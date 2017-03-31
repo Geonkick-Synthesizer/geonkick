@@ -1,4 +1,5 @@
 /*
+  Copyright (C) 2017 Iurie Nistor <nistor@iurie.org>
   Copyright (C) 2004 Ian Esten
 
   This program is free software; you can redistribute it and/or modify
@@ -31,7 +32,8 @@
 #define GEON_APP_NAME "geonckick"
 
 jack_port_t *input_port;
-jack_port_t *output_port;
+jack_port_t *output_port_l;
+jack_port_t *output_port_r;
 jack_default_audio_sample_t ramp=0.0;
 jack_default_audio_sample_t note_on;
 unsigned char note = 0;
@@ -58,7 +60,8 @@ static int process(jack_nframes_t nframes, void *arg)
 {
 	int i;
 	void* port_buf = jack_port_get_buffer(input_port, nframes);
-	jack_default_audio_sample_t *out = (jack_default_audio_sample_t *) jack_port_get_buffer (output_port, nframes);
+	jack_default_audio_sample_t *out_l = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
+	jack_default_audio_sample_t *out_r = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
 	jack_midi_event_t in_event;
 	jack_nframes_t event_index = 0;
 	jack_nframes_t event_count = jack_midi_get_event_count(port_buf);
@@ -95,7 +98,8 @@ static int process(jack_nframes_t nframes, void *arg)
 		}
 		ramp += note_frqs[note];
 		ramp = (ramp > 1.0) ? ramp - 2.0 : ramp;
-		out[i] = note_on*sin(2*M_PI*ramp);
+		out_l[i] = note_on*sin(2*M_PI*ramp);
+		out_r[i] = note_on*sin(2*M_PI*ramp);
 	}
 	
 	return 0;
@@ -126,8 +130,9 @@ int main(int narg, char **args)
 	jack_set_sample_rate_callback(client, srate, 0);
 	jack_on_shutdown(client, jack_shutdown, 0);
 
-	input_port = jack_port_register (client, "midi_in", JACK_DEFAULT_MIDI_TYPE, JackPortIsInput, 0);
-	output_port = jack_port_register (client, "audio_out", JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+	input_port = jack_port_register(client, "midi_in", JACK_DEFAULT_MIDI_TYPE, JackPortIsInput, 0);
+	output_port_l = jack_port_register(client, "audio_out_L", JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
+	output_port_r = jack_port_register(client, "audio_out_R", JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
 
 	if (jack_activate (client)) {
 		fprintf(stderr, "cannot activate client");
