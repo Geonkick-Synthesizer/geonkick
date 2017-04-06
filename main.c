@@ -46,31 +46,15 @@ jack_client_t *client;
 	int y;
 };
 
-struct gkick_envelope {
-	size_t count;
-	gkick_point *point;
-	gkick_point *next;
-};
+*/
 
-static void gkick_envelope_create(gkick_envelope** envelope)
-{
-	if (envelope == NULL) {
-		return;
-	}
-
-	*envelope = (struct gkick_envelope*)malloc(sizeof(struct gkick_envelope));
-	if (*envelope == NULL) {
-		return;
-	}
-
-	memset(*envelope, 0, sizeof(struct gkick_envelope));
-}
-
-static void gkick_envelope_add_point(gkick_envelope *envelope, int x, int y)
+float
+gkick_envelope_get_value(void *envelope)
 {
 	
+	return 1.0; 
 }
-*/
+
 static void signal_handler(int sig)
 {
 	jack_client_close(client);
@@ -99,11 +83,16 @@ static int process(jack_nframes_t nframes, void *arg)
 	//volatile int s = 1;//nframes / 2;
 	int f = 100;
 	for (i = 0; i < nframes; i++) {
-	       out_l[i] = 0.5 * sin(2 * M_PI * ramp);
-	       out_r[i] = 0.5 * sin(2 * M_PI * ramp);
-	       ramp += 1000 * 1.0 / 48000.0;
+		float amp = gkick_get_envelope_value((struct gkick_envelope*)arg);
+		out_l[i] = 0.5 * amp * sin(2 * M_PI * ramp);
+	        out_r[i] = 0.5 * amp * sin(2 * M_PI * ramp);
+	        ramp += 1000 * 1.0 / 48000.0;
 	       //	       printf("ramp = %f\n", ramp);
 	       ramp = (ramp > 1.0) ? ramp - 2.0 : ramp;
+	       if (gkick_clock_get_value(envelope->clock) > 2) {
+		        // Reinit the envelope action.
+		       	gkick_envelope_activate(envelope);
+	       }
 	}
 
 	//        out_l[nframes - 500] = 0; 
@@ -132,7 +121,25 @@ int main(int narg, char **args)
 	}
 
 	calc_note_frqs(jack_get_sample_rate (client));
-	jack_set_process_callback(client, process, 0);
+
+	struct gkick_envelope *envelope = gkick_envelope_create();
+
+	// Attack time = 0.1s
+	gkick_envelope_add_point(envelope, 0, 0);
+	gkick_envelope_add_point(envelope, 0.1, 1);
+
+	//Decay time = 0.3 s
+	gkick_envelope_add_point(envelope, 0.3, 0.5);
+
+	//Sustain time = 0.4s
+	gkick_envelope_add_point(envelope, 0.7, 0.5);
+
+	// Release time = 0.8s
+	gkick_envelope_add_point(envelope, 1.5, 0);
+	
+	gkick_envelope_activate(envelope);
+	
+	jack_set_process_callback(client, process, (void*)envelope);
 	jack_set_sample_rate_callback(client, srate, 0);
 	jack_on_shutdown(client, jack_shutdown, 0);
 
@@ -162,6 +169,7 @@ int main(int narg, char **args)
 #endif
 	}
 	jack_client_close(client);
+	gkick_envelope_destory(envelope);
 	exit (0);
 }
 
