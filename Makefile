@@ -1,6 +1,7 @@
 CC = gcc
 INCLUDES = 
-CFLAGS = -O2 -Wall $(INCLUDES)
+#CFLAGS = -O2 -Wall $(INCLUDES)
+CFLAGS = -O0 -Wall $(INCLUDES)
 LIBS = -ljack -lm
 TARGET = geonkick
 SRC = ./

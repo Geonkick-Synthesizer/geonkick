@@ -41,6 +41,36 @@ jack_default_audio_sample_t note_frqs[128];
 
 jack_client_t *client;
 
+/*struct gkick_point {
+	int x;
+	int y;
+};
+
+struct gkick_envelope {
+	size_t count;
+	gkick_point *point;
+	gkick_point *next;
+};
+
+static void gkick_envelope_create(gkick_envelope** envelope)
+{
+	if (envelope == NULL) {
+		return;
+	}
+
+	*envelope = (struct gkick_envelope*)malloc(sizeof(struct gkick_envelope));
+	if (*envelope == NULL) {
+		return;
+	}
+
+	memset(*envelope, 0, sizeof(struct gkick_envelope));
+}
+
+static void gkick_envelope_add_point(gkick_envelope *envelope, int x, int y)
+{
+	
+}
+*/
 static void signal_handler(int sig)
 {
 	jack_client_close(client);
@@ -59,48 +89,25 @@ static void calc_note_frqs(jack_default_audio_sample_t srate)
 static int process(jack_nframes_t nframes, void *arg)
 {
 	int i;
-	void* port_buf = jack_port_get_buffer(input_port, nframes);
-	jack_default_audio_sample_t *out_l = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
-	jack_default_audio_sample_t *out_r = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
-	jack_midi_event_t in_event;
-	jack_nframes_t event_index = 0;
-	jack_nframes_t event_count = jack_midi_get_event_count(port_buf);
 	
-	if(event_count > 1) {
-		printf(" midisine: have %d events\n", event_count);
-		for(i=0; i<event_count; i++) {
-			jack_midi_event_get(&in_event, port_buf, i);
-			printf("    event %d time is %d. 1st byte is 0x%x\n", i, in_event.time, *(in_event.buffer));
-		}
-		/*		printf("1st byte of 1st event addr is %p\n", in_events[0].buffer);*/
+	//void* port_buf = jack_port_get_buffer(input_port, nframes);
+        jack_default_audio_sample_t *out_l = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
+	jack_default_audio_sample_t *out_r = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_r, nframes);
+
+	printf("nframes = %d \n", nframes);
+	//	out_l[100] = 90;
+	//volatile int s = 1;//nframes / 2;
+	int f = 100;
+	for (i = 0; i < nframes; i++) {
+	       out_l[i] = 0.5 * sin(10 * 2 * M_PI * f * ramp);
+	       out_r[i] = 0.5 * sin(10 * 2 * M_PI * f * ramp);
+	       ramp += 1.0 / 48000.0;
+	       if (ramp > 48000.0) {
+	       	        ramp = 0.0;
+	       }
 	}
-	
-	jack_midi_event_get(&in_event, port_buf, 0);
-	for(i = 0; i < nframes; i++) {
-		if ((in_event.time == i) && (event_index < event_count)) {
-			if (((*(in_event.buffer) & 0xf0)) == 0x90) {
-				/* note on */
-				note = *(in_event.buffer + 1);
-				if (*(in_event.buffer + 2) == 0) {
-					note_on = 0.0;
-				} else {
-					note_on = (float)(*(in_event.buffer + 2)) / 127.f;
-				}
-			}
-			else if (((*(in_event.buffer)) & 0xf0) == 0x80) {
-				/* note off */
-				note = *(in_event.buffer + 1);
-				note_on = 0.0;
-			}
-			event_index++;
-			if(event_index < event_count)
-				jack_midi_event_get(&in_event, port_buf, event_index);
-		}
-		ramp += note_frqs[note];
-		ramp = (ramp > 1.0) ? ramp - 2.0 : ramp;
-		out_l[i] = note_on*sin(2*M_PI*ramp);
-		out_r[i] = note_on*sin(2*M_PI*ramp);
-	}
+
+	//        out_l[nframes - 500] = 0; 
 	
 	return 0;
 }
@@ -125,16 +132,16 @@ int main(int narg, char **args)
 		return 1;
 	}
 
-	calc_note_frqs(jack_get_sample_rate (client));
+	//	calc_note_frqs(jack_get_sample_rate (client));
 	jack_set_process_callback(client, process, 0);
 	jack_set_sample_rate_callback(client, srate, 0);
 	jack_on_shutdown(client, jack_shutdown, 0);
 
-	input_port = jack_port_register(client, "midi_in", JACK_DEFAULT_MIDI_TYPE, JackPortIsInput, 0);
+	//input_port = jack_port_register(client, "midi_in", JACK_DEFAULT_MIDI_TYPE, JackPortIsInput, 0);
 	output_port_l = jack_port_register(client, "audio_out_L", JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
 	output_port_r = jack_port_register(client, "audio_out_R", JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
 
-	if (jack_activate (client)) {
+	if (jack_activate(client)) {
 		fprintf(stderr, "cannot activate client");
 		return 1;
 	}
