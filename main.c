@@ -94,17 +94,16 @@ static int process(jack_nframes_t nframes, void *arg)
         jack_default_audio_sample_t *out_l = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
 	jack_default_audio_sample_t *out_r = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_r, nframes);
 
-	printf("nframes = %d \n", nframes);
+	//printf("nframes = %d \n", nframes);
 	//	out_l[100] = 90;
 	//volatile int s = 1;//nframes / 2;
 	int f = 100;
 	for (i = 0; i < nframes; i++) {
-	       out_l[i] = 0.5 * sin(10 * 2 * M_PI * f * ramp);
-	       out_r[i] = 0.5 * sin(10 * 2 * M_PI * f * ramp);
-	       ramp += 1.0 / 48000.0;
-	       if (ramp > 48000.0) {
-	       	        ramp = 0.0;
-	       }
+	       out_l[i] = 0.5 * sin(2 * M_PI * ramp);
+	       out_r[i] = 0.5 * sin(2 * M_PI * ramp);
+	       ramp += 1000 * 1.0 / 48000.0;
+	       //	       printf("ramp = %f\n", ramp);
+	       ramp = (ramp > 1.0) ? ramp - 2.0 : ramp;
 	}
 
 	//        out_l[nframes - 500] = 0; 
@@ -132,7 +131,7 @@ int main(int narg, char **args)
 		return 1;
 	}
 
-	//	calc_note_frqs(jack_get_sample_rate (client));
+	calc_note_frqs(jack_get_sample_rate (client));
 	jack_set_process_callback(client, process, 0);
 	jack_set_sample_rate_callback(client, srate, 0);
 	jack_on_shutdown(client, jack_shutdown, 0);
