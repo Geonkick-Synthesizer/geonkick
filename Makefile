@@ -4,9 +4,11 @@ INCLUDES =
 CFLAGS = -O0 -Wall $(INCLUDES)
 LIBS = -ljack -lm
 TARGET = geonkick
-SRC = ./
+SRC = src
 
-OBJECTS = main.o
+OBJECTS = clock.o \
+	envelope.o \
+	main.o
 
 all: $(TARGET)
 

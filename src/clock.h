@@ -19,17 +19,20 @@
 */
 
 #include <time.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 struct gkick_clock
 {
 	clockid_t id;
 };
 
-void gkick_clock_create(struct gkick_clock *clock);
+struct gkick_clock* gkick_clock_create(void);
 
 int gkick_clock_start(struct gkick_clock *clock);
 
-int gkick_clock_stop(struct gkick_clock *clock)
+int gkick_clock_stop(struct gkick_clock *clock);
 
 long int gkick_clock_get_value(struct gkick_clock *clock);
 

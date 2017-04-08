@@ -17,6 +17,8 @@
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include "envelope.h"
+
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
@@ -41,19 +43,6 @@ jack_default_audio_sample_t note_frqs[128];
 
 jack_client_t *client;
 
-/*struct gkick_point {
-	int x;
-	int y;
-};
-
-*/
-
-float
-gkick_envelope_get_value(void *envelope)
-{
-	
-	return 1.0; 
-}
 
 static void signal_handler(int sig)
 {
@@ -73,6 +62,7 @@ static void calc_note_frqs(jack_default_audio_sample_t srate)
 static int process(jack_nframes_t nframes, void *arg)
 {
 	int i;
+	struct gkick_envelope *envelope = (struct gkick_envelope*)arg;
 	
 	//void* port_buf = jack_port_get_buffer(input_port, nframes);
         jack_default_audio_sample_t *out_l = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
@@ -82,8 +72,9 @@ static int process(jack_nframes_t nframes, void *arg)
 	//	out_l[100] = 90;
 	//volatile int s = 1;//nframes / 2;
 	int f = 100;
+	(void)f;
 	for (i = 0; i < nframes; i++) {
-		float amp = gkick_get_envelope_value((struct gkick_envelope*)arg);
+		float amp = gkick_envelope_get_value(envelope);
 		out_l[i] = 0.5 * amp * sin(2 * M_PI * ramp);
 	        out_r[i] = 0.5 * amp * sin(2 * M_PI * ramp);
 	        ramp += 1000 * 1.0 / 48000.0;
@@ -169,7 +160,7 @@ int main(int narg, char **args)
 #endif
 	}
 	jack_client_close(client);
-	gkick_envelope_destory(envelope);
+	gkick_envelope_destroy(envelope);
 	exit (0);
 }
 
