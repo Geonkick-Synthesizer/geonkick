@@ -17,6 +17,7 @@
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include "common.h"
 #include "envelope.h"
 
 #include <stdio.h>
@@ -30,8 +31,6 @@
 
 #include <jack/jack.h>
 #include <jack/midiport.h>
-
-#define GEON_APP_NAME "geonckick"
 
 jack_port_t *input_port;
 jack_port_t *output_port_l;

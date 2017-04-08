@@ -20,25 +20,61 @@
 
 struct gkick_clock* gkick_clock_create(void)
 {
-	return NULL;
+	struct gkick_clock* clock;
+
+	clock = (struct gkick_clock*)malloc(sizeof(struct gkick_clock));
+	if (clock == NULL) {
+		return NULL;
+	}
+
+	clock->started_at = -1;
+	clock->started = 0;
+
+	
+	return clock;
 }
 
-int gkick_clock_start(struct gkick_clock *clock)
+void gkick_clock_start(struct gkick_clock *clock)
 {
-	return 0;
+	struct timespec start;
+	
+	if (clock == NULL) {
+		return;
+	}
+
+	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
+	clock->started = 1;
+	clock->started_at = start.tv_sec * (1000000000L) + start.tv_nsec;
 }
 
 int gkick_clock_stop(struct gkick_clock *clock)
 {
+	if (clock == NULL) {
+		return 0;
+	}
+
+	clock->started = 0;
+	
 	return 0;
 }
 
 long int gkick_clock_get_value(struct gkick_clock *clock)
 {
-	return 1;
+	struct timespec start;
+	long int current;
+	
+	if (clock == NULL) {
+		return 0;
+	}
+	
+	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
+	current = start.tv_sec * (1000000000L) + start.tv_nsec;
+	return current - clock->started_at;
 }
 
-int gkick_clock_destroy(struct gkick_clock *clock)
+void gkick_clock_destroy(struct gkick_clock *clock)
 {
-	return 0;
+	if (clock != NULL) {
+		free(clock);
+	}
 }
