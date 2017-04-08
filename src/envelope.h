@@ -18,17 +18,16 @@
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include "clock.h"
+#include "common.h"
 
 struct gkick_envelope_point {
 	struct gkick_envelope_point *prev;
 	struct gkick_envelope_point *next;
-	float x;
-	float y;
+	double x;
+	double y;
 };
 
 struct gkick_envelope {
-	struct gkick_clock *clock;
 	size_t npoints;
 	struct gkick_envelope_point *first;
 	struct gkick_envelope_point *last;
@@ -50,10 +49,13 @@ gkick_envelope_activate(struct gkick_envelope* envelope);
  * With an array it can be reduced to O(log(N)) with binary search.
  */
 float
-gkick_envelope_get_value(const struct gkick_envelope* envelope);
+gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm);
 
 struct gkick_envelope_point*
 gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y);
+
+void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
+			       struct gkick_envelope_point *point);
 
 void
 gkick_envelope_destroy(struct gkick_envelope *envelope);

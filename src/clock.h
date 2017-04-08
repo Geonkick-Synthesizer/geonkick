@@ -18,6 +18,7 @@
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+#include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,7 +27,7 @@
 struct gkick_clock
 {
 	int started;
-	long int started_at;
+	double started_at;
 };
 
 struct gkick_clock* gkick_clock_create(void);
@@ -35,7 +36,7 @@ void gkick_clock_start(struct gkick_clock *clock);
 
 int gkick_clock_stop(struct gkick_clock *clock);
 
-long int gkick_clock_get_value(struct gkick_clock *clock);
+double gkick_clock_get_value(struct gkick_clock *clock);
 
 void gkick_clock_destroy(struct gkick_clock *clock);
 

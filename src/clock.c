@@ -17,6 +17,7 @@
 */
 
 #include "clock.h"
+#include <sys/time.h>
 
 struct gkick_clock* gkick_clock_create(void)
 {
@@ -27,7 +28,7 @@ struct gkick_clock* gkick_clock_create(void)
 		return NULL;
 	}
 
-	clock->started_at = -1;
+	clock->started_at = -1.0;
 	clock->started = 0;
 
 	
@@ -36,15 +37,15 @@ struct gkick_clock* gkick_clock_create(void)
 
 void gkick_clock_start(struct gkick_clock *clock)
 {
-	struct timespec start;
+	struct timeval start;
 	
 	if (clock == NULL) {
 		return;
 	}
 
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
+	gettimeofday(&start, NULL);
 	clock->started = 1;
-	clock->started_at = start.tv_sec * (1000000000L) + start.tv_nsec;
+	clock->started_at = (double)start.tv_sec * (1000000.0L) + (double)start.tv_usec;
 }
 
 int gkick_clock_stop(struct gkick_clock *clock)
@@ -58,17 +59,18 @@ int gkick_clock_stop(struct gkick_clock *clock)
 	return 0;
 }
 
-long int gkick_clock_get_value(struct gkick_clock *clock)
+double gkick_clock_get_value(struct gkick_clock *clock)
 {
-	struct timespec start;
-	long int current;
+	struct timeval now;
+	double current;
 	
 	if (clock == NULL) {
 		return 0;
 	}
-	
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &start);
-	current = start.tv_sec * (1000000000L) + start.tv_nsec;
+
+	gettimeofday(&now, NULL);
+
+	current = ((double)now.tv_sec * (1000000.0) + (double)now.tv_usec);
 	return current - clock->started_at;
 }
 

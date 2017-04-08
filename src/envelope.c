@@ -27,13 +27,7 @@ gkick_envelope_create(void)
 	if (envelope == NULL) {
 		return NULL;
 	}
-
 	memset(envelope, 0, sizeof(struct gkick_envelope));
-	envelope->clock = gkick_clock_create();
-	if (envelope->clock == NULL) {
-		free(envelope);
-		return NULL;
-	}
 	
 	return envelope;
 }
@@ -45,10 +39,6 @@ gkick_envelope_create(void)
 void
 gkick_envelope_activate(struct gkick_envelope* envelope)
 {
-	if (envelope != NULL && envelope->clock != NULL) {
-		// The envelope clock is restarted.
-		gkick_clock_start(envelope->clock);
-	}
 }
 
 /**
@@ -57,9 +47,9 @@ gkick_envelope_activate(struct gkick_envelope* envelope)
  * With an array it can be reduced to O(log(N)) with binary search.
  */
 float
-gkick_envelope_get_value(const struct gkick_envelope* envelope)
+gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 {
-	long int x1, y1, x2, y2, xm, ym;
+	double x1, y1, x2, y2, ym;
 	struct gkick_envelope_point *point;
 
 	if (envelope == NULL ||
@@ -68,7 +58,6 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope)
 		return 0.0;
 	}
 
-	xm = gkick_clock_get_value(envelope->clock);
 	if (xm < envelope->first->x || xm > envelope->last->x) {
 		return 0.0;
 	}
@@ -93,8 +82,12 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope)
 		}
 		point = point->prev;
 	}
-
-	ym = (y1 * (x2 - xm) + y2 * (xm - x1)) / (x2 - x1);
+	
+	if (fabsl(x2 - x1) < 1e-40) {
+		return 0.0;
+	} else {
+		ym = (y1 * (x2 - xm) + y2 * (xm - x1)) / (x2 - x1);
+	}
 
 	return ym;
 }
@@ -113,21 +106,54 @@ gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
 		return NULL;
 	}
 	memset(point, 0, sizeof(sizeof(struct gkick_envelope_point)));
-	point->x = x;
+	point->x = 1e6 * x;
 	point->y = y;
 
 	if (envelope->npoints == 0
 	    || envelope->first == NULL || envelope->last == NULL) {
 		envelope->first = envelope->last = point;
+		printf("here 0\n");
 	} else {
-		envelope->last->next = point;
-		point->prev = envelope->last;
-		envelope->last = point;
+		gkick_envelope_add_sorted(envelope, point);
 	}
 
 	envelope->npoints++;
 
 	return point;
+}
+
+void gkick_envelope_add_sorted(struct gkick_envelope *envelope, struct gkick_envelope_point *point)
+{
+	struct gkick_envelope_point *p;
+	printf("gkick_envelope_add_sorted");
+	
+	p = envelope->first;
+
+	if (point->x > envelope->last->x) {
+		printf("here[1]\n");
+		envelope->last->next = point;
+	        point->prev = envelope->last;
+		envelope->last = point;
+	} else {	
+		while (p) {
+			printf("here1\n");
+			if (point->x < p->x) {
+				if (p == envelope->first) {
+					point->next = p;
+					p->prev = point;
+					envelope->first = point;
+								printf("here2\n");
+				} else {
+					point->prev = p->prev;
+					point->next = p;
+					p->prev->next = point;
+					p->prev = point;
+				}
+				break;
+			}
+			p = p->next;
+		}
+	}
 }
 
 void gkick_envelope_destroy(struct gkick_envelope *envelope)
@@ -136,18 +162,13 @@ void gkick_envelope_destroy(struct gkick_envelope *envelope)
 	if (envelope == NULL) {
 		return;
 	}
-
-	if (envelope->clock != NULL) {
-		gkick_clock_destroy(envelope->clock);
-	}
-
+	
 	if (envelope->npoints != 0) {
 		while (envelope->first != NULL) {
 			point = envelope->first;
 			envelope->first = point->next;
 			free(point);
 		}
-	}
-	
+	}	
 	free(envelope);
 }

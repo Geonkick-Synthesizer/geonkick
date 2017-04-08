@@ -19,5 +19,17 @@
 */
 #endif
 
+#include <stdio.h>
+#include <errno.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <math.h>
+#include <inttypes.h>
+
+#include <jack/jack.h>
+#include <jack/midiport.h>
+
 #define GEON_APP_VERSION 0x000100
 #define GEON_APP_NAME "geonckick"
