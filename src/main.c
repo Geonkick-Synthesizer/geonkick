@@ -26,11 +26,13 @@ jack_port_t *output_port_r;
 jack_default_audio_sample_t ramp=0.0;
 jack_default_audio_sample_t note_on;
 double T = 0.0;
+double phase = 0.0;
 unsigned char note = 0;
 jack_default_audio_sample_t note_frqs[128];
 
 jack_client_t *client;
 
+struct gkick_envelope *envelope_fr;
 
 static void signal_handler(int sig)
 {
@@ -55,21 +57,24 @@ static int process(jack_nframes_t nframes, void *arg)
         jack_default_audio_sample_t *out_l = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_l, nframes);
 	jack_default_audio_sample_t *out_r = (jack_default_audio_sample_t *)jack_port_get_buffer(output_port_r, nframes);
 
-	int f = 10;
-	(void)f;
+	double f = 100;
+	double samplerate = 44800;
 	for (i = 0; i < nframes; i++) {
 	      	double amp = gkick_envelope_get_value(envelope, 1e6 * T);
+		f = 250 * gkick_envelope_get_value(envelope_fr, 1e6 * T);
+		out_l[i] = 0.5 * amp * sin(phase) + 0.1 * amp * sin(2 * phase);
+	        out_r[i] = 0.5 * amp * sin(phase) + 0.1 * amp * sin(2 * phase);
+		phase += ((2 * M_PI * f) / samplerate);
+		
+		if (phase > M_PI) {
+			phase -= 2 * M_PI;
+		}
+		//				       	printf("[%f] phase = %f, v = %f\n", T, phase, out_r[i]);		
+		T += 1.0 / samplerate;
 
-		out_l[i] = 0.5 * amp * sin(2 * M_PI * ramp);
-	        out_r[i] = 0.5 * amp * sin(2 * M_PI * ramp);
-	        ramp += 1000 * 1.0 / 48000.0;
-	       ramp = (ramp > 1.0) ? ramp - 2.0 : ramp;
-	       T += 1/48000.0;
-
-	       if (T > 0.2) {
-		       T = 0.0;
-		      	gkick_envelope_activate(envelope);
-	       }
+	        if (T > 0.5) {
+	              T = 0.0;
+	        }
 	}
 
 	return 0;
@@ -98,10 +103,21 @@ int main(int narg, char **args)
 	calc_note_frqs(jack_get_sample_rate (client));
 
 	struct gkick_envelope *envelope = gkick_envelope_create();
+	envelope_fr = gkick_envelope_create();
 
-	gkick_envelope_add_point(envelope, 0.01, 0.0);
-	gkick_envelope_add_point(envelope, 0.02, 1.0);
-	gkick_envelope_add_point(envelope, 0.03, 0.5);	
+	gkick_envelope_add_point(envelope_fr, 0.0, 1.0);
+	gkick_envelope_add_point(envelope_fr, 0.375, 36.0/250.0);
+	
+	gkick_envelope_add_point(envelope, 0.0, 0.0);
+	gkick_envelope_add_point(envelope, 0.01, 1.0);
+	gkick_envelope_add_point(envelope, 0.360, 1.0);
+	gkick_envelope_add_point(envelope, 0.375, 0.0);
+
+
+	//gkick_envelope_add_point(envelope, 0.02, 1.0);
+	//gkick_envelope_add_point(envelope, 0.03, 0.7);
+	//gkick_envelope_add_point(envelope, 0.05, 0.5);
+	//gkick_envelope_add_point(envelope, 0.1, 0.0);	
 	/*	gkick_envelope_add_point(envelope, 4, 0.0);
 	gkick_envelope_add_point(envelope, 5, 0.0);
 	gkick_envelope_add_point(envelope, 7.8, 1.0);
@@ -114,7 +130,7 @@ int main(int narg, char **args)
 	gkick_envelope_add_point(envelope, 7, 0.5);	
 	gkick_envelope_add_point(envelope, 8, 0.0);
 	gkick_envelope_add_point(envelope, 0.1, 0.0);	*/
-	struct gkick_envelope_point *p = envelope->first;
+	struct gkick_envelope_point *p = envelope_fr->first;
 	while(p) {
 		printf("\nx = %f, y = %f\n", p->x / 1e6, p->y);
 		p = p->next;
