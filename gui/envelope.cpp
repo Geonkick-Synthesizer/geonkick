@@ -213,3 +213,17 @@ void GKickEnvelope::addPoint(QPointF point)
 		}
 	}
 }
+
+void GKickEnvelope::removePoint(QPointF point)
+{
+	for(int i = 0; i < envelopePoints.size(); i++) {
+		if (envelopePoints[i].hasPoint(point)) {
+			if (envelopePoints[i] != envelopePoints.first()
+			    && envelopePoints[i] != envelopePoints.last()) {
+				envelopePoints.remove(i);
+			}
+			break;
+		}
+		
+	}	
+}

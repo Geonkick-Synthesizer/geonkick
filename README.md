@@ -1,2 +1,2 @@
-# soundspa
-Sound spectrum analyzer
+# GeonKick
+Kick drum synthesizer.

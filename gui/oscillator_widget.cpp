@@ -54,11 +54,18 @@ void OscillatorWidget::drawAxes(void)
 void 
 OscillatorWidget::mousePressEvent(QMouseEvent *event)
 {
+	if (event->button() == Qt::RightButton) {
+		kickEnvelope.removePoint(QPointF(event->x() - xPadding,
+					 height() - (event->y() + yPadding)));
+		update();
+		return; 
+	}
+	
 	qDebug() << "mousePressEvent";
 	mousePoint.setX(event->x());
 	mousePoint.setY(event->y());
 	kickEnvelope.selectPoint(QPointF(event->x() - xPadding,
-					 height() - (event->y() + yPadding)));
+				 height() - (event->y() + yPadding)));
 	if (kickEnvelope.hasSelected()) {
 		update();
 	}

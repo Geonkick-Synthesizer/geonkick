@@ -53,6 +53,7 @@ class GKickEnvelope
 	double getLeftPointLimit(void);
 	double getRightPointLimit(void);
 	void addPoint(QPointF point);
+	void removePoint(QPointF point);
    
  protected:
 	void drawPoints(QPainter &painter);
