@@ -52,6 +52,7 @@ class GKickEnvelope
 	void setOutOfRangeY(GKickEnvelope::OutOfRangeType type);
 	double getLeftPointLimit(void);
 	double getRightPointLimit(void);
+	void addPoint(QPointF point);
    
  protected:
 	void drawPoints(QPainter &painter);

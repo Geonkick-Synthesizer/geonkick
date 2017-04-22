@@ -74,6 +74,13 @@ OscillatorWidget::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void 
+OscillatorWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+	kickEnvelope.addPoint(QPointF(event->x() - xPadding, height() - (event->y() + yPadding)));
+	update();
+}
+
+void 
 OscillatorWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	if (!kickEnvelope.hasSelected()) {

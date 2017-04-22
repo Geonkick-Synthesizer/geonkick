@@ -38,11 +38,11 @@ GKickEnvelope::GKickEnvelope(void) :
 	envelopePoints << GKickEnvelopePoint(QPointF(100.0, 120.0));
 	envelopePoints << GKickEnvelopePoint(QPointF(150.0, 200.0));
 	envelopePoints << GKickEnvelopePoint(QPointF(250.0, 20.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(233.0, 10.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(80.0, 50.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(160.0, 120.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(110.0, 200.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(210.0, 20.0));
+	envelopePoints << GKickEnvelopePoint(QPointF(270.0, 10.0));
+	envelopePoints << GKickEnvelopePoint(QPointF(300.0, 50.0));
+	envelopePoints << GKickEnvelopePoint(QPointF(320.0, 120.0));
+	envelopePoints << GKickEnvelopePoint(QPointF(350.0, 200.0));
+	envelopePoints << GKickEnvelopePoint(QPointF(380.0, 20.0));
 
 }
 
@@ -193,4 +193,23 @@ void GKickEnvelope::moveSelectedPoint(double dx, double dy)
 	}
 }
 
-
+void GKickEnvelope::addPoint(QPointF point)
+{
+	if (point.x() > envelopeW) {
+		envelopePoints.append(GKickEnvelopePoint(envelopeW, point.y()));
+	} else if (point.x() < 0.0) {
+		envelopePoints.push_front(GKickEnvelopePoint(0.0, point.y()));
+	} else if (point.x() < envelopePoints[0].x()) {
+		envelopePoints.push_front(GKickEnvelopePoint(point));
+	} else if (point.x() > envelopePoints.last().x()) {
+		envelopePoints.push_back(GKickEnvelopePoint(point));
+	} else {		
+		GKickEnvelopePoint p;
+		for(int i = 0; i < envelopePoints.size(); i++) {
+			if (point.x() < envelopePoints[i].x()) {
+				envelopePoints.insert(i, GKickEnvelopePoint(point));
+				break;
+			}
+		}
+	}
+}

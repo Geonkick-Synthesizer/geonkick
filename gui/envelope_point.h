@@ -33,6 +33,7 @@ class GKickEnvelopePoint : public QPointF
  public:
 	GKickEnvelopePoint(void);
 	GKickEnvelopePoint(const QPointF &point);
+	GKickEnvelopePoint(double x, double y);
 	virtual ~GKickEnvelopePoint();
 	void draw(QPainter &painter, const QPointF &origin);
 	bool isSelected(void);

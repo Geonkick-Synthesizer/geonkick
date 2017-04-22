@@ -18,6 +18,14 @@ GKickEnvelopePoint::GKickEnvelopePoint(const QPointF &point)
 {
 }
 
+GKickEnvelopePoint::GKickEnvelopePoint(double x, double y)
+	: QPointF(x, y),
+	  is_selected(false),
+	  pointRadius(7),
+	  dotRadius(3)
+{
+}
+
 GKickEnvelopePoint::~GKickEnvelopePoint()
 {
 	
