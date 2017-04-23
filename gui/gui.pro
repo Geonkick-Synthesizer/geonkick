@@ -12,10 +12,12 @@ INCLUDEPATH += .
 
 # Input
 HEADERS += globals.h \
+           gkickoscillator.h \
            envelope_point.h \
-           envelope.h \
+           oscillator_envelope.h \
            oscillator_widget.h
 SOURCES += envelope_point.cpp \
-           envelope.cpp \
+           gkickoscillator.cpp \
+           oscillator_envelope.cpp \
            oscillator_widget.cpp \
            main.cpp 

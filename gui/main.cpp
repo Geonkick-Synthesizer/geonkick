@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-  qDebug() << "Hello soundspec";
+  qDebug() << "Hello Geonkick";
 
 
   /*  struct geonckick *kick;
@@ -24,8 +24,9 @@ int main(int argc, char *argv[])
 
   gkick_set_opt_app_name(kick, "GeonKick");
   gkick_start(kick);*/
+  GKickOscillator osc;
    
-  OscillatorWidget plotWindow(NULL);
+  OscillatorWidget plotWindow(NULL, &osc);
   plotWindow.show();
   //  gkick_free(kick);
   

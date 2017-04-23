@@ -1,5 +1,5 @@
-#ifndef GKICK_ENVELOPE_UI_H
-#define GKICK_ENVELOPE_UI_H
+#ifndef GKICK_OSCILLATOR_ENVELOPE_H
+#define GKICK_OSCILLATOR_ENVELOPE_H
 
 /**
  * File name: envelope.h
@@ -27,8 +27,12 @@
 
 #include "envelope_point.h"
 
-class GKickEnvelope
+#include <QObject>
+
+class OscillatorEnvelope: public QObject
 {
+  Q_OBJECT
+
  public:
 	enum OutOfRangeType {
 		OUT_OF_RANGE_NONE,
@@ -38,8 +42,8 @@ class GKickEnvelope
 		OUT_OF_RANGE_BOTTOM,
 	};
 
-	GKickEnvelope(void);
-	~GKickEnvelope();
+	OscillatorEnvelope(void);
+	~OscillatorEnvelope();
 	void draw(QPainter &painter);
 	void setOrigin(QPointF &point);
 	void setWidth(double width);
@@ -48,25 +52,32 @@ class GKickEnvelope
 	void selectPoint(QPointF point);
 	void unselectPoint(void);
 	void moveSelectedPoint(double dx, double dy);
-	void setOutOfRangeX(GKickEnvelope::OutOfRangeType type);
-	void setOutOfRangeY(GKickEnvelope::OutOfRangeType type);
+	void setOutOfRangeX(OutOfRangeType type);
+	void setOutOfRangeY(OutOfRangeType type);
 	double getLeftPointLimit(void);
 	double getRightPointLimit(void);
 	void addPoint(QPointF point);
+	void addEnvelopePoints(const QPolygonF &points);
 	void removePoint(QPointF point);
+	
+ signals:
+	void pointAdded(const QPointF & point);
+	void pointRemoved(int index);
+	void pointUpdated(int index, const QPointF & point);
+	
    
  protected:
 	void drawPoints(QPainter &painter);
 	void drawLines(QPainter &painter);
      
  private:
-	QVector<GKickEnvelopePoint> envelopePoints;
-	GKickEnvelopePoint* selectedPoint;
+	QVector<OscillatorEnvelopePoint> envelopePoints;
+	OscillatorEnvelopePoint* selectedPoint;
 	QPointF originPoint;
 	double envelopeW;
 	double envelopeH;
-	GKickEnvelope::OutOfRangeType outOfRangeX;
-	GKickEnvelope::OutOfRangeType outOfRangeY;
+	OutOfRangeType outOfRangeX;
+	OutOfRangeType outOfRangeY;
 };
 
 #endif

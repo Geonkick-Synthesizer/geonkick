@@ -1,0 +1,58 @@
+
+double gkick_get_oscillators_value(struct geonkick *kick)
+{
+  double value;
+
+  v = gkick_osc_value(kick->oscillator_base);
+  v += gkick_osc_value(kick->oscillator_noise);
+  
+  gkick_osc_increment_phase(kick->oscillator_base);
+  gkick_osc_increment_phase(kick->oscillator_noise);
+
+  return v;  
+}
+
+double gkick_get_oscillator_value(struct geonkick *kick,
+				  enum gkick_oscillator_type type)
+{
+  double v = 0.0;
+  
+  if (type == GKICK_OSCILLATOR_BASE) {
+    v = gkick_oscillator_value(kick->oscillator_base);
+  } else if (type == GKICK_OSCILLATOR_NOISE) {
+    v = gkick_oscillator_value(kick->oscillator_noise);
+  }
+
+  return v;
+}
+
+
+double gkick_osc_value(struct gkick_oscillator *osc)
+{
+  enum gkick_osc_func func;
+  struct gkick_envelope *amp_env;
+  struct gkick_envelope *freq_env;
+  double amp;
+
+  amp = gkick_get_envlope_value();
+
+  func = gkick_osc_func(osc);
+  if (func == GKICK_OSC_SINE) {
+    return gkick_osc_func_sine(osc)
+  }
+}
+
+double gkick_osc_func_sine(dstruct gkick_oscillator *osc)
+{
+  double phase = gkick_osc_get_phase(osc);
+  return sin(2 * M_PI * phase);
+}
+
+double gkick_osc_func_sqare(dstruct gkick_oscillator *osc)
+{
+  double phase = gkick_osc_get_phase(osc);
+  
+  if (phase < M_PI) {
+    return 1;
+  } else -1;
+}

@@ -33,20 +33,11 @@ gkick_envelope_create(void)
 }
 
 /**
- * This functions resetes the time elapsed since the envelope 
- * acts on the signal.
- */
-void
-gkick_envelope_activate(struct gkick_envelope* envelope)
-{
-}
-
-/**
  * Compexity = O(N), where N are the nuber of evelope points.
  * TODO: to reduce the complexity with a hash table intead of the list.
  * With an array it can be reduced to O(log(N)) with binary search.
  */
-float
+double
 gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 {
 	double x1, y1, x2, y2, ym;
@@ -122,27 +113,24 @@ gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
 	return point;
 }
 
-void gkick_envelope_add_sorted(struct gkick_envelope *envelope, struct gkick_envelope_point *point)
+void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
+			       struct gkick_envelope_point *point)
 {
 	struct gkick_envelope_point *p;
-	printf("gkick_envelope_add_sorted");
 	
 	p = envelope->first;
 
 	if (point->x > envelope->last->x) {
-		printf("here[1]\n");
 		envelope->last->next = point;
 	        point->prev = envelope->last;
 		envelope->last = point;
 	} else {	
 		while (p) {
-			printf("here1\n");
 			if (point->x < p->x) {
 				if (p == envelope->first) {
 					point->next = p;
 					p->prev = point;
 					envelope->first = point;
-								printf("here2\n");
 				} else {
 					point->prev = p->prev;
 					point->next = p;

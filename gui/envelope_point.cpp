@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-GKickEnvelopePoint::GKickEnvelopePoint(void)
+OscillatorEnvelopePoint::OscillatorEnvelopePoint(void)
 	: QPointF(),
 	  is_selected(false),
 	  pointRadius(7),
@@ -10,7 +10,7 @@ GKickEnvelopePoint::GKickEnvelopePoint(void)
 {
 }
 
-GKickEnvelopePoint::GKickEnvelopePoint(const QPointF &point)
+OscillatorEnvelopePoint::OscillatorEnvelopePoint(const QPointF &point)
 	: QPointF(point),
 	  is_selected(false),
 	  pointRadius(7),
@@ -18,7 +18,7 @@ GKickEnvelopePoint::GKickEnvelopePoint(const QPointF &point)
 {
 }
 
-GKickEnvelopePoint::GKickEnvelopePoint(double x, double y)
+OscillatorEnvelopePoint::OscillatorEnvelopePoint(double x, double y)
 	: QPointF(x, y),
 	  is_selected(false),
 	  pointRadius(7),
@@ -26,12 +26,12 @@ GKickEnvelopePoint::GKickEnvelopePoint(double x, double y)
 {
 }
 
-GKickEnvelopePoint::~GKickEnvelopePoint()
+OscillatorEnvelopePoint::~OscillatorEnvelopePoint()
 {
 	
 }
 
-void GKickEnvelopePoint::draw(QPainter &painter, const QPointF &origin)
+void OscillatorEnvelopePoint::draw(QPainter &painter, const QPointF &origin)
 {
 	QPen pen;
 	if (isSelected()) {
@@ -58,39 +58,36 @@ void GKickEnvelopePoint::draw(QPainter &painter, const QPointF &origin)
 	painter.drawEllipse(rect);
 }
 
-double GKickEnvelopePoint::radius(void)
+double OscillatorEnvelopePoint::radius(void)
 {
 	return pointRadius;
 }
 
-double GKickEnvelopePoint::getDotRadius(void)
+double OscillatorEnvelopePoint::getDotRadius(void)
 {
 	return dotRadius;
 }
 
-bool GKickEnvelopePoint::isSelected(void)
+bool OscillatorEnvelopePoint::isSelected(void)
 {
 	return is_selected;
 }
 
-void GKickEnvelopePoint::selectPoint(void)
+void OscillatorEnvelopePoint::selectPoint(void)
 {
 	is_selected = true;
 }
 
-void GKickEnvelopePoint::unselectPoint(void)
+void OscillatorEnvelopePoint::unselectPoint(void)
 {
 	is_selected = false;
 }
 
-bool GKickEnvelopePoint::hasPoint(const QPointF &point)
+bool OscillatorEnvelopePoint::hasPoint(const QPointF &point)
 {
 	double px = point.x();
 	double py = point.y();
 
-	qDebug() << "mpx:" << px << "mpy: " << py;
-	qDebug() << "x:"  << x() << "y: " << y();	
-	
 	if ((px > x() - pointRadius) && (px < x() + pointRadius)
 	    && (py > y() - pointRadius) && (y() < y() + pointRadius)
 	    && (pow(x() - px, 2) + pow(y() - py, 2) < pow(pointRadius, 2)))

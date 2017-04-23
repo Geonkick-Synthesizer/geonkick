@@ -3,19 +3,32 @@
 #include <QPainter>
 #include <QPolygonF>
 #include <QPainterPath>
-
 #include <QDebug>
 
-OscillatorWidget::OscillatorWidget(QWidget *parent)
+OscillatorWidget::OscillatorWidget(QWidget *parent, GKickOscillator *osc)
 	: QWidget(parent),
+	  kickOscillator(osc),
 	  widgetPainter(),
-	  kickEnvelope(),
+	  oscEnvelope(),
 	  xPadding(50),
 	  yPadding(50),
 	  originPoint(0.0, 0.0),
 	  mousePoint(0.0, 0.0)
 {
-	//	widgetPainter.begin(this);
+  oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
+   //  oscEnvelope->setEnvelopeType(kickOscillator->getEnvelopeType());
+   connectoToOscillator();
+}
+
+void OscillatorWidget::connectoToOscillator(void)
+{
+  connect(&oscEnvelope, SIGNAL(pointAdded(const QPointF &)),
+	  kickOscillator, SLOT(addPoint(const QPointF &)));
+  connect(&oscEnvelope, SIGNAL(pointRemoved(int)),
+	  kickOscillator, SLOT(removePoint(int)));
+  connect(&oscEnvelope, SIGNAL(pointUpdated(int, const QPointF&)),
+	  kickOscillator, SLOT(updatePoint(int, const QPointF&)));
+
 }
 
 OscillatorWidget::~OscillatorWidget()
@@ -33,10 +46,10 @@ void OscillatorWidget::paintEvent(QPaintEvent *event)
 void OscillatorWidget::drawEnvelope(void)
 {
 	QPainter painter(this);
-	kickEnvelope.setWidth(width() - 2 * xPadding);
-	kickEnvelope.setHeight(height() - 2 * yPadding);
-	kickEnvelope.setOrigin(originPoint);
-	kickEnvelope.draw(painter);
+	oscEnvelope.setWidth(width() - 2 * xPadding);
+	oscEnvelope.setHeight(height() - 2 * yPadding);
+	oscEnvelope.setOrigin(originPoint);
+	oscEnvelope.draw(painter);
 }
 
 void OscillatorWidget::drawAxes(void)
@@ -55,7 +68,7 @@ void
 OscillatorWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
-		kickEnvelope.removePoint(QPointF(event->x() - xPadding,
+		oscEnvelope.removePoint(QPointF(event->x() - xPadding,
 					 height() - (event->y() + yPadding)));
 		update();
 		return; 
@@ -64,9 +77,9 @@ OscillatorWidget::mousePressEvent(QMouseEvent *event)
 	qDebug() << "mousePressEvent";
 	mousePoint.setX(event->x());
 	mousePoint.setY(event->y());
-	kickEnvelope.selectPoint(QPointF(event->x() - xPadding,
+	oscEnvelope.selectPoint(QPointF(event->x() - xPadding,
 				 height() - (event->y() + yPadding)));
-	if (kickEnvelope.hasSelected()) {
+	if (oscEnvelope.hasSelected()) {
 		update();
 	}
 }
@@ -74,8 +87,8 @@ OscillatorWidget::mousePressEvent(QMouseEvent *event)
 void 
 OscillatorWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (kickEnvelope.hasSelected()) {
-		kickEnvelope.unselectPoint();
+	if (oscEnvelope.hasSelected()) {
+		oscEnvelope.unselectPoint();
 		update();
 	}
 }
@@ -83,36 +96,36 @@ OscillatorWidget::mouseReleaseEvent(QMouseEvent *event)
 void 
 OscillatorWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	kickEnvelope.addPoint(QPointF(event->x() - xPadding, height() - (event->y() + yPadding)));
+	oscEnvelope.addPoint(QPointF(event->x() - xPadding, height() - (event->y() + yPadding)));
 	update();
 }
 
 void 
 OscillatorWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (!kickEnvelope.hasSelected()) {
+	if (!oscEnvelope.hasSelected()) {
 		return;
 	}
 
-	double left  = kickEnvelope.getLeftPointLimit();
-	double right = kickEnvelope.getRightPointLimit();		
+	double left  = oscEnvelope.getLeftPointLimit();
+	double right = oscEnvelope.getRightPointLimit();		
 	if (event->x() < left + xPadding) {
-		kickEnvelope.setOutOfRangeX(GKickEnvelope::OUT_OF_RANGE_LEFT);
+		oscEnvelope.setOutOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_LEFT);
 	} else if (event->x() > right + xPadding) {
-		kickEnvelope.setOutOfRangeX(GKickEnvelope::OUT_OF_RANGE_RIGHT);
+		oscEnvelope.setOutOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_RIGHT);
 	} else {
-		kickEnvelope.setOutOfRangeX(GKickEnvelope::OUT_OF_RANGE_NONE);		
+		oscEnvelope.setOutOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_NONE);		
 	}
 
 	if (event->y() < yPadding) {
-		kickEnvelope.setOutOfRangeY(GKickEnvelope::OUT_OF_RANGE_TOP);
+		oscEnvelope.setOutOfRangeY(OscillatorEnvelope::OUT_OF_RANGE_TOP);
 	} else if(event->y() > height() - xPadding) {
-		kickEnvelope.setOutOfRangeY(GKickEnvelope::OUT_OF_RANGE_BOTTOM);
+		oscEnvelope.setOutOfRangeY(OscillatorEnvelope::OUT_OF_RANGE_BOTTOM);
 	} else {
-		kickEnvelope.setOutOfRangeY(GKickEnvelope::OUT_OF_RANGE_NONE);
+		oscEnvelope.setOutOfRangeY(OscillatorEnvelope::OUT_OF_RANGE_NONE);
 	}
 
-	kickEnvelope.moveSelectedPoint(event->x() - mousePoint.x(),
+	oscEnvelope.moveSelectedPoint(event->x() - mousePoint.x(),
 				       -(event->y() - mousePoint.y()));
 	mousePoint.setX(event->x());
 	mousePoint.setY(event->y());

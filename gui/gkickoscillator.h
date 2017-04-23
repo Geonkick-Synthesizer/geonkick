@@ -1,8 +1,8 @@
-#ifndef GKICK_ENVELOPE_POINT_UI_H
-#define GKICK_ENVELOPE_POINT_UI_H
+#ifndef GKICK_OSCILLATOR_H
+#define GKICK_OSCILLATOR_H
 
 /**
- * File name: envelope_point.h
+ * File name: gkickoscillator.h
  * Project: GeonKick
  *
  * Copyright (C) 2015 Iurie Nistor
@@ -25,28 +25,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include <QPointF>
-#include <QPainter>
+#include <QPolygonF>
 
-class OscillatorEnvelopePoint : public QPointF
+#include <QObject>
+
+class GKickOscillator: public QObject
 {
+  
+  Q_OBJECT
+
  public:
-	OscillatorEnvelopePoint(void);
-	OscillatorEnvelopePoint(const QPointF &point);
-	OscillatorEnvelopePoint(double x, double y);
-	virtual ~OscillatorEnvelopePoint();
-	void draw(QPainter &painter, const QPointF &origin);
-	bool isSelected(void);
-	bool hasPoint(const QPointF &point);
-	void selectPoint(void);
-	void unselectPoint(void);
-	double radius(void);
-	double getDotRadius(void);
+	GKickOscillator(void);
+	~GKickOscillator();
+	const QPolygonF& getEnvelopePoints(void);
 	
+ public slots:
+	  void addPoint(const QPointF &point);
+	  void removePoint(int index);
+	  void updatePoint(int, const QPointF &point);
+
+ protected:
+     
  private:
-	bool is_selected;
-	double pointRadius;
-	double dotRadius;
+
 };
 
 #endif

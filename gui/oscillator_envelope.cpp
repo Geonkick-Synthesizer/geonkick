@@ -22,48 +22,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "envelope.h"
+#include "oscillator_envelope.h"
 
-GKickEnvelope::GKickEnvelope(void) :
+OscillatorEnvelope::OscillatorEnvelope(void) :
 	envelopePoints(),
 	selectedPoint(NULL),
 	originPoint(0.0, 0.0),
 	envelopeW(0.0),
 	envelopeH(0.0),
-	outOfRangeX(GKickEnvelope::OUT_OF_RANGE_NONE),
-	outOfRangeY(GKickEnvelope::OUT_OF_RANGE_NONE)
-{
-	envelopePoints << GKickEnvelopePoint(QPointF(0.0, 10.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(50.0, 50.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(100.0, 120.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(150.0, 200.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(250.0, 20.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(270.0, 10.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(300.0, 50.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(320.0, 120.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(350.0, 200.0));
-	envelopePoints << GKickEnvelopePoint(QPointF(380.0, 20.0));
-
-}
-
-GKickEnvelope::~GKickEnvelope()
+	outOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_NONE),
+	outOfRangeY(OscillatorEnvelope::OUT_OF_RANGE_NONE)
 {
 }
 
-void GKickEnvelope::draw(QPainter &painter)
+OscillatorEnvelope::~OscillatorEnvelope()
+{
+}
+
+void OscillatorEnvelope::draw(QPainter &painter)
 {
 	drawPoints(painter);
 	drawLines(painter);
 }
 
-void GKickEnvelope::drawPoints(QPainter &painter)
+void OscillatorEnvelope::drawPoints(QPainter &painter)
 {
 	for (int i = 0; i < envelopePoints.size(); i++) {
 		envelopePoints[i].draw(painter, originPoint);
 	}
 }
 
-void GKickEnvelope::drawLines(QPainter &painter)
+void OscillatorEnvelope::drawLines(QPainter &painter)
 {
 	QPolygonF points;
 	for (int i = 0; i < envelopePoints.size(); i++) {
@@ -77,40 +66,40 @@ void GKickEnvelope::drawLines(QPainter &painter)
 	painter.drawPolyline(points);
 }
 
-void GKickEnvelope::setOrigin(QPointF &point)
+void OscillatorEnvelope::setOrigin(QPointF &point)
 {
 	originPoint = point;
 }
 
-void GKickEnvelope::setOutOfRangeX(GKickEnvelope::OutOfRangeType type)
+void OscillatorEnvelope::setOutOfRangeX(OscillatorEnvelope::OutOfRangeType type)
 {
 	outOfRangeX = type;
 }
 
-void GKickEnvelope::setOutOfRangeY(GKickEnvelope::OutOfRangeType type)
+void OscillatorEnvelope::setOutOfRangeY(OscillatorEnvelope::OutOfRangeType type)
 {
 	outOfRangeY = type;
 }
 
-void GKickEnvelope::setWidth(double width)
+void OscillatorEnvelope::setWidth(double width)
 {
 	envelopeW = width;
 }
 
-void GKickEnvelope::setHeight(double height)
+void OscillatorEnvelope::setHeight(double height)
 {
 	envelopeH = height;
 }
 
-bool GKickEnvelope::hasSelected(void)
+bool OscillatorEnvelope::hasSelected(void)
 {
 	return selectedPoint != NULL;
 }
 
-void GKickEnvelope::selectPoint(QPointF point)
+void OscillatorEnvelope::selectPoint(QPointF point)
 {
-	outOfRangeX = GKickEnvelope::OUT_OF_RANGE_NONE;
-	outOfRangeY = GKickEnvelope::OUT_OF_RANGE_NONE;
+	outOfRangeX = OscillatorEnvelope::OUT_OF_RANGE_NONE;
+	outOfRangeY = OscillatorEnvelope::OUT_OF_RANGE_NONE;
 
 	for(int i = 0; i < envelopePoints.size(); i++) {
 		if (envelopePoints[i].hasPoint(point)) {
@@ -122,17 +111,17 @@ void GKickEnvelope::selectPoint(QPointF point)
 	}
 }
 
-void GKickEnvelope::unselectPoint(void)
+void OscillatorEnvelope::unselectPoint(void)
 {
 	if (selectedPoint) {
 		selectedPoint->unselectPoint();
 		selectedPoint = NULL;
 	}
 	
-	outOfRangeX = outOfRangeY = GKickEnvelope::OUT_OF_RANGE_NONE;
+	outOfRangeX = outOfRangeY = OscillatorEnvelope::OUT_OF_RANGE_NONE;
 }
 
-double GKickEnvelope::getLeftPointLimit(void)
+double OscillatorEnvelope::getLeftPointLimit(void)
 {
 	if (selectedPoint == NULL) {
 		return 0.0;
@@ -151,7 +140,7 @@ double GKickEnvelope::getLeftPointLimit(void)
 	return x;
 }
 
-double GKickEnvelope::getRightPointLimit(void)
+double OscillatorEnvelope::getRightPointLimit(void)
 {
 	if (selectedPoint == NULL) {
 		return 0.0;
@@ -170,57 +159,81 @@ double GKickEnvelope::getRightPointLimit(void)
 	return x;
 }
 
-void GKickEnvelope::moveSelectedPoint(double dx, double dy)
+void OscillatorEnvelope::moveSelectedPoint(double dx, double dy)
 {
 	if (selectedPoint == NULL) {
 		return;
 	}
 
-	if (outOfRangeX == GKickEnvelope::OUT_OF_RANGE_LEFT) {
+	if (outOfRangeX == OscillatorEnvelope::OUT_OF_RANGE_LEFT) {
 		selectedPoint->setX(getLeftPointLimit());
-	} else if (outOfRangeX == GKickEnvelope::OUT_OF_RANGE_RIGHT) {
+	} else if (outOfRangeX == OscillatorEnvelope::OUT_OF_RANGE_RIGHT) {
 		selectedPoint->setX(getRightPointLimit());
 	} else {
 		selectedPoint->setX(selectedPoint->x() + dx);
 	}
 
-	if (outOfRangeY == GKickEnvelope::OUT_OF_RANGE_BOTTOM) {
+	if (outOfRangeY == OscillatorEnvelope::OUT_OF_RANGE_BOTTOM) {
 		selectedPoint->setY(0.0);
-	} else if (outOfRangeY == GKickEnvelope::OUT_OF_RANGE_TOP) {
+	} else if (outOfRangeY == OscillatorEnvelope::OUT_OF_RANGE_TOP) {
 		selectedPoint->setY(envelopeH);
 	} else {
 		selectedPoint->setY(selectedPoint->y() + dy);
 	}
+
+	int index = envelopePoints.indexOf(*selectedPoint);
+	if (index > -1 && index < envelopePoints.size()) {
+	  emit pointUpdated(index, QPointF(selectedPoint->x(), selectedPoint->y()));
+	}
 }
 
-void GKickEnvelope::addPoint(QPointF point)
+void OscillatorEnvelope::addEnvelopePoints(const QPolygonF &points)
 {
+  for (int i = 0; i < 10/*points.size()*/; i++) {
+    envelopePoints << OscillatorEnvelopePoint(QPointF(100.0,100.0)/*points[i]*/);
+  }
+}
+
+void OscillatorEnvelope::addPoint(QPointF point)
+{
+  bool added = false;
+  
 	if (point.x() > envelopeW) {
-		envelopePoints.append(GKickEnvelopePoint(envelopeW, point.y()));
+		envelopePoints.append(OscillatorEnvelopePoint(envelopeW, point.y()));
+		added = true;
 	} else if (point.x() < 0.0) {
-		envelopePoints.push_front(GKickEnvelopePoint(0.0, point.y()));
+		envelopePoints.push_front(OscillatorEnvelopePoint(0.0, point.y()));
+		added = true;
 	} else if (point.x() < envelopePoints[0].x()) {
-		envelopePoints.push_front(GKickEnvelopePoint(point));
+		envelopePoints.push_front(OscillatorEnvelopePoint(point));
+		added = true;
 	} else if (point.x() > envelopePoints.last().x()) {
-		envelopePoints.push_back(GKickEnvelopePoint(point));
+		envelopePoints.push_back(OscillatorEnvelopePoint(point));
+		added = true;
 	} else {		
-		GKickEnvelopePoint p;
+		OscillatorEnvelopePoint p;
 		for(int i = 0; i < envelopePoints.size(); i++) {
 			if (point.x() < envelopePoints[i].x()) {
-				envelopePoints.insert(i, GKickEnvelopePoint(point));
+				envelopePoints.insert(i, OscillatorEnvelopePoint(point));
+				added = true;
 				break;
 			}
 		}
 	}
+
+	if (added) {
+	  emit pointAdded(point);
+	}
 }
 
-void GKickEnvelope::removePoint(QPointF point)
+void OscillatorEnvelope::removePoint(QPointF point)
 {
 	for(int i = 0; i < envelopePoints.size(); i++) {
 		if (envelopePoints[i].hasPoint(point)) {
 			if (envelopePoints[i] != envelopePoints.first()
 			    && envelopePoints[i] != envelopePoints.last()) {
 				envelopePoints.remove(i);
+				emit pointRemoved(i);
 			}
 			break;
 		}

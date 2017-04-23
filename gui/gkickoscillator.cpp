@@ -1,8 +1,5 @@
-#ifndef GKICK_ENVELOPE_POINT_UI_H
-#define GKICK_ENVELOPE_POINT_UI_H
-
 /**
- * File name: envelope_point.h
+ * File name: gkickoscillator.cpp
  * Project: GeonKick
  *
  * Copyright (C) 2015 Iurie Nistor
@@ -25,28 +22,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include <QPointF>
-#include <QPainter>
+#include "gkickoscillator.h"
 
-class OscillatorEnvelopePoint : public QPointF
+#include <QDebug>
+
+GKickOscillator::GKickOscillator(void)
 {
- public:
-	OscillatorEnvelopePoint(void);
-	OscillatorEnvelopePoint(const QPointF &point);
-	OscillatorEnvelopePoint(double x, double y);
-	virtual ~OscillatorEnvelopePoint();
-	void draw(QPainter &painter, const QPointF &origin);
-	bool isSelected(void);
-	bool hasPoint(const QPointF &point);
-	void selectPoint(void);
-	void unselectPoint(void);
-	double radius(void);
-	double getDotRadius(void);
-	
- private:
-	bool is_selected;
-	double pointRadius;
-	double dotRadius;
-};
+}
 
-#endif
+GKickOscillator::~GKickOscillator()
+{
+}
+
+const QPolygonF& GKickOscillator::getEnvelopePoints(void)
+{
+  return QPolygonF();
+}
+
+void GKickOscillator::addPoint(const QPointF &point)
+{
+  qDebug() << "point added: ";//(" << point.x() << ", " << point.() << ")";
+}
+
+void GKickOscillator::removePoint(int index)
+{
+  qDebug() << "point removed: [";// << index << "]";
+}
+
+void GKickOscillator::updatePoint(int, const QPointF &point)
+{
+  qDebug() << "point updated: [";// << index << "](" << point.x() << ", " << point.y() << ")";
+}
+
