@@ -7,16 +7,19 @@ TEMPLATE = app
 QT = core gui widgets
 TARGET = geonckick
 INCLUDEPATH += .
+INCLUDEPATH += ../geonkick/src/
 
-#LIBS += -ljack
+LIBS += -L../geonkick/ -lgeonkick -ljack
 
 # Input
 HEADERS += globals.h \
+           gkickapi.h \
            gkickoscillator.h \
            envelope_point.h \
            oscillator_envelope.h \
            oscillator_widget.h
 SOURCES += envelope_point.cpp \
+           gkickapi.cpp \
            gkickoscillator.cpp \
            oscillator_envelope.cpp \
            oscillator_widget.cpp \

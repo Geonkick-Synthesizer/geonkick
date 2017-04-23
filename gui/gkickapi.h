@@ -1,8 +1,8 @@
-#ifndef GKICK_OSCILLATOR_H
-#define GKICK_OSCILLATOR_H
+#ifndef GKICK_API_H
+#define GKICK_API_H
 
 /**
- * File name: gkickoscillator.h
+ * File name: gkickapi.h
  * Project: GeonKick
  *
  * Copyright (C) 2015 Iurie Nistor
@@ -26,34 +26,35 @@
  */
 
 #include <QPolygonF>
-#include <QObject>
 
-#include "gkickapi.h"
+class GKickOscillator;
+struct geonckick;
 
-class GKickOscillator: public QObject
+class GKickApi
 {
-  
-  Q_OBJECT
-
  public:
-	GKickOscillator(GKickApi *api, int index);
-	~GKickOscillator();
-	//	void setApi(GKickApi *api);
-	QPolygonF getEnvelopePoints(void);
-	void setOscillatorIndex(int index);
-	int getOscillatorIndex(void);
 
-public slots:
-	  void addPoint(const QPointF &point);
-	  void removePoint(int index);
-	  void updatePoint(int, const QPointF &point);
+  GKickApi(void);
+  ~GKickApi();
+  void setError(bool b);
+  QVector<GKickOscillator*> getOscillators(void);
+  QPolygonF getOscEvelopePoints(int osc, int envelope);
+  void addOscEnvelopePoint(int osc,
+			    int evenlope,
+			    const QPointF &point);
 
+   void removeOscEvelopePoint(int osc,
+			      int envelope,
+			      int index);
+   void updateOscEvelopePoint(int osc,
+			      int envelope,
+			      int index,
+			      const QPointF &point);
  protected:
      
  private:
-	  GKickApi *kickApi;	  
-	  int oscillatorIndex;
-	  int envelopeIndex;
+	bool isError;
+      	struct geonkick *gKickApi;	
 };
 
 #endif

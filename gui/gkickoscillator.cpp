@@ -26,7 +26,10 @@
 
 #include <QDebug>
 
-GKickOscillator::GKickOscillator(void)
+GKickOscillator::GKickOscillator(GKickApi *api, int index) :
+  kickApi(api),
+  oscillatorIndex(index),
+  envelopeIndex(0)
 {
 }
 
@@ -34,23 +37,49 @@ GKickOscillator::~GKickOscillator()
 {
 }
 
-const QPolygonF& GKickOscillator::getEnvelopePoints(void)
+//void GKickOscillator::setApi(GKickApi *api)
+//{/
+//  kickApi = api;
+//}
+
+QPolygonF GKickOscillator::getEnvelopePoints(void)
 {
-  return QPolygonF();
+  QPolygonF points;
+  
+  if (kickApi) {
+    points =  kickApi->getOscEvelopePoints(oscillatorIndex, envelopeIndex);
+  }
+
+  return points;
 }
 
 void GKickOscillator::addPoint(const QPointF &point)
 {
-  qDebug() << "point added: ";//(" << point.x() << ", " << point.() << ")";
+  if (kickApi) {
+    kickApi->addOscEnvelopePoint(oscillatorIndex, envelopeIndex, point);
+  }
 }
 
 void GKickOscillator::removePoint(int index)
 {
-  qDebug() << "point removed: [";// << index << "]";
+  if (kickApi) {
+    kickApi->removeOscEvelopePoint(oscillatorIndex, envelopeIndex, index);
+  }
 }
 
-void GKickOscillator::updatePoint(int, const QPointF &point)
+void GKickOscillator::updatePoint(int index, const QPointF &point)
 {
-  qDebug() << "point updated: [";// << index << "](" << point.x() << ", " << point.y() << ")";
+  if (kickApi) {
+    kickApi->updateOscEvelopePoint(oscillatorIndex, envelopeIndex, index, point);
+  }
 }
 
+void GKickOscillator::setOscillatorIndex(int index)
+{
+  oscillatorIndex = index;
+}
+
+int GKickOscillator::getOscillatorIndex(void)
+{
+  return oscillatorIndex;
+}

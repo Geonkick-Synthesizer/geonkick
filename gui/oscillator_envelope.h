@@ -57,7 +57,7 @@ class OscillatorEnvelope: public QObject
 	double getLeftPointLimit(void);
 	double getRightPointLimit(void);
 	void addPoint(QPointF point);
-	void addEnvelopePoints(const QPolygonF &points);
+	void addEnvelopePoints(QPolygonF points);
 	void removePoint(QPointF point);
 	
  signals:

@@ -68,7 +68,7 @@ geonkick_get_envelope_points(struct geonkick *kick,
 			      double **points,
 			      size_t *npoints)
 {
-  if (kick == NULL && points != NULL && npoints != NULL) {
+  /*  if (kick == NULL && points != NULL && npoints != NULL) {
 	  return GEONKICK_ERROR_NULL_POINTER;    
   }
 
@@ -77,7 +77,7 @@ geonkick_get_envelope_points(struct geonkick *kick,
   if (type == GKICK_AMPLITUDE_ENVELOPE) {
     *points = gkick_envelope_get_points(kick)
   }
-  
+  */
   return GEONKICK_OK;
 }
 
@@ -136,11 +136,11 @@ double geonkick_get_oscillators_value(struct geonkick *kick, double t)
 {
   double val;
 
-  val = gkick_osc_value(kick->base_oscillator, t);
+  /*  val = gkick_osc_value(kick->base_oscillator, t);
   val += gkick_osc_value(kick->noise_oscillator, t);
   
   gkick_osc_increment_phase(kick->base_oscillator, t);
-  gkick_osc_increment_phase(kick->noise_oscillator, t);
+  gkick_osc_increment_phase(kick->noise_oscillator, t);*/
 
   return val;  
 }

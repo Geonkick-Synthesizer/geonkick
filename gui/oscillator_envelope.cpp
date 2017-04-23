@@ -187,10 +187,10 @@ void OscillatorEnvelope::moveSelectedPoint(double dx, double dy)
 	}
 }
 
-void OscillatorEnvelope::addEnvelopePoints(const QPolygonF &points)
+void OscillatorEnvelope::addEnvelopePoints(QPolygonF points)
 {
-  for (int i = 0; i < 10/*points.size()*/; i++) {
-    envelopePoints << OscillatorEnvelopePoint(QPointF(100.0,100.0)/*points[i]*/);
+  for (int i = 0; i < points.size(); i++) {
+    envelopePoints << OscillatorEnvelopePoint(points[i]);
   }
 }
 
