@@ -25,6 +25,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#include <memory>
+#include <vector>
 #include <QPolygonF>
 
 class GKickOscillator;
@@ -37,7 +39,7 @@ class GKickApi
   GKickApi(void);
   ~GKickApi();
   void setError(bool b);
-  QVector<GKickOscillator*> getOscillators(void);
+  std::vector<std::unique_ptr<GKickOscillator>> getOscillators(void);
   QPolygonF getOscEvelopePoints(int osc, int envelope);
   void addOscEnvelopePoint(int osc,
 			    int evenlope,

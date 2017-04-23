@@ -26,15 +26,15 @@ void GKickApi::setError(bool b)
   isError = b;
 }
 
-QVector<GKickOscillator*> GKickApi::getOscillators(void)
+std::vector<std::unique_ptr<GKickOscillator>> GKickApi::getOscillators(void)
 {
-  QVector<GKickOscillator*> oscillators;
+  std::vector<std::unique_ptr<GKickOscillator>> oscillators;
 //
 //  int n = 0;//geonkick_get_oscllators_number(&gKickApi);
-//  for (int i = 0; i < n; i++) {
-//    //oscillators << GKickOscillator(this, i);
-//  }
-//
+  for (int i = 0; i < 5; i++) {
+    oscillators.push_back(std::make_unique<GKickOscillator>(this, i));
+  }
+
 	return oscillators;
 }
 

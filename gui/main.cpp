@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
   
   GKickApi kickApi;
 
-  QVector<GKickOscillator*> socillators = kickApi.getOscillators();
+  std::vector<std::unique_ptr<GKickOscillator>> socillators = kickApi.getOscillators();
    
-  OscillatorWidget plotWindow(NULL, socillators.at(0));
+  OscillatorWidget plotWindow(NULL, socillators[0].get());
   plotWindow.show();
   //  gkick_free(kick);
   
