@@ -6,7 +6,8 @@ LIBS = -ljack -lm
 TARGET = libgeonkick.a
 SRC = src
 
-OBJECTS = envelope.o \
+OBJECTS = gkick_log.o \
+          envelope.o \
           oscillator.o \
           gkick_jack.o \
           geonkick.o

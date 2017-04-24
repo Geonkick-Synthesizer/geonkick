@@ -160,3 +160,26 @@ void gkick_envelope_destroy(struct gkick_envelope *envelope)
 	}	
 	free(envelope);
 }
+
+void
+gkick_envelope_get_points(struct gkick_envelope *env,
+			  double **buff,
+			  size_t *npoints)
+{
+  struct gkick_envelope_point *p;
+  double *points;
+  size_t i;
+
+  *buff = NULL;
+  points = (double *)malloc(sizeof(double) * (2 * env->npoints));
+  
+  p = env->first;
+  i = 0;
+  while (p) {
+    points[i] = p->x;
+    points[i+1] = p->y;
+    p = p->next;
+  }
+  *buff = points;
+  *npoints = env->npoints;
+}

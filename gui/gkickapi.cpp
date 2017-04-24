@@ -29,9 +29,9 @@ void GKickApi::setError(bool b)
 std::vector<std::unique_ptr<GKickOscillator>> GKickApi::getOscillators(void)
 {
   std::vector<std::unique_ptr<GKickOscillator>> oscillators;
-//
-//  int n = 0;//geonkick_get_oscllators_number(&gKickApi);
-  for (int i = 0; i < 5; i++) {
+  
+  int n = geonkick_get_oscillators_number(gKickApi);
+  for (int i = 0; i < n; i++) {
     oscillators.push_back(std::make_unique<GKickOscillator>(this, i));
   }
 
@@ -45,11 +45,12 @@ QPolygonF GKickApi::getOscEvelopePoints(int osc, int envelope)
   size_t npoints = 0;
 
   qDebug() << "GKickApi::getOscEvelopePoints(int osc, int envelope)";
-  //geonkick_osc_envelope_get_points(osc, envelope, &buf, &npoints);
+  geonkick_osc_envelope_get_points(gKickApi, osc, envelope, &buf, &npoints);
 
-  for (size_t i = 0; i < 10/*2 * npoints*/; i += 2) {
-    points << QPointF(100, 100/*buf[i], buf[i+1]*/);
+  for (size_t i = 0; i < npoints; i += 2) {
+    points << QPointF(buf[i], buf[i+1]);
   }
+  free(buf);
 
   return points;
 }

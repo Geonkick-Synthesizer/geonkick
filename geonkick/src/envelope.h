@@ -53,4 +53,9 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 void
 gkick_envelope_destroy(struct gkick_envelope *envelope);
 
+void
+gkick_envelope_get_points(struct gkick_envelope *env,
+			  double **buff,
+			  size_t *npoints);
+
 #endif

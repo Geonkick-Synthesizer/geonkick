@@ -13,7 +13,6 @@ extern "C" {
 #include <signal.h>
 #include <math.h>
 #include <inttypes.h>
-#include <pthread.h>
 
 #define GEON_APP_VERSION 0x000100
 #define GEON_APP_NAME "geonkick"  
@@ -22,8 +21,10 @@ enum geonkick_error {
   	GEONKICK_OK,
 	GEONKICK_ERROR_MEM_ALLOC,
 	GEONKICK_ERROR_NULL_POINTER,
+	GEONKICK_ERROR_INIT_MUTEX,
 	GEONKICK_ERROR_CREATE_ENVELOPE,
 	GEONKICK_ERROR_OPEN_JACK,
+	GEONKICK_ERROR_CANT_CREATE_OSC,
 	GEONKICK_ERROR_ACTIVATE_JACK
 };
 
@@ -37,9 +38,19 @@ struct geonkick;
 enum geonkick_error
 geonkick_create(struct geonkick **kick);
 
-enum geonkick_error
+void
 geonkick_free(struct geonkick **kick);
 
+size_t
+geonkick_get_oscillators_number(struct geonkick* kick);
+
+enum geonkick_error
+geonkick_osc_envelope_get_points(struct geonkick *kick,
+				 size_t osc_index,
+				 size_t env_index,
+				 double **buf,
+				 size_t *npoints);
+    
 enum geonkick_error
 geonkick_get_envelope_points(struct geonkick *kick,
 			      enum gkick_envelope_type type,

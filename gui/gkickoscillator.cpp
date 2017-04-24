@@ -31,10 +31,12 @@ GKickOscillator::GKickOscillator(GKickApi *api, int index) :
   oscillatorIndex(index),
   envelopeIndex(0)
 {
+    qDebug() << "GKickOscillator::GKickOscillator()";
 }
 
 GKickOscillator::~GKickOscillator()
 {
+  qDebug() << "GKickOscillator::~GKickOscillator()";
 }
 
 //void GKickOscillator::setApi(GKickApi *api)
