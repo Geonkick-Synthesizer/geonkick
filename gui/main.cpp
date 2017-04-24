@@ -25,9 +25,14 @@ int main(int argc, char *argv[])
   
   GKickApi kickApi;
 
-  std::vector<std::unique_ptr<GKickOscillator>> socillators = kickApi.getOscillators();
-   
-  OscillatorWidget plotWindow(NULL, socillators[0].get());
+  std::vector<std::unique_ptr<GKickOscillator>> ocillators = kickApi.getOscillators();
+
+  if (kickApi.hasErrors()) {
+    qDebug() << "error on ceated API";
+    exit(1);
+  }
+  
+  OscillatorWidget plotWindow(NULL, ocillators[0].get());
   plotWindow.show();
   //  gkick_free(kick);
   

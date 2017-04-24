@@ -96,8 +96,8 @@ gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
 	if (point == NULL) {
 		return NULL;
 	}
-	memset(point, 0, sizeof(sizeof(struct gkick_envelope_point)));
-	point->x = 1e6 * x;
+	memset(point, 0, sizeof(struct gkick_envelope_point));
+	point->x = x;
 	point->y = y;
 
 	if (envelope->npoints == 0
@@ -109,7 +109,9 @@ gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
 	}
 
 	envelope->npoints++;
-
+	
+	gkick_log_debug("point added: %f, %f", point->x, point->y);
+	
 	return point;
 }
 
@@ -170,16 +172,110 @@ gkick_envelope_get_points(struct gkick_envelope *env,
   double *points;
   size_t i;
 
-  *buff = NULL;
-  points = (double *)malloc(sizeof(double) * (2 * env->npoints));
+  if (buff == NULL) {
+    gkick_log_error("buff null");
+    return;
+  }
+
+  gkick_log_debug("here");
   
+  *buff = NULL;
+  if (env->npoints < 1) {
+    return;
+  }
+
+  points = (double *)malloc(sizeof(double) * (2 * env->npoints));
+  memset(points, 0, sizeof(double) * (2 * env->npoints));
   p = env->first;
   i = 0;
   while (p) {
-    points[i] = p->x;
-    points[i+1] = p->y;
+    points[i]     = p->x;
+    points[i + 1] = p->y;
+    gkick_log_debug("get point : %f, %f", points[i], points[i+1]);
     p = p->next;
+    i += 2;
   }
+
+  gkick_log_info("end");
   *buff = points;
   *npoints = env->npoints;
+  gkick_log_info("end");
+  for (i = 0; i < 2 * env->npoints; i++) {
+    gkick_log_debug("POINT:[%d] = %f", i, (*buff)[i]);
+  }
+}
+
+void
+gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
+{
+  struct gkick_envelope_point *p;
+  size_t i;
+  
+  if (env == NULL) {
+    return;
+  }
+
+  if (!(index >= 0 && index < env->npoints)) {
+    return;
+  }
+
+  p = env->first;
+  i = 0;
+  while (p) {
+    if (i == index) {
+      
+      if (p == env->first) {
+	env->first = p->next;
+	if (env->first != NULL) {
+	  env->first->prev = NULL;
+	}
+      } else if (p == env->last) {
+	if (p->prev != NULL) {
+	  p->prev->next = NULL;
+	}
+      } else {
+	p->prev->next = p->next;
+	p->next->prev = p->prev;
+      }
+      gkick_log_debug("point removed: index = %u, (%f, %f)"
+		      , i, p->x, p->y);
+      free(p);
+      break;
+    }
+    p = p->next;
+    i++;
+  }
+  
+}
+
+void
+gkick_envelope_update_point(struct gkick_envelope *env,
+			    size_t index,
+			    double x,
+			    double y)
+{
+   struct gkick_envelope_point *p;
+  size_t i;
+  
+  if (env == NULL) {
+    return;
+  }
+
+  if (!(index >= 0 && index < env->npoints)) {
+    return;
+  }
+
+  p = env->first;
+  i = 0;
+  while (p) {
+    if (i == index) {
+      p->x = x;
+      p->y = y;
+            gkick_log_debug("point removed: index = %u, (%f, %f)"
+			    , i, p->x, p->y);
+      break;
+    }
+    p = p->next;
+    i++;
+  }
 }

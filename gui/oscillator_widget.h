@@ -24,7 +24,9 @@ public:
      void mouseReleaseEvent(QMouseEvent *event);
      void mouseMoveEvent(QMouseEvent *event);
      void mouseDoubleClickEvent(QMouseEvent *event);
+     void resizeEvent(QResizeEvent *event);
      void connectoToOscillator(void);
+     void calculateRatio(void);
 
  private:
      GKickOscillator* kickOscillator;

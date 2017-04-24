@@ -15,9 +15,28 @@ OscillatorWidget::OscillatorWidget(QWidget *parent, GKickOscillator *osc)
 	  originPoint(0.0, 0.0),
 	  mousePoint(0.0, 0.0)
 {
+
+  this->resize(800, 400);
+  calculateRatio();  
   oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
    //  oscEnvelope->setEnvelopeType(kickOscillator->getEnvelopeType());
    connectoToOscillator();
+}
+
+void OscillatorWidget::calculateRatio(void)
+{
+  double w = 1.0;//kickOscillator->getEnvelopeLenth();
+  double h = 1.0; //kickOscillator->getEnvelopeHeight();
+
+  qDebug() << "WIDTH: " << width();
+  qDebug() << "HEIGHT: " << height(); 
+  if (w > 0.0 && h > 0.0) {
+    oscEnvelope.setXRatio(w / (width() - 2 * xPadding));
+    oscEnvelope.setYRatio(h / (height() - 2 * yPadding));
+  } else {
+    oscEnvelope.setXRatio(1);
+    oscEnvelope.setYRatio(1);
+  }
 }
 
 void OscillatorWidget::connectoToOscillator(void)
@@ -38,6 +57,9 @@ OscillatorWidget::~OscillatorWidget()
 
 void OscillatorWidget::paintEvent(QPaintEvent *event)
 {
+    Q_UNUSED(event)
+
+        calculateRatio();
 	recalculateOrigin();
 	drawAxes();
 	drawEnvelope();
@@ -87,10 +109,11 @@ OscillatorWidget::mousePressEvent(QMouseEvent *event)
 void 
 OscillatorWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (oscEnvelope.hasSelected()) {
-		oscEnvelope.unselectPoint();
-		update();
-	}
+  Q_UNUSED(event)
+    if (oscEnvelope.hasSelected()) {
+      oscEnvelope.unselectPoint();
+      update();
+    }
 }
 
 void 
@@ -138,4 +161,8 @@ void OscillatorWidget::recalculateOrigin(void)
 	originPoint.setY((height() - yPadding));
 }
 
-
+void OscillatorWidget::resizeEvent(QResizeEvent *event)
+{
+  Q_UNUSED(event);
+  calculateRatio();
+}

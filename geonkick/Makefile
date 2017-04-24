@@ -1,7 +1,7 @@
 CC = gcc
-INCLUDES = 
-#CFLAGS = -O2 -Wall $(INCLUDES)
-CFLAGS = -O0 -Wall $(INCLUDES)
+INCLUDES =
+DEFINES =  -DGKICK_LIB_LOG_LEVEL_TRACE -DGKICK_LIB_LOG_FUNCTION
+CFLAGS = -O0 -Wall $(DEFINES) $(INCLUDES)
 LIBS = -ljack -lm
 TARGET = libgeonkick.a
 SRC = src
@@ -9,7 +9,6 @@ SRC = src
 OBJECTS = gkick_log.o \
           envelope.o \
           oscillator.o \
-          gkick_jack.o \
           geonkick.o
 
 all: $(TARGET)

@@ -40,12 +40,13 @@ struct gkick_oscillator {
   double sample_rate;
   double frequency;
   size_t env_number;
+  double env_length;
   struct gkick_envelope **envelopes;
   pthread_mutex_t lock;
 };
 
 struct gkick_oscillator
-*gkick_osc_create(void);
+*gkick_osc_create(struct geonkick *kick);
 
 void gkick_osc_free(struct gkick_oscillator **osc);
 

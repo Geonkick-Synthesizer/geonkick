@@ -59,6 +59,8 @@ class OscillatorEnvelope: public QObject
 	void addPoint(QPointF point);
 	void addEnvelopePoints(QPolygonF points);
 	void removePoint(QPointF point);
+	void setXRatio(double k);
+	void setYRatio(double k);
 	
  signals:
 	void pointAdded(const QPointF & point);
@@ -76,6 +78,8 @@ class OscillatorEnvelope: public QObject
 	QPointF originPoint;
 	double envelopeW;
 	double envelopeH;
+	double xRatio;
+	double yRatio;
 	OutOfRangeType outOfRangeX;
 	OutOfRangeType outOfRangeY;
 };

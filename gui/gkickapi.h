@@ -39,10 +39,11 @@ class GKickApi
   GKickApi(void);
   ~GKickApi();
   void setError(bool b);
+  bool hasErrors(void);
   std::vector<std::unique_ptr<GKickOscillator>> getOscillators(void);
   QPolygonF getOscEvelopePoints(int osc, int envelope);
   void addOscEnvelopePoint(int osc,
-			    int evenlope,
+			    int envelope,
 			    const QPointF &point);
 
    void removeOscEvelopePoint(int osc,

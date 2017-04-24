@@ -1,10 +1,8 @@
 #ifndef GKICk_LOG_H
 #define GKICK_LOG_H
 
-#include "geonkick_internal.h"
-
 #include <stdarg.h>
-#include<stdio.h>
+#include <stdio.h>
 
 void
 gkick_log_msg(const char *message, ...);

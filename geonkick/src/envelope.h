@@ -58,4 +58,13 @@ gkick_envelope_get_points(struct gkick_envelope *env,
 			  double **buff,
 			  size_t *npoints);
 
+void
+gkick_envelope_remove_point(struct gkick_envelope *env, size_t index);
+
+void
+gkick_envelope_update_point(struct gkick_envelope *env,
+			    size_t index,
+			    double x,
+			    double y);
+
 #endif

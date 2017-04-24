@@ -50,6 +50,7 @@ QPolygonF GKickOscillator::getEnvelopePoints(void)
   
   if (kickApi) {
     points =  kickApi->getOscEvelopePoints(oscillatorIndex, envelopeIndex);
+    qDebug() << "GKickOscillator::getEnvelopePoints(void): size:"  << points.size();
   }
 
   return points;

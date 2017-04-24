@@ -3,8 +3,12 @@
 #include <math.h>
 
 struct gkick_oscillator
-*gkick_osc_create(void)
+*gkick_osc_create(struct geonkick *kick)
 {
+  if (kick == NULL) {
+    return NULL;
+  }
+  
   struct gkick_oscillator *osc;
 
   osc = (struct gkick_oscillator*)malloc(sizeof(struct gkick_oscillator));
@@ -13,7 +17,7 @@ struct gkick_oscillator
   }
   memset(osc, 0, sizeof(struct gkick_oscillator));
 
-  if (pthread_mutex_init(&osc->lock, NULL) == 0) {
+  if (pthread_mutex_init(&osc->lock, NULL) != 0) {
     gkick_osc_free(&osc);
     return NULL;
   }
@@ -23,6 +27,7 @@ struct gkick_oscillator
   osc->sample_rate = GKICK_OSC_DEFAULT_SAMPLE_RATE;
   osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
   osc->env_number = 2;
+  osc->env_length = kick->length;
 
   if (gkick_osc_create_envelopes(osc) != GEONKICK_OK) {
     gkick_osc_free(&osc);
@@ -41,10 +46,13 @@ void gkick_osc_free(struct gkick_oscillator **osc)
     return;
   }
 
-  for (i = 0; i < (*osc)->env_number; i++) {
-    gkick_envelope_destroy((*osc)->envelopes[i]);
+  if ((*osc)->envelopes != NULL) {
+    for (i = 0; i < (*osc)->env_number; i++) {
+      gkick_envelope_destroy((*osc)->envelopes[i]);
+    }
+    free((*osc)->envelopes);
   }
-  free((*osc)->envelopes);
+  
   pthread_mutex_destroy(&(*osc)->lock);
   free(*osc);
   *osc = NULL;
@@ -54,6 +62,12 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
 {
   size_t i;
   struct gkick_envelope *env;
+
+  gkick_log_debug("envelope numbers: %d", osc->env_number);
+
+  if (osc->env_number < 1) {
+    return GEONKICK_ERROR_CREATE_ENVELOPE;
+  }
   
   osc->envelopes = (struct gkick_envelope**)malloc(sizeof(struct gkick_envelope*) *osc->env_number);
   if (osc->envelopes == NULL) {
@@ -66,6 +80,10 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
     if (env == NULL) {
       return GEONKICK_ERROR_CREATE_ENVELOPE;
     } else {
+      /* Add two default points. */
+      gkick_log_debug("create env length: %f", osc->env_length);
+      gkick_envelope_add_point(env, 0.0, 1.0);
+      gkick_envelope_add_point(env, osc->env_length, 1.0);
       osc->envelopes[i] = env;
     }
     
@@ -131,8 +149,13 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      double **buff,
 			      size_t *npoints)
 {
-  *buff = NULL;
-  if (env_index > -1 && env_index < osc->env_number) {
+  if (buff != NULL) {
+    *buff = NULL;
+  }
+
+  gkick_log_debug("env_index %d", env_index);
+  
+  if (env_index >= 0 && env_index < osc->env_number) {
     gkick_envelope_get_points(osc->envelopes[env_index], buff, npoints);
   }
 }

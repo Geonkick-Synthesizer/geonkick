@@ -14,6 +14,8 @@ extern "C" {
 #include <math.h>
 #include <inttypes.h>
 
+#include "gkick_log.h"
+
 #define GEON_APP_VERSION 0x000100
 #define GEON_APP_NAME "geonkick"  
   
@@ -49,31 +51,31 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t osc_index,
 				 size_t env_index,
 				 double **buf,
-				 size_t *npoints);
-    
-enum geonkick_error
-geonkick_get_envelope_points(struct geonkick *kick,
-			      enum gkick_envelope_type type,
-			      double **points,
-			      size_t *npoints);
-
+				 size_t *npoints);    
 enum geonkick_error
 geonkick_remove_envelope_point(struct geonkick *kick,
 				enum gkick_envelope_type type,
 				size_t index);
 
 enum geonkick_error
-geonkick_add_envelope_point(struct geonkick *kick,
-			    enum gkick_envelope_type type,
-			    double x,
-			    double y);
+geonkick_osc_envelope_add_point(struct geonkick *kick,
+				size_t osc_index,
+				size_t env_index,
+				double x,
+				double y);
 
 enum geonkick_error
-geonkick_update_envelope_point(struct geonkick *kick,
-			       enum gkick_envelope_type type,
-			       size_t index,
-			       double x,
-			       double y);
+geonkick_osc_envelope_remove_point(struct geonkick *kick,
+				   size_t osc_index,
+				   size_t env_index,
+				   size_t index);
+enum geonkick_error
+geonkick_osc_envelope_update_point(struct geonkick *kick,
+				   size_t osc_index,
+				   size_t env_index,
+  				   size_t index,
+				   double x,
+				   double y);  
   
 #ifdef __cplusplus
 }
