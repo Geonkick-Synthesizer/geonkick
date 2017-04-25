@@ -11,7 +11,9 @@ struct gkick_jack {
   jack_port_t *output_port_r;
   jack_client_t *client;
   double time;
+  double kick_len;
   jack_nframes_t sample_rate;
+  int end;
 };
 
 int
@@ -23,5 +25,7 @@ gkick_jack_srate_callback(jack_nframes_t nframes, void *arg);
 
 enum geonkick_error
 gkick_create_jack(struct geonkick *kick);
+
+void gkick_jack_free(struct gkick_jack **jack);
 
 #endif

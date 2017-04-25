@@ -9,6 +9,7 @@ SRC = src
 OBJECTS = gkick_log.o \
           envelope.o \
           oscillator.o \
+          gkick_jack.o \
           geonkick.o
 
 all: $(TARGET)

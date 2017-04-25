@@ -29,10 +29,12 @@ geonkick_create(struct geonkick **kick)
 	  geonkick_free(kick);
 	  return GEONKICK_ERROR_CANT_CREATE_OSC;
 	}
-	//	if (gkick_create_jack(*kick) != GEONKICK_OK) {
-	//  geonkick_free(kick);
-	//}
 
+	if (gkick_create_jack(*kick)) {
+	  geonkick_free(kick);
+	  return GEONKICK_ERROR;
+	}
+	
 	return GEONKICK_OK;
 }
 
@@ -45,9 +47,11 @@ void geonkick_free(struct geonkick **kick)
     *kick = NULL;
     return;
   }
+  
   gkick_log_info("free...");
 
-  // gkick_jack_free((*kick)->jack);
+  gkick_jack_free(&((*kick)->jack));
+  
   if ((*kick)->oscillators != NULL) {
     for (i = 0; i < (*kick)->oscillators_number; i++) {
       gkick_osc_free(&((*kick)->oscillators[i]));
@@ -141,6 +145,7 @@ geonkick_osc_envelope_add_point(struct geonkick *kick,
   osc = geonkick_get_oscillator(kick, osc_index);
   if (osc == NULL) {
     gkick_log_error("can't get oscillator %d", osc_index);
+    geonkick_unlock(kick);
     return GEONKICK_ERROR_NULL_POINTER;
   }
 
@@ -151,12 +156,14 @@ geonkick_osc_envelope_add_point(struct geonkick *kick,
   }
 
  if (env == NULL) {
+   geonkick_unlock(kick);
    gkick_log_error("can't get envelope");
    return GEONKICK_ERROR_NULL_POINTER;
  }
 
  if (gkick_envelope_add_point(env, x, y) == NULL) {
    gkick_log_error("can't get envelope");
+   geonkick_unlock(kick);
    return GEONKICK_ERROR_NULL_POINTER;
  }
   
@@ -174,39 +181,18 @@ geonkick_update_envelope_point(struct geonkick *kick,
     return GEONKICK_OK;
 }
 
-/*double geonkick_get_graph(struct geonckick kick)
-{
-  geonkick_lock(kick);
-  geonkick_save_state(kick);
-  geonkick_set_begin(kick);
-
-  t = 0.0;
-  while( t < samplerate) {
-    out[i] = t;
-    out[i + 1] = gkick_get_oscialltors_value(kick, t);
-    if (t > geonkick_get_length(kick)) {
-      break;
-    }
-    t += 1.0 / samplerate;
-  }
-  
-  /// get graph
-  gkick_restore_state(kick);
-  geonkick_ulock(kick);
-
-  return out;
-}
-*/
-
 double geonkick_get_oscillators_value(struct geonkick *kick, double t)
 {
   double val = 0.0;
+  size_t i;
 
-  /*  val = gkick_osc_value(kick->base_oscillator, t);
-  val += gkick_osc_value(kick->noise_oscillator, t);
-  
-  gkick_osc_increment_phase(kick->base_oscillator, t);
-  gkick_osc_increment_phase(kick->noise_oscillator, t);*/
+  geonkick_lock(kick);
+  val = 0.0;
+  for (i = 0; i < 1;/*kick->oscillators_number;*/ i++) {
+    val += gkick_osc_value(kick->oscillators[i], t);
+    gkick_osc_increment_phase(kick->oscillators[i], t);
+  }
+  geonkick_unlock(kick);
 
   return val;  
 }

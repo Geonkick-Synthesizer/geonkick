@@ -5,28 +5,27 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg)
 {
 	int i;
-	double t;
 	double val;
 	struct geonkick *kick = (struct geonkick*)arg;
 	struct gkick_jack *jack = kick->jack;
-
-	if (kick == NULL) {
-	  return 0;
-	}
+	
+	//if (!jack->end) {
+	//  return 0;
+	//}
 	
         jack_default_audio_sample_t *out_l
 	  = (jack_default_audio_sample_t *)jack_port_get_buffer(jack->output_port_l, nframes);
 	jack_default_audio_sample_t *out_r
 	  = (jack_default_audio_sample_t *)jack_port_get_buffer(jack->output_port_r, nframes);
 
-	t = 0.0;
 	for (i = 0; i < nframes; i++) {
-	  //t = gkick_get_jack_time(jack);
-	  val = geonkick_get_oscillators_value(kick, t);
-	  out_l[i] = val;
-	  out_r[i] = val;
-	  //gkick_jack_increment_time(jack);
+	  val = geonkick_get_oscillators_value(kick, jack->time);
+	  out_l[i] = 0.1 * val;
+	  out_r[i] = 0.1 * val;
+	  gkick_jack_increment_time(jack);
 	}
+	gkick_log_info("var %f", val);
+
 
 	return 0;
 }
@@ -37,14 +36,32 @@ int gkick_jack_srate_callback(jack_nframes_t nframes, void *arg)
 	return 0;
 }
 
+void gkick_jack_increment_time(struct gkick_jack *jack)
+{
+  if (jack->time > 1.5 * jack->kick_len) {
+    //jack->end = 1;
+    jack->time = 0.0;
+  } else {
+    jack->time += 1.0/jack->sample_rate;
+  }
+}
+
 enum geonkick_error
 gkick_create_jack(struct geonkick *kick)
 {
 
   struct gkick_jack *jack;
 
-  jack = kick->jack;
-  //name = geonkick_get_opt_name(kick);
+  jack = (struct gkick_jack*)malloc(sizeof(struct gkick_jack));
+  if (jack == NULL) {
+    return GEONKICK_ERROR_NULL_POINTER;
+  }
+  memset(jack, 0, sizeof(struct gkick_jack));
+  jack->sample_rate = 48000;
+  jack->kick_len = kick->length;
+  jack->end = 0;
+
+  kick->jack = jack;
   jack->client = jack_client_open(kick->name, JackNullOption, NULL);
   
   if (jack->client == NULL) {
@@ -52,8 +69,12 @@ gkick_create_jack(struct geonkick *kick)
     return GEONKICK_ERROR_OPEN_JACK;
   }
 	
-  jack_set_process_callback(jack->client, gkick_jack_process_callback, (void*)kick);
-  jack_set_sample_rate_callback(jack->client, gkick_jack_srate_callback, (void*)kick);
+  jack_set_process_callback(jack->client,
+			    gkick_jack_process_callback,
+			    (void*)kick);
+  jack_set_sample_rate_callback(jack->client,
+				gkick_jack_srate_callback,
+				(void*)kick);
 
   jack->output_port_l = jack_port_register(jack->client, "audio_out_L",
 					   JACK_DEFAULT_AUDIO_TYPE,
@@ -67,4 +88,13 @@ gkick_create_jack(struct geonkick *kick)
     return GEONKICK_ERROR_ACTIVATE_JACK;
   }
 	return GEONKICK_OK;
+}
+
+void gkick_jack_free(struct gkick_jack **jack)
+{
+  if (jack != NULL && *jack != NULL) {
+    jack_client_close((*jack)->client);
+    free(*jack);
+    *jack = NULL;
+  }
 }

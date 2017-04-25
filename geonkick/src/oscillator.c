@@ -17,10 +17,10 @@ struct gkick_oscillator
   }
   memset(osc, 0, sizeof(struct gkick_oscillator));
 
-  if (pthread_mutex_init(&osc->lock, NULL) != 0) {
-    gkick_osc_free(&osc);
-    return NULL;
-  }
+  //if (pthread_mutex_init(&osc->lock, NULL) != 0) {
+  //  gkick_osc_free(&osc);
+  //  return NULL;
+  //}
 
   osc->func = GKICK_OSC_FUNC_SINE;
   osc->phase = 0.0;
@@ -53,7 +53,7 @@ void gkick_osc_free(struct gkick_oscillator **osc)
     free((*osc)->envelopes);
   }
   
-  pthread_mutex_destroy(&(*osc)->lock);
+  //pthread_mutex_destroy(&(*osc)->lock);
   free(*osc);
   *osc = NULL;
 }
@@ -97,14 +97,12 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
 {
   double freq;
 
-  pthread_mutex_lock(&osc->lock);
-  freq = osc->frequency * gkick_envelope_get_value(osc->envelopes[0], t);  
+  freq = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t);  
 
   osc->phase += ((2 * M_PI * freq) / osc->sample_rate);
-  if (osc->phase > (2 * M_PI)) {
-    osc->phase = osc->phase - (2 * M_PI);
+  if (osc->phase > M_PI) {
+    osc->phase = -(2 * M_PI);
   }
-  pthread_mutex_unlock(&osc->lock);
 }
 
 double gkick_osc_value(struct gkick_oscillator *osc, double t)
@@ -112,9 +110,7 @@ double gkick_osc_value(struct gkick_oscillator *osc, double t)
   double amp;
   double v;
 
-  pthread_mutex_lock(&(osc->lock));
-  
-  amp = gkick_envelope_get_value(osc->envelopes[1], t);  
+  amp = gkick_envelope_get_value(osc->envelopes[0], t);  
 
   v = 0.0;
   if (osc->func == GKICK_OSC_FUNC_SINE) {
@@ -123,8 +119,6 @@ double gkick_osc_value(struct gkick_oscillator *osc, double t)
   {
     v = amp * gkick_osc_func_sqare(osc->phase);
   }
-
-  pthread_mutex_unlock(&(osc->lock));
 
   return v;
 }
