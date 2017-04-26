@@ -16,7 +16,7 @@ geonkick_create(struct geonkick **kick)
 
 	strcpy((*kick)->name, "GeonKick");
 	(*kick)->length = 1.0; // One second;
-	(*kick)->oscillators_number = 2;
+	(*kick)->oscillators_number = 1;
 
 	if (pthread_mutex_init(&(*kick)->lock, NULL) != 0) {
 	  gkick_log_error("error on init mutex");
@@ -186,13 +186,13 @@ double geonkick_get_oscillators_value(struct geonkick *kick, double t)
   double val = 0.0;
   size_t i;
 
-  geonkick_lock(kick);
+  //geonkick_lock(kick);
   val = 0.0;
-  for (i = 0; i < 1;/*kick->oscillators_number;*/ i++) {
+  for (i = 0; i < kick->oscillators_number; i++) {
     val += gkick_osc_value(kick->oscillators[i], t);
     gkick_osc_increment_phase(kick->oscillators[i], t);
   }
-  geonkick_unlock(kick);
+  //geonkick_unlock(kick);
 
   return val;  
 }
@@ -203,6 +203,21 @@ geonkick_set_sample_rate(struct geonkick *kick, double rate)
   //gkick_set_osc_sample_rate(kick->base_oscillator, rate);
   //gkick_set_osc_sample_rate(kick->noise_oscillator, rate);
   return GEONKICK_OK;
+}
+
+void geonkick_reset_oscillators(struct geonkick *kick)
+{
+  int i = 0;
+  
+  if (kick != NULL) {
+    geonkick_lock(kick);
+    
+    for (i = 0; i < kick->oscillators_number; i++) {
+      (kick->oscillators[i])->phase = 0.0;
+    }
+    
+    geonkick_unlock(kick);	
+  }
 }
 
 enum geonkick_error

@@ -1,5 +1,6 @@
 #include "gkick_jack.h"
-
+#include "oscillator.h"
+double phase = 0.0;
 int
 gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg)
@@ -17,14 +18,21 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 	  = (jack_default_audio_sample_t *)jack_port_get_buffer(jack->output_port_l, nframes);
 	jack_default_audio_sample_t *out_r
 	  = (jack_default_audio_sample_t *)jack_port_get_buffer(jack->output_port_r, nframes);
-
+	
 	for (i = 0; i < nframes; i++) {
 	  val = geonkick_get_oscillators_value(kick, jack->time);
-	  out_l[i] = 0.1 * val;
-	  out_r[i] = 0.1 * val;
-	  gkick_jack_increment_time(jack);
+	  out_l[i] = 0.5 * val;
+	  out_r[i] = 0.5 * val;
+	  if (jack->time > 1.5 * jack->kick_len) {
+	    //jack->end = 1;
+	    jack->time = 0.0;
+	    geonkick_reset_oscillators(kick);
+	  } else {
+	    jack->time += 1.0 / jack->sample_rate;
+	  }
+
+	  //gkick_jack_increment_time(jack);
 	}
-	gkick_log_info("var %f", val);
 
 
 	return 0;
@@ -32,6 +40,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 
 int gkick_jack_srate_callback(jack_nframes_t nframes, void *arg)
 {
+  printf("sample rate: %u", nframes );
   //geonkick_set_sampe_rate((struct geonkick*)arg), (double)nframes);
 	return 0;
 }
@@ -93,6 +102,9 @@ gkick_create_jack(struct geonkick *kick)
 void gkick_jack_free(struct gkick_jack **jack)
 {
   if (jack != NULL && *jack != NULL) {
+    jack_deactivate((*jack)->client);
+    jack_port_unregister((*jack)->client, (*jack)->output_port_l);
+    jack_port_unregister((*jack)->client, (*jack)->output_port_r);
     jack_client_close((*jack)->client);
     free(*jack);
     *jack = NULL;

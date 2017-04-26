@@ -30,6 +30,9 @@ geonkick_get_oscillator(struct geonkick *kick, size_t index);
 void geonkick_lock(struct geonkick *kick);
 
 void geonkick_unlock(struct geonkick *kick);
+
 void gkick_jack_increment_time(struct gkick_jack *jack);
+
+void geonkick_reset_oscillators(struct geonkick *kick);
 
 #endif

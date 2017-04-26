@@ -95,14 +95,14 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
 void gkick_osc_increment_phase(struct gkick_oscillator *osc,
 			       double t)
 {
-  double freq;
+  double f;
 
-  freq = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t);  
+  osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t);
 
-  osc->phase += ((2 * M_PI * freq) / osc->sample_rate);
+  osc->phase += (2 * M_PI * osc->frequency) / (osc->sample_rate);
   if (osc->phase > M_PI) {
-    osc->phase = -(2 * M_PI);
-  }
+    osc->phase -= 2 * M_PI;
+  } 
 }
 
 double gkick_osc_value(struct gkick_oscillator *osc, double t)
@@ -112,20 +112,20 @@ double gkick_osc_value(struct gkick_oscillator *osc, double t)
 
   amp = gkick_envelope_get_value(osc->envelopes[0], t);  
 
-  v = 0.0;
-  if (osc->func == GKICK_OSC_FUNC_SINE) {
+  //  v = 0.0;
+  // if (osc->func == GKICK_OSC_FUNC_SINE) {
     v = amp * gkick_osc_func_sine(osc->phase);
-  } else if (osc->func == GKICK_OSC_FUNC_SQARE)
-  {
-    v = amp * gkick_osc_func_sqare(osc->phase);
-  }
+    //} else if (osc->func == GKICK_OSC_FUNC_SQARE)
+    //{
+    //v = amp * gkick_osc_func_sqare(osc->phase);
+    //}
 
   return v;
 }
 
 double gkick_osc_func_sine(double phase)
 {
-  return sin(2 * M_PI * phase);
+  return sin(phase);
 }
 
 double gkick_osc_func_sqare(double phase)
