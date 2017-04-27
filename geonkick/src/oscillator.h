@@ -65,6 +65,10 @@ gkick_osc_func_sine(double phase);
 double
 gkick_osc_func_sqare(double phase);
 
+double gkick_osc_func_noise(void);
+
+double gkick_osc_func_sawtooh(double phase);
+
 void
 gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,

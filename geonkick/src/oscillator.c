@@ -114,7 +114,7 @@ double gkick_osc_value(struct gkick_oscillator *osc, double t)
 
   //  v = 0.0;
   // if (osc->func == GKICK_OSC_FUNC_SINE) {
-    v = amp * gkick_osc_func_sine(osc->phase);
+  v = amp * gkick_osc_func_sawtooh(osc->phase);
     //} else if (osc->func == GKICK_OSC_FUNC_SQARE)
     //{
     //v = amp * gkick_osc_func_sqare(osc->phase);
@@ -128,12 +128,22 @@ double gkick_osc_func_sine(double phase)
   return sin(phase);
 }
 
+double gkick_osc_func_noise(void)
+{
+  return ((double)(rand() % 100)) / 100.0;
+}
+
+double gkick_osc_func_sawtooh(double phase)
+{
+  return 1 - (1 / M_PI) * (phase - M_PI);
+}
+
 double gkick_osc_func_sqare(double phase)
 {
-  if (phase < M_PI) {
-    return 1;
-  } else {
+  if (phase < 0) {
     return -1;
+  } else {
+    return 1;
   }
 }
 
