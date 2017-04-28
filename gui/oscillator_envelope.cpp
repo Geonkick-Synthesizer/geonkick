@@ -51,19 +51,17 @@ void OscillatorEnvelope::draw(QPainter &painter)
 void OscillatorEnvelope::setXRatio(double k)
 {
   xRatio = k;
-  qDebug() << "set ratio x: " << k;
 }
 
 void OscillatorEnvelope::setYRatio(double k)
 {
   yRatio = k;
-  qDebug() << "set ratio y: " << k;
 }
 
 void OscillatorEnvelope::drawPoints(QPainter &painter)
 {
 	for (int i = 0; i < envelopePoints.size(); i++) {
-		envelopePoints[i].draw(painter, originPoint);
+		envelopePoints[i].draw(painter);
 	}
 }
 
@@ -71,8 +69,9 @@ void OscillatorEnvelope::drawLines(QPainter &painter)
 {
 	QPolygonF points;
 	for (int i = 0; i < envelopePoints.size(); i++) {
-		points << QPointF(originPoint.x() + envelopePoints[i].x(),
-				  originPoint.y() - envelopePoints[i].y());
+	        QPointF p = scaleUp(envelopePoints[i]);
+		points << QPointF(originPoint.x() + p.x(),
+				  originPoint.y() - p.y());
 	}
 
 	QPen pen = painter.pen();
@@ -86,6 +85,11 @@ void OscillatorEnvelope::setOrigin(QPointF &point)
 	originPoint = point;
 }
 
+QPointF OscillatorEnvelope::getOriginPoint(void)
+{
+  return originPoint;
+}
+
 void OscillatorEnvelope::setOutOfRangeX(OscillatorEnvelope::OutOfRangeType type)
 {
 	outOfRangeX = type;
@@ -94,16 +98,6 @@ void OscillatorEnvelope::setOutOfRangeX(OscillatorEnvelope::OutOfRangeType type)
 void OscillatorEnvelope::setOutOfRangeY(OscillatorEnvelope::OutOfRangeType type)
 {
 	outOfRangeY = type;
-}
-
-void OscillatorEnvelope::setWidth(double width)
-{
-	envelopeW = width;
-}
-
-void OscillatorEnvelope::setHeight(double height)
-{
-	envelopeH = height;
 }
 
 bool OscillatorEnvelope::hasSelected(void)
@@ -152,7 +146,7 @@ double OscillatorEnvelope::getLeftPointLimit(void)
 		x = envelopePoints[index - 1].x();
 	}
 
-	return x;
+	return x * xRatio;
 }
 
 double OscillatorEnvelope::getRightPointLimit(void)
@@ -171,11 +165,14 @@ double OscillatorEnvelope::getRightPointLimit(void)
 		x = envelopePoints[index + 1].x();
 	}
 
-	return x;
+	return x * xRatio;
 }
 
 void OscillatorEnvelope::moveSelectedPoint(double dx, double dy)
 {
+  dx /= xRatio;
+  dy /= yRatio;
+  
 	if (selectedPoint == NULL) {
 		return;
 	}
@@ -198,24 +195,40 @@ void OscillatorEnvelope::moveSelectedPoint(double dx, double dy)
 
 	int index = envelopePoints.indexOf(*selectedPoint);
 	if (index > -1 && index < envelopePoints.size()) {
-	  emit pointUpdated(index, QPointF(selectedPoint->x() * xRatio,
-					   selectedPoint->y() * yRatio));
+	  emit pointUpdated(index, QPointF(selectedPoint->x(),
+					   selectedPoint->y()));
 	}
 }
 
 void OscillatorEnvelope::addEnvelopePoints(QPolygonF points)
 {
   for (int i = 0; i < points.size(); i++) {
-    QPointF p(points[i].x() / xRatio, points[i].y()/ yRatio);
-    qDebug() << "ADD: " << p.x() << ", " <<  p.y();
-    envelopePoints.push_back(OscillatorEnvelopePoint(p));
+    envelopePoints.push_back(OscillatorEnvelopePoint(this, points[i]));
   }
+
+  envelopeW = envelopePoints.last().x() - envelopePoints.first().x();
+  envelopeH = 1.0;
+}
+
+QPointF OscillatorEnvelope::scaleUp(QPointF point)
+{
+  point.setX(point.x() * xRatio);
+  point.setY(point.y() * yRatio);
+  return point;
+}
+
+QPointF OscillatorEnvelope::scaleDown(QPointF point)
+{
+  point.setX(point.x() / xRatio);
+  point.setY(point.y() / yRatio);
+  return point;
 }
 
 void OscillatorEnvelope::addPoint(QPointF point)
 {
   bool added = false;
   qDebug() << "OscillatorEnvelope::addPoint: " << point.x() << ", " << point.y();
+  point = scaleDown(point);
 
   if (point.y() < 0.0) {
     point.setY(0.0); 
@@ -225,35 +238,42 @@ void OscillatorEnvelope::addPoint(QPointF point)
     
   	if (point.x() > envelopeW) {
 	        point.setX(envelopeW);
-		envelopePoints.append(OscillatorEnvelopePoint(point));
+		envelopePoints.append(OscillatorEnvelopePoint(this, point));
 	} else if (point.x() < 0.0) {
 	  point.setX(0.0);
-	  envelopePoints.push_front(OscillatorEnvelopePoint(point));
+	  envelopePoints.push_front(OscillatorEnvelopePoint(this, point));
 	} else if (point.x() < envelopePoints[0].x()) {
-		envelopePoints.push_front(OscillatorEnvelopePoint(point));
-		added = true;
+	  envelopePoints.push_front(OscillatorEnvelopePoint(this, point));
 	} else if (point.x() > envelopePoints.last().x()) {
-		envelopePoints.push_back(OscillatorEnvelopePoint(point));
-		added = true;
+	  envelopePoints.push_back(OscillatorEnvelopePoint(this, point));
 	} else {		
 		OscillatorEnvelopePoint p;
 		for(int i = 0; i < envelopePoints.size(); i++) {
 			if (point.x() < envelopePoints[i].x()) {
-				envelopePoints.insert(i, OscillatorEnvelopePoint(point));
+			  envelopePoints.insert(i, OscillatorEnvelopePoint(this, point));
 				break;
 			}
 		}
 	}
 
-	qDebug() << "POINT: " << point.x() << ", " << point.y();
+	qDebug() << "POINT ADDED: " << point.x() << ", " << point.y();
+	emit pointAdded(point);
+}
 
-	QPointF p(point.x() * xRatio, point.y() * yRatio);
-	qDebug() << "POINT_K: " << p.x() << ", " << p.y();	
-	emit pointAdded(p);
+double OscillatorEnvelope::getEnvelopeLenth(void)
+{
+  return envelopeW;
+}
+
+double OscillatorEnvelope::getEnvelopeHeight(void)
+{
+  return envelopeH;
 }
 
 void OscillatorEnvelope::removePoint(QPointF point)
 {
+  point = scaleDown(point);
+
 	for(int i = 0; i < envelopePoints.size(); i++) {
 		if (envelopePoints[i].hasPoint(point)) {
 			if (envelopePoints[i] != envelopePoints.first()

@@ -24,16 +24,14 @@ int main(int argc, char *argv[])
   gkick_set_opt_app_name(kick, "GeonKick");
   gkick_start(kick);*/
   
-  GKickApi kickApi;
-
   //std::vector<std::unique_ptr<GKickOscillator>> ocillators = kickApi.getOscillators();
 
-  if (kickApi.hasErrors()) {
-    qDebug() << "error on ceated API";
+   MainWindow window;
+  if (!window.init()) {
+    qDebug() << "can't init main window";
     exit(1);
   }
-
-  MainWindow window;
+  
   window.show();
   //OscillatorWidget plotWindow(NULL, ocillators[0].get());
   //plotWindow.show();

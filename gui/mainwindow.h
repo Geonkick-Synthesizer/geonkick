@@ -24,6 +24,10 @@
 #ifndef GKICK_MAINWINDOW_H
 #define GKICK_MAINWINDOW_H
 
+#include "gkickapi.h"
+#include "gkickoscillator.h"
+#include "oscillator_widget.h"
+
 #include <QMainWindow>
 #include "ui_MainWindow.h"
 
@@ -37,6 +41,7 @@ class MainWindow : public QMainWindow, public Ui_MainWindow
  public:
       MainWindow(void);
       ~MainWindow();
+      bool init(void);
 
       protected slots:
 
@@ -50,7 +55,9 @@ class MainWindow : public QMainWindow, public Ui_MainWindow
 
  private:
 	//	QPushButton *uploadButton;
-	std::unique_ptr<GKickOscillatorWidget> oscillatorWidget;
+	std::unique_ptr<GKickApi> gkickApi;
+	std::vector<std::unique_ptr<GKickOscillator>> oscillators;
+	OscillatorWidget *oscillatorWidget;
 };
 
 #endif

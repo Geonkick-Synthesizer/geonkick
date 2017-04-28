@@ -32,18 +32,27 @@
 #include <QToolBar>
 #include <QAction>
 #include <QMessageBox>
+#include <QDebug>
 
 MainWindow::MainWindow() :
-  gkickApi(NULL),
+  gkickApi(std::make_unique<GKickApi>()),
   oscillatorWidget(NULL)
 {
 }
 
-MainWindow::init(void)
+bool MainWindow::init(void)
 {
-  GkickOscillator osc = gkickApi->getOscillators()[0].get();
-  oscillatorWidget = std::make_unique(GKickOscillatorWidget)(this, osc);
+  if (gkickApi.get()->hasErrors()) {
+    return false;
+  }
+  
   setupUi(this);
+
+  oscillators = gkickApi.get()->getOscillators();
+  oscillatorWidget = new OscillatorWidget(verticalLayoutWidget, oscillators[0].get());
+  viewOscillatorLayout->addWidget(oscillatorWidget);
+  
+  return true;
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +65,6 @@ MainWindow::~MainWindow()
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
-  event->ignore();
-  this->setVisible(false);
+  //  event->ignore();
+  //this->setVisible(false);
 }

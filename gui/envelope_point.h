@@ -28,14 +28,16 @@
 #include <QPointF>
 #include <QPainter>
 
+class OscillatorEnvelope;
+
 class OscillatorEnvelopePoint : public QPointF
 {
  public:
 	OscillatorEnvelopePoint(void);
-	OscillatorEnvelopePoint(const QPointF &point);
-	OscillatorEnvelopePoint(double x, double y);
+	OscillatorEnvelopePoint(OscillatorEnvelope *parent, const QPointF &point);
+	OscillatorEnvelopePoint(OscillatorEnvelope *parent, double x, double y);
 	virtual ~OscillatorEnvelopePoint();
-	void draw(QPainter &painter, const QPointF &origin);
+	void draw(QPainter &painter);
 	bool isSelected(void);
 	bool hasPoint(const QPointF &point);
 	void selectPoint(void);
@@ -43,10 +45,14 @@ class OscillatorEnvelopePoint : public QPointF
 	double radius(void);
 	double getDotRadius(void);
 	
+ protected:
+	QPointF scaleUp(QPointF point);
+	
  private:
 	bool is_selected;
 	double pointRadius;
 	double dotRadius;
+	OscillatorEnvelope *parentEnvelope;
 };
 
 #endif

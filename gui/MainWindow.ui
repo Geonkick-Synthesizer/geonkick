@@ -28,7 +28,7 @@
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
      <item>
-      <widget class="QWidget" name="widget" native="true"/>
+      <layout class="QVBoxLayout" name="viewOscillatorLayout"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">

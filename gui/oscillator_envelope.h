@@ -28,6 +28,7 @@
 #include "envelope_point.h"
 
 #include <QObject>
+#include <QPainter>
 
 class OscillatorEnvelope: public QObject
 {
@@ -46,8 +47,6 @@ class OscillatorEnvelope: public QObject
 	~OscillatorEnvelope();
 	void draw(QPainter &painter);
 	void setOrigin(QPointF &point);
-	void setWidth(double width);
-	void setHeight(double height);
 	bool hasSelected(void);
 	void selectPoint(QPointF point);
 	void unselectPoint(void);
@@ -61,7 +60,12 @@ class OscillatorEnvelope: public QObject
 	void removePoint(QPointF point);
 	void setXRatio(double k);
 	void setYRatio(double k);
-	
+	QPointF scaleUp(QPointF point);
+	QPointF scaleDown(QPointF point);
+	QPointF getOriginPoint(void);
+	double getEnvelopeLenth(void);
+	double getEnvelopeHeight(void);
+
  signals:
 	void pointAdded(const QPointF & point);
 	void pointRemoved(int index);

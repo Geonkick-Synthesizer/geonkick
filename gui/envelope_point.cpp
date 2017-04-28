@@ -1,4 +1,5 @@
 #include "envelope_point.h"
+#include "oscillator_envelope.h"
 
 #include <QDebug>
 
@@ -6,23 +7,30 @@ OscillatorEnvelopePoint::OscillatorEnvelopePoint(void)
 	: QPointF(),
 	  is_selected(false),
 	  pointRadius(7),
-	  dotRadius(3)
+	  dotRadius(3),
+	  parentEnvelope(NULL)
+
 {
 }
 
-OscillatorEnvelopePoint::OscillatorEnvelopePoint(const QPointF &point)
+OscillatorEnvelopePoint::OscillatorEnvelopePoint(OscillatorEnvelope *parent,
+						 const QPointF &point)
 	: QPointF(point),
 	  is_selected(false),
 	  pointRadius(7),
-	  dotRadius(3)
+	  dotRadius(3),
+	  parentEnvelope(parent)
 {
 }
 
-OscillatorEnvelopePoint::OscillatorEnvelopePoint(double x, double y)
+OscillatorEnvelopePoint::OscillatorEnvelopePoint(OscillatorEnvelope *parent,
+						 double x, double y)
 	: QPointF(x, y),
 	  is_selected(false),
 	  pointRadius(7),
-	  dotRadius(3)
+	  dotRadius(3),
+	  parentEnvelope(parent)
+
 {
 }
 
@@ -31,7 +39,7 @@ OscillatorEnvelopePoint::~OscillatorEnvelopePoint()
 	
 }
 
-void OscillatorEnvelopePoint::draw(QPainter &painter, const QPointF &origin)
+void OscillatorEnvelopePoint::draw(QPainter &painter)
 {
 	QPen pen;
 	if (isSelected()) {
@@ -42,20 +50,28 @@ void OscillatorEnvelopePoint::draw(QPainter &painter, const QPointF &origin)
 
 	painter.setPen(pen);
 	painter.setBrush(Qt::white);
-
+	QPointF point = scaleUp(QPointF(x(), y()));
+	QPointF origin = parentEnvelope->getOriginPoint();
 	QRectF rect;
-	double X0 = origin.x();
-	double Y0 = origin.y();
-	rect.setCoords(X0 + (x() - radius()), Y0 - (y() - radius()),
-		       X0 + (x() + radius()), Y0 - (y() + radius()));
+	rect.setCoords(origin.x() + (point.x() - radius()),
+		       origin.y() - (point.y() - radius()),
+		       origin.x() + (point.x() + radius()),
+		       origin.y() - (point.y() + radius()));
 	painter.drawEllipse(rect);
-	painter.drawText(X0 + (x() + 3/2 * radius()),
-			 Y0 - (y() + 3/2 * radius()), "17.890 KHz");
+	painter.drawText(origin.x() + (point.x() + 3/2 * radius() / 3),
+			 origin.y() - (point.y() + 3/2 * radius() / 3), "17.890 KHz");
 
 	painter.setBrush(Qt::black);
-	rect.setCoords(X0 + (x() - radius()/3), Y0 - (y() - radius()/3),
-		       X0 + (x() + radius()/3), Y0 - (y() + radius()/3));
+	rect.setCoords(origin.x() + (point.x() - radius() / 3),
+		       origin.y() - (point.y() - radius() / 3),
+		       origin.x() + (point.x() + radius() / 3),
+		       origin.y() - (point.y() + radius() / 3));
 	painter.drawEllipse(rect);
+}
+
+QPointF OscillatorEnvelopePoint::scaleUp(QPointF point)
+{
+  return parentEnvelope->scaleUp(point);
 }
 
 double OscillatorEnvelopePoint::radius(void)
@@ -87,13 +103,19 @@ bool OscillatorEnvelopePoint::hasPoint(const QPointF &point)
 {
 	double px = point.x();
 	double py = point.y();
-
-	if ((px > x() - pointRadius) && (px < x() + pointRadius)
-	    && (py > y() - pointRadius) && (y() < y() + pointRadius)
-	    && (pow(x() - px, 2) + pow(y() - py, 2) < pow(pointRadius, 2)))
+	QPointF p = scaleUp(QPointF(x(), y()));
+	qDebug() << "mouse(" << px << ", " << py << ") current(" << p.x() << ", " << p.y() << ")";
+	
+	if ((px > p.x() - pointRadius) && (px < p.x() + pointRadius)
+	    && (py > y() - pointRadius) && (py < p.y() + pointRadius)
+	    && (pow(p.x() - px, 2) + pow(p.y() - py, 2) < pow(pointRadius, 2)))
 		{
+		  qDebug() << "IS here";
 			return true;
 		}
+
+	qDebug() << "NOT here";
+
 	return false;
 }
 
