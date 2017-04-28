@@ -1,5 +1,6 @@
 #include "oscillator_widget.h"
 #include "gkickapi.h"
+#include "mainwindow.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -25,15 +26,17 @@ int main(int argc, char *argv[])
   
   GKickApi kickApi;
 
-  std::vector<std::unique_ptr<GKickOscillator>> ocillators = kickApi.getOscillators();
+  //std::vector<std::unique_ptr<GKickOscillator>> ocillators = kickApi.getOscillators();
 
   if (kickApi.hasErrors()) {
     qDebug() << "error on ceated API";
     exit(1);
   }
-  
-  OscillatorWidget plotWindow(NULL, ocillators[0].get());
-  plotWindow.show();
+
+  MainWindow window;
+  window.show();
+  //OscillatorWidget plotWindow(NULL, ocillators[0].get());
+  //plotWindow.show();
   //  gkick_free(kick);
   
   return a.exec();

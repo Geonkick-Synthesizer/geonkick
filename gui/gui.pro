@@ -11,16 +11,20 @@ INCLUDEPATH += ../geonkick/src/
 
 LIBS += -L../geonkick/ -lgeonkick -ljack
 
+FORMS += MainWindow.ui
+
 # Input
 HEADERS += globals.h \
            gkickapi.h \
            gkickoscillator.h \
            envelope_point.h \
            oscillator_envelope.h \
-           oscillator_widget.h
+           oscillator_widget.h \
+           mainwindow.h
 SOURCES += envelope_point.cpp \
            gkickapi.cpp \
            gkickoscillator.cpp \
            oscillator_envelope.cpp \
            oscillator_widget.cpp \
+           mainwindow.cpp \
            main.cpp 
