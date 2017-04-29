@@ -128,26 +128,8 @@ OscillatorWidget::mouseMoveEvent(QMouseEvent *event)
 		return;
 	}
 
-	double left  = oscEnvelope.getLeftPointLimit();
-	double right = oscEnvelope.getRightPointLimit();		
-	if (event->x() < left + xPadding) {
-		oscEnvelope.setOutOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_LEFT);
-	} else if (event->x() > right + xPadding) {
-		oscEnvelope.setOutOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_RIGHT);
-	} else {
-		oscEnvelope.setOutOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_NONE);		
-	}
-
-	if (event->y() < yPadding) {
-		oscEnvelope.setOutOfRangeY(OscillatorEnvelope::OUT_OF_RANGE_TOP);
-	} else if(event->y() > height() - xPadding) {
-		oscEnvelope.setOutOfRangeY(OscillatorEnvelope::OUT_OF_RANGE_BOTTOM);
-	} else {
-		oscEnvelope.setOutOfRangeY(OscillatorEnvelope::OUT_OF_RANGE_NONE);
-	}
-
-	oscEnvelope.moveSelectedPoint(event->x() - mousePoint.x(),
-				       -(event->y() - mousePoint.y()));
+	oscEnvelope.moveSelectedPoint(event->x() - xPadding,
+				      height() - (event->y() + yPadding));
 	mousePoint.setX(event->x());
 	mousePoint.setY(event->y());
 	update();

@@ -35,14 +35,7 @@ class OscillatorEnvelope: public QObject
   Q_OBJECT
 
  public:
-	enum OutOfRangeType {
-		OUT_OF_RANGE_NONE,
-		OUT_OF_RANGE_LEFT,
-		OUT_OF_RANGE_RIGHT,
-		OUT_OF_RANGE_TOP,
-		OUT_OF_RANGE_BOTTOM,
-	};
-
+  
 	OscillatorEnvelope(void);
 	~OscillatorEnvelope();
 	void draw(QPainter &painter);
@@ -50,9 +43,7 @@ class OscillatorEnvelope: public QObject
 	bool hasSelected(void);
 	void selectPoint(QPointF point);
 	void unselectPoint(void);
-	void moveSelectedPoint(double dx, double dy);
-	void setOutOfRangeX(OutOfRangeType type);
-	void setOutOfRangeY(OutOfRangeType type);
+	void moveSelectedPoint(double x, double y);
 	double getLeftPointLimit(void);
 	double getRightPointLimit(void);
 	void addPoint(QPointF point);
@@ -85,8 +76,6 @@ class OscillatorEnvelope: public QObject
 	double envelopeH;
 	double xRatio;
 	double yRatio;
-	OutOfRangeType outOfRangeX;
-	OutOfRangeType outOfRangeY;
 };
 
 #endif

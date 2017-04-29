@@ -368,7 +368,8 @@ geonkick_set_osc_function(struct geonkick *kick,
   osc = geonkick_get_oscillator(kick, oscillatorIndex);
   if (osc != NULL) {
     osc->func = type;
-    gkick_log_debug("SET FUNCTION: %d (osc:%d)", osc->func, oscillatorIndex);
   }
   geonkick_unlock(kick);
+
+  return GEONKICK_OK;
 }

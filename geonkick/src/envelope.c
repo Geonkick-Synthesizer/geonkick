@@ -103,7 +103,6 @@ gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
 	if (envelope->npoints == 0
 	    || envelope->first == NULL || envelope->last == NULL) {
 		envelope->first = envelope->last = point;
-		printf("here 0\n");
 	} else {
 		gkick_envelope_add_sorted(envelope, point);
 	}
@@ -122,13 +121,13 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 	
 	p = envelope->first;
 
-	if (point->x > envelope->last->x) {
+	if (point->x >= envelope->last->x) {
 		envelope->last->next = point;
 	        point->prev = envelope->last;
 		envelope->last = point;
 	} else {	
 		while (p) {
-			if (point->x < p->x) {
+			if (point->x <= p->x) {
 				if (p == envelope->first) {
 					point->next = p;
 					p->prev = point;
@@ -196,13 +195,8 @@ gkick_envelope_get_points(struct gkick_envelope *env,
     i += 2;
   }
 
-  gkick_log_info("end");
   *buff = points;
   *npoints = env->npoints;
-  gkick_log_info("end");
-  for (i = 0; i < 2 * env->npoints; i++) {
-    gkick_log_debug("POINT:[%d] = %f", i, (*buff)[i]);
-  }
 }
 
 void
