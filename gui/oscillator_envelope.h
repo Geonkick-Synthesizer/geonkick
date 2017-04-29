@@ -65,6 +65,7 @@ class OscillatorEnvelope: public QObject
 	QPointF getOriginPoint(void);
 	double getEnvelopeLenth(void);
 	double getEnvelopeHeight(void);
+	void removePoints(void);
 
  signals:
 	void pointAdded(const QPointF & point);

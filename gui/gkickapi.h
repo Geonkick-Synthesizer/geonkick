@@ -29,8 +29,9 @@
 #include <vector>
 #include <QPolygonF>
 
+#include "geonkick.h"
+
 class GKickOscillator;
-struct geonckick;
 
 class GKickApi
 {
@@ -53,6 +54,10 @@ class GKickApi
 			      int envelope,
 			      int index,
 			      const QPointF &point);
+
+   void setOscFunction(int oscillatorIndex,
+		       enum geonkick_osc_func_type type);
+
  protected:
      
  private:

@@ -24,18 +24,10 @@
 #include <pthread.h>
 
 #define GKICK_OSC_DEFAULT_SAMPLE_RATE 48000
-#define GKICK_OSC_DEFAULT_FREQUENCY   147
-
-enum GKICK_OSC_FUNC_TYPE {
-	GKICK_OSC_FUNC_SINE,
-	GKICK_OSC_FUNC_SQARE, 
-	GKICK_OSC_FUNC_TRIANGLE,
-	GKICK_OSC_FUNC_SAWTOOTH,
-	GKICK_OSC_FUNC_NOISE
-};
+#define GKICK_OSC_DEFAULT_FREQUENCY   1000
 
 struct gkick_oscillator {
-  enum GKICK_OSC_FUNC_TYPE func;
+  enum geonkick_osc_func_type func;
   double phase;
   double sample_rate;
   double frequency;

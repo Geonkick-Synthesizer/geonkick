@@ -49,8 +49,19 @@ bool MainWindow::init(void)
   setupUi(this);
 
   oscillators = gkickApi.get()->getOscillators();
-  oscillatorWidget = new OscillatorWidget(verticalLayoutWidget, oscillators[0].get());
+  oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
+  oscillators[MainWindow::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
+  
+  oscillatorWidget = new OscillatorWidget(verticalLayoutWidget, oscillators[MainWindow::OSC_BASE].get());
   viewOscillatorLayout->addWidget(oscillatorWidget);
+
+  radioButtonBaseOsc->setChecked(true);
+  connect(radioButtonBaseOsc, SIGNAL(clicked(bool)), this, SLOT(viewBaseOsc(bool)));
+  connect(radioButtonNoiseOsc, SIGNAL(clicked(bool)), this, SLOT(viewNoiseOsc(bool)));
+
+  radioButtonBaseAmplitudeEnv->setChecked(true);
+  connect(radioButtonBaseAmplitudeEnv, SIGNAL(clicked(bool)), this, SLOT(setAmplitudeEnvelope(bool)));
+  connect(radioButtonBaseFrequencyEnv, SIGNAL(clicked(bool)), this, SLOT(setFrequencyEnvelope(bool)));
   
   return true;
 }
@@ -67,4 +78,34 @@ MainWindow::closeEvent(QCloseEvent *event)
 {
   //  event->ignore();
   //this->setVisible(false);
+}
+
+void MainWindow::viewBaseOsc(bool b)
+{
+  if (b) {
+    oscillatorWidget->setOscillator(oscillators[MainWindow::OSC_BASE].get());
+    baseOscEnvGroupBox->setEnabled(true);
+  }
+}
+
+void MainWindow::viewNoiseOsc(bool b)
+{
+  if (b) {
+    oscillatorWidget->setOscillator(oscillators[MainWindow::OSC_NOISE].get());
+    baseOscEnvGroupBox->setEnabled(false);
+  }
+}
+
+void MainWindow::setAmplitudeEnvelope(bool b)
+{
+  if (b) {
+    oscillatorWidget->setAmplitudeEnvelope();
+  }
+}
+
+void MainWindow::setFrequencyEnvelope(bool b)
+{
+  if (b) {
+    oscillatorWidget->setFrequencyEnvelope();
+  }
 }

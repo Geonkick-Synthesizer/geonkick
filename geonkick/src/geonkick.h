@@ -32,10 +32,18 @@ enum geonkick_error {
 	GEONKICK_ERROR_ACTIVATE_JACK
 };
 
-enum gkick_envelope_type {
-  GKICK_AMPLITUDE_ENVELOPE = 0,
-  GKICK_FREQUENCY_ENVELOPE = 1
+enum geonkick_envelope_type {
+  GEONKICK_AMPLITUDE_ENVELOPE = 0,
+  GEONKICK_FREQUENCY_ENVELOPE = 1
 };
+
+enum geonkick_osc_func_type {
+	GEONKICK_OSC_FUNC_SINE     = 0,
+	GEONKICK_OSC_FUNC_SQARE    = 1, 
+	GEONKICK_OSC_FUNC_TRIANGLE = 2,
+	GEONKICK_OSC_FUNC_SAWTOOTH = 3,
+	GEONKICK_OSC_FUNC_NOISE    = 4
+};  
 
 struct geonkick;
 
@@ -56,7 +64,7 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t *npoints);    
 enum geonkick_error
 geonkick_remove_envelope_point(struct geonkick *kick,
-				enum gkick_envelope_type type,
+				enum geonkick_envelope_type type,
 				size_t index);
 
 enum geonkick_error
@@ -77,8 +85,13 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 				   size_t env_index,
   				   size_t index,
 				   double x,
-				   double y);  
+				   double y);
   
+enum geonkick_error
+geonkick_set_osc_function(struct geonkick *kick,
+			  size_t oscillatorIndex,
+			  enum geonkick_osc_func_type type);
+
 #ifdef __cplusplus
 }
 #endif

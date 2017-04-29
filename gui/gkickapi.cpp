@@ -48,7 +48,9 @@ std::vector<std::unique_ptr<GKickOscillator>> GKickApi::getOscillators(void)
   int n = geonkick_get_oscillators_number(gKickApi);
   qDebug() << "N oscialltors:" << n;  
   for (int i = 0; i < n; i++) {
-    oscillators.push_back(std::make_unique<GKickOscillator>(this, i));
+    std::unique_ptr<GKickOscillator> osc = std::make_unique<GKickOscillator>(this, i);
+    osc.get()->setOscillatorIndex(i);
+    oscillators.push_back(std::move(osc));
   }
 
   return oscillators;
@@ -123,3 +125,13 @@ void GKickApi::updateOscEvelopePoint(int osc, int envelope,
 }
 
 
+void GKickApi::setOscFunction(int oscillatorIndex,
+			      enum geonkick_osc_func_type type)
+{
+  if (!gKickApi) {
+    return;
+  }
+  
+   qDebug() << "GKickApi::updateOscEvelopePoint";
+   geonkick_set_osc_function(gKickApi, oscillatorIndex, (enum geonkick_osc_func_type)type);
+}

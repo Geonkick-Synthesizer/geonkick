@@ -15,6 +15,10 @@ public:
    OscillatorWidget(QWidget *parent, GKickOscillator *osc);
    ~OscillatorWidget();
 
+   void setOscillator(GKickOscillator *osc);
+   void setAmplitudeEnvelope(void);
+   void setFrequencyEnvelope(void);
+
  protected:
      void drawAxes(void);
      void drawEnvelope(void);
@@ -25,9 +29,10 @@ public:
      void mouseMoveEvent(QMouseEvent *event);
      void mouseDoubleClickEvent(QMouseEvent *event);
      void resizeEvent(QResizeEvent *event);
-     void connectoToOscillator(void);
+     void connectOscillator(void);
+     void disconnectOscillator(void);
      void calculateRatio(void);
-
+     
  private:
      GKickOscillator* kickOscillator;
      QPainter widgetPainter;

@@ -57,14 +57,14 @@
             <number>5</number>
            </property>
            <item row="0" column="0">
-            <widget class="QRadioButton" name="radioButton_2">
+            <widget class="QRadioButton" name="radioButtonBaseOsc">
              <property name="text">
               <string>Base Oscillator</string>
              </property>
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="radioButtonNoiseOsc">
              <property name="text">
               <string>Noise</string>
              </property>
@@ -93,7 +93,7 @@
             <number>10</number>
            </property>
            <item row="1" column="0">
-            <widget class="QGroupBox" name="groupBox_4">
+            <widget class="QGroupBox" name="baseOscEnvGroupBox">
              <property name="title">
               <string>Envelope</string>
              </property>
@@ -111,14 +111,14 @@
                 <number>10</number>
                </property>
                <item>
-                <widget class="QRadioButton" name="radioButton_4">
+                <widget class="QRadioButton" name="radioButtonBaseAmplitudeEnv">
                  <property name="text">
                   <string>Amplitude</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QRadioButton" name="radioButton_3">
+                <widget class="QRadioButton" name="radioButtonBaseFrequencyEnv">
                  <property name="text">
                   <string>Frequency</string>
                  </property>

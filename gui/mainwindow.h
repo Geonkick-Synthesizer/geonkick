@@ -52,8 +52,18 @@ class MainWindow : public QMainWindow, public Ui_MainWindow
 	void closeEvent(QCloseEvent *event);
 	bool setupMenuBar(void);
 	bool setupToolBar(void);
+ protected slots:
+        void viewBaseOsc(bool b);
+        void viewNoiseOsc(bool b);
+	void setAmplitudeEnvelope(bool b);
+	void setFrequencyEnvelope(bool b);
 
  private:
+	enum {
+	  OSC_BASE = 0,
+	  OSC_NOISE = 1,
+	};
+
 	//	QPushButton *uploadButton;
 	std::unique_ptr<GKickApi> gkickApi;
 	std::vector<std::unique_ptr<GKickOscillator>> oscillators;

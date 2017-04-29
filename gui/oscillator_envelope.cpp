@@ -29,8 +29,8 @@ OscillatorEnvelope::OscillatorEnvelope(void) :
 	envelopePoints(),
 	selectedPoint(NULL),
 	originPoint(0.0, 0.0),
-	envelopeW(0.0),
-	envelopeH(0.0),
+	envelopeW(1.0),
+	envelopeH(1.0),
 	xRatio(1.0),
 	yRatio(1.0),
 	outOfRangeX(OscillatorEnvelope::OUT_OF_RANGE_NONE),
@@ -205,9 +205,11 @@ void OscillatorEnvelope::addEnvelopePoints(QPolygonF points)
   for (int i = 0; i < points.size(); i++) {
     envelopePoints.push_back(OscillatorEnvelopePoint(this, points[i]));
   }
+}
 
-  envelopeW = envelopePoints.last().x() - envelopePoints.first().x();
-  envelopeH = 1.0;
+void OscillatorEnvelope::removePoints(void)
+{
+  envelopePoints.clear();
 }
 
 QPointF OscillatorEnvelope::scaleUp(QPointF point)

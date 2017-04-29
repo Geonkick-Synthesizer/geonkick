@@ -29,6 +29,7 @@
 #include <QObject>
 
 #include "gkickapi.h"
+#include "geonkick.h"
 
 class GKickOscillator: public QObject
 {
@@ -36,12 +37,25 @@ class GKickOscillator: public QObject
   Q_OBJECT
 
  public:
+
+  enum EnvelopeType {
+    OSC_ENV_AMPLITUDE = 0,
+    OSC_ENV_FREQUENCY = 1
+  };
+
+  enum OscillatorFuncType {
+    OSC_FUNC_SINE  = GEONKICK_OSC_FUNC_SINE,
+    OSC_FUNC_NOISE = GEONKICK_OSC_FUNC_NOISE
+  };
+  
 	GKickOscillator(GKickApi *api, int index);
 	~GKickOscillator();
 	//	void setApi(GKickApi *api);
 	QPolygonF getEnvelopePoints(void);
 	void setOscillatorIndex(int index);
 	int getOscillatorIndex(void);
+	void setCurrentEnvelope(EnvelopeType type);
+	void setOscFunction(OscillatorFuncType type);
 
 public slots:
 	  void addPoint(const QPointF &point);

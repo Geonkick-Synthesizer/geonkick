@@ -15,19 +15,17 @@ OscillatorWidget::OscillatorWidget(QWidget *parent, GKickOscillator *osc)
 	  originPoint(0.0, 0.0),
 	  mousePoint(0.0, 0.0)
 {
-
-  //this->resize(800, 400);
-  oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
-   //  oscEnvelope->setEnvelopeType(kickOscillator->getEnvelopeType());
-   connectoToOscillator();
+  setOscillator(kickOscillator);
 }
 
 void OscillatorWidget::calculateRatio(void)
 {
   double w = oscEnvelope.getEnvelopeLenth();
   double h = oscEnvelope.getEnvelopeHeight();
+  qDebug() << "set origin:" << w << ", " << h;
 
   if (w > 0.0 && h > 0.0) {
+    qDebug() << "set origin:" << w << ", " << h;
     oscEnvelope.setXRatio((width() - 2 * xPadding) / w);
     oscEnvelope.setYRatio((height() - 2 * yPadding) / h);
   } else {
@@ -36,15 +34,22 @@ void OscillatorWidget::calculateRatio(void)
   }
 }
 
-void OscillatorWidget::connectoToOscillator(void)
+void OscillatorWidget::connectOscillator(void)
 {
+
   connect(&oscEnvelope, SIGNAL(pointAdded(const QPointF &)),
 	  kickOscillator, SLOT(addPoint(const QPointF &)));
   connect(&oscEnvelope, SIGNAL(pointRemoved(int)),
 	  kickOscillator, SLOT(removePoint(int)));
   connect(&oscEnvelope, SIGNAL(pointUpdated(int, const QPointF&)),
 	  kickOscillator, SLOT(updatePoint(int, const QPointF&)));
+}
 
+void OscillatorWidget::disconnectOscillator(void)
+{
+    disconnect(&oscEnvelope, SIGNAL(pointAdded(const QPointF &)), 0, 0);
+    disconnect(&oscEnvelope, SIGNAL(pointRemoved(int)), 0, 0);
+    disconnect(&oscEnvelope, SIGNAL(pointUpdated(int, const QPointF&)), 0, 0);
 }
 
 OscillatorWidget::~OscillatorWidget()
@@ -158,4 +163,30 @@ void OscillatorWidget::recalculateOrigin(void)
 void OscillatorWidget::resizeEvent(QResizeEvent *event)
 {
   Q_UNUSED(event);  
+}
+
+void OscillatorWidget::setOscillator(GKickOscillator *osc)
+{
+  disconnectOscillator();
+  kickOscillator = osc;
+  connectOscillator();
+  oscEnvelope.removePoints();
+  oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
+  update();
+}
+
+void OscillatorWidget::setAmplitudeEnvelope(void)
+{
+  kickOscillator->setCurrentEnvelope(GKickOscillator::OSC_ENV_AMPLITUDE);
+  oscEnvelope.removePoints();
+  oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
+  update();
+}
+
+void OscillatorWidget::setFrequencyEnvelope(void)
+{
+    kickOscillator->setCurrentEnvelope(GKickOscillator::OSC_ENV_FREQUENCY);
+    oscEnvelope.removePoints();
+    oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
+    update();
 }

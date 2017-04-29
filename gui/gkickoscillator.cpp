@@ -29,7 +29,7 @@
 GKickOscillator::GKickOscillator(GKickApi *api, int index) :
   kickApi(api),
   oscillatorIndex(index),
-  envelopeIndex(0)
+  envelopeIndex((int)OSC_ENV_AMPLITUDE)
 {
     qDebug() << "GKickOscillator::GKickOscillator()";
 }
@@ -43,6 +43,14 @@ GKickOscillator::~GKickOscillator()
 //{/
 //  kickApi = api;
 //}
+
+void GKickOscillator::setOscFunction(OscillatorFuncType type)
+{
+  qDebug() << "GKickOscillator::setOscFunction(OscillatorFuncType type):" << type;
+  if (kickApi) {
+    kickApi->setOscFunction(oscillatorIndex, (enum geonkick_osc_func_type)type);
+  }
+}
 
 QPolygonF GKickOscillator::getEnvelopePoints(void)
 {
@@ -85,4 +93,9 @@ void GKickOscillator::setOscillatorIndex(int index)
 int GKickOscillator::getOscillatorIndex(void)
 {
   return oscillatorIndex;
+}
+
+void GKickOscillator::setCurrentEnvelope(EnvelopeType type)
+{
+  envelopeIndex = (int)type;
 }
