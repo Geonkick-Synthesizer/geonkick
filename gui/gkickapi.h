@@ -58,6 +58,8 @@ class GKickApi
    void setOscFunction(int oscillatorIndex,
 		       enum geonkick_osc_func_type type);
 
+   void setKickLength(double len);
+
  protected:
      
  private:

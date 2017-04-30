@@ -92,6 +92,10 @@ geonkick_set_osc_function(struct geonkick *kick,
 			  size_t oscillatorIndex,
 			  enum geonkick_osc_func_type type);
 
+enum geonkick_error
+geonkick_set_length(struct geonkick *kick, double t);
+
+
 #ifdef __cplusplus
 }
 #endif

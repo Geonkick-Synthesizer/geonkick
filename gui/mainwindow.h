@@ -31,6 +31,8 @@
 #include <QMainWindow>
 #include "ui_MainWindow.h"
 
+#define GKICK_UI_MAX_TIME (1.0)
+
 class QPushButton;
 class QCloseEvent;
 
@@ -57,6 +59,7 @@ class MainWindow : public QMainWindow, public Ui_MainWindow
         void viewNoiseOsc(bool b);
 	void setAmplitudeEnvelope(bool b);
 	void setFrequencyEnvelope(bool b);
+	void setKickLength(double v);
 
  private:
 	enum {

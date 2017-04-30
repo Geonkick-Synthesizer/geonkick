@@ -135,3 +135,13 @@ void GKickApi::setOscFunction(int oscillatorIndex,
    qDebug() << "GKickApi::updateOscEvelopePoint";
    geonkick_set_osc_function(gKickApi, oscillatorIndex, (enum geonkick_osc_func_type)type);
 }
+
+void GKickApi::setKickLength(double len)
+{
+  if (!gKickApi) {
+    return;
+  }
+
+  qDebug() << "GKIckApi::setKickLength: " << len;
+  geonkick_set_length(gKickApi, len);
+}

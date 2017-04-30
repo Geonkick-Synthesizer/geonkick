@@ -15,7 +15,7 @@ geonkick_create(struct geonkick **kick)
 	memset(*kick, 0, sizeof(struct geonkick));
 
 	strcpy((*kick)->name, "GeonKick");
-	(*kick)->length = 1.0; // One second;
+	(*kick)->length = 0.26; // One second;
 	(*kick)->oscillators_number = 2;
 
 	if (pthread_mutex_init(&(*kick)->lock, NULL) != 0) {
@@ -189,8 +189,8 @@ double geonkick_get_oscillators_value(struct geonkick *kick, double t)
   geonkick_lock(kick);
   val = 0.0;
   for (i = 0; i < kick->oscillators_number; i++) {
-    val += gkick_osc_value(kick->oscillators[i], t);
-    gkick_osc_increment_phase(kick->oscillators[i], t);
+    val += gkick_osc_value(kick->oscillators[i], t, kick->length);
+    gkick_osc_increment_phase(kick->oscillators[i], t, kick->length);
   }
   geonkick_unlock(kick);
 
@@ -371,5 +371,20 @@ geonkick_set_osc_function(struct geonkick *kick,
   }
   geonkick_unlock(kick);
 
+  return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_set_length(struct geonkick *kick, double t)
+{
+  if (kick == NULL) {
+    return GEONKICK_ERROR;
+  }
+  
+  geonkick_lock(kick);
+  gkick_log_debug("set kick len: %f", t);
+  kick->length = t;
+  geonkick_unlock(kick);
+  
   return GEONKICK_OK;
 }

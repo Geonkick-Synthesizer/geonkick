@@ -22,7 +22,7 @@ struct gkick_oscillator
   osc->sample_rate = GKICK_OSC_DEFAULT_SAMPLE_RATE;
   osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
   osc->env_number = 2;
-  osc->env_length = kick->length;
+  osc->env_length = 1.0;
 
   if (gkick_osc_create_envelopes(osc) != GEONKICK_OK) {
     gkick_osc_free(&osc);
@@ -87,11 +87,12 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
 }
 
 void gkick_osc_increment_phase(struct gkick_oscillator *osc,
-			       double t)
+			       double t,
+			       double kick_len)
 {
   double f;
 
-  f = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t);
+  f = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t / kick_len);
 
   osc->phase += (2 * M_PI * f) / (osc->sample_rate);
   if (osc->phase > M_PI) {
@@ -99,12 +100,14 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
   } 
 }
 
-double gkick_osc_value(struct gkick_oscillator *osc, double t)
+double gkick_osc_value(struct gkick_oscillator *osc,
+		       double t,
+		       double kick_len)
 {
   double amp;
   double v;
 
-  amp = gkick_envelope_get_value(osc->envelopes[0], t);  
+  amp = gkick_envelope_get_value(osc->envelopes[0], t / kick_len);  
 
   v = 0.0;
   if (osc->func == GEONKICK_OSC_FUNC_SINE) {

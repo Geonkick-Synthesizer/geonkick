@@ -22,6 +22,7 @@
  */
 
 #include "mainwindow.h"
+#include "gkick_knob.h"
 
 #include <QFileDialog>
 #include <QPushButton>
@@ -54,6 +55,15 @@ bool MainWindow::init(void)
   
   oscillatorWidget = new OscillatorWidget(verticalLayoutWidget, oscillators[MainWindow::OSC_BASE].get());
   viewOscillatorLayout->addWidget(oscillatorWidget);
+
+  GKickKnob *kickLengthKnob = new GKickKnob(NULL);
+  connect(kickLengthKnob, SIGNAL(valueUpdated(double)), this, SLOT(setKickLength(double)));
+  gkickApi->setKickLength(0.25);
+  kickLengthKnob->setValue(0.25);
+  genealSettingsLayout->addWidget(kickLengthKnob, 0,0);
+  
+  knobsLayout->addWidget(new GKickKnob(NULL), 1, 0);
+  knobsLayout->addWidget(new GKickKnob(NULL), 1, 1);
 
   radioButtonBaseOsc->setChecked(true);
   connect(radioButtonBaseOsc, SIGNAL(clicked(bool)), this, SLOT(viewBaseOsc(bool)));
@@ -108,4 +118,10 @@ void MainWindow::setFrequencyEnvelope(bool b)
   if (b) {
     oscillatorWidget->setFrequencyEnvelope();
   }
+}
+
+void MainWindow::setKickLength(double v)
+{
+  qDebug() << "MainWindow::setKickLength: " << v;
+  gkickApi->setKickLength(GKICK_UI_MAX_TIME * v);
 }

@@ -47,9 +47,12 @@ gkick_osc_create_envelopes(struct gkick_oscillator *osc);
 
 void
 gkick_osc_increment_phase(struct gkick_oscillator *osc,
-			  double t);
+			  double t,
+			  double kick_len);
 double
-gkick_osc_value(struct gkick_oscillator *osc, double t);
+gkick_osc_value(struct gkick_oscillator *osc,
+		double t,
+		double kick_len);
 
 double
 gkick_osc_func_sine(double phase);

@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>831</width>
-    <height>498</height>
+    <width>833</width>
+    <height>499</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
@@ -25,15 +31,34 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="sizeConstraint">
-      <enum>QLayout::SetDefaultConstraint</enum>
+      <enum>QLayout::SetNoConstraint</enum>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="viewOscillatorLayout"/>
+      <layout class="QVBoxLayout" name="viewOscillatorLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetNoConstraint</enum>
+       </property>
+      </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
+      <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,5,4,4">
+       <property name="spacing">
+        <number>20</number>
+       </property>
        <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
+        <enum>QLayout::SetNoConstraint</enum>
+       </property>
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>10</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
        </property>
        <item>
         <widget class="QGroupBox" name="groupBox_3">
@@ -50,6 +75,9 @@
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetNoConstraint</enum>
+           </property>
            <property name="leftMargin">
             <number>10</number>
            </property>
@@ -84,52 +112,43 @@
            <rect>
             <x>-1</x>
             <y>19</y>
-            <width>251</width>
-            <height>131</height>
+            <width>211</width>
+            <height>181</height>
            </rect>
           </property>
-          <layout class="QGridLayout" name="gridLayout_2">
+          <layout class="QGridLayout" name="baseOscillatorGLayout">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetNoConstraint</enum>
+           </property>
            <property name="leftMargin">
-            <number>10</number>
+            <number>5</number>
            </property>
            <item row="1" column="0">
-            <widget class="QGroupBox" name="baseOscEnvGroupBox">
-             <property name="title">
-              <string>Envelope</string>
+            <layout class="QGridLayout" name="knobsLayout">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetNoConstraint</enum>
              </property>
-             <widget class="QWidget" name="horizontalLayoutWidget_3">
-              <property name="geometry">
-               <rect>
-                <x>-1</x>
-                <y>19</y>
-                <width>212</width>
-                <height>41</height>
-               </rect>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
-               <property name="leftMargin">
-                <number>10</number>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>Amplitude </string>
                </property>
-               <item>
-                <widget class="QRadioButton" name="radioButtonBaseAmplitudeEnv">
-                 <property name="text">
-                  <string>Amplitude</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioButtonBaseFrequencyEnv">
-                 <property name="text">
-                  <string>Frequency</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </widget>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Frequency</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetNoConstraint</enum>
+             </property>
              <item>
               <widget class="QLabel" name="label">
                <property name="text">
@@ -163,6 +182,45 @@
              </item>
             </layout>
            </item>
+           <item row="2" column="0">
+            <widget class="QGroupBox" name="baseOscEnvGroupBox">
+             <property name="title">
+              <string>View Envelope</string>
+             </property>
+             <widget class="QWidget" name="horizontalLayoutWidget_3">
+              <property name="geometry">
+               <rect>
+                <x>-1</x>
+                <y>19</y>
+                <width>201</width>
+                <height>41</height>
+               </rect>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetNoConstraint</enum>
+               </property>
+               <property name="leftMargin">
+                <number>10</number>
+               </property>
+               <item>
+                <widget class="QRadioButton" name="radioButtonBaseAmplitudeEnv">
+                 <property name="text">
+                  <string>Amplitude</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioButtonBaseFrequencyEnv">
+                 <property name="text">
+                  <string>Frequency</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
           </layout>
          </widget>
         </widget>
@@ -177,11 +235,14 @@
            <rect>
             <x>0</x>
             <y>19</y>
-            <width>271</width>
+            <width>191</width>
             <height>201</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetNoConstraint</enum>
+           </property>
            <property name="leftMargin">
             <number>10</number>
            </property>
@@ -210,6 +271,28 @@
          </widget>
         </widget>
        </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="title">
+          <string>General Settings</string>
+         </property>
+         <widget class="QWidget" name="gridLayoutWidget_3">
+          <property name="geometry">
+           <rect>
+            <x>-1</x>
+            <y>19</y>
+            <width>201</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" name="genealSettingsLayout">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetNoConstraint</enum>
+           </property>
+          </layout>
+         </widget>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -220,7 +303,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>831</width>
+     <width>833</width>
      <height>19</height>
     </rect>
    </property>
