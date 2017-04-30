@@ -29,14 +29,16 @@
 #include "oscillator_widget.h"
 
 #include <QMainWindow>
-#include "ui_MainWindow.h"
+//#include "ui_MainWindow.h"
 
 #define GKICK_UI_MAX_TIME (1.0)
 
 class QPushButton;
 class QCloseEvent;
+class QVBoxLayout;
+class QGroupBox;
 
-class MainWindow : public QMainWindow, public Ui_MainWindow
+class MainWindow : public QMainWindow/*, public Ui_MainWindow*/
 {
       Q_OBJECT
 
@@ -54,13 +56,18 @@ class MainWindow : public QMainWindow, public Ui_MainWindow
 	void closeEvent(QCloseEvent *event);
 	bool setupMenuBar(void);
 	bool setupToolBar(void);
+        void createBottomControlArea(void);
+	void createGroupOscillatorsBox(QWidget *controlAreaWidget);
+	void createBaseOscillatorBox(QWidget *controlAreaWidget);
+	void createNoiseBox(QWidget *controlAreaWidget);
+	void createGeneralSettingsBox(QWidget *controlAreaWidget);
+
  protected slots:
         void viewBaseOsc(bool b);
         void viewNoiseOsc(bool b);
 	void setAmplitudeEnvelope(bool b);
 	void setFrequencyEnvelope(bool b);
 	void setKickLength(double v);
-
  private:
 	enum {
 	  OSC_BASE = 0,
@@ -71,6 +78,8 @@ class MainWindow : public QMainWindow, public Ui_MainWindow
 	std::unique_ptr<GKickApi> gkickApi;
 	std::vector<std::unique_ptr<GKickOscillator>> oscillators;
 	OscillatorWidget *oscillatorWidget;
+	QVBoxLayout *centralWidgetLayout;
+	QGroupBox *envelopeGroupBox;
 };
 
 #endif

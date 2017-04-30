@@ -144,7 +144,8 @@ void OscillatorWidget::recalculateOrigin(void)
 
 void OscillatorWidget::resizeEvent(QResizeEvent *event)
 {
-  Q_UNUSED(event);  
+  Q_UNUSED(event);
+  qDebug() << "size: " << width() << ", " << height();
 }
 
 void OscillatorWidget::setOscillator(GKickOscillator *osc)
