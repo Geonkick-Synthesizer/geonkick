@@ -24,7 +24,7 @@
 #include <pthread.h>
 
 #define GKICK_OSC_DEFAULT_SAMPLE_RATE 48000
-#define GKICK_OSC_DEFAULT_FREQUENCY   1000
+#define GKICK_OSC_DEFAULT_FREQUENCY   10000
 
 struct gkick_oscillator {
   enum geonkick_osc_func_type func;

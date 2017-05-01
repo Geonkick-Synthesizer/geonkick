@@ -267,3 +267,8 @@ void OscillatorEnvelope::removePoint(QPointF point)
 		
 	}	
 }
+
+//double OscillatorEnvelope::kickLength(void)
+//{
+//  
+//}

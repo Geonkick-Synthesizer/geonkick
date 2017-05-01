@@ -85,6 +85,7 @@ void MainWindow::createBottomControlArea(void)
 {
   QHBoxLayout* controlAreaLayout = new QHBoxLayout;
   QWidget *controlAreaWidget = new QWidget(centralWidget());
+  controlAreaWidget->setMaximumHeight(200);
   controlAreaWidget->setLayout(controlAreaLayout);
 
   // Add control area to central layout.
@@ -129,10 +130,9 @@ void MainWindow::createBaseOscillatorBox(QWidget *controlAreaWidget)
   baseOscillatorGroupBoxLayout->addWidget(new QLabel(tr("Wave function")), 0, 0);
   baseOscillatorGroupBoxLayout->addWidget(waveFunctionCb, 0, 1);
 
-
   // Select enevelope.
   envelopeGroupBox = new QGroupBox(tr("Envelope"), baseOscillatorGroupBox);
-  baseOscillatorGroupBoxLayout->addWidget(envelopeGroupBox);
+  baseOscillatorGroupBoxLayout->addWidget(envelopeGroupBox, 1, 0);
   envelopeGroupBox->setLayout(new QHBoxLayout());
   QRadioButton *amplitudeRb  = new QRadioButton(tr("Amplitude"), envelopeGroupBox);
   QRadioButton *frequencyRb  = new QRadioButton(tr("Frquency"), envelopeGroupBox);
@@ -141,23 +141,41 @@ void MainWindow::createBaseOscillatorBox(QWidget *controlAreaWidget)
   connect(frequencyRb, SIGNAL(clicked(bool)), this, SLOT(setFrequencyEnvelope(bool)));
   envelopeGroupBox->layout()->addWidget(amplitudeRb);
   envelopeGroupBox->layout()->addWidget(frequencyRb);
+
+  
+  GKickKnob *kickAmplitudeKnob = new GKickKnob(baseOscillatorGroupBox);
+  kickAmplitudeKnob->setValue(0.25);
+  baseOscillatorGroupBoxLayout->addWidget(kickAmplitudeKnob, 2, 0);
+  GKickKnob *kickFrequencyKnob = new GKickKnob(baseOscillatorGroupBox);
+  kickFrequencyKnob->setValue(0.25);
+  baseOscillatorGroupBoxLayout->addWidget(kickFrequencyKnob, 2, 1);  
+  connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorAplitude(double)));
+  connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorFrequency(double))); 
 }
 
 void MainWindow::createNoiseBox(QWidget *controlAreaWidget)
 {
   QGroupBox *noiseGroupBox = new QGroupBox(tr("Noise"), controlAreaWidget);
+  QGridLayout *noiseOscillatorGroupBoxLayout = new QGridLayout();
+  noiseGroupBox->setLayout(noiseOscillatorGroupBoxLayout);
   controlAreaWidget->layout()->addWidget(noiseGroupBox);
+  
+  GKickKnob *noiseAmplitudeKnob = new GKickKnob(noiseGroupBox);
+  noiseAmplitudeKnob->setValue(0.25);
+  noiseOscillatorGroupBoxLayout->addWidget(noiseAmplitudeKnob, 0, 0);
+  connect(noiseAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setNoiseAmplitude(double))); 
 }
 
 void MainWindow::createGeneralSettingsBox(QWidget *controlAreaWidget)
 {
   QGroupBox *generalSettingsGroupBox = new QGroupBox(tr("General Settings"), controlAreaWidget);
   controlAreaWidget->layout()->addWidget(generalSettingsGroupBox);
-  generalSettingsGroupBox->setLayout(new QVBoxLayout());
+  QGridLayout *generalSettingsGroupBoxLayout = new QGridLayout();
+  generalSettingsGroupBox->setLayout(generalSettingsGroupBoxLayout);
   GKickKnob *kickLengthKnob = new GKickKnob(NULL);
   kickLengthKnob->setValue(0.25);
   connect(kickLengthKnob, SIGNAL(valueUpdated(double)), this, SLOT(setKickLength(double)));
-  generalSettingsGroupBox->layout()->addWidget(kickLengthKnob);
+  generalSettingsGroupBoxLayout->addWidget(kickLengthKnob, 0, 0);
 }
 
 void
@@ -201,4 +219,5 @@ void MainWindow::setKickLength(double v)
 {
   qDebug() << "MainWindow::setKickLength: " << v;
   gkickApi->setKickLength(GKICK_UI_MAX_TIME * v);
+  //  oscillatorWidget->setKickLength(GKICK_UI_MAX_TIME * v);
 }
