@@ -96,7 +96,7 @@ enum geonkick_error
 geonkick_set_length(struct geonkick *kick, double t);
 
 enum geonkick_error
-geonkick_get_length(struct geonkick *kick, double *len);
+geonkick_get_length(struct geonkick *kick, double *t);
 
 #ifdef __cplusplus
 }

@@ -18,6 +18,10 @@ public:
    void setOscillator(GKickOscillator *osc);
    void setAmplitudeEnvelope(void);
    void setFrequencyEnvelope(void);
+   double getKickLength(void);
+   
+   public slots:
+        void updateKickLength(double v);
 
  protected:
      void drawAxes(void);
@@ -41,6 +45,7 @@ public:
      int yPadding;
      QPointF originPoint;
      QPointF mousePoint;
+     double kickLength;
 };
 
 #endif

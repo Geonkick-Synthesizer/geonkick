@@ -99,3 +99,12 @@ void GKickOscillator::setCurrentEnvelope(EnvelopeType type)
 {
   envelopeIndex = (int)type;
 }
+
+double GKickOscillator::getKickLength(void)
+{
+  if (!kickApi) {
+    return 0.0;
+  } else {
+    return kickApi->getKickLength();
+  }
+}

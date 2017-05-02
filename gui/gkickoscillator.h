@@ -50,6 +50,7 @@ class GKickOscillator: public QObject
   
 	GKickOscillator(GKickApi *api, int index);
 	~GKickOscillator();
+	double getKickLength(void);
 	//	void setApi(GKickApi *api);
 	QPolygonF getEnvelopePoints(void);
 	void setOscillatorIndex(int index);

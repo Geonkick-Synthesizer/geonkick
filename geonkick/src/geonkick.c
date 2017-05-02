@@ -388,3 +388,18 @@ geonkick_set_length(struct geonkick *kick, double t)
   
   return GEONKICK_OK;
 }
+
+enum geonkick_error
+geonkick_get_length(struct geonkick *kick, double *t)
+{
+  if (kick == NULL || t == 0) {
+    return GEONKICK_ERROR;
+  }
+  
+  geonkick_lock(kick);
+  gkick_log_debug("get kick len");
+  *t = kick->length;
+  geonkick_unlock(kick);
+  
+  return GEONKICK_OK;
+}

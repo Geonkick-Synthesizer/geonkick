@@ -30,13 +30,15 @@
 #include <QObject>
 #include <QPainter>
 
+class OscillatorWidget;
+
 class OscillatorEnvelope: public QObject
 {
   Q_OBJECT
 
  public:
   
-	OscillatorEnvelope(void);
+	OscillatorEnvelope(OscillatorWidget *parent);
 	~OscillatorEnvelope();
 	void draw(QPainter &painter);
 	void setOrigin(QPointF &point);
@@ -70,6 +72,7 @@ class OscillatorEnvelope: public QObject
 	void drawLines(QPainter &painter);
      
  private:
+	OscillatorWidget *parentWidget;
 	QVector<OscillatorEnvelopePoint> envelopePoints;
 	OscillatorEnvelopePoint* selectedPoint;
 	QPointF originPoint;

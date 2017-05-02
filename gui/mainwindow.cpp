@@ -61,6 +61,7 @@ bool MainWindow::init(void)
   // Create central Widget.
   setCentralWidget(new QWidget(this));
   oscillatorWidget = new OscillatorWidget(centralWidget(), oscillators[MainWindow::OSC_BASE].get());
+  connect(gkickApi.get(), SIGNAL(kickLengthUpdated(double)), oscillatorWidget, SLOT(updateKickLength(double)));
 
   centralWidgetLayout = new QVBoxLayout();
   
@@ -68,9 +69,8 @@ bool MainWindow::init(void)
   centralWidget()->setLayout(centralWidgetLayout);
 
   createBottomControlArea();
+  gkickApi.get()->setKickLength(0.25);
   
-  gkickApi->setKickLength(0.25);
-   
   return true;
 }
 
@@ -149,8 +149,8 @@ void MainWindow::createBaseOscillatorBox(QWidget *controlAreaWidget)
   GKickKnob *kickFrequencyKnob = new GKickKnob(baseOscillatorGroupBox);
   kickFrequencyKnob->setValue(0.25);
   baseOscillatorGroupBoxLayout->addWidget(kickFrequencyKnob, 2, 1);  
-  connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorAplitude(double)));
-  connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorFrequency(double))); 
+  connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorAplitudeMaxValue(double)));
+  connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorFrequencyMaxValue(double))); 
 }
 
 void MainWindow::createNoiseBox(QWidget *controlAreaWidget)
@@ -163,7 +163,7 @@ void MainWindow::createNoiseBox(QWidget *controlAreaWidget)
   GKickKnob *noiseAmplitudeKnob = new GKickKnob(noiseGroupBox);
   noiseAmplitudeKnob->setValue(0.25);
   noiseOscillatorGroupBoxLayout->addWidget(noiseAmplitudeKnob, 0, 0);
-  connect(noiseAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setNoiseAmplitude(double))); 
+  connect(noiseAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setNoiseAmplitudeMaxValue(double))); 
 }
 
 void MainWindow::createGeneralSettingsBox(QWidget *controlAreaWidget)
@@ -221,3 +221,7 @@ void MainWindow::setKickLength(double v)
   gkickApi->setKickLength(GKICK_UI_MAX_TIME * v);
   //  oscillatorWidget->setKickLength(GKICK_UI_MAX_TIME * v);
 }
+
+//setNoiseAmplitudeMaxValue
+//connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorAplitudeMaxValue(double)));
+//connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorFrequencyMaxValue(double))); 

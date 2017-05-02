@@ -9,11 +9,12 @@ OscillatorWidget::OscillatorWidget(QWidget *parent, GKickOscillator *osc)
 	: QWidget(parent),
 	  kickOscillator(osc),
 	  widgetPainter(),
-	  oscEnvelope(),
+	  oscEnvelope(this),
 	  xPadding(50),
 	  yPadding(50),
 	  originPoint(0.0, 0.0),
-	  mousePoint(0.0, 0.0)
+	  mousePoint(0.0, 0.0),
+	  kickLength(0.0)
 {
   setOscillator(kickOscillator);
 }
@@ -36,7 +37,6 @@ void OscillatorWidget::calculateRatio(void)
 
 void OscillatorWidget::connectOscillator(void)
 {
-
   connect(&oscEnvelope, SIGNAL(pointAdded(const QPointF &)),
 	  kickOscillator, SLOT(addPoint(const QPointF &)));
   connect(&oscEnvelope, SIGNAL(pointRemoved(int)),
@@ -173,3 +173,15 @@ void OscillatorWidget::setFrequencyEnvelope(void)
     oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
     update();
 }
+
+void OscillatorWidget::updateKickLength(double v)
+{
+  kickLength = v;
+  update();
+}
+
+double OscillatorWidget::getKickLength(void)
+{
+  return kickLength;
+}
+

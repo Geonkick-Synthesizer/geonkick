@@ -22,10 +22,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#include "oscillator_widget.h"
 #include "oscillator_envelope.h"
 #include <QDebug>
 
-OscillatorEnvelope::OscillatorEnvelope(void) :
+OscillatorEnvelope::OscillatorEnvelope(OscillatorWidget *parent) :
+        parentWidget(parent),
 	envelopePoints(),
 	selectedPoint(NULL),
 	originPoint(0.0, 0.0),
@@ -268,7 +270,7 @@ void OscillatorEnvelope::removePoint(QPointF point)
 	}	
 }
 
-//double OscillatorEnvelope::kickLength(void)
-//{
-//  
-//}
+double OscillatorEnvelope::kickLength(void)
+{
+  return parentWidget->getKickLength();  
+}

@@ -28,13 +28,16 @@
 #include <memory>
 #include <vector>
 #include <QPolygonF>
+#include <QObject>
 
 #include "geonkick.h"
 
 class GKickOscillator;
 
-class GKickApi
+class GKickApi: public QObject
 {
+  Q_OBJECT
+  
  public:
 
   GKickApi(void);
@@ -59,6 +62,9 @@ class GKickApi
 		       enum geonkick_osc_func_type type);
 
    void setKickLength(double len);
+   double getKickLength(void);
+ signals:
+   void kickLengthUpdated(double len);
 
  protected:
      

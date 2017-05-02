@@ -143,5 +143,14 @@ void GKickApi::setKickLength(double len)
   }
 
   qDebug() << "GKIckApi::setKickLength: " << len;
-  geonkick_set_length(gKickApi, len);
+  if (geonkick_set_length(gKickApi, len) == GEONKICK_OK) {
+    emit kickLengthUpdated(len);
+  };
+}
+
+double GKickApi::getKickLength(void)
+{
+  double len = 0.0;
+  geonkick_get_length(gKickApi, &len);
+  return len;
 }

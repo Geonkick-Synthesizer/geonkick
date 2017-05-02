@@ -58,10 +58,9 @@ void OscillatorEnvelopePoint::draw(QPainter &painter)
 		       origin.x() + (point.x() + radius()),
 		       origin.y() - (point.y() + radius()));
 	painter.drawEllipse(rect);
-	//QString textVal = QString::number(((parentEnvelope->kickLength() * x()) * 1000, 'f', 0) + " ms"; 
-	//painter.drawText(origin.x() + (point.x() + 3 * radius() / 3),
-	//		 origin.y() - (point.y() + 3 * radius() / 3),
-	//		 );
+	QString textVal = QString::number((parentEnvelope->kickLength() * x()) * 1000, 'f', 0) + " ms"; 
+	painter.drawText(origin.x() + (point.x() + 3 * radius() / 3),
+			 origin.y() - (point.y() + 3 * radius() / 3), textVal);
 
 	painter.setBrush(Qt::black);
 	rect.setCoords(origin.x() + (point.x() - radius() / 3),
