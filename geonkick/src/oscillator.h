@@ -24,17 +24,18 @@
 #include <pthread.h>
 
 #define GKICK_OSC_DEFAULT_SAMPLE_RATE 48000
-#define GKICK_OSC_DEFAULT_FREQUENCY   10000
+#define GKICK_OSC_DEFAULT_AMPLITUDE   150
+#define GKICK_OSC_DEFAULT_FREQUENCY   0.5
 
 struct gkick_oscillator {
-  enum geonkick_osc_func_type func;
-  double phase;
-  double sample_rate;
-  double frequency;
-  size_t env_number;
-  double env_length;
-  struct gkick_envelope **envelopes;
-  pthread_mutex_t lock;
+	enum geonkick_osc_func_type func;
+	double phase;
+	double sample_rate;
+	double frequency;
+	double amplitude;
+	size_t env_number;
+	struct gkick_envelope **envelopes;
+	pthread_mutex_t lock;
 };
 
 struct gkick_oscillator
@@ -60,9 +61,11 @@ gkick_osc_func_sine(double phase);
 double
 gkick_osc_func_sqare(double phase);
 
-double gkick_osc_func_noise(void);
+double gkick_osc_func_triangle(double phase);
 
-double gkick_osc_func_sawtooh(double phase);
+double gkick_osc_func_sawtooth(double phase);
+
+double gkick_osc_func_noise(void);
 
 void
 gkick_osc_get_envelope_points(struct gkick_oscillator *osc,

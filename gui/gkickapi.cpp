@@ -154,3 +154,67 @@ double GKickApi::getKickLength(void)
   geonkick_get_length(gKickApi, &len);
   return len;
 }
+
+bool GKickApi::setOscAmplitudeValue(int oscillatorIndex, double v)
+{
+	if (!gKickApi) {
+		return false;
+	}
+
+	if (geonkick_set_osc_amplitude_val(gKickApi, oscillatorIndex, v)
+	    != GEONKICK_OK) {
+		return false;
+	}
+
+	return true;
+}
+
+double GKickApi::getOscAmplitudeValue(int oscillatorIndex)
+{
+	double v;
+	
+	if (!gKickApi) {
+		return 0.0;
+	}
+
+	v = 0.0;
+	if (geonkick_get_osc_amplitude_val(gKickApi, oscillatorIndex, &v)
+	    != GEONKICK_OK) {
+		return 0.0;
+	}
+
+	qDebug() << "GKickApi::getOscAmplitudeValue(int oscillatorIndex):" << v;
+
+	return v;
+}
+
+bool GKickApi::setOscFrequencyValue(int oscillatorIndex, double v)
+{
+	if (!gKickApi) {
+		return false;
+	}
+
+	if (geonkick_set_osc_frequency_val(gKickApi, oscillatorIndex, v)
+	    != GEONKICK_OK) {
+		return false;
+	}
+
+	return true;
+}
+
+double GKickApi::getOscFrequencyValue(int oscillatorIndex)
+{
+	double v;
+	
+	if (!gKickApi) {
+		return 0.0;
+	}
+
+	v = 0.0;
+	if (geonkick_get_osc_frequency_val(gKickApi, oscillatorIndex, &v)
+	    != GEONKICK_OK) {
+	    return 0.0;
+	}
+
+	return v;
+}

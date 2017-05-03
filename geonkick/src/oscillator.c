@@ -20,9 +20,9 @@ struct gkick_oscillator
   osc->func = GEONKICK_OSC_FUNC_SINE;
   osc->phase = 0.0;
   osc->sample_rate = GKICK_OSC_DEFAULT_SAMPLE_RATE;
+  osc->amplitude = GKICK_OSC_DEFAULT_AMPLITUDE;
   osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
   osc->env_number = 2;
-  osc->env_length = 1.0;
 
   if (gkick_osc_create_envelopes(osc) != GEONKICK_OK) {
     gkick_osc_free(&osc);
@@ -75,9 +75,8 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
       return GEONKICK_ERROR_CREATE_ENVELOPE;
     } else {
       /* Add two default points. */
-      gkick_log_debug("create env length: %f", osc->env_length);
       gkick_envelope_add_point(env, 0.0, 1.0);
-      gkick_envelope_add_point(env, osc->env_length, 1.0);
+      gkick_envelope_add_point(env, 1.0, 1.0);
       osc->envelopes[i] = env;
     }
     
@@ -107,31 +106,35 @@ double gkick_osc_value(struct gkick_oscillator *osc,
   double amp;
   double v;
 
-  amp = gkick_envelope_get_value(osc->envelopes[0], t / kick_len);  
-
+  amp = osc->amplitude * gkick_envelope_get_value(osc->envelopes[0], t / kick_len);
+  
   v = 0.0;
-  if (osc->func == GEONKICK_OSC_FUNC_SINE) {
-    v = amp * gkick_osc_func_sine(osc->phase);
-  } else if (osc->func == GEONKICK_OSC_FUNC_NOISE)  {
-    v = amp * gkick_osc_func_noise();
-  }
-
+  switch (osc->func) {
+  case GEONKICK_OSC_FUNC_SINE:
+	  v = amp * gkick_osc_func_sine(osc->phase);
+	  break;
+  case GEONKICK_OSC_FUNC_SQARE:
+	  v = amp * gkick_osc_func_sqare(osc->phase);
+	  break;
+  case GEONKICK_OSC_FUNC_TRIANGLE:
+	  v = amp * gkick_osc_func_triangle(osc->phase);
+	  break;
+  case GEONKICK_OSC_FUNC_SAWTOOTH:
+	  v = amp * gkick_osc_func_sawtooth(osc->phase);
+	  break;
+  case GEONKICK_OSC_FUNC_NOISE:
+	  v = amp * gkick_osc_func_noise();	  
+	  break;
+  default:
+	  v = amp * gkick_osc_func_sine(osc->phase);
+  };
+  
   return v;
 }
 
 double gkick_osc_func_sine(double phase)
 {
   return sin(phase);
-}
-
-double gkick_osc_func_noise(void)
-{
-  return ((double)(rand() % 100)) / 100.0;
-}
-
-double gkick_osc_func_sawtooh(double phase)
-{
-  return 1 - (1 / M_PI) * (phase - M_PI);
 }
 
 double gkick_osc_func_sqare(double phase)
@@ -141,6 +144,28 @@ double gkick_osc_func_sqare(double phase)
   } else {
     return 1;
   }
+}
+
+double gkick_osc_func_triangle(double phase)
+{
+	double a = 1.0;
+
+	if (phase < M_PI) {
+		return -a + (2 * a / M_PI) * phase;
+	}
+	else {
+		return 3 * a - (2 * a / M_PI) * phase;
+	}
+}
+
+double gkick_osc_func_sawtooth(double phase)
+{
+  return 1 - (1 / M_PI) * (phase - M_PI);
+}
+
+double gkick_osc_func_noise(void)
+{
+  return ((double)(rand() % 100)) / 100.0;
 }
 
 void

@@ -21,8 +21,8 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 	
 	for (i = 0; i < nframes; i++) {
 	  val = geonkick_get_oscillators_value(kick, jack->time);
-	  out_l[i] = 0.5 * val;
-	  out_r[i] = 0.5 * val;
+	  out_l[i] = val;
+	  out_r[i] = val;
 	  if (jack->time > 1.5) {
 	    //jack->end = 1;
 	    jack->time = 0.0;

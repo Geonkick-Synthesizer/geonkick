@@ -8,6 +8,7 @@ GKickKnob::GKickKnob(QWidget *parent)
 	  knobRadius(GKICK_UI_DEFAULT_KNOB_RADIOUS),
 	  lastPositionPoint(),
 	  knobValueDegree(0),
+	  realValue(0.0),
           isSelected(false)
 
 {
@@ -87,12 +88,12 @@ GKickKnob::mouseMoveEvent(QMouseEvent *event)
     }
     lastPositionPoint.setX(event->x());
     lastPositionPoint.setY(event->y());
-    emit valueUpdated((double)knobValueDegree / 360.0);
+    emit valueUpdated(realValue * (double)knobValueDegree / 360.0);
     update();
   }
 }
 
-void GKickKnob::setValue(double v)
+void GKickKnob::setPosition(double v)
 {
   knobValueDegree = v * 360.0;
   if (knobValueDegree > 360.0) {
@@ -100,11 +101,23 @@ void GKickKnob::setValue(double v)
   } else if(knobValueDegree < 0.0) {
     knobValueDegree = 0.0;
   }
+  qDebug() << "realValue * (double)knobValueDegree / 360.0 : " << realValue * (double)knobValueDegree / 360.0;
+  emit valueUpdated(realValue * (double)knobValueDegree / 360.0);
+}
+
+double GKickKnob::getPosition(void)
+{
+	return (double)knobValueDegree / 360.0;
+}
+
+void GKickKnob::setValue(double v)
+{
+	realValue = v;
 }
 
 double GKickKnob::getValue(void)
 {
-  return (double)knobValueDegree / 360.0;
+	return realValue * ((double)knobValueDegree / 360.0);
 }
 
 void GKickKnob::resizeEvent(QResizeEvent *event)

@@ -44,8 +44,11 @@ class GKickOscillator: public QObject
   };
 
   enum OscillatorFuncType {
-    OSC_FUNC_SINE  = GEONKICK_OSC_FUNC_SINE,
-    OSC_FUNC_NOISE = GEONKICK_OSC_FUNC_NOISE
+    OSC_FUNC_SINE     = GEONKICK_OSC_FUNC_SINE,
+    OSC_FUNC_SQARE    = GEONKICK_OSC_FUNC_SQARE,
+    OSC_FUNC_TRIANGLE = GEONKICK_OSC_FUNC_TRIANGLE,
+    OSC_FUNC_SAWTOOTH = GEONKICK_OSC_FUNC_SAWTOOTH,
+    OSC_FUNC_NOISE    = GEONKICK_OSC_FUNC_NOISE
   };
   
 	GKickOscillator(GKickApi *api, int index);
@@ -57,11 +60,20 @@ class GKickOscillator: public QObject
 	int getOscillatorIndex(void);
 	void setCurrentEnvelope(EnvelopeType type);
 	void setOscFunction(OscillatorFuncType type);
+	double getOscAmplitudeValue(void);
+	double getOscFrequencyValue(void);
 
 public slots:
+		
+	void setOscAmplitudeValue(double v);
+	void setOscFrequencyValue(double v);
+
 	  void addPoint(const QPointF &point);
 	  void removePoint(int index);
 	  void updatePoint(int, const QPointF &point);
+ signals:
+	  void oscAmplitudeValueUpdated(double v);
+	  void oscFrequencyValueUpdated(double v);
 
  protected:
      

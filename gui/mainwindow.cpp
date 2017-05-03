@@ -44,7 +44,10 @@
 MainWindow::MainWindow() :
   gkickApi(std::make_unique<GKickApi>()),
   oscillatorWidget(NULL),
-  centralWidgetLayout(NULL)
+  centralWidgetLayout(NULL),
+  amplitudeRb(NULL),
+  frequencyRb(NULL),
+  waveFunctionCb(NULL)
 {
 }
 
@@ -54,13 +57,18 @@ bool MainWindow::init(void)
     return false;
   }
 
+  gkickApi.get()->setKickLength(0.25);
   oscillators = gkickApi.get()->getOscillators();
   oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
   oscillators[MainWindow::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
+  oscillators[MainWindow::OSC_BASE].get()->setOscAmplitudeValue(1);
+  oscillators[MainWindow::OSC_BASE].get()->setOscFrequencyValue(10000);
+  oscillators[MainWindow::OSC_NOISE].get()->setOscAmplitudeValue(1);
 
   // Create central Widget.
   setCentralWidget(new QWidget(this));
   oscillatorWidget = new OscillatorWidget(centralWidget(), oscillators[MainWindow::OSC_BASE].get());
+  oscillatorWidget->setAmplitudeEnvelope();
   connect(gkickApi.get(), SIGNAL(kickLengthUpdated(double)), oscillatorWidget, SLOT(updateKickLength(double)));
 
   centralWidgetLayout = new QVBoxLayout();
@@ -69,7 +77,6 @@ bool MainWindow::init(void)
   centralWidget()->setLayout(centralWidgetLayout);
 
   createBottomControlArea();
-  gkickApi.get()->setKickLength(0.25);
   
   return true;
 }
@@ -122,11 +129,14 @@ void MainWindow::createBaseOscillatorBox(QWidget *controlAreaWidget)
   baseOscillatorGroupBox->setLayout(baseOscillatorGroupBoxLayout);
 
   // Wave function.
-  QComboBox *waveFunctionCb = new QComboBox(baseOscillatorGroupBox);
+  waveFunctionCb = new QComboBox(baseOscillatorGroupBox);
   waveFunctionCb->addItem("Sine");
   waveFunctionCb->addItem("Sqare");
   waveFunctionCb->addItem("Triangle");
-  waveFunctionCb->addItem("Sawtooth");    
+  waveFunctionCb->addItem("Sawtooth");
+  waveFunctionCb->addItem("Noise");
+  connect(waveFunctionCb, SIGNAL(currentIndexChanged(int)),
+	  this, SLOT(oscillatorFunctionChanged(int)));
   baseOscillatorGroupBoxLayout->addWidget(new QLabel(tr("Wave function")), 0, 0);
   baseOscillatorGroupBoxLayout->addWidget(waveFunctionCb, 0, 1);
 
@@ -134,8 +144,8 @@ void MainWindow::createBaseOscillatorBox(QWidget *controlAreaWidget)
   envelopeGroupBox = new QGroupBox(tr("Envelope"), baseOscillatorGroupBox);
   baseOscillatorGroupBoxLayout->addWidget(envelopeGroupBox, 1, 0);
   envelopeGroupBox->setLayout(new QHBoxLayout());
-  QRadioButton *amplitudeRb  = new QRadioButton(tr("Amplitude"), envelopeGroupBox);
-  QRadioButton *frequencyRb  = new QRadioButton(tr("Frquency"), envelopeGroupBox);
+  amplitudeRb  = new QRadioButton(tr("Amplitude"), envelopeGroupBox);
+  frequencyRb  = new QRadioButton(tr("Frquency"), envelopeGroupBox);
   amplitudeRb->setChecked(true);
   connect(amplitudeRb, SIGNAL(clicked(bool)), this, SLOT(setAmplitudeEnvelope(bool)));
   connect(frequencyRb, SIGNAL(clicked(bool)), this, SLOT(setFrequencyEnvelope(bool)));
@@ -144,13 +154,20 @@ void MainWindow::createBaseOscillatorBox(QWidget *controlAreaWidget)
 
   
   GKickKnob *kickAmplitudeKnob = new GKickKnob(baseOscillatorGroupBox);
-  kickAmplitudeKnob->setValue(0.25);
+  kickAmplitudeKnob->setValue(oscillators[MainWindow::OSC_BASE].get()->getOscAmplitudeValue());
   baseOscillatorGroupBoxLayout->addWidget(kickAmplitudeKnob, 2, 0);
+  
   GKickKnob *kickFrequencyKnob = new GKickKnob(baseOscillatorGroupBox);
-  kickFrequencyKnob->setValue(0.25);
+  kickFrequencyKnob->setValue(oscillators[MainWindow::OSC_BASE].get()->getOscFrequencyValue());
   baseOscillatorGroupBoxLayout->addWidget(kickFrequencyKnob, 2, 1);  
-  connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorAplitudeMaxValue(double)));
-  connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorFrequencyMaxValue(double))); 
+ 
+  connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
+	  oscillators[MainWindow::OSC_BASE].get(), SLOT(setOscAmplitudeValue(double)));
+  connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)),
+	  oscillators[MainWindow::OSC_BASE].get(), SLOT(setOscFrequencyValue(double)));
+  
+  kickAmplitudeKnob->setPosition(0.25);
+  kickFrequencyKnob->setPosition(0.25);
 }
 
 void MainWindow::createNoiseBox(QWidget *controlAreaWidget)
@@ -163,7 +180,10 @@ void MainWindow::createNoiseBox(QWidget *controlAreaWidget)
   GKickKnob *noiseAmplitudeKnob = new GKickKnob(noiseGroupBox);
   noiseAmplitudeKnob->setValue(0.25);
   noiseOscillatorGroupBoxLayout->addWidget(noiseAmplitudeKnob, 0, 0);
-  connect(noiseAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setNoiseAmplitudeMaxValue(double))); 
+  connect(noiseAmplitudeKnob, SIGNAL(valueUpdated(double)),
+	  oscillators[MainWindow::OSC_NOISE].get(),
+	  SLOT(setOscAmplitudeValue(double)));
+    noiseAmplitudeKnob->setPosition(0.25);
 }
 
 void MainWindow::createGeneralSettingsBox(QWidget *controlAreaWidget)
@@ -173,9 +193,10 @@ void MainWindow::createGeneralSettingsBox(QWidget *controlAreaWidget)
   QGridLayout *generalSettingsGroupBoxLayout = new QGridLayout();
   generalSettingsGroupBox->setLayout(generalSettingsGroupBoxLayout);
   GKickKnob *kickLengthKnob = new GKickKnob(NULL);
-  kickLengthKnob->setValue(0.25);
+  kickLengthKnob->setValue(1.0);
   connect(kickLengthKnob, SIGNAL(valueUpdated(double)), this, SLOT(setKickLength(double)));
   generalSettingsGroupBoxLayout->addWidget(kickLengthKnob, 0, 0);
+  kickLengthKnob->setPosition(0.25);
 }
 
 void
@@ -188,8 +209,13 @@ MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::viewBaseOsc(bool b)
 {
   if (b) {
-    oscillatorWidget->setOscillator(oscillators[MainWindow::OSC_BASE].get());
-    envelopeGroupBox->setEnabled(true);
+	  oscillatorWidget->setOscillator(oscillators[MainWindow::OSC_BASE].get());
+	  if(frequencyRb->isChecked()) {
+		  oscillatorWidget->setFrequencyEnvelope();
+	  } else {
+		  oscillatorWidget->setAmplitudeEnvelope();  
+	  }
+	  envelopeGroupBox->setEnabled(true);
   }
 }
 
@@ -197,6 +223,7 @@ void MainWindow::viewNoiseOsc(bool b)
 {
   if (b) {
     oscillatorWidget->setOscillator(oscillators[MainWindow::OSC_NOISE].get());
+    oscillatorWidget->setAmplitudeEnvelope();		  
     envelopeGroupBox->setEnabled(false);
   }
 }
@@ -222,6 +249,20 @@ void MainWindow::setKickLength(double v)
   //  oscillatorWidget->setKickLength(GKICK_UI_MAX_TIME * v);
 }
 
-//setNoiseAmplitudeMaxValue
-//connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorAplitudeMaxValue(double)));
-//connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), this, SLOT(setBaseOscillatorFrequencyMaxValue(double))); 
+void MainWindow::oscillatorFunctionChanged(int index)
+{
+	QString text = waveFunctionCb->itemText(index);
+	if (text == "Sine") {
+		oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
+	} else if (text == "Sqare") {
+		oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_SQARE);
+	} else if(text == "Triangle") {
+		oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_TRIANGLE);
+	} else if (text == "Sawtooth") {
+		oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_SAWTOOTH);
+	} else if (text == "Noise") {
+		oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
+	} else {
+		oscillators[MainWindow::OSC_BASE].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
+	}
+}

@@ -15,9 +15,11 @@ public:
    int getRadius(void);
    int getWidth(void);
    int getHeight(void);
+   double getPosition(void);
    double getValue(void);
    
    public slots:
+     void setPosition(double v);
      void setValue(double v);
 	  
  signals:
@@ -35,7 +37,8 @@ public:
    int knobRadius;
    QPoint lastPositionPoint;
    int knobValueDegree;
-   bool isSelected;   
+   double realValue;
+   bool isSelected;
 };
 
 #endif

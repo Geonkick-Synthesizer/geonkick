@@ -98,6 +98,24 @@ geonkick_set_length(struct geonkick *kick, double t);
 enum geonkick_error
 geonkick_get_length(struct geonkick *kick, double *len);
 
+enum geonkick_error
+geonkick_set_osc_amplitude_val(struct geonkick *kick,
+			       size_t osc_index,
+			       double v);
+enum geonkick_error
+geonkick_set_osc_frequency_val(struct geonkick *kick,
+			       size_t osc_index,
+			       double v);
+
+enum geonkick_error
+geonkick_get_osc_amplitude_val(struct geonkick *kick,
+			       size_t osc_index,
+			       double *v);
+enum geonkick_error
+geonkick_get_osc_frequency_val(struct geonkick *kick,
+			       size_t osc_index,
+			       double *v);
+
 #ifdef __cplusplus
 }
 #endif

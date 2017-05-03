@@ -43,13 +43,19 @@ void OscillatorWidget::connectOscillator(void)
 	  kickOscillator, SLOT(removePoint(int)));
   connect(&oscEnvelope, SIGNAL(pointUpdated(int, const QPointF&)),
 	  kickOscillator, SLOT(updatePoint(int, const QPointF&)));
+  connect(kickOscillator, SIGNAL(oscAmplitudeValueUpdated(double)),
+	  this, SLOT(setEnvelopeAmplitudeValue(double)));
+  connect(kickOscillator, SIGNAL(oscFrequencyValueUpdated(double)),
+	  this, SLOT(setEnvelopeFrequencyValue(double)));
 }
 
 void OscillatorWidget::disconnectOscillator(void)
 {
-    disconnect(&oscEnvelope, SIGNAL(pointAdded(const QPointF &)), 0, 0);
-    disconnect(&oscEnvelope, SIGNAL(pointRemoved(int)), 0, 0);
-    disconnect(&oscEnvelope, SIGNAL(pointUpdated(int, const QPointF&)), 0, 0);
+  disconnect(&oscEnvelope, SIGNAL(pointAdded(const QPointF &)), 0, 0);
+  disconnect(&oscEnvelope, SIGNAL(pointRemoved(int)), 0, 0);
+  disconnect(&oscEnvelope, SIGNAL(pointUpdated(int, const QPointF&)), 0, 0);
+  disconnect(kickOscillator, SIGNAL(oscAmplitudeValueUpdated(double)), this, 0);
+  disconnect(kickOscillator, SIGNAL(oscFrequencyValueUpdated(double)), this, 0);
 }
 
 OscillatorWidget::~OscillatorWidget()
@@ -152,24 +158,29 @@ void OscillatorWidget::setOscillator(GKickOscillator *osc)
 {
   disconnectOscillator();
   kickOscillator = osc;
+  kickLength = kickOscillator->getKickLength();
   connectOscillator();
-  oscEnvelope.removePoints();
-  oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
   update();
 }
 
 void OscillatorWidget::setAmplitudeEnvelope(void)
 {
+  qDebug() << "OscillatorWidget::setAmplitudeEnvelope(void) ---------_>";
   kickOscillator->setCurrentEnvelope(GKickOscillator::OSC_ENV_AMPLITUDE);
   oscEnvelope.removePoints();
+  oscEnvelope.setType(OscillatorEnvelope::OSC_ENV_AMPLITUDE);
+  oscEnvelope.setEnvelopeValue(kickOscillator->getOscAmplitudeValue());
   oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
   update();
 }
 
 void OscillatorWidget::setFrequencyEnvelope(void)
 {
+	qDebug() << "OscillatorWidget::setFrequencyEnvelope(void) ---------_>";
     kickOscillator->setCurrentEnvelope(GKickOscillator::OSC_ENV_FREQUENCY);
     oscEnvelope.removePoints();
+    oscEnvelope.setType(OscillatorEnvelope::OSC_ENV_FREQUENCY);
+    oscEnvelope.setEnvelopeValue(kickOscillator->getOscFrequencyValue());
     oscEnvelope.addEnvelopePoints(kickOscillator->getEnvelopePoints());
     update();
 }
@@ -184,4 +195,21 @@ double OscillatorWidget::getKickLength(void)
 {
   return kickLength;
 }
+
+void OscillatorWidget::setEnvelopeAmplitudeValue(double v)
+{
+	if (oscEnvelope.getType() == OscillatorEnvelope::OSC_ENV_AMPLITUDE) {
+		oscEnvelope.setEnvelopeValue(v);
+		update();
+	}
+}
+
+void OscillatorWidget::setEnvelopeFrequencyValue(double v)
+{
+	if (oscEnvelope.getType() == OscillatorEnvelope::OSC_ENV_FREQUENCY) {
+		oscEnvelope.setEnvelopeValue(v);
+		update();
+	}
+}
+
 

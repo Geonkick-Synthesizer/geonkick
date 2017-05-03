@@ -37,6 +37,10 @@ class OscillatorEnvelope: public QObject
   Q_OBJECT
 
  public:
+      enum EnvelopeType {
+	      OSC_ENV_FREQUENCY,
+	      OSC_ENV_AMPLITUDE
+      };
   
 	OscillatorEnvelope(OscillatorWidget *parent);
 	~OscillatorEnvelope();
@@ -59,7 +63,13 @@ class OscillatorEnvelope: public QObject
 	double getEnvelopeLenth(void);
 	double getEnvelopeHeight(void);
 	void removePoints(void);
-	double kickLength(void);
+	double getKickLength(void);
+	void setType(OscillatorEnvelope::EnvelopeType type);
+	OscillatorEnvelope::EnvelopeType getType(void);
+	double getEnvelopeValue(void);
+	
+ public slots:
+	void setEnvelopeValue(double v);
 
  signals:
 	void pointAdded(const QPointF & point);
@@ -80,6 +90,8 @@ class OscillatorEnvelope: public QObject
 	double envelopeH;
 	double xRatio;
 	double yRatio;
+	OscillatorEnvelope::EnvelopeType envelopeType;
+	double envelopeValue;
 };
 
 #endif

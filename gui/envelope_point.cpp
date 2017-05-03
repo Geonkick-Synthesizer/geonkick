@@ -58,9 +58,8 @@ void OscillatorEnvelopePoint::draw(QPainter &painter)
 		       origin.x() + (point.x() + radius()),
 		       origin.y() - (point.y() + radius()));
 	painter.drawEllipse(rect);
-	QString textVal = QString::number((parentEnvelope->kickLength() * x()) * 1000, 'f', 0) + " ms"; 
 	painter.drawText(origin.x() + (point.x() + 3 * radius() / 3),
-			 origin.y() - (point.y() + 3 * radius() / 3), textVal);
+			 origin.y() - (point.y() + 3 * radius() / 3), pointText());
 
 	painter.setBrush(Qt::black);
 	rect.setCoords(origin.x() + (point.x() - radius() / 3),
@@ -105,18 +104,55 @@ bool OscillatorEnvelopePoint::hasPoint(const QPointF &point)
 	double px = point.x();
 	double py = point.y();
 	QPointF p = scaleUp(QPointF(x(), y()));
-	qDebug() << "mouse(" << px << ", " << py << ") current(" << p.x() << ", " << p.y() << ")";
 	
 	if ((px > p.x() - pointRadius) && (px < p.x() + pointRadius)
 	    && (py > y() - pointRadius) && (py < p.y() + pointRadius)
-	    && (pow(p.x() - px, 2) + pow(p.y() - py, 2) < pow(pointRadius, 2)))
-		{
-		  qDebug() << "IS here";
+	    && (pow(p.x() - px, 2) + pow(p.y() - py, 2) < pow(pointRadius, 2)))	{
 			return true;
 		}
 
-	qDebug() << "NOT here";
-
 	return false;
+}
+
+QString OscillatorEnvelopePoint::pointText(void)
+{
+	if (parentEnvelope->getType() == OscillatorEnvelope::OSC_ENV_AMPLITUDE) {
+		return pointAmplitudeText();
+	} else if (parentEnvelope->getType() == OscillatorEnvelope::OSC_ENV_FREQUENCY) {
+		return pointFrequencyText();
+	}
+
+	return "";
+}
+
+QString OscillatorEnvelopePoint::pointAmplitudeText(void)
+{
+	QString text = QString::number(parentEnvelope->getEnvelopeValue() * y())
+		+ " dB / ";
+	text += getTimeTextValue();
+	return text;
+}
+
+QString OscillatorEnvelopePoint::pointFrequencyText(void)
+{
+	double v = parentEnvelope->getEnvelopeValue() * y();
+
+	QString textVal;
+	QString str;
+	if (v > 1000.0) {
+		textVal = QString::number(v / 1000.0, 'f', 3) + " kHz";
+	} else {
+		textVal = QString::number(v, 'f', 0) + " Hz";
+	}
+	
+        textVal += " / ";
+	textVal += getTimeTextValue();
+	
+	return textVal;
+}
+
+QString OscillatorEnvelopePoint::getTimeTextValue(void)
+{
+	return QString::number((parentEnvelope->getKickLength() * x()) * 1000, 'f', 0) + " ms";
 }
 

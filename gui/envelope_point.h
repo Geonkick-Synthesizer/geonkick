@@ -44,9 +44,15 @@ class OscillatorEnvelopePoint : public QPointF
 	void unselectPoint(void);
 	double radius(void);
 	double getDotRadius(void);
+	QString valueType(void);
 	
  protected:
 	QPointF scaleUp(QPointF point);
+	QString pointText(void);
+	QString pointAmplitudeText(void);
+	QString pointFrequencyText(void);
+	QString getTimeTextValue(void);
+
 	
  private:
 	bool is_selected;

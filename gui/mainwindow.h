@@ -37,6 +37,8 @@ class QPushButton;
 class QCloseEvent;
 class QVBoxLayout;
 class QGroupBox;
+class QRadioButton;
+class QComboBox;
 
 class MainWindow : public QMainWindow/*, public Ui_MainWindow*/
 {
@@ -63,11 +65,14 @@ class MainWindow : public QMainWindow/*, public Ui_MainWindow*/
 	void createGeneralSettingsBox(QWidget *controlAreaWidget);
 
  protected slots:
+	 
         void viewBaseOsc(bool b);
         void viewNoiseOsc(bool b);
 	void setAmplitudeEnvelope(bool b);
 	void setFrequencyEnvelope(bool b);
 	void setKickLength(double v);
+	void oscillatorFunctionChanged(int index);
+		
  private:
 	enum {
 	  OSC_BASE = 0,
@@ -80,6 +85,9 @@ class MainWindow : public QMainWindow/*, public Ui_MainWindow*/
 	OscillatorWidget *oscillatorWidget;
 	QVBoxLayout *centralWidgetLayout;
 	QGroupBox *envelopeGroupBox;
+	QRadioButton *amplitudeRb;
+	QRadioButton *frequencyRb;
+	QComboBox *waveFunctionCb;
 };
 
 #endif

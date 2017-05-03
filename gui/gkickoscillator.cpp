@@ -108,3 +108,48 @@ double GKickOscillator::getKickLength(void)
     return kickApi->getKickLength();
   }
 }
+
+void GKickOscillator::setOscAmplitudeValue(double v)
+{
+	if (!kickApi) {
+		return;
+	}
+
+	bool b = kickApi->setOscAmplitudeValue(oscillatorIndex, v);
+	if (b) {
+		emit oscAmplitudeValueUpdated(v);
+	}
+}
+
+double GKickOscillator::getOscAmplitudeValue(void)
+{
+	if (!kickApi) {
+		return 0.0;
+	}
+
+	double v = kickApi->getOscAmplitudeValue(oscillatorIndex);
+	qDebug() << "double GKickOscillator::getOscAmplitudeValue(void)V:" << v;
+        return v;
+}
+
+void GKickOscillator::setOscFrequencyValue(double v)
+{
+	if (!kickApi) {
+		return;
+	}
+
+	bool b = kickApi->setOscFrequencyValue(oscillatorIndex, v);
+	if (b) {
+		emit oscFrequencyValueUpdated(v);
+	}
+}
+
+double GKickOscillator::getOscFrequencyValue(void)
+{
+	if (!kickApi) {
+		return 0.0;
+	}
+
+        return kickApi->getOscFrequencyValue(oscillatorIndex);
+}
+

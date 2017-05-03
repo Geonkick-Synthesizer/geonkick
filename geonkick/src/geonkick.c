@@ -403,3 +403,89 @@ geonkick_get_length(struct geonkick *kick, double *t)
   
   return GEONKICK_OK;
 }
+
+enum geonkick_error
+geonkick_set_osc_frequency_val(struct geonkick *kick,
+			 size_t osc_index,
+			 double v)
+{
+	if (kick == NULL) {
+		return GEONKICK_ERROR;
+	}
+
+	geonkick_lock(kick);
+	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, osc_index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+	osc->frequency = v;
+	geonkick_unlock(kick);
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_set_osc_amplitude_val(struct geonkick *kick,
+			 size_t osc_index,
+			 double v)
+{
+	if (kick == NULL) {
+		return GEONKICK_ERROR;
+	}
+
+	geonkick_lock(kick);
+	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, osc_index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+	osc->amplitude = v;
+	geonkick_unlock(kick);
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_get_osc_amplitude_val(struct geonkick *kick,
+			       size_t osc_index,
+			       double *v)
+{
+	if (kick == NULL || v == NULL) {
+		return GEONKICK_ERROR;
+	}
+
+	*v = 0.0;
+	geonkick_lock(kick);
+	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, osc_index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+	*v = osc->amplitude;
+	geonkick_unlock(kick);
+	return GEONKICK_OK;	
+}
+
+enum geonkick_error
+geonkick_get_osc_frequency_val(struct geonkick *kick,
+			       size_t osc_index,
+			       double *v)
+{
+	if (kick == NULL || v == NULL) {
+		return GEONKICK_ERROR;
+	}
+
+	*v = 0.0;
+	geonkick_lock(kick);
+	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, osc_index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+	*v = osc->frequency;
+	geonkick_unlock(kick);
+	return GEONKICK_OK;
+}

@@ -34,7 +34,9 @@ OscillatorEnvelope::OscillatorEnvelope(OscillatorWidget *parent) :
 	envelopeW(1.0),
 	envelopeH(1.0),
 	xRatio(1.0),
-	yRatio(1.0)
+	yRatio(1.0),
+	envelopeType(OscillatorEnvelope::OSC_ENV_FREQUENCY),
+	envelopeValue(0.0)
 {
 }
 
@@ -270,7 +272,28 @@ void OscillatorEnvelope::removePoint(QPointF point)
 	}	
 }
 
-double OscillatorEnvelope::kickLength(void)
+double OscillatorEnvelope::getKickLength(void)
 {
-  return parentWidget->getKickLength();  
+  return parentWidget->getKickLength();
+}
+
+void OscillatorEnvelope::setEnvelopeValue(double v)
+{
+	qDebug() << "OscillatorEnvelope::setEnvelopeValue: set envelope value: " << v;
+	envelopeValue = v;
+}
+
+double OscillatorEnvelope::getEnvelopeValue(void)
+{
+  return envelopeValue;
+}
+
+void OscillatorEnvelope::setType(OscillatorEnvelope::EnvelopeType type)
+{
+	envelopeType = type;
+}
+
+OscillatorEnvelope::EnvelopeType OscillatorEnvelope::getType(void)
+{
+	return envelopeType;
 }

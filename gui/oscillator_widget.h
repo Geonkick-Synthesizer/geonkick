@@ -16,12 +16,15 @@ public:
    ~OscillatorWidget();
 
    void setOscillator(GKickOscillator *osc);
-   void setAmplitudeEnvelope(void);
-   void setFrequencyEnvelope(void);
    double getKickLength(void);
    
    public slots:
-        void updateKickLength(double v);
+	   void setAmplitudeEnvelope(void);
+	   void setFrequencyEnvelope(void);
+	   void updateKickLength(double v);
+	   void setEnvelopeAmplitudeValue(double v);
+	   void setEnvelopeFrequencyValue(double v);
+
 
  protected:
      void drawAxes(void);

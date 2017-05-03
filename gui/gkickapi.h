@@ -63,6 +63,14 @@ class GKickApi: public QObject
 
    void setKickLength(double len);
    double getKickLength(void);
+   bool setOscAmplitudeValue(int oscillatorIndex,
+			     double v);
+   bool setOscFrequencyValue(int oscillatorIndex,
+			     double v);
+   double getOscAmplitudeValue(int oscillatorIndex);
+   double getOscFrequencyValue(int oscillatorIndex);
+
+
  signals:
    void kickLengthUpdated(double len);
 
