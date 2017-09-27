@@ -1,5 +1,3 @@
-#ifndef GKICK_OSCILLATOR_H
-#define GKICK_OSCILLATOR_H
 /*
   Copyright (C) 2017 Iurie Nistor <nistor@iurie.org>
 
@@ -17,6 +15,9 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+
+#ifndef GKICK_OSCILLATOR_H
+#define GKICK_OSCILLATOR_H
 
 #include "geonkick_internal.h"
 #include "envelope.h"

@@ -7,13 +7,13 @@
 #include <pthread.h>
 
 struct geonkick {
-  pthread_mutex_t lock;
-  char name[30];
-  double length;
-  struct gkick_oscillator **oscillators;
-  size_t oscillators_number;
-  struct gkick_jack *jack;
-  int midi_in_enabled;
+        pthread_mutex_t lock;
+        char name[30];
+        double length;
+        struct gkick_oscillator **oscillators;
+        size_t oscillators_number;
+        struct gkick_jack *jack;
+        int midi_in_enabled;
 };
 
 enum geonkick_error

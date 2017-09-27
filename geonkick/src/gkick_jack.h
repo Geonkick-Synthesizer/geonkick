@@ -7,15 +7,15 @@
 #include <jack/midiport.h>
 
 struct gkick_jack {
-  jack_port_t *output_port_l;
-  jack_port_t *output_port_r;
-  jack_port_t *midi_in_port;
-  jack_client_t *client;
-  double time;
-  double kick_len;
-  jack_nframes_t sample_rate;
-  int end;
-  pthread_mutex_t lock;
+        jack_port_t *output_port_l;
+        jack_port_t *output_port_r;
+        jack_port_t *midi_in_port;
+        jack_client_t *client;
+        double time;
+        double kick_len;
+        jack_nframes_t sample_rate;
+        int end;
+        pthread_mutex_t lock;
 };
 
 int

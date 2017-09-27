@@ -28,7 +28,6 @@ gkick_envelope_create(void)
 		return NULL;
 	}
 	memset(envelope, 0, sizeof(struct gkick_envelope));
-	
 	return envelope;
 }
 
@@ -53,7 +52,7 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 		return 0.0;
 	}
 
-        x2 = x1 = xm;	
+        x2 = x1 = xm;
 	point = envelope->first;
 	while (point) {
 		if (point->x > xm) {
@@ -73,7 +72,7 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 		}
 		point = point->prev;
 	}
-	
+
 	if (fabsl(x2 - x1) < 1e-40) {
 		return 0.0;
 	} else {
@@ -108,9 +107,9 @@ gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
 	}
 
 	envelope->npoints++;
-	
+
 	gkick_log_debug("point added: %f, %f", point->x, point->y);
-	
+
 	return point;
 }
 
@@ -118,14 +117,13 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 			       struct gkick_envelope_point *point)
 {
 	struct gkick_envelope_point *p;
-	
-	p = envelope->first;
 
+	p = envelope->first;
 	if (point->x >= envelope->last->x) {
 		envelope->last->next = point;
 	        point->prev = envelope->last;
 		envelope->last = point;
-	} else {	
+	} else {
 		while (p) {
 			if (point->x <= p->x) {
 				if (p == envelope->first) {
@@ -151,14 +149,14 @@ void gkick_envelope_destroy(struct gkick_envelope *envelope)
 	if (envelope == NULL) {
 		return;
 	}
-	
+
 	if (envelope->npoints != 0) {
 		while (envelope->first != NULL) {
 			point = envelope->first;
 			envelope->first = point->next;
 			free(point);
 		}
-	}	
+	}
 	free(envelope);
 }
 
@@ -167,79 +165,75 @@ gkick_envelope_get_points(struct gkick_envelope *env,
 			  double **buff,
 			  size_t *npoints)
 {
-  struct gkick_envelope_point *p;
-  double *points;
-  size_t i;
+        struct gkick_envelope_point *p;
+        double *points;
+        size_t i;
 
-  if (buff == NULL) {
-    gkick_log_error("buff null");
-    return;
-  }
+        if (buff == NULL) {
+                gkick_log_error("buff null");
+                return;
+        }
 
-  gkick_log_debug("here");
-  
-  *buff = NULL;
-  if (env->npoints < 1) {
-    return;
-  }
+        *buff = NULL;
+        if (env->npoints < 1) {
+                return;
+        }
 
-  points = (double *)malloc(sizeof(double) * (2 * env->npoints));
-  memset(points, 0, sizeof(double) * (2 * env->npoints));
-  p = env->first;
-  i = 0;
-  while (p) {
-    points[i]     = p->x;
-    points[i + 1] = p->y;
-    gkick_log_debug("get point : %f, %f", points[i], points[i+1]);
-    p = p->next;
-    i += 2;
-  }
+        points = (double *)malloc(sizeof(double) * (2 * env->npoints));
+        memset(points, 0, sizeof(double) * (2 * env->npoints));
+        p = env->first;
+        i = 0;
+        while (p) {
+                points[i]     = p->x;
+                points[i + 1] = p->y;
+                gkick_log_debug("get point : %f, %f", points[i], points[i+1]);
+                p = p->next;
+                i += 2;
+        }
 
-  *buff = points;
-  *npoints = env->npoints;
+        *buff = points;
+        *npoints = env->npoints;
 }
 
 void
 gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
 {
-  struct gkick_envelope_point *p;
-  size_t i;
-  
-  if (env == NULL) {
-    return;
-  }
+        struct gkick_envelope_point *p;
+        size_t i;
 
-  if (!(index >= 0 && index < env->npoints)) {
-    return;
-  }
+        if (env == NULL) {
+                return;
+        }
 
-  p = env->first;
-  i = 0;
-  while (p) {
-    if (i == index) {
-      
-      if (p == env->first) {
-	env->first = p->next;
-	if (env->first != NULL) {
-	  env->first->prev = NULL;
-	}
-      } else if (p == env->last) {
-	if (p->prev != NULL) {
-	  p->prev->next = NULL;
-	}
-      } else {
-	p->prev->next = p->next;
-	p->next->prev = p->prev;
-      }
-      gkick_log_debug("point removed: index = %u, (%f, %f)"
-		      , i, p->x, p->y);
-      free(p);
-      break;
-    }
-    p = p->next;
-    i++;
-  }
-  
+        if (!(index >= 0 && index < env->npoints)) {
+                return;
+        }
+
+        p = env->first;
+        i = 0;
+        while (p) {
+                if (i == index) {
+                        if (p == env->first) {
+                                env->first = p->next;
+                                if (env->first != NULL) {
+                                        env->first->prev = NULL;
+                                }
+                        } else if (p == env->last) {
+                                if (p->prev != NULL) {
+                                        p->prev->next = NULL;
+                                }
+                        } else {
+                                p->prev->next = p->next;
+                                p->next->prev = p->prev;
+                        }
+                        gkick_log_debug("point removed: index = %u, (%f, %f)"
+                                        , i, p->x, p->y);
+                        free(p);
+                        break;
+                }
+                p = p->next;
+                i++;
+        }
 }
 
 void
@@ -248,28 +242,28 @@ gkick_envelope_update_point(struct gkick_envelope *env,
 			    double x,
 			    double y)
 {
-   struct gkick_envelope_point *p;
-  size_t i;
-  
-  if (env == NULL) {
-    return;
-  }
+        struct gkick_envelope_point *p;
+        size_t i;
 
-  if (!(index >= 0 && index < env->npoints)) {
-    return;
-  }
+        if (env == NULL) {
+                return;
+        }
 
-  p = env->first;
-  i = 0;
-  while (p) {
-    if (i == index) {
-      p->x = x;
-      p->y = y;
-            gkick_log_debug("point removed: index = %u, (%f, %f)"
-			    , i, p->x, p->y);
-      break;
-    }
-    p = p->next;
-    i++;
-  }
+        if (!(index >= 0 && index < env->npoints)) {
+                return;
+        }
+
+        p = env->first;
+        i = 0;
+        while (p) {
+                if (i == index) {
+                        p->x = x;
+                        p->y = y;
+                        gkick_log_debug("point removed: index = %u, (%f, %f)"
+                                        , i, p->x, p->y);
+                        break;
+                }
+                p = p->next;
+                i++;
+        }
 }
