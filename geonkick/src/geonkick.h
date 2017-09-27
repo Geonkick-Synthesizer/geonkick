@@ -116,6 +116,15 @@ geonkick_get_osc_frequency_val(struct geonkick *kick,
 			       size_t osc_index,
 			       double *v);
 
+enum geonkick_error
+geonkick_enable_midi_in(struct geonkick *kick, const char *name);
+
+int
+geonkick_play(struct geonkick *kick, int play);
+  
+int
+geonkick_is_play(struct geonkick *kick);
+
 #ifdef __cplusplus
 }
 #endif

@@ -17,6 +17,7 @@ geonkick_create(struct geonkick **kick)
 	strcpy((*kick)->name, "GeonKick");
 	(*kick)->length = 0.26; // One second;
 	(*kick)->oscillators_number = 2;
+	(*kick)->enable_midi_in = 1;
 
 	if (pthread_mutex_init(&(*kick)->lock, NULL) != 0) {
 	  gkick_log_error("error on init mutex");
@@ -211,11 +212,9 @@ void geonkick_reset_oscillators(struct geonkick *kick)
   
   if (kick != NULL) {
     geonkick_lock(kick);
-    
     for (i = 0; i < kick->oscillators_number; i++) {
       (kick->oscillators[i])->phase = 0.0;
     }
-    
     geonkick_unlock(kick);	
   }
 }
@@ -488,4 +487,48 @@ geonkick_get_osc_frequency_val(struct geonkick *kick,
 	*v = osc->frequency;
 	geonkick_unlock(kick);
 	return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_enable_midi_in(struct geonkick *kick, const char *name, int enable)
+{
+  if (kick == NULL || name != NULL) {
+    gkick_log_error("wrong arugment");
+    return GEONKICK_ERROR;
+  }
+
+  return gkick_jack_set_midi_in(kick->jack, name, enable);
+}
+
+enum geonkick_error
+geonkick_play(struct geonkick *kick, int play)
+{
+  if (kick == NULL || name != NULL) {
+    gkick_log_error("wrong arugment");
+    return GEONKICK_ERROR;
+  }
+
+  geonkick_lock(kick);
+  kick->is_play = play;
+  geonkick_unlock(kick);
+}
+  
+int
+geonkick_is_play(struct geonkick *kick, enum geonkick_error *error)
+{
+  int is_play;
+  
+  if (kick == NULL || name != NULL) {
+    gkick_log_error("wrong arugment");
+    if (error != NULL) {
+      *error = GEONKICK_ERROR
+    }
+    return 0;
+  }
+
+  geonkick_lock(kick);
+  is_play = kick->is_play;
+  geonkick_unlock(kick);
+
+  return is_play;
 }
