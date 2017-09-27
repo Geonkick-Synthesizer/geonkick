@@ -50,7 +50,10 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 
 	if (xm < envelope->first->x || xm > envelope->last->x) {
 		return 0.0;
-	}
+	} else if (fabsl(xm - envelope->first->x) < 1e-40
+                   || fabsl(envelope->last->x - xm) < 1e-40) {
+                return 0.0;
+        }
 
         x2 = x1 = xm;
 	point = envelope->first;

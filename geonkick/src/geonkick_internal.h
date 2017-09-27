@@ -15,6 +15,7 @@ struct geonkick {
         size_t oscillators_number;
         struct gkick_jack *jack;
         int midi_in_enabled;
+        int is_play;
 };
 
 enum geonkick_error
@@ -24,7 +25,7 @@ enum geonkick_error
 geonkick_set_sample_rate(struct geonkick *kick, double rate);
 
 double
-geonkick_get_oscillators_value(struct geonkick *kick, double t);
+geonkick_get_oscillators_value(struct geonkick *kick);
 
 struct gkick_oscillator*
 geonkick_get_oscillator(struct geonkick *kick, size_t index);
@@ -54,12 +55,16 @@ enum geonkick_error
 geonkick_stop_play(struct geonkick *kick);
 
 enum geonkick_error
-geonkick_incement_time(struct geonkick *kick, double dt);
+geonkick_increment_time(struct geonkick *kick, double dt);
 
 double
 geonkick_current_time(struct geonkick *kick);
 
+double
+geonkick_length(struct geonkick *kick);
+
 void
-geonkick_current_time(struct geonkick *kick, double current_time);
+geonkick_set_current_time(struct geonkick *kick,
+			  double current_time);
 
 #endif

@@ -15,7 +15,7 @@ geonkick_create(struct geonkick **kick)
 	memset(*kick, 0, sizeof(struct geonkick));
 
 	strcpy((*kick)->name, "GeonKick");
-	(*kick)->length = 0.26; // One second;
+	(*kick)->length = 0.26;
 	(*kick)->oscillators_number = 2;
 	(*kick)->midi_in_enabled = 1;
 
@@ -31,7 +31,8 @@ geonkick_create(struct geonkick **kick)
                 return GEONKICK_ERROR_CANT_CREATE_OSC;
 	}
 
-	if (gkick_create_jack(*kick)) {
+	if (gkick_create_jack(*kick) != GEONKICK_OK) {
+                gkick_log_error("can't create jack");
                 geonkick_free(kick);
                 return GEONKICK_ERROR;
 	}
@@ -41,6 +42,8 @@ geonkick_create(struct geonkick **kick)
 
 void geonkick_free(struct geonkick **kick)
 {
+        int i = 0;
+
         if (kick == NULL || *kick == NULL) {
                 *kick = NULL;
                 return;
@@ -172,7 +175,7 @@ geonkick_update_envelope_point(struct geonkick *kick,
         return GEONKICK_OK;
 }
 
-double geonkick_get_oscillators_value(struct geonkick *kick, double t)
+double geonkick_get_oscillators_value(struct geonkick *kick)
 {
         double val = 0.0;
         size_t i;
@@ -180,8 +183,10 @@ double geonkick_get_oscillators_value(struct geonkick *kick, double t)
         geonkick_lock(kick);
         val = 0.0;
         for (i = 0; i < kick->oscillators_number; i++) {
-                val += gkick_osc_value(kick->oscillators[i], t, kick->length);
-                gkick_osc_increment_phase(kick->oscillators[i], t, kick->length);
+                val += gkick_osc_value(kick->oscillators[i],
+                                       kick->current_time, kick->length);
+                gkick_osc_increment_phase(kick->oscillators[i],
+                                          kick->current_time, kick->length);
         }
         geonkick_unlock(kick);
 
@@ -471,24 +476,9 @@ geonkick_get_osc_frequency_val(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_enable_midi_in(struct geonkick *kick, const char *name, int enable)
-{
-        if (kick == NULL || name != NULL) {
-                gkick_log_error("wrong arugment");
-                return GEONKICK_ERROR;
-        }
-
-        geonkick_lock(kick);
-        kick->midi_in_enabled = 1;
-        geonkick_unlock(kick);
-
-        return GEONKICK_OK;
-}
-
-enum geonkick_error
 geonkick_play(struct geonkick *kick, int play)
 {
-        if (kick == NULL || name != NULL) {
+        if (kick == NULL) {
                 gkick_log_error("wrong arugment");
                 return GEONKICK_ERROR;
         }
@@ -496,6 +486,8 @@ geonkick_play(struct geonkick *kick, int play)
         geonkick_lock(kick);
         kick->is_play = play;
         geonkick_unlock(kick);
+
+        return GEONKICK_OK;
 }
 
 int
@@ -513,7 +505,7 @@ geonckick_is_play_stopped(struct geonkick *kick)
         is_play = kick->is_play;
         geonkick_unlock(kick);
 
-        return is_play;
+        return !is_play;
 }
 
 enum geonkick_error
@@ -526,8 +518,11 @@ geonkick_start_play(struct geonkick *kick)
 
         geonkick_lock(kick);
         kick->current_time = 0.0;
-        kick->play = 1;
+        kick->is_play = 1;
         geonkick_unlock(kick);
+        geonkick_reset_oscillators(kick);
+
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -537,15 +532,16 @@ geonkick_stop_play(struct geonkick *kick)
                 gkick_log_error("wrong arugment");
                 return GEONKICK_ERROR;
         }
-
         geonkick_lock(kick);
         kick->current_time = 0.0;
-        kick->play = 0;
+        kick->is_play = 0;
         geonkick_unlock(kick);
+
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
-geonkick_incement_time(struct geonkick *kick, double dt)
+geonkick_increment_time(struct geonkick *kick, double dt)
 {
         double current_time;
 
@@ -554,15 +550,32 @@ geonkick_incement_time(struct geonkick *kick, double dt)
                 return GEONKICK_ERROR;
         }
 
-        current_time = gonekick_current_time(kick);
+        current_time = geonkick_current_time(kick);
         current_time += dt;
-        if (current_time > gonekick_length(kick)) {
+        if (current_time > geonkick_length(kick)) {
                 geonkick_stop_play(kick);
         } else {
-                geonckick_set_current_time(kick, current_time);
+                geonkick_set_current_time(kick, current_time);
         }
 
         return GEONKICK_OK;
+}
+
+double
+geonkick_length(struct geonkick *kick)
+{
+        double len;
+
+        if (kick == NULL) {
+                gkick_log_error("wrong arugment");
+                return 0.0;
+        }
+
+        geonkick_lock(kick);
+        len = kick->length;
+        geonkick_unlock(kick);
+
+        return len;
 }
 
 double
@@ -575,23 +588,24 @@ geonkick_current_time(struct geonkick *kick)
                 return 0.0;
         }
 
-        geonkick_lock(lock);
+        geonkick_lock(kick);
         current_time = kick->current_time;
-        geonkick_unlock(lock);
+        geonkick_unlock(kick);
 
         return current_time;
 }
 
 void
-geonkick_current_time(struct geonkick *kick, double current_time)
+geonkick_set_current_time(struct geonkick *kick,
+			  double current_time)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arugment");
                 return;
         }
 
-        geonkick_lock(lock);
+        geonkick_lock(kick);
         kick->current_time = current_time;
-        geonkick_unlock(lock);
+        geonkick_unlock(kick);
 }
 
