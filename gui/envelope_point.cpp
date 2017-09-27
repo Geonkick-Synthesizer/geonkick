@@ -107,7 +107,7 @@ bool OscillatorEnvelopePoint::hasPoint(const QPointF &point)
 	
 	if ((px > p.x() - pointRadius) && (px < p.x() + pointRadius)
 	    && (py > y() - pointRadius) && (py < p.y() + pointRadius)
-	    && (pow(p.x() - px, 2) + pow(p.y() - py, 2) < pow(pointRadius, 2)))	{
+	    && ((p.x() - px) * (p.x() - px) + (p.y() - py) * (p.y() - py) < pointRadius * pointRadius))	{
 			return true;
 		}
 
