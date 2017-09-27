@@ -10,6 +10,7 @@ struct geonkick {
         pthread_mutex_t lock;
         char name[30];
         double length;
+        double current_time;
         struct gkick_oscillator **oscillators;
         size_t oscillators_number;
         struct gkick_jack *jack;
@@ -35,5 +36,7 @@ void geonkick_unlock(struct geonkick *kick);
 void gkick_jack_increment_time(struct gkick_jack *jack);
 
 void geonkick_reset_oscillators(struct geonkick *kick);
+
+int geonckick_is_end(struct geonkick *kick);
 
 #endif

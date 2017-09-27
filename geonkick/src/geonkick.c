@@ -513,3 +513,50 @@ geonkick_is_play(struct geonkick *kick, enum geonkick_error *error)
 
         return is_play;
 }
+
+int geonckick_is_play_stopped(struct geonkick *kick)
+{
+        int is_end;
+
+        if (kick == NULL) {
+                gkick_log_error("wrong arugment");
+                return GEONKICK_ERROR;
+        }
+
+        is_end = 0;
+        geonkick_lock(kick);
+        if (kick->current_time > kick->length) {
+                is_end = 1;
+        }
+        geonkick_unlock(kick);
+
+        return is_end;
+}
+
+enum geonkick_error
+geonkick_start_play(struct geonkick *kick)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugment");
+                return GEONKICK_ERROR;
+        }
+
+        geonkick_lock(kick);
+        kick->current_time = 0.0;
+        kick->play = 1;
+        geonkick_unlock(kick);
+}
+
+enum geonkick_error
+geonkick_stop_play(struct geonkick *kick)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugment");
+                return GEONKICK_ERROR;
+        }
+
+        geonkick_lock(kick);
+        kick->current_time = 0.0;
+        kick->play = 0;
+        geonkick_unlock(kick);
+}
