@@ -17,7 +17,7 @@ geonkick_create(struct geonkick **kick)
 	strcpy((*kick)->name, "GeonKick");
 	(*kick)->length = 0.26; // One second;
 	(*kick)->oscillators_number = 2;
-	(*kick)->enable_midi_in = 1;
+	(*kick)->midi_in_enabled = 1;
 
 	if (pthread_mutex_init(&(*kick)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
@@ -478,7 +478,11 @@ geonkick_enable_midi_in(struct geonkick *kick, const char *name, int enable)
                 return GEONKICK_ERROR;
         }
 
-        return gkick_jack_set_midi_in(kick->jack, name, enable);
+        geonkick_lock(kick);
+        kick->midi_in_enabled = 1;
+        geonkick_unlock(kick);
+
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -495,42 +499,21 @@ geonkick_play(struct geonkick *kick, int play)
 }
 
 int
-geonkick_is_play(struct geonkick *kick, enum geonkick_error *error)
+geonckick_is_play_stopped(struct geonkick *kick)
 {
         int is_play;
-
-        if (kick == NULL || name != NULL) {
-                gkick_log_error("wrong arugment");
-                if (error != NULL) {
-                        *error = GEONKICK_ERROR;
-                }
-                return 0;
-        }
-
-        geonkick_lock(kick);
-        is_play = kick->is_play;
-        geonkick_unlock(kick);
-
-        return is_play;
-}
-
-int geonckick_is_play_stopped(struct geonkick *kick)
-{
-        int is_end;
 
         if (kick == NULL) {
                 gkick_log_error("wrong arugment");
                 return GEONKICK_ERROR;
         }
 
-        is_end = 0;
+        is_play = 0;
         geonkick_lock(kick);
-        if (kick->current_time > kick->length) {
-                is_end = 1;
-        }
+        is_play = kick->is_play;
         geonkick_unlock(kick);
 
-        return is_end;
+        return is_play;
 }
 
 enum geonkick_error
@@ -560,3 +543,55 @@ geonkick_stop_play(struct geonkick *kick)
         kick->play = 0;
         geonkick_unlock(kick);
 }
+
+enum geonkick_error
+geonkick_incement_time(struct geonkick *kick, double dt)
+{
+        double current_time;
+
+        if (kick == NULL) {
+                gkick_log_error("wrong arugment");
+                return GEONKICK_ERROR;
+        }
+
+        current_time = gonekick_current_time(kick);
+        current_time += dt;
+        if (current_time > gonekick_length(kick)) {
+                geonkick_stop_play(kick);
+        } else {
+                geonckick_set_current_time(kick, current_time);
+        }
+
+        return GEONKICK_OK;
+}
+
+double
+geonkick_current_time(struct geonkick *kick)
+{
+        double current_time;
+
+        if (kick == NULL) {
+                gkick_log_error("wrong arugment");
+                return 0.0;
+        }
+
+        geonkick_lock(lock);
+        current_time = kick->current_time;
+        geonkick_unlock(lock);
+
+        return current_time;
+}
+
+void
+geonkick_current_time(struct geonkick *kick, double current_time)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugment");
+                return;
+        }
+
+        geonkick_lock(lock);
+        kick->current_time = current_time;
+        geonkick_unlock(lock);
+}
+

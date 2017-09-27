@@ -11,16 +11,16 @@ struct gkick_jack {
         jack_port_t *output_port_r;
         jack_port_t *midi_in_port;
         jack_client_t *client;
-        double time;
-        double kick_len;
         jack_nframes_t sample_rate;
-        int end;
         pthread_mutex_t lock;
 };
 
 int
 gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg);
+
+jack_nframes_t
+gkick_jack_sample_rate(struct gkick_jack *jack);
 
 int
 gkick_jack_srate_callback(jack_nframes_t nframes,

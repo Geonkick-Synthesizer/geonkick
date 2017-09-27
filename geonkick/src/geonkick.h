@@ -17,8 +17,8 @@ extern "C" {
 #include "gkick_log.h"
 
 #define GEON_APP_VERSION 0x000100
-#define GEON_APP_NAME "geonkick"  
-  
+#define GEON_APP_NAME "geonkick"
+
 enum geonkick_error {
   	GEONKICK_OK,
 	GEONKICK_ERROR,
@@ -39,11 +39,11 @@ enum geonkick_envelope_type {
 
 enum geonkick_osc_func_type {
 	GEONKICK_OSC_FUNC_SINE     = 0,
-	GEONKICK_OSC_FUNC_SQARE    = 1, 
+	GEONKICK_OSC_FUNC_SQARE    = 1,
 	GEONKICK_OSC_FUNC_TRIANGLE = 2,
 	GEONKICK_OSC_FUNC_SAWTOOTH = 3,
 	GEONKICK_OSC_FUNC_NOISE    = 4
-};  
+};
 
 struct geonkick;
 
@@ -61,7 +61,7 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t osc_index,
 				 size_t env_index,
 				 double **buf,
-				 size_t *npoints);    
+				 size_t *npoints);
 enum geonkick_error
 geonkick_remove_envelope_point(struct geonkick *kick,
 				enum geonkick_envelope_type type,
@@ -86,7 +86,7 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
   				   size_t index,
 				   double x,
 				   double y);
-  
+
 enum geonkick_error
 geonkick_set_osc_function(struct geonkick *kick,
 			  size_t oscillatorIndex,
@@ -121,7 +121,7 @@ geonkick_enable_midi_in(struct geonkick *kick, const char *name);
 
 int
 geonkick_play(struct geonkick *kick, int play);
-  
+
 int
 geonkick_is_play(struct geonkick *kick);
 

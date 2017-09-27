@@ -41,7 +41,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 val = geonkick_get_oscillators_value(kick);
                 buffers[0][i] = val;
                 buffers[1][i] = val;
-                if (geonkick_is_end(kick)) {
+                if (geonckick_is_play_stopped(kick)) {
                         return 0;
                 } else {
                         geonkick_increment_time(kick, delta_time);
@@ -49,6 +49,23 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         }
 
         return 0;
+}
+
+jack_nframes_t
+gkick_jack_sample_rate(struct gkick_jack *jack)
+{
+        jack_nframes_t sample_rate;
+
+        if (jack == NULL) {
+                geonkick_log_error("wrong arguments");
+                return 0;
+        }
+
+        gkick_jack_lock(jack);
+        sample_rate = jack->sample_rate;
+        gkick_jack_lock(jack);
+
+        return sample_rate;
 }
 
 enum geonkick_error
@@ -114,23 +131,6 @@ int gkick_jack_is_note_pressed(struct gkick_jack *jack,
 int gkick_jack_srate_callback(jack_nframes_t nframes, void *arg)
 {
 	return 0;
-}
-
-enum geonkick_error
-gkick_jack_set_midi_in(struct gkick_jack *jack, const char *name, int enable)
-{
-        int is_enabled;
-        if (jack == NULL || name == NULL) {
-                gkick_log_error("wrong arugment");
-                return GEONKICK_ERROR;
-        }
-
-        is_enabled = gkick_jack_is_midi_in_enabled(jack);
-        if (is_enabled) {
-                gkick_log_note("midi is already enabled");
-                return GEONKICK_OK;
-        } else if (enbale && !is_enabled) {
-        }
 }
 
 enum geonkick_error
