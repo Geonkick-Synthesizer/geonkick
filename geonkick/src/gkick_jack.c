@@ -227,7 +227,6 @@ gkick_create_jack(struct geonkick *kick)
                 return GEONKICK_ERROR_INIT_MUTEX;
         }
 
-        kick->jack = jack;
         jack->client = jack_client_open(kick->name, JackNullOption, NULL);
         if (jack->client == NULL) {
                 gkick_log_error("can't create jack client");
@@ -249,10 +248,10 @@ gkick_create_jack(struct geonkick *kick)
         }
 
         gkick_jack_enable_midi_in(jack, "midi_in");
-
-        if (jack_activate(jack->client)) {
+        kick->jack = jack;
+        if (jack_activate(kick->jack->client) != 0) {
                 gkick_log_error("cannot activate client");
-                gkick_jack_free(&jack);
+                gkick_jack_free(&kick->jack);
                 return GEONKICK_ERROR_ACTIVATE_JACK;
         }
 

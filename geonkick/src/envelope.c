@@ -18,6 +18,12 @@
 
 #include "envelope.h"
 
+/*
+ * TODO: reduce the averall
+ * complexity of the envelope.
+ *
+*/
+
 struct gkick_envelope*
 gkick_envelope_create(void)
 {
@@ -33,14 +39,14 @@ gkick_envelope_create(void)
 
 /**
  * Compexity = O(N), where N are the nuber of evelope points.
- * TODO: to reduce the complexity with a hash table intead of the list.
- * With an array it can be reduced to O(log(N)) with binary search.
+ * TODO: Reduce the complexity. With an array instead of list
+ * it can be reducedl to O(log(N)) with binary search.
  */
 double
 gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 {
 	double x1, y1, x2, y2, ym;
-	struct gkick_envelope_point *point;
+	struct gkick_envelope_point *p;
 
 	if (envelope == NULL ||
 	    (envelope->first == NULL
@@ -50,34 +56,35 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 
 	if (xm < envelope->first->x || xm > envelope->last->x) {
 		return 0.0;
-	} else if (fabsl(xm - envelope->first->x) < 1e-40
-                   || fabsl(envelope->last->x - xm) < 1e-40) {
-                return 0.0;
+	} else if (fabsl(xm - envelope->first->x) < 1e-40) {
+                return envelope->first->x;
+        } else if (fabsl(envelope->last->x - xm) < 1e-40) {
+                return envelope->last->x;
         }
 
         x2 = x1 = xm;
-	point = envelope->first;
-	while (point) {
-		if (point->x > xm) {
-			x2 = point->x;
-			y2 = point->y;
+	p = envelope->first;
+	while (p) {
+		if (xm < p->x) {
+			x2 = p->x;
+			y2 = p->y;
 			break;
 		}
-		point = point->next;
+		p = p->next;
 	}
 
-	point = envelope->last;
-	while (point) {
-		if (point->x < xm) {
-			x1 = point->x;
-			y1 = point->y;
+	p = envelope->last;
+	while (p) {
+		if (p->x < xm) {
+			x1 = p->x;
+			y1 = p->y;
 			break;
 		}
-		point = point->prev;
+		p = p->prev;
 	}
 
 	if (fabsl(x2 - x1) < 1e-40) {
-		return 0.0;
+		return y1;
 	} else {
 		ym = (y1 * (x2 - xm) + y2 * (xm - x1)) / (x2 - x1);
 	}
@@ -86,7 +93,9 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 }
 
 struct gkick_envelope_point*
-gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
+gkick_envelope_add_point(struct gkick_envelope *envelope,
+                         float x,
+                         float y)
 {
 	struct gkick_envelope_point *point;
 
@@ -102,16 +111,12 @@ gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y)
 	point->x = x;
 	point->y = y;
 
-	if (envelope->npoints == 0
-	    || envelope->first == NULL || envelope->last == NULL) {
+	if (envelope->first == NULL ||  envelope->last == NULL) {
 		envelope->first = envelope->last = point;
 	} else {
 		gkick_envelope_add_sorted(envelope, point);
 	}
-
 	envelope->npoints++;
-
-	gkick_log_debug("point added: %f, %f", point->x, point->y);
 
 	return point;
 }
@@ -121,27 +126,30 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 {
 	struct gkick_envelope_point *p;
 
-	p = envelope->first;
-	if (point->x >= envelope->last->x) {
+
+        if (point->x >= envelope->last->x) {
+                /* Add as a last element. */
 		envelope->last->next = point;
 	        point->prev = envelope->last;
 		envelope->last = point;
-	} else {
+	} else if (point->x <= envelope->first->x) {
+                /* Add as a frist element. */
+		envelope->first->prev = point;
+	        point->next = envelope->first;
+		envelope->first = point;
+        } else {
+                p = envelope->first->next;
 		while (p) {
-			if (point->x <= p->x) {
-				if (p == envelope->first) {
-					point->next = p;
-					p->prev = point;
-					envelope->first = point;
-				} else {
-					point->prev = p->prev;
-					point->next = p;
-					p->prev->next = point;
-					p->prev = point;
-				}
-				break;
-			}
-			p = p->next;
+			if (point->x >= p->x) {
+                                if (p->next != NULL) {
+                                        p->next->prev = point;
+                                }
+                                point->next = p->next;
+                                point->prev = p;
+                                p->next = point;
+                                break;
+                        }
+                        p = p->next;
 		}
 	}
 }
@@ -189,7 +197,6 @@ gkick_envelope_get_points(struct gkick_envelope *env,
         while (p) {
                 points[i]     = p->x;
                 points[i + 1] = p->y;
-                gkick_log_debug("get point : %f, %f", points[i], points[i+1]);
                 p = p->next;
                 i += 2;
         }
@@ -218,19 +225,12 @@ gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
                 if (i == index) {
                         if (p == env->first) {
                                 env->first = p->next;
-                                if (env->first != NULL) {
-                                        env->first->prev = NULL;
-                                }
                         } else if (p == env->last) {
-                                if (p->prev != NULL) {
-                                        p->prev->next = NULL;
-                                }
+                                env->last = p->prev;
                         } else {
                                 p->prev->next = p->next;
                                 p->next->prev = p->prev;
                         }
-                        gkick_log_debug("point removed: index = %u, (%f, %f)"
-                                        , i, p->x, p->y);
                         free(p);
                         break;
                 }
@@ -262,8 +262,6 @@ gkick_envelope_update_point(struct gkick_envelope *env,
                 if (i == index) {
                         p->x = x;
                         p->y = y;
-                        gkick_log_debug("point removed: index = %u, (%f, %f)"
-                                        , i, p->x, p->y);
                         break;
                 }
                 p = p->next;
