@@ -3,14 +3,13 @@
 ######################################################################
 
 QMAKE_CXXFLAGS += -std=c++1y
-#QMAKE_CXXFLAGS += -std=gnu++14
 TEMPLATE = app
 QT = core gui widgets
 TARGET = geonckick
 INCLUDEPATH += .
-INCLUDEPATH += ../geonkick/src/
+INCLUDEPATH += ../api/src/
 
-LIBS += -L../geonkick/ -lgeonkick -ljack
+LIBS += -L../api/ -lgeonkick -ljack
 
 FORMS += MainWindow.ui
 
@@ -30,4 +29,5 @@ SOURCES += envelope_point.cpp \
            gkick_knob.cpp \
            oscillator_widget.cpp \
            mainwindow.cpp \
-           main.cpp 
+           main.cpp
+

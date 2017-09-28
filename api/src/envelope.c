@@ -39,8 +39,8 @@ gkick_envelope_create(void)
 
 /**
  * Compexity = O(N), where N are the nuber of evelope points.
- * TODO: Reduce the complexity. With an array instead of list
- * it can be reducedl to O(log(N)) with binary search.
+ * TODO: Reduce the complexity.Ex: with an array instead of list
+ * it can be reduced to O(log(N)) with binary search.
  */
 double
 gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
@@ -56,9 +56,9 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 
 	if (xm < envelope->first->x || xm > envelope->last->x) {
 		return 0.0;
-	} else if (fabsl(xm - envelope->first->x) < 1e-40) {
+	} else if (fabsl(xm - envelope->first->x) < DBL_EPSILON) {
                 return envelope->first->x;
-        } else if (fabsl(envelope->last->x - xm) < 1e-40) {
+        } else if (fabsl(envelope->last->x - xm) < DBL_EPSILON) {
                 return envelope->last->x;
         }
 
@@ -83,7 +83,7 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
 		p = p->prev;
 	}
 
-	if (fabsl(x2 - x1) < 1e-40) {
+	if (fabsl(x2 - x1) < DBL_EPSILON) {
 		return y1;
 	} else {
 		ym = (y1 * (x2 - xm) + y2 * (xm - x1)) / (x2 - x1);
@@ -138,7 +138,7 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 	        point->next = envelope->first;
 		envelope->first = point;
         } else {
-                p = envelope->first->next;
+                p = envelope->first;
 		while (p) {
 			if (point->x >= p->x) {
                                 if (p->next != NULL) {
@@ -232,6 +232,7 @@ gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
                                 p->next->prev = p->prev;
                         }
                         free(p);
+                        env->npoints--;
                         break;
                 }
                 p = p->next;

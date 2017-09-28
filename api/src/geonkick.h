@@ -13,10 +13,11 @@ extern "C" {
 #include <signal.h>
 #include <math.h>
 #include <inttypes.h>
+#include <float.h>
 
 #include "gkick_log.h"
 
-#define GEON_APP_VERSION 0x000300
+#define GEON_APP_VERSION 0x000301
 #define GEON_APP_NAME "geonkick"
 
 enum geonkick_error {

@@ -1,7 +1,7 @@
 # GeonKick
 Kick drum synthesizer (standalone)
 
-Version 0.3.0
+Version 0.3.1
 
 Features:
 
@@ -19,3 +19,15 @@ Two oscillators:
 
 Settings:
   - kick length
+
+Build:
+
+From the top directory:
+cd api
+make
+cd ../gui
+qmake
+make
+
+Use:
+Run the geonkick from the gui directory
