@@ -36,49 +36,47 @@ class GKickOscillator;
 
 class GKickApi: public QObject
 {
-  Q_OBJECT
-  
+ Q_OBJECT
+
  public:
 
-  GKickApi(void);
-  ~GKickApi();
-  void setError(bool b);
-  bool hasErrors(void);
-  std::vector<std::unique_ptr<GKickOscillator>> getOscillators(void);
-  QPolygonF getOscEvelopePoints(int osc, int envelope);
-  void addOscEnvelopePoint(int osc,
-			    int envelope,
-			    const QPointF &point);
+        GKickApi(void);
+        ~GKickApi();
+        void setError(bool b);
+        bool hasErrors(void);
+        std::vector<std::unique_ptr<GKickOscillator>> getOscillators(void);
+        QPolygonF getOscEvelopePoints(int osc, int envelope);
+        void addOscEnvelopePoint(int osc,
+                                 int envelope,
+                                 const QPointF &point);
 
-   void removeOscEvelopePoint(int osc,
-			      int envelope,
-			      int index);
-   void updateOscEvelopePoint(int osc,
-			      int envelope,
-			      int index,
-			      const QPointF &point);
+        void removeOscEvelopePoint(int osc,
+                                   int envelope,
+                                   int index);
+        void updateOscEvelopePoint(int osc,
+                                   int envelope,
+                                   int index,
+                                   const QPointF &point);
 
-   void setOscFunction(int oscillatorIndex,
-		       enum geonkick_osc_func_type type);
+        void setOscFunction(int oscillatorIndex,
+                            enum geonkick_osc_func_type type);
 
-   void setKickLength(double len);
-   double getKickLength(void);
-   bool setOscAmplitudeValue(int oscillatorIndex,
-			     double v);
-   bool setOscFrequencyValue(int oscillatorIndex,
-			     double v);
-   double getOscAmplitudeValue(int oscillatorIndex);
-   double getOscFrequencyValue(int oscillatorIndex);
+        void setKickLength(double len);
+        double getKickLength(void);
+        bool setOscAmplitudeValue(int oscillatorIndex,
+                                  double v);
+        bool setOscFrequencyValue(int oscillatorIndex,
+                                  double v);
+        double getOscAmplitudeValue(int oscillatorIndex);
+        double getOscFrequencyValue(int oscillatorIndex);
 
 
  signals:
-   void kickLengthUpdated(double len);
+        void kickLengthUpdated(double len);
 
- protected:
-     
  private:
 	bool isError;
-      	struct geonkick *gKickApi;	
+      	struct geonkick *gKickApi;
 };
 
 #endif

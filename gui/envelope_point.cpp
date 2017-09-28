@@ -36,7 +36,6 @@ OscillatorEnvelopePoint::OscillatorEnvelopePoint(OscillatorEnvelope *parent,
 
 OscillatorEnvelopePoint::~OscillatorEnvelopePoint()
 {
-	
 }
 
 void OscillatorEnvelopePoint::draw(QPainter &painter)
@@ -104,12 +103,12 @@ bool OscillatorEnvelopePoint::hasPoint(const QPointF &point)
 	double px = point.x();
 	double py = point.y();
 	QPointF p = scaleUp(QPointF(x(), y()));
-	
+
 	if ((px > p.x() - pointRadius) && (px < p.x() + pointRadius)
 	    && (py > y() - pointRadius) && (py < p.y() + pointRadius)
 	    && ((p.x() - px) * (p.x() - px) + (p.y() - py) * (p.y() - py) < pointRadius * pointRadius))	{
-			return true;
-		}
+                return true;
+        }
 
 	return false;
 }
@@ -127,9 +126,7 @@ QString OscillatorEnvelopePoint::pointText(void)
 
 QString OscillatorEnvelopePoint::pointAmplitudeText(void)
 {
-	QString text = QString::number(parentEnvelope->getEnvelopeValue() * y())
-		+ " dB / ";
-	text += getTimeTextValue();
+	QString text = QString::number(parentEnvelope->getEnvelopeValue() * y(), 'f', 3);
 	return text;
 }
 
@@ -144,10 +141,7 @@ QString OscillatorEnvelopePoint::pointFrequencyText(void)
 	} else {
 		textVal = QString::number(v, 'f', 0) + " Hz";
 	}
-	
-        textVal += " / ";
-	textVal += getTimeTextValue();
-	
+
 	return textVal;
 }
 

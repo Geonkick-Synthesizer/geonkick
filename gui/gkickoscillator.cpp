@@ -23,90 +23,80 @@
  */
 
 #include "gkickoscillator.h"
-
 #include <QDebug>
 
 GKickOscillator::GKickOscillator(GKickApi *api, int index) :
-  kickApi(api),
-  oscillatorIndex(index),
-  envelopeIndex((int)OSC_ENV_AMPLITUDE)
+        kickApi(api),
+        oscillatorIndex(index),
+        envelopeIndex((int)OSC_ENV_AMPLITUDE)
 {
-    qDebug() << "GKickOscillator::GKickOscillator()";
 }
 
 GKickOscillator::~GKickOscillator()
 {
-  qDebug() << "GKickOscillator::~GKickOscillator()";
 }
-
-//void GKickOscillator::setApi(GKickApi *api)
-//{/
-//  kickApi = api;
-//}
 
 void GKickOscillator::setOscFunction(OscillatorFuncType type)
 {
-  qDebug() << "GKickOscillator::setOscFunction(OscillatorFuncType type):" << type;
-  if (kickApi) {
-    kickApi->setOscFunction(oscillatorIndex, (enum geonkick_osc_func_type)type);
-  }
+        if (kickApi) {
+                kickApi->setOscFunction(oscillatorIndex, (enum geonkick_osc_func_type)type);
+        }
 }
 
 QPolygonF GKickOscillator::getEnvelopePoints(void)
 {
-  QPolygonF points;
-  
-  if (kickApi) {
-    points =  kickApi->getOscEvelopePoints(oscillatorIndex, envelopeIndex);
-    qDebug() << "GKickOscillator::getEnvelopePoints(void): size:"  << points.size();
-  }
+        QPolygonF points;
 
-  return points;
+        if (kickApi) {
+                points =  kickApi->getOscEvelopePoints(oscillatorIndex, envelopeIndex);
+        }
+
+        return points;
 }
 
 void GKickOscillator::addPoint(const QPointF &point)
 {
-  if (kickApi) {
-    kickApi->addOscEnvelopePoint(oscillatorIndex, envelopeIndex, point);
-  }
+        if (kickApi) {
+                kickApi->addOscEnvelopePoint(oscillatorIndex, envelopeIndex, point);
+        }
 }
 
 void GKickOscillator::removePoint(int index)
 {
-  if (kickApi) {
-    kickApi->removeOscEvelopePoint(oscillatorIndex, envelopeIndex, index);
-  }
+        if (kickApi) {
+                kickApi->removeOscEvelopePoint(oscillatorIndex, envelopeIndex, index);
+        }
 }
 
 void GKickOscillator::updatePoint(int index, const QPointF &point)
 {
-  if (kickApi) {
-    kickApi->updateOscEvelopePoint(oscillatorIndex, envelopeIndex, index, point);
-  }
+        if (kickApi) {
+                kickApi->updateOscEvelopePoint(oscillatorIndex, envelopeIndex, index, point);
+        }
 }
 
 void GKickOscillator::setOscillatorIndex(int index)
 {
-  oscillatorIndex = index;
+        oscillatorIndex = index;
 }
 
 int GKickOscillator::getOscillatorIndex(void)
 {
-  return oscillatorIndex;
+        return oscillatorIndex;
 }
 
 void GKickOscillator::setCurrentEnvelope(EnvelopeType type)
 {
-  envelopeIndex = (int)type;
+        envelopeIndex = (int)type;
 }
 
 double GKickOscillator::getKickLength(void)
 {
-  if (!kickApi) {
-    return 0.0;
-  } else {
-    return kickApi->getKickLength();
-  }
+        if (!kickApi) {
+                return 0.0;
+        } else {
+                return kickApi->getKickLength();
+        }
 }
 
 void GKickOscillator::setOscAmplitudeValue(double v)

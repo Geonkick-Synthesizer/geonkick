@@ -17,11 +17,11 @@ public:
    int getHeight(void);
    double getPosition(void);
    double getValue(void);
-   
+
    public slots:
      void setPosition(double v);
      void setValue(double v);
-	  
+
  signals:
      void valueUpdated(double v);
 
