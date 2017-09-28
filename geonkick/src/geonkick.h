@@ -16,7 +16,7 @@ extern "C" {
 
 #include "gkick_log.h"
 
-#define GEON_APP_VERSION 0x000100
+#define GEON_APP_VERSION 0x000300
 #define GEON_APP_NAME "geonkick"
 
 enum geonkick_error {

@@ -1,5 +1,9 @@
 # GeonKick
-Kick drum synthesizer (standalone):
+Kick drum synthesizer (standalone)
+
+Version 0.3.0
+
+Features:
 
 Working with Jack server:
 
