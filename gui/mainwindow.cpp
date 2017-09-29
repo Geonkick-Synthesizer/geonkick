@@ -23,23 +23,14 @@
 
 #include "mainwindow.h"
 #include "gkick_knob.h"
+#include "control_area.h"
 
-#include <QFileDialog>
-#include <QPushButton>
 #include <QCloseEvent>
-#include <QSystemTrayIcon>
 #include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
 #include <QAction>
-#include <QMessageBox>
 #include <QDebug>
-#include <QVBoxLayout>
-#include <QGroupBox>
-#include <QRadioButton>
-#include <QGridLayout>
-#include <QComboBox>
-#include <QLabel>
 
 MainWindow::MainWindow() :
         gkickApi(std::make_unique<GKickApi>()),
@@ -60,54 +51,37 @@ bool MainWindow::init(void)
 
         gkickApi.get()->setKickLength(0.25);
         oscillators = gkickApi.get()->getOscillators();
-        oscillators[MainWindow::OSC_1].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
-        oscillators[MainWindow::OSC_2].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
-        oscillators[MainWindow::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
-        oscillators[MainWindow::OSC_1].get()->setOscAmplitudeValue(1);
-        oscillators[MainWindow::OSC_1].get()->setOscFrequencyValue(10000);
-        oscillators[MainWindow::OSC_2].get()->setOscAmplitudeValue(0);
-        oscillators[MainWindow::OSC_2].get()->setOscFrequencyValue(10000);
-        oscillators[MainWindow::OSC_NOISE].get()->setOscAmplitudeValue(1);
+        oscillators[GKickOscillator::OSC_1].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
+        oscillators[GKickOscillator::OSC_2].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
+        oscillators[GKickOscillator::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
+        oscillators[GKickOscillator::OSC_1].get()->setOscAmplitudeValue(1);
+        oscillators[GKickOscillator::OSC_1].get()->setOscFrequencyValue(10000);
+        oscillators[GKickOscillator::OSC_2].get()->setOscAmplitudeValue(0);
+        oscillators[GKickOscillator::OSC_2].get()->setOscFrequencyValue(10000);
+        oscillators[GKickOscillator::OSC_NOISE].get()->setOscAmplitudeValue(1);
 
         // Create central Widget.
         setCentralWidget(new QWidget(this));
+        centralWidgetLayout = new QVBoxLayout();
+        centralWidget()->setLayout(centralWidgetLayout);
+
+        // Create and envelope widget to the central widget layout.
         oscillatorWidget = new OscillatorWidget(centralWidget(), oscillators[MainWindow::OSC_1].get());
         oscillatorWidget->setAmplitudeEnvelope();
         connect(gkickApi.get(), SIGNAL(kickLengthUpdated(double)), oscillatorWidget, SLOT(updateKickLength(double)));
-
-        centralWidgetLayout = new QVBoxLayout();
-
-        oscillatorWidgetLabel = new QLabel(tr("OSC1: Amplitude Envelope"), this);
-        centralWidgetLayout->addWidget(oscillatorWidgetLabel);
         centralWidgetLayout->addWidget(oscillatorWidget);
-        centralWidget()->setLayout(centralWidgetLayout);
 
-        createBottomControlArea();
+        // Create and control area to central layout.
+        QWidget *controlAreaWidget = new ControlArea(centralWidget());
+        centralWidgetLayout->addWidget(controlAreaWidget);
+        centralWidgetLayout->setStretchFactor(controlAreaWidget, 1);
+        centralWidgetLayout->setStretchFactor(oscillatorWidget, 2);
 
         return true;
 }
 
 MainWindow::~MainWindow()
 {
-}
-
-void MainWindow::createBottomControlArea(void)
-{
-        QHBoxLayout* controlAreaLayout = new QHBoxLayout;
-        QWidget *controlAreaWidget = new QWidget(centralWidget());
-        controlAreaWidget->setMaximumHeight(200);
-        controlAreaWidget->setLayout(controlAreaLayout);
-
-        // Add control area to central layout.
-        centralWidgetLayout->addWidget(controlAreaWidget);
-        centralWidgetLayout->setStretchFactor(controlAreaWidget, 1);
-        centralWidgetLayout->setStretchFactor(oscillatorWidget, 2);
-
-        createEnvelopesGroupBox(controlAreaWidget);
-        createOscillatorBox(controlAreaWidget, MainWindow::OSC_1);
-        createOscillatorBox(controlAreaWidget, MainWindow::OSC_2);
-        createNoiseBox(controlAreaWidget);
-        createGeneralSettingsBox(controlAreaWidget);
 }
 
 void MainWindow::createEnvelopesGroupBox(QWidget *controlAreaWidget)
@@ -130,9 +104,14 @@ void MainWindow::createEnvelopesGroupBox(QWidget *controlAreaWidget)
         oscillatorsGroupBox->layout()->addWidget(generalRb);
 }
 
-void MainWindow::createOscillatorBox(QWidget *controlAreaWidget, MainWindow::OscillatorType type)
+void MainWindow::createControlArea(QWidget *controlAreaWidget)
 {
-        QString name = (type == MainWindow::OSC_1) ? tr("OSC 1") : tr("OSC 2");
+        controlAreaWidget->layout()->addWidget(new EnvelopesGroupBox(controlAreaWidget));
+        controlAreaWidget->layout()->addWidget(new OscillatorGroupBox(controlAreaWidget, MainWindow::OSC_1));
+        controlAreaWidget->layout()->addWidget(new OscillatorGroupBox(controlAreaWidget, MainWindow::OSC_2));
+        controlAreaWidget->layout()->addWidget(new NoiseGroupBox(controlAreaWidget));
+        controlAreaWidget->layout()->addWidget(new GenralSettingGroupBox(controlAreaWidget));
+        /*        QString name = (type == MainWindow::OSC_1) ? tr("OSC 1") : tr("OSC 2");
         QGroupBox *oscillatorGroupBox = new QGroupBox(name, controlAreaWidget);
         controlAreaWidget->layout()->addWidget(oscillatorGroupBox);
         QGridLayout *oscillatorGroupBoxLayout = new QGridLayout();
@@ -152,9 +131,9 @@ void MainWindow::createOscillatorBox(QWidget *controlAreaWidget, MainWindow::Osc
         oscillatorGroupBoxLayout->addWidget(waveFunctionCb, 0, 1);
 
        // Select enevelope.
-        envelopeGroupBox = new QGroupBox(tr("Envelope"), oscillatorGroupBox);
-        envelopeGroupBox->setLayout(new QHBoxLayout());
-        amplitudeRb  = new QRadioButton(tr("Amplitude"), envelopeGroupBox);
+        envelopeGroupBox << new QGroupBox(tr("Envelope"), oscillatorGroupBox);
+        envelopeGroupBox[type]->setLayout(new QHBoxLayout());
+        amplitudeRb << = new QRadioButton(tr("Amplitude"), envelopeGroupBox);
         frequencyRb  = new QRadioButton(tr("Frquency"), envelopeGroupBox);
         amplitudeRb->setChecked(true);
         connect(amplitudeRb, SIGNAL(clicked(bool)), this, SLOT(setAmplitudeEnvelope(bool)));
@@ -181,7 +160,7 @@ void MainWindow::createOscillatorBox(QWidget *controlAreaWidget, MainWindow::Osc
         } else {
                 kickAmplitudeKnob->setPosition(0.25);
         }
-        kickFrequencyKnob->setPosition(0.25);
+        kickFrequencyKnob->setPosition(0.25);*/
 }
 
 void MainWindow::createNoiseBox(QWidget *controlAreaWidget)

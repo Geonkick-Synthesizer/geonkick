@@ -90,10 +90,10 @@ class MainWindow : public QMainWindow
       	QLabel *oscillatorWidgetLabel;
 	OscillatorWidget *oscillatorWidget;
 	QVBoxLayout *centralWidgetLayout;
-	QGroupBox *envelopeGroupBox;
-	QRadioButton *amplitudeRb;
-	QRadioButton *frequencyRb;
-	QComboBox *waveFunctionCb;
+	QVector<QGroupBox*> envelopeGroupBox;
+	QVector<QRadioButton*> amplitudeRb;
+	QVector<QRadioButton*> frequencyRb;
+	QVector<QComboBox*> waveFunctionCb;
 };
 
 #endif

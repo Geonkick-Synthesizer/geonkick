@@ -37,6 +37,12 @@ class GKickOscillator: public QObject
 
  public:
 
+  enum OscillatorType {
+          OSC_1 = 0,
+          OSC_2 = 1,
+          OSC_NOISE = 2
+  };
+
   enum EnvelopeType {
     OSC_ENV_AMPLITUDE = 0,
     OSC_ENV_FREQUENCY = 1
