@@ -16,7 +16,7 @@ geonkick_create(struct geonkick **kick)
 
 	strcpy((*kick)->name, "GeonKick");
 	(*kick)->length = 0.26;
-	(*kick)->oscillators_number = 2;
+	(*kick)->oscillators_number = 3;
 	(*kick)->midi_in_enabled = 1;
 
 	if (pthread_mutex_init(&(*kick)->lock, NULL) != 0) {

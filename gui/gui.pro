@@ -11,8 +11,6 @@ INCLUDEPATH += ../api/src/
 
 LIBS += -L../api/ -lgeonkick -ljack
 
-FORMS += MainWindow.ui
-
 # Input
 HEADERS += globals.h \
            gkickapi.h \

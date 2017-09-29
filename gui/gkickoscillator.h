@@ -33,7 +33,6 @@
 
 class GKickOscillator: public QObject
 {
-  
   Q_OBJECT
 
  public:
@@ -50,11 +49,10 @@ class GKickOscillator: public QObject
     OSC_FUNC_SAWTOOTH = GEONKICK_OSC_FUNC_SAWTOOTH,
     OSC_FUNC_NOISE    = GEONKICK_OSC_FUNC_NOISE
   };
-  
+
 	GKickOscillator(GKickApi *api, int index);
 	~GKickOscillator();
 	double getKickLength(void);
-	//	void setApi(GKickApi *api);
 	QPolygonF getEnvelopePoints(void);
 	void setOscillatorIndex(int index);
 	int getOscillatorIndex(void);
@@ -64,7 +62,6 @@ class GKickOscillator: public QObject
 	double getOscFrequencyValue(void);
 
 public slots:
-		
 	void setOscAmplitudeValue(double v);
 	void setOscFrequencyValue(double v);
 
@@ -75,10 +72,8 @@ public slots:
 	  void oscAmplitudeValueUpdated(double v);
 	  void oscFrequencyValueUpdated(double v);
 
- protected:
-     
  private:
-	  GKickApi *kickApi;	  
+	  GKickApi *kickApi;
 	  int oscillatorIndex;
 	  int envelopeIndex;
 };

@@ -12,7 +12,8 @@ GKickApi::GKickApi() :
 {
   	if (geonkick_create(&gKickApi) != GEONKICK_OK) {
   		setError(true);
-  	}
+  	} else {
+        }
 }
 
 GKickApi::~GKickApi()

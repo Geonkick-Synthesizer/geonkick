@@ -39,12 +39,19 @@ class QVBoxLayout;
 class QGroupBox;
 class QRadioButton;
 class QComboBox;
+class QLabel;
 
-class MainWindow : public QMainWindow/*, public Ui_MainWindow*/
+class MainWindow : public QMainWindow
 {
       Q_OBJECT
 
  public:
+      	enum OscillatorType {
+	  OSC_1 = 0,
+          OSC_2 = 1,
+	  OSC_NOISE = 2,
+	};
+
       MainWindow(void);
       ~MainWindow();
       bool init(void);
@@ -59,29 +66,28 @@ class MainWindow : public QMainWindow/*, public Ui_MainWindow*/
 	bool setupMenuBar(void);
 	bool setupToolBar(void);
         void createBottomControlArea(void);
-	void createGroupOscillatorsBox(QWidget *controlAreaWidget);
-	void createBaseOscillatorBox(QWidget *controlAreaWidget);
+        void createEnvelopesGroupBox(QWidget *controlAreaWidget);
+	void createOscillatorBox(QWidget *controlAreaWidget, MainWindow::OscillatorType type);
 	void createNoiseBox(QWidget *controlAreaWidget);
 	void createGeneralSettingsBox(QWidget *controlAreaWidget);
 
  protected slots:
-	 
-        void viewBaseOsc(bool b);
+
+        void viewOsc(bool b, MainWindow::OscillatorType type);
+        void viewOsc1(bool b);
+        void viewOsc2(bool b);
         void viewNoiseOsc(bool b);
+        void viewGeneral(bool b);
 	void setAmplitudeEnvelope(bool b);
 	void setFrequencyEnvelope(bool b);
 	void setKickLength(double v);
-	void oscillatorFunctionChanged(int index);
-		
- private:
-	enum {
-	  OSC_BASE = 0,
-	  OSC_NOISE = 1,
-	};
+	void oscillatorFunctionChanged(int index, MainWindow::OscillatorType type);
 
+ private:
 	//	QPushButton *uploadButton;
 	std::unique_ptr<GKickApi> gkickApi;
 	std::vector<std::unique_ptr<GKickOscillator>> oscillators;
+      	QLabel *oscillatorWidgetLabel;
 	OscillatorWidget *oscillatorWidget;
 	QVBoxLayout *centralWidgetLayout;
 	QGroupBox *envelopeGroupBox;
