@@ -1,5 +1,5 @@
 /**
- * File name: envelopes_group_box.h
+ * File name: oscillator_group_box.h
  * Project: GeonKick
  *
  * Copyright (C) 2017 Iurie Nistor <nistor@iurie.org>
@@ -21,22 +21,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_ENVELOPES_GROUP_BOX_H
-#define GKICK_ENVELOPES_GROUP_BOX_H
+#ifndef GKICK_GENERAL_GROUP_BOX_H
+#define GKICK_GENERAL_GROUP_BOX_H
 
+#include "gkickoscillator.h"
 #include "control_group_box.h"
 
-class EnvelopesGroupBox: public ControlGroupBox
+class GkickOscillator;
+
+class GeneralGroupBox: public ControlGroupBox
 {
- Q_OBJECT
+        Q_OBJECT
  public:
-         EnvelopesGroupBox(QWidget *widget);
-         ~EnvelopesGroupBox();
- signals:
-        void viewOsc1(bool b);
-        void viewOsc2(bool b);
-        void viewNoiseOsc(bool b);
-        void viewGeneral(bool b);
+        GeneralGroupBox(QWidget *widget, std::shared_prt<GKickOscillator> &osc);
+        ~GeneralGroupBox();
+
+ private:
+        std::shared_prt<GKickOscillator> oscillator;
 };
 
 #endif

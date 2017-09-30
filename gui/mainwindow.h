@@ -46,11 +46,6 @@ class MainWindow : public QMainWindow
       Q_OBJECT
 
  public:
-      	enum OscillatorType {
-	  OSC_1 = 0,
-          OSC_2 = 1,
-	  OSC_NOISE = 2,
-	};
 
       MainWindow(void);
       ~MainWindow();
@@ -65,11 +60,7 @@ class MainWindow : public QMainWindow
 	void closeEvent(QCloseEvent *event);
 	bool setupMenuBar(void);
 	bool setupToolBar(void);
-        void createBottomControlArea(void);
-        void createEnvelopesGroupBox(QWidget *controlAreaWidget);
-	void createOscillatorBox(QWidget *controlAreaWidget, MainWindow::OscillatorType type);
-	void createNoiseBox(QWidget *controlAreaWidget);
-	void createGeneralSettingsBox(QWidget *controlAreaWidget);
+        void createControlArea(void);
 
  protected slots:
 
@@ -85,8 +76,8 @@ class MainWindow : public QMainWindow
 
  private:
 	//	QPushButton *uploadButton;
-	std::unique_ptr<GKickApi> gkickApi;
-	std::vector<std::unique_ptr<GKickOscillator>> oscillators;
+	std::shared_ptr<GKickApi> gkickApi;
+	std::vector<std::shared_ptr<GKickOscillator>> oscillators;
       	QLabel *oscillatorWidgetLabel;
 	OscillatorWidget *oscillatorWidget;
 	QVBoxLayout *centralWidgetLayout;

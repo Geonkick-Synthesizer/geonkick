@@ -1,5 +1,5 @@
 /**
- * File name: control_group_box.cpp
+ * File name: envelopes_group_box.cpp
  * Project: GeonKick
  *
  * Copyright (C) 2017 Iurie Nistor <nistor@iurie.org>
@@ -26,6 +26,20 @@
 EnvelopesGroupBox::EnvelopesGroupBox(QWidget *parent)
         : ControlGroupBox(tr("Envelopes"), parent)
 {
+        QRadioButton *osc1Rb    = new QRadioButton(tr("OSC 1"), this);
+        QRadioButton *osc2Rb    = new QRadioButton(tr("OSC 2"), this);
+        QRadioButton *noiseRb   = new QRadioButton(tr("Noise"), this);
+        QRadioButton *generalRb = new QRadioButton(tr("General"), this);
+        osc1Rb->setChecked(true);
+        connect(osc1Rb, SIGNAL(clicked(bool)), this, SIGNAL(viewOsc1(bool)));
+        connect(osc2Rb, SIGNAL(clicked(bool)), this, SIGNAL(viewOsc2(bool)));
+        connect(noiseRb, SIGNAL(clicked(bool)), this, SIGNAL(viewNoiseOsc(bool)));
+        connect(generalRb, SIGNAL(clicked(bool)), this, SIGNAL(viewGeneral(bool)));
+        layout()->addWidget(osc1Rb);
+        layout()->addWidget(osc2Rb);
+        layout()->addWidget(noiseRb);
+        layout()->addWidget(generalRb);
+        parent->layout()->addWidget(envelopesGroupBox, parent));
 }
 
 EnvelopesGroupBox::~EnvelopesGroupBox()

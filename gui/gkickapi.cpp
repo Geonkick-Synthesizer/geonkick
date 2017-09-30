@@ -33,9 +33,9 @@ bool GKickApi::hasErrors(void)
         return isError;
 }
 
-std::vector<std::unique_ptr<GKickOscillator>> GKickApi::getOscillators(void)
+std::vector<std::shared_ptr<GKickOscillator>> GKickApi::getOscillators(void)
 {
-        std::vector<std::unique_ptr<GKickOscillator>> oscillators;
+        std::vector<std::shared_ptr<GKickOscillator>> oscillators;
 
         if (!gKickApi) {
                 return oscillators;
@@ -43,9 +43,9 @@ std::vector<std::unique_ptr<GKickOscillator>> GKickApi::getOscillators(void)
 
         int n = geonkick_get_oscillators_number(gKickApi);
         for (int i = 0; i < n; i++) {
-                std::unique_ptr<GKickOscillator> osc = std::make_unique<GKickOscillator>(this, i);
-                osc.get()->setOscillatorIndex(i);
-                oscillators.push_back(std::move(osc));
+                std::shared_ptr<GKickOscillator> osc = std::make_shared<GKickOscillator>(this, i);
+                osc->setOscillatorIndex(i);
+                oscillators.push_back(osc);
         }
 
         return oscillators;
