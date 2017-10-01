@@ -8,23 +8,31 @@
 #include <QVector>
 #include <QMouseEvent>
 
-class OscillatorWidget : public QWidget
+class GKickEnvelopeWidget : public QWidget
 {
    Q_OBJECT
 public:
-   OscillatorWidget(QWidget *parent, GKickOscillator *osc);
-   ~OscillatorWidget();
+
+   enum EnvelopeType {
+           ENV_OSC_1,
+           ENV_OSC_2,
+           ENV_NOISE,
+           ENV_GENERAL
+   };
+
+   GKickEnvelopeWidget(QWidget *parent, GKickOscillator *osc);
+   ~GKickEnvelopeWidget();
 
    void setOscillator(GKickOscillator *osc);
    double getKickLength(void);
-   
+
    public slots:
-	   void setAmplitudeEnvelope(void);
+           void viewEnvelope(EnvelopeType type);
+	   /*void setAmplitudeEnvelope(void);
 	   void setFrequencyEnvelope(void);
 	   void updateKickLength(double v);
 	   void setEnvelopeAmplitudeValue(double v);
-	   void setEnvelopeFrequencyValue(double v);
-
+	   void setEnvelopeFrequencyValue(double v);*/
 
  protected:
      void drawAxes(void);
@@ -39,7 +47,7 @@ public:
      void connectOscillator(void);
      void disconnectOscillator(void);
      void calculateRatio(void);
-     
+
  private:
      GKickOscillator* kickOscillator;
      QPainter widgetPainter;

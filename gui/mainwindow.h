@@ -26,12 +26,9 @@
 
 #include "gkickapi.h"
 #include "gkickoscillator.h"
-#include "oscillator_widget.h"
+#include "gkick_envelope_widget.h"
 
 #include <QMainWindow>
-//#include "ui_MainWindow.h"
-
-#define GKICK_UI_MAX_TIME (1.0)
 
 class QPushButton;
 class QCloseEvent;

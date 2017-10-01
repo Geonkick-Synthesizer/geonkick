@@ -35,7 +35,7 @@
 #include <QDebug>
 
 MainWindow::MainWindow() :
-        gkickApi(std::make_shared<GKickApi>()),
+        gkickApi(std::make_shared<GKickApi>())
 {
 }
 
@@ -74,7 +74,7 @@ bool MainWindow::init(void)
         centralWidget()->setLayout(new QVBoxLayout(centralWidget()));
 
         // Create  envelope widget.
-        GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(centralWidget());
+        GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(centralWidget(), gkickApi, oscillators);
         centralWidget()->layout()->addWidget(envelopeWidget);
 
         // Create control area.
@@ -89,7 +89,11 @@ bool MainWindow::init(void)
 
 void MainWindow::createControlArea(QWidget *controlAreaWidget)
 {
-        controlAreaWidget->layout()->addWidget(new EnvelopesGroupBox(controlAreaWidget));
+        envelopeGroupBox = new EnvelopesGroupBox(controlAreaWidget);
+        connect(envelopeGroupBox, SIGNAL(viewEnvelope(GKickEnvelopeWidget::EnvelopeType)),
+                envelopeWidget, SLOT(viewEnvelope(GKickEnvelopeWidget::EnvelopeType)));
+
+        controlAreaWidget->layout()->addWidget(envelopeGroupBox);
         controlAreaWidget->layout()->addWidget(new OscillatorGroupBox(controlAreaWidget,
                                                                       oscillators[GkickOscillator::OSC_1]));
         controlAreaWidget->layout()->addWidget(new OscillatorGroupBox(controlAreaWidget,
