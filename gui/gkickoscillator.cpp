@@ -54,10 +54,10 @@ QPolygonF GKickOscillator::getEnvelopePoints(void)
         return points;
 }
 
-void GKickOscillator::addPoint(const QPointF &point)
+void GKickOscillator::addPoint(double x, double y)
 {
         if (kickApi) {
-                kickApi->addOscEnvelopePoint(oscillatorIndex, envelopeIndex, point);
+                kickApi->addOscEnvelopePoint(oscillatorIndex, envelopeIndex, QPointF(x, y));
         }
 }
 
@@ -68,10 +68,10 @@ void GKickOscillator::removePoint(int index)
         }
 }
 
-void GKickOscillator::updatePoint(int index, const QPointF &point)
+void GKickOscillator::updatePoint(int index, double x, double y)
 {
         if (kickApi) {
-                kickApi->updateOscEvelopePoint(oscillatorIndex, envelopeIndex, index, point);
+                kickApi->updateOscEvelopePoint(oscillatorIndex, envelopeIndex, index, QPointF(x, y));
         }
 }
 

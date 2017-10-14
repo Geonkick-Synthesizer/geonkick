@@ -30,24 +30,55 @@
 #include <QObject>
 #include <QPainter>
 
-class OscillatorWidget;
-
 class GKickEnvelope: public QObject
 {
   Q_OBJECT
 
+  enum EnvelopeType {
+          ENV_TYPE_AMPLITUDE = 0,
+          ENV_TYPE_FREQUENCY = 1
+  };
+
  public:
 
-	GKickEnvelope(Widget *parent);
+	GKickEnvelope();
 	virtual ~GKickEnvelope();
-        void activate();
-        void deactivate();
         void update();
+        bool hasSelected();
+        void selectPoint(QPointF point);
+        void unselectPoint(void);
+        void moveSelectedPoint(double x, double y);
+        double getLeftPointLimit(void);
+        double getRightPointLimit(void);
+        void addPoint(QPointF point);
+        void removePoint(QPointF point);
+        //void setXRatio(double k);
+        //void setYRatio(double k);
+        //QPointF scaleUp(QPointF point);
+        //QPointF scaleDown(QPointF point);
+        //QPointF getOriginPoint(void);
+        //double getEnvelopeLenth(void);
+        //double getEnvelopeHeight(void);
+        //double getKickLength(void);
+        void setType(EnvelopeType type);
+        EnvelopeType getType();
+        //        double getEnvelopeValue(void);
+
+ protected:
+        virtual void pointEddedEvent(double x, double y) {}
+        virtual void pointUpdatedEvent(unsigned int index, double x, double y) {}
+        virtual void pointRemovedEvent(unsigned int index) {}
+        void addEnvelopePoints(QPolygonF points);
+        void removePoints(void);
+        void drawPoints(QPainter &painter);
+        void drawLines(QPainter &painter);
 
  private:
 
         bool isActive;
-	QWidget *parentWidget;
+        QVector<std::shared_ptr<GkickEnvelopePoint>> envelopePoints;
+        std::shared_ptr<std::GKickEnvelopePoint> selectedPoint;
+        EnvelopeType envelopeType;
 };
 
 #endif

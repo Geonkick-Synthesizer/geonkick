@@ -1,11 +1,8 @@
-#ifndef GKICK_OSCILLLATOR_ENVELOPE_H
-#define GKICK_OSCILLLATOR_ENVELOPE_H
-
 /**
- * File name: oscillator_envelope.h
+ * File name: general_envelope.cpp
  * Project: GeonKick
  *
- * Copyright (C) 2017 Iurie Nistor
+ * Copyright (C) 2015 Iurie Nistor
  * Email: nistor@iurie.org
  *
  * This file is part of GeonKick.
@@ -25,26 +22,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "gkick_envelope.h"
+#include "oscillator_envelope.h"
+#include "gkick_oscillator.h"
 
-class GKickOscillator;
-
-class OscillatorEnvelope: public GKickEnvelope
+GeneralEnvelope::GeneralEnvelope(std::shared_ptr<GKickApi> &api)
+        : gkickApi(api)
 {
-  Q_OBJECT
+}
 
- public:
+GeneralEnvelope::~GeneralEnvelope()
+{
+}
 
-  OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc);
-  ~OscillatorEnvelope();
+void GeneralEnvelope::pointEddedEvent(double x, double y)
+{
+        gkickApi->addEnvelopePoint(x, y);
+}
 
- protected:
-  void pointEddedEvent(double x, double y) override;
-  void pointUpdatedEvent(unsigned int index, double x, double y) override;
-  void pointRemovedEvent(unsigned int index) override;
+void GeneralEnvelope::pointUpdatedEvent(unsigned int index, double x, double y)
+{
+        gkickApi->updateEnvelopePoint(index, x, y);
+}
 
- private:
-          std::shred_prt<GKickOscillator> oscillator;
-};
-
-#endif
+void GeneralEnvelope::pointRemovedEvent(unsigned int index)
+{
+        gkickApi->removeEnvelopePoint(index);
+}

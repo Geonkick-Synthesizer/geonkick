@@ -1,5 +1,5 @@
 /**
- * File name: envelope.cpp
+ * File name: gkick_envelope.cpp
  * Project: GeonKick
  *
  * Copyright (C) 2015 Iurie Nistor
@@ -56,6 +56,16 @@ void GKickEnvelope::drawPoints(QPainter &painter)
 	for (int i = 0; i < envelopePoints.size(); i++) {
 		envelopePoints[i].draw(painter);
 	}
+}
+
+void OscillatorWidget::drawAxes(QPainter &painter)
+{
+        QPen pen(Qt::black);
+        pen.setWidth(1);
+        painter.setPen(pen);
+        painter.drawLine(xPadding, yPadding, xPadding, height() - yPadding);
+        painter.drawLine(xPadding, height() - yPadding,
+                         width() - xPadding, height() - yPadding);
 }
 
 void GKickEnvelope::drawLines(QPainter &painter)
@@ -172,7 +182,7 @@ void GKickEnvelope::moveSelectedPoint(double x, double y)
 
 	int index = envelopePoints.indexOf(*selectedPoint);
 	if (index > -1 && index < envelopePoints.size()) {
-                emit pointUpdated(index, QPointF(selectedPoint->x(), selectedPoint->y()));
+                pointUpdatedEvent(index, QPointF(selectedPoint->x(), selectedPoint->y()));
 	}
 }
 
@@ -232,8 +242,7 @@ void GKickEnvelope::addPoint(QPointF point)
 		}
 	}
 
-	qDebug() << "POINT ADDED: " << point.x() << ", " << point.y();
-	emit pointAdded(point);
+	pointAddedEvent(point.x(), point.y());
 }
 
 double GKickEnvelope::getEnvelopeLenth(void)
@@ -253,7 +262,7 @@ void GKickEnvelope::removePoint(QPointF point)
 			if (envelopePoints[i] != envelopePoints.first()
 			    && envelopePoints[i] != envelopePoints.last()) {
 				envelopePoints.remove(i);
-				emit pointRemoved(i);
+				pointRemovedEvent(i);
 			}
 			break;
 		}
@@ -267,7 +276,6 @@ double GKickEnvelope::getKickLength(void)
 
 void GKickEnvelope::setEnvelopeValue(double v)
 {
-	qDebug() << "GKickEnvelope::setEnvelopeValue: set envelope value: " << v;
 	envelopeValue = v;
 }
 

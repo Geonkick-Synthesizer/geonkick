@@ -63,6 +63,12 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t env_index,
 				 double **buf,
 				 size_t *npoints);
+
+enum geonkick_error
+geonkick_envelope_get_points(struct geonkick *kick,
+				 double **buf,
+				 size_t *npoints);
+
 enum geonkick_error
 geonkick_remove_envelope_point(struct geonkick *kick,
 				enum geonkick_envelope_type type,

@@ -1,8 +1,8 @@
-#ifndef GKICK_OSCILLLATOR_ENVELOPE_H
-#define GKICK_OSCILLLATOR_ENVELOPE_H
+#ifndef GKICK_GENERAL_ENVELOPE_H
+#define GKICK_GENERAL_ENVELOPE_H
 
 /**
- * File name: oscillator_envelope.h
+ * File name: general_envelope.h
  * Project: GeonKick
  *
  * Copyright (C) 2017 Iurie Nistor
@@ -29,22 +29,22 @@
 
 class GKickOscillator;
 
-class OscillatorEnvelope: public GKickEnvelope
+class GeneralEnvelope: public GKickEnvelope
 {
   Q_OBJECT
 
  public:
 
-  OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc);
-  ~OscillatorEnvelope();
+  GeneralEnvelope(std::shared_ptr<GKickApi> &api);
+  ~GeneralEnvelope();
 
- protected:
+  protected;
   void pointEddedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;
   void pointRemovedEvent(unsigned int index) override;
 
  private:
-          std::shred_prt<GKickOscillator> oscillator;
+          std::shred_prt<GKickApi> gkickApi;
 };
 
 #endif

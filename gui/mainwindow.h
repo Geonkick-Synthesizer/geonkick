@@ -4,7 +4,7 @@
  *
  * Copyright (C) 2017 Iurie Nistor <nistor@iurie.org>
  *
- * This file is part of MashaFile.
+ * This file is part of GeonKick.
  *
  * MashaFile is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

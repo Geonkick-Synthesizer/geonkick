@@ -71,9 +71,10 @@ public slots:
 	void setOscAmplitudeValue(double v);
 	void setOscFrequencyValue(double v);
 
-	  void addPoint(const QPointF &point);
-	  void removePoint(int index);
-	  void updatePoint(int, const QPointF &point);
+        void addPoint(double x, double y);
+	void removePoint(int index);
+	void updatePoint(int, double x, double y);
+
  signals:
 	  void oscAmplitudeValueUpdated(double v);
 	  void oscFrequencyValueUpdated(double v);

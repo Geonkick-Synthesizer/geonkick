@@ -20,7 +20,7 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
         envelopes[GKickEnvelopeWidget::ENV_GNERAL] =
                 std::make_shared<GeneralEnvelope>(api);
 
-        currentEnvelope = envelopes[GKickEnvelopeWidget::ENV_GNERAL];
+        currentEnvelope = envelopes[GKickEnvelopeWidget::ENV_GENERAL];
 
         setLayout(new QVLayout(this));
 
@@ -29,7 +29,7 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
         layout()->addWidget(envelopeTitleLabel);
 
         // Create drawing area.
-        drawArea = new EnvelopeDrawingArea(currentEnvelope);
+        drawArea = new EnvelopeDrawingArea(this, currentEnvelope);
         layout()->addWidget(drawArea);
 
         // Create bottom area.
@@ -89,41 +89,4 @@ void GKickEnvelopeWidget::showFrequencyEnvelope()
         currentEnvelope->setEnvelopeType(GKickEnvelope::ENV_FRQUENCY);
         drawArea->update();
 }
-
-
-/*void OscillatorWidget::paintEvent(QPaintEvent *event)
-{
-        Q_UNUSED(event);
-        currentEnvelope->draw();
-}
-
-void
-OscillatorWidget::mousePressEvent(QMouseEvent *event)
-{
-        currentEnvelope->mousePressEvent(event);
-}
-
-void
-OscillatorWidget::mouseReleaseEvent(QMouseEvent *event)
-{
-        currentEnvelope->mouseReleaseEvent(event);
-}
-
-void
-OscillatorWidget::mouseDoubleClickEvent(QMouseEvent *event)
-{
-        currentEnvelope->mouseDoubleClickEvent(event);
-}
-
-void
-OscillatorWidget::mouseMoveEvent(QMouseEvent *event)
-{
-        currentEnvelope->mouseMoveEvent(event);
-}
-
-void OscillatorWidget::resizeEvent(QResizeEvent *event)
-{
-        Q_UNUSED(event);
-}
-*/
 

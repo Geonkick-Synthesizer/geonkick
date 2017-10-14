@@ -113,11 +113,44 @@ geonkick_start(struct geonkick *kick)
 }
 
 enum geonkick_error
+geonkick_envelope_get_points(struct geonkick *kick,
+				 double **buf,
+				 size_t *npoints)
+{
+        if (kick == NULL || buf == NULL || npoints == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR_NULL_POINTER;
+        }
+
+        *npoints = 0;
+        *buf = NULL;
+        geonkick_lock(kick);
+        gkick_envelope_get_points(kick->amp_envelope, buff, npoints);
+        geonkick_unlock(kick);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 geonkick_remove_envelope_point(struct geonkick *kick,
-                               enum geonkick_envelope_type type,
                                size_t index)
 {
-        return GEONKICK_OK;
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR_NULL_POINTER;
+        }
+
+        res = GEONKICK_OK;
+        geonkick_lock(kick);
+        if (kick->amp_envelope == NULL) {
+                gkick_log_error("envelope is not defined");
+                res = GEONKICK_ERROR_NULL_POINTER;
+        } else {
+                gkick_envelope_remove_point(kick->amp_envelope, index);
+        }
+        geonkick_unlock(kick);
+
+        return res;
 }
 
 enum geonkick_error

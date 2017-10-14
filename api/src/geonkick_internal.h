@@ -16,6 +16,8 @@ struct geonkick {
         struct gkick_jack *jack;
         int midi_in_enabled;
         int is_play;
+        gkick_envelope *amp_envelope;
+        gkick_filter *filer;
 };
 
 enum geonkick_error
