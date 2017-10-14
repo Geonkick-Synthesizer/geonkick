@@ -1,7 +1,7 @@
 #ifndef OSCILLATOR_WIDGET_H
 #define OSCILLATOR_WIDGET_H
 
-#include "gkickoscillator.h"
+#include "gkick_oscillator.h"
 #include "oscillator_envelope.h"
 
 #include <QWidget>
@@ -20,7 +20,9 @@ public:
            ENV_GENERAL
    };
 
-   GKickEnvelopeWidget(QWidget *parent, GKickOscillator *osc);
+   GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
+                                            std::shared_ptr<GKickApi> &api,
+                                            std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
    ~GKickEnvelopeWidget();
 
    void setOscillator(GKickOscillator *osc);

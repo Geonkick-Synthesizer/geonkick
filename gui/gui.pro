@@ -14,18 +14,18 @@ LIBS += -L../api/ -lgeonkick -ljack
 # Input
 HEADERS += globals.h \
            gkickapi.h \
-           gkickoscillator.h \
+           gkick_oscillator.h \
            envelope_point.h \
            oscillator_envelope.h \
            gkick_knob.h \
-           oscillator_widget.h \
+           gkick_envelope_widget.h \
            mainwindow.h
 SOURCES += envelope_point.cpp \
            gkickapi.cpp \
-           gkickoscillator.cpp \
+           gkick_oscillator.cpp \
            oscillator_envelope.cpp \
            gkick_knob.cpp \
-           oscillator_widget.cpp \
+           gkick_envelope_widget.cpp \
            mainwindow.cpp \
            main.cpp
 

@@ -44,7 +44,7 @@ class GKickApi: public QObject
         ~GKickApi();
         void setError(bool b);
         bool hasErrors(void);
-        std::vector<std::unique_ptr<GKickOscillator>> getOscillators(void);
+        std::vector<std::shared_ptr<GKickOscillator>> getOscillators(void);
         QPolygonF getOscEvelopePoints(int osc, int envelope);
         void addOscEnvelopePoint(int osc,
                                  int envelope,

@@ -1,5 +1,5 @@
 #include "gkickapi.h"
-#include "gkickoscillator.h"
+#include "gkick_oscillator.h"
 #include <memory>
 
 #include <geonkick.h>

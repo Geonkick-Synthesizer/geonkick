@@ -30,16 +30,19 @@
 #include <QObject>
 #include <QPainter>
 
+#include <memory>
+
 class GKickEnvelope: public QObject
 {
   Q_OBJECT
 
-  enum EnvelopeType {
-          ENV_TYPE_AMPLITUDE = 0,
-          ENV_TYPE_FREQUENCY = 1
-  };
-
  public:
+
+        enum EnvelopeType {
+                ENV_TYPE_AMPLITUDE = 0,
+                ENV_TYPE_FREQUENCY = 1
+        };
+
 
 	GKickEnvelope();
 	virtual ~GKickEnvelope();
@@ -52,20 +55,20 @@ class GKickEnvelope: public QObject
         double getRightPointLimit(void);
         void addPoint(QPointF point);
         void removePoint(QPointF point);
-        //void setXRatio(double k);
-        //void setYRatio(double k);
-        //QPointF scaleUp(QPointF point);
-        //QPointF scaleDown(QPointF point);
-        //QPointF getOriginPoint(void);
-        //double getEnvelopeLenth(void);
-        //double getEnvelopeHeight(void);
-        //double getKickLength(void);
+        void setXRatio(double k);
+        void setYRatio(double k);
+        QPointF scaleUp(QPointF point);
+        QPointF scaleDown(QPointF point);
+        QPointF getOriginPoint(void);
+        double getEnvelopeLenth(void);
+        double getEnvelopeHeight(void);
+        double getKickLength(void);
         void setType(EnvelopeType type);
         EnvelopeType getType();
-        //        double getEnvelopeValue(void);
+        double getEnvelopeValue(void);
 
  protected:
-        virtual void pointEddedEvent(double x, double y) {}
+        virtual void pointEditedEvent(double x, double y) {}
         virtual void pointUpdatedEvent(unsigned int index, double x, double y) {}
         virtual void pointRemovedEvent(unsigned int index) {}
         void addEnvelopePoints(QPolygonF points);
@@ -76,8 +79,8 @@ class GKickEnvelope: public QObject
  private:
 
         bool isActive;
-        QVector<std::shared_ptr<GkickEnvelopePoint>> envelopePoints;
-        std::shared_ptr<std::GKickEnvelopePoint> selectedPoint;
+        QVector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
+        std::shared_ptr<GKickEnvelopePoint> selectedPoint;
         EnvelopeType envelopeType;
 };
 

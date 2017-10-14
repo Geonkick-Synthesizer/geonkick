@@ -27,6 +27,8 @@
 
 #include "gkick_envelope.h"
 
+#include <memory>
+
 class GKickOscillator;
 
 class OscillatorEnvelope: public GKickEnvelope
@@ -39,12 +41,12 @@ class OscillatorEnvelope: public GKickEnvelope
   ~OscillatorEnvelope();
 
  protected:
-  void pointEddedEvent(double x, double y) override;
+  void pointEditedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;
   void pointRemovedEvent(unsigned int index) override;
 
  private:
-          std::shred_prt<GKickOscillator> oscillator;
+          std::shared_ptr<GKickOscillator> oscillator;
 };
 
 #endif

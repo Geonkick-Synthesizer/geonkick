@@ -28,15 +28,15 @@
 #include <QPointF>
 #include <QPainter>
 
-class OscillatorEnvelope;
+class GKickEnvelope;
 
-class OscillatorEnvelopePoint : public QPointF
+class GKickEnvelopePoint : public QPointF
 {
  public:
-	OscillatorEnvelopePoint(void);
-	OscillatorEnvelopePoint(OscillatorEnvelope *parent, const QPointF &point);
-	OscillatorEnvelopePoint(OscillatorEnvelope *parent, double x, double y);
-	virtual ~OscillatorEnvelopePoint();
+	GKickEnvelopePoint(void);
+	GKickEnvelopePoint(GKickEnvelope *parent, const QPointF &point);
+	GKickEnvelopePoint(GKickEnvelope *parent, double x, double y);
+	virtual ~GKickEnvelopePoint();
 	void draw(QPainter &painter);
 	bool isSelected(void);
 	bool hasPoint(const QPointF &point);
@@ -45,7 +45,7 @@ class OscillatorEnvelopePoint : public QPointF
 	double radius(void);
 	double getDotRadius(void);
 	QString valueType(void);
-	
+
  protected:
 	QPointF scaleUp(QPointF point);
 	QString pointText(void);
@@ -53,12 +53,11 @@ class OscillatorEnvelopePoint : public QPointF
 	QString pointFrequencyText(void);
 	QString getTimeTextValue(void);
 
-	
  private:
 	bool is_selected;
 	double pointRadius;
 	double dotRadius;
-	OscillatorEnvelope *parentEnvelope;
+	GKickEnvelope *parentEnvelope;
 };
 
 #endif

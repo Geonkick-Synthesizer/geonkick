@@ -34,14 +34,14 @@ OscillatorEnvelope::~OscillatorEnvelope()
 {
 }
 
-void OscillatorEnvelope::pointEddedEvent(double x, double y)
+void OscillatorEnvelope::pointEditedEvent(double x, double y)
 {
         oscillator->addPoint(x, y);
 }
 
 void OscillatorEnvelope::pointUpdatedEvent(unsigned int index, double x, double y)
 {
-        updatePoint(index, x, y);
+        oscillator->updatePoint(index, x, y);
 }
 
 void OscillatorEnvelope::pointRemovedEvent(unsigned int index)

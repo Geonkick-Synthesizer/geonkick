@@ -1,9 +1,9 @@
 #include "envelope_point.h"
-#include "oscillator_envelope.h"
+#include "gkick_envelope.h"
 
 #include <QDebug>
 
-OscillatorEnvelopePoint::OscillatorEnvelopePoint(void)
+GKickEnvelopePoint::GKickEnvelopePoint(void)
 	: QPointF(),
 	  is_selected(false),
 	  pointRadius(7),
@@ -13,7 +13,7 @@ OscillatorEnvelopePoint::OscillatorEnvelopePoint(void)
 {
 }
 
-OscillatorEnvelopePoint::OscillatorEnvelopePoint(OscillatorEnvelope *parent,
+GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
 						 const QPointF &point)
 	: QPointF(point),
 	  is_selected(false),
@@ -23,7 +23,7 @@ OscillatorEnvelopePoint::OscillatorEnvelopePoint(OscillatorEnvelope *parent,
 {
 }
 
-OscillatorEnvelopePoint::OscillatorEnvelopePoint(OscillatorEnvelope *parent,
+GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
 						 double x, double y)
 	: QPointF(x, y),
 	  is_selected(false),
@@ -34,11 +34,11 @@ OscillatorEnvelopePoint::OscillatorEnvelopePoint(OscillatorEnvelope *parent,
 {
 }
 
-OscillatorEnvelopePoint::~OscillatorEnvelopePoint()
+GKickEnvelopePoint::~GKickEnvelopePoint()
 {
 }
 
-void OscillatorEnvelopePoint::draw(QPainter &painter)
+void GKickEnvelopePoint::draw(QPainter &painter)
 {
 	QPen pen;
 	if (isSelected()) {
@@ -68,37 +68,37 @@ void OscillatorEnvelopePoint::draw(QPainter &painter)
 	painter.drawEllipse(rect);
 }
 
-QPointF OscillatorEnvelopePoint::scaleUp(QPointF point)
+QPointF GKickEnvelopePoint::scaleUp(QPointF point)
 {
   return parentEnvelope->scaleUp(point);
 }
 
-double OscillatorEnvelopePoint::radius(void)
+double GKickEnvelopePoint::radius(void)
 {
 	return pointRadius;
 }
 
-double OscillatorEnvelopePoint::getDotRadius(void)
+double GKickEnvelopePoint::getDotRadius(void)
 {
 	return dotRadius;
 }
 
-bool OscillatorEnvelopePoint::isSelected(void)
+bool GKickEnvelopePoint::isSelected(void)
 {
 	return is_selected;
 }
 
-void OscillatorEnvelopePoint::selectPoint(void)
+void GKickEnvelopePoint::selectPoint(void)
 {
 	is_selected = true;
 }
 
-void OscillatorEnvelopePoint::unselectPoint(void)
+void GKickEnvelopePoint::unselectPoint(void)
 {
 	is_selected = false;
 }
 
-bool OscillatorEnvelopePoint::hasPoint(const QPointF &point)
+bool GKickEnvelopePoint::hasPoint(const QPointF &point)
 {
 	double px = point.x();
 	double py = point.y();
@@ -113,24 +113,24 @@ bool OscillatorEnvelopePoint::hasPoint(const QPointF &point)
 	return false;
 }
 
-QString OscillatorEnvelopePoint::pointText(void)
+QString GKickEnvelopePoint::pointText(void)
 {
-	if (parentEnvelope->getType() == OscillatorEnvelope::OSC_ENV_AMPLITUDE) {
+	if (parentEnvelope->getType() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
 		return pointAmplitudeText();
-	} else if (parentEnvelope->getType() == OscillatorEnvelope::OSC_ENV_FREQUENCY) {
+	} else if (parentEnvelope->getType() == GKickEnvelope::ENV_TYPE_FREQUENCY) {
 		return pointFrequencyText();
 	}
 
 	return "";
 }
 
-QString OscillatorEnvelopePoint::pointAmplitudeText(void)
+QString GKickEnvelopePoint::pointAmplitudeText(void)
 {
 	QString text = QString::number(parentEnvelope->getEnvelopeValue() * y(), 'f', 3);
 	return text;
 }
 
-QString OscillatorEnvelopePoint::pointFrequencyText(void)
+QString GKickEnvelopePoint::pointFrequencyText(void)
 {
 	double v = parentEnvelope->getEnvelopeValue() * y();
 
@@ -145,7 +145,7 @@ QString OscillatorEnvelopePoint::pointFrequencyText(void)
 	return textVal;
 }
 
-QString OscillatorEnvelopePoint::getTimeTextValue(void)
+QString GKickEnvelopePoint::getTimeTextValue(void)
 {
 	return QString::number((parentEnvelope->getKickLength() * x()) * 1000, 'f', 0) + " ms";
 }
