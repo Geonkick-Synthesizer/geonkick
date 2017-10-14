@@ -28,6 +28,8 @@
 #include <QPointF>
 #include <QPainter>
 
+#include "globals.h"
+
 class GKickEnvelope;
 
 class GKickEnvelopePoint : public QPointF

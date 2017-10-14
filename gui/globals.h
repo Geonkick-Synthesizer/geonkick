@@ -2,6 +2,7 @@
 #define SOUNDSPEC_GLOBALS_H
 
 #include <QString>
+#include <QDebug>
 
 #include <memory>
 

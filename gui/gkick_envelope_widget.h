@@ -8,6 +8,8 @@
 #include <QVector>
 #include <QMouseEvent>
 
+class EnvelopeDrawingArea;
+
 class GKickEnvelopeWidget : public QWidget
 {
    Q_OBJECT
@@ -20,45 +22,30 @@ public:
            ENV_GENERAL
    };
 
-   GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
-                                            std::shared_ptr<GKickApi> &api,
-                                            std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
+   GKickEnvelopeWidget(QWidget *parent,
+                       std::shared_ptr<GKickApi> &api,
+                       std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
    ~GKickEnvelopeWidget();
 
-   void setOscillator(GKickOscillator *osc);
-   double getKickLength(void);
-
-   public slots:
-           void viewEnvelope(EnvelopeType type);
-	   /*void setAmplitudeEnvelope(void);
-	   void setFrequencyEnvelope(void);
-	   void updateKickLength(double v);
-	   void setEnvelopeAmplitudeValue(double v);
-	   void setEnvelopeFrequencyValue(double v);*/
-
  protected:
-     void drawAxes(void);
-     void drawEnvelope(void);
      void paintEvent(QPaintEvent *event);
-     void recalculateOrigin(void);
      void mousePressEvent(QMouseEvent *event);
      void mouseReleaseEvent(QMouseEvent *event);
      void mouseMoveEvent(QMouseEvent *event);
      void mouseDoubleClickEvent(QMouseEvent *event);
-     void resizeEvent(QResizeEvent *event);
-     void connectOscillator(void);
-     void disconnectOscillator(void);
-     void calculateRatio(void);
 
  private:
-     GKickOscillator* kickOscillator;
-     QPainter widgetPainter;
-     OscillatorEnvelope oscEnvelope;
+     std::shared_ptr<GKickEnvelope> currentEnvelope;
+     std::vector<std::shared_ptr<GKickEnvelope>> envelopes;
+     QLabel *envelopeTitleLabel;
+     EnvelopeDrawingArea *drawArea;
+     QPushButton *showAmplitudeEnvButton;
+     QPushButton *showFrequencyEnvButton;
+
      int xPadding;
      int yPadding;
      QPointF originPoint;
      QPointF mousePoint;
-     double kickLength;
 };
 
 #endif

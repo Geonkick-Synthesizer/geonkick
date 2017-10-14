@@ -202,3 +202,19 @@ double GKickApi::getOscFrequencyValue(int oscillatorIndex)
 
 	return v;
 }
+
+void GKickApi::addEnvelopePoint(double x, double y)
+{
+        qDebug() << __PRETTY_FUNCTION__ << "x: " << x << ", y : " << y;
+}
+
+void GKickApi::updateEnvelopePoint(unsigned int index, double x, double y)
+{
+        qDebug() << __PRETTY_FUNCTION__ << "index: " << index << ", x: " << x << ", y : " << y;
+}
+
+void GKickApi::removeEnvelopePoint(unsigned int index)
+{
+        qDebug() << __PRETTY_FUNCTION__ << "index: " << index;
+}
+

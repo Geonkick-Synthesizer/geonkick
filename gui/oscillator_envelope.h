@@ -41,7 +41,7 @@ class OscillatorEnvelope: public GKickEnvelope
   ~OscillatorEnvelope();
 
  protected:
-  void pointEditedEvent(double x, double y) override;
+  void pointAddedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;
   void pointRemovedEvent(unsigned int index) override;
 

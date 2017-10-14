@@ -34,7 +34,7 @@ OscillatorEnvelope::~OscillatorEnvelope()
 {
 }
 
-void OscillatorEnvelope::pointEditedEvent(double x, double y)
+void OscillatorEnvelope::pointAddedEvent(double x, double y)
 {
         oscillator->addPoint(x, y);
 }

@@ -1,15 +1,22 @@
 #include "gkick_envelope_widget.h"
+#include "general_envelope.h"
+#include "envelope_draw_area.h"
 
 #include <QPainter>
 #include <QPolygonF>
 #include <QPainterPath>
-#include <QDebug>
+#include <QVBoxLayout>
 
 GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
                                          std::shared_ptr<GKickApi> &api,
                                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
 	: QWidget(parent),
-	  envelopes(4)
+	  envelopes(4),
+          envelopeTitleLabel(NULL),
+          drawArea(NULL),
+          showAmplitudeEnvButton(NULL);
+          showFrequencyEnvButton(NULL);
+
 {
         envelopes[GKickEnvelopeWidget::ENV_OSC_1] =
                 std::make_shared<OscillatorEnvelope>(oscillators[GKickOscillator::OSC_1]);
@@ -17,12 +24,12 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
                 std::make_shared<OscillatorEnvelope>(oscillators[GKickOscillator::OSC_2]);
         envelopes[GKickEnvelopeWidget::ENV_NOISE] =
                 std::make_shared<OscillatorEnvelope>(oscillators[GKickOscillator::OSC_NOISE]);
-        envelopes[GKickEnvelopeWidget::ENV_GNERAL] =
+        envelopes[GKickEnvelopeWidget::ENV_GENERAL] =
                 std::make_shared<GeneralEnvelope>(api);
 
         currentEnvelope = envelopes[GKickEnvelopeWidget::ENV_GENERAL];
 
-        setLayout(new QVLayout(this));
+        setLayout(new QVBoxLayout(this));
 
         // Create top area.
         envelopeTitleLabel = new QLabel(currentEnvelope->name(), this);
@@ -35,8 +42,8 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
         // Create bottom area.
         showAmplitudeEnvButton = new QPushButton(tr("AMPL"), this);
         showFrequencyEnvButton = new QPushButton(tr("FREQ"), this);
-        connect(showAmplitudeEnvButton, SIGNAL(checked(), this, showAmplitudeEnvelope()));
-        connect(showFrequencyEnvButton, SIGNAL(checked(), this, showFrequencyEnvelope()));
+        connect(showAmplitudeEnvButton, SIGNAL(checked()), this, SLOT(showAmplitudeEnvelope()));
+        connect(showFrequencyEnvButton, SIGNAL(checked()), this, SLOT(showFrequencyEnvelope()));
         QHLayout *buttomAreaLayout = new QHLayout(this);
         buttomAreaLayout->addWidget(showAmplitudeEnvButton);
         buttomAreaLayout->addWidget(showFrequencyEnvButton);

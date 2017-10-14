@@ -28,6 +28,7 @@
 #include "gkick_envelope.h"
 
 class GKickOscillator;
+class GKickApi;
 
 class GeneralEnvelope: public GKickEnvelope
 {
@@ -38,13 +39,13 @@ class GeneralEnvelope: public GKickEnvelope
   GeneralEnvelope(std::shared_ptr<GKickApi> &api);
   ~GeneralEnvelope();
 
-  protected;
-  void pointEddedEvent(double x, double y) override;
+ protected:
+  void pointAddedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;
   void pointRemovedEvent(unsigned int index) override;
 
  private:
-          std::shred_prt<GKickApi> gkickApi;
+          std::shared_ptr<GKickApi> gkickApi;
 };
 
 #endif

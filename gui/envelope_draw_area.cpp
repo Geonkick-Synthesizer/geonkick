@@ -21,6 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#include "envelope_draw_area.h"
+
 EnvelopeDrawingArea::EnvelopeDrawingArea(QWidget *parent,
                                          std::shared_ptr<GKickEnvelope> &envelope)
         : QWidget(parent),

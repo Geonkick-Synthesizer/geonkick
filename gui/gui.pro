@@ -17,6 +17,8 @@ HEADERS += globals.h \
            gkick_oscillator.h \
            envelope_point.h \
            oscillator_envelope.h \
+           general_envelope.h \
+           envelope_draw_area.h \
            gkick_knob.h \
            gkick_envelope_widget.h \
            mainwindow.h
@@ -24,6 +26,8 @@ SOURCES += envelope_point.cpp \
            gkickapi.cpp \
            gkick_oscillator.cpp \
            oscillator_envelope.cpp \
+           general_envelope.cpp \
+           envelope_draw_area.cpp \
            gkick_knob.cpp \
            gkick_envelope_widget.cpp \
            mainwindow.cpp \

@@ -68,7 +68,7 @@ class GKickEnvelope: public QObject
         double getEnvelopeValue(void);
 
  protected:
-        virtual void pointEditedEvent(double x, double y) {}
+        virtual void pointAddedEvent(double x, double y) {}
         virtual void pointUpdatedEvent(unsigned int index, double x, double y) {}
         virtual void pointRemovedEvent(unsigned int index) {}
         void addEnvelopePoints(QPolygonF points);

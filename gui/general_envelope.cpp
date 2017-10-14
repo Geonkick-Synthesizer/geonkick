@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "oscillator_envelope.h"
+#include "general_envelope.h"
 #include "gkick_oscillator.h"
 
 GeneralEnvelope::GeneralEnvelope(std::shared_ptr<GKickApi> &api)
@@ -34,7 +34,7 @@ GeneralEnvelope::~GeneralEnvelope()
 {
 }
 
-void GeneralEnvelope::pointEddedEvent(double x, double y)
+void GeneralEnvelope::pointAddedEvent(double x, double y)
 {
         gkickApi->addEnvelopePoint(x, y);
 }
