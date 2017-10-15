@@ -9,18 +9,13 @@
 #include <QMouseEvent>
 
 class EnvelopeDrawingArea;
+class QLabel;
+class QPushButton;
 
 class GKickEnvelopeWidget : public QWidget
 {
    Q_OBJECT
 public:
-
-   enum EnvelopeType {
-           ENV_OSC_1,
-           ENV_OSC_2,
-           ENV_NOISE,
-           ENV_GENERAL
-   };
 
    GKickEnvelopeWidget(QWidget *parent,
                        std::shared_ptr<GKickApi> &api,
@@ -28,11 +23,15 @@ public:
    ~GKickEnvelopeWidget();
 
  protected:
+     void updateButtonArea();
      void paintEvent(QPaintEvent *event);
      void mousePressEvent(QMouseEvent *event);
      void mouseReleaseEvent(QMouseEvent *event);
      void mouseMoveEvent(QMouseEvent *event);
      void mouseDoubleClickEvent(QMouseEvent *event);
+     void viewEnvelope(GKickEnvelope::EnvelopeType type);
+     void showAmplitudeEnvelope();
+     void showFrequencyEnvelope();
 
  private:
      std::shared_ptr<GKickEnvelope> currentEnvelope;
@@ -41,7 +40,6 @@ public:
      EnvelopeDrawingArea *drawArea;
      QPushButton *showAmplitudeEnvButton;
      QPushButton *showFrequencyEnvButton;
-
      int xPadding;
      int yPadding;
      QPointF originPoint;

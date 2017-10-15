@@ -34,7 +34,7 @@ class EnvelopesGroupBox: public ControlGroupBox
          EnvelopesGroupBox(QWidget *widget);
          ~EnvelopesGroupBox();
  signals:
-        void viewEnvelope(GKickEnvelopeWidget::EnvelopeType type);
+        void viewEnvelope(GKickEnvelope::EnvelopeType type);
 };
 
 #endif

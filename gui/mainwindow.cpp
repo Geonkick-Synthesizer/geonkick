@@ -26,6 +26,7 @@
 #include "envelopes_group_box.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
+#include "control_area.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -33,6 +34,8 @@
 #include <QToolBar>
 #include <QAction>
 #include <QDebug>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 MainWindow::MainWindow() :
         gkickApi(std::make_shared<GKickApi>())
@@ -49,8 +52,8 @@ bool MainWindow::init(void)
                 return false;
         }
 
-        gkickApi->setMaxLength(1.5)
-        gkickApi->setLength(0.25);
+        gkickApi->setMaxLength(1.5);
+        gkickApi->setKickLength(0.25);
         gkickApi->setAmplitude(1);
         gkickApi->setKickFilterFrequency(0);
         oscillators = gkickApi.get()->getOscillators();
@@ -78,18 +81,18 @@ bool MainWindow::init(void)
         centralWidget()->layout()->addWidget(envelopeWidget);
 
         // Create control area.
-        QWidget *controlAreaWidget = new ControlArea(centralWidget());
+        /*        QWidget *controlAreaWidget = new ControlArea(centralWidget());
         centralWidget()->layout()->addWidget(controlAreaWidget);
 
         centralWidget()->layout()->setStretchFactor(controlAreaWidget, 1);
-        centralWidget()->layout()->setStretchFactor(oscillatorWidget, 2);
+        centralWidget()->layout()->setStretchFactor(oscillatorWidget, 2);*/
 
         return true;
 }
 
 void MainWindow::createControlArea(QWidget *controlAreaWidget)
 {
-        envelopeGroupBox = new EnvelopesGroupBox(controlAreaWidget);
+        /*        envelopeGroupBox = new EnvelopesGroupBox(controlAreaWidget);
         connect(envelopeGroupBox, SIGNAL(viewEnvelope(GKickEnvelopeWidget::EnvelopeType)),
                 envelopeWidget, SLOT(viewEnvelope(GKickEnvelopeWidget::EnvelopeType)));
 
@@ -100,5 +103,5 @@ void MainWindow::createControlArea(QWidget *controlAreaWidget)
                                                                       oscillators[GkickOscillator::OSC_2]));
         controlAreaWidget->layout()->addWidget(new NoiseGroupBox(controlAreaWidget,
                                                                  oscillators[GkickOscillator::OSC_NOISE]));
-        controlAreaWidget->layout()->addWidget(new GenralSettingGroupBox(controlAreaWidget, gkickApi));
+                                                                 controlAreaWidget->layout()->addWidget(new GenralSettingGroupBox(controlAreaWidget, gkickApi));*/
 }

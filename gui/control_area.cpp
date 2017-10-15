@@ -21,19 +21,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "gkickoscillator.h"
+#include "gkick_oscillator.h"
 #include "control_area.h"
+#include "envelopes_group_box.h"
+#include "oscillator_group_box.h"
+#include "general_group_box.h"
+
+#include <QHBoxLayout>
 
 ControlArea::ControlArea(QWidget *parent)
         : QWidget(parent)
 {
         setMaximumHeight(200);
         setLayout(new QHBoxLayout);
-        layout()->addWidget(new EnvelopesGroupBox(this));
+        /*        layout()->addWidget(new EnvelopesGroupBox(this));
         layout()->addWidget(new OscillatorGroupBox(this, GKickOscillator::OSC_1));
         layout()->addWidget(new OscillatorGroupBox(this, GKickOscillator::OSC_2));
-        layout()->addWidget(new NoiseGroupBox(this));
-        layout()->addWidget(new GenralSettingGroupBox(this));
+        layout()->addWidget(new OscillatorGroupBox(this, GKickOscillator::OSC_NOISE));
+        layout()->addWidget(new GenralSettingGroupBox(this));*/
 }
 
 ControlArea::~ControlArea()

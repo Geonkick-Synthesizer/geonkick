@@ -1,4 +1,3 @@
-#include "oscillator_widget.h"
 #include "gkickapi.h"
 #include "mainwindow.h"
 

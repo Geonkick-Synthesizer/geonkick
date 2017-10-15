@@ -21,51 +21,58 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "oscillator_group_box.h"
+#include "general_group_box.h"
+#include "gkick_knob.h"
+#include "gkickapi.h"
 
-OscillatorGroupBox::OscillatorGroupBox(QWidget *parent, std::shared_prt<GKickApi> &api)
+#include <QGroupBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
+GeneralGroupBox::GeneralGroupBox(QWidget *parent, std::shared_ptr<GKickApi> &api)
         : ControlGroupBox(tr("General"), parent),
-          kickApi(osc)
+          kickApi(api)
 {
-        GKickKnob *kickLengthKnob = new GKickKnob(envelope, tr("Length"));
-        kickLengthKnob->setMaxValue(kickApi->getKickMaxLength());
-        kickLengthKnob->setCurrentValue(kickApi->getKicktLength());
+        GKickKnob *kickLengthKnob = new GKickKnob(this, tr("Length"));
+        kickLengthKnob->setMaxValue(kickApi->getMaxLength());
+        kickLengthKnob->setCurrentValue(kickApi->getKickLength());
         layout()->addWidget(kickLengthKnob);
         connect(kickLengthKnob, SIGNAL(valueUpdated(double)),
-                kickApi, SLOT(setKickLengthValue(double)));
+                kickApi.get(), SLOT(setKickLengthValue(double)));
 
-        GKickKnob *kickAmplitudeKnob = new GKickKnob(envelope, tr("Amplitute"));
+        GKickKnob *kickAmplitudeKnob = new GKickKnob(this, tr("Amplitute"));
         kickAmplitudeKnob->setMaxValue(1);
-        kickAmplitudeKnob->setCurrentValue(kickApi->getKickAmplitudeValue());
+        kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
         layout()->addWidget(kickAmplitudeKnob);
         connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
-                kickApi, SLOT(setKickAmplitudeValue(double)));
+                        kickApi.get(), SLOT(setAmplitude(double)));
 
 
         createFilterGroupBox();
 }
 
-EnvelopesGroupBox::~EnvelopesGroupBox()
+GeneralGroupBox::~GeneralGroupBox()
 {
 }
 
-void EnvelopesGroupBox::createFilterGroupBox()
+void GeneralGroupBox::createFilterGroupBox()
 {
         QGroupBox *filterGroupBox = new QGroupBox(tr("Filter"), this);
-        QVLayout *filterGroupBoxLayout = new QVLayout();
-        filterGroupBox->setLayout(envelopeGroupBoxLayout);
+        QVBoxLayout *filterGroupBoxLayout = new QVBoxLayout();
+        filterGroupBox->setLayout(filterGroupBoxLayout);
         layout()->addWidget(filterGroupBox);
 
         // Create filter type group box.
-        QGrouoBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);
+/*        QGroupBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);
         filterTypeCb = new QComboBox(filterTypeGroupBox);
         filterTypeCb->addItem(tr("Low pass"));
         filterTypeCb->addItem(tr("Hight pass"));
         filterTypeGroupBox->layout()->addWiget(filterTypeCb);
+        filterGroupBox->layout()->addWiget(filterTypeGroupBox);
 
         // Create filter knobs gorup box.
         QGroupBox *filterKnobsGroupBox = new QGroupBox(filterGroupBox);
-        QHlayout *filterKnobsGroupBoxLayout = new QHLayout();
+        QHBoxLayout *filterKnobsGroupBoxLayout = new QHLayout();
         filterKnobsGroupBox->setLayout(filterKnobsGroupBox);
         GKickKnob *filterFrequencyKnob = new GKickKnob(oscillatorGroupBox, tr("Frequency"));
         GKickKnob *filterQKnob = new GKickKnob(oscillatorGroupBox, tr("Q"));
@@ -77,7 +84,8 @@ void EnvelopesGroupBox::createFilterGroupBox()
         filterKnobsGroupBoxLayout->addWidget(filterQKnob);
 
         connect(filterFrequencyKnob, SIGNAL(valueUpdated(double)),
-                kickApi, SLOT(setKickFilterFrequency(double)));
+                kickApi.get(), SLOT(setKickFilterFrequency(double)));
         connect(filterQKnob, SIGNAL(valueUpdated(double)),
-                kickApi, SLOT(setKickFilterQFactor(double)));
+                kickApi.get(), SLOT(setKickFilterQFactor(double)));
+*/
 }

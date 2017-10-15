@@ -43,8 +43,8 @@ std::vector<std::shared_ptr<GKickOscillator>> GKickApi::getOscillators(void)
 
         int n = geonkick_get_oscillators_number(gKickApi);
         for (int i = 0; i < n; i++) {
-                std::shared_ptr<GKickOscillator> osc = std::make_shared<GKickOscillator>(this, i);
-                osc->setOscillatorIndex(i);
+                std::shared_ptr<GKickOscillator> osc;
+                osc = std::make_shared<GKickOscillator>(this, (GKickOscillator::OscillatorType)i);
                 oscillators.push_back(osc);
         }
 
@@ -139,6 +139,23 @@ double GKickApi::getKickLength(void)
         double len = 0.0;
         geonkick_get_length(gKickApi, &len);
         return len;
+}
+
+void GKickApi::setMaxLength(double len)
+{
+}
+
+void GKickApi::setAmplitude(double val)
+{
+}
+
+double GKickApi::getAmplitude()
+{
+        return 1.0;
+}
+
+void GKickApi::setKickFilterFrequency(double f)
+{
 }
 
 bool GKickApi::setOscAmplitudeValue(int oscillatorIndex, double v)

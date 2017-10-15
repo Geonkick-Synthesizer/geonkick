@@ -22,13 +22,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "oscillator_widget.h"
+#include "gkick_oscillator.h"
 #include "oscillator_envelope.h"
 #include <QDebug>
 
 GKickEnvelope::GKickEnvelope(QWidget *parent)
         : parentWidget(parent),
+          name("GKickEnvelope")
+          envelopeType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
+          envelopeCategory(GKickEnvelope::ENV_CATEGORY_GENERAL);
 {
+
 }
 
 GKickEnvelope::~GKickEnvelope()
@@ -289,7 +293,22 @@ void GKickEnvelope::setType(GKickEnvelope::EnvelopeType type)
 	envelopeType = type;
 }
 
-GKickEnvelope::EnvelopeType GKickEnvelope::getType(void)
+GKickEnvelope::EnvelopeType GKickEnvelope::type(void)
 {
 	return envelopeType;
+}
+
+void GKickEnvelope::setCategory(GKickEnvelope::EnvelopeCategory cat)
+{
+	envelopeCategory = cat;
+}
+
+GKickEnvelope::EnvelopeCategory GKickEnvelope::category(void)
+{
+	return envelopeCategory;
+}
+
+QString GKickEnvelope::name(void)
+{
+        return envelopeName;
 }

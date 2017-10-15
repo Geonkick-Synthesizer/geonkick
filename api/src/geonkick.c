@@ -112,7 +112,7 @@ geonkick_start(struct geonkick *kick)
         return GEONKICK_OK;
 }
 
-enum geonkick_error
+/*enum geonkick_error
 geonkick_envelope_get_points(struct geonkick *kick,
 				 double **buf,
 				 size_t *npoints)
@@ -129,9 +129,9 @@ geonkick_envelope_get_points(struct geonkick *kick,
         geonkick_unlock(kick);
 
         return GEONKICK_OK;
-}
+        }*/
 
-enum geonkick_error
+/*enum geonkick_error
 geonkick_remove_envelope_point(struct geonkick *kick,
                                size_t index)
 {
@@ -151,7 +151,7 @@ geonkick_remove_envelope_point(struct geonkick *kick,
         geonkick_unlock(kick);
 
         return res;
-}
+        }*/
 
 enum geonkick_error
 geonkick_osc_envelope_add_point(struct geonkick *kick,

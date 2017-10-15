@@ -24,20 +24,26 @@
 #ifndef GKICK_GENERAL_GROUP_BOX_H
 #define GKICK_GENERAL_GROUP_BOX_H
 
-#include "gkickoscillator.h"
+#include "gkick_oscillator.h"
 #include "control_group_box.h"
 
 class GkickOscillator;
+class QComboBox;
+class GKickApi;
 
 class GeneralGroupBox: public ControlGroupBox
 {
         Q_OBJECT
  public:
-        GeneralGroupBox(QWidget *widget, std::shared_prt<GKickOscillator> &osc);
+        GeneralGroupBox(QWidget *widget, std::shared_ptr<GKickApi> &osc);
         ~GeneralGroupBox();
 
+ protected:
+        void createFilterGroupBox();
+
  private:
-        std::shared_prt<GKickOscillator> oscillator;
+        std::shared_ptr<GKickApi> kickApi;
+        QComboBox *filterTypeCb;
 };
 
 #endif

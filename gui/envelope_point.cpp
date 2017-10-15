@@ -115,9 +115,9 @@ bool GKickEnvelopePoint::hasPoint(const QPointF &point)
 
 QString GKickEnvelopePoint::pointText(void)
 {
-	if (parentEnvelope->getType() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+	if (parentEnvelope->type() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
 		return pointAmplitudeText();
-	} else if (parentEnvelope->getType() == GKickEnvelope::ENV_TYPE_FREQUENCY) {
+	} else if (parentEnvelope->type() == GKickEnvelope::ENV_TYPE_FREQUENCY) {
 		return pointFrequencyText();
 	}
 

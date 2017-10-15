@@ -24,18 +24,18 @@
 #ifndef GKICK_OSCILLATOR_GROUP_BOX_H
 #define GKICK_OSCILLATOR_GROUP_BOX_H
 
-#include "gkickoscillator.h"
+#include "gkick_oscillator.h"
 #include "control_group_box.h"
 
-class GkickOscillator;
+class GKickOscillator;
+class QComboBox;
 
 class OscillatorGroupBox: public ControlGroupBox
 {
         Q_OBJECT
  public:
-        EnvelopesGroupBox(QWidget *widget,
-        GKickOscillator::OscillatorType type = GKickOscillator::OSC_1);
-        ~EnvelopesGroupBox();
+        OscillatorGroupBox(QWidget *parent, std::shared_ptr<GKickOscillator> &osc);
+        ~OscillatorGroupBox();
  signals:
         void oscillatorFunctionChanged(int index);
 
@@ -45,7 +45,9 @@ class OscillatorGroupBox: public ControlGroupBox
         void createFilterGroupBox();
 
  private:
-        std::shared_prt<GKickOscillator> oscillator;
+        std::shared_ptr<GKickOscillator> oscillator;
+        QComboBox *waveFunctionCb;
+        QComboBox *filterTypeCb;
 };
 
 #endif

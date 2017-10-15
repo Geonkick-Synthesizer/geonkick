@@ -6,29 +6,33 @@
 #include <QPolygonF>
 #include <QPainterPath>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include <QLabel>
 
 GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
                                          std::shared_ptr<GKickApi> &api,
                                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
 	: QWidget(parent),
-	  envelopes(4),
+	  envelopes(5),
           envelopeTitleLabel(NULL),
           drawArea(NULL),
-          showAmplitudeEnvButton(NULL);
-          showFrequencyEnvButton(NULL);
+          showAmplitudeEnvButton(NULL),
+          showFrequencyEnvButton(NULL)
 
 {
-        envelopes[GKickEnvelopeWidget::ENV_OSC_1] =
+        envelopes[GKickEnvelope::ENV_CATEGORY_OSC_1] =
                 std::make_shared<OscillatorEnvelope>(oscillators[GKickOscillator::OSC_1]);
-        envelopes[GKickEnvelopeWidget::ENV_OSC_2] =
+        envelopes[GKickEnvelope::ENV_CATEGORY_OSC_2] =
                 std::make_shared<OscillatorEnvelope>(oscillators[GKickOscillator::OSC_2]);
-        envelopes[GKickEnvelopeWidget::ENV_NOISE] =
+        envelopes[GKickEnvelope::ENV_CATEGORY_NOISE] =
                 std::make_shared<OscillatorEnvelope>(oscillators[GKickOscillator::OSC_NOISE]);
-        envelopes[GKickEnvelopeWidget::ENV_GENERAL] =
+        envelopes[GKickEnvelope::ENV_CATEGORY_GENERAL] =
                 std::make_shared<GeneralEnvelope>(api);
 
-        currentEnvelope = envelopes[GKickEnvelopeWidget::ENV_GENERAL];
+        currentEnvelope = envelopes[GKickEnvelope::ENV_CATEGORY_GENERAL];
 
+        //        QVBoxLayout* vBoxLayout = ;
         setLayout(new QVBoxLayout(this));
 
         // Create top area.
@@ -44,10 +48,10 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
         showFrequencyEnvButton = new QPushButton(tr("FREQ"), this);
         connect(showAmplitudeEnvButton, SIGNAL(checked()), this, SLOT(showAmplitudeEnvelope()));
         connect(showFrequencyEnvButton, SIGNAL(checked()), this, SLOT(showFrequencyEnvelope()));
-        QHLayout *buttomAreaLayout = new QHLayout(this);
+        QHBoxLayout *buttomAreaLayout = new QHBoxLayout(this);
         buttomAreaLayout->addWidget(showAmplitudeEnvButton);
         buttomAreaLayout->addWidget(showFrequencyEnvButton);
-        layout()->addLayout(buttomAreaLayout);
+        static_cast<QVBoxLayout*>(layout())->addLayout(buttomAreaLayout);
         updateButtonArea();
 }
 
@@ -58,8 +62,8 @@ GKickEnvelopeWidget::~GKickEnvelopeWidget()
 
 void GKickEnvelopeWidget::updateButtonArea()
 {
-        if (currentEnvelope->type() == OSC_1
-            || currentEnvelope->type() == OSC_2)  {
+        if (currentEnvelope->category() == GKickEnvelope::ENV_CATEGORY_OSC_1
+            || currentEnvelope->category() == GKickEnvelope::ENV_CATEGORY_OSC_2)  {
                 showAmplitudeEnvButton->setVisible(true);
                 showFrequencyEnvButton->setVisible(true);
         } else {
@@ -67,7 +71,7 @@ void GKickEnvelopeWidget::updateButtonArea()
                 showFrequencyEnvButton->setVisible(false);
         }
 
-        if (currentEnvelope->envelopeType() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+        if (currentEnvelope->type() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
                 showAmplitudeEnvButton->setDown(true);
                 showFrequencyEnvButton->setDown(false);
         } else {
@@ -76,7 +80,7 @@ void GKickEnvelopeWidget::updateButtonArea()
         }
 }
 
-void GKickEnvelopeWidget::viewEnvelope(EnvelopeType type)
+void GKickEnvelopeWidget::viewEnvelope(GKickEnvelope::EnvelopeType type)
 {
         currentEnvelope = envelopes[type];
         envelopeTitleLabel->setText(currentEnvelope->name());
@@ -87,13 +91,13 @@ void GKickEnvelopeWidget::viewEnvelope(EnvelopeType type)
 
 void GKickEnvelopeWidget::showAmplitudeEnvelope()
 {
-       currentEnvelope->setEnvelopeType(GKickEnvelope::ENV_APLITUDE);
+       currentEnvelope->setType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
        drawArea->update();
 }
 
 void GKickEnvelopeWidget::showFrequencyEnvelope()
 {
-        currentEnvelope->setEnvelopeType(GKickEnvelope::ENV_FRQUENCY);
+        currentEnvelope->setType(GKickEnvelope::ENV_TYPE_FREQUENCY);
         drawArea->update();
 }
 

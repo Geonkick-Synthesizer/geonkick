@@ -22,23 +22,32 @@
  */
 
 #include "oscillator_group_box.h"
+#include "gkick_oscillator.h"
+#include <gkick_knob.h>
 
-OscillatorGroupBox::OscillatorGroupBox(QWidget *parent, std::shared_prt<GKickOscillator> &osc)
-        : ControlGroupBox((osc->name(), parent),
-          oscillator(osc)
+#include <QComboBox>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+OscillatorGroupBox::OscillatorGroupBox(QWidget *parent, std::shared_ptr<GKickOscillator> &osc)
+        : ControlGroupBox(osc->name(), parent),
+          oscillator(osc),
+          waveFunctionCb(NULL),
+          filterTypeCb(NULL)
 {
-        if (socillator->type() != GKickOscillator::OSC_NOISE) {
+        if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 createWaveFunctionGroupBox();
         }
         createEvelopeGroupBox();
         createFilterGroupBox();
 }
 
-EnvelopesGroupBox::~EnvelopesGroupBox()
+OscillatorGroupBox::~OscillatorGroupBox()
 {
 }
 
-void EnvelopesGroupBox::createWaveFunctionGroupBox()
+void OscillatorGroupBox::createWaveFunctionGroupBox()
 {
         QGroupBox *waveFunctionGroupBox = new QGroupBox(tr("Wave function"), this);
         waveFunctionCb = new QComboBox(waveFunctionGroupBox);
@@ -48,64 +57,64 @@ void EnvelopesGroupBox::createWaveFunctionGroupBox()
         waveFunctionCb->addItem(tr("Sawtooth"));
         waveFunctionCb->addItem(tr("Noise"));
         connect(waveFunctionCb, SIGNAL(currentIndexChanged(int)),
-                oscillator, SLOT(changeOscFunction(int)));
+                oscillator.get(), SLOT(changeOscFunction(int)));
         layout()->addWidget(waveFunctionGroupBox);
 }
 
-void EnvelopesGroupBox::createEvelopeGroupBox()
+void OscillatorGroupBox::createEvelopeGroupBox()
 {
         QGroupBox *envelopeGroupBox = new QGroupBox(tr("Envelope"), this);
-        QHLayout *envelopeGroupBoxLayout = new QGridLayout();
+        QGridLayout *envelopeGroupBoxLayout = new QGridLayout();
         envelopeGroupBox->setLayout(envelopeGroupBoxLayout);
         layout()->addWidget(envelopeGroupBox);
 
-        GKickKnob *envAmplitudeKnob = new GKickKnob(envelope, tr("Amplitute"));
+        GKickKnob *kickAmplitudeKnob = new GKickKnob(envelopeGroupBox, tr("Amplitute"));
         kickAmplitudeKnob->setMaxValue(1);
         kickAmplitudeKnob->setCurrentValue(oscillator->getOscAmplitudeValue());
         envelopeGroupBoxLayout->addWidget(kickAmplitudeKnob);
 
-        connect(envAmplitudeKnob, SIGNAL(valueUpdated(double)),
-                oscillators, SLOT(setOscAmplitudeValue(double)));
+        connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
+                oscillator.get(), SLOT(setOscAmplitudeValue(double)));
 
-        if (oscillator->type() != GKickOscillator::OSC_NOISE) {
-                GKickKnob *envFrequencyKnob = new GKickKnob(oscillatorGroupBox, tr("Frequency"));
-                envFrequencyKnob->setMaxValue(20000);
-                envFrequencyKnob->setCurrentValue(oscillator->getOscFrequencyValue());
-                envelopeGroupBoxLayout->addWidget(envFrequencyKnob);
-                connect(envFrequencyKnob, SIGNAL(valueUpdated(double)),
-                oscillators, SLOT(setOscFrequencyValue(double)));
+        if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
+                GKickKnob *kickFrequencyKnob = new GKickKnob(envelopeGroupBox, tr("Frequency"));
+                kickFrequencyKnob->setMaxValue(20000);
+                kickFrequencyKnob->setCurrentValue(oscillator->getOscFrequencyValue());
+                envelopeGroupBoxLayout->addWidget(kickFrequencyKnob);
+                connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)),
+                        oscillator.get(), SLOT(setOscFrequencyValue(double)));
         }
 }
 
-void EnvelopesGroupBox::createFilterGroupBox()
+void OscillatorGroupBox::createFilterGroupBox()
 {
         QGroupBox *filterGroupBox = new QGroupBox(tr("Filter"), this);
-        QVLayout *filterGroupBoxLayout = new QGridLayout();
-        filterGroupBox->setLayout(envelopeGroupBoxLayout);
+        QGridLayout *filterGroupBoxLayout = new QGridLayout();
+        filterGroupBox->setLayout(filterGroupBoxLayout);
         layout()->addWidget(filterGroupBox);
 
         // Create filter type group box.
-        QGrouoBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);
+        QGroupBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);
         filterTypeCb = new QComboBox(filterTypeGroupBox);
         filterTypeCb->addItem(tr("Low pass"));
         filterTypeCb->addItem(tr("Hight pass"));
-        filterTypeGroupBox->layout()->addWiget(filterTypeCb);
+        filterGroupBoxLayout->addWidget(filterTypeCb);
 
         // Create filter knobs gorup box.
         QGroupBox *filterKnobsGroupBox = new QGroupBox(filterGroupBox);
-        QHlayout *filterKnobsGroupBoxLayout = new QHLayout();
-        filterKnobsGroupBox->setLayout(filterKnobsGroupBox);
-        GKickKnob *filterFrequencyKnob = new GKickKnob(oscillatorGroupBox, tr("Frequency"));
-        GKickKnob *filterQKnob = new GKickKnob(oscillatorGroupBox, tr("Q"));
+        QHBoxLayout *filterKnobsGroupBoxLayout = new QHBoxLayout();
+        filterKnobsGroupBox->setLayout(filterKnobsGroupBoxLayout);
+        GKickKnob *filterFrequencyKnob = new GKickKnob(filterKnobsGroupBox, tr("Frequency"));
+        GKickKnob *filterQKnob = new GKickKnob(filterKnobsGroupBox, tr("Q"));
         filterFrequencyKnob->setMaxValue(20000);
-        filterFrequencyKnob->setCurrentValue(oscillator->getOscFilterFrequency());
+        filterFrequencyKnob->setCurrentValue(oscillator->getFilterFrequency());
         filterQKnob->setMaxValue(10);
-        filterQKnob->setCurrentValue(oscillator->getQFactor());
+        filterQKnob->setCurrentValue(oscillator->getFilterQFactor());
         filterKnobsGroupBoxLayout->addWidget(filterFrequencyKnob);
         filterKnobsGroupBoxLayout->addWidget(filterQKnob);
 
         connect(filterFrequencyKnob, SIGNAL(valueUpdated(double)),
-                oscillators, SLOT(setOscFilterFrequency(double)));
+                oscillator.get(), SLOT(setOscFilterFrequencyValue(double)));
         connect(filterQKnob, SIGNAL(valueUpdated(double)),
-                oscillators, SLOT(setOscFilterQFactor(double)));
+                oscillator.get(), SLOT(setOscFilterQFactor(double)));
 }

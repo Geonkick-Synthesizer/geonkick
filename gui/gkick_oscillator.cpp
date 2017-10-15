@@ -25,10 +25,10 @@
 #include "gkick_oscillator.h"
 #include <QDebug>
 
-GKickOscillator::GKickOscillator(GKickApi *api, int index) :
+GKickOscillator::GKickOscillator(GKickApi *api, GKickOscillator::OscillatorType type) :
         kickApi(api),
-        oscillatorIndex(index),
-        envelopeIndex((int)OSC_ENV_AMPLITUDE)
+        oscillatorType(type),
+        filterType(GKickOscillator::FILTER_LP)
 {
 }
 
@@ -39,55 +39,59 @@ GKickOscillator::~GKickOscillator()
 void GKickOscillator::setOscFunction(OscillatorFuncType type)
 {
         if (kickApi) {
-                kickApi->setOscFunction(oscillatorIndex, (enum geonkick_osc_func_type)type);
+                kickApi->setOscFunction((int)oscillatorType, (enum geonkick_osc_func_type)type);
         }
 }
 
-QPolygonF GKickOscillator::getEnvelopePoints(void)
+QPolygonF GKickOscillator::getEnvelopePoints(GKickOscillator::OscillatorEnvelopeType type)
 {
         QPolygonF points;
 
         if (kickApi) {
-                points =  kickApi->getOscEvelopePoints(oscillatorIndex, envelopeIndex);
+                points = kickApi->getOscEvelopePoints(oscillatorIndex(), envelopeIndex(type));
         }
 
         return points;
 }
 
-void GKickOscillator::addPoint(double x, double y)
+void GKickOscillator::addEnvelopePoint(GKickOscillator::OscillatorEnvelopeType type,
+                                       double x,
+                                       double y)
 {
         if (kickApi) {
-                kickApi->addOscEnvelopePoint(oscillatorIndex, envelopeIndex, QPointF(x, y));
+                kickApi->addOscEnvelopePoint(oscillatorIndex(), envelopeIndex(type), QPointF(x, y));
         }
 }
 
-void GKickOscillator::removePoint(int index)
+void GKickOscillator::removeEnvelopePoint(GKickOscillator::OscillatorEnvelopeType type,
+                                          int index)
 {
         if (kickApi) {
-                kickApi->removeOscEvelopePoint(oscillatorIndex, envelopeIndex, index);
+                kickApi->removeOscEvelopePoint(oscillatorIndex(), envelopeIndex(type), index);
         }
 }
 
-void GKickOscillator::updatePoint(int index, double x, double y)
+void GKickOscillator::updateEnvelopePoint(GKickOscillator::OscillatorEnvelopeType type,
+                                          int index,
+                                          double x,
+                                          double y)
 {
         if (kickApi) {
-                kickApi->updateOscEvelopePoint(oscillatorIndex, envelopeIndex, index, QPointF(x, y));
+                kickApi->updateOscEvelopePoint(oscillatorIndex(),
+                                               envelopeIndex(type),
+                                               index,
+                                               QPointF(x, y));
         }
 }
 
-void GKickOscillator::setOscillatorIndex(int index)
+void GKickOscillator::setOscillatorType(GKickOscillator::OscillatorType type)
 {
-        oscillatorIndex = index;
+        oscillatorType = type;
 }
 
-int GKickOscillator::getOscillatorIndex(void)
+GKickOscillator::OscillatorType GKickOscillator::getType()
 {
-        return oscillatorIndex;
-}
-
-void GKickOscillator::setCurrentEnvelope(EnvelopeType type)
-{
-        envelopeIndex = (int)type;
+        return oscillatorType;
 }
 
 double GKickOscillator::getKickLength(void)
@@ -105,7 +109,7 @@ void GKickOscillator::setOscAmplitudeValue(double v)
 		return;
 	}
 
-	bool b = kickApi->setOscAmplitudeValue(oscillatorIndex, v);
+	bool b = kickApi->setOscAmplitudeValue(oscillatorIndex(), v);
 	if (b) {
 		emit oscAmplitudeValueUpdated(v);
 	}
@@ -117,8 +121,7 @@ double GKickOscillator::getOscAmplitudeValue(void)
 		return 0.0;
 	}
 
-	double v = kickApi->getOscAmplitudeValue(oscillatorIndex);
-	qDebug() << "double GKickOscillator::getOscAmplitudeValue(void)V:" << v;
+	double v = kickApi->getOscAmplitudeValue(oscillatorIndex());
         return v;
 }
 
@@ -128,7 +131,7 @@ void GKickOscillator::setOscFrequencyValue(double v)
 		return;
 	}
 
-	bool b = kickApi->setOscFrequencyValue(oscillatorIndex, v);
+	bool b = kickApi->setOscFrequencyValue(oscillatorIndex(), v);
 	if (b) {
 		emit oscFrequencyValueUpdated(v);
 	}
@@ -140,6 +143,53 @@ double GKickOscillator::getOscFrequencyValue(void)
 		return 0.0;
 	}
 
-        return kickApi->getOscFrequencyValue(oscillatorIndex);
+        return kickApi->getOscFrequencyValue(oscillatorIndex());
+}
+
+int GKickOscillator::oscillatorIndex()
+{
+        return (int)oscillatorType;
+}
+
+int GKickOscillator::envelopeIndex(GKickOscillator::OscillatorEnvelopeType type)
+{
+        return (int)type;
+}
+
+void GKickOscillator::setFilterType(GKickOscillator::OscillatorFilterType type)
+{
+        filterType = type;
+}
+
+GKickOscillator::OscillatorFilterType GKickOscillator::getFilterType()
+{
+        return filterType;
+}
+
+void GKickOscillator::setFilterFrequency(double f)
+{
+}
+
+double GKickOscillator::getFilterFrequency(void)
+{
+}
+
+void GKickOscillator::setFilterQFactor(double v)
+{
+}
+
+double GKickOscillator::getFilterQFactor()
+{
+}
+
+QString GKickOscillator::name()
+{
+        if (oscillatorType == GKickOscillator::OSC_1) {
+                return "OSC 1";
+        } else if (oscillatorType == GKickOscillator::OSC_2) {
+                return "OSC 2";
+        } else {
+                return "NOISE";
+        }
 }
 

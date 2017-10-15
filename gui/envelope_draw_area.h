@@ -37,9 +37,19 @@ class EnvelopeDrawingArea : public QWidget
  public:
    EnvelopeDrawingArea(QWidget *parent, std::shared_ptr<GKickEnvelope> &envelope);
    ~EnvelopeDrawingArea();
+   void setEnvelope(std::shared_ptr<GKickEnvelope> &envelope);
+   void update();
+   void paintEvent(QPaintEvent *event);
+   void mousePressEvent(QMouseEvent *event);
+   void mouseReleaseEvent(QMouseEvent *event);
+   void mouseDoubleClickEvent(QMouseEvent *event);
+   void mouseMoveEvent(QMouseEvent *event);
 
  private:
    std::shared_ptr<GKickEnvelope> currentEnvelope;
+   int xPadding;
+   int yPadding;
+   QPointF mousePoint;
 };
 
 #endif

@@ -3,8 +3,9 @@
 #include <QPainter>
 #include <QDebug>
 
-GKickKnob::GKickKnob(QWidget *parent)
+GKickKnob::GKickKnob(QWidget *parent, const QString &name)
 	: QWidget(parent),
+          knobName(name),
 	  knobRadius(GKICK_UI_DEFAULT_KNOB_RADIOUS),
 	  lastPositionPoint(),
 	  knobValueDegree(0),
@@ -127,3 +128,12 @@ void GKickKnob::resizeEvent(QResizeEvent *event)
 {
         Q_UNUSED(event);
 }
+
+void setMaxValue(double val)
+{
+}
+
+void setCurrentValue(double val)
+{
+}
+

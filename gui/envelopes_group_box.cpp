@@ -23,6 +23,10 @@
 
 #include "envelopes_group_box.h"
 
+#include <QRadioButton>
+
+#include <QLayout>
+
 EnvelopesGroupBox::EnvelopesGroupBox(QWidget *parent)
         : ControlGroupBox(tr("Envelopes"), parent)
 {
@@ -39,7 +43,6 @@ EnvelopesGroupBox::EnvelopesGroupBox(QWidget *parent)
         layout()->addWidget(osc2Rb);
         layout()->addWidget(noiseRb);
         layout()->addWidget(generalRb);
-        parent->layout()->addWidget(envelopesGroupBox, parent));
 }
 
 EnvelopesGroupBox::~EnvelopesGroupBox()

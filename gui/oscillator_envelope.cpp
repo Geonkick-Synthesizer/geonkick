@@ -28,6 +28,13 @@
 OscillatorEnvelope::OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc)
         : oscillator(osc)
 {
+        if (osc->getType() == GKickOscillator::OSC_1) {
+                setCategory(GKickEnvelope::ENV_CATEGORY_OSC_1);
+        } else if(osc->getType() == GKickOscillator::OSC_2) {
+                setCategory(GKickEnvelope::ENV_CATEGORY_OSC_2);
+        } else {
+                setCategory(GKickEnvelope::ENV_CATEGORY_NOISE);
+        }
 }
 
 OscillatorEnvelope::~OscillatorEnvelope()
@@ -36,18 +43,27 @@ OscillatorEnvelope::~OscillatorEnvelope()
 
 void OscillatorEnvelope::pointAddedEvent(double x, double y)
 {
-        oscillator->addPoint(x, y);
+        if (type() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+                oscillator->addEnvelopePoint(GKickOscillator::OSC_ENV_TYPE_APLITUDE, x, y);
+        } else {
+                oscillator->addEnvelopePoint(GKickOscillator::OSC_ENV_TYPE_FREQUENCY, x, y);
+        }
 }
 
 void OscillatorEnvelope::pointUpdatedEvent(unsigned int index, double x, double y)
 {
-        oscillator->updatePoint(index, x, y);
+        if (type() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+                oscillator->updateEnvelopePoint(GKickOscillator::OSC_ENV_TYPE_APLITUDE, index, x, y);
+        } else {
+                oscillator->updateEnvelopePoint(GKickOscillator::OSC_ENV_TYPE_FREQUENCY, index, x, y);
+        }
 }
 
 void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
 {
-        oscillator->removePoint(index);
+        if (type() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+                oscillator->removeEnvelopePoint(GKickOscillator::OSC_ENV_TYPE_APLITUDE, index);
+        } else {
+                oscillator->removeEnvelopePoint(GKickOscillator::OSC_ENV_TYPE_FREQUENCY, index);
+        }
 }
-
-
-

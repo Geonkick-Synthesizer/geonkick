@@ -63,6 +63,8 @@ class GKickApi: public QObject
 
         void setKickLength(double len);
         double getKickLength(void);
+        void setMaxLength(double len);
+        double getMaxLength(void);
         bool setOscAmplitudeValue(int oscillatorIndex,
                                   double v);
         bool setOscFrequencyValue(int oscillatorIndex,
@@ -72,6 +74,10 @@ class GKickApi: public QObject
         void addEnvelopePoint(double x, double y);
         void updateEnvelopePoint(unsigned int index, double x, double y);
         void removeEnvelopePoint(unsigned int index);
+
+        void setAmplitude(double val);
+        double getAmplitude();
+        void setKickFilterFrequency(double f);
 
  signals:
         void kickLengthUpdated(double len);

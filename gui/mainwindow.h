@@ -25,10 +25,12 @@
 #define GKICK_MAINWINDOW_H
 
 #include "gkickapi.h"
-#include "gkickoscillator.h"
+#include "gkick_oscillator.h"
 #include "gkick_envelope_widget.h"
 
 #include <QMainWindow>
+
+class OscillatorWidget;
 
 class QPushButton;
 class QCloseEvent;
@@ -57,22 +59,9 @@ class MainWindow : public QMainWindow
 	void closeEvent(QCloseEvent *event);
 	bool setupMenuBar(void);
 	bool setupToolBar(void);
-        void createControlArea(void);
-
- protected slots:
-
-        void viewOsc(bool b, MainWindow::OscillatorType type);
-        void viewOsc1(bool b);
-        void viewOsc2(bool b);
-        void viewNoiseOsc(bool b);
-        void viewGeneral(bool b);
-	void setAmplitudeEnvelope(bool b);
-	void setFrequencyEnvelope(bool b);
-	void setKickLength(double v);
-	void oscillatorFunctionChanged(int index, MainWindow::OscillatorType type);
+        void createControlArea(QWidget *controlAreaWidget);
 
  private:
-	//	QPushButton *uploadButton;
 	std::shared_ptr<GKickApi> gkickApi;
 	std::vector<std::shared_ptr<GKickOscillator>> oscillators;
       	QLabel *oscillatorWidgetLabel;

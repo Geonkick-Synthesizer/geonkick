@@ -10,14 +10,16 @@ class GKickKnob : public QWidget
 {
    Q_OBJECT
 public:
-   GKickKnob(QWidget *parent);
+   GKickKnob(QWidget *parent, const QString &name);
    virtual ~GKickKnob();
    int getRadius(void);
    int getWidth(void);
    int getHeight(void);
    double getPosition(void);
    double getValue(void);
-
+   void setMaxValue(double val);
+   void setCurrentValue(double val);
+   
    public slots:
      void setPosition(double v);
      void setValue(double v);
@@ -34,6 +36,7 @@ public:
    void resizeEvent(QResizeEvent *event);
 
  private:
+   QString knobName;
    int knobRadius;
    QPoint lastPositionPoint;
    int knobValueDegree;

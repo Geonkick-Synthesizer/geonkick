@@ -22,19 +22,25 @@
  */
 
 #include "envelope_draw_area.h"
+#include "gkick_envelope.h"
+
+#include <QPainter>
+#include <QMouseEvent>
 
 EnvelopeDrawingArea::EnvelopeDrawingArea(QWidget *parent,
                                          std::shared_ptr<GKickEnvelope> &envelope)
         : QWidget(parent),
-          currentEnvelope(envelope)
+          currentEnvelope(envelope),
+          xPadding(10),
+          yPadding(10)
 {
 }
 
-~EnvelopeDrawingArea()
+EnvelopeDrawingArea::~EnvelopeDrawingArea()
 {
 }
 
-void EnvelopeDrawingArea::setEnvelope(std::<GKickEnvelope> &envelope)
+void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<GKickEnvelope> &envelope)
 {
         currentEnvelope = envelope;
 }
@@ -52,7 +58,7 @@ void EnvelopeDrawingArea::paintEvent(QPaintEvent *event)
 }
 
 void
-OscillatorWidget::mousePressEvent(QMouseEvent *event)
+EnvelopeDrawingArea::mousePressEvent(QMouseEvent *event)
 {
         if (event->button() == Qt::RightButton) {
                 currentEnvelope->removePoint(QPointF(event->x() - xPadding,
@@ -63,15 +69,15 @@ OscillatorWidget::mousePressEvent(QMouseEvent *event)
 
         mousePoint.setX(event->x());
         mousePoint.setY(event->y());
-        currnetEnvelope->selectPoint(QPointF(event->x() - xPadding,
+        currentEnvelope->selectPoint(QPointF(event->x() - xPadding,
                                              height() - (event->y() + yPadding)));
-        if (currnetEnvelope->hasSelected()) {
+        if (currentEnvelope->hasSelected()) {
                 update();
         }
 }
 
 void
-OscillatorWidget::mouseReleaseEvent(QMouseEvent *event)
+EnvelopeDrawingArea::mouseReleaseEvent(QMouseEvent *event)
 {
         Q_UNUSED(event);
         if (currentEnvelope->hasSelected()) {
@@ -81,14 +87,14 @@ OscillatorWidget::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void
-OscillatorWidget::mouseDoubleClickEvent(QMouseEvent *event)
+EnvelopeDrawingArea::mouseDoubleClickEvent(QMouseEvent *event)
 {
         currentEnvelope->addPoint(QPointF(event->x() - xPadding, height() - (event->y() + yPadding)));
         update();
 }
 
 void
-OscillatorWidget::mouseMoveEvent(QMouseEvent *event)
+EnvelopeDrawingArea::mouseMoveEvent(QMouseEvent *event)
 {
         if (!currentEnvelope->hasSelected()) {
                 return;

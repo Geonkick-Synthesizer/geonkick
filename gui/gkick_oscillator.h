@@ -43,46 +43,67 @@ class GKickOscillator: public QObject
           OSC_NOISE = 2
   };
 
-  enum EnvelopeType {
-    OSC_ENV_AMPLITUDE = 0,
-    OSC_ENV_FREQUENCY = 1
-  };
-
   enum OscillatorFuncType {
-    OSC_FUNC_SINE     = GEONKICK_OSC_FUNC_SINE,
-    OSC_FUNC_SQARE    = GEONKICK_OSC_FUNC_SQARE,
-    OSC_FUNC_TRIANGLE = GEONKICK_OSC_FUNC_TRIANGLE,
-    OSC_FUNC_SAWTOOTH = GEONKICK_OSC_FUNC_SAWTOOTH,
-    OSC_FUNC_NOISE    = GEONKICK_OSC_FUNC_NOISE
+          OSC_FUNC_SINE     = GEONKICK_OSC_FUNC_SINE,
+          OSC_FUNC_SQARE    = GEONKICK_OSC_FUNC_SQARE,
+          OSC_FUNC_TRIANGLE = GEONKICK_OSC_FUNC_TRIANGLE,
+          OSC_FUNC_SAWTOOTH = GEONKICK_OSC_FUNC_SAWTOOTH,
+          OSC_FUNC_NOISE    = GEONKICK_OSC_FUNC_NOISE
   };
 
-	GKickOscillator(GKickApi *api, int index);
-	~GKickOscillator();
-	double getKickLength(void);
-	QPolygonF getEnvelopePoints(void);
-	void setOscillatorIndex(int index);
-	int getOscillatorIndex(void);
-	void setCurrentEnvelope(EnvelopeType type);
-	void setOscFunction(OscillatorFuncType type);
-	double getOscAmplitudeValue(void);
-	double getOscFrequencyValue(void);
+  enum OscillatorEnvelopeType {
+          OSC_ENV_TYPE_APLITUDE  = GEONKICK_AMPLITUDE_ENVELOPE,
+          OSC_ENV_TYPE_FREQUENCY = GEONKICK_FREQUENCY_ENVELOPE
+  };
 
-public slots:
-	void setOscAmplitudeValue(double v);
-	void setOscFrequencyValue(double v);
+  enum OscillatorFilterType {
+          FILTER_LP = 0,
+          FILTER_HP = 1
+  };
 
-        void addPoint(double x, double y);
-	void removePoint(int index);
-	void updatePoint(int, double x, double y);
+  GKickOscillator(GKickApi *api, GKickOscillator::OscillatorType type);
+  ~GKickOscillator();
+  double getKickLength(void);
+  QPolygonF getEnvelopePoints(GKickOscillator::OscillatorEnvelopeType type);
+  void setOscFunction(OscillatorFuncType type);
+  double getOscAmplitudeValue(void);
+  double getOscFrequencyValue(void);
+  void setOscillatorType(GKickOscillator::OscillatorType type);
+  GKickOscillator::OscillatorType getType(void);
+  void setFilterType(GKickOscillator::OscillatorFilterType type);
+  GKickOscillator::OscillatorFilterType getFilterType();
+  void setFilterFrequency(double f);
+  double getFilterFrequency(void);
+  QString name();
+
+  public slots:
+          void setOscAmplitudeValue(double v);
+          void setOscFrequencyValue(double v);
+          void setFilterQFactor(double v);
+          double getFilterQFactor();
+
+          void addEnvelopePoint(GKickOscillator::OscillatorEnvelopeType type,
+                                double x,
+                                double y);
+          void removeEnvelopePoint(GKickOscillator::OscillatorEnvelopeType type,
+                                   int index);
+
+          void updateEnvelopePoint(GKickOscillator::OscillatorEnvelopeType type,
+                                   int index,
+                                   double x,
+                                   double y);
 
  signals:
 	  void oscAmplitudeValueUpdated(double v);
 	  void oscFrequencyValueUpdated(double v);
 
+ protected:
+          int oscillatorIndex();
+          int envelopeIndex(GKickOscillator::OscillatorEnvelopeType type);
  private:
 	  GKickApi *kickApi;
-	  int oscillatorIndex;
-	  int envelopeIndex;
+          OscillatorType oscillatorType;
+          OscillatorFilterType filterType;
 };
 
 #endif

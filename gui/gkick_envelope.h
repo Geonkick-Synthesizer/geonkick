@@ -34,18 +34,25 @@
 
 class GKickEnvelope: public QObject
 {
-  Q_OBJECT
+        Q_OBJECT
 
  public:
 
         enum EnvelopeType {
-                ENV_TYPE_AMPLITUDE = 0,
-                ENV_TYPE_FREQUENCY = 1
+                ENV_TYPE_AMPLITUDE  = 0,
+                ENV_TYPE_FREQUENCY  = 1,
         };
 
+        enum  EnvelopeCategory {
+                ENV_CATEGORY_OSC_1   = 0,
+                ENV_CATEGORY_OSC_2   = 1,
+                ENV_CATEGORY_NOISE   = 3,
+                ENV_CATEGORY_GENERAL = 4
+        };
 
-	GKickEnvelope();
-	virtual ~GKickEnvelope();
+        GKickEnvelope();
+        virtual ~GKickEnvelope();
+        void draw(QPainter &painter);
         void update();
         bool hasSelected();
         void selectPoint(QPointF point);
@@ -64,8 +71,11 @@ class GKickEnvelope: public QObject
         double getEnvelopeHeight(void);
         double getKickLength(void);
         void setType(EnvelopeType type);
-        EnvelopeType getType();
+        EnvelopeType type();
+        void setCategory(EnvelopeCategory cat);
+        EnvelopeCategory category();
         double getEnvelopeValue(void);
+        QString name();
 
  protected:
         virtual void pointAddedEvent(double x, double y) {}
@@ -78,10 +88,10 @@ class GKickEnvelope: public QObject
 
  private:
 
-        bool isActive;
         QVector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
         std::shared_ptr<GKickEnvelopePoint> selectedPoint;
         EnvelopeType envelopeType;
+        QString envelopeName;
 };
 
 #endif
