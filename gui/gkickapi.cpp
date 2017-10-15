@@ -145,6 +145,11 @@ void GKickApi::setMaxLength(double len)
 {
 }
 
+double GKickApi::getMaxLength()
+{
+        return 1.5;
+}
+
 void GKickApi::setAmplitude(double val)
 {
 }

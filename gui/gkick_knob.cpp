@@ -129,11 +129,11 @@ void GKickKnob::resizeEvent(QResizeEvent *event)
         Q_UNUSED(event);
 }
 
-void setMaxValue(double val)
+void GKickKnob::setMaxValue(double val)
 {
 }
 
-void setCurrentValue(double val)
+void GKickKnob::setCurrentValue(double val)
 {
 }
 

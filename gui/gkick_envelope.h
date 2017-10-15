@@ -46,8 +46,8 @@ class GKickEnvelope: public QObject
         enum  EnvelopeCategory {
                 ENV_CATEGORY_OSC_1   = 0,
                 ENV_CATEGORY_OSC_2   = 1,
-                ENV_CATEGORY_NOISE   = 3,
-                ENV_CATEGORY_GENERAL = 4
+                ENV_CATEGORY_NOISE   = 2,
+                ENV_CATEGORY_GENERAL = 3
         };
 
         GKickEnvelope();
@@ -91,7 +91,10 @@ class GKickEnvelope: public QObject
         QVector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
         std::shared_ptr<GKickEnvelopePoint> selectedPoint;
         EnvelopeType envelopeType;
+        EnvelopeCategory envelopeCategory;
         QString envelopeName;
+        double envelopeW;
+        double envelopeH;
 };
 
 #endif

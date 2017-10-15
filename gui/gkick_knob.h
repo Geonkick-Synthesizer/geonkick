@@ -19,7 +19,7 @@ public:
    double getValue(void);
    void setMaxValue(double val);
    void setCurrentValue(double val);
-   
+
    public slots:
      void setPosition(double v);
      void setValue(double v);

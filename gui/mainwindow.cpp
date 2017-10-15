@@ -74,18 +74,18 @@ bool MainWindow::init(void)
 
         // Create central Widget.
         setCentralWidget(new QWidget(this));
-        centralWidget()->setLayout(new QVBoxLayout(centralWidget()));
+        centralWidgetLayout = new QVBoxLayout(centralWidget());
+        centralWidget()->setLayout(centralWidgetLayout);
 
         // Create  envelope widget.
         GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(centralWidget(), gkickApi, oscillators);
-        centralWidget()->layout()->addWidget(envelopeWidget);
+        centralWidgetLayout->addWidget(envelopeWidget);
 
         // Create control area.
-        /*        QWidget *controlAreaWidget = new ControlArea(centralWidget());
-        centralWidget()->layout()->addWidget(controlAreaWidget);
-
-        centralWidget()->layout()->setStretchFactor(controlAreaWidget, 1);
-        centralWidget()->layout()->setStretchFactor(oscillatorWidget, 2);*/
+        ControlArea *controlAreaWidget = new ControlArea(centralWidget(), gkickApi, oscillators);
+        centralWidgetLayout->addWidget(controlAreaWidget);
+        centralWidgetLayout->setStretchFactor(controlAreaWidget, 1);
+        centralWidgetLayout->setStretchFactor(envelopeWidget, 2);
 
         return true;
 }

@@ -35,7 +35,7 @@ class GeneralGroupBox: public ControlGroupBox
 {
         Q_OBJECT
  public:
-        GeneralGroupBox(QWidget *widget, std::shared_ptr<GKickApi> &osc);
+        GeneralGroupBox(QWidget *widget, std::shared_ptr<GKickApi> &api);
         ~GeneralGroupBox();
 
  protected:

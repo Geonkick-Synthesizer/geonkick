@@ -21,16 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_ENVELOPES_GROUP_BOX_H
-#define GKICK_ENVELOPES_GROUP_BOX_H
+#ifndef GKICK_CONTROL_AREA_H
+#define GKICK_CONTROL_AREA_H
 
 #include <QWidget>
+
+#include <memory>
+
+class GKickOscillator;
+class GKickApi;
 
 class ControlArea: public QWidget
 {
  Q_OBJECT
  public:
-         ControlArea(QWidget *parent);
+ ControlArea(QWidget *parent, std::shared_ptr<GKickApi> &api,
+             std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
          ~ControlArea();
  private:
 };

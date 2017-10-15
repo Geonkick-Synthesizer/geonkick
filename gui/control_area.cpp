@@ -26,19 +26,21 @@
 #include "envelopes_group_box.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
+#include "gkickapi.h"
 
 #include <QHBoxLayout>
 
-ControlArea::ControlArea(QWidget *parent)
+ControlArea::ControlArea(QWidget *parent, std::shared_ptr<GKickApi> &api,
+                         std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
         : QWidget(parent)
 {
         setMaximumHeight(200);
         setLayout(new QHBoxLayout);
-        /*        layout()->addWidget(new EnvelopesGroupBox(this));
-        layout()->addWidget(new OscillatorGroupBox(this, GKickOscillator::OSC_1));
-        layout()->addWidget(new OscillatorGroupBox(this, GKickOscillator::OSC_2));
-        layout()->addWidget(new OscillatorGroupBox(this, GKickOscillator::OSC_NOISE));
-        layout()->addWidget(new GenralSettingGroupBox(this));*/
+        layout()->addWidget(new EnvelopesGroupBox(this));
+        layout()->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_1]));
+        layout()->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_2]));
+        layout()->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]));
+        layout()->addWidget(new GeneralGroupBox(this, api));
 }
 
 ControlArea::~ControlArea()

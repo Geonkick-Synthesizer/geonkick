@@ -46,7 +46,7 @@ class MainWindow : public QMainWindow
 
  public:
 
-      MainWindow(void);
+      MainWindow();
       ~MainWindow();
       bool init(void);
 
@@ -56,7 +56,6 @@ class MainWindow : public QMainWindow
 	void quit(void);
 
  protected:
-	void closeEvent(QCloseEvent *event);
 	bool setupMenuBar(void);
 	bool setupToolBar(void);
         void createControlArea(QWidget *controlAreaWidget);

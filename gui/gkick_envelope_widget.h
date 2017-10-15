@@ -24,14 +24,11 @@ public:
 
  protected:
      void updateButtonArea();
-     void paintEvent(QPaintEvent *event);
-     void mousePressEvent(QMouseEvent *event);
-     void mouseReleaseEvent(QMouseEvent *event);
-     void mouseMoveEvent(QMouseEvent *event);
-     void mouseDoubleClickEvent(QMouseEvent *event);
      void viewEnvelope(GKickEnvelope::EnvelopeType type);
-     void showAmplitudeEnvelope();
-     void showFrequencyEnvelope();
+
+ protected slots:
+             void showAmplitudeEnvelope();
+             void showFrequencyEnvelope();
 
  private:
      std::shared_ptr<GKickEnvelope> currentEnvelope;

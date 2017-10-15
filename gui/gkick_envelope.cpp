@@ -26,11 +26,12 @@
 #include "oscillator_envelope.h"
 #include <QDebug>
 
-GKickEnvelope::GKickEnvelope(QWidget *parent)
-        : parentWidget(parent),
-          name("GKickEnvelope")
-          envelopeType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
-          envelopeCategory(GKickEnvelope::ENV_CATEGORY_GENERAL);
+GKickEnvelope::GKickEnvelope():
+          envelopeName("GKickEnvelope"),
+          envelopeType(GKickEnvelope::ENV_TYPE_AMPLITUDE),
+          envelopeCategory(GKickEnvelope::ENV_CATEGORY_GENERAL),
+          envelopeW(0),
+          envelopeH(0)
 {
 
 }
@@ -41,40 +42,40 @@ GKickEnvelope::~GKickEnvelope()
 
 void GKickEnvelope::draw(QPainter &painter)
 {
-	drawPoints(painter);
-	drawLines(painter);
+	//drawPoints(painter);
+	//drawLines(painter);
 }
 
 void GKickEnvelope::setXRatio(double k)
 {
-        xRatio = k;
+        //        xRatio = k;
 }
 
 void GKickEnvelope::setYRatio(double k)
 {
-        yRatio = k;
+        //yRatio = k;
 }
 
 void GKickEnvelope::drawPoints(QPainter &painter)
-{
+{/*
 	for (int i = 0; i < envelopePoints.size(); i++) {
 		envelopePoints[i].draw(painter);
-	}
+                }*/
 }
 
-void OscillatorWidget::drawAxes(QPainter &painter)
-{
-        QPen pen(Qt::black);
+//void GKickEnvelope::drawAxes(QPainter &painter)
+//{
+        /*QPen pen(Qt::black);
         pen.setWidth(1);
         painter.setPen(pen);
         painter.drawLine(xPadding, yPadding, xPadding, height() - yPadding);
         painter.drawLine(xPadding, height() - yPadding,
-                         width() - xPadding, height() - yPadding);
-}
+        width() - xPadding, height() - yPadding);*/
+//}
 
-void GKickEnvelope::drawLines(QPainter &painter)
-{
-	QPolygonF points;
+//void GKickEnvelope::drawLines(QPainter &painter)
+//{
+	/*QPolygonF points;
 	for (int i = 0; i < envelopePoints.size(); i++) {
 	        QPointF p = scaleUp(envelopePoints[i]);
 		points << QPointF(originPoint.x() + p.x(),
@@ -84,45 +85,45 @@ void GKickEnvelope::drawLines(QPainter &painter)
 	QPen pen = painter.pen();
 	pen.setWidth(1);
 	painter.setPen(pen);
-	painter.drawPolyline(points);
-}
+	painter.drawPolyline(points);*/
+//}
 
-void GKickEnvelope::setOrigin(QPointF &point)
-{
-	originPoint = point;
-}
+//void GKickEnvelope::setOrigin(QPointF &point)
+//{
+        //	originPoint = point;
+//}
 
 QPointF GKickEnvelope::getOriginPoint(void)
 {
-        return originPoint;
+        //return originPoint;
 }
 
 bool GKickEnvelope::hasSelected(void)
 {
-	return selectedPoint != NULL;
+	//return selectedPoint != NULL;
 }
 
 void GKickEnvelope::selectPoint(QPointF point)
 {
-	for(int i = 0; i < envelopePoints.size(); i++) {
+	/*for(int i = 0; i < envelopePoints.size(); i++) {
 		if (envelopePoints[i].hasPoint(point)) {
 			selectedPoint = &envelopePoints[i];
 			selectedPoint->selectPoint();
 			break;
 		}
-	}
+	}*/
 }
 
 void GKickEnvelope::unselectPoint(void)
 {
-	if (selectedPoint) {
+        /*	if (selectedPoint) {
 		selectedPoint->unselectPoint();
 		selectedPoint = NULL;
-	}
+                }*/
 }
 
 double GKickEnvelope::getLeftPointLimit(void)
-{
+{/*
 	if (selectedPoint == NULL) {
 		return 0.0;
 	}
@@ -137,12 +138,12 @@ double GKickEnvelope::getLeftPointLimit(void)
 		x = envelopePoints[index - 1].x();
 	}
 
-	return x;
+	return x;*/
 }
 
 double GKickEnvelope::getRightPointLimit(void)
-{
-	if (selectedPoint == NULL) {
+{/*
+        	if (selectedPoint == NULL) {
 		return 0.0;
 	}
 
@@ -154,14 +155,14 @@ double GKickEnvelope::getRightPointLimit(void)
 		x = envelopeW;
 	} else {
 		x = envelopePoints[index + 1].x();
-	}
+                }
 
-	return x;
+	return x;*/
 }
 
 void GKickEnvelope::moveSelectedPoint(double x, double y)
 {
-	if (selectedPoint == NULL) {
+        /*	if (selectedPoint == NULL) {
 		return;
 	}
 
@@ -187,38 +188,38 @@ void GKickEnvelope::moveSelectedPoint(double x, double y)
 	int index = envelopePoints.indexOf(*selectedPoint);
 	if (index > -1 && index < envelopePoints.size()) {
                 pointUpdatedEvent(index, QPointF(selectedPoint->x(), selectedPoint->y()));
-	}
+                }*/
 }
 
 void GKickEnvelope::addEnvelopePoints(QPolygonF points)
-{
+{/*
         for (int i = 0; i < points.size(); i++) {
                 envelopePoints.push_back(GKickEnvelopePoint(this, points[i]));
-        }
+                }*/
 }
 
 void GKickEnvelope::removePoints(void)
 {
-        envelopePoints.clear();
+        //        envelopePoints.clear();
 }
 
 QPointF GKickEnvelope::scaleUp(QPointF point)
 {
-        point.setX(point.x() * xRatio);
-        point.setY(point.y() * yRatio);
-        return point;
+        //point.setX(point.x() * xRatio);
+        //point.setY(point.y() * yRatio);
+        //return point;
 }
 
 QPointF GKickEnvelope::scaleDown(QPointF point)
 {
-        point.setX(point.x() / xRatio);
-        point.setY(point.y() / yRatio);
-        return point;
+        //point.setX(point.x() / xRatio);
+        //point.setY(point.y() / yRatio);
+        //return point;
 }
 
 void GKickEnvelope::addPoint(QPointF point)
 {
-        point = scaleDown(point);
+        /*        point = scaleDown(point);
 
         if (point.y() < 0.0) {
                 point.setY(0.0);
@@ -246,7 +247,7 @@ void GKickEnvelope::addPoint(QPointF point)
 		}
 	}
 
-	pointAddedEvent(point.x(), point.y());
+	pointAddedEvent(point.x(), point.y());*/
 }
 
 double GKickEnvelope::getEnvelopeLenth(void)
@@ -261,7 +262,7 @@ double GKickEnvelope::getEnvelopeHeight(void)
 
 void GKickEnvelope::removePoint(QPointF point)
 {
-	for(int i = 0; i < envelopePoints.size(); i++) {
+        /*	for(int i = 0; i < envelopePoints.size(); i++) {
 		if (envelopePoints[i].hasPoint(point)) {
 			if (envelopePoints[i] != envelopePoints.first()
 			    && envelopePoints[i] != envelopePoints.last()) {
@@ -270,42 +271,42 @@ void GKickEnvelope::removePoint(QPointF point)
 			}
 			break;
 		}
-	}
+                }*/
 }
 
 double GKickEnvelope::getKickLength(void)
 {
-        return parentWidget->getKickLength();
+        //        return parentWidget->getKickLength();
 }
 
-void GKickEnvelope::setEnvelopeValue(double v)
+/*void GKickEnvelope::setEnvelopeValue(double v)
 {
-	envelopeValue = v;
-}
+	//envelopeValue = v;
+        }*/
 
 double GKickEnvelope::getEnvelopeValue(void)
 {
-        return envelopeValue;
+        //return envelopeValue;
 }
 
 void GKickEnvelope::setType(GKickEnvelope::EnvelopeType type)
 {
-	envelopeType = type;
+	//envelopeType = type;
 }
 
 GKickEnvelope::EnvelopeType GKickEnvelope::type(void)
 {
-	return envelopeType;
+	//return envelopeType;
 }
 
 void GKickEnvelope::setCategory(GKickEnvelope::EnvelopeCategory cat)
 {
-	envelopeCategory = cat;
+	//envelopeCategory = cat;
 }
 
 GKickEnvelope::EnvelopeCategory GKickEnvelope::category(void)
 {
-	return envelopeCategory;
+	//return envelopeCategory;
 }
 
 QString GKickEnvelope::name(void)
