@@ -34,7 +34,7 @@ ControlArea::ControlArea(QWidget *parent, std::shared_ptr<GKickApi> &api,
                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
         : QWidget(parent)
 {
-        setMaximumHeight(200);
+        //        setMaximumHeight(200);
         setLayout(new QHBoxLayout);
         layout()->addWidget(new EnvelopesGroupBox(this));
         layout()->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_1]));

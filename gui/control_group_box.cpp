@@ -28,7 +28,7 @@
 ControlGroupBox::ControlGroupBox(const QString &title, QWidget *parent)
         : QGroupBox(title, parent)
 {
-        setLayout(new QVBoxLayout());
+        setLayout(new QVBoxLayout(this));
 }
 
 ControlGroupBox::~ControlGroupBox()

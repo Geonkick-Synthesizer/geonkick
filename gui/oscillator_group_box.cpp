@@ -41,6 +41,7 @@ OscillatorGroupBox::OscillatorGroupBox(QWidget *parent, std::shared_ptr<GKickOsc
         }
         createEvelopeGroupBox();
         createFilterGroupBox();
+        layout()->setSpacing(2);
 }
 
 OscillatorGroupBox::~OscillatorGroupBox()
@@ -58,13 +59,18 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         waveFunctionCb->addItem(tr("Noise"));
         connect(waveFunctionCb, SIGNAL(currentIndexChanged(int)),
                 oscillator.get(), SLOT(changeOscFunction(int)));
+        QHBoxLayout *glayout = new QHBoxLayout(waveFunctionGroupBox);
+        glayout->setSpacing(0);
+        glayout->addWidget(waveFunctionCb);
+        waveFunctionGroupBox->setLayout(glayout);
         layout()->addWidget(waveFunctionGroupBox);
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()
 {
         QGroupBox *envelopeGroupBox = new QGroupBox(tr("Envelope"), this);
-        QGridLayout *envelopeGroupBoxLayout = new QGridLayout();
+        QHBoxLayout *envelopeGroupBoxLayout = new QHBoxLayout(envelopeGroupBox);
+        envelopeGroupBoxLayout->setSpacing(0);
         envelopeGroupBox->setLayout(envelopeGroupBoxLayout);
         layout()->addWidget(envelopeGroupBox);
 
@@ -89,21 +95,29 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 void OscillatorGroupBox::createFilterGroupBox()
 {
         QGroupBox *filterGroupBox = new QGroupBox(tr("Filter"), this);
-        QGridLayout *filterGroupBoxLayout = new QGridLayout();
+        QVBoxLayout *filterGroupBoxLayout = new QVBoxLayout(filterGroupBox);
+        filterGroupBoxLayout->setSpacing(0);
+        filterGroupBoxLayout->setContentsMargins(0,0,0,0);
         filterGroupBox->setLayout(filterGroupBoxLayout);
         layout()->addWidget(filterGroupBox);
 
         // Create filter type group box.
         QGroupBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);
+        QHBoxLayout *filterTypeGroupBoxLayout = new QHBoxLayout(filterTypeGroupBox);
+        filterTypeGroupBoxLayout->setSpacing(0);
+        filterTypeGroupBoxLayout->setContentsMargins(0,0,0,0);
+        filterTypeGroupBox->setLayout(filterTypeGroupBoxLayout);
         filterTypeCb = new QComboBox(filterTypeGroupBox);
         filterTypeCb->addItem(tr("Low pass"));
         filterTypeCb->addItem(tr("Hight pass"));
-        filterGroupBoxLayout->addWidget(filterTypeCb);
+        filterTypeGroupBoxLayout->addWidget(filterTypeCb);
+        filterGroupBoxLayout->addWidget(filterTypeGroupBox);
 
         // Create filter knobs gorup box.
         QGroupBox *filterKnobsGroupBox = new QGroupBox(filterGroupBox);
-        QHBoxLayout *filterKnobsGroupBoxLayout = new QHBoxLayout();
+        QHBoxLayout *filterKnobsGroupBoxLayout = new QHBoxLayout(filterKnobsGroupBox);
         filterKnobsGroupBox->setLayout(filterKnobsGroupBoxLayout);
+        filterKnobsGroupBoxLayout->setContentsMargins(0,0,0,0);
         GKickKnob *filterFrequencyKnob = new GKickKnob(filterKnobsGroupBox, tr("Frequency"));
         GKickKnob *filterQKnob = new GKickKnob(filterKnobsGroupBox, tr("Q"));
         filterFrequencyKnob->setMaxValue(20000);
@@ -112,9 +126,10 @@ void OscillatorGroupBox::createFilterGroupBox()
         filterQKnob->setCurrentValue(oscillator->getFilterQFactor());
         filterKnobsGroupBoxLayout->addWidget(filterFrequencyKnob);
         filterKnobsGroupBoxLayout->addWidget(filterQKnob);
+        filterGroupBoxLayout->addWidget(filterKnobsGroupBox);
 
         connect(filterFrequencyKnob, SIGNAL(valueUpdated(double)),
                 oscillator.get(), SLOT(setOscFilterFrequencyValue(double)));
         connect(filterQKnob, SIGNAL(valueUpdated(double)),
-                oscillator.get(), SLOT(setOscFilterQFactor(double)));
+        oscillator.get(), SLOT(setOscFilterQFactor(double)));
 }
