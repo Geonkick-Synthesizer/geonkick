@@ -163,6 +163,18 @@ void GKickApi::setKickFilterFrequency(double f)
 {
 }
 
+double GKickApi::getKickFilterFrequency(void)
+{
+}
+
+void GKickApi::setKickFilterQFactor(double f)
+{
+}
+
+double GKickApi::getKickFilterQFactor()
+{
+}
+
 bool GKickApi::setOscAmplitudeValue(int oscillatorIndex, double v)
 {
 	if (!gKickApi) {

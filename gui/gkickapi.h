@@ -78,6 +78,9 @@ class GKickApi: public QObject
         void setAmplitude(double val);
         double getAmplitude();
         void setKickFilterFrequency(double f);
+        double getKickFilterFrequency(void);
+        void setKickFilterQFactor(double f);
+        double getKickFilterQFactor();
 
  signals:
         void kickLengthUpdated(double len);

@@ -185,11 +185,11 @@ double GKickOscillator::getFilterQFactor()
 QString GKickOscillator::name()
 {
         if (oscillatorType == GKickOscillator::OSC_1) {
-                return "OSC 1";
+                return tr("OSC 1");
         } else if (oscillatorType == GKickOscillator::OSC_2) {
-                return "OSC 2";
+                return tr("OSC 2");
         } else {
-                return "NOISE";
+                return tr("Noise");
         }
 }
 
