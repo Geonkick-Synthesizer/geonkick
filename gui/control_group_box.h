@@ -1,12 +1,12 @@
 /**
- * File name: control_group_box.h
- * Project: GeonKick
+ * File name: control_group_box.cpp
+ * Project: GeonKick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor <nistor@iurie.org>
+ * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of MashaFile.
+ * This file is part of GeonKick.
  *
- * MashaFile is free software; you can redistribute it and/or modify
+ * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
