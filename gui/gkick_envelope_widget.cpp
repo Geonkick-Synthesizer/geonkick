@@ -49,16 +49,20 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
         envelopes.push_back(std::make_shared<GeneralEnvelope>(api));
         currentEnvelope = envelopes[GKickEnvelope::ENV_CATEGORY_GENERAL];
 
-        //        QVBoxLayout* vBoxLayout = ;
-        setLayout(new QVBoxLayout(this));
+        QVBoxLayout *envelopeLayout = new QVBoxLayout(this);
+        setLayout(envelopeLayout);
+        envelopeLayout->setSpacing(0);
 
         // Create top area.
         envelopeTitleLabel = new QLabel(currentEnvelope->name(), this);
-        layout()->addWidget(envelopeTitleLabel);
+        envelopeTitleLabel->setAlignment(Qt::AlignHCenter);
+        envelopeLayout->addWidget(envelopeTitleLabel);
+        envelopeLayout->setStretchFactor(envelopeTitleLabel, 0);
 
         // Create drawing area.
         drawArea = new EnvelopeDrawingArea(this, currentEnvelope);
-        layout()->addWidget(drawArea);
+        envelopeLayout->addWidget(drawArea);
+        envelopeLayout->setStretchFactor(drawArea, 1);
 
         // Create bottom area.
         showAmplitudeEnvButton = new QPushButton(tr("AMPL"), this);
@@ -70,7 +74,8 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
         buttomAreaLayout->addWidget(showAmplitudeEnvButton);
         buttomAreaLayout->addWidget(showFrequencyEnvButton);
         buttomAreaWidget->setLayout(buttomAreaLayout);
-        layout()->addWidget(buttomAreaWidget);
+        envelopeLayout->addWidget(buttomAreaWidget);
+        envelopeLayout->setStretchFactor(buttomAreaWidget, 0);
         updateButtonArea();
 }
 

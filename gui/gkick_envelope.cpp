@@ -41,6 +41,7 @@ GKickEnvelope::~GKickEnvelope()
 
 void GKickEnvelope::draw(QPainter &painter)
 {
+        drawAxes(painter);
 	//drawPoints(painter);
 	//drawLines(painter);
 }
@@ -62,15 +63,20 @@ void GKickEnvelope::drawPoints(QPainter &painter)
                 }*/
 }
 
-//void GKickEnvelope::drawAxes(QPainter &painter)
-//{
-        /*QPen pen(Qt::black);
+void GKickEnvelope::drawAxes(QPainter &painter)
+{
+        int width = painter.window().width();
+        int height = painter.window().height();
+        QPen pen(Qt::black);
         pen.setWidth(1);
         painter.setPen(pen);
-        painter.drawLine(xPadding, yPadding, xPadding, height() - yPadding);
-        painter.drawLine(xPadding, height() - yPadding,
-        width() - xPadding, height() - yPadding);*/
-//}
+        //painter.drawLine(xPadding, yPadding, xPadding, height - yPadding);
+        //painter.drawLine(xPadding, height - yPadding,
+        //width - xPadding, height - yPadding);
+        painter.drawLine(10, 10, 10, height - 10);
+        painter.drawLine(10, height - 10, width - 10, height - 10);
+
+}
 
 //void GKickEnvelope::drawLines(QPainter &painter)
 //{

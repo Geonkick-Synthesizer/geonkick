@@ -84,7 +84,7 @@ bool MainWindow::init(void)
         // Create control area.
         ControlArea *controlAreaWidget = new ControlArea(centralWidget(), gkickApi, oscillators);
         centralWidgetLayout->addWidget(controlAreaWidget);
-        centralWidgetLayout->setStretchFactor(controlAreaWidget, 1);
+        centralWidgetLayout->setStretchFactor(controlAreaWidget, 0);
         centralWidgetLayout->setStretchFactor(envelopeWidget, 2);
 
         return true;

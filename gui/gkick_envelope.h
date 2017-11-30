@@ -52,6 +52,7 @@ class GKickEnvelope: public QObject
         GKickEnvelope();
         virtual ~GKickEnvelope();
         void draw(QPainter &painter);
+        void drawAxes(QPainter &painter);
         void update();
         bool hasSelected();
         void selectPoint(QPointF point);
