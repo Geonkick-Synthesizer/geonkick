@@ -54,8 +54,8 @@ class GKickEnvelope: public QObject
         void draw(QPainter &painter);
         void drawAxes(QPainter &painter);
         void update();
-        bool hasSelected();
-        void selectPoint(QPointF point);
+        bool hasSelected() const;
+        void selectPoint(const QPointF point);
         void unselectPoint(void);
         void moveSelectedPoint(double x, double y);
         double getLeftPointLimit(void);
@@ -88,13 +88,15 @@ class GKickEnvelope: public QObject
 
  private:
 
-        QVector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
+        std::vector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
         std::shared_ptr<GKickEnvelopePoint> selectedPoint;
         EnvelopeType envelopeType;
         EnvelopeCategory envelopeCategory;
         QString envelopeName;
         double envelopeW;
         double envelopeH;
+        double xRatio;
+        double yRatio;
 };
 
 #endif
