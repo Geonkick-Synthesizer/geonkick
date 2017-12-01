@@ -51,52 +51,42 @@ class GKickEnvelope: public QObject
 
         GKickEnvelope();
         virtual ~GKickEnvelope();
+        int W(void) const;
+        int H(void) const;
+        virtual double envelopeLengh(void) const { return 0.0; }
+        QPointF origin(void) const;
         void draw(QPainter &painter);
         void drawAxes(QPainter &painter);
-        void update();
         bool hasSelected() const;
-        void selectPoint(const QPointF point);
+        void selectPoint(const QPointF &point);
         void unselectPoint(void);
         void moveSelectedPoint(double x, double y);
-        double getLeftPointLimit(void);
-        double getRightPointLimit(void);
+        double getLeftPointLimit(void) const;
+        double getRightPointLimit(void) const;
         void addPoint(QPointF point);
         void removePoint(QPointF point);
-        void setXRatio(double k);
-        void setYRatio(double k);
-        QPointF scaleUp(QPointF point);
-        QPointF scaleDown(QPointF point);
-        QPointF getOriginPoint(void);
-        double getEnvelopeLenth(void);
-        double getEnvelopeHeight(void);
-        double getKickLength(void);
         void setType(EnvelopeType type);
-        EnvelopeType type();
+        EnvelopeType type() const;
         void setCategory(EnvelopeCategory cat);
-        EnvelopeCategory category();
-        double getEnvelopeValue(void);
-        QString name();
+        EnvelopeCategory category() const;
+        double getEnvelopeValue(void) const;
+        QString name() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) {}
         virtual void pointUpdatedEvent(unsigned int index, double x, double y) {}
         virtual void pointRemovedEvent(unsigned int index) {}
-        void addEnvelopePoints(QPolygonF points);
-        void removePoints(void);
         void drawPoints(QPainter &painter);
         void drawLines(QPainter &painter);
 
  private:
-
         std::vector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
-        std::shared_ptr<GKickEnvelopePoint> selectedPoint;
+        int selectedPointIndex;
         EnvelopeType envelopeType;
         EnvelopeCategory envelopeCategory;
         QString envelopeName;
         double envelopeW;
         double envelopeH;
-        double xRatio;
-        double yRatio;
 };
 
 #endif

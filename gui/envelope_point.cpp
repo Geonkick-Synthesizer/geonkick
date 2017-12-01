@@ -37,7 +37,7 @@ GKickEnvelopePoint::GKickEnvelopePoint(void)
 }
 
 GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
-						 const QPointF &point)
+                                       const QPointF &point)
 	: QPointF(point),
 	  is_selected(false),
 	  pointRadius(7),
@@ -47,7 +47,7 @@ GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
 }
 
 GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
-						 double x, double y)
+                                       double x, double y)
 	: QPointF(x, y),
 	  is_selected(false),
 	  pointRadius(7),
@@ -72,8 +72,9 @@ void GKickEnvelopePoint::draw(QPainter &painter)
 
 	painter.setPen(pen);
 	painter.setBrush(Qt::white);
-	QPointF point = scaleUp(QPointF(x(), y()));
-	QPointF origin = parentEnvelope->getOriginPoint();
+	QPointF point  = QPointF(x() * parentEnvelope->W(),
+                                 y() * parentEnvelope->H());
+	QPointF origin = parentEnvelope->origin();
 	QRectF rect;
 	rect.setCoords(origin.x() + (point.x() - radius()),
 		       origin.y() - (point.y() - radius()),
@@ -89,11 +90,6 @@ void GKickEnvelopePoint::draw(QPainter &painter)
 		       origin.x() + (point.x() + radius() / 3),
 		       origin.y() - (point.y() + radius() / 3));
 	painter.drawEllipse(rect);
-}
-
-QPointF GKickEnvelopePoint::scaleUp(QPointF point)
-{
-  return parentEnvelope->scaleUp(point);
 }
 
 double GKickEnvelopePoint::radius(void)
@@ -125,11 +121,10 @@ bool GKickEnvelopePoint::hasPoint(const QPointF &point)
 {
 	double px = point.x();
 	double py = point.y();
-	QPointF p = scaleUp(QPointF(x(), y()));
 
-	if ((px > p.x() - pointRadius) && (px < p.x() + pointRadius)
-	    && (py > y() - pointRadius) && (py < p.y() + pointRadius)
-	    && ((p.x() - px) * (p.x() - px) + (p.y() - py) * (p.y() - py) < pointRadius * pointRadius))	{
+	if ((px > point.x() - pointRadius) && (px < point.x() + pointRadius)
+	    && (py > y() - pointRadius) && (py < point.y() + pointRadius)
+	    && ((point.x() - px) * (point.x() - px) + (point.y() - py) * (point.y() - py) < pointRadius * pointRadius))	{
                 return true;
         }
 
@@ -149,13 +144,13 @@ QString GKickEnvelopePoint::pointText(void)
 
 QString GKickEnvelopePoint::pointAmplitudeText(void)
 {
-	QString text = QString::number(parentEnvelope->getEnvelopeValue() * y(), 'f', 3);
+	QString text = QString::number(y(), 'f', 3);
 	return text;
 }
 
 QString GKickEnvelopePoint::pointFrequencyText(void)
 {
-	double v = parentEnvelope->getEnvelopeValue() * y();
+	double v = y();
 
 	QString textVal;
 	QString str;
@@ -170,6 +165,6 @@ QString GKickEnvelopePoint::pointFrequencyText(void)
 
 QString GKickEnvelopePoint::getTimeTextValue(void)
 {
-	return QString::number((parentEnvelope->getKickLength() * x()) * 1000, 'f', 0) + " ms";
+	return QString::number((parentEnvelope->envelopeLengh() * x()) * 1000, 'f', 0) + " ms";
 }
 

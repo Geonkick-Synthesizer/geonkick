@@ -38,6 +38,7 @@ class OscillatorEnvelope: public GKickEnvelope
 
   OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc);
   ~OscillatorEnvelope();
+  double envelopeLengh(void) const;
 
  protected:
   void pointAddedEvent(double x, double y) override;

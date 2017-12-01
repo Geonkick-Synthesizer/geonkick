@@ -66,3 +66,8 @@ void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
                 oscillator->removeEnvelopePoint(GKickOscillator::OSC_ENV_TYPE_FREQUENCY, index);
         }
 }
+
+double OscillatorEnvelope::envelopeLengh(void) const
+{
+        return oscillator->getKickLength();
+}

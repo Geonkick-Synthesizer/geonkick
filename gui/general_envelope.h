@@ -37,6 +37,7 @@ class GeneralEnvelope: public GKickEnvelope
 
   GeneralEnvelope(std::shared_ptr<GKickApi> &api);
   ~GeneralEnvelope();
+  double envelopeLengh(void) const;
 
  protected:
   void pointAddedEvent(double x, double y) override;

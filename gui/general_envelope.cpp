@@ -48,3 +48,9 @@ void GeneralEnvelope::pointRemovedEvent(unsigned int index)
 {
         gkickApi->removeEnvelopePoint(index);
 }
+
+double GeneralEnvelope::envelopeLengh(void) const
+{
+        return gkickApi->getKickLength();
+}
+
