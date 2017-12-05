@@ -104,9 +104,9 @@ void GKickEnvelopeWidget::updateButtonArea()
         }
 }
 
-void GKickEnvelopeWidget::viewEnvelope(GKickEnvelope::EnvelopeType type)
+void GKickEnvelopeWidget::viewEnvelope(GKickEnvelope::EnvelopeCategory category)
 {
-        currentEnvelope = envelopes[type];
+        currentEnvelope = envelopes[category];
         envelopeTitleLabel->setText(currentEnvelope->name());
         drawArea->setEnvelope(currentEnvelope);
         updateButtonArea();

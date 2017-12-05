@@ -33,6 +33,6 @@
 #define SPEC_APP_VERION 0x000100
 #define SPEC_APP_VERION_SRE "0.1.0"
 
-#define GKICK_DEBUG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
+#define GKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
 
 #endif

@@ -34,7 +34,13 @@ class EnvelopesGroupBox: public ControlGroupBox
          EnvelopesGroupBox(QWidget *widget);
          ~EnvelopesGroupBox();
  signals:
-        void viewEnvelope(GKickEnvelope::EnvelopeType type);
+        void viewEnvelope(GKickEnvelope::EnvelopeCategory category);
+
+ protected slots:
+         void viewOsc1(bool);
+         void viewOsc2(bool);
+         void viewNoiseOsc(bool);
+         void viewGeneral(bool);
 };
 
 #endif

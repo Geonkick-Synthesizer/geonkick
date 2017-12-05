@@ -45,17 +45,11 @@ void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<GKickEnvelope> &envelope)
         currentEnvelope = envelope;
 }
 
-void EnvelopeDrawingArea::update()
-{
-        GKICK_DEBUG_INFO("called");
-        QPainter painter(this);
-        currentEnvelope->draw(painter);
-}
-
 void EnvelopeDrawingArea::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event);
-        update();
+        QPainter painter(this);
+        currentEnvelope->draw(painter);
 }
 
 void

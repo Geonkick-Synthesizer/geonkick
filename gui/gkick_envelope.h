@@ -64,6 +64,7 @@ class GKickEnvelope: public QObject
         double getLeftPointLimit(void) const;
         double getRightPointLimit(void) const;
         void addPoint(QPointF point);
+        void addPoints(const QPolygonF  &points);
         void removePoint(QPointF point);
         void setType(EnvelopeType type);
         EnvelopeType type() const;
@@ -81,7 +82,8 @@ class GKickEnvelope: public QObject
 
  private:
         std::vector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
-        int selectedPointIndex;
+        std::vector<std::shared_ptr<GKickEnvelopePoint>>::size_type selectedPointIndex;
+        bool pointSelected;
         EnvelopeType envelopeType;
         EnvelopeCategory envelopeCategory;
         QString envelopeName;

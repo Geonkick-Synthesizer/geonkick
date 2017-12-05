@@ -27,6 +27,7 @@
 #include <QWidget>
 
 #include <memory>
+#include <gkick_envelope.h>
 
 class GKickOscillator;
 class GKickApi;
@@ -37,7 +38,10 @@ class ControlArea: public QWidget
  public:
  ControlArea(QWidget *parent, std::shared_ptr<GKickApi> &api,
              std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
-         ~ControlArea();
+ ~ControlArea();
+
+ signals:
+         void viewEnvelope(GKickEnvelope::EnvelopeCategory category);
  private:
 };
 

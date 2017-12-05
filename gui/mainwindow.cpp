@@ -87,21 +87,8 @@ bool MainWindow::init(void)
         centralWidgetLayout->setStretchFactor(controlAreaWidget, 0);
         centralWidgetLayout->setStretchFactor(envelopeWidget, 2);
 
+        connect(controlAreaWidget, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
+                envelopeWidget, SLOT(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
+
         return true;
-}
-
-void MainWindow::createControlArea(QWidget *controlAreaWidget)
-{
-        /*        envelopeGroupBox = new EnvelopesGroupBox(controlAreaWidget);
-        connect(envelopeGroupBox, SIGNAL(viewEnvelope(GKickEnvelopeWidget::EnvelopeType)),
-                envelopeWidget, SLOT(viewEnvelope(GKickEnvelopeWidget::EnvelopeType)));
-
-        controlAreaWidget->layout()->addWidget(envelopeGroupBox);
-        controlAreaWidget->layout()->addWidget(new OscillatorGroupBox(controlAreaWidget,
-                                                                      oscillators[GkickOscillator::OSC_1]));
-        controlAreaWidget->layout()->addWidget(new OscillatorGroupBox(controlAreaWidget,
-                                                                      oscillators[GkickOscillator::OSC_2]));
-        controlAreaWidget->layout()->addWidget(new NoiseGroupBox(controlAreaWidget,
-                                                                 oscillators[GkickOscillator::OSC_NOISE]));
-                                                                 controlAreaWidget->layout()->addWidget(new GenralSettingGroupBox(controlAreaWidget, gkickApi));*/
 }

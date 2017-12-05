@@ -58,7 +58,6 @@ class MainWindow : public QMainWindow
  protected:
 	bool setupMenuBar(void);
 	bool setupToolBar(void);
-        void createControlArea(QWidget *controlAreaWidget);
 
  private:
 	std::shared_ptr<GKickApi> gkickApi;

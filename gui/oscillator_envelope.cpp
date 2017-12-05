@@ -34,6 +34,9 @@ OscillatorEnvelope::OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc)
         } else {
                 setCategory(GKickEnvelope::ENV_CATEGORY_NOISE);
         }
+
+        QPolygonF points = oscillator->getEnvelopePoints(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()));
+        addPoints(points);
 }
 
 OscillatorEnvelope::~OscillatorEnvelope()

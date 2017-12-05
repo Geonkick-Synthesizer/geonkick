@@ -35,10 +35,10 @@ EnvelopesGroupBox::EnvelopesGroupBox(QWidget *parent)
         QRadioButton *noiseRb   = new QRadioButton(tr("Noise"), this);
         QRadioButton *generalRb = new QRadioButton(tr("General"), this);
         osc1Rb->setChecked(true);
-        connect(osc1Rb, SIGNAL(clicked(bool)), this, SIGNAL(viewOsc1(bool)));
-        connect(osc2Rb, SIGNAL(clicked(bool)), this, SIGNAL(viewOsc2(bool)));
-        connect(noiseRb, SIGNAL(clicked(bool)), this, SIGNAL(viewNoiseOsc(bool)));
-        connect(generalRb, SIGNAL(clicked(bool)), this, SIGNAL(viewGeneral(bool)));
+        connect(osc1Rb, SIGNAL(clicked(bool)), this, SLOT(viewOsc1(bool)));
+        connect(osc2Rb, SIGNAL(clicked(bool)), this, SLOT(viewOsc2(bool)));
+        connect(noiseRb, SIGNAL(clicked(bool)), this, SLOT(viewNoiseOsc(bool)));
+        connect(generalRb, SIGNAL(clicked(bool)), this, SLOT(viewGeneral(bool)));
         layout()->addWidget(osc1Rb);
         layout()->addWidget(osc2Rb);
         layout()->addWidget(noiseRb);
@@ -47,4 +47,28 @@ EnvelopesGroupBox::EnvelopesGroupBox(QWidget *parent)
 
 EnvelopesGroupBox::~EnvelopesGroupBox()
 {
+}
+
+void EnvelopesGroupBox::viewOsc1(bool b)
+{
+        Q_UNUSED(b);
+        emit viewEnvelope(GKickEnvelope::ENV_CATEGORY_OSC_1);
+}
+
+void EnvelopesGroupBox::viewOsc2(bool b)
+{
+        Q_UNUSED(b);
+        emit viewEnvelope(GKickEnvelope::ENV_CATEGORY_OSC_2);
+}
+
+void EnvelopesGroupBox::viewNoiseOsc(bool b)
+{
+        Q_UNUSED(b);
+        emit viewEnvelope(GKickEnvelope::ENV_CATEGORY_NOISE);
+}
+
+void EnvelopesGroupBox::viewGeneral(bool b)
+{
+        Q_UNUSED(b);
+        emit viewEnvelope(GKickEnvelope::ENV_CATEGORY_GENERAL);
 }

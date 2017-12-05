@@ -45,9 +45,12 @@ public:
                        std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
    ~GKickEnvelopeWidget();
 
+   public slots:
+
+           void viewEnvelope(GKickEnvelope::EnvelopeCategory category);
+
  protected:
      void updateButtonArea();
-     void viewEnvelope(GKickEnvelope::EnvelopeType type);
 
  protected slots:
              void showAmplitudeEnvelope();

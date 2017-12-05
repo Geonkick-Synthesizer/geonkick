@@ -147,12 +147,12 @@ double GKickOscillator::getOscFrequencyValue(void)
 
 int GKickOscillator::oscillatorIndex()
 {
-        return (int)oscillatorType;
+        return static_cast<int>(oscillatorType);
 }
 
 int GKickOscillator::envelopeIndex(GKickOscillator::OscillatorEnvelopeType type)
 {
-        return (int)type;
+        return static_cast<int>(type);
 }
 
 void GKickOscillator::setFilterType(GKickOscillator::OscillatorFilterType type)

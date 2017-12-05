@@ -29,8 +29,8 @@
 GKickEnvelopePoint::GKickEnvelopePoint(void)
 	: QPointF(),
 	  is_selected(false),
-	  pointRadius(7),
-	  dotRadius(3),
+	  pointRadius(20),
+	  dotRadius(5),
 	  parentEnvelope(NULL)
 
 {
@@ -40,8 +40,8 @@ GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
                                        const QPointF &point)
 	: QPointF(point),
 	  is_selected(false),
-	  pointRadius(7),
-	  dotRadius(3),
+	  pointRadius(20),
+	  dotRadius(6),
 	  parentEnvelope(parent)
 {
 }
@@ -50,8 +50,8 @@ GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
                                        double x, double y)
 	: QPointF(x, y),
 	  is_selected(false),
-	  pointRadius(7),
-	  dotRadius(3),
+	  pointRadius(20),
+	  dotRadius(6),
 	  parentEnvelope(parent)
 
 {
@@ -72,24 +72,21 @@ void GKickEnvelopePoint::draw(QPainter &painter)
 
 	painter.setPen(pen);
 	painter.setBrush(Qt::white);
-	QPointF point  = QPointF(x() * parentEnvelope->W(),
-                                 y() * parentEnvelope->H());
+	QPointF point  = QPointF(x() * (parentEnvelope->W() - 20), y() * (parentEnvelope->H() - 20));
 	QPointF origin = parentEnvelope->origin();
 	QRectF rect;
-	rect.setCoords(origin.x() + (point.x() - radius()),
-		       origin.y() - (point.y() - radius()),
-		       origin.x() + (point.x() + radius()),
-		       origin.y() - (point.y() + radius()));
+        double r = radius();
+        rect.setCoords((point.x() - r/2) + origin.x(), origin.y() - (point.y() + r/2),
+                       (point.x() + r/2) + origin.x(), origin.y() - (point.y() - r/2));
 	painter.drawEllipse(rect);
-	painter.drawText(origin.x() + (point.x() + 3 * radius() / 3),
-			 origin.y() - (point.y() + 3 * radius() / 3), pointText());
+        //	painter.drawText(origin.x() + (point.x() + 3 * radius() / 3),
+	//		 origin.y() - (point.y() + 3 * radius() / 3), pointText());
 
-	painter.setBrush(Qt::black);
-	rect.setCoords(origin.x() + (point.x() - radius() / 3),
-		       origin.y() - (point.y() - radius() / 3),
-		       origin.x() + (point.x() + radius() / 3),
-		       origin.y() - (point.y() + radius() / 3));
-	painter.drawEllipse(rect);
+        painter.setBrush(Qt::black);
+        r = getDotRadius();
+        rect.setCoords((point.x() - r/2) + origin.x(), origin.y() - (point.y() + r/2),
+                       (point.x() + r/2) + origin.x(), origin.y() - (point.y() - r/2));
+        painter.drawEllipse(rect);
 }
 
 double GKickEnvelopePoint::radius(void)
@@ -121,10 +118,12 @@ bool GKickEnvelopePoint::hasPoint(const QPointF &point)
 {
 	double px = point.x();
 	double py = point.y();
+        double X = x() * (parentEnvelope->W() - 20);
+        double Y = y() * (parentEnvelope->H() - 20);
 
-	if ((px > point.x() - pointRadius) && (px < point.x() + pointRadius)
-	    && (py > y() - pointRadius) && (py < point.y() + pointRadius)
-	    && ((point.x() - px) * (point.x() - px) + (point.y() - py) * (point.y() - py) < pointRadius * pointRadius))	{
+	if ((px > X - pointRadius) && (px < X + pointRadius)
+	    && (py > Y - pointRadius) && (py < Y + pointRadius)
+	    && ((X - px) * (X - px) + (Y - py) * (Y - py) < pointRadius * pointRadius))	{
                 return true;
         }
 
