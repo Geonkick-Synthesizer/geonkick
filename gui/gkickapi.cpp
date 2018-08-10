@@ -34,9 +34,9 @@ GKickApi::GKickApi() :
         gKickApi(NULL)
 {
   	if (geonkick_create(&gKickApi) != GEONKICK_OK) {
+	        qDebug() << "can't create geonkick API";
   		setError(true);
-  	} else {
-        }
+  	}
 }
 
 GKickApi::~GKickApi()
@@ -159,6 +159,9 @@ void GKickApi::setKickLength(double len)
 
 double GKickApi::getKickLength(void)
 {
+        if (!gKickApi) {
+	          return 0;
+        }
         double len = 0.0;
         geonkick_get_length(gKickApi, &len);
         return len;

@@ -49,7 +49,7 @@ MainWindow::~MainWindow()
 bool MainWindow::init(void)
 {
         if (gkickApi.get()->hasErrors()) {
-                return false;
+	  //return false;
         }
 
         gkickApi->setMaxLength(1.5);

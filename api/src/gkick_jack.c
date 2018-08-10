@@ -250,7 +250,7 @@ gkick_create_jack(struct geonkick *kick)
                 return GEONKICK_ERROR_INIT_MUTEX;
         }
 
-        jack->client = jack_client_open(kick->name, JackNullOption, NULL);
+        jack->client = jack_client_open(kick->name, JackNoStartServer, NULL);
         if (jack->client == NULL) {
                 gkick_log_error("can't create jack client");
                 gkick_jack_free(&jack);

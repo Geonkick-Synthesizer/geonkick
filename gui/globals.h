@@ -34,5 +34,6 @@
 #define SPEC_APP_VERION_SRE "0.1.0"
 
 #define GKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
+#define GKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
 
 #endif
