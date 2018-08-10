@@ -35,7 +35,6 @@ GKickApi::GKickApi() :
 {
   	if (geonkick_create(&gKickApi) != GEONKICK_OK) {
 	        qDebug() << "can't create geonkick API";
-  		setError(true);
   	}
 }
 

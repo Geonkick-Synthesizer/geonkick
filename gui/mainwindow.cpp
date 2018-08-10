@@ -57,22 +57,22 @@ bool MainWindow::init(void)
         gkickApi->setAmplitude(1);
         gkickApi->setKickFilterFrequency(0);
         oscillators = gkickApi.get()->getOscillators();
-        oscillators[GKickOscillator::OSC_1].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
-        oscillators[GKickOscillator::OSC_2].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
-        oscillators[GKickOscillator::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
-        oscillators[GKickOscillator::OSC_1].get()->setOscAmplitudeValue(1);
-        oscillators[GKickOscillator::OSC_1].get()->setOscFrequencyValue(10000);
-        oscillators[GKickOscillator::OSC_1].get()->setFilterType(GKickOscillator::FILTER_LP);
-        oscillators[GKickOscillator::OSC_1].get()->setFilterFrequency(0);
-        oscillators[GKickOscillator::OSC_2].get()->setOscAmplitudeValue(0);
-        oscillators[GKickOscillator::OSC_2].get()->setOscFrequencyValue(10000);
-        oscillators[GKickOscillator::OSC_2].get()->setFilterType(GKickOscillator::FILTER_LP);
-        oscillators[GKickOscillator::OSC_2].get()->setFilterFrequency(0);
-        oscillators[GKickOscillator::OSC_NOISE].get()->setOscAmplitudeValue(1);
-        oscillators[GKickOscillator::OSC_NOISE].get()->setFilterType(GKickOscillator::FILTER_LP);
-        oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(0);
+	oscillators[GKickOscillator::OSC_1].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
+	oscillators[GKickOscillator::OSC_2].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
+	oscillators[GKickOscillator::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
+	oscillators[GKickOscillator::OSC_1].get()->setOscAmplitudeValue(1);
+	oscillators[GKickOscillator::OSC_1].get()->setOscFrequencyValue(10000);
+	oscillators[GKickOscillator::OSC_1].get()->setFilterType(GKickOscillator::FILTER_LP);
+	oscillators[GKickOscillator::OSC_1].get()->setFilterFrequency(0);
+	oscillators[GKickOscillator::OSC_2].get()->setOscAmplitudeValue(0);
+	oscillators[GKickOscillator::OSC_2].get()->setOscFrequencyValue(10000);
+	oscillators[GKickOscillator::OSC_2].get()->setFilterType(GKickOscillator::FILTER_LP);
+	oscillators[GKickOscillator::OSC_2].get()->setFilterFrequency(0);
+	oscillators[GKickOscillator::OSC_NOISE].get()->setOscAmplitudeValue(1);
+	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterType(GKickOscillator::FILTER_LP);
+	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(0);
 
-        // Create central Widget.
+	// Create central Widget.
         setCentralWidget(new QWidget(this));
         centralWidgetLayout = new QVBoxLayout(centralWidget());
         centralWidget()->setLayout(centralWidgetLayout);

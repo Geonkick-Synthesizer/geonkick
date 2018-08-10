@@ -33,6 +33,13 @@ int main(int argc, char *argv[])
 {
         QApplication a(argc, argv);
 
+	QFile file("./themes/geontime/common.css");
+	if (!file.open(QFile::ReadOnly)) {
+	        qDebug() << "can't read theme CSS file";
+	} else {
+	        a.setStyleSheet(QLatin1String(file.readAll()));
+	}
+
         MainWindow window;
         if (!window.init()) {
                 qDebug() << "can't init main window";

@@ -55,9 +55,9 @@ geonkick_create(struct geonkick **kick)
 	}
 
 	if (gkick_create_jack(*kick) != GEONKICK_OK) {
-                gkick_log_error("can't create jack");
-                geonkick_free(kick);
-                return GEONKICK_ERROR;
+                gkick_log_warning("can't create jack");
+		// geonkick_free(kick);
+		// return GEONKICK_ERROR;
 	}
 
 	return GEONKICK_OK;
