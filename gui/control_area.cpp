@@ -34,7 +34,7 @@ ControlArea::ControlArea(QWidget *parent, std::shared_ptr<GKickApi> &api,
                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
         : QWidget(parent)
 {
-        setMaximumHeight(400);
+        setMaximumHeight(1000);
         setLayout(new QHBoxLayout);
         EnvelopesGroupBox *envelopesGroupBox = new EnvelopesGroupBox(this);
         connect(envelopesGroupBox, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),

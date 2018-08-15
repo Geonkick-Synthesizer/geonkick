@@ -27,7 +27,7 @@
 #include <QWidget>
 #include <QMouseEvent>
 
-#define GKICK_UI_DEFAULT_KNOB_RADIOUS 30
+#define GKICK_UI_DEFAULT_KNOB_DIAMETER 84
 
 class GKickKnob : public QWidget
 {

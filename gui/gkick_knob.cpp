@@ -25,19 +25,21 @@
 
 #include <QPainter>
 #include <QDebug>
+#include <QStyleOption>
 
 GKickKnob::GKickKnob(QWidget *parent, const QString &name)
 	: QWidget(parent),
           knobName(name),
-	  knobRadius(GKICK_UI_DEFAULT_KNOB_RADIOUS),
+	  knobRadius(GKICK_UI_DEFAULT_KNOB_DIAMETER),
 	  lastPositionPoint(),
 	  knobValueDegree(0),
 	  realValue(0.0),
           isSelected(false)
 
 {
-        setFixedSize(2 * knobRadius, 2 * knobRadius);
-        setContentsMargins(2, 2, 2, 2);
+        setObjectName("GKickKnob");
+        //        setFixedSize(GKICK_UI_DEFAULT_KNOB_DIAMETER, GKICK_UI_DEFAULT_KNOB_DIAMETER);
+        //setContentsMargins(2, 2, 2, 2);
 }
 
 GKickKnob::~GKickKnob()
@@ -50,8 +52,11 @@ GKickKnob::paintEvent(QPaintEvent *event)
 {
         Q_UNUSED(event);
         QPainter painter(this);
+        QStyleOption opt;
+        opt.init(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
-        QRect rect;
+        /*QRect rect;
         painter.setBrush(Qt::white);
         rect.setCoords(2, 2, width() - 2, height() - 2);
         painter.drawEllipse(rect);
@@ -63,7 +68,7 @@ GKickKnob::paintEvent(QPaintEvent *event)
 
         painter.setBrush(Qt::white);
         rect.setCoords(8, 8, width() - 8, height() - 8);
-        painter.drawEllipse(rect);
+        painter.drawEllipse(rect);*/
 }
 
 int

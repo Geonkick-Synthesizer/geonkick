@@ -4,3 +4,4 @@ moc_*
 .qmake.stash
 gui/Makefile
 gui/geonkick
+build
