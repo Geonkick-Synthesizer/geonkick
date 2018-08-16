@@ -38,7 +38,7 @@ GKickKnob::GKickKnob(QWidget *parent, const QString &name)
 
 {
         setObjectName("GKickKnob");
-        //        setFixedSize(GKICK_UI_DEFAULT_KNOB_DIAMETER, GKICK_UI_DEFAULT_KNOB_DIAMETER);
+        setFixedSize(GKICK_UI_DEFAULT_KNOB_DIAMETER, GKICK_UI_DEFAULT_KNOB_DIAMETER);
         //setContentsMargins(2, 2, 2, 2);
 }
 
@@ -55,6 +55,8 @@ GKickKnob::paintEvent(QPaintEvent *event)
         QStyleOption opt;
         opt.init(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
+		       QPixmap p;
+		       		       p.load("./themes/geontime/knob.png");
 
         /*QRect rect;
         painter.setBrush(Qt::white);
@@ -69,6 +71,10 @@ GKickKnob::paintEvent(QPaintEvent *event)
         painter.setBrush(Qt::white);
         rect.setCoords(8, 8, width() - 8, height() - 8);
         painter.drawEllipse(rect);*/
+        painter.translate(GKICK_UI_DEFAULT_KNOB_DIAMETER/2, GKICK_UI_DEFAULT_KNOB_DIAMETER/2);
+	painter.rotate(knobValueDegree);
+	painter.drawPixmap((GKICK_UI_DEFAULT_KNOB_DIAMETER - p.size().width()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER/2, (GKICK_UI_DEFAULT_KNOB_DIAMETER - p.size().height()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER /2, p.size().width(), p.size().height(), p);
+
 }
 
 int
