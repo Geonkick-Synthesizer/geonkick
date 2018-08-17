@@ -1,5 +1,5 @@
 /**
- * File name: mainwindow.h
+ * File name: geonkick_mainwindow.h
  * Project: GeonKick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
@@ -21,10 +21,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_MAINWINDOW_H
-#define GKICK_MAINWINDOW_H
+#ifndef GEONGKICK_MAINWINDOW_H
+#define GEONGKICK_MAINWINDOW_H
 
 #include "gkickapi.h"
+#include "geonkick_widget.h"
 #include "gkick_oscillator.h"
 #include "gkick_envelope_widget.h"
 
@@ -40,24 +41,15 @@ class QRadioButton;
 class QComboBox;
 class QLabel;
 
-class MainWindow : public QMainWindow
+class MainWindow : public GeonkickWidget
 {
       Q_OBJECT
 
  public:
 
-      MainWindow();
+      MainWindow(GeonkickWidget *parent = nullptr);
       ~MainWindow();
       bool init(void);
-
-      protected slots:
-
- signals:
-	void quit(void);
-
- protected:
-	bool setupMenuBar(void);
-	bool setupToolBar(void);
 
  private:
 	std::shared_ptr<GKickApi> gkickApi;
@@ -71,4 +63,4 @@ class MainWindow : public QMainWindow
 	QVector<QComboBox*> waveFunctionCb;
 };
 
-#endif
+#endif // GEONKICK_MAINWINDOW_H

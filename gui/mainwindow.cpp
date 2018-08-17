@@ -37,7 +37,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-MainWindow::MainWindow() :
+MainWindow::MainWindow(GeonkickWidget *parent) :
+        GeonkickWidget(parent),
         gkickApi(std::make_shared<GKickApi>())
 {
 }
@@ -72,20 +73,18 @@ bool MainWindow::init(void)
 	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterType(GKickOscillator::FILTER_LP);
 	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(0);
 
-	// Create central Widget.
-        setCentralWidget(new QWidget(this));
-        centralWidgetLayout = new QVBoxLayout(centralWidget());
-        centralWidget()->setLayout(centralWidgetLayout);
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+        setLayout(mainLayout);
 
-        // Create  envelope widget.
-        GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(centralWidget(), gkickApi, oscillators);
-        centralWidgetLayout->addWidget(envelopeWidget);
+        // Create envelope widget.
+        GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(this, gkickApi, oscillators);
+        mainLayout->addWidget(envelopeWidget);
 
         // Create control area.
-        ControlArea *controlAreaWidget = new ControlArea(centralWidget(), gkickApi, oscillators);
-        centralWidgetLayout->addWidget(controlAreaWidget);
-        centralWidgetLayout->setStretchFactor(controlAreaWidget, 0);
-        centralWidgetLayout->setStretchFactor(envelopeWidget, 2);
+        ControlArea *controlAreaWidget = new ControlArea(this, gkickApi, oscillators);
+        mainLayout->addWidget(controlAreaWidget);
+        mainLayout->setStretchFactor(controlAreaWidget, 0);
+        mainLayout->setStretchFactor(envelopeWidget, 2);
 
         connect(controlAreaWidget, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
                 envelopeWidget, SLOT(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
