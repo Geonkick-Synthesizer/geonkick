@@ -25,17 +25,16 @@
 #define ENVELOPE_DRAW_AREA_H
 
 #include "globals.h"
-
-#include <QWidget>
+#include "geonkick_widget.h"
 
 class GKickEnvelope;
 
-class EnvelopeDrawingArea : public QWidget
+class EnvelopeDrawingArea : public GeonkickWidget
 {
    Q_OBJECT
 
  public:
-   EnvelopeDrawingArea(QWidget *parent, std::shared_ptr<GKickEnvelope> &envelope);
+   EnvelopeDrawingArea(GeonkickWidget *parent, std::shared_ptr<GKickEnvelope> &envelope);
    ~EnvelopeDrawingArea();
    void setEnvelope(std::shared_ptr<GKickEnvelope> &envelope);
    void paintEvent(QPaintEvent *event);
@@ -51,4 +50,4 @@ class EnvelopeDrawingArea : public QWidget
    QPointF mousePoint;
 };
 
-#endif
+#endif // ENVELOPE_DRAW_AREA_H

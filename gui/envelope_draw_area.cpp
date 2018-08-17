@@ -27,9 +27,9 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-EnvelopeDrawingArea::EnvelopeDrawingArea(QWidget *parent,
+EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent,
                                          std::shared_ptr<GKickEnvelope> &envelope)
-        : QWidget(parent),
+          : GeonkickWidget(parent),
           currentEnvelope(envelope),
           xPadding(10),
           yPadding(10)

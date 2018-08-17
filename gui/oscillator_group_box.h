@@ -29,12 +29,13 @@
 
 class GKickOscillator;
 class QComboBox;
+class GeonkickWidget;
 
 class OscillatorGroupBox: public ControlGroupBox
 {
         Q_OBJECT
  public:
-        OscillatorGroupBox(QWidget *parent, std::shared_ptr<GKickOscillator> &osc);
+        OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc);
         ~OscillatorGroupBox();
  signals:
         void oscillatorFunctionChanged(int index);

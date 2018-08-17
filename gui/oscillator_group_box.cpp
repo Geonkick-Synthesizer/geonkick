@@ -23,6 +23,7 @@
 
 #include "oscillator_group_box.h"
 #include "gkick_oscillator.h"
+#include "geonkick_widget.h"
 #include <gkick_knob.h>
 
 #include <QComboBox>
@@ -30,8 +31,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-OscillatorGroupBox::OscillatorGroupBox(QWidget *parent, std::shared_ptr<GKickOscillator> &osc)
-        : ControlGroupBox(osc->name(), parent),
+OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc)
+          : ControlGroupBox(osc->name(), static_cast<QWidget*>(parent)),
           oscillator(osc),
           waveFunctionCb(NULL),
           filterTypeCb(NULL)

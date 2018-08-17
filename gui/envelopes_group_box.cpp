@@ -22,13 +22,13 @@
  */
 
 #include "envelopes_group_box.h"
+#include "geonkick_widget.h"
 
 #include <QRadioButton>
-
 #include <QLayout>
 
-EnvelopesGroupBox::EnvelopesGroupBox(QWidget *parent)
-        : ControlGroupBox(tr("View Envelopes"), parent)
+EnvelopesGroupBox::EnvelopesGroupBox(GeonkickWidget *parent)
+  : ControlGroupBox(tr("View Envelopes"), parent)
 {
         QRadioButton *osc1Rb    = new QRadioButton(tr("OSC 1"), this);
         QRadioButton *osc2Rb    = new QRadioButton(tr("OSC 2"), this);

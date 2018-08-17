@@ -30,15 +30,15 @@
 #include <QHBoxLayout>
 #include <QComboBox>
 
-GeneralGroupBox::GeneralGroupBox(QWidget *parent, std::shared_ptr<GKickApi> &api)
-        : ControlGroupBox(tr("General"), parent),
+GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api)
+          : GeonkickGroupBox(tr("General"), parent),
           kickApi(api)
 {
         QGroupBox *generalGroupBox = new QGroupBox(this);
         QHBoxLayout *generalGroupBoxLayout = new QHBoxLayout(generalGroupBox);
         generalGroupBox->setLayout(generalGroupBoxLayout);
-        layout()->addWidget(generalGroupBox);
-        GKickKnob *kickLengthKnob = new GKickKnob(this, tr("Length"));
+        addWidget(generalGroupBox);
+        GKickKnob *kickLengthKnob = new GKickKnob(generalGroupBox, tr("Length"));
         kickLengthKnob->setMaxValue(kickApi->getMaxLength());
         kickLengthKnob->setCurrentValue(kickApi->getKickLength());
         generalGroupBoxLayout->addWidget(kickLengthKnob);
@@ -53,6 +53,7 @@ GeneralGroupBox::GeneralGroupBox(QWidget *parent, std::shared_ptr<GKickApi> &api
                         kickApi.get(), SLOT(setAmplitude(double)));
 
         createFilterGroupBox();
+	*/
 }
 
 GeneralGroupBox::~GeneralGroupBox()

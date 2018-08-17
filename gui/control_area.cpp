@@ -30,9 +30,9 @@
 
 #include <QHBoxLayout>
 
-ControlArea::ControlArea(QWidget *parent, std::shared_ptr<GKickApi> &api,
+ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
-        : QWidget(parent)
+                         : GeonkickWidget(parent)
 {
         setMaximumHeight(1000);
         setLayout(new QHBoxLayout);

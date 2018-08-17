@@ -33,10 +33,10 @@
 #include <QPushButton>
 #include <QLabel>
 
-GKickEnvelopeWidget::GKickEnvelopeWidget(QWidget *parent,
+GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
                                          std::shared_ptr<GKickApi> &api,
                                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
-	: QWidget(parent),
+          : GeonkickWidget(parent),
           envelopeTitleLabel(NULL),
           drawArea(NULL),
           showAmplitudeEnvButton(NULL),

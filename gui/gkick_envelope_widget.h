@@ -26,6 +26,8 @@
 
 #include "gkick_oscillator.h"
 #include "oscillator_envelope.h"
+#include "gkick_envelope.h"
+#include "geonkick_widget.h"
 
 #include <QWidget>
 #include <QVector>
@@ -35,12 +37,12 @@ class EnvelopeDrawingArea;
 class QLabel;
 class QPushButton;
 
-class GKickEnvelopeWidget : public QWidget
+class GKickEnvelopeWidget : public GeonkickWidget
 {
    Q_OBJECT
 public:
 
-   GKickEnvelopeWidget(QWidget *parent,
+   GKickEnvelopeWidget(GeonkickWidget *parent,
                        std::shared_ptr<GKickApi> &api,
                        std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
    ~GKickEnvelopeWidget();

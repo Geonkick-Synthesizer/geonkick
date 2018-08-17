@@ -25,17 +25,18 @@
 #define GKICK_GENERAL_GROUP_BOX_H
 
 #include "gkick_oscillator.h"
-#include "control_group_box.h"
+#include "geonkick_groupbox.h"
 
 class GkickOscillator;
 class QComboBox;
 class GKickApi;
+class GeonkickWidget;
 
-class GeneralGroupBox: public ControlGroupBox
+class GeneralGroupBox: public GeonkickGroupBox
 {
         Q_OBJECT
  public:
-        GeneralGroupBox(QWidget *widget, std::shared_ptr<GKickApi> &api);
+        GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api);
         ~GeneralGroupBox();
 
  protected:

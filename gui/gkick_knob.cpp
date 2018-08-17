@@ -27,8 +27,8 @@
 #include <QDebug>
 #include <QStyleOption>
 
-GKickKnob::GKickKnob(QWidget *parent, const QString &name)
-	: QWidget(parent),
+GKickKnob::GKickKnob(GeonkickWidget *parent, const QString &name)
+          : GeonkickWidget(parent),
           knobName(name),
 	  knobRadius(GKICK_UI_DEFAULT_KNOB_DIAMETER),
 	  lastPositionPoint(),
@@ -39,7 +39,6 @@ GKickKnob::GKickKnob(QWidget *parent, const QString &name)
 {
         setObjectName("GKickKnob");
         setFixedSize(GKICK_UI_DEFAULT_KNOB_DIAMETER, GKICK_UI_DEFAULT_KNOB_DIAMETER);
-        //setContentsMargins(2, 2, 2, 2);
 }
 
 GKickKnob::~GKickKnob()

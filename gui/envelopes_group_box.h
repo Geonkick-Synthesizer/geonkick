@@ -27,11 +27,13 @@
 #include "control_group_box.h"
 #include "gkick_envelope_widget.h"
 
+class GeonkickWidget;
+
 class EnvelopesGroupBox: public ControlGroupBox
 {
  Q_OBJECT
  public:
-         EnvelopesGroupBox(QWidget *widget);
+         EnvelopesGroupBox(GeonkickWidget *parent);
          ~EnvelopesGroupBox();
  signals:
         void viewEnvelope(GKickEnvelope::EnvelopeCategory category);

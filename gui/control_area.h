@@ -24,7 +24,7 @@
 #ifndef GKICK_CONTROL_AREA_H
 #define GKICK_CONTROL_AREA_H
 
-#include <QWidget>
+#include "geonkick_widget.h"
 
 #include <memory>
 #include <gkick_envelope.h>
@@ -32,11 +32,11 @@
 class GKickOscillator;
 class GKickApi;
 
-class ControlArea: public QWidget
+class ControlArea: public GeonkickWidget
 {
  Q_OBJECT
  public:
- ControlArea(QWidget *parent, std::shared_ptr<GKickApi> &api,
+ ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
              std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
  ~ControlArea();
 

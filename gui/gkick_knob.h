@@ -24,16 +24,18 @@
 #ifndef GKICK_KNOB_H
 #define GKICK_KNOB_H
 
+#include "geonkick_widget.h"
+
 #include <QWidget>
 #include <QMouseEvent>
 
 #define GKICK_UI_DEFAULT_KNOB_DIAMETER 140
 
-class GKickKnob : public QWidget
+class GKickKnob : public GeonkickWidget
 {
    Q_OBJECT
 public:
-   GKickKnob(QWidget *parent, const QString &name);
+   GKickKnob(GeonkickWidget *parent, const QString &name);
    virtual ~GKickKnob();
    int getRadius(void);
    int getWidth(void);
