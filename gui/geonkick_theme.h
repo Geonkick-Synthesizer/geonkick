@@ -1,5 +1,5 @@
 /**
- * File name: geonkick_widget.cpp
+ * File name: geonkick_theme.h
  * Project: GeonKick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
@@ -21,33 +21,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "geonkick_widget.h"
-#include "geonkick_theme.h"
+#ifndef GEONKICK_THEME_H
+#define GEONKICK_THEME_H
 
-GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
-        : QWidget(parent),
-          widgetTheme(nullptr)
-{
-        if (parent) {
-                setTheme(parent->getTheme());
-        }
-}
+#include <QObject>
 
-GeonkickWidget::~GeonkickWidget()
+class GeonkickTheme: public QObject
 {
-}
+ Q_OBJECT
 
-void GeonkickWidget::setTheme(GeonkickTheme *theme)
-{
-        if (widgetTheme) {
-                disconnect(widgetTheme, SIGNAL(themeChanged(GeonkickTheme*)), this, SLOT(themeChanged(GeonkickTheme*)));
-        }
-        widgetTheme = theme;
-        connect(widgetTheme, SIGNAL(themeChanged(GeonkickTheme*)), this, SLOT(themeChanged(GeonkickTheme*)));
-        themeChanged(widgetTheme);
-}
+ public:
+        GeonkickTheme(const QString &name);
+        ~GeonkickTheme();
+        bool load(const QString &name);
 
-GeonkickTheme* GeonkickWidget::getTheme()
-{
-        return widgetTheme;
-}
+ signals:
+        void themeChanged(GeonkickTheme *theme);
+
+ private:
+        QString themeName;
+};
+
+#endif // GEONKICK_THEME_H

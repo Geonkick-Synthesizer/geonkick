@@ -32,11 +32,13 @@
 #include <QVBoxLayout>
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc)
-          : ControlGroupBox(osc->name(), static_cast<QWidget*>(parent)),
+          : GeonkickGroupBox(osc->name(), parent),
           oscillator(osc),
           waveFunctionCb(NULL),
           filterTypeCb(NULL)
 {
+        setLayout(QVBoxLayout(this));
+
         setCheckable(true);
         if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 createWaveFunctionGroupBox();

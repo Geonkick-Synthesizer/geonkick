@@ -26,14 +26,22 @@
 
 #include <QWidget>
 
+class GeonkickTheme;
+
 class GeonkickWidget: public QWidget
 {
  Q_OBJECT
 
  public:
-
         GeonkickWidget(GeonkickWidget *parent = nullptr);
-        virtual ~GeonkickWidget();	
+        virtual ~GeonkickWidget();
+        void setTheme(GeonkickTheme *theme);
+        GeonkickTheme* getTheme();
+
+ public slots:
+         virtual void themeChanged(GeonkickTheme *theme) {Q_UNUSED(theme)};
+ private:
+        GeonkickTheme *widgetTheme;
 };
 
 #endif // GEONKICK_WIDGET_H

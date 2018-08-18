@@ -13,9 +13,11 @@ LIBS += -L../api/ -lgeonkick -ljack
 
 # Input
 HEADERS += globals.h \
+           geonkick_theme.h \
            geonkick_widget.h \
+           geonkick_label.h \
+           geonkick_groupbox.h \
            control_area.h \
-           control_group_box.h \
            envelope_draw_area.h \
            envelope_point.h \
            envelopes_group_box.h \
@@ -29,9 +31,12 @@ HEADERS += globals.h \
            oscillator_envelope.h \
            oscillator_group_box.h \
            mainwindow.h
-SOURCES += geonkick_widget.cpp \
+
+SOURCES += geonkick_theme.cpp \
+           geonkick_widget.cpp \
+           geonkick_label.cpp \
+           geonkick_groupbox.cpp \
            control_area.cpp \
-           control_group_box.cpp \
            envelope_draw_area.cpp \
            envelope_point.cpp \
            envelopes_group_box.cpp \

@@ -1,5 +1,5 @@
 /**
- * File name: oscillator_group_box.h
+ * File name: geonkick_object.h
  * Project: GeonKick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
@@ -21,34 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_OSCILLATOR_GROUP_BOX_H
-#define GKICK_OSCILLATOR_GROUP_BOX_H
+#ifndef GEONKICK_WIDGET_H
+#define GEONKICK_WIDGET_H
 
-#include "gkick_oscillator.h"
-#include "geonkick_groupbox.h"
+#include <QObject>
 
-class GKickOscillator;
-class QComboBox;
-class GeonkickWidget;
-
-class OscillatorGroupBox: public GeonkickGroupBox
+class GeonkickObject: public virtual QObject
 {
-        Q_OBJECT
  public:
-        OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc);
-        ~OscillatorGroupBox();
- signals:
-        void oscillatorFunctionChanged(int index);
-
- protected:
-        void createWaveFunctionGroupBox();
-        void createEvelopeGroupBox();
-        void createFilterGroupBox();
-
- private:
-        std::shared_ptr<GKickOscillator> oscillator;
-        QComboBox *waveFunctionCb;
-        QComboBox *filterTypeCb;
-};
+        GeonkickObject(GeonkickObject* object = ptrnull)
+        {
+        }
+        virtual themeUpdated() {};
+}
 
 #endif

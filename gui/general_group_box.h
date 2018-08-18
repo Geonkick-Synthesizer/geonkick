@@ -32,7 +32,7 @@ class QComboBox;
 class GKickApi;
 class GeonkickWidget;
 
-class GeneralGroupBox: public GeonkickGroupBox
+class GeneralGroupBox: public GeonkickWidget
 {
         Q_OBJECT
  public:

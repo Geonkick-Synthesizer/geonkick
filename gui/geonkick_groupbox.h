@@ -24,25 +24,33 @@
 #ifndef GEOBKICK_GROUPBOX_H
 #define GEOBKICK_GROUPBOX_H
 
-#include "geonkick_widget.h"
+#include <geonkick_widget.h>
 
 class GeonkickWidget;
-class QGroupBox;
-class QLayout;
+class GeonkickLabel;
 
 class GeonkickGroupBox: public GeonkickWidget
 {
  Q_OBJECT
- public:
- 
-   GeonkickGroupBox(const QString &title, GeonkickWidget *parent = nullptr)
-   ~ControlGroupBox();
-   void setTitle(const QString &title);
-   void setGroupBoxLayou(Layout *layout);
 
-   
+ public:
+
+  enum class Orientation:char {
+         Vertical,
+         Horizontal
+ };
+
+ GeonkickGroupBox(GeonkickWidget *parent = nullptr,
+                  Orientation orientation = Orientation::Vertical);
+ GeonkickGroupBox(const QString &title,
+                  GeonkickWidget *parent = nullptr,
+                  Orientation orientation = Orientation::Vertical);
+ virtual ~GeonkickGroupBox();
+ void init();
+
  private:
-	 QGroupBox *groupBox;
+   Orientation groupBoxOrientation;
+   GeonkickLabel *goupBoxLabel;
 };
 
 #endif // GEOBKICK_GROUPBOX_H

@@ -22,30 +22,41 @@
  */
 
 #include "geonkick_groupbox.h"
+#include "geonkick_label.h"
 
-#include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 
-GeonkickGroupBox::GeonkickGroupBox(const QString &title, GeonkickWidget *parent)
-  : GeonkickWidget(parent),
-    groupBox(new QGroupBox(title, this))
+GeonkickGroupBox::GeonkickGroupBox(GeonkickWidget *parent, Orientation orientation)
+        : GeonkickWidget(parent),
+          groupBoxOrientation(orientation),
+          goupBoxLabel(new GeonkickLabel(this))
 {
-    // Add groupbox in the  widget layout.
-    QVBoxLayout *widgetLayout = QVBoxLayout(this);
-    setLyout(widgetLayout);
-    widgetLayout->addWidget(groupBox);
+        init();
+}
+
+GeonkickGroupBox::GeonkickGroupBox(const QString &title,
+                                   GeonkickWidget *parent,
+                                   Orientation orientation)
+        : GeonkickWidget(parent),
+          groupBoxOrientation(orientation),
+          goupBoxLabel(new GeonkickLabel(title, this))
+{
+        init();
+}
+
+void GeonkickGroupBox::init()
+{
+        if (groupBoxOrientation == Orientation::Vertical) {
+                setLayout(new QVBoxLayout(this));
+        } else {
+                setLayout(new QHBoxLayout(this));
+        }
+
+        layout()->addWidget(goupBoxLabel);
 }
 
 GeonkickGroupBox::~GeonkickGroupBox()
 {
 }
 
-void GeonkickGroupBox::setTitle(const QString &title)
-{
-        groupBox->setTitle(name);
-}
-
-void GeonkickGroupBox::setGroubBoxLayout(QLayout *layout)
-{
-        groupBox->setLayout(layout);
-}

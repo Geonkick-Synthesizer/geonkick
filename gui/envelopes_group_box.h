@@ -24,12 +24,12 @@
 #ifndef GKICK_ENVELOPES_GROUP_BOX_H
 #define GKICK_ENVELOPES_GROUP_BOX_H
 
-#include "control_group_box.h"
+#include "geonkick_groupbox.h"
 #include "gkick_envelope_widget.h"
 
 class GeonkickWidget;
 
-class EnvelopesGroupBox: public ControlGroupBox
+class EnvelopesGroupBox: public GeonkickGroupBox
 {
  Q_OBJECT
  public:
