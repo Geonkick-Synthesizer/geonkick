@@ -91,9 +91,3 @@ bool MainWindow::init(void)
 
         return true;
 }
-
-MainWindow::setTheme(const QString *name)
-{
-    getTheme()->load(name);
-    emit themeChanged();
-}

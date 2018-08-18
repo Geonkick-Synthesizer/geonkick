@@ -40,6 +40,10 @@ GeonkickLabel::GeonkickLabel(const QString &title, GeonkickWidget *parent)
         init();
 }
 
+GeonkickLabel::~GeonkickLabel()
+{
+}
+
 void GeonkickLabel::init()
 {
         setLayout(new QHBoxLayout(this));

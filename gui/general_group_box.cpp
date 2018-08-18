@@ -31,27 +31,24 @@
 #include <QComboBox>
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api)
-        : GeonkickWidget(parent),
+        : GeonkickGroupBox(tr("General Settings"), parent),
           kickApi(api)
 {
-        setLayout(new QVBoxlayout(this));
-        layout()->addLabel(new QLabel(tr("General Setings")));
-        
         GeonkickWidget *amplitudeEnvelopeBox = new GeonkickWidget(this);
-        addWidget(amplitudeEnvelopeBox);
+        layout()->addWidget(amplitudeEnvelopeBox);
         amplitudeEnvelopeBox->setLayout(new QHBoxLayout(amplitudeEnvelopeBox));
 
         GKickKnob *kickLengthKnob = new GKickKnob(amplitudeEnvelopeBox, tr("Length"));
         kickLengthKnob->setMaxValue(kickApi->getMaxLength());
         kickLengthKnob->setCurrentValue(kickApi->getKickLength());
-        amplitudeEnvelopeBoxLayout->addWidget(kickLengthKnob);
+        amplitudeEnvelopeBox->layout()->addWidget(kickLengthKnob);
         connect(kickLengthKnob, SIGNAL(valueUpdated(double)),
                 kickApi.get(), SLOT(setKickLengthValue(double)));
 
         GKickKnob *kickAmplitudeKnob = new GKickKnob(this, tr("Amplitute"));
         kickAmplitudeKnob->setMaxValue(1);
         kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
-        amplitudeEnvelopeBoxLayout->addWidget(kickAmplitudeKnob);
+        amplitudeEnvelopeBox->layout()->addWidget(kickAmplitudeKnob);
         connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
                 kickApi.get(), SLOT(setAmplitude(double)));
 
@@ -64,10 +61,10 @@ GeneralGroupBox::~GeneralGroupBox()
 
 void GeneralGroupBox::createFilterGroupBox()
 {
-        QGroupBox *filterGroupBox = new QGroupBox(tr("Filter"), this);
+        /*QGroupBox *filterGroupBox = new QGroupBox(tr("Filter"), this);
         QVBoxLayout *filterGroupBoxLayout = new QVBoxLayout();
         filterGroupBox->setLayout(filterGroupBoxLayout);
-        layout()->addWidget(filterGroupBox);
+        layout()->addWidget(filterGroupBox);*/
 
         // Create filter type group box.
         /*QGroupBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);

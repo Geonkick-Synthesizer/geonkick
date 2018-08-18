@@ -30,9 +30,8 @@
 class GkickOscillator;
 class QComboBox;
 class GKickApi;
-class GeonkickWidget;
 
-class GeneralGroupBox: public GeonkickWidget
+class GeneralGroupBox: public GeonkickGroupBox
 {
         Q_OBJECT
  public:
