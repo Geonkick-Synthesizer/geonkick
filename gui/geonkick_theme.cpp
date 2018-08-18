@@ -37,3 +37,8 @@ bool GeonkickTheme::load(const QString &name)
         themeName = name;
         return true;
 }
+
+QString GeonkickTheme::knobImage()
+{
+        return QString();
+}

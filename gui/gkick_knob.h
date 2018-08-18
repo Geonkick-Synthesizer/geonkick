@@ -62,6 +62,7 @@ public:
 
  private:
    QString knobName;
+   QPixmap *knobPixmap;
    int knobRadius;
    QPoint lastPositionPoint;
    int knobValueDegree;

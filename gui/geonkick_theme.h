@@ -34,6 +34,7 @@ class GeonkickTheme: public QObject
         GeonkickTheme(const QString &name);
         ~GeonkickTheme();
         bool load(const QString &name);
+        QString knobImage();
 
  signals:
         void themeChanged(GeonkickTheme *theme);

@@ -27,9 +27,12 @@
 #include <QDebug>
 #include <QStyleOption>
 
+#include "geonkick_theme.h"
+
 GKickKnob::GKickKnob(GeonkickWidget *parent, const QString &name)
           : GeonkickWidget(parent),
           knobName(name),
+          knobPixmap(nullptr),
 	  knobRadius(GKICK_UI_DEFAULT_KNOB_DIAMETER),
 	  lastPositionPoint(),
 	  knobValueDegree(0),
@@ -37,13 +40,17 @@ GKickKnob::GKickKnob(GeonkickWidget *parent, const QString &name)
           isSelected(false)
 
 {
-        setObjectName("GKickKnob");
         setFixedSize(GKICK_UI_DEFAULT_KNOB_DIAMETER, GKICK_UI_DEFAULT_KNOB_DIAMETER);
+        if (getTheme()) {
+                knobPixmap = new QPixmap(getTheme()->knobImage());
+        }
 }
 
 GKickKnob::~GKickKnob()
 {
-
+        if (knobPixmap) {
+                delete knobPixmap;
+        }
 }
 
 void
@@ -54,14 +61,15 @@ GKickKnob::paintEvent(QPaintEvent *event)
         QStyleOption opt;
         opt.init(this);
         style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
-	QPixmap p;
-	p.load("./themes/geontime/knob.png");
-	painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
-        painter.translate(GKICK_UI_DEFAULT_KNOB_DIAMETER/2, GKICK_UI_DEFAULT_KNOB_DIAMETER/2);
-	painter.rotate(knobValueDegree);
-	int x = (GKICK_UI_DEFAULT_KNOB_DIAMETER - p.size().width()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER / 2;
-	int y = (GKICK_UI_DEFAULT_KNOB_DIAMETER - p.size().height()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER / 2;
-	painter.drawPixmap(x, y, p.size().width(), p.size().height(), p);
+
+        if (knobPixmap) {
+                painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
+                painter.translate(GKICK_UI_DEFAULT_KNOB_DIAMETER/2, GKICK_UI_DEFAULT_KNOB_DIAMETER/2);
+                painter.rotate(knobValueDegree);
+                int x = (GKICK_UI_DEFAULT_KNOB_DIAMETER - knobPixmap->size().width()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER / 2;
+                int y = (GKICK_UI_DEFAULT_KNOB_DIAMETER - knobPixmap->size().height()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER / 2;
+                painter.drawPixmap(x, y, knobPixmap->size().width(), knobPixmap->size().height(), *knobPixmap);
+        }
 }
 
 int
