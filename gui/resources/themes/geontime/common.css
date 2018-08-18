@@ -4,8 +4,5 @@ QWidget {
 }
 
 GKickKnob {
-    background-color: #ffffff;
     background-image: url('./themes/geontime/knob_scale.png');
-    width: 80px;
-    height: 80px;
 }

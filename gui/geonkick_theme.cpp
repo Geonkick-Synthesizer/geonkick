@@ -40,5 +40,5 @@ bool GeonkickTheme::load(const QString &name)
 
 QString GeonkickTheme::knobImage()
 {
-        return QString();
+        return QString("./themes/geontime/knob.png");
 }

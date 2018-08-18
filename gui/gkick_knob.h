@@ -29,7 +29,7 @@
 #include <QWidget>
 #include <QMouseEvent>
 
-#define GKICK_UI_DEFAULT_KNOB_DIAMETER 140
+#define GKICK_UI_DEFAULT_KNOB_DIAMETER 104
 
 class GKickKnob : public GeonkickWidget
 {

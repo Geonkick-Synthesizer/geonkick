@@ -30,8 +30,7 @@
 EnvelopesGroupBox::EnvelopesGroupBox(GeonkickWidget *parent)
   : GeonkickGroupBox(tr("View Envelopes"), parent)
 {
-        setLayout(new QVBoxLayout(this));
-        QRadioButton *osc1Rb    = new QRadioButton(tr("OSC 1"), this);
+        /*        QRadioButton *osc1Rb    = new QRadioButton(tr("OSC 1"), this);
         QRadioButton *osc2Rb    = new QRadioButton(tr("OSC 2"), this);
         QRadioButton *noiseRb   = new QRadioButton(tr("Noise"), this);
         QRadioButton *generalRb = new QRadioButton(tr("General"), this);
@@ -43,7 +42,7 @@ EnvelopesGroupBox::EnvelopesGroupBox(GeonkickWidget *parent)
         layout()->addWidget(osc1Rb);
         layout()->addWidget(osc2Rb);
         layout()->addWidget(noiseRb);
-        layout()->addWidget(generalRb);
+        layout()->addWidget(generalRb);*/
 }
 
 EnvelopesGroupBox::~EnvelopesGroupBox()

@@ -29,6 +29,8 @@
 
 #include "geonkick_theme.h"
 
+#define GEONKICK_KNOB_MAX_DEGREE 345
+
 GKickKnob::GKickKnob(GeonkickWidget *parent, const QString &name)
           : GeonkickWidget(parent),
           knobName(name),
@@ -114,33 +116,33 @@ GKickKnob::mouseMoveEvent(QMouseEvent *event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();
-                knobValueDegree += dy;
+                knobValueDegree -= dy;
                 if (knobValueDegree < 0) {
                         knobValueDegree = 0;
-                } else if (knobValueDegree > 360) {
-                        knobValueDegree = 360;
+                } else if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE) {
+                        knobValueDegree = GEONKICK_KNOB_MAX_DEGREE;
                 }
                 lastPositionPoint.setX(event->x());
                 lastPositionPoint.setY(event->y());
-                emit valueUpdated(realValue * (double)knobValueDegree / 360.0);
+                emit valueUpdated(realValue * (double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE);
                 update();
         }
 }
 
 void GKickKnob::setPosition(double v)
 {
-        knobValueDegree = v * 360.0;
-        if (knobValueDegree > 360.0) {
-                knobValueDegree = 360.0;
+        knobValueDegree = v * GEONKICK_KNOB_MAX_DEGREE;
+        if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE) {
+                knobValueDegree = GEONKICK_KNOB_MAX_DEGREE;
         } else if(knobValueDegree < 0.0) {
                 knobValueDegree = 0.0;
         }
-        emit valueUpdated(realValue * (double)knobValueDegree / 360.0);
+        emit valueUpdated(realValue * (double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE);
 }
 
 double GKickKnob::getPosition(void)
 {
-	return (double)knobValueDegree / 360.0;
+	return (double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE;
 }
 
 void GKickKnob::setValue(double v)
@@ -150,7 +152,7 @@ void GKickKnob::setValue(double v)
 
 double GKickKnob::getValue(void)
 {
-	return realValue * ((double)knobValueDegree / 360.0);
+	return realValue * ((double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE);
 }
 
 void GKickKnob::resizeEvent(QResizeEvent *event)

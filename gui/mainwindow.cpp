@@ -27,6 +27,7 @@
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"
+#include "geonkick_theme.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -37,10 +38,14 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+#define GEONKICK_MAINWINDOW_WIDTH  1024
+#define GEONKICK_MAINWINDOW_HEIGHT 768
+
 MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
         gkickApi(std::make_shared<GKickApi>())
 {
+        setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
 }
 
 MainWindow::~MainWindow()
@@ -52,6 +57,8 @@ bool MainWindow::init(void)
         if (gkickApi.get()->hasErrors()) {
 	  //return false;
         }
+
+        setTheme(new GeonkickTheme("Geontime"));
 
         gkickApi->setMaxLength(1.5);
         gkickApi->setKickLength(0.25);
