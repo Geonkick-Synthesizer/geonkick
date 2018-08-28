@@ -45,7 +45,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
         createFilterGroupBox();
         layout()->setSpacing(2);*/
         createEvelopeGroupBox();
-        createEvelopeGroupBox();
 }
 
 OscillatorGroupBox::~OscillatorGroupBox()
