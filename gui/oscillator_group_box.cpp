@@ -44,6 +44,8 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
         createEvelopeGroupBox();
         createFilterGroupBox();
         layout()->setSpacing(2);*/
+        createEvelopeGroupBox();
+        createEvelopeGroupBox();
 }
 
 OscillatorGroupBox::~OscillatorGroupBox()
@@ -70,21 +72,36 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 
 void OscillatorGroupBox::createEvelopeGroupBox()
 {
-        /*        QGroupBox *envelopeGroupBox = new QGroupBox(tr("Envelope"), this);
-        QHBoxLayout *envelopeGroupBoxLayout = new QHBoxLayout(envelopeGroupBox);
-        envelopeGroupBoxLayout->setSpacing(0);
-        envelopeGroupBox->setLayout(envelopeGroupBoxLayout);
-        layout()->addWidget(envelopeGroupBox);
 
-        GKickKnob *kickAmplitudeKnob = new GKickKnob(envelopeGroupBox, tr("Amplitute"));
-        kickAmplitudeKnob->setMaxValue(1);
-        kickAmplitudeKnob->setCurrentValue(oscillator->getOscAmplitudeValue());
-        envelopeGroupBoxLayout->addWidget(kickAmplitudeKnob);
+        GeonkickWidget *amplitudeEnvelopeBox = new GeonkickWidget(this);
+        amplitudeEnvelopeBox->setFixedSize(224, 125);
+        if (oscillator->getType() == GKickOscillator::OSC_NOISE) {
+                amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_noise_env.png"));
+        } else {
+                amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_osc_env.png"));
+        }
+        layout()->addWidget(amplitudeEnvelopeBox);
 
-        connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
-                oscillator.get(), SLOT(setOscAmplitudeValue(double)));
+        GKickKnob *kickLengthKnob = new GKickKnob(amplitudeEnvelopeBox);
+        kickLengthKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
+        kickLengthKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
+        kickLengthKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        //kickLengthKnob->setMaxValue(kickApi->getMaxLength());
+        //kickLengthKnob->setCurrentValue(kickApi->getKickLength());
 
-        if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
+        if (oscillator->getType() == GKickOscillator::OSC_NOISE) {
+        } else {
+                GKickKnob *kickAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
+                kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
+                kickAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
+                kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+                kickAmplitudeKnob->setMaxValue(1);
+        }
+        //kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
+        //connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
+        //        oscillator.get(), SLOT(setOscAmplitudeValue(double)));
+
+        /*        if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 GKickKnob *kickFrequencyKnob = new GKickKnob(envelopeGroupBox, tr("Frequency"));
                 kickFrequencyKnob->setMaxValue(20000);
                 kickFrequencyKnob->setCurrentValue(oscillator->getOscFrequencyValue());

@@ -39,7 +39,8 @@ class GeneralGroupBox: public GeonkickGroupBox
         ~GeneralGroupBox();
 
  protected:
-        void createFilterGroupBox();
+        void createAplitudeEnvelopeHBox();
+        void createFilterHBox();
 
  private:
         std::shared_ptr<GKickApi> kickApi;

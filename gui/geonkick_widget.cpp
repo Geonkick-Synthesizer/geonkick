@@ -37,6 +37,19 @@ GeonkickWidget::~GeonkickWidget()
 {
 }
 
+void GeonkickWidget::paintEvent(QPaintEvent *event)
+{
+        if (!backgroundImage.isNull()) {
+                QPainter painter(this);
+                painter.drawPixmap(0, 0, backgroundImage);
+        }
+}
+
+void GeonkickWidget::setBackgroundImage(const QPixmap &pixmap)
+{
+         backgroundImage = pixmap;
+}
+
 void GeonkickWidget::setTheme(GeonkickTheme *theme)
 {
         if (widgetTheme) {

@@ -25,8 +25,12 @@
 #define GEONKICK_WIDGET_H
 
 #include <QWidget>
+#include <QPainter>
+#include <QStyleOption>
+#include <memory>
 
 class GeonkickTheme;
+class QPixmap;
 
 class GeonkickWidget: public QWidget
 {
@@ -35,13 +39,16 @@ class GeonkickWidget: public QWidget
  public:
         GeonkickWidget(GeonkickWidget *parent = nullptr);
         virtual ~GeonkickWidget();
+        void setBackgroundImage(const QPixmap &pixmap);
         void setTheme(GeonkickTheme *theme);
         GeonkickTheme* getTheme();
+        virtual void paintEvent(QPaintEvent *event);
 
  public slots:
          virtual void themeChanged(GeonkickTheme *theme) {Q_UNUSED(theme)};
  private:
         GeonkickTheme *widgetTheme;
+        QPixmap backgroundImage;
 };
 
 #endif // GEONKICK_WIDGET_H

@@ -42,21 +42,22 @@ class GKickEnvelopeWidget : public GeonkickWidget
    Q_OBJECT
 public:
 
-   GKickEnvelopeWidget(GeonkickWidget *parent,
+     GKickEnvelopeWidget(GeonkickWidget *parent,
                        std::shared_ptr<GKickApi> &api,
                        std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
-   ~GKickEnvelopeWidget();
+     ~GKickEnvelopeWidget();
+     void setBackgourndImage(const QPixmap &pixmap);
 
    public slots:
 
-           void viewEnvelope(GKickEnvelope::EnvelopeCategory category);
+     void viewEnvelope(GKickEnvelope::EnvelopeCategory category);
 
  protected:
      void updateButtonArea();
 
  protected slots:
-             void showAmplitudeEnvelope();
-             void showFrequencyEnvelope();
+     void showAmplitudeEnvelope();
+     void showFrequencyEnvelope();
 
  private:
      std::shared_ptr<GKickEnvelope> currentEnvelope;
@@ -69,6 +70,7 @@ public:
      int yPadding;
      QPointF originPoint;
      QPointF mousePoint;
+     QPixmap *backgorundImage;
 };
 
 #endif

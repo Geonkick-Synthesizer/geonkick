@@ -29,25 +29,16 @@
 #include <QWidget>
 #include <QMouseEvent>
 
-#define GKICK_UI_DEFAULT_KNOB_DIAMETER 104
-
 class GKickKnob : public GeonkickWidget
 {
    Q_OBJECT
 public:
-   GKickKnob(GeonkickWidget *parent, const QString &name);
+   GKickKnob(GeonkickWidget *parent);
    virtual ~GKickKnob();
-   int getRadius(void);
-   int getWidth(void);
-   int getHeight(void);
-   double getPosition(void);
    double getValue(void);
    void setMaxValue(double val);
    void setCurrentValue(double val);
-
-   public slots:
-     void setPosition(double v);
-     void setValue(double v);
+   void setKnobImage(const QPixmap &pixmap);
 
  signals:
      void valueUpdated(double v);
@@ -56,17 +47,13 @@ public:
    void paintEvent(QPaintEvent *event);
    void mousePressEvent(QMouseEvent *event);
    void mouseReleaseEvent(QMouseEvent *event);
-   void mouseDoubleClickEvent(QMouseEvent *event);
    void mouseMoveEvent(QMouseEvent *event);
-   void resizeEvent(QResizeEvent *event);
 
  private:
-   QString knobName;
-   QPixmap *knobPixmap;
-   int knobRadius;
+   QPixmap knobPixmap;
    QPoint lastPositionPoint;
-   int knobValueDegree;
-   double realValue;
+   double knobValueDegree;
+   double rangeValue;
    bool isSelected;
 };
 

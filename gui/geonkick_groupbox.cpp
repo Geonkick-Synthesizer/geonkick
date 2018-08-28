@@ -47,6 +47,11 @@ GeonkickGroupBox::GeonkickGroupBox(const QString &title,
 
 void GeonkickGroupBox::init()
 {
+        QPalette pal;
+        pal.setColor(QPalette::Background, QColor(68, 68, 70));
+        setAutoFillBackground(true);
+        setPalette(pal);
+
         if (groupBoxOrientation == Orientation::Vertical) {
                 setLayout(new QVBoxLayout(this));
         } else {

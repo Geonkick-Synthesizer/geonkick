@@ -29,75 +29,57 @@
 
 #include "geonkick_theme.h"
 
-#define GEONKICK_KNOB_MAX_DEGREE 345
+#define GEONKICK_KNOB_MAX_DEGREE 270
+#define GEONKICK_KNOB_MIN_DEGREE 0
+#define GEONKICK_KNOB_RANGE_DEGREE (GEONKICK_KNOB_MAX_DEGREE - GEONKICK_KNOB_MIN_DEGREE)
 
-GKickKnob::GKickKnob(GeonkickWidget *parent, const QString &name)
+GKickKnob::GKickKnob(GeonkickWidget *parent)
           : GeonkickWidget(parent),
-          knobName(name),
-          knobPixmap(nullptr),
-	  knobRadius(GKICK_UI_DEFAULT_KNOB_DIAMETER),
-	  lastPositionPoint(),
-	  knobValueDegree(0),
-	  realValue(0.0),
+	  knobValueDegree(GEONKICK_KNOB_MIN_DEGREE),
+	  rangeValue(0),
           isSelected(false)
-
 {
-        setFixedSize(GKICK_UI_DEFAULT_KNOB_DIAMETER, GKICK_UI_DEFAULT_KNOB_DIAMETER);
-        if (getTheme()) {
-                knobPixmap = new QPixmap(getTheme()->knobImage());
-        }
 }
 
 GKickKnob::~GKickKnob()
 {
-        if (knobPixmap) {
-                delete knobPixmap;
-        }
+}
+
+void GKickKnob::setKnobImage(const QPixmap &pixmap)
+{
+        knobPixmap = pixmap;
 }
 
 void
 GKickKnob::paintEvent(QPaintEvent *event)
 {
-        Q_UNUSED(event);
+        GeonkickWidget::paintEvent(event);
         QPainter painter(this);
-        QStyleOption opt;
-        opt.init(this);
-        style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
-
-        if (knobPixmap) {
+        if (!knobPixmap.isNull()) {
                 painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
-                painter.translate(GKICK_UI_DEFAULT_KNOB_DIAMETER/2, GKICK_UI_DEFAULT_KNOB_DIAMETER/2);
+                painter.translate(width() / 2, height() / 2);
                 painter.rotate(knobValueDegree);
-                int x = (GKICK_UI_DEFAULT_KNOB_DIAMETER - knobPixmap->size().width()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER / 2;
-                int y = (GKICK_UI_DEFAULT_KNOB_DIAMETER - knobPixmap->size().height()) / 2 - GKICK_UI_DEFAULT_KNOB_DIAMETER / 2;
-                painter.drawPixmap(x, y, knobPixmap->size().width(), knobPixmap->size().height(), *knobPixmap);
+                int x = (width() - knobPixmap.size().width()) / 2 - width() / 2;
+                int y = (height() - knobPixmap.size().height()) / 2 - height() / 2;
+                painter.drawPixmap(x, y, knobPixmap.size().width(), knobPixmap.size().height(), knobPixmap);
         }
-}
-
-int
-GKickKnob::getRadius(void)
-{
-        return knobRadius;
-}
-
-int
-GKickKnob::getWidth(void)
-{
-        return 2 * knobRadius;
-}
-
-int
-GKickKnob::getHeight(void)
-{
-        return 2 * knobRadius;
 }
 
 void
 GKickKnob::mousePressEvent(QMouseEvent *event)
 {
-        isSelected = true;
-        lastPositionPoint.setX(event->x());
-        lastPositionPoint.setY(event->y());
+        if (!knobPixmap.isNull()) {
+                int xCenter = width() / 2;
+                int yCenter = height() / 2;
+                int r = knobPixmap.size().width() / 2;
+                if ((event->x() - xCenter) * (event->x() - xCenter) +
+                    (event->y() - yCenter) * (event->y() - yCenter) <=  r * r)
+                {
+                        isSelected = true;
+                        lastPositionPoint.setX(event->x());
+                        lastPositionPoint.setY(event->y());
+                }
+        }
 }
 
 void
@@ -107,57 +89,28 @@ GKickKnob::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void
-GKickKnob::mouseDoubleClickEvent(QMouseEvent *event)
-{
-}
-
-void
 GKickKnob::mouseMoveEvent(QMouseEvent *event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();
                 knobValueDegree -= dy;
-                if (knobValueDegree < 0) {
-                        knobValueDegree = 0;
+                if (knobValueDegree < GEONKICK_KNOB_MIN_DEGREE) {
+                        knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
                 } else if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE) {
                         knobValueDegree = GEONKICK_KNOB_MAX_DEGREE;
                 }
                 lastPositionPoint.setX(event->x());
                 lastPositionPoint.setY(event->y());
-                emit valueUpdated(realValue * (double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE);
+                double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
+                emit valueUpdated(k * rangeValue);
                 update();
         }
 }
 
-void GKickKnob::setPosition(double v)
-{
-        knobValueDegree = v * GEONKICK_KNOB_MAX_DEGREE;
-        if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE) {
-                knobValueDegree = GEONKICK_KNOB_MAX_DEGREE;
-        } else if(knobValueDegree < 0.0) {
-                knobValueDegree = 0.0;
-        }
-        emit valueUpdated(realValue * (double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE);
-}
-
-double GKickKnob::getPosition(void)
-{
-	return (double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE;
-}
-
-void GKickKnob::setValue(double v)
-{
-	realValue = v;
-}
-
 double GKickKnob::getValue(void)
 {
-	return realValue * ((double)knobValueDegree / GEONKICK_KNOB_MAX_DEGREE);
-}
-
-void GKickKnob::resizeEvent(QResizeEvent *event)
-{
-        Q_UNUSED(event);
+        double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
+	return k * rangeValue;
 }
 
 void GKickKnob::setMaxValue(double val)
