@@ -28,7 +28,7 @@
 #include <QGroupBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QComboBox>
+#include <QPushButton>
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api)
         : GeonkickGroupBox(tr("General Settings"), parent),
@@ -73,103 +73,29 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 void GeneralGroupBox::createFilterHBox()
 {
         GeonkickWidget *filterEnvelopeBox = new GeonkickWidget(this);
-        filterEnvelopeBox->setFixedSize(224, 125);
-        filterEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_filter.png"));
+        QPixmap pixmap("./themes/geontime/hboxbk_filter.png");
+        filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
+        filterEnvelopeBox->setBackgroundImage(pixmap);
         layout()->addWidget(filterEnvelopeBox);
 
         GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickFrequencyKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickFrequencyKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        // kickFrequencyKnob->setMaxValue(kickApi->getMaxLength());
-        //        kickFrequencyKnob->setCurrentValue(kickApi->getKickLength());
-
-        //       connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)),
-        //        kickApi.get(), SLOT(setFilterLengthValue(double)));
 
         GKickKnob *kickQFactorKnob = new GKickKnob(filterEnvelopeBox);
-        QPixmap pixmap("./themes/geontime/knob_bk_50x50.png");
+        pixmap = QPixmap("./themes/geontime/knob_bk_50x50.png");
         int w = pixmap.size().width();
         int h = pixmap.size().height();
         kickQFactorKnob->setGeometry(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4, w, h);
         kickQFactorKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_50x50.png"));
         kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
-        kickQFactorKnob->setMaxValue(kickApi->getMaxLength());
-        kickQFactorKnob->setCurrentValue(kickApi->getKickLength());
+        //kickQFactorKnob->setMaxValue(kickApi->getMaxLength());
+        //kickQFactorKnob->setCurrentValue(kickApi->getKickLength());
 
-        filterTypeCb = new QComboBox(filterEnvelopeBox);
-        w = 90;
+        auto filterType = new GeonkickWidget(filterEnvelopeBox);
+        w = 80;
         h = 25;
-        filterTypeCb->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
-        filterTypeCb->addItem("Low Pass");
-        filterTypeCb->addItem("Hight Pass");
-        //filterLeftSideLayout->addWidget(filterTypeCb);
-        //       connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)),
-        //        kickApi.get(), SLOT(setFilterLengthValue(double)));
-
-        /*        GeonkickWidget *filterGroupBox = new GeonkickWidget(this);
-        filterEnvelopeBox->setFixedSize(224, 125);
-        filterEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_filter.png"));
-        layout()->addWidget(filterEnvelopeBox);
-
-        QHBoxLayout *filterEnvelopeBoxLayout  = new QHBoxLayout(filterEnvelopeBox);
-        amplitudeEnvelopeBoxLayout->setContentsMargins(0, 0, 0, 0);
-        amplitudeEnvelopeBoxLayout->setSpacing(0);
-        amplitudeEnvelopeBox->setLayout(amplitudeEnvelopeBoxLayout);
-
-        GKickKnob *kickLengthKnob = new GKickKnob(amplitudeEnvelopeBox);
-        kickLengthKnob->setFixedSize(224 / 2, 125);
-        kickLengthKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image_ampl.png"));
-        kickLengthKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        kickLengthKnob->setMaxValue(kickApi->getMaxLength());
-        kickLengthKnob->setCurrentValue(kickApi->getKickLength());
-
-        amplitudeEnvelopeBox->layout()->addWidget(kickLengthKnob);
-        connect(kickLengthKnob, SIGNAL(valueUpdated(double)),
-                kickApi.get(), SLOT(setKickLengthValue(double)));
-
-        GKickKnob *kickAmplitudeKnob = new GKickKnob(this);
-        kickLengthKnob->setFixedSize(224 / 2, 125);
-        kickAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image_freq.png"));
-        kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        kickAmplitudeKnob->setMaxValue(1);
-        kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
-        amplitudeEnvelopeBox->layout()->addWidget(kickAmplitudeKnob);
-        connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
-                kickApi.get(), SLOT(setAmplitude(double)));
-
-        /*QGroupBox *filterGroupBox = new QGroupBox(tr("Filter"), this);
-        QVBoxLayout *filterGroupBoxLayout = new QVBoxLayout();
-        filterGroupBox->setLayout(filterGroupBoxLayout);
-        layout()->addWidget(filterGroupBox);*/
-
-        // Create filter type group box.
-        /*QGroupBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);
-        QHBoxLayout *filterTypeGroupBoxLayout = new QHBoxLayout(filterTypeGroupBox);
-        filterTypeGroupBox->setLayout(filterTypeGroupBoxLayout);
-        filterTypeCb = new QComboBox(filterTypeGroupBox);
-        filterTypeCb->addItem(tr("Low pass"));
-        filterTypeCb->addItem(tr("Hight pass"));
-        filterTypeGroupBoxLayout->addWidget(filterTypeCb);
-        filterGroupBoxLayout->addWidget(filterTypeGroupBox);
-
-        // Create filter knobs gorup box.
-        QGroupBox *filterKnobsGroupBox = new QGroupBox(filterGroupBox);
-        QHBoxLayout *filterKnobsGroupBoxLayout = new QHBoxLayout(filterKnobsGroupBox);
-        filterKnobsGroupBox->setLayout(filterKnobsGroupBoxLayout);
-        GKickKnob *filterFrequencyKnob = new GKickKnob(filterKnobsGroupBox, tr("Frequency"));
-        GKickKnob *filterQKnob = new GKickKnob(filterKnobsGroupBox, tr("Q"));
-        filterFrequencyKnob->setMaxValue(20000);
-        filterFrequencyKnob->setCurrentValue(kickApi->getKickFilterFrequency());
-        filterQKnob->setMaxValue(10);
-        filterQKnob->setCurrentValue(kickApi->getKickFilterQFactor());
-        filterKnobsGroupBoxLayout->addWidget(filterFrequencyKnob);
-        filterKnobsGroupBoxLayout->addWidget(filterQKnob);
-        filterGroupBoxLayout->addWidget(filterKnobsGroupBox);
-        layout()->addWidget(filterGroupBox);
-
-        connect(filterFrequencyKnob, SIGNAL(valueUpdated(double)),
-                kickApi.get(), SLOT(setKickFilterFrequency(double)));
-        connect(filterQKnob, SIGNAL(valueUpdated(double)),
-        kickApi.get(), SLOT(setKickFilterQFactor(double)));*/
+        filterType->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
+        filterType->setBackgroundImage(QPixmap("./themes/geontime/filter_type_hp.png"));
 }

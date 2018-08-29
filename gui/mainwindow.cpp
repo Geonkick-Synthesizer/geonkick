@@ -46,6 +46,7 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         gkickApi(std::make_shared<GKickApi>())
 {
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 }
 
 MainWindow::~MainWindow()
@@ -81,7 +82,10 @@ bool MainWindow::init(void)
 	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(0);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout->setSpacing(0);
         setLayout(mainLayout);
+        setContentsMargins(0, 0, 0, 0);
 
         // Create envelope widget.
         GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(this, gkickApi, oscillators);
@@ -90,11 +94,11 @@ bool MainWindow::init(void)
         // Create control area.
         ControlArea *controlAreaWidget = new ControlArea(this, gkickApi, oscillators);
         mainLayout->addWidget(controlAreaWidget);
-        mainLayout->setStretchFactor(controlAreaWidget, 0);
-        mainLayout->setStretchFactor(envelopeWidget, 2);
+        //mainLayout->setStretchFactor(controlAreaWidget, 0);
+        // mainLayout->setStretchFactor(envelopeWidget, 2);
 
-        connect(controlAreaWidget, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
-                envelopeWidget, SLOT(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
+        //connect(controlAreaWidget, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
+        //        envelopeWidget, SLOT(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
 
         return true;
 }

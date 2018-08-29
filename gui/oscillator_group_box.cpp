@@ -37,14 +37,11 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
           waveFunctionCb(NULL),
           filterTypeCb(NULL)
 {
-        /*setCheckable(true);
         if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 createWaveFunctionGroupBox();
         }
         createEvelopeGroupBox();
         createFilterGroupBox();
-        layout()->setSpacing(2);*/
-        createEvelopeGroupBox();
 }
 
 OscillatorGroupBox::~OscillatorGroupBox()
@@ -53,20 +50,11 @@ OscillatorGroupBox::~OscillatorGroupBox()
 
 void OscillatorGroupBox::createWaveFunctionGroupBox()
 {
-        /*        QGroupBox *waveFunctionGroupBox = new QGroupBox(tr("Wave function"), this);
-        waveFunctionCb = new QComboBox(waveFunctionGroupBox);
-        waveFunctionCb->addItem(tr("Sine"));
-        waveFunctionCb->addItem(tr("Sqare"));
-        waveFunctionCb->addItem(tr("Triangle"));
-        waveFunctionCb->addItem(tr("Sawtooth"));
-        waveFunctionCb->addItem(tr("Noise"));
-        connect(waveFunctionCb, SIGNAL(currentIndexChanged(int)),
-                oscillator.get(), SLOT(changeOscFunction(int)));
-        QHBoxLayout *glayout = new QHBoxLayout(waveFunctionGroupBox);
-        glayout->setSpacing(0);
-        glayout->addWidget(waveFunctionCb);
-        waveFunctionGroupBox->setLayout(glayout);
-        layout()->addWidget(waveFunctionGroupBox);*/
+        auto waveFunctionHBox = new GeonkickWidget(this);
+        QPixmap pixmap("./themes/geontime/wf_bk_hbox.png");
+        waveFunctionHBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
+        waveFunctionHBox->setBackgroundImage(pixmap);
+        layout()->addWidget(waveFunctionHBox);
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()
@@ -112,42 +100,29 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 
 void OscillatorGroupBox::createFilterGroupBox()
 {
-        /*        QGroupBox *filterGroupBox = new QGroupBox(tr("Filter"), this);
-        QVBoxLayout *filterGroupBoxLayout = new QVBoxLayout(filterGroupBox);
-        filterGroupBoxLayout->setSpacing(0);
-        filterGroupBoxLayout->setContentsMargins(0,0,0,0);
-        filterGroupBox->setLayout(filterGroupBoxLayout);
-        layout()->addWidget(filterGroupBox);
+        GeonkickWidget *filterEnvelopeBox = new GeonkickWidget(this);
+        filterEnvelopeBox->setFixedSize(224, 125);
+        filterEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_filter.png"));
+        layout()->addWidget(filterEnvelopeBox);
 
-        // Create filter type group box.
-        QGroupBox *filterTypeGroupBox = new QGroupBox(tr("Type"), filterGroupBox);
-        QHBoxLayout *filterTypeGroupBoxLayout = new QHBoxLayout(filterTypeGroupBox);
-        filterTypeGroupBoxLayout->setSpacing(0);
-        filterTypeGroupBoxLayout->setContentsMargins(0,0,0,0);
-        filterTypeGroupBox->setLayout(filterTypeGroupBoxLayout);
-        filterTypeCb = new QComboBox(filterTypeGroupBox);
-        filterTypeCb->addItem(tr("Low pass"));
-        filterTypeCb->addItem(tr("Hight pass"));
-        filterTypeGroupBoxLayout->addWidget(filterTypeCb);
-        filterGroupBoxLayout->addWidget(filterTypeGroupBox);
+        GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
+        kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
+        kickFrequencyKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
+        kickFrequencyKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
 
-        // Create filter knobs gorup box.
-        QGroupBox *filterKnobsGroupBox = new QGroupBox(filterGroupBox);
-        QHBoxLayout *filterKnobsGroupBoxLayout = new QHBoxLayout(filterKnobsGroupBox);
-        filterKnobsGroupBox->setLayout(filterKnobsGroupBoxLayout);
-        filterKnobsGroupBoxLayout->setContentsMargins(0,0,0,0);
-        GKickKnob *filterFrequencyKnob = new GKickKnob(filterKnobsGroupBox, tr("Frequency"));
-        GKickKnob *filterQKnob = new GKickKnob(filterKnobsGroupBox, tr("Q"));
-        filterFrequencyKnob->setMaxValue(20000);
-        filterFrequencyKnob->setCurrentValue(oscillator->getFilterFrequency());
-        filterQKnob->setMaxValue(10);
-        filterQKnob->setCurrentValue(oscillator->getFilterQFactor());
-        filterKnobsGroupBoxLayout->addWidget(filterFrequencyKnob);
-        filterKnobsGroupBoxLayout->addWidget(filterQKnob);
-        filterGroupBoxLayout->addWidget(filterKnobsGroupBox);
+        GKickKnob *kickQFactorKnob = new GKickKnob(filterEnvelopeBox);
+        QPixmap pixmap("./themes/geontime/knob_bk_50x50.png");
+        int w = pixmap.size().width();
+        int h = pixmap.size().height();
+        kickQFactorKnob->setGeometry(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4, w, h);
+        kickQFactorKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_50x50.png"));
+        kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
+        //        kickQFactorKnob->setMaxValue(kickApi->getMaxLength());
+        //kickQFactorKnob->setCurrentValue(kickApi->getKickLength());
 
-        connect(filterFrequencyKnob, SIGNAL(valueUpdated(double)),
-                oscillator.get(), SLOT(setOscFilterFrequencyValue(double)));
-        connect(filterQKnob, SIGNAL(valueUpdated(double)),
-        oscillator.get(), SLOT(setOscFilterQFactor(double)));*/
+        auto filterType = new GeonkickWidget(filterEnvelopeBox);
+        w = 80;
+        h = 25;
+        filterType->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
+        filterType->setBackgroundImage(QPixmap("./themes/geontime/filter_type_hp.png"));
 }

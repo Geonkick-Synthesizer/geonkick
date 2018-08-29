@@ -34,7 +34,7 @@ EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent,
           xPadding(10),
           yPadding(10)
 {
-        setFixedSize(600, 300);
+        setFixedSize(600, 20);
 }
 
 EnvelopeDrawingArea::~EnvelopeDrawingArea()
