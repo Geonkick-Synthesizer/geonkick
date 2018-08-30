@@ -46,7 +46,7 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         gkickApi(std::make_shared<GKickApi>())
 {
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
-        setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+        //        setWindowFlags(Qt::FramelessWindowHint);
 }
 
 MainWindow::~MainWindow()

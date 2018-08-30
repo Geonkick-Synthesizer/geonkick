@@ -3416,11 +3416,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.267971"
-     inkscape:cx="395.54831"
-     inkscape:cy="487.96913"
+     inkscape:zoom="16.353307"
+     inkscape:cx="203.76936"
+     inkscape:cy="458.86648"
      inkscape:document-units="px"
-     inkscape:current-layer="g26930"
+     inkscape:current-layer="g7540"
      showgrid="false"
      inkscape:window-width="1918"
      inkscape:window-height="1002"
@@ -9221,8 +9221,8 @@
              id="rect4510-63-0-8-1"
              width="59.18026"
              height="18.180763"
-             x="55.513237"
-             y="180.63385"
+             x="57.598557"
+             y="186.42641"
              inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wf_bk_hbox.png"
              inkscape:export-xdpi="95.942627"
              inkscape:export-ydpi="95.942627" />
@@ -9475,10 +9475,12 @@
                y="185.47997"
                style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268">Wave Function</tspan></text>
           <g
-             style="display:inline"
-             id="g9610-0-94"
-             transform="matrix(0.08931988,0,0,0.08931988,162.84694,108.27732)">
+             id="g7540"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_sine.png"
+             inkscape:export-xdpi="95.942627"
+             inkscape:export-ydpi="95.942627">
             <rect
+               transform="matrix(0.08931988,0,0,0.08931988,149.29237,121.25263)"
                ry="9.3728256"
                rx="10.743702"
                y="569.65753"
@@ -9486,17 +9488,24 @@
                height="45.917767"
                width="169.08815"
                id="rect4890-6-7-5-81"
-               style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-8-1-77)" />
+               style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-8-1-77)"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
+               inkscape:export-xdpi="97.263344"
+               inkscape:export-ydpi="97.263344" />
             <rect
-               ry="9.3728256"
-               rx="10.743702"
-               y="568.48877"
-               x="-1153.7717"
-               height="45.917767"
-               width="169.08815"
+               ry="0.83717966"
+               rx="0.95962614"
+               y="172.13437"
+               x="46.323032"
+               height="4.1013694"
+               width="15.102933"
                id="rect4890-4-2-2"
-               style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+               style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.17926289;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
+               inkscape:export-xdpi="97.263344"
+               inkscape:export-ydpi="97.263344" />
             <rect
+               transform="matrix(0.08931988,0,0,0.08931988,149.54585,121.46579)"
                ry="10.000007"
                rx="10.000007"
                y="574.4201"
@@ -9504,20 +9513,36 @@
                height="31.61977"
                width="152.8289"
                id="rect5044-9-7-93"
-               style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-6-9-7)" />
+               style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-6-9-7)"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
+               inkscape:export-xdpi="97.263344"
+               inkscape:export-ydpi="97.263344" />
             <text
-               transform="matrix(0.60514905,0,0,0.60514905,-1173.3021,346.64122)"
+               transform="matrix(0.05405184,0,0,0.05405184,44.153303,152.11216)"
                id="text10105-4-0-91-9"
                y="417.70291"
                x="113.74126"
-               style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.76099997;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.41765422;filter:url(#filter10330-7-2-56)"
-               xml:space="preserve"><tspan
-                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#8b8f74;fill-opacity:1;stroke-width:0.41765422"
+               style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#b0b1b2;fill-opacity:1;stroke:none;stroke-width:0.41765422;filter:url(#filter10330-7-2-56)"
+               xml:space="preserve"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
+               inkscape:export-xdpi="97.263344"
+               inkscape:export-ydpi="97.263344"><tspan
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#b0b1b2;fill-opacity:1;stroke-width:0.41765422"
                  y="417.70291"
                  x="113.74126"
                  id="tspan10103-9-1-9-08"
-                 sodipodi:role="line">Sine</tspan></text>
-          </g>
+                 sodipodi:role="line">Triangle</tspan></text>
+            <flowRoot
+               xml:space="preserve"
+               id="flowRoot7542"
+               style="fill:black;fill-opacity:1;stroke:none;font-family:'URW Gothic L';font-style:normal;font-weight:normal;font-size:32px;line-height:1.25;letter-spacing:0px;word-spacing:0px;-inkscape-font-specification:'URW Gothic L';font-stretch:normal;font-variant:normal"><flowRegion
+                 id="flowRegion7544"><rect
+                   id="rect7546"
+                   width="82.613258"
+                   height="36.934425"
+                   x="163.02513"
+                   y="318.34164" /></flowRegion><flowPara
+                 id="flowPara7548"></flowPara></flowRoot>          </g>
           <g
              style="display:inline"
              id="g9610-9-6-8"
@@ -9565,7 +9590,7 @@
           <g
              style="display:inline"
              id="g9610-33-6-6"
-             transform="matrix(0.08931988,0,0,0.08931988,162.93235,114.56275)">
+             transform="matrix(0.08931988,0,0,0.08931988,165.71277,101.23989)">
             <rect
                ry="9.3728256"
                rx="10.743702"
