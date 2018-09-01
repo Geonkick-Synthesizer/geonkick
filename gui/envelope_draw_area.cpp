@@ -46,7 +46,7 @@ void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<GKickEnvelope> &envelope)
         currentEnvelope = envelope;
 }
 
-void EnvelopeDrawingArea::paintEvent(QPaintEvent *event)
+void EnvelopeDrawingArea::paintWidget(QPaintEvent *event)
 {
         Q_UNUSED(event);
         QPainter painter(this);

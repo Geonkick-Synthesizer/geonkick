@@ -35,7 +35,7 @@ class GKickKnob : public GeonkickWidget
 public:
    GKickKnob(GeonkickWidget *parent);
    virtual ~GKickKnob();
-   double getValue(void);
+   double getValue(void) const;
    void setMaxValue(double val);
    void setCurrentValue(double val);
    void setKnobImage(const QPixmap &pixmap);
@@ -44,7 +44,7 @@ public:
      void valueUpdated(double v);
 
  protected:
-   void paintEvent(QPaintEvent *event);
+   void paintWidget(QPaintEvent *event) override;
    void mousePressEvent(QMouseEvent *event);
    void mouseReleaseEvent(QMouseEvent *event);
    void mouseMoveEvent(QMouseEvent *event);

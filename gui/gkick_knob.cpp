@@ -51,9 +51,8 @@ void GKickKnob::setKnobImage(const QPixmap &pixmap)
 }
 
 void
-GKickKnob::paintEvent(QPaintEvent *event)
+GKickKnob::paintWidget(QPaintEvent *event)
 {
-        GeonkickWidget::paintEvent(event);
         QPainter painter(this);
         if (!knobPixmap.isNull()) {
                 painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
@@ -107,7 +106,7 @@ GKickKnob::mouseMoveEvent(QMouseEvent *event)
         }
 }
 
-double GKickKnob::getValue(void)
+double GKickKnob::getValue(void) const
 {
         double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
 	return k * rangeValue;

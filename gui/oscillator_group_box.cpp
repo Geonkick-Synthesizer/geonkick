@@ -55,6 +55,8 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         waveFunctionHBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         waveFunctionHBox->setBackgroundImage(pixmap);
         layout()->addWidget(waveFunctionHBox);
+
+        
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()

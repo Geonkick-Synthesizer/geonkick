@@ -37,7 +37,7 @@ class EnvelopeDrawingArea : public GeonkickWidget
    EnvelopeDrawingArea(GeonkickWidget *parent, std::shared_ptr<GKickEnvelope> &envelope);
    ~EnvelopeDrawingArea();
    void setEnvelope(std::shared_ptr<GKickEnvelope> &envelope);
-   void paintEvent(QPaintEvent *event);
+   void paintWidget(QPaintEvent *event) override;
    void mousePressEvent(QMouseEvent *event);
    void mouseReleaseEvent(QMouseEvent *event);
    void mouseDoubleClickEvent(QMouseEvent *event);

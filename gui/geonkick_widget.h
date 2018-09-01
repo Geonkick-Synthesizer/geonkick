@@ -42,7 +42,8 @@ class GeonkickWidget: public QWidget
         void setBackgroundImage(const QPixmap &pixmap);
         void setTheme(GeonkickTheme *theme);
         GeonkickTheme* getTheme();
-        virtual void paintEvent(QPaintEvent *event);
+        void paintEvent(QPaintEvent *event) final;
+        virtual void paintWidget(QPaintEvent *event);
 
  public slots:
          virtual void themeChanged(GeonkickTheme *theme) {Q_UNUSED(theme)};

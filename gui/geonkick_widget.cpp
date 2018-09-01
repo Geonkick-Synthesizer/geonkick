@@ -43,6 +43,12 @@ void GeonkickWidget::paintEvent(QPaintEvent *event)
                 QPainter painter(this);
                 painter.drawPixmap(0, 0, backgroundImage);
         }
+        paintWidget(event);
+}
+
+void GeonkickWidget::paintWidget(QPaintEvent *event)
+{
+        Q_UNUSED(event)
 }
 
 void GeonkickWidget::setBackgroundImage(const QPixmap &pixmap)
