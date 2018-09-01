@@ -30,6 +30,7 @@
 class GKickOscillator;
 class QComboBox;
 class GeonkickWidget;
+class GeonkickButton;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -45,10 +46,20 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void createEvelopeGroupBox();
         void createFilterGroupBox();
 
+ protected slots:
+        void setSineWave(bool pressed);
+        void setSquareWave(bool pressed);
+        void setTriangleWave(bool pressed);
+        void setSawtoothWave(bool pressed);
+
  private:
         std::shared_ptr<GKickOscillator> oscillator;
         QComboBox *waveFunctionCb;
         QComboBox *filterTypeCb;
+        GeonkickButton *sineButton;
+        GeonkickButton *squareButton;
+        GeonkickButton *triangleButton;
+        GeonkickButton *sawtoothButton;
 };
 
 #endif

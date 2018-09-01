@@ -24,7 +24,8 @@
 #include "oscillator_group_box.h"
 #include "gkick_oscillator.h"
 #include "geonkick_widget.h"
-#include <gkick_knob.h>
+#include "geonkick_button.h"
+#include "gkick_knob.h"
 
 #include <QComboBox>
 #include <QGridLayout>
@@ -33,9 +34,13 @@
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc)
           : GeonkickGroupBox(osc->name(), parent),
-          oscillator(osc),
-          waveFunctionCb(NULL),
-          filterTypeCb(NULL)
+            oscillator(osc),
+            waveFunctionCb(nullptr),
+            filterTypeCb(nullptr),
+            sineButton(nullptr),
+            squareButton(nullptr),
+            triangleButton(nullptr),
+            sawtoothButton(nullptr)
 {
         if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 createWaveFunctionGroupBox();
@@ -56,7 +61,29 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         waveFunctionHBox->setBackgroundImage(pixmap);
         layout()->addWidget(waveFunctionHBox);
 
-        
+        sineButton = new GeonkickButton(waveFunctionHBox);
+        sineButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
+        sineButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        sineButton->move((waveFunctionHBox->width() / 2 - sineButton->width()) / 2, 22);
+        connect(sineButton, SIGNAL(toggled(bool)), this, SLOT(setSineWave(bool)));
+
+        squareButton = new GeonkickButton(waveFunctionHBox);
+        squareButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
+        squareButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        squareButton->move((waveFunctionHBox->width() / 2 - squareButton->width()) / 2, 21 + squareButton->height());
+        connect(squareButton, SIGNAL(toggled(bool)), this, SLOT(setSquareWave(bool)));
+
+        triangleButton = new GeonkickButton(waveFunctionHBox);
+        triangleButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
+        triangleButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        triangleButton->move(waveFunctionHBox->width() / 2 + (waveFunctionHBox->width() / 2 - triangleButton->width()) / 2, 22);
+        connect(triangleButton, SIGNAL(toggled(bool)), this, SLOT(setTriangleWave(bool)));
+
+        sawtoothButton = new GeonkickButton(waveFunctionHBox);
+        sawtoothButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
+        sawtoothButton->move(waveFunctionHBox->width() / 2 +  (waveFunctionHBox->width() / 2 - sawtoothButton->width()) / 2, 21 + sawtoothButton->height());
+        sawtoothButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        connect(sawtoothButton, SIGNAL(toggled(bool)), this, SLOT(setSawtoothWave(bool)));
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()
@@ -127,4 +154,40 @@ void OscillatorGroupBox::createFilterGroupBox()
         h = 25;
         filterType->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
         filterType->setBackgroundImage(QPixmap("./themes/geontime/filter_type_hp.png"));
+}
+
+void OscillatorGroupBox::setSineWave(bool pressed)
+{
+        if (pressed) {
+                squareButton->setPressed(false);
+                triangleButton->setPressed(false);
+                sawtoothButton->setPressed(false);
+        }
+}
+
+void OscillatorGroupBox::setSquareWave(bool pressed)
+{
+        if (pressed) {
+                sineButton->setPressed(false);
+                triangleButton->setPressed(false);
+                sawtoothButton->setPressed(false);
+        }
+}
+
+void OscillatorGroupBox::setTriangleWave(bool pressed)
+{
+        if (pressed) {
+                sineButton->setPressed(false);
+                squareButton->setPressed(false);
+                sawtoothButton->setPressed(false);
+        }
+}
+
+void OscillatorGroupBox::setSawtoothWave(bool pressed)
+{
+        if (pressed) {
+                sineButton->setPressed(false);
+                squareButton->setPressed(false);
+                triangleButton->setPressed(false);
+        }
 }

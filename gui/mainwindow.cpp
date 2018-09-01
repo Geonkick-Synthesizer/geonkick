@@ -39,7 +39,7 @@
 #include <QHBoxLayout>
 
 #define GEONKICK_MAINWINDOW_WIDTH  1000
-#define GEONKICK_MAINWINDOW_HEIGHT 700
+#define GEONKICK_MAINWINDOW_HEIGHT 720
 
 MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
