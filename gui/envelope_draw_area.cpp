@@ -34,7 +34,9 @@ EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent,
           xPadding(10),
           yPadding(10)
 {
-        setFixedSize(600, 20);
+        QPixmap pixmap("./themes/geontime/envelope_bk.png");
+        setBackgroundImage(pixmap);
+        setFixedSize(pixmap.size());
 }
 
 EnvelopeDrawingArea::~EnvelopeDrawingArea()

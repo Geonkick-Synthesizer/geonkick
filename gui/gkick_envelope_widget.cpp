@@ -54,18 +54,19 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
         envelopeLayout->setSpacing(0);
 
         // Create top area.
-        envelopeTitleLabel = new QLabel(currentEnvelope->name(), this);
-        envelopeTitleLabel->setAlignment(Qt::AlignHCenter);
-        envelopeLayout->addWidget(envelopeTitleLabel);
-        envelopeLayout->setStretchFactor(envelopeTitleLabel, 0);
+        //envelopeTitleLabel = new QLabel(currentEnvelope->name(), this);
+        //envelopeTitleLabel->setAlignment(Qt::AlignHCenter);
+        //envelopeLayout->addWidget(envelopeTitleLabel);
+        // envelopeLayout->setStretchFactor(envelopeTitleLabel, 0);
 
         // Create drawing area.
         drawArea = new EnvelopeDrawingArea(this, currentEnvelope);
         envelopeLayout->addWidget(drawArea);
-        envelopeLayout->setStretchFactor(drawArea, 1);
+        setFixedSize(drawArea->size());
+        //        envelopeLayout->setStretchFactor(drawArea, 1);
 
         // Create bottom area.
-        showAmplitudeEnvButton = new QPushButton(tr("AMPL"), this);
+        /*showAmplitudeEnvButton = new QPushButton(tr("AMPL"), this);
         showFrequencyEnvButton = new QPushButton(tr("FREQ"), this);
         connect(showAmplitudeEnvButton, SIGNAL(pressed()), this, SLOT(showAmplitudeEnvelope()));
         connect(showFrequencyEnvButton, SIGNAL(pressed()), this, SLOT(showFrequencyEnvelope()));
@@ -76,7 +77,7 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
         buttomAreaWidget->setLayout(buttomAreaLayout);
         envelopeLayout->addWidget(buttomAreaWidget);
         envelopeLayout->setStretchFactor(buttomAreaWidget, 0);
-        updateButtonArea();
+        updateButtonArea();*/
 }
 
 GKickEnvelopeWidget::~GKickEnvelopeWidget()

@@ -74,11 +74,11 @@ void GKickEnvelope::drawPoints(QPainter &painter)
 
 void GKickEnvelope::drawAxes(QPainter &painter)
 {
-        QPen pen(Qt::black);
+        /*        QPen pen(Qt::black);
         pen.setWidth(1);
         painter.setPen(pen);
         painter.drawLine(10, 10, 10, envelopeH - 10);
-        painter.drawLine(10, envelopeH - 10, envelopeW - 10, envelopeH - 10);
+        painter.drawLine(10, envelopeH - 10, envelopeW - 10, envelopeH - 10);*/
 
 }
 
