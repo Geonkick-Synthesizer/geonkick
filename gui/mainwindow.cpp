@@ -28,6 +28,7 @@
 #include "general_group_box.h"
 #include "control_area.h"
 #include "geonkick_theme.h"
+#include "top_bar.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -50,7 +51,7 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         setAutoFillBackground(true);
         setPalette(pal);
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
-        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
+        setWindowFlags(/*Qt::Window | */Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
 }
 
 MainWindow::~MainWindow()
@@ -90,6 +91,8 @@ bool MainWindow::init(void)
         mainLayout->setSpacing(0);
         setLayout(mainLayout);
         setContentsMargins(0, 0, 0, 0);
+
+        mainLayout->addWidget(new TopBar(this));
 
         // Create envelope widget.
         GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(this, gkickApi, oscillators);

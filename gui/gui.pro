@@ -18,6 +18,7 @@ HEADERS += globals.h \
            geonkick_label.h \
            geonkick_button.h \
            geonkick_groupbox.h \
+           top_bar.h \
            control_area.h \
            envelope_draw_area.h \
            envelope_point.h \
@@ -38,6 +39,7 @@ SOURCES += geonkick_theme.cpp \
            geonkick_label.cpp \
            geonkick_button.cpp \
            geonkick_groupbox.cpp \
+           top_bar.cpp \
            control_area.cpp \
            envelope_draw_area.cpp \
            envelope_point.cpp \
