@@ -40,7 +40,7 @@
 #include <QHBoxLayout>
 
 #define GEONKICK_MAINWINDOW_WIDTH  1000
-#define GEONKICK_MAINWINDOW_HEIGHT 700
+#define GEONKICK_MAINWINDOW_HEIGHT 820
 
 MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
@@ -51,7 +51,7 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         setAutoFillBackground(true);
         setPalette(pal);
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
-        setWindowFlags(/*Qt::Window | */Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
+        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
 }
 
 MainWindow::~MainWindow()
@@ -101,8 +101,6 @@ bool MainWindow::init(void)
         // Create control area.
         ControlArea *controlAreaWidget = new ControlArea(this, gkickApi, oscillators);
         mainLayout->addWidget(controlAreaWidget);
-        //mainLayout->setStretchFactor(controlAreaWidget, 0);
-        // mainLayout->setStretchFactor(envelopeWidget, 2);
 
         //connect(controlAreaWidget, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
         //        envelopeWidget, SLOT(viewEnvelope(GKickEnvelope::EnvelopeCategory)));

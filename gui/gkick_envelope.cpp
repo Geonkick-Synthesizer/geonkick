@@ -74,12 +74,6 @@ void GKickEnvelope::drawPoints(QPainter &painter)
 
 void GKickEnvelope::drawAxes(QPainter &painter)
 {
-        /*        QPen pen(Qt::black);
-        pen.setWidth(1);
-        painter.setPen(pen);
-        painter.drawLine(10, 10, 10, envelopeH - 10);
-        painter.drawLine(10, envelopeH - 10, envelopeW - 10, envelopeH - 10);*/
-
 }
 
 void GKickEnvelope::drawLines(QPainter &painter)
@@ -90,8 +84,10 @@ void GKickEnvelope::drawLines(QPainter &painter)
 	}
 
 	auto pen = painter.pen();
-	pen.setWidth(1);
+	pen.setWidth(2);
+        pen.setColor(QColor(250, 250, 250, 255));
 	painter.setPen(pen);
+        painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
 	painter.drawPolyline(points);
 }
 

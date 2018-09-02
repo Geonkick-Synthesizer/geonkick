@@ -21,19 +21,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef SOUNDSPEC_GLOBALS_H
-#define SOUNDSPEC_GLOBALS_H
+#ifndef GEONKICK_GLOBALS_H
+#define GEONKICK_GLOBALS_H
 
 #include <QString>
 #include <QDebug>
 
 #include <memory>
 
-#define SPEC_APP_NAME "SoundSpec"
-#define SPEC_APP_VERION 0x000100
-#define SPEC_APP_VERION_SRE "0.1.0"
+#define GEOKICK_APP_NAME "Geonkick"
+#define GEOKICK_APP_VERION 0x010000
+#define GEOKICK_APP_VERION_STRING "1.0.0"
 
 #define GKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
 #define GKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
 
-#endif
+#endif // GEONKICK_GLOBALS_H

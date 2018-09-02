@@ -3765,9 +3765,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.94905406"
-     inkscape:cx="1459.0389"
-     inkscape:cy="797.97734"
+     inkscape:zoom="1.0173961"
+     inkscape:cx="1414.4554"
+     inkscape:cy="895.55058"
      inkscape:document-units="px"
      inkscape:current-layer="g7871"
      showgrid="false"
@@ -10313,7 +10313,47 @@
             </g>
           </g>
           <g
-             id="g7871" />
+             id="g7871">
+            <path
+               style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+               d="m 432.39766,74.249691 c 31.22406,0 31.22406,0 31.22406,0"
+               id="path7911"
+               inkscape:connector-curvature="0" />
+            <g
+               id="g7977"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/close_button.png"
+               inkscape:export-xdpi="122.18"
+               inkscape:export-ydpi="122.18">
+              <rect
+                 ry="0.62952584"
+                 rx="0.79374999"
+                 y="12.712667"
+                 x="469.70346"
+                 height="6.4120865"
+                 width="8.0848045"
+                 id="rect7875"
+                 style="opacity:0.32;fill:#000200;fill-opacity:1;stroke:#1a191c;stroke-width:0.29104166;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.37444937" />
+              <g
+                 transform="matrix(1.430443,0,0,1.430443,-204.04109,-5.4307018)"
+                 id="g7971">
+                <path
+                   style="display:inline;fill:none;stroke:#c9caca;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                   d="m 475.56555,13.189584 c -3.4709,3.470904 -3.4709,3.470904 -3.4709,3.470904"
+                   id="path7928-0"
+                   inkscape:connector-curvature="0" />
+                <path
+                   style="display:inline;fill:none;stroke:#c9caca;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+                   d="m 472.09465,13.189583 c 3.4709,3.470904 3.4709,3.470904 3.4709,3.470904"
+                   id="path7928-0-9"
+                   inkscape:connector-curvature="0" />
+              </g>
+            </g>
+          </g>
+          <path
+             style="display:inline;fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+             d="m 446.61576,90.140508 c 0,-31.22406 0,-31.22406 0,-31.22406"
+             id="path7911-7"
+             inkscape:connector-curvature="0" />
         </g>
       </g>
     </g>
