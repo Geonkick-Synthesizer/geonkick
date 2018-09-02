@@ -50,7 +50,7 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         setAutoFillBackground(true);
         setPalette(pal);
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
-        setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
 }
 
 MainWindow::~MainWindow()
