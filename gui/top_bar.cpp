@@ -22,6 +22,8 @@
  */
 
 #include "top_bar.h"
+#include "geonkick_button.h"
+#include "geonkick_button.h"
 
 #include <QMouseEvent>
 
@@ -38,6 +40,13 @@ TopBar::TopBar(GeonkickWidget *parent)
         if (parent) {
                 setFixedSize(parent->width(), 40);
         }
+        auto closeButton = new GeonkickButton(this);
+        closeButton->setPressedImage(QPixmap("./themes/geontime/close_button.png"));
+        closeButton->setUnpressedImage(QPixmap("./themes/geontime/close_button.png"));
+        if (parent) {
+                connect(closeButton, SIGNAL(toggled(bool)), parent, SLOT(close()));
+                closeButton->move(parent->width() - closeButton->width(), 0);
+        }
 }
 
 TopBar::~TopBar()
@@ -48,6 +57,7 @@ void TopBar::mousePressEvent(QMouseEvent *event)
 {
         Q_UNUSED(event)
         is_pressed = true;
+        setCursor(Qt::ClosedHandCursor);
         dX = event->x();
         dY = event->y();
 }
@@ -55,6 +65,7 @@ void TopBar::mousePressEvent(QMouseEvent *event)
 void TopBar::mouseReleaseEvent(QMouseEvent *event)
 {
         Q_UNUSED(event)
+        setCursor(Qt::ArrowCursor);
         is_pressed = false;
 }
 
