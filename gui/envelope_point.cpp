@@ -78,7 +78,7 @@ void GKickEnvelopePoint::draw(QPainter &painter)
 	painter.drawEllipse(rect);
 
         QBrush brush = painter.brush();
-        painter.setBrush(Qt::white);
+        painter.setBrush(QColor(250, 250, 250, 255));
         r = getDotRadius();
         rect.setCoords((point.x() - r/2) + origin.x(), origin.y() - (point.y() + r/2),
                        (point.x() + r/2) + origin.x(), origin.y() - (point.y() - r/2));

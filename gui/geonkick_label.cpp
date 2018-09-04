@@ -28,7 +28,7 @@
 
 GeonkickLabel::GeonkickLabel(GeonkickWidget *parent)
         : GeonkickWidget(parent),
-          widgetLabel(new QLabel(this))
+          widgetLabel(nullptr)
 {
         init();
 }
@@ -46,7 +46,15 @@ GeonkickLabel::~GeonkickLabel()
 
 void GeonkickLabel::init()
 {
-        setLayout(new QHBoxLayout(this));
-        layout()->addWidget(widgetLabel);
+        if (widgetLabel) {
+                setLayout(new QHBoxLayout(this));
+                layout()->addWidget(widgetLabel);
+        }
+}
+
+void GeonkickLabel::setImage(const QPixmap &image)
+{
+        setFixedSize(image.size());
+        setBackgroundImage(image);
 }
 

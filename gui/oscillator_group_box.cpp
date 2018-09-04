@@ -26,6 +26,7 @@
 #include "geonkick_widget.h"
 #include "geonkick_button.h"
 #include "gkick_knob.h"
+#include "geonkick_label.h"
 
 #include <QComboBox>
 #include <QGridLayout>
@@ -33,7 +34,7 @@
 #include <QVBoxLayout>
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc)
-          : GeonkickGroupBox(osc->name(), parent),
+          : GeonkickGroupBox(parent),
             oscillator(osc),
             waveFunctionCb(nullptr),
             filterTypeCb(nullptr),
@@ -42,6 +43,15 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
             triangleButton(nullptr),
             sawtoothButton(nullptr)
 {
+        GeonkickLabel *label = getGroupBoxLabel();
+        if (oscillator->getType() == GKickOscillator::OSC_1) {
+                label->setImage(QPixmap("./themes/geontime/osc1_groupbox_label.png"));
+        } else if (oscillator->getType() == GKickOscillator::OSC_2) {
+                label->setImage(QPixmap("./themes/geontime/osc2_groupbox_label.png"));
+        } else {
+                label->setImage(QPixmap("./themes/geontime/noise_groupbox_label.png"));
+        }
+
         if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 createWaveFunctionGroupBox();
         }

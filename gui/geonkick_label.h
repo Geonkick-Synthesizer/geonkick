@@ -37,6 +37,7 @@ class GeonkickLabel: public GeonkickWidget
         GeonkickLabel(const QString &title, GeonkickWidget *parent = nullptr);
         virtual ~GeonkickLabel();
         void init();
+        void setImage(const QPixmap &image);
 
  private:
         QLabel *widgetLabel;

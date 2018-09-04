@@ -40,9 +40,13 @@ GeonkickGroupBox::GeonkickGroupBox(const QString &title,
                                    Orientation orientation)
         : GeonkickWidget(parent),
           groupBoxOrientation(orientation),
-          goupBoxLabel(new GeonkickLabel(title, this))
+          goupBoxLabel(new GeonkickLabel(this))
 {
         init();
+}
+
+GeonkickGroupBox::~GeonkickGroupBox()
+{
 }
 
 void GeonkickGroupBox::init()
@@ -61,7 +65,18 @@ void GeonkickGroupBox::init()
         layout()->addWidget(goupBoxLabel);
 }
 
-GeonkickGroupBox::~GeonkickGroupBox()
+GeonkickLabel* GeonkickGroupBox::getGroupBoxLabel()
 {
+        return goupBoxLabel;
+}
+
+void GeonkickGroupBox::paintWidget(QPaintEvent *event)
+{
+        Q_UNUSED(event)
+        QPainter painter(this);
+        int padding = 2;
+        painter.setPen(QPen(QColor(40, 40, 40, 100)));
+        painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
+        painter.drawRoundedRect(padding, padding, width() - 2 * padding, height() - 2 * padding, 7, 7);
 }
 

@@ -71,7 +71,6 @@ void TopBar::mouseReleaseEvent(QMouseEvent *event)
 
 void TopBar::mouseMoveEvent(QMouseEvent *event)
 {
-        GKICK_LOG_INFO("here");
         if (is_pressed) {
                 auto parent = parentWidget();
                 parent->move(event->globalX() - dX, event->globalY() - dY);

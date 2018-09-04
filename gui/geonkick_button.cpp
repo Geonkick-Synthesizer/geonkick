@@ -51,7 +51,6 @@ void GeonkickButton::setPressedImage(const QPixmap &pixmap)
 {
         pressedImage = pixmap;
         if (is_pressed) {
-                GKICK_LOG_INFO("pressedImage");
                 setFixedSize(pixmap.size().width(), pixmap.size().height());
                 setBackgroundImage(pressedImage);
                 update();
@@ -62,7 +61,6 @@ void GeonkickButton::setUnpressedImage(const QPixmap &pixmap)
 {
         unpressedImage = pixmap;
         if (!is_pressed) {
-                GKICK_LOG_INFO("unpressedImage");
                 setFixedSize(pixmap.size().width(), pixmap.size().height());
                 setBackgroundImage(unpressedImage);
                 update();

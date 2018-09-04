@@ -24,6 +24,7 @@
 #include "general_group_box.h"
 #include "gkick_knob.h"
 #include "gkickapi.h"
+#include "geonkick_label.h"
 
 #include <QGroupBox>
 #include <QVBoxLayout>
@@ -31,10 +32,12 @@
 #include <QPushButton>
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api)
-        : GeonkickGroupBox(tr("General Settings"), parent),
+        : GeonkickGroupBox(parent),
           kickApi(api)
 {
 
+        GeonkickLabel *label = getGroupBoxLabel();
+        //label->setImage(QPixmap("./themes/geontime/general_groupbox_label.png"));
         createAplitudeEnvelopeHBox();
         createFilterHBox();
 }
