@@ -50,7 +50,7 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
         setAutoFillBackground(true);
         setPalette(pal);
-        setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
+        //        setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
 }
 

@@ -34,8 +34,7 @@
 #include <QMouseEvent>
 
 class EnvelopeDrawingArea;
-class QLabel;
-class QPushButton;
+class GeonkickButton;
 
 class GKickEnvelopeWidget : public GeonkickWidget
 {
@@ -62,10 +61,9 @@ public:
  private:
      std::shared_ptr<GKickEnvelope> currentEnvelope;
      std::vector<std::shared_ptr<GKickEnvelope>> envelopes;
-     QLabel *envelopeTitleLabel;
      EnvelopeDrawingArea *drawArea;
-     QPushButton *showAmplitudeEnvButton;
-     QPushButton *showFrequencyEnvButton;
+     GeonkickButton *showAmplitudeEnvButton;
+     GeonkickButton *showFrequencyEnvButton;
      int xPadding;
      int yPadding;
      QPointF originPoint;

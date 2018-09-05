@@ -24,6 +24,7 @@
 #include "gkick_envelope_widget.h"
 #include "general_envelope.h"
 #include "envelope_draw_area.h"
+#include "geonkick_button.h"
 
 #include <QPainter>
 #include <QPolygonF>
@@ -37,10 +38,9 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
                                          std::shared_ptr<GKickApi> &api,
                                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
           : GeonkickWidget(parent),
-          envelopeTitleLabel(NULL),
-          drawArea(NULL),
-          showAmplitudeEnvButton(NULL),
-          showFrequencyEnvButton(NULL)
+          drawArea(nullptr),
+          showAmplitudeEnvButton(nullptr),
+          showFrequencyEnvButton(nullptr)
 
 {
         envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillators[GKickOscillator::OSC_1]));
@@ -53,31 +53,28 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
         setLayout(envelopeLayout);
         envelopeLayout->setSpacing(0);
 
-        // Create top area.
-        //envelopeTitleLabel = new QLabel(currentEnvelope->name(), this);
-        //envelopeTitleLabel->setAlignment(Qt::AlignHCenter);
-        //envelopeLayout->addWidget(envelopeTitleLabel);
-        // envelopeLayout->setStretchFactor(envelopeTitleLabel, 0);
-
         // Create drawing area.
         drawArea = new EnvelopeDrawingArea(this, currentEnvelope);
         envelopeLayout->addWidget(drawArea);
-        setFixedSize(drawArea->size());
-        //        envelopeLayout->setStretchFactor(drawArea, 1);
 
-        // Create bottom area.
-        /*showAmplitudeEnvButton = new QPushButton(tr("AMPL"), this);
-        showFrequencyEnvButton = new QPushButton(tr("FREQ"), this);
+
+        auto buttomAreaWidget = new GeonkickWidget(this);// Create bottom area.
+        envelopeLayout->addWidget(buttomAreaWidget);
+        showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
+        showAmplitudeEnvButton->setPressedImage(QPixmap("./themes/geontime/show_ampl_env_active.png"));
+        showAmplitudeEnvButton->setUnpressedImage(QPixmap("./themes/geontime/show_ampl_env_active.png"));
+        showFrequencyEnvButton = new GeonkickButton(buttomAreaWidget);
+        showFrequencyEnvButton->setPressedImage(QPixmap("./themes/geontime/show_freq_env_active.png"));
+        showFrequencyEnvButton->setUnpressedImage(QPixmap("./themes/geontime/show_freq_env_active.png"));
+        buttomAreaWidget->setFixedSize(2 * showAmplitudeEnvButton->width() + 10, 2 * showAmplitudeEnvButton->height());
         connect(showAmplitudeEnvButton, SIGNAL(pressed()), this, SLOT(showAmplitudeEnvelope()));
         connect(showFrequencyEnvButton, SIGNAL(pressed()), this, SLOT(showFrequencyEnvelope()));
-        QWidget* buttomAreaWidget = new QWidget(this);
+
         QHBoxLayout *buttomAreaLayout = new QHBoxLayout(buttomAreaWidget);
         buttomAreaLayout->addWidget(showAmplitudeEnvButton);
         buttomAreaLayout->addWidget(showFrequencyEnvButton);
         buttomAreaWidget->setLayout(buttomAreaLayout);
-        envelopeLayout->addWidget(buttomAreaWidget);
-        envelopeLayout->setStretchFactor(buttomAreaWidget, 0);
-        updateButtonArea();*/
+        //updateButtonArea();
 }
 
 GKickEnvelopeWidget::~GKickEnvelopeWidget()
@@ -87,7 +84,7 @@ GKickEnvelopeWidget::~GKickEnvelopeWidget()
 
 void GKickEnvelopeWidget::updateButtonArea()
 {
-        if (currentEnvelope->category() == GKickEnvelope::ENV_CATEGORY_OSC_1
+        /*if (currentEnvelope->category() == GKickEnvelope::ENV_CATEGORY_OSC_1
             || currentEnvelope->category() == GKickEnvelope::ENV_CATEGORY_OSC_2)  {
                 showAmplitudeEnvButton->setVisible(true);
                 showFrequencyEnvButton->setVisible(true);
@@ -102,27 +99,27 @@ void GKickEnvelopeWidget::updateButtonArea()
         } else {
                 showAmplitudeEnvButton->setDown(false);
                 showFrequencyEnvButton->setDown(true);
-        }
+                }*/
 }
 
 void GKickEnvelopeWidget::viewEnvelope(GKickEnvelope::EnvelopeCategory category)
 {
-        currentEnvelope = envelopes[category];
+        /*        currentEnvelope = envelopes[category];
         envelopeTitleLabel->setText(currentEnvelope->name());
         drawArea->setEnvelope(currentEnvelope);
         updateButtonArea();
-        drawArea->update();
+        drawArea->update();*/
 }
 
 void GKickEnvelopeWidget::showAmplitudeEnvelope()
 {
-       currentEnvelope->setType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
-       drawArea->update();
+        /*       currentEnvelope->setType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
+                 drawArea->update();*/
 }
 
 void GKickEnvelopeWidget::showFrequencyEnvelope()
 {
-        currentEnvelope->setType(GKickEnvelope::ENV_TYPE_FREQUENCY);
-        drawArea->update();
+        /*        currentEnvelope->setType(GKickEnvelope::ENV_TYPE_FREQUENCY);
+                  drawArea->update();*/
 }
 
