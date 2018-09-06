@@ -60,6 +60,9 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *squareButton;
         GeonkickButton *triangleButton;
         GeonkickButton *sawtoothButton;
+        GeonkickButton *noiseWhiteButton;
+        GeonkickButton *noisePinkButton;
+        GeonkickButton *noiseBrownianButton;
 };
 
 #endif

@@ -118,6 +118,21 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         //kickLengthKnob->setCurrentValue(kickApi->getKickLength());
 
         if (oscillator->getType() == GKickOscillator::OSC_NOISE) {
+                auto vLayout = new QVBoxLayout(amplitudeEnvelopeBox);
+                auto noiseWhiteButton = new GeonkickButton(this);
+                vLayout->addWidget(noiseWhiteButton);
+                noiseWhiteButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_white.png"));
+                noiseWhiteButton->setPressedImage(QPixmap("./themes/geontime/noise_type_white_active.png"));
+                auto noisePinkButton = new GeonkickButton(this);
+                vLayout->addWidget(noisePinkButton);
+                noisePinkButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_pink.png"));
+                noisePinkButton->setPressedImage(QPixmap("./themes/geontime/noise_type_pink_active.png"));
+                auto noiseBrownianButton = new GeonkickButton(this);
+                vLayout->addWidget(noiseBrownianButton);
+                noiseBrownianButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_brownian.png"));
+                noiseBrownianButton->setPressedImage(QPixmap("./themes/geontime/noise_type_brownian_active.png"));
+                vLayout->setContentsMargins(224/2, 10, 0, 12);
+                vLayout->setSpacing(0);
         } else {
                 GKickKnob *kickAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
                 kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
