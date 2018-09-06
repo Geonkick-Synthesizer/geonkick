@@ -26,6 +26,8 @@
 
 #include "geonkick_widget.h"
 
+class GeonkickButton;
+
 class TopBar : public GeonkickWidget
 {
  public:
@@ -39,6 +41,10 @@ class TopBar : public GeonkickWidget
         bool is_pressed;
         int dX;
         int dY;
+        GeonkickButton *openFileButton;
+        GeonkickButton *saveFileButton;
+        GeonkickButton *exportFileButton;
+        GeonkickButton *settingsButton;
 };
 
 #endif // GEONKICK_TOP_BAR_H

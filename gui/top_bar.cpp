@@ -23,30 +23,72 @@
 
 #include "top_bar.h"
 #include "geonkick_button.h"
-#include "geonkick_button.h"
+#include "geonkick_label.h"
 
 #include <QMouseEvent>
+#include <QHBoxLayout>
 
 TopBar::TopBar(GeonkickWidget *parent)
         : GeonkickWidget(parent),
           is_pressed(false),
           dX(0),
-          dY(0)
+          dY(0),
+          openFileButton(nullptr),
+          saveFileButton(nullptr),
+          exportFileButton(nullptr)
 {
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(80, 80, 80));
         setAutoFillBackground(true);
         setPalette(pal);
-        if (parent) {
-                setFixedSize(parent->width(), 40);
-        }
+        //        if (parent) {
+        //        setFixedSize(parent->width(), 40);
+        //}
+
+        auto buttonsLayout = new QHBoxLayout(this);
+        buttonsLayout->setContentsMargins(15, 0, 0, 0);
+        setLayout(buttonsLayout);
+
+        auto logo = new GeonkickLabel(this);
+        logo->setImage(QPixmap("./themes/geontime/logo.png"));
+        buttonsLayout->addWidget(logo);
+        buttonsLayout->setAlignment(logo, Qt::AlignLeft);
+        buttonsLayout->addSpacing(20);
+
+        openFileButton = new GeonkickButton(this);
+        openFileButton->setUnpressedImage(QPixmap("./themes/geontime/open.png"));
+        openFileButton->setPressedImage(QPixmap("./themes/geontime/open_active.png"));
+        buttonsLayout->addWidget(openFileButton);
+        buttonsLayout->setAlignment(openFileButton, Qt::AlignLeft);
+
+        saveFileButton = new GeonkickButton(this);
+        saveFileButton->setUnpressedImage(QPixmap("./themes/geontime/save.png"));
+        saveFileButton->setPressedImage(QPixmap("./themes/geontime/save_active.png"));
+        buttonsLayout->addWidget(saveFileButton);
+        buttonsLayout->setAlignment(saveFileButton, Qt::AlignLeft);
+
+        exportFileButton = new GeonkickButton(this);
+        exportFileButton->setUnpressedImage(QPixmap("./themes/geontime/export.png"));
+        exportFileButton->setPressedImage(QPixmap("./themes/geontime/export_active.png"));
+        buttonsLayout->addWidget(exportFileButton);
+        buttonsLayout->setAlignment(exportFileButton, Qt::AlignLeft);
+
+        settingsButton = new GeonkickButton(this);
+        settingsButton->setUnpressedImage(QPixmap("./themes/geontime/settings.png"));
+        settingsButton->setPressedImage(QPixmap("./themes/geontime/settings_active.png"));
+        buttonsLayout->addWidget(settingsButton);
+        buttonsLayout->setAlignment(settingsButton, Qt::AlignLeft);
+        buttonsLayout->addStretch(1);
+
         auto closeButton = new GeonkickButton(this);
         closeButton->setPressedImage(QPixmap("./themes/geontime/close_button.png"));
         closeButton->setUnpressedImage(QPixmap("./themes/geontime/close_button.png"));
+        buttonsLayout->addWidget(closeButton);
+        buttonsLayout->setAlignment(closeButton, Qt::AlignRight);
         if (parent) {
                 connect(closeButton, SIGNAL(toggled(bool)), parent, SLOT(close()));
-                closeButton->move(parent->width() - closeButton->width(), 0);
         }
+
 }
 
 TopBar::~TopBar()
