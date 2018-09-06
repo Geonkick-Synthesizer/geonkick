@@ -70,6 +70,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         waveFunctionHBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         waveFunctionHBox->setBackgroundImage(pixmap);
         layout()->addWidget(waveFunctionHBox);
+        layout()->setAlignment(waveFunctionHBox, Qt::AlignTop);
 
         sineButton = new GeonkickButton(waveFunctionHBox);
         sineButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
@@ -107,6 +108,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_osc_env.png"));
         }
         layout()->addWidget(amplitudeEnvelopeBox);
+        layout()->setAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
 
         GKickKnob *kickLengthKnob = new GKickKnob(amplitudeEnvelopeBox);
         kickLengthKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
@@ -143,6 +145,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_filter.png"));
         layout()->addWidget(filterEnvelopeBox);
+        layout()->setAlignment(filterEnvelopeBox, Qt::AlignTop);
 
         GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);

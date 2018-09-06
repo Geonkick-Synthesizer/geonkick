@@ -3757,6 +3757,45 @@
        r="3.4369132"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(3.4739869,-1.96834e-7,1.1497045e-7,2.0291506,-1699.7429,-55.030464)" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-7-2-56-3"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-3-1-3-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-6-9-7-7"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-7-36-36-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-8-1-77-3"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-5-7-6-5" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -3765,18 +3804,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.0173961"
-     inkscape:cx="1414.4554"
-     inkscape:cy="895.55058"
+     inkscape:zoom="4.0883267"
+     inkscape:cx="1216.3958"
+     inkscape:cy="675.55299"
      inkscape:document-units="px"
-     inkscape:current-layer="g7871"
+     inkscape:current-layer="g26930"
      showgrid="false"
      inkscape:window-width="1918"
      inkscape:window-height="1002"
      inkscape:window-x="0"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
-     showguides="false"
+     showguides="true"
      units="px">
     <inkscape:grid
        type="xygrid"
@@ -5697,13 +5736,14 @@
              x="287.71588"
              y="122.62632"
              id="text10652-7-1"
-             inkscape:export-xdpi="29.256962"
-             inkscape:export-ydpi="29.256962"><tspan
+             inkscape:export-xdpi="107.85156"
+             inkscape:export-ydpi="107.85156"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/general_groupbox_label.png"><tspan
                sodipodi:role="line"
                id="tspan10650-9-7"
                x="287.71588"
                y="122.62632"
-               style="font-size:3.35689926px;fill:#faffff;fill-opacity:1;stroke-width:0.06294185">Oscillator 2</tspan></text>
+               style="font-size:3.35689926px;fill:#faffff;fill-opacity:1;stroke-width:0.06294185">  General</tspan></text>
           <ellipse
              style="opacity:0.91500005;fill:#77bb80;fill-opacity:1;stroke:none;stroke-width:0.84206176;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter16738)"
              id="path10686-5-1"
@@ -6432,7 +6472,7 @@
                id="tspan10650-9-6"
                x="415.21375"
                y="121.82784"
-               style="font-size:3.35689902px;fill:#faffff;fill-opacity:1;stroke-width:0.06294185">General Settings</tspan></text>
+               style="font-size:3.35689902px;fill:#faffff;fill-opacity:1;stroke-width:0.06294185">General</tspan></text>
           <g
              id="g8715"
              transform="translate(32.860999,111.89034)"
@@ -9844,9 +9884,9 @@
                width="169.08815"
                id="rect4890-6-7-5-81"
                style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-8-1-77)"
-               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
-               inkscape:export-xdpi="97.263344"
-               inkscape:export-ydpi="97.263344" />
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env_active.png"
+               inkscape:export-xdpi="138.66612"
+               inkscape:export-ydpi="138.66612" />
             <rect
                ry="0.83717966"
                rx="0.95962614"
@@ -9856,9 +9896,9 @@
                width="15.102933"
                id="rect4890-4-2-2"
                style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.17926289;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
-               inkscape:export-xdpi="97.263344"
-               inkscape:export-ydpi="97.263344" />
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env_active.png"
+               inkscape:export-xdpi="138.66612"
+               inkscape:export-ydpi="138.66612" />
             <rect
                transform="matrix(0.08931988,0,0,0.08931988,149.54585,121.46579)"
                ry="10.000007"
@@ -9869,24 +9909,24 @@
                width="152.8289"
                id="rect5044-9-7-93"
                style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-6-9-7)"
-               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
-               inkscape:export-xdpi="97.263344"
-               inkscape:export-ydpi="97.263344" />
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env_active.png"
+               inkscape:export-xdpi="138.66612"
+               inkscape:export-ydpi="138.66612" />
             <text
-               transform="matrix(0.05405184,0,0,0.05405184,44.153303,152.11216)"
+               transform="matrix(0.05405184,0,0,0.05405184,42.685327,152.13432)"
                id="text10105-4-0-91-9"
                y="417.70291"
                x="113.74126"
-               style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#b0b1b2;fill-opacity:1;stroke:none;stroke-width:0.41765422;filter:url(#filter10330-7-2-56)"
+               style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:1;fill:#edffff;fill-opacity:1;stroke:none;stroke-width:0.41765422;filter:url(#filter10330-7-2-56)"
                xml:space="preserve"
-               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/wave_button_triangle.png"
-               inkscape:export-xdpi="97.263344"
-               inkscape:export-ydpi="97.263344"><tspan
-                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#b0b1b2;fill-opacity:1;stroke-width:0.41765422"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env_active.png"
+               inkscape:export-xdpi="138.66612"
+               inkscape:export-ydpi="138.66612"><tspan
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#edffff;fill-opacity:1;stroke-width:0.41765422"
                  y="417.70291"
                  x="113.74126"
                  id="tspan10103-9-1-9-08"
-                 sodipodi:role="line">Triangle</tspan></text>
+                 sodipodi:role="line">Frequency</tspan></text>
             <flowRoot
                xml:space="preserve"
                id="flowRoot7542"
@@ -9897,7 +9937,60 @@
                    height="36.934425"
                    x="163.02513"
                    y="318.34164" /></flowRegion><flowPara
-                 id="flowPara7548" /></flowRoot>          </g>
+                 id="flowPara7548" /></flowRoot>            <rect
+               transform="matrix(0.08931988,0,0,0.08931988,147.78992,128.11128)"
+               ry="9.3728256"
+               rx="10.743702"
+               y="569.65753"
+               x="-1152.8154"
+               height="45.917767"
+               width="169.08815"
+               id="rect4890-6-7-5-81-6"
+               style="display:inline;opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-8-1-77-3)"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env.png"
+               inkscape:export-xdpi="138.94763"
+               inkscape:export-ydpi="138.94763" />
+            <rect
+               ry="0.83717966"
+               rx="0.9596262"
+               y="178.99303"
+               x="44.820583"
+               height="4.1013694"
+               width="15.102933"
+               id="rect4890-4-2-2-2"
+               style="display:inline;opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.17926289;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env.png"
+               inkscape:export-xdpi="138.94763"
+               inkscape:export-ydpi="138.94763" />
+            <rect
+               transform="matrix(0.08931988,0,0,0.08931988,148.0434,128.32444)"
+               ry="10.000007"
+               rx="10.000007"
+               y="574.4201"
+               x="-1147.5237"
+               height="31.61977"
+               width="152.8289"
+               id="rect5044-9-7-93-9"
+               style="display:inline;opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-6-9-7-7)"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env.png"
+               inkscape:export-xdpi="138.94763"
+               inkscape:export-ydpi="138.94763" />
+            <text
+               transform="matrix(0.05405184,0,0,0.05405184,41.182877,158.99297)"
+               id="text10105-4-0-91-9-1"
+               y="417.70291"
+               x="113.74126"
+               style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:0.68000034;fill:#b0b1b2;fill-opacity:1;stroke:none;stroke-width:0.41765422;filter:url(#filter10330-7-2-56-3)"
+               xml:space="preserve"
+               inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/show_freq_env.png"
+               inkscape:export-xdpi="138.94763"
+               inkscape:export-ydpi="138.94763"><tspan
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#b0b1b2;fill-opacity:1;stroke-width:0.41765422"
+                 y="417.70291"
+                 x="113.74126"
+                 id="tspan10103-9-1-9-08-2"
+                 sodipodi:role="line">Frequency</tspan></text>
+          </g>
           <g
              style="display:inline"
              id="g9610-9-6-8"

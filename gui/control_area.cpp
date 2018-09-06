@@ -29,22 +29,31 @@
 #include "gkickapi.h"
 
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 
 ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
                          : GeonkickWidget(parent)
 {
         setMaximumHeight(1000);
-        setLayout(new QHBoxLayout);
+        auto mainLayout = new QHBoxLayout(this);
+        setLayout(mainLayout);
         //        EnvelopesGroupBox *envelopesGroupBox = new EnvelopesGroupBox(this);
         //        connect(envelopesGroupBox, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
         //        this, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
         //layout()->addWidget(envelopesGroupBox);
-        layout()->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_1]));
-        layout()->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_2]));
-        layout()->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]));
-        layout()->addWidget(new GeneralGroupBox(this, api));
-        layout()->setSpacing(0);
+        mainLayout->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_1]));
+        mainLayout->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_2]));
+
+        auto layoutVBox = new QVBoxLayout;
+        layoutVBox->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]));
+        layoutVBox->addStretch(1);
+        mainLayout->addLayout(layoutVBox);
+
+        layoutVBox = new QVBoxLayout;
+        mainLayout->addLayout(layoutVBox);
+        layoutVBox->addWidget(new GeneralGroupBox(this, api));
+        layoutVBox->addStretch(1);
 }
 
 ControlArea::~ControlArea()
