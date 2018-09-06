@@ -52,34 +52,69 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
         QVBoxLayout *envelopeLayout = new QVBoxLayout(this);
         setLayout(envelopeLayout);
         envelopeLayout->setSpacing(0);
+        envelopeLayout->setContentsMargins(10, 0, 0, 0);
 
         // Create drawing area.
         drawArea = new EnvelopeDrawingArea(this, currentEnvelope);
+        drawArea->setContentsMargins(10, 0, 0, 0);
         envelopeLayout->addWidget(drawArea);
 
+        createButtomMenu();
 
-        auto buttomAreaWidget = new GeonkickWidget(this);// Create bottom area.
-        envelopeLayout->addWidget(buttomAreaWidget);
-        showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
-        showAmplitudeEnvButton->setPressedImage(QPixmap("./themes/geontime/show_ampl_env_active.png"));
-        showAmplitudeEnvButton->setUnpressedImage(QPixmap("./themes/geontime/show_ampl_env_active.png"));
-        showFrequencyEnvButton = new GeonkickButton(buttomAreaWidget);
-        showFrequencyEnvButton->setPressedImage(QPixmap("./themes/geontime/show_freq_env_active.png"));
-        showFrequencyEnvButton->setUnpressedImage(QPixmap("./themes/geontime/show_freq_env_active.png"));
-        buttomAreaWidget->setFixedSize(2 * showAmplitudeEnvButton->width() + 10, 2 * showAmplitudeEnvButton->height());
-        connect(showAmplitudeEnvButton, SIGNAL(pressed()), this, SLOT(showAmplitudeEnvelope()));
-        connect(showFrequencyEnvButton, SIGNAL(pressed()), this, SLOT(showFrequencyEnvelope()));
-
-        QHBoxLayout *buttomAreaLayout = new QHBoxLayout(buttomAreaWidget);
-        buttomAreaLayout->addWidget(showAmplitudeEnvButton);
-        buttomAreaLayout->addWidget(showFrequencyEnvButton);
-        buttomAreaWidget->setLayout(buttomAreaLayout);
         //updateButtonArea();
 }
 
 GKickEnvelopeWidget::~GKickEnvelopeWidget()
 {
 
+}
+
+void GKickEnvelopeWidget::createButtomMenu()
+{
+        auto buttomAreaWidget = new GeonkickWidget(this);// Create bottom area.
+        buttomAreaWidget->setContentsMargins(0, 0, 0, 0);
+
+        layout()->addWidget(buttomAreaWidget);
+        showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
+        showAmplitudeEnvButton->setPressedImage(QPixmap("./themes/geontime/show_ampl_env_active.png"));
+        showAmplitudeEnvButton->setUnpressedImage(QPixmap("./themes/geontime/show_ampl_env.png"));
+        showFrequencyEnvButton = new GeonkickButton(buttomAreaWidget);
+        showFrequencyEnvButton->setPressedImage(QPixmap("./themes/geontime/show_freq_env_active.png"));
+        showFrequencyEnvButton->setUnpressedImage(QPixmap("./themes/geontime/show_freq_env.png"));
+        buttomAreaWidget->setFixedSize(drawArea->width(), showAmplitudeEnvButton->height() + 2);
+        connect(showAmplitudeEnvButton, SIGNAL(pressed()), this, SLOT(showAmplitudeEnvelope()));
+        connect(showFrequencyEnvButton, SIGNAL(pressed()), this, SLOT(showFrequencyEnvelope()));
+
+        osccillator1EvelopesButton = new GeonkickButton(buttomAreaWidget);
+        osccillator1EvelopesButton->setPressedImage(QPixmap("./themes/geontime/show_osc1_envelopes_button_active.png"));
+        osccillator1EvelopesButton->setUnpressedImage(QPixmap("./themes/geontime/show_osc1_envelopes_button.png"));
+        osccillator2EvelopesButton = new GeonkickButton(buttomAreaWidget);
+        osccillator2EvelopesButton->setPressedImage(QPixmap("./themes/geontime/show_osc2_envelopes_button_active.png"));
+        osccillator2EvelopesButton->setUnpressedImage(QPixmap("./themes/geontime/show_osc2_envelopes_button.png"));
+        noiseEvelopesButton = new GeonkickButton(buttomAreaWidget);
+        noiseEvelopesButton->setPressedImage(QPixmap("./themes/geontime/show_noise_envelopes_button_active.png"));
+        noiseEvelopesButton->setUnpressedImage(QPixmap("./themes/geontime/show_noise_envelopes_button.png"));
+        generalEvelopesButton = new GeonkickButton(buttomAreaWidget);
+        generalEvelopesButton->setPressedImage(QPixmap("./themes/geontime/show_general_envelopes_button_active.png"));
+        generalEvelopesButton->setUnpressedImage(QPixmap("./themes/geontime/show_general_envelopes_button.png"));
+
+        QHBoxLayout *buttomAreaLayout = new QHBoxLayout(buttomAreaWidget);
+        buttomAreaLayout->addWidget(showAmplitudeEnvButton);
+        buttomAreaLayout->setAlignment(showAmplitudeEnvButton, Qt::AlignLeft);
+        buttomAreaLayout->addWidget(showFrequencyEnvButton);
+        buttomAreaLayout->setAlignment(showFrequencyEnvButton, Qt::AlignLeft);
+        buttomAreaLayout->addStretch(1);
+        buttomAreaLayout->addWidget(osccillator1EvelopesButton);
+        buttomAreaLayout->setAlignment(osccillator1EvelopesButton, Qt::AlignRight);
+        buttomAreaLayout->addWidget(osccillator2EvelopesButton);
+        buttomAreaLayout->setAlignment(osccillator2EvelopesButton, Qt::AlignRight);
+        buttomAreaLayout->addWidget(noiseEvelopesButton);
+        buttomAreaLayout->setAlignment(noiseEvelopesButton, Qt::AlignRight);
+        buttomAreaLayout->addWidget(generalEvelopesButton);
+        buttomAreaLayout->setAlignment(generalEvelopesButton, Qt::AlignRight);
+        buttomAreaWidget->setLayout(buttomAreaLayout);
+        buttomAreaLayout->setSpacing(0);
+        buttomAreaLayout->setContentsMargins(0, 0, 0, 0);
 }
 
 void GKickEnvelopeWidget::updateButtonArea()

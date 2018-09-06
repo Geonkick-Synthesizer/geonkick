@@ -59,11 +59,17 @@ public:
      void showFrequencyEnvelope();
 
  private:
+     void createButtomMenu();
      std::shared_ptr<GKickEnvelope> currentEnvelope;
      std::vector<std::shared_ptr<GKickEnvelope>> envelopes;
      EnvelopeDrawingArea *drawArea;
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;
+     GeonkickButton *osccillator1EvelopesButton;
+     GeonkickButton *osccillator2EvelopesButton;
+     GeonkickButton *noiseEvelopesButton;
+     GeonkickButton *generalEvelopesButton;
+
      int xPadding;
      int yPadding;
      QPointF originPoint;
