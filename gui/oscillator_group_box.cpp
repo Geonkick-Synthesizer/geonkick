@@ -73,14 +73,14 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         layout()->setAlignment(waveFunctionHBox, Qt::AlignTop);
 
         sineButton = new GeonkickButton(waveFunctionHBox);
-        sineButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
-        sineButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        sineButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_sine.png"));
+        sineButton->setPressedImage(QPixmap("./themes/geontime/wave_button_sine_active.png"));
         sineButton->move((waveFunctionHBox->width() / 2 - sineButton->width()) / 2, 22);
         connect(sineButton, SIGNAL(toggled(bool)), this, SLOT(setSineWave(bool)));
 
         squareButton = new GeonkickButton(waveFunctionHBox);
-        squareButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
-        squareButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        squareButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_square.png"));
+        squareButton->setPressedImage(QPixmap("./themes/geontime/wave_button_square_active.png"));
         squareButton->move((waveFunctionHBox->width() / 2 - squareButton->width()) / 2, 21 + squareButton->height());
         connect(squareButton, SIGNAL(toggled(bool)), this, SLOT(setSquareWave(bool)));
 
@@ -91,9 +91,9 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         connect(triangleButton, SIGNAL(toggled(bool)), this, SLOT(setTriangleWave(bool)));
 
         sawtoothButton = new GeonkickButton(waveFunctionHBox);
-        sawtoothButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
+        sawtoothButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_sawtooth.png"));
         sawtoothButton->move(waveFunctionHBox->width() / 2 +  (waveFunctionHBox->width() / 2 - sawtoothButton->width()) / 2, 21 + sawtoothButton->height());
-        sawtoothButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        sawtoothButton->setPressedImage(QPixmap("./themes/geontime/wave_button_sawtooth_active.png"));
         connect(sawtoothButton, SIGNAL(toggled(bool)), this, SLOT(setSawtoothWave(bool)));
 }
 
