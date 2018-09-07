@@ -47,13 +47,22 @@ ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
 
         auto layoutVBox = new QVBoxLayout;
         layoutVBox->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]));
-        layoutVBox->addStretch(1);
+        layoutVBox->addWidget(new GeonkickGroupBox(this));
         mainLayout->addLayout(layoutVBox);
 
         layoutVBox = new QVBoxLayout;
         mainLayout->addLayout(layoutVBox);
         layoutVBox->addWidget(new GeneralGroupBox(this, api));
-        layoutVBox->addStretch(1);
+
+        auto gb = new GeonkickGroupBox(this);
+        layoutVBox->addWidget(gb);
+
+        auto compressor = new GeonkickWidget(gb);
+        auto pixmap = QPixmap("./themes/geontime/distortion_groupbox_bk.png");
+        compressor->setFixedSize(pixmap.size());
+        compressor->setBackgroundImage(pixmap);
+        gb->layout()->addWidget(compressor);
+        //        layoutVBox->addStretch(1);
 }
 
 ControlArea::~ControlArea()
