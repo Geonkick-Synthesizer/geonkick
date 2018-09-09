@@ -1,5 +1,5 @@
 /**
- * File name: effects_group_box.cpp
+ * File name: compressor_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
@@ -21,23 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "effects_group_box.h"
 #include "compressor_group_box.h"
-#include "distortion_group_box.h"
-#include "geonkick_label.h"
 
-#include <QHBoxLayout>
-
-EffectsGroupBox::EffectsGroupBox(GeonkickWidget *parent)
-        : GeonkickGroupBox(parent, Orientation::Horizontal)
-{
-        GeonkickLabel *label = getGroupBoxLabel();
-        label->setImage(QPixmap("./themes/geontime/effects_groupbox_label.png"));
-        addWidget(new CompressorGroupBox(this));
-        addWidget(new DistortionGroupBox(this));
-}
-
-EffectsGroupBox::~EffectsGroupBox()
+CompressorGroupBox::CompressorGroupBox(GeonkickWidget *parent)
+        : GeonkickGroupBox(parent)
 {
 }
 
+CompressorGroupBox::~CompressorGroupBox()
+{
+};

@@ -30,7 +30,9 @@
 GeonkickGroupBox::GeonkickGroupBox(GeonkickWidget *parent, Orientation orientation)
         : GeonkickWidget(parent),
           groupBoxOrientation(orientation),
-          goupBoxLabel(new GeonkickLabel(this))
+          groupBoxLabel(new GeonkickLabel(this)),
+          mainLayout(new QVBoxLayout(this)),
+          groupBoxLayout(nullptr)
 {
         init();
 }
@@ -40,7 +42,9 @@ GeonkickGroupBox::GeonkickGroupBox(const QString &title,
                                    Orientation orientation)
         : GeonkickWidget(parent),
           groupBoxOrientation(orientation),
-          goupBoxLabel(new GeonkickLabel(this))
+          groupBoxLabel(new GeonkickLabel(this)),
+          mainLayout(new QVBoxLayout(this)),
+          groupBoxLayout(nullptr)
 {
         init();
 }
@@ -51,23 +55,35 @@ GeonkickGroupBox::~GeonkickGroupBox()
 
 void GeonkickGroupBox::init()
 {
+        setLayout(mainLayout);
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
         setAutoFillBackground(true);
         setPalette(pal);
 
         if (groupBoxOrientation == Orientation::Vertical) {
-                setLayout(new QVBoxLayout(this));
+                groupBoxLayout = new QVBoxLayout(this);
         } else {
-                setLayout(new QHBoxLayout(this));
+                groupBoxLayout = new QHBoxLayout(this);
         }
-
-        layout()->addWidget(goupBoxLabel);
+        mainLayout->addWidget(groupBoxLabel);
+        mainLayout->addLayout(groupBoxLayout);
 }
 
 GeonkickLabel* GeonkickGroupBox::getGroupBoxLabel()
 {
-        return goupBoxLabel;
+        return groupBoxLabel;
+}
+
+GeonkickWidget* GeonkickGroupBox::addWidget(GeonkickWidget *widget)
+{
+        groupBoxLayout->addWidget(widget);
+}
+
+void GeonkickGroupBox::setWidgetAlignment(GeonkickWidget *widget,
+                                          Qt::Alignment alignment)
+{
+        groupBoxLayout->setAlignment(widget, alignment);
 }
 
 void GeonkickGroupBox::paintWidget(QPaintEvent *event)
@@ -77,6 +93,7 @@ void GeonkickGroupBox::paintWidget(QPaintEvent *event)
         int padding = 2;
         painter.setPen(QPen(QColor(40, 40, 40, 100)));
         painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
-        painter.drawRoundedRect(padding, padding, width() - 2 * padding, height() - 2 * padding, 7, 7);
+        painter.drawRoundedRect(padding, padding, width() - 2 * padding,
+                                height() - 2 * padding, 7, 7);
 }
 

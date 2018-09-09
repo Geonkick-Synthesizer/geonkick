@@ -18,6 +18,9 @@ HEADERS += globals.h \
            geonkick_label.h \
            geonkick_button.h \
            geonkick_groupbox.h \
+           effects_group_box.h \
+           compressor_group_box.h \
+           distortion_group_box.h \
            top_bar.h \
            control_area.h \
            envelope_draw_area.h \
@@ -25,7 +28,6 @@ HEADERS += globals.h \
            envelopes_group_box.h \
            general_envelope.h \
            general_group_box.h \
-           effects_group_box.h \
            gkick_envelope.h \
            gkick_envelope_widget.h \
            gkick_knob.h \
@@ -47,6 +49,8 @@ SOURCES += geonkick_theme.cpp \
            envelopes_group_box.cpp \
            general_envelope.cpp \
            effects_group_box.cpp \
+           compressor_group_box.cpp \
+           distortion_group_box.cpp \
            general_group_box.cpp \
            gkick_envelope.cpp \
            gkick_envelope_widget.cpp \

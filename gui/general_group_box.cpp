@@ -51,8 +51,8 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         GeonkickWidget *amplitudeEnvelopeBox = new GeonkickWidget(this);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_ampl_env.png"));
-        layout()->addWidget(amplitudeEnvelopeBox);
-        layout()->setAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
+        addWidget(amplitudeEnvelopeBox);
+        setWidgetAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
 
         GKickKnob *kickAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
         kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
@@ -80,8 +80,8 @@ void GeneralGroupBox::createFilterHBox()
         QPixmap pixmap("./themes/geontime/hboxbk_filter.png");
         filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         filterEnvelopeBox->setBackgroundImage(pixmap);
-        layout()->addWidget(filterEnvelopeBox);
-        layout()->setAlignment(filterEnvelopeBox, Qt::AlignTop);
+        addWidget(filterEnvelopeBox);
+        setWidgetAlignment(filterEnvelopeBox, Qt::AlignTop);
 
         GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
