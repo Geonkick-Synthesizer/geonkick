@@ -1,10 +1,10 @@
 /**
- * File name: general_group_box.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: effects_group_box.h
+ * Project: GeonKick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
- * This file is part of Geonkick.
+ * This file is part of GeonKick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,30 +21,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_GENERAL_GROUP_BOX_H
-#define GKICK_GENERAL_GROUP_BOX_H
+#ifndef GEONKICK_EFFECTS_GROUP_BOX_H
+#define GEONKICK_EFFECTS_GROUP_BOX_H
 
-#include "gkick_oscillator.h"
 #include "geonkick_groupbox.h"
 
-class GkickOscillator;
-class QComboBox;
-class GKickApi;
-
-class GeneralGroupBox: public GeonkickGroupBox
+class EffectsGroupBox: public GeonkickGroupBox
 {
         Q_OBJECT
  public:
-        GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api);
-        ~GeneralGroupBox();
-
- protected:
-        void createAplitudeEnvelopeHBox();
-        void createFilterHBox();
-
- private:
-        std::shared_ptr<GKickApi> kickApi;
-        QComboBox *filterTypeCb;
+        EffectsGroupBox(GeonkickWidget *parent);
+        ~EffectsGroupBox();
 };
 
-#endif
+#endif // GKICK_GENERAL_GROUP_BOX_H

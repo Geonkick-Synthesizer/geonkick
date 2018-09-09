@@ -26,10 +26,11 @@
 #include "envelopes_group_box.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
+#include "effects_group_box.h"
 #include "gkickapi.h"
 
 #include <QHBoxLayout>
-#include <QVBoxLayout>
+#include <QGridLayout>
 
 ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
@@ -45,24 +46,11 @@ ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
         mainLayout->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_1]));
         mainLayout->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_2]));
 
-        auto layoutVBox = new QVBoxLayout;
-        layoutVBox->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]));
-        layoutVBox->addWidget(new GeonkickGroupBox(this));
-        mainLayout->addLayout(layoutVBox);
-
-        layoutVBox = new QVBoxLayout;
-        mainLayout->addLayout(layoutVBox);
-        layoutVBox->addWidget(new GeneralGroupBox(this, api));
-
-        auto gb = new GeonkickGroupBox(this);
-        layoutVBox->addWidget(gb);
-
-        auto compressor = new GeonkickWidget(gb);
-        auto pixmap = QPixmap("./themes/geontime/distortion_groupbox_bk.png");
-        compressor->setFixedSize(pixmap.size());
-        compressor->setBackgroundImage(pixmap);
-        gb->layout()->addWidget(compressor);
-        //        layoutVBox->addStretch(1);
+        auto layoutGBox = new QGridLayout;
+        mainLayout->addLayout(layoutGBox);
+        layoutGBox->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]), 0, 0);
+        layoutGBox->addWidget(new GeneralGroupBox(this, api), 0, 1);
+        layoutGBox->addWidget(new EffectsGroupBox(this), 1, 0, 1, 2);
 }
 
 ControlArea::~ControlArea()

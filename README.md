@@ -1,4 +1,4 @@
-# GeonKick
+# Geonkick
 
 Kick drum synthesizer (standalone)
 

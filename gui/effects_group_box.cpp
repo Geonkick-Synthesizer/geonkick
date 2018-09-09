@@ -1,8 +1,8 @@
 /**
- * File name: general_group_box.h
+ * File name: effects_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
  * This file is part of Geonkick.
  *
@@ -21,30 +21,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_GENERAL_GROUP_BOX_H
-#define GKICK_GENERAL_GROUP_BOX_H
+#include "effects_group_box.h"
+#include "geonkick_label.h"
 
-#include "gkick_oscillator.h"
-#include "geonkick_groupbox.h"
+#include <QHBoxLayout>
 
-class GkickOscillator;
-class QComboBox;
-class GKickApi;
-
-class GeneralGroupBox: public GeonkickGroupBox
+EffectsGroupBox::EffectsGroupBox(GeonkickWidget *parent)
+        : GeonkickGroupBox(parent, Orientation::Horizontal)
 {
-        Q_OBJECT
- public:
-        GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api);
-        ~GeneralGroupBox();
+        GeonkickLabel *label = getGroupBoxLabel();
+        label->setImage(QPixmap("./themes/geontime/effects_groupbox_label.png"));
+        layout->addWidget(new Compressor(this));
+        layout->addWidget(new Distortion(this));
+}
 
- protected:
-        void createAplitudeEnvelopeHBox();
-        void createFilterHBox();
+EffectsGroupBox::~EffectsGroupBox()
+{
+}
 
- private:
-        std::shared_ptr<GKickApi> kickApi;
-        QComboBox *filterTypeCb;
-};
-
-#endif

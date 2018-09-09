@@ -25,6 +25,7 @@ HEADERS += globals.h \
            envelopes_group_box.h \
            general_envelope.h \
            general_group_box.h \
+           effects_group_box.h \
            gkick_envelope.h \
            gkick_envelope_widget.h \
            gkick_knob.h \
@@ -45,6 +46,7 @@ SOURCES += geonkick_theme.cpp \
            envelope_point.cpp \
            envelopes_group_box.cpp \
            general_envelope.cpp \
+           effects_group_box.cpp \
            general_group_box.cpp \
            gkick_envelope.cpp \
            gkick_envelope_widget.cpp \
