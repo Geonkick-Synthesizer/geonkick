@@ -58,3 +58,8 @@ void GeonkickLabel::setImage(const QPixmap &image)
         setBackgroundImage(image);
 }
 
+void GeonkickLabel::setImage(const QString &file)
+{
+        setImage(QPixmap(file));
+}
+

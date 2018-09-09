@@ -39,7 +39,7 @@ ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
         setMaximumHeight(1000);
         auto mainLayout = new QHBoxLayout(this);
         setLayout(mainLayout);
-        //        EnvelopesGroupBox *envelopesGroupBox = new EnvelopesGroupBox(this);
+        //EnvelopesGroupBox *envelopesGroupBox = new EnvelopesGroupBox(this);
         //        connect(envelopesGroupBox, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
         //        this, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
         //layout()->addWidget(envelopesGroupBox);

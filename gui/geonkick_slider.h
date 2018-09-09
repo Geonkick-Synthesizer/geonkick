@@ -1,5 +1,5 @@
 /**
- * File name: compressor_group_box.h
+ * File name: geonkick_slider.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
@@ -21,27 +21,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_COMPRESSOR_GROUPBOX_H
-#define GEONKICK_COMPRESSOR_GROUPBOX_H
+#ifndef GEONKICK_SLIDER_H
+#define GEONKICK_SLIDER_H
 
-#include "geonkick_groupbox.h"
+#include "geonkick_widget.h"
 
-class GeonkickSlider;
+class QMouseEvent;
 
-class CompressorGroupBox: public GeonkickGroupBox
+class GeonkickSlider: public GeonkickWidget
 {
-        Q_OBJECT
+ Q_OBJECT
+
  public:
-        CompressorGroupBox(GeonkickWidget *parent);
-        ~CompressorGroupBox();
+        GeonkickSlider(GeonkickWidget *parent = nullptr);
+        ~GeonkickSlider();
+        void paintWidget(QPaintEvent *event) override;
+        int getValue() const;
+
+public slots:
+        void setValue(int value);
+
+ signals:
+        void valueUpdated(int value);
 
  private:
-        GeonkickSlider *attackSlider;
-        GeonkickSlider *releaseSlider;
-        GeonkickSlider *thresholdSlider;
-        GeonkickSlider *ratioSlider;
-        GeonkickSlider *kneeSlider;
-        GeonkickSlider *makeupSlider;
+        void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        void mouseReleaseEvent(QMouseEvent *event);
+        bool isSelected;
+        int sliderValue;
 };
 
-#endif // GEONKICK_COMPRESSOR_WIDGET_H
+#endif // GEONKICK_SLIDER_H

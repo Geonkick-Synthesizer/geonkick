@@ -31,8 +31,10 @@
 EffectsGroupBox::EffectsGroupBox(GeonkickWidget *parent)
         : GeonkickGroupBox(parent, Orientation::Horizontal)
 {
-        GeonkickLabel *label = getGroupBoxLabel();
-        label->setImage(QPixmap("./themes/geontime/effects_groupbox_label.png"));
+        /*GeonkickLabel *label = getGroupBoxLabel();
+          label->setImage(QPixmap("./themes/geontime/effects_groupbox_label.png"));*/
+        //        setLabelPosition(GeonkickGroupBox::Center);
+        //setPadding(0, 0, 0, 0);
         addWidget(new CompressorGroupBox(this));
         addWidget(new DistortionGroupBox(this));
 }

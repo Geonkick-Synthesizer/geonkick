@@ -56,17 +56,19 @@ GeonkickGroupBox::~GeonkickGroupBox()
 void GeonkickGroupBox::init()
 {
         setLayout(mainLayout);
+        //        mainLayout->setContentsMargins(0, 0, 0, 0);
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
         setAutoFillBackground(true);
         setPalette(pal);
 
         if (groupBoxOrientation == Orientation::Vertical) {
-                groupBoxLayout = new QVBoxLayout(this);
+                groupBoxLayout = new QVBoxLayout;
         } else {
-                groupBoxLayout = new QHBoxLayout(this);
+                groupBoxLayout = new QHBoxLayout;
         }
-        mainLayout->addWidget(groupBoxLabel);
+        //        groupBoxLayout->setContentsMargins(0, 0, 2, 0);
+        //        mainLayout->addWidget(groupBoxLabel);
         mainLayout->addLayout(groupBoxLayout);
 }
 
@@ -88,12 +90,12 @@ void GeonkickGroupBox::setWidgetAlignment(GeonkickWidget *widget,
 
 void GeonkickGroupBox::paintWidget(QPaintEvent *event)
 {
-        Q_UNUSED(event)
+        /*        Q_UNUSED(event)
         QPainter painter(this);
         int padding = 2;
         painter.setPen(QPen(QColor(40, 40, 40, 100)));
         painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
         painter.drawRoundedRect(padding, padding, width() - 2 * padding,
-                                height() - 2 * padding, 7, 7);
+        height() - 2 * padding, 7, 7);*/
 }
 

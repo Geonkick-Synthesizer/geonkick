@@ -2,7 +2,7 @@
  * File name: compressor_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 20112 Iurie Nistor (http://geontime.com)
  *
  * This file is part of Geonkick.
  *
@@ -22,10 +22,78 @@
  */
 
 #include "compressor_group_box.h"
+#include "geonkick_slider.h"
+#include "geonkick_label.h"
+
+#include <QGridLayout>
 
 CompressorGroupBox::CompressorGroupBox(GeonkickWidget *parent)
-        : GeonkickGroupBox(parent)
+        : GeonkickGroupBox(parent),
+          attackSlider(nullptr),
+          releaseSlider(nullptr),
+          thresholdSlider(nullptr),
+          ratioSlider(nullptr),
+          kneeSlider(nullptr),
+          makeupSlider(nullptr)
 {
+        GeonkickLabel *label = getGroupBoxLabel();
+        label->setImage("./themes/geontime/compressor_groupbox_label.png");
+
+        auto widget = new GeonkickWidget(this);
+        addWidget(widget);
+        auto gridLayout = new QGridLayout(widget);
+        widget->setLayout(gridLayout);
+
+        // Attack
+        auto attackLabel = new GeonkickLabel(widget);
+        attackLabel->setImage("./themes/geontime/compressor_attack_label.png");
+        gridLayout->addWidget(attackLabel, 0, 0, Qt::AlignRight);
+        attackSlider = new GeonkickSlider(widget);
+        attackSlider->setFixedSize(60, 12);
+        attackSlider->setValue(50);
+        gridLayout->addWidget(attackSlider, 0, 1, Qt::AlignLeft);
+
+        // Relsease
+        auto releaseLabel = new GeonkickLabel(widget);
+        releaseLabel->setImage("./themes/geontime/compressor_release_label.png");
+        gridLayout->addWidget(releaseLabel, 1, 0, Qt::AlignRight);
+        releaseSlider = new GeonkickSlider(widget);
+        releaseSlider->setFixedSize(60, 12);
+        gridLayout->addWidget(releaseSlider, 1, 1, Qt::AlignLeft);
+
+        // Threshold
+        auto thresholdLabel = new GeonkickLabel(widget);
+        thresholdLabel->setImage("./themes/geontime/compressor_threshold_label.png");
+        gridLayout->addWidget(thresholdLabel, 2, 0, Qt::AlignRight);
+        thresholdSlider = new GeonkickSlider(widget);
+        thresholdSlider->setFixedSize(60, 12);
+        gridLayout->addWidget(thresholdSlider, 2, 1, Qt::AlignLeft);
+
+        gridLayout->setColumnMinimumWidth(2, 10);
+
+        // Ratio
+        auto ratioLabel = new GeonkickLabel(widget);
+        ratioLabel->setImage("./themes/geontime/compressor_ratio_label.png");
+        gridLayout->addWidget(ratioLabel, 0, 3, Qt::AlignRight);
+        ratioSlider = new GeonkickSlider(widget);
+        ratioSlider->setFixedSize(60, 12);
+        gridLayout->addWidget(ratioSlider, 0, 4, Qt::AlignLeft);
+
+        // Knee
+        auto kneeLabel = new GeonkickLabel(widget);
+        kneeLabel->setImage("./themes/geontime/compressor_knee_label.png");
+        gridLayout->addWidget(kneeLabel, 1, 3, Qt::AlignRight);
+        kneeSlider = new GeonkickSlider(widget);
+        kneeSlider->setFixedSize(60, 12);
+        gridLayout->addWidget(kneeSlider, 1, 4, Qt::AlignLeft);
+
+        // Makeup
+        auto makeupLabel = new GeonkickLabel(widget);
+        makeupLabel->setImage("./themes/geontime/compressor_makeup_label.png");
+        gridLayout->addWidget(makeupLabel, 2, 3, Qt::AlignRight);
+        makeupSlider = new GeonkickSlider(widget);
+        makeupSlider->setFixedSize(60, 12);
+        gridLayout->addWidget(makeupSlider, 2, 4, Qt::AlignLeft);
 }
 
 CompressorGroupBox::~CompressorGroupBox()
