@@ -1,0 +1,7 @@
+<map id="GeonkickGroupBox" name="GeonkickGroupBox">
+<area shape="rect" id="node4" href="$class_effects_group_box.html" title="EffectsGroupBox" alt="" coords="5,229,128,256"/>
+<area shape="rect" id="node5" href="$class_envelopes_group_box.html" title="EnvelopesGroupBox" alt="" coords="152,229,293,256"/>
+<area shape="rect" id="node6" href="$class_general_group_box.html" title="GeneralGroupBox" alt="" coords="317,229,443,256"/>
+<area shape="rect" id="node7" href="$class_oscillator_group_box.html" title="OscillatorGroupBox" alt="" coords="467,229,602,256"/>
+<area shape="rect" id="node2" href="$class_geonkick_widget.html" title="GeonkickWidget" alt="" coords="242,80,361,107"/>
+</map>
