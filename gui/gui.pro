@@ -17,6 +17,7 @@ HEADERS += globals.h \
            geonkick_widget.h \
            geonkick_label.h \
            geonkick_button.h \
+           geonkick_checkbox.h \
            geonkick_slider.h \
            geonkick_groupbox.h \
            effects_group_box.h \
@@ -43,6 +44,7 @@ SOURCES += geonkick_theme.cpp \
            geonkick_label.cpp \
            geonkick_slider.cpp \
            geonkick_button.cpp \
+           geonkick_checkbox.cpp \
            geonkick_groupbox.cpp \
            top_bar.cpp \
            control_area.cpp \

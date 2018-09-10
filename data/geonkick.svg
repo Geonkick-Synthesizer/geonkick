@@ -4121,6 +4121,19 @@
          stdDeviation="0.035058843"
          id="feGaussianBlur8831-9-4-2" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -4129,9 +4142,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4566808"
-     inkscape:cx="2425.8034"
-     inkscape:cy="420.05463"
+     inkscape:zoom="92.417828"
+     inkscape:cx="2505.01"
+     inkscape:cy="179.17446"
      inkscape:document-units="px"
      inkscape:current-layer="g24485"
      showgrid="false"
@@ -14235,6 +14248,16 @@
            x="618.34894"
            y="248.5396"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268">Compressor</tspan></text>
+      <circle
+         style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3)"
+         id="path8795-94-7"
+         cx="217.09576"
+         cy="146.42635"
+         r="0.58431405"
+         transform="matrix(1.6895901,0,0,1.6895901,292.48313,-2.8665664)"
+         inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+         inkscape:export-xdpi="134.93715"
+         inkscape:export-ydpi="134.93715" />
     </g>
   </g>
 </svg>

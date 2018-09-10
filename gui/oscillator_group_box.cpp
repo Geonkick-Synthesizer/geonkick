@@ -26,7 +26,7 @@
 #include "geonkick_widget.h"
 #include "geonkick_button.h"
 #include "gkick_knob.h"
-#include "geonkick_label.h"
+#include "geonkick_checkbox.h"
 
 #include <QComboBox>
 #include <QGridLayout>
@@ -43,15 +43,18 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
             triangleButton(nullptr),
             sawtoothButton(nullptr)
 {
-        auto label = new GeonkickLabel(this);
+        auto checkbox = new GeonkickCheckbox(this);
         if (oscillator->getType() == GKickOscillator::OSC_1) {
-                label->setImage(QPixmap("./themes/geontime/osc1_groupbox_label.png"));
+                checkbox->setCheckboxLabelImage("./themes/geontime/osc1_groupbox_label.png");
         } else if (oscillator->getType() == GKickOscillator::OSC_2) {
-                label->setImage(QPixmap("./themes/geontime/osc2_groupbox_label.png"));
+                checkbox->setCheckboxLabelImage("./themes/geontime/osc2_groupbox_label.png");
         } else {
-                label->setImage(QPixmap("./themes/geontime/noise_groupbox_label.png"));
+                checkbox->setCheckboxLabelImage("./themes/geontime/noise_groupbox_label.png");
         }
-        setGroupBoxLabel(label, Qt::AlignLeft);
+        checkbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
+        checkbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
+        checkbox->setPadding(10, 0, 0, 0);
+        setGroupBoxLabel(checkbox, Qt::AlignLeft);
 
         if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 createWaveFunctionGroupBox();
