@@ -22,12 +22,43 @@
  */
 
 #include "distortion_group_box.h"
+#include "geonkick_slider.h"
+#include "geonkick_label.h"
+
+#include <QGridLayout>
 
 DistortionGroupBox::DistortionGroupBox(GeonkickWidget *parent)
-        : GeonkickGroupBox(parent)
+        : GeonkickGroupBox(parent),
+          volumeSlider(nullptr),
+          driveSlider(nullptr)
 {
+        auto label = new GeonkickLabel(this);
+        label->setImage("./themes/geontime/distortion_groupbox_label.png");
+        setGroupBoxLabel(label);
+
+        auto widget = new GeonkickWidget(this);
+        addWidget(widget);
+        auto gridLayout = new QGridLayout(widget);
+        widget->setLayout(gridLayout);
+
+        // Volume
+        auto volumeLabel = new GeonkickLabel(widget);
+        volumeLabel->setImage("./themes/geontime/distortion_volume_label.png");
+        gridLayout->addWidget(volumeLabel, 0, 0, Qt::AlignRight);
+        volumeSlider = new GeonkickSlider(widget);
+        volumeSlider->setFixedSize(60, 12);
+        volumeSlider->setValue(50);
+        gridLayout->addWidget(volumeSlider, 0, 1, Qt::AlignLeft);
+
+        // Drive
+        auto driveLabel = new GeonkickLabel(widget);
+        driveLabel->setImage("./themes/geontime/distortion_drive_label.png");
+        gridLayout->addWidget(driveLabel, 1, 0, Qt::AlignRight);
+        driveSlider = new GeonkickSlider(widget);
+        driveSlider->setFixedSize(60, 12);
+        gridLayout->addWidget(driveSlider, 1, 1, Qt::AlignLeft);
 }
 
 DistortionGroupBox::~DistortionGroupBox()
 {
-};
+}

@@ -27,7 +27,6 @@
 #include <geonkick_widget.h>
 
 class GeonkickWidget;
-class GeonkickLabel;
 class QPaintEvent;
 class QLayout;
 class QBoxLayout;
@@ -45,19 +44,17 @@ class GeonkickGroupBox: public GeonkickWidget
 
      GeonkickGroupBox(GeonkickWidget *parent = nullptr,
                   Orientation orientation = Orientation::Vertical);
-     GeonkickGroupBox(const QString &title,
-                  GeonkickWidget *parent = nullptr,
-                  Orientation orientation = Orientation::Vertical);
      virtual ~GeonkickGroupBox();
-     void init();
-     GeonkickLabel* getGroupBoxLabel();
-     GeonkickWidget* addWidget(GeonkickWidget *widget);
+     GeonkickWidget* getGroupBoxLabel();
+     void setGroupBoxLabel(GeonkickWidget *label, Qt::Alignment alignment = Qt::AlignCenter);
+     GeonkickWidget* addWidget(GeonkickWidget *widget, Qt::Alignment alignment = Qt::AlignTop);
      void setWidgetAlignment(GeonkickWidget *widget, Qt::Alignment alignment);
+     void setPadding(int left, int top, int right, int buttom);
 
  private:
      void paintWidget(QPaintEvent *event);
      Orientation groupBoxOrientation;
-     GeonkickLabel *groupBoxLabel;
+     GeonkickWidget *groupBoxLabel;
      QBoxLayout *mainLayout;
      QLayout *groupBoxLayout;
 };

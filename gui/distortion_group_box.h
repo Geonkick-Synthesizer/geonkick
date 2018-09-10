@@ -26,12 +26,18 @@
 
 #include "geonkick_groupbox.h"
 
+class GeonkickSlider;
+
 class DistortionGroupBox: public GeonkickGroupBox
 {
         Q_OBJECT
  public:
-        DistortionGroupBox(GeonkickWidget *parent);
+        DistortionGroupBox(GeonkickWidget *parent = nullptr);
         ~DistortionGroupBox();
+
+ private:
+        GeonkickSlider *volumeSlider;
+        GeonkickSlider *driveSlider;
 };
 
 #endif // GEONKICK_DISTORTION_WIDGET_H

@@ -22,7 +22,6 @@
  */
 
 #include "geonkick_groupbox.h"
-#include "geonkick_label.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -30,33 +29,12 @@
 GeonkickGroupBox::GeonkickGroupBox(GeonkickWidget *parent, Orientation orientation)
         : GeonkickWidget(parent),
           groupBoxOrientation(orientation),
-          groupBoxLabel(new GeonkickLabel(this)),
+          groupBoxLabel(nullptr),
           mainLayout(new QVBoxLayout(this)),
           groupBoxLayout(nullptr)
-{
-        init();
-}
-
-GeonkickGroupBox::GeonkickGroupBox(const QString &title,
-                                   GeonkickWidget *parent,
-                                   Orientation orientation)
-        : GeonkickWidget(parent),
-          groupBoxOrientation(orientation),
-          groupBoxLabel(new GeonkickLabel(this)),
-          mainLayout(new QVBoxLayout(this)),
-          groupBoxLayout(nullptr)
-{
-        init();
-}
-
-GeonkickGroupBox::~GeonkickGroupBox()
-{
-}
-
-void GeonkickGroupBox::init()
 {
         setLayout(mainLayout);
-        //        mainLayout->setContentsMargins(0, 0, 0, 0);
+        setPadding(0, 0, 0, 0);
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
         setAutoFillBackground(true);
@@ -67,19 +45,35 @@ void GeonkickGroupBox::init()
         } else {
                 groupBoxLayout = new QHBoxLayout;
         }
-        //        groupBoxLayout->setContentsMargins(0, 0, 2, 0);
-        //        mainLayout->addWidget(groupBoxLabel);
         mainLayout->addLayout(groupBoxLayout);
 }
 
-GeonkickLabel* GeonkickGroupBox::getGroupBoxLabel()
+GeonkickGroupBox::~GeonkickGroupBox()
+{
+}
+
+GeonkickWidget* GeonkickGroupBox::getGroupBoxLabel()
 {
         return groupBoxLabel;
 }
 
-GeonkickWidget* GeonkickGroupBox::addWidget(GeonkickWidget *widget)
+void GeonkickGroupBox::setGroupBoxLabel(GeonkickWidget *label, Qt::Alignment alignment)
+{
+        if (label) {
+                groupBoxLabel = label;
+                mainLayout->insertWidget(0, groupBoxLabel, 0, alignment);
+        }
+}
+
+GeonkickWidget* GeonkickGroupBox::addWidget(GeonkickWidget *widget, Qt::Alignment alignment)
 {
         groupBoxLayout->addWidget(widget);
+        setWidgetAlignment(widget, alignment);
+}
+
+void GeonkickGroupBox::setPadding(int left, int top, int right, int buttom)
+{
+        mainLayout->setContentsMargins(left, top, right, buttom);
 }
 
 void GeonkickGroupBox::setWidgetAlignment(GeonkickWidget *widget,

@@ -36,8 +36,9 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickAp
           kickApi(api)
 {
 
-        GeonkickLabel *label = getGroupBoxLabel();
+        auto label = new GeonkickLabel(this);
         label->setImage(QPixmap("./themes/geontime/general_groupbox_label.png"));
+        setGroupBoxLabel(label, Qt::AlignLeft);
         createAplitudeEnvelopeHBox();
         createFilterHBox();
 }
@@ -52,7 +53,6 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_ampl_env.png"));
         addWidget(amplitudeEnvelopeBox);
-        setWidgetAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
 
         GKickKnob *kickAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
         kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
@@ -81,7 +81,6 @@ void GeneralGroupBox::createFilterHBox()
         filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         filterEnvelopeBox->setBackgroundImage(pixmap);
         addWidget(filterEnvelopeBox);
-        setWidgetAlignment(filterEnvelopeBox, Qt::AlignTop);
 
         GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);

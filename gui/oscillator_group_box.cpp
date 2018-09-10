@@ -43,7 +43,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
             triangleButton(nullptr),
             sawtoothButton(nullptr)
 {
-        GeonkickLabel *label = getGroupBoxLabel();
+        auto label = new GeonkickLabel(this);
         if (oscillator->getType() == GKickOscillator::OSC_1) {
                 label->setImage(QPixmap("./themes/geontime/osc1_groupbox_label.png"));
         } else if (oscillator->getType() == GKickOscillator::OSC_2) {
@@ -51,12 +51,14 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
         } else {
                 label->setImage(QPixmap("./themes/geontime/noise_groupbox_label.png"));
         }
+        setGroupBoxLabel(label, Qt::AlignLeft);
 
         if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
                 createWaveFunctionGroupBox();
         }
         createEvelopeGroupBox();
         createFilterGroupBox();
+        setPadding(0, 0, 8, 0);
 }
 
 OscillatorGroupBox::~OscillatorGroupBox()

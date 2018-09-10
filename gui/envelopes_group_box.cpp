@@ -28,7 +28,7 @@
 #include <QLayout>
 
 EnvelopesGroupBox::EnvelopesGroupBox(GeonkickWidget *parent)
-  : GeonkickGroupBox(tr("View Envelopes"), parent)
+  : GeonkickGroupBox(parent)
 {
         /*        QRadioButton *osc1Rb    = new QRadioButton(tr("OSC 1"), this);
         QRadioButton *osc2Rb    = new QRadioButton(tr("OSC 2"), this);

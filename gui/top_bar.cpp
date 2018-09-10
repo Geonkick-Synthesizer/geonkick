@@ -42,7 +42,7 @@ TopBar::TopBar(GeonkickWidget *parent)
         setAutoFillBackground(true);
         setPalette(pal);
         //        if (parent) {
-        //        setFixedSize(parent->width(), 40);
+        setFixedSize(parent->width(), 40);
         //}
 
         auto buttonsLayout = new QHBoxLayout(this);

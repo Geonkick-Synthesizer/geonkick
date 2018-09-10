@@ -36,12 +36,14 @@ CompressorGroupBox::CompressorGroupBox(GeonkickWidget *parent)
           kneeSlider(nullptr),
           makeupSlider(nullptr)
 {
-        GeonkickLabel *label = getGroupBoxLabel();
+        auto label = new GeonkickLabel(this);
         label->setImage("./themes/geontime/compressor_groupbox_label.png");
+        setGroupBoxLabel(label);
 
         auto widget = new GeonkickWidget(this);
         addWidget(widget);
         auto gridLayout = new QGridLayout(widget);
+        gridLayout->setContentsMargins(0, 0, 0, 0);
         widget->setLayout(gridLayout);
 
         // Attack
@@ -98,4 +100,4 @@ CompressorGroupBox::CompressorGroupBox(GeonkickWidget *parent)
 
 CompressorGroupBox::~CompressorGroupBox()
 {
-};
+}
