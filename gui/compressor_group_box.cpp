@@ -24,6 +24,7 @@
 #include "compressor_group_box.h"
 #include "geonkick_slider.h"
 #include "geonkick_label.h"
+#include "geonkick_checkbox.h"
 
 #include <QGridLayout>
 
@@ -34,11 +35,13 @@ CompressorGroupBox::CompressorGroupBox(GeonkickWidget *parent)
           thresholdSlider(nullptr),
           ratioSlider(nullptr),
           kneeSlider(nullptr),
-          makeupSlider(nullptr)
+          makeupSlider(nullptr),
+          compressorCheckbox(new GeonkickCheckbox(this))
 {
-        auto label = new GeonkickLabel(this);
-        label->setImage("./themes/geontime/compressor_groupbox_label.png");
-        setGroupBoxLabel(label);
+        compressorCheckbox->setCheckedImage("./themes/geontime/checkbox_checked_10x10.png");
+        compressorCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked_10x10.png");
+        compressorCheckbox->setCheckboxLabelImage("./themes/geontime/compressor_groupbox_label.png");
+        setGroupBoxLabel(compressorCheckbox);
 
         auto widget = new GeonkickWidget(this);
         addWidget(widget);

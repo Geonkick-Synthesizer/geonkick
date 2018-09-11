@@ -51,9 +51,17 @@ void GeonkickWidget::paintWidget(QPaintEvent *event)
         Q_UNUSED(event)
 }
 
+void GeonkickWidget::setBackgroundImage(const QString &file)
+{
+        setBackgroundImage(QPixmap(file));
+}
+
 void GeonkickWidget::setBackgroundImage(const QPixmap &pixmap)
 {
-         backgroundImage = pixmap;
+        if (!pixmap.isNull()) {
+                backgroundImage = pixmap;
+                update();
+        }
 }
 
 void GeonkickWidget::setTheme(GeonkickTheme *theme)

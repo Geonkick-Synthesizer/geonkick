@@ -27,6 +27,7 @@
 #include "geonkick_groupbox.h"
 
 class GeonkickSlider;
+class GeonkickCheckbox;
 
 class DistortionGroupBox: public GeonkickGroupBox
 {
@@ -38,6 +39,7 @@ class DistortionGroupBox: public GeonkickGroupBox
  private:
         GeonkickSlider *volumeSlider;
         GeonkickSlider *driveSlider;
+        GeonkickCheckbox *distortionCheckbox;
 };
 
 #endif // GEONKICK_DISTORTION_WIDGET_H

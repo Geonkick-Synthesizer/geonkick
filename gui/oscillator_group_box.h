@@ -31,6 +31,7 @@ class GKickOscillator;
 class QComboBox;
 class GeonkickWidget;
 class GeonkickButton;
+class GeonkickCheckbox;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -56,6 +57,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         std::shared_ptr<GKickOscillator> oscillator;
         QComboBox *waveFunctionCb;
         QComboBox *filterTypeCb;
+        GeonkickCheckbox *filterCheckbox;
         GeonkickButton *sineButton;
         GeonkickButton *squareButton;
         GeonkickButton *triangleButton;

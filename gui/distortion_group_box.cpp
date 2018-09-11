@@ -24,17 +24,20 @@
 #include "distortion_group_box.h"
 #include "geonkick_slider.h"
 #include "geonkick_label.h"
+#include "geonkick_checkbox.h"
 
 #include <QGridLayout>
 
 DistortionGroupBox::DistortionGroupBox(GeonkickWidget *parent)
         : GeonkickGroupBox(parent),
           volumeSlider(nullptr),
-          driveSlider(nullptr)
+          driveSlider(nullptr),
+          distortionCheckbox(new GeonkickCheckbox(this))
 {
-        auto label = new GeonkickLabel(this);
-        label->setImage("./themes/geontime/distortion_groupbox_label.png");
-        setGroupBoxLabel(label);
+        distortionCheckbox->setCheckedImage("./themes/geontime/checkbox_checked_10x10.png");
+        distortionCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked_10x10.png");
+        distortionCheckbox->setCheckboxLabelImage("./themes/geontime/distortion_groupbox_label.png");
+        setGroupBoxLabel(distortionCheckbox);
 
         auto widget = new GeonkickWidget(this);
         addWidget(widget);

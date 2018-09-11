@@ -30,6 +30,7 @@
 class GkickOscillator;
 class QComboBox;
 class GKickApi;
+class GeonkickCheckbox;
 
 class GeneralGroupBox: public GeonkickGroupBox
 {
@@ -45,6 +46,7 @@ class GeneralGroupBox: public GeonkickGroupBox
  private:
         std::shared_ptr<GKickApi> kickApi;
         QComboBox *filterTypeCb;
+        GeonkickCheckbox *filterCheckbox;
 };
 
 #endif

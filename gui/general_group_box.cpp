@@ -25,6 +25,8 @@
 #include "gkick_knob.h"
 #include "gkickapi.h"
 #include "geonkick_label.h"
+#include "geonkick_checkbox.h"
+#include "geonkick_button.h"
 
 #include <QGroupBox>
 #include <QVBoxLayout>
@@ -33,7 +35,8 @@
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api)
         : GeonkickGroupBox(parent),
-          kickApi(api)
+          kickApi(api),
+          filterCheckbox(nullptr)
 {
 
         auto label = new GeonkickLabel(this);
@@ -76,11 +79,17 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 
 void GeneralGroupBox::createFilterHBox()
 {
-        GeonkickWidget *filterEnvelopeBox = new GeonkickWidget(this);
-        QPixmap pixmap("./themes/geontime/hboxbk_filter.png");
-        filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
+        auto filterEnvelopeBox = new GeonkickWidget(this);
+        auto pixmap = QPixmap("./themes/geontime/hboxbk_filter.png");
         filterEnvelopeBox->setBackgroundImage(pixmap);
+        filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         addWidget(filterEnvelopeBox);
+        setWidgetAlignment(filterEnvelopeBox, Qt::AlignTop);
+
+        filterCheckbox = new GeonkickCheckbox(filterEnvelopeBox);
+        filterCheckbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
+        filterCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
+        filterCheckbox->move(10, 10);
 
         GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);

@@ -37,14 +37,7 @@ GeonkickButton::~GeonkickButton()
 void GeonkickButton::mousePressEvent(QMouseEvent * event)
 {
         Q_UNUSED(event)
-        is_pressed = !is_pressed;
-        if (is_pressed) {
-                setBackgroundImage(pressedImage);
-        } else {
-                setBackgroundImage(unpressedImage);
-        }
-        update();
-        emit toggled(is_pressed);
+        setPressed(!is_pressed);
 }
 
 void GeonkickButton::setPressedImage(const QPixmap &pixmap)
@@ -53,7 +46,6 @@ void GeonkickButton::setPressedImage(const QPixmap &pixmap)
         if (is_pressed) {
                 setFixedSize(pixmap.size().width(), pixmap.size().height());
                 setBackgroundImage(pressedImage);
-                update();
         }
 }
 
@@ -63,17 +55,18 @@ void GeonkickButton::setUnpressedImage(const QPixmap &pixmap)
         if (!is_pressed) {
                 setFixedSize(pixmap.size().width(), pixmap.size().height());
                 setBackgroundImage(unpressedImage);
-                update();
         }
 }
 
 void GeonkickButton::setPressed(bool pressed)
 {
-        is_pressed = pressed;
-        if (is_pressed) {
-                setBackgroundImage(pressedImage);
-        } else {
-                setBackgroundImage(unpressedImage);
+        if (is_pressed != pressed) {
+                is_pressed = pressed;
+                if (is_pressed) {
+                        setBackgroundImage(pressedImage);
+                } else {
+                        setBackgroundImage(unpressedImage);
+                }
+                emit toggled(is_pressed);
         }
-        update();
 }

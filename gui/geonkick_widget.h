@@ -42,6 +42,7 @@ class GeonkickWidget: public QWidget
         GeonkickWidget(GeonkickWidget *parent = nullptr);
         virtual ~GeonkickWidget();
         void setBackgroundImage(const QPixmap &pixmap);
+        void setBackgroundImage(const QString &file);
         void setTheme(GeonkickTheme *theme);
         GeonkickTheme* getTheme();
         void paintEvent(QPaintEvent *event) final;

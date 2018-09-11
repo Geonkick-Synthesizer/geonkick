@@ -45,9 +45,12 @@ class GeonkickCheckbox: public GeonkickWidget
         void setUncheckedImage(const QString &file);
         void setPadding(int left, int top, int right, int buttom);
 
+ public slots:
+        void setChecked(bool checked);
+
  private:
         GeonkickButton *checkboxButton;
-        GeonkickLabel *checkboxLabel;
+        GeonkickButton *checkboxLabel;
         QHBoxLayout *mainLayout;
 };
 

@@ -27,6 +27,7 @@
 #include "geonkick_groupbox.h"
 
 class GeonkickSlider;
+class GeonkickCheckbox;
 
 class CompressorGroupBox: public GeonkickGroupBox
 {
@@ -42,6 +43,7 @@ class CompressorGroupBox: public GeonkickGroupBox
         GeonkickSlider *ratioSlider;
         GeonkickSlider *kneeSlider;
         GeonkickSlider *makeupSlider;
+        GeonkickCheckbox *compressorCheckbox;
 };
 
 #endif // GEONKICK_COMPRESSOR_WIDGET_H

@@ -38,6 +38,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
             oscillator(osc),
             waveFunctionCb(nullptr),
             filterTypeCb(nullptr),
+            filterCheckbox(nullptr),
             sineButton(nullptr),
             squareButton(nullptr),
             triangleButton(nullptr),
@@ -162,10 +163,16 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 void OscillatorGroupBox::createFilterGroupBox()
 {
         GeonkickWidget *filterEnvelopeBox = new GeonkickWidget(this);
-        filterEnvelopeBox->setFixedSize(224, 125);
-        filterEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_filter.png"));
+        auto pixmap = QPixmap("./themes/geontime/hboxbk_filter.png");
+        filterEnvelopeBox->setBackgroundImage(pixmap);
+        filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         addWidget(filterEnvelopeBox);
         setWidgetAlignment(filterEnvelopeBox, Qt::AlignTop);
+
+        filterCheckbox = new GeonkickCheckbox(filterEnvelopeBox);
+        filterCheckbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
+        filterCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
+        filterCheckbox->move(10, 10);
 
         GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
@@ -173,7 +180,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         kickFrequencyKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
 
         GKickKnob *kickQFactorKnob = new GKickKnob(filterEnvelopeBox);
-        QPixmap pixmap("./themes/geontime/knob_bk_50x50.png");
+        pixmap = QPixmap("./themes/geontime/knob_bk_50x50.png");
         int w = pixmap.size().width();
         int h = pixmap.size().height();
         kickQFactorKnob->setGeometry(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4, w, h);
