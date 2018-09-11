@@ -25,14 +25,12 @@
 
 #include <QMouseEvent>
 
-GeonkickSlider::GeonkickSlider(GeonkickWidget *parent)
+GeonkickSlider::GeonkickSlider(GeonkickWidget *parent, Orientation orientation)
         : GeonkickWidget(parent),
+          sliderOrientation(orientation),
           isSelected(false),
           sliderValue(50)
 {
-        GKICK_LOG_INFO("here");
-        GKICK_LOG_INFO("w: " << width());
-        GKICK_LOG_INFO("h: " << height());
 }
 
 GeonkickSlider::~GeonkickSlider()
@@ -45,13 +43,17 @@ void GeonkickSlider::paintWidget(QPaintEvent *event)
         QPainter painter(this);
         painter.setPen(QPen(QColor(40, 40, 40)));
         painter.drawRect(0, 0, width() - 1, height() - 1);
-        painter.fillRect(1, 1, (width() - 2) * ((double)sliderValue / 100), height() - 2, QBrush(QColor(200, 200, 200)));
-        GKICK_LOG_INFO("here" << width());
+        if (sliderOrientation == Orientation::Horizontal) {
+                painter.fillRect(1, 1, (width() - 2) * ((double)sliderValue / 100), height() - 2,
+                                 QBrush(QColor(200, 200, 200)));
+        } else {
+                painter.fillRect(1, 1, (width() - 2), (height() - 2) * ((double)sliderValue / 100),
+                                 QBrush(QColor(200, 200, 200)));
+        }
 }
 
 void GeonkickSlider::mousePressEvent(QMouseEvent *event)
 {
-        GKICK_LOG_INFO("here");
         if (event->x() >= 0 && event->x() <= width() && event->y() >= 0 && event->y() <= height())
         {
                 GKICK_LOG_INFO("here");

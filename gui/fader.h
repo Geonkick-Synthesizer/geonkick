@@ -1,5 +1,5 @@
 /**
- * File name: geonkick_slider.h
+ * File name: fader.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
@@ -21,41 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_SLIDER_H
-#define GEONKICK_SLIDER_H
+#ifndef GEONKICK_FADER_H
+#define GEONKICK_FADER_H
 
 #include "geonkick_widget.h"
 
-class QMouseEvent;
+class GeonkickSlider;
 
-class GeonkickSlider: public GeonkickWidget
+class Fader: public GeonkickWidget
 {
  Q_OBJECT
 
-class enum Orientation {
-         Horizontal,
-         Vertical,
- }
-
  public:
-         GeonkickSlider(GeonkickWidget *parent = nullptr,
-                        Orientation orientation = Orientation::Horizontal);
-        ~GeonkickSlider();
-        void paintWidget(QPaintEvent *event) override;
-        int getValue() const;
-
-public slots:
-        void setValue(int value);
-
- signals:
-        void valueUpdated(int value);
-
+        Fader(GeonkickWidget *parent = nullptr);
+        ~Fader();
  private:
-        void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
-        bool isSelected;
-        int sliderValue;
+        GeonkickSlider *fiderSlider;
 };
 
-#endif // GEONKICK_SLIDER_H
+#endif // GEONKICK_FADER_H
