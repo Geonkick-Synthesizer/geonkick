@@ -1,34 +1,17 @@
 # Geonkick
 
-Kick drum synthesizer (standalone)
+Kick drum synthesizer Geonkick
 
-Version 0.3.1
+Status: no release yet
 
-Features:
+What is should include:
 
-Working with Jack server:
-
-- 2 audio outputs
-- 1 MIDI in
-
-Two oscillators:
- - base
-      wave form: sine, sqare, sawtooth, triangle)
-      envelopes: amplitude, frequency
- - noise
-      envelope: amplitude
-
-Settings:
-  - kick length
-
-Build:
-
-From the top directory:
-cd api
-make
-cd ../gui
-qmake
-make
-
-Use:
-Run the geonkick from the gui directory
+* Two oscillators: since, square, triangle, sawtooth, amplitude and frequency envelope, filter (low & high pass)
+* Noise: white, pink, browninan, amplitude envelope, filter (low & high pass)
+* General kick amplitude envelope and filter (low & high pass)
+* Compression and Distortion DSP effects for the kick
+* Jack support, 1 MIDI in, 2 audio out
+* Export to a lossless format like WAVE (with stereo, mono option for export)
+* Save/Open a kick preset
+* Standalone and Lv2 plugin
+* Maybe also a VST and a release for other platforms than GNU/Linux
