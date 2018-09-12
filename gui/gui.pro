@@ -26,6 +26,7 @@ HEADERS += globals.h \
            top_bar.h \
            control_area.h \
            envelope_draw_area.h \
+           fader.h \
            envelope_point.h \
            envelopes_group_box.h \
            general_envelope.h \
@@ -49,6 +50,7 @@ SOURCES += geonkick_theme.cpp \
            top_bar.cpp \
            control_area.cpp \
            envelope_draw_area.cpp \
+           fader.cpp \
            envelope_point.cpp \
            envelopes_group_box.cpp \
            general_envelope.cpp \

@@ -1,6 +1,8 @@
 var dir_11bc0974ce736ce9a6fadebbeb7a8314 =
 [
+    [ "compressor_group_box.h", "compressor__group__box_8h_source.html", null ],
     [ "control_area.h", "control__area_8h_source.html", null ],
+    [ "distortion_group_box.h", "distortion__group__box_8h_source.html", null ],
     [ "effects_group_box.h", "effects__group__box_8h_source.html", null ],
     [ "envelope_draw_area.h", "envelope__draw__area_8h_source.html", null ],
     [ "envelope_point.h", "envelope__point_8h_source.html", null ],
@@ -8,8 +10,10 @@ var dir_11bc0974ce736ce9a6fadebbeb7a8314 =
     [ "general_envelope.h", "general__envelope_8h_source.html", null ],
     [ "general_group_box.h", "general__group__box_8h_source.html", null ],
     [ "geonkick_button.h", "geonkick__button_8h_source.html", null ],
+    [ "geonkick_checkbox.h", "geonkick__checkbox_8h_source.html", null ],
     [ "geonkick_groupbox.h", "geonkick__groupbox_8h_source.html", null ],
     [ "geonkick_label.h", "geonkick__label_8h_source.html", null ],
+    [ "geonkick_slider.h", "geonkick__slider_8h_source.html", null ],
     [ "geonkick_theme.h", "geonkick__theme_8h_source.html", null ],
     [ "geonkick_widget.h", "geonkick__widget_8h_source.html", null ],
     [ "gkick_envelope.h", "gkick__envelope_8h_source.html", null ],

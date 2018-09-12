@@ -22,33 +22,125 @@
  */
 
 #include "fader.h"
-#inclue "geonkick_slider.h"
+#include "geonkick_slider.h"
 
 Fader::Fader(GeonkickWidget *parent)
         : GeonkickWidget(parent),
-          faderSlider(new GeonkickSlider(this, Geonkick::Orientaiton::Vertical)),
+          faderSlider(new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)),
+          leftChannelLevel(40),
+          rightChannelLevel(30)
 {
-        faderSlider->move(5, 5);
-        faderSlider->setFixedSize(size());
+        faderSlider->move(0, 5);
 }
 
 Fader::~Fader()
 {
 }
 
-void GeonkickWidget::paintWidget(QPaintEvent *event)
+/**
+ *  Draws two concentric filled rectangles for every channel.
+ */
+void Fader::paintWidget(QPaintEvent *event)
 {
         Q_UNUSED(event)
-        int x = faderSlider.width() + 5;
-        painter.fillRect(faderSlider->x() + 5, faderSlider->y(), 8, faderSlider.height(),
-                         QBrush(QColor(40, 40, 40)));
-        painter.fillRect(faderSlider->x() + 5 + 8 + 2, faderSlider->y(), 8, faderSlider.height(),
-                         QBrush(QColor(40, 40, 40)));
+        QPainter painter(this);
 
-        painter.fillRect(faderSlider->x() + 5, faderSlider->y(), 8, faderSlider.height() - 20,
-                         QBrush(QColor(40., 40, 40)));
-        painter.fillRect(faderSlider->x() + 5 + 8 + 2, faderSlider->y(), 8, faderSlider.height() - 20,
-                         QBrush(QColor(100, 100, 100)));
+        drawLevels(painter);
+        drawScale(painter);
 }
 
+void Fader::drawLevels(QPainter &painter)
+{
+        int x = faderSlider->width() + 10;
+        int levelWidth   = 7;
+        int levelHeight  = faderSlider->height();
+        int levelPadding = 2;
+        int levelInnerW  = levelWidth - 2 * levelPadding;
+        int levelInnerH  = levelHeight - 2 * levelPadding;
 
+        // Left channel level rectangles.
+        int levelPixels = levelInnerH * ((double)leftChannelLevel / 100);
+        painter.fillRect(x, faderSlider->y(), levelWidth, levelHeight,
+                         QBrush(QColor(40, 40, 40)));
+        painter.fillRect(x + 2, faderSlider->y() + levelPadding + levelInnerH - levelPixels,
+                         levelInnerW, levelPixels,
+                         QBrush(QColor(125, 200, 125)));
+
+        // Right channel level rectangles.
+        levelPixels = (faderSlider->height() - 4) * ((double)rightChannelLevel / 100);
+        x += levelWidth + 3;
+        painter.fillRect(x, faderSlider->y(), levelWidth, levelHeight,
+                         QBrush(QColor(40, 40, 40)));
+        painter.fillRect(x + 2, faderSlider->y() + levelPadding + levelInnerH - levelPixels,
+                         levelInnerW, levelPixels,
+                         QBrush(QColor(125, 200, 125)));
+}
+
+void Fader::drawScale(QPainter &painter)
+{
+        int i = 20;
+        double y = faderSlider->y();
+        double dy =  ((double)faderSlider->height()) / 80;
+        auto font = painter.font();
+        font.setPixelSize(11);
+        painter.setFont(font);
+        painter.setPen(QPen(QColor(200, 200, 200)));
+        while (i >= -50) {
+                int x = faderSlider->width() + 7;
+                if (abs(i) % 10 == 0 || abs(i) == 6 || abs(i) == 3 || abs(i) == 15 ) {
+                        if (abs(i) == 6 || abs(i) == 3 || abs(i) == 15) {
+                                painter.drawLine(x, y, x + 2, y);
+                        } else {
+                                painter.drawLine(x - 3, y, x + 2, y);
+                        }
+                        x += 2 * (7 + 3);
+
+                        if( abs(i) == 6 || abs(i) == 3 || abs(i) == 15) {
+                                painter.drawLine(x , y, x + 3, y);
+                        } else {
+                                painter.drawLine(x , y, x + 5, y);
+                        }
+                        painter.drawText(QPoint(x + 10, y + 3), QString::number(i));
+                }
+
+                i--;
+                y += dy;
+        }
+}
+
+void Fader::resizeEvent(QResizeEvent *event)
+{
+        faderSlider->setFixedSize(20, height() - 10);
+        update();
+}
+
+int Fader::getFaderLevel(void) const
+{
+        faderSlider->getValue();
+}
+
+int Fader::getChannelLevel(int channel) const
+{
+        int level;
+        if (channel == 0) {
+                level = leftChannelLevel;
+        } else {
+                level = rightChannelLevel;
+        }
+
+        return level;
+}
+
+void Fader::setFaderLevel(int level)
+{
+        faderSlider->setValue(level);
+}
+
+void Fader::setChannelLevel(int channel, int level)
+{
+        if (channel == 0) {
+                leftChannelLevel = level;
+        } else {
+                rightChannelLevel = level;
+        }
+}

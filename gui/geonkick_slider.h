@@ -32,30 +32,35 @@ class GeonkickSlider: public GeonkickWidget
 {
  Q_OBJECT
 
-class enum Orientation {
-         Horizontal,
-         Vertical,
- }
-
  public:
-         GeonkickSlider(GeonkickWidget *parent = nullptr,
+        enum class Orientation:char {
+               Horizontal,
+               Vertical
+        };
+
+        GeonkickSlider(GeonkickWidget *parent = nullptr,
                         Orientation orientation = Orientation::Horizontal);
         ~GeonkickSlider();
         void paintWidget(QPaintEvent *event) override;
         int getValue() const;
 
-public slots:
+ public slots:
         void setValue(int value);
 
  signals:
         void valueUpdated(int value);
 
+ protected:
+        int  calculateValue(int x, int y) const;
+
  private:
         void mousePressEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
+        Orientation sliderOrientation;
         bool isSelected;
         int sliderValue;
+        int sliderPixels;
 };
 
 #endif // GEONKICK_SLIDER_H

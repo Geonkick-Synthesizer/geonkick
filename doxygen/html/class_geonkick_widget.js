@@ -6,6 +6,7 @@ var class_geonkick_widget =
     [ "paintEvent", "class_geonkick_widget.html#a1984fecedfb75d7ab09a55d562cee7d9", null ],
     [ "paintWidget", "class_geonkick_widget.html#a1be0d97d1ccef845647eeb247dd9e0e5", null ],
     [ "setBackgroundImage", "class_geonkick_widget.html#a2d95d29e7271c2f13c6394f59e5223c9", null ],
+    [ "setBackgroundImage", "class_geonkick_widget.html#a4b922806a8e1fda32606a92a829bc817", null ],
     [ "setTheme", "class_geonkick_widget.html#aae7b40a677bb13f1a6c8328031da17eb", null ],
     [ "themeChanged", "class_geonkick_widget.html#a2d646eea56b7732b3e0456a950418c40", null ]
 ];

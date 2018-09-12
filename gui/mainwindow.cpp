@@ -29,6 +29,7 @@
 #include "control_area.h"
 #include "geonkick_theme.h"
 #include "top_bar.h"
+#include "fader.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -39,8 +40,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-#define GEONKICK_MAINWINDOW_WIDTH  1000
-#define GEONKICK_MAINWINDOW_HEIGHT 750
+#define GEONKICK_MAINWINDOW_WIDTH  950
+#define GEONKICK_MAINWINDOW_HEIGHT 760
 
 MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
@@ -50,7 +51,7 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
         setAutoFillBackground(true);
         setPalette(pal);
-        //        setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
+        setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
 }
 
@@ -95,8 +96,16 @@ bool MainWindow::init(void)
         mainLayout->addWidget(new TopBar(this));
 
         // Create envelope widget.
-        GKickEnvelopeWidget* envelopeWidget = new GKickEnvelopeWidget(this, gkickApi, oscillators);
-        mainLayout->addWidget(envelopeWidget);
+        auto hBoxLayout = new QHBoxLayout;
+        hBoxLayout->setContentsMargins(0, 0, 0, 0);
+        hBoxLayout->setSpacing(0);
+        auto envelopeWidget = new GKickEnvelopeWidget(this, gkickApi, oscillators);
+        envelopeWidget->setFixedSize(850, 345);
+        hBoxLayout->addWidget(envelopeWidget);
+        auto faderWidget = new Fader(this);
+        faderWidget->setFixedSize(width() - envelopeWidget->width() - 10, envelopeWidget->height() - 13);
+        hBoxLayout->addWidget(faderWidget);
+        mainLayout->addLayout(hBoxLayout);
 
         // Create control area.
         ControlArea *controlAreaWidget = new ControlArea(this, gkickApi, oscillators);

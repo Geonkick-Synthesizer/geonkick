@@ -29,7 +29,8 @@ GeonkickSlider::GeonkickSlider(GeonkickWidget *parent, Orientation orientation)
         : GeonkickWidget(parent),
           sliderOrientation(orientation),
           isSelected(false),
-          sliderValue(50)
+          sliderValue(50),
+          sliderPixels(0)
 {
 }
 
@@ -44,40 +45,32 @@ void GeonkickSlider::paintWidget(QPaintEvent *event)
         painter.setPen(QPen(QColor(40, 40, 40)));
         painter.drawRect(0, 0, width() - 1, height() - 1);
         if (sliderOrientation == Orientation::Horizontal) {
-                painter.fillRect(1, 1, (width() - 2) * ((double)sliderValue / 100), height() - 2,
+                painter.fillRect(1, 1, sliderPixels, height() - 2,
                                  QBrush(QColor(200, 200, 200)));
         } else {
-                painter.fillRect(1, 1, (width() - 2), (height() - 2) * ((double)sliderValue / 100),
+                painter.fillRect(1, height() - sliderPixels,
+                                 width() - 2, sliderPixels,
                                  QBrush(QColor(200, 200, 200)));
         }
 }
 
 void GeonkickSlider::mousePressEvent(QMouseEvent *event)
 {
-        if (event->x() >= 0 && event->x() <= width() && event->y() >= 0 && event->y() <= height())
-        {
-                GKICK_LOG_INFO("here");
-                if (event->x() < 1) {
-                        setValue(0);
-                } else if (event->x() > width() - 1) {
-                        setValue(100);
-                } else {
-                        setValue((double)((event->x() - 1) * 100) / (width() - 2));
-                }
+        if (event->x() >= 0 && event->x() <= width()
+            && event->y() >= 0 && event->y() <= height()) {
+                sliderPixels = calculateValue(event->x(), event->y());
+                setValue(100);
                 isSelected = true;
-        }
+                update();
+         }
 }
 
 void GeonkickSlider::mouseMoveEvent(QMouseEvent *event)
 {
         if (isSelected) {
-                if (event->x() < 1) {
-                        setValue(0);
-                } else if (event->x() > width() - 1) {
-                        setValue(100);
-                } else {
-                        setValue((double)((event->x() - 1) * 100) / (width() - 2));
-                }
+                sliderPixels = calculateValue(event->x(), event->y());
+                setValue(100);
+                update();
         }
 }
 
@@ -85,6 +78,30 @@ void GeonkickSlider::mouseReleaseEvent(QMouseEvent *event)
 {
         Q_UNUSED(event)
         isSelected = false;
+}
+
+
+int GeonkickSlider::calculateValue(int x, int y) const
+{
+        int value = 0;
+        if (sliderOrientation == Orientation::Horizontal) {
+                if (x < 1) {
+                        value = 0;
+                } else if (x > width() - 1) {
+                        value = width() - 1;
+                } else {
+                        value = x;
+                }
+        } else {
+                if (y < 1) {
+                        value = height();
+                } else if (y > height() - 1) {
+                        value = 0;
+                } else {
+                        value = height() - 1 - y;
+                }
+        }
+        return value;
 }
 
 int GeonkickSlider::getValue() const
@@ -103,6 +120,5 @@ void GeonkickSlider::setValue(int value)
         if (value != sliderValue) {
                 sliderValue = value;
                 emit valueUpdated(sliderValue);
-                update();
         }
 }

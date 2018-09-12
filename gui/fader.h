@@ -26,7 +26,10 @@
 
 #include "geonkick_widget.h"
 
+#include <unordered_map>
+
 class GeonkickSlider;
+class GeonkickLevel;
 
 class Fader: public GeonkickWidget
 {
@@ -35,8 +38,21 @@ class Fader: public GeonkickWidget
  public:
         Fader(GeonkickWidget *parent = nullptr);
         ~Fader();
+        int getFaderLevel(void) const;
+        int getChannelLevel(int channel) const;
+
+ public slots:
+        void setFaderLevel(int level);
+        void setChannelLevel(int channel, int level);
+
  private:
-        GeonkickSlider *fiderSlider;
+        void drawLevels(QPainter &painter);
+        void drawScale(QPainter &painter);
+        void paintWidget(QPaintEvent *event) final;
+        void resizeEvent(QResizeEvent *event) final;
+        GeonkickSlider *faderSlider;
+        int leftChannelLevel;
+        int rightChannelLevel;
 };
 
 #endif // GEONKICK_FADER_H

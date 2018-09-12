@@ -1,22 +1,5 @@
 var searchData=
 [
-  ['qt_5fmeta_5fstringdata_5fcontrolarea_5ft',['qt_meta_stringdata_ControlArea_t',['../structqt__meta__stringdata___control_area__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5feffectsgroupbox_5ft',['qt_meta_stringdata_EffectsGroupBox_t',['../structqt__meta__stringdata___effects_group_box__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fenvelopedrawingarea_5ft',['qt_meta_stringdata_EnvelopeDrawingArea_t',['../structqt__meta__stringdata___envelope_drawing_area__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fenvelopesgroupbox_5ft',['qt_meta_stringdata_EnvelopesGroupBox_t',['../structqt__meta__stringdata___envelopes_group_box__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgeneralenvelope_5ft',['qt_meta_stringdata_GeneralEnvelope_t',['../structqt__meta__stringdata___general_envelope__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgeneralgroupbox_5ft',['qt_meta_stringdata_GeneralGroupBox_t',['../structqt__meta__stringdata___general_group_box__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgeonkickbutton_5ft',['qt_meta_stringdata_GeonkickButton_t',['../structqt__meta__stringdata___geonkick_button__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgeonkickgroupbox_5ft',['qt_meta_stringdata_GeonkickGroupBox_t',['../structqt__meta__stringdata___geonkick_group_box__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgeonkicklabel_5ft',['qt_meta_stringdata_GeonkickLabel_t',['../structqt__meta__stringdata___geonkick_label__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgeonkicktheme_5ft',['qt_meta_stringdata_GeonkickTheme_t',['../structqt__meta__stringdata___geonkick_theme__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgeonkickwidget_5ft',['qt_meta_stringdata_GeonkickWidget_t',['../structqt__meta__stringdata___geonkick_widget__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgkickapi_5ft',['qt_meta_stringdata_GKickApi_t',['../structqt__meta__stringdata___g_kick_api__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgkickenvelope_5ft',['qt_meta_stringdata_GKickEnvelope_t',['../structqt__meta__stringdata___g_kick_envelope__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgkickenvelopewidget_5ft',['qt_meta_stringdata_GKickEnvelopeWidget_t',['../structqt__meta__stringdata___g_kick_envelope_widget__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgkickknob_5ft',['qt_meta_stringdata_GKickKnob_t',['../structqt__meta__stringdata___g_kick_knob__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fgkickoscillator_5ft',['qt_meta_stringdata_GKickOscillator_t',['../structqt__meta__stringdata___g_kick_oscillator__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5fmainwindow_5ft',['qt_meta_stringdata_MainWindow_t',['../structqt__meta__stringdata___main_window__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5foscillatorenvelope_5ft',['qt_meta_stringdata_OscillatorEnvelope_t',['../structqt__meta__stringdata___oscillator_envelope__t.html',1,'']]],
-  ['qt_5fmeta_5fstringdata_5foscillatorgroupbox_5ft',['qt_meta_stringdata_OscillatorGroupBox_t',['../structqt__meta__stringdata___oscillator_group_box__t.html',1,'']]]
+  ['oscillatorenvelope',['OscillatorEnvelope',['../class_oscillator_envelope.html',1,'OscillatorEnvelope'],['../class_oscillator_envelope.html#ae5adfba04d2dea3c51db316781dbe6fc',1,'OscillatorEnvelope::OscillatorEnvelope()']]],
+  ['oscillatorgroupbox',['OscillatorGroupBox',['../class_oscillator_group_box.html',1,'OscillatorGroupBox'],['../class_oscillator_group_box.html#a1f426d0c484964581aebbb8ae3ba5888',1,'OscillatorGroupBox::OscillatorGroupBox()']]]
 ];
