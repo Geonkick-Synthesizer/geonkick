@@ -52,11 +52,11 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
         QVBoxLayout *envelopeLayout = new QVBoxLayout(this);
         setLayout(envelopeLayout);
         envelopeLayout->setSpacing(0);
-        envelopeLayout->setContentsMargins(10, 0, 0, 0);
+        envelopeLayout->setContentsMargins(0, 0, 0, 0);
 
         // Create drawing area.
         drawArea = new EnvelopeDrawingArea(this, currentEnvelope);
-        drawArea->setContentsMargins(10, 0, 0, 0);
+        drawArea->setContentsMargins(0, 0, 0, 0);
         envelopeLayout->addWidget(drawArea);
 
         createButtomMenu();
