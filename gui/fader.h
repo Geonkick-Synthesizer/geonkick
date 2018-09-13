@@ -47,12 +47,12 @@ class Fader: public GeonkickWidget
 
  private:
         void drawLevels(QPainter &painter);
-        void drawScale(QPainter &painter);
         void paintWidget(QPaintEvent *event) final;
         void resizeEvent(QResizeEvent *event) final;
         GeonkickSlider *faderSlider;
         int leftChannelLevel;
         int rightChannelLevel;
+        QPixmap levelsImage;
 };
 
 #endif // GEONKICK_FADER_H

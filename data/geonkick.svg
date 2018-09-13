@@ -4142,22 +4142,30 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.9513768"
-     inkscape:cx="2836.9908"
-     inkscape:cy="802.60986"
+     inkscape:zoom="16.595422"
+     inkscape:cx="3092.9496"
+     inkscape:cy="881.09222"
      inkscape:document-units="px"
-     inkscape:current-layer="g24485"
-     showgrid="false"
+     inkscape:current-layer="g11250"
+     showgrid="true"
      inkscape:window-width="1918"
      inkscape:window-height="1002"
      inkscape:window-x="0"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
-     showguides="false"
-     units="px">
+     showguides="true"
+     units="px"
+     inkscape:guide-bbox="true">
     <inkscape:grid
        type="xygrid"
-       id="grid8181" />
+       id="grid8181"
+       empspacing="10"
+       dotted="false" />
+    <sodipodi:guide
+       position="772.05416,221.19167"
+       orientation="0,1"
+       id="guide10881"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata14592">
@@ -4196,15 +4204,6 @@
         <desc
            id="desc11671">Background for MainWindow</desc>
       </rect>
-      <rect
-         style="opacity:1;fill:#353834;fill-opacity:1;stroke:none;stroke-width:0.67485482;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect8726"
-         width="26.185905"
-         height="70.731819"
-         x="734.0296"
-         y="44.217415"
-         rx="2.8654108"
-         ry="1.8520833" />
       <rect
          y="109.50179"
          x="226.66846"
@@ -11458,13 +11457,6 @@
            x="626.07184"
            y="260.53708"
            style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 2</tspan></text>
-      <rect
-         style="opacity:1;fill:#afafaf;fill-opacity:1;stroke:#78787b;stroke-width:0.45376042;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect8698"
-         width="4.3795352"
-         height="66.556618"
-         x="735.93945"
-         y="45.658722" />
       <g
          id="g21776"
          transform="translate(9.0053003,0.25131071)">
@@ -14285,20 +14277,6 @@
          inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
          inkscape:export-xdpi="134.93715"
          inkscape:export-ydpi="134.93715" />
-      <rect
-         style="opacity:1;fill:#565555;fill-opacity:1;stroke:#232323;stroke-width:0.26509842;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect8709"
-         width="1.0846603"
-         height="66.410416"
-         x="742.96484"
-         y="45.804916" />
-      <rect
-         style="display:inline;opacity:1;fill:#565555;fill-opacity:1;stroke:#232323;stroke-width:0.26509842;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect8709-7"
-         width="1.0846603"
-         height="66.410416"
-         x="745.10785"
-         y="45.804916" />
       <path
          style="fill:none;stroke:#b8b8b8;stroke-width:0.2329942px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m 746.87583,64.425337 c 2.74142,0 2.74142,0 2.74142,0"
@@ -14324,13 +14302,6 @@
          d="m 746.87583,75.381239 c 1.69707,0 1.69707,0 1.69707,0"
          id="path9588-5-3-5-6"
          inkscape:connector-curvature="0" />
-      <rect
-         style="opacity:1;fill:#565555;fill-opacity:1;stroke:none;stroke-width:0.3830761;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect9650"
-         width="3.960032"
-         height="41.010418"
-         x="736.08997"
-         y="45.658722" />
       <rect
          style="opacity:1;fill:#565555;fill-opacity:1;stroke:none;stroke-width:0.45376042;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="rect9664"
@@ -14387,11 +14358,451 @@
            x="758.02087"
            y="64.851547"
            style="fill:#888788;fill-opacity:1;stroke-width:0.15568699">0</tspan></text>
-      <path
-         style="fill:none;stroke:#8f8f8e;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 736.27263,64.056758 c 3.76521,0 3.67557,0 3.67557,0"
-         id="path9710"
-         inkscape:connector-curvature="0" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         x="809.83124"
+         y="74.982185"
+         id="text11102"><tspan
+           sodipodi:role="line"
+           id="tspan11100"
+           x="809.83124"
+           y="82.847054"
+           style="stroke-width:0.26458332" /></text>
+      <g
+         id="g11250"
+         transform="translate(5.2699756,-20.156196)">
+        <rect
+           y="74.982185"
+           x="806.11938"
+           height="85.989586"
+           width="1.8520833"
+           id="rect8709-3"
+           style="display:inline;opacity:1;fill:#282828;fill-opacity:1;stroke:none;stroke-width:0.39418098;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6"
+           d="m 808.00086,86.407128 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8"
+           d="m 804.7994,97.784212 c 1.30123,0 1.30123,0 1.30123,0"
+           style="fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <text
+           id="text11106"
+           y="76.04097"
+           x="811.36328"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="76.04097"
+             x="811.36328"
+             id="tspan11104"
+             sodipodi:role="line">20</tspan></text>
+        <text
+           id="text11106-7"
+           y="87.559029"
+           x="811.01428"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="87.559029"
+             x="811.01428"
+             id="tspan11104-8"
+             sodipodi:role="line">10</tspan></text>
+        <text
+           id="text11106-7-4"
+           y="98.793419"
+           x="811.36017"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="98.793419"
+             x="811.36017"
+             id="tspan11104-8-5"
+             sodipodi:role="line">0</tspan></text>
+        <text
+           id="text11106-7-0"
+           y="109.63178"
+           x="811.35736"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="109.63178"
+             x="811.35736"
+             id="tspan11104-8-3"
+             sodipodi:role="line">-10</tspan></text>
+        <text
+           id="text11106-7-0-6"
+           y="121.00729"
+           x="811.35742"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="121.00729"
+             x="811.35742"
+             id="tspan11104-8-3-1"
+             sodipodi:role="line">-20</tspan></text>
+        <text
+           id="text11106-7-0-0"
+           y="132.4017"
+           x="811.35742"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="132.4017"
+             x="811.35742"
+             id="tspan11104-8-3-6"
+             sodipodi:role="line">-30</tspan></text>
+        <text
+           id="text11106-7-0-3"
+           y="143.77475"
+           x="811.36884"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08636001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08636001;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             y="143.77475"
+             x="811.36884"
+             id="tspan11104-8-3-2"
+             sodipodi:role="line">-40</tspan></text>
+        <text
+           id="text11106-7-0-06"
+           y="155.15614"
+           x="811.35742"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="155.15614"
+             x="811.35742"
+             id="tspan11104-8-3-15"
+             sodipodi:role="line">-50</tspan></text>
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-0-5"
+           d="m 808.00086,114.45296 c 1.32292,0 1.32292,0 1.32292,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <text
+           id="text11106-7-0-6-4"
+           y="115.2266"
+           x="811.34448"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.81471634px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08795989"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08795989"
+             y="115.2266"
+             x="811.34448"
+             id="tspan11104-8-3-1-7"
+             sodipodi:role="line">-15</tspan></text>
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-2-6"
+           d="m 805.32857,104.39879 c 0.79375,0 0.79375,0 0.79375,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-0-56"
+           d="m 808.00086,104.39879 c 1.32292,0 1.32292,0 1.32292,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-2-9"
+           d="m 805.32857,114.45296 c 0.79375,0 0.79375,0 0.79375,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <text
+           id="text11106-7-0-37"
+           y="105.15574"
+           x="811.3559"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.81471634px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08795989"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08795989"
+             y="105.15574"
+             x="811.3559"
+             id="tspan11104-8-3-4"
+             sodipodi:role="line">-6</tspan></text>
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-2-6-5"
+           d="m 805.32857,100.95921 c 0.79375,0 0.79375,0 0.79375,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-0-56-2"
+           d="m 808.00086,100.95921 c 1.32292,0 1.32292,0 1.32292,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <text
+           id="text11106-7-0-37-5"
+           y="101.70078"
+           x="811.36884"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="101.70078"
+             x="811.36884"
+             id="tspan11104-8-3-4-4"
+             sodipodi:role="line">-3</tspan></text>
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-2-6-5-7"
+           d="m 805.32856,94.609212 c 0.79375,0 0.79375,0 0.79375,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-0-56-2-4"
+           d="m 808.00085,94.609212 c 1.32292,0 1.32292,0 1.32292,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <text
+           id="text11106-7-0-37-5-4"
+           y="95.602173"
+           x="811.35187"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="95.602173"
+             x="811.35187"
+             id="tspan11104-8-3-4-4-3"
+             sodipodi:role="line">3</tspan></text>
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-2-6-5-7-0"
+           d="m 805.32857,91.169628 c 0.79375,0 0.79375,0 0.79375,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-0-56-2-4-7"
+           d="m 808.00086,91.169628 c 1.32292,0 1.32292,0 1.32292,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <text
+           id="text11106-7-0-37-5-4-8"
+           y="92.139107"
+           x="811.3728"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.81471634px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08795989"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08795989"
+             y="92.139107"
+             x="811.3728"
+             id="tspan11104-8-3-4-4-3-6"
+             sodipodi:role="line">6</tspan></text>
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-8"
+           d="m 808.00086,80.586295 c 1.32292,0 1.32292,0 1.32292,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-8-3"
+           d="m 805.32857,80.586295 c 0.79375,0 0.79375,0 0.79375,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-14"
+           d="m 808.00086,97.784212 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-92"
+           d="m 808.00086,75.030045 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-0"
+           d="m 808.00086,108.89671 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-6"
+           d="m 808.00086,120.27379 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8-8"
+           d="m 804.82109,108.89671 c 1.30123,0 1.30123,0 1.30123,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8-9"
+           d="m 804.7994,120.27379 c 1.30123,0 1.30123,0 1.30123,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8-2"
+           d="m 804.7994,86.407128 c 1.30123,0 1.30123,0 1.30123,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8-6"
+           d="m 804.7994,75.030045 c 1.30123,0 1.30123,0 1.30123,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8-64"
+           d="m 804.82109,131.65088 c 1.30123,0 1.30123,0 1.30123,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8-95"
+           d="m 804.82109,143.02796 c 1.30123,0 1.30123,0 1.30123,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-56-2-8-0"
+           d="m 804.82109,154.40504 c 1.30123,0 1.30123,0 1.30123,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-6-4"
+           d="m 808.00086,131.65088 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-6-8"
+           d="m 808.00086,143.02796 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path10921-5-2-6-6-7"
+           d="m 808.00086,154.40504 c 2.13836,0 2.13836,0 2.13836,0"
+           style="display:inline;fill:none;stroke:#c8c8c8;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529" />
+        <text
+           id="text11106-3"
+           y="81.562485"
+           x="811.01428"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.76688457px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.08646514"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/fader.png"
+           inkscape:export-xdpi="95.926529"
+           inkscape:export-ydpi="95.926529"><tspan
+             style="fill:#c8c8c8;fill-opacity:1;stroke-width:0.08646514"
+             y="81.562485"
+             x="811.01428"
+             id="tspan11104-6"
+             sodipodi:role="line">15</tspan></text>
+      </g>
     </g>
   </g>
 </svg>

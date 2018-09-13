@@ -103,7 +103,7 @@ bool MainWindow::init(void)
         envelopeWidget->setFixedSize(850, 345);
         hBoxLayout->addWidget(envelopeWidget);
         auto faderWidget = new Fader(this);
-        faderWidget->setFixedSize(width() - envelopeWidget->width() - 10, envelopeWidget->height() - 13);
+        faderWidget->setFixedSize(width() - envelopeWidget->width() - 10, 330);
         hBoxLayout->addWidget(faderWidget);
         mainLayout->addLayout(hBoxLayout);
 
