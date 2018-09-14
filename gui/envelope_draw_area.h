@@ -45,8 +45,7 @@ class EnvelopeDrawingArea : public GeonkickWidget
 
  private:
    std::shared_ptr<GKickEnvelope> currentEnvelope;
-   int xPadding;
-   int yPadding;
+   QRect drawingArea;
    QPointF mousePoint;
 };
 

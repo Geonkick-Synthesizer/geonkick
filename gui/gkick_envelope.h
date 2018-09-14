@@ -55,15 +55,14 @@ class GKickEnvelope: public QObject
         int H(void) const;
         virtual double envelopeLengh(void) const { return 0.0; }
         QPointF origin(void) const;
-        void draw(QPainter &painter);
-        void drawAxes(QPainter &painter);
+        void draw(QPainter &painter, const QRectF &rect);
         bool hasSelected() const;
         void selectPoint(const QPointF &point);
         void unselectPoint(void);
         void moveSelectedPoint(double x, double y);
         double getLeftPointLimit(void) const;
         double getRightPointLimit(void) const;
-        void addPoint(QPointF point);
+        void addPoint(const QPointF &point);
         void addPoints(const QPolygonF  &points);
         void removePoint(QPointF point);
         void setType(EnvelopeType type);
@@ -87,6 +86,7 @@ class GKickEnvelope: public QObject
         EnvelopeType envelopeType;
         EnvelopeCategory envelopeCategory;
         QString envelopeName;
+        QPointF envelopeOrigin;
         double envelopeW;
         double envelopeH;
 };

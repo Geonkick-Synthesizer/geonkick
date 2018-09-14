@@ -35,5 +35,6 @@
 
 #define GKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
 #define GKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
+#define GKICK_LOG_DEBUG(msg) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] " << msg
 
 #endif // GEONKICK_GLOBALS_H
