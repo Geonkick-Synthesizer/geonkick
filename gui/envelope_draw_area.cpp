@@ -31,10 +31,10 @@ EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent,
                                          std::shared_ptr<GKickEnvelope> &envelope)
           : GeonkickWidget(parent),
           currentEnvelope(envelope),
-          drawingArea(54, 12, 784, 260)
+            drawingArea(54, 12, 784, 260 - 3)
 {
         QPixmap pixmap("./themes/geontime/envelope_bk.png");
-        setFixedSize(pixmap.size());
+        setFixedSize(850, 300);
         setBackgroundImage(pixmap);
 }
 
@@ -86,15 +86,18 @@ EnvelopeDrawingArea::mouseReleaseEvent(QMouseEvent *event)
 void
 EnvelopeDrawingArea::mouseDoubleClickEvent(QMouseEvent *event)
 {
-        QPointF point(event->x() - drawingArea.x(),
-                      drawingArea.bottomLeft().y() - event->y());
-        currentEnvelope->addPoint(point);
-        update();
+        if (event->button() != Qt::RightButton) {
+                QPointF point(event->x() - drawingArea.x(),
+                              drawingArea.bottomLeft().y() - event->y());
+                currentEnvelope->addPoint(point);
+                update();
+        }
 }
 
 void
 EnvelopeDrawingArea::mouseMoveEvent(QMouseEvent *event)
 {
+        GKICK_LOG_INFO("(x = " << event->x() << ", y = "<< event->y() << ")");
         if (!currentEnvelope->hasSelected()) {
                 return;
         }

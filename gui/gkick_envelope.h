@@ -76,6 +76,7 @@ class GKickEnvelope: public QObject
         virtual void pointAddedEvent(double x, double y) {}
         virtual void pointUpdatedEvent(unsigned int index, double x, double y) {}
         virtual void pointRemovedEvent(unsigned int index) {}
+        void drawScale(QPainter &painter);
         void drawPoints(QPainter &painter);
         void drawLines(QPainter &painter);
 

@@ -65,7 +65,7 @@ void GKickEnvelopePoint::draw(QPainter &painter)
 {
 	QPen pen;
         pen.setWidth(2);
-        pen.setColor(QColor(250, 250, 250, 255));
+        pen.setColor(QColor(200, 200, 200, 200));
         painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
 	painter.setPen(pen);
 
@@ -77,7 +77,7 @@ void GKickEnvelopePoint::draw(QPainter &painter)
 	painter.drawEllipse(rect);
 
         QBrush brush = painter.brush();
-        painter.setBrush(QColor(250, 250, 250, 255));
+        painter.setBrush(QColor(200, 200, 200, 200));
         r = getDotRadius();
         rect = QRectF(point.x() - r / 2, point.y() - r / 2, r, r);
         painter.drawEllipse(rect);

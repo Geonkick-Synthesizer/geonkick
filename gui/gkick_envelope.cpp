@@ -62,8 +62,27 @@ void GKickEnvelope::draw(QPainter &painter, const QRectF &rect)
         envelopeW = rect.width();
         envelopeH = rect.height();
         envelopeOrigin = rect.bottomLeft();
+        drawScale(painter);
         drawPoints(painter);
         drawLines(painter);
+}
+
+void GKickEnvelope::drawScale(QPainter &painter)
+{
+        auto val = 356 /*envelopeLengh()*/ / 10;
+        auto dx = W() / 10;
+        auto x = (envelopeOrigin.x()) + dx;
+        QPen pen = painter.pen();
+        painter.setPen(QPen(QColor(110, 110, 110)));
+        QFont font = painter.font();
+        font.setPixelSize(10);
+        painter.setFont(font);
+        for (auto i = 1; i < 10; i++) {
+                QRect rect(x - 10, envelopeOrigin.y() - 12, 20, font.pixelSize());
+                painter.drawText(rect, Qt::AlignCenter, QString::number(i * val));
+                x += dx;
+        }
+        painter.setPen(pen);
 }
 
 void GKickEnvelope::drawPoints(QPainter &painter)
@@ -83,7 +102,7 @@ void GKickEnvelope::drawLines(QPainter &painter)
 
 	auto pen = painter.pen();
 	pen.setWidth(2);
-        pen.setColor(QColor(250, 250, 250, 255));
+        pen.setColor(QColor(200, 200, 200, 200));
 	painter.setPen(pen);
         painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
 	painter.drawPolyline(points);
@@ -190,11 +209,6 @@ void GKickEnvelope::addPoint(const QPointF &point)
                 scaledPoint.setY(1.0);
         }
 
-        if (envelopePoints.empty()) {
-                envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
-                return;
-        }
-
   	if (scaledPoint.x() > 1.0) {
 	        scaledPoint.setX(1.0);
 		envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
@@ -202,17 +216,18 @@ void GKickEnvelope::addPoint(const QPointF &point)
                 scaledPoint.setX(0.0);
                 envelopePoints.insert(envelopePoints.begin(),
                                       std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
+        } else if (envelopePoints.empty()) {
+                envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
 	} else if (scaledPoint.x() < envelopePoints[0]->x()) {
                 envelopePoints.insert(envelopePoints.begin(),
                                       std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
 	} else if (scaledPoint.x() > envelopePoints.back()->x()) {
                 envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
 	} else {
-		GKickEnvelopePoint p;
 		for (auto it = envelopePoints.begin() ; it != envelopePoints.end(); ++it) {
 			if (scaledPoint.x() < (*it)->x()) {
                                 envelopePoints.insert(it, std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
-				break;
+                                break;
 			}
 		}
 	}
