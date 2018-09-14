@@ -37,13 +37,9 @@ TopBar::TopBar(GeonkickWidget *parent)
           saveFileButton(nullptr),
           exportFileButton(nullptr)
 {
-        QPalette pal;
-        pal.setColor(QPalette::Background, QColor(80, 80, 80));
-        setAutoFillBackground(true);
-        setPalette(pal);
-        //        if (parent) {
-        setFixedSize(parent->width(), 40);
-        //}
+        if (parent) {
+                setFixedSize(parent->width(), 35);
+        }
 
         auto buttonsLayout = new QHBoxLayout(this);
         buttonsLayout->setContentsMargins(15, 0, 0, 0);
@@ -93,6 +89,14 @@ TopBar::TopBar(GeonkickWidget *parent)
 
 TopBar::~TopBar()
 {
+}
+
+void TopBar::paintWidget(QPaintEvent *event)
+{
+        Q_UNUSED(event)
+        QPainter painter(this);
+        painter.setPen(QPen(QColor(80, 80, 80)));
+        painter.drawLine(0, height() - 1, width() - 1, height() - 1);
 }
 
 void TopBar::mousePressEvent(QMouseEvent *event)

@@ -36,14 +36,10 @@ ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
                          std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
                          : GeonkickWidget(parent)
 {
-        //        setMaximumHeight(1000);
         auto mainLayout = new QHBoxLayout(this);
-        mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout->setSpacing(0);
+        mainLayout->setContentsMargins(10, 0, 10, 0);
         setLayout(mainLayout);
-        //EnvelopesGroupBox *envelopesGroupBox = new EnvelopesGroupBox(this);
-        //        connect(envelopesGroupBox, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
-        //        this, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
-        //layout()->addWidget(envelopesGroupBox);
         auto widget = new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_1]);
         mainLayout->addWidget(widget);
         mainLayout->setAlignment(widget, Qt::AlignTop);
@@ -52,6 +48,7 @@ ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
         mainLayout->setAlignment(widget, Qt::AlignTop);
 
         auto layoutGBox = new QGridLayout;
+        layoutGBox->setSpacing(0);
         layoutGBox->setContentsMargins(0, 0, 0, 0);
         mainLayout->addLayout(layoutGBox);
         layoutGBox->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]), 0, 0);

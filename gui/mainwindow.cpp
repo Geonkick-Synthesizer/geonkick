@@ -40,8 +40,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
-#define GEONKICK_MAINWINDOW_WIDTH  980
-#define GEONKICK_MAINWINDOW_HEIGHT 760
+#define GEONKICK_MAINWINDOW_WIDTH  940
+#define GEONKICK_MAINWINDOW_HEIGHT 765
 
 MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
@@ -88,27 +88,27 @@ bool MainWindow::init(void)
 	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(0);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-        mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout->setContentsMargins(0, 0, 0, 10);
+        mainLayout->setSpacing(5);
         setLayout(mainLayout);
-        setContentsMargins(0, 0, 0, 0);
 
         mainLayout->addWidget(new TopBar(this));
-        mainLayout->addSpacing(5);
+
         // Create envelope widget.
         auto hBoxLayout = new QHBoxLayout;
+        hBoxLayout->setSpacing(0);
         hBoxLayout->setContentsMargins(0, 0, 0, 0);
         auto envelopeWidget = new GKickEnvelopeWidget(this, gkickApi, oscillators);
         envelopeWidget->setFixedSize(850, 340);
         hBoxLayout->addWidget(envelopeWidget);
         auto faderWidget = new Fader(this);
         faderWidget->setFixedSize(65, 330);
-        hBoxLayout->addSpacing(5);
         hBoxLayout->addWidget(faderWidget, 0, Qt::AlignTop);
+        hBoxLayout->addSpacing(5);
         mainLayout->addLayout(hBoxLayout);
 
         // Create control area.
         ControlArea *controlAreaWidget = new ControlArea(this, gkickApi, oscillators);
-        mainLayout->addSpacing(5);
         mainLayout->addWidget(controlAreaWidget);
 
         //connect(controlAreaWidget, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),

@@ -35,6 +35,7 @@ class TopBar : public GeonkickWidget
         ~TopBar();
 
  private:
+        void paintWidget(QPaintEvent * event) final;
         void mousePressEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);

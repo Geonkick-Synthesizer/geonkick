@@ -33,7 +33,7 @@ EffectsGroupBox::EffectsGroupBox(GeonkickWidget *parent)
 {
         addWidget(new CompressorGroupBox(this));
         addWidget(new DistortionGroupBox(this));
-        setPadding(0, 5, 0, 0);
+        setPadding(10, 14, 0, 0);
 }
 
 EffectsGroupBox::~EffectsGroupBox()
