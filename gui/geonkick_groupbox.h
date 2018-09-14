@@ -52,7 +52,6 @@ class GeonkickGroupBox: public GeonkickWidget
      void setPadding(int left, int top, int right, int buttom);
 
  private:
-     void paintWidget(QPaintEvent *event);
      Orientation groupBoxOrientation;
      GeonkickWidget *groupBoxLabel;
      QBoxLayout *mainLayout;

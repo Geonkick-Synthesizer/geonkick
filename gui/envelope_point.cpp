@@ -68,7 +68,7 @@ void GKickEnvelopePoint::draw(QPainter &painter)
         pen.setColor(QColor(250, 250, 250, 255));
         painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
 	painter.setPen(pen);
-	//painter.setBrush(Qt::white);
+
 	QPointF point  = QPointF(x() * (parentEnvelope->W() - 20), y() * (parentEnvelope->H() - 20));
 	QPointF origin = parentEnvelope->origin();
 	QRectF rect;

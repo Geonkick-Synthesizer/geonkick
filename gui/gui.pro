@@ -28,7 +28,6 @@ HEADERS += globals.h \
            envelope_draw_area.h \
            fader.h \
            envelope_point.h \
-           envelopes_group_box.h \
            general_envelope.h \
            general_group_box.h \
            gkick_envelope.h \
@@ -52,7 +51,6 @@ SOURCES += geonkick_theme.cpp \
            envelope_draw_area.cpp \
            fader.cpp \
            envelope_point.cpp \
-           envelopes_group_box.cpp \
            general_envelope.cpp \
            effects_group_box.cpp \
            compressor_group_box.cpp \

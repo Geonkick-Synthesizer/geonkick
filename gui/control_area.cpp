@@ -58,5 +58,6 @@ ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
 
 ControlArea::~ControlArea()
 {
+
 }
 

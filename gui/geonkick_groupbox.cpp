@@ -82,14 +82,3 @@ void GeonkickGroupBox::setWidgetAlignment(GeonkickWidget *widget,
         groupBoxLayout->setAlignment(widget, alignment);
 }
 
-void GeonkickGroupBox::paintWidget(QPaintEvent *event)
-{
-        /*        Q_UNUSED(event)
-        QPainter painter(this);
-        int padding = 2;
-        painter.setPen(QPen(QColor(40, 40, 40, 100)));
-        painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
-        painter.drawRoundedRect(padding, padding, width() - 2 * padding,
-        height() - 2 * padding, 7, 7);*/
-}
-

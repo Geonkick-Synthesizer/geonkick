@@ -120,8 +120,6 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         kickLengthKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickLengthKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickLengthKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        //kickLengthKnob->setMaxValue(kickApi->getMaxLength());
-        //kickLengthKnob->setCurrentValue(kickApi->getKickLength());
 
         if (oscillator->getType() == GKickOscillator::OSC_NOISE) {
                 auto vLayout = new QVBoxLayout(amplitudeEnvelopeBox);
@@ -146,18 +144,6 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
                 kickAmplitudeKnob->setMaxValue(1);
         }
-        //kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
-        //connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
-        //        oscillator.get(), SLOT(setOscAmplitudeValue(double)));
-
-        /*        if (oscillator->getType() != GKickOscillator::OSC_NOISE) {
-                GKickKnob *kickFrequencyKnob = new GKickKnob(envelopeGroupBox, tr("Frequency"));
-                kickFrequencyKnob->setMaxValue(20000);
-                kickFrequencyKnob->setCurrentValue(oscillator->getOscFrequencyValue());
-                envelopeGroupBoxLayout->addWidget(kickFrequencyKnob);
-                connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)),
-                        oscillator.get(), SLOT(setOscFrequencyValue(double)));
-                        }*/
 }
 
 void OscillatorGroupBox::createFilterGroupBox()
@@ -186,8 +172,6 @@ void OscillatorGroupBox::createFilterGroupBox()
         kickQFactorKnob->setGeometry(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4, w, h);
         kickQFactorKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_50x50.png"));
         kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
-        //        kickQFactorKnob->setMaxValue(kickApi->getMaxLength());
-        //kickQFactorKnob->setCurrentValue(kickApi->getKickLength());
 
         auto filterType = new GeonkickButton(filterEnvelopeBox);
         w = 80;

@@ -27,7 +27,7 @@
 Fader::Fader(GeonkickWidget *parent)
         : GeonkickWidget(parent),
           faderSlider(new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)),
-          leftChannelLevel(100),
+          leftChannelLevel(40),
           rightChannelLevel(50),
           levelsImage("./themes/geontime/fader.png")
 {
@@ -47,7 +47,6 @@ void Fader::paintWidget(QPaintEvent *event)
         QPainter painter(this);
         painter.drawPixmap(faderSlider->x() + faderSlider->width() + 5, 0, levelsImage);
         drawLevels(painter);
-        //drawScale(painter);
 }
 
 void Fader::drawLevels(QPainter &painter)

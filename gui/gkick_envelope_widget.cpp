@@ -60,7 +60,6 @@ GKickEnvelopeWidget::GKickEnvelopeWidget(GeonkickWidget *parent,
         envelopeLayout->addWidget(drawArea);
 
         createButtomMenu();
-        //updateButtonArea();
 }
 
 GKickEnvelopeWidget::~GKickEnvelopeWidget()

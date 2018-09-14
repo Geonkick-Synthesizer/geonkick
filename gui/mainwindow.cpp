@@ -111,8 +111,5 @@ bool MainWindow::init(void)
         ControlArea *controlAreaWidget = new ControlArea(this, gkickApi, oscillators);
         mainLayout->addWidget(controlAreaWidget);
 
-        //connect(controlAreaWidget, SIGNAL(viewEnvelope(GKickEnvelope::EnvelopeCategory)),
-        //        envelopeWidget, SLOT(viewEnvelope(GKickEnvelope::EnvelopeCategory)));
-
         return true;
 }
