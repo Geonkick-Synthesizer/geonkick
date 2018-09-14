@@ -189,11 +189,12 @@ void OscillatorGroupBox::createFilterGroupBox()
         //        kickQFactorKnob->setMaxValue(kickApi->getMaxLength());
         //kickQFactorKnob->setCurrentValue(kickApi->getKickLength());
 
-        auto filterType = new GeonkickWidget(filterEnvelopeBox);
+        auto filterType = new GeonkickButton(filterEnvelopeBox);
         w = 80;
         h = 25;
         filterType->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
-        filterType->setBackgroundImage(QPixmap("./themes/geontime/filter_type_hp.png"));
+        filterType->setPressedImage(QPixmap("./themes/geontime/filter_type_hp.png"));
+        filterType->setUnpressedImage(QPixmap("./themes/geontime/filter_type_lp.png"));
 }
 
 void OscillatorGroupBox::setSineWave(bool pressed)
