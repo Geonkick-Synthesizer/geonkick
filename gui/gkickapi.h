@@ -38,17 +38,14 @@ class GKickApi: public QObject
  Q_OBJECT
 
  public:
-
         GKickApi(void);
         ~GKickApi();
-        void setError(bool b);
-        bool hasErrors(void);
+        bool init();
         std::vector<std::shared_ptr<GKickOscillator>> getOscillators(void);
-        QPolygonF getOscEvelopePoints(int osc, int envelope);
+        QPolygonF getOscEvelopePoints(int osc, int envelope) const;
         void addOscEnvelopePoint(int osc,
                                  int envelope,
                                  const QPointF &point);
-
         void removeOscEvelopePoint(int osc,
                                    int envelope,
                                    int index);
@@ -56,38 +53,31 @@ class GKickApi: public QObject
                                    int envelope,
                                    int index,
                                    const QPointF &point);
-
         void setOscFunction(int oscillatorIndex,
                             enum geonkick_osc_func_type type);
-        enum geonkick_osc_func_type getOscFunction(int oscillatorIndex);
-
-
+        enum geonkick_osc_func_type getOscFunction(int oscillatorIndex) const;
         void setKickLength(double len);
-        double getKickLength(void);
+        double getKickLength(void) const;
         void setMaxLength(double len);
-        double getMaxLength();
-        bool setOscAmplitudeValue(int oscillatorIndex,
-                                  double v);
-        bool setOscFrequencyValue(int oscillatorIndex,
-                                  double v);
-        double getOscAmplitudeValue(int oscillatorIndex);
-        double getOscFrequencyValue(int oscillatorIndex);
+        double getMaxLength() const;
+        bool setOscAmplitudeValue(int oscillatorIndex, double v);
+        bool setOscFrequencyValue(int oscillatorIndex, double v);
+        double getOscAmplitudeValue(int oscillatorIndex) const;
+        double getOscFrequencyValue(int oscillatorIndex) const;
         void addEnvelopePoint(double x, double y);
         void updateEnvelopePoint(unsigned int index, double x, double y);
         void removeEnvelopePoint(unsigned int index);
-
         void setAmplitude(double val);
-        double getAmplitude();
+        double getAmplitude() const;
         void setKickFilterFrequency(double f);
-        double getKickFilterFrequency(void);
+        double getKickFilterFrequency(void) const;
         void setKickFilterQFactor(double f);
-        double getKickFilterQFactor();
+        double getKickFilterQFactor() const;
 
  signals:
         void kickLengthUpdated(double len);
 
  private:
-	bool isError;
       	struct geonkick *gKickApi;
 };
 

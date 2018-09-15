@@ -23,7 +23,6 @@
 
 #include "mainwindow.h"
 #include "gkick_envelope_widget.h"
-#include "envelopes_group_box.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"
@@ -61,7 +60,7 @@ MainWindow::~MainWindow()
 
 bool MainWindow::init(void)
 {
-        if (gkickApi.get()->hasErrors()) {
+        if (gkickApi->init()) {
 	  //return false;
         }
 

@@ -37,7 +37,8 @@ GeonkickButton::~GeonkickButton()
 void GeonkickButton::mousePressEvent(QMouseEvent * event)
 {
         Q_UNUSED(event)
-        setPressed(!is_pressed);
+        setPressed(true);
+        emit toggled(is_pressed);
 }
 
 void GeonkickButton::setPressedImage(const QPixmap &pixmap)
@@ -60,13 +61,17 @@ void GeonkickButton::setUnpressedImage(const QPixmap &pixmap)
 
 void GeonkickButton::setPressed(bool pressed)
 {
-        if (is_pressed != pressed) {
-                is_pressed = pressed;
-                if (is_pressed) {
-                        setBackgroundImage(pressedImage);
-                } else {
-                        setBackgroundImage(unpressedImage);
-                }
-                emit toggled(is_pressed);
+        is_pressed = pressed;
+        if (is_pressed) {
+                setBackgroundImage(pressedImage);
+        } else {
+                setBackgroundImage(unpressedImage);
         }
+        update();
 }
+
+bool GeonkickButton::isPressed() const
+{
+        return is_pressed;
+}
+

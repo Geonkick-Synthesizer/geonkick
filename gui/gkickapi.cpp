@@ -23,20 +23,15 @@
 
 #include "gkickapi.h"
 #include "gkick_oscillator.h"
-#include <memory>
 #include "globals.h"
 
 #include <geonkick.h>
 
-#include <QDebug>
+#include <memory>
 
 GKickApi::GKickApi() :
-        isError(false),
-        gKickApi(NULL)
+        gKickApi(nullptr)
 {
-  	if (geonkick_create(&gKickApi) != GEONKICK_OK) {
-	        qDebug() << "can't create geonkick API";
-  	}
 }
 
 GKickApi::~GKickApi()
@@ -46,20 +41,19 @@ GKickApi::~GKickApi()
   	}
 }
 
-void GKickApi::setError(bool b)
+bool GKickApi::init()
 {
-        isError = b;
-}
+  	if (geonkick_create(&gKickApi) != GEONKICK_OK) {
+	        GKICK_LOG_ERROR("can't create geonkick API");
+                return false;
+  	}
 
-bool GKickApi::hasErrors(void)
-{
-        return isError;
+        return true;
 }
 
 std::vector<std::shared_ptr<GKickOscillator>> GKickApi::getOscillators(void)
 {
         std::vector<std::shared_ptr<GKickOscillator>> oscillators;
-
         if (!gKickApi) {
                 return oscillators;
         }
@@ -74,7 +68,7 @@ std::vector<std::shared_ptr<GKickOscillator>> GKickApi::getOscillators(void)
         return oscillators;
 }
 
-QPolygonF GKickApi::getOscEvelopePoints(int osc, int envelope)
+QPolygonF GKickApi::getOscEvelopePoints(int osc, int envelope) const
 {
         double *buf;
         QPolygonF points;
@@ -98,9 +92,7 @@ QPolygonF GKickApi::getOscEvelopePoints(int osc, int envelope)
 }
 
 
-void GKickApi::addOscEnvelopePoint(int osc,
-				   int envelope,
-				   const QPointF &point)
+void GKickApi::addOscEnvelopePoint(int osc, int envelope,const QPointF &point)
 {
         if (!gKickApi) {
                 return;
@@ -112,9 +104,7 @@ void GKickApi::addOscEnvelopePoint(int osc,
                                         point.x(), point.y());
 }
 
-void GKickApi::removeOscEvelopePoint(int osc,
-                                     int envelope,
-                                     int index)
+void GKickApi::removeOscEvelopePoint(int osc, int envelope, int index)
 {
         if (!gKickApi) {
                 return;
@@ -135,8 +125,7 @@ void GKickApi::updateOscEvelopePoint(int osc, int envelope,
 }
 
 
-void GKickApi::setOscFunction(int oscillatorIndex,
-			      enum geonkick_osc_func_type type)
+void GKickApi::setOscFunction(int oscillatorIndex, enum geonkick_osc_func_type type)
 {
         if (!gKickApi) {
                 return;
@@ -146,8 +135,7 @@ void GKickApi::setOscFunction(int oscillatorIndex,
         geonkick_set_osc_function(gKickApi, oscillatorIndex, (enum geonkick_osc_func_type)type);
 }
 
-enum geonkick_osc_func_type
-GKickApi::getOscFunction(int oscillatorIndex)
+enum geonkick_osc_func_type GKickApi::getOscFunction(int oscillatorIndex) const
 {
         GKICK_LOG_INFO("OSC_INDEX:" << oscillatorIndex);
         if (!gKickApi) {
@@ -170,7 +158,7 @@ void GKickApi::setKickLength(double len)
         };
 }
 
-double GKickApi::getKickLength(void)
+double GKickApi::getKickLength(void) const
 {
         if (!gKickApi) {
 	          return 0;
@@ -184,7 +172,7 @@ void GKickApi::setMaxLength(double len)
 {
 }
 
-double GKickApi::getMaxLength()
+double GKickApi::getMaxLength() const
 {
         return 1.5;
 }
@@ -193,7 +181,7 @@ void GKickApi::setAmplitude(double val)
 {
 }
 
-double GKickApi::getAmplitude()
+double GKickApi::getAmplitude() const
 {
         return 1.0;
 }
@@ -202,7 +190,7 @@ void GKickApi::setKickFilterFrequency(double f)
 {
 }
 
-double GKickApi::getKickFilterFrequency(void)
+double GKickApi::getKickFilterFrequency(void) const
 {
 }
 
@@ -210,7 +198,7 @@ void GKickApi::setKickFilterQFactor(double f)
 {
 }
 
-double GKickApi::getKickFilterQFactor()
+double GKickApi::getKickFilterQFactor() const
 {
 }
 
@@ -229,7 +217,7 @@ bool GKickApi::setOscAmplitudeValue(int oscillatorIndex, double v)
 	return true;
 }
 
-double GKickApi::getOscAmplitudeValue(int oscillatorIndex)
+double GKickApi::getOscAmplitudeValue(int oscillatorIndex) const
 {
 	double v;
 
@@ -260,7 +248,7 @@ bool GKickApi::setOscFrequencyValue(int oscillatorIndex, double v)
 	return true;
 }
 
-double GKickApi::getOscFrequencyValue(int oscillatorIndex)
+double GKickApi::getOscFrequencyValue(int oscillatorIndex) const
 {
 	double v;
 
@@ -279,16 +267,13 @@ double GKickApi::getOscFrequencyValue(int oscillatorIndex)
 
 void GKickApi::addEnvelopePoint(double x, double y)
 {
-        qDebug() << __PRETTY_FUNCTION__ << "x: " << x << ", y : " << y;
 }
 
 void GKickApi::updateEnvelopePoint(unsigned int index, double x, double y)
 {
-        qDebug() << __PRETTY_FUNCTION__ << "index: " << index << ", x: " << x << ", y : " << y;
 }
 
 void GKickApi::removeEnvelopePoint(unsigned int index)
 {
-        qDebug() << __PRETTY_FUNCTION__ << "index: " << index;
 }
 

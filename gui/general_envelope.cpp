@@ -27,7 +27,7 @@
 GeneralEnvelope::GeneralEnvelope(std::shared_ptr<GKickApi> &api)
         : gkickApi(api)
 {
-        setCategory(GKickEnvelope::ENV_CATEGORY_GENERAL);
+        removeSupportedType(GKickEnvelope::ENV_TYPE_FREQUENCY);
 }
 
 GeneralEnvelope::~GeneralEnvelope()

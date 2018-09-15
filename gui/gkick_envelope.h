@@ -30,6 +30,7 @@
 #include <QPainter>
 
 #include <memory>
+#include <unordered_set>
 
 class GKickEnvelope: public QObject
 {
@@ -42,18 +43,11 @@ class GKickEnvelope: public QObject
                 ENV_TYPE_FREQUENCY  = 1,
         };
 
-        enum  EnvelopeCategory {
-                ENV_CATEGORY_OSC_1   = 0,
-                ENV_CATEGORY_OSC_2   = 1,
-                ENV_CATEGORY_NOISE   = 2,
-                ENV_CATEGORY_GENERAL = 3
-        };
-
         GKickEnvelope();
         virtual ~GKickEnvelope();
         int W(void) const;
         int H(void) const;
-        virtual double envelopeLengh(void) const { return 0.0; }
+        virtual double envelopeLengh(void) const { return 0;}
         QPointF origin(void) const;
         void draw(QPainter &painter, const QRectF &rect);
         bool hasSelected() const;
@@ -64,24 +58,25 @@ class GKickEnvelope: public QObject
         double getRightPointLimit(void) const;
         void addPoint(const QPointF &point);
         void addPoints(const QPolygonF  &points);
+        virtual void updatePoints() {};
         void removePoint(QPointF point);
-        void setType(EnvelopeType type);
         EnvelopeType type() const;
-        void setCategory(EnvelopeCategory cat);
-        EnvelopeCategory category() const;
         double getEnvelopeValue(void) const;
-        QString name() const;
+        bool isSupportedType(GKickEnvelope::EnvelopeType type) const;
 
  public slots:
-        virtual void setEnvelopeLengh(double len) {}
-
+         virtual void setEnvelopeLengh(double len) {};
+         bool setType(EnvelopeType type);
+         void addSupportedType(GKickEnvelope::EnvelopeType type);
+         void removeSupportedType(GKickEnvelope::EnvelopeType type);
+         void removePoints();
  signals:
          void envelopeLengthUpdated(double len);
 
  protected:
-        virtual void pointAddedEvent(double x, double y) {}
-        virtual void pointUpdatedEvent(unsigned int index, double x, double y) {}
-        virtual void pointRemovedEvent(unsigned int index) {}
+        virtual void pointAddedEvent(double x, double y) {};
+        virtual void pointUpdatedEvent(unsigned int index, double x, double y) {};
+        virtual void pointRemovedEvent(unsigned int index) {};
         void drawScale(QPainter &painter);
         void drawPoints(QPainter &painter);
         void drawLines(QPainter &painter);
@@ -89,10 +84,9 @@ class GKickEnvelope: public QObject
  private:
         std::vector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
         std::vector<std::shared_ptr<GKickEnvelopePoint>>::size_type selectedPointIndex;
+        std::unordered_set<EnvelopeType> supportedTypes;
         bool pointSelected;
         EnvelopeType envelopeType;
-        EnvelopeCategory envelopeCategory;
-        QString envelopeName;
         QPointF envelopeOrigin;
         double envelopeW;
         double envelopeH;

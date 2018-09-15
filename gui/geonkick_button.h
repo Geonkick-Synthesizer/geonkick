@@ -35,6 +35,7 @@ class GeonkickButton: public GeonkickWidget
         virtual ~GeonkickButton();
         void setPressedImage(const QPixmap &pixmap);
         void setUnpressedImage(const QPixmap &pixmap);
+        bool isPressed() const;
 
 public slots:
         void setPressed(bool pressed);

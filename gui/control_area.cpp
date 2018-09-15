@@ -23,7 +23,6 @@
 
 #include "gkick_oscillator.h"
 #include "control_area.h"
-#include "envelopes_group_box.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "effects_group_box.h"

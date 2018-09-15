@@ -25,9 +25,9 @@
 #define GKICK_CONTROL_AREA_H
 
 #include "geonkick_widget.h"
+#include "gkick_envelope.h"
 
 #include <memory>
-#include <gkick_envelope.h>
 
 class GKickOscillator;
 class GKickApi;
@@ -39,10 +39,6 @@ class ControlArea: public GeonkickWidget
  ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
              std::vector<std::shared_ptr<GKickOscillator>> &oscillators);
  ~ControlArea();
-
- signals:
-         void viewEnvelope(GKickEnvelope::EnvelopeCategory category);
- private:
 };
 
 #endif

@@ -29,8 +29,7 @@ GKickEnvelope::GKickEnvelope()
 :        selectedPointIndex(0),
          pointSelected(false),
          envelopeType(GKickEnvelope::ENV_TYPE_AMPLITUDE),
-         envelopeCategory(GKickEnvelope::ENV_CATEGORY_GENERAL),
-         envelopeName("GKick Envelope"),
+         supportedTypes({GKickEnvelope::ENV_TYPE_AMPLITUDE, GKickEnvelope::ENV_TYPE_FREQUENCY}),
          envelopeOrigin(0, 0),
          envelopeW(0),
          envelopeH(0)
@@ -266,9 +265,14 @@ void GKickEnvelope::removePoint(QPointF point)
         }
 }
 
-void GKickEnvelope::setType(GKickEnvelope::EnvelopeType type)
+bool GKickEnvelope::setType(GKickEnvelope::EnvelopeType type)
 {
-	envelopeType = type;
+        if (type == isSupportedType(type)) {
+                envelopeType = type;
+                updatePoints();
+                return true;
+        }
+        return false;
 }
 
 GKickEnvelope::EnvelopeType GKickEnvelope::type(void) const
@@ -276,17 +280,30 @@ GKickEnvelope::EnvelopeType GKickEnvelope::type(void) const
 	return envelopeType;
 }
 
-void GKickEnvelope::setCategory(GKickEnvelope::EnvelopeCategory cat)
+bool GKickEnvelope::isSupportedType(GKickEnvelope::EnvelopeType type) const
 {
-	envelopeCategory = cat;
+        if (supportedTypes.find(type) != supportedTypes.end()) {
+                return true;
+        }
+        return false;
 }
 
-GKickEnvelope::EnvelopeCategory GKickEnvelope::category(void) const
+void GKickEnvelope::addSupportedType(GKickEnvelope::EnvelopeType type)
 {
-	return envelopeCategory;
+        if (!isSupportedType(type)) {
+                supportedTypes.insert(type);
+        }
 }
 
-QString GKickEnvelope::name(void) const
+void GKickEnvelope::removeSupportedType(GKickEnvelope::EnvelopeType type)
 {
-        return envelopeName;
+        if (isSupportedType(type)) {
+                supportedTypes.erase(type);
+        }
+}
+
+void GKickEnvelope::removePoints()
+{
+        GKICK_LOG_INFO("HERE");
+        envelopePoints.clear();
 }
