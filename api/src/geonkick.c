@@ -402,7 +402,7 @@ geonkick_set_osc_function(struct geonkick *kick,
 			  enum geonkick_osc_func_type type)
 {
         struct gkick_oscillator *osc;
-        gkick_log_debug("SET FUNCTION: %d", oscillatorIndex);
+        gkick_log_debug("SET FUNCTION: %d", type);
         if (kick == NULL) {
                 return GEONKICK_ERROR_NULL_POINTER;
         }

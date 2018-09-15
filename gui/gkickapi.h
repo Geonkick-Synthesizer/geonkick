@@ -59,6 +59,8 @@ class GKickApi: public QObject
 
         void setOscFunction(int oscillatorIndex,
                             enum geonkick_osc_func_type type);
+        enum geonkick_osc_func_type getOscFunction(int oscillatorIndex);
+
 
         void setKickLength(double len);
         double getKickLength(void);

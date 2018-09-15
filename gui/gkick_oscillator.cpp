@@ -42,6 +42,14 @@ void GKickOscillator::setOscFunction(OscillatorFuncType type)
         }
 }
 
+GKickOscillator::OscillatorFuncType
+GKickOscillator::getOscFunction()
+{
+        if (kickApi) {
+                return static_cast<OscillatorFuncType>(kickApi->getOscFunction(oscillatorIndex()));
+        }
+}
+
 QPolygonF GKickOscillator::getEnvelopePoints(GKickOscillator::OscillatorEnvelopeType type)
 {
         QPolygonF points;

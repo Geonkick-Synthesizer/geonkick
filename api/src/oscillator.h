@@ -65,7 +65,7 @@ double
 gkick_osc_func_sine(double phase);
 
 double
-gkick_osc_func_sqare(double phase);
+gkick_osc_func_square(double phase);
 
 double gkick_osc_func_triangle(double phase);
 

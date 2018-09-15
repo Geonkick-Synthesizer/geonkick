@@ -132,8 +132,8 @@ double gkick_osc_value(struct gkick_oscillator *osc,
         case GEONKICK_OSC_FUNC_SINE:
                 v = amp * gkick_osc_func_sine(osc->phase);
                 break;
-        case GEONKICK_OSC_FUNC_SQARE:
-                v = amp * gkick_osc_func_sqare(osc->phase);
+        case GEONKICK_OSC_FUNC_SQUARE:
+                v = amp * gkick_osc_func_square(osc->phase);
                 break;
         case GEONKICK_OSC_FUNC_TRIANGLE:
                 v = amp * gkick_osc_func_triangle(osc->phase);
@@ -155,7 +155,7 @@ double gkick_osc_func_sine(double phase)
         return sin(phase);
 }
 
-double gkick_osc_func_sqare(double phase)
+double gkick_osc_func_square(double phase)
 {
         if (phase < 0) {
                 return -1;

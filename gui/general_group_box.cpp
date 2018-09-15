@@ -61,7 +61,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        kickAmplitudeKnob->setMaxValue(1);
+        kickAmplitudeKnob->setRange(0, 1000);
         kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
         connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
         kickApi.get(), SLOT(setAmplitude(double)));
@@ -70,7 +70,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickLengthKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickLengthKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickLengthKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        kickLengthKnob->setMaxValue(kickApi->getMaxLength());
+        kickLengthKnob->setRange(0, kickApi->getMaxLength());
         kickLengthKnob->setCurrentValue(kickApi->getKickLength());
         connect(kickLengthKnob, SIGNAL(valueUpdated(double)),
                 kickApi.get(), SLOT(setKickLengthValue(double)));

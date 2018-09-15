@@ -24,6 +24,7 @@
 #include "gkickapi.h"
 #include "gkick_oscillator.h"
 #include <memory>
+#include "globals.h"
 
 #include <geonkick.h>
 
@@ -141,7 +142,20 @@ void GKickApi::setOscFunction(int oscillatorIndex,
                 return;
         }
 
+        GKICK_LOG_INFO("OSC_FUNC:" << type);
         geonkick_set_osc_function(gKickApi, oscillatorIndex, (enum geonkick_osc_func_type)type);
+}
+
+enum geonkick_osc_func_type
+GKickApi::getOscFunction(int oscillatorIndex)
+{
+        GKICK_LOG_INFO("OSC_INDEX:" << oscillatorIndex);
+        if (!gKickApi) {
+                return GEONKICK_OSC_FUNC_UNKNOWN;
+        }
+
+        // IMPREMENT API
+        return GEONKICK_OSC_FUNC_SINE;
 }
 
 void GKickApi::setKickLength(double len)
@@ -206,6 +220,7 @@ bool GKickApi::setOscAmplitudeValue(int oscillatorIndex, double v)
 		return false;
 	}
 
+        GKICK_LOG_INFO("AMPLITUDE :" << v);
 	if (geonkick_set_osc_amplitude_val(gKickApi, oscillatorIndex, v)
 	    != GEONKICK_OK) {
 		return false;

@@ -39,6 +39,9 @@ class GeneralEnvelope: public GKickEnvelope
   ~GeneralEnvelope();
   double envelopeLengh(void) const;
 
+public slots:
+  void setEnvelopeLengh(double len) final;
+
  protected:
   void pointAddedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;

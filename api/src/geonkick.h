@@ -63,10 +63,11 @@ enum geonkick_envelope_type {
 
 enum geonkick_osc_func_type {
 	GEONKICK_OSC_FUNC_SINE     = 0,
-	GEONKICK_OSC_FUNC_SQARE    = 1,
+	GEONKICK_OSC_FUNC_SQUARE   = 1,
 	GEONKICK_OSC_FUNC_TRIANGLE = 2,
 	GEONKICK_OSC_FUNC_SAWTOOTH = 3,
-	GEONKICK_OSC_FUNC_NOISE    = 4
+	GEONKICK_OSC_FUNC_NOISE    = 4,
+        GEONKICK_OSC_FUNC_UNKNOWN  = 5
 };
 
 struct geonkick;

@@ -44,7 +44,7 @@ class GKickOscillator: public QObject
 
   enum OscillatorFuncType {
           OSC_FUNC_SINE     = GEONKICK_OSC_FUNC_SINE,
-          OSC_FUNC_SQARE    = GEONKICK_OSC_FUNC_SQARE,
+          OSC_FUNC_SQUARE   = GEONKICK_OSC_FUNC_SQUARE,
           OSC_FUNC_TRIANGLE = GEONKICK_OSC_FUNC_TRIANGLE,
           OSC_FUNC_SAWTOOTH = GEONKICK_OSC_FUNC_SAWTOOTH,
           OSC_FUNC_NOISE    = GEONKICK_OSC_FUNC_NOISE
@@ -63,8 +63,8 @@ class GKickOscillator: public QObject
   GKickOscillator(GKickApi *api, GKickOscillator::OscillatorType type);
   ~GKickOscillator();
   double getKickLength(void);
+  OscillatorFuncType getOscFunction();
   QPolygonF getEnvelopePoints(GKickOscillator::OscillatorEnvelopeType type);
-  void setOscFunction(OscillatorFuncType type);
   double getOscAmplitudeValue(void);
   double getOscFrequencyValue(void);
   void setOscillatorType(GKickOscillator::OscillatorType type);
@@ -76,6 +76,7 @@ class GKickOscillator: public QObject
   QString name();
 
   public slots:
+          void setOscFunction(OscillatorFuncType type);
           void setOscAmplitudeValue(double v);
           void setOscFrequencyValue(double v);
           void setFilterQFactor(double v);

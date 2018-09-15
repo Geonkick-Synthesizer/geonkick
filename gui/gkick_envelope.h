@@ -72,6 +72,12 @@ class GKickEnvelope: public QObject
         double getEnvelopeValue(void) const;
         QString name() const;
 
+ public slots:
+        virtual void setEnvelopeLengh(double len) {}
+
+ signals:
+         void envelopeLengthUpdated(double len);
+
  protected:
         virtual void pointAddedEvent(double x, double y) {}
         virtual void pointUpdatedEvent(unsigned int index, double x, double y) {}

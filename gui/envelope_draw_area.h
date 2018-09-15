@@ -43,6 +43,9 @@ class EnvelopeDrawingArea : public GeonkickWidget
    void mouseDoubleClickEvent(QMouseEvent *event);
    void mouseMoveEvent(QMouseEvent *event);
 
+   public slots:
+           void envelopeUpdated(double);
+
  private:
    std::shared_ptr<GKickEnvelope> currentEnvelope;
    QRect drawingArea;

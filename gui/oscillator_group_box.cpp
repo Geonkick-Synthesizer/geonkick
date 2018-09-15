@@ -79,24 +79,37 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         setWidgetAlignment(waveFunctionHBox, Qt::AlignTop);
 
         sineButton = new GeonkickButton(waveFunctionHBox);
+        if (oscillator->getOscFunction() == GKickOscillator::OSC_FUNC_SINE) {
+                sineButton->setPressed(true);
+        }
         sineButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_sine.png"));
         sineButton->setPressedImage(QPixmap("./themes/geontime/wave_button_sine_active.png"));
         sineButton->move((waveFunctionHBox->width() / 2 - sineButton->width()) / 2, 22);
         connect(sineButton, SIGNAL(toggled(bool)), this, SLOT(setSineWave(bool)));
 
         squareButton = new GeonkickButton(waveFunctionHBox);
+        if (oscillator->getOscFunction() == GKickOscillator::OSC_FUNC_SQUARE) {
+                squareButton->setPressed(true);
+        }
+
         squareButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_square.png"));
         squareButton->setPressedImage(QPixmap("./themes/geontime/wave_button_square_active.png"));
         squareButton->move((waveFunctionHBox->width() / 2 - squareButton->width()) / 2, 21 + squareButton->height());
         connect(squareButton, SIGNAL(toggled(bool)), this, SLOT(setSquareWave(bool)));
 
         triangleButton = new GeonkickButton(waveFunctionHBox);
+        if (oscillator->getOscFunction() == GKickOscillator::OSC_FUNC_TRIANGLE) {
+                triangleButton->setPressed(true);
+        }
         triangleButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
         triangleButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
         triangleButton->move(waveFunctionHBox->width() / 2 + (waveFunctionHBox->width() / 2 - triangleButton->width()) / 2, 22);
         connect(triangleButton, SIGNAL(toggled(bool)), this, SLOT(setTriangleWave(bool)));
 
         sawtoothButton = new GeonkickButton(waveFunctionHBox);
+        if (oscillator->getOscFunction() == GKickOscillator::OSC_FUNC_SAWTOOTH) {
+                sawtoothButton->setPressed(true);
+        }
         sawtoothButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_sawtooth.png"));
         sawtoothButton->move(waveFunctionHBox->width() / 2 +  (waveFunctionHBox->width() / 2 - sawtoothButton->width()) / 2, 21 + sawtoothButton->height());
         sawtoothButton->setPressedImage(QPixmap("./themes/geontime/wave_button_sawtooth_active.png"));
@@ -105,8 +118,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 
 void OscillatorGroupBox::createEvelopeGroupBox()
 {
-
-        GeonkickWidget *amplitudeEnvelopeBox = new GeonkickWidget(this);
+        auto amplitudeEnvelopeBox = new GeonkickWidget(this);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         if (oscillator->getType() == GKickOscillator::OSC_NOISE) {
                 amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_noise_env.png"));
@@ -116,10 +128,14 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         addWidget(amplitudeEnvelopeBox);
         setWidgetAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
 
-        GKickKnob *kickLengthKnob = new GKickKnob(amplitudeEnvelopeBox);
-        kickLengthKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-        kickLengthKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-        kickLengthKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        auto envelopeAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
+        envelopeAmplitudeKnob->setRange(0, oscillator->getOscAmplitudeValue());
+        envelopeAmplitudeKnob->setCurrentValue(0);
+        envelopeAmplitudeKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
+        envelopeAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
+        envelopeAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        connect(envelopeAmplitudeKnob, SIGNAL(valueUpdated(double)),
+                oscillator.get(), SLOT(setOscAmplitudeValue(double)));
 
         if (oscillator->getType() == GKickOscillator::OSC_NOISE) {
                 auto vLayout = new QVBoxLayout(amplitudeEnvelopeBox);
@@ -138,11 +154,14 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 vLayout->setContentsMargins(224/2, 10, 0, 12);
                 vLayout->setSpacing(0);
         } else {
-                GKickKnob *kickAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
-                kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-                kickAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-                kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-                kickAmplitudeKnob->setMaxValue(1);
+                GKickKnob *frequencyAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
+                frequencyAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
+                frequencyAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
+                frequencyAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+                frequencyAmplitudeKnob->setRange(200, oscillator->getOscFrequencyValue());
+                frequencyAmplitudeKnob->setCurrentValue(0);
+                connect(frequencyAmplitudeKnob, SIGNAL(valueUpdated(double)),
+                oscillator.get(), SLOT(setOscAmplitudeValue(double)));
         }
 }
 
@@ -187,6 +206,7 @@ void OscillatorGroupBox::setSineWave(bool pressed)
                 squareButton->setPressed(false);
                 triangleButton->setPressed(false);
                 sawtoothButton->setPressed(false);
+                oscillator->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
         }
 }
 
@@ -196,6 +216,7 @@ void OscillatorGroupBox::setSquareWave(bool pressed)
                 sineButton->setPressed(false);
                 triangleButton->setPressed(false);
                 sawtoothButton->setPressed(false);
+                oscillator->setOscFunction(GKickOscillator::OSC_FUNC_SQUARE);
         }
 }
 
@@ -205,6 +226,7 @@ void OscillatorGroupBox::setTriangleWave(bool pressed)
                 sineButton->setPressed(false);
                 squareButton->setPressed(false);
                 sawtoothButton->setPressed(false);
+                oscillator->setOscFunction(GKickOscillator::OSC_FUNC_TRIANGLE);
         }
 }
 
@@ -214,5 +236,6 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
                 sineButton->setPressed(false);
                 squareButton->setPressed(false);
                 triangleButton->setPressed(false);
+                oscillator->setOscFunction(GKickOscillator::OSC_FUNC_SAWTOOTH);
         }
 }

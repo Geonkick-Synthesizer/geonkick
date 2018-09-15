@@ -26,6 +26,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QStyleOption>
+#include <math.h>
 
 #include "geonkick_theme.h"
 
@@ -36,7 +37,8 @@
 GKickKnob::GKickKnob(GeonkickWidget *parent)
           : GeonkickWidget(parent),
 	  knobValueDegree(GEONKICK_KNOB_MIN_DEGREE),
-	  rangeValue(0),
+          rangeFrom(0),
+          rangeTo(0),
           isSelected(false)
 {
 }
@@ -101,7 +103,7 @@ GKickKnob::mouseMoveEvent(QMouseEvent *event)
                 lastPositionPoint.setX(event->x());
                 lastPositionPoint.setY(event->y());
                 double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
-                emit valueUpdated(k * rangeValue);
+                emit valueUpdated(rangeFrom + k * (rangeTo - rangeFrom));
                 update();
         }
 }
@@ -109,14 +111,29 @@ GKickKnob::mouseMoveEvent(QMouseEvent *event)
 double GKickKnob::getValue(void) const
 {
         double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
-	return k * rangeValue;
+	return rangeFrom + k * (rangeTo - rangeFrom);
 }
 
-void GKickKnob::setMaxValue(double val)
+void GKickKnob::setRange(double from, double to)
 {
+        rangeFrom = from;
+        rangeTo = to;
 }
 
 void GKickKnob::setCurrentValue(double val)
 {
+        if (val > rangeTo) {
+                val = rangeTo;
+        } else if (val < rangeFrom) {
+                val = rangeFrom;
+        }
+
+        double k = 0;
+        if (fabs(rangeTo - rangeFrom) < std::numeric_limits<double>::epsilon()) {
+                knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
+        } else {
+                k = (val - rangeFrom) / (rangeTo - rangeFrom);
+        }
+        knobValueDegree = GEONKICK_KNOB_MIN_DEGREE + k * GEONKICK_KNOB_RANGE_DEGREE;
 }
 

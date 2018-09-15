@@ -36,6 +36,7 @@ EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent,
         QPixmap pixmap("./themes/geontime/envelope_bk.png");
         setFixedSize(850, 300);
         setBackgroundImage(pixmap);
+        connect(currentEnvelope.get(), SIGNAL(envelopeLengthUpdated(double)), this, SLOT(envelopeUpdated()));
 }
 
 EnvelopeDrawingArea::~EnvelopeDrawingArea()
@@ -44,7 +45,11 @@ EnvelopeDrawingArea::~EnvelopeDrawingArea()
 
 void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<GKickEnvelope> &envelope)
 {
+        if (currentEnvelope) {
+                disconnect(currentEnvelope.get(), 0, this, 0);
+        }
         currentEnvelope = envelope;
+        connect(currentEnvelope.get(), SIGNAL(envelopeLengthUpdated(double)), this, SLOT(envelopeUpdated()));
 }
 
 void EnvelopeDrawingArea::paintWidget(QPaintEvent *event)
@@ -106,5 +111,10 @@ EnvelopeDrawingArea::mouseMoveEvent(QMouseEvent *event)
         currentEnvelope->moveSelectedPoint(point.x(), point.y());
         mousePoint.setX(event->x());
         mousePoint.setY(event->y());
+        update();
+}
+
+void EnvelopeDrawingArea::envelopeUpdated(double len)
+{
         update();
 }

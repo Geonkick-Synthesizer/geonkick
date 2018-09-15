@@ -36,7 +36,7 @@ public:
    GKickKnob(GeonkickWidget *parent);
    virtual ~GKickKnob();
    double getValue(void) const;
-   void setMaxValue(double val);
+   void setRange(double from, double to);
    void setCurrentValue(double val);
    void setKnobImage(const QPixmap &pixmap);
 
@@ -53,7 +53,8 @@ public:
    QPixmap knobPixmap;
    QPoint lastPositionPoint;
    double knobValueDegree;
-   double rangeValue;
+   double rangeFrom;
+   double rangeTo;
    bool isSelected;
 };
 

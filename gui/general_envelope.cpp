@@ -54,3 +54,8 @@ double GeneralEnvelope::envelopeLengh(void) const
         return gkickApi->getKickLength();
 }
 
+void GeneralEnvelope::setEnvelopeLengh(double len)
+{
+        gkickApi->setKickLength(len);
+        emit envelopeLengthUpdated(len);
+}
