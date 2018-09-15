@@ -69,7 +69,7 @@ void GKickEnvelope::draw(QPainter &painter, const QRectF &rect)
 
 void GKickEnvelope::drawScale(QPainter &painter)
 {
-        auto val = 356 /*envelopeLengh()*/ / 10;
+                auto val = 356 /*envelopeLengh()*/ / 10;
         auto dx = W() / 10;
         auto x = (envelopeOrigin.x()) + dx;
         QPen pen = painter.pen();
@@ -82,7 +82,24 @@ void GKickEnvelope::drawScale(QPainter &painter)
                 painter.drawText(rect, Qt::AlignCenter, QString::number(i * val));
                 x += dx;
         }
+
+        font.setPixelSize(12);
+        painter.setFont(font);
+        painter.setPen(QPen(QColor(180, 180, 180, 200)));
+        painter.drawText(envelopeOrigin.x() + W() / 2 - 35, envelopeOrigin.y() + 20, tr("Length, ms"));
+
+        QString text;
+        if (type() != EnvelopeType::ENV_TYPE_AMPLITUDE) {
+                text = tr("Amplitude, dB");
+        } else {
+                text = tr("Frequency, Hz");
+        }
+        painter.translate(envelopeOrigin.x() - 30, envelopeOrigin.y() - H() / 2 + 35);
+        painter.rotate(-90);
+        painter.drawText(0, 0, text);
         painter.setPen(pen);
+        painter.rotate(-90);
+        painter.translate(-(envelopeOrigin.x() - 30), -(envelopeOrigin.y() - H() / 2 + 35));
 }
 
 void GKickEnvelope::drawPoints(QPainter &painter)
