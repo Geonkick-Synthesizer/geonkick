@@ -1,10 +1,10 @@
 /**
  * File name: gkickapi.cpp
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,6 @@ QPolygonF GKickApi::getOscEvelopePoints(int osc, int envelope) const
         }
 
         geonkick_osc_envelope_get_points(gKickApi, osc, envelope, &buf, &npoints);
-
         for (size_t i = 0; i < 2 * npoints; i += 2) {
                 points.push_back(QPointF(buf[i], buf[i+1]));
         }
@@ -131,13 +130,11 @@ void GKickApi::setOscFunction(int oscillatorIndex, enum geonkick_osc_func_type t
                 return;
         }
 
-        GKICK_LOG_INFO("OSC_FUNC:" << type);
         geonkick_set_osc_function(gKickApi, oscillatorIndex, (enum geonkick_osc_func_type)type);
 }
 
 enum geonkick_osc_func_type GKickApi::getOscFunction(int oscillatorIndex) const
 {
-        GKICK_LOG_INFO("OSC_INDEX:" << oscillatorIndex);
         if (!gKickApi) {
                 return GEONKICK_OSC_FUNC_UNKNOWN;
         }
@@ -152,7 +149,6 @@ void GKickApi::setKickLength(double len)
                 return;
         }
 
-        qDebug() << "GKIckApi::setKickLength: " << len;
         if (geonkick_set_length(gKickApi, len) == GEONKICK_OK) {
                 emit kickLengthUpdated(len);
         };
@@ -267,13 +263,22 @@ double GKickApi::getOscFrequencyValue(int oscillatorIndex) const
 
 void GKickApi::addEnvelopePoint(double x, double y)
 {
+        Q_UNUSED(x);
+        Q_UNUSED(y);
+        GKICK_LOG_INFO("IMPLEMENT API");
 }
 
 void GKickApi::updateEnvelopePoint(unsigned int index, double x, double y)
 {
+        Q_UNUSED(index);
+        Q_UNUSED(x);
+        Q_UNUSED(y);
+        GKICK_LOG_INFO("IMPLEMENT API");
 }
 
 void GKickApi::removeEnvelopePoint(unsigned int index)
 {
+        Q_UNUSED(index);
+        GKICK_LOG_INFO("IMPLEMENT API");
 }
 

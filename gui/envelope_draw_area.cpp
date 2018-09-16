@@ -36,10 +36,10 @@ EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent,
         QPixmap pixmap("./themes/geontime/envelope_bk.png");
         setFixedSize(850, 300);
         setBackgroundImage(pixmap);
-        //        if (currentEnvelope) {
-        //        connect(currentEnvelope.get(), SIGNAL(envelopeLengthUpdated(double)),
-        //                this, SLOT(envelopeUpdated()));
-        //}
+        if (currentEnvelope) {
+                connect(currentEnvelope.get(), SIGNAL(envelopeLengthUpdated(double)),
+                        this, SLOT(envelopeUpdated()));
+        }
 }
 
 EnvelopeDrawingArea::~EnvelopeDrawingArea()
@@ -126,7 +126,7 @@ EnvelopeDrawingArea::mouseMoveEvent(QMouseEvent *event)
         }
 }
 
-void EnvelopeDrawingArea::envelopeUpdated(double len)
+void EnvelopeDrawingArea::envelopeUpdated()
 {
         update();
 }

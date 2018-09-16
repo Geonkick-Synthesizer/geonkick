@@ -45,7 +45,7 @@ class EnvelopeDrawingArea : public GeonkickWidget
 
    public slots:
            void setEnvelope(std::shared_ptr<GKickEnvelope> &envelope);
-           void envelopeUpdated(double);
+           void envelopeUpdated();
 
  private:
    std::shared_ptr<GKickEnvelope> currentEnvelope;

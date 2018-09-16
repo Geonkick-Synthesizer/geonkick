@@ -207,8 +207,9 @@ void GKickEnvelope::moveSelectedPoint(double x, double y)
                           selectedPoint->y());
 }
 
-void GKickEnvelope::addPoints(const QPolygonF &points)
+void GKickEnvelope::setPoints(const QPolygonF &points)
 {
+        removePoints();
         for (const auto &point : points) {
                 envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, point));
         }
@@ -223,7 +224,6 @@ void GKickEnvelope::addPoint(const QPointF &point)
         }  else if (scaledPoint.y() > 1.0) {
                 scaledPoint.setY(1.0);
         }
-
   	if (scaledPoint.x() > 1.0) {
 	        scaledPoint.setX(1.0);
 		envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
@@ -267,7 +267,7 @@ void GKickEnvelope::removePoint(QPointF point)
 
 bool GKickEnvelope::setType(GKickEnvelope::EnvelopeType type)
 {
-        if (type == isSupportedType(type)) {
+        if (isSupportedType(type)) {
                 envelopeType = type;
                 updatePoints();
                 return true;
@@ -304,6 +304,5 @@ void GKickEnvelope::removeSupportedType(GKickEnvelope::EnvelopeType type)
 
 void GKickEnvelope::removePoints()
 {
-        GKICK_LOG_INFO("HERE");
         envelopePoints.clear();
 }

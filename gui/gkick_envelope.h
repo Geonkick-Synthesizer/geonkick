@@ -57,7 +57,6 @@ class GKickEnvelope: public QObject
         double getLeftPointLimit(void) const;
         double getRightPointLimit(void) const;
         void addPoint(const QPointF &point);
-        void addPoints(const QPolygonF  &points);
         virtual void updatePoints() {};
         void removePoint(QPointF point);
         EnvelopeType type() const;
@@ -69,6 +68,7 @@ class GKickEnvelope: public QObject
          bool setType(EnvelopeType type);
          void addSupportedType(GKickEnvelope::EnvelopeType type);
          void removeSupportedType(GKickEnvelope::EnvelopeType type);
+         void setPoints(const QPolygonF  &points);
          void removePoints();
  signals:
          void envelopeLengthUpdated(double len);

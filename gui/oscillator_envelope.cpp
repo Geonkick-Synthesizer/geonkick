@@ -32,7 +32,7 @@ OscillatorEnvelope::OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc)
         }
         setType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
         QPolygonF points = oscillator->getEnvelopePoints(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()));
-        addPoints(points);
+        setPoints(points);
 }
 
 OscillatorEnvelope::~OscillatorEnvelope()
@@ -41,9 +41,8 @@ OscillatorEnvelope::~OscillatorEnvelope()
 
 void OscillatorEnvelope::updatePoints()
 {
-        removePoints();
         QPolygonF points = oscillator->getEnvelopePoints(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()));
-        addPoints(points);
+        setPoints(points);
 }
 
 void OscillatorEnvelope::pointAddedEvent(double x, double y)

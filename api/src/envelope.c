@@ -112,9 +112,9 @@ gkick_envelope_add_point(struct gkick_envelope *envelope,
 	if (point == NULL) {
 		return NULL;
 	}
-	memset(point, 0, sizeof(struct gkick_envelope_point));
 	point->x = x;
 	point->y = y;
+        point->next = point->prev = NULL;
 
 	if (envelope->first == NULL ||  envelope->last == NULL) {
 		envelope->first = envelope->last = point;
@@ -131,7 +131,6 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 {
 	struct gkick_envelope_point *p;
 
-
         if (point->x >= envelope->last->x) {
                 /* Add as a last element. */
 		envelope->last->next = point;
@@ -145,10 +144,8 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
         } else {
                 p = envelope->first;
 		while (p) {
-			if (point->x >= p->x) {
-                                if (p->next != NULL) {
-                                        p->next->prev = point;
-                                }
+                        if (p->next != NULL && point->x < p->next->x) {
+                                p->next->prev = point;
                                 point->next = p->next;
                                 point->prev = p;
                                 p->next = point;
