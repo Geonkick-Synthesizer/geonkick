@@ -149,7 +149,7 @@ void GKickApi::setKickLength(double len)
                 return;
         }
 
-        if (geonkick_set_length(gKickApi, len) == GEONKICK_OK) {
+        if (geonkick_set_length(gKickApi, len / 1000) == GEONKICK_OK) {
                 emit kickLengthUpdated(len);
         };
 }
@@ -161,7 +161,7 @@ double GKickApi::getKickLength(void) const
         }
         double len = 0.0;
         geonkick_get_length(gKickApi, &len);
-        return len;
+        return 1000 * len;
 }
 
 void GKickApi::setMaxLength(double len)
@@ -170,7 +170,7 @@ void GKickApi::setMaxLength(double len)
 
 double GKickApi::getMaxLength() const
 {
-        return 1.5;
+        return 1000;
 }
 
 void GKickApi::setAmplitude(double val)
@@ -257,7 +257,7 @@ double GKickApi::getOscFrequencyValue(int oscillatorIndex) const
 	    != GEONKICK_OK) {
                 return 0.0;
 	}
-
+        GKICK_LOG_INFO("val - " << v);
 	return v;
 }
 

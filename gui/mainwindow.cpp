@@ -66,25 +66,25 @@ bool MainWindow::init(void)
 
         setTheme(new GeonkickTheme("Geontime"));
 
-        gkickApi->setMaxLength(1000);
-        gkickApi->setKickLength(1000);
+        gkickApi->setMaxLength(300);
+        gkickApi->setKickLength(300);
         gkickApi->setAmplitude(0);
         gkickApi->setKickFilterFrequency(0);
         oscillators = gkickApi.get()->getOscillators();
 	oscillators[GKickOscillator::OSC_1].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
 	oscillators[GKickOscillator::OSC_2].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
 	oscillators[GKickOscillator::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
-	oscillators[GKickOscillator::OSC_1].get()->setOscAmplitudeValue(1000);
-	oscillators[GKickOscillator::OSC_1].get()->setOscFrequencyValue(20000);
+	oscillators[GKickOscillator::OSC_1].get()->setOscAmplitudeValue(0.8);
+	oscillators[GKickOscillator::OSC_1].get()->setOscFrequencyValue(1000);
 	oscillators[GKickOscillator::OSC_1].get()->setFilterType(GKickOscillator::FILTER_LP);
-	oscillators[GKickOscillator::OSC_1].get()->setFilterFrequency(0);
-	oscillators[GKickOscillator::OSC_2].get()->setOscAmplitudeValue(1000);
-	oscillators[GKickOscillator::OSC_2].get()->setOscFrequencyValue(20000);
+	oscillators[GKickOscillator::OSC_1].get()->setFilterFrequency(20000);
+	oscillators[GKickOscillator::OSC_2].get()->setOscAmplitudeValue(0.8);
+	oscillators[GKickOscillator::OSC_2].get()->setOscFrequencyValue(1000);
 	oscillators[GKickOscillator::OSC_2].get()->setFilterType(GKickOscillator::FILTER_LP);
-	oscillators[GKickOscillator::OSC_2].get()->setFilterFrequency(0);
-	oscillators[GKickOscillator::OSC_NOISE].get()->setOscAmplitudeValue(1);
+	oscillators[GKickOscillator::OSC_2].get()->setFilterFrequency(20000);
+	oscillators[GKickOscillator::OSC_NOISE].get()->setOscAmplitudeValue(0.8);
 	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterType(GKickOscillator::FILTER_LP);
-	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(0);
+	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(20000);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
         mainLayout->setContentsMargins(0, 0, 0, 10);

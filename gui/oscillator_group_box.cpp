@@ -129,8 +129,8 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         setWidgetAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
 
         auto envelopeAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
-        envelopeAmplitudeKnob->setRange(0, oscillator->getOscAmplitudeValue());
-        envelopeAmplitudeKnob->setCurrentValue(0);
+        envelopeAmplitudeKnob->setRange(0, 1.0);
+        envelopeAmplitudeKnob->setCurrentValue(oscillator->getOscAmplitudeValue());
         envelopeAmplitudeKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         envelopeAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         envelopeAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
@@ -158,10 +158,10 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 frequencyAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
                 frequencyAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
                 frequencyAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-                frequencyAmplitudeKnob->setRange(200, oscillator->getOscFrequencyValue());
-                frequencyAmplitudeKnob->setCurrentValue(0);
+                frequencyAmplitudeKnob->setRange(200, 20000);
+                frequencyAmplitudeKnob->setCurrentValue(oscillator->getOscFrequencyValue());
                 connect(frequencyAmplitudeKnob, SIGNAL(valueUpdated(double)),
-                oscillator.get(), SLOT(setOscAmplitudeValue(double)));
+                oscillator.get(), SLOT(setOscFrequencyValue(double)));
         }
 }
 

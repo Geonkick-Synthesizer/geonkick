@@ -61,7 +61,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        kickAmplitudeKnob->setRange(0, 1000);
+        kickAmplitudeKnob->setRange(0, 1.0);
         kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
         connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
         kickApi.get(), SLOT(setAmplitude(double)));
