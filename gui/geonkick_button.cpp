@@ -26,7 +26,8 @@
 
 GeonkickButton::GeonkickButton(GeonkickWidget *parent)
         : GeonkickWidget(parent),
-          is_pressed(false)
+          is_pressed(false),
+          is_checkable(false)
 {
 }
 
@@ -37,14 +38,19 @@ GeonkickButton::~GeonkickButton()
 void GeonkickButton::mousePressEvent(QMouseEvent * event)
 {
         Q_UNUSED(event)
-        setPressed(true);
-        emit toggled(is_pressed);
+        if (isCheckable()) {
+                setPressed(!isPressed());
+                emit toggled(isPressed());
+        } else if (!isPressed()) {
+                setPressed(true);
+                emit toggled(true);
+        }
 }
 
 void GeonkickButton::setPressedImage(const QPixmap &pixmap)
 {
         pressedImage = pixmap;
-        if (is_pressed) {
+        if (isPressed()) {
                 setFixedSize(pixmap.size().width(), pixmap.size().height());
                 setBackgroundImage(pressedImage);
         }
@@ -53,7 +59,7 @@ void GeonkickButton::setPressedImage(const QPixmap &pixmap)
 void GeonkickButton::setUnpressedImage(const QPixmap &pixmap)
 {
         unpressedImage = pixmap;
-        if (!is_pressed) {
+        if (!isPressed()) {
                 setFixedSize(pixmap.size().width(), pixmap.size().height());
                 setBackgroundImage(unpressedImage);
         }
@@ -73,5 +79,15 @@ void GeonkickButton::setPressed(bool pressed)
 bool GeonkickButton::isPressed() const
 {
         return is_pressed;
+}
+
+bool GeonkickButton::isCheckable()
+{
+        return is_checkable;
+}
+
+void GeonkickButton::setCheckable(bool checkable)
+{
+        is_checkable = checkable;
 }
 

@@ -78,5 +78,4 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,
 			      double **buff,
 			      size_t *npoints);
-
 #endif

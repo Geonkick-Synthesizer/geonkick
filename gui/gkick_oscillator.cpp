@@ -200,3 +200,12 @@ QString GKickOscillator::name()
         }
 }
 
+void GKickOscillator::enable(bool b)
+{
+        kickApi->enableOscillator(oscilattorIndex(), b);
+}
+
+void GKickOscillator::isEnabled(bool b)
+{
+        return kickApi->isOscillatorElabled(oscilattorIndex());
+}

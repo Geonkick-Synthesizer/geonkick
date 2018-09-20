@@ -40,20 +40,14 @@ extern "C" {
 
 #include "gkick_log.h"
 
-#define GEON_APP_VERSION 0x000301
-#define GEON_APP_NAME "geonkick"
+#define GEONKICK_API_VERSION 0x001000
+#define GEONKICK_API_NAME "geonkick"
 
 enum geonkick_error {
-  	GEONKICK_OK,
-	GEONKICK_ERROR,
-	GEONKICK_ERROR_MEM_ALLOC,
-	GEONKICK_ERROR_NULL_POINTER,
-	GEONKICK_ERROR_INIT_MUTEX,
-	GEONKICK_ERROR_CREATE_ENVELOPE,
-	GEONKICK_ERROR_OPEN_JACK,
-	GEONKICK_ERROR_CREATE_JACK,
-	GEONKICK_ERROR_CANT_CREATE_OSC,
-	GEONKICK_ERROR_ACTIVATE_JACK
+  	GEONKICK_OK                    = 0,
+	GEONKICK_ERROR                 = 1,
+	GEONKICK_ERROR_MEM_ALLOC       = 2,
+	GEONKICK_ERROR_WRONG_ARGUMENTS = 3
 };
 
 enum geonkick_envelope_type {
@@ -76,7 +70,22 @@ enum geonkick_error
 geonkick_create(struct geonkick **kick);
 
 void
-geonkick_free(struct geonkick **kick);
+geonkick_free(wstruct geonkick **kick);
+
+enum geonkick_error
+geonkick_add_oscillator(struct geonkick* kick, size_t *index);
+
+enum geonkick_error
+geonkick_remove_oscillator(struct geonkick* kick, size_t index);
+
+enum geonkick_error
+geonkick_enable_oscillator(struct geonkick* kick, size_t index);
+
+enum geonkick_error
+geonkick_disable_oscillator(struct geonkick* kick, size_t index);
+
+enum geonkick_error
+geonkick_is_oscillator_enabled(struct geonkick* kick, size_t index, int *enabled);
 
 size_t
 geonkick_get_oscillators_number(struct geonkick* kick);
@@ -87,16 +96,6 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t env_index,
 				 double **buf,
 				 size_t *npoints);
-
-        /*enum geonkick_error
-geonkick_envelope_get_points(struct geonkick *kick,
-				 double **buf,
-				 size_t *npoints);*/
-
-        /*enum geonkick_error
-geonkick_remove_envelope_point(struct geonkick *kick,
-				enum geonkick_envelope_type type,
-				size_t index);*/
 
 enum geonkick_error
 geonkick_osc_envelope_add_point(struct geonkick *kick,

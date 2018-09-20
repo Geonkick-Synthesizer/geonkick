@@ -33,8 +33,7 @@
 
 class GKickOscillator;
 
-class GKickApi: public QObject
-{
+class GKickApi: public QObject {
  Q_OBJECT
 
  public:
@@ -53,10 +52,8 @@ class GKickApi: public QObject
                                    int envelope,
                                    int index,
                                    const QPointF &point);
-        void setOscFunction(int oscillatorIndex,
-                            enum geonkick_osc_func_type type);
+        void setOscFunction(int oscillatorIndex, enum geonkick_osc_func_type type);
         enum geonkick_osc_func_type getOscFunction(int oscillatorIndex) const;
-        void setKickLength(double len);
         double getKickLength(void) const;
         void setMaxLength(double len);
         double getMaxLength() const;
@@ -67,12 +64,15 @@ class GKickApi: public QObject
         void addEnvelopePoint(double x, double y);
         void updateEnvelopePoint(unsigned int index, double x, double y);
         void removeEnvelopePoint(unsigned int index);
-        void setAmplitude(double val);
         double getAmplitude() const;
         void setKickFilterFrequency(double f);
         double getKickFilterFrequency(void) const;
         void setKickFilterQFactor(double f);
         double getKickFilterQFactor() const;
+
+ public slots:
+        void setAmplitude(double val);
+        void setKickLength(double len);
 
  signals:
         void kickLengthUpdated(double len);

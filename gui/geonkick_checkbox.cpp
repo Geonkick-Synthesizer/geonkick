@@ -34,11 +34,17 @@ GeonkickCheckbox::GeonkickCheckbox(GeonkickWidget *parent)
           checkboxLabel(new GeonkickButton(this)),
           mainLayout(new QHBoxLayout(this))
 {
+        checkboxButton->setCheckable(true);
+        checkboxLabel->setCheckable(true);
         setPadding(0, 0, 0, 0);
+        mainLayout->setSpacing(3);
         setLayout(mainLayout);
-        mainLayout->addWidget(checkboxButton, 0, Qt::AlignTop);
-        mainLayout->addWidget(checkboxLabel, 0, Qt::AlignTop);
+        mainLayout->addWidget(checkboxButton, 0, Qt::AlignLeft);
+        mainLayout->addWidget(checkboxLabel, 0, Qt::AlignLeft);
+        connect(checkboxButton, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
+        connect(checkboxButton, SIGNAL(toggled(bool)), checkboxLabel, SLOT(setPressed(bool)));
         connect(checkboxLabel, SIGNAL(toggled(bool)), checkboxButton, SLOT(setPressed(bool)));
+        connect(checkboxLabel, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
 }
 
 GeonkickCheckbox::~GeonkickCheckbox()
@@ -47,8 +53,7 @@ GeonkickCheckbox::~GeonkickCheckbox()
 
 void GeonkickCheckbox::setCheckboxLabelImage(const QPixmap &pixmap)
 {
-        checkboxLabel->setBackgroundImage(pixmap);
-        checkboxLabel->setFixedSize(pixmap.size());
+        checkboxLabel->setUnpressedImage(pixmap);
 }
 
 void GeonkickCheckbox::setCheckboxLabelImage(const QString &file)

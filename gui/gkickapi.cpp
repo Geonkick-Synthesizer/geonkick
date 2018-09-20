@@ -282,3 +282,14 @@ void GKickApi::removeEnvelopePoint(unsigned int index)
         GKICK_LOG_INFO("IMPLEMENT API");
 }
 
+void GKickApi::enableOscillator(unsigned int index, bool enable)
+{
+        geonkick_enable_osc(gKickApi, index, enable);
+}
+
+bool GKickApi::isOscillatorEnabled(unsigned int index)
+{
+        return geonkick_is_osc_enabled(gKickApi, index);
+}
+
+

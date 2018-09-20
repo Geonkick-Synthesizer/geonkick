@@ -74,8 +74,10 @@ class GKickOscillator: public QObject
   void setFilterFrequency(double f);
   double getFilterFrequency(void);
   QString name();
+  void isEnabled();
 
   public slots:
+          void enable(bool b);
           void setOscFunction(OscillatorFuncType type);
           void setOscAmplitudeValue(double v);
           void setOscFrequencyValue(double v);
@@ -92,7 +94,6 @@ class GKickOscillator: public QObject
                                    int index,
                                    double x,
                                    double y);
-
  signals:
 	  void oscAmplitudeValueUpdated(double v);
 	  void oscFrequencyValueUpdated(double v);

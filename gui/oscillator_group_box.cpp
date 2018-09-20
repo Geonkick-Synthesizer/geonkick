@@ -38,6 +38,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
             oscillator(osc),
             waveFunctionCb(nullptr),
             filterTypeCb(nullptr),
+            filterTypeIsChecked(false),
             filterCheckbox(nullptr),
             sineButton(nullptr),
             squareButton(nullptr),
@@ -45,6 +46,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<G
             sawtoothButton(nullptr)
 {
         auto checkbox = new GeonkickCheckbox(this);
+        connect(checkbox, SIGNAL(stateUpdated(bool)), this, SLOT(disableOscillator(bool)));
         if (oscillator->getType() == GKickOscillator::OSC_1) {
                 checkbox->setCheckboxLabelImage("./themes/geontime/osc1_groupbox_label.png");
         } else if (oscillator->getType() == GKickOscillator::OSC_2) {
@@ -193,6 +195,11 @@ void OscillatorGroupBox::createFilterGroupBox()
         kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
 
         auto filterType = new GeonkickButton(filterEnvelopeBox);
+        filterType->setCheckable(true);
+        connect(getGroupBoxLabel(), SIGNAL(stateUpdated(bool), this, SLOT([](bool state){
+                                        filterType->setPressed(state);
+                                        filterTypeIsChecked = filterType->isPressed();
+                                }));
         w = 80;
         h = 25;
         filterType->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
@@ -238,4 +245,13 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
                 triangleButton->setPressed(false);
                 oscillator->setOscFunction(GKickOscillator::OSC_FUNC_SAWTOOTH);
         }
+}
+
+
+void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
+{
+        if (filterTypeIsChecked && state == true) {
+                filterType->setChecked(true);
+        }
+        oscillator->enable(state);
 }

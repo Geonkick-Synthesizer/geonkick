@@ -30,8 +30,7 @@ class GeonkickButton;
 class GeonkickLabel;
 class QHBoxLayout;
 
-class GeonkickCheckbox: public GeonkickWidget
-{
+class GeonkickCheckbox: public GeonkickWidget {
  Q_OBJECT
 
  public:
@@ -47,6 +46,9 @@ class GeonkickCheckbox: public GeonkickWidget
 
  public slots:
         void setChecked(bool checked);
+
+ signals:
+        void stateUpdated(bool state);
 
  private:
         GeonkickButton *checkboxButton;

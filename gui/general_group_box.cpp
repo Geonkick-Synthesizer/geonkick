@@ -73,7 +73,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickLengthKnob->setRange(0, kickApi->getMaxLength());
         kickLengthKnob->setCurrentValue(kickApi->getKickLength());
         connect(kickLengthKnob, SIGNAL(valueUpdated(double)),
-                kickApi.get(), SLOT(setKickLengthValue(double)));
+                kickApi.get(), SLOT(setKickLength(double)));
 
 }
 
