@@ -30,11 +30,11 @@ HEADERS += globals.h \
            envelope_point.h \
            general_envelope.h \
            general_group_box.h \
-           gkick_envelope.h \
-           gkick_envelope_widget.h \
-           gkick_knob.h \
-           gkick_oscillator.h \
-           gkickapi.h \
+           envelope.h \
+           envelope_widget.h \
+           knob.h \
+           oscillator.h \
+           geonkick_api.h \
            oscillator_envelope.h \
            oscillator_group_box.h \
            mainwindow.h
@@ -56,11 +56,11 @@ SOURCES += geonkick_theme.cpp \
            compressor_group_box.cpp \
            distortion_group_box.cpp \
            general_group_box.cpp \
-           gkick_envelope.cpp \
-           gkick_envelope_widget.cpp \
-           gkick_knob.cpp \
-           gkick_oscillator.cpp \
-           gkickapi.cpp \
+           envelope.cpp \
+           envelope_widget.cpp \
+           knob.cpp \
+           oscillator.cpp \
+           geonkick_api.cpp \
            oscillator_envelope.cpp \
            oscillator_group_box.cpp \
            mainwindow.cpp \

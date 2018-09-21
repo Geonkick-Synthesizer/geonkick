@@ -40,6 +40,8 @@ extern "C" {
 
 #include "gkick_log.h"
 
+#define GEONKICK_UNUSED(expr) (void)expr
+
 #define GEONKICK_API_VERSION 0x001000
 #define GEONKICK_API_NAME "geonkick"
 
@@ -70,7 +72,7 @@ enum geonkick_error
 geonkick_create(struct geonkick **kick);
 
 void
-geonkick_free(wstruct geonkick **kick);
+geonkick_free(struct geonkick **kick);
 
 enum geonkick_error
 geonkick_add_oscillator(struct geonkick* kick, size_t *index);
@@ -79,7 +81,7 @@ enum geonkick_error
 geonkick_remove_oscillator(struct geonkick* kick, size_t index);
 
 enum geonkick_error
-geonkick_enable_oscillator(struct geonkick* kick, size_t index);
+geonkick_enable_oscillator(struct geonkick* kick, size_t index, int enable);
 
 enum geonkick_error
 geonkick_disable_oscillator(struct geonkick* kick, size_t index);

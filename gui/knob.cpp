@@ -1,10 +1,10 @@
 /**
- * File name: gkick_knob.h
- * Project: GeonKick (A kick synthesizer)
+ * File name: knob.cpp
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,20 +21,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "gkick_knob.h"
+#include "knob.h"
+#include "theme.h"
 
 #include <QPainter>
 #include <QDebug>
 #include <QStyleOption>
 #include <math.h>
 
-#include "geonkick_theme.h"
-
 #define GEONKICK_KNOB_MAX_DEGREE 270
 #define GEONKICK_KNOB_MIN_DEGREE 0
 #define GEONKICK_KNOB_RANGE_DEGREE (GEONKICK_KNOB_MAX_DEGREE - GEONKICK_KNOB_MIN_DEGREE)
 
-GKickKnob::GKickKnob(GeonkickWidget *parent)
+Knob::Knob(GeonkickWidget *parent)
           : GeonkickWidget(parent),
 	  knobValueDegree(GEONKICK_KNOB_MIN_DEGREE),
           rangeFrom(0),
@@ -43,17 +42,17 @@ GKickKnob::GKickKnob(GeonkickWidget *parent)
 {
 }
 
-GKickKnob::~GKickKnob()
+Knob::~Knob()
 {
 }
 
-void GKickKnob::setKnobImage(const QPixmap &pixmap)
+void Knob::setKnobImage(const QPixmap &pixmap)
 {
         knobPixmap = pixmap;
 }
 
 void
-GKickKnob::paintWidget(QPaintEvent *event)
+Knob::paintWidget(QPaintEvent *event)
 {
         QPainter painter(this);
         if (!knobPixmap.isNull()) {
@@ -67,7 +66,7 @@ GKickKnob::paintWidget(QPaintEvent *event)
 }
 
 void
-GKickKnob::mousePressEvent(QMouseEvent *event)
+Knob::mousePressEvent(QMouseEvent *event)
 {
         if (!knobPixmap.isNull()) {
                 int xCenter = width() / 2;
@@ -84,13 +83,13 @@ GKickKnob::mousePressEvent(QMouseEvent *event)
 }
 
 void
-GKickKnob::mouseReleaseEvent(QMouseEvent *event)
+Knob::mouseReleaseEvent(QMouseEvent *event)
 {
         isSelected = false;
 }
 
 void
-GKickKnob::mouseMoveEvent(QMouseEvent *event)
+Knob::mouseMoveEvent(QMouseEvent *event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();
@@ -108,19 +107,19 @@ GKickKnob::mouseMoveEvent(QMouseEvent *event)
         }
 }
 
-double GKickKnob::getValue(void) const
+double Knob::getValue(void) const
 {
         double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
 	return rangeFrom + k * (rangeTo - rangeFrom);
 }
 
-void GKickKnob::setRange(double from, double to)
+void Knob::setRange(double from, double to)
 {
         rangeFrom = from;
         rangeTo = to;
 }
 
-void GKickKnob::setCurrentValue(double val)
+void Knob::setCurrentValue(double val)
 {
         if (val > rangeTo) {
                 val = rangeTo;

@@ -1,10 +1,10 @@
 /**
- * File name: gkick_envelope.h
- * Project: GeonKick (A kick synthesizer)
+ * File name: envelope.h
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_ENVELOPE_H
-#define GKICK_ENVELOPE_H
+#ifndef GEONKICK_ENVELOPE_H
+#define GEONKICK_ENVELOPE_H
 
 #include "envelope_point.h"
 
@@ -32,19 +32,19 @@
 #include <memory>
 #include <unordered_set>
 
-class GKickEnvelope: public QObject
+class Envelope: public QObject
 {
         Q_OBJECT
 
  public:
 
-        enum EnvelopeType {
-                ENV_TYPE_AMPLITUDE  = 0,
-                ENV_TYPE_FREQUENCY  = 1,
+        enum class EnvelopeType:int {
+                Aplitude  = 0,
+                Frequency = 1
         };
 
-        GKickEnvelope();
-        virtual ~GKickEnvelope();
+        Envelope();
+        virtual ~Envelope();
         int W(void) const;
         int H(void) const;
         virtual double envelopeLengh(void) const { return 0;}
@@ -61,13 +61,13 @@ class GKickEnvelope: public QObject
         void removePoint(QPointF point);
         EnvelopeType type() const;
         double getEnvelopeValue(void) const;
-        bool isSupportedType(GKickEnvelope::EnvelopeType type) const;
+        bool isSupportedType(Envelope::EnvelopeType type) const;
 
  public slots:
          virtual void setEnvelopeLengh(double len) {};
          bool setType(EnvelopeType type);
-         void addSupportedType(GKickEnvelope::EnvelopeType type);
-         void removeSupportedType(GKickEnvelope::EnvelopeType type);
+         void addSupportedType(Envelope::EnvelopeType type);
+         void removeSupportedType(Envelope::EnvelopeType type);
          void setPoints(const QPolygonF  &points);
          void removePoints();
  signals:
@@ -82,8 +82,8 @@ class GKickEnvelope: public QObject
         void drawLines(QPainter &painter);
 
  private:
-        std::vector<std::shared_ptr<GKickEnvelopePoint>> envelopePoints;
-        std::vector<std::shared_ptr<GKickEnvelopePoint>>::size_type selectedPointIndex;
+        std::vector<std::shared_ptr<EnvelopePoint>> envelopePoints;
+        std::vector<std::shared_ptr<EnvelopePoint>>::size_type selectedPointIndex;
         std::unordered_set<EnvelopeType> supportedTypes;
         bool pointSelected;
         EnvelopeType envelopeType;
@@ -92,4 +92,4 @@ class GKickEnvelope: public QObject
         double envelopeH;
 };
 
-#endif
+#endif // GEONKICK_ENVELOPE_H

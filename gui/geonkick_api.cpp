@@ -61,7 +61,7 @@ std::vector<std::shared_ptr<GKickOscillator>> GKickApi::getOscillators(void)
         int n = geonkick_get_oscillators_number(gKickApi);
         for (int i = 0; i < n; i++) {
                 std::shared_ptr<GKickOscillator> osc;
-                osc = std::make_shared<GKickOscillator>(this, (GKickOscillator::OscillatorType)i);
+                osc = std::make_shared<GKickOscillator>(this, static_cast<GKickOscillator::OscillatorType>(i));
                 oscillators.push_back(osc);
         }
 
@@ -284,12 +284,13 @@ void GKickApi::removeEnvelopePoint(unsigned int index)
 
 void GKickApi::enableOscillator(unsigned int index, bool enable)
 {
-        geonkick_enable_osc(gKickApi, index, enable);
+        geonkick_enable_oscillator(gKickApi, index, static_cast<int>(enable));
 }
 
 bool GKickApi::isOscillatorEnabled(unsigned int index)
 {
-        return geonkick_is_osc_enabled(gKickApi, index);
+        int enabled = 0;
+        geonkick_is_oscillator_enabled(gKickApi, index, &enabled);
+        return enabled;
 }
-
 

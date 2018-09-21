@@ -52,11 +52,10 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void setSquareWave(bool pressed);
         void setTriangleWave(bool pressed);
         void setSawtoothWave(bool pressed);
+        void groupBoxLabelUpdated(bool state);
 
  private:
         std::shared_ptr<GKickOscillator> oscillator;
-        QComboBox *waveFunctionCb;
-        QComboBox *filterTypeCb;
         GeonkickCheckbox *filterCheckbox;
         GeonkickButton *sineButton;
         GeonkickButton *squareButton;
@@ -65,6 +64,8 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *noiseWhiteButton;
         GeonkickButton *noisePinkButton;
         GeonkickButton *noiseBrownianButton;
+        GeonkickButton *filterType;
+        bool filterTypeIsChecked;
 };
 
 #endif

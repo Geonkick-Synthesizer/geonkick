@@ -41,6 +41,7 @@ class GKickApi: public QObject {
         ~GKickApi();
         bool init();
         std::vector<std::shared_ptr<GKickOscillator>> getOscillators(void);
+        bool isOscillatorEnabled(unsigned int index);
         QPolygonF getOscEvelopePoints(int osc, int envelope) const;
         void addOscEnvelopePoint(int osc,
                                  int envelope,
@@ -73,6 +74,8 @@ class GKickApi: public QObject {
  public slots:
         void setAmplitude(double val);
         void setKickLength(double len);
+        void enableOscillator(unsigned int index, bool enable);
+        void setOscillatorFilterType(int index, enum geonkick_filter_type type);
 
  signals:
         void kickLengthUpdated(double len);

@@ -1,10 +1,10 @@
 /**
- * File name: gkick_knob.h
- * Project: GeonKick (A kick synthesizer)
+ * File name: knob.h
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,12 +29,12 @@
 #include <QWidget>
 #include <QMouseEvent>
 
-class GKickKnob : public GeonkickWidget
+class Knob : public GeonkickWidget
 {
    Q_OBJECT
 public:
-   GKickKnob(GeonkickWidget *parent);
-   virtual ~GKickKnob();
+   Knob(GeonkickWidget *parent);
+   virtual ~Knob();
    double getValue(void) const;
    void setRange(double from, double to);
    void setCurrentValue(double val);

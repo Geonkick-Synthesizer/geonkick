@@ -36,14 +36,13 @@
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc)
           : GeonkickGroupBox(parent),
             oscillator(osc),
-            waveFunctionCb(nullptr),
-            filterTypeCb(nullptr),
-            filterTypeIsChecked(false),
             filterCheckbox(nullptr),
             sineButton(nullptr),
             squareButton(nullptr),
             triangleButton(nullptr),
-            sawtoothButton(nullptr)
+            sawtoothButton(nullptr),
+            filterTypeIsChecked(false),
+            filterType(nullptr)
 {
         auto checkbox = new GeonkickCheckbox(this);
         connect(checkbox, SIGNAL(stateUpdated(bool)), this, SLOT(disableOscillator(bool)));
@@ -194,11 +193,13 @@ void OscillatorGroupBox::createFilterGroupBox()
         kickQFactorKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_50x50.png"));
         kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
 
-        auto filterType = new GeonkickButton(filterEnvelopeBox);
+        filterType = new GeonkickButton(filterEnvelopeBox);
         filterType->setCheckable(true);
-        connect(getGroupBoxLabel(), SIGNAL(stateUpdated(bool), this, SLOT([](bool state){
-                                        filterType->setPressed(state);
-                                        filterTypeIsChecked = filterType->isPressed();
+        connect(filterType, SIGNAL(stateUpdated(bool)), this, SLOT([](bool state){
+                                       if (state)
+                                               osc->setFilterType();
+                                       } else {
+                                       }
                                 }));
         w = 80;
         h = 25;
@@ -251,7 +252,7 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
 void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 {
         if (filterTypeIsChecked && state == true) {
-                filterType->setChecked(true);
+                filterType->setPressed(true);
         }
         oscillator->enable(state);
 }

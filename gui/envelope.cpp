@@ -1,10 +1,10 @@
 /**
- * File name: gkick_envelope.h
- * Project: GeonKick (A kick synthesizer)
+ * File name: envelope.h
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "gkick_oscillator.h"
-#include "oscillator_envelope.h"
-#include "globals.h"
+#include "envelope.h"
 
-GKickEnvelope::GKickEnvelope()
+Envelope::Envelope()
 :        selectedPointIndex(0),
          pointSelected(false),
-         envelopeType(GKickEnvelope::ENV_TYPE_AMPLITUDE),
-         supportedTypes({GKickEnvelope::ENV_TYPE_AMPLITUDE, GKickEnvelope::ENV_TYPE_FREQUENCY}),
+         envelopeType(EnvelopeType::Amplitude),
+         supportedTypes({EnvelopeType::Amplitude, EnvelopeType::Frequency}),
          envelopeOrigin(0, 0),
          envelopeW(0),
          envelopeH(0)
@@ -37,26 +35,26 @@ GKickEnvelope::GKickEnvelope()
 
 }
 
-GKickEnvelope::~GKickEnvelope()
+Envelope::~Envelope()
 {
 }
 
-int GKickEnvelope::W(void) const
+int Envelope::W(void) const
 {
         return envelopeW;
 }
 
-int GKickEnvelope::H(void) const
+int Envelope::H(void) const
 {
         return envelopeH;
 }
 
-QPointF GKickEnvelope::origin(void) const
+QPointF Envelope::origin(void) const
 {
         return envelopeOrigin;
 }
 
-void GKickEnvelope::draw(QPainter &painter, const QRectF &rect)
+void Envelope::draw(QPainter &painter, const QRectF &rect)
 {
         envelopeW = rect.width();
         envelopeH = rect.height();
@@ -66,7 +64,7 @@ void GKickEnvelope::draw(QPainter &painter, const QRectF &rect)
         drawLines(painter);
 }
 
-void GKickEnvelope::drawScale(QPainter &painter)
+void Envelope::drawScale(QPainter &painter)
 {
         auto val = envelopeLengh() / 10;
         auto dx = W() / 10;
@@ -100,14 +98,14 @@ void GKickEnvelope::drawScale(QPainter &painter)
         p.setPen(pen);*/
 }
 
-void GKickEnvelope::drawPoints(QPainter &painter)
+void Envelope::drawPoints(QPainter &painter)
 {
 	for (const auto &point : envelopePoints) {
 		point->draw(painter);
         }
 }
 
-void GKickEnvelope::drawLines(QPainter &painter)
+void Envelope::drawLines(QPainter &painter)
 {
         QPolygonF points;
 	for (const auto& point : envelopePoints) {
@@ -123,14 +121,14 @@ void GKickEnvelope::drawLines(QPainter &painter)
 	painter.drawPolyline(points);
 }
 
-bool GKickEnvelope::hasSelected(void) const
+bool Envelope::hasSelected(void) const
 {
 	return pointSelected;
 }
 
-void GKickEnvelope::selectPoint(const QPointF &point)
+void Envelope::selectPoint(const QPointF &point)
 {
-        std::vector<std::shared_ptr<GKickEnvelopePoint>>::size_type index = 0;
+        std::vector<std::shared_ptr<EnvelopePoint>>::size_type index = 0;
 	for (const auto& p : envelopePoints) {
 		if (p->hasPoint(point)) {
 			p->selectPoint();
@@ -142,7 +140,7 @@ void GKickEnvelope::selectPoint(const QPointF &point)
 	}
 }
 
-void GKickEnvelope::unselectPoint(void)
+void Envelope::unselectPoint(void)
 {
         if (pointSelected) {
 		envelopePoints[selectedPointIndex]->unselectPoint();
@@ -150,7 +148,7 @@ void GKickEnvelope::unselectPoint(void)
         }
 }
 
-double GKickEnvelope::getLeftPointLimit(void) const
+double Envelope::getLeftPointLimit(void) const
 {
         double x;
 	if (!pointSelected || envelopePoints.empty() || selectedPointIndex < 1) {
@@ -162,7 +160,7 @@ double GKickEnvelope::getLeftPointLimit(void) const
 	return x;
 }
 
-double GKickEnvelope::getRightPointLimit(void) const
+double Envelope::getRightPointLimit(void) const
 {
 	double x;
 	if (!pointSelected || envelopePoints.empty()) {
@@ -176,7 +174,7 @@ double GKickEnvelope::getRightPointLimit(void) const
 	return x;
 }
 
-void GKickEnvelope::moveSelectedPoint(double x, double y)
+void Envelope::moveSelectedPoint(double x, double y)
 {
         if (!pointSelected || envelopePoints.empty()) {
 		return;
@@ -207,15 +205,15 @@ void GKickEnvelope::moveSelectedPoint(double x, double y)
                           selectedPoint->y());
 }
 
-void GKickEnvelope::setPoints(const QPolygonF &points)
+void Envelope::setPoints(const QPolygonF &points)
 {
         removePoints();
         for (const auto &point : points) {
-                envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, point));
+                envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, point));
         }
 }
 
-void GKickEnvelope::addPoint(const QPointF &point)
+void Envelope::addPoint(const QPointF &point)
 {
         QPointF scaledPoint = QPointF(point.x() / W(), point.y() / H());
 
@@ -226,22 +224,22 @@ void GKickEnvelope::addPoint(const QPointF &point)
         }
   	if (scaledPoint.x() > 1.0) {
 	        scaledPoint.setX(1.0);
-		envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
+		envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, scaledPoint));
 	} else if (scaledPoint.x() < 0.0) {
                 scaledPoint.setX(0.0);
                 envelopePoints.insert(envelopePoints.begin(),
-                                      std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
+                                      std::make_shared<EnvelopePoint>(this, scaledPoint));
         } else if (envelopePoints.empty()) {
-                envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
+                envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, scaledPoint));
 	} else if (scaledPoint.x() < envelopePoints[0]->x()) {
                 envelopePoints.insert(envelopePoints.begin(),
-                                      std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
+                                      std::make_shared<EnvelopePoint>(this, scaledPoint));
 	} else if (scaledPoint.x() > envelopePoints.back()->x()) {
-                envelopePoints.push_back(std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
+                envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, scaledPoint));
 	} else {
 		for (auto it = envelopePoints.begin() ; it != envelopePoints.end(); ++it) {
 			if (scaledPoint.x() < (*it)->x()) {
-                                envelopePoints.insert(it, std::make_shared<GKickEnvelopePoint>(this, scaledPoint));
+                                envelopePoints.insert(it, std::make_shared<EnvelopePoint>(this, scaledPoint));
                                 break;
 			}
 		}
@@ -250,9 +248,9 @@ void GKickEnvelope::addPoint(const QPointF &point)
 	pointAddedEvent(scaledPoint.x(), scaledPoint.y());
 }
 
-void GKickEnvelope::removePoint(QPointF point)
+void Envelope::removePoint(QPointF point)
 {
-        std::vector<std::shared_ptr<GKickEnvelopePoint>>::size_type index = 0;
+        std::vector<std::shared_ptr<EnvelopePoint>>::size_type index = 0;
         for (const auto p: envelopePoints) {
 		if (p->hasPoint(point)) {
 			if (p != envelopePoints.front() && p != envelopePoints.back()) {
@@ -265,7 +263,7 @@ void GKickEnvelope::removePoint(QPointF point)
         }
 }
 
-bool GKickEnvelope::setType(GKickEnvelope::EnvelopeType type)
+bool Envelope::setType(Envelope::EnvelopeType type)
 {
         if (isSupportedType(type)) {
                 envelopeType = type;
@@ -275,12 +273,12 @@ bool GKickEnvelope::setType(GKickEnvelope::EnvelopeType type)
         return false;
 }
 
-GKickEnvelope::EnvelopeType GKickEnvelope::type(void) const
+Envelope::EnvelopeType Envelope::type(void) const
 {
 	return envelopeType;
 }
 
-bool GKickEnvelope::isSupportedType(GKickEnvelope::EnvelopeType type) const
+bool Envelope::isSupportedType(Envelope::EnvelopeType type) const
 {
         if (supportedTypes.find(type) != supportedTypes.end()) {
                 return true;
@@ -288,21 +286,21 @@ bool GKickEnvelope::isSupportedType(GKickEnvelope::EnvelopeType type) const
         return false;
 }
 
-void GKickEnvelope::addSupportedType(GKickEnvelope::EnvelopeType type)
+void Envelope::addSupportedType(Envelope::EnvelopeType type)
 {
         if (!isSupportedType(type)) {
                 supportedTypes.insert(type);
         }
 }
 
-void GKickEnvelope::removeSupportedType(GKickEnvelope::EnvelopeType type)
+void Envelope::removeSupportedType(Envelope::EnvelopeType type)
 {
         if (isSupportedType(type)) {
                 supportedTypes.erase(type);
         }
 }
 
-void GKickEnvelope::removePoints()
+void Envelope::removePoints()
 {
         envelopePoints.clear();
 }
