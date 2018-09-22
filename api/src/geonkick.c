@@ -110,11 +110,10 @@ geonkick_enable_oscillator(struct geonkick* kick, size_t index)
 }
 
 enum geonkick_error
-geonkick_disable_oscillator(struct geonkick* kick, size_t index, int enable)
+geonkick_disable_oscillator(struct geonkick* kick, size_t index)
 {
         GEONKICK_UNUSED(kick);
         GEONKICK_UNUSED(index);
-        GEONKICK_UNUSED(enable);
         return GEONKICK_OK;
 }
 

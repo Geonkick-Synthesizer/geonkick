@@ -24,7 +24,7 @@
 #ifndef GKICK_OSCILLATOR_GROUP_BOX_H
 #define GKICK_OSCILLATOR_GROUP_BOX_H
 
-#include "gkick_oscillator.h"
+#include "oscillator.h"
 #include "geonkick_groupbox.h"
 
 class GKickOscillator;
@@ -37,7 +37,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
 {
         Q_OBJECT
  public:
-        OscillatorGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickOscillator> &osc);
+        OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc);
         ~OscillatorGroupBox();
  signals:
         void oscillatorFunctionChanged(int index);
@@ -53,9 +53,10 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void setTriangleWave(bool pressed);
         void setSawtoothWave(bool pressed);
         void groupBoxLabelUpdated(bool state);
+        void setFilterType(bool state);
 
  private:
-        std::shared_ptr<GKickOscillator> oscillator;
+        Oscillator *oscillator;
         GeonkickCheckbox *filterCheckbox;
         GeonkickButton *sineButton;
         GeonkickButton *squareButton;

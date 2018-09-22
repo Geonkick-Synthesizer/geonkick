@@ -1,5 +1,5 @@
 /**
- * File name: gkickapi.cpp
+ * File name: geonkick_api.cpp
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
@@ -21,64 +21,56 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "gkickapi.h"
-#include "gkick_oscillator.h"
+#include "geonkick_api.h"
+#include "oscillator.h"
 #include "globals.h"
 
 #include <geonkick.h>
 
 #include <memory>
 
-GKickApi::GKickApi() :
-        gKickApi(nullptr)
+GeonkickApi::GeonkickApi(QObject *parent) :
+        QObject(parent),
+        geonkickApi(nullptr)
 {
 }
 
-GKickApi::~GKickApi()
+GeonkickApi::~GeonkickApi()
 {
-  	if (gKickApi) {
-                geonkick_free(&gKickApi);
+  	if (geonkickApi) {
+                geonkick_free(&geonkickApi);
   	}
 }
 
-bool GKickApi::init()
+bool GeonkickApi::init()
 {
-  	if (geonkick_create(&gKickApi) != GEONKICK_OK) {
-	        GKICK_LOG_ERROR("can't create geonkick API");
+  	if (geonkick_create(&geonkickApi) != GEONKICK_OK) {
+	        GEONKICK_LOG_ERROR("can't create geonkick API");
                 return false;
   	}
 
         return true;
 }
 
-std::vector<std::shared_ptr<GKickOscillator>> GKickApi::getOscillators(void)
+std::vector<Oscillator*> GeonkickApi::oscillators(void)
 {
-        std::vector<std::shared_ptr<GKickOscillator>> oscillators;
-        if (!gKickApi) {
-                return oscillators;
-        }
-
-        int n = geonkick_get_oscillators_number(gKickApi);
+        std::vector<Oscillator*> oscillators;
+        int n = geonkick_get_oscillators_number(geonkickApi);
         for (int i = 0; i < n; i++) {
-                std::shared_ptr<GKickOscillator> osc;
-                osc = std::make_shared<GKickOscillator>(this, static_cast<GKickOscillator::OscillatorType>(i));
-                oscillators.push_back(osc);
+                oscillators.push_back(new Oscillator(this, static_cast<Oscillator::Type>(i)));
         }
 
         return oscillators;
 }
 
-QPolygonF GKickApi::getOscEvelopePoints(int osc, int envelope) const
+QPolygonF GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeType envelope) const
 {
         double *buf;
         QPolygonF points;
         size_t npoints = 0;
 
-        if (!gKickApi) {
-                return points;
-        }
-
-        geonkick_osc_envelope_get_points(gKickApi, osc, envelope, &buf, &npoints);
+        geonkick_osc_envelope_get_points(geonkickApi, oscillatorIndex,
+                                         static_cast<int>(envelope), &buf, &npoints);
         for (size_t i = 0; i < 2 * npoints; i += 2) {
                 points.push_back(QPointF(buf[i], buf[i+1]));
         }
@@ -90,207 +82,158 @@ QPolygonF GKickApi::getOscEvelopePoints(int osc, int envelope) const
         return points;
 }
 
-
-void GKickApi::addOscEnvelopePoint(int osc, int envelope,const QPointF &point)
+void GeonkickApi::addOscillatorEnvelopePoint(int oscillatorIndex, EnvelopeType envelope, const QPointF &point)
 {
-        if (!gKickApi) {
-                return;
-        }
-
-        geonkick_osc_envelope_add_point(gKickApi,
-                                        osc,
-                                        envelope,
-                                        point.x(), point.y());
+        geonkick_osc_envelope_add_point(geonkickApi, oscillatorIndex,
+                                        static_cast<int>(envelope), point.x(), point.y());
 }
 
-void GKickApi::removeOscEvelopePoint(int osc, int envelope, int index)
+void GeonkickApi::removeOscillatorEvelopePoint(int oscillatorIndex, EnvelopeType envelope, int pointIndex)
 {
-        if (!gKickApi) {
-                return;
-        }
-
-        geonkick_osc_envelope_remove_point(gKickApi, osc, envelope, index);
+        geonkick_osc_envelope_remove_point(geonkickApi, oscillatorIndex,
+                                           static_cast<int>(envelope), pointIndex);
 }
 
-void GKickApi::updateOscEvelopePoint(int osc, int envelope,
-                                     int index, const QPointF &point)
+void GeonkickApi::updateOscillatorEvelopePoint(int oscillatorIndex,
+                                        EnvelopeType envelope,
+                                        int pointIndex,
+                                        const QPointF &point)
 {
-        if (!gKickApi) {
-                return;
-        }
-
-        geonkick_osc_envelope_update_point(gKickApi, osc, envelope,
-                                           index, point.x(), point.y());
+        geonkick_osc_envelope_update_point(geonkickApi, oscillatorIndex,
+                                           static_cast<int>(envelope),
+                                           pointIndex, point.x(), point.y());
 }
 
 
-void GKickApi::setOscFunction(int oscillatorIndex, enum geonkick_osc_func_type type)
+void GeonkickApi::setOscillatorFunction(int oscillatorIndex, FunctionType function)
 {
-        if (!gKickApi) {
-                return;
-        }
-
-        geonkick_set_osc_function(gKickApi, oscillatorIndex, (enum geonkick_osc_func_type)type);
+        geonkick_set_osc_function(geonkickApi, oscillatorIndex,
+                                  static_cast<enum geonkick_osc_func_type>(function));
 }
 
-enum geonkick_osc_func_type GKickApi::getOscFunction(int oscillatorIndex) const
+GeonkickApi::FunctionType GeonkickApi::oscillatorFunction(int oscillatorIndex) const
 {
-        if (!gKickApi) {
-                return GEONKICK_OSC_FUNC_UNKNOWN;
-        }
-
         // IMPREMENT API
-        return GEONKICK_OSC_FUNC_SINE;
+        return FunctionType::Sine;
 }
 
-void GKickApi::setKickLength(double len)
+void GeonkickApi::setKickLength(double length)
 {
-        if (!gKickApi) {
-                return;
-        }
-
-        if (geonkick_set_length(gKickApi, len / 1000) == GEONKICK_OK) {
-                emit kickLengthUpdated(len);
+        if (geonkick_set_length(geonkickApi, length / 1000) == GEONKICK_OK) {
+                emit kickLengthUpdated(length);
         };
 }
 
-double GKickApi::getKickLength(void) const
+double GeonkickApi::kickLength(void) const
 {
-        if (!gKickApi) {
-	          return 0;
+        double length = 0;
+        geonkick_get_length(geonkickApi, &length);
+        return 1000 * length;
+}
+
+void GeonkickApi::setKickAmplitude(double amplitude)
+{
+}
+
+double GeonkickApi::kickAmplitude() const
+{
+        return 1;
+}
+
+void GeonkickApi::setKickFilterFrequency(double frequency)
+{
+}
+
+double GeonkickApi::kickFilterFrequency(void) const
+{
+}
+
+void GeonkickApi::setKickFilterQFactor(double factor)
+{
+}
+
+double GeonkickApi::kickFilterQFactor() const
+{
+}
+
+bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
+{
+	if (geonkick_set_osc_amplitude_val(geonkickApi, oscillatorIndex, value) != GEONKICK_OK) {
+		return false;
+	}
+
+	return true;
+}
+
+double GeonkickApi::oscillatorAmplitude(int oscillatorIndex) const
+{
+	double value = 0;
+	if (geonkick_get_osc_amplitude_val(geonkickApi, oscillatorIndex, &value) != GEONKICK_OK) {
+		return 0;
+	}
+
+	return value;
+}
+
+bool GeonkickApi::setOscillatorFrequency(int oscillatorIndex, double value)
+{
+	if (geonkick_set_osc_frequency_val(geonkickApi, oscillatorIndex, value) != GEONKICK_OK) {
+		return false;
+	}
+
+	return true;
+}
+
+double GeonkickApi::oscillatorFrequency(int oscillatorIndex) const
+{
+	double value = 0;
+	if (geonkick_get_osc_frequency_val(geonkickApi, oscillatorIndex, &value) != GEONKICK_OK) {
+                return 0;
+	}
+
+	return value;
+}
+
+void GeonkickApi::addKickEnvelopePoint(double x, double y)
+{
+        Q_UNUSED(x);
+        Q_UNUSED(y);
+}
+
+void GeonkickApi::updateKickEnvelopePoint(double x, double y)
+{
+        Q_UNUSED(x);
+        Q_UNUSED(y);
+}
+
+ void GeonkickApi::removeKickEnvelopePoint(int pointIndex)
+{
+        Q_UNUSED(pointIndex);
+}
+
+void GeonkickApi::enableOscillator(int oscillatorIndex, bool enable)
+{
+        if (enable) {
+                geonkick_enable_oscillator(geonkickApi, oscillatorIndex);
+        } else {
+                geonkick_disable_oscillator(geonkickApi, oscillatorIndex);
         }
-        double len = 0.0;
-        geonkick_get_length(gKickApi, &len);
-        return 1000 * len;
 }
 
-void GKickApi::setMaxLength(double len)
+bool GeonkickApi::isOscillatorEnabled(int oscillatorIndex)
 {
+        int enabled = 0;
+        geonkick_is_oscillator_enabled(geonkickApi, oscillatorIndex, &enabled);
+        return enabled;
 }
 
-double GKickApi::getMaxLength() const
+double GeonkickApi::kickMaxLength(void) const
 {
         return 1000;
 }
 
-void GKickApi::setAmplitude(double val)
+void GeonkickApi::setOscillatorFilterType(int oscillatorIndex, FilterType filter)
 {
+        Q_UNUSED(oscillatorIndex);
+        Q_UNUSED(filter);
 }
-
-double GKickApi::getAmplitude() const
-{
-        return 1.0;
-}
-
-void GKickApi::setKickFilterFrequency(double f)
-{
-}
-
-double GKickApi::getKickFilterFrequency(void) const
-{
-}
-
-void GKickApi::setKickFilterQFactor(double f)
-{
-}
-
-double GKickApi::getKickFilterQFactor() const
-{
-}
-
-bool GKickApi::setOscAmplitudeValue(int oscillatorIndex, double v)
-{
-	if (!gKickApi) {
-		return false;
-	}
-
-        GKICK_LOG_INFO("AMPLITUDE :" << v);
-	if (geonkick_set_osc_amplitude_val(gKickApi, oscillatorIndex, v)
-	    != GEONKICK_OK) {
-		return false;
-	}
-
-	return true;
-}
-
-double GKickApi::getOscAmplitudeValue(int oscillatorIndex) const
-{
-	double v;
-
-	if (!gKickApi) {
-		return 0.0;
-	}
-
-	v = 0.0;
-	if (geonkick_get_osc_amplitude_val(gKickApi, oscillatorIndex, &v)
-	    != GEONKICK_OK) {
-		return 0.0;
-	}
-
-	return v;
-}
-
-bool GKickApi::setOscFrequencyValue(int oscillatorIndex, double v)
-{
-	if (!gKickApi) {
-		return false;
-	}
-
-	if (geonkick_set_osc_frequency_val(gKickApi, oscillatorIndex, v)
-	    != GEONKICK_OK) {
-		return false;
-	}
-
-	return true;
-}
-
-double GKickApi::getOscFrequencyValue(int oscillatorIndex) const
-{
-	double v;
-
-	if (!gKickApi) {
-		return 0.0;
-	}
-
-	v = 0.0;
-	if (geonkick_get_osc_frequency_val(gKickApi, oscillatorIndex, &v)
-	    != GEONKICK_OK) {
-                return 0.0;
-	}
-        GKICK_LOG_INFO("val - " << v);
-	return v;
-}
-
-void GKickApi::addEnvelopePoint(double x, double y)
-{
-        Q_UNUSED(x);
-        Q_UNUSED(y);
-        GKICK_LOG_INFO("IMPLEMENT API");
-}
-
-void GKickApi::updateEnvelopePoint(unsigned int index, double x, double y)
-{
-        Q_UNUSED(index);
-        Q_UNUSED(x);
-        Q_UNUSED(y);
-        GKICK_LOG_INFO("IMPLEMENT API");
-}
-
-void GKickApi::removeEnvelopePoint(unsigned int index)
-{
-        Q_UNUSED(index);
-        GKICK_LOG_INFO("IMPLEMENT API");
-}
-
-void GKickApi::enableOscillator(unsigned int index, bool enable)
-{
-        geonkick_enable_oscillator(gKickApi, index, static_cast<int>(enable));
-}
-
-bool GKickApi::isOscillatorEnabled(unsigned int index)
-{
-        int enabled = 0;
-        geonkick_is_oscillator_enabled(gKickApi, index, &enabled);
-        return enabled;
-}
-

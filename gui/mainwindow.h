@@ -24,10 +24,10 @@
 #ifndef GEONGKICK_MAINWINDOW_H
 #define GEONGKICK_MAINWINDOW_H
 
-#include "gkickapi.h"
+#include "geonkick_api.h"
 #include "geonkick_widget.h"
-#include "gkick_oscillator.h"
-#include "gkick_envelope_widget.h"
+#include "oscillator.h"
+#include "envelope_widget.h"
 
 #include <QMainWindow>
 
@@ -52,15 +52,11 @@ class MainWindow : public GeonkickWidget
       bool init(void);
 
  private:
-	std::shared_ptr<GKickApi> gkickApi;
-	std::vector<std::shared_ptr<GKickOscillator>> oscillators;
-      	QLabel *oscillatorWidgetLabel;
+	GeonkickApi *geonkickApi;
+	std::vector<Oscillator*> oscillators;
 	OscillatorWidget *oscillatorWidget;
 	QVBoxLayout *centralWidgetLayout;
 	QVector<QGroupBox*> envelopeGroupBox;
-	QVector<QRadioButton*> amplitudeRb;
-	QVector<QRadioButton*> frequencyRb;
-	QVector<QComboBox*> waveFunctionCb;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

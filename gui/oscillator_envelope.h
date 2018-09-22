@@ -1,10 +1,10 @@
 /**
  * File name: oscillator_envelope.h
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,19 +24,19 @@
 #ifndef GKICK_OSCILLLATOR_ENVELOPE_H
 #define GKICK_OSCILLLATOR_ENVELOPE_H
 
-#include "gkick_envelope.h"
+#include "envelope.h"
 
 #include <memory>
 
-class GKickOscillator;
+class Oscillator;
 
-class OscillatorEnvelope: public GKickEnvelope
+class OscillatorEnvelope: public Envelope
 {
   Q_OBJECT
 
  public:
 
-  OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc);
+  OscillatorEnvelope(Oscillator* osc);
   ~OscillatorEnvelope();
   double envelopeLengh(void) const;
 
@@ -47,7 +47,7 @@ class OscillatorEnvelope: public GKickEnvelope
   void pointRemovedEvent(unsigned int index) override;
 
  private:
-          std::shared_ptr<GKickOscillator> oscillator;
+          Oscillator *oscillator;
 };
 
 #endif

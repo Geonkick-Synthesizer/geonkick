@@ -239,7 +239,7 @@ gkick_create_jack(struct geonkick *kick)
 
         jack = (struct gkick_jack*)malloc(sizeof(struct gkick_jack));
         if (jack == NULL) {
-                return GEONKICK_ERROR_NULL_POINTER;
+                return GEONKICK_ERROR;
         }
         memset(jack, 0, sizeof(struct gkick_jack));
         jack->sample_rate = 48000;
@@ -247,14 +247,14 @@ gkick_create_jack(struct geonkick *kick)
         if (pthread_mutex_init(&jack->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
                 gkick_jack_free(&jack);
-                return GEONKICK_ERROR_INIT_MUTEX;
+                return GEONKICK_ERROR;
         }
 
         jack->client = jack_client_open(kick->name, JackNoStartServer, NULL);
         if (jack->client == NULL) {
                 gkick_log_error("can't create jack client");
                 gkick_jack_free(&jack);
-                return GEONKICK_ERROR_OPEN_JACK;
+                return GEONKICK_ERROR;
         }
 
         jack_set_process_callback(jack->client,
@@ -275,7 +275,7 @@ gkick_create_jack(struct geonkick *kick)
         if (jack_activate(kick->jack->client) != 0) {
                 gkick_log_error("cannot activate client");
                 gkick_jack_free(&kick->jack);
-                return GEONKICK_ERROR_ACTIVATE_JACK;
+                return GEONKICK_ERROR;
         }
 
 	return GEONKICK_OK;

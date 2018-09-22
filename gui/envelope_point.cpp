@@ -1,10 +1,10 @@
 /**
  * File name: envelope_point.cpp
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@
  */
 
 #include "envelope_point.h"
-#include "gkick_envelope.h"
+#include "envelope.h"
 
 #include <QDebug>
 
-GKickEnvelopePoint::GKickEnvelopePoint(void)
+EnvelopePoint::EnvelopePoint(void)
 	: QPointF(),
 	  is_selected(false),
 	  pointRadius(20),
@@ -36,8 +36,7 @@ GKickEnvelopePoint::GKickEnvelopePoint(void)
 {
 }
 
-GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
-                                       const QPointF &point)
+EnvelopePoint::EnvelopePoint(Envelope *parent, const QPointF &point)
 	: QPointF(point),
 	  is_selected(false),
 	  pointRadius(20),
@@ -46,8 +45,7 @@ GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
 {
 }
 
-GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
-                                       double x, double y)
+EnvelopePoint::EnvelopePoint(Envelope *parent, double x, double y)
 	: QPointF(x, y),
 	  is_selected(false),
 	  pointRadius(20),
@@ -57,11 +55,11 @@ GKickEnvelopePoint::GKickEnvelopePoint(GKickEnvelope *parent,
 {
 }
 
-GKickEnvelopePoint::~GKickEnvelopePoint()
+EnvelopePoint::~EnvelopePoint()
 {
 }
 
-void GKickEnvelopePoint::draw(QPainter &painter)
+void EnvelopePoint::draw(QPainter &painter)
 {
 	QPen pen;
         pen.setWidth(2);
@@ -84,32 +82,32 @@ void GKickEnvelopePoint::draw(QPainter &painter)
         painter.setBrush(brush);
 }
 
-double GKickEnvelopePoint::radius(void)
+double EnvelopePoint::radius(void)
 {
 	return pointRadius;
 }
 
-double GKickEnvelopePoint::getDotRadius(void)
+double EnvelopePoint::getDotRadius(void)
 {
 	return dotRadius;
 }
 
-bool GKickEnvelopePoint::isSelected(void)
+bool EnvelopePoint::isSelected(void)
 {
 	return is_selected;
 }
 
-void GKickEnvelopePoint::selectPoint(void)
+void EnvelopePoint::selectPoint(void)
 {
 	is_selected = true;
 }
 
-void GKickEnvelopePoint::unselectPoint(void)
+void EnvelopePoint::unselectPoint(void)
 {
 	is_selected = false;
 }
 
-bool GKickEnvelopePoint::hasPoint(const QPointF &point)
+bool EnvelopePoint::hasPoint(const QPointF &point)
 {
 	double px = point.x();
 	double py = point.y();
@@ -125,24 +123,24 @@ bool GKickEnvelopePoint::hasPoint(const QPointF &point)
 	return false;
 }
 
-QString GKickEnvelopePoint::pointText(void)
+QString EnvelopePoint::pointText(void)
 {
-	if (parentEnvelope->type() == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+	if (parentEnvelope->type() == Envelope::Type::Amplitude) {
 		return pointAmplitudeText();
-	} else if (parentEnvelope->type() == GKickEnvelope::ENV_TYPE_FREQUENCY) {
+	} else if (parentEnvelope->type() == Envelope::Type::Frequency) {
 		return pointFrequencyText();
 	}
 
-	return "";
+	return QString();
 }
 
-QString GKickEnvelopePoint::pointAmplitudeText(void)
+QString EnvelopePoint::pointAmplitudeText(void)
 {
 	QString text = QString::number(y(), 'f', 3);
 	return text;
 }
 
-QString GKickEnvelopePoint::pointFrequencyText(void)
+QString EnvelopePoint::pointFrequencyText(void)
 {
 	double v = y();
 
@@ -157,7 +155,7 @@ QString GKickEnvelopePoint::pointFrequencyText(void)
 	return textVal;
 }
 
-QString GKickEnvelopePoint::getTimeTextValue(void)
+QString EnvelopePoint::getTimeTextValue(void)
 {
 	return QString::number((parentEnvelope->envelopeLengh() * x()) * 1000, 'f', 0) + " ms";
 }

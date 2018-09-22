@@ -27,8 +27,7 @@
 #include <QPolygonF>
 #include <QObject>
 
-#include "gkickapi.h"
-#include "geonkick.h"
+#include "geonkick_api.h"
 
 class Oscillator: public QObject
 {
@@ -36,76 +35,69 @@ class Oscillator: public QObject
 
  public:
 
-  enum class OscillatorType: int {
-          Oscialltor1 = GeonkickApi::OscillatorType::Oscillator1,
-          Oscillator2 = GeonkickApi::OscillatorType::Oscillator2,
-          Noise       = GeonkickApi::OscillatorType::Noise
+  enum class Type: int {
+          Oscillator1 = 0,
+          Oscillator2 = 1,
+          Noise       = 2
   };
 
-  enum class OscillatorFunctionType:int {
-          Sine     = GeonkickApi::OscillatorFunctionType::Sine,
-          Square   = GeonkickApi::OscillatorFunctionType::Sqaure,
-          Triangle = GekickApi::OscillatorFunctionType::Triangle,
-          Sawtooth = GekickApi::OscillatorFunctionType::Sawtooth,
-          Noise    = GekickApi::OscillatorFunctionType::Noise
+  enum class FunctionType:int {
+          Sine     = static_cast<int>(GeonkickApi::FunctionType::Sine),
+          Square   = static_cast<int>(GeonkickApi::FunctionType::Square),
+          Triangle = static_cast<int>(GeonkickApi::FunctionType::Triangle),
+          Sawtooth = static_cast<int>(GeonkickApi::FunctionType::Sawtooth),
+          Noise    = static_cast<int>(GeonkickApi::FunctionType::Noise)
   };
 
-  enum class OscillatorEnvelopeType:int {
-          Amplitude  = GeokickApi::OscillatorEnvelopeType::Amplitude,
-          Frequency  = GeokickApi::OscillatorEnvelopeType::Frequency
+  enum class EnvelopeType:int {
+          Amplitude  = static_cast<int>(GeonkickApi::EnvelopeType::Amplitude),
+          Frequency  = static_cast<int>(GeonkickApi::EnvelopeType::Frequency)
   };
 
-  enum class OscillatorFilterType:char {
-          LowPass    = GeokickApi::OscillatorFilterType::LowPass,
-          HeightPass = GeokickApi::OscillatorFilterType::HightPass
+  enum class FilterType:int {
+          LowPass    = static_cast<int>(GeonkickApi::FilterType::LowPass),
+          HighPass = static_cast<int>(GeonkickApi::FilterType::HighPass)
   };
 
-  Oscillator(GKickApi *api, GKickOscillator::OscillatorType type);
+  Oscillator(GeonkickApi *api, Oscillator::Type type);
   ~Oscillator();
-  double getKickLength(void);
-  OscillatorFuncType getOscFunction();
-  QPolygonF getEnvelopePoints(Oscillator::OscillatorEnvelopeType type);
-  double getOscAmplitudeValue(void);
-  double getOscFrequencyValue(void);
-  void setOscillatorType(Oscillator::OscillatorType type);
-  Oscillator::OscillatorType getType(void);
-  void setFilterType(Oscillator::OscillatorFilterType type);
-  Oscillator::OscillatorFilterType getFilterType();
+  Oscillator::FunctionType function();
+  QPolygonF envelopePoints(EnvelopeType type);
+  double amplitude(void);
+  double frequency(void);
+  void setType(Type type);
+  Oscillator::Type type(void);
+  Oscillator::FilterType filter();
   void setFilterFrequency(double f);
-  double getFilterFrequency(void);
   bool isEnabled();
+  double envelopeLength();
 
   public slots:
           void enable(bool b);
-          void setOscFunction(OscillatorFuncType type);
-          void setOscAmplitudeValue(double v);
-          void setOscFrequencyValue(double v);
-          void setFilterQFactor(double v);
-          double getFilterQFactor();
+          void setFunction(FunctionType func);
+          void setAmplitude(double amp);
+          void setFrequency(double freq);
+          void setFilterQFactor(double factor);
+          double filterQFactor();
 
-          void addEnvelopePoint(Oscillator::OscillatorEnvelopeType type,
-                                double x,
-                                double y);
-          void removeEnvelopePoint(Oscillator::OscillatorEnvelopeType type,
-                                   int index);
+          void addEnvelopePoint(EnvelopeType envelope, double x, double y);
+          void removeEnvelopePoint(EnvelopeType envelope, int point_index);
 
-          void updateEnvelopePoint(Oscillator::OscillatorEnvelopeType type,
-                                   int index,
-                                   double x,
-                                   double y);
-          void setFilterType(OscillatorFilterType type);
+          void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
+          void setFilterType(FilterType filter);
+          double filterFrequency(void);
 
  signals:
-	  void oscAmplitudeValueUpdated(double v);
-	  void oscFrequencyValueUpdated(double v);
+	  void amplitudeUpdated(double v);
+	  void frequencyUpdated(double v);
 
  protected:
-          int oscillatorIndex();
-          int envelopeIndex(Oscillator::OscillatorEnvelopeType type);
+          int index();
+          int envelopeIndex(EnvelopeType type);
  private:
 	  GeonkickApi *geonkickApi;
-          OscillatorType oscillatorType;
-          OscillatorFilterType filterType;
+          Type oscillatorType;
+          FilterType filterType;
 };
 
 #endif

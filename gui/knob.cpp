@@ -22,7 +22,7 @@
  */
 
 #include "knob.h"
-#include "theme.h"
+#include "geonkick_theme.h"
 
 #include <QPainter>
 #include <QDebug>

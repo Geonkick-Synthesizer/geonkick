@@ -22,7 +22,7 @@
  */
 
 #include "mainwindow.h"
-#include "gkick_envelope_widget.h"
+#include "envelope_widget.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"
@@ -44,7 +44,7 @@
 
 MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
-        gkickApi(std::make_shared<GKickApi>())
+        geonkickApi(new GeonkickApi(this))
 {
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
@@ -60,31 +60,39 @@ MainWindow::~MainWindow()
 
 bool MainWindow::init(void)
 {
-        if (gkickApi->init()) {
+        if (geonkickApi->init()) {
 	  //return false;
         }
 
         setTheme(new GeonkickTheme("Geontime"));
 
-        gkickApi->setMaxLength(300);
-        gkickApi->setKickLength(300);
-        gkickApi->setAmplitude(0);
-        gkickApi->setKickFilterFrequency(0);
-        oscillators = gkickApi.get()->getOscillators();
-	oscillators[GKickOscillator::OSC_1].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
-	oscillators[GKickOscillator::OSC_2].get()->setOscFunction(GKickOscillator::OSC_FUNC_SINE);
-	oscillators[GKickOscillator::OSC_NOISE].get()->setOscFunction(GKickOscillator::OSC_FUNC_NOISE);
-	oscillators[GKickOscillator::OSC_1].get()->setOscAmplitudeValue(0.8);
-	oscillators[GKickOscillator::OSC_1].get()->setOscFrequencyValue(1000);
-	oscillators[GKickOscillator::OSC_1].get()->setFilterType(GKickOscillator::FILTER_LP);
-	oscillators[GKickOscillator::OSC_1].get()->setFilterFrequency(20000);
-	oscillators[GKickOscillator::OSC_2].get()->setOscAmplitudeValue(0.8);
-	oscillators[GKickOscillator::OSC_2].get()->setOscFrequencyValue(1000);
-	oscillators[GKickOscillator::OSC_2].get()->setFilterType(GKickOscillator::FILTER_LP);
-	oscillators[GKickOscillator::OSC_2].get()->setFilterFrequency(20000);
-	oscillators[GKickOscillator::OSC_NOISE].get()->setOscAmplitudeValue(0.8);
-	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterType(GKickOscillator::FILTER_LP);
-	oscillators[GKickOscillator::OSC_NOISE].get()->setFilterFrequency(20000);
+        geonkickApi->setKickLength(300);
+        geonkickApi->setKickAmplitude(0);
+        geonkickApi->setKickFilterFrequency(0);
+        oscillators = geonkickApi->oscillators();
+
+        // Oscillator 1
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
+        oscillator->setFrequency(1000);
+	oscillator->setFilterType(Oscillator::FilterType::LowPass);
+	oscillator->setFilterFrequency(20000);
+	oscillator->setFunction(Oscillator::FunctionType::Sine);
+        oscillator->setAmplitude(0.8);
+
+        // Oscillator 2
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
+        oscillator->setFrequency(1000);
+	oscillator->setFilterType(Oscillator::FilterType::LowPass);
+	oscillator->setFilterFrequency(20000);
+	oscillator->setFunction(Oscillator::FunctionType::Sine);
+        oscillator->setAmplitude(0.8);
+
+        // Noise
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
+	oscillator->setFunction(Oscillator::FunctionType::Noise);
+	oscillator->setAmplitude(0.8);
+	oscillator->setFilterType(Oscillator::FilterType::LowPass);
+	oscillator->setFilterFrequency(20000);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
         mainLayout->setContentsMargins(0, 0, 0, 10);
@@ -97,7 +105,7 @@ bool MainWindow::init(void)
         auto hBoxLayout = new QHBoxLayout;
         hBoxLayout->setSpacing(0);
         hBoxLayout->setContentsMargins(0, 0, 0, 0);
-        auto envelopeWidget = new GKickEnvelopeWidget(this, gkickApi, oscillators);
+        auto envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setFixedSize(850, 340);
         hBoxLayout->addWidget(envelopeWidget);
         auto faderWidget = new Fader(this);
@@ -107,7 +115,7 @@ bool MainWindow::init(void)
         mainLayout->addLayout(hBoxLayout);
 
         // Create control area.
-        ControlArea *controlAreaWidget = new ControlArea(this, gkickApi, oscillators);
+        ControlArea *controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         mainLayout->addWidget(controlAreaWidget);
 
         return true;

@@ -33,8 +33,8 @@
 #define GEOKICK_APP_VERION 0x010000
 #define GEOKICK_APP_VERION_STRING "1.0.0"
 
-#define GKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
-#define GKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
-#define GKICK_LOG_DEBUG(msg) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] " << msg
+#define GEONKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
+#define GEONKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
+#define GEONKICK_LOG_DEBUG(msg) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] " << msg
 
 #endif // GEONKICK_GLOBALS_H

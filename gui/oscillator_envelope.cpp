@@ -1,10 +1,10 @@
 /**
  * File name: oscillator_envelope.cpp
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,16 @@
  */
 
 #include "oscillator_envelope.h"
-#include "gkick_oscillator.h"
+#include "oscillator.h"
 
-OscillatorEnvelope::OscillatorEnvelope(std::shared_ptr<GKickOscillator> &osc)
+OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc)
         : oscillator(osc)
 {
-        if (oscillator->getType() == GKickOscillator::OSC_NOISE) {
-                removeSupportedType(GKickEnvelope::ENV_TYPE_FREQUENCY);
+        if (oscillator->type() == Oscillator::Type::Noise) {
+                removeSupportedType(Envelope::Type::Frequency);
         }
-        setType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
-        QPolygonF points = oscillator->getEnvelopePoints(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()));
+        setType(Envelope::Type::Amplitude);
+        QPolygonF points = oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type()));
         setPoints(points);
 }
 
@@ -41,27 +41,27 @@ OscillatorEnvelope::~OscillatorEnvelope()
 
 void OscillatorEnvelope::updatePoints()
 {
-        QPolygonF points = oscillator->getEnvelopePoints(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()));
+        QPolygonF points = oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type()));
         setPoints(points);
 }
 
 void OscillatorEnvelope::pointAddedEvent(double x, double y)
 {
-        oscillator->addEnvelopePoint(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()), x, y);
+        oscillator->addEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), x, y);
 }
 
 void OscillatorEnvelope::pointUpdatedEvent(unsigned int index, double x, double y)
 {
-        oscillator->updateEnvelopePoint(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()), index, x, y);
+        oscillator->updateEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), index, x, y);
 }
 
 void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
 {
-        oscillator->removeEnvelopePoint(static_cast<GKickOscillator::OscillatorEnvelopeType>(type()), index);
+        oscillator->removeEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), index);
 
 }
 
 double OscillatorEnvelope::envelopeLengh(void) const
 {
-        return oscillator->getKickLength();
+        return oscillator->envelopeLength();
 }

@@ -23,11 +23,12 @@
 
 #include "envelope.h"
 
-Envelope::Envelope()
-:        selectedPointIndex(0),
+Envelope::Envelope(QObject *object)
+        : QObject(object),
+         selectedPointIndex(0),
          pointSelected(false),
-         envelopeType(EnvelopeType::Amplitude),
-         supportedTypes({EnvelopeType::Amplitude, EnvelopeType::Frequency}),
+         envelopeType(Type::Amplitude),
+         supportedTypes({Type::Amplitude, Type::Frequency}),
          envelopeOrigin(0, 0),
          envelopeW(0),
          envelopeH(0)
@@ -87,7 +88,7 @@ void Envelope::drawScale(QPainter &painter)
                          tr("Length, ") + QString::number(envelopeLengh(), 'f', 0) + " ms");
 
         /*        QString text;
-        if (type() != EnvelopeType::ENV_TYPE_AMPLITUDE) {
+        if (type() != Type::ENV_TYPE_AMPLITUDE) {
                 text = tr("Amplitude, dB");
         } else {
                 text = tr("Frequency, Hz");
@@ -263,7 +264,7 @@ void Envelope::removePoint(QPointF point)
         }
 }
 
-bool Envelope::setType(Envelope::EnvelopeType type)
+bool Envelope::setType(Type type)
 {
         if (isSupportedType(type)) {
                 envelopeType = type;
@@ -273,12 +274,12 @@ bool Envelope::setType(Envelope::EnvelopeType type)
         return false;
 }
 
-Envelope::EnvelopeType Envelope::type(void) const
+Envelope::Type Envelope::type(void) const
 {
 	return envelopeType;
 }
 
-bool Envelope::isSupportedType(Envelope::EnvelopeType type) const
+bool Envelope::isSupportedType(Type type) const
 {
         if (supportedTypes.find(type) != supportedTypes.end()) {
                 return true;
@@ -286,14 +287,14 @@ bool Envelope::isSupportedType(Envelope::EnvelopeType type) const
         return false;
 }
 
-void Envelope::addSupportedType(Envelope::EnvelopeType type)
+void Envelope::addSupportedType(Type type)
 {
         if (!isSupportedType(type)) {
                 supportedTypes.insert(type);
         }
 }
 
-void Envelope::removeSupportedType(Envelope::EnvelopeType type)
+void Envelope::removeSupportedType(Type type)
 {
         if (isSupportedType(type)) {
                 supportedTypes.erase(type);

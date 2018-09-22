@@ -24,19 +24,19 @@
 #ifndef GKICK_GENERAL_GROUP_BOX_H
 #define GKICK_GENERAL_GROUP_BOX_H
 
-#include "gkick_oscillator.h"
+#include "oscillator.h"
 #include "geonkick_groupbox.h"
 
-class GkickOscillator;
+class Oscillator;
 class QComboBox;
-class GKickApi;
+class GeonkickApi;
 class GeonkickCheckbox;
 
 class GeneralGroupBox: public GeonkickGroupBox
 {
         Q_OBJECT
  public:
-        GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api);
+        GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
         ~GeneralGroupBox();
 
  protected:
@@ -44,7 +44,7 @@ class GeneralGroupBox: public GeonkickGroupBox
         void createFilterHBox();
 
  private:
-        std::shared_ptr<GKickApi> kickApi;
+        GeonkickApi* geonkickApi;
         QComboBox *filterTypeCb;
         GeonkickCheckbox *filterCheckbox;
 };

@@ -21,28 +21,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "gkick_oscillator.h"
+#include "oscillator.h"
 #include "control_area.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "effects_group_box.h"
-#include "gkickapi.h"
+#include "geonkick_api.h"
 
 #include <QHBoxLayout>
 #include <QGridLayout>
 
-ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
-                         std::vector<std::shared_ptr<GKickOscillator>> &oscillators)
+ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
+                         std::vector<Oscillator*> &oscillators)
                          : GeonkickWidget(parent)
 {
         auto mainLayout = new QHBoxLayout(this);
         mainLayout->setSpacing(0);
         mainLayout->setContentsMargins(10, 0, 10, 0);
         setLayout(mainLayout);
-        auto widget = new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_1]);
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
+        auto widget = new OscillatorGroupBox(this, oscillator);
         mainLayout->addWidget(widget);
         mainLayout->setAlignment(widget, Qt::AlignTop);
-        widget = new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_2]);
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
+        widget = new OscillatorGroupBox(this, oscillator);
         mainLayout->addWidget(widget);
         mainLayout->setAlignment(widget, Qt::AlignTop);
 
@@ -50,7 +52,8 @@ ControlArea::ControlArea(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api,
         layoutGBox->setSpacing(0);
         layoutGBox->setContentsMargins(0, 0, 0, 0);
         mainLayout->addLayout(layoutGBox);
-        layoutGBox->addWidget(new OscillatorGroupBox(this, oscillators[GKickOscillator::OSC_NOISE]), 0, 0);
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
+        layoutGBox->addWidget(new OscillatorGroupBox(this, oscillator), 0, 0);
         layoutGBox->addWidget(new GeneralGroupBox(this, api), 0, 1);
         layoutGBox->addWidget(new EffectsGroupBox(this), 1, 0, 1, 2);
 }

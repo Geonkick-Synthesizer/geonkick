@@ -24,18 +24,18 @@
 #ifndef GKICK_GENERAL_ENVELOPE_H
 #define GKICK_GENERAL_ENVELOPE_H
 
-#include "gkick_envelope.h"
+#include "envelope.h"
 
-class GKickOscillator;
-class GKickApi;
+class Oscillator;
+class GeonkickApi;
 
-class GeneralEnvelope: public GKickEnvelope
+class GeneralEnvelope: public Envelope
 {
   Q_OBJECT
 
  public:
 
-  GeneralEnvelope(std::shared_ptr<GKickApi> &api);
+  GeneralEnvelope(GeonkickApi *api);
   ~GeneralEnvelope();
   double envelopeLengh(void) const;
 
@@ -48,7 +48,7 @@ public slots:
   void pointRemovedEvent(unsigned int index) override;
 
  private:
-          std::shared_ptr<GKickApi> gkickApi;
+          GeonkickApi *geonkickApi;
 };
 
 #endif

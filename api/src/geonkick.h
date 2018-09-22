@@ -53,8 +53,13 @@ enum geonkick_error {
 };
 
 enum geonkick_envelope_type {
-  GEONKICK_AMPLITUDE_ENVELOPE = 0,
-  GEONKICK_FREQUENCY_ENVELOPE = 1
+        GEONKICK_AMPLITUDE_ENVELOPE = 0,
+        GEONKICK_FREQUENCY_ENVELOPE = 1
+};
+
+enum geonkick_filter_type {
+        GEONKICK_FILTER_LOW_PASS     = 0,
+        GEONKICK_FREQUENCY_HIGH_PASS = 1
 };
 
 enum geonkick_osc_func_type {
@@ -81,7 +86,7 @@ enum geonkick_error
 geonkick_remove_oscillator(struct geonkick* kick, size_t index);
 
 enum geonkick_error
-geonkick_enable_oscillator(struct geonkick* kick, size_t index, int enable);
+geonkick_enable_oscillator(struct geonkick* kick, size_t index);
 
 enum geonkick_error
 geonkick_disable_oscillator(struct geonkick* kick, size_t index);

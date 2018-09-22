@@ -34,20 +34,18 @@
 #include <QPushButton>
 #include <QLabel>
 
-EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
-                               std::shared_ptr<GeonkickApi> &api,
-                               std::vector<std::shared_ptr<Oscillator>> &oscillators)
+EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::vector<Oscillator*> &oscillators)
           : GeonkickWidget(parent),
           drawArea(nullptr),
           showAmplitudeEnvButton(nullptr),
           showFrequencyEnvButton(nullptr)
 
 {
-        auto oscillator = oscillators[GKickOscillator::OscillatorType::Oscillator1]);
-        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator);
-        oscillator = oscillators[GKickOscillator::OscillatorType::Oscillator2]);
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
         envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator));
-        oscillator = oscillators[GKickOscillator::OscillatorType::Noise]);
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
+        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator));
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
         envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator));
         envelopes.push_back(std::make_shared<GeneralEnvelope>(api));
 
@@ -57,7 +55,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelopeLayout->setContentsMargins(0, 0, 0, 0);
 
         // Create drawing area.
-        drawArea = new EnvelopeDrawingArea(this, envelopes[static_cast<int>(Envelope::EnvelopeType::General)]);
+        drawArea = new EnvelopeDrawingArea(this, envelopes[static_cast<int>(EnvelopeType::General)]);
         drawArea->setContentsMargins(0, 0, 0, 0);
         envelopeLayout->addWidget(drawArea);
 
@@ -128,8 +126,6 @@ void EnvelopeWidget::createButtomMenu()
 
 void EnvelopeWidget::showGeneralEnvelope()
 {
-        GKICK_LOG_INFO("called");
-        //        generalEvelopesButton->setPressed(true);
         osccillator1EvelopesButton->setPressed(false);
         osccillator2EvelopesButton->setPressed(false);
         noiseEvelopesButton->setPressed(false);
@@ -137,7 +133,7 @@ void EnvelopeWidget::showGeneralEnvelope()
         showAmplitudeEnvButton->hide();
         showFrequencyEnvButton->setPressed(false);
         showFrequencyEnvButton->hide();
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeWidgetType::General)]);
+        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::General)]);
 }
 
 void EnvelopeWidget::showOsc1Envelope()
@@ -147,15 +143,15 @@ void EnvelopeWidget::showOsc1Envelope()
         noiseEvelopesButton->setPressed(false);
         showFrequencyEnvButton->show();
         showAmplitudeEnvButton->show();
-        if (envelopes[static_cast<int>(Envelope::Oscillator1)]->type()
-            == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+        if (envelopes[static_cast<int>(EnvelopeType::Oscillator1)]->type()
+            == Envelope::Type::Amplitude) {
                 showAmplitudeEnvButton->setPressed(true);
                 showFrequencyEnvButton->setPressed(false);
         } else {
                 showAmplitudeEnvButton->setPressed(false);
                 showFrequencyEnvButton->setPressed(true);
         }
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeWidgetType::Oscillator1)]);
+        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::Oscillator1)]);
 }
 
 void EnvelopeWidget::showOsc2Envelope()
@@ -165,15 +161,15 @@ void EnvelopeWidget::showOsc2Envelope()
         noiseEvelopesButton->setPressed(false);
         showFrequencyEnvButton->show();
         showAmplitudeEnvButton->show();
-        if (envelopes[static_cast<int>(Envelope::Oscillator1)]->type()
-            == GKickEnvelope::ENV_TYPE_AMPLITUDE) {
+        if (envelopes[static_cast<int>(EnvelopeType::Oscillator1)]->type()
+            == Envelope::Type::Amplitude) {
                 showAmplitudeEnvButton->setPressed(true);
                 showFrequencyEnvButton->setPressed(false);
         } else {
                 showAmplitudeEnvButton->setPressed(false);
                 showFrequencyEnvButton->setPressed(true);
         }
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeWidgetType::Oscillator2)]);
+        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::Oscillator2)]);
 }
 
 void EnvelopeWidget::showNoiseEnvelope()
@@ -185,16 +181,15 @@ void EnvelopeWidget::showNoiseEnvelope()
         showAmplitudeEnvButton->hide();
         showFrequencyEnvButton->setPressed(false);
         showFrequencyEnvButton->hide();
-        drawArea->setEnvelope(envelopes[static_cast<int>(Envelope::Noise)]);
+        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::Noise)]);
 }
 
 void EnvelopeWidget::showAmplitudeEnvelope()
 {
         auto envelope = drawArea->getEnvelope();
         showFrequencyEnvButton->setPressed(false);
-        if (envelope && envelope->isSupportedType(Envelope::ENV_TYPE_AMPLITUDE)) {
-                GKICK_LOG_INFO("HERE1");
-                envelope->setType(GKickEnvelope::ENV_TYPE_AMPLITUDE);
+        if (envelope && envelope->isSupportedType(Envelope::Type::Amplitude)) {
+                envelope->setType(Envelope::Type::Amplitude);
                 drawArea->update();
         }
 }
@@ -203,9 +198,8 @@ void EnvelopeWidget::showFrequencyEnvelope()
 {
         auto envelope = drawArea->getEnvelope();
         showAmplitudeEnvButton->setPressed(false);
-        if (envelope && envelope->isSupportedType(GKickEnvelope::ENV_TYPE_FREQUENCY)) {
-                GKICK_LOG_INFO("HERE1");
-                envelope->setType(GKickEnvelope::ENV_TYPE_FREQUENCY);
+        if (envelope && envelope->isSupportedType(Envelope::Type::Frequency)) {
+                envelope->setType(Envelope::Type::Frequency);
                 drawArea->update();
         }
 }

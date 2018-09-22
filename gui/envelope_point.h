@@ -1,10 +1,10 @@
 /**
  * File name: envelope_point.h
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,15 +29,15 @@
 
 #include "globals.h"
 
-class GKickEnvelope;
+class Envelope;
 
-class GKickEnvelopePoint : public QPointF
+class EnvelopePoint : public QPointF
 {
  public:
-	GKickEnvelopePoint(void);
-	GKickEnvelopePoint(GKickEnvelope *parent, const QPointF &point);
-	GKickEnvelopePoint(GKickEnvelope *parent, double x, double y);
-	virtual ~GKickEnvelopePoint();
+	EnvelopePoint(void);
+	EnvelopePoint(Envelope *parent, const QPointF &point);
+	EnvelopePoint(Envelope *parent, double x, double y);
+	~EnvelopePoint();
 	void draw(QPainter &painter);
 	bool isSelected(void);
 	bool hasPoint(const QPointF &point);
@@ -58,7 +58,7 @@ class GKickEnvelopePoint : public QPointF
 	bool is_selected;
 	double pointRadius;
 	double dotRadius;
-	GKickEnvelope *parentEnvelope;
+	Envelope *parentEnvelope;
 };
 
 #endif

@@ -82,7 +82,7 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
         gkick_log_debug("envelope numbers: %d", osc->env_number);
 
         if (osc->env_number < 1) {
-                return GEONKICK_ERROR_CREATE_ENVELOPE;
+                return GEONKICK_ERROR;
         }
 
         osc->envelopes = (struct gkick_envelope**)malloc(sizeof(struct gkick_envelope*) *osc->env_number);
@@ -94,7 +94,7 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
         for(i = 0; i < osc->env_number; i++) {
                 env = gkick_envelope_create();
                 if (env == NULL) {
-                        return GEONKICK_ERROR_CREATE_ENVELOPE;
+                        return GEONKICK_ERROR;
                 } else {
                         /* Add two default points. */
                         gkick_envelope_add_point(env, 0.0, 1.0);

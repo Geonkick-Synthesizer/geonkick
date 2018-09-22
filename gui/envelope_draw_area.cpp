@@ -22,13 +22,12 @@
  */
 
 #include "envelope_draw_area.h"
-#include "gkick_envelope.h"
+#include "envelope.h"
 
 #include <QPainter>
 #include <QMouseEvent>
 
-EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent,
-                                         std::shared_ptr<GKickEnvelope> &envelope)
+EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent, std::shared_ptr<Envelope> &envelope)
           : GeonkickWidget(parent),
             currentEnvelope(envelope),
             drawingArea(54, 12, 784, 260 - 3)
@@ -46,7 +45,7 @@ EnvelopeDrawingArea::~EnvelopeDrawingArea()
 {
 }
 
-void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<GKickEnvelope> &envelope)
+void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
 {
         if (envelope) {
                 if (currentEnvelope) {
@@ -131,7 +130,7 @@ void EnvelopeDrawingArea::envelopeUpdated()
         update();
 }
 
-std::shared_ptr<GKickEnvelope> EnvelopeDrawingArea::getEnvelope() const
+std::shared_ptr<Envelope> EnvelopeDrawingArea::getEnvelope() const
 {
         return currentEnvelope;
 }

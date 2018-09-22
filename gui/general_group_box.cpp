@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#include "geonkick_api.h"
 #include "general_group_box.h"
-#include "gkick_knob.h"
-#include "gkickapi.h"
+#include "knob.h"
 #include "geonkick_label.h"
 #include "geonkick_checkbox.h"
 #include "geonkick_button.h"
@@ -33,9 +33,9 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 
-GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, std::shared_ptr<GKickApi> &api)
+GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickGroupBox(parent),
-          kickApi(api),
+          geonkickApi(api),
           filterCheckbox(nullptr)
 {
 
@@ -57,23 +57,23 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_ampl_env.png"));
         addWidget(amplitudeEnvelopeBox);
 
-        GKickKnob *kickAmplitudeKnob = new GKickKnob(amplitudeEnvelopeBox);
+        Knob *kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         kickAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
         kickAmplitudeKnob->setRange(0, 1.0);
-        kickAmplitudeKnob->setCurrentValue(kickApi->getAmplitude());
+        kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
         connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
-        kickApi.get(), SLOT(setAmplitude(double)));
+        geonkickApi, SLOT(setKickAmplitude(double)));
 
-        GKickKnob *kickLengthKnob = new GKickKnob(amplitudeEnvelopeBox);
+        Knob *kickLengthKnob = new Knob(amplitudeEnvelopeBox);
         kickLengthKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickLengthKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickLengthKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
-        kickLengthKnob->setRange(0, kickApi->getMaxLength());
-        kickLengthKnob->setCurrentValue(kickApi->getKickLength());
+        kickLengthKnob->setRange(0, geonkickApi->kickMaxLength());
+        kickLengthKnob->setCurrentValue(geonkickApi->kickLength());
         connect(kickLengthKnob, SIGNAL(valueUpdated(double)),
-                kickApi.get(), SLOT(setKickLength(double)));
+                geonkickApi, SLOT(setKickLength(double)));
 
 }
 
@@ -91,20 +91,20 @@ void GeneralGroupBox::createFilterHBox()
         filterCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
         filterCheckbox->move(10, 10);
 
-        GKickKnob *kickFrequencyKnob = new GKickKnob(filterEnvelopeBox);
+        Knob *kickFrequencyKnob = new Knob(filterEnvelopeBox);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickFrequencyKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickFrequencyKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
 
-        GKickKnob *kickQFactorKnob = new GKickKnob(filterEnvelopeBox);
+        Knob *kickQFactorKnob = new Knob(filterEnvelopeBox);
         pixmap = QPixmap("./themes/geontime/knob_bk_50x50.png");
         int w = pixmap.size().width();
         int h = pixmap.size().height();
         kickQFactorKnob->setGeometry(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4, w, h);
         kickQFactorKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_50x50.png"));
         kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
-        //kickQFactorKnob->setMaxValue(kickApi->getMaxLength());
-        //kickQFactorKnob->setCurrentValue(kickApi->getKickLength());
+        //kickQFactorKnob->setMaxValue(geonkickApi->getMaxLength());
+        //kickQFactorKnob->setCurrentValue(geonkickApi->getKickLength());
 
         auto filterType = new GeonkickButton(filterEnvelopeBox);
         w = 80;

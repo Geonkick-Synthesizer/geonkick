@@ -30,7 +30,6 @@
 #include "geonkick_widget.h"
 
 #include <QWidget>
-#include <QVector>
 #include <QMouseEvent>
 
 class EnvelopeDrawingArea;
@@ -42,15 +41,13 @@ class EnvelopeWidget : public GeonkickWidget
 public:
 
      enum class EnvelopeType:int {
-                   Oscillator1 = Oscillator::OscillatorType::Oscillator1,
-                   Oscillator2 = Oscillator::OscillatorType::Oscillator2,
-                   Noise       = Oscillator::OscillatorType::Noise,
+                   Oscillator1 = static_cast<int>(Oscillator::Type::Oscillator1),
+                   Oscillator2 = static_cast<int>(Oscillator::Type::Oscillator2),
+                   Noise       = static_cast<int>(Oscillator::Type::Noise),
                    General
      };
 
-     EnvelopeWidget(GeonkickWidget *parent,
-                    std::shared_ptr<GeonkickApi> &api,
-                    std::vector<std::shared_ptr<Oscillator>> &oscillators);
+     EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::vector<Oscillator*> &oscillators);
      ~EnvelopeWidget();
      void setBackgourndImage(const QPixmap &pixmap);
 
@@ -64,7 +61,7 @@ public:
 
  private:
      void createButtomMenu();
-     std::shared_ptr<Envelope> currentEnvelope;
+     Envelope *currentEnvelope;
      std::vector<std::shared_ptr<Envelope>> envelopes;
      EnvelopeDrawingArea *drawArea;
      GeonkickButton *showAmplitudeEnvButton;

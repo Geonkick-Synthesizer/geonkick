@@ -25,6 +25,7 @@
 #define GEONKICK_ENVELOPE_H
 
 #include "envelope_point.h"
+#include "geonkick_api.h"
 
 #include <QObject>
 #include <QPainter>
@@ -38,12 +39,12 @@ class Envelope: public QObject
 
  public:
 
-        enum class EnvelopeType:int {
-                Aplitude  = 0,
-                Frequency = 1
+        enum class Type:int {
+                Amplitude  = static_cast<int>(GeonkickApi::EnvelopeType::Amplitude),
+                Frequency = static_cast<int>(GeonkickApi::EnvelopeType::Frequency)
         };
 
-        Envelope();
+        Envelope(QObject *parent = nullptr);
         virtual ~Envelope();
         int W(void) const;
         int H(void) const;
@@ -59,15 +60,15 @@ class Envelope: public QObject
         void addPoint(const QPointF &point);
         virtual void updatePoints() {};
         void removePoint(QPointF point);
-        EnvelopeType type() const;
+        Type type() const;
         double getEnvelopeValue(void) const;
-        bool isSupportedType(Envelope::EnvelopeType type) const;
+        bool isSupportedType(Type type) const;
 
  public slots:
          virtual void setEnvelopeLengh(double len) {};
-         bool setType(EnvelopeType type);
-         void addSupportedType(Envelope::EnvelopeType type);
-         void removeSupportedType(Envelope::EnvelopeType type);
+         bool setType(Type type);
+         void addSupportedType(Type type);
+         void removeSupportedType(Type type);
          void setPoints(const QPolygonF  &points);
          void removePoints();
  signals:
@@ -84,9 +85,9 @@ class Envelope: public QObject
  private:
         std::vector<std::shared_ptr<EnvelopePoint>> envelopePoints;
         std::vector<std::shared_ptr<EnvelopePoint>>::size_type selectedPointIndex;
-        std::unordered_set<EnvelopeType> supportedTypes;
+        std::unordered_set<Type> supportedTypes;
         bool pointSelected;
-        EnvelopeType envelopeType;
+        Type envelopeType;
         QPointF envelopeOrigin;
         double envelopeW;
         double envelopeH;

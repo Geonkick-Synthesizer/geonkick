@@ -27,28 +27,30 @@
 #include "globals.h"
 #include "geonkick_widget.h"
 
-class GKickEnvelope;
+#include <memory>
+
+class Envelope;
 
 class EnvelopeDrawingArea : public GeonkickWidget
 {
    Q_OBJECT
 
  public:
-   EnvelopeDrawingArea(GeonkickWidget *parent, std::shared_ptr<GKickEnvelope> &envelope);
+   EnvelopeDrawingArea(GeonkickWidget *parent, std::shared_ptr<Envelope> &envelope);
    ~EnvelopeDrawingArea();
    void paintWidget(QPaintEvent *event) override;
    void mousePressEvent(QMouseEvent *event);
    void mouseReleaseEvent(QMouseEvent *event);
    void mouseDoubleClickEvent(QMouseEvent *event);
    void mouseMoveEvent(QMouseEvent *event);
-   std::shared_ptr<GKickEnvelope> getEnvelope() const;
+   std::shared_ptr<Envelope> getEnvelope() const;
 
    public slots:
-           void setEnvelope(std::shared_ptr<GKickEnvelope> &envelope);
+           void setEnvelope(std::shared_ptr<Envelope> &envelope);
            void envelopeUpdated();
 
  private:
-   std::shared_ptr<GKickEnvelope> currentEnvelope;
+   std::shared_ptr<Envelope> currentEnvelope;
    QRect drawingArea;
    QPointF mousePoint;
 };
