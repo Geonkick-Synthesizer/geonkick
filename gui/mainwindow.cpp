@@ -77,7 +77,7 @@ bool MainWindow::init(void)
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
 	oscillator->setFilterFrequency(20000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(0.8);
+        oscillator->setAmplitude(1);
 
         // Oscillator 2
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
@@ -85,12 +85,12 @@ bool MainWindow::init(void)
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
 	oscillator->setFilterFrequency(20000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(0.8);
+        oscillator->setAmplitude(1);
 
         // Noise
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
 	oscillator->setFunction(Oscillator::FunctionType::Noise);
-	oscillator->setAmplitude(0.8);
+	oscillator->setAmplitude(1);
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
 	oscillator->setFilterFrequency(20000);
 

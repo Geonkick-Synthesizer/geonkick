@@ -49,6 +49,7 @@ class Envelope: public QObject
         int W(void) const;
         int H(void) const;
         virtual double envelopeLengh(void) const { return 0;}
+        virtual double envelopeAmplitude(void) const { return 0;}
         QPointF origin(void) const;
         void draw(QPainter &painter, const QRectF &rect);
         bool hasSelected() const;
@@ -73,12 +74,15 @@ class Envelope: public QObject
          void removePoints();
  signals:
          void envelopeLengthUpdated(double len);
+         void amplitudeUpdated(double amplitude);
 
  protected:
         virtual void pointAddedEvent(double x, double y) {};
         virtual void pointUpdatedEvent(unsigned int index, double x, double y) {};
         virtual void pointRemovedEvent(unsigned int index) {};
         void drawScale(QPainter &painter);
+        void drawTimeScale(QPainter &painter);
+        void drawValueScale(QPainter &painter);
         void drawPoints(QPainter &painter);
         void drawLines(QPainter &painter);
 

@@ -148,5 +148,5 @@ void Oscillator::setFilterType(FilterType type)
 
 double Oscillator::envelopeLength()
 {
-       geonkickApi->kickLength();
+        geonkickApi->kickLength();
 }

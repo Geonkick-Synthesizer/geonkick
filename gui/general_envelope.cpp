@@ -29,6 +29,7 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api)
 {
         removeSupportedType(Envelope::Type::Frequency);
         connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeLengthUpdated(double)));
+        connect(geonkickApi, SIGNAL(kickAmplitudeUpdated(double)), this, SIGNAL(amplitudeUpdated(double)));
 }
 
 GeneralEnvelope::~GeneralEnvelope()
@@ -60,3 +61,4 @@ void GeneralEnvelope::setEnvelopeLengh(double len)
         geonkickApi->setKickLength(len);
         emit envelopeLengthUpdated(len);
 }
+

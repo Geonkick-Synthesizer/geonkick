@@ -94,6 +94,7 @@ public slots:
 
 signals:
   void kickLengthUpdated(double length);
+  void kickAmplitudeUpdated(double amplitude);
 
 private:
   struct geonkick *geonkickApi;

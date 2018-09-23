@@ -49,12 +49,9 @@ class EnvelopePoint : public QPointF
 
  protected:
 	QPointF scaleUp(QPointF point);
-	QString pointText(void);
-	QString pointAmplitudeText(void);
-	QString pointFrequencyText(void);
-	QString getTimeTextValue(void);
 
  private:
+        QString frequencyToNote(double f);
 	bool is_selected;
 	double pointRadius;
 	double dotRadius;

@@ -27,8 +27,11 @@
 OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc)
         : oscillator(osc)
 {
+        connect(osc, SIGNAL(amplitudeUpdated(double)), this, SIGNAL(amplitudeUpdated(double)));
         if (oscillator->type() == Oscillator::Type::Noise) {
                 removeSupportedType(Envelope::Type::Frequency);
+        } else {
+                connect(osc, SIGNAL(frequencyUpdated(double)), this, SIGNAL(amplitudeUpdated(double)));
         }
         setType(Envelope::Type::Amplitude);
         QPolygonF points = oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type()));
@@ -64,4 +67,13 @@ void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
 double OscillatorEnvelope::envelopeLengh(void) const
 {
         return oscillator->envelopeLength();
+}
+
+double OscillatorEnvelope::envelopeAmplitude() const
+{
+        if (type() == Type::Amplitude) {
+                return oscillator->amplitude();
+        } else {
+                return oscillator->frequency();
+        }
 }

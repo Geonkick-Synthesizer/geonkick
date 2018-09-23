@@ -133,10 +133,13 @@ double GeonkickApi::kickLength(void) const
 
 void GeonkickApi::setKickAmplitude(double amplitude)
 {
+        emit kickAmplitudeUpdated(amplitude);
+        // Implement API.
 }
 
 double GeonkickApi::kickAmplitude() const
 {
+        // Implement API.
         return 1;
 }
 
@@ -146,14 +149,17 @@ void GeonkickApi::setKickFilterFrequency(double frequency)
 
 double GeonkickApi::kickFilterFrequency(void) const
 {
+        // Implement API.
 }
 
 void GeonkickApi::setKickFilterQFactor(double factor)
 {
+        // Implement API.
 }
 
 double GeonkickApi::kickFilterQFactor() const
 {
+        // Implement API.
 }
 
 bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
@@ -198,17 +204,20 @@ void GeonkickApi::addKickEnvelopePoint(double x, double y)
 {
         Q_UNUSED(x);
         Q_UNUSED(y);
+        // Implement API.
 }
 
 void GeonkickApi::updateKickEnvelopePoint(double x, double y)
 {
         Q_UNUSED(x);
         Q_UNUSED(y);
+        // Implement API.
 }
 
  void GeonkickApi::removeKickEnvelopePoint(int pointIndex)
 {
         Q_UNUSED(pointIndex);
+        // Implement API.
 }
 
 void GeonkickApi::enableOscillator(int oscillatorIndex, bool enable)
@@ -230,10 +239,12 @@ bool GeonkickApi::isOscillatorEnabled(int oscillatorIndex)
 double GeonkickApi::kickMaxLength(void) const
 {
         return 1000;
+        // Implement API.
 }
 
 void GeonkickApi::setOscillatorFilterType(int oscillatorIndex, FilterType filter)
 {
         Q_UNUSED(oscillatorIndex);
         Q_UNUSED(filter);
+        // Implement API.
 }

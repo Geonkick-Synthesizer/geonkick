@@ -80,6 +80,24 @@ void EnvelopePoint::draw(QPainter &painter)
         rect = QRectF(point.x() - r / 2, point.y() - r / 2, r, r);
         painter.drawEllipse(rect);
         painter.setBrush(brush);
+
+        double value = 0;
+        if (parentEnvelope->type() == Envelope::Type::Amplitude) {
+                value = y() * parentEnvelope->envelopeAmplitude();
+                painter.drawText(point.x() + 1.5 * r, point.y() - 1.5 * r,
+                                 QString::number(value, 'f', 0) + "dB");
+        } else if (parentEnvelope->type() == Envelope::Type::Frequency) {
+                value = y() * parentEnvelope->envelopeAmplitude();
+                if (value < 1000) {
+                        painter.drawText(point.x() + 1.5 * r, point.y() - 1.5 * r,
+                                         QString::number(value, 'f', 0)
+                                         + "Hz " + frequencyToNote(value));
+                } else if (value >= 1000 && value <= 20000) {
+                        painter.drawText(point.x() +  1.5 * r, point.y() - 1.5 * r,
+                                         QString::number(value / 1000, 'f', 1) + "kHz "
+                                         + frequencyToNote(value));
+                }
+        }
 }
 
 double EnvelopePoint::radius(void)
@@ -123,40 +141,41 @@ bool EnvelopePoint::hasPoint(const QPointF &point)
 	return false;
 }
 
-QString EnvelopePoint::pointText(void)
+// TODO: more precise funtion...
+QString EnvelopePoint::frequencyToNote(double f)
 {
-	if (parentEnvelope->type() == Envelope::Type::Amplitude) {
-		return pointAmplitudeText();
-	} else if (parentEnvelope->type() == Envelope::Type::Frequency) {
-		return pointFrequencyText();
-	}
+        if (f < 16.35160 || f > 7902.133) {
+                return QString();
+        }
 
-	return QString();
+        int n = 0;
+        while (f > 32.70320) {
+                f /=2;
+                n++;
+        }
+
+        int octave = n;
+        std::vector<double> pitches {
+                        16.35160,
+                        17.32391,
+                        18.35405,
+                        19.44544,
+                        20.60172,
+                        21.82676,
+                        23.12465,
+                        24.49971,
+                        25.95654,
+                        27.50000,
+                        29.13524,
+                        30.86771};
+
+        std::vector<QString> notes{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+
+        n = 12;
+        while (--n && pitches[n] > f);
+        if (n < 11 && f > (pitches[n + 1] - pitches[n]) / 2) {
+                n++;
+        }
+
+        return "(" + notes[n] + QString::number(octave) + ")";
 }
-
-QString EnvelopePoint::pointAmplitudeText(void)
-{
-	QString text = QString::number(y(), 'f', 3);
-	return text;
-}
-
-QString EnvelopePoint::pointFrequencyText(void)
-{
-	double v = y();
-
-	QString textVal;
-	QString str;
-	if (v > 1000.0) {
-		textVal = QString::number(v / 1000.0, 'f', 3) + " kHz";
-	} else {
-		textVal = QString::number(v, 'f', 0) + " Hz";
-	}
-
-	return textVal;
-}
-
-QString EnvelopePoint::getTimeTextValue(void)
-{
-	return QString::number((parentEnvelope->envelopeLengh() * x()) * 1000, 'f', 0) + " ms";
-}
-

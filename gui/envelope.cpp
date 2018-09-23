@@ -67,6 +67,12 @@ void Envelope::draw(QPainter &painter, const QRectF &rect)
 
 void Envelope::drawScale(QPainter &painter)
 {
+        drawTimeScale(painter);
+        drawValueScale(painter);
+}
+
+void Envelope::drawTimeScale(QPainter &painter)
+{
         auto val = envelopeLengh() / 10;
         auto dx = W() / 10;
         auto x = (envelopeOrigin.x()) + dx;
@@ -86,17 +92,52 @@ void Envelope::drawScale(QPainter &painter)
         painter.setPen(QPen(QColor(180, 180, 180, 200)));
         painter.drawText(envelopeOrigin.x() + W() / 2 - 35, envelopeOrigin.y() + 20,
                          tr("Length, ") + QString::number(std::round(envelopeLengh())) + " ms");
+}
 
-        /*        QString text;
-        if (type() != Type::ENV_TYPE_AMPLITUDE) {
+void Envelope::drawValueScale(QPainter &painter)
+{
+        QString text;
+        if (type() == Type::Amplitude) {
                 text = tr("Amplitude, dB");
-        } else {
+        } else if (type() == Type::Frequency) {
                 text = tr("Frequency, Hz");
         }
-        p.translate(envelopeOrigin.x() - 30, envelopeOrigin.y() - H() / 2 + 35);
-        p.rotate(-90);
-        p.drawText(0, 0, text);
-        p.setPen(pen);*/
+
+        painter.translate(envelopeOrigin.x() - 30, envelopeOrigin.y() - H() / 2 + 35);
+        painter.rotate(-90);
+
+        painter.drawText(-5, -5, text);
+        painter.rotate(90);
+        painter.translate(-(envelopeOrigin.x() - 30), -(envelopeOrigin.y() - H() / 2 + 35));
+
+        QFont font = painter.font();
+        font.setPixelSize(10);
+        painter.setFont(font);
+        painter.setPen(QPen(QColor(110, 110, 110)));
+
+        if (type() == Type::Amplitude) {
+                std::vector<int> values{0, -3, -6, -10, -15, -20, -30, -40, -50};
+                for (auto value : values) {
+                        QRect rect(28, (envelopeOrigin.y() - H()) + H() * (-value) / 60 - font.pixelSize() / 2, 20,
+                                   font.pixelSize());
+                        painter.drawText(rect, Qt::AlignRight, "-" + QString::number(-value));
+                }
+        } else if (type() == Type::Frequency) {
+                std::vector<int> values{20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
+                int i = 0;
+                for (auto value : values) {
+                        QRect rect(28, H() - (H() * i / 10) - 30, 20, font.pixelSize());
+                        QString text;
+                        if (value >= 1000) {
+                                text = QString::number(value / 1000) + "k";
+                        } else {
+                                text = QString::number(value);
+                        }
+                        painter.drawText(rect, Qt::AlignRight, text);
+                        i++;
+                }
+        }
+
 }
 
 void Envelope::drawPoints(QPainter &painter)
