@@ -77,7 +77,7 @@ void Envelope::drawScale(QPainter &painter)
         painter.setFont(font);
         for (auto i = 1; i < 10; i++) {
                 QRect rect(x - 10, envelopeOrigin.y() - 12, 20, font.pixelSize());
-                painter.drawText(rect, Qt::AlignCenter, QString::number(i * val));
+                painter.drawText(rect, Qt::AlignCenter, QString::number(std::round(i * val)));
                 x += dx;
         }
 
@@ -85,7 +85,7 @@ void Envelope::drawScale(QPainter &painter)
         painter.setFont(font);
         painter.setPen(QPen(QColor(180, 180, 180, 200)));
         painter.drawText(envelopeOrigin.x() + W() / 2 - 35, envelopeOrigin.y() + 20,
-                         tr("Length, ") + QString::number(envelopeLengh(), 'f', 0) + " ms");
+                         tr("Length, ") + QString::number(std::round(envelopeLengh())) + " ms");
 
         /*        QString text;
         if (type() != Type::ENV_TYPE_AMPLITUDE) {

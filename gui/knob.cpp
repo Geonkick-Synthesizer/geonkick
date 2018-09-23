@@ -93,7 +93,7 @@ Knob::mouseMoveEvent(QMouseEvent *event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();
-                knobValueDegree -= dy;
+                knobValueDegree -= 0.5 * dy;
                 if (knobValueDegree < GEONKICK_KNOB_MIN_DEGREE) {
                         knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
                 } else if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE) {

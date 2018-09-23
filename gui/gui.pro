@@ -1,3 +1,4 @@
+CONFIG+=debug
 QMAKE_CXXFLAGS += -std=c++1y
 TEMPLATE = app
 QT = core gui widgets
