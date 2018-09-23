@@ -48,7 +48,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         connect(checkbox, SIGNAL(stateUpdated(bool)), osc, SLOT(enable(bool)));
         if (oscillator->type() == Oscillator::Type::Oscillator1) {
                 checkbox->setCheckboxLabelImage("./themes/geontime/osc1_groupbox_label.png");
-        } else if (oscillator->type() == Oscillator::Type::Oscillator1) {
+        } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 checkbox->setCheckboxLabelImage("./themes/geontime/osc2_groupbox_label.png");
         } else {
                 checkbox->setCheckboxLabelImage("./themes/geontime/noise_groupbox_label.png");
@@ -56,6 +56,9 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         checkbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
         checkbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
         checkbox->setPadding(10, 0, 0, 0);
+        if (oscillator->isEnabled()) {
+                checkbox->setChecked(true);
+        }
         setGroupBoxLabel(checkbox, Qt::AlignLeft);
 
         if (oscillator->type() != Oscillator::Type::Noise) {

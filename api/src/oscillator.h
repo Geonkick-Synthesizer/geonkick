@@ -33,7 +33,13 @@
 #define GKICK_OSC_DEFAULT_AMPLITUDE   150
 #define GKICK_OSC_DEFAULT_FREQUENCY   0.5
 
+enum geonkick_osc_state {
+        GEONKICK_OSC_STATE_DISABLED = 0,
+        GEONKICK_OSC_STATE_ENABLED  = 1
+};
+
 struct gkick_oscillator {
+        enum geonkick_osc_state state;
 	enum geonkick_osc_func_type func;
 	double phase;
 	double sample_rate;
@@ -48,6 +54,9 @@ struct gkick_oscillator
 *gkick_osc_create(struct geonkick *kick);
 
 void gkick_osc_free(struct gkick_oscillator **osc);
+
+void gkick_osc_set_state(struct gkick_oscillator *osc,
+                         enum geonkick_osc_state state);
 
 enum geonkick_error
 gkick_osc_create_envelopes(struct gkick_oscillator *osc);
@@ -78,4 +87,7 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,
 			      double **buff,
 			      size_t *npoints);
+
+int gkick_osc_enabled(struct gkick_oscillator *osc);
+
 #endif

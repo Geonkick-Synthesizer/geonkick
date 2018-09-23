@@ -104,25 +104,62 @@ geonkick_remove_oscillator(struct geonkick* kick, size_t index)
 enum geonkick_error
 geonkick_enable_oscillator(struct geonkick* kick, size_t index)
 {
-        GEONKICK_UNUSED(kick);
-        GEONKICK_UNUSED(index);
+        if (kick == NULL) {
+                return GEONKICK_ERROR;
+        }
+
+        geonkick_lock(kick);
+	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+
+	gkick_osc_set_state(osc, GEONKICK_OSC_STATE_ENABLED);
+	geonkick_unlock(kick);
         return GEONKICK_OK;
 }
 
 enum geonkick_error
 geonkick_disable_oscillator(struct geonkick* kick, size_t index)
 {
-        GEONKICK_UNUSED(kick);
-        GEONKICK_UNUSED(index);
+        if (kick == NULL) {
+                return GEONKICK_ERROR;
+        }
+
+        geonkick_lock(kick);
+	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+	gkick_osc_set_state(osc, GEONKICK_OSC_STATE_DISABLED);
+	geonkick_unlock(kick);
+
         return GEONKICK_OK;
 }
 
 enum geonkick_error
 geonkick_is_oscillator_enabled(struct geonkick* kick, size_t index, int *enabled)
 {
-        GEONKICK_UNUSED(kick);
-        GEONKICK_UNUSED(index);
-        GEONKICK_UNUSED(enabled);
+        *enabled = 0;
+        if (kick == NULL) {
+                return GEONKICK_ERROR;
+        }
+
+        geonkick_lock(kick);
+	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+	if (gkick_osc_enabled(osc)) {
+                *enabled = 1;
+        }
+	geonkick_unlock(kick);
         return GEONKICK_OK;
 }
 
@@ -175,47 +212,6 @@ geonkick_start(struct geonkick *kick)
 {
         return GEONKICK_OK;
 }
-
-/*enum geonkick_error
-geonkick_envelope_get_points(struct geonkick *kick,
-				 double **buf,
-				 size_t *npoints)
-{
-        if (kick == NULL || buf == NULL || npoints == NULL) {
-                gkick_log_error("wrong arguments");
-                return GEONKICK_ERROR_NULL_POINTER;
-        }
-
-        *npoints = 0;
-        *buf = NULL;
-        geonkick_lock(kick);
-        gkick_envelope_get_points(kick->amp_envelope, buff, npoints);
-        geonkick_unlock(kick);
-
-        return GEONKICK_OK;
-        }*/
-
-/*enum geonkick_error
-geonkick_remove_envelope_point(struct geonkick *kick,
-                               size_t index)
-{
-        if (kick == NULL) {
-                gkick_log_error("wrong arguments");
-                return GEONKICK_ERROR_NULL_POINTER;
-        }
-
-        res = GEONKICK_OK;
-        geonkick_lock(kick);
-        if (kick->amp_envelope == NULL) {
-                gkick_log_error("envelope is not defined");
-                res = GEONKICK_ERROR_NULL_POINTER;
-        } else {
-                gkick_envelope_remove_point(kick->amp_envelope, index);
-        }
-        geonkick_unlock(kick);
-
-        return res;
-        }*/
 
 enum geonkick_error
 geonkick_osc_envelope_add_point(struct geonkick *kick,
@@ -280,8 +276,10 @@ double geonkick_get_oscillators_value(struct geonkick *kick)
         geonkick_lock(kick);
         val = 0.0;
         for (i = 0; i < kick->oscillators_number; i++) {
-                val += gkick_osc_value(kick->oscillators[i],
-                                       kick->current_time, kick->length);
+                if (gkick_osc_enabled(kick->oscillators[i])) {
+                        val += gkick_osc_value(kick->oscillators[i],
+                                               kick->current_time, kick->length);
+                }
                 gkick_osc_increment_phase(kick->oscillators[i],
                                           kick->current_time, kick->length);
         }

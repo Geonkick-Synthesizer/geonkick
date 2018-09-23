@@ -43,6 +43,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 
         note_pressed = gkick_jack_is_note_pressed(jack, nframes);
         if (note_pressed) {
+                gkick_log_debug("note pressed");
                 geonkick_start_play(kick);
         }
 
