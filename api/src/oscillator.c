@@ -188,7 +188,12 @@ double gkick_osc_func_sawtooth(double phase)
 
 double gkick_osc_func_noise(void)
 {
-        return ((double)(rand() % 100)) / 100.0;
+        int sign = 1;
+        if (rand() % 2) {
+                sign = -1;
+        }
+
+        return sign * ((double)(rand() % 100)) / 100.0;
 }
 
 void
