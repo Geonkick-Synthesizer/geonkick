@@ -24,37 +24,37 @@
 #ifndef GKICK_ENVELOPE_POINT_UI_H
 #define GKICK_ENVELOPE_POINT_UI_H
 
-#include <QPointF>
+#include <QPoint>
 #include <QPainter>
 
 #include "globals.h"
 
 class Envelope;
 
-class EnvelopePoint : public QPointF
+class EnvelopePoint : public QPoint
 {
  public:
 	EnvelopePoint(void);
-	EnvelopePoint(Envelope *parent, const QPointF &point);
-	EnvelopePoint(Envelope *parent, double x, double y);
+	EnvelopePoint(Envelope *parent, const QPoint &point);
+	EnvelopePoint(Envelope *parent, int x, int y);
 	~EnvelopePoint();
 	void draw(QPainter &painter);
 	bool isSelected(void);
-	bool hasPoint(const QPointF &point);
+	bool hasPoint(const QPoint &point);
 	void selectPoint(void);
 	void unselectPoint(void);
-	double radius(void);
-	double getDotRadius(void);
+	int radius(void);
+	int getDotRadius(void);
 	QString valueType(void);
 
  protected:
-	QPointF scaleUp(QPointF point);
+        void drawPointValue(QPainter &painter);
 
  private:
         QString frequencyToNote(double f);
 	bool is_selected;
-	double pointRadius;
-	double dotRadius;
+	int pointRadius;
+	int dotRadius;
 	Envelope *parentEnvelope;
 };
 

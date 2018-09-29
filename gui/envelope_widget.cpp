@@ -41,23 +41,24 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::ve
           showFrequencyEnvButton(nullptr)
 
 {
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
-        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator));
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
-        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator));
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
-        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator));
-        envelopes.push_back(std::make_shared<GeneralEnvelope>(api));
-
         QVBoxLayout *envelopeLayout = new QVBoxLayout(this);
         setLayout(envelopeLayout);
         envelopeLayout->setSpacing(0);
         envelopeLayout->setContentsMargins(0, 0, 0, 0);
 
         // Create drawing area.
-        drawArea = new EnvelopeDrawingArea(this, envelopes[static_cast<int>(EnvelopeType::General)]);
+        drawArea = new EnvelopeWidgetDrawingArea(this);
         drawArea->setContentsMargins(0, 0, 0, 0);
         envelopeLayout->addWidget(drawArea);
+
+        QRect rect = drawArea->getDrawingArea();
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
+        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
+        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
+        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        envelopes.push_back(std::make_shared<GeneralEnvelope>(api, rect));
 
         createButtomMenu();
         showGeneralEnvelope();
@@ -70,7 +71,7 @@ EnvelopeWidget::~EnvelopeWidget()
 
 void EnvelopeWidget::createButtomMenu()
 {
-        auto buttomAreaWidget = new GeonkickWidget(this);// Create bottom area.
+        auto buttomAreaWidget = new GeonkickWidget(this);
         buttomAreaWidget->setContentsMargins(0, 0, 0, 0);
 
         layout()->addWidget(buttomAreaWidget);

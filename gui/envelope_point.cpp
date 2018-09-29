@@ -27,29 +27,29 @@
 #include <QDebug>
 
 EnvelopePoint::EnvelopePoint(void)
-	: QPointF(),
+	: QPoint(0, 0),
 	  is_selected(false),
-	  pointRadius(20),
-	  dotRadius(5),
+	  pointRadius(10),
+	  dotRadius(3),
 	  parentEnvelope(NULL)
 
 {
 }
 
-EnvelopePoint::EnvelopePoint(Envelope *parent, const QPointF &point)
-	: QPointF(point),
+EnvelopePoint::EnvelopePoint(Envelope *parent, const QPoint &point)
+	: QPoint(point),
 	  is_selected(false),
-	  pointRadius(20),
-	  dotRadius(6),
+	  pointRadius(10),
+	  dotRadius(3),
 	  parentEnvelope(parent)
 {
 }
 
-EnvelopePoint::EnvelopePoint(Envelope *parent, double x, double y)
-	: QPointF(x, y),
+EnvelopePoint::EnvelopePoint(Envelope *parent, int x, int y)
+	: QPoint(x, y),
 	  is_selected(false),
-	  pointRadius(20),
-	  dotRadius(6),
+	  pointRadius(10),
+	  dotRadius(3),
 	  parentEnvelope(parent)
 
 {
@@ -67,45 +67,49 @@ void EnvelopePoint::draw(QPainter &painter)
         painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
 	painter.setPen(pen);
 
-        QPointF origin = parentEnvelope->origin();
-	QPointF point  = QPointF(origin.x() + x() * (parentEnvelope->W()),
-                                 origin.y() - y() * (parentEnvelope->H()));
-        double r = radius();
-	QRectF rect(point.x() - r / 2, point.y() - r / 2, r, r);
+        QPoint origin = parentEnvelope->origin();
+        double d = 2 * radius();
+	QRect rect(origin.x() + x() - d / 2, origin.y() - y() - d /2, d, d);
 	painter.drawEllipse(rect);
 
         QBrush brush = painter.brush();
         painter.setBrush(QColor(200, 200, 200, 200));
-        r = getDotRadius();
-        rect = QRectF(point.x() - r / 2, point.y() - r / 2, r, r);
+        d = 2 * getDotRadius();
+        rect = QRect(origin.x() + x() - d / 2, origin.y() - y() - d / 2, d, d);
         painter.drawEllipse(rect);
         painter.setBrush(brush);
+        drawPointValue(painter);
+}
 
-        double value = 0;
+void EnvelopePoint::drawPointValue(QPainter &painter)
+{
         if (parentEnvelope->type() == Envelope::Type::Amplitude) {
-                value = y() * parentEnvelope->envelopeAmplitude();
-                painter.drawText(point.x() + 1.5 * r, point.y() - 1.5 * r,
-                                 QString::number(value, 'f', 0) + "dB");
+                double d = 2 * radius();
+                QPoint origin = parentEnvelope->origin();
+                QPoint point(origin.x() + x(), origin.y() - y() - 0.7 * d);
+                painter.drawText(point, QString::number((double)y() / parentEnvelope->H(), 'f', 1));
         } else if (parentEnvelope->type() == Envelope::Type::Frequency) {
-                value = y() * parentEnvelope->envelopeAmplitude();
-                if (value < 1000) {
-                        painter.drawText(point.x() + 1.5 * r, point.y() - 1.5 * r,
-                                         QString::number(value, 'f', 0)
-                                         + "Hz " + frequencyToNote(value));
-                } else if (value >= 1000 && value <= 20000) {
-                        painter.drawText(point.x() +  1.5 * r, point.y() - 1.5 * r,
-                                         QString::number(value / 1000, 'f', 1) + "kHz "
-                                         + frequencyToNote(value));
+                QPoint origin = parentEnvelope->origin();
+                double logVal = ((double)y() / parentEnvelope->H()) * (log10(parentEnvelope->envelopeAmplitude()) - log10(20)) + log10(20);
+                double linearVal = pow(10, logVal);
+                double d = 2 * radius();
+                QPoint point(origin.x() + x(), origin.y() - y() - 0.7 *  d);
+                if (linearVal < 1000) {
+                        painter.drawText(point, QString::number(linearVal, 'f', 0)
+                                         + "Hz " + frequencyToNote(linearVal));
+                } else if (linearVal >= 1000 && linearVal <= 20000) {
+                        painter.drawText(point, QString::number(linearVal / 1000, 'f', 1) + "kHz "
+                                         + frequencyToNote(linearVal));
                 }
         }
 }
 
-double EnvelopePoint::radius(void)
+int EnvelopePoint::radius(void)
 {
 	return pointRadius;
 }
 
-double EnvelopePoint::getDotRadius(void)
+int EnvelopePoint::getDotRadius(void)
 {
 	return dotRadius;
 }
@@ -125,23 +129,18 @@ void EnvelopePoint::unselectPoint(void)
 	is_selected = false;
 }
 
-bool EnvelopePoint::hasPoint(const QPointF &point)
+bool EnvelopePoint::hasPoint(const QPoint &point)
 {
-	double px = point.x();
-	double py = point.y();
-        double X = x() * parentEnvelope->W();
-        double Y = y() * parentEnvelope->H();
-
-	if ((px > X - pointRadius) && (px < X + pointRadius)
-	    && (py > Y - pointRadius) && (py < Y + pointRadius)
-	    && ((X - px) * (X - px) + (Y - py) * (Y - py) < pointRadius * pointRadius))	{
+	if ((point.x() > x() - pointRadius) && (point.x() < x() + pointRadius)
+	    && (point.y() > y() - pointRadius) && (point.y() < y() + pointRadius)
+	    && pow(x() - point.x(), 2) + pow(y() - point.y(), 2) < pow(pointRadius, 2)) {
                 return true;
         }
 
 	return false;
 }
 
-// TODO: more precise funtion...
+// TODO: more precise funtion... move this function out of here
 QString EnvelopePoint::frequencyToNote(double f)
 {
         if (f < 16.35160 || f > 7902.133) {

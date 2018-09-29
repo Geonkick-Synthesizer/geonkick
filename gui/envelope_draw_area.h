@@ -31,19 +31,20 @@
 
 class Envelope;
 
-class EnvelopeDrawingArea : public GeonkickWidget
+class EnvelopeWidgetDrawingArea : public GeonkickWidget
 {
    Q_OBJECT
 
  public:
-   EnvelopeDrawingArea(GeonkickWidget *parent, std::shared_ptr<Envelope> &envelope);
-   ~EnvelopeDrawingArea();
+   EnvelopeWidgetDrawingArea(GeonkickWidget *parent);
+   ~EnvelopeWidgetDrawingArea();
    void paintWidget(QPaintEvent *event) override;
    void mousePressEvent(QMouseEvent *event);
    void mouseReleaseEvent(QMouseEvent *event);
    void mouseDoubleClickEvent(QMouseEvent *event);
    void mouseMoveEvent(QMouseEvent *event);
    std::shared_ptr<Envelope> getEnvelope() const;
+   const QRect getDrawingArea();
 
    public slots:
            void setEnvelope(std::shared_ptr<Envelope> &envelope);

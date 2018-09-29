@@ -44,57 +44,58 @@ class Envelope: public QObject
                 Frequency = static_cast<int>(GeonkickApi::EnvelopeType::Frequency)
         };
 
-        Envelope(QObject *parent = nullptr);
+        Envelope(QObject *parent = nullptr, const QRect &area = QRect());
         virtual ~Envelope();
         int W(void) const;
         int H(void) const;
         virtual double envelopeLengh(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
-        QPointF origin(void) const;
-        void draw(QPainter &painter, const QRectF &rect);
+        QPoint origin(void) const;
+        void draw(QPainter &painter);
         bool hasSelected() const;
-        void selectPoint(const QPointF &point);
+        void selectPoint(const QPoint &point);
         void unselectPoint(void);
-        void moveSelectedPoint(double x, double y);
-        double getLeftPointLimit(void) const;
-        double getRightPointLimit(void) const;
-        void addPoint(const QPointF &point);
+        void moveSelectedPoint(int x, int y);
+        int getLeftPointLimit(void) const;
+        int getRightPointLimit(void) const;
+        void addPoint(QPoint point);
         virtual void updatePoints() {};
-        void removePoint(QPointF point);
+        void removePoint(const QPoint &point);
         Type type() const;
-        double getEnvelopeValue(void) const;
         bool isSupportedType(Type type) const;
+        const QRect& getDrawingArea();
 
  public slots:
-         virtual void setEnvelopeLengh(double len) {};
+         virtual void setEnvelopeLengh(double len) {}
          bool setType(Type type);
          void addSupportedType(Type type);
          void removeSupportedType(Type type);
          void setPoints(const QPolygonF  &points);
          void removePoints();
+         void setDrawingArea(const QRect &rect);
  signals:
          void envelopeLengthUpdated(double len);
          void amplitudeUpdated(double amplitude);
 
  protected:
-        virtual void pointAddedEvent(double x, double y) {};
-        virtual void pointUpdatedEvent(unsigned int index, double x, double y) {};
-        virtual void pointRemovedEvent(unsigned int index) {};
+        virtual void pointAddedEvent(double x, double y) = 0;
+        virtual void pointUpdatedEvent(unsigned int index, double x, double y) = 0;
+        virtual void pointRemovedEvent(unsigned int index)  = 0;
+        void drawAxies(QPainter &painter);
         void drawScale(QPainter &painter);
         void drawTimeScale(QPainter &painter);
         void drawValueScale(QPainter &painter);
         void drawPoints(QPainter &painter);
         void drawLines(QPainter &painter);
+        QPointF scaleDown(const QPoint &point);
 
  private:
+        QRect drawingArea;
         std::vector<std::shared_ptr<EnvelopePoint>> envelopePoints;
         std::vector<std::shared_ptr<EnvelopePoint>>::size_type selectedPointIndex;
         std::unordered_set<Type> supportedTypes;
         bool pointSelected;
         Type envelopeType;
-        QPointF envelopeOrigin;
-        double envelopeW;
-        double envelopeH;
 };
 
 #endif // GEONKICK_ENVELOPE_H

@@ -36,7 +36,7 @@ class OscillatorEnvelope: public Envelope
 
  public:
 
-  OscillatorEnvelope(Oscillator* osc);
+  OscillatorEnvelope(Oscillator* osc, const QRect &area);
   ~OscillatorEnvelope();
   double envelopeLengh(void) const;
 

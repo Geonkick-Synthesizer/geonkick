@@ -27,22 +27,25 @@
 #include <QPainter>
 #include <QMouseEvent>
 
-EnvelopeDrawingArea::EnvelopeDrawingArea(GeonkickWidget *parent, std::shared_ptr<Envelope> &envelope)
+EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent)
           : GeonkickWidget(parent),
-            currentEnvelope(envelope),
-            drawingArea(54, 12, 784, 260 - 3)
+            currentEnvelope(nullptr)
 {
-        QPixmap pixmap("./themes/geontime/envelope_bk.png");
         setFixedSize(850, 300);
-        setBackgroundImage(pixmap);
-        setEnvelope(envelope);
+        int padding = 50;
+        drawingArea = QRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
+
+        QPalette pal;
+        pal.setColor(QPalette::Background, QColor(40, 40, 40));
+        setAutoFillBackground(true);
+        setPalette(pal);
 }
 
-EnvelopeDrawingArea::~EnvelopeDrawingArea()
+EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
 {
 }
 
-void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
+void EnvelopeWidgetDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
 {
         if (envelope) {
                 if (currentEnvelope) {
@@ -60,19 +63,19 @@ void EnvelopeDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
         }
 }
 
-void EnvelopeDrawingArea::paintWidget(QPaintEvent *event)
+void EnvelopeWidgetDrawingArea::paintWidget(QPaintEvent *event)
 {
         Q_UNUSED(event);
         QPainter painter(this);
         if (currentEnvelope) {
-                currentEnvelope->draw(painter, drawingArea);
+                currentEnvelope->draw(painter);
         }
 }
 
 void
-EnvelopeDrawingArea::mousePressEvent(QMouseEvent *event)
+EnvelopeWidgetDrawingArea::mousePressEvent(QMouseEvent *event)
 {
-        QPointF point(event->x() - drawingArea.x(),
+        QPoint point(event->x() - drawingArea.x(),
                       drawingArea.bottomRight().y() - event->y());
         if (event->button() == Qt::RightButton) {
                 if (currentEnvelope) {
@@ -93,7 +96,7 @@ EnvelopeDrawingArea::mousePressEvent(QMouseEvent *event)
 }
 
 void
-EnvelopeDrawingArea::mouseReleaseEvent(QMouseEvent *event)
+EnvelopeWidgetDrawingArea::mouseReleaseEvent(QMouseEvent *event)
 {
         Q_UNUSED(event);
         if (currentEnvelope && currentEnvelope->hasSelected()) {
@@ -103,10 +106,10 @@ EnvelopeDrawingArea::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void
-EnvelopeDrawingArea::mouseDoubleClickEvent(QMouseEvent *event)
+EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(QMouseEvent *event)
 {
         if (event->button() != Qt::RightButton) {
-                QPointF point(event->x() - drawingArea.x(),
+                QPoint point(event->x() - drawingArea.x(),
                               drawingArea.bottomLeft().y() - event->y());
                 if (currentEnvelope) {
                         currentEnvelope->addPoint(point);
@@ -116,10 +119,10 @@ EnvelopeDrawingArea::mouseDoubleClickEvent(QMouseEvent *event)
 }
 
 void
-EnvelopeDrawingArea::mouseMoveEvent(QMouseEvent *event)
+EnvelopeWidgetDrawingArea::mouseMoveEvent(QMouseEvent *event)
 {
         if (currentEnvelope && currentEnvelope->hasSelected()) {
-                QPointF point(event->x() - drawingArea.x(), drawingArea.bottomLeft().y() - event->y());
+                QPoint point(event->x() - drawingArea.x(), drawingArea.bottomLeft().y() - event->y());
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
@@ -127,12 +130,17 @@ EnvelopeDrawingArea::mouseMoveEvent(QMouseEvent *event)
         }
 }
 
-void EnvelopeDrawingArea::envelopeUpdated()
+void EnvelopeWidgetDrawingArea::envelopeUpdated()
 {
         update();
 }
 
-std::shared_ptr<Envelope> EnvelopeDrawingArea::getEnvelope() const
+std::shared_ptr<Envelope> EnvelopeWidgetDrawingArea::getEnvelope() const
 {
         return currentEnvelope;
+}
+
+const QRect EnvelopeWidgetDrawingArea::getDrawingArea()
+{
+        return drawingArea;
 }

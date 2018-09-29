@@ -24,8 +24,9 @@
 #include "oscillator_envelope.h"
 #include "oscillator.h"
 
-OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc)
-        : oscillator(osc)
+OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const QRect &area)
+        : Envelope(nullptr, area),
+         oscillator(osc)
 {
         connect(osc, SIGNAL(amplitudeUpdated(double)), this, SIGNAL(amplitudeUpdated(double)));
         if (oscillator->type() == Oscillator::Type::Noise) {

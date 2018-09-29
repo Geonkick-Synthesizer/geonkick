@@ -32,7 +32,7 @@
 #include <QWidget>
 #include <QMouseEvent>
 
-class EnvelopeDrawingArea;
+class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
 
 class EnvelopeWidget : public GeonkickWidget
@@ -63,7 +63,7 @@ public:
      void createButtomMenu();
      Envelope *currentEnvelope;
      std::vector<std::shared_ptr<Envelope>> envelopes;
-     EnvelopeDrawingArea *drawArea;
+     EnvelopeWidgetDrawingArea *drawArea;
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;
      GeonkickButton *osccillator1EvelopesButton;

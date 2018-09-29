@@ -35,7 +35,7 @@ class GeneralEnvelope: public Envelope
 
  public:
 
-  GeneralEnvelope(GeonkickApi *api);
+  GeneralEnvelope(GeonkickApi *api, const QRect &area);
   ~GeneralEnvelope();
   double envelopeLengh(void) const;
 

@@ -24,8 +24,9 @@
 #include "general_envelope.h"
 #include "oscillator.h"
 
-GeneralEnvelope::GeneralEnvelope(GeonkickApi *api)
-        : geonkickApi(api)
+GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const QRect &area)
+        : Envelope(nullptr, area),
+          geonkickApi(api)
 {
         removeSupportedType(Envelope::Type::Frequency);
         connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeLengthUpdated(double)));
