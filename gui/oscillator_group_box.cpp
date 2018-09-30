@@ -133,7 +133,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         setWidgetAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
 
         auto envelopeAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-        envelopeAmplitudeKnob->setRange(0, 1.0);
+        envelopeAmplitudeKnob->setRange(0.01, 1.0);
         envelopeAmplitudeKnob->setCurrentValue(oscillator->amplitude());
         envelopeAmplitudeKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         envelopeAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));

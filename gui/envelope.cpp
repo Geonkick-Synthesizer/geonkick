@@ -22,10 +22,13 @@
  */
 
 #include "envelope.h"
+#include "globals.h"
 
 Envelope::Envelope(QObject *object, const QRect &area)
         : QObject(object),
           drawingArea(area),
+          pointRadius(10),
+          dotRadius(3),
           selectedPointIndex(0),
           pointSelected(false),
           envelopeType(Type::Amplitude),
@@ -48,7 +51,7 @@ int Envelope::H(void) const
         return drawingArea.height();
 }
 
-QPoint Envelope::origin(void) const
+QPoint Envelope::getOrigin(void) const
 {
         return drawingArea.bottomLeft();
 }
@@ -64,7 +67,7 @@ void Envelope::draw(QPainter &painter)
 void Envelope::drawAxies(QPainter & painter)
 {
         painter.setPen(QColor(125, 125, 125));
-        QPoint point = origin();
+        QPoint point = getOrigin();
         painter.drawLine(point.x(), point.y(), point.x() + W() + 10, point.y());
         painter.drawLine(point.x(), point.y(), point.x(), point.y() - H() - 10);
 }
@@ -83,7 +86,7 @@ void Envelope::drawTimeScale(QPainter &painter)
 
         auto val = envelopeLengh() / 10;
         int dx = W() / 10;
-        QPoint point = origin();
+        QPoint point = getOrigin();
         int x  = point.x() + dx;
         for (auto i = 1; i <= 10; i++) {
                 QPen pen(QColor(80, 80, 80));
@@ -113,12 +116,12 @@ void Envelope::drawValueScale(QPainter &painter)
                 text = tr("Frequency, Hz");
         }
 
-        painter.translate(origin().x() - 30, origin().y() - H() / 2 + 35);
+        painter.translate(getOrigin().x() - 30, getOrigin().y() - H() / 2 + 35);
         painter.rotate(-90);
 
         painter.drawText(-5, -5, text);
         painter.rotate(90);
-        painter.translate(-(origin().x() - 30), -(origin().y() - H() / 2 + 35));
+        painter.translate(-(getOrigin().x() - 30), -(getOrigin().y() - H() / 2 + 35));
 
         QFont font = painter.font();
         font.setPixelSize(10);
@@ -126,25 +129,27 @@ void Envelope::drawValueScale(QPainter &painter)
         painter.setPen(QPen(QColor(110, 110, 110)));
 
         if (type() == Type::Amplitude) {
-                double step = 1.0 / 10;
-                double val = step;
+                double step = envelopeAmplitude() / 10;
+                double amplitude = envelopeAmplitude();
                 for (int i = 1; i <= 10; i++) {
-                        int x = origin().x();
-                        int y = origin().y() - H() * val;
+                        int x = getOrigin().x();
+                        int y = 0;
+                        if (amplitude > std::numeric_limits<double>::min()) {
+                                y = getOrigin().y() - H() * (i * step / amplitude);
+                        }
                         QPen pen(QColor(80, 80, 80));
                         pen.setStyle(Qt::DotLine);
                         painter.setPen(pen);
                         painter.drawLine(x + 1, y, x + W(), y);
                         QRect rect(x - 28,  y - font.pixelSize() / 2, 20, font.pixelSize());
                         painter.setPen(QPen(QColor(110, 110, 110)));
-                        painter.drawText(rect,  Qt::AlignRight, QString::number(val, 'f', 1));
-                        val += step;
+                        painter.drawText(rect,  Qt::AlignRight, QString::number(i * step, 'f', 2));
                 }
         } else if (type() == Type::Frequency) {
                 std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
                 for (auto value : values) {
-                        int x = origin().x();
-                        int y = origin().y() - H() * (log10(value) - log10(20)) / (log10(envelopeAmplitude()) - log10(20));
+                        int x = getOrigin().x();
+                        int y = getOrigin().y() - H() * (log10(value) - log10(20)) / (log10(envelopeAmplitude()) - log10(20));
                         if (y < 0) {
                                 break;
                         }
@@ -177,17 +182,59 @@ void Envelope::drawValueScale(QPainter &painter)
 
 void Envelope::drawPoints(QPainter &painter)
 {
+        QPoint origin = getOrigin();
 	for (const auto &point : envelopePoints) {
-		point->draw(painter);
+                QPoint scaledPoint = scaleUp(point);
+                scaledPoint = QPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
+		drawPoint(painter, scaledPoint);
+                scaledPoint = QPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
+                drawPointValue(painter, scaledPoint, point.y() * envelopeAmplitude());
+        }
+}
+
+void Envelope::drawPoint(QPainter &painter, const QPoint &point)
+{
+        QPen pen;
+        pen.setWidth(2);
+        pen.setColor(QColor(200, 200, 200, 200));
+        painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
+	painter.setPen(pen);
+
+        int r = getPointRadius();
+	QRect rect(point.x() - r, point.y() - r, 2 * r, 2 * r);
+	painter.drawEllipse(rect);
+
+        QBrush brush = painter.brush();
+        painter.setBrush(QColor(200, 200, 200, 200));
+        r = getDotRadius();
+        rect = QRect(point.x() - r, point.y() - r, 2 * r, 2 * r);
+        painter.drawEllipse(rect);
+        painter.setBrush(brush);
+}
+
+void Envelope::drawPointValue(QPainter &painter, const QPoint &point, double value)
+{
+        if (type() == Envelope::Type::Amplitude) {
+                painter.drawText(point, QString::number(value, 'f', 2));
+        } else if (type() == Envelope::Type::Frequency) {
+                if (value < 1000) {
+                        painter.drawText(point, QString::number(value, 'f', 0)
+                                         + "Hz " + frequencyToNote(value));
+                } else if (value >= 1000 && value <= 20000) {
+                        painter.drawText(point, QString::number(value / 1000, 'f', 1) + "kHz "
+                                         + frequencyToNote(value));
+                }
         }
 }
 
 void Envelope::drawLines(QPainter &painter)
 {
         QPolygon points;
+        QPoint origin = getOrigin();
 	for (const auto& point : envelopePoints) {
-	        points << QPoint(origin().x() + point->x(),
-                                  origin().y() - (point->y()));
+                auto scaledPoint = scaleUp(point);
+	        points << QPoint(origin.x() + scaledPoint.x(),
+                                 origin.y() - scaledPoint.y());
 	}
 
 	auto pen = painter.pen();
@@ -205,11 +252,12 @@ bool Envelope::hasSelected(void) const
 
 void Envelope::selectPoint(const QPoint &point)
 {
-        std::vector<std::shared_ptr<EnvelopePoint>>::size_type index = 0;
+        GEONKICK_DEBUG_POINT(point);
+        std::vector<QPointF>::size_type index = 0;
 	for (const auto& p : envelopePoints) {
-		if (p->hasPoint(point)) {
-			p->selectPoint();
+		if (hasPoint(p, point)) {
                         selectedPointIndex = index;
+                        GEONKICK_LOG_DEBUG("selected : " << selectedPointIndex);
                         pointSelected = true;
 			break;
 		}
@@ -220,32 +268,31 @@ void Envelope::selectPoint(const QPoint &point)
 void Envelope::unselectPoint(void)
 {
         if (pointSelected) {
-		envelopePoints[selectedPointIndex]->unselectPoint();
                 pointSelected = false;
         }
 }
 
-int Envelope::getLeftPointLimit(void) const
+double Envelope::getLeftPointLimit(void) const
 {
-        int x;
+        double x;
 	if (!pointSelected || envelopePoints.empty() || selectedPointIndex < 1) {
 		x = 0;
 	} else {
-		x = envelopePoints[selectedPointIndex - 1]->x();
+		x = envelopePoints[selectedPointIndex - 1].x();
 	}
 
 	return x;
 }
 
-int Envelope::getRightPointLimit(void) const
+double Envelope::getRightPointLimit(void) const
 {
-	int x;
+	double x;
 	if (!pointSelected || envelopePoints.empty()) {
 		x = 0;
 	} else if (selectedPointIndex >= envelopePoints.size() - 1) {
-		x = W();
+		x = 1;
 	} else {
-		x = envelopePoints[selectedPointIndex + 1]->x();
+		x = envelopePoints[selectedPointIndex + 1].x();
         }
 
 	return x;
@@ -257,84 +304,74 @@ void Envelope::moveSelectedPoint(int x, int y)
 		return;
 	}
 
-        auto selectedPoint = envelopePoints[selectedPointIndex];
-	if (x < getLeftPointLimit()) {
-                selectedPoint->setX(getLeftPointLimit());
-	} else if (x > getRightPointLimit()) {
-                selectedPoint->setX(getRightPointLimit());
+        auto scaledPoint = scaleDown(QPoint(x, y));
+        auto &selectedPoint = envelopePoints[selectedPointIndex];
+	if (scaledPoint.x() < getLeftPointLimit()) {
+                selectedPoint.setX(getLeftPointLimit());
+	} else if (scaledPoint.x() > getRightPointLimit()) {
+                selectedPoint.setX(getRightPointLimit());
 	} else {
-                selectedPoint->setX(x);
+                selectedPoint.setX(scaledPoint.x());
 	}
 
 	if (y < 0) {
-                selectedPoint->setY(0);
-	} else if (y >= H()) {
-                selectedPoint->setY(H());
+                selectedPoint.setY(0);
+	} else if (y > H()) {
+                selectedPoint.setY(1);
 	} else {
-                selectedPoint->setY(y);
+                selectedPoint.setY(scaledPoint.y());
 	}
 
-        auto scaledPoint = scaleDown(QPoint(selectedPoint->x(), selectedPoint->y()));
-        pointUpdatedEvent(selectedPointIndex, scaledPoint.x(), scaledPoint.y());
+        pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
 }
 
 void Envelope::setPoints(const QPolygonF &points)
 {
         removePoints();
         for (const auto &point : points) {
-                QPoint scaledPoint;
-                if (type() == Type::Amplitude) {
-                        scaledPoint.setX(point.x() * W());
-                        scaledPoint.setY(point.y() * H());
-                } else {
-                        scaledPoint.setX(point.x() * W());
-                        double logVal = log10(point.y() * envelopeAmplitude());
-                        double k = logVal / log10(envelopeAmplitude());
-                        scaledPoint.setY(H() * k);
-                }
-                envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, scaledPoint));
+                envelopePoints.push_back(point);
         }
 }
 
-void Envelope::addPoint(QPoint point)
+void Envelope::addPoint(const QPoint &point)
 {
-        if (point.y() < 0) {
-                point.setY(0);
-        }  else if (point.y() > H()) {
-                point.setY(H());
+        GEONKICK_DEBUG_POINT(point);
+        auto scaledPoint = scaleDown(point);
+        GEONKICK_DEBUG_POINT(scaledPoint);
+        if (scaledPoint.y() < 0) {
+                scaledPoint.setY(0);
+        }  else if (scaledPoint.y() > 1) {
+                scaledPoint.setY(1);
         }
-  	if (point.x() > W()) {
-	        point.setX(W());
-		envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, point));
-	} else if (point.x() < 0) {
-                point.setX(0);
-                envelopePoints.insert(envelopePoints.begin(),
-                                      std::make_shared<EnvelopePoint>(this, point));
+  	if (scaledPoint.x() > 1) {
+	        scaledPoint.setX(1);
+		envelopePoints.push_back(scaledPoint);
+	} else if (scaledPoint.x() < 0) {
+                scaledPoint.setX(0);
+                envelopePoints.insert(envelopePoints.begin(), scaledPoint);
         } else if (envelopePoints.empty()) {
-                envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, point));
-	} else if (point.x() < envelopePoints[0]->x()) {
-                envelopePoints.insert(envelopePoints.begin(),
-                                      std::make_shared<EnvelopePoint>(this, point));
-	} else if (point.x() > envelopePoints.back()->x()) {
-                envelopePoints.push_back(std::make_shared<EnvelopePoint>(this, point));
+                envelopePoints.push_back(scaledPoint);
+	} else if (scaledPoint.x() < envelopePoints[0].x()) {
+                envelopePoints.insert(envelopePoints.begin(), scaledPoint);
+	} else if (scaledPoint.x() > envelopePoints.back().x()) {
+                envelopePoints.push_back(scaledPoint);
 	} else {
 		for (auto it = envelopePoints.begin() ; it != envelopePoints.end(); ++it) {
-			if (point.x() < (*it)->x()) {
-                                envelopePoints.insert(it, std::make_shared<EnvelopePoint>(this, point));
+			if (scaledPoint.x() < (*it).x()) {
+                                envelopePoints.insert(it, scaledPoint);
                                 break;
 			}
 		}
 	}
 
-        auto scaledPoint = scaleDown(point);
 	pointAddedEvent(scaledPoint.x(), scaledPoint.y());
 }
 
 void Envelope::removePoint(const QPoint &point)
 {
-        std::vector<std::shared_ptr<EnvelopePoint>>::size_type index = 0;
+        std::vector<QPointF>::size_type index = 0;
         for (const auto p: envelopePoints) {
-		if (p->hasPoint(point)) {
+		if (hasPoint(p, point)) {
 			if (p != envelopePoints.front() && p != envelopePoints.back()) {
 				envelopePoints.erase(envelopePoints.begin() + index);
 				pointRemovedEvent(index);
@@ -395,7 +432,6 @@ const QRect& Envelope::getDrawingArea()
 void Envelope::setDrawingArea(const QRect &rect)
 {
         drawingArea = rect;
-        updatePoints();
 }
 
 QPointF Envelope::scaleDown(const QPoint &point)
@@ -413,3 +449,94 @@ QPointF Envelope::scaleDown(const QPoint &point)
 
         return scaledPoint;
 }
+
+QPoint Envelope::scaleUp(const QPointF &point)
+{
+        int x = 0;
+        int y = 0;
+        if (type() == Type::Amplitude) {
+                x = point.x() * W();
+                y = point.y() * H();
+        } else {
+                x = static_cast<int>(point.x() * W());
+                double logRange = log10(envelopeAmplitude()) - log10(20);
+                double k = 0;
+                if (point.y() > 0) {
+                        double logValue = log10(envelopeAmplitude() * point.y()) - log10(20);
+                        k = logValue / logRange;
+                }
+                y = k * H();
+        }
+
+        return QPoint(x, y);
+}
+
+bool Envelope::hasPoint(const QPointF &point, const QPoint &p)
+{
+        QPoint scaledPoint = scaleUp(point);
+        int r = getPointRadius();
+	if (pow(p.x() - scaledPoint.x(), 2) + pow(p.y() - scaledPoint.y(), 2) < pow(r, 2)) {
+                return true;
+        }
+
+	return false;
+}
+
+int Envelope::getPointRadius() const
+{
+        return pointRadius;
+}
+
+void Envelope::setPointRadius(int radius)
+{
+        pointRadius = radius;
+}
+
+int Envelope::getDotRadius() const
+{
+        return dotRadius;
+}
+
+void Envelope::setDotRadius(int radius)
+{
+        dotRadius = radius;
+}
+
+QString Envelope::frequencyToNote(double f)
+{
+        if (f < 16.35160 || f > 7902.133) {
+                return QString();
+        }
+
+        int n = 0;
+        while (f > 32.70320) {
+                f /=2;
+                n++;
+        }
+
+        int octave = n;
+        std::vector<double> pitches {
+                        16.35160,
+                        17.32391,
+                        18.35405,
+                        19.44544,
+                        20.60172,
+                        21.82676,
+                        23.12465,
+                        24.49971,
+                        25.95654,
+                        27.50000,
+                        29.13524,
+                        30.86771};
+
+        std::vector<QString> notes{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+
+        n = 12;
+        while (--n && pitches[n] > f);
+        if (n < 11 && f > (pitches[n + 1] - pitches[n]) / 2) {
+                n++;
+        }
+
+        return "(" + notes[n] + QString::number(octave) + ")";
+}
+

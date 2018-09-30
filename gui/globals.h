@@ -37,4 +37,6 @@
 #define GEONKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
 #define GEONKICK_LOG_DEBUG(msg) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] " << msg
 
+#define GEONKICK_DEBUG_POINT(point) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] (" << point.x() << ", " << point.y() << ")"
+
 #endif // GEONKICK_GLOBALS_H

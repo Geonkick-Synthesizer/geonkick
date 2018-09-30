@@ -24,7 +24,6 @@
 #ifndef GEONKICK_ENVELOPE_H
 #define GEONKICK_ENVELOPE_H
 
-#include "envelope_point.h"
 #include "geonkick_api.h"
 
 #include <QObject>
@@ -50,15 +49,13 @@ class Envelope: public QObject
         int H(void) const;
         virtual double envelopeLengh(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
-        QPoint origin(void) const;
+        QPoint getOrigin(void) const;
         void draw(QPainter &painter);
         bool hasSelected() const;
         void selectPoint(const QPoint &point);
         void unselectPoint(void);
         void moveSelectedPoint(int x, int y);
-        int getLeftPointLimit(void) const;
-        int getRightPointLimit(void) const;
-        void addPoint(QPoint point);
+        void addPoint(const QPoint &point);
         virtual void updatePoints() {};
         void removePoint(const QPoint &point);
         Type type() const;
@@ -86,13 +83,26 @@ class Envelope: public QObject
         void drawTimeScale(QPainter &painter);
         void drawValueScale(QPainter &painter);
         void drawPoints(QPainter &painter);
+        void drawPoint(QPainter &painter, const QPoint &point);
+        void drawPointValue(QPainter &painter, const QPoint &point, double value);
         void drawLines(QPainter &painter);
         QPointF scaleDown(const QPoint &point);
+        QPoint scaleUp(const QPointF &point);
+        bool hasPoint(const QPointF &point, const QPoint &p);
+        int getPointRadius() const;
+        void setPointRadius(int radius);
+        int getDotRadius()  const;
+        void setDotRadius(int radius);
+        double getLeftPointLimit(void) const;
+        double getRightPointLimit(void) const;
+        QString frequencyToNote(double f);
 
  private:
         QRect drawingArea;
-        std::vector<std::shared_ptr<EnvelopePoint>> envelopePoints;
-        std::vector<std::shared_ptr<EnvelopePoint>>::size_type selectedPointIndex;
+        std::vector<QPointF> envelopePoints;
+        int pointRadius;
+        int dotRadius;
+        std::vector<QPointF>::size_type selectedPointIndex;
         std::unordered_set<Type> supportedTypes;
         bool pointSelected;
         Type envelopeType;
