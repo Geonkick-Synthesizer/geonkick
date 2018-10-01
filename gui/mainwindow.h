@@ -51,12 +51,15 @@ class MainWindow : public GeonkickWidget
       ~MainWindow();
       bool init(void);
 
+ public slots:
+      void openExportDialog();
+
  private:
-	GeonkickApi *geonkickApi;
-	std::vector<Oscillator*> oscillators;
-	OscillatorWidget *oscillatorWidget;
-	QVBoxLayout *centralWidgetLayout;
-	QVector<QGroupBox*> envelopeGroupBox;
+      GeonkickApi *geonkickApi;
+      std::vector<Oscillator*> oscillators;
+      OscillatorWidget *oscillatorWidget;
+      QVBoxLayout *centralWidgetLayout;
+      QVector<QGroupBox*> envelopeGroupBox;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

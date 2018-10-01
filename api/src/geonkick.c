@@ -703,3 +703,11 @@ geonkick_set_current_time(struct geonkick *kick,
         kick->current_time = current_time;
         geonkick_unlock(kick);
 }
+
+enum geonkick_error
+geonkick_get_kick_buffer(double *buffer, size_t *size)
+{
+        (void)buffer;
+        (void)size;
+        gkick_log_info("not implemented");
+}

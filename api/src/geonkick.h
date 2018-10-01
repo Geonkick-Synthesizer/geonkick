@@ -159,6 +159,9 @@ geonkick_play(struct geonkick *kick, int play);
 int
 geonkick_is_play(struct geonkick *kick);
 
+enum geonkick_error
+geonkick_get_kick_buffer(double *buffer, size_t *size);
+
 #ifdef __cplusplus
 }
 #endif

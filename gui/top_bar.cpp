@@ -64,10 +64,11 @@ TopBar::TopBar(GeonkickWidget *parent)
         buttonsLayout->setAlignment(saveFileButton, Qt::AlignLeft);
 
         exportFileButton = new GeonkickButton(this);
-        exportFileButton->setUnpressedImage(QPixmap("./themes/geontime/export.png"));
-        exportFileButton->setPressedImage(QPixmap("./themes/geontime/export_active.png"));
+        exportFileButton->setUnpressedImage(QPixmap("./themes/geontime/export_active.png"));
+        exportFileButton->setCheckable(true);
         buttonsLayout->addWidget(exportFileButton);
         buttonsLayout->setAlignment(exportFileButton, Qt::AlignLeft);
+        connect(exportFileButton, SIGNAL(toggled(bool)), parent, SLOT(openExportDialog()));
 
         settingsButton = new GeonkickButton(this);
         settingsButton->setUnpressedImage(QPixmap("./themes/geontime/settings.png"));

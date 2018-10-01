@@ -38,6 +38,7 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFileDialog>
 
 #define GEONKICK_MAINWINDOW_WIDTH  940
 #define GEONKICK_MAINWINDOW_HEIGHT 765
@@ -119,4 +120,11 @@ bool MainWindow::init(void)
         mainLayout->addWidget(controlAreaWidget);
 
         return true;
+}
+
+void MainWindow::openExportDialog()
+{
+        QFileDialog::getSaveFileName(this, tr("Export"),
+                                     "kick.wav",
+                                     "*.wav");
 }
