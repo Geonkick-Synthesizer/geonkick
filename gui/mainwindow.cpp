@@ -78,7 +78,7 @@ bool MainWindow::init(void)
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
 	oscillator->setFilterFrequency(20000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(1);
+        oscillator->setAmplitude(0.05);
 
         // Oscillator 2
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
@@ -86,12 +86,12 @@ bool MainWindow::init(void)
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
 	oscillator->setFilterFrequency(20000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(1);
+        oscillator->setAmplitude(0.05);
 
         // Noise
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
 	oscillator->setFunction(Oscillator::FunctionType::Noise);
-	oscillator->setAmplitude(1);
+	oscillator->setAmplitude(0.05);
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
 	oscillator->setFilterFrequency(20000);
 
@@ -111,6 +111,9 @@ bool MainWindow::init(void)
         hBoxLayout->addWidget(envelopeWidget);
         auto faderWidget = new Fader(this);
         faderWidget->setFixedSize(65, 330);
+        GEONKICK_LOG_DEBUG("Fader level: " << faderWidget->getFaderLevel());
+        connect(faderWidget, SIGNAL(levelUpdated(int)), this, SLOT(setLimiterValue(int)));
+        faderWidget->setFaderLevel(100 * geonkickApi->limiterValue());
         hBoxLayout->addWidget(faderWidget, 0, Qt::AlignTop);
         hBoxLayout->addSpacing(5);
         mainLayout->addLayout(hBoxLayout);
@@ -127,4 +130,10 @@ void MainWindow::openExportDialog()
         QFileDialog::getSaveFileName(this, tr("Export"),
                                      "kick.wav",
                                      "*.wav");
+}
+
+void MainWindow::setLimiterValue(int value)
+{
+        GEONKICK_LOG_DEBUG("value: " << value);
+        geonkickApi->setLimiterValue(static_cast<double>(value) / 100);
 }

@@ -51,12 +51,14 @@ class GeonkickSlider: public GeonkickWidget
         void valueUpdated(int value);
 
  protected:
-        int  calculateValue(int x, int y) const;
+        int  calculateValue(int x, int y);
 
  private:
         void mousePressEvent(QMouseEvent *event);
         void mouseMoveEvent(QMouseEvent *event);
         void mouseReleaseEvent(QMouseEvent *event);
+        void resizeEvent(QResizeEvent *event);
+        int pixelsFromValue();
         Orientation sliderOrientation;
         bool isSelected;
         int sliderValue;

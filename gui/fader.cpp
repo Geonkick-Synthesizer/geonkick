@@ -32,6 +32,7 @@ Fader::Fader(GeonkickWidget *parent)
           levelsImage("./themes/geontime/fader.png")
 {
         faderSlider->move(0, 3);
+        connect(faderSlider, SIGNAL(valueUpdated(int)), this, SIGNAL(levelUpdated(int)));
 }
 
 Fader::~Fader()

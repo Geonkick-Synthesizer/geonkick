@@ -39,6 +39,7 @@ geonkick_create(struct geonkick **kick)
 
 	strcpy((*kick)->name, "GeonKick");
 	(*kick)->length = 0.26;
+        (*kick)->limiter = 1.0;
 	(*kick)->oscillators_number = 3;
 	(*kick)->midi_in_enabled = 1;
 
@@ -710,4 +711,37 @@ geonkick_get_kick_buffer(double *buffer, size_t *size)
         (void)buffer;
         (void)size;
         gkick_log_info("not implemented");
+        return GEONKICK_OK;
+}
+
+void geonkick_set_limiter_value(struct geonkick *kick, double limit)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+        }
+
+        gkick_log_debug("limit: %.5f", limit);
+        if (limit < 0) {
+                limit = 0;
+        } else if (limit > 1.0) {
+                limit = 1.0;
+        } else {
+                geonkick_lock(kick);
+                kick->limiter = 0.1 * limit;
+                geonkick_unlock(kick);
+        }
+}
+
+double geonkick_get_limiter_value(struct geonkick *kick)
+{
+        double limit;
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+        }
+
+        geonkick_lock(kick);
+        limit = kick->limiter;
+        geonkick_unlock(kick);
+
+        return limit;
 }

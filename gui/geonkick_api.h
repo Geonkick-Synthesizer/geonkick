@@ -87,10 +87,12 @@ class GeonkickApi: public QObject {
   void enableOscillator(int oscillatorIndex, bool enable);
   void setOscillatorFilterType(int oscillatorIndex, FilterType filter);
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
+  double limiterValue();
 
 public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
+  void setLimiterValue(double value);
 
 signals:
   void kickLengthUpdated(double length);

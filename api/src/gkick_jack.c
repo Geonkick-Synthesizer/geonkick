@@ -30,6 +30,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 {
         int i;
         double val;
+        double limit;
         int note_pressed;
         struct geonkick *kick;
         struct gkick_jack *jack;
@@ -58,7 +59,9 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         for (i = 0; i < nframes; i++) {
                 val = 0.0;
                 if (!geonckick_is_play_stopped(kick)) {
-                        val = geonkick_get_oscillators_value(kick);
+                        val   = geonkick_get_oscillators_value(kick);
+                        limit = geonkick_get_limiter_value(kick);
+                        val = limit * val;
                         geonkick_increment_time(kick, delta_time);
                 }
                 buffers[0][i] = (jack_default_audio_sample_t)val;

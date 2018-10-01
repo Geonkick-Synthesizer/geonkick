@@ -248,3 +248,14 @@ void GeonkickApi::setOscillatorFilterType(int oscillatorIndex, FilterType filter
         Q_UNUSED(filter);
         // Implement API.
 }
+
+double GeonkickApi::limiterValue()
+{
+        return geonkick_get_limiter_value(geonkickApi);
+}
+
+void GeonkickApi::setLimiterValue(double value)
+{
+        geonkick_set_limiter_value(geonkickApi, value);
+}
+

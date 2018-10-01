@@ -41,6 +41,7 @@ struct geonkick {
         int midi_in_enabled;
         int is_play;
         struct gkick_envelope *amp_envelope;
+        double limiter;
         //        gkick_filter *filer;
 };
 

@@ -26,8 +26,6 @@
 
 #include "geonkick_widget.h"
 
-#include <unordered_map>
-
 class GeonkickSlider;
 class GeonkickLevel;
 
@@ -44,6 +42,8 @@ class Fader: public GeonkickWidget
  public slots:
         void setFaderLevel(int level);
         void setChannelLevel(int channel, int level);
+ signals:
+        void levelUpdated(int level);
 
  private:
         void drawLevels(QPainter &painter);

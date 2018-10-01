@@ -59,26 +59,23 @@ void GeonkickSlider::mousePressEvent(QMouseEvent *event)
 {
         if (event->x() >= 0 && event->x() < width()
             && event->y() >= 0 && event->y() < height()) {
-                sliderPixels = calculateValue(event->x(), event->y());
-                if (sliderOrientation == Orientation::Horizontal) {
-                        setValue(100 * (sliderPixels / width() - 2));
-                } else {
-                        setValue(100 * (sliderPixels / height() - 2));
-                }
+                int value = calculateValue(event->x(), event->y());
                 isSelected = true;
-                update();
+                if (value != sliderValue) {
+                        sliderValue = value;
+                        emit valueUpdated(sliderValue);
+                        update();
+                }
          }
 }
 
 void GeonkickSlider::mouseMoveEvent(QMouseEvent *event)
 {
         if (isSelected) {
-                sliderPixels = calculateValue(event->x(), event->y());
-                if (sliderOrientation == Orientation::Horizontal) {
-                        setValue(100 * (sliderPixels / width() - 2));
-                } else {
-                        setValue(100 * (sliderPixels / height() - 2));
-                }
+                int value = calculateValue(event->x(), event->y());
+                sliderValue = value;
+                GEONKICK_LOG_DEBUG("emit: " << sliderValue);
+                emit valueUpdated(sliderValue);
                 update();
         }
 }
@@ -90,7 +87,7 @@ void GeonkickSlider::mouseReleaseEvent(QMouseEvent *event)
 }
 
 
-int GeonkickSlider::calculateValue(int x, int y) const
+int GeonkickSlider::calculateValue(int x, int y)
 {
         int value = 0;
         if (sliderOrientation == Orientation::Horizontal) {
@@ -101,6 +98,8 @@ int GeonkickSlider::calculateValue(int x, int y) const
                 } else {
                         value = x;
                 }
+                sliderPixels = value;
+                value = 100 * ((double)sliderPixels / (width() - 2));
         } else {
                 if (y < 1) {
                         value = height() - 2;
@@ -109,6 +108,8 @@ int GeonkickSlider::calculateValue(int x, int y) const
                 } else {
                         value = height() - y;
                 }
+                sliderPixels = value;
+                value = 100 * ((double)sliderPixels / (height() - 2));
         }
         return value;
 }
@@ -116,6 +117,24 @@ int GeonkickSlider::calculateValue(int x, int y) const
 int GeonkickSlider::getValue() const
 {
         return sliderValue;
+}
+
+void GeonkickSlider::resizeEvent(QResizeEvent *event)
+{
+        Q_UNUSED(event);
+        sliderPixels = pixelsFromValue();
+        update();
+}
+
+int GeonkickSlider::pixelsFromValue()
+{
+        int pixels;
+        if (sliderOrientation == Orientation::Horizontal) {
+                pixels = ((double)sliderValue / 100) * (width() - 2);
+        } else {
+                pixels = ((double)sliderValue / 100) * (height() - 2);
+        }
+        return pixels;
 }
 
 void GeonkickSlider::setValue(int value)
@@ -128,6 +147,7 @@ void GeonkickSlider::setValue(int value)
 
         if (value != sliderValue) {
                 sliderValue = value;
-                emit valueUpdated(sliderValue);
+                sliderPixels = pixelsFromValue();
+                update();
         }
 }

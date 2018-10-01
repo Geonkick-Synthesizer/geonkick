@@ -193,7 +193,7 @@ double gkick_osc_func_noise(void)
                 sign = -1;
         }
 
-        return sign * ((double)(rand() % 100)) / 100.0;
+        return sign * ((double)(rand() % RAND_MAX)) / RAND_MAX;
 }
 
 void

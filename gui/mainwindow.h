@@ -53,6 +53,7 @@ class MainWindow : public GeonkickWidget
 
  public slots:
       void openExportDialog();
+      void setLimiterValue(int value);
 
  private:
       GeonkickApi *geonkickApi;
