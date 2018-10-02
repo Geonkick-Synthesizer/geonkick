@@ -217,7 +217,10 @@ void Envelope::drawPointValue(QPainter &painter, const QPoint &point, double val
         if (type() == Envelope::Type::Amplitude) {
                 painter.drawText(point, QString::number(value, 'f', 2));
         } else if (type() == Envelope::Type::Frequency) {
-                if (value < 1000) {
+                if (value < 20) {
+                        painter.drawText(point, "20Hz " + frequencyToNote(20));
+                }
+                if (value >= 20 && value < 1000) {
                         painter.drawText(point, QString::number(value, 'f', 0)
                                          + "Hz " + frequencyToNote(value));
                 } else if (value >= 1000 && value <= 20000) {
@@ -463,7 +466,9 @@ QPoint Envelope::scaleUp(const QPointF &point)
                 double k = 0;
                 if (point.y() > 0) {
                         double logValue = log10(envelopeAmplitude() * point.y()) - log10(20);
-                        k = logValue / logRange;
+                        if (logValue > 0) {
+                                k = logValue / logRange;
+                        }
                 }
                 y = k * H();
         }

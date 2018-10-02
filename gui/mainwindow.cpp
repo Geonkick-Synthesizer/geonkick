@@ -76,7 +76,7 @@ bool MainWindow::init(void)
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
         oscillator->setFrequency(1000);
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(20000);
+	oscillator->setFilterFrequency(5000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
         oscillator->setAmplitude(0.05);
 
@@ -84,7 +84,7 @@ bool MainWindow::init(void)
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
         oscillator->setFrequency(1000);
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(20000);
+	oscillator->setFilterFrequency(5000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
         oscillator->setAmplitude(0.05);
 
@@ -93,7 +93,7 @@ bool MainWindow::init(void)
 	oscillator->setFunction(Oscillator::FunctionType::Noise);
 	oscillator->setAmplitude(0.05);
 	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(20000);
+	oscillator->setFilterFrequency(5000);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
         mainLayout->setContentsMargins(0, 0, 0, 10);
