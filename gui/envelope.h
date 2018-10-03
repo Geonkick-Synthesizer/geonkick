@@ -70,6 +70,7 @@ class Envelope: public QObject
  signals:
          void envelopeLengthUpdated(double len);
          void amplitudeUpdated(double amplitude);
+         void envelopeUpdated();
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;

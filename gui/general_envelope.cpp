@@ -29,8 +29,8 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const QRect &area)
           geonkickApi(api)
 {
         removeSupportedType(Envelope::Type::Frequency);
-        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeLengthUpdated(double)));
-        connect(geonkickApi, SIGNAL(kickAmplitudeUpdated(double)), this, SIGNAL(amplitudeUpdated(double)));
+        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
+        connect(geonkickApi, SIGNAL(kickAmplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
 }
 
 GeneralEnvelope::~GeneralEnvelope()

@@ -54,9 +54,9 @@ void EnvelopeWidgetDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
 
                 currentEnvelope = envelope;
                 if (currentEnvelope) {
-                        connect(currentEnvelope.get(), SIGNAL(envelopeLengthUpdated(double)),
+                        connect(currentEnvelope.get(), SIGNAL(envelopeUpdated()),
                                 this, SLOT(envelopeUpdated()));
-                        connect(currentEnvelope.get(), SIGNAL(amplitudeUpdated(double)),
+                        connect(currentEnvelope.get(), SIGNAL(envelopeUpdated()),
                                 this, SLOT(envelopeUpdated()));
                         update();
                 }

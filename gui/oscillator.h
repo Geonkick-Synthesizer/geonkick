@@ -76,6 +76,7 @@ class Oscillator: public QObject
  signals:
 	  void amplitudeUpdated(double v);
 	  void frequencyUpdated(double v);
+          void kickLengthUpdated(double len);
 
  protected:
           int index();
