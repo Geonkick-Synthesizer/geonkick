@@ -38,10 +38,7 @@ class Envelope: public QObject
 
  public:
 
-        enum class Type:int {
-                Amplitude  = static_cast<int>(GeonkickApi::EnvelopeType::Amplitude),
-                Frequency = static_cast<int>(GeonkickApi::EnvelopeType::Frequency)
-        };
+        using Type = GeonkickApi::EnvelopeType;
 
         Envelope(QObject *parent = nullptr, const QRect &area = QRect());
         virtual ~Envelope();

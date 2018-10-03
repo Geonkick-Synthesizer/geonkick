@@ -41,23 +41,9 @@ class Oscillator: public QObject
           Noise       = 2
   };
 
-  enum class FunctionType:int {
-          Sine     = static_cast<int>(GeonkickApi::FunctionType::Sine),
-          Square   = static_cast<int>(GeonkickApi::FunctionType::Square),
-          Triangle = static_cast<int>(GeonkickApi::FunctionType::Triangle),
-          Sawtooth = static_cast<int>(GeonkickApi::FunctionType::Sawtooth),
-          Noise    = static_cast<int>(GeonkickApi::FunctionType::Noise)
-  };
-
-  enum class EnvelopeType:int {
-          Amplitude  = static_cast<int>(GeonkickApi::EnvelopeType::Amplitude),
-          Frequency  = static_cast<int>(GeonkickApi::EnvelopeType::Frequency)
-  };
-
-  enum class FilterType:int {
-          LowPass    = static_cast<int>(GeonkickApi::FilterType::LowPass),
-          HighPass = static_cast<int>(GeonkickApi::FilterType::HighPass)
-  };
+  using FunctionType = GeonkickApi::FunctionType;
+  using EnvelopeType = GeonkickApi::EnvelopeType;
+  using FilterType   = GeonkickApi::FilterType;
 
   Oscillator(GeonkickApi *api, Oscillator::Type type);
   ~Oscillator();
