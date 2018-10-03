@@ -1,6 +1,8 @@
 # Geonkick
 
-A kick drum synthesizer Geonkick
+A kick drum synthesizer.
+
+License: GPLV3
 
 Status: no release yet
 
@@ -39,7 +41,7 @@ What it should include:
      - stereo
      - mono
      - 16 bit
-     - 23 bit
+     - 32 bit
 * Save
 * Open
 * Standalone
