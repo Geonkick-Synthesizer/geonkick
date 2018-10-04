@@ -23,13 +23,15 @@
 
 #include "envelope_draw_area.h"
 #include "envelope.h"
+#include "kick_graph.h"
 
 #include <QPainter>
 #include <QMouseEvent>
 
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent)
           : GeonkickWidget(parent),
-            currentEnvelope(nullptr)
+            currentEnvelope(nullptr),
+            kickGraph(nullptr)
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -67,6 +69,11 @@ void EnvelopeWidgetDrawingArea::paintWidget(QPaintEvent *event)
 {
         Q_UNUSED(event);
         QPainter painter(this);
+
+        if (kickGraph) {
+                kickGraph->draw(painter);
+        }
+
         if (currentEnvelope) {
                 currentEnvelope->draw(painter);
         }
@@ -143,4 +150,15 @@ std::shared_ptr<Envelope> EnvelopeWidgetDrawingArea::getEnvelope() const
 const QRect EnvelopeWidgetDrawingArea::getDrawingArea()
 {
         return drawingArea;
+}
+
+void EnvelopeWidgetDrawingArea::setKickGraph(KickGraph *graph)
+{
+        kickGraph = graph;
+        kickGraph->setDrawingArea(drawingArea);
+}
+
+KickGraph* EnvelopeWidgetDrawingArea::getKickGraph()
+{
+        return kickGraph;
 }

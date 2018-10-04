@@ -30,6 +30,7 @@
 #include <memory>
 
 class Envelope;
+class KickGraph;
 
 class EnvelopeWidgetDrawingArea : public GeonkickWidget
 {
@@ -45,6 +46,8 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void mouseMoveEvent(QMouseEvent *event);
    std::shared_ptr<Envelope> getEnvelope() const;
    const QRect getDrawingArea();
+   void setKickGraph(KickGraph *graph);
+   KickGraph* getKickGraph();
 
    public slots:
            void setEnvelope(std::shared_ptr<Envelope> &envelope);
@@ -52,6 +55,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
 
  private:
    std::shared_ptr<Envelope> currentEnvelope;
+   KickGraph *kickGraph;
    QRect drawingArea;
    QPointF mousePoint;
 };

@@ -25,6 +25,7 @@
 #include "general_envelope.h"
 #include "envelope_draw_area.h"
 #include "geonkick_button.h"
+#include "kick_graph.h"
 
 #include <QPainter>
 #include <QPolygonF>
@@ -59,6 +60,10 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::ve
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
         envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
         envelopes.push_back(std::make_shared<GeneralEnvelope>(api, rect));
+
+        auto kickGraph = new KickGraph(this, api);
+        kickGraph->setDrawingArea(rect);
+        drawArea->setKickGraph(kickGraph);
 
         createButtomMenu();
         showGeneralEnvelope();

@@ -27,6 +27,7 @@ HEADERS += globals.h \
            general_envelope.h \
            general_group_box.h \
            envelope.h \
+           kick_graph.h \
            envelope_widget.h \
            knob.h \
            oscillator.h \
@@ -52,6 +53,7 @@ SOURCES += geonkick_theme.cpp \
            distortion_group_box.cpp \
            general_group_box.cpp \
            envelope.cpp \
+           kick_graph.cpp \
            envelope_widget.cpp \
            knob.cpp \
            oscillator.cpp \

@@ -259,3 +259,8 @@ void GeonkickApi::setLimiterValue(double value)
         geonkick_set_limiter_value(geonkickApi, value);
 }
 
+std::vector<double> GeonkickApi::getKickBuffer(void)
+{
+        // TODO: implement
+        return std::move(std::vector<double>());
+}
