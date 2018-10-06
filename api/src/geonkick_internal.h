@@ -30,19 +30,18 @@
 
 #include <pthread.h>
 
-struct geonkick {
-        pthread_mutex_t lock;
-        char name[30];
-        double length;
-        double current_time;
-        struct gkick_oscillator **oscillators;
-        size_t oscillators_number;
+struct audio_device {
         struct gkick_jack *jack;
-        int midi_in_enabled;
         int is_play;
-        struct gkick_envelope *amp_envelope;
         double limiter;
-        //        gkick_filter *filer;
+        pthread_mutex_t lock;
+};
+
+struct geonkick {
+        char name[30];
+        struct geonkick_synthesizer *synthesizer;
+        struct gkick_audio_device *audio_device;
+        pthread_mutex_t lock;
 };
 
 enum geonkick_error

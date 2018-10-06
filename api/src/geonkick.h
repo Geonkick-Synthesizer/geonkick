@@ -126,11 +126,11 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 
 enum geonkick_error
 geonkick_set_osc_function(struct geonkick *kick,
-			  size_t oscillatorIndex,
+			  size_t osc_index,
 			  enum geonkick_osc_func_type type);
 
 enum geonkick_error
-geonkick_set_length(struct geonkick *kick, double t);
+geonkick_set_length(struct geonkick *kick, double len);
 
 enum geonkick_error
 geonkick_get_length(struct geonkick *kick, double *len);
