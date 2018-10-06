@@ -56,12 +56,15 @@ QPoint Envelope::getOrigin(void) const
         return drawingArea.bottomLeft();
 }
 
-void Envelope::draw(QPainter &painter)
+void Envelope::draw(QPainter &painter, DrawLayer layer)
 {
-        drawAxies(painter);
-        drawScale(painter);
-        drawPoints(painter);
-        drawLines(painter);
+        if (layer == DrawLayer::Axies) {
+                drawAxies(painter);
+                drawScale(painter);
+        } else if (layer == DrawLayer::Envelope) {
+                drawPoints(painter);
+                drawLines(painter);
+        }
 }
 
 void Envelope::drawAxies(QPainter & painter)

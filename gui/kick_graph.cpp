@@ -38,7 +38,6 @@ KickGraph::~KickGraph()
 
 void KickGraph::draw(QPainter &painter)
 {
-        //        drawKickGraph();
         if (!cacheGraphImage.isNull()) {
                 painter.drawPixmap(drawingArea, cacheGraphImage);
         }
@@ -49,29 +48,40 @@ void KickGraph::setDrawingArea(const QRect &rect)
         drawingArea = rect;
         cacheGraphImage = QPixmap(drawingArea.size());
         cacheGraphImage.fill(Qt::transparent);
+        kickBuffer.resize(drawingArea.width());
+        geonkickApi->getKickBuffer(kickBuffer);
         drawKickGraph();
 }
 
 void KickGraph::updateGraphBuffer()
 {
-        kickBuffer = geonkickApi->getKickBuffer();
+        geonkickApi->getKickBuffer(kickBuffer);
         drawKickGraph();
 }
 
 void KickGraph::drawKickGraph()
 {
-        /*        if (!cacheGraphImage.isNull()) {
-                static const QPointF points[4] = {
-                        QPointF(10.0, 80.0),
-                        QPointF(20.0, 10.0),
-                        QPointF(80.0, 30.0),
-                        QPointF(90.0, 70.0)
-                };
+        if (kickBuffer.empty()) {
+                return;
+        }
 
-                GEONKICK_LOG_DEBUG("is null:" << cacheGraphImage.isNull());
-                QPainter painter(&cacheGraphImage);
-                painter.setPen(QPen(QColor(125, 125, 125, 255)));
-                painter.drawPolygon(points, 4);
-                painter.end();
-                }*/
+        cacheGraphImage.fill(Qt::transparent);
+        QPainter painter(&cacheGraphImage);
+        QPen pen(QColor(59, 130, 4, 200));
+        pen.setWidth(2);
+        pen.setJoinStyle(Qt::MiterJoin);
+        painter.setPen(pen);
+
+        int w = drawingArea.width();
+        int h = drawingArea.height();
+        int k = kickBuffer.size() / w;
+        QPolygonF graphPoints;
+        for (auto i = 0; i < w; i++) {
+                graphPoints << QPointF(i, h * (0.5  - kickBuffer[i * k]));
+        }
+
+        painter.setRenderHints(QPainter::SmoothPixmapTransform
+                               | QPainter::Antialiasing, true);
+        painter.drawPolyline(graphPoints);
+        painter.end();
 }

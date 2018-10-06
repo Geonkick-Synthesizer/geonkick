@@ -38,6 +38,11 @@ class Envelope: public QObject
 
  public:
 
+        enum class DrawLayer {
+                Axies,
+                Envelope
+        };
+
         using Type = GeonkickApi::EnvelopeType;
 
         Envelope(QObject *parent = nullptr, const QRect &area = QRect());
@@ -47,7 +52,7 @@ class Envelope: public QObject
         virtual double envelopeLengh(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
         QPoint getOrigin(void) const;
-        void draw(QPainter &painter);
+        void draw(QPainter &painter, DrawLayer layer);
         bool hasSelected() const;
         void selectPoint(const QPoint &point);
         void unselectPoint(void);

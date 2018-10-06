@@ -86,12 +86,14 @@ void GeonkickApi::addOscillatorEnvelopePoint(int oscillatorIndex, EnvelopeType e
 {
         geonkick_osc_envelope_add_point(geonkickApi, oscillatorIndex,
                                         static_cast<int>(envelope), point.x(), point.y());
+        emit kickUpdated();
 }
 
 void GeonkickApi::removeOscillatorEvelopePoint(int oscillatorIndex, EnvelopeType envelope, int pointIndex)
 {
         geonkick_osc_envelope_remove_point(geonkickApi, oscillatorIndex,
                                            static_cast<int>(envelope), pointIndex);
+        emit kickUpdated();
 }
 
 void GeonkickApi::updateOscillatorEvelopePoint(int oscillatorIndex,
@@ -102,6 +104,7 @@ void GeonkickApi::updateOscillatorEvelopePoint(int oscillatorIndex,
         geonkick_osc_envelope_update_point(geonkickApi, oscillatorIndex,
                                            static_cast<int>(envelope),
                                            pointIndex, point.x(), point.y());
+        emit kickUpdated();
 }
 
 
@@ -109,6 +112,7 @@ void GeonkickApi::setOscillatorFunction(int oscillatorIndex, FunctionType functi
 {
         geonkick_set_osc_function(geonkickApi, oscillatorIndex,
                                   static_cast<enum geonkick_osc_func_type>(function));
+        emit kickUpdated();
 }
 
 GeonkickApi::FunctionType GeonkickApi::oscillatorFunction(int oscillatorIndex) const
@@ -121,6 +125,7 @@ void GeonkickApi::setKickLength(double length)
 {
         if (geonkick_set_length(geonkickApi, length / 1000) == GEONKICK_OK) {
                 emit kickLengthUpdated(length);
+                emit kickUpdated();
         };
 }
 
@@ -134,6 +139,7 @@ double GeonkickApi::kickLength(void) const
 void GeonkickApi::setKickAmplitude(double amplitude)
 {
         emit kickAmplitudeUpdated(amplitude);
+        emit kickUpdated();
         // Implement API.
 }
 
@@ -145,6 +151,7 @@ double GeonkickApi::kickAmplitude() const
 
 void GeonkickApi::setKickFilterFrequency(double frequency)
 {
+        emit kickUpdated();
 }
 
 double GeonkickApi::kickFilterFrequency(void) const
@@ -155,6 +162,7 @@ double GeonkickApi::kickFilterFrequency(void) const
 void GeonkickApi::setKickFilterQFactor(double factor)
 {
         // Implement API.
+        emit kickUpdated();
 }
 
 double GeonkickApi::kickFilterQFactor() const
@@ -167,6 +175,7 @@ bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
 	if (geonkick_set_osc_amplitude_val(geonkickApi, oscillatorIndex, value) != GEONKICK_OK) {
 		return false;
 	}
+        emit kickUpdated();
 
 	return true;
 }
@@ -186,6 +195,8 @@ bool GeonkickApi::setOscillatorFrequency(int oscillatorIndex, double value)
 	if (geonkick_set_osc_frequency_val(geonkickApi, oscillatorIndex, value) != GEONKICK_OK) {
 		return false;
 	}
+        emit kickUpdated();
+
 
 	return true;
 }
@@ -205,6 +216,7 @@ void GeonkickApi::addKickEnvelopePoint(double x, double y)
         Q_UNUSED(x);
         Q_UNUSED(y);
         // Implement API.
+        emit kickUpdated();
 }
 
 void GeonkickApi::updateKickEnvelopePoint(double x, double y)
@@ -212,12 +224,14 @@ void GeonkickApi::updateKickEnvelopePoint(double x, double y)
         Q_UNUSED(x);
         Q_UNUSED(y);
         // Implement API.
+        emit kickUpdated();
 }
 
  void GeonkickApi::removeKickEnvelopePoint(int pointIndex)
 {
         Q_UNUSED(pointIndex);
         // Implement API.
+        emit kickUpdated();
 }
 
 void GeonkickApi::enableOscillator(int oscillatorIndex, bool enable)
@@ -247,6 +261,7 @@ void GeonkickApi::setOscillatorFilterType(int oscillatorIndex, FilterType filter
         Q_UNUSED(oscillatorIndex);
         Q_UNUSED(filter);
         // Implement API.
+        emit kickUpdated();
 }
 
 double GeonkickApi::limiterValue()
@@ -259,8 +274,7 @@ void GeonkickApi::setLimiterValue(double value)
         geonkick_set_limiter_value(geonkickApi, value);
 }
 
-std::vector<double> GeonkickApi::getKickBuffer(void)
+void GeonkickApi::getKickBuffer(std::vector<double> &buffer)
 {
-        // TODO: implement
-        return std::move(std::vector<double>());
+        geonkick_get_kick_buffer(geonkickApi, buffer.data(), buffer.size());
 }

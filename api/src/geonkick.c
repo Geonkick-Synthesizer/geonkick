@@ -706,11 +706,13 @@ geonkick_set_current_time(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_get_kick_buffer(double *buffer, size_t *size)
+geonkick_get_kick_buffer(struct geonkick *kick, double *buffer, size_t size)
 {
-        (void)buffer;
-        (void)size;
-        gkick_log_info("not implemented");
+        size_t i;
+        for (i = 0; i < size; i++) {
+                buffer[i] = (0.5 * (double)i  / size) * sin(0.01 * cos(0.1 * i));
+        }
+
         return GEONKICK_OK;
 }
 

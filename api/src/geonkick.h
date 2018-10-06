@@ -160,7 +160,7 @@ int
 geonkick_is_play(struct geonkick *kick);
 
 enum geonkick_error
-geonkick_get_kick_buffer(double *buffer, size_t *size);
+geonkick_get_kick_buffer(struct geonkick *kick, double *buffer, size_t size);
 
 void geonkick_set_limiter_value(struct geonkick *kick, double limit);
 

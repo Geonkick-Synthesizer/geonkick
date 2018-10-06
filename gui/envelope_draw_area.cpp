@@ -70,12 +70,16 @@ void EnvelopeWidgetDrawingArea::paintWidget(QPaintEvent *event)
         Q_UNUSED(event);
         QPainter painter(this);
 
+        if (currentEnvelope) {
+                currentEnvelope->draw(painter, Envelope::DrawLayer::Axies);
+        }
+
         if (kickGraph) {
                 kickGraph->draw(painter);
         }
 
         if (currentEnvelope) {
-                currentEnvelope->draw(painter);
+                currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
         }
 }
 
