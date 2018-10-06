@@ -58,8 +58,9 @@ enum geonkick_envelope_type {
 };
 
 enum geonkick_filter_type {
-        GEONKICK_FILTER_LOW_PASS     = 0,
-        GEONKICK_FREQUENCY_HIGH_PASS = 1
+        GEONKICK_FILTER_LOW_PASS  = 0,
+        GEONKICK_FILTER_HIGH_PASS = 1,
+        GEONKICK_FILTER_BAND      = 2
 };
 
 enum geonkick_osc_func_type {
@@ -94,8 +95,8 @@ geonkick_disable_oscillator(struct geonkick* kick, size_t index);
 enum geonkick_error
 geonkick_is_oscillator_enabled(struct geonkick* kick, size_t index, int *enabled);
 
-size_t
-geonkick_get_oscillators_number(struct geonkick* kick);
+enum geonkick_error
+geonkick_get_oscillators_number(struct geonkick* kick, int *number);
 
 enum geonkick_error
 geonkick_osc_envelope_get_points(struct geonkick *kick,
@@ -154,17 +155,16 @@ geonkick_get_osc_frequency_val(struct geonkick *kick,
 			       double *v);
 
 enum geonkick_error
-geonkick_play(struct geonkick *kick, int play);
-
-int
-geonkick_is_play(struct geonkick *kick);
+geonkick_play(struct geonkick *kick);
 
 enum geonkick_error
 geonkick_get_kick_buffer(struct geonkick *kick, double *buffer, size_t size);
 
-void geonkick_set_limiter_value(struct geonkick *kick, double limit);
+enum geonkick_error
+geonkick_set_limiter_value(struct geonkick *kick, double limit);
 
-double geonkick_get_limiter_value(struct geonkick *kick);
+enum geonkick_error
+geonkick_get_limiter_value(struct geonkick *kick, int *limit);
 
 #ifdef __cplusplus
 }
