@@ -40,6 +40,12 @@ extern "C" {
 
 #include "gkick_log.h"
 
+#ifndef GEONKICK_DOUBLE_PRECISION
+typedef float gkick_real;
+#else
+typedef double gkick_real;
+#endif
+
 #define GEONKICK_UNUSED(expr) (void)expr
 
 #define GEONKICK_API_VERSION 0x001000

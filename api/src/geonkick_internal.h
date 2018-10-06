@@ -33,8 +33,8 @@ struct gkick_audio_device;
 
 struct geonkick {
         char name[30];
-        struct geonkick_synthesizer *synthesizer;
-        struct gkick_audio_device *audio_device;
+        struct geonkick_synth *synth;
+        struct gkick_audio_device *audio;
         pthread_mutex_t lock;
 };
 

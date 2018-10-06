@@ -29,10 +29,6 @@
 
 #include <pthread.h>
 
-#define GKICK_OSC_DEFAULT_SAMPLE_RATE 48000
-#define GKICK_OSC_DEFAULT_AMPLITUDE   0.005
-#define GKICK_OSC_DEFAULT_FREQUENCY   150
-
 enum geonkick_osc_state {
         GEONKICK_OSC_STATE_DISABLED = 0,
         GEONKICK_OSC_STATE_ENABLED  = 1
@@ -60,6 +56,9 @@ void gkick_osc_set_state(struct gkick_oscillator *osc,
 
 enum geonkick_error
 gkick_osc_create_envelopes(struct gkick_oscillator *osc);
+
+struct gkick_envelope*
+gkick_osc_get_envelope(struct gkick_oscillator *osc,  size_t env_index);
 
 void
 gkick_osc_increment_phase(struct gkick_oscillator *osc,

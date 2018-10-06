@@ -111,6 +111,20 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
         return GEONKICK_OK;
 }
 
+struct gkick_envelope*
+gkick_osc_get_envelope(struct gkick_oscillator *osc,  size_t env_index)
+{
+        if (osc == NULL) {
+                return NULL;
+        }
+
+        if (env_index >= 0 && env_index < osc->env_number) {
+                return osc->envelopes[env_index];
+        }
+
+        return NULL;
+}
+
 void gkick_osc_increment_phase(struct gkick_oscillator *osc,
 			       double t,
 			       double kick_len)

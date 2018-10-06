@@ -43,17 +43,25 @@ geonkick_create(struct geonkick **kick)
                 return GEONKICK_ERROR;
 	}
 
-        if (gkick_synthesizer_create((*kick)->synthesizer) != GEONKICK_OK) {
+	if (gkick_audio_device_create((*kick)->audio) != GEONKICK_OK) {
+                gkick_log_warning("can't create jack");
+		// geonkick_free(kick);
+		// return GEONKICK_ERROR;
+	}
+
+        if (gkick_synth_create((*kick)->synth) != GEONKICK_OK) {
                 gkick_log_error("can't create oscillators");
                 geonkick_free(kick);
                 return GEONKICK_ERROR;
 	}
 
-	if (gkick_audio_device_create((*kick)->audio_device) != GEONKICK_OK) {
-                gkick_log_warning("can't create jack");
-		// geonkick_free(kick);
-		// return GEONKICK_ERROR;
-	}
+        gkick_synth_set_output((*kick)->synth, (*kick)->audio->input);
+
+        if (gkick_synth_start((*kick)->synth)) {
+                gkick_log_warning("can't start synthesizer");
+                geonkick_free(kick);
+                return GEONKICK_ERROR;
+        }
 
 	return GEONKICK_OK;
 }
@@ -62,16 +70,13 @@ void geonkick_free(struct geonkick **kick)
 {
         int i = 0;
 
-        if (kick == NULL || *kick == NULL) {
+        if (kick != NULL && *kick != NULL) {
+                gkick_audio_device_free(&((*kick)->audio_device));
+                gkick_synthesizer_free(&((*kick)->synthesizer));
+                pthread_mutex_destroy(&(*kick)->lock);
+                free(*kick);
                 *kick = NULL;
-                return;
         }
-
-        gkick_audio_device_free(&((*kick)->audio_device));
-        gkick_synthesizer_free(&((*kick)->synthesizer);
-        pthread_mutex_destroy(&(*kick)->lock);
-        free(*kick);
-        *kick = NULL;
 }
 
 enum geonkick_error
@@ -159,7 +164,7 @@ geonkick_osc_envelope_add_point(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        return gkick_synth_osc_envelope_add_point(osc_index, env_index, x, y);
+        return gkick_synth_osc_env_add_point(osc_index, env_index, x, y);
 }
 
 enum geonkick_error
@@ -189,8 +194,8 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        return gkick_synth_osc_envelope_points(kick->synt, osc,
-                                               env, buf, npoints);
+        return gkick_synth_osc_env_get_points(kick->synt, osc,
+                                              env, buf, npoints);
 }
 
 void geonkick_lock(struct geonkick *kick)
@@ -269,33 +274,33 @@ geonkick_get_length(struct geonkick *kick, double *len)
 }
 
 enum geonkick_error
-geonkick_set_osc_frequency_val(struct geonkick *kick,
-                               size_t osc_index,
-                               double v)
+geonkick_set_osc_frequency(struct geonkick *kick,
+                           size_t osc_index,
+                           double v)
 {
 	if (kick == NULL) {
 		return GEONKICK_ERROR;
 	}
 
-	return gkick_synth_set_osc_amplitude_val(kick->synth, osc_index, v);
+	return gkick_synth_set_osc_frequency(kick->synth, osc_index, v);
 }
 
 enum geonkick_error
-geonkick_set_osc_amplitude_val(struct geonkick *kick,
-                               size_t osc_index,
-                               double v)
+geonkick_set_osc_amplitude(struct geonkick *kick,
+                           size_t osc_index,
+                           double v)
 {
 	if (kick == NULL) {
 		return GEONKICK_ERROR;
 	}
 
-	return gkick_synth_set_osc_amplitude_val(kick->synth, osc_index, v);
+	return gkick_synth_set_osc_amplitude(kick->synth, osc_index, v);
 }
 
 enum geonkick_error
-geonkick_get_osc_amplitude_val(struct geonkick *kick,
-			       size_t osc_index,
-			       double *v)
+geonkick_get_osc_amplitude(struct geonkick *kick,
+                           size_t osc_index,
+                           double *v)
 {
 	if (kick == NULL || v == NULL) {
 		return GEONKICK_ERROR;
@@ -313,14 +318,14 @@ geonkick_get_osc_frequency_val(struct geonkick *kick,
 		return GEONKICK_ERROR;
 	}
 
-	return gkick_synth_get_osc_frequency_val(kick->synth, osc_index, v);
+	return gkick_synth_get_osc_frequency(kick->synth, osc_index, v);
 }
 
 enum geonkick_error
 geonkick_play(struct geonkick *kick, int play)
 {
         if (kick == NULL) {
-                gkick_log_error("wrong arugment");
+                gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
 
@@ -330,12 +335,12 @@ geonkick_play(struct geonkick *kick, int play)
 enum geonkick_error
 geonkick_get_kick_buffer(struct geonkick *kick, double *buffer, size_t size)
 {
-        size_t i;
-        for (i = 0; i < size; i++) {
-                buffer[i] = (0.5 * (double)i  / size) * sin(0.01 * cos(0.1 * i));
+        if (kick  == NULL || buffer == NULL || size < 1) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
         }
 
-        return GEONKICK_OK;
+        return gkick_synth_get_buffer(kick->synth, buffer, size);
 }
 
 enum geonkick_error
@@ -343,6 +348,7 @@ geonkick_set_limiter_value(struct geonkick *kick, double limit)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
         }
 
         return gkick_audio_set_limiter_val(kick->audio_dev, limit);
@@ -351,9 +357,9 @@ geonkick_set_limiter_value(struct geonkick *kick, double limit)
 enum geonkick_error
 geonkick_get_limiter_value(struct geonkick *kick, double *limit)
 {
-        double limit;
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
         }
 
         return gkick_audio_set_limiter_val(kick->audio_dev, limit);
