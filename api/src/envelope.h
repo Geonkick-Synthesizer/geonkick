@@ -29,8 +29,8 @@
 struct gkick_envelope_point {
 	struct gkick_envelope_point *prev;
 	struct gkick_envelope_point *next;
-	double x;
-	double y;
+	gkick_real x;
+	gkick_real y;
 };
 
 struct gkick_envelope {
@@ -47,8 +47,8 @@ gkick_envelope_create(void);
  * TODO: to reduce the complexity with a hash table intead of the list.
  * With an array it can be reduced to O(log(N)) with binary search.
  */
-double
-gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm);
+gkick_real
+gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm);
 
 struct gkick_envelope_point*
 gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y);
@@ -61,7 +61,7 @@ gkick_envelope_destroy(struct gkick_envelope *envelope);
 
 void
 gkick_envelope_get_points(struct gkick_envelope *env,
-			  double **buff,
+			  gkick_real **buff,
 			  size_t *npoints);
 
 void
@@ -70,7 +70,7 @@ gkick_envelope_remove_point(struct gkick_envelope *env, size_t index);
 void
 gkick_envelope_update_point(struct gkick_envelope *env,
 			    size_t index,
-			    double x,
-			    double y);
+			    gkick_real x,
+			    gkick_real y);
 
 #endif

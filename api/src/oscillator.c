@@ -25,13 +25,9 @@
 #include <math.h>
 
 struct gkick_oscillator
-*gkick_osc_create(struct geonkick *kick)
+*gkick_osc_create(void)
 {
         struct gkick_oscillator *osc;
-
-        if (kick == NULL) {
-                return NULL;
-        }
 
         osc = (struct gkick_oscillator*)malloc(sizeof(struct gkick_oscillator));
         if (osc == NULL) {
@@ -42,7 +38,7 @@ struct gkick_oscillator
         osc->state = GEONKICK_OSC_STATE_ENABLED;
         osc->func = GEONKICK_OSC_FUNC_SINE;
         osc->phase = 0.0;
-        osc->sample_rate = GKICK_OSC_DEFAULT_SAMPLE_RATE;
+        osc->sample_rate = GEONKICK_SAMPLE_RATE;
         osc->amplitude = GKICK_OSC_DEFAULT_AMPLITUDE;
         osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
         osc->env_number = 2;
@@ -60,7 +56,6 @@ void gkick_osc_free(struct gkick_oscillator **osc)
         size_t i;
 
         if (osc == NULL || *osc == NULL) {
-                *osc = NULL;
                 return;
         }
 
@@ -126,10 +121,10 @@ gkick_osc_get_envelope(struct gkick_oscillator *osc,  size_t env_index)
 }
 
 void gkick_osc_increment_phase(struct gkick_oscillator *osc,
-			       double t,
-			       double kick_len)
+			       gkick_real t,
+			       gkick_real kick_len)
 {
-        double f;
+        gkick_real f;
 
         f = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t / kick_len);
         osc->phase += (2 * M_PI * f) / (osc->sample_rate);
@@ -138,12 +133,12 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
         }
 }
 
-double gkick_osc_value(struct gkick_oscillator *osc,
-		       double t,
-		       double kick_len)
+gkick_real gkick_osc_value(struct gkick_oscillator *osc,
+		       gkick_real t,
+		       gkick_real kick_len)
 {
-        double amp;
-        double v;
+        gkick_real amp;
+        gkick_real v;
 
         amp = osc->amplitude * gkick_envelope_get_value(osc->envelopes[0], t / kick_len);
         v = 0.0;
@@ -169,12 +164,12 @@ double gkick_osc_value(struct gkick_oscillator *osc,
         return v;
 }
 
-double gkick_osc_func_sine(double phase)
+gkick_real gkick_osc_func_sine(gkick_real phase)
 {
         return sin(phase);
 }
 
-double gkick_osc_func_square(double phase)
+gkick_real gkick_osc_func_square(gkick_real phase)
 {
         if (phase < 0) {
                 return -1;
@@ -183,9 +178,9 @@ double gkick_osc_func_square(double phase)
         }
 }
 
-double gkick_osc_func_triangle(double phase)
+gkick_real gkick_osc_func_triangle(gkick_real phase)
 {
-	double a = 1.0;
+	gkick_real a = 1.0;
 
 	if (phase < M_PI) {
 		return -a + (2 * a / M_PI) * phase;
@@ -195,25 +190,25 @@ double gkick_osc_func_triangle(double phase)
 	}
 }
 
-double gkick_osc_func_sawtooth(double phase)
+gkick_real gkick_osc_func_sawtooth(gkick_real phase)
 {
         return 1 - (1 / M_PI) * (phase - M_PI);
 }
 
-double gkick_osc_func_noise(void)
+gkick_real gkick_osc_func_noise(void)
 {
         int sign = 1;
         if (rand() % 2) {
                 sign = -1;
         }
 
-        return sign * ((double)(rand() % RAND_MAX)) / RAND_MAX;
+        return sign * ((gkick_real)(rand() % RAND_MAX)) / RAND_MAX;
 }
 
 void
 gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,
-			      double **buff,
+			      gkick_real **buff,
 			      size_t *npoints)
 {
         if (buff != NULL) {

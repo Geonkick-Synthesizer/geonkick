@@ -1,10 +1,10 @@
 /**
- * File name: geonkick_internal.h
+ * File name: gkick_audio.h
  * Project: GeonKick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,30 +21,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEON_KICK_INTERNAL_H
-#define GEON_KICK_INTERNAL_H
+#ifndef GKICK_AUDIO_H
+#define GKICK_AUDIO_H
 
-#include "geonkick.h"
+#include "geonkick_internal.h"
 
-#include <pthread.h>
-
-#define GEONKICK_SAMPLE_RATE 48000
-
-/* Kick maximum length in seconds. */
-#define GEONKICK_MAX_LENGTH 4
-#define GEONKICK_MAX_KICK_BUFFER_SIZE  (4 * GEONKICK_SAMPLE_RATE)
-
-struct gkick_audio;
-struct geonkick_synth;
-
-struct geonkick {
-        char name[30];
-        struct geonkick_synth *synth;
-        struct gkick_audio *audio;
-        pthread_mutex_t lock;
+struct gkick_audio {
+        struct gkick_jack *jack;
+        // other audio device
 };
 
-void geonkick_lock(struct geonkick *kick);
-void geonkick_unlock(struct geonkick *kick);
+enum geonkick_error
+gkick_audio_create(struct gkick_audio** audio);
 
-#endif // GEON_KICK_INTERNAL_H
+enum geonkick_error
+gkick_audio_free(struct gkick_audio** audio);
+
+enum geonkick_error
+gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit);
+
+enum geonkick_error
+gkick_audio_get_limiter_val(struct gkick_audio *adio, gkick_real *limit);
+
+enum geonkick_error
+gkick_audio_play(struct gkick_audio *audio, int play);
+
+#endif // GKICK_AUDIO_H

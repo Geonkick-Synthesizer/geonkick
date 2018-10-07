@@ -8,8 +8,11 @@ SRC = src
 
 OBJECTS = gkick_log.o \
           envelope.o \
+          gkick_buffer.o \
           oscillator.o \
+          synthesizer.o \
           gkick_jack.o \
+          gkick_audio.o \
           geonkick.o
 
 all: $(TARGET)

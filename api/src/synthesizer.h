@@ -24,16 +24,11 @@
 #ifndef GEONKICK_SYNTHESIZER_H
 #define GEONKICK_SYNTHESIZER_H
 
-#define GEONKICK_SAMPLE_RATE 48000
-#define GKICK_OSC_DEFAULT_AMPLITUDE   0.005
-#define GKICK_OSC_DEFAULT_FREQUENCY   150
+#include "geonkick_internal.h"
+#include "gkick_buffer.h"
 
-/* Kick maximum length in seconds. */
-#define GEONKICK_MAX_LENGTH 4
-#define GEONKICK_MAX_BUFFER_SIZE  (4 * GEONKICK_SAMPLE_RATE)
-
-struct geonkick_synth {
-        double current_time;
+struct gkick_synth {
+        gkick_real current_time;
         struct gkick_oscillator **oscillators;
         size_t oscillators_number;
 
@@ -50,16 +45,12 @@ struct geonkick_synth {
          */
         size_t buffer_size;
 
+        /* To update or not the buffer. */
+        int buffer_update;
+
+
         /* Kick smaples buffer. */
         gkick_real *buffer;
-
-        /* Bool: is to update or not the buffer. */
-        int update_buffer;
-
-        /**
-         * The synthesizer main thread.
-         */
-        pthread_t thread;
 
         /* Output buffer for the synthesizer.
          * The access to its internal buffer
@@ -67,26 +58,36 @@ struct geonkick_synth {
          */
         gkick_buffer *output;
 
+        /**
+         * The synthesizer main thread.
+         */
+        pthread_t thread;
+        int is_running;
+
         pthread_mutex_t lock;
         pthread_cond_t condition_var;
 };
 
+enum geonkick_error
+gkick_synth_new(struct gkick_synth **synth);
+
 void gkick_synth_free(struct gkick_synth **synth);
 
-void geonkick_synth_new(struct geonkick_synth **synth);
+void gkick_synth_lock(struct gkick_synth *synth);
 
-void geonkick_synth_lock(struct geonkick_synth *synth);
-
-void geonkick_synth_unlock(struct geonkick_synth *synth);
+void gkick_synth_unlock(struct gkick_synth *synth);
 
 enum geonkick_error
-gkick_synth_create_oscillators(struct geonkick_synth *synth);
+gkick_synth_create_oscillators(struct gkick_synth *synth);
 
 struct gkick_oscillator*
 gkick_synth_get_oscillator(struct gkick_synth *synth, size_t index);
 
 enum geonkick_error
-gkick_synthesizer_disable_oscilaltor(struct geonkick_synth *synth);
+gkick_synthesizer_enable_socillator(struct gkick_synth *synth, size_t index);
+
+enum geonkick_error
+gkick_synth_disable_oscilaltor(struct geonkick_synth *synth, size_t index);
 
 struct gkick_envelope*
 gkick_synth_osc_get_env(struct gkick_synth *synth,
@@ -97,17 +98,17 @@ enum geonkick_error
 gkick_synth_osc_envelope_points(struct gkick_synth *synth,
                                 int osc_index,
                                 int env_index,
-                                double **buf,
+                                gkick_real **buf,
                                 size_t *npoints);
 
 
 
 enum geonkick_error
-gkick_synth_osc_env_add_point(struct gkikc_synth *synth,
+gkick_synth_osc_env_add_point(struct gkick_synth *synth,
                               int osc_index,
                               int env_index,
-                              double x,
-                              double y);
+                              gkick_real x,
+                              gkick_real y);
 
 enum geonkick_error
 gkick_synth_osc_env_remove_point(struct gkick_synth *synth,
@@ -116,47 +117,47 @@ gkick_synth_osc_env_remove_point(struct gkick_synth *synth,
                                  size_t index);
 
 enum geonkick_error
-gkick_synth_osc_env_update_point(struct gkikc_synth *synth,
+gkick_synth_osc_env_update_point(struct gkick_synth *synth,
                                  int osc_index,
                                  int env_index,
                                  int index,
-                                 double x,
-                                 double y);
+                                 gkick_real x,
+                                 gkick_real y);
 
 enum geonkick_error
 gkick_synth_set_osc_function(struct gkick_synth *synth,
                              size_t osc_index,
-                             geonkick_osc_func_type type);
+                             enum geonkick_osc_func_type type);
 
 enum geonkick_error
-gkick_synth_get_length(struct gkick_synth *synth, size_t *len);
+gkick_synth_get_length(struct gkick_synth *synth, gkick_real *len);
 
 enum geonkick_error
-gkick_synth_set_length(struct gkick_synth *synth, size_t len);
+gkick_synth_set_length(struct gkick_synth *synth, gkick_real len);
 
 enum geonkick_error
 gick_synth_set_osc_frequency(struct gkick_synth *synth,
                              size_t osc_index,
-                             double v);
+                             gkick_real v);
 
 enum geonkick_error
 gick_synth_get_osc_frequency(struct gkick_synth *synth,
                              size_t osc_index,
-                             double *v);
+                             gkick_real *v);
 
 enum geonkick_error
 gkick_synth_set_osc_amplitude(struct gkick_synth *synth,
                               size_t osc_index,
-                              double v);
+                              gkick_real v);
 
 enum geonkick_error
 gkick_synth_get_osc_amplitude(struct gkick_synth *synth,
                               size_t osc_index,
-                              double *v);
+                              gkick_real *v);
 
 enum geonkick_error
 gkick_synth_get_buffer(struct gkick_synth *synth,
-                       double *buffer,
+                       gkick_real *buffer,
                        size_t size);
 
 enum geonkick_error
@@ -165,15 +166,17 @@ gkick_synth_start(struct gkick_synth *synth);
 enum geonkick_error
 gkick_synth_stop(struct gkick_synth *synth);
 
+void gkick_synth_set_started(struct gkick_synth *synth, int started);
+
+int gkick_synth_is_running(struct gkick_synth *synth);
+
 void *gkick_synth_run(void *arg);
 
 gkick_real
-gkick_synth_get_value(struct geonkick *synth, gkick_real t);
-
-void gkick_synth_copy_to_output(struct gkick_synth *synth);
+gkick_synth_get_value(struct gkick_synth *synth, gkick_real t);
 
 void gkick_synth_reset_oscillators(struct gkick_synth *synth);
 
-void gkick_set_update_buffer(struct gkick_synth *synth, int update);
+int gkick_is_update_buffer(struct gkick_synth *synth);
 
 #endif // GEONKICK_SYNTHESIZER_H

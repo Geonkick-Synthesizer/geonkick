@@ -25,6 +25,7 @@
 #define GKICK_JACK_H
 
 #include "geonkick_internal.h"
+#include "gkick_buffer.h"
 
 #include <jack/jack.h>
 #include <jack/midiport.h>
@@ -35,6 +36,10 @@ struct gkick_jack {
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;
+        gkick_buffer *input;
+        size_t buffer_index;
+        gkick_real limiter;
+        int is_play;
         pthread_mutex_t lock;
 };
 
@@ -65,7 +70,7 @@ enum geonkick_error
 gkick_jack_create_output_ports(struct gkick_jack *jack);
 
 enum geonkick_error
-gkick_create_jack(struct geonkick *kick);
+gkick_create_jack(struct gkick_jack **jack);
 
 int gkick_jack_is_midi_in_enabled(struct gkick_jack *jack);
 
@@ -74,6 +79,16 @@ void gkick_jack_free(struct gkick_jack **jack);
 void gkick_jack_lock(struct gkick_jack *jack);
 
 void gkick_jack_unlock(struct gkick_jack *jack);
+
+void gkick_jack_set_play(struct gkick_jack *jack, int play);
+
+int gkick_jack_is_play(struct gkick_jack *jack);
+
+enum geonkick_error
+gkick_jack_set_limiter_val(struct gkick_jack *jack, gkick_real limit);
+
+enum geonkick_error
+gkick_jack_get_limiter_val(struct gkick_jack *jack, gkick_real *limit);
 
 
 #endif

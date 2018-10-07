@@ -43,13 +43,13 @@ extern "C" {
 #ifndef GEONKICK_DOUBLE_PRECISION
 typedef float gkick_real;
 #else
-typedef double gkick_real;
+typedef gkick_real gkick_real;
 #endif
 
 #define GEONKICK_UNUSED(expr) (void)expr
 
 #define GEONKICK_API_VERSION 0x001000
-#define GEONKICK_API_NAME "geonkick"
+#define GEONKICK_API_NAME "Geonkick"
 
 enum geonkick_error {
   	GEONKICK_OK                    = 0,
@@ -108,15 +108,15 @@ enum geonkick_error
 geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t osc_index,
 				 size_t env_index,
-				 double **buf,
+				 gkick_real **buf,
 				 size_t *npoints);
 
 enum geonkick_error
 geonkick_osc_envelope_add_point(struct geonkick *kick,
 				size_t osc_index,
 				size_t env_index,
-				double x,
-				double y);
+				gkick_real x,
+				gkick_real y);
 
 enum geonkick_error
 geonkick_osc_envelope_remove_point(struct geonkick *kick,
@@ -128,8 +128,8 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 				   size_t osc_index,
 				   size_t env_index,
   				   size_t index,
-				   double x,
-				   double y);
+				   gkick_real x,
+				   gkick_real y);
 
 enum geonkick_error
 geonkick_set_osc_function(struct geonkick *kick,
@@ -137,40 +137,40 @@ geonkick_set_osc_function(struct geonkick *kick,
 			  enum geonkick_osc_func_type type);
 
 enum geonkick_error
-geonkick_set_length(struct geonkick *kick, double len);
+geonkick_set_length(struct geonkick *kick, gkick_real len);
 
 enum geonkick_error
-geonkick_get_length(struct geonkick *kick, double *len);
+geonkick_get_length(struct geonkick *kick, gkick_real *len);
 
 enum geonkick_error
 geonkick_set_osc_amplitude_val(struct geonkick *kick,
 			       size_t osc_index,
-			       double v);
+			       gkick_real v);
 enum geonkick_error
 geonkick_set_osc_frequency_val(struct geonkick *kick,
 			       size_t osc_index,
-			       double v);
+			       gkick_real v);
 
 enum geonkick_error
 geonkick_get_osc_amplitude_val(struct geonkick *kick,
 			       size_t osc_index,
-			       double *v);
+			       gkick_real *v);
 enum geonkick_error
 geonkick_get_osc_frequency_val(struct geonkick *kick,
 			       size_t osc_index,
-			       double *v);
+			       gkick_real *v);
 
 enum geonkick_error
-geonkick_play(struct geonkick *kick);
+geonkick_play(struct geonkick *kick, int play);
 
 enum geonkick_error
-geonkick_get_kick_buffer(struct geonkick *kick, double *buffer, size_t size);
+geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size);
 
 enum geonkick_error
-geonkick_set_limiter_value(struct geonkick *kick, double limit);
+geonkick_set_limiter_value(struct geonkick *kick, gkick_real limit);
 
 enum geonkick_error
-geonkick_get_limiter_value(struct geonkick *kick, int *limit);
+geonkick_get_limiter_value(struct geonkick *kick, gkick_real *limit);
 
 #ifdef __cplusplus
 }

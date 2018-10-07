@@ -47,10 +47,10 @@ gkick_envelope_create(void)
  * TODO: Reduce the complexity.Ex: with an array instead of list
  * it can be reduced to O(log(N)) with binary search.
  */
-double
-gkick_envelope_get_value(const struct gkick_envelope* envelope, double xm)
+gkick_real
+gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm)
 {
-	double x1, y1, x2, y2, ym;
+	gkick_real x1, y1, x2, y2, ym;
 	struct gkick_envelope_point *p;
 
 	if (envelope == NULL ||
@@ -175,11 +175,11 @@ void gkick_envelope_destroy(struct gkick_envelope *envelope)
 
 void
 gkick_envelope_get_points(struct gkick_envelope *env,
-			  double **buff,
+			  gkick_real **buff,
 			  size_t *npoints)
 {
         struct gkick_envelope_point *p;
-        double *points;
+        gkick_real *points;
         size_t i;
 
         if (buff == NULL) {
@@ -192,8 +192,8 @@ gkick_envelope_get_points(struct gkick_envelope *env,
                 return;
         }
 
-        points = (double *)malloc(sizeof(double) * (2 * env->npoints));
-        memset(points, 0, sizeof(double) * (2 * env->npoints));
+        points = (gkick_real *)malloc(sizeof(gkick_real) * (2 * env->npoints));
+        memset(points, 0, sizeof(gkick_real) * (2 * env->npoints));
         p = env->first;
         i = 0;
         while (p) {
@@ -245,8 +245,8 @@ gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
 void
 gkick_envelope_update_point(struct gkick_envelope *env,
 			    size_t index,
-			    double x,
-			    double y)
+			    gkick_real x,
+			    gkick_real y)
 {
         struct gkick_envelope_point *p;
         size_t i;

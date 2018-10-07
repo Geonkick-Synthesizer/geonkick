@@ -27,7 +27,8 @@
 #include "geonkick_internal.h"
 #include "envelope.h"
 
-#include <pthread.h>
+#define GKICK_OSC_DEFAULT_AMPLITUDE   0.005
+#define GKICK_OSC_DEFAULT_FREQUENCY   150
 
 enum geonkick_osc_state {
         GEONKICK_OSC_STATE_DISABLED = 0,
@@ -37,17 +38,17 @@ enum geonkick_osc_state {
 struct gkick_oscillator {
         enum geonkick_osc_state state;
 	enum geonkick_osc_func_type func;
-	double phase;
-	double sample_rate;
-	double frequency;
-	double amplitude;
+	gkick_real phase;
+	gkick_real sample_rate;
+	gkick_real frequency;
+	gkick_real amplitude;
 	size_t env_number;
 	struct gkick_envelope **envelopes;
 	pthread_mutex_t lock;
 };
 
 struct gkick_oscillator
-*gkick_osc_create(struct geonkick *kick);
+*gkick_osc_create(void);
 
 void gkick_osc_free(struct gkick_oscillator **osc);
 
@@ -62,29 +63,29 @@ gkick_osc_get_envelope(struct gkick_oscillator *osc,  size_t env_index);
 
 void
 gkick_osc_increment_phase(struct gkick_oscillator *osc,
-			  double t,
-			  double kick_len);
-double
+			  gkick_real t,
+			  gkick_real kick_len);
+gkick_real
 gkick_osc_value(struct gkick_oscillator *osc,
-		double t,
-		double kick_len);
+		gkick_real t,
+		gkick_real kick_len);
 
-double
-gkick_osc_func_sine(double phase);
+gkick_real
+gkick_osc_func_sine(gkick_real phase);
 
-double
-gkick_osc_func_square(double phase);
+gkick_real
+gkick_osc_func_square(gkick_real phase);
 
-double gkick_osc_func_triangle(double phase);
+gkick_real gkick_osc_func_triangle(gkick_real phase);
 
-double gkick_osc_func_sawtooth(double phase);
+gkick_real gkick_osc_func_sawtooth(gkick_real phase);
 
-double gkick_osc_func_noise(void);
+gkick_real gkick_osc_func_noise(void);
 
 void
 gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,
-			      double **buff,
+			      gkick_real **buff,
 			      size_t *npoints);
 
 int gkick_osc_enabled(struct gkick_oscillator *osc);

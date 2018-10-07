@@ -29,43 +29,43 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg)
 {
         int i;
-        double val;
-        double limit;
+        gkick_real val;
+        gkick_real limit;
         int note_pressed;
-        struct geonkick *kick;
         struct gkick_jack *jack;
-        double delta_time;
-        jack_nframes_t sample_rate;
-        /* Lef and right channels buffers. */
-        jack_default_audio_sample_t *buffers[2];
+        jack_default_audio_sample_t *buffers[2]; /* Lef and right channels Jack buffers. */
 
-        kick = (struct geonkick*)arg;
-        jack = kick->jack;
+        jack = (struct gkick_jack*)arg;
 
         note_pressed = gkick_jack_is_note_pressed(jack, nframes);
         if (note_pressed) {
                 gkick_log_debug("note pressed");
-                geonkick_start_play(kick);
+                gkick_jack_set_play(jack, 1);
+        }
+
+        if (!gkick_jack_is_play(jack)) {
+                return 0;
         }
 
         if (gkick_jack_get_output_buffers(jack, buffers, nframes)
            != GEONKICK_OK) {
-                gkick_log_error("can't get output buffers");
+                gkick_log_error("can't get output jack buffers");
                 return 0;
         }
 
-        sample_rate = gkick_jack_sample_rate(jack);
-        delta_time = 1.0 / sample_rate;
         for (i = 0; i < nframes; i++) {
-                val = 0.0;
-                if (!geonckick_is_play_stopped(kick)) {
-                        val   = geonkick_get_oscillators_value(kick);
-                        limit = geonkick_get_limiter_value(kick);
-                        val = limit * val;
-                        geonkick_increment_time(kick, delta_time);
+                size_t is_end;
+                val = gkick_buffer_get_at(jack->input, jack->buffer_index, &is_end);
+                if (is_end) {
+                        jack->buffer_index = 0;
+                        gkick_jack_set_play(jack, 0);
+                } else {
+                        gkick_jack_get_limiter_val(jack, &limit);
+                        val *= limit;
+                        buffers[0][i] = (jack_default_audio_sample_t)val;
+                        buffers[1][i] = (jack_default_audio_sample_t)val;
+                        jack->buffer_index++;
                 }
-                buffers[0][i] = (jack_default_audio_sample_t)val;
-                buffers[1][i] = (jack_default_audio_sample_t)val;
         }
 
         return 0;
@@ -237,61 +237,71 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
 }
 
 enum geonkick_error
-gkick_create_jack(struct geonkick *kick)
+gkick_create_jack(struct gkick_jack **jack)
 {
-        struct gkick_jack *jack;
-
-        jack = (struct gkick_jack*)malloc(sizeof(struct gkick_jack));
         if (jack == NULL) {
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        memset(jack, 0, sizeof(struct gkick_jack));
-        jack->sample_rate = 48000;
 
-        if (pthread_mutex_init(&jack->lock, NULL) != 0) {
+        *jack = (struct gkick_jack*)malloc(sizeof(struct gkick_jack));
+        if (*jack == NULL) {
+                return GEONKICK_ERROR;
+        }
+        memset(*jack, 0, sizeof(struct gkick_jack));
+        (*jack)->sample_rate = 48000;
+        (*jack)->limiter = 1.0;
+        gkick_buffer_new(&(*jack)->input, GEONKICK_MAX_KICK_BUFFER_SIZE);
+        if ((*jack)->input == NULL) {
+                gkick_log_error("can't create input buffer");
+                gkick_jack_free(jack);
+                return GEONKICK_ERROR;
+        }
+
+        if (pthread_mutex_init(&(*jack)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
-                gkick_jack_free(&jack);
+                gkick_jack_free(jack);
                 return GEONKICK_ERROR;
         }
 
-        jack->client = jack_client_open(kick->name, JackNoStartServer, NULL);
-        if (jack->client == NULL) {
+        (*jack)->client = jack_client_open(GEONKICK_API_NAME, JackNoStartServer, NULL);
+        if ((*jack)->client == NULL) {
                 gkick_log_error("can't create jack client");
-                gkick_jack_free(&jack);
+                gkick_jack_free(jack);
                 return GEONKICK_ERROR;
         }
 
-        jack_set_process_callback(jack->client,
+        jack_set_process_callback((*jack)->client,
                                   gkick_jack_process_callback,
-                                  (void*)kick);
-        jack_set_sample_rate_callback(jack->client,
+                                  (void*)(*jack));
+        jack_set_sample_rate_callback((*jack)->client,
                                       gkick_jack_srate_callback,
-                                      (void*)kick);
+                                      (void*)(*jack));
 
-        if (gkick_jack_create_output_ports(jack) != GEONKICK_OK) {
+        if (gkick_jack_create_output_ports((*jack)) != GEONKICK_OK) {
                 gkick_log_error("can't create output ports");
-                gkick_jack_free(&jack);
+                gkick_jack_free(jack);
                 return GEONKICK_ERROR;
         }
 
-        gkick_jack_enable_midi_in(jack, "midi_in");
-        kick->jack = jack;
-        if (jack_activate(kick->jack->client) != 0) {
+        gkick_jack_enable_midi_in(*jack, "midi_in");
+        if (jack_activate((*jack)->client) != 0) {
                 gkick_log_error("cannot activate client");
-                gkick_jack_free(&kick->jack);
+                gkick_jack_free(jack);
                 return GEONKICK_ERROR;
         }
 
 	return GEONKICK_OK;
 }
 
-int gkick_jack_is_midi_in_enabled(struct gkick_jack *jack)
+int
+gkick_jack_is_midi_in_enabled(struct gkick_jack *jack)
 {
         int enabled;
 
         if (jack == NULL) {
                 gkick_log_error("wrong arugment");
-                return GEONKICK_ERROR;
+                return 0;
         }
 
         gkick_jack_lock(jack);
@@ -318,6 +328,10 @@ void gkick_jack_free(struct gkick_jack **jack)
                                              (*jack)->output_port_r);
                         jack_client_close((*jack)->client);
                 }
+
+                if ((*jack)->input) {
+                        gkick_buffer_free(&(*jack)->input);
+                }
                 free(*jack);
                 *jack = NULL;
         }
@@ -337,3 +351,59 @@ void gkick_jack_unlock(struct gkick_jack *jack)
         }
 }
 
+void gkick_jack_set_play(struct gkick_jack *jack, int play)
+{
+
+        if (jack == NULL) {
+                gkick_log_error("wrong arugment");
+                return;
+        }
+
+        gkick_jack_lock(jack);
+        jack->is_play = play;
+        gkick_jack_unlock(jack);
+}
+
+int gkick_jack_is_play(struct gkick_jack *jack)
+{
+        int play;
+
+        if (jack == NULL) {
+                gkick_log_error("wrong arugment");
+                return 0;
+        }
+
+        gkick_jack_lock(jack);
+        play = jack->is_play;
+        gkick_jack_unlock(jack);
+
+        return play;
+}
+
+enum geonkick_error
+gkick_jack_set_limiter_val(struct gkick_jack *jack, gkick_real limit)
+{
+        if (jack == NULL) {
+                gkick_log_error("wrong arugment");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_jack_lock(jack);
+        jack->limiter = limit;
+        gkick_jack_unlock(jack);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_jack_get_limiter_val(struct gkick_jack *jack, gkick_real *limit)
+{
+        if (jack == NULL || limit == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_jack_lock(jack);
+        *limit = jack->limiter;
+        gkick_jack_unlock(jack);
+        return GEONKICK_OK;
+}
