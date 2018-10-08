@@ -36,7 +36,7 @@ struct gkick_jack {
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;
-        gkick_buffer *input;
+        struct gkick_buffer *input;
         size_t buffer_index;
         gkick_real limiter;
         int is_play;

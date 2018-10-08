@@ -25,6 +25,9 @@
 #define GEON_KICK_INTERNAL_H
 
 #include "geonkick.h"
+#include "synthesizer.h"
+#include "gkick_audio.h"
+#include "gkick_buffer.h"
 
 #include <pthread.h>
 
@@ -33,9 +36,6 @@
 /* Kick maximum length in seconds. */
 #define GEONKICK_MAX_LENGTH 4
 #define GEONKICK_MAX_KICK_BUFFER_SIZE  (4 * GEONKICK_SAMPLE_RATE)
-
-struct gkick_audio;
-struct gkick_synth;
 
 struct geonkick {
         char name[30];

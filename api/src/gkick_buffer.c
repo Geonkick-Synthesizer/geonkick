@@ -1,10 +1,10 @@
 /**
- * File name: gkick_buffer.h
- * Project: GeonKick (A kick synthesizer)
+ * File name: gkick_buffer.c
+ * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,14 +23,14 @@
 
 #include "gkick_buffer.h"
 
-void gkick_buffer_new(gkick_buffer **buffer, int size)
+void gkick_buffer_new(struct gkick_buffer **buffer, int size)
 {
         if (buffer == NULL || size < 1) {
                 gkick_log_error("wrong argumnets");
                 return;
         }
 
-        *buffer = (gkick_buffer*)malloc(sizeof(gkick_buffer));
+        *buffer = (struct gkick_buffer*)malloc(sizeof(struct gkick_buffer));
         if (*buffer == NULL) {
                 gkick_log_error("can't allocate memory");
                 return;
@@ -44,7 +44,7 @@ void gkick_buffer_new(gkick_buffer **buffer, int size)
                 return;
 	}
 
-        (*buffer)->buff = (gkick_real*)malloc(sizeof(gkick_real));
+        (*buffer)->buff = (gkick_real*)malloc(sizeof(gkick_real) * size);
         if ((*buffer)->buff == NULL) {
                 gkick_log_error("can't allocate memory");
                 gkick_buffer_free(buffer);
@@ -52,7 +52,7 @@ void gkick_buffer_new(gkick_buffer **buffer, int size)
         }
 }
 
-void gkick_buffer_free(gkick_buffer **buffer)
+void gkick_buffer_free(struct gkick_buffer **buffer)
 {
         if (buffer == NULL || *buffer == NULL) {
                 return;
@@ -66,7 +66,7 @@ void gkick_buffer_free(gkick_buffer **buffer)
         *buffer = NULL;
 }
 
-int gkick_buffer_set_data(gkick_buffer *buffer, gkick_real *data, size_t size)
+int gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size)
 {
         if (buffer == NULL || data == NULL) {
                 return 0;
@@ -90,7 +90,7 @@ int gkick_buffer_set_data(gkick_buffer *buffer, gkick_real *data, size_t size)
         return 1;
 }
 
-gkick_real gkick_buffer_get_at(gkick_buffer *buffer,  size_t index, size_t *is_end)
+gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index, size_t *is_end)
 {
         gkick_real val;
 

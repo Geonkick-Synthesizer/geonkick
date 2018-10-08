@@ -26,7 +26,7 @@
 
 #include "geonkick_internal.h"
 
-typedef struct {
+struct gkick_buffer {
         gkick_real *buff;
 
         /* Real fixed size alwayse bigger than size. */
@@ -35,14 +35,14 @@ typedef struct {
         /* Current size set for the buffer. */
         size_t size;
         pthread_mutex_t lock;
-} gkick_buffer;
+};
 
-void gkick_buffer_new(gkick_buffer **buffer, int size);
+void gkick_buffer_new(struct gkick_buffer **buffer, int size);
 
-void gkick_buffer_free(gkick_buffer **buffer);
+void gkick_buffer_free(struct gkick_buffer **buffer);
 
-int gkick_buffer_set_data(gkick_buffer *buffer, gkick_real *data, size_t size);
+int gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size);
 
-gkick_real gkick_buffer_get_at(gkick_buffer *buffer,  size_t index, size_t *is_end);
+gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index, size_t *is_end);
 
 #endif // GKICK_BUFFER_H

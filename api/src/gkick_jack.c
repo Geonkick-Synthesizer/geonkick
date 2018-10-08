@@ -44,6 +44,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         }
 
         if (!gkick_jack_is_play(jack)) {
+                //                gkick_log_debug("exiting ehere....");
                 return 0;
         }
 
@@ -54,14 +55,16 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         }
 
         for (i = 0; i < nframes; i++) {
+                //gkick_log_debug("here0....");
                 size_t is_end;
                 val = gkick_buffer_get_at(jack->input, jack->buffer_index, &is_end);
                 if (is_end) {
                         jack->buffer_index = 0;
                         gkick_jack_set_play(jack, 0);
                 } else {
-                        gkick_jack_get_limiter_val(jack, &limit);
-                        val *= limit;
+                        //gkick_jack_get_limiter_val(jack, &limit);
+                        //val *= limit;
+                        //gkick_log_debug("here....%f", val);
                         buffers[0][i] = (jack_default_audio_sample_t)val;
                         buffers[1][i] = (jack_default_audio_sample_t)val;
                         jack->buffer_index++;

@@ -25,7 +25,6 @@
 #define GKICK_SYNTHESIZER_H
 
 #include "geonkick_internal.h"
-#include "gkick_buffer.h"
 
 struct gkick_synth {
         gkick_real current_time;
@@ -56,7 +55,7 @@ struct gkick_synth {
          * The access to its internal buffer
          * can be locked by other threads.
          */
-        gkick_buffer *output;
+        struct gkick_buffer *output;
 
         /**
          * The synthesizer main thread.
@@ -164,7 +163,7 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
                        size_t size);
 
 void gkick_synth_set_output(struct gkick_synth *synth,
-                            gkick_buffer *buffer);
+                            struct gkick_buffer *buffer);
 
 enum geonkick_error
 gkick_synth_start(struct gkick_synth *synth);

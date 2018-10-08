@@ -25,11 +25,10 @@
 #define GKICK_AUDIO_H
 
 #include "geonkick_internal.h"
-#include "gkick_buffer.h"
 
 struct gkick_audio {
         struct gkick_jack *jack;
-        gkick_buffer *input;
+        struct gkick_buffer *input;
         // other audio device
 };
 

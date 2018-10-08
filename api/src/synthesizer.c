@@ -610,7 +610,7 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
         return GEONKICK_ERROR;
 }
 
-void gkick_synth_set_output(struct gkick_synth *synth, gkick_buffer *buffer)
+void gkick_synth_set_output(struct gkick_synth *synth, struct gkick_buffer *buffer)
 {
         if (synth == NULL || buffer == NULL) {
                 gkick_log_error("wrong arugment");
@@ -722,6 +722,7 @@ void *gkick_synth_run(void *arg)
                 if (!gkick_buffer_set_data(synth->output, synth->buffer, synth->buffer_size)) {
                         gkick_log_warning("can't copy buffer to audio");
                 }
+                synth->buffer_update = 0;
                 gkick_synth_unlock(synth);
         }
 
