@@ -25,17 +25,18 @@
 #define GKICK_AUDIO_H
 
 #include "geonkick_internal.h"
+#include "gkick_buffer.h"
 
 struct gkick_audio {
         struct gkick_jack *jack;
+        gkick_buffer *input;
         // other audio device
 };
 
 enum geonkick_error
 gkick_audio_create(struct gkick_audio** audio);
 
-enum geonkick_error
-gkick_audio_free(struct gkick_audio** audio);
+void gkick_audio_free(struct gkick_audio** audio);
 
 enum geonkick_error
 gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit);

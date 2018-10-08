@@ -102,7 +102,7 @@ enum geonkick_error
 geonkick_is_oscillator_enabled(struct geonkick* kick, size_t index, int *enabled);
 
 enum geonkick_error
-geonkick_get_oscillators_number(struct geonkick* kick, int *number);
+geonkick_get_oscillators_number(struct geonkick* kick, size_t *number);
 
 enum geonkick_error
 geonkick_osc_envelope_get_points(struct geonkick *kick,
@@ -143,22 +143,22 @@ enum geonkick_error
 geonkick_get_length(struct geonkick *kick, gkick_real *len);
 
 enum geonkick_error
-geonkick_set_osc_amplitude_val(struct geonkick *kick,
-			       size_t osc_index,
-			       gkick_real v);
+geonkick_set_osc_amplitude(struct geonkick *kick,
+                           size_t osc_index,
+                           gkick_real v);
 enum geonkick_error
-geonkick_set_osc_frequency_val(struct geonkick *kick,
-			       size_t osc_index,
-			       gkick_real v);
+geonkick_set_osc_frequency(struct geonkick *kick,
+                           size_t osc_index,
+                           gkick_real v);
 
 enum geonkick_error
-geonkick_get_osc_amplitude_val(struct geonkick *kick,
-			       size_t osc_index,
-			       gkick_real *v);
+geonkick_get_osc_amplitude(struct geonkick *kick,
+                           size_t osc_index,
+                           gkick_real *v);
 enum geonkick_error
-geonkick_get_osc_frequency_val(struct geonkick *kick,
-			       size_t osc_index,
-			       gkick_real *v);
+geonkick_get_osc_frequency(struct geonkick *kick,
+                           size_t osc_index,
+                           gkick_real *v);
 
 enum geonkick_error
 geonkick_play(struct geonkick *kick, int play);

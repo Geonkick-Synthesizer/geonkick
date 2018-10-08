@@ -35,11 +35,11 @@
 #define GEONKICK_MAX_KICK_BUFFER_SIZE  (4 * GEONKICK_SAMPLE_RATE)
 
 struct gkick_audio;
-struct geonkick_synth;
+struct gkick_synth;
 
 struct geonkick {
         char name[30];
-        struct geonkick_synth *synth;
+        struct gkick_synth *synth;
         struct gkick_audio *audio;
         pthread_mutex_t lock;
 };

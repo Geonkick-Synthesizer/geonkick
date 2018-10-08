@@ -51,7 +51,7 @@ geonkick_create(struct geonkick **kick)
 		// return GEONKICK_ERROR;
 	}
 
-        if (gkick_synth_create(&(*kick)->synth) != GEONKICK_OK) {
+        if (gkick_synth_new(&(*kick)->synth) != GEONKICK_OK) {
                 gkick_log_error("can't create oscillators");
                 geonkick_free(kick);
                 return GEONKICK_ERROR;
@@ -70,7 +70,6 @@ geonkick_create(struct geonkick **kick)
 
 void geonkick_free(struct geonkick **kick)
 {
-        int i = 0;
         if (kick != NULL && *kick != NULL) {
                 gkick_audio_free(&((*kick)->audio));
                 gkick_synth_free(&((*kick)->synth));
@@ -114,7 +113,7 @@ geonkick_enable_oscillator(struct geonkick* kick, size_t index)
                 return GEONKICK_ERROR;
         }
 
-        res = gkick_synthesizer_enable_oscilaltor(kick->synthesizer, index, 1);
+        res = gkick_synth_enable_oscillator(kick->synth, index, 1);
         return res;
 }
 
@@ -125,41 +124,27 @@ geonkick_disable_oscillator(struct geonkick* kick, size_t index)
                 return GEONKICK_ERROR;
         }
 
-        return gkick_synthesizer_enable_oscilaltor(kick->synthesizer, index, 0);
+        return gkick_synth_enable_oscillator(kick->synth, index, 0);
 }
 
 enum geonkick_error
 geonkick_is_oscillator_enabled(struct geonkick* kick, size_t index, int *enabled)
 {
-        *enabled = 0;
         if (kick == NULL) {
                 return GEONKICK_ERROR;
         }
 
-        geonkick_lock(kick);
-	struct gkick_oscillator* osc = geonkick_get_oscillator(kick, index);
-	if (osc == NULL) {
-		gkick_log_error("can't get oscillator");
-		geonkick_unlock(kick);
-		return GEONKICK_ERROR;
-	}
-	if (gkick_osc_enabled(osc)) {
-                *enabled = 1;
-        }
-	geonkick_unlock(kick);
-        return GEONKICK_OK;
+        return gkick_synth_osc_is_enabled(kick->synth, index, enabled);
 }
 
 enum geonkick_error
-geonkick_get_oscillators_number(struct geonkick *kick, int *number)
+geonkick_get_oscillators_number(struct geonkick *kick, size_t *number)
 {
-        size_t n;
-
         if (kick == NULL || number == NULL) {
                 return GEONKICK_ERROR;
         }
 
-        return gkick_synth_get_oscillators_number(synth, number);
+        return gkick_synth_get_oscillators_number(kick->synth, number);
 }
 
 enum geonkick_error
@@ -210,8 +195,8 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        return gkick_synth_osc_env_get_points(kick->synth, osc_index,
-                                              env_index, buf, npoints);
+        return gkick_synth_osc_envelope_points(kick->synth, osc_index,
+                                               env_index, buf, npoints);
 }
 
 enum geonkick_error
@@ -237,9 +222,6 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 				   gkick_real x,
 				   gkick_real y)
 {
-        struct gkick_oscillator *osc;
-        struct gkick_envelope   *env;
-
         if (kick == NULL) {
                 return GEONKICK_ERROR;
         }
@@ -268,7 +250,7 @@ geonkick_set_length(struct geonkick *kick, gkick_real len)
                 return GEONKICK_ERROR;
         }
 
-        gkick_synth_set_length(kick->synth, len);
+        return gkick_synth_set_length(kick->synth, len);
 }
 
 enum geonkick_error
@@ -314,13 +296,13 @@ geonkick_get_osc_amplitude(struct geonkick *kick,
 		return GEONKICK_ERROR;
 	}
 
-        return gkick_synth_get_osc_amplitude_val(kick->synth, osc_index, v);
+        return gkick_synth_get_osc_amplitude(kick->synth, osc_index, v);
 }
 
 enum geonkick_error
-geonkick_get_osc_frequency_val(struct geonkick *kick,
-			       size_t osc_index,
-			       gkick_real *v)
+geonkick_get_osc_frequency(struct geonkick *kick,
+                           size_t osc_index,
+                           gkick_real *v)
 {
 	if (kick == NULL || v == NULL) {
 		return GEONKICK_ERROR;

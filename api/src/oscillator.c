@@ -220,7 +220,7 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
         }
 }
 
-int gkick_osc_enabled(struct gkick_oscillator *osc)
+int  gkick_osc_enabled(struct gkick_oscillator *osc)
 {
         if (osc == NULL) {
                 return 0;

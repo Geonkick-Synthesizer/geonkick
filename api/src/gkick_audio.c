@@ -43,12 +43,12 @@ gkick_audio_create(struct gkick_audio** audio)
                 gkick_audio_free(audio);
                 return GEONKICK_ERROR;
         }
+        (*audio)->input = (*audio)->jack->input;
 
         return GEONKICK_OK;
 }
 
-enum geonkick_error
-gkick_audio_free(struct gkick_audio** audio)
+void gkick_audio_free(struct gkick_audio** audio)
 {
         if (audio != NULL && *audio != NULL) {
                 gkick_jack_free(&(*audio)->jack);
@@ -72,7 +72,7 @@ gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit)
         }
 
         if (audio->jack != NULL) {
-                gkick_jack_set_limit_val(audio->jack, limit);
+                gkick_jack_set_limiter_val(audio->jack, limit);
         } else {
                 // TODO: some other audio device.
         }
@@ -93,6 +93,8 @@ gkick_audio_get_limiter_val(struct gkick_audio *audio, gkick_real *limit)
         } else {
                 // TODO: some other audio device.
         }
+
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -108,4 +110,6 @@ gkick_audio_play(struct gkick_audio *audio, int play)
         } else {
                 // TODO: some other audio device.
         }
+
+        return GEONKICK_OK;
 }

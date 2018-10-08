@@ -50,7 +50,7 @@ protected slots:
 
 private:
      GeonkickApi *geonkickApi;
-     std::vector<double> kickBuffer;
+     std::vector<float> kickBuffer;
      QRect drawingArea;
      QPixmap cacheGraphImage;
 };

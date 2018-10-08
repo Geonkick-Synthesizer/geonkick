@@ -54,7 +54,7 @@ class GeonkickApi: public QObject {
 
   enum class FilterType:int {
           LowPass  = GEONKICK_FILTER_LOW_PASS,
-          HighPass = GEONKICK_FREQUENCY_HIGH_PASS
+          HighPass = GEONKICK_FILTER_HIGH_PASS
   };
 
   GeonkickApi(QObject *parent = nullptr);
@@ -88,7 +88,7 @@ class GeonkickApi: public QObject {
   void setOscillatorFilterType(int oscillatorIndex, FilterType filter);
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
   double limiterValue();
-  void getKickBuffer(std::vector<double> &buffer);
+  void getKickBuffer(std::vector<float> &buffer);
 
 public slots:
   void setKickAmplitude(double amplitude);
