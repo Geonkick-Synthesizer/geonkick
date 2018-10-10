@@ -35,12 +35,13 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         int note_pressed;
         struct gkick_jack *jack;
         jack_default_audio_sample_t *buffers[2]; /* Lef and right channels Jack buffers. */
-
+        static uint64_t current_t = 0;
         jack = (struct gkick_jack*)arg;
 
         note_pressed = gkick_jack_is_note_pressed(jack, nframes);
         if (note_pressed) {
                 gkick_jack_set_play(jack, 1);
+                jack->buffer_index = 0;
         }
 
         if (gkick_jack_get_output_buffers(jack, buffers, nframes)
