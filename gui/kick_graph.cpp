@@ -77,7 +77,7 @@ void KickGraph::drawKickGraph()
         int k = kickBuffer.size() / w;
         QPolygonF graphPoints;
         for (auto i = 0; i < w; i++) {
-                graphPoints << QPointF(i, h * (0.5  - kickBuffer[i * k]));
+                graphPoints << QPointF(i, h * (0.5  - 4 * kickBuffer[i * k]));
         }
 
         painter.setRenderHints(QPainter::SmoothPixmapTransform
