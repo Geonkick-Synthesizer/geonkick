@@ -1,5 +1,5 @@
 /**
- * File name: geonkick_widget.h
+ * File name: export_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
@@ -21,38 +21,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_WIDGET_H
-#define GEONKICK_WIDGET_H
+#ifndef GEONKICK_EXPORT_WIDGET_H
+#define GEONKICK_EXPORT_WIDGET_H
 
-#include "globals.h"
+#include "geonkick_widget.h"
 
-#include <QWidget>
-#include <QPainter>
-#include <QStyleOption>
-#include <memory>
+#include <QDialog>
 
-class GeonkickTheme;
-class QPixmap;
+class GeonkickApi;
 
-class GeonkickWidget: public QWidget
-{
+class ExportWidget: public GeonkickWidget {
  Q_OBJECT
 
- public:
-        GeonkickWidget(GeonkickWidget *parent = nullptr);
-        virtual ~GeonkickWidget();
-        void setBackgroundImage(const QPixmap &pixmap);
-        void setBackgroundImage(const QString &file);
-        void setTheme(GeonkickTheme *theme);
-        GeonkickTheme* getTheme();
-        void paintEvent(QPaintEvent *event) final;
-        virtual void paintWidget(QPaintEvent *event);
+ using ExportResult = QDialog::DialogCode;
 
- public slots:
-         virtual void themeChanged(GeonkickTheme *theme) {Q_UNUSED(theme)};
+ public:
+        ExportWidget(GeonkickWidget *parent = nullptr, GeonkickApi *api = nullptr);
+        ~ExportWidget();
+        ExportResult exec();
+
+ protected:
+        void closeEvent(QCloseEvent *event);
+
+ signals:
+         void closeDialog();
+
  private:
-        GeonkickTheme *widgetTheme;
-        QPixmap backgroundImage;
+        GeonkickApi *geonkickApi;
+        ExportResult exportResult;
+
 };
 
-#endif // GEONKICK_WIDGET_H
+#endif // GEONKICK_EXPORT_WIDGET_H

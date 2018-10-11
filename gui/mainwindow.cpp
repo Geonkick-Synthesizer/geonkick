@@ -29,6 +29,7 @@
 #include "geonkick_theme.h"
 #include "top_bar.h"
 #include "fader.h"
+#include "export_widget.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -38,7 +39,6 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QFileDialog>
 
 #define GEONKICK_MAINWINDOW_WIDTH  940
 #define GEONKICK_MAINWINDOW_HEIGHT 765
@@ -47,10 +47,6 @@ MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
         geonkickApi(new GeonkickApi(this))
 {
-        QPalette pal;
-        pal.setColor(QPalette::Background, QColor(68, 68, 70));
-        setAutoFillBackground(true);
-        setPalette(pal);
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
         setWindowFlags(Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
 }
@@ -127,9 +123,8 @@ bool MainWindow::init(void)
 
 void MainWindow::openExportDialog()
 {
-        QFileDialog::getSaveFileName(this, tr("Export"),
-                                     "kick.wav",
-                                     "*.wav");
+        ExportWidget exportDialog(this, geonkickApi);
+        exportDialog.exec();
 }
 
 void MainWindow::setLimiterValue(int value)

@@ -31,6 +31,11 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
         if (parent) {
                 setTheme(parent->getTheme());
         }
+
+        QPalette pal;
+        pal.setColor(QPalette::Background, QColor(68, 68, 70));
+        setAutoFillBackground(true);
+        setPalette(pal);
 }
 
 GeonkickWidget::~GeonkickWidget()
