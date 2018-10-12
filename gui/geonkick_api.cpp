@@ -276,7 +276,7 @@ void GeonkickApi::setLimiterValue(double value)
         geonkick_set_limiter_value(geonkickApi, value);
 }
 
-void GeonkickApi::getKickBuffer(std::vector<float> &buffer)
+void GeonkickApi::getKickBuffer(std::vector<gkick_real> &buffer)
 {
         geonkick_get_kick_buffer(geonkickApi, buffer.data(), buffer.size());
 }

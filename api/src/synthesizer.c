@@ -580,31 +580,13 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
                        gkick_real *buffer,
                        size_t size)
 {
-        size_t i;
-        size_t k;
-
 	if (synth == NULL || buffer == NULL) {
                 gkick_log_error("wrong arguments");
 		return GEONKICK_ERROR;
-	}
+        }
 
         gkick_synth_lock(synth);
-
-        if (size > synth->buffer_size) {
-                gkick_log_error("buffer overflow");
-                gkick_synth_unlock(synth);
-                return GEONKICK_ERROR;
-        }
-
-        k = synth->buffer_size / size;
-        for (i = 0; i < size; i++) {
-                if (i < size - 1) {
-                        buffer[i] = (synth->buffer[i * k] + synth->buffer[(i + 1) * k]) / 2;
-                } else {
-                        buffer[i] = (synth->buffer[synth->buffer_size - 1]
-                                     + synth->buffer[i * k]) / 2;
-                }
-        }
+        memcpy(buffer, synth->buffer, size * sizeof(gkick_real));
         gkick_synth_unlock(synth);
 
         return GEONKICK_ERROR;

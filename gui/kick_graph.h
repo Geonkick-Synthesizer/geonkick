@@ -24,11 +24,13 @@
 #ifndef GEONKICK_GRAPTH_H
 #define GEONKICK_GRAPTH_H
 
+#include "geonkick_api.h"
+
 #include <QObject>
 #include <QPainter>
 
-class GeonkickApi;
 class QPixmap;
+class QImage;
 
 class KickGraph : public QObject {
    Q_OBJECT
@@ -50,9 +52,9 @@ protected slots:
 
 private:
      GeonkickApi *geonkickApi;
-     std::vector<float> kickBuffer;
+     std::vector<gkick_real> kickBuffer;
      QRect drawingArea;
-     QPixmap cacheGraphImage;
+     QImage cacheGraphImage;
 };
 
 #endif // GEONKICK_GRAPH

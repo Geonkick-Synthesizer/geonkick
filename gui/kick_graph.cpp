@@ -27,7 +27,8 @@
 
 KickGraph::KickGraph(QObject *parent, GeonkickApi *api)
         : QObject(parent),
-          geonkickApi(api)
+          geonkickApi(api),
+          kickBuffer(48000 * geonkickApi->kickLength() / 1000)
 {
         connect(api, SIGNAL(kickUpdated()), this, SLOT(updateGraphBuffer()));
 }
@@ -39,22 +40,22 @@ KickGraph::~KickGraph()
 void KickGraph::draw(QPainter &painter)
 {
         if (!cacheGraphImage.isNull()) {
-                painter.drawPixmap(drawingArea, cacheGraphImage);
+                painter.drawImage(drawingArea, cacheGraphImage);
         }
 }
 
 void KickGraph::setDrawingArea(const QRect &rect)
 {
         drawingArea = rect;
-        cacheGraphImage = QPixmap(drawingArea.size());
+        cacheGraphImage = QImage(drawingArea.size(),  QImage::Format_ARGB32_Premultiplied);
         cacheGraphImage.fill(Qt::transparent);
-        kickBuffer.resize(drawingArea.width());
         geonkickApi->getKickBuffer(kickBuffer);
         drawKickGraph();
 }
 
 void KickGraph::updateGraphBuffer()
 {
+        kickBuffer.resize(48000 * geonkickApi->kickLength() / 1000);
         geonkickApi->getKickBuffer(kickBuffer);
         drawKickGraph();
 }
@@ -67,21 +68,20 @@ void KickGraph::drawKickGraph()
 
         cacheGraphImage.fill(Qt::transparent);
         QPainter painter(&cacheGraphImage);
-        QPen pen(QColor(59, 130, 4, 200));
-        pen.setWidth(2);
+        QPen pen(QColor(59, 130, 4, 230));
         pen.setJoinStyle(Qt::MiterJoin);
         painter.setPen(pen);
 
         int w = drawingArea.width();
         int h = drawingArea.height();
-        int k = kickBuffer.size() / w;
-        QPolygonF graphPoints;
-        for (auto i = 0; i < w; i++) {
-                graphPoints << QPointF(i, h * (0.5  - 4 * kickBuffer[i * k]));
-        }
+        painter.setRenderHints(QPainter::Antialiasing, true);
 
-        painter.setRenderHints(QPainter::SmoothPixmapTransform
-                               | QPainter::Antialiasing, true);
+
+        QPolygonF graphPoints;
+        gkick_real k = static_cast<gkick_real>(w) / kickBuffer.size();
+        for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
+                graphPoints << QPointF(k * i, h * (0.5 - kickBuffer[i]));
+        }
         painter.drawPolyline(graphPoints);
         painter.end();
 }
