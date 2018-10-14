@@ -53,8 +53,10 @@ class Oscillator: public QObject
   double frequency(void);
   void setType(Type type);
   Oscillator::Type type(void);
+  bool isFilterEnabled();
   Oscillator::FilterType filter();
-  void setFilterFrequency(double f);
+  double filterFrequency(void);
+  double filterQFactor();
   bool isEnabled();
   double envelopeLength();
 
@@ -63,15 +65,13 @@ class Oscillator: public QObject
           void setFunction(FunctionType func);
           void setAmplitude(double amp);
           void setFrequency(double freq);
+          void enableFilter(bool b);
+          void setFilterType(FilterType filter);
+          void setFilterFrequency(double f);
           void setFilterQFactor(double factor);
-          double filterQFactor();
-
           void addEnvelopePoint(EnvelopeType envelope, double x, double y);
           void removeEnvelopePoint(EnvelopeType envelope, int point_index);
-
           void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
-          void setFilterType(FilterType filter);
-          double filterFrequency(void);
 
  signals:
 	  void amplitudeUpdated(double v);

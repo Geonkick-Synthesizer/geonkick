@@ -51,6 +51,13 @@ struct gkick_synth {
         /* Kick smaples buffer. */
         gkick_real *buffer;
 
+        /**
+         * Pointer to a funtion to be
+         * called when kick synthesis is finished.
+         */
+        void (*buffer_callback) (void*);
+        void *callback_args;
+
         /* Output buffer for the synthesizer.
          * The access to its internal buffer
          * can be locked by other threads.
@@ -162,6 +169,9 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
                        gkick_real *buffer,
                        size_t size);
 
+enum geonkick_error
+gkick_synth_set_buffer_callback(struct gkick_synth *synth, void (*callback) (void*), void *args);
+
 void gkick_synth_set_output(struct gkick_synth *synth,
                             struct gkick_buffer *buffer);
 
@@ -183,5 +193,46 @@ gkick_synth_get_value(struct gkick_synth *synth, gkick_real t);
 void gkick_synth_reset_oscillators(struct gkick_synth *synth);
 
 int gkick_synth_is_update_buffer(struct gkick_synth *synth);
+
+enum geonkick_error
+gkick_synth_set_osc_filter_type(struct gkick_synth *synth,
+                                size_t osc_index,
+                                enum gkick_filter_type type);
+
+enum geonkick_error
+gkick_synth_get_osc_filter_type(struct gkick_synth *synth,
+                                size_t osc_index,
+                                enum gkick_filter_type *type);
+
+enum geonkick_error
+gkick_synth_set_osc_filter_cutoff(struct gkick_synth *synth,
+                                  size_t osc_index,
+                                  gkick_real cutoff);
+
+enum geonkick_error
+gkick_synth_get_osc_filter_cutoff(struct gkick_synth *synth,
+                                  size_t osc_index,
+                                  gkick_real *cutoff);
+
+enum geonkick_error
+gkick_synth_set_osc_filter_factor(struct gkick_synth *synth,
+                                  size_t osc_index,
+                                  gkick_real factor);
+
+enum geonkick_error
+gkick_synth_get_osc_filter_factor(struct gkick_synth *synth,
+                                  size_t osc_index,
+                                  gkick_real *factor);
+
+enum geonkick_error
+gkick_synth_osc_enable_filter(struct gkick_synth *synth,
+                              size_t osc_index,
+                              int enable);
+
+enum geonkick_error
+gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
+                                  size_t osc_index,
+                                  int *enabled);
+
 
 #endif // GEONKICK_SYNTHESIZER_H

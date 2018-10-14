@@ -113,23 +113,42 @@ int Oscillator::index()
 
 Oscillator::FilterType Oscillator::filter()
 {
-        return filterType;
+        return static_cast<FilterType>(geonkickApi->getOscillatorFilterType(index()));
+}
+
+void Oscillator::setFilterType(FilterType type)
+{
+        geonkickApi->setOscillatorFilterType(index(), static_cast<GeonkickApi::FilterType>(type));
+}
+
+void Oscillator::enableFilter(bool b)
+{
+        geonkickApi->enableOscillatorFilter(index(), b);
+}
+
+bool Oscillator::isFilterEnabled()
+{
+        return geonkickApi->isOscillatorFilterEnabled(index());
 }
 
 void Oscillator::setFilterFrequency(double f)
 {
+        geonkickApi->setOscillatorFilterCutOffFreq(index(), f);
 }
 
 double Oscillator::filterFrequency(void)
 {
+        return geonkickApi->getOscillatorFilterCutOffFreq(index());
 }
 
 void Oscillator::setFilterQFactor(double v)
 {
+        return geonkickApi->setOscillatorFilterFactor(index(), v);
 }
 
 double Oscillator::filterQFactor()
 {
+        return geonkickApi->getOscillatorFilterFactor(index());
 }
 
 void Oscillator::enable(bool b)
@@ -140,11 +159,6 @@ void Oscillator::enable(bool b)
 bool Oscillator::isEnabled()
 {
         return geonkickApi->isOscillatorEnabled(index());
-}
-
-void Oscillator::setFilterType(FilterType type)
-{
-        geonkickApi->setOscillatorFilterType(index(), static_cast<GeonkickApi::FilterType>(type));
 }
 
 double Oscillator::envelopeLength()

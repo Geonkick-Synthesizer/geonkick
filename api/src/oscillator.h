@@ -1,10 +1,10 @@
 /**
  * File name: oscillator.c
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 
 #include "geonkick_internal.h"
 #include "envelope.h"
+#include "filter.h"
 
 #define GKICK_OSC_DEFAULT_AMPLITUDE   0.005
 #define GKICK_OSC_DEFAULT_FREQUENCY   150
@@ -44,6 +45,8 @@ struct gkick_oscillator {
 	gkick_real amplitude;
 	size_t env_number;
 	struct gkick_envelope **envelopes;
+        struct gkick_filter *filter;
+        int filter_enabled;
 	pthread_mutex_t lock;
 };
 
@@ -54,6 +57,8 @@ void gkick_osc_free(struct gkick_oscillator **osc);
 
 void gkick_osc_set_state(struct gkick_oscillator *osc,
                          enum geonkick_osc_state state);
+
+int gkick_osc_enabled(struct gkick_oscillator *osc);
 
 enum geonkick_error
 gkick_osc_create_envelopes(struct gkick_oscillator *osc);
@@ -87,7 +92,5 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,
 			      gkick_real **buff,
 			      size_t *npoints);
-
-int gkick_osc_enabled(struct gkick_oscillator *osc);
 
 #endif

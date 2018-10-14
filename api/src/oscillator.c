@@ -48,6 +48,13 @@ struct gkick_oscillator
                 return NULL;
         }
 
+        if (gkick_filter_new(&osc->filter) != GEONKICK_OK) {
+                gkick_log_error("can't create filter");
+                gkick_osc_free(&osc);
+		return NULL;
+        }
+        osc->filter_enabled = 0;
+
         return osc;
 }
 
@@ -64,6 +71,7 @@ void gkick_osc_free(struct gkick_oscillator **osc)
                         gkick_envelope_destroy((*osc)->envelopes[i]);
                 }
                 free((*osc)->envelopes);
+                gkick_filter_free(&(*osc)->filter);
         }
 
         free(*osc);
@@ -161,6 +169,11 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
         default:
                 v = amp * gkick_osc_func_sine(osc->phase);
         };
+
+        if (osc->filter_enabled) {
+                gkick_filter_val(osc->filter, v, &v);
+        }
+
         return v;
 }
 

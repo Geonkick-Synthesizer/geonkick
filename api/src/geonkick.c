@@ -71,8 +71,8 @@ geonkick_create(struct geonkick **kick)
 void geonkick_free(struct geonkick **kick)
 {
         if (kick != NULL && *kick != NULL) {
-                gkick_audio_free(&((*kick)->audio));
                 gkick_synth_free(&((*kick)->synth));
+                gkick_audio_free(&((*kick)->audio));
                 pthread_mutex_destroy(&(*kick)->lock);
                 free(*kick);
                 *kick = NULL;
@@ -338,6 +338,17 @@ geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size)
 }
 
 enum geonkick_error
+geonkick_set_kick_buffer_callback(struct geonkick *kick, void (*callback)(void*), void *arg)
+{
+        if (kick  == NULL || callback == NULL || arg == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_set_buffer_callback(kick->synth, callback, arg);
+}
+
+enum geonkick_error
 geonkick_set_limiter_value(struct geonkick *kick, gkick_real limit)
 {
         enum geonkick_error res;
@@ -362,3 +373,105 @@ geonkick_get_limiter_value(struct geonkick *kick, gkick_real *limit)
         res = gkick_audio_get_limiter_val(kick->audio, limit);
         return res;
 }
+
+enum geonkick_error
+geonkick_set_osc_filter_type(struct geonkick *kick,
+                             size_t osc_index,
+                             enum gkick_filter_type type)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_set_osc_filter_type(kick->synth, osc_index, type);
+}
+
+enum geonkick_error
+geonkick_get_osc_filter_type(struct geonkick *kick,
+                             size_t osc_index,
+                             enum gkick_filter_type *type)
+{
+        if (kick == NULL || type == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_get_osc_filter_type(kick->synth, osc_index, type);
+}
+
+enum geonkick_error
+geonkick_set_osc_filter_cutoff_freq(struct geonkick *kick,
+                                    size_t osc_index,
+                                    gkick_real cutoff)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_set_osc_filter_cutoff(kick->synth, osc_index, cutoff);
+}
+
+enum geonkick_error
+geonkick_get_osc_filter_cutoff_freq(struct geonkick *kick,
+                                    size_t osc_index,
+                                    gkick_real *cutoff)
+{
+        if (kick == NULL || cutoff == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_get_osc_filter_cutoff(kick->synth, osc_index, cutoff);
+}
+
+enum geonkick_error
+geonkick_set_osc_filter_factor(struct geonkick *kick,
+                               size_t osc_index,
+                               gkick_real factor)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_set_osc_filter_factor(kick->synth, osc_index, factor);
+}
+
+enum geonkick_error
+geonkick_get_osc_filter_factor(struct geonkick *kick,
+                               size_t osc_index,
+                               gkick_real *factor)
+{
+        if (kick == NULL || factor == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_get_osc_filter_factor(kick->synth, osc_index, factor);
+}
+
+
+enum geonkick_error
+geonkick_enbale_osc_filter(struct geonkick *kick, size_t osc_index, int enable)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_osc_enable_filter(kick->synth, osc_index, enable);
+}
+
+enum geonkick_error
+geonkick_osc_filter_is_enabled(struct geonkick *kick, size_t osc_index, int *enable)
+{
+        if (kick == NULL || enable == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_osc_is_enabled_filter(kick->synth, osc_index, enable);
+}
+

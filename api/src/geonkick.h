@@ -63,7 +63,7 @@ enum geonkick_envelope_type {
         GEONKICK_FREQUENCY_ENVELOPE = 1
 };
 
-enum geonkick_filter_type {
+enum gkick_filter_type {
         GEONKICK_FILTER_LOW_PASS  = 0,
         GEONKICK_FILTER_HIGH_PASS = 1,
         GEONKICK_FILTER_BAND      = 2
@@ -167,10 +167,51 @@ enum geonkick_error
 geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size);
 
 enum geonkick_error
+geonkick_set_kick_buffer_callback(struct geonkick *kick, void (*callback)(void*), void *arg);
+
+enum geonkick_error
 geonkick_set_limiter_value(struct geonkick *kick, gkick_real limit);
 
 enum geonkick_error
 geonkick_get_limiter_value(struct geonkick *kick, gkick_real *limit);
+
+enum geonkick_error
+geonkick_set_osc_filter_type(struct geonkick *kick,
+                             size_t osc_index,
+                             enum gkick_filter_type type);
+enum geonkick_error
+geonkick_get_osc_filter_type(struct geonkick *kick,
+                             size_t osc_index,
+                             enum gkick_filter_type *type);
+
+enum geonkick_error
+geonkick_set_osc_filter_cutoff_freq(struct geonkick *kick,
+                                    size_t osc_index,
+                                    gkick_real cutoff);
+enum geonkick_error
+geonkick_get_osc_filter_cutoff_freq(struct geonkick *kick,
+                                    size_t osc_index,
+                                    gkick_real *cutoff);
+
+enum geonkick_error
+geonkick_set_osc_filter_factor(struct geonkick *kick,
+                               size_t osc_index,
+                               gkick_real factor);
+
+enum geonkick_error
+geonkick_get_osc_filter_factor(struct geonkick *kick,
+                               size_t osc_index,
+                               gkick_real *factor);
+
+enum geonkick_error
+geonkick_enbale_osc_filter(struct geonkick *kick,
+                           size_t osc_index,
+                           int enable);
+
+enum geonkick_error
+geonkick_osc_filter_is_enabled(struct geonkick *kick,
+                               size_t osc_index,
+                               int *enable);
 
 #ifdef __cplusplus
 }

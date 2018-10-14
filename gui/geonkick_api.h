@@ -85,7 +85,14 @@ class GeonkickApi: public QObject {
   void updateKickEnvelopePoint(double x, double y);
   void setOscillatorFunction(int oscillatorIndex, FunctionType function);
   void enableOscillator(int oscillatorIndex, bool enable);
+  void enableOscillatorFilter(int oscillatorIndex, bool enable);
+  bool isOscillatorFilterEnabled(int oscillatorIndex);
   void setOscillatorFilterType(int oscillatorIndex, FilterType filter);
+  FilterType getOscillatorFilterType(int oscillatorIndex);
+  void setOscillatorFilterCutOffFreq(int oscillatorIndex, double frequency);
+  double getOscillatorFilterCutOffFreq(int oscillatorIndex);
+  void setOscillatorFilterFactor(int oscillatorIndex, double factor);
+  double getOscillatorFilterFactor(int oscillatorIndex);
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
   double limiterValue();
   void getKickBuffer(std::vector<gkick_real> &buffer);
@@ -99,6 +106,10 @@ signals:
   void kickLengthUpdated(double length);
   void kickAmplitudeUpdated(double amplitude);
   void kickUpdated();
+
+protected:
+  static void kickUpdatedCallback(void *arg);
+  void emitKickUpdated();
 
 private:
   struct geonkick *geonkickApi;
