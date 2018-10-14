@@ -63,7 +63,9 @@ gkick_filter_init(struct gkick_filter *filter)
 
         gkick_filter_lock(filter);
         filter->queue_empty = 1;
-        memset(filter->queue, 0, sizeof(filter->queue));
+        memset(filter->queue_l, 0, sizeof(filter->queue_l));
+        memset(filter->queue_b, 0, sizeof(filter->queue_b));
+        memset(filter->queue_h, 0, sizeof(filter->queue_h));
         gkick_filter_update_coefficents(filter);
         gkick_filter_unlock(filter);
 
@@ -92,20 +94,17 @@ void gkick_filter_unlock(struct gkick_filter *filter)
 enum geonkick_error
 gkick_filter_update_coefficents(struct gkick_filter *filter)
 {
-        gkick_real *k, C, p1, p2;
+        gkick_real F, Q;
 
         if (filter == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        k = filter->coefficients;
-        C = 1.0 / tan(M_PI * filter->cutoff_freq / GEONKICK_SAMPLE_RATE);
-        p1 = 2.0 * filter->factor * C;
-        p2 = C * C;
-        k[2] = 1.0 / (1.0 + p1 + p2);
-        k[1] = 2.0 * k[2] * p2;
-        k[0] = k[2] * (p1 - p2);
+        F = 2.0 * sin(M_PI * filter->cutoff_freq / GEONKICK_SAMPLE_RATE);
+        Q = filter->factor;
+        filter->coefficients[0] = F;
+        filter->coefficients[1] = Q;
 
         return GEONKICK_OK;
 }
@@ -203,13 +202,20 @@ gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor)
         return GEONKICK_OK;
 }
 
+
+/**
+ * gkick_filter_val function
+ *
+ * Implements low, high, and band pass digital state variable filter.
+ */
 enum geonkick_error
 gkick_filter_val(struct gkick_filter *filter,
                  gkick_real in_val,
                  gkick_real *out_val)
 {
-        gkick_real *k;
-        gkick_real *q;
+        gkick_real *l, *b, *h;
+        gkick_real F, Q;
+        size_t n;
 
         if (filter == NULL || out_val == NULL) {
                 gkick_log_error("wrong arguments");
@@ -218,19 +224,42 @@ gkick_filter_val(struct gkick_filter *filter,
 
         gkick_filter_lock(filter);
 
-        q = filter->queue;
-        k = filter->coefficients;
+        l = filter->queue_l;
+        b = filter->queue_b;
+        h = filter->queue_h;
+        F = filter->coefficients[0];
+        Q = filter->coefficients[1];
+        n = 1;
         if (filter->queue_empty) {
-                q[0] = q[1] = q[2] = in_val;
+                l[n - 1] = l[n] = 0;
+                b[n - 1] = b[n] = 0;
+                h[n - 1] = h[n] = 0;
                 filter->queue_empty = 0;
+                gkick_log_debug("F: %f", F);
+                gkick_log_debug("Q: %f", Q);
         } else {
-                q[0] = q[1];
-                q[1] = q[2];
-                q[2] = in_val;
+                h[n - 1] = h[n];
+                b[n - 1] = b[n];
+                l[n - 1] = l[n];
         }
-        q[2] = k[2] * q[2] +  k[1] * q[1] + k[0] * q[0];
-        *out_val = q[2];
+        h[n] = in_val - l[n - 1] - Q * b[n - 1];
+        b[n] = F * h[n] + b[n - 1];
+        l[n] = F * b[n] + l[n - 1];
+        /*        gkick_log_debug("---------------");
+        gkick_log_debug("in: %f", in_val);
+        gkick_log_debug("F: %f", F);
+        gkick_log_debug("Q: %f", Q);
+        gkick_log_debug("l: %f", l[n]);
+        gkick_log_debug("b: %f", b[n]);
+        gkick_log_debug("h: %f", h[n]);*/
 
+        if (filter->type == GEONKICK_FILTER_HIGH_PASS) {
+                *out_val = h[n];
+        } else if (filter->type == GEONKICK_FILTER_BAND_PASS) {
+                *out_val = b[n];
+        } else {
+                *out_val = l[n];
+        }
         gkick_filter_unlock(filter);
 
         return GEONKICK_OK;

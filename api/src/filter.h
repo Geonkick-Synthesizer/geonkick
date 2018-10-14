@@ -38,11 +38,13 @@ struct gkick_filter {
         /* Filter damping factor. */
         gkick_real factor;
         /* A queue of a three elements */
-        gkick_real queue[3];
+        gkick_real queue_l[2];
+        gkick_real queue_b[2];
+        gkick_real queue_h[2];
         char queue_empty;
 
         /* Filter coefficients. See the code how they are calculated. */
-        gkick_real coefficients[3];
+        gkick_real coefficients[2];
         pthread_mutex_t lock;
 };
 

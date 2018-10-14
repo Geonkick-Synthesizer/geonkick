@@ -410,6 +410,7 @@ geonkick_set_osc_filter_cutoff_freq(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
+        gkick_log_debug("freq: %f", cutoff);
         return gkick_synth_set_osc_filter_cutoff(kick->synth, osc_index, cutoff);
 }
 
@@ -436,6 +437,7 @@ geonkick_set_osc_filter_factor(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
+        gkick_log_debug("factor: %f", factor);
         return gkick_synth_set_osc_filter_factor(kick->synth, osc_index, factor);
 }
 

@@ -193,7 +193,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), oscillator,  SLOT(setFilterFrequency(double)));
 
         Knob *kickQFactorKnob = new Knob(filterEnvelopeBox);
-        kickQFactorKnob->setRange(0.1, 10);
+        kickQFactorKnob->setRange(0.01, 10);
         kickQFactorKnob->setCurrentValue(oscillator->filterQFactor());
         pixmap = QPixmap("./themes/geontime/knob_bk_50x50.png");
         int w = pixmap.size().width();

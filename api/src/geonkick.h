@@ -66,7 +66,7 @@ enum geonkick_envelope_type {
 enum gkick_filter_type {
         GEONKICK_FILTER_LOW_PASS  = 0,
         GEONKICK_FILTER_HIGH_PASS = 1,
-        GEONKICK_FILTER_BAND      = 2
+        GEONKICK_FILTER_BAND_PASS = 2
 };
 
 enum geonkick_osc_func_type {
