@@ -29,6 +29,12 @@
 #include <QDialog>
 
 class GeonkickApi;
+class QLineEdit;
+class QPushButton;
+class QComboBox;
+class QRadioButton;
+class QRadioButton;
+
 
 class ExportWidget: public GeonkickWidget {
  Q_OBJECT
@@ -40,8 +46,10 @@ class ExportWidget: public GeonkickWidget {
         ~ExportWidget();
         ExportResult exec();
 
- protected:
-        void closeEvent(QCloseEvent *event);
+ protected slots:
+         void browse();
+         void cancel();
+         void exportKick();
 
  signals:
          void closeDialog();
@@ -49,7 +57,11 @@ class ExportWidget: public GeonkickWidget {
  private:
         GeonkickApi *geonkickApi;
         ExportResult exportResult;
-
+        QLineEdit *locationEdit;
+        QPushButton *browseLocation;
+        QComboBox *formatComboBox;
+        QRadioButton *monoRadioButton;
+        QRadioButton *stereoRadioButton;
 };
 
 #endif // GEONKICK_EXPORT_WIDGET_H

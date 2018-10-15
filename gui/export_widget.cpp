@@ -24,15 +24,69 @@
 #include "export_widget.h"
 
 #include <QEventLoop>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QComboBox>
+#include <QRadioButton>
+#include <QProgressBar>
 
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent),
           geonkickApi(api),
-          exportResult(ExportResult::Rejected)
+          exportResult(ExportResult::Rejected),
+          locationEdit(nullptr),
+          browseLocation(nullptr),
+          formatComboBox(nullptr),
+          monoRadioButton(nullptr),
+          stereoRadioButton(nullptr)
 {
         setFixedSize(600, 500);
         setWindowFlags(Qt::Dialog);
         setWindowModality(Qt::ApplicationModal);
+        setWindowTitle(tr("Export Kick"));
+
+        auto mainLayout = new QVBoxLayout(this);
+        mainLayout->addWidget(new QLabel(tr("Location"), this));
+
+        auto locationLayout = new QHBoxLayout;
+        locationEdit = new QLineEdit(this);
+        locationLayout->addWidget(locationEdit);
+        browseLocation = new QPushButton(tr("Browse"), this);
+        connect(browseLocation, SIGNAL(clicked(bool)), this, SLOT(browse()));
+        locationLayout->addWidget(browseLocation);
+        mainLayout->addLayout(locationLayout);
+
+        mainLayout->addWidget(new QLabel(tr("Export format"), this));
+        auto formatLayout = new QHBoxLayout;
+
+        formatComboBox = new QComboBox(this);
+        formatComboBox->addItem(tr("FLAC, 16 bit"));
+        formatComboBox->addItem(tr("FLAC, 24 bit"));
+        formatComboBox->addItem(tr("WAV, 16 bit"));
+        formatComboBox->addItem(tr("WAV, 32 bit"));
+        formatComboBox->addItem(tr("Ogg Vorbis"));
+        formatLayout->addWidget(formatComboBox);
+        monoRadioButton = new QRadioButton(tr("Mono"), this);
+        stereoRadioButton = new QRadioButton(tr("Stereo"), this);
+        formatLayout->addWidget(monoRadioButton);
+        formatLayout->addWidget(stereoRadioButton);
+        mainLayout->addLayout(formatLayout);
+
+        auto exportProgress = new QProgressBar(this);
+        mainLayout->addWidget(exportProgress);
+
+        auto buttonsLayout = new QHBoxLayout;
+        auto exportButton = new QPushButton(tr("Export"), this);
+        connect(exportButton, SIGNAL(clicked(bool)), this, SLOT(exportKick()));
+        auto cancelButton = new QPushButton(tr("Cancel"), this);
+        connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(closeDialog()));
+        buttonsLayout->addWidget(cancelButton);
+        buttonsLayout->addWidget(exportButton);
+        mainLayout->addLayout(buttonsLayout);
+
+        setLayout(mainLayout);
         show();
 }
 
@@ -48,7 +102,18 @@ ExportWidget::ExportResult ExportWidget::exec()
         return exportResult;
 }
 
-void ExportWidget::closeEvent(QCloseEvent *event)
+void ExportWidget::browse()
+{
+        GEONKICK_LOG_INFO("browse...");
+}
+
+void ExportWidget::exportKick()
+{
+        GEONKICK_LOG_INFO("export...");
+}
+
+void ExportWidget::cancel()
 {
         emit closeDialog();
 }
+
