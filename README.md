@@ -17,15 +17,13 @@ What it should include:
      - sawtooth [i]
      - amplitude envelope [i]
      - frequency envelope [i]
-     - low pass filter
-     - height pass
+     - low, band, hight pass filter [i]
 * Noise:
      - white [i]
      - pink
      - browninan
-     - amplitude envelope
-     - low pass filter
-     - height pass filter
+     - amplitude envelope [i]
+     - low, band, hight pass filter [i]
 * Kick
      - amplitude envelope
      - low pass filter
