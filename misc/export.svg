@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -67,8 +67,8 @@
        id="rect4487"
        width="18.76033"
        height="7.8617768"
-       x="134.48071"
-       y="125.81821"
+       x="133.64236"
+       y="133.02802"
        rx="1.3871629"
        ry="1.3450432" />
     <rect
@@ -76,8 +76,8 @@
        id="rect4500"
        width="23.256348"
        height="7.4953642"
-       x="157.13171"
-       y="126.00143"
+       x="156.29337"
+       y="133.21124"
        rx="1.4658922"
        ry="1.0410235" />
     <rect
@@ -85,8 +85,8 @@
        id="rect4502"
        width="21.294096"
        height="9.0541821"
-       x="149.57831"
-       y="71.668076"
+       x="142.87151"
+       y="89.105759"
        rx="1.4658922"
        ry="1.0410243" />
     <rect
@@ -94,144 +94,144 @@
        id="rect4504"
        width="100.97063"
        height="8.5844297"
-       x="44.583599"
-       y="71.802498"
+       x="37.876797"
+       y="89.240189"
        rx="0.51073998"
        ry="0.31823936" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
-       x="47.257538"
-       y="68.302498"
+       x="40.550735"
+       y="85.740189"
        id="text4508"><tspan
          sodipodi:role="line"
          id="tspan4506"
-         x="47.257538"
-         y="68.302498"
+         x="40.550735"
+         y="85.740189"
          style="stroke-width:0.13714737">Location</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.93112564px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18534768"
-       x="49.228748"
-       y="78.328865"
+       x="42.521946"
+       y="95.766548"
        id="text4512"><tspan
          sodipodi:role="line"
          id="tspan4510"
-         x="49.228748"
-         y="78.328865"
-         style="stroke-width:0.18534768">/home/iurie/wave/kick.wav</tspan></text>
+         x="42.521946"
+         y="95.766548"
+         style="stroke-width:0.18534768">/home/iurie/wave/kicks</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
-       x="152.27802"
-       y="77.603981"
+       x="145.57121"
+       y="95.041664"
        id="text4508-3"><tspan
          sodipodi:role="line"
          id="tspan4506-6"
-         x="152.27802"
-         y="77.603981"
+         x="145.57121"
+         y="95.041664"
          style="stroke-width:0.13714737">Browse</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
-       x="43.460148"
-       y="92.023605"
+       x="40.945099"
+       y="67.87912"
        id="text4508-7"><tspan
          sodipodi:role="line"
          id="tspan4506-5"
-         x="43.460148"
-         y="92.023605"
+         x="40.945099"
+         y="67.87912"
          style="stroke-width:0.13714737">Export format</tspan></text>
     <rect
        style="opacity:0.73299997;fill:#151212;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.19619399;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4504-3"
        width="72.334183"
        height="8.6195631"
-       x="73.908295"
-       y="86.456047"
+       x="71.393242"
+       y="62.311562"
        rx="0.36588815"
        ry="0.31954175" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.08958578px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.15904956"
-       x="80.515388"
-       y="92.461929"
+       x="78.000336"
+       y="68.317444"
        id="text4587"><tspan
          sodipodi:role="line"
          id="tspan4585"
-         x="80.515388"
-         y="92.461929"
+         x="78.000336"
+         y="68.317444"
          style="stroke-width:0.15904956">WAV, 32 bit</tspan></text>
     <rect
-       style="opacity:0.73299997;fill:#151212;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.27429333;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:0.73299997;fill:#151212;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.12500237;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect4504-3-5"
        width="142.67751"
-       height="8.5414629"
+       height="1.7739371"
        x="37.562943"
-       y="109.80126"
+       y="127.97035"
        rx="0.72170591"
-       ry="0.31664652" />
+       ry="0.065762855" />
     <circle
        style="opacity:0.73299997;fill:#151212;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.26458332;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4604"
-       cx="76.960556"
-       cy="101.83205"
+       cx="74.445503"
+       cy="77.687561"
        r="1.6767005" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
-       x="81.840691"
-       y="103.53539"
+       x="79.325638"
+       y="79.390907"
        id="text4508-7-6"><tspan
          sodipodi:role="line"
          id="tspan4506-5-2"
-         x="81.840691"
-         y="103.53539"
+         x="79.325638"
+         y="79.390907"
          style="stroke-width:0.13714737">Mono</tspan></text>
     <circle
        style="opacity:0.73299997;fill:#151212;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.26458332;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4604-9"
-       cx="108.63228"
-       cy="101.32906"
+       cx="106.11723"
+       cy="77.184578"
        r="1.6767005" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
-       x="113.51241"
-       y="103.03239"
+       x="110.99736"
+       y="78.887901"
        id="text4508-7-6-1"><tspan
          sodipodi:role="line"
          id="tspan4506-5-2-2"
-         x="113.51241"
-         y="103.03239"
+         x="110.99736"
+         y="78.887901"
          style="stroke-width:0.13714737">Stereo</tspan></text>
     <circle
        style="opacity:0.73299997;fill:#ffff8f;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.26458332;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4645"
-       cx="108.56635"
-       cy="101.24522"
+       cx="106.0513"
+       cy="77.100731"
        r="0.92218524" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
-       x="160.36053"
-       y="130.94943"
+       x="159.52219"
+       y="138.15924"
        id="text4508-7-6-7"><tspan
          sodipodi:role="line"
          id="tspan4506-5-2-0"
-         x="160.36053"
-         y="130.94943"
+         x="159.52219"
+         y="138.15924"
          style="stroke-width:0.13714737">Export</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
-       x="136.31804"
-       y="131.37074"
+       x="135.47969"
+       y="138.41289"
        id="text4508-7-6-7-9"><tspan
          sodipodi:role="line"
          id="tspan4506-5-2-0-3"
-         x="136.31804"
-         y="131.37074"
+         x="135.47969"
+         y="138.41289"
          style="stroke-width:0.13714737">Cancel</tspan></text>
     <rect
        style="opacity:0.73299997;fill:#151212;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.17351697;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -242,5 +242,47 @@
        y="55.266682"
        rx="0.60182524"
        ry="1.1630229" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="53.822083"
+       y="105.52081"
+       id="text4600"><tspan
+         sodipodi:role="line"
+         id="tspan4598"
+         x="53.822083"
+         y="113.38568"
+         style="stroke-width:0.26458332"></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.38871574px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13714737"
+       x="39.603737"
+       y="109.96429"
+       id="text4508-36"><tspan
+         sodipodi:role="line"
+         id="tspan4506-7"
+         x="39.603737"
+         y="109.96429"
+         style="stroke-width:0.13714737">File Name</tspan></text>
+    <rect
+       style="opacity:0.73299997;fill:#151212;fill-opacity:1;stroke:#5e5e5e;stroke-width:0.19620679;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4504-5"
+       width="72.334167"
+       height="8.6206875"
+       x="66.028381"
+       y="104.39619"
+       rx="0.36588809"
+       ry="0.31958351" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.93112564px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18534768"
+       x="69.512451"
+       y="111.02151"
+       id="text4512-3"><tspan
+         sodipodi:role="line"
+         id="tspan4510-5"
+         x="69.512451"
+         y="111.02151"
+         style="stroke-width:0.18534768">Kick1</tspan></text>
   </g>
 </svg>

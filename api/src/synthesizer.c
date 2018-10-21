@@ -576,6 +576,21 @@ gkick_synth_get_osc_amplitude(struct gkick_synth *synth,
 }
 
 enum geonkick_error
+gkick_synth_get_buffer_size(struct gkick_synth *synth,
+                            size_t *size)
+{
+        if (synth == NULL || size == NULL) {
+                gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        *size = synth->buffer_size;
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 gkick_synth_get_buffer(struct gkick_synth *synth,
                        gkick_real *buffer,
                        size_t size)
@@ -587,7 +602,7 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
 
         gkick_synth_lock(synth);
 
-        if (size > synth->buffer_size) {
+        if (size >= synth->buffer_size) {
                 memcpy(buffer, synth->buffer, synth->buffer_size * sizeof(gkick_real));
         } else {
                 memcpy(buffer, synth->buffer, size * sizeof(gkick_real));

@@ -96,6 +96,8 @@ class GeonkickApi: public QObject {
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
   double limiterValue();
   void getKickBuffer(std::vector<gkick_real> &buffer);
+  std::vector<gkick_real> getKickBuffer();
+  int getSampleRate();
 
 public slots:
   void setKickAmplitude(double amplitude);

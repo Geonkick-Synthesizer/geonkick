@@ -30,10 +30,10 @@
 
 class GeonkickApi;
 class QLineEdit;
-class QPushButton;
+class GeonkickButton;
 class QComboBox;
 class QRadioButton;
-class QRadioButton;
+class QProgressBar;
 
 
 class ExportWidget: public GeonkickWidget {
@@ -42,26 +42,47 @@ class ExportWidget: public GeonkickWidget {
  using ExportResult = QDialog::DialogCode;
 
  public:
-        ExportWidget(GeonkickWidget *parent = nullptr, GeonkickApi *api = nullptr);
+        ExportWidget(GeonkickWidget *parent, GeonkickApi *api);
         ~ExportWidget();
         ExportResult exec();
+
+ protected:
+        int exportFormat();
+        void enableButtons(bool enable);
+        QString getFilePath();
+        QString fileSuffix();
 
  protected slots:
          void browse();
          void cancel();
          void exportKick();
+         void resetProgressBar();
+         void showError();
 
  signals:
          void closeDialog();
 
  private:
+         enum class ExportFormat: int {
+                 Flac16 = 0,
+                 Flac24 = 1,
+                 Wav16  = 2,
+                 Wav24  = 3,
+                 Wav32  = 4,
+                 Ogg    = 5
+         };
+
         GeonkickApi *geonkickApi;
         ExportResult exportResult;
         QLineEdit *locationEdit;
-        QPushButton *browseLocation;
+        QLineEdit *fileNameEdit;
+        GeonkickButton *browseLocation;
         QComboBox *formatComboBox;
+        QProgressBar *exportProgress;
         QRadioButton *monoRadioButton;
         QRadioButton *stereoRadioButton;
+        GeonkickButton *exportButton;
+        GeonkickButton *cancelButton;
 };
 
 #endif // GEONKICK_EXPORT_WIDGET_H
