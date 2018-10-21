@@ -35,14 +35,14 @@ What it should include:
 * Jack support:
      - 1 MIDI in [i]
      - 2 audio out [i]
-* Export to WAVE
-     - stereo
-     - mono
-     - 16 bit
-     - 32 bit
+* Export to WAVE [i]
+     - stereo [i]
+     - mono [i]
+     - WAV 16. 24. 23 bit [i]
+     - FLAC 16, 24 bit [i]
 * Save
 * Open
-* Standalone
+* Standalone [i]
 * Plugin
      - LV2
      - VST
