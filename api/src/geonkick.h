@@ -164,6 +164,9 @@ enum geonkick_error
 geonkick_play(struct geonkick *kick, int play);
 
 enum geonkick_error
+geonkick_get_kick_buffer_size(struct geonkick *kick, size_t *size);
+
+enum geonkick_error
 geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size);
 
 enum geonkick_error
@@ -212,6 +215,9 @@ enum geonkick_error
 geonkick_osc_filter_is_enabled(struct geonkick *kick,
                                size_t osc_index,
                                int *enable);
+
+enum geonkick_error
+geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate);
 
 #ifdef __cplusplus
 }

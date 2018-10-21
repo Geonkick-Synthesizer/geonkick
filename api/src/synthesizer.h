@@ -165,6 +165,10 @@ gkick_synth_get_osc_amplitude(struct gkick_synth *synth,
                               gkick_real *v);
 
 enum geonkick_error
+gkick_synth_get_buffer_size(struct gkick_synth *synth,
+                            size_t *size);
+
+enum geonkick_error
 gkick_synth_get_buffer(struct gkick_synth *synth,
                        gkick_real *buffer,
                        size_t size);

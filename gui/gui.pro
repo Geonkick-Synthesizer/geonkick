@@ -6,7 +6,7 @@ TARGET = geonkick
 INCLUDEPATH += .
 INCLUDEPATH += ../api/src/
 
-LIBS += -L../api/ -lgeonkick -ljack
+LIBS += -L../api/ -lgeonkick -lsndfile -ljack
 
 # Input
 HEADERS += globals.h \

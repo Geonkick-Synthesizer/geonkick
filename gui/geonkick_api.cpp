@@ -309,6 +309,17 @@ void GeonkickApi::getKickBuffer(std::vector<gkick_real> &buffer)
         geonkick_get_kick_buffer(geonkickApi, buffer.data(), buffer.size());
 }
 
+std::vector<gkick_real> GeonkickApi::getKickBuffer()
+{
+        std::vector<gkick_real> buffer;
+        size_t size;
+        geonkick_get_kick_buffer_size(geonkickApi, &size);
+        GEONKICK_LOG_DEBUG("size: = " << size);
+        buffer.resize(size);
+        geonkick_get_kick_buffer(geonkickApi, buffer.data(), size);
+        return std::move(buffer);
+}
+
 void GeonkickApi::kickUpdatedCallback(void *arg)
 {
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
@@ -320,4 +331,14 @@ void GeonkickApi::kickUpdatedCallback(void *arg)
 void GeonkickApi::emitKickUpdated()
 {
         emit kickUpdated();
+}
+
+int GeonkickApi::getSampleRate()
+{
+        int sampleRate;
+        if (geonkick_get_sample_rate(geonkickApi, &sampleRate) != GEONKICK_OK) {
+                sampleRate = 0;
+        }
+
+        return sampleRate;
 }

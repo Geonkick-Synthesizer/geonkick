@@ -132,3 +132,9 @@ void MainWindow::setLimiterValue(int value)
         GEONKICK_LOG_DEBUG("value: " << value);
         geonkickApi->setLimiterValue(static_cast<double>(value) / 100);
 }
+
+void MainWindow::paintWidget(QPaintEvent *event)
+{
+        QPainter painter(this);
+        painter.drawRect(0, 0, width() - 1, height() - 1);
+}

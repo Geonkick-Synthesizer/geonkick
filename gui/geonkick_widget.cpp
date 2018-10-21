@@ -34,6 +34,7 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
 
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
+        pal.setColor(QPalette::WindowText, Qt::white);
         setAutoFillBackground(true);
         setPalette(pal);
 }
@@ -44,10 +45,11 @@ GeonkickWidget::~GeonkickWidget()
 
 void GeonkickWidget::paintEvent(QPaintEvent *event)
 {
+        QPainter painter(this);
         if (!backgroundImage.isNull()) {
-                QPainter painter(this);
                 painter.drawPixmap(0, 0, backgroundImage);
         }
+
         paintWidget(event);
 }
 
