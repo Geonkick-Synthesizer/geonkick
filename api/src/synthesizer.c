@@ -486,7 +486,6 @@ gkick_synth_set_osc_frequency(struct gkick_synth *synth,
 		return GEONKICK_ERROR;
 	}
 	osc->frequency = v;
-
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
                 synth->buffer_update = 1;
                 pthread_cond_signal(&synth->condition_var);
@@ -767,7 +766,7 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
         val = 0.0;
         for (i = 0; i < synth->oscillators_number; i++) {
                 if (gkick_osc_enabled(synth->oscillators[i])) {
-                        val = gkick_osc_value(synth->oscillators[i],
+                        val += gkick_osc_value(synth->oscillators[i],
                                               t, synth->length);
                 }
                 gkick_osc_increment_phase(synth->oscillators[i], t,

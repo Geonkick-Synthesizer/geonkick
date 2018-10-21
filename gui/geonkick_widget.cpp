@@ -32,6 +32,7 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
                 setTheme(parent->getTheme());
         }
 
+        // Later will get this info settings from the theme/skin.
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
         pal.setColor(QPalette::WindowText, Qt::white);

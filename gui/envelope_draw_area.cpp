@@ -81,6 +81,12 @@ void EnvelopeWidgetDrawingArea::paintWidget(QPaintEvent *event)
         if (currentEnvelope) {
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
         }
+
+        QPainter paint(this);
+        QPen pen(QPen(QColor(20, 20, 20, 255)));
+        pen.setWidth(1);
+        paint.setPen(pen);
+        paint.drawRect(0, 0, width() - 1, height() - 1);
 }
 
 void
@@ -160,6 +166,7 @@ void EnvelopeWidgetDrawingArea::setKickGraph(KickGraph *graph)
 {
         kickGraph = graph;
         kickGraph->setDrawingArea(drawingArea);
+        connect(kickGraph, SIGNAL(graphUpdated()), this, SLOT(update()));
 }
 
 KickGraph* EnvelopeWidgetDrawingArea::getKickGraph()

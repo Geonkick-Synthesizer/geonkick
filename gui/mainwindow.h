@@ -56,7 +56,6 @@ class MainWindow : public GeonkickWidget
       void setLimiterValue(int value);
 
  private:
-      void paintWidget(QPaintEvent *event) final;
       GeonkickApi *geonkickApi;
       std::vector<Oscillator*> oscillators;
       OscillatorWidget *oscillatorWidget;

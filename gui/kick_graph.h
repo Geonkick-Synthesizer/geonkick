@@ -44,6 +44,9 @@ public:
 public slots:
      void setDrawingArea(const QRect &rect);
 
+ signals:
+     void graphUpdated();
+
 protected:
      void drawKickGraph();
 

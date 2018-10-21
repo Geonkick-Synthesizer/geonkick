@@ -50,13 +50,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
           exportButton(nullptr),
           cancelButton(nullptr)
 {
-        QPalette pal;
-        pal.setColor(QPalette::Background, QColor(67, 68, 68, 255));
-        setAutoFillBackground(true);
-        setPalette(pal);
-
-        //        setFixedSize(700, 500);
-        setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
+        setWindowFlags(Qt::Dialog);
         setWindowModality(Qt::ApplicationModal);
         setWindowTitle(tr("Export Kick"));
 

@@ -71,11 +71,9 @@ void KickGraph::drawKickGraph()
         QPen pen(QColor(59, 130, 4, 230));
         pen.setJoinStyle(Qt::MiterJoin);
         painter.setPen(pen);
-
         int w = drawingArea.width();
         int h = drawingArea.height();
         painter.setRenderHints(QPainter::Antialiasing, true);
-
 
         QPolygonF graphPoints;
         gkick_real k = static_cast<gkick_real>(w) / kickBuffer.size();
@@ -84,4 +82,5 @@ void KickGraph::drawKickGraph()
         }
         painter.drawPolyline(graphPoints);
         painter.end();
+        emit graphUpdated();
 }

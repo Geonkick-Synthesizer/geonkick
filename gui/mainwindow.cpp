@@ -41,14 +41,13 @@
 #include <QHBoxLayout>
 
 #define GEONKICK_MAINWINDOW_WIDTH  940
-#define GEONKICK_MAINWINDOW_HEIGHT 765
+#define GEONKICK_MAINWINDOW_HEIGHT 760
 
 MainWindow::MainWindow(GeonkickWidget *parent) :
         GeonkickWidget(parent),
         geonkickApi(new GeonkickApi(this))
 {
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
-        setWindowFlags(Qt::FramelessWindowHint | Qt::WindowCloseButtonHint);
 }
 
 MainWindow::~MainWindow()
@@ -75,7 +74,7 @@ bool MainWindow::init(void)
 	oscillator->setFilterFrequency(5000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
         oscillator->setAmplitude(0.05);
-
+        GEONKICK_LOG_DEBUG("H2");
         // Oscillator 2
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
         oscillator->setFrequency(1000);
@@ -83,7 +82,6 @@ bool MainWindow::init(void)
 	oscillator->setFilterFrequency(5000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
         oscillator->setAmplitude(0.05);
-
         // Noise
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
 	oscillator->setFunction(Oscillator::FunctionType::Noise);
@@ -92,10 +90,9 @@ bool MainWindow::init(void)
 	oscillator->setFilterFrequency(5000);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-        mainLayout->setContentsMargins(0, 0, 0, 10);
-        mainLayout->setSpacing(5);
+        mainLayout->setContentsMargins(0, 0, 0, 0);
+        mainLayout->setSpacing(0);
         setLayout(mainLayout);
-
         mainLayout->addWidget(new TopBar(this));
 
         // Create envelope widget.
@@ -106,16 +103,14 @@ bool MainWindow::init(void)
         envelopeWidget->setFixedSize(850, 340);
         hBoxLayout->addWidget(envelopeWidget);
         auto faderWidget = new Fader(this);
-        faderWidget->setFixedSize(65, 330);
-        GEONKICK_LOG_DEBUG("Fader level: " << faderWidget->getFaderLevel());
+        faderWidget->setFixedSize(65, 340);
         connect(faderWidget, SIGNAL(levelUpdated(int)), this, SLOT(setLimiterValue(int)));
         faderWidget->setFaderLevel(100 * geonkickApi->limiterValue());
-        hBoxLayout->addWidget(faderWidget, 0, Qt::AlignTop);
-        hBoxLayout->addSpacing(5);
+        hBoxLayout->addWidget(faderWidget);
         mainLayout->addLayout(hBoxLayout);
 
-        // Create control area.
         ControlArea *controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
+        mainLayout->addSpacing(5);
         mainLayout->addWidget(controlAreaWidget);
 
         return true;
@@ -129,12 +124,5 @@ void MainWindow::openExportDialog()
 
 void MainWindow::setLimiterValue(int value)
 {
-        GEONKICK_LOG_DEBUG("value: " << value);
         geonkickApi->setLimiterValue(static_cast<double>(value) / 100);
-}
-
-void MainWindow::paintWidget(QPaintEvent *event)
-{
-        QPainter painter(this);
-        painter.drawRect(0, 0, width() - 1, height() - 1);
 }

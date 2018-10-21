@@ -60,11 +60,9 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::ve
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
         envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
         envelopes.push_back(std::make_shared<GeneralEnvelope>(api, rect));
-
         auto kickGraph = new KickGraph(this, api);
         kickGraph->setDrawingArea(rect);
         drawArea->setKickGraph(kickGraph);
-
         createButtomMenu();
         showGeneralEnvelope();
 }

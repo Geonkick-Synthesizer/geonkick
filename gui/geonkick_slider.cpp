@@ -74,7 +74,6 @@ void GeonkickSlider::mouseMoveEvent(QMouseEvent *event)
         if (isSelected) {
                 int value = calculateValue(event->x(), event->y());
                 sliderValue = value;
-                GEONKICK_LOG_DEBUG("emit: " << sliderValue);
                 emit valueUpdated(sliderValue);
                 update();
         }

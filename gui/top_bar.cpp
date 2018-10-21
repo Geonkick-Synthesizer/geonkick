@@ -30,16 +30,20 @@
 
 TopBar::TopBar(GeonkickWidget *parent)
         : GeonkickWidget(parent),
-          is_pressed(false),
-          dX(0),
-          dY(0),
           openFileButton(nullptr),
           saveFileButton(nullptr),
           exportFileButton(nullptr)
 {
         if (parent) {
-                setFixedSize(parent->width(), 35);
+                setFixedSize(parent->width() , 40);
         }
+
+        /*QPalette pal;
+        pal.setColor(QPalette::Background, QColor(200, 200, 70));
+        pal.setColor(QPalette::WindowText, Qt::white);
+        setAutoFillBackground(true);
+        setPalette(pal);*/
+
 
         auto buttonsLayout = new QHBoxLayout(this);
         buttonsLayout->setContentsMargins(15, 0, 0, 0);
@@ -76,50 +80,8 @@ TopBar::TopBar(GeonkickWidget *parent)
         buttonsLayout->addWidget(settingsButton);
         buttonsLayout->setAlignment(settingsButton, Qt::AlignLeft);
         buttonsLayout->addStretch(1);
-
-        auto closeButton = new GeonkickButton(this);
-        closeButton->setPressedImage(QPixmap("./themes/geontime/close_button.png"));
-        closeButton->setUnpressedImage(QPixmap("./themes/geontime/close_button.png"));
-        buttonsLayout->addWidget(closeButton);
-        buttonsLayout->setAlignment(closeButton, Qt::AlignRight);
-        if (parent) {
-                connect(closeButton, SIGNAL(toggled(bool)), parent, SLOT(close()));
-        }
-
 }
 
 TopBar::~TopBar()
 {
-}
-
-void TopBar::paintWidget(QPaintEvent *event)
-{
-        Q_UNUSED(event)
-        QPainter painter(this);
-        painter.setPen(QPen(QColor(80, 80, 80)));
-        painter.drawLine(0, height() - 1, width() - 1, height() - 1);
-}
-
-void TopBar::mousePressEvent(QMouseEvent *event)
-{
-        Q_UNUSED(event)
-        is_pressed = true;
-        setCursor(Qt::ClosedHandCursor);
-        dX = event->x();
-        dY = event->y();
-}
-
-void TopBar::mouseReleaseEvent(QMouseEvent *event)
-{
-        Q_UNUSED(event)
-        setCursor(Qt::ArrowCursor);
-        is_pressed = false;
-}
-
-void TopBar::mouseMoveEvent(QMouseEvent *event)
-{
-        if (is_pressed) {
-                auto parent = parentWidget();
-                parent->move(event->globalX() - dX, event->globalY() - dY);
-        }
 }
