@@ -459,6 +459,7 @@ gkick_synth_set_length(struct gkick_synth *synth, gkick_real len)
 
         gkick_synth_lock(synth);
         synth->length = len;
+        synth->buffer_size = synth->length * GEONKICK_SAMPLE_RATE;
         synth->buffer_update = 1;
         pthread_cond_signal(&synth->condition_var);
         gkick_synth_unlock(synth);

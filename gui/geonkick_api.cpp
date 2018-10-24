@@ -241,8 +241,9 @@ bool GeonkickApi::isOscillatorEnabled(int oscillatorIndex)
 
 double GeonkickApi::kickMaxLength(void) const
 {
-        return 1000;
-        // Implement API.
+        gkick_real len;
+        geonkick_get_max_length(geonkickApi, &len);
+        return len * 1000;
 }
 
 void GeonkickApi::enableOscillatorFilter(int oscillatorIndex, bool enable)

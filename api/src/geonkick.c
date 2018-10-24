@@ -266,6 +266,19 @@ geonkick_get_length(struct geonkick *kick, gkick_real *len)
 }
 
 enum geonkick_error
+geonkick_get_max_length(struct geonkick *kick, gkick_real *len)
+{
+        GEONKICK_UNUSED(kick);
+        if (kick == NULL || len == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        *len = GEONKICK_MAX_LENGTH;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 geonkick_set_osc_frequency(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real v)

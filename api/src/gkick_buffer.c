@@ -78,7 +78,7 @@ int gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t 
 
         pthread_mutex_lock(&buffer->lock);
         if (size <= buffer->max_size) {
-                memcpy(buffer->buff, data, size);
+                memcpy(buffer->buff, data, sizeof(gkick_real) * size);
                 buffer->size = size;
         } else {
                 gkick_log_error("maximum allowed buffer size");

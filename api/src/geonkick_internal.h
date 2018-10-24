@@ -34,7 +34,7 @@
 #define GEONKICK_SAMPLE_RATE 48000
 
 /* Kick maximum length in seconds. */
-#define GEONKICK_MAX_LENGTH 4
+#define GEONKICK_MAX_LENGTH 4.0
 #define GEONKICK_MAX_KICK_BUFFER_SIZE  (4 * GEONKICK_SAMPLE_RATE)
 
 struct geonkick {

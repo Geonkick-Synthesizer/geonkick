@@ -143,6 +143,9 @@ enum geonkick_error
 geonkick_get_length(struct geonkick *kick, gkick_real *len);
 
 enum geonkick_error
+geonkick_get_max_length(struct geonkick *kick, gkick_real *len);
+
+enum geonkick_error
 geonkick_set_osc_amplitude(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real v);
