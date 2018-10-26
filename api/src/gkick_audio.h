@@ -26,6 +26,19 @@
 
 #include "geonkick_internal.h"
 
+enum gkick_key_state {
+        GKICK_KEY_STATE_DEFAULT  = 0,
+        GKICK_KEY_STATE_PRESSED  = 1,
+        GKICK_KEY_STATE_RELEASED = 2
+};
+
+struct gkick_note_info {
+        enum gkick_key_state state;
+        char channel;
+        char note_number;
+        char velocity;
+};
+
 struct gkick_audio {
         struct gkick_jack *jack;
         struct gkick_buffer *input;

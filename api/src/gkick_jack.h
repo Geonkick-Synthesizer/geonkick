@@ -31,16 +31,22 @@
 #include <jack/midiport.h>
 
 struct gkick_jack {
+        /* Accessed only by jack thread. */
         jack_port_t *output_port_l;
         jack_port_t *output_port_r;
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;
-        struct gkick_buffer *input;
         size_t buffer_index;
+        char key_velocity;
+        pthread_mutex_t lock;
+        /**
+         * Accessed by jack and other threads. input has it own mutex,
+         * so there no need to used the current struct mutex lock.
+         */
         gkick_real limiter;
         int is_play;
-        pthread_mutex_t lock;
+        struct gkick_buffer *input;
 };
 
 int
@@ -55,8 +61,9 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
                               jack_default_audio_sample_t **channels_bufs,
                               jack_nframes_t nframes);
 
-int gkick_jack_is_note_pressed(struct gkick_jack *jack,
-                               jack_nframes_t nframes);
+void gkick_jack_get_note_info(struct gkick_jack *jack,
+                              jack_nframes_t nframes,
+                              struct gkick_note_info *note);
 
 jack_port_t*
 gkick_jack_get_midi_in_port(struct gkick_jack *jack);

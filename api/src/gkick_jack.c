@@ -32,15 +32,18 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         size_t is_end;
         gkick_real val;
         gkick_real limit;
-        int note_pressed;
         struct gkick_jack *jack;
         jack_default_audio_sample_t *buffers[2]; /* Lef and right channels Jack buffers. */
         jack = (struct gkick_jack*)arg;
-
-        note_pressed = gkick_jack_is_note_pressed(jack, nframes);
-        if (note_pressed) {
+        gkick_real decay;
+        struct gkick_note_info note;
+        static int cur_time;
+        int temp = jack_get_time();
+        gkick_jack_get_note_info(jack, nframes, &note);
+        if (note.state == GKICK_KEY_STATE_PRESSED) {
                 gkick_jack_set_play(jack, 1);
                 jack->buffer_index = 0;
+                jack->key_velocity = note.velocity;
         }
 
         if (gkick_jack_get_output_buffers(jack, buffers, nframes)
@@ -56,20 +59,35 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 return 0;
         }
 
+        decay = 1.0;
         for (i = 0; i < nframes; i++) {
+                if (note.state == GKICK_KEY_STATE_RELEASED) {
+                                decay = - (1.0 / (nframes - 1)) * i + 1.0;
+                }
+
                 val = gkick_buffer_get_at(jack->input, jack->buffer_index, &is_end);
                 if (is_end) {
                         jack->buffer_index = 0;
                         gkick_jack_set_play(jack, 0);
                         break;
                 } else {
-                                //gkick_jack_get_limiter_val(jack, &limit);
-                                //val *= limit;
-                        buffers[0][i] = (jack_default_audio_sample_t)val;
-                        buffers[1][i] = (jack_default_audio_sample_t)val;
+                        //gkick_jack_get_limiter_val(jack, &limit);
+                        // val *= limit;
+                        val *= decay * ((gkick_real)jack->key_velocity / 127);
+                        buffers[0][i] = (jack_default_audio_sample_t) (val);
+                        buffers[1][i] = (jack_default_audio_sample_t) (val);
                         jack->buffer_index++;
                 }
         }
+
+        if (note.state == GKICK_KEY_STATE_RELEASED) {
+                gkick_jack_set_play(jack, 0);
+                jack->buffer_index = 0;
+        }
+
+        gkick_log_debug("time = %d", jack_get_time() - temp);
+        cur_time = temp;
+
 
         return 0;
 }
@@ -123,31 +141,38 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
         return error;
 }
 
-int gkick_jack_is_note_pressed(struct gkick_jack *jack,
-                               jack_nframes_t nframes)
+void
+gkick_jack_get_note_info(struct gkick_jack *jack,
+                         jack_nframes_t nframes,
+                         struct gkick_note_info *note)
 {
         jack_nframes_t event_index;
         void* port_buf;
         jack_midi_event_t in_event;
         jack_nframes_t event_count;
-        int note_pressed;
 
-        if (gkick_jack_get_midi_in_port(jack) == NULL) {
-                return 0;
+        if (gkick_jack_get_midi_in_port(jack) == NULL || note == NULL) {
+                return;
         }
 
         port_buf    = jack_port_get_buffer(jack->midi_in_port, nframes);
         event_count = jack_midi_get_event_count(port_buf);
 
-        note_pressed = 0;
+        note->state = GKICK_KEY_STATE_DEFAULT;
         for (event_index = 0; event_index < event_count; event_index++) {
                 jack_midi_event_get(&in_event, port_buf, 0);
-                if ( ((*(in_event.buffer) & 0xf0)) == 0x90) {
-                        note_pressed = 1;
+                if (((*(in_event.buffer) & 0xf0)) == 0x90) {
+                        note->state = GKICK_KEY_STATE_PRESSED;
+                        note->channel     = 1;
+                        note->note_number = in_event.buffer[1];
+                        note->velocity    = in_event.buffer[2];
+                } else if(((*(in_event.buffer) & 0xf0)) == 0x80) {
+                        note->state       = GKICK_KEY_STATE_RELEASED;
+                        note->channel     = 1;
+                        note->note_number = in_event.buffer[1];
+                        note->velocity    = in_event.buffer[2];
                 }
         }
-
-        return note_pressed;
 }
 
 jack_port_t*
