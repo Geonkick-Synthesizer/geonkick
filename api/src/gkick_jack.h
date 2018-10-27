@@ -39,6 +39,15 @@ struct gkick_jack {
         jack_nframes_t sample_rate;
         size_t buffer_index;
         char key_velocity;
+        enum gkick_key_state key_state;
+
+        /**
+         * decay - note release time in measured in number of jack frames.
+         * Relaxation curve for audio is liniear:
+         *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,
+         *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
+         */
+        int decay;
         pthread_mutex_t lock;
         /**
          * Accessed by jack and other threads. input has it own mutex,
@@ -61,8 +70,7 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
                               jack_default_audio_sample_t **channels_bufs,
                               jack_nframes_t nframes);
 
-void gkick_jack_get_note_info(struct gkick_jack *jack,
-                              jack_nframes_t nframes,
+void gkick_jack_get_note_info(jack_midi_event_t *event,
                               struct gkick_note_info *note);
 
 jack_port_t*

@@ -26,6 +26,9 @@
 
 #include "geonkick_internal.h"
 
+/* Note release time measuerd in number of jack frames. */
+#define GEKICK_NOTE_RELEASE_TIME 1000
+
 enum gkick_key_state {
         GKICK_KEY_STATE_DEFAULT  = 0,
         GKICK_KEY_STATE_PRESSED  = 1,
