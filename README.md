@@ -33,7 +33,7 @@ What it should include:
      - Compression
      - Distortion
 * Jack support:
-     - 1 MIDI in [i]
+     - 1 MIDI in (key velocity sensitive) [i]
      - 2 audio out [i]
 * Export to WAVE [i]
      - stereo [i]
