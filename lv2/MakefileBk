@@ -1,0 +1,27 @@
+DEFINES = -DFGEON_LOG_LEVEL_TRACE -DFGEON_LOG_FUNCTION
+BUNDLE = geonkick.lv2
+INSTALL_DIR = /usr/local/lib/lv2
+TARGET =
+
+$(BUNDLE): manifest.ttl geonkick_lv2
+#	rm -rf $(BUNDLE)
+#	mkdir $(BUNDLE)
+#	cp manifest.ttl geonkick.ttl geonkick_lv2.so geonkick_lv2_ui.so $(BUNDLE)
+
+geonkick_lv2: geonkick_lv2.c
+	gcc -Wall -shared -fPIC -DPIC $(DEFINES) geonkick_lv2.c -I/usr/include/ -o geonkick_lv2.so
+
+#geonkick_lv2_ui: geonkick_lv2_ui.cpp
+#	g++ -Wall -shared -fPIC -DPIC $(DEFINES) geonkick_lv2_ui.cpp -I/usr/include/ -o geonkick_lv2_ui.so
+
+
+#install: $(BUNDLE)
+#	mkdir -p $(INSTALL_DIR)
+#	rm -rf $(INSTALL_DIR)/$(BUNDLE)
+#	cp -R $(BUNDLE) $(INSTALL_DIR)
+
+#uninstall:
+#	rm -fr /usr/local/lib/lv2/$(BUNDLE)
+
+#clean:
+#	rm -rf $(BUNDLE) geonkick_lv2.so

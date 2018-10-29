@@ -1,8 +1,8 @@
 /**
- * File name: gluidgeon.c
+ * File name: geonkick.c
  * Project: Geonkick
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
  * This file is part of Geonkick.
  *
@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "geonkick.h"
+#include "geonkick_lv2.h"
 
 /**
    In code, ports are referred to by index.  An enumeration of port indices
@@ -62,16 +62,19 @@ instantiate(const LV2_Descriptor*     descriptor,
             const char*               bundle_path,
             const LV2_Feature* const* features)
 {
-        UNUSED(descriptor);
-	UNUSED(rate);
-	UNUSED(bundle_path);
-	UNUSED(features);
-	
-        fgeon_log_trace("start");
+        //        UNUSED(descriptor);
+        ///	UNUSED(rate);
+	//UNUSED(bundle_path);
+	//UNUSED(features);
+
+        struct geonkick *api;
+
+        //        gkick_log_info("create geonkick plugin");
+        
 	Amp* amp = (Amp*)calloc(1, sizeof(Amp));
 	
 	if (amp == NULL) {
-	  fgeon_log_critical("can't allocate memory for plugin");
+                //	  fgeon_log_critical("can't allocate memory for plugin");
 	  return NULL;
 	}
 
@@ -94,7 +97,7 @@ connect_port(LV2_Handle instance,
   const LV2_Atom_Sequence* control;
     //y  fgeon_log_trace("port: %u", port);
 	if (instance == NULL) {
-	  fgeon_log_error("Can't connect to port %d. Invalid argument (NULL pointer)", port);
+                //	  fgeon_log_error("Can't connect to port %d. Invalid argument (NULL pointer)", port);
 	  return;
 	}
 
@@ -105,13 +108,13 @@ connect_port(LV2_Handle instance,
 	const uint8_t* const msg = (const uint8_t*)(ev + 1);
 	switch (lv2_midi_message_type(msg)) {
 	case LV2_MIDI_MSG_NOTE_ON:
-	  fgeon_log_info("LV2_MIDI_MSG_NOTE_ON: %d, %d", msg[1], msg[2]);
+                //	  fgeon_log_info("LV2_MIDI_MSG_NOTE_ON: %d, %d", msg[1], msg[2]);
 	  break;
 	case LV2_MIDI_MSG_NOTE_OFF:
-	  fgeon_log_info("LV2_MIDI_MSG_NOTE_OFF: %d, %d", msg[1], msg[2]);
+                //	  fgeon_log_info("LV2_MIDI_MSG_NOTE_OFF: %d, %d", msg[1], msg[2]);
 	  break;
 	case LV2_MIDI_MSG_PGM_CHANGE:
-	  fgeon_log_info("LV2_MIDI_MSG_NOTE_OFF");
+                //	  fgeon_log_info("LV2_MIDI_MSG_NOTE_OFF");
 	  break;
 	} // switch
 	//} // if
@@ -157,7 +160,7 @@ static void
 run(LV2_Handle instance, uint32_t n_samples)
 {
   	if (instance == NULL) {
-	  fgeon_log_error("Invalid argument (NULL pointer)");
+                //	  fgeon_log_error("Invalid argument (NULL pointer)");
 	  return;
 	}
 
@@ -229,7 +232,7 @@ extension_data(const char* uri)
    library constructors and destructors to clean up properly.
 */
 static const LV2_Descriptor descriptor = {
-	AMP_URI,
+	APP_URI,
 	instantiate,
 	connect_port,
 	activate,

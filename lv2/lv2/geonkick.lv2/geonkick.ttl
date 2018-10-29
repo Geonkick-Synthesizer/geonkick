@@ -8,19 +8,29 @@
 @prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
 @prefix state:   <http://lv2plug.in/ns/ext/state#> .
 
-<http://geontime.com/plugin/geonkick>
-geonkick:api
-    a lv2:Plugin, lv2:InstrumentPlugin;
-    lv2:project <http://lv2plug.in/ns/lv2> ;
-    doap:name "Geonkick";
-    doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
-    ui:ui geonkick:ui ;
-    doap:maintainer [
-         foaf:name "Iurie Nistor";
-         foaf:mbox <mailto:nistor@iurie.org>;
-    ] ;
+<http://geontime.com/geonkick#ui>
+    a ui:Qt4UI ;
+    lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
+    ui:binary <geonkick_lv2.so> .
 
-	lv2:port [
+<http://geontime.com/geonkick#author>
+	a foaf:Person ;
+	foaf:name "Iurie Nistor" ;
+	foaf:mbox <mailto:nistor@iurie.org> ;
+	foaf:homepage <http://iurie.org/> .
+
+<http://geontime.com/geonkick>
+	a doap:Project ;
+	doap:maintainer <http://geontime.com/geonkick#author> ;
+	doap:name "Geonkick" .
+
+<http://geontime.com/geonkick>
+    a lv2:Plugin, lv2:InstrumentPlugin;
+    doap:name "Geonkick";
+    lv2:project <http://geontime.com/geonkick> ;
+    doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
+    ui:ui <http://geontime.com/geonkick#ui> ;
+    lv2:port [
              a lv2:InputPort , atom:AtomPort ;
              atom:bufferType atom:Sequence ;
              atom:supports midi:MidiEvent ;
@@ -43,8 +53,4 @@ geonkick:api
 		lv2:symbol "out_right" ;
 		lv2:name "Audio Right"
 	] .
-
-
-geonkick:ui
-        a ui:Qt5UI ;
 
