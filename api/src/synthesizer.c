@@ -43,6 +43,31 @@ gkick_synth_new(struct gkick_synth **synth)
         (*synth)->length = 0.3;
 	(*synth)->oscillators_number = 3;
         (*synth)->buffer_update = 1;
+        (*synth)->amplitude = 1.0;
+
+        if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
+                gkick_log_error("can't create filter");
+                gkick_synth_free(&osc);
+		return GEONKICK_ERROR;
+        }
+        (*synth)->filter_enabled = 0;
+
+        if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
+                gkick_log_error("can't create filter");
+                gkick_synth_free(&osc);
+		return GEONKICK_ERROR;
+        }
+
+        (*synth)->envelope = gkick_envelope_create();
+        if ((*synth)->envelope == NULL) {
+                gkick_log_error("can't create envelope");
+                gkick_synth_free(synth);
+                return GEONKICK_ERROR;
+        } else {
+                /* Add two default points. */
+                gkick_envelope_add_point((*synth)->envelope, 0.0, 1.0);
+                gkick_envelope_add_point((*synth)->envelope, 1.0, 1.0);
+        }
 
         size = sizeof(gkick_real) * GEONKICK_MAX_KICK_BUFFER_SIZE;
         (*synth)->buffer = (gkick_real*)malloc(size);
@@ -90,6 +115,14 @@ void gkick_synth_free(struct gkick_synth **synth)
                         if ((*synth)->buffer != NULL) {
                                 free((*synth)->buffer);
                                 (*synth)->buffer = NULL;
+                        }
+
+                        if ((*synth)->filter) {
+                                gkick_filter_free(&(*synth)->filter);
+                        }
+
+                        if ((*synth)->envelope) {
+                                gkick_envelope_free(&(*synth)->envelope);
                         }
                 }
 

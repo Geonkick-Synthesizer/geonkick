@@ -31,11 +31,18 @@ struct gkick_synth {
         struct gkick_oscillator **oscillators;
         size_t oscillators_number;
 
-        /* General synthesizer amplitude envelope. */
-        struct gkick_envelope *envelope;
+        /* Kick general amplitude */
+        gkick_real amplitude;
 
         /* Time length of the kick in seconds. */
         gkick_real length;
+
+        /* Kick general filter */
+        struct gkick_filter *filter;
+        int filter_enabled;
+
+        /* General synthesizer amplitude envelope. */
+        struct gkick_envelope *envelope;
 
         /**
          * Current kick samples buffer size which is calculated
