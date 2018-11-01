@@ -138,7 +138,9 @@ double GeonkickApi::kickLength(void) const
 
 void GeonkickApi::setKickAmplitude(double amplitude)
 {
-        emit kickAmplitudeUpdated(amplitude);
+        if (geonkick_kick_set_amplitude(geonkickApi, amplitude) == GEONKICK_OK) {
+                emit kickAmplitudeUpdated(amplitude);
+        }
 }
 
 double GeonkickApi::kickAmplitude() const
@@ -162,14 +164,29 @@ double GeonkickApi::kickFilterFrequency(void) const
 
 void GeonkickApi::setKickFilterQFactor(double factor)
 {
-        geonkick_kick_set_filer_frequency(geonkickApi, factor);
+        geonkick_kick_set_filer_factor(geonkickApi, factor);
 }
 
 double GeonkickApi::kickFilterQFactor() const
 {
         gkick_real factor;
-        geonkick_kick_get_filer_frequency(geonkickApi, &factor);
+        geonkick_kick_get_filer_factor(geonkickApi, &factor);
         return static_cast<double>(factor);
+}
+
+void GeonkickApi::addKickEnvelopePoint(double x, double y)
+{
+        geonkick_kick_add_env_point(geonkickApi, x, y);
+}
+
+void GeonkickApi::updateKickEnvelopePoint(int index, double x, double y)
+{
+        geonkick_kick_update_env_point(geonkickApi, index, x, y);
+}
+
+ void GeonkickApi::removeKickEnvelopePoint(int pointIndex)
+{
+        geonkick_kick_update_env_point(geonkickApi, pointIndex);
 }
 
 bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
@@ -179,6 +196,15 @@ bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
 	}
 
 	return true;
+}
+
+void GeonkickApi::enableOscillator(int oscillatorIndex, bool enable)
+{
+        if (enable) {
+                geonkick_enable_oscillator(geonkickApi, oscillatorIndex);
+        } else {
+                geonkick_disable_oscillator(geonkickApi, oscillatorIndex);
+        }
 }
 
 double GeonkickApi::oscillatorAmplitude(int oscillatorIndex) const
@@ -208,30 +234,6 @@ double GeonkickApi::oscillatorFrequency(int oscillatorIndex) const
 	}
 
 	return value;
-}
-
-void GeonkickApi::addKickEnvelopePoint(double x, double y)
-{
-        geonkick_kick_add_env_point(geonkickApi, x, y);
-}
-
-void GeonkickApi::updateKickEnvelopePoint(int index, double x, double y)
-{
-        geonkick_kick_update_env_point(geonkickApi, index, x, y);
-}
-
- void GeonkickApi::removeKickEnvelopePoint(int pointIndex)
-{
-        geonkick_kick_update_env_point(geonkickApi, pointIndex);
-}
-
-void GeonkickApi::enableOscillator(int oscillatorIndex, bool enable)
-{
-        if (enable) {
-                geonkick_enable_oscillator(geonkickApi, oscillatorIndex);
-        } else {
-                geonkick_disable_oscillator(geonkickApi, oscillatorIndex);
-        }
 }
 
 bool GeonkickApi::isOscillatorEnabled(int oscillatorIndex)

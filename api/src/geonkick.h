@@ -146,6 +146,39 @@ enum geonkick_error
 geonkick_get_max_length(struct geonkick *kick, gkick_real *len);
 
 enum geonkick_error
+geonkick_kick_set_amplitude(struct geonkick *kick, gkick_real amplitude);
+
+enum geonkick_error
+geonkick_kick_get_amplitude(struct geonkick *kick, gkick_real *amplitude);
+
+enum geonkick_error
+geonkick_kick_set_filter_frequency(struct geonkick *kick, gkick_real frequency);
+
+enum geonkick_error
+geonkick_kick_get_filter_frequency(struct geonkick *kick, gkick_real *frequency);
+
+enum geonkick_error
+geonkick_kick_set_filter_factor(struct geonkick *kick, gkick_real factor);
+
+enum geonkick_error
+geonkick_kick_get_filter_factor(struct geonkick *kick, gkick_real *factor);
+
+enum geonkick_error
+geonkick_kick_add_env_point(struct geonkick *kick, gkick_real x, gkick_real y);
+
+enum geonkick_error
+geonkick_kick_remove_env_point(struct geonkick *kick, int index);
+
+enum geonkick_error
+geonkick_kick_update_env_point(struct geonkick *kick,
+                               int index,
+                               gkick_real x,
+                               gkick_real y);
+
+enum geonkick_error
+geonkick_kick_update_env_point(struct geonkick *kick, int index);
+
+enum geonkick_error
 geonkick_set_osc_amplitude(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real v);

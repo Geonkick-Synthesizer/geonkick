@@ -501,6 +501,90 @@ gkick_synth_set_length(struct gkick_synth *synth, gkick_real len)
 }
 
 enum geonkick_error
+gkick_synth_kick_set_amplitude(struct gkick_synth *synth, gkick_real amplitude)
+{
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_get_amplitude(struct gkick_synth *synth, gkick_real *amplitude)
+{
+        if (synth == NULL || amplitude == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_set_filter_frequency(struct gkick_synth *synth, gkick_real frequency)
+{
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_get_filter_frequency(struct gkick_synth *synth, gkick_real *frequency)
+{
+        if (synth == NULL || frequency == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_set_filter_factor(struct gkick_synth *synth, gkick_real factor)
+{
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_get_filter_factor(struct gkick_synth *synth, gkick_real *factor)
+{
+        if (synth == NULL || factor == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_add_env_point(struct gkick_synth *synth, gkick_real x, gkick_real y)
+{
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_remove_env_point(struct gkick_synth *synth, int index)
+{
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
+gkick_synth_kick_update_env_point(struct gkick_synth *synth,
+                                  int index,
+                                  gkick_real x,
+                                  gkick_real y)
+{
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+}
+
+enum geonkick_error
 gkick_synth_set_osc_frequency(struct gkick_synth *synth,
                              size_t osc_index,
                              gkick_real v)
