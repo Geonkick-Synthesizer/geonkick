@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$class_geonkick_theme.html" title="GeonkickTheme" alt="" coords="124,5,241,32"/>
-<area shape="rect" id="node3" href="$class_g_kick_api.html" title="GKickApi" alt="" coords="144,56,221,83"/>
-<area shape="rect" id="node4" href="$class_g_kick_envelope.html" title="GKickEnvelope" alt="" coords="127,107,239,133"/>
-<area shape="rect" id="node7" href="$class_g_kick_oscillator.html" title="GKickOscillator" alt="" coords="126,157,239,184"/>
-<area shape="rect" id="node5" href="$class_general_envelope.html" title="GeneralEnvelope" alt="" coords="294,81,415,108"/>
-<area shape="rect" id="node6" href="$class_oscillator_envelope.html" title="OscillatorEnvelope" alt="" coords="289,132,420,159"/>
-</map>

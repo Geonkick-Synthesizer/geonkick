@@ -1,6 +1,0 @@
-<map id="geonkick" name="geonkick">
-<area shape="rect" id="node2" href="$structgkick__envelope.html" title="gkick_envelope" alt="" coords="23,112,135,139"/>
-<area shape="rect" id="node5" href="$structgkick__oscillator.html" title="gkick_oscillator" alt="" coords="139,201,251,228"/>
-<area shape="rect" id="node3" href="$structgkick__envelope__point.html" title="gkick_envelope_point" alt="" coords="5,7,152,33"/>
-<area shape="rect" id="node4" href="$structgkick__jack.html" title="gkick_jack" alt="" coords="275,201,359,228"/>
-</map>
