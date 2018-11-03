@@ -42,11 +42,6 @@ struct gkick_envelope {
 struct gkick_envelope*
 gkick_envelope_create(void);
 
-/**
- * Compexity = O(N), where N are the nuber of evelope points.
- * TODO: to reduce the complexity with a hash table intead of the list.
- * With an array it can be reduced to O(log(N)) with binary search.
- */
 gkick_real
 gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm);
 

@@ -246,6 +246,18 @@ geonkick_set_osc_function(struct geonkick *kick,
 }
 
 enum geonkick_error
+geonkick_get_osc_function(struct geonkick *kick,
+			  size_t osc_index,
+			  enum geonkick_osc_func_type *type)
+{
+        if (kick == NULL || type == NULL) {
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_get_osc_function(kick->synth, osc_index, type);
+}
+
+enum geonkick_error
 geonkick_set_length(struct geonkick *kick, gkick_real len)
 {
         if (kick == NULL) {
@@ -276,6 +288,151 @@ geonkick_get_max_length(struct geonkick *kick, gkick_real *len)
 
         *len = GEONKICK_MAX_LENGTH;
         return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_kick_set_amplitude(struct geonkick *kick, gkick_real amplitude)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_set_amplitude(kick->synth, amplitude);
+}
+
+enum geonkick_error
+geonkick_kick_get_amplitude(struct geonkick *kick, gkick_real *amplitude)
+{
+        if (kick == NULL || amplitude == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_get_amplitude(kick->synth, amplitude);
+}
+
+enum geonkick_error
+geonkick_kick_set_filter_frequency(struct geonkick *kick, gkick_real frequency)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_set_filter_frequency(kick->synth, frequency);
+}
+
+enum geonkick_error
+geonkick_kick_filter_enable(struct geonkick *kick, int enable)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return geonkick_synth_kick_filter_enable(kick->synth, enable);
+}
+
+enum geonkick_error
+geonkick_kick_get_filter_frequency(struct geonkick *kick, gkick_real *frequency)
+{
+        if (kick == NULL || frequency == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_get_filter_frequency(kick->synth, frequency);
+}
+
+enum geonkick_error
+geonkick_kick_set_filter_factor(struct geonkick *kick, gkick_real factor)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_synth_kick_set_filter_factor(kick->synth, factor);
+}
+
+enum geonkick_error
+geonkick_kick_get_filter_factor(struct geonkick *kick, gkick_real *factor)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_get_filter_factor(kick->synth, factor);
+}
+
+enum geonkick_error
+geonkick_set_kick_filter_type(struct geonkick *kick, enum gkick_filter_type type)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_synth_set_kick_filter_type(kick->synth, type);
+}
+
+enum geonkick_error
+geonkick_get_kick_filter_type(struct geonkick *kick, enum gkick_filter_type *type)
+{
+        if (kick == NULL || type == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_synth_get_kick_filter_type(kick->synth, type);
+}
+
+enum geonkick_error
+geonkick_kick_envelope_get_points(struct geonkick *kick,
+                                  gkick_real **buf,
+                                  size_t *npoints)
+{
+        if (kick == NULL || buf == NULL || npoints == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_envelope_get_points(kick->synth, buf, npoints);
+}
+
+enum geonkick_error
+geonkick_kick_add_env_point(struct geonkick *kick, gkick_real x, gkick_real y)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_add_env_point(kick->synth, x, y);
+}
+
+enum geonkick_error
+geonkick_kick_remove_env_point(struct geonkick *kick, size_t index)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_remove_env_point(kick->synth, index);
+}
+
+enum geonkick_error
+geonkick_kick_update_env_point(struct geonkick *kick,
+                               size_t index,
+                               gkick_real x,
+                               gkick_real y)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_update_env_point(kick->synth, index, x, y);
 }
 
 enum geonkick_error

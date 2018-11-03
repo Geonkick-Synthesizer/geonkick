@@ -42,6 +42,8 @@ class GeneralGroupBox: public GeonkickGroupBox
  protected:
         void createAplitudeEnvelopeHBox();
         void createFilterHBox();
+ protected slots:
+        void setFilterType(bool state);
 
  private:
         GeonkickApi* geonkickApi;

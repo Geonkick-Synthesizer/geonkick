@@ -31,6 +31,8 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const QRect &area)
         removeSupportedType(Envelope::Type::Frequency);
         connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
         connect(geonkickApi, SIGNAL(kickAmplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
+        setType(Envelope::Type::Amplitude);
+        setPoints(geonkickApi->getKickEnvelopePoints());
 }
 
 GeneralEnvelope::~GeneralEnvelope()
@@ -44,7 +46,7 @@ void GeneralEnvelope::pointAddedEvent(double x, double y)
 
 void GeneralEnvelope::pointUpdatedEvent(unsigned int index, double x, double y)
 {
-        geonkickApi->updateKickEnvelopePoint(x, y);
+        geonkickApi->updateKickEnvelopePoint(index, x, y);
 }
 
 void GeneralEnvelope::pointRemovedEvent(unsigned int index)
@@ -63,3 +65,7 @@ void GeneralEnvelope::setEnvelopeLengh(double len)
         emit envelopeLengthUpdated(len);
 }
 
+double GeneralEnvelope::envelopeAmplitude(void) const
+{
+        return geonkickApi->kickAmplitude();
+}
