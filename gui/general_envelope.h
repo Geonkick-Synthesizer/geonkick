@@ -46,6 +46,7 @@ public slots:
   void pointAddedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;
   void pointRemovedEvent(unsigned int index) override;
+  double envelopeAmplitude(void) const final;
 
  private:
           GeonkickApi *geonkickApi;

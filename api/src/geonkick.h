@@ -137,6 +137,11 @@ geonkick_set_osc_function(struct geonkick *kick,
 			  enum geonkick_osc_func_type type);
 
 enum geonkick_error
+geonkick_get_osc_function(struct geonkick *kick,
+			  size_t osc_index,
+			  enum geonkick_osc_func_type *type);
+
+enum geonkick_error
 geonkick_set_length(struct geonkick *kick, gkick_real len);
 
 enum geonkick_error
@@ -152,6 +157,9 @@ enum geonkick_error
 geonkick_kick_get_amplitude(struct geonkick *kick, gkick_real *amplitude);
 
 enum geonkick_error
+geonkick_kick_filter_enable(struct geonkick *kick, int enable);
+
+enum geonkick_error
 geonkick_kick_set_filter_frequency(struct geonkick *kick, gkick_real frequency);
 
 enum geonkick_error
@@ -164,19 +172,27 @@ enum geonkick_error
 geonkick_kick_get_filter_factor(struct geonkick *kick, gkick_real *factor);
 
 enum geonkick_error
+geonkick_set_kick_filter_type(struct geonkick *kick, enum gkick_filter_type type);
+
+enum geonkick_error
+geonkick_get_kick_filter_type(struct geonkick *kick, enum gkick_filter_type *type);
+
+enum geonkick_error
+geonkick_kick_envelope_get_points(struct geonkick *kick,
+                                  gkick_real **buf,
+                                  size_t *npoints);
+
+enum geonkick_error
 geonkick_kick_add_env_point(struct geonkick *kick, gkick_real x, gkick_real y);
 
 enum geonkick_error
-geonkick_kick_remove_env_point(struct geonkick *kick, int index);
+geonkick_kick_remove_env_point(struct geonkick *kick, size_t index);
 
 enum geonkick_error
 geonkick_kick_update_env_point(struct geonkick *kick,
-                               int index,
+                               size_t index,
                                gkick_real x,
                                gkick_real y);
-
-enum geonkick_error
-geonkick_kick_update_env_point(struct geonkick *kick, int index);
 
 enum geonkick_error
 geonkick_set_osc_amplitude(struct geonkick *kick,

@@ -25,9 +25,8 @@ What it should include:
      - amplitude envelope [i]
      - low, band, hight pass filter [i]
 * Kick
-     - amplitude envelope
-     - low pass filter
-     - high pass filter
+     - amplitude envelope [i]
+     - low, band, hight pass filter [i]
      - kick length [i]
      - kick limiter [i]
      - Compression

@@ -47,14 +47,14 @@ gkick_synth_new(struct gkick_synth **synth)
 
         if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
-                gkick_synth_free(&osc);
+                gkick_synth_free(synth);
 		return GEONKICK_ERROR;
         }
         (*synth)->filter_enabled = 0;
 
         if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
-                gkick_synth_free(&osc);
+                gkick_synth_free(synth);
 		return GEONKICK_ERROR;
         }
 
@@ -122,7 +122,8 @@ void gkick_synth_free(struct gkick_synth **synth)
                         }
 
                         if ((*synth)->envelope) {
-                                gkick_envelope_free(&(*synth)->envelope);
+                                gkick_envelope_destroy((*synth)->envelope);
+                                (*synth)->envelope = NULL;
                         }
                 }
 
@@ -346,6 +347,7 @@ gkick_synth_osc_env_add_point(struct gkick_synth *synth,
 
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
                 synth->buffer_update = 1;
+                pthread_cond_signal(&synth->condition_var);
         }
 
         gkick_synth_unlock(synth);
@@ -469,6 +471,33 @@ gkick_synth_set_osc_function(struct gkick_synth *synth,
 }
 
 enum geonkick_error
+gkick_synth_get_osc_function(struct gkick_synth *synth,
+                             size_t osc_index,
+                             enum geonkick_osc_func_type *type)
+{
+        struct gkick_oscillator *osc;
+
+        if (synth == NULL || type == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (osc == NULL) {
+                gkick_log_error("can't get oscilaltor");
+                gkick_synth_unlock(synth);
+                return GEONKICK_ERROR;
+        } else {
+                *type = osc->func;
+        }
+
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 gkick_synth_get_length(struct gkick_synth *synth, gkick_real *len)
 {
         if (synth == NULL || len == NULL) {
@@ -507,6 +536,13 @@ gkick_synth_kick_set_amplitude(struct gkick_synth *synth, gkick_real amplitude)
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        gkick_synth_lock(synth);
+        synth->amplitude = amplitude;
+        synth->buffer_update = 1;
+        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -516,15 +552,47 @@ gkick_synth_kick_get_amplitude(struct gkick_synth *synth, gkick_real *amplitude)
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        gkick_synth_lock(synth);
+        *amplitude = synth->amplitude;
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_synth_kick_set_filter_frequency(struct gkick_synth *synth, gkick_real frequency)
+geonkick_synth_kick_filter_enable(struct gkick_synth *synth, int enable)
 {
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        gkick_synth_lock(synth);
+        synth->filter_enabled = enable;
+        synth->buffer_update = 1;
+        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_kick_set_filter_frequency(struct gkick_synth *synth, gkick_real frequency)
+{
+        enum geonkick_error res;
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        res = gkick_filter_set_cutoff_freq(synth->filter, frequency);
+        if (synth->filter_enabled) {
+                synth->buffer_update = 1;
+                pthread_cond_signal(&synth->condition_var);
+        }
+        gkick_synth_unlock(synth);
+        return res;
 }
 
 enum geonkick_error
@@ -534,15 +602,27 @@ gkick_synth_kick_get_filter_frequency(struct gkick_synth *synth, gkick_real *fre
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        return gkick_filter_get_cutoff_freq(synth->filter, frequency);
 }
 
 enum geonkick_error
 gkick_synth_kick_set_filter_factor(struct gkick_synth *synth, gkick_real factor)
 {
+        enum geonkick_error res;
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        gkick_synth_lock(synth);
+        res = gkick_filter_set_factor(synth->filter, factor);
+        if (synth->filter_enabled) {
+                synth->buffer_update = 1;
+                pthread_cond_signal(&synth->condition_var);
+        }
+        gkick_synth_unlock(synth);
+        return res;
 }
 
 enum geonkick_error
@@ -552,6 +632,58 @@ gkick_synth_kick_get_filter_factor(struct gkick_synth *synth, gkick_real *factor
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        return gkick_filter_get_factor(synth->filter, factor);
+}
+
+enum geonkick_error
+gkick_synth_set_kick_filter_type(struct gkick_synth *synth, enum gkick_filter_type type)
+{
+        enum geonkick_error res;
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        res = gkick_filter_set_type(synth->filter, type);
+        if (synth->filter_enabled) {
+                synth->buffer_update = 1;
+                pthread_cond_signal(&synth->condition_var);
+        }
+        gkick_synth_unlock(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_get_kick_filter_type(struct gkick_synth *synth, enum gkick_filter_type *type)
+{
+        if (synth == NULL || type == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_filter_get_type(synth->filter, type);
+}
+
+enum geonkick_error
+gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
+                                     gkick_real **buf,
+                                     size_t *npoints)
+{
+        if (synth == NULL || buf == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        *npoints = 0;
+        *buf = NULL;
+
+        gkick_synth_lock(synth);
+        gkick_envelope_get_points(synth->envelope, buf, npoints);
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -561,20 +693,34 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth, gkick_real x, gkick_re
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        gkick_synth_lock(synth);
+        gkick_envelope_add_point(synth->envelope, x, y);
+        synth->buffer_update = 1;
+        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_synth_kick_remove_env_point(struct gkick_synth *synth, int index)
+gkick_synth_kick_remove_env_point(struct gkick_synth *synth, size_t index)
 {
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        gkick_synth_lock(synth);
+        gkick_envelope_remove_point(synth->envelope, index);
+        synth->buffer_update = 1;
+        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
 gkick_synth_kick_update_env_point(struct gkick_synth *synth,
-                                  int index,
+                                  size_t index,
                                   gkick_real x,
                                   gkick_real y)
 {
@@ -582,6 +728,14 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        gkick_synth_lock(synth);
+        gkick_envelope_update_point(synth->envelope, index, x, y);
+        synth->buffer_update = 1;
+        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -889,6 +1043,11 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
                 }
                 gkick_osc_increment_phase(synth->oscillators[i], t,
                                           synth->length);
+        }
+
+        val *= synth->amplitude * gkick_envelope_get_value(synth->envelope, t / synth->length);
+        if (synth->filter_enabled) {
+                gkick_filter_val(synth->filter, val, &val);
         }
 
         return val;

@@ -74,15 +74,14 @@ class GeonkickApi: public QObject {
   double kickLength(void) const;
   double kickAmplitude() const;
   double kickFilterFrequency(void) const;
+  QPolygonF getKickEnvelopePoints() const;
   bool setOscillatorFrequency(int oscillatorIndex, double frequency);
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;
   double kickFilterQFactor() const;
-  void setKickFilterFrequency(double frequency);
-  void setKickFilterQFactor(double factor);
   void addKickEnvelopePoint(double x, double y);
   void removeKickEnvelopePoint(int pointIndex);
-  void updateKickEnvelopePoint(double x, double y);
+  void updateKickEnvelopePoint(int index, double x, double y);
   void setOscillatorFunction(int oscillatorIndex, FunctionType function);
   void enableOscillator(int oscillatorIndex, bool enable);
   void enableOscillatorFilter(int oscillatorIndex, bool enable);
@@ -103,6 +102,10 @@ public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
   void setLimiterValue(double value);
+  void setKickFilterFrequency(double frequency);
+  void setKickFilterQFactor(double factor);
+  void enableKickFilter(bool b);
+  void setKickFilterType(FilterType type);
 
 signals:
   void kickLengthUpdated(double length);

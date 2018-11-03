@@ -63,8 +63,8 @@ bool MainWindow::init(void)
         setTheme(new GeonkickTheme("Geontime"));
 
         geonkickApi->setKickLength(300);
-        geonkickApi->setKickAmplitude(0);
-        geonkickApi->setKickFilterFrequency(0);
+        geonkickApi->setKickAmplitude(0.8);
+        geonkickApi->setKickFilterFrequency(200);
         oscillators = geonkickApi->oscillators();
 
         // Oscillator 1
@@ -74,7 +74,7 @@ bool MainWindow::init(void)
 	oscillator->setFilterFrequency(5000);
 	oscillator->setFunction(Oscillator::FunctionType::Sine);
         oscillator->setAmplitude(0.05);
-        GEONKICK_LOG_DEBUG("H2");
+
         // Oscillator 2
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
         oscillator->setFrequency(1000);

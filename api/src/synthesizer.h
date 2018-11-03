@@ -146,13 +146,24 @@ gkick_synth_set_osc_function(struct gkick_synth *synth,
                              enum geonkick_osc_func_type type);
 
 enum geonkick_error
+gkick_synth_get_osc_function(struct gkick_synth *synth,
+                             size_t osc_index,
+                             enum geonkick_osc_func_type *type);
+
+enum geonkick_error
 gkick_synth_get_length(struct gkick_synth *synth, gkick_real *len);
+
+enum geonkick_error
+gkick_synth_set_length(struct gkick_synth *synth, gkick_real len);
 
 enum geonkick_error
 gkick_synth_kick_set_amplitude(struct gkick_synth *synth, gkick_real amplitude);
 
 enum geonkick_error
 gkick_synth_kick_get_amplitude(struct gkick_synth *synth, gkick_real *amplitude);
+
+enum geonkick_error
+geonkick_synth_kick_filter_enable(struct gkick_synth *synth, int enable);
 
 enum geonkick_error
 gkick_synth_kick_set_filter_frequency(struct gkick_synth *synth, gkick_real frequency);
@@ -167,14 +178,25 @@ enum geonkick_error
 gkick_synth_kick_get_filter_factor(struct gkick_synth *synth, gkick_real *factor);
 
 enum geonkick_error
+gkick_synth_set_kick_filter_type(struct gkick_synth *synth, enum gkick_filter_type type);
+
+enum geonkick_error
+gkick_synth_get_kick_filter_type(struct gkick_synth *synth, enum gkick_filter_type *type);
+
+enum geonkick_error
+gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
+                                     gkick_real **buf,
+                                     size_t *npoints);
+
+enum geonkick_error
 gkick_synth_kick_add_env_point(struct gkick_synth *synth, gkick_real x, gkick_real y);
 
 enum geonkick_error
-gkick_synth_kick_remove_env_point(struct gkick_synth *synth, int index);
+gkick_synth_kick_remove_env_point(struct gkick_synth *synth, size_t index);
 
 enum geonkick_error
 gkick_synth_kick_update_env_point(struct gkick_synth *synth,
-                                  int index,
+                                  size_t index,
                                   gkick_real x,
                                   gkick_real y);
 
