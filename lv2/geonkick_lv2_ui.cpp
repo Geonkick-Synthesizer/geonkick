@@ -12,7 +12,7 @@ struct GeonkickApi {
 };
 
 
-QApplication* samplv1_lv2ui_qapp_instance = nullptr;
+QApplication* qapp_instance = nullptr;
 
 static LV2UI_Handle
 instantiate_ui(const LV2UI_Descriptor*   descriptor,
@@ -24,26 +24,29 @@ instantiate_ui(const LV2UI_Descriptor*   descriptor,
             const LV2_Feature* const* features)
 {
         std::cout << __PRETTY_FUNCTION__ << "called" << std::endl;
-        /*        static int s_argc = 1;
+        static int s_argc = 1;
         static const char *s_argv[] = { __func__, NULL };
-        samplv1_lv2ui_qapp_instance = new QApplication(s_argc, (char **) s_argv);
-        std::cout << __PRETTY_FUNCTION__ << "called[1]" << std::endl;
+        if (QCoreApplication::instance()) {
+                std::cout << __PRETTY_FUNCTION__ << "APP Running" << std::endl;
+                //qapp_instance = new QApplication(s_argc, (char **) s_argv);
+        }
+        else {
+                std::cout << __PRETTY_FUNCTION__ << "APP not running" << std::endl;
+        }
+
         QWidget *w = new QWidget;
         *widget = w;
         w->show();
-        std::cout << __PRETTY_FUNCTION__ << "called[END]" << std::endl;*/
-                std::cout << __PRETTY_FUNCTION__ << "called[call system]" << std::endl;
-        GeonkickApi* api = (GeonkickApi*)malloc(sizeof(GeonkickApi));
-        system("/home/iurie/Desktop/Geontime/geonkick/build/geonkick &");
 
-        return NULL;
+        std::cout << __PRETTY_FUNCTION__ << "called[END]" << std::endl;
+        return w;
 }
 
 static void
 cleanup_ui(LV2UI_Handle handle)
 {
         std::cout << __PRETTY_FUNCTION__ << "called" << std::endl;
-        //        delete (QWidget*)(handle);
+        delete (QWidget*)(handle);
 }
 
 static void port_event_ui (
@@ -53,21 +56,14 @@ static void port_event_ui (
         std::cout << __PRETTY_FUNCTION__ << "called" << std::endl;
 }
 
-/*static const LV2UI_Descriptor descriptor_ui = {
+static const LV2UI_Descriptor descriptor_ui = {
 	APP_URI_UI,
 	instantiate_ui,
 	cleanup_ui,
 	port_event_ui,
 	NULL
-        };*/
-
-static const LV2UI_Descriptor descriptor_ui = {
-        APP_URI_UI,
-	NULL,
-	NULL,
-	NULL,
-	NULL
 };
+
 
 static int i = 0;
 
@@ -77,17 +73,12 @@ lv2ui_descriptor(uint32_t index)
 {
         std::cout << __PRETTY_FUNCTION__ << "index = " << index << std::endl;
 
-        if (i == 0) {
-        GeonkickApi* api = (GeonkickApi*)malloc(sizeof(GeonkickApi));
-        system("/home/iurie/Desktop/Geontime/geonkick/build/geonkick &");
-        }
-
 	switch (index) {
 	case 0:
 		return &descriptor_ui;
 	default:
 		return NULL;
-                }
+        }
 
 }
 
@@ -99,9 +90,8 @@ instantiate(const LV2_Descriptor*     descriptor,
             const char*               bundle_path,
             const LV2_Feature* const* features)
 {
-                std::cout << __PRETTY_FUNCTION__ << "called[call system]" << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << "called[call system]" << std::endl;
         GeonkickApi* api = (GeonkickApi*)malloc(sizeof(GeonkickApi));
-        //system("/home/iurie/Desktop/Geontime/geonkick/build/geonkick &");
 	return api;
 }
 
@@ -143,6 +133,7 @@ LV2_SYMBOL_EXPORT
 const LV2_Descriptor*
 lv2_descriptor(uint32_t index)
 {
+        std::cout << __PRETTY_FUNCTION__ << "index = " << index << std::endl;
 	switch (index) {
 	case 0:  return &descriptor;
 	default: return NULL;
