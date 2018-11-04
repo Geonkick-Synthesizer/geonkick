@@ -30,6 +30,7 @@
 #include "top_bar.h"
 #include "fader.h"
 #include "export_widget.h"
+#include "geonkick_api.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -43,9 +44,9 @@
 #define GEONKICK_MAINWINDOW_WIDTH  940
 #define GEONKICK_MAINWINDOW_HEIGHT 760
 
-MainWindow::MainWindow(GeonkickWidget *parent) :
+MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
         GeonkickWidget(parent),
-        geonkickApi(new GeonkickApi(this))
+        geonkickApi(api)
 {
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
 }
@@ -56,37 +57,8 @@ MainWindow::~MainWindow()
 
 bool MainWindow::init(void)
 {
-        if (geonkickApi->init()) {
-	  //return false;
-        }
-        setTheme(new GeonkickTheme("Geontime"));
-
-        geonkickApi->setKickLength(300);
-        geonkickApi->setKickAmplitude(0.8);
-        geonkickApi->setKickFilterFrequency(200);
         oscillators = geonkickApi->oscillators();
-
-        // Oscillator 1
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
-        oscillator->setFrequency(1000);
-	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(5000);
-	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(0.05);
-
-        // Oscillator 2
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
-        oscillator->setFrequency(1000);
-	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(5000);
-	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(0.05);
-        // Noise
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
-	oscillator->setFunction(Oscillator::FunctionType::Noise);
-	oscillator->setAmplitude(0.05);
-	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(5000);
+        setTheme(new GeonkickTheme("Geontime"));
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
         mainLayout->setContentsMargins(0, 0, 0, 0);

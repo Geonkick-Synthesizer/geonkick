@@ -38,7 +38,15 @@ int main(int argc, char *argv[])
         font.setPixelSize(12);
         a.setFont(font);
 
-        MainWindow window;
+        auto api = std::make_unique<GeonkickApi>();
+        if (!api->init()) {
+                GEONKICK_LOG_ERROR("can't init API");
+                exit(1);
+        } else {
+                api->setApiState(getDefaultState());
+        }
+
+        MainWindow window(api.get());
         if (!window.init()) {
                 qDebug() << "can't init main window";
                 exit(1);

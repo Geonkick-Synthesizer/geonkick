@@ -35,12 +35,7 @@ class Oscillator: public QObject
 
  public:
 
-  enum class Type: int {
-          Oscillator1 = 0,
-          Oscillator2 = 1,
-          Noise       = 2
-  };
-
+  using Type = GeonkickApi::OscillatorType;
   using FunctionType = GeonkickApi::FunctionType;
   using EnvelopeType = GeonkickApi::EnvelopeType;
   using FilterType   = GeonkickApi::FilterType;

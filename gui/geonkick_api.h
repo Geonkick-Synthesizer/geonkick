@@ -38,6 +38,12 @@ class GeonkickApi: public QObject {
 
  public:
 
+  enum class OscillatorType: int {
+         Oscillator1 = 0,
+         Oscillator2 = 1,
+         Noise       = 2
+  }
+
   enum class FunctionType:int {
           Sine     = GEONKICK_OSC_FUNC_SINE,
           Square   = GEONKICK_OSC_FUNC_SQUARE,

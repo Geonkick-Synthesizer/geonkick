@@ -24,7 +24,6 @@
 #ifndef GEONGKICK_MAINWINDOW_H
 #define GEONGKICK_MAINWINDOW_H
 
-#include "geonkick_api.h"
 #include "geonkick_widget.h"
 #include "oscillator.h"
 #include "envelope_widget.h"
@@ -40,6 +39,7 @@ class QGroupBox;
 class QRadioButton;
 class QComboBox;
 class QLabel;
+class GeonkickApi;
 
 class MainWindow : public GeonkickWidget
 {
@@ -47,7 +47,7 @@ class MainWindow : public GeonkickWidget
 
  public:
 
-      MainWindow(GeonkickWidget *parent = nullptr);
+      MainWindow(GeonkickApi *api = nullptr, GeonkickWidget *parent = nullptr);
       ~MainWindow();
       bool init(void);
 
@@ -56,6 +56,9 @@ class MainWindow : public GeonkickWidget
       void setLimiterValue(int value);
 
  private:
+      void loadApiDefaultSettings();
+      void loadApiSettings();
+
       GeonkickApi *geonkickApi;
       std::vector<Oscillator*> oscillators;
       OscillatorWidget *oscillatorWidget;

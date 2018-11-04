@@ -49,9 +49,59 @@ bool GeonkickApi::init()
                 return false;
   	}
 
+        /*geonkickApi->setKickLength(300);
+        geonkickApi->setKickAmplitude(0.8);
+        geonkickApi->setKickFilterFrequency(200);
+        oscillators = geonkickApi->oscillators();
+
+        // Oscillator 1
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
+        oscillator->setFrequency(1000);
+	oscillator->setFilterType(Oscillator::FilterType::LowPass);
+	oscillator->setFilterFrequency(5000);
+	oscillator->setFunction(Oscillator::FunctionType::Sine);
+        oscillator->setAmplitude(0.05);
+
+        // Oscillator 2
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
+        oscillator->setFrequency(1000);
+	oscillator->setFilterType(Oscillator::FilterType::LowPass);
+	oscillator->setFilterFrequency(5000);
+	oscillator->setFunction(Oscillator::FunctionType::Sine);
+        oscillator->setAmplitude(0.05);
+        // Noise
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
+	oscillator->setFunction(Oscillator::FunctionType::Noise);
+	oscillator->setAmplitude(0.05);
+	oscillator->setFilterType(Oscillator::FilterType::LowPass);
+	oscillator->setFilterFrequency(5000);*/
+
         geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
 
         return true;
+}
+
+bool GeonkickApi::setApiState(const GeonkickApiState &state)
+{
+        setLimiterValue(state.limiterValue());
+
+        setKickLength(state.kickLength());
+        setKickAmplitude(state.kickAmplitude());
+        enableKickFilter(state.isKickFilterEnabled());
+        setKickFilterFrequency(state.kickFilterFrequency());
+        setKickEnvelopePoints(state.kickEnvelopePoints());
+        setKickFilterQFactor(state.kickFilterFactor());
+
+        setOscillatorState(OscillatorType::Oscillator1, state);
+        setOscillatorState(OscillatorType::Oscillator2, state);
+        setOscillatorState(OscillatorType::Noise, state);
+}
+
+void GeonkickApi::setOscillatorState(OscillatorType oscillator, const GeonkickState &state)
+{
+        auto osc = static_cast<int>(oscillator);
+        enableOscillator(osc, state.isOscillatorEnabled(static_cast<GeonkickState::Oscillator>(osc)));
+        setOscillatorFunction(osc, state.oscillatorFunction(static_cast<GeonkickState::Oscillator>(osc)));
 }
 
 std::vector<Oscillator*> GeonkickApi::oscillators(void)
