@@ -1,7 +1,7 @@
 CC = gcc
 INCLUDES =
 DEFINES =  -DGKICK_LIB_LOG_LEVEL_TRACE -DGKICK_LIB_LOG_FUNCTION
-CFLAGS = -O0 -g -Wall $(DEFINES) $(INCLUDES)
+CFLAGS = -O0 -g -Wall -fPIC $(DEFINES) $(INCLUDES)
 LIBS = -ljack -lm
 TARGET = libgeonkick.a
 SRC = src

@@ -59,7 +59,6 @@ bool MainWindow::init(void)
         if (geonkickApi->init()) {
 	  //return false;
         }
-
         setTheme(new GeonkickTheme("Geontime"));
 
         geonkickApi->setKickLength(300);
@@ -112,7 +111,6 @@ bool MainWindow::init(void)
         ControlArea *controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         mainLayout->addSpacing(5);
         mainLayout->addWidget(controlAreaWidget);
-
         return true;
 }
 

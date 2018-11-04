@@ -1,18 +1,15 @@
 
-//
-//#include "mainwindow.h"
+
+#include "mainwindow.h"
 #include "geonkick_lv2.h"
 
 #include <QApplication>
 #include <QWidget>
 #include <iostream>
 
-struct GeonkickApi {
+struct GeonkickAPI {
         int api;
 };
-
-
-QApplication* qapp_instance = nullptr;
 
 static LV2UI_Handle
 instantiate_ui(const LV2UI_Descriptor*   descriptor,
@@ -24,29 +21,27 @@ instantiate_ui(const LV2UI_Descriptor*   descriptor,
             const LV2_Feature* const* features)
 {
         std::cout << __PRETTY_FUNCTION__ << "called" << std::endl;
-        static int s_argc = 1;
-        static const char *s_argv[] = { __func__, NULL };
-        if (QCoreApplication::instance()) {
-                std::cout << __PRETTY_FUNCTION__ << "APP Running" << std::endl;
-                //qapp_instance = new QApplication(s_argc, (char **) s_argv);
-        }
-        else {
-                std::cout << __PRETTY_FUNCTION__ << "APP not running" << std::endl;
+        if (!QCoreApplication::instance()) {
+                std::cout << __PRETTY_FUNCTION__ << "App not running" << std::endl;
+                return NULL;
         }
 
-        QWidget *w = new QWidget;
-        *widget = w;
-        w->show();
+        auto window = new MainWindow;
+        *widget = window;
+        if (!window->init()) {
+                qDebug() << "can't init main window";
+                return NULL;
+        }
 
-        std::cout << __PRETTY_FUNCTION__ << "called[END]" << std::endl;
-        return w;
+        window->show();
+        return window;
 }
 
 static void
 cleanup_ui(LV2UI_Handle handle)
 {
         std::cout << __PRETTY_FUNCTION__ << "called" << std::endl;
-        delete (QWidget*)(handle);
+        delete static_cast<MainWindow*>(handle);
 }
 
 static void port_event_ui (
@@ -91,7 +86,7 @@ instantiate(const LV2_Descriptor*     descriptor,
             const LV2_Feature* const* features)
 {
         std::cout << __PRETTY_FUNCTION__ << "called[call system]" << std::endl;
-        GeonkickApi* api = (GeonkickApi*)malloc(sizeof(GeonkickApi));
+        GeonkickAPI* api = (GeonkickAPI*)malloc(sizeof(GeonkickApi));
 	return api;
 }
 
