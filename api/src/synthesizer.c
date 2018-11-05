@@ -44,6 +44,7 @@ gkick_synth_new(struct gkick_synth **synth)
 	(*synth)->oscillators_number = 3;
         (*synth)->buffer_update = 1;
         (*synth)->amplitude = 1.0;
+        (*synth)->synthesis_on = 1;
 
         if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
@@ -229,12 +230,18 @@ gkick_synth_enable_oscillator(struct gkick_synth *synth, size_t index, int enabl
                 gkick_osc_set_state(osc, GEONKICK_OSC_STATE_DISABLED);
         }
 
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
-
+        wakeup_thread();
 	gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
+}
+
+void gkick_synth_wakeup_thread(void)
+{
+        if (synth->synthesis_on) {
+                synth->buffer_update = 1;
+                pthread_cond_signal(&synth->condition_var);
+        }
 }
 
 enum geonkick_error
@@ -346,8 +353,7 @@ gkick_synth_osc_env_add_point(struct gkick_synth *synth,
         }
 
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
 
         gkick_synth_unlock(synth);
@@ -386,8 +392,7 @@ gkick_synth_osc_env_remove_point(struct gkick_synth *synth,
 
         gkick_envelope_remove_point(env, index);
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
 
         gkick_synth_unlock(synth);
@@ -429,8 +434,7 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
 
         gkick_envelope_update_point(env, index, x, y);
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
 
         gkick_synth_unlock(synth);
@@ -461,8 +465,7 @@ gkick_synth_set_osc_function(struct gkick_synth *synth,
         }
 
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
 
         gkick_synth_unlock(synth);
@@ -522,8 +525,7 @@ gkick_synth_set_length(struct gkick_synth *synth, gkick_real len)
         gkick_synth_lock(synth);
         synth->length = len;
         synth->buffer_size = synth->length * GEONKICK_SAMPLE_RATE;
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
@@ -539,8 +541,7 @@ gkick_synth_kick_set_amplitude(struct gkick_synth *synth, gkick_real amplitude)
 
         gkick_synth_lock(synth);
         synth->amplitude = amplitude;
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -569,8 +570,7 @@ geonkick_synth_kick_filter_enable(struct gkick_synth *synth, int enable)
 
         gkick_synth_lock(synth);
         synth->filter_enabled = enable;
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
@@ -588,8 +588,7 @@ gkick_synth_kick_set_filter_frequency(struct gkick_synth *synth, gkick_real freq
         gkick_synth_lock(synth);
         res = gkick_filter_set_cutoff_freq(synth->filter, frequency);
         if (synth->filter_enabled) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
         gkick_synth_unlock(synth);
         return res;
@@ -618,8 +617,7 @@ gkick_synth_kick_set_filter_factor(struct gkick_synth *synth, gkick_real factor)
         gkick_synth_lock(synth);
         res = gkick_filter_set_factor(synth->filter, factor);
         if (synth->filter_enabled) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
         gkick_synth_unlock(synth);
         return res;
@@ -648,8 +646,7 @@ gkick_synth_set_kick_filter_type(struct gkick_synth *synth, enum gkick_filter_ty
         gkick_synth_lock(synth);
         res = gkick_filter_set_type(synth->filter, type);
         if (synth->filter_enabled) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
         gkick_synth_unlock(synth);
         return res;
@@ -696,8 +693,7 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth, gkick_real x, gkick_re
 
         gkick_synth_lock(synth);
         gkick_envelope_add_point(synth->envelope, x, y);
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -712,8 +708,7 @@ gkick_synth_kick_remove_env_point(struct gkick_synth *synth, size_t index)
 
         gkick_synth_lock(synth);
         gkick_envelope_remove_point(synth->envelope, index);
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -731,8 +726,7 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
 
         gkick_synth_lock(synth);
         gkick_envelope_update_point(synth->envelope, index, x, y);
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
@@ -759,8 +753,7 @@ gkick_synth_set_osc_frequency(struct gkick_synth *synth,
 	}
 	osc->frequency = v;
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
 
 	gkick_synth_unlock(synth);
@@ -813,8 +806,7 @@ gkick_synth_set_osc_amplitude(struct gkick_synth *synth,
 	osc->amplitude = v;
 
         if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
-                synth->buffer_update = 1;
-                pthread_cond_signal(&synth->condition_var);
+                gkick_synth_wakeup_thread();
         }
 
 	gkick_synth_unlock(synth);
@@ -1021,7 +1013,7 @@ void *gkick_synth_run(void *arg)
                         gkick_log_warning("can't copy buffer to audio");
                 }
                 synth->buffer_update = 0;
-                if (synth->buffer_callback != NULL) {
+                if (synth->buffer_callback != NULL || synth->callback_args) {
                         synth->buffer_callback(synth->callback_args);
                 }
                 gkick_synth_unlock(synth);
@@ -1104,8 +1096,7 @@ gkick_synth_set_osc_filter_type(struct gkick_synth *synth,
 	}
 
         res = gkick_filter_set_type(osc->filter, type);
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
 
         return res;
@@ -1158,8 +1149,7 @@ gkick_synth_set_osc_filter_cutoff(struct gkick_synth *synth,
 		return GEONKICK_ERROR;
 	}
         res = gkick_filter_set_cutoff_freq(osc->filter, cutoff);
-        synth->buffer_update = 1;
-        pthread_cond_signal(&synth->condition_var);
+        gkick_synth_wakeup_thread();
         gkick_synth_unlock(synth);
 
         return res;
@@ -1300,4 +1290,9 @@ gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
+}
+
+void gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable)
+{
+        if (synth ==)
 }

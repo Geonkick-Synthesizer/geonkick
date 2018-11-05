@@ -79,6 +79,12 @@ struct gkick_synth {
 
         pthread_mutex_t lock;
         pthread_cond_t condition_var;
+        /**
+         * Specifies if the kick synthesis is tuned off.
+         * If is 0 any updates of the synthesizer parameters
+         * will not trigger the kick synthesisys.
+         */
+        int synthesis_on;
 };
 
 enum geonkick_error
@@ -293,6 +299,10 @@ enum geonkick_error
 gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
                                   size_t osc_index,
                                   int *enabled);
+
+void gkick_synth_wakeup_thread(struct gkick_synth *synth);
+
+void gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable);
 
 
 #endif // GEONKICK_SYNTHESIZER_H

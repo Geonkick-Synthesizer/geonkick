@@ -45,12 +45,14 @@ class GeonkickApi: public QObject {
   }
 
   enum class FunctionType:int {
-          Sine     = GEONKICK_OSC_FUNC_SINE,
-          Square   = GEONKICK_OSC_FUNC_SQUARE,
-          Triangle = GEONKICK_OSC_FUNC_TRIANGLE,
-          Sawtooth = GEONKICK_OSC_FUNC_SAWTOOTH,
-          Noise    = GEONKICK_OSC_FUNC_NOISE,
-          Unknown  = GEONKICK_OSC_FUNC_UNKNOWN
+          Sine          = GEONKICK_OSC_FUNC_SINE,
+          Square        = GEONKICK_OSC_FUNC_SQUARE,
+          Triangle      = GEONKICK_OSC_FUNC_TRIANGLE,
+          Sawtooth      = GEONKICK_OSC_FUNC_SAWTOOTH,
+          NoiseWite     = GEONKICK_OSC_FUNC_NOISE_WHITE,
+          NoisePink     = GEONKICK_OSC_FUNC_NOISE_PINK,
+          NoiseBrownian = GEONKICK_OSC_FUNC_NOISE_BROWNIAN,
+          Unknown       = GEONKICK_OSC_FUNC_UNKNOWN
   };
 
   enum class EnvelopeType:int {
@@ -112,6 +114,7 @@ public slots:
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
+  vois setState(const GeonkickState &state);
 
 signals:
   void kickLengthUpdated(double length);
@@ -121,6 +124,8 @@ signals:
 protected:
   static void kickUpdatedCallback(void *arg);
   void emitKickUpdated();
+  void turnOnKickSynthesis();
+  void turnOffKickSynthesis();
 
 private:
   struct geonkick *geonkickApi;
