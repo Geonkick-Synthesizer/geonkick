@@ -1013,7 +1013,7 @@ void *gkick_synth_run(void *arg)
                         gkick_log_warning("can't copy buffer to audio");
                 }
                 synth->buffer_update = 0;
-                if (synth->buffer_callback != NULL || synth->callback_args) {
+                if (synth->buffer_callback != NULL || synth->callback_args != NULL) {
                         synth->buffer_callback(synth->callback_args);
                 }
                 gkick_synth_unlock(synth);
