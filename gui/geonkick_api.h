@@ -30,6 +30,7 @@
 #include <QObject>
 
 #include "geonkick.h"
+#include "geonkick_state.h"
 
 class Oscillator;
 
