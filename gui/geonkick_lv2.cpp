@@ -39,6 +39,80 @@
 #define APP_URI "http://geontime.com/geonkick"
 #define APP_URI_UI "http://geontime.com/geonkick#ui"
 
+class GeonkickLv2PLugin
+{
+  public:
+        enum class PortType: int {
+                MidiIn       = 0,
+                LeftChannel  = 1,
+                RightChannel = 2
+        };
+
+        GeonkickLv2PLugin()
+                : geonkickApi(new GeonkickApi),
+                  midiIn(nullptr),
+                  leftChannel(nullptr),
+                  rightChannel(nullptr)
+        {
+        }
+
+        ~GeonkickLv2PLugin()
+        {
+                if (geonkickApi) {
+                        delete geonkickApi;
+                }
+        }
+
+        void setAudioChannel(float *data, PortType port)
+        {
+                if (port == PortType::LeftChannel)
+                        leftChannel = data;
+                else
+                        rightChannel = data;
+        }
+
+        void setMidiIn(const LV2_Atom_Sequence *data)
+        {
+                midiIn = data;
+        }
+
+        GeonkickApi* getApi()
+        {
+                return geonkickApi;
+        }
+
+        void processSamples(int nsamples)
+        {
+                if (!midiIn) {
+                        return;
+                }
+
+                auto it = lv2_atom_sequence_begin(&midiIn->body);
+                for (auto i = 0; i < nsamples; i++) {
+                        if (it->time.frame == i && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
+                                const uint8_t* const msg = (const uint8_t*)(ev + 1);
+                                switch (lv2_midi_message_type(msg))
+                                {
+                                case LV2_MIDI_MSG_NOTE_ON:
+                                                geonkickApi->setKeyPressed(true);
+                                case LV2_MIDI_MSG_NOTE_OFF:
+                                                geonkickApi->setKeyPressed(false);
+                                }
+                                it = lv2_atom_sequence_next(it);
+                        }
+                        auto val = geonkickApi->getAudioFrame();
+                        leftChannel[i]  = val;
+                        rightChannel[i] = val;
+                }
+        }
+
+pivate:
+        GeonkickApi *geonkickApi;
+        LV2_Atom_Sequence* midiIn;
+        float *leftChannel;
+        float *rightChannel;
+};
+
 /**
  * Funcitons for LV2 UI plugin.
  *
@@ -54,6 +128,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                                          LV2UI_Widget*             widget,
                                          const LV2_Feature* const* features)
 {
+        qDebug() << __PRETTY_FUNCTION__;
         MainWindow *mainWindow = nullptr;
         if (!features) {
                 return NULL;
@@ -62,7 +137,8 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         const LV2_Feature *feature = *features;
         while (feature != nullptr) {
                 if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
-                        mainWindow = new MainWindow(static_cast<GeonkickApi*>(feature->data));
+                        auto geonkickLv2PLugin = static_cast<GeonkickLv2PLugin*>(feature->data);
+                        mainWindow = new MainWindow(geonkickLv2PLugin->getApi());
                         if (!mainWindow->init()) {
                                 GEONKICK_LOG_ERROR("can't init MainWindow");
                                 delete mainWindow;
@@ -81,6 +157,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 
 static void gkick_cleanup_ui(LV2UI_Handle handle)
 {
+        qDebug() << __PRETTY_FUNCTION__;
         if (handle) {
                 delete static_cast<MainWindow*>(handle);
         }
@@ -92,6 +169,7 @@ static void gkick_port_event_ui(LV2UI_Handle ui,
                                 uint32_t format,
                                 const void *buffer )
 {
+        qDebug() << __PRETTY_FUNCTION__;
 }
 
 static const LV2UI_Descriptor gkick_descriptor_ui = {
@@ -104,6 +182,7 @@ static const LV2UI_Descriptor gkick_descriptor_ui = {
 
 const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index)
 {
+        qDebug() << __PRETTY_FUNCTION__;
 	switch (index) {
 	case 0:
 		return &gkick_descriptor_ui;
@@ -117,36 +196,37 @@ const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index)
  *
  * The Geonkick API instance is loaded alone.
  */
-
 static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
                                     double                    rate,
                                     const char*               bundle_path,
                                     const LV2_Feature* const* features)
 {
-        GeonkickApi *api = new GeonkickApi;
-        if (!api->init()) {
-                GEONKICK_LOG_DEBUG("can't init api");
-                delete api;
+        qDebug() << __PRETTY_FUNCTION__ ;;
+        geonkickLv2PLugin = new GeonkickLv2Plugin;
+        if (!geonkickLv2PLugin->init()) {
+                GEONKICK_LOG_DEBUG("can't init plugin");
+                delete geonkickLv2PLugin;
                 return NULL;
         }
-        return static_cast<LV2_Handle>(api);
+        return static_cast<LV2_Handle>(geonkickLv2PLugin);
 }
 
 static void gkick_connect_port(LV2_Handle instance,
                                uint32_t   port,
                                void*      data)
 {
-        /*        auto portType = static_cast<GeonKickLv2Plugin::PortType>(port);
+        qDebug() << __PRETTY_FUNCTION__ << "instance: " << instance;
+        auto geonkickLv2PLugin = static_cast<GeonkickLv2PLugin*>(instance);
         switch (static_cast<PortType>(port))
         {
-        case GeonKickApi::PortType::LeftChannel:
-        case GeonKickApi::PortType::RightChannel:
-                geonkickApi->setOuptutChannel(static_cast<const float*>(data), portType);
+        case GeonkickLv2PLugin::PortType::LeftChannel:
+        case GeonkickLv2PLugin::PortType::RightChannel:
+                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), portType);
                 break;
         case GeonKickApi::PortType::MidiIn:
-                geonkicApi->setMidiIn(static_cast<const LV2_Atom_Sequence*>(data));
+                geonkickLv2PLugin->setMidiIn(static_cast<const LV2_Atom_Sequence*>(data));
                 break;
-                }*/
+        }
 }
 
 static void gkick_activate(LV2_Handle instance)
@@ -156,6 +236,8 @@ static void gkick_activate(LV2_Handle instance)
 
 static void gkick_run(LV2_Handle instance, uint32_t n_samples)
 {
+       auto geonkickLv2PLugin = static_cast<GeonkickLv2PLugin*>(instance);
+       geonkickLv2PLugin->processSamples(n_samples);
 }
 
 static void gkick_deactivate(LV2_Handle instance)
@@ -166,7 +248,7 @@ static void gkick_deactivate(LV2_Handle instance)
 static void gkick_cleaup(LV2_Handle instance)
 {
         qDebug() << __PRETTY_FUNCTION__ << "instance: " << instance;
-        delete static_cast<GeonkickApi*>(instance);
+        delete static_cast<GeonkickLv2PLugin*>(instance);
 }
 
 static const LV2_Descriptor gkick_descriptor = {

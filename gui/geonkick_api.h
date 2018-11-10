@@ -41,6 +41,12 @@ class GeonkickApi: public QObject {
 
  public:
 
+  enum class PortType: int {
+         MidiIn       = GEONKICK_PORT_MIDI_IN;
+         LeftChannel  = GEONKICK_PORT_AUDIO_LEFT,
+         RightChannel = GEONKICK_PORT_AUDIO_RIGHT,
+  };
+
   enum class OscillatorType: int {
          Oscillator1 = 0,
          Oscillator2 = 1,
@@ -110,6 +116,9 @@ class GeonkickApi: public QObject {
   std::vector<gkick_real> getKickBuffer();
   int getSampleRate();
   static std::shared_ptr<GeonkickState> getDefaultState();
+  void setAudioChannel(float *data, PortType port);
+  void setMidiIn(float *data, PortType port);
+  void processSamples(int nsamples);
 
 public slots:
   void setKickAmplitude(double amplitude);
