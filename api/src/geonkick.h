@@ -274,6 +274,9 @@ geonkick_osc_filter_is_enabled(struct geonkick *kick,
 enum geonkick_error
 geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate);
 
+enum geonkick_error
+geonkick_enable_synthesis(struct geonkick *kick, int enable);
+
 #ifdef __cplusplus
 }
 #endif

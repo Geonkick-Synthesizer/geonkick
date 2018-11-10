@@ -22,6 +22,7 @@ HEADERS += globals.h \
            knob.h \
            oscillator.h \
            geonkick_api.h \
+           geonkick_state.h \
            oscillator_envelope.h \
            oscillator_group_box.h \
            export_widget.h \
@@ -49,6 +50,7 @@ SOURCES += geonkick_theme.cpp \
            knob.cpp \
            oscillator.cpp \
            geonkick_api.cpp \
+           geonkick_state.cpp \
            oscillator_envelope.cpp \
            oscillator_group_box.cpp \
            export_widget.cpp \

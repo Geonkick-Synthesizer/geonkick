@@ -24,6 +24,7 @@
 #include "geonkick_api.h"
 #include "oscillator.h"
 #include "globals.h"
+#include "geonkick_state.h"
 
 #include <geonkick.h>
 
@@ -49,72 +50,39 @@ bool GeonkickApi::init()
                 return false;
   	}
 
-        /*geonkickApi->setKickLength(300);
-        geonkickApi->setKickAmplitude(0.8);
-        geonkickApi->setKickFilterFrequency(200);
-        oscillators = geonkickApi->oscillators();
-
-        // Oscillator 1
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
-        oscillator->setFrequency(1000);
-	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(5000);
-	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(0.05);
-
-        // Oscillator 2
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
-        oscillator->setFrequency(1000);
-	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(5000);
-	oscillator->setFunction(Oscillator::FunctionType::Sine);
-        oscillator->setAmplitude(0.05);
-        // Noise
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
-	oscillator->setFunction(Oscillator::FunctionType::Noise);
-	oscillator->setAmplitude(0.05);
-	oscillator->setFilterType(Oscillator::FilterType::LowPass);
-	oscillator->setFilterFrequency(5000);*/
-
         geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
-
         return true;
 }
 
-void GeonkickApi::turnOnKickSynthesis()
+void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
 {
-        geonkick_enable_synthesis(1);
-}
+        if (!state)
+        {
+                return;
+        }
 
-void turnOffKickSynthesis()
-{
-        geonkick_enable_synthesis(0);
-}
-
-bool GeonkickApi::setState(const GeonkickState &state)
-{
-        turnOffKickSynthesis();
-        setLimiterValue(state.limiterValue());
-        setKickLength(state.kickLength());
-        setKickAmplitude(state.kickAmplitude());
-        enableKickFilter(state.isKickFilterEnabled());
-        setKickFilterFrequency(state.kickFilterFrequency());
-        setKickFilterQFactor(state.kickFilterFactor());
-        setKickFilterType(state.kickFilterType());
-        setKickEnvelopePoints(state.kickEnvelopePoints());
+        geonkick_enable_synthesis(geonkickApi, 1);
+        setLimiterValue(state->getLimiterValue());
+        setKickLength(state->getKickLength());
+        setKickAmplitude(state->getKickAmplitude());
+        enableKickFilter(state->isKickFilterEnabled());
+        setKickFilterFrequency(state->kickFilterFrequency());
+        setKickFilterQFactor(state->kickFilterFactor());
+        setKickFilterType(state->kickFilterType());
+        setKickEnvelopePoints(state->kickEnvelopePoints());
         setOscillatorState(OscillatorType::Oscillator1, state);
         setOscillatorState(OscillatorType::Oscillator2, state);
         setOscillatorState(OscillatorType::Noise, state);
-        tunOnKickSynthesis();
 }
 
 void GeonkickApi::setOscillatorState(OscillatorType oscillator, const GeonkickState &state)
 {
+        state.addOscillator(oscillator);
         auto osc = static_cast<int>(oscillator);
         enableOscillator(osc, state.isOscillatorEnabled(static_cast<int>(osc)));
         setOscillatorFunction(osc, state.oscillatorFunction(static_cast<int>(osc)));
         setOscillatorAmplitude(osc, state.oscillatorAmplitue(static_cast<int>(osc)));
-        if (osc != OscillatorType::Noise) {
+        if (oscillator != OscillatorType::Noise) {
                 setOscillatorFrequency(osc, state.oscillatorFrequency(static_cast<int>(osc)));
         }
         enableOscillatorFilter(osc, state.isOscillatorFilterEnabled(static_cast<int>(osc)));
@@ -123,11 +91,11 @@ void GeonkickApi::setOscillatorState(OscillatorType oscillator, const GeonkickSt
         setOscillatorFilterFactor(osc, state.oscillatorFilterFactor(static_cast<int>(osc)));
         setOscillatorEvelopePoints(osc, EnvelopeType::Amplitude,
                                    oscillatorEnvelopePoints(static_cast<int>(osc)),
-                                   GeonkickState::Envelope::Amplitude), EnvelopeType::Amplitude);
-        if (osc != OscillatorType::Noise) {
+                                   EnvelopeType::Amplitude));
+        if (oscillator != OscillatorType::Noise) {
                 setOscillatorEvelopePoints(osc, EnvelopeType::Frequency,
                                            oscillatorEnvelopePoints(static_cast<int>(osc)),
-                                           GeonkickState::Envelope::Frequency));
+                                           GeonkickState::EnvelopeType::Frequency));
         }
 }
 
@@ -160,6 +128,11 @@ QPolygonF GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeTyp
         }
 
         return points;
+}
+
+void GeonkickApi::setOscillatorEvelopePoints(int index,  EnvelopeType envelope, const QPolygonF &points)
+{
+        geonkick_osc_envelope_set_points();
 }
 
 void GeonkickApi::addOscillatorEnvelopePoint(int oscillatorIndex, EnvelopeType envelope, const QPointF &point)

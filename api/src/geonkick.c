@@ -676,3 +676,9 @@ geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate)
 
         return GEONKICK_OK;
 }
+
+enum geonkick_error
+geonkick_enable_synthesis(struct geonkick *kick, int enable)
+{
+        return gkick_synth_enable_synthesis(kick, enable);
+}

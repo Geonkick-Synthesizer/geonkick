@@ -30,9 +30,11 @@
 #include <QObject>
 
 #include "geonkick.h"
-#include "geonkick_state.h"
+
+#include <memory>
 
 class Oscillator;
+class GeonkickState;
 
 class GeonkickApi: public QObject {
  Q_OBJECT
@@ -43,7 +45,7 @@ class GeonkickApi: public QObject {
          Oscillator1 = 0,
          Oscillator2 = 1,
          Noise       = 2
-  }
+  };
 
   enum class FunctionType:int {
           Sine          = GEONKICK_OSC_FUNC_SINE,
@@ -115,7 +117,7 @@ public slots:
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
-  vois setState(const GeonkickState &state);
+  void setState(const std::shared_ptr<GeonkickState> &state);
 
 signals:
   void kickLengthUpdated(double length);
@@ -125,8 +127,7 @@ signals:
 protected:
   static void kickUpdatedCallback(void *arg);
   void emitKickUpdated();
-  void turnOnKickSynthesis();
-  void turnOffKickSynthesis();
+  void setOscillatorState(OscillatorType oscillator, const GeonkickState &state);
 
 private:
   struct geonkick *geonkickApi;

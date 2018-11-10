@@ -60,23 +60,23 @@ class GeonkickState
         void setOscillatorFilterType(int index, GeonkickApi::FilterType type);
         void setOscillatorFilterCutOffFreq(int index, double val);
         void setOscillatorFilterFactor(int index, double val);
-        void setOscillatorEnvelopePoints(int index, const QPointF &points);
+        void setOscillatorEnvelopePoints(int index, const QPointF &points, GeonkickApi::EnvelopeType);
 
         bool isOscillatorEnabled(int index);
         GeonkickApi::FunctionType oscillatorFunction(int index);
         double oscillatorAmplitue(int index);
         double oscillatorFrequency(int index);
         bool isOscillatorFilterEnabled(int index);
-        FiterType oscillatorFilterType(int index);
+        GeonkickApi::FilterType oscillatorFilterType(int index);
         double oscillatorFilterCutOffFreq(int index);
         double oscillatorFilterFactor(int index);
-        QPolygonF oscillatorEnvelopePoints(int index);
+        QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type);
 
 private:
-        struct Oscialltor {
+        struct Oscillator {
                 GeonkickApi::OscillatorType type;
                 bool isEnabled;
-                GeonkickApi::FunctionType;
+                GeonkickApi::FunctionType function;
                 double amplitude;
                 double frequency;
                 bool isFilterEnabled;
@@ -87,7 +87,7 @@ private:
                 QPolygonF frequencyEnvelope;
         };
 
-        const Oscillator& getOscillator(int index);
+        std::shared_ptr<Oscillator>& getOscillator(int index);
 
         double limiterValue;
         double kickLength;
@@ -96,8 +96,8 @@ private:
         double kickFilterFrequency;
         double kickFilterQFactor;
         GeonkickApi::FilterType kickFilterType;
-        QPolygonF kickEvelopePoints;
-        std::unordered_map<int, Socillator> oscillators;
+        QPolygonF kickEnvelopePoints;
+        std::vector<int, std::shared_ptr<Oscillator>> oscillators;
 };
 
 #endif // GEONKICK_STATE_H

@@ -236,6 +236,18 @@ gkick_synth_enable_oscillator(struct gkick_synth *synth, size_t index, int enabl
         return GEONKICK_OK;
 }
 
+void gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable)
+{
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        synth->synthesis_on = enable;
+        gkick_synth_unlock(synth);
+}
+
 void gkick_synth_wakeup_thread(void)
 {
         if (synth->synthesis_on) {

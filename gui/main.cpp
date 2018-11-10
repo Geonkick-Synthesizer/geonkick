@@ -22,12 +22,53 @@
  */
 
 #include "mainwindow.h"
+#include "geonkick_state.h"
 
 #include <QApplication>
 #include <QDebug>
 #include <QPushButton>
 #include <QVector>
 #include <QFontDatabase>
+
+static std::shared_ptr<GeonkickState> getDefaultState()
+{
+        std::shared_ptr<GeonkickState> state = std::make_sahred<GeonkickState>();
+        state->setLimiterValue(1.0);
+        state->setKickLength(300);
+        state->setKickAmplitude(1.0);
+        state->enableKickFilter(false);
+        state->setKickFilterFrequency(500);
+        state->setKickFilterQFactor(1.0);
+        state->setKickFilterType(GeonkickApi::FilterType::LowPass);
+        QPolygonF envelope = {QPointF(0, 1), QPointF(1, 1)};
+        state->setKickEnvelopePoints(envelope);
+
+        std::vector<GeonkickApi::OscillatorType> oscilattors = {
+                GeonkickApi::OscillatorType::Oscillator1,
+                GeonkickApi::OscillatorType::Oscillator2,
+                GeonkickApi::OscillatorType::Noise,
+        };
+
+        for (auto const &osc: oscillators) {
+                index = static_cast<int>(osc);
+                if (osc == GeonkickApi::OscillatorType::Ocillator1) {
+                        state->setOscillatorEnabled(index, true);
+                } else {
+                        state->setOscillatorEnabled(index, false);
+                }
+                state->setOscillatorFunction(index, GeonkickApi::FunctionType::Sine);
+                state->setOscillatorAmplitue(index, 1);
+                state->setOscillatorFrequency(index, 5000);
+                state->setOscillatorFilterEnabled(index, false);
+                state->setOscillatorFilterType(index, GeonkickApi::FilterType::LowPass);
+                state->setOscillatorFilterCutOffFreq(index, 5000);
+                state->setOscillatorFilterFactor(index, 1);
+                state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Amplitude);
+                if (osc != GeonkickApi::OscillatorType::Noise) {
+                        state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Frequency);
+                }
+        }
+}
 
 int main(int argc, char *argv[])
 {
@@ -43,7 +84,7 @@ int main(int argc, char *argv[])
                 GEONKICK_LOG_ERROR("can't init API");
                 exit(1);
         } else {
-                api->setApiState(getDefaultState());
+                api->setState(getDefaultState());
         }
 
         MainWindow window(api.get());
