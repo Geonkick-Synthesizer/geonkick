@@ -10,7 +10,7 @@ CONFIG += shared plugin
 
 LIBS += -L../api/ -lgeonkick -lsndfile -ljack
 
-#include(gui.pri)
+include(gui.pri)
 
 SOURCES += geonkick_lv2.cpp
 
