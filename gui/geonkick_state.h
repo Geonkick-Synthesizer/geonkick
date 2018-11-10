@@ -60,17 +60,17 @@ class GeonkickState
         void setOscillatorFilterType(int index, GeonkickApi::FilterType type);
         void setOscillatorFilterCutOffFreq(int index, double val);
         void setOscillatorFilterFactor(int index, double val);
-        void setOscillatorEnvelopePoints(int index, const QPointF &points, GeonkickApi::EnvelopeType);
+        void setOscillatorEnvelopePoints(int index, const QPolygonF &points, GeonkickApi::EnvelopeType envelope);
 
-        bool isOscillatorEnabled(int index);
-        GeonkickApi::FunctionType oscillatorFunction(int index);
-        double oscillatorAmplitue(int index);
-        double oscillatorFrequency(int index);
-        bool isOscillatorFilterEnabled(int index);
-        GeonkickApi::FilterType oscillatorFilterType(int index);
-        double oscillatorFilterCutOffFreq(int index);
-        double oscillatorFilterFactor(int index);
-        QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type);
+        bool isOscillatorEnabled(int index) const;
+        GeonkickApi::FunctionType oscillatorFunction(int index) const;
+        double oscillatorAmplitue(int index) const;
+        double oscillatorFrequency(int index) const;
+        bool isOscillatorFilterEnabled(int index) const;
+        GeonkickApi::FilterType oscillatorFilterType(int index) const;
+        double oscillatorFilterCutOffFreq(int index) const;
+        double oscillatorFilterFactor(int index) const;
+        QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
 
 private:
         struct Oscillator {
@@ -87,7 +87,7 @@ private:
                 QPolygonF frequencyEnvelope;
         };
 
-        std::shared_ptr<Oscillator>& getOscillator(int index);
+        std::shared_ptr<Oscillator> getOscillator(int index) const;
 
         double limiterValue;
         double kickLength;
@@ -97,7 +97,7 @@ private:
         double kickFilterQFactor;
         GeonkickApi::FilterType kickFilterType;
         QPolygonF kickEnvelopePoints;
-        std::vector<int, std::shared_ptr<Oscillator>> oscillators;
+        std::unordered_map<int, std::shared_ptr<Oscillator>> oscillators;
 };
 
 #endif // GEONKICK_STATE_H

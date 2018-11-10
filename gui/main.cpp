@@ -32,7 +32,7 @@
 
 static std::shared_ptr<GeonkickState> getDefaultState()
 {
-        std::shared_ptr<GeonkickState> state = std::make_sahred<GeonkickState>();
+        std::shared_ptr<GeonkickState> state = std::make_shared<GeonkickState>();
         state->setLimiterValue(1.0);
         state->setKickLength(300);
         state->setKickAmplitude(1.0);
@@ -40,18 +40,20 @@ static std::shared_ptr<GeonkickState> getDefaultState()
         state->setKickFilterFrequency(500);
         state->setKickFilterQFactor(1.0);
         state->setKickFilterType(GeonkickApi::FilterType::LowPass);
-        QPolygonF envelope = {QPointF(0, 1), QPointF(1, 1)};
+        QPolygonF envelope;
+        envelope << QPointF(0, 1);
+        envelope << QPointF(1, 1);
         state->setKickEnvelopePoints(envelope);
 
-        std::vector<GeonkickApi::OscillatorType> oscilattors = {
+        std::vector<GeonkickApi::OscillatorType> oscillators = {
                 GeonkickApi::OscillatorType::Oscillator1,
                 GeonkickApi::OscillatorType::Oscillator2,
                 GeonkickApi::OscillatorType::Noise,
         };
 
         for (auto const &osc: oscillators) {
-                index = static_cast<int>(osc);
-                if (osc == GeonkickApi::OscillatorType::Ocillator1) {
+                int index = static_cast<int>(osc);
+                if (osc == GeonkickApi::OscillatorType::Oscillator1) {
                         state->setOscillatorEnabled(index, true);
                 } else {
                         state->setOscillatorEnabled(index, false);
@@ -68,6 +70,8 @@ static std::shared_ptr<GeonkickState> getDefaultState()
                         state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Frequency);
                 }
         }
+
+        return state;
 }
 
 int main(int argc, char *argv[])

@@ -302,7 +302,8 @@ gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
 
 void gkick_synth_wakeup_thread(struct gkick_synth *synth);
 
-void gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable);
+enum geonkick_error
+gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable);
 
 
 #endif // GEONKICK_SYNTHESIZER_H
