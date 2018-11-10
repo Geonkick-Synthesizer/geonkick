@@ -30,50 +30,6 @@
 #include <QVector>
 #include <QFontDatabase>
 
-static std::shared_ptr<GeonkickState> getDefaultState()
-{
-        std::shared_ptr<GeonkickState> state = std::make_shared<GeonkickState>();
-        state->setLimiterValue(1.0);
-        state->setKickLength(300);
-        state->setKickAmplitude(1.0);
-        state->enableKickFilter(false);
-        state->setKickFilterFrequency(500);
-        state->setKickFilterQFactor(1.0);
-        state->setKickFilterType(GeonkickApi::FilterType::LowPass);
-        QPolygonF envelope;
-        envelope << QPointF(0, 1);
-        envelope << QPointF(1, 1);
-        state->setKickEnvelopePoints(envelope);
-
-        std::vector<GeonkickApi::OscillatorType> oscillators = {
-                GeonkickApi::OscillatorType::Oscillator1,
-                GeonkickApi::OscillatorType::Oscillator2,
-                GeonkickApi::OscillatorType::Noise,
-        };
-
-        for (auto const &osc: oscillators) {
-                int index = static_cast<int>(osc);
-                if (osc == GeonkickApi::OscillatorType::Oscillator1) {
-                        state->setOscillatorEnabled(index, true);
-                } else {
-                        state->setOscillatorEnabled(index, false);
-                }
-                state->setOscillatorFunction(index, GeonkickApi::FunctionType::Sine);
-                state->setOscillatorAmplitue(index, 1);
-                state->setOscillatorFrequency(index, 5000);
-                state->setOscillatorFilterEnabled(index, false);
-                state->setOscillatorFilterType(index, GeonkickApi::FilterType::LowPass);
-                state->setOscillatorFilterCutOffFreq(index, 5000);
-                state->setOscillatorFilterFactor(index, 1);
-                state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Amplitude);
-                if (osc != GeonkickApi::OscillatorType::Noise) {
-                        state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Frequency);
-                }
-        }
-
-        return state;
-}
-
 int main(int argc, char *argv[])
 {
         QApplication a(argc, argv);
@@ -87,8 +43,6 @@ int main(int argc, char *argv[])
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");
                 exit(1);
-        } else {
-                api->setState(getDefaultState());
         }
 
         MainWindow window(api.get());

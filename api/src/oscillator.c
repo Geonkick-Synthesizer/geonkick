@@ -163,7 +163,9 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
         case GEONKICK_OSC_FUNC_SAWTOOTH:
                 v = amp * gkick_osc_func_sawtooth(osc->phase);
                 break;
-        case GEONKICK_OSC_FUNC_NOISE:
+        case GEONKICK_OSC_FUNC_NOISE_WHITE:
+        case GEONKICK_OSC_FUNC_NOISE_PINK:
+        case GEONKICK_OSC_FUNC_NOISE_BROWNIAN:
                 v = amp * gkick_osc_func_noise();
                 break;
         default:

@@ -52,7 +52,7 @@ class GeonkickApi: public QObject {
           Square        = GEONKICK_OSC_FUNC_SQUARE,
           Triangle      = GEONKICK_OSC_FUNC_TRIANGLE,
           Sawtooth      = GEONKICK_OSC_FUNC_SAWTOOTH,
-          NoiseWite     = GEONKICK_OSC_FUNC_NOISE_WHITE,
+          NoiseWhite    = GEONKICK_OSC_FUNC_NOISE_WHITE,
           NoisePink     = GEONKICK_OSC_FUNC_NOISE_PINK,
           NoiseBrownian = GEONKICK_OSC_FUNC_NOISE_BROWNIAN,
           Unknown       = GEONKICK_OSC_FUNC_UNKNOWN
@@ -109,6 +109,7 @@ class GeonkickApi: public QObject {
   void getKickBuffer(std::vector<gkick_real> &buffer);
   std::vector<gkick_real> getKickBuffer();
   int getSampleRate();
+  static std::shared_ptr<GeonkickState> getDefaultState();
 
 public slots:
   void setKickAmplitude(double amplitude);

@@ -14,9 +14,6 @@ GeonkickState::GeonkickState() :
             {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
         }
 {
-        //        oscillators[static_cast<int>(GeonkickApi::OscillatorType::Oscillator1] = std::make_shared<Oscillator>();
-        ///       oscillators[GeonkickApi::OscillatorType::Oscillator2] = std::make_shared<Oscillator>();
-        //oscillators[GeonkickApi::OscillatorType::Noise]       = std::make_shared<Oscillator>();
 }
 
 void GeonkickState::setLimiterValue(double val)
@@ -220,7 +217,7 @@ double GeonkickState::oscillatorFrequency(int index) const
 {
         auto oscillator = getOscillator(index);
         if (oscillator) {
-                return oscillator->amplitude;
+                return oscillator->frequency;
         }
         return 0;
 }
