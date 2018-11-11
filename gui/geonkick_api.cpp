@@ -476,3 +476,16 @@ int GeonkickApi::getSampleRate()
 
         return sampleRate;
 }
+
+void GeonkickApi::setKeyPressed(bool b, int velocity)
+{
+        geonkick_key_pressed(geonkickApi, b, velocity);
+}
+
+gkick_real GeonkickApi::getAudioFrame()
+{
+        gkick_real val;
+        geonkick_get_audio_frame(geonkickApi, &val);
+        return val;
+}
+

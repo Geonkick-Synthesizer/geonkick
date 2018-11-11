@@ -58,7 +58,8 @@ geonkick_create(struct geonkick **kick)
 	}
 
         if ((*kick)->synth != NULL && (*kick)->audio != NULL) {
-                gkick_synth_set_output((*kick)->synth, (*kick)->audio->input);
+                gkick_synth_set_output((*kick)->synth,
+                                       gkick_audio_get_buffer((*kick)->audio));
         }
 
         if (gkick_synth_start((*kick)->synth)) {
@@ -484,16 +485,14 @@ geonkick_get_osc_frequency(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_play(struct geonkick *kick, int play)
+geonkick_key_pressed(struct geonkick *kick, int pressed, int velocity)
 {
-        enum geonkick_error res;
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
 
-        res = gkick_audio_play(kick->audio, play);
-        return res;
+        return gkick_audio_key_pressed(kick->audio, pressed, velocity);
 }
 
 enum geonkick_error
@@ -681,4 +680,10 @@ enum geonkick_error
 geonkick_enable_synthesis(struct geonkick *kick, int enable)
 {
         return gkick_synth_enable_synthesis(kick->synth, enable);
+}
+
+enum geonkick_error
+geonkick_get_audio_frame(struct geonkick *kick, gkick_real *val)
+{
+        return gkick_audio_get_frame(kick->audio, val);
 }

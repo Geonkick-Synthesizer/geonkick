@@ -215,7 +215,7 @@ geonkick_get_osc_frequency(struct geonkick *kick,
                            gkick_real *v);
 
 enum geonkick_error
-geonkick_play(struct geonkick *kick, int play);
+geonkick_key_pressed(struct geonkick *kick, int pressed, int velocity);
 
 enum geonkick_error
 geonkick_get_kick_buffer_size(struct geonkick *kick, size_t *size);
@@ -275,6 +275,9 @@ geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate);
 
 enum geonkick_error
 geonkick_enable_synthesis(struct geonkick *kick, int enable);
+
+enum geonkick_error
+geonkick_get_audio_frame(struct geonkick *kick, gkick_real *val);
 
 #ifdef __cplusplus
 }

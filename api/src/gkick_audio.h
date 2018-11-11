@@ -42,9 +42,28 @@ struct gkick_note_info {
         char velocity;
 };
 
+struct gkick_audio_output
+{
+        struct gkick_buffer *buffer;
+
+        pthread_mutex_t lock;
+        gkick_real limiter;
+        size_t buffer_index;
+        char key_velocity;
+        enum gkick_key_state key_state;
+
+        /**
+         * decay - note release time in measured in number of jack frames.
+         * Relaxation curve for audio is liniear:
+         *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,
+         *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
+         */
+        int decay;
+}
+
 struct gkick_audio {
+        struct gkick_audio_output *audio_output;
         struct gkick_jack *jack;
-        struct gkick_buffer *input;
         // other audio device
 };
 
@@ -59,7 +78,22 @@ gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit);
 enum geonkick_error
 gkick_audio_get_limiter_val(struct gkick_audio *adio, gkick_real *limit);
 
+sutrct gkick_buffer*
+gkick_audio_get_buffer(struct gkick_audio *audio);
+
 enum geonkick_error
-gkick_audio_play(struct gkick_audio *audio, int play);
+gkick_audio_key_pressed(struct gkick_audio *audio, int pressed, int velocity);
+
+enum geonkick_error
+gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val);
+
+/**
+ * Audio output functions module
+ */
+enum geonkick_error
+gkick_audio_output_key_pressed(struct gkick_audio *audio_output, int pressed, int velocity);
+
+enum geonkick_error
+gkick_audio_output_get_frame(struct gkick_audio_output *audio, gkick_real *val);
 
 #endif // GKICK_AUDIO_H

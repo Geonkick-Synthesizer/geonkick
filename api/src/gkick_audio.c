@@ -37,14 +37,20 @@ gkick_audio_create(struct gkick_audio** audio)
                 gkick_log_error("can't allocate memory");
 		return GEONKICK_ERROR_MEM_ALLOC;
 	}
+        *audio->jack         = NULL;
+        *audio->audio_outptut = NULL;
 
-        if (gkick_create_jack(&(*audio)->jack) != GEONKICK_OK) {
-                gkick_log_error("can't create jack");
-                gkick_audio_free(audio);
+        if (gkick_audio_output_create(*audio) != GEONKICK_OK) {
+                gkick_log_error("can't create audio output");
+                gkick_audo_free(audio);
                 return GEONKICK_ERROR;
         }
-        (*audio)->input = (*audio)->jack->input;
 
+#ifdef GEONKICK_AUDIO_JACK
+        if (gkick_create_jack(*audio) != GEONKICK_OK) {
+                gkick_log_warning("can't create jack");
+        }
+#endif
         return GEONKICK_OK;
 }
 
@@ -52,6 +58,7 @@ void gkick_audio_free(struct gkick_audio** audio)
 {
         if (audio != NULL && *audio != NULL) {
                 gkick_jack_free(&(*audio)->jack);
+                gkick_audio_output_free(&(*audio)->audio_output);
                 free(*audio);
                 *audio = NULL;
         }
@@ -71,13 +78,7 @@ gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit)
                 limit = 1.0;
         }
 
-        if (audio->jack != NULL) {
-                gkick_jack_set_limiter_val(audio->jack, limit);
-        } else {
-                // TODO: some other audio device.
-        }
-
-        return GEONKICK_OK;
+        return gkick_audio_output_set_limiter(audio->audio_output, limit);
 }
 
 enum geonkick_error
@@ -88,28 +89,93 @@ gkick_audio_get_limiter_val(struct gkick_audio *audio, gkick_real *limit)
                return GEONKICK_ERROR;
         }
 
-        if (audio->jack != NULL) {
-                gkick_jack_get_limiter_val(audio->jack, limit);
-        } else {
-                // TODO: some other audio device.
+        return gkick_audio_output_get_limiter(audio->audio_ouptut, limit);
+}
+
+sutrct gkick_buffer*
+gkick_audio_get_buffer(struct gkick_audio *adio)
+{
+        if (audio == NULL) {
+                gkick_log_error("wrong arguments");
+                return NULL;
         }
 
-        return GEONKICK_OK;
+        return gkick_audio_output_get_buffer(audio->audio_output);
 }
 
 enum geonkick_error
-gkick_audio_play(struct gkick_audio *audio, int play)
+gkick_audio_key_pressed(struct gkick_audio *audio, int pressed, int velocity)
 {
         if (audio == NULL) {
                gkick_log_error("wrong arguments");
                return GEONKICK_ERROR;
         }
 
-        if (audio->jack != NULL) {
-                gkick_jack_set_play(audio->jack, play);
-        } else {
-                // TODO: some other audio device.
+        gkick_audio_output_key_pressed(audio->audio_output, pressed, velocity);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val)
+{
+        if (audio == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
         }
 
+        return gkick_audio_output_get_frame(audio->audio_output, val);
+}
+
+/**
+ * Audio output module functions definition
+ */
+enum geonkick_error
+gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output, pressed, velocity)
+{
+        gkick_audio_output_lock(audio_output);
+        if (pressed) {
+                audio_output->key_state = GKICK_KEY_STATE_PRESSED;
+                audio_output->is_play = 1;
+                audio_output->buffer_index = 0;
+        } else {
+                audio_output->key_state = GKICK_KEY_STATE_RELESED;
+                audio_output->decay = GEKICK_NOTE_RELEASE_TIME;
+        }
+        audio_output->key_velocity = velocity;
+        gkick_audio_output_unlock(audio_output);
         return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real *val)
+{
+        gkick_real val;
+        int is_end;
+        int release_time = GEKICK_NOTE_RELEASE_TIME;
+        gkick_audio_output_lock(audio_output);
+        if (!audio_output->is_play) {
+                val = 0.0;
+        } else {
+                val = gkick_buffer_get_at(audio_output->buffer, jack->buffer_index, &is_end);
+                if (is_end) {
+                        audio_output->buffer_index = 0;
+                        audio_output->is_play = 0;
+                } else {
+                        if (audio_output->key_state == GKICK_KEY_STATE_RELEASED) {
+                                audio_output->decay = - 1.0 * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
+                        } else {
+                                audio_output->decay = 1.0;
+                        }
+                        val *= audio_output->decay * ((gkick_real)audio_output->key_velocity / 127);
+                        audio_output->buffer_index++;
+                }
+
+                if (audio_output->key_state == GKICK_KEY_STATE_RELEASED) {
+                        audio_output->decay--;
+                        if (audio_output->decay < 0) {
+                                audio_output->is_play = 0;
+                        }
+                }
+        }
+        gkick_audio_output_unlock(audio_output);
 }
