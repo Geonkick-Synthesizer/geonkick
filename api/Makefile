@@ -1,6 +1,7 @@
 CC = gcc
 INCLUDES =
 DEFINES =  -DGKICK_LIB_LOG_LEVEL_TRACE -DGKICK_LIB_LOG_FUNCTION
+DEFINES += -DGEONKICK_AUDIO_JACK
 CFLAGS = -O0 -g -Wall -fPIC $(DEFINES) $(INCLUDES)
 LIBS = -ljack -lm
 TARGET = libgeonkick.a
@@ -13,6 +14,7 @@ OBJECTS = gkick_log.o \
           oscillator.o \
           synthesizer.o \
           gkick_jack.o \
+          audio_output.o \
           gkick_audio.o \
           geonkick.o
 

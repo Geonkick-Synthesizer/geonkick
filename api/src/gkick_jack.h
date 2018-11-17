@@ -1,10 +1,10 @@
 /**
- * File name: gkick_kack.c
- * Project: GeonKick (A kick synthesizer)
+ * File name: gkick_jack.c
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,18 +25,19 @@
 #define GKICK_JACK_H
 
 #include "geonkick_internal.h"
-#include "gkick_buffer.h"
+#include "audio_output.h"
 
 #include <jack/jack.h>
 #include <jack/midiport.h>
 
 struct gkick_jack {
-        /* Accessed only by jack thread. */
         jack_port_t *output_port_l;
         jack_port_t *output_port_r;
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;
+        struct gkick_audio_output *audio_output;
+        pthread_mutex_t lock;
 };
 
 int
@@ -66,7 +67,7 @@ enum geonkick_error
 gkick_jack_create_output_ports(struct gkick_jack *jack);
 
 enum geonkick_error
-gkick_create_jack(struct gkick_jack **jack);
+gkick_create_jack(struct gkick_jack **jack, struct gkick_audio_output *audio_output);
 
 int gkick_jack_is_midi_in_enabled(struct gkick_jack *jack);
 
@@ -75,15 +76,5 @@ void gkick_jack_free(struct gkick_jack **jack);
 void gkick_jack_lock(struct gkick_jack *jack);
 
 void gkick_jack_unlock(struct gkick_jack *jack);
-
-void gkick_jack_set_play(struct gkick_jack *jack, int play);
-
-int gkick_jack_is_play(struct gkick_jack *jack);
-
-enum geonkick_error
-gkick_jack_set_limiter_val(struct gkick_jack *jack, gkick_real limit);
-
-enum geonkick_error
-gkick_jack_get_limiter_val(struct gkick_jack *jack, gkick_real *limit);
 
 #endif

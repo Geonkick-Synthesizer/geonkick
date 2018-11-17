@@ -235,8 +235,6 @@ gkick_filter_val(struct gkick_filter *filter,
                 b[n - 1] = b[n] = 0;
                 h[n - 1] = h[n] = 0;
                 filter->queue_empty = 0;
-                gkick_log_debug("F: %f", F);
-                gkick_log_debug("Q: %f", Q);
         } else {
                 h[n - 1] = h[n];
                 b[n - 1] = b[n];
@@ -245,13 +243,6 @@ gkick_filter_val(struct gkick_filter *filter,
         h[n] = in_val - l[n - 1] - Q * b[n - 1];
         b[n] = F * h[n] + b[n - 1];
         l[n] = F * b[n] + l[n - 1];
-        /*        gkick_log_debug("---------------");
-        gkick_log_debug("in: %f", in_val);
-        gkick_log_debug("F: %f", F);
-        gkick_log_debug("Q: %f", Q);
-        gkick_log_debug("l: %f", l[n]);
-        gkick_log_debug("b: %f", b[n]);
-        gkick_log_debug("h: %f", h[n]);*/
 
         if (filter->type == GEONKICK_FILTER_HIGH_PASS) {
                 *out_val = h[n];

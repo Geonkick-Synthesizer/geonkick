@@ -58,6 +58,12 @@ enum geonkick_error {
 	GEONKICK_ERROR_WRONG_ARGUMENTS = 3
 };
 
+enum gkick_key_state {
+        GKICK_KEY_STATE_DEFAULT  = 0,
+        GKICK_KEY_STATE_PRESSED  = 1,
+        GKICK_KEY_STATE_RELEASED = 2
+};
+
 enum geonkick_envelope_type {
         GEONKICK_AMPLITUDE_ENVELOPE = 0,
         GEONKICK_FREQUENCY_ENVELOPE = 1
