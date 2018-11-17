@@ -40,7 +40,7 @@ gkick_audio_create(struct gkick_audio** audio)
         *audio->jack         = NULL;
         *audio->audio_outptut = NULL;
 
-        if (gkick_audio_output_create(*audio) != GEONKICK_OK) {
+        if (gkick_audio_output_create(&(*audio)->audio_outptut) != GEONKICK_OK) {
                 gkick_log_error("can't create audio output");
                 gkick_audo_free(audio);
                 return GEONKICK_ERROR;
@@ -127,8 +127,51 @@ gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val)
 }
 
 /**
- * Audio output module functions definition
+ * Audio output module functions definitions.
  */
+
+enum geonkick_error
+gkick_audio_output_create(struct gkick_audio_output **audio_output)
+{
+        if (audio_output == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        *audio_output = (struct gkick_audio_output*)malloc(sizeof(struct gkick_audio_output));
+        if (*audio_output == NULL) {
+                gkick_log_error("can't allocate memory");
+                return GEONKICK_ERROR;
+        }
+        memset(*audio_output, 0, sizeof(struct gkick_audio_output));
+
+        gkick_buffer_new(&(*audio_output)->buffer, GEONKICK_MAX_KICK_BUFFER_SIZE);
+        if ((*audio_output)->buffer == NULL) {
+                gkick_log_error("can't create kick buffer");
+                gkick_audio_output_free(audio_output);
+                return GEONKICK_ERROR;
+        }
+
+        if (pthread_mutex_init(&(*audio_output)->lock, NULL) != 0) {
+                gkick_log_error("error on init mutex");
+                gkick_audio_output_free(audio_output);
+                return GEONKICK_ERROR;
+	}
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_audio_output_free(struct gkick_audio_output **audio_output)
+{
+        if (audio_output != NULL && *audio_output != NULL) {
+                gkick_buffer_free(&(*audio_output)->buffer);
+                pthread_mutex_destroy(&(*audio_output)->lock);
+                free(*audio_output);
+                *audio_output = NULL;
+        }
+}
+
 enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output, pressed, velocity)
 {
@@ -139,7 +182,7 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output, pressed,
                 audio_output->buffer_index = 0;
         } else {
                 audio_output->key_state = GKICK_KEY_STATE_RELESED;
-                audio_output->decay = GEKICK_NOTE_RELEASE_TIME;
+                audio_output->decay = GEKICK_KEY_RELESE_DECAY_TIME;
         }
         audio_output->key_velocity = velocity;
         gkick_audio_output_unlock(audio_output);
@@ -151,7 +194,8 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
 {
         gkick_real val;
         int is_end;
-        int release_time = GEKICK_NOTE_RELEASE_TIME;
+        int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
+
         gkick_audio_output_lock(audio_output);
         if (!audio_output->is_play) {
                 val = 0.0;

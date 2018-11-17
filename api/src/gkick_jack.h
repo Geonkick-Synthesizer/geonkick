@@ -37,25 +37,6 @@ struct gkick_jack {
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;
-        size_t buffer_index;
-        char key_velocity;
-        enum gkick_key_state key_state;
-
-        /**
-         * decay - note release time in measured in number of jack frames.
-         * Relaxation curve for audio is liniear:
-         *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,
-         *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
-         */
-        int decay;
-        pthread_mutex_t lock;
-        /**
-         * Accessed by jack and other threads. input has it own mutex,
-         * so there no need to used the current struct mutex lock.
-         */
-        gkick_real limiter;
-        int is_play;
-        struct gkick_buffer *input;
 };
 
 int
@@ -104,6 +85,5 @@ gkick_jack_set_limiter_val(struct gkick_jack *jack, gkick_real limit);
 
 enum geonkick_error
 gkick_jack_get_limiter_val(struct gkick_jack *jack, gkick_real *limit);
-
 
 #endif

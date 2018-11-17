@@ -26,8 +26,8 @@
 
 #include "geonkick_internal.h"
 
-/* Note release time measuerd in number of jack frames. */
-#define GEKICK_NOTE_RELEASE_TIME 1000
+/* Decay time measured in number of audio frames / samples. */
+#define GEKICK_KEY_RELESE_DECAY_TIME 1000
 
 enum gkick_key_state {
         GKICK_KEY_STATE_DEFAULT  = 0,
@@ -90,6 +90,12 @@ gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val);
 /**
  * Audio output functions module
  */
+enum geonkick_error
+gkick_audio_output_create(struct gkick_audio_output **audio_output);
+
+enum geonkick_error
+gkick_audio_output_free(struct gkick_audio_output **audio_output);
+
 enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio *audio_output, int pressed, int velocity);
 
