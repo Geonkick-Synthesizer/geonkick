@@ -70,15 +70,14 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                int velocity)
 {
         gkick_audio_output_lock(audio_output);
-        if (pressed) {
-                audio_output->key_state = GKICK_KEY_STATE_PRESSED;
+        audio_output->key_state = pressed;
+        if (audio_output->key_state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->is_play = 1;
                 audio_output->buffer_index = 0;
+                audio_output->key_velocity = velocity;
         } else {
-                audio_output->key_state = GKICK_KEY_STATE_RELEASED;
                 audio_output->decay = GEKICK_KEY_RELESE_DECAY_TIME;
         }
-        audio_output->key_velocity = velocity;
         gkick_audio_output_unlock(audio_output);
         return GEONKICK_OK;
 }
@@ -88,6 +87,7 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
 {
         size_t is_end;
         int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
+        gkick_real decay_val;
 
         gkick_audio_output_lock(audio_output);
         if (!audio_output->is_play) {
@@ -99,11 +99,11 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                         audio_output->is_play = 0;
                 } else {
                         if (audio_output->key_state == GKICK_KEY_STATE_RELEASED) {
-                                audio_output->decay = - 1.0 * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
+                                decay_val = - 1.0 * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
                         } else {
-                                audio_output->decay = 1.0;
+                                decay_val = 1.0;
                         }
-                        *val *= audio_output->decay * ((gkick_real)audio_output->key_velocity / 127);
+                        *val *= decay_val * ((gkick_real)audio_output->key_velocity / 127);
                         audio_output->buffer_index++;
                 }
 
@@ -129,7 +129,7 @@ void gkick_audio_output_lock(struct gkick_audio_output *audio_output)
 void gkick_audio_output_unlock(struct gkick_audio_output *audio_output)
 {
         if (audio_output != NULL) {
-                pthread_mutex_lock(&audio_output->lock);
+                pthread_mutex_unlock(&audio_output->lock);
         }
 }
 
