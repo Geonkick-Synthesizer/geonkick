@@ -46,9 +46,9 @@ geonkick_create(struct geonkick **kick)
 	}
 
 	if (gkick_audio_create(&(*kick)->audio) != GEONKICK_OK) {
-                gkick_log_warning("can't create jack");
-		//geonkick_free(kick);
-		//return GEONKICK_ERROR;
+                gkick_log_warning("can't create audio");
+		geonkick_free(kick);
+		return GEONKICK_ERROR;
 	}
 
         if (gkick_synth_new(&(*kick)->synth) != GEONKICK_OK) {

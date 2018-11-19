@@ -53,14 +53,16 @@ gkick_audio_create(struct gkick_audio** audio)
                 gkick_log_warning("can't create jack");
                 gkick_audio_free(audio);
         }
-#endif
+#endif // GEONKICK_AUDIO_JACK
         return GEONKICK_OK;
 }
 
 void gkick_audio_free(struct gkick_audio** audio)
 {
         if (audio != NULL && *audio != NULL) {
+#ifdef GEONKICK_AUDIO_JACK
                 gkick_jack_free(&(*audio)->jack);
+#endif // GEONKICK_AUDIO_JACK
                 gkick_audio_output_free(&(*audio)->audio_output);
                 free(*audio);
                 *audio = NULL;

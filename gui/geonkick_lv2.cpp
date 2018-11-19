@@ -99,10 +99,12 @@ class GeonkickLv2Plugin
                                 switch (lv2_midi_message_type(msg))
                                 {
                                 case LV2_MIDI_MSG_NOTE_ON:
-                                        geonkickApi->setKeyPressed(true, velocity);
+                                        GEONKICK_LOG_ERROR("LV2_MIDI_MSG_NOTE_ON");
+                                        geonkickApi->setKeyPressed(true, msg[2]);
                                                 break;
                                 case LV2_MIDI_MSG_NOTE_OFF:
-                                        geonkickApi->setKeyPressed(false, velocity);
+                                        GEONKICK_LOG_ERROR("LV2_MIDI_MSG_NOTE_OFF");
+                                        geonkickApi->setKeyPressed(false, msg[2]);
                                                 break;
                                 default:
                                         break;
@@ -178,7 +180,6 @@ static void gkick_port_event_ui(LV2UI_Handle ui,
                                 uint32_t format,
                                 const void *buffer )
 {
-        qDebug() << __PRETTY_FUNCTION__;
 }
 
 static const LV2UI_Descriptor gkick_descriptor_ui = {
@@ -224,7 +225,6 @@ static void gkick_connect_port(LV2_Handle instance,
                                uint32_t   port,
                                void*      data)
 {
-        qDebug() << __PRETTY_FUNCTION__ << "instance: " << instance;
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
         auto portType = static_cast<GeonkickLv2Plugin::PortType>(port);
         switch (portType)
