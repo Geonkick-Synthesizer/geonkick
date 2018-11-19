@@ -43,7 +43,7 @@ What it should include:
 * Open
 * Standalone [i]
 * Plugin
-     - LV2
+     - LV2 [i]
      - VST
 * Platforms:
      - GNU/Linux [i]
