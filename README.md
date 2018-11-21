@@ -2,7 +2,7 @@
 
 A kick drum synthesizer.
 
-License: GPLV3
+License: GPLv3
 
 Status: no release yet
 
