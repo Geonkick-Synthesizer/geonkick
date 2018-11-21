@@ -42,9 +42,9 @@ gkick_synth_new(struct gkick_synth **synth)
 	memset(*synth, 0, sizeof(struct gkick_synth));
         (*synth)->length = 0.3;
 	(*synth)->oscillators_number = 3;
-        (*synth)->buffer_update = 1;
+        (*synth)->buffer_update = 0;
         (*synth)->amplitude = 1.0;
-        (*synth)->synthesis_on = 1;
+        (*synth)->synthesis_on = 0;
 
         if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
@@ -960,6 +960,7 @@ int gkick_synth_is_running(struct gkick_synth *synth)
 void *gkick_synth_run(void *arg)
 {
         size_t size;
+        size_t i;
         gkick_real len;
         gkick_real dt;
         struct gkick_synth *synth;
@@ -992,7 +993,7 @@ void *gkick_synth_run(void *arg)
                  * The synth parmaters is supposed to change even
                  * during the synthesis of the kick.
                  */
-                size_t i = 0;
+                i = 0;
                 while (1) {
                         gkick_synth_lock(synth);
                         if (i >= synth->buffer_size) {
