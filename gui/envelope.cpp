@@ -129,6 +129,7 @@ void Envelope::drawValueScale(QPainter &painter)
         QFont font = painter.font();
         font.setPixelSize(10);
         painter.setFont(font);
+        int rectH = font.pixelSize() + 2;
         painter.setPen(QPen(QColor(110, 110, 110)));
 
         if (type() == Type::Amplitude) {
@@ -144,7 +145,7 @@ void Envelope::drawValueScale(QPainter &painter)
                         pen.setStyle(Qt::DotLine);
                         painter.setPen(pen);
                         painter.drawLine(x + 1, y, x + W(), y);
-                        QRect rect(x - 28,  y - font.pixelSize() / 2, 20, font.pixelSize());
+                        QRect rect(x - 28,  y -  rectH / 2, 22, rectH);
                         painter.setPen(QPen(QColor(110, 110, 110)));
                         painter.drawText(rect,  Qt::AlignRight, QString::number(i * step, 'f', 2));
                 }
@@ -166,9 +167,9 @@ void Envelope::drawValueScale(QPainter &painter)
 
                         QRect rect;
                         if (value == 20) {
-                                rect = QRect(x - 24, y - font.pixelSize() / 2, 20, font.pixelSize());
+                                rect = QRect(x - 28, y - rectH / 2, 22, rectH);
                         } else {
-                                rect = QRect(x - 24, y - font.pixelSize() / 2, 20, font.pixelSize());
+                                rect = QRect(x - 28, y - rectH / 2, 22, rectH);
                         }
                         painter.setPen(QPen(QColor(110, 110, 110)));
                         QString text;

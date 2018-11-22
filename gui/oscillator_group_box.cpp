@@ -135,7 +135,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         auto envelopeAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         envelopeAmplitudeKnob->setRange(0.001, 0.1);
         envelopeAmplitudeKnob->setCurrentValue(oscillator->amplitude());
-        envelopeAmplitudeKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
+        envelopeAmplitudeKnob->setGeometry((224 / 2 - 80) / 2, (125 - 82) / 2,  80, 80);
         envelopeAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         envelopeAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
         connect(envelopeAmplitudeKnob, SIGNAL(valueUpdated(double)),
