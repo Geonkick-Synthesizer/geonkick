@@ -1,5 +1,10 @@
 #include "geonkick_state.h"
 
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QDebug>
+
 GeonkickState::GeonkickState() :
         limiterValue(0),
         kickLength(0),
@@ -14,6 +19,24 @@ GeonkickState::GeonkickState() :
             {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
         }
 {
+}
+
+GeonkickState::GeonkickState(const QByteArray &data) :
+        limiterValue(0),
+        kickLength(0),
+        kickAmplitude(0),
+        kickFilterEnabled(0),
+        kickFilterFrequency(0),
+        kickFilterQFactor(0),
+        kickFilterType(GeonkickApi::FilterType::LowPass),
+        oscillators{
+            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<Oscillator>()},
+            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<Oscillator>()},
+            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
+        }
+{
+        QJsonDocument document = QJsonDocument::fromBinaryData(data);
+        // To be continued...
 }
 
 void GeonkickState::setLimiterValue(double val)
@@ -269,4 +292,55 @@ QPolygonF GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::Envelo
         }
 
         return QPolygonF();
+}
+
+QByteArray GeonkickState::toRawData() const
+{
+        QJsonObject state;
+        for (const auto& val: oscillators)
+        {
+                QJsonObject osc;
+                int index = val.first;
+                osc["enabled"] = QJsonValue(isOscillatorEnabled(index));
+                osc["function"] = QJsonValue(static_cast<int>(oscillatorFunction(index)));
+                osc["ampl_env"] = QJsonValue(QJsonObject({{"amplitude", oscillatorAmplitue(index)}}));
+                auto points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Amplitude);
+                QJsonArray jsonArray;
+                for (const auto &point: points) {
+                        jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+                }
+                osc["ampl_env"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
+                osc["freq_env"] = QJsonValue(QJsonObject({{"aplitude", oscillatorFrequency(index)}}));
+                points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Frequency);
+                if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise) {
+                        jsonArray = QJsonArray();
+                        for (const auto &point: points) {
+                                jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+                        }
+                        osc["ampl_freq"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
+                }
+                osc["filter"] = QJsonValue(QJsonObject({{"enabled", isOscillatorFilterEnabled(index)}}));
+                osc["filter"] = QJsonValue(QJsonObject({{"type", static_cast<int>(oscillatorFilterType(index))}}));
+                osc["filter"] = QJsonValue(QJsonObject({{"cutoff", oscillatorFilterCutOffFreq(index)}}));
+                osc["filter"] = QJsonValue(QJsonObject({{"factor", oscillatorFilterFactor(index)}}));
+                state["osc" + QString::number(index)] = osc;
+        }
+
+        QJsonObject kick;
+        kick["limiter"] = getLimiterValue();
+        kick["ampl_env"] = QJsonValue(QJsonObject({{"length", getKickLength()}}));
+        kick["ampl_env"] = QJsonValue(QJsonObject({{"amplitude", getKickAmplitude()}}));
+        auto points = getKickEnvelopePoints();
+        QJsonArray jsonArray;
+        for (const auto &point: points) {
+                jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+        }
+        kick["filter"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
+        kick["ampl_env"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
+        kick["filter"] = QJsonValue(QJsonObject({{"enabled", isKickFilterEnabled()}}));
+        kick["filter"] = QJsonValue(QJsonObject({{"type", static_cast<int>(getKickFilterType())}}));
+        kick["filter"] = QJsonValue(QJsonObject({{"cutoff", getKickFilterFrequency()}}));
+        kick["filter"] = QJsonValue(QJsonObject({{"factor", getKickFilterQFactor()}}));
+        state["kick"] = kick;
+        return QJsonDocument(state).toBinaryData();
 }

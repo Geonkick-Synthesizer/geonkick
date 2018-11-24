@@ -23,6 +23,7 @@
     a lv2:Plugin, lv2:InstrumentPlugin;
     doap:name "Geonkick";
     lv2:project <http://geontime.com/geonkick> ;
+    lv2:extensionData state:interface ;
     doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
     ui:ui <http://geontime.com/geonkick#ui> ;
     lv2:port [

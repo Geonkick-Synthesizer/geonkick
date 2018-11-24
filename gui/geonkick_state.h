@@ -33,6 +33,7 @@ class GeonkickState
  public:
 
         GeonkickState();
+        GeonkickState(const QByteArray &data);
 
         void setLimiterValue(double val);
         void setKickLength(double val);
@@ -71,6 +72,7 @@ class GeonkickState
         double oscillatorFilterCutOffFreq(int index) const;
         double oscillatorFilterFactor(int index) const;
         QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
+        QByteArray toRawData() const;
 
 private:
         struct Oscillator {

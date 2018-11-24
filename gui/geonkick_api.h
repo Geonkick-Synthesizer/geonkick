@@ -111,6 +111,7 @@ class GeonkickApi: public QObject {
   int getSampleRate();
   static std::shared_ptr<GeonkickState> getDefaultState();
   gkick_real getAudioFrame();
+  std::shared_ptr<GeonkickState> getState();
 
 public slots:
   void setKickAmplitude(double amplitude);
@@ -121,6 +122,7 @@ public slots:
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
   void setState(const std::shared_ptr<GeonkickState> &state);
+  void setState(const QByteArray &data);
   void setKickEnvelopePoints(const QPolygonF &points);
   void setKeyPressed(bool b, int velocity);
 

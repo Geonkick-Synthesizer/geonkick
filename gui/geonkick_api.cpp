@@ -124,6 +124,16 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         geonkick_enable_synthesis(geonkickApi, 1);
 }
 
+void GeonkickApi::setState(const QByteArray &data)
+{
+        setState(std::make_shared<GeonkickState>(data));
+}
+
+std::shared_ptr<GeonkickState> GeonkickApi::getState()
+{
+        return std::move(getDefaultState());
+}
+
 void GeonkickApi::setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state)
 {
         auto osc = static_cast<int>(oscillator);

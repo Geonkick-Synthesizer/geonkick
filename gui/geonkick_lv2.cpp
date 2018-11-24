@@ -21,23 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-//#include "mainwindow.h"
-
 #include <lv2/lv2plug.in/ns/lv2core/lv2.h>
 #include <lv2/lv2plug.in/ns/ext/atom/atom.h>
 #include <lv2/lv2plug.in/ns/ext/atom/util.h>
 #include <lv2/lv2plug.in/ns/ext/midi/midi.h>
 #include <lv2/lv2plug.in/ns/ext/urid/urid.h>
 #include <lv2/lv2plug.in/ns/extensions/ui/ui.h>
-#include "lv2/lv2plug.in/ns/ext/instance-access/instance-access.h"
+#include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
+#include <lv2/lv2plug.in/ns/ext/state/state.h>
 
 #include "mainwindow.h"
 #include "geonkick_api.h"
+#include "geonkick_state.h"
 
-#include <QDebug>
-
-#define APP_URI "http://geontime.com/geonkick"
-#define APP_URI_UI "http://geontime.com/geonkick#ui"
+#define GEONKICK_URI "http://geontime.com/geonkick"
+#define GEONKICK_URI_UI "http://geontime.com/geonkick#ui"
+#define GEONKICK_URI_STATE "http://geontime.com/geonkick#state"
 
 class GeonkickLv2Plugin
 {
@@ -81,12 +80,43 @@ class GeonkickLv2Plugin
                 midiIn = data;
         }
 
-        GeonkickApi* getApi()
+        void setStateId(LV2_URID id)
+        {
+                stateId = id;
+        }
+
+        LV2_URID getStateId() const
+        {
+                return stateId;
+        }
+
+        void setAtomChunkId(LV2_URID id)
+        {
+                atomStringId = id;
+        }
+
+        LV2_URID getAtomChunkId()
+        {
+                return atomStringId;
+        }
+
+        void setStateData(const QByteArray &data, int flags = 0)
+        {
+                Q_UNUSED(flags);
+                geonkickApi->setState(data);
+        }
+
+        const QByteArray getStateData()
+        {
+                return geonkickApi->getState()->toRawData();
+        }
+
+        GeonkickApi* getApi() const
         {
                 return geonkickApi;
         }
 
-        void processSamples(int nsamples)
+        void processSamples(int nsamples) const
         {
                 if (!midiIn) {
                         return;
@@ -122,6 +152,8 @@ private:
         LV2_Atom_Sequence* midiIn;
         float *leftChannel;
         float *rightChannel;
+        LV2_URID stateId;
+        LV2_URID atomStringId;
 };
 
 /**
@@ -145,8 +177,8 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                 return NULL;
         }
 
-        const LV2_Feature *feature = *features;
-        while (feature != nullptr) {
+        const LV2_Feature *feature;
+        while (feature = *features) {
                 if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
                         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
                         mainWindow = new MainWindow(geonkickLv2PLugin->getApi());
@@ -183,7 +215,7 @@ static void gkick_port_event_ui(LV2UI_Handle ui,
 }
 
 static const LV2UI_Descriptor gkick_descriptor_ui = {
-	APP_URI_UI,
+	GEONKICK_URI_UI,
 	gkick_instantiate_ui,
 	gkick_cleanup_ui,
 	gkick_port_event_ui,
@@ -218,6 +250,21 @@ static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
                 delete geonkickLv2PLugin;
                 return NULL;
         }
+
+        const LV2_Feature *feature;
+        while (feature = *features) {
+                if (QByteArray(feature->URI) == QByteArray(LV2_URID__map)) {
+                        auto uridMap = static_cast<LV2_URID_Map*>(feature->data);
+                        if (uridMap && uridMap->map && uridMap->handle) {
+                                geonkickLv2PLugin->setStateId(uridMap->map(uridMap->handle, GEONKICK_URI_STATE));
+                                geonkickLv2PLugin->setAtomChunkId(uridMap->map(uridMap->handle, LV2_ATOM__Chunk));
+                        }
+                        break;
+                }
+                features++;
+        }
+
+
         return static_cast<LV2_Handle>(geonkickLv2PLugin);
 }
 
@@ -261,15 +308,68 @@ static void gkick_cleaup(LV2_Handle instance)
         delete static_cast<GeonkickLv2Plugin*>(instance);
 }
 
+static LV2_State_Status
+gkick_state_save(LV2_Handle                instance,
+                 LV2_State_Store_Function  store,
+                 LV2_State_Handle          handle,
+                 uint32_t                  flags,
+                 const LV2_Feature* const* features)
+{
+        qDebug() << __PRETTY_FUNCTION__;
+        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
+        if (geonkickLv2PLugin){
+                QByteArray stateData = geonkickLv2PLugin->getStateData();
+                store(handle, geonkickLv2PLugin->getStateId(), stateData.data(),
+                      stateData.size(), geonkickLv2PLugin->getAtomChunkId(),
+                      LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE);
+                GEONKICK_LOG_DEBUG(QString("id:") << geonkickLv2PLugin->getStateId());
+                GEONKICK_LOG_DEBUG(QString("size:") << stateData.size());
+                GEONKICK_LOG_DEBUG(QString("geonkickLv2PLugin->getAtomStringId():") << geonkickLv2PLugin->getAtomChunkId());
+        }
+
+        return LV2_STATE_SUCCESS;
+}
+
+static LV2_State_Status
+gkick_state_restore(LV2_Handle                  instance,
+                    LV2_State_Retrieve_Function retrieve,
+                    LV2_State_Handle            handle,
+                    uint32_t                    flags,
+                    const LV2_Feature* const*   features)
+{
+        qDebug() << __PRETTY_FUNCTION__;
+        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
+        if (geonkickLv2PLugin){
+                size_t size   = 0;
+                LV2_URID type = 0;
+                const char *data = (const char*)retrieve(handle, geonkickLv2PLugin->getStateId(),
+                                            &size, &type, &flags);
+                GEONKICK_LOG_DEBUG(QString("id:") << geonkickLv2PLugin->getStateId());
+                GEONKICK_LOG_DEBUG(QString("size:") << size << ", type : " << type);
+                GEONKICK_LOG_DEBUG(QString("geonkickLv2PLugin->getAtomStringId():") << geonkickLv2PLugin->getAtomChunkId());
+                geonkickLv2PLugin->setStateData(QByteArray(data, size), flags);
+        }
+}
+
+static const void* gkick_extention_data(const char* uri)
+{
+        static const LV2_State_Interface state = {gkick_state_save, gkick_state_restore};
+        if (QByteArray(uri) == QByteArray(LV2_STATE__interface)) {
+                GEONKICK_LOG_INFO("called");
+                return &state;
+        }
+        return NULL;
+}
+
 static const LV2_Descriptor gkick_descriptor = {
-	APP_URI,
+	GEONKICK_URI,
 	gkick_instantiate,
 	gkick_connect_port,
 	gkick_activate,
 	gkick_run,
 	gkick_deactivate,
 	gkick_cleaup,
-	NULL
+	gkick_extention_data,
 };
 
 const LV2_Descriptor* lv2_descriptor(uint32_t index)
