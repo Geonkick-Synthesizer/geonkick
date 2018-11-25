@@ -36,7 +36,31 @@ GeonkickState::GeonkickState(const QByteArray &data) :
         }
 {
         QJsonDocument document = QJsonDocument::fromBinaryData(data);
-        // To be continued...
+        QJsonObject object = document.object();
+        auto kick = object.take("kick");
+        if (!kick.isNull() && kick.isObject()) {
+                auto limiter = kick.toObject().take("limiter");
+                if (!limiter.isNull() && limiter.isDouble()) {
+                        setLimiterValue(limiter.toDouble());
+                }
+
+                auto envelope = kick.toObject().take("ampl_env");
+                if (!envelope.isNull() && envelope.isObject()) {
+                        setKickLength(envelope.toObject().take("length").toDouble());
+                        setKickAmplitude(envelope.toObject().take("amplitude").toDouble());
+                        auto envPoints = envelope.toObject().take("points").toArray();
+                        QPolygonF points;
+                        for (auto it = envPoints.constBegin(); it != envPoints.constEnd(); ++it) {
+                                auto point = it->toArray();
+                                if (point.count() == 2) {
+                                        points << QPointF(point.takeAt(0).toDouble(), point.takeAt(1).toDouble());
+                                }
+                        }
+                        setKickEnvelopePoints(points);
+                }
+                auto filter = kick.toObject().take("filter");
+                if (!filter.isNull() && filter.isObject())
+        }
 }
 
 void GeonkickState::setLimiterValue(double val)
@@ -335,7 +359,6 @@ QByteArray GeonkickState::toRawData() const
         for (const auto &point: points) {
                 jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
         }
-        kick["filter"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
         kick["ampl_env"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
         kick["filter"] = QJsonValue(QJsonObject({{"enabled", isKickFilterEnabled()}}));
         kick["filter"] = QJsonValue(QJsonObject({{"type", static_cast<int>(getKickFilterType())}}));
