@@ -83,11 +83,13 @@ void GeonkickState::parseOscillatorObject(int index, const auto &osc)
                 setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Amplitude);
         }
 
-        envelope = osc.toObject().take("freq_env");
-        if (!envelope.isNull() && envelope.isObject()) {
-                setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
-                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
-                setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
+        if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise){
+                envelope = osc.toObject().take("freq_env");
+                if (!envelope.isNull() && envelope.isObject()) {
+                        setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
+                        QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
+                        setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
+                }
         }
 
         auto filter = osc.toObject().take("filter");
