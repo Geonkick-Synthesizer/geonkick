@@ -74,6 +74,11 @@ class GeonkickState
         QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
         QByteArray toRawData() const;
 
+protected:
+        void parseKickObject(const auto &kick);
+        void parseOscillatorObject(int index, const auto &osc);
+        QPolygonF parseEnvelopeArray(const auto &envelopeArray);
+
 private:
         struct Oscillator {
                 GeonkickApi::OscillatorType type;

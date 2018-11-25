@@ -37,30 +37,79 @@ GeonkickState::GeonkickState(const QByteArray &data) :
 {
         QJsonDocument document = QJsonDocument::fromBinaryData(data);
         QJsonObject object = document.object();
-        auto kick = object.take("kick");
-        if (!kick.isNull() && kick.isObject()) {
-                auto limiter = kick.toObject().take("limiter");
-                if (!limiter.isNull() && limiter.isDouble()) {
-                        setLimiterValue(limiter.toDouble());
-                }
+        parseKickObject(object.take("kick"));
+        for (const auto& val: oscillators)
+                parseOscillatorObject(val.first, object.take("osc" + QString::number(val.first)));
+}
 
-                auto envelope = kick.toObject().take("ampl_env");
-                if (!envelope.isNull() && envelope.isObject()) {
-                        setKickLength(envelope.toObject().take("length").toDouble());
-                        setKickAmplitude(envelope.toObject().take("amplitude").toDouble());
-                        auto envPoints = envelope.toObject().take("points").toArray();
-                        QPolygonF points;
-                        for (auto it = envPoints.constBegin(); it != envPoints.constEnd(); ++it) {
-                                auto point = it->toArray();
-                                if (point.count() == 2) {
-                                        points << QPointF(point.takeAt(0).toDouble(), point.takeAt(1).toDouble());
-                                }
-                        }
-                        setKickEnvelopePoints(points);
-                }
-                auto filter = kick.toObject().take("filter");
-                if (!filter.isNull() && filter.isObject())
+void GeonkickState::parseKickObject(const auto &kick)
+{
+        if (kick.isNull() || !kick.isObject())
+                return;
+
+        auto limiter = kick.toObject().take("limiter");
+        if (!limiter.isNull() && limiter.isDouble()) {
+                setLimiterValue(limiter.toDouble());
         }
+
+        auto envelope = kick.toObject().take("ampl_env");
+        if (!envelope.isNull() && envelope.isObject()) {
+                setKickLength(envelope.toObject().take("length").toDouble());
+                setKickAmplitude(envelope.toObject().take("amplitude").toDouble());
+                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
+                setKickEnvelopePoints(points);
+        }
+
+        auto filter = kick.toObject().take("filter");
+        if (!filter.isNull() && filter.isObject()) {
+                enableKickFilter(filter.toObject().take("enabled").toBool());
+                setKickFilterFrequency(filter.toObject().take("cutoff").toDouble());
+                setKickFilterQFactor(filter.toObject().take("factor").toDouble());
+                setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("factor").toInt()));
+        }
+}
+
+void GeonkickState::parseOscillatorObject(int index, const auto &osc)
+{
+        if (osc.isNull() || !osc.isObject())
+                return;
+
+        setOscillatorEnabled(index, osc.toObject().take("enabled").toBool());
+        setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(osc.toObject().take("function").toInt()));
+        auto envelope = osc.toObject().take("ampl_env");
+        if (!envelope.isNull() && envelope.isObject()) {
+                setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
+                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
+                setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Amplitude);
+        }
+
+        envelope = osc.toObject().take("freq_env");
+        if (!envelope.isNull() && envelope.isObject()) {
+                setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
+                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
+                setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
+        }
+
+        auto filter = osc.toObject().take("filter");
+        if (!filter.isNull() && filter.isObject()) {
+                enableKickFilter(filter.toObject().take("enabled").toBool());
+                setKickFilterFrequency(filter.toObject().take("cutoff").toDouble());
+                setKickFilterQFactor(filter.toObject().take("factor").toDouble());
+                setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("factor").toInt()));
+        }
+}
+
+QPolygonF GeonkickState::parseEnvelopeArray(const auto &envelopeArray)
+{
+        QPolygonF points;
+        for (auto it = envelopeArray.constBegin(); it != envelopeArray.constEnd(); ++it) {
+                auto point = it->toArray();
+                if (point.count() == 2) {
+                        points << QPointF(point.takeAt(0).toDouble(), point.takeAt(1).toDouble());
+                }
+        }
+
+        return points;
 }
 
 void GeonkickState::setLimiterValue(double val)
