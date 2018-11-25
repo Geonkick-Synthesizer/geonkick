@@ -203,6 +203,21 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 }
 
 enum geonkick_error
+geonkick_osc_envelope_set_points(struct geonkick *kick,
+                                 size_t osc_index,
+                                 size_t env_index,
+                                 const gkick_real *buff,
+                                 size_t npoints)
+{
+        if (kick == NULL || buf == NULL || npoints == 0) {
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_osc_envelope_points(synth, osc_index, env_index, buf, npoints);
+}
+
+
+enum geonkick_error
 geonkick_osc_envelope_remove_point(struct geonkick *kick,
 				   size_t osc_index,
 				   size_t env_index,
@@ -398,6 +413,18 @@ geonkick_kick_envelope_get_points(struct geonkick *kick,
         }
 
         return gkick_synth_kick_envelope_get_points(kick->synth, buf, npoints);
+}
+
+enum geonkick_error
+geonkick_kick_envelope_set_points(struct geonkick *kick,
+                                  const gkick_real *buff,
+                                  size_t npoints)
+{
+        if (kick == NULL || buf == NULL || npoints == 0) {
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_kick_envelope_points(synth, buf, npoints);
 }
 
 enum geonkick_error

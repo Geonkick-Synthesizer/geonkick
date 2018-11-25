@@ -208,6 +208,17 @@ gkick_envelope_get_points(struct gkick_envelope *env,
 }
 
 void
+gkick_envelope_set_points(struct gkick_envelope *env,
+			  const gkick_real *buff,
+			  size_t npoints)
+{
+        if (env == NULL || buff == NULL) {
+                return;
+        }
+        // TODO: implement.
+}
+
+void
 gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
 {
         struct gkick_envelope_point *p;

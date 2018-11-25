@@ -120,6 +120,13 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t *npoints);
 
 enum geonkick_error
+geonkick_osc_envelope_set_points(struct geonkick *kick,
+                                 size_t osc_index,
+                                 size_t env_index,
+                                 const gkick_real *buff,
+                                 size_t npoints);
+
+enum geonkick_error
 geonkick_osc_envelope_add_point(struct geonkick *kick,
 				size_t osc_index,
 				size_t env_index,
@@ -188,7 +195,12 @@ geonkick_get_kick_filter_type(struct geonkick *kick, enum gkick_filter_type *typ
 enum geonkick_error
 geonkick_kick_envelope_get_points(struct geonkick *kick,
                                   gkick_real **buf,
-                                  size_t *npoints);
+                                  size_t *npoints)
+
+enum geonkick_error
+geonkick_kick_envelope_set_points(struct geonkick *kick,
+                                  const gkick_real *buff,
+                                  size_t npoints);
 
 enum geonkick_error
 geonkick_kick_add_env_point(struct geonkick *kick, gkick_real x, gkick_real y);

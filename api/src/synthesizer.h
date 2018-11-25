@@ -123,7 +123,12 @@ gkick_synth_osc_envelope_points(struct gkick_synth *synth,
                                 gkick_real **buf,
                                 size_t *npoints);
 
-
+enum geonkick_error
+gkick_synth_osc_envelope_set_points(struct gkick_synth *synth,
+                                    int osc_index,
+                                    int env_index,
+                                    const gkick_real *buf,
+                                    size_t npoints);
 
 enum geonkick_error
 gkick_synth_osc_env_add_point(struct gkick_synth *synth,
@@ -193,6 +198,11 @@ enum geonkick_error
 gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
                                      gkick_real **buf,
                                      size_t *npoints);
+
+enum geonkick_error
+gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
+                                     gkick_real *buf,
+                                     size_t npoints);
 
 enum geonkick_error
 gkick_synth_kick_add_env_point(struct gkick_synth *synth, gkick_real x, gkick_real y);

@@ -235,6 +235,21 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
         }
 }
 
+void
+gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
+			      size_t env_index,
+			      gkick_real *buff,
+			      size_t npoints)
+{
+        if (buff == NULL) {
+                *buff = NULL;
+        }
+
+        if (env_index >= 0 && env_index < osc->env_number) {
+                gkick_envelope_get_points(osc->envelopes[env_index], buff, npoints);
+        }
+}
+
 int  gkick_osc_enabled(struct gkick_oscillator *osc)
 {
         if (osc == NULL) {

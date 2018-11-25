@@ -317,6 +317,31 @@ gkick_synth_osc_envelope_points(struct gkick_synth *synth,
 }
 
 enum geonkick_error
+gkick_synth_osc_envelope_set_points(struct gkick_synth *synth,
+                                    int osc_index,
+                                    int env_index,
+                                    const gkick_real *buf,
+                                    size_t npoints)
+{
+        if (synth == NULL || buf == NULL || npoints == 0) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        struct gkick_oscillator *osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (osc == NULL) {
+                gkick_log_error("can't get oscillator %d", osc_index);
+                gkick_synth_unlock(synth);
+                return GEONKICK_ERROR;
+        }
+        gkick_osc_set_envelope_points(osc, env_index, buf, npoints);
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 gkick_synth_osc_env_add_point(struct gkick_synth *synth,
                               int osc_index,
                               int env_index,
@@ -681,6 +706,21 @@ gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
+                                     const gkick_real *buf,
+                                     size_t npoints)
+{
+        if (synth == NULL || buf == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        gkick_envelope_set_points(synth->envelope, buf, npoints);
+        gkick_synth_unlock(synth);
 }
 
 enum geonkick_error

@@ -222,7 +222,17 @@ QPolygonF GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeTyp
 
 void GeonkickApi::setOscillatorEvelopePoints(int index,  EnvelopeType envelope, const QPolygonF &points)
 {
-        //        geonkick_osc_envelope_set_points();
+        if (points.isEmpty())
+                return;
+
+        QByteArray data(2 * points.size() * sizeof(gkick_real), 0);
+        gkick_real *buff = static_cast<gkick_real*>(data.data());
+        for (decltype(points.size()) i = 0; i < points.size(); i += 2) {
+                buff[i]     = points[i].x();
+                buff[i + 1] = points[i].y();
+        }
+
+        geonkick_osc_envelope_set_points(geonkickApi, index, static_cast<int>(envelope), buff, points.size());
 }
 
 void GeonkickApi::addOscillatorEnvelopePoint(int oscillatorIndex, EnvelopeType envelope, const QPointF &point)
@@ -309,7 +319,14 @@ QPolygonF GeonkickApi::getKickEnvelopePoints() const
 
 void GeonkickApi::setKickEnvelopePoints(const QPolygonF &points)
 {
-        //        geonkick_kick_envelope_set_points();
+        QByteArray data(2 * points.size() * sizeof(gkick_real), 0);
+        gkick_real *buff = static_cast<gkick_real*>(data.data());
+        for (decltype(points.size()) i = 0; i < points.size(); i += 2) {
+                buff[i]     = points[i].x();
+                buff[i + 1] = points[i].y();
+        }
+
+        geonkick_kick_envelope_set_points(geonkickApi, buff, points.size());
 }
 
 void GeonkickApi::enableKickFilter(bool b)
