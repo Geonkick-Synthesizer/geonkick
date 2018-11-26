@@ -219,8 +219,8 @@ gkick_envelope_set_points(struct gkick_envelope *env,
         }
 
         gkick_envelope_clear(env);
-        for (i = 0; i < npoints; i += 2) {
-                gkick_envelope_add_point(env, buff[i], buff[i + 1]);
+        for (i = 0; i < npoints; i++) {
+                gkick_envelope_add_point(env, buff[2 * i], buff[2 * i + 1]);
         }
 }
 
@@ -234,6 +234,7 @@ void gkick_envelope_clear(struct gkick_envelope* env)
                 free(curr);
                 env->npoints--;
         }
+        env->first = env->last = NULL;
 }
 
 void

@@ -227,9 +227,9 @@ void GeonkickApi::setOscillatorEvelopePoints(int index,  EnvelopeType envelope, 
 
         QByteArray data(2 * points.size() * sizeof(gkick_real), 0);
         gkick_real *buff = reinterpret_cast<gkick_real*>(data.data());
-        for (decltype(points.size()) i = 0; i < points.size(); i += 2) {
-                buff[i]     = points[i].x();
-                buff[i + 1] = points[i].y();
+        for (decltype(points.size()) i = 0; i < points.size(); i++) {
+                buff[2 * i]     = points[i].x();
+                buff[2 * i + 1] = points[i].y();
         }
 
         geonkick_osc_envelope_set_points(geonkickApi, index, static_cast<int>(envelope), buff, points.size());
@@ -321,9 +321,9 @@ void GeonkickApi::setKickEnvelopePoints(const QPolygonF &points)
 {
         QByteArray data(2 * points.size() * sizeof(gkick_real), 0);
         gkick_real *buff = reinterpret_cast<gkick_real*>(data.data());
-        for (decltype(points.size()) i = 0; i < points.size(); i += 2) {
-                buff[i]     = points[i].x();
-                buff[i + 1] = points[i].y();
+        for (decltype(points.size()) i = 0; i < points.size(); i++) {
+                buff[2 * i]     = points[i].x();
+                buff[2 * i + 1] = points[i].y();
         }
 
         geonkick_kick_envelope_set_points(geonkickApi, buff, points.size());
