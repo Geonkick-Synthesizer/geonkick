@@ -177,6 +177,9 @@ enum geonkick_error
 geonkick_synth_kick_filter_enable(struct gkick_synth *synth, int enable);
 
 enum geonkick_error
+geonkick_synth_kick_filter_is_enabled(struct gkick_synth *synth, int *enabled);
+
+enum geonkick_error
 gkick_synth_kick_set_filter_frequency(struct gkick_synth *synth, gkick_real frequency);
 
 enum geonkick_error
@@ -201,7 +204,7 @@ gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
 
 enum geonkick_error
 gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
-                                     gkick_real *buf,
+                                     const gkick_real *buf,
                                      size_t npoints);
 
 enum geonkick_error

@@ -226,7 +226,7 @@ void GeonkickApi::setOscillatorEvelopePoints(int index,  EnvelopeType envelope, 
                 return;
 
         QByteArray data(2 * points.size() * sizeof(gkick_real), 0);
-        gkick_real *buff = static_cast<gkick_real*>(data.data());
+        gkick_real *buff = reinterpret_cast<gkick_real*>(data.data());
         for (decltype(points.size()) i = 0; i < points.size(); i += 2) {
                 buff[i]     = points[i].x();
                 buff[i + 1] = points[i].y();
@@ -320,7 +320,7 @@ QPolygonF GeonkickApi::getKickEnvelopePoints() const
 void GeonkickApi::setKickEnvelopePoints(const QPolygonF &points)
 {
         QByteArray data(2 * points.size() * sizeof(gkick_real), 0);
-        gkick_real *buff = static_cast<gkick_real*>(data.data());
+        gkick_real *buff = reinterpret_cast<gkick_real*>(data.data());
         for (decltype(points.size()) i = 0; i < points.size(); i += 2) {
                 buff[i]     = points[i].x();
                 buff[i + 1] = points[i].y();
@@ -336,8 +336,9 @@ void GeonkickApi::enableKickFilter(bool b)
 
 bool GeonkickApi::isKickFilterEnabled() const
 {
-        // TODO: implement.
-        return true;
+        int enabled = 0;
+        geonkick_kick_filter_is_enabled(geonkickApi, &enabled);
+        return enabled;
 }
 
 void GeonkickApi::setKickFilterType(FilterType type)
@@ -347,8 +348,9 @@ void GeonkickApi::setKickFilterType(FilterType type)
 
 GeonkickApi::FilterType GeonkickApi::kickFilterType() const
 {
-        // TODO: implement.
-        return FilterType::LowPass;
+        enum gkick_filter_type type;
+        geonkick_get_kick_filter_type(geonkickApi, &type);
+        return static_cast<FilterType>(type);
 }
 
 void GeonkickApi::setKickFilterFrequency(double frequency)
@@ -503,6 +505,7 @@ double GeonkickApi::limiterValue()
 {
         gkick_real val = 0;
         geonkick_get_limiter_value(geonkickApi, &val);
+        return val;
 }
 
 void GeonkickApi::setLimiterValue(double value)

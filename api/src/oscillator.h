@@ -87,10 +87,14 @@ gkick_real gkick_osc_func_sawtooth(gkick_real phase);
 
 gkick_real gkick_osc_func_noise(void);
 
-void
-gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
-			      size_t env_index,
-			      gkick_real **buff,
-			      size_t *npoints);
+void gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
+                                   size_t env_index,
+                                   gkick_real **buff,
+                                   size_t *npoints);
+
+void gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
+                                   size_t env_index,
+                                   const gkick_real *buff,
+                                   size_t npoints);
 
 #endif

@@ -209,11 +209,11 @@ geonkick_osc_envelope_set_points(struct geonkick *kick,
                                  const gkick_real *buff,
                                  size_t npoints)
 {
-        if (kick == NULL || buf == NULL || npoints == 0) {
+        if (kick == NULL || buff == NULL || npoints == 0) {
                 return GEONKICK_ERROR;
         }
 
-        return gkick_synth_osc_envelope_points(synth, osc_index, env_index, buf, npoints);
+        return gkick_synth_osc_envelope_set_points(kick->synth, osc_index, env_index, buff, npoints);
 }
 
 
@@ -351,6 +351,17 @@ geonkick_kick_filter_enable(struct geonkick *kick, int enable)
 }
 
 enum geonkick_error
+geonkick_kick_filter_is_enabled(struct geonkick *kick, int *enabled)
+{
+        if (kick == NULL || enabled == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return geonkick_synth_kick_filter_is_enabled(kick->synth, enabled);
+}
+
+enum geonkick_error
 geonkick_kick_get_filter_frequency(struct geonkick *kick, gkick_real *frequency)
 {
         if (kick == NULL || frequency == NULL) {
@@ -420,11 +431,11 @@ geonkick_kick_envelope_set_points(struct geonkick *kick,
                                   const gkick_real *buff,
                                   size_t npoints)
 {
-        if (kick == NULL || buf == NULL || npoints == 0) {
+        if (kick == NULL || buff == NULL || npoints == 0) {
                 return GEONKICK_ERROR;
         }
 
-        return gkick_synth_kick_envelope_points(synth, buf, npoints);
+        return gkick_synth_kick_envelope_set_points(kick->synth, buff, npoints);
 }
 
 enum geonkick_error

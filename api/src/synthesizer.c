@@ -602,6 +602,20 @@ geonkick_synth_kick_filter_enable(struct gkick_synth *synth, int enable)
 }
 
 enum geonkick_error
+geonkick_synth_kick_filter_is_enabled(struct gkick_synth *synth, int *enabled)
+{
+        if (synth == NULL || enabled == NULL) {
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        *enabled = synth->filter_enabled;
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 gkick_synth_kick_set_filter_frequency(struct gkick_synth *synth, gkick_real frequency)
 {
         enum geonkick_error res;
@@ -721,6 +735,7 @@ gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
         gkick_synth_lock(synth);
         gkick_envelope_set_points(synth->envelope, buf, npoints);
         gkick_synth_unlock(synth);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
