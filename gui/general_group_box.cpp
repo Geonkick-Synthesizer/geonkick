@@ -88,6 +88,7 @@ void GeneralGroupBox::createFilterHBox()
         filterCheckbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
         filterCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
         filterCheckbox->move(10, 10);
+        filterCheckbox->setChecked(geonkickApi->isKickFilterEnabled());
         connect(filterCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableKickFilter(bool)));
 
         Knob *kickFrequencyKnob = new Knob(filterEnvelopeBox);

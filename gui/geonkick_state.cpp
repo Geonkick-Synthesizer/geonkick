@@ -86,7 +86,7 @@ void GeonkickState::parseOscillatorObject(int index, const auto &osc)
         if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise){
                 envelope = osc.toObject().take("freq_env");
                 if (!envelope.isNull() && envelope.isObject()) {
-                        setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
+                        setOscillatorFrequency(index, envelope.toObject().take("amplitude").toDouble());
                         QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
                         setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
                 }
@@ -94,10 +94,10 @@ void GeonkickState::parseOscillatorObject(int index, const auto &osc)
 
         auto filter = osc.toObject().take("filter");
         if (!filter.isNull() && filter.isObject()) {
-                enableKickFilter(filter.toObject().take("enabled").toBool());
-                setKickFilterFrequency(filter.toObject().take("cutoff").toDouble());
-                setKickFilterQFactor(filter.toObject().take("factor").toDouble());
-                setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("factor").toInt()));
+                setOscillatorFilterEnabled(index, filter.toObject().take("enabled").toBool());
+                setOscillatorFilterCutOffFreq(index, filter.toObject().take("cutoff").toDouble());
+                setOscillatorFilterFactor(index, filter.toObject().take("factor").toDouble());
+                setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(filter.toObject().take("factor").toInt()));
         }
 }
 
@@ -378,43 +378,54 @@ QByteArray GeonkickState::toRawData() const
                 int index = val.first;
                 osc["enabled"] = QJsonValue(isOscillatorEnabled(index));
                 osc["function"] = QJsonValue(static_cast<int>(oscillatorFunction(index)));
-                osc["ampl_env"] = QJsonValue(QJsonObject({{"amplitude", oscillatorAmplitue(index)}}));
+
+                QJsonObject envelope;
+                envelope.insert("amplitude", oscillatorAmplitue(index));
                 auto points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Amplitude);
                 QJsonArray jsonArray;
                 for (const auto &point: points) {
                         jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
                 }
-                osc["ampl_env"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
-                osc["freq_env"] = QJsonValue(QJsonObject({{"aplitude", oscillatorFrequency(index)}}));
+                envelope.insert("points", jsonArray);
+                osc["ampl_env"] = envelope;
+
+                envelope = QJsonObject();
+                envelope.insert("amplitude", oscillatorFrequency(index));
                 points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Frequency);
-                if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise) {
-                        jsonArray = QJsonArray();
-                        for (const auto &point: points) {
-                                jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
-                        }
-                        osc["ampl_freq"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
+                jsonArray = QJsonArray();
+                for (const auto &point: points) {
+                        jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
                 }
-                osc["filter"] = QJsonValue(QJsonObject({{"enabled", isOscillatorFilterEnabled(index)}}));
-                osc["filter"] = QJsonValue(QJsonObject({{"type", static_cast<int>(oscillatorFilterType(index))}}));
-                osc["filter"] = QJsonValue(QJsonObject({{"cutoff", oscillatorFilterCutOffFreq(index)}}));
-                osc["filter"] = QJsonValue(QJsonObject({{"factor", oscillatorFilterFactor(index)}}));
+                envelope.insert("points", jsonArray);
+                osc["freq_env"] = envelope;
+
+                QJsonObject filter;
+                filter.insert("enabled", isOscillatorFilterEnabled(index));
+                filter.insert("type", static_cast<int>(static_cast<int>(oscillatorFilterType(index))));
+                filter.insert("cutoff", oscillatorFilterCutOffFreq(index));
+                filter.insert("factor", oscillatorFilterFactor(index));
+                osc["filter"] = filter;
                 state["osc" + QString::number(index)] = osc;
         }
 
         QJsonObject kick;
         kick["limiter"] = getLimiterValue();
-        kick["ampl_env"] = QJsonValue(QJsonObject({{"length", getKickLength()}}));
-        kick["ampl_env"] = QJsonValue(QJsonObject({{"amplitude", getKickAmplitude()}}));
+        QJsonObject envelope;
+        envelope.insert("length", static_cast<double>(getKickLength()));
+        envelope.insert("amplitude", static_cast<double>(getKickAmplitude()));
         auto points = getKickEnvelopePoints();
         QJsonArray jsonArray;
         for (const auto &point: points) {
                 jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
         }
-        kick["ampl_env"] = QJsonValue(QJsonObject({{"points", jsonArray}}));
-        kick["filter"] = QJsonValue(QJsonObject({{"enabled", isKickFilterEnabled()}}));
-        kick["filter"] = QJsonValue(QJsonObject({{"type", static_cast<int>(getKickFilterType())}}));
-        kick["filter"] = QJsonValue(QJsonObject({{"cutoff", getKickFilterFrequency()}}));
-        kick["filter"] = QJsonValue(QJsonObject({{"factor", getKickFilterQFactor()}}));
+        envelope.insert("points", jsonArray);
+        kick["ampl_env"] = envelope;
+        QJsonObject filter;
+        filter.insert("enabled", isKickFilterEnabled());
+        filter.insert("type", static_cast<int>(getKickFilterType()));
+        filter.insert("cutoff", getKickFilterFrequency());
+        filter.insert("factor", getKickFilterQFactor());
+        kick["filter"] = filter;
         state["kick"] = kick;
         return QJsonDocument(state).toBinaryData();
 }

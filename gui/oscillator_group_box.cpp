@@ -182,6 +182,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         filterCheckbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
         filterCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
         filterCheckbox->move(10, 10);
+        filterCheckbox->setChecked(oscillator->isFilterEnabled());
         connect(filterCheckbox, SIGNAL(stateUpdated(bool)), oscillator, SLOT(enableFilter(bool)));
 
         Knob *kickFrequencyKnob = new Knob(filterEnvelopeBox);
