@@ -8,7 +8,7 @@ INCLUDEPATH += ../api/src/
 
 CONFIG += shared plugin
 
-LIBS += -L../api/ -lgeonkick -lsndfile -ljack
+LIBS += -L../api/ -lgeonkick -lsndfile
 
 include(gui.pri)
 

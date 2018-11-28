@@ -1,10 +1,10 @@
 /**
  * File name: mainwindow.cpp
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include "fader.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
+#include "geonkick_state.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -40,6 +41,9 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QJsonDocument>
 
 #define GEONKICK_MAINWINDOW_WIDTH  940
 #define GEONKICK_MAINWINDOW_HEIGHT 760
@@ -92,7 +96,52 @@ void MainWindow::openExportDialog()
         exportDialog.exec();
 }
 
+void MainWindow::savePreset()
+{
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Save Preset"),
+                                                        "./",
+                                                        tr("Geonkick preset (*.gkick)"));
+
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+                QMessageBox::critical(this, "Error | Save Preset", "Can't save preset");
+                return;
+        }
+
+        file.write(geonkickApi->getState()->toJson());
+        file.close();
+}
+
+void MainWindow::openPreset()
+{
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Open Preset"), "./",
+                                                        tr("Geonkick preset (*.gkick)"));
+
+        GEONKICK_LOG_ERROR(fileName);
+        QFile file(fileName);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                QMessageBox::critical(this, "Error | Open Preset", "Can't open preset");
+                return;
+        }
+
+        QJsonDocument document = QJsonDocument::fromJson(file.readAll());
+        if (document.isNull()) {
+                QMessageBox::critical(this, "Error | Open Preset", "Wrong file contents");
+        } else {
+                geonkickApi->setState(std::make_shared<GeonkickState>(document.toBinaryData()));
+        }
+        file.close();
+        updateGui();
+}
+
 void MainWindow::setLimiterValue(int value)
 {
         geonkickApi->setLimiterValue(static_cast<double>(value) / 100);
+}
+
+void MainWindow::updateGui()
+{
+        /*        faderWidget.update();
+        controlAreaWidget.update();
+        envelopeWidget.update();*/
 }

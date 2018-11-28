@@ -51,13 +51,16 @@ class MainWindow : public GeonkickWidget
       ~MainWindow();
       bool init(void);
 
- public slots:
+ protected slots:
       void openExportDialog();
+      void openPreset();
+      void savePreset();
       void setLimiterValue(int value);
 
  private:
       void loadApiDefaultSettings();
       void loadApiSettings();
+      void updateGui();
 
       GeonkickApi *geonkickApi;
       std::vector<Oscillator*> oscillators;

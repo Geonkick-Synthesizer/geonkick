@@ -371,7 +371,17 @@ QPolygonF GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::Envelo
 
 QByteArray GeonkickState::toRawData() const
 {
-        QJsonObject state;
+        return getJsonDocument().toBinaryData();
+}
+
+QByteArray GeonkickState::toJson() const
+{
+        return getJsonDocument().toJson();
+}
+
+QJsonDocument GeonkickState::getJsonDocument() const
+{
+                QJsonObject state;
         for (const auto& val: oscillators)
         {
                 QJsonObject osc;
@@ -427,5 +437,6 @@ QByteArray GeonkickState::toRawData() const
         filter.insert("factor", getKickFilterQFactor());
         kick["filter"] = filter;
         state["kick"] = kick;
-        return QJsonDocument(state).toBinaryData();
+
+        return QJsonDocument(state);
 }

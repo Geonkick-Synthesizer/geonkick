@@ -28,6 +28,8 @@
 
 #include <unordered_map>
 
+#include <QJsonDocument>
+
 class GeonkickState
 {
  public:
@@ -73,11 +75,13 @@ class GeonkickState
         double oscillatorFilterFactor(int index) const;
         QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
         QByteArray toRawData() const;
+        QByteArray toJson() const;
 
 protected:
         void parseKickObject(const auto &kick);
         void parseOscillatorObject(int index, const auto &osc);
         QPolygonF parseEnvelopeArray(const auto &envelopeArray);
+        QJsonDocument getJsonDocument() const;
 
 private:
         struct Oscillator {

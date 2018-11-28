@@ -56,16 +56,18 @@ TopBar::TopBar(GeonkickWidget *parent)
         buttonsLayout->addSpacing(20);
 
         openFileButton = new GeonkickButton(this);
-        openFileButton->setUnpressedImage(QPixmap("./themes/geontime/open.png"));
-        openFileButton->setPressedImage(QPixmap("./themes/geontime/open_active.png"));
+        openFileButton->setUnpressedImage(QPixmap("./themes/geontime/open_active.png"));
+        openFileButton->setCheckable(true);
         buttonsLayout->addWidget(openFileButton);
         buttonsLayout->setAlignment(openFileButton, Qt::AlignLeft);
+        connect(openFileButton, SIGNAL(toggled(bool)), parent, SLOT(openPreset()));
 
         saveFileButton = new GeonkickButton(this);
-        saveFileButton->setUnpressedImage(QPixmap("./themes/geontime/save.png"));
-        saveFileButton->setPressedImage(QPixmap("./themes/geontime/save_active.png"));
+        saveFileButton->setUnpressedImage(QPixmap("./themes/geontime/save_active.png"));
+        saveFileButton->setCheckable(true);
         buttonsLayout->addWidget(saveFileButton);
         buttonsLayout->setAlignment(saveFileButton, Qt::AlignLeft);
+        connect(saveFileButton, SIGNAL(toggled(bool)), parent, SLOT(savePreset()));
 
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setUnpressedImage(QPixmap("./themes/geontime/export_active.png"));
@@ -75,8 +77,8 @@ TopBar::TopBar(GeonkickWidget *parent)
         connect(exportFileButton, SIGNAL(toggled(bool)), parent, SLOT(openExportDialog()));
 
         settingsButton = new GeonkickButton(this);
-        settingsButton->setUnpressedImage(QPixmap("./themes/geontime/settings.png"));
-        settingsButton->setPressedImage(QPixmap("./themes/geontime/settings_active.png"));
+        settingsButton->setUnpressedImage(QPixmap("./themes/geontime/settings_active.png"));
+        settingsButton->setCheckable(true);
         buttonsLayout->addWidget(settingsButton);
         buttonsLayout->setAlignment(settingsButton, Qt::AlignLeft);
         buttonsLayout->addStretch(1);
