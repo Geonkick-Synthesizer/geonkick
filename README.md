@@ -4,6 +4,9 @@ A kick drum synthesizer.
 
 License: GPLv3
 
+![Screenshot](misc/Screenshot.png)
+
+
 Status: no release yet
 
 What it should include:
@@ -39,7 +42,7 @@ What it should include:
      - mono [i]
      - WAV 16. 24. 23 bit [i]
      - FLAC 16, 24 bit [i]
-* Save
+* Save [i]
 * Open
 * Standalone [i]
 * Plugin
