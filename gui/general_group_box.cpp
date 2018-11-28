@@ -92,6 +92,7 @@ void GeneralGroupBox::createFilterHBox()
         connect(filterCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableKickFilter(bool)));
 
         Knob *kickFrequencyKnob = new Knob(filterEnvelopeBox);
+        kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
         kickFrequencyKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
         kickFrequencyKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));

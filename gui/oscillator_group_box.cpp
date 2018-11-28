@@ -159,6 +159,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 vLayout->setSpacing(0);
         } else {
                 Knob *frequencyAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
+                frequencyAmplitudeKnob->setRangeType(Knob::RangeType::Logarithmic);
                 frequencyAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
                 frequencyAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
                 frequencyAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
@@ -186,6 +187,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         connect(filterCheckbox, SIGNAL(stateUpdated(bool)), oscillator, SLOT(enableFilter(bool)));
 
         Knob *kickFrequencyKnob = new Knob(filterEnvelopeBox);
+        kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
         kickFrequencyKnob->setRange(20, 20000);
         kickFrequencyKnob->setCurrentValue(oscillator->filterFrequency());
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);

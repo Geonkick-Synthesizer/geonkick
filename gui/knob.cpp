@@ -38,6 +38,7 @@ Knob::Knob(GeonkickWidget *parent)
 	  knobValueDegree(GEONKICK_KNOB_MIN_DEGREE),
           rangeFrom(0),
           rangeTo(0),
+          rangeType(RangeType::Linear),
           isSelected(false)
 {
         QPalette pal;
@@ -107,7 +108,12 @@ Knob::mouseMoveEvent(QMouseEvent *event)
                 lastPositionPoint.setX(event->x());
                 lastPositionPoint.setY(event->y());
                 double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
-                emit valueUpdated(rangeFrom + k * (rangeTo - rangeFrom));
+                if (getRangeType() == RangeType::Logarithmic) {
+                        double logVal = log10(rangeFrom) + k * (log10(rangeTo) - log10(rangeFrom));
+                        emit valueUpdated(pow(10, logVal));
+                } else {
+                        emit valueUpdated(rangeFrom + k * (rangeTo - rangeFrom));
+                }
                 update();
         }
 }
@@ -115,13 +121,32 @@ Knob::mouseMoveEvent(QMouseEvent *event)
 double Knob::getValue(void) const
 {
         double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
-	return rangeFrom + k * (rangeTo - rangeFrom);
+
+        double val;
+        if (getRangeType() == RangeType::Logarithmic) {
+                double logVal = log10(rangeFrom) + k * (log10(rangeTo) - log10(rangeFrom));
+                val = pow(10, logVal);
+        } else {
+                val = rangeFrom + k * (rangeTo - rangeFrom);
+        }
+
+	return val;
 }
 
 void Knob::setRange(double from, double to)
 {
         rangeFrom = from;
         rangeTo = to;
+}
+
+void Knob::setRangeType(RangeType type)
+{
+        rangeType = type;
+}
+
+Knob::RangeType Knob::getRangeType() const
+{
+        return rangeType;
 }
 
 void Knob::setCurrentValue(double val)
@@ -136,7 +161,11 @@ void Knob::setCurrentValue(double val)
         if (fabs(rangeTo - rangeFrom) < std::numeric_limits<double>::epsilon()) {
                 knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
         } else {
-                k = (val - rangeFrom) / (rangeTo - rangeFrom);
+                if (getRangeType() == RangeType::Logarithmic) {
+                        k = (log10(val) - log10(rangeFrom)) / (log10(rangeTo) - log10(rangeFrom));
+                } else {
+                        k = (val - rangeFrom) / (rangeTo - rangeFrom);
+                }
         }
         knobValueDegree = GEONKICK_KNOB_MIN_DEGREE + k * GEONKICK_KNOB_RANGE_DEGREE;
 }

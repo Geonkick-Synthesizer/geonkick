@@ -32,11 +32,20 @@
 class Knob : public GeonkickWidget
 {
    Q_OBJECT
+
 public:
+
+   enum RangeType: int {
+           Linear,
+           Logarithmic
+   };
+
    Knob(GeonkickWidget *parent);
    virtual ~Knob();
    double getValue(void) const;
    void setRange(double from, double to);
+   void setRangeType(RangeType type);
+   RangeType getRangeType() const;
    void setCurrentValue(double val);
    void setKnobImage(const QPixmap &pixmap);
 
@@ -55,6 +64,7 @@ public:
    double knobValueDegree;
    double rangeFrom;
    double rangeTo;
+   RangeType rangeType;
    bool isSelected;
 };
 
