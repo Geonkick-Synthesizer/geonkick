@@ -51,6 +51,9 @@ public:
      ~EnvelopeWidget();
      void setBackgourndImage(const QPixmap &pixmap);
 
+ signals:
+     void update();
+
  protected slots:
      void showAmplitudeEnvelope();
      void showFrequencyEnvelope();

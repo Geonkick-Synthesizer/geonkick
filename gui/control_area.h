@@ -36,8 +36,11 @@ class ControlArea: public GeonkickWidget
 {
  Q_OBJECT
  public:
- ControlArea(GeonkickWidget *parent, GeonkickApi* api, std::vector<Oscillator*> &oscillators);
- ~ControlArea();
+     ControlArea(GeonkickWidget *parent, GeonkickApi* api, std::vector<Oscillator*> &oscillators);
+     ~ControlArea();
+
+signals:
+     void update();
 };
 
 #endif

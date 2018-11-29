@@ -311,12 +311,3 @@ QString ExportWidget::fileSuffix()
                 return QString();
         }
 }
-
-/*void ExportWidget::paintWidget(QPaintEvent *event)
-{
-        QPainter painter(this);
-        QPen pen(QColor(20, 20, 20, 255));
-        pen.setWidth(3);
-        painter.setPen(pen);
-        painter.drawRect(0, 0, width() - 1, height() - 1);
-        }*/

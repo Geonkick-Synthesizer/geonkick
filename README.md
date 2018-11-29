@@ -43,7 +43,7 @@ What it should include:
      - WAV 16. 24. 23 bit [i]
      - FLAC 16, 24 bit [i]
 * Save [i]
-* Open
+* Open [i]
 * Standalone [i]
 * Plugin
      - LV2 [i]
