@@ -42,6 +42,9 @@ class GeneralEnvelope: public Envelope
 public slots:
   void setEnvelopeLengh(double len) final;
 
+protected slots:
+  void updatePoints() final;
+
  protected:
   void pointAddedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;

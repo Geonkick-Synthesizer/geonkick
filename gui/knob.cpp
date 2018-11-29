@@ -139,5 +139,6 @@ void Knob::setCurrentValue(double val)
                 k = (val - rangeFrom) / (rangeTo - rangeFrom);
         }
         knobValueDegree = GEONKICK_KNOB_MIN_DEGREE + k * GEONKICK_KNOB_RANGE_DEGREE;
+        update();
 }
 

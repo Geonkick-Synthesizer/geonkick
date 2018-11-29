@@ -54,12 +54,20 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::ve
 
         QRect rect = drawArea->getDrawingArea();
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
-        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        std::shared_ptr<Envelope> envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
+        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
+        envelopes.push_back(envelope);
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
-        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
+        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
+        envelopes.push_back(envelope);
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
-        envelopes.push_back(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        envelopes.push_back(std::make_shared<GeneralEnvelope>(api, rect));
+        envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
+        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
+        envelopes.push_back(envelope);
+        envelope = std::make_shared<GeneralEnvelope>(api, rect);
+        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
+        envelopes.push_back(envelope);
         auto kickGraph = new KickGraph(this, api);
         kickGraph->setDrawingArea(rect);
         drawArea->setKickGraph(kickGraph);

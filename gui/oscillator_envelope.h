@@ -40,8 +40,10 @@ class OscillatorEnvelope: public Envelope
   ~OscillatorEnvelope();
   double envelopeLengh(void) const;
 
+  protected slots:
+          void updatePoints() final;
+
  protected:
-  void updatePoints() final;
   void pointAddedEvent(double x, double y) override;
   void pointUpdatedEvent(unsigned int index, double x, double y) override;
   void pointRemovedEvent(unsigned int index) override;

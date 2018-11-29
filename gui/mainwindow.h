@@ -56,15 +56,15 @@ class MainWindow : public GeonkickWidget
       void openPreset();
       void savePreset();
       void setLimiterValue(int value);
+ signals:
+      void updateGui();
 
  private:
       void loadApiDefaultSettings();
       void loadApiSettings();
-      void updateGui();
 
       GeonkickApi *geonkickApi;
       std::vector<Oscillator*> oscillators;
-      OscillatorWidget *oscillatorWidget;
       QVBoxLayout *centralWidgetLayout;
       QVector<QGroupBox*> envelopeGroupBox;
 };

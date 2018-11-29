@@ -28,13 +28,14 @@
 
 class GeonkickSlider;
 class GeonkickLevel;
+class GeonkickApi;
 
 class Fader: public GeonkickWidget
 {
  Q_OBJECT
 
  public:
-        Fader(GeonkickWidget *parent = nullptr);
+        Fader(GeonkickApi *api, GeonkickWidget *parent = nullptr);
         ~Fader();
         int getFaderLevel(void) const;
         int getChannelLevel(int channel) const;
@@ -42,6 +43,8 @@ class Fader: public GeonkickWidget
  public slots:
         void setFaderLevel(int level);
         void setChannelLevel(int channel, int level);
+        void updateFader();
+
  signals:
         void levelUpdated(int level);
 
@@ -49,6 +52,7 @@ class Fader: public GeonkickWidget
         void drawLevels(QPainter &painter);
         void paintWidget(QPaintEvent *event) final;
         void resizeEvent(QResizeEvent *event) final;
+        GeonkickApi *geonkickApi;
         GeonkickSlider *faderSlider;
         int leftChannelLevel;
         int rightChannelLevel;

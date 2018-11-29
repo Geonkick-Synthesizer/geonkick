@@ -31,6 +31,7 @@ class Oscillator;
 class QComboBox;
 class GeonkickApi;
 class GeonkickCheckbox;
+class Knob;
 
 class GeneralGroupBox: public GeonkickGroupBox
 {
@@ -38,6 +39,9 @@ class GeneralGroupBox: public GeonkickGroupBox
  public:
         GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
         ~GeneralGroupBox();
+
+public slots:
+        void update();
 
  protected:
         void createAplitudeEnvelopeHBox();
@@ -49,6 +53,10 @@ class GeneralGroupBox: public GeonkickGroupBox
         GeonkickApi* geonkickApi;
         QComboBox *filterTypeCb;
         GeonkickCheckbox *filterCheckbox;
+        Knob *kickAmplitudeKnob;
+        Knob *kickLengthKnob;
+        Knob *kickFrequencyKnob;
+        Knob *kickQFactorKnob;
 };
 
 #endif

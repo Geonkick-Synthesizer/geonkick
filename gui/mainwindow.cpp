@@ -75,16 +75,18 @@ bool MainWindow::init(void)
         hBoxLayout->setSpacing(0);
         hBoxLayout->setContentsMargins(0, 0, 0, 0);
         auto envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
+        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
         envelopeWidget->setFixedSize(850, 340);
         hBoxLayout->addWidget(envelopeWidget);
-        auto faderWidget = new Fader(this);
+        auto faderWidget = new Fader(geonkickApi, this);
+        connect(this, SIGNAL(updateGui()), faderWidget, SLOT(updateFader()));
         faderWidget->setFixedSize(65, 340);
         connect(faderWidget, SIGNAL(levelUpdated(int)), this, SLOT(setLimiterValue(int)));
-        faderWidget->setFaderLevel(100 * geonkickApi->limiterValue());
         hBoxLayout->addWidget(faderWidget);
         mainLayout->addLayout(hBoxLayout);
 
-        ControlArea *controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
+        auto controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
+        connect(this, SIGNAL(updateGui()), controlAreaWidget, SIGNAL(update()));
         mainLayout->addSpacing(5);
         mainLayout->addWidget(controlAreaWidget);
         return true;
@@ -131,7 +133,7 @@ void MainWindow::openPreset()
                 geonkickApi->setState(std::make_shared<GeonkickState>(document.toBinaryData()));
         }
         file.close();
-        updateGui();
+        emit updateGui();
 }
 
 void MainWindow::setLimiterValue(int value)
@@ -139,9 +141,3 @@ void MainWindow::setLimiterValue(int value)
         geonkickApi->setLimiterValue(static_cast<double>(value) / 100);
 }
 
-void MainWindow::updateGui()
-{
-        /*        faderWidget.update();
-        controlAreaWidget.update();
-        envelopeWidget.update();*/
-}

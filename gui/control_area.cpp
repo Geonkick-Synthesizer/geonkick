@@ -41,10 +41,12 @@ ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
         setLayout(mainLayout);
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
         auto widget = new OscillatorGroupBox(this, oscillator);
+        connect(this, SIGNAL(update()), widget, SLOT(update()));
         mainLayout->addWidget(widget);
         mainLayout->setAlignment(widget, Qt::AlignTop);
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
         widget = new OscillatorGroupBox(this, oscillator);
+        connect(this, SIGNAL(update()), widget, SLOT(update()));
         mainLayout->addWidget(widget);
         mainLayout->setAlignment(widget, Qt::AlignTop);
 
@@ -53,13 +55,20 @@ ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
         layoutGBox->setContentsMargins(0, 0, 0, 0);
         mainLayout->addLayout(layoutGBox);
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
-        layoutGBox->addWidget(new OscillatorGroupBox(this, oscillator), 0, 0);
-        layoutGBox->addWidget(new GeneralGroupBox(this, api), 0, 1);
-        layoutGBox->addWidget(new EffectsGroupBox(this), 1, 0, 1, 2);
+        widget = new OscillatorGroupBox(this, oscillator);
+        connect(this, SIGNAL(update()), widget, SLOT(update()));
+        layoutGBox->addWidget(widget, 0, 0);
+        auto generalWidget = new GeneralGroupBox(this, api);
+        connect(this, SIGNAL(update()), generalWidget, SLOT(update()));
+        layoutGBox->addWidget(generalWidget, 0, 1);
+        auto effectsWidget = new EffectsGroupBox(this);
+        connect(this, SIGNAL(update()), effectsWidget, SLOT(update()));
+        layoutGBox->addWidget(effectsWidget, 1, 0, 1, 2);
 }
 
 ControlArea::~ControlArea()
 {
 
 }
+
 
