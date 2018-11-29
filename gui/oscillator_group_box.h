@@ -32,6 +32,7 @@ class QComboBox;
 class GeonkickWidget;
 class GeonkickButton;
 class GeonkickCheckbox;
+class Knob;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -39,6 +40,10 @@ class OscillatorGroupBox: public GeonkickGroupBox
  public:
         OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc);
         ~OscillatorGroupBox();
+
+ public slots:
+        void update();
+
  signals:
         void oscillatorFunctionChanged(int index);
 
@@ -57,6 +62,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
 
  private:
         Oscillator *oscillator;
+        GeonkickCheckbox *oscillatorCheckbox;
         GeonkickCheckbox *filterCheckbox;
         GeonkickButton *sineButton;
         GeonkickButton *squareButton;
@@ -66,6 +72,10 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *noisePinkButton;
         GeonkickButton *noiseBrownianButton;
         GeonkickButton *filterType;
+        Knob *kickQFactorKnob;
+        Knob *kickFrequencyKnob;
+        Knob *envelopeAmplitudeKnob;
+        Knob *frequencyAmplitudeKnob;
         bool filterTypeIsChecked;
 };
 

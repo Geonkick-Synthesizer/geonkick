@@ -69,3 +69,8 @@ double GeneralEnvelope::envelopeAmplitude(void) const
 {
         return geonkickApi->kickAmplitude();
 }
+
+void GeneralEnvelope::updatePoints()
+{
+        setPoints(geonkickApi->getKickEnvelopePoints());
+}

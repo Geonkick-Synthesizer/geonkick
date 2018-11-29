@@ -58,7 +58,6 @@ class Envelope: public QObject
         void unselectPoint(void);
         void moveSelectedPoint(int x, int y);
         void addPoint(const QPoint &point);
-        virtual void updatePoints() {};
         void removePoint(const QPoint &point);
         Type type() const;
         bool isSupportedType(Type type) const;
@@ -72,6 +71,7 @@ class Envelope: public QObject
          void setPoints(const QPolygonF  &points);
          void removePoints();
          void setDrawingArea(const QRect &rect);
+         virtual void updatePoints() {};
  signals:
          void envelopeLengthUpdated(double len);
          void amplitudeUpdated(double amplitude);

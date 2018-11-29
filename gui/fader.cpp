@@ -23,9 +23,11 @@
 
 #include "fader.h"
 #include "geonkick_slider.h"
+#include "geonkick_api.h"
 
-Fader::Fader(GeonkickWidget *parent)
+Fader::Fader(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickWidget(parent),
+          geonkickApi(api),
           faderSlider(new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)),
           leftChannelLevel(40),
           rightChannelLevel(50),
@@ -33,6 +35,7 @@ Fader::Fader(GeonkickWidget *parent)
 {
         faderSlider->move(0, 3);
         connect(faderSlider, SIGNAL(valueUpdated(int)), this, SIGNAL(levelUpdated(int)));
+        updateFader();
 }
 
 Fader::~Fader()
@@ -100,4 +103,9 @@ void Fader::setChannelLevel(int channel, int level)
         } else {
                 rightChannelLevel = level;
         }
+}
+
+void Fader::updateFader()
+{
+        setFaderLevel(100 * geonkickApi->limiterValue());
 }
