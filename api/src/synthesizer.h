@@ -26,6 +26,7 @@
 
 #include "geonkick_internal.h"
 #include "compressor.h"
+#include "distortion.h"
 
 struct gkick_synth {
         gkick_real current_time;
@@ -45,6 +46,8 @@ struct gkick_synth {
         /* Kick compressor */
         struct gkick_compressor *compressor;
 
+        /* Kick distortion */
+        struct gkick_distortion *distortion;
 
         /* General synthesizer amplitude envelope. */
         struct gkick_envelope *envelope;
@@ -364,5 +367,23 @@ gkick_synth_compressor_set_makeup(struct gkick_synth *synth, gkick_real makeup);
 
 enum geonkick_error
 gkick_synth_compressor_get_makeup(struct gkick_synth *synth, gkick_real *makeup);
+
+enum geonkick_error
+gkick_synth_distortion_enable(struct gkick_synth *synth, int enable);
+
+enum geonkick_error
+gkick_synth_distortion_is_enabled(struct gkick_synth *synth, int *enabled);
+
+enum geonkick_error
+gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume);
+
+enum geonkick_error
+gkick_synth_distortion_get_volume(struct gkick_synth *synth, gkick_real *volume);
+
+enum geonkick_error
+gkick_synth_distortion_set_drive(struct gkick_synth *synth, gkick_real drive);
+
+enum geonkick_error
+gkick_synth_distortion_get_drive(struct gkick_synth *synth, gkick_real *drive);
 
 #endif // GEONKICK_SYNTHESIZER_H

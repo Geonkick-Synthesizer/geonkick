@@ -90,6 +90,13 @@ class GeonkickState
         double getCompressorKnee() const;
         double getCompressorMakeup() const;
 
+        void enableDistortion(bool enable);
+        bool isDistortionEnabled() const;
+        void setDistortionVolume(double volume);
+        void setDistortionDrive(double drive);
+        double getDistortionVolume() const;
+        double getDistortionDrive() const;
+
         QByteArray toRawData() const;
         QByteArray toJson() const;
 
@@ -126,8 +133,8 @@ private:
 
         struct Distortion {
                 bool enabled;
-                double drive;
                 double volume;
+                double drive;
         };
 
         std::shared_ptr<Oscillator> getOscillator(int index) const;

@@ -25,11 +25,13 @@
 #include "geonkick_slider.h"
 #include "geonkick_label.h"
 #include "geonkick_checkbox.h"
+#include "geonkick_api.h"
 
 #include <QGridLayout>
 
-DistortionGroupBox::DistortionGroupBox(GeonkickWidget *parent)
+DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent),
+          geonkickApi(api),
           volumeSlider(nullptr),
           driveSlider(nullptr),
           distortionCheckbox(new GeonkickCheckbox(this))
@@ -37,6 +39,7 @@ DistortionGroupBox::DistortionGroupBox(GeonkickWidget *parent)
         distortionCheckbox->setCheckedImage("./themes/geontime/checkbox_checked_10x10.png");
         distortionCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked_10x10.png");
         distortionCheckbox->setCheckboxLabelImage("./themes/geontime/distortion_groupbox_label.png");
+        connect(distortionCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableDistortion(bool)));
         setGroupBoxLabel(distortionCheckbox);
 
         auto widget = new GeonkickWidget(this);
@@ -49,6 +52,7 @@ DistortionGroupBox::DistortionGroupBox(GeonkickWidget *parent)
         volumeLabel->setImage("./themes/geontime/distortion_volume_label.png");
         gridLayout->addWidget(volumeLabel, 0, 0, Qt::AlignRight);
         volumeSlider = new GeonkickSlider(widget);
+        connect(volumeSlider, SIGNAL(valueUpdated(int)), this, SLOT(setVolume(int)));
         volumeSlider->setFixedSize(60, 12);
         volumeSlider->setValue(50);
         gridLayout->addWidget(volumeSlider, 0, 1, Qt::AlignLeft);
@@ -58,10 +62,36 @@ DistortionGroupBox::DistortionGroupBox(GeonkickWidget *parent)
         driveLabel->setImage("./themes/geontime/distortion_drive_label.png");
         gridLayout->addWidget(driveLabel, 1, 0, Qt::AlignRight);
         driveSlider = new GeonkickSlider(widget);
+        connect(driveSlider, SIGNAL(valueUpdated(int)), this, SLOT(setDrive(int)));
         driveSlider->setFixedSize(60, 12);
         gridLayout->addWidget(driveSlider, 1, 1, Qt::AlignLeft);
 }
 
 DistortionGroupBox::~DistortionGroupBox()
 {
+}
+
+void DistortionGroupBox::setVolume(int val)
+{
+        double logVal = -60 * (1.0 - (static_cast<double>(val) / 100));
+        double volume = pow(10, logVal / 20);
+        geonkickApi->setDistortionVolume(volume);
+}
+
+void DistortionGroupBox::setDrive(int val)
+{
+        geonkickApi->setDistortionDrive(val);
+}
+
+void DistortionGroupBox::update()
+{
+        distortionCheckbox->setChecked(geonkickApi->isDistortionEnabled());
+        double volume = geonkickApi->getDistortionVolume();
+        double logVal;
+        if (volume > 0)
+                logVal = 20 * log10(volume);
+        else
+                logVal = 60;
+        volumeSlider->setValue(100 * (60 - fabs(logVal)) / 60);
+        driveSlider->setValue(geonkickApi->getDistortionDrive());
 }

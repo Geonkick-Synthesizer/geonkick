@@ -59,6 +59,12 @@ gkick_synth_new(struct gkick_synth **synth)
                 return GEONKICK_ERROR;
         }
 
+        if (gkick_distortion_new(&(*synth)->distortion) != GEONKICK_OK) {
+                gkick_log_error("can't create distortion");
+                gkick_synth_free(synth);
+                return GEONKICK_ERROR;
+        }
+
         if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
                 gkick_synth_free(synth);
@@ -129,6 +135,9 @@ void gkick_synth_free(struct gkick_synth **synth)
 
                         if ((*synth)->compressor)
                                 gkick_compressor_free(&(*synth)->compressor);
+
+                        if ((*synth)->distortion)
+                                gkick_distortion_free(&(*synth)->distortion);
 
                         if ((*synth)->envelope) {
                                 gkick_envelope_destroy((*synth)->envelope);
@@ -1107,6 +1116,10 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
         if (synth->filter_enabled)
                 gkick_filter_val(synth->filter, val, &val);
 
+        gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled)
+                gkick_distortion_val(synth->distortion, val, &val);
+
         gkick_compressor_is_enabled(synth->compressor, &enabled);
         if (enabled)
                 gkick_compressor_val(synth->compressor, val, &val);
@@ -1483,4 +1496,49 @@ enum geonkick_error
 gkick_synth_compressor_get_makeup(struct gkick_synth *synth, gkick_real *makeup)
 {
         return gkick_compressor_get_makeup(synth->compressor, makeup);
+}
+
+enum geonkick_error
+gkick_synth_distortion_enable(struct gkick_synth *synth, int enable)
+{
+        enum geonkick_error res;
+        res = gkick_distortion_enable(synth->distortion, enable);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_distortion_is_enabled(struct gkick_synth *synth, int *enabled)
+{
+        return gkick_distortion_is_enabled(synth->distortion, enabled);
+}
+
+enum geonkick_error
+gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume)
+{
+        enum geonkick_error res;
+        res = gkick_distortion_set_volume(synth->distortion, volume);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_distortion_get_volume(struct gkick_synth *synth, gkick_real *volume)
+{
+        return gkick_distortion_get_volume(synth->distortion, volume);
+}
+
+enum geonkick_error
+gkick_synth_distortion_set_drive(struct gkick_synth *synth, gkick_real drive)
+{
+        enum geonkick_error res;
+        res = gkick_distortion_set_drive(synth->distortion, drive);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_distortion_get_drive(struct gkick_synth *synth, gkick_real *drive)
+{
+        return gkick_distortion_get_drive(synth->distortion, drive);
 }

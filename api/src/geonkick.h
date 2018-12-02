@@ -342,6 +342,24 @@ geonkick_compressor_set_makeup(struct geonkick *kick, gkick_real makeup);
 enum geonkick_error
 geonkick_compressor_get_makeup(struct geonkick *kick, gkick_real *makeup);
 
+enum geonkick_error
+geonkick_distortion_enable(struct geonkick *kick, int enable);
+
+enum geonkick_error
+geonkick_distortion_is_enabled(struct geonkick *kick, int *enabled);
+
+enum geonkick_error
+geonkick_distortion_set_volume(struct geonkick *kick, gkick_real volume);
+
+enum geonkick_error
+geonkick_distortion_get_volume(struct geonkick *kick, gkick_real *volume);
+
+enum geonkick_error
+geonkick_distortion_set_drive(struct geonkick *kick, gkick_real drive);
+
+enum geonkick_error
+geonkick_distortion_get_drive(struct geonkick *kick, gkick_real *drive);
+
 #ifdef __cplusplus
 }
 #endif

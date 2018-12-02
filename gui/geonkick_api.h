@@ -123,6 +123,11 @@ class GeonkickApi: public QObject {
   double getCompressorKnee() const;
   double getCompressorMakeup() const;
 
+  bool isDistortionEnabled() const;
+  double getDistortionVolume() const;
+  double getDistortionDrive() const;
+
+
 public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
@@ -142,6 +147,9 @@ public slots:
   void setCompressorRatio(double ratio);
   void setCompressorKnee(double knee);
   void setCompressorMakeup(double makeup);
+  void enableDistortion(bool enable);
+  void setDistortionVolume(double volume);
+  void setDistortionDrive(double drive);
 
 signals:
   void kickLengthUpdated(double length);

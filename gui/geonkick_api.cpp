@@ -76,6 +76,9 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
         state->setCompressorRatio(1);
         state->setCompressorKnee(0);
         state->setCompressorMakeup(0);
+        state->enableDistortion(false);
+        state->setDistortionVolume(10);
+        state->setDistortionDrive(0);
 
         std::vector<GeonkickApi::OscillatorType> oscillators = {
                 GeonkickApi::OscillatorType::Oscillator1,
@@ -135,6 +138,9 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         setCompressorRatio(state->getCompressorRatio());
         setCompressorKnee(state->getCompressorKnee());
         setCompressorMakeup(state->getCompressorMakeup());
+        enableDistortion(state->isDistortionEnabled());
+        setDistortionVolume(state->getDistortionVolume());
+        setDistortionDrive(state->getDistortionDrive());
         geonkick_enable_synthesis(geonkickApi, 1);
 }
 
@@ -164,6 +170,9 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState()
         state->setCompressorRatio(getCompressorRatio());
         state->setCompressorKnee(getCompressorKnee());
         state->setCompressorMakeup(getCompressorMakeup());
+        state->enableDistortion(isDistortionEnabled());
+        state->setDistortionVolume(getDistortionVolume());
+        state->setDistortionDrive(getDistortionDrive());
 
         return state;
 }
@@ -665,4 +674,40 @@ double GeonkickApi::getCompressorMakeup() const
         gkick_real val;
         geonkick_compressor_get_makeup(geonkickApi, &val);
         return val;
+}
+
+void GeonkickApi::enableDistortion(bool enable)
+{
+        geonkick_distortion_enable(geonkickApi, enable);
+}
+
+bool GeonkickApi::isDistortionEnabled() const
+{
+        int enabled = false;
+        geonkick_distortion_is_enabled(geonkickApi, &enabled);
+        return enabled;
+}
+
+void GeonkickApi::setDistortionVolume(double volume)
+{
+        geonkick_distortion_set_volume(geonkickApi, volume);
+}
+
+double GeonkickApi::getDistortionVolume(void) const
+{
+        gkick_real volume;
+        geonkick_distortion_get_volume(geonkickApi, &volume);
+        return volume;
+}
+
+void GeonkickApi::setDistortionDrive(double drive)
+{
+        geonkick_distortion_set_drive(geonkickApi, drive);
+}
+
+double GeonkickApi::getDistortionDrive(void) const
+{
+        gkick_real drive;
+        geonkick_distortion_get_drive(geonkickApi, &drive);
+        return drive;
 }

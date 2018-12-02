@@ -78,6 +78,13 @@ void GeonkickState::parseKickObject(const auto &kick)
                 setCompressorKnee(compressor.toObject().take("knee").toDouble());
                 setCompressorMakeup(compressor.toObject().take("makeup").toDouble());
         }
+
+        auto distortion = kick.toObject().take("distortion");
+        if (!distortion.isNull() && distortion.isObject()) {
+                enableDistortion(distortion.toObject().take("enabled").toBool());
+                setDistortionVolume(distortion.toObject().take("volume").toDouble());
+                setDistortionDrive(distortion.toObject().take("drive").toDouble());
+        }
 }
 
 void GeonkickState::parseOscillatorObject(int index, const auto &osc)
@@ -450,6 +457,36 @@ double GeonkickState::getCompressorMakeup() const
         return compressor.makeup;
 }
 
+void GeonkickState::enableDistortion(bool enable)
+{
+        distortion.enabled = enable;
+}
+
+bool GeonkickState::isDistortionEnabled() const
+{
+        return distortion.enabled;
+}
+
+void GeonkickState::setDistortionVolume(double volume)
+{
+        distortion.volume = volume;
+}
+
+void GeonkickState::setDistortionDrive(double drive)
+{
+        distortion.drive = drive;
+}
+
+double GeonkickState::getDistortionVolume() const
+{
+        return distortion.volume;
+}
+
+double GeonkickState::getDistortionDrive() const
+{
+        return distortion.drive;
+}
+
 QByteArray GeonkickState::toRawData() const
 {
         return getJsonDocument().toBinaryData();
@@ -528,6 +565,12 @@ QJsonDocument GeonkickState::getJsonDocument() const
         compressor.insert("knee", getCompressorKnee());
         compressor.insert("makeup", getCompressorMakeup());
         kick["compressor"] = compressor;
+
+        QJsonObject distortion;
+        distortion.insert("enabled", isDistortionEnabled());
+        distortion.insert("volume", getDistortionVolume());
+        distortion.insert("drive", getDistortionDrive());
+        kick["distortion"] = distortion;
 
         state["kick"] = kick;
         return QJsonDocument(state);
