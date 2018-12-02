@@ -23,12 +23,6 @@
 
 #include "envelope.h"
 
-/*
- * TODO: reduce the averall
- * complexity of the envelope.
- *
-*/
-
 struct gkick_envelope*
 gkick_envelope_create(void)
 {
@@ -42,11 +36,6 @@ gkick_envelope_create(void)
 	return envelope;
 }
 
-/**
- * Compexity = O(N), where N are the nuber of evelope points.
- * TODO: Reduce the complexity.Ex: with an array instead of list
- * it can be reduced to O(log(N)) with binary search.
- */
 gkick_real
 gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm)
 {

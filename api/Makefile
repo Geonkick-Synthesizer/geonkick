@@ -11,6 +11,7 @@ OBJECTS = gkick_log.o \
           envelope.o \
           gkick_buffer.o \
           filter.o \
+          compressor.o \
           oscillator.o \
           synthesizer.o \
           gkick_jack.o \

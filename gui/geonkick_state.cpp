@@ -67,6 +67,17 @@ void GeonkickState::parseKickObject(const auto &kick)
                 setKickFilterQFactor(filter.toObject().take("factor").toDouble());
                 setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("factor").toInt()));
         }
+
+        auto compressor = kick.toObject().take("compressor");
+        if (!compressor.isNull() && compressor.isObject()) {
+                enableCompressor(compressor.toObject().take("enabled").toBool());
+                setCompressorAttack(compressor.toObject().take("attack").toDouble());
+                setCompressorRelease(compressor.toObject().take("release").toDouble());
+                setCompressorThreshold(compressor.toObject().take("threshold").toDouble());
+                setCompressorRatio(compressor.toObject().take("ratio").toDouble());
+                setCompressorKnee(compressor.toObject().take("knee").toDouble());
+                setCompressorMakeup(compressor.toObject().take("makeup").toDouble());
+        }
 }
 
 void GeonkickState::parseOscillatorObject(int index, const auto &osc)
@@ -369,6 +380,76 @@ QPolygonF GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::Envelo
         return QPolygonF();
 }
 
+void GeonkickState::enableCompressor(bool enable)
+{
+        compressor.enabled = enable;
+}
+
+bool GeonkickState::isCompressorEnabled() const
+{
+        return compressor.enabled;
+}
+
+void GeonkickState::setCompressorAttack(double attack)
+{
+        compressor.attack = attack;
+}
+
+void GeonkickState::setCompressorRelease(double release)
+{
+        compressor.release = release;
+}
+
+void GeonkickState::setCompressorThreshold(double threshold)
+{
+        compressor.threshold = threshold;
+}
+
+void GeonkickState::setCompressorRatio(double ratio)
+{
+        compressor.ratio = ratio;
+}
+
+void GeonkickState::setCompressorKnee(double knee)
+{
+        compressor.knee = knee;
+}
+
+void GeonkickState::setCompressorMakeup(double makeup)
+{
+        compressor.makeup = makeup;
+}
+
+double GeonkickState::getCompressorAttack() const
+{
+        return compressor.attack;
+}
+
+double GeonkickState::getCompressorRelease() const
+{
+        return compressor.release;
+}
+
+double GeonkickState::getCompressorThreshold() const
+{
+        return compressor.threshold;
+}
+
+double GeonkickState::getCompressorRatio() const
+{
+        return compressor.ratio;
+}
+
+double GeonkickState::getCompressorKnee() const
+{
+        return compressor.knee;
+}
+
+double GeonkickState::getCompressorMakeup() const
+{
+        return compressor.makeup;
+}
+
 QByteArray GeonkickState::toRawData() const
 {
         return getJsonDocument().toBinaryData();
@@ -430,13 +511,24 @@ QJsonDocument GeonkickState::getJsonDocument() const
         }
         envelope.insert("points", jsonArray);
         kick["ampl_env"] = envelope;
+
         QJsonObject filter;
         filter.insert("enabled", isKickFilterEnabled());
         filter.insert("type", static_cast<int>(getKickFilterType()));
         filter.insert("cutoff", getKickFilterFrequency());
         filter.insert("factor", getKickFilterQFactor());
         kick["filter"] = filter;
-        state["kick"] = kick;
 
+        QJsonObject compressor;
+        compressor.insert("enabled", isCompressorEnabled());
+        compressor.insert("attack", getCompressorAttack());
+        compressor.insert("release", getCompressorRelease());
+        compressor.insert("threshold", getCompressorThreshold());
+        compressor.insert("ratio", getCompressorRatio());
+        compressor.insert("knee", getCompressorKnee());
+        compressor.insert("makeup", getCompressorMakeup());
+        kick["compressor"] = compressor;
+
+        state["kick"] = kick;
         return QJsonDocument(state);
 }

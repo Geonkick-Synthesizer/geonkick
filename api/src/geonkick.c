@@ -725,3 +725,157 @@ geonkick_get_audio_frame(struct geonkick *kick, gkick_real *val)
 {
         return gkick_audio_get_frame(kick->audio, val);
 }
+
+enum geonkick_error
+geonkick_compressor_enable(struct geonkick *kick, int enable)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_enable(kick->synth, enable);
+}
+
+enum geonkick_error
+geonkick_compressor_is_enabled(struct geonkick *kick, int *enabled)
+{
+        if (kick == NULL || enabled == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_is_enabled(kick->synth, enabled);
+}
+
+enum geonkick_error
+geonkick_compressor_set_attack(struct geonkick *kick, gkick_real attack)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_set_attack(kick->synth, attack);
+}
+
+enum geonkick_error
+geonkick_compressor_get_attack(struct geonkick *kick, gkick_real *attack)
+{
+        if (kick == NULL || attack == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_get_attack(kick->synth, attack);
+}
+
+enum geonkick_error
+geonkick_compressor_set_release(struct geonkick *kick, gkick_real release)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_set_release(kick->synth, release);
+}
+
+enum geonkick_error
+geonkick_compressor_get_release(struct geonkick *kick, gkick_real *release)
+{
+        if (kick == NULL || release == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_get_release(kick->synth, release);
+}
+
+enum geonkick_error
+geonkick_compressor_set_threshold(struct geonkick *kick, gkick_real threshold)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_set_threshold(kick->synth, threshold);
+}
+
+enum geonkick_error
+geonkick_compressor_get_threshold(struct geonkick *kick, gkick_real *threshold)
+{
+        if (kick == NULL || threshold == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_get_threshold(kick->synth, threshold);
+}
+
+enum geonkick_error
+geonkick_compressor_set_ratio(struct geonkick *kick, gkick_real ratio)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_set_ratio(kick->synth, ratio);
+}
+
+enum geonkick_error
+geonkick_compressor_get_ratio(struct geonkick *kick, gkick_real *ratio)
+{
+        if (kick == NULL || ratio == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_get_ratio(kick->synth, ratio);
+}
+
+enum geonkick_error
+geonkick_compressor_set_knee(struct geonkick *kick, gkick_real knee)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_set_knee(kick->synth, knee);
+}
+
+enum geonkick_error
+geonkick_compressor_get_knee(struct geonkick *kick, gkick_real *knee)
+{
+        if (kick == NULL || knee == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_get_knee(kick->synth, knee);
+}
+
+enum geonkick_error
+geonkick_compressor_set_makeup(struct geonkick *kick, gkick_real makeup)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_set_makeup(kick->synth, makeup);
+}
+
+enum geonkick_error
+geonkick_compressor_get_makeup(struct geonkick *kick, gkick_real *makeup)
+{
+        if (kick == NULL || makeup == NULL) {
+                gkick_log_error("wrng arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_compressor_get_makeup(kick->synth, makeup);
+}

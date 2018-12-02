@@ -26,12 +26,19 @@
 
 #include "geonkick_groupbox.h"
 
+class GeonkickApi;
+
 class EffectsGroupBox: public GeonkickGroupBox
 {
         Q_OBJECT
  public:
-        EffectsGroupBox(GeonkickWidget *parent);
+        EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent);
         ~EffectsGroupBox();
+ signals:
+        void update();
+
+ private:
+        GeonkickApi *geonkickApi;
 };
 
 #endif // GKICK_GENERAL_GROUP_BOX_H

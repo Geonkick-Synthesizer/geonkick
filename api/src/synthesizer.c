@@ -53,6 +53,12 @@ gkick_synth_new(struct gkick_synth **synth)
         }
         (*synth)->filter_enabled = 0;
 
+        if (gkick_compressor_new(&(*synth)->compressor) != GEONKICK_OK) {
+                gkick_log_error("can't create compressor");
+                gkick_synth_free(synth);
+                return GEONKICK_ERROR;
+        }
+
         if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
                 gkick_synth_free(synth);
@@ -118,9 +124,11 @@ void gkick_synth_free(struct gkick_synth **synth)
                                 (*synth)->buffer = NULL;
                         }
 
-                        if ((*synth)->filter) {
+                        if ((*synth)->filter)
                                 gkick_filter_free(&(*synth)->filter);
-                        }
+
+                        if ((*synth)->compressor)
+                                gkick_compressor_free(&(*synth)->compressor);
 
                         if ((*synth)->envelope) {
                                 gkick_envelope_destroy((*synth)->envelope);
@@ -1036,6 +1044,7 @@ void *gkick_synth_run(void *arg)
                         pthread_cond_wait(&synth->condition_var, &synth->lock);
                         synth->buffer_update = 0;
                         gkick_synth_reset_oscillators(synth);
+                        gkick_compressor_set_state(synth->compressor, GKICK_COMPRESSOR_DEACTIVATED);
                         gkick_synth_unlock(synth);
                         if (!gkick_synth_is_running(synth)) {
                                 break;
@@ -1082,6 +1091,7 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
 {
         gkick_real val;
         size_t i;
+        int enabled;
 
         val = 0.0;
         for (i = 0; i < synth->oscillators_number; i++) {
@@ -1094,9 +1104,12 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
         }
 
         val *= synth->amplitude * gkick_envelope_get_value(synth->envelope, t / synth->length);
-        if (synth->filter_enabled) {
+        if (synth->filter_enabled)
                 gkick_filter_val(synth->filter, val, &val);
-        }
+
+        gkick_compressor_is_enabled(synth->compressor, &enabled);
+        if (enabled)
+                gkick_compressor_val(synth->compressor, val, &val);
 
         return val;
 }
@@ -1343,7 +1356,6 @@ gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
 		gkick_synth_unlock(synth);
 		return GEONKICK_ERROR;
 	}
-        gkick_log_debug("enabled: %d", enabled);
         *enabled = osc->filter_enabled;
         gkick_synth_unlock(synth);
 
@@ -1366,4 +1378,109 @@ gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable)
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_compressor_enable(struct gkick_synth *synth, int enable)
+{
+        enum geonkick_error res;
+        res = gkick_compressor_enable(synth->compressor, enable);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_compressor_is_enabled(struct gkick_synth *synth, int *enabled)
+{
+        return gkick_compressor_is_enabled(synth->compressor, enabled);
+}
+
+enum geonkick_error
+gkick_synth_compressor_set_attack(struct gkick_synth *synth, gkick_real attack)
+{
+        enum geonkick_error res;
+        res = gkick_compressor_set_attack(synth->compressor, attack);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_compressor_get_attack(struct gkick_synth *synth, gkick_real *attack)
+{
+        return gkick_compressor_get_attack(synth->compressor, attack);
+}
+
+enum geonkick_error
+gkick_synth_compressor_set_release(struct gkick_synth *synth, gkick_real release)
+{
+        enum geonkick_error res;
+        res = gkick_compressor_set_release(synth->compressor, release);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_compressor_get_release(struct gkick_synth *synth, gkick_real *release)
+{
+        return gkick_compressor_get_release(synth->compressor, release);
+}
+
+enum geonkick_error
+gkick_synth_compressor_set_threshold(struct gkick_synth *synth, gkick_real threshold)
+{
+        enum geonkick_error res;
+        res = gkick_compressor_set_threshold(synth->compressor, threshold);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_compressor_get_threshold(struct gkick_synth *synth, gkick_real *threshold)
+{
+        return gkick_compressor_get_threshold(synth->compressor, threshold);
+}
+
+enum geonkick_error
+gkick_synth_compressor_set_ratio(struct gkick_synth *synth, gkick_real ratio)
+{
+        enum geonkick_error res;
+        res = gkick_compressor_set_ratio(synth->compressor, ratio);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_compressor_get_ratio(struct gkick_synth *synth, gkick_real *ratio)
+{
+        return gkick_compressor_get_ratio(synth->compressor, ratio);
+}
+
+enum geonkick_error
+gkick_synth_compressor_set_knee(struct gkick_synth *synth, gkick_real knee)
+{
+        enum geonkick_error res;
+        res = gkick_compressor_set_knee(synth->compressor, knee);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_compressor_get_knee(struct gkick_synth *synth, gkick_real *knee)
+{
+        return gkick_compressor_get_threshold(synth->compressor, knee);
+}
+
+enum geonkick_error
+gkick_synth_compressor_set_makeup(struct gkick_synth *synth, gkick_real makeup)
+{
+        enum geonkick_error res;
+        res = gkick_compressor_set_makeup(synth->compressor, makeup);
+        gkick_synth_wakeup_thread(synth);
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_compressor_get_makeup(struct gkick_synth *synth, gkick_real *makeup)
+{
+        return gkick_compressor_get_makeup(synth->compressor, makeup);
 }

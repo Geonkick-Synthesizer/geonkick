@@ -25,6 +25,7 @@
 #define GKICK_SYNTHESIZER_H
 
 #include "geonkick_internal.h"
+#include "compressor.h"
 
 struct gkick_synth {
         gkick_real current_time;
@@ -40,6 +41,10 @@ struct gkick_synth {
         /* Kick general filter */
         struct gkick_filter *filter;
         int filter_enabled;
+
+        /* Kick compressor */
+        struct gkick_compressor *compressor;
+
 
         /* General synthesizer amplitude envelope. */
         struct gkick_envelope *envelope;
@@ -318,5 +323,46 @@ void gkick_synth_wakeup_thread(struct gkick_synth *synth);
 enum geonkick_error
 gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable);
 
+enum geonkick_error
+gkick_synth_compressor_enable(struct gkick_synth *synth, int enable);
+
+enum geonkick_error
+gkick_synth_compressor_is_enabled(struct gkick_synth *synth, int *enabled);
+
+enum geonkick_error
+gkick_synth_compressor_set_attack(struct gkick_synth *synth, gkick_real attack);
+
+enum geonkick_error
+gkick_synth_compressor_get_attack(struct gkick_synth *synth, gkick_real *attack);
+
+enum geonkick_error
+gkick_synth_compressor_set_release(struct gkick_synth *synth, gkick_real release);
+
+enum geonkick_error
+gkick_synth_compressor_get_release(struct gkick_synth *synth, gkick_real *release);
+
+enum geonkick_error
+gkick_synth_compressor_set_threshold(struct gkick_synth *synth, gkick_real threshold);
+
+enum geonkick_error
+gkick_synth_compressor_get_threshold(struct gkick_synth *synth, gkick_real *threshold);
+
+enum geonkick_error
+gkick_synth_compressor_set_ratio(struct gkick_synth *synth, gkick_real ratio);
+
+enum geonkick_error
+gkick_synth_compressor_get_ratio(struct gkick_synth *synth, gkick_real *ratio);
+
+enum geonkick_error
+gkick_synth_compressor_set_knee(struct gkick_synth *synth, gkick_real knee);
+
+enum geonkick_error
+gkick_synth_compressor_get_knee(struct gkick_synth *synth, gkick_real *knee);
+
+enum geonkick_error
+gkick_synth_compressor_set_makeup(struct gkick_synth *synth, gkick_real makeup);
+
+enum geonkick_error
+gkick_synth_compressor_get_makeup(struct gkick_synth *synth, gkick_real *makeup);
 
 #endif // GEONKICK_SYNTHESIZER_H

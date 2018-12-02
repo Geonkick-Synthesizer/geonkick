@@ -115,6 +115,14 @@ class GeonkickApi: public QObject {
   gkick_real getAudioFrame();
   std::shared_ptr<GeonkickState> getState();
 
+  bool isCompressorEnabled() const;
+  double getCompressorAttack() const;
+  double getCompressorRelease() const;
+  double getCompressorThreshold() const;
+  double getCompressorRatio() const;
+  double getCompressorKnee() const;
+  double getCompressorMakeup() const;
+
 public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
@@ -127,6 +135,13 @@ public slots:
   void setState(const QByteArray &data);
   void setKickEnvelopePoints(const QPolygonF &points);
   void setKeyPressed(bool b, int velocity);
+  void enableCompressor(bool enable);
+  void setCompressorAttack(double attack);
+  void setCompressorRelease(double release);
+  void setCompressorThreshold(double threshold);
+  void setCompressorRatio(double ratio);
+  void setCompressorKnee(double knee);
+  void setCompressorMakeup(double makeup);
 
 signals:
   void kickLengthUpdated(double length);

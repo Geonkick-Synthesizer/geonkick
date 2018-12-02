@@ -74,6 +74,22 @@ class GeonkickState
         double oscillatorFilterCutOffFreq(int index) const;
         double oscillatorFilterFactor(int index) const;
         QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
+
+        void enableCompressor(bool enable);
+        bool isCompressorEnabled() const;
+        void setCompressorAttack(double attack);
+        void setCompressorRelease(double release);
+        void setCompressorThreshold(double threshold);
+        void setCompressorRatio(double ratio);
+        void setCompressorKnee(double knee);
+        void setCompressorMakeup(double makeup);
+        double getCompressorAttack() const;
+        double getCompressorRelease() const;
+        double getCompressorThreshold() const;
+        double getCompressorRatio() const;
+        double getCompressorKnee() const;
+        double getCompressorMakeup() const;
+
         QByteArray toRawData() const;
         QByteArray toJson() const;
 
@@ -98,6 +114,22 @@ private:
                 QPolygonF frequencyEnvelope;
         };
 
+        struct Compressor {
+                bool enabled;
+                double attack;
+                double release;
+                double threshold;
+                double ratio;
+                double knee;
+                double makeup;
+        };
+
+        struct Distortion {
+                bool enabled;
+                double drive;
+                double volume;
+        };
+
         std::shared_ptr<Oscillator> getOscillator(int index) const;
 
         double limiterValue;
@@ -109,6 +141,8 @@ private:
         GeonkickApi::FilterType kickFilterType;
         QPolygonF kickEnvelopePoints;
         std::unordered_map<int, std::shared_ptr<Oscillator>> oscillators;
+        Compressor compressor;
+        Distortion distortion;
 };
 
 #endif // GEONKICK_STATE_H

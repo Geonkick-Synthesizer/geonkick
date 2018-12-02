@@ -61,8 +61,8 @@ ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
         auto generalWidget = new GeneralGroupBox(this, api);
         connect(this, SIGNAL(update()), generalWidget, SLOT(update()));
         layoutGBox->addWidget(generalWidget, 0, 1);
-        auto effectsWidget = new EffectsGroupBox(this);
-        connect(this, SIGNAL(update()), effectsWidget, SLOT(update()));
+        auto effectsWidget = new EffectsGroupBox(api, this);
+        connect(this, SIGNAL(update()), effectsWidget, SIGNAL(update()));
         layoutGBox->addWidget(effectsWidget, 1, 0, 1, 2);
 }
 
