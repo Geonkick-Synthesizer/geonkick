@@ -9,9 +9,10 @@ License: GPLv3
 
 Status: no release yet
 
-What it should include:
+What version 1.0 should include:
 
 [i] - means implemented
+[p] - means partial implemented
 
 * Two oscillators:
      - since [i]
@@ -32,8 +33,8 @@ What it should include:
      - low, band, hight pass filter [i]
      - kick length [i]
      - kick limiter [i]
-     - Compression
-     - Distortion
+     - Compression [p]
+     - Distortion [i]
 * Jack support:
      - 1 MIDI in (key velocity sensitive) [i]
      - 2 audio out [i]
@@ -47,8 +48,6 @@ What it should include:
 * Standalone [i]
 * Plugin
      - LV2 [i]
-     - VST
 * Platforms:
      - GNU/Linux [i]
-     - Windows
-     - Mac
+
