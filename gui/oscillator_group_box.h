@@ -57,6 +57,9 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void setSquareWave(bool pressed);
         void setTriangleWave(bool pressed);
         void setSawtoothWave(bool pressed);
+        void setNoiseWhite(bool pressed);
+        void setNoisePink(bool pressed);
+        void setNoiseBrownian(bool pressed);
         void groupBoxLabelUpdated(bool state);
         void setFilterType(bool state);
 

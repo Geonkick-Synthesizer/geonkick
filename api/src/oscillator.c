@@ -42,6 +42,7 @@ struct gkick_oscillator
         osc->amplitude = GKICK_OSC_DEFAULT_AMPLITUDE;
         osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
         osc->env_number = 2;
+        osc->brownian = 0;
 
         if (gkick_osc_create_envelopes(osc) != GEONKICK_OK) {
                 gkick_osc_free(&osc);
@@ -164,9 +165,13 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
                 v = amp * gkick_osc_func_sawtooth(osc->phase);
                 break;
         case GEONKICK_OSC_FUNC_NOISE_WHITE:
+                v = amp * gkick_osc_func_noise_white();
+                break;
         case GEONKICK_OSC_FUNC_NOISE_PINK:
+                v = amp * gkick_osc_func_noise_pink();
+                break;
         case GEONKICK_OSC_FUNC_NOISE_BROWNIAN:
-                v = amp * gkick_osc_func_noise();
+                v = amp * gkick_osc_func_noise_brownian(&(osc)->brownian);
                 break;
         default:
                 v = amp * gkick_osc_func_sine(osc->phase);
@@ -210,7 +215,7 @@ gkick_real gkick_osc_func_sawtooth(gkick_real phase)
         return 1 - (1 / M_PI) * (phase - M_PI);
 }
 
-gkick_real gkick_osc_func_noise(void)
+gkick_real gkick_osc_func_noise_white(void)
 {
         int sign = 1;
         if (rand() % 2) {
@@ -218,6 +223,27 @@ gkick_real gkick_osc_func_noise(void)
         }
 
         return sign * ((gkick_real)(rand() % RAND_MAX)) / RAND_MAX;
+}
+
+gkick_real gkick_osc_func_noise_pink(void)
+{
+        return 0;
+}
+
+gkick_real gkick_osc_func_noise_brownian(gkick_real *previous)
+{
+        gkick_real sign = 1;
+        gkick_real walk;
+        if (rand() % 2) {
+                sign = -1;
+        }
+
+        walk = sign * 0.1 * (((gkick_real)(rand() % RAND_MAX)) / RAND_MAX);
+        if (*previous + walk > 1.0 || *previous + walk < -1.0)
+                *previous -= walk;
+        else
+                *previous += walk;
+        return *previous;
 }
 
 void

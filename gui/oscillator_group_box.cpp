@@ -131,15 +131,18 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 
         if (oscillator->type() == Oscillator::Type::Noise) {
                 auto vLayout = new QVBoxLayout(amplitudeEnvelopeBox);
-                auto noiseWhiteButton = new GeonkickButton(this);
+                noiseWhiteButton = new GeonkickButton(this);
+                connect(noiseWhiteButton, SIGNAL(toggled(bool)), this, SLOT(setNoiseWhite(bool)));
                 vLayout->addWidget(noiseWhiteButton);
                 noiseWhiteButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_white.png"));
                 noiseWhiteButton->setPressedImage(QPixmap("./themes/geontime/noise_type_white_active.png"));
-                auto noisePinkButton = new GeonkickButton(this);
+                noisePinkButton = new GeonkickButton(this);
+                connect(noisePinkButton, SIGNAL(toggled(bool)), this, SLOT(setNoisePink(bool)));
                 vLayout->addWidget(noisePinkButton);
                 noisePinkButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_pink.png"));
                 noisePinkButton->setPressedImage(QPixmap("./themes/geontime/noise_type_pink_active.png"));
-                auto noiseBrownianButton = new GeonkickButton(this);
+                noiseBrownianButton = new GeonkickButton(this);
+                connect(noiseBrownianButton, SIGNAL(toggled(bool)), this, SLOT(setNoiseBrownian(bool)));
                 vLayout->addWidget(noiseBrownianButton);
                 noiseBrownianButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_brownian.png"));
                 noiseBrownianButton->setPressedImage(QPixmap("./themes/geontime/noise_type_brownian_active.png"));
@@ -240,6 +243,32 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
         }
 }
 
+void OscillatorGroupBox::setNoiseWhite(bool pressed)
+{
+        if (pressed) {
+                noisePinkButton->setPressed(false);
+                noiseBrownianButton->setPressed(false);
+                oscillator->setFunction(Oscillator::FunctionType::NoiseWhite);
+        }
+}
+
+void OscillatorGroupBox::setNoisePink(bool pressed)
+{
+        if (pressed) {
+                noiseWhiteButton->setPressed(false);
+                noiseBrownianButton->setPressed(false);
+                oscillator->setFunction(Oscillator::FunctionType::NoisePink);
+        }
+}
+
+void OscillatorGroupBox::setNoiseBrownian(bool pressed)
+{
+        if (pressed) {
+                noiseWhiteButton->setPressed(false);
+                noisePinkButton->setPressed(false);
+                oscillator->setFunction(Oscillator::FunctionType::NoiseBrownian);
+        }
+}
 
 void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 {
@@ -258,14 +287,23 @@ void OscillatorGroupBox::setFilterType(bool state)
 
 void OscillatorGroupBox::update()
 {
-        GEONKICK_LOG_INFO("called");
         if (oscillator->isEnabled())
                 oscillatorCheckbox->setChecked(true);
         else
                 oscillatorCheckbox->setChecked(false);
 
 
-        if (oscillator->type() != Oscillator::Type::Noise) {
+        if (oscillator->type() == Oscillator::Type::Noise) {
+                noiseWhiteButton->setPressed(false);
+                noisePinkButton->setPressed(false);
+                noiseBrownianButton->setPressed(false);
+                if (oscillator->function() == Oscillator::FunctionType::NoiseWhite)
+                        noiseWhiteButton->setPressed(true);
+                else if (oscillator->function() == Oscillator::FunctionType::NoisePink)
+                        noisePinkButton->setPressed(true);
+                else
+                        noiseBrownianButton->setPressed(true);
+        } else {
                 sineButton->setPressed(false);
                 squareButton->setPressed(false);
                 triangleButton->setPressed(false);
