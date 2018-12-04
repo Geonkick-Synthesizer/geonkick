@@ -24,7 +24,7 @@ What it should include:
 * Noise:
      - white [i]
      - pink
-     - browninan
+     - browninan [i]
      - amplitude envelope [i]
      - low, band, hight pass filter [i]
 * Kick
