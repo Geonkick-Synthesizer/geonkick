@@ -1,8 +1,11 @@
 # Geonkick
 
 Geonkick - a kick drum synthesizer.
+
 Author: Iurie Nistor
+
 License: GPLv3
+
 Home page: http://geontime.com
 
 ![Screenshot](misc/Screenshot.png)
