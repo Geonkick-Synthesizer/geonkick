@@ -136,17 +136,12 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 vLayout->addWidget(noiseWhiteButton);
                 noiseWhiteButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_white.png"));
                 noiseWhiteButton->setPressedImage(QPixmap("./themes/geontime/noise_type_white_active.png"));
-                noisePinkButton = new GeonkickButton(this);
-                connect(noisePinkButton, SIGNAL(toggled(bool)), this, SLOT(setNoisePink(bool)));
-                vLayout->addWidget(noisePinkButton);
-                noisePinkButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_pink.png"));
-                noisePinkButton->setPressedImage(QPixmap("./themes/geontime/noise_type_pink_active.png"));
                 noiseBrownianButton = new GeonkickButton(this);
                 connect(noiseBrownianButton, SIGNAL(toggled(bool)), this, SLOT(setNoiseBrownian(bool)));
                 vLayout->addWidget(noiseBrownianButton);
                 noiseBrownianButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_brownian.png"));
                 noiseBrownianButton->setPressedImage(QPixmap("./themes/geontime/noise_type_brownian_active.png"));
-                vLayout->setContentsMargins(224/2, 10, 0, 12);
+                vLayout->setContentsMargins(224/2, 20, 0, 12);
                 vLayout->setSpacing(0);
         } else {
                 frequencyAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
@@ -246,18 +241,8 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
 void OscillatorGroupBox::setNoiseWhite(bool pressed)
 {
         if (pressed) {
-                noisePinkButton->setPressed(false);
                 noiseBrownianButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::NoiseWhite);
-        }
-}
-
-void OscillatorGroupBox::setNoisePink(bool pressed)
-{
-        if (pressed) {
-                noiseWhiteButton->setPressed(false);
-                noiseBrownianButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::NoisePink);
         }
 }
 
@@ -265,7 +250,6 @@ void OscillatorGroupBox::setNoiseBrownian(bool pressed)
 {
         if (pressed) {
                 noiseWhiteButton->setPressed(false);
-                noisePinkButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::NoiseBrownian);
         }
 }
@@ -295,12 +279,9 @@ void OscillatorGroupBox::update()
 
         if (oscillator->type() == Oscillator::Type::Noise) {
                 noiseWhiteButton->setPressed(false);
-                noisePinkButton->setPressed(false);
                 noiseBrownianButton->setPressed(false);
                 if (oscillator->function() == Oscillator::FunctionType::NoiseWhite)
                         noiseWhiteButton->setPressed(true);
-                else if (oscillator->function() == Oscillator::FunctionType::NoisePink)
-                        noisePinkButton->setPressed(true);
                 else
                         noiseBrownianButton->setPressed(true);
         } else {

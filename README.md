@@ -1,13 +1,14 @@
 # Geonkick
 
-A kick drum synthesizer.
-
+Geonkick - a kick drum synthesizer.
+Author: Iurie Nistor
 License: GPLv3
+Home page: http://geontime.com
 
 ![Screenshot](misc/Screenshot.png)
 
 
-Status: no release yet
+Status: Active development. No release yet.
 
 What version 1.0 should include:
 
@@ -21,20 +22,19 @@ What version 1.0 should include:
      - sawtooth [i]
      - amplitude envelope [i]
      - frequency envelope [i]
-     - low, band, hight pass filter [i]
+     - low & hight pass filter [i]
 * Noise:
      - white [i]
-     - pink
      - browninan [i]
      - amplitude envelope [i]
-     - low, band, hight pass filter [i]
+     - low & hight pass filter [i]
 * Kick
      - amplitude envelope [i]
-     - low, band, hight pass filter [i]
+     - low & hight pass filter [i]
      - kick length [i]
      - kick limiter [i]
-     - Compression [p]
-     - Distortion [i]
+     - compression [p]
+     - distortion [i]
 * Jack support:
      - 1 MIDI in (key velocity sensitive) [i]
      - 2 audio out [i]

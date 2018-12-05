@@ -58,7 +58,6 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void setTriangleWave(bool pressed);
         void setSawtoothWave(bool pressed);
         void setNoiseWhite(bool pressed);
-        void setNoisePink(bool pressed);
         void setNoiseBrownian(bool pressed);
         void groupBoxLabelUpdated(bool state);
         void setFilterType(bool state);
@@ -72,7 +71,6 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *triangleButton;
         GeonkickButton *sawtoothButton;
         GeonkickButton *noiseWhiteButton;
-        GeonkickButton *noisePinkButton;
         GeonkickButton *noiseBrownianButton;
         GeonkickButton *filterType;
         Knob *kickQFactorKnob;
