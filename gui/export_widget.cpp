@@ -61,7 +61,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         exportProgress->setRange(0, 100);
         exportProgress->setTextVisible(false);
 
-        QFont font("./themes/geontime/urw_gothic_l_book.ttf");
+        QFont font(":/urw_gothic_l_book.ttf");
         setFont(font);
         auto locationLayout = new QHBoxLayout;
         locationLayout->addWidget(new QLabel(tr("Location"), this));
@@ -70,7 +70,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         locationLayout->addWidget(locationEdit);
         browseLocation = new GeonkickButton(this);
         browseLocation->setCheckable(true);
-        browseLocation->setUnpressedImage(QPixmap("./themes/geontime/export_browse.png"));
+        browseLocation->setUnpressedImage(QPixmap(":/export_browse.png"));
         connect(browseLocation, SIGNAL(toggled(bool)), this, SLOT(browse()));
         locationLayout->addWidget(browseLocation);
         locationLayout->addWidget(new QLabel(tr("File name"), this));
@@ -109,10 +109,10 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         auto buttonsLayout = new QHBoxLayout;
         exportButton = new GeonkickButton(this);
         exportButton->setCheckable(true);
-        exportButton->setUnpressedImage(QPixmap("./themes/geontime/export_export.png"));
+        exportButton->setUnpressedImage(QPixmap(":/export_export.png"));
         connect(exportButton, SIGNAL(toggled(bool)), this, SLOT(exportKick()));
         cancelButton = new GeonkickButton(this);
-        cancelButton->setUnpressedImage(QPixmap("./themes/geontime/export_cancel.png"));
+        cancelButton->setUnpressedImage(QPixmap(":/export_cancel.png"));
         cancelButton->setCheckable(true);
         connect(cancelButton, SIGNAL(toggled(bool)), this, SIGNAL(closeDialog()));
         buttonsLayout->addWidget(cancelButton);
@@ -277,9 +277,9 @@ void ExportWidget::enableButtons(bool enable)
 {
         exportButton->setEnabled(enable);
         if (enable) {
-                cancelButton->setUnpressedImage(QPixmap("./themes/geontime/export_cancel.png"));
+                cancelButton->setUnpressedImage(QPixmap(":/export_cancel.png"));
         } else {
-                cancelButton->setUnpressedImage(QPixmap("./themes/geontime/export_stop.png"));
+                cancelButton->setUnpressedImage(QPixmap(":/export_stop.png"));
         }
         monoRadioButton->setEnabled(enable);
         stereoRadioButton->setEnabled(enable);

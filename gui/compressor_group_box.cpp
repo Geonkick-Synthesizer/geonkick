@@ -40,9 +40,9 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
           makeupSlider(nullptr),
           compressorCheckbox(new GeonkickCheckbox(this))
 {
-        compressorCheckbox->setCheckedImage("./themes/geontime/checkbox_checked_10x10.png");
-        compressorCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked_10x10.png");
-        compressorCheckbox->setCheckboxLabelImage("./themes/geontime/compressor_groupbox_label.png");
+        compressorCheckbox->setCheckedImage(":/checkbox_checked_10x10.png");
+        compressorCheckbox->setUncheckedImage(":/checkbox_unchecked_10x10.png");
+        compressorCheckbox->setCheckboxLabelImage(":/compressor_groupbox_label.png");
         connect(compressorCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableCompressor(bool)));
         setGroupBoxLabel(compressorCheckbox);
 
@@ -54,7 +54,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Attack
         auto attackLabel = new GeonkickLabel(widget);
-        attackLabel->setImage("./themes/geontime/compressor_attack_label.png");
+        attackLabel->setImage(":/compressor_attack_label.png");
         gridLayout->addWidget(attackLabel, 0, 0, Qt::AlignRight);
         attackSlider = new GeonkickSlider(widget);
         connect(attackSlider, SIGNAL(valueUpdated(int)), this, SLOT(setAttack(int)));
@@ -64,7 +64,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Relsease
         auto releaseLabel = new GeonkickLabel(widget);
-        releaseLabel->setImage("./themes/geontime/compressor_release_label.png");
+        releaseLabel->setImage(":/compressor_release_label.png");
         gridLayout->addWidget(releaseLabel, 1, 0, Qt::AlignRight);
         releaseSlider = new GeonkickSlider(widget);
         connect(releaseSlider, SIGNAL(valueUpdated(int)), this, SLOT(setRelease(int)));
@@ -73,7 +73,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Threshold
         auto thresholdLabel = new GeonkickLabel(widget);
-        thresholdLabel->setImage("./themes/geontime/compressor_threshold_label.png");
+        thresholdLabel->setImage(":/compressor_threshold_label.png");
         gridLayout->addWidget(thresholdLabel, 2, 0, Qt::AlignRight);
         thresholdSlider = new GeonkickSlider(widget);
         connect(thresholdSlider, SIGNAL(valueUpdated(int)), this, SLOT(setThreshold(int)));
@@ -83,7 +83,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Ratio
         auto ratioLabel = new GeonkickLabel(widget);
-        ratioLabel->setImage("./themes/geontime/compressor_ratio_label.png");
+        ratioLabel->setImage(":/compressor_ratio_label.png");
         gridLayout->addWidget(ratioLabel, 0, 3, Qt::AlignRight);
         ratioSlider = new GeonkickSlider(widget);
         connect(ratioSlider, SIGNAL(valueUpdated(int)), this, SLOT(setRatio(int)));
@@ -92,7 +92,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Knee
         auto kneeLabel = new GeonkickLabel(widget);
-        kneeLabel->setImage("./themes/geontime/compressor_knee_label.png");
+        kneeLabel->setImage(":/compressor_knee_label.png");
         gridLayout->addWidget(kneeLabel, 1, 3, Qt::AlignRight);
         kneeSlider = new GeonkickSlider(widget);
         connect(kneeSlider, SIGNAL(valueUpdated(int)), this, SLOT(setKnee(int)));
@@ -101,7 +101,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Makeup
         auto makeupLabel = new GeonkickLabel(widget);
-        makeupLabel->setImage("./themes/geontime/compressor_makeup_label.png");
+        makeupLabel->setImage(":/compressor_makeup_label.png");
         gridLayout->addWidget(makeupLabel, 2, 3, Qt::AlignRight);
         makeupSlider = new GeonkickSlider(widget);
         connect(makeupSlider, SIGNAL(valueUpdated(int)), this, SLOT(setMakeup(int)));

@@ -31,7 +31,7 @@ Fader::Fader(GeonkickApi *api, GeonkickWidget *parent)
           faderSlider(new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)),
           leftChannelLevel(40),
           rightChannelLevel(50),
-          levelsImage("./themes/geontime/fader.png")
+          levelsImage(":/fader.png")
 {
         faderSlider->move(0, 3);
         connect(faderSlider, SIGNAL(valueUpdated(int)), this, SIGNAL(levelUpdated(int)));

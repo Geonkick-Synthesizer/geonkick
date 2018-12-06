@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 {
         QApplication a(argc, argv);
 
-        QFontDatabase::addApplicationFont("./themes/geontime/urw_gothic_l_book.ttf");
+        QFontDatabase::addApplicationFont(":/urw_gothic_l_book.ttf");
         QFont font("URW Gothic L");
         font.setPixelSize(12);
         a.setFont(font);

@@ -55,3 +55,5 @@ SOURCES += geonkick_theme.cpp \
            oscillator_group_box.cpp \
            export_widget.cpp \
            mainwindow.cpp
+
+RESOURCES  = resources/resources.qrc

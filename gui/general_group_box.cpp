@@ -44,7 +44,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
 {
 
         auto label = new GeonkickLabel(this);
-        label->setImage(QPixmap("./themes/geontime/general_groupbox_label.png"));
+        label->setImage(QPixmap(":/general_groupbox_label.png"));
         setGroupBoxLabel(label, Qt::AlignLeft);
         createAplitudeEnvelopeHBox();
         createFilterHBox();
@@ -59,21 +59,21 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 {
         GeonkickWidget *amplitudeEnvelopeBox = new GeonkickWidget(this);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
-        amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_ampl_env.png"));
+        amplitudeEnvelopeBox->setBackgroundImage(QPixmap(":/hboxbk_ampl_env.png"));
         addWidget(amplitudeEnvelopeBox);
 
         kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         kickAmplitudeKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-        kickAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-        kickAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        kickAmplitudeKnob->setBackgroundImage(QPixmap(":/knob_bk_image.png"));
+        kickAmplitudeKnob->setKnobImage(QPixmap(":/knob.png"));
         kickAmplitudeKnob->setRange(0.01, 1.0);
         connect(kickAmplitudeKnob, SIGNAL(valueUpdated(double)),
         geonkickApi, SLOT(setKickAmplitude(double)));
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
         kickLengthKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-        kickLengthKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-        kickLengthKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        kickLengthKnob->setBackgroundImage(QPixmap(":/knob_bk_image.png"));
+        kickLengthKnob->setKnobImage(QPixmap(":/knob.png"));
         kickLengthKnob->setRange(50, geonkickApi->kickMaxLength());
         connect(kickLengthKnob, SIGNAL(valueUpdated(double)), geonkickApi, SLOT(setKickLength(double)));
 }
@@ -81,33 +81,33 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 void GeneralGroupBox::createFilterHBox()
 {
         auto filterEnvelopeBox = new GeonkickWidget(this);
-        auto pixmap = QPixmap("./themes/geontime/hboxbk_filter.png");
+        auto pixmap = QPixmap(":/hboxbk_filter.png");
         filterEnvelopeBox->setBackgroundImage(pixmap);
         filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         addWidget(filterEnvelopeBox);
         setWidgetAlignment(filterEnvelopeBox, Qt::AlignTop);
 
         filterCheckbox = new GeonkickCheckbox(filterEnvelopeBox);
-        filterCheckbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
-        filterCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
+        filterCheckbox->setCheckedImage(":/checkbox_checked.png");
+        filterCheckbox->setUncheckedImage(":/checkbox_unchecked.png");
         filterCheckbox->move(10, 10);
         connect(filterCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableKickFilter(bool)));
 
         kickFrequencyKnob = new Knob(filterEnvelopeBox);
         kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-        kickFrequencyKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-        kickFrequencyKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        kickFrequencyKnob->setBackgroundImage(QPixmap(":/knob_bk_image.png"));
+        kickFrequencyKnob->setKnobImage(QPixmap(":/knob.png"));
         kickFrequencyKnob->setRange(200, 20000);
         connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), geonkickApi, SLOT(setKickFilterFrequency(double)));
 
         kickQFactorKnob = new Knob(filterEnvelopeBox);
-        pixmap = QPixmap("./themes/geontime/knob_bk_50x50.png");
+        pixmap = QPixmap(":/knob_bk_50x50.png");
         int w = pixmap.size().width();
         int h = pixmap.size().height();
         kickQFactorKnob->setGeometry(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4, w, h);
-        kickQFactorKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_50x50.png"));
-        kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
+        kickQFactorKnob->setBackgroundImage(QPixmap(":/knob_bk_50x50.png"));
+        kickQFactorKnob->setKnobImage(QPixmap(":/knob_50x50.png"));
         kickQFactorKnob->setRange(0.01, 10);
         connect(kickQFactorKnob, SIGNAL(valueUpdated(double)), geonkickApi, SLOT(setKickFilterQFactor(double)));
 
@@ -116,8 +116,8 @@ void GeneralGroupBox::createFilterHBox()
         w = 80;
         h = 25;
         filterType->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
-        filterType->setPressedImage(QPixmap("./themes/geontime/filter_type_hp.png"));
-        filterType->setUnpressedImage(QPixmap("./themes/geontime/filter_type_lp.png"));
+        filterType->setPressedImage(QPixmap(":/filter_type_hp.png"));
+        filterType->setUnpressedImage(QPixmap(":/filter_type_lp.png"));
 }
 
 void GeneralGroupBox::setFilterType(bool state)

@@ -52,14 +52,14 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         oscillatorCheckbox = new GeonkickCheckbox(this);
         connect(oscillatorCheckbox, SIGNAL(stateUpdated(bool)), osc, SLOT(enable(bool)));
         if (oscillator->type() == Oscillator::Type::Oscillator1) {
-                oscillatorCheckbox->setCheckboxLabelImage("./themes/geontime/osc1_groupbox_label.png");
+                oscillatorCheckbox->setCheckboxLabelImage(":/osc1_groupbox_label.png");
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
-                oscillatorCheckbox->setCheckboxLabelImage("./themes/geontime/osc2_groupbox_label.png");
+                oscillatorCheckbox->setCheckboxLabelImage(":/osc2_groupbox_label.png");
         } else {
-                oscillatorCheckbox->setCheckboxLabelImage("./themes/geontime/noise_groupbox_label.png");
+                oscillatorCheckbox->setCheckboxLabelImage(":/noise_groupbox_label.png");
         }
-        oscillatorCheckbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
-        oscillatorCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
+        oscillatorCheckbox->setCheckedImage(":/checkbox_checked.png");
+        oscillatorCheckbox->setUncheckedImage(":/checkbox_unchecked.png");
         oscillatorCheckbox->setPadding(10, 0, 0, 0);
         setGroupBoxLabel(oscillatorCheckbox, Qt::AlignLeft);
 
@@ -79,34 +79,34 @@ OscillatorGroupBox::~OscillatorGroupBox()
 void OscillatorGroupBox::createWaveFunctionGroupBox()
 {
         auto waveFunctionHBox = new GeonkickWidget(this);
-        QPixmap pixmap("./themes/geontime/wf_bk_hbox.png");
+        QPixmap pixmap(":/wf_bk_hbox.png");
         waveFunctionHBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         waveFunctionHBox->setBackgroundImage(pixmap);
         addWidget(waveFunctionHBox);
         setWidgetAlignment(waveFunctionHBox, Qt::AlignTop);
 
         sineButton = new GeonkickButton(waveFunctionHBox);
-        sineButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_sine.png"));
-        sineButton->setPressedImage(QPixmap("./themes/geontime/wave_button_sine_active.png"));
+        sineButton->setUnpressedImage(QPixmap(":/wave_button_sine.png"));
+        sineButton->setPressedImage(QPixmap(":/wave_button_sine_active.png"));
         sineButton->move((waveFunctionHBox->width() / 2 - sineButton->width()) / 2, 22);
         connect(sineButton, SIGNAL(toggled(bool)), this, SLOT(setSineWave(bool)));
 
         squareButton = new GeonkickButton(waveFunctionHBox);
-        squareButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_square.png"));
-        squareButton->setPressedImage(QPixmap("./themes/geontime/wave_button_square_active.png"));
+        squareButton->setUnpressedImage(QPixmap(":/wave_button_square.png"));
+        squareButton->setPressedImage(QPixmap(":/wave_button_square_active.png"));
         squareButton->move((waveFunctionHBox->width() / 2 - squareButton->width()) / 2, 21 + squareButton->height());
         connect(squareButton, SIGNAL(toggled(bool)), this, SLOT(setSquareWave(bool)));
 
         triangleButton = new GeonkickButton(waveFunctionHBox);
-        triangleButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_triangle.png"));
-        triangleButton->setPressedImage(QPixmap("./themes/geontime/wave_button_triangle_active.png"));
+        triangleButton->setUnpressedImage(QPixmap(":/wave_button_triangle.png"));
+        triangleButton->setPressedImage(QPixmap(":/wave_button_triangle_active.png"));
         triangleButton->move(waveFunctionHBox->width() / 2 + (waveFunctionHBox->width() / 2 - triangleButton->width()) / 2, 22);
         connect(triangleButton, SIGNAL(toggled(bool)), this, SLOT(setTriangleWave(bool)));
 
         sawtoothButton = new GeonkickButton(waveFunctionHBox);
-        sawtoothButton->setUnpressedImage(QPixmap("./themes/geontime/wave_button_sawtooth.png"));
+        sawtoothButton->setUnpressedImage(QPixmap(":/wave_button_sawtooth.png"));
         sawtoothButton->move(waveFunctionHBox->width() / 2 +  (waveFunctionHBox->width() / 2 - sawtoothButton->width()) / 2, 21 + sawtoothButton->height());
-        sawtoothButton->setPressedImage(QPixmap("./themes/geontime/wave_button_sawtooth_active.png"));
+        sawtoothButton->setPressedImage(QPixmap(":/wave_button_sawtooth_active.png"));
         connect(sawtoothButton, SIGNAL(toggled(bool)), this, SLOT(setSawtoothWave(bool)));
 }
 
@@ -115,17 +115,17 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         if (oscillator->type() == Oscillator::Type::Noise)
-                amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_noise_env.png"));
+                amplitudeEnvelopeBox->setBackgroundImage(QPixmap(":/hboxbk_noise_env.png"));
         else
-                amplitudeEnvelopeBox->setBackgroundImage(QPixmap("./themes/geontime/hboxbk_osc_env.png"));
+                amplitudeEnvelopeBox->setBackgroundImage(QPixmap(":/hboxbk_osc_env.png"));
         addWidget(amplitudeEnvelopeBox);
         setWidgetAlignment(amplitudeEnvelopeBox, Qt::AlignTop);
 
         envelopeAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         envelopeAmplitudeKnob->setRange(0.001, 0.1);
         envelopeAmplitudeKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-        envelopeAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-        envelopeAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        envelopeAmplitudeKnob->setBackgroundImage(QPixmap(":/knob_bk_image.png"));
+        envelopeAmplitudeKnob->setKnobImage(QPixmap(":/knob.png"));
         connect(envelopeAmplitudeKnob, SIGNAL(valueUpdated(double)),
                 oscillator, SLOT(setAmplitude(double)));
 
@@ -134,21 +134,21 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 noiseWhiteButton = new GeonkickButton(this);
                 connect(noiseWhiteButton, SIGNAL(toggled(bool)), this, SLOT(setNoiseWhite(bool)));
                 vLayout->addWidget(noiseWhiteButton);
-                noiseWhiteButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_white.png"));
-                noiseWhiteButton->setPressedImage(QPixmap("./themes/geontime/noise_type_white_active.png"));
+                noiseWhiteButton->setUnpressedImage(QPixmap(":/noise_type_white.png"));
+                noiseWhiteButton->setPressedImage(QPixmap(":/noise_type_white_active.png"));
                 noiseBrownianButton = new GeonkickButton(this);
                 connect(noiseBrownianButton, SIGNAL(toggled(bool)), this, SLOT(setNoiseBrownian(bool)));
                 vLayout->addWidget(noiseBrownianButton);
-                noiseBrownianButton->setUnpressedImage(QPixmap("./themes/geontime/noise_type_brownian.png"));
-                noiseBrownianButton->setPressedImage(QPixmap("./themes/geontime/noise_type_brownian_active.png"));
+                noiseBrownianButton->setUnpressedImage(QPixmap(":/noise_type_brownian.png"));
+                noiseBrownianButton->setPressedImage(QPixmap(":/noise_type_brownian_active.png"));
                 vLayout->setContentsMargins(224/2, 20, 0, 12);
                 vLayout->setSpacing(0);
         } else {
                 frequencyAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
                 frequencyAmplitudeKnob->setRangeType(Knob::RangeType::Logarithmic);
                 frequencyAmplitudeKnob->setGeometry(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-                frequencyAmplitudeKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-                frequencyAmplitudeKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+                frequencyAmplitudeKnob->setBackgroundImage(QPixmap(":/knob_bk_image.png"));
+                frequencyAmplitudeKnob->setKnobImage(QPixmap(":/knob.png"));
                 frequencyAmplitudeKnob->setRange(200, 20000);
                 connect(frequencyAmplitudeKnob, SIGNAL(valueUpdated(double)),
                 oscillator, SLOT(setFrequency(double)));
@@ -158,15 +158,15 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 void OscillatorGroupBox::createFilterGroupBox()
 {
         GeonkickWidget *filterEnvelopeBox = new GeonkickWidget(this);
-        auto pixmap = QPixmap("./themes/geontime/hboxbk_filter.png");
+        auto pixmap = QPixmap(":/hboxbk_filter.png");
         filterEnvelopeBox->setBackgroundImage(pixmap);
         filterEnvelopeBox->setFixedSize(pixmap.size().width(), pixmap.size().height());
         addWidget(filterEnvelopeBox);
         setWidgetAlignment(filterEnvelopeBox, Qt::AlignTop);
 
         filterCheckbox = new GeonkickCheckbox(filterEnvelopeBox);
-        filterCheckbox->setCheckedImage("./themes/geontime/checkbox_checked.png");
-        filterCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked.png");
+        filterCheckbox->setCheckedImage(":/checkbox_checked.png");
+        filterCheckbox->setUncheckedImage(":/checkbox_unchecked.png");
         filterCheckbox->move(10, 10);
         connect(filterCheckbox, SIGNAL(stateUpdated(bool)), oscillator, SLOT(enableFilter(bool)));
 
@@ -174,18 +174,18 @@ void OscillatorGroupBox::createFilterGroupBox()
         kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
         kickFrequencyKnob->setRange(20, 20000);
         kickFrequencyKnob->setGeometry((224 / 2 - 80) / 2, (125 - 80) / 2,  80, 80);
-        kickFrequencyKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_image.png"));
-        kickFrequencyKnob->setKnobImage(QPixmap("./themes/geontime/knob.png"));
+        kickFrequencyKnob->setBackgroundImage(QPixmap(":/knob_bk_image.png"));
+        kickFrequencyKnob->setKnobImage(QPixmap(":/knob.png"));
         connect(kickFrequencyKnob, SIGNAL(valueUpdated(double)), oscillator,  SLOT(setFilterFrequency(double)));
 
         kickQFactorKnob = new Knob(filterEnvelopeBox);
         kickQFactorKnob->setRange(0.01, 10);
-        pixmap = QPixmap("./themes/geontime/knob_bk_50x50.png");
+        pixmap = QPixmap(":/knob_bk_50x50.png");
         int w = pixmap.size().width();
         int h = pixmap.size().height();
         kickQFactorKnob->setGeometry(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4, w, h);
-        kickQFactorKnob->setBackgroundImage(QPixmap("./themes/geontime/knob_bk_50x50.png"));
-        kickQFactorKnob->setKnobImage(QPixmap("./themes/geontime/knob_50x50.png"));
+        kickQFactorKnob->setBackgroundImage(QPixmap(":/knob_bk_50x50.png"));
+        kickQFactorKnob->setKnobImage(QPixmap(":/knob_50x50.png"));
         connect(kickQFactorKnob, SIGNAL(valueUpdated(double)), oscillator, SLOT(setFilterQFactor(double)));
 
         filterType = new GeonkickButton(filterEnvelopeBox);
@@ -194,8 +194,8 @@ void OscillatorGroupBox::createFilterGroupBox()
         w = 80;
         h = 25;
         filterType->setGeometry(224 / 2 + (224 / 2 - w) / 2, 112 - 20, w, h);
-        filterType->setPressedImage(QPixmap("./themes/geontime/filter_type_hp.png"));
-        filterType->setUnpressedImage(QPixmap("./themes/geontime/filter_type_lp.png"));
+        filterType->setPressedImage(QPixmap(":/filter_type_hp.png"));
+        filterType->setUnpressedImage(QPixmap(":/filter_type_lp.png"));
 }
 
 void OscillatorGroupBox::setSineWave(bool pressed)

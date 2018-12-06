@@ -36,9 +36,9 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
           driveSlider(nullptr),
           distortionCheckbox(new GeonkickCheckbox(this))
 {
-        distortionCheckbox->setCheckedImage("./themes/geontime/checkbox_checked_10x10.png");
-        distortionCheckbox->setUncheckedImage("./themes/geontime/checkbox_unchecked_10x10.png");
-        distortionCheckbox->setCheckboxLabelImage("./themes/geontime/distortion_groupbox_label.png");
+        distortionCheckbox->setCheckedImage(":/checkbox_checked_10x10.png");
+        distortionCheckbox->setUncheckedImage(":/checkbox_unchecked_10x10.png");
+        distortionCheckbox->setCheckboxLabelImage(":/distortion_groupbox_label.png");
         connect(distortionCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableDistortion(bool)));
         setGroupBoxLabel(distortionCheckbox);
 
@@ -49,7 +49,7 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Volume
         auto volumeLabel = new GeonkickLabel(widget);
-        volumeLabel->setImage("./themes/geontime/distortion_volume_label.png");
+        volumeLabel->setImage(":/distortion_volume_label.png");
         gridLayout->addWidget(volumeLabel, 0, 0, Qt::AlignRight);
         volumeSlider = new GeonkickSlider(widget);
         connect(volumeSlider, SIGNAL(valueUpdated(int)), this, SLOT(setVolume(int)));
@@ -59,7 +59,7 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         // Drive
         auto driveLabel = new GeonkickLabel(widget);
-        driveLabel->setImage("./themes/geontime/distortion_drive_label.png");
+        driveLabel->setImage(":/distortion_drive_label.png");
         gridLayout->addWidget(driveLabel, 1, 0, Qt::AlignRight);
         driveSlider = new GeonkickSlider(widget);
         connect(driveSlider, SIGNAL(valueUpdated(int)), this, SLOT(setDrive(int)));
