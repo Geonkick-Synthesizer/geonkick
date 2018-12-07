@@ -173,7 +173,7 @@ void EnvelopeWidget::showOsc2Envelope()
         noiseEvelopesButton->setPressed(false);
         showFrequencyEnvButton->show();
         showAmplitudeEnvButton->show();
-        if (envelopes[static_cast<int>(EnvelopeType::Oscillator1)]->type()
+        if (envelopes[static_cast<int>(EnvelopeType::Oscillator2)]->type()
             == Envelope::Type::Amplitude) {
                 showAmplitudeEnvButton->setPressed(true);
                 showFrequencyEnvButton->setPressed(false);
