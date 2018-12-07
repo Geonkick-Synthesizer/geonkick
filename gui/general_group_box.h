@@ -28,10 +28,10 @@
 #include "geonkick_groupbox.h"
 
 class Oscillator;
-class QComboBox;
 class GeonkickApi;
 class GeonkickCheckbox;
 class Knob;
+class GeonkickButton;
 
 class GeneralGroupBox: public GeonkickGroupBox
 {
@@ -51,12 +51,12 @@ public slots:
 
  private:
         GeonkickApi* geonkickApi;
-        QComboBox *filterTypeCb;
         GeonkickCheckbox *filterCheckbox;
         Knob *kickAmplitudeKnob;
         Knob *kickLengthKnob;
         Knob *kickFrequencyKnob;
         Knob *kickQFactorKnob;
+        GeonkickButton *filterType;
 };
 
 #endif

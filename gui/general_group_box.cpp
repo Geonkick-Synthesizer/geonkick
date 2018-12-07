@@ -40,7 +40,8 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
           kickAmplitudeKnob(nullptr),
           kickLengthKnob(nullptr),
           kickFrequencyKnob(nullptr),
-          kickQFactorKnob(nullptr)
+          kickQFactorKnob(nullptr),
+          filterType(nullptr)
 {
 
         auto label = new GeonkickLabel(this);
@@ -111,7 +112,8 @@ void GeneralGroupBox::createFilterHBox()
         kickQFactorKnob->setRange(0.01, 10);
         connect(kickQFactorKnob, SIGNAL(valueUpdated(double)), geonkickApi, SLOT(setKickFilterQFactor(double)));
 
-        auto filterType = new GeonkickButton(filterEnvelopeBox);
+        filterType = new GeonkickButton(filterEnvelopeBox);
+        filterType->setCheckable(true);
         connect(filterType, SIGNAL(toggled(bool)), this, SLOT(setFilterType(bool)));
         w = 80;
         h = 25;
@@ -122,20 +124,23 @@ void GeneralGroupBox::createFilterHBox()
 
 void GeneralGroupBox::setFilterType(bool state)
 {
-        if (state) {
-                geonkickApi->setKickFilterType(Oscillator::FilterType::LowPass);
-        } else {
+        if (state)
                 geonkickApi->setKickFilterType(Oscillator::FilterType::HighPass);
-        }
+        else
+                geonkickApi->setKickFilterType(Oscillator::FilterType::LowPass);
 }
 
 void GeneralGroupBox::update()
 {
         kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
         kickLengthKnob->setCurrentValue(geonkickApi->kickLength());
-
         filterCheckbox->setChecked(geonkickApi->isKickFilterEnabled());
         kickFrequencyKnob->setCurrentValue(geonkickApi->kickFilterFrequency());
         kickQFactorKnob->setCurrentValue(geonkickApi->kickFilterQFactor());
+        if (geonkickApi->kickFilterType() == Oscillator::FilterType::LowPass)
+                filterType->setPressed(false);
+        else
+                filterType->setPressed(true);
+
 }
 

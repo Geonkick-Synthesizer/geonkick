@@ -264,9 +264,9 @@ void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 void OscillatorGroupBox::setFilterType(bool state)
 {
         if (state)
-                oscillator->setFilterType(Oscillator::FilterType::LowPass);
-        else
                 oscillator->setFilterType(Oscillator::FilterType::HighPass);
+        else
+                oscillator->setFilterType(Oscillator::FilterType::LowPass);
 }
 
 void OscillatorGroupBox::update()
