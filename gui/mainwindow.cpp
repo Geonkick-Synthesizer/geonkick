@@ -98,9 +98,34 @@ void MainWindow::openExportDialog()
 
 void MainWindow::savePreset()
 {
-        QString fileName = QFileDialog::getSaveFileName(this, tr("Save Preset"),
-                                                        "./",
-                                                        tr("Geonkick preset (*.gkick)"));
+        QFileDialog fileDialog(this, tr("Save Preset"),
+                               "./",
+                               tr("Geonkick preset (*.gkick)"));
+        fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+        if (fileDialog.exec() == QDialog::Rejected)
+                return;
+
+        QStringList files = fileDialog.selectedFiles();
+        if (files.isEmpty() || files.first().isEmpty()) {
+                QMessageBox::critical(this,
+                                      "Error | Save Preset",
+                                      "Can't save preset. Empty file name. File name format example: 'mykick.gkick'");
+                return;
+        }
+
+        QFileInfo fileInfo(files.first());
+        if (fileInfo.baseName().isEmpty()) {
+                QMessageBox::critical(this,
+                                      "Error | Save Preset",
+                                      "Can't save preset. Wrong file format. File name format example: 'mykick.gkick'");
+                return;
+        }
+
+        QString fileName;
+        if (fileInfo.suffix().isEmpty() || fileInfo.suffix().toLower() != "gkick")
+                fileName = fileInfo.filePath() + ".gkick";
+        else
+                fileName = fileInfo.filePath();
 
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -114,11 +139,20 @@ void MainWindow::savePreset()
 
 void MainWindow::openPreset()
 {
-        QString fileName = QFileDialog::getOpenFileName(this, tr("Open Preset"), "./",
-                                                        tr("Geonkick preset (*.gkick)"));
+        QFileDialog fileDialog(this, tr("Open Preset"), "./",
+                               tr("Geonkick preset (*.gkick)"));
+        fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
+        if (fileDialog.exec() == QDialog::Rejected)
+                return;
 
-        GEONKICK_LOG_ERROR(fileName);
-        QFile file(fileName);
+        QStringList files = fileDialog.selectedFiles();
+        if (files.isEmpty() || files.first().isEmpty()) {
+                QMessageBox::critical(this, "Error | Open Preset", "Can't save preset");
+                return;
+        }
+
+
+        QFile file(files.first());
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 QMessageBox::critical(this, "Error | Open Preset", "Can't open preset");
                 return;
