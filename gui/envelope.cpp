@@ -31,8 +31,8 @@ Envelope::Envelope(QObject *object, const QRect &area)
           dotRadius(3),
           selectedPointIndex(0),
           pointSelected(false),
-          envelopeType(Type::Amplitude),
-          supportedTypes({Type::Amplitude, Type::Frequency})
+          supportedTypes({Type::Amplitude, Type::Frequency}),
+          envelopeType(Type::Amplitude)
 {
 
 }

@@ -31,7 +31,6 @@
 #include <QStyleOption>
 #include <memory>
 
-class GeonkickTheme;
 class QPixmap;
 
 class GeonkickWidget: public QWidget
@@ -43,15 +42,10 @@ class GeonkickWidget: public QWidget
         virtual ~GeonkickWidget();
         void setBackgroundImage(const QPixmap &pixmap);
         void setBackgroundImage(const QString &file);
-        void setTheme(GeonkickTheme *theme);
-        GeonkickTheme* getTheme();
         void paintEvent(QPaintEvent *event) final;
         virtual void paintWidget(QPaintEvent *event);
 
- public slots:
-         virtual void themeChanged(GeonkickTheme *theme) {Q_UNUSED(theme)};
  private:
-        GeonkickTheme *widgetTheme;
         QPixmap backgroundImage;
 };
 

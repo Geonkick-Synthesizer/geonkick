@@ -1,6 +1,5 @@
 # Input
 HEADERS += globals.h \
-           geonkick_theme.h \
            geonkick_widget.h \
            geonkick_label.h \
            geonkick_button.h \
@@ -28,8 +27,7 @@ HEADERS += globals.h \
            export_widget.h \
            mainwindow.h
 
-SOURCES += geonkick_theme.cpp \
-           geonkick_widget.cpp \
+SOURCES += geonkick_widget.cpp \
            geonkick_label.cpp \
            geonkick_slider.cpp \
            geonkick_button.cpp \

@@ -26,7 +26,6 @@
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"
-#include "geonkick_theme.h"
 #include "top_bar.h"
 #include "fader.h"
 #include "export_widget.h"
@@ -62,7 +61,6 @@ MainWindow::~MainWindow()
 bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
-        setTheme(new GeonkickTheme("Geontime"));
 
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
         mainLayout->setContentsMargins(0, 0, 0, 0);

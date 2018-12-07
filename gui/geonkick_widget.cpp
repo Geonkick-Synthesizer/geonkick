@@ -22,16 +22,10 @@
  */
 
 #include "geonkick_widget.h"
-#include "geonkick_theme.h"
 
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
-        : QWidget(parent),
-          widgetTheme(nullptr)
+        : QWidget(parent)
 {
-        if (parent) {
-                setTheme(parent->getTheme());
-        }
-
         // Later will get this info settings from the theme/skin.
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
@@ -72,17 +66,3 @@ void GeonkickWidget::setBackgroundImage(const QPixmap &pixmap)
         }
 }
 
-void GeonkickWidget::setTheme(GeonkickTheme *theme)
-{
-        if (widgetTheme) {
-                disconnect(widgetTheme, SIGNAL(themeChanged(GeonkickTheme*)), this, SLOT(themeChanged(GeonkickTheme*)));
-        }
-        widgetTheme = theme;
-        connect(widgetTheme, SIGNAL(themeChanged(GeonkickTheme*)), this, SLOT(themeChanged(GeonkickTheme*)));
-        themeChanged(widgetTheme);
-}
-
-GeonkickTheme* GeonkickWidget::getTheme()
-{
-        return widgetTheme;
-}
