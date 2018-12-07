@@ -42,8 +42,8 @@ GeonkickCheckbox::GeonkickCheckbox(GeonkickWidget *parent)
         mainLayout->addWidget(checkboxButton, 0, Qt::AlignLeft);
         mainLayout->addWidget(checkboxLabel, 0, Qt::AlignLeft);
         connect(checkboxButton, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
-        connect(checkboxButton, SIGNAL(toggled(bool)), checkboxLabel, SLOT(setPressed(bool)));
-        connect(checkboxLabel, SIGNAL(toggled(bool)), checkboxButton, SLOT(setPressed(bool)));
+        connect(checkboxButton, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
+        connect(checkboxLabel, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
         connect(checkboxLabel, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
 }
 
@@ -89,4 +89,5 @@ void GeonkickCheckbox::setPadding(int left, int top, int right, int buttom)
 void GeonkickCheckbox::setChecked(bool checked)
 {
         checkboxButton->setPressed(checked);
+        checkboxLabel->setPressed(checked);
 }
