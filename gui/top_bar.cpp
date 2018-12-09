@@ -38,13 +38,6 @@ TopBar::TopBar(GeonkickWidget *parent)
                 setFixedSize(parent->width() , 40);
         }
 
-        /*QPalette pal;
-        pal.setColor(QPalette::Background, QColor(200, 200, 70));
-        pal.setColor(QPalette::WindowText, Qt::white);
-        setAutoFillBackground(true);
-        setPalette(pal);*/
-
-
         auto buttonsLayout = new QHBoxLayout(this);
         buttonsLayout->setContentsMargins(15, 0, 0, 0);
         setLayout(buttonsLayout);
@@ -75,12 +68,6 @@ TopBar::TopBar(GeonkickWidget *parent)
         buttonsLayout->addWidget(exportFileButton);
         buttonsLayout->setAlignment(exportFileButton, Qt::AlignLeft);
         connect(exportFileButton, SIGNAL(toggled(bool)), parent, SLOT(openExportDialog()));
-
-        settingsButton = new GeonkickButton(this);
-        settingsButton->setUnpressedImage(QPixmap(":/settings_active.png"));
-        settingsButton->setCheckable(true);
-        buttonsLayout->addWidget(settingsButton);
-        buttonsLayout->setAlignment(settingsButton, Qt::AlignLeft);
         buttonsLayout->addStretch(1);
 }
 
