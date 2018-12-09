@@ -38,7 +38,6 @@ class TopBar : public GeonkickWidget
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
         GeonkickButton *exportFileButton;
-        GeonkickButton *settingsButton;
 };
 
 #endif // GEONKICK_TOP_BAR_H
