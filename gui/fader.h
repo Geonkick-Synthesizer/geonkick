@@ -26,6 +26,8 @@
 
 #include "geonkick_widget.h"
 
+#include <QTimer>
+
 class GeonkickSlider;
 class GeonkickLevel;
 class GeonkickApi;
@@ -48,6 +50,12 @@ class Fader: public GeonkickWidget
  signals:
         void levelUpdated(int level);
 
+ protected:
+        int logValToLevel(double val);
+ protected slots:
+         void updateLeveler(double val);
+         void updateLevelerTimeout();
+
  private:
         void drawLevels(QPainter &painter);
         void paintWidget(QPaintEvent *event) final;
@@ -57,6 +65,7 @@ class Fader: public GeonkickWidget
         int leftChannelLevel;
         int rightChannelLevel;
         QPixmap levelsImage;
+        QTimer faderTimer;
 };
 
 #endif // GEONKICK_FADER_H

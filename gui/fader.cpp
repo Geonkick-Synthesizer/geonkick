@@ -29,13 +29,16 @@ Fader::Fader(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickWidget(parent),
           geonkickApi(api),
           faderSlider(new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)),
-          leftChannelLevel(40),
-          rightChannelLevel(50),
+          leftChannelLevel(0),
+          rightChannelLevel(0),
           levelsImage(":/fader.png")
 {
         faderSlider->move(0, 3);
         connect(faderSlider, SIGNAL(valueUpdated(int)), this, SIGNAL(levelUpdated(int)));
+        connect(geonkickApi, SIGNAL(currentPlayingFrameVal(double)), this, SLOT(updateLeveler(double)));
+        connect(&faderTimer, SIGNAL(timeout()), this, SLOT(updateLevelerTimeout()));
         updateFader();
+        faderTimer.start(50);
 }
 
 Fader::~Fader()
@@ -68,6 +71,15 @@ void Fader::drawLevels(QPainter &painter)
                          QBrush(QColor(125, 200, 125)));
 }
 
+void Fader::updateLevelerTimeout()
+{
+        for (auto i = 0; i < 2; i++) {
+                int val = getChannelLevel(i) - 1;
+                if (val > -1)
+                        setChannelLevel(i, val);
+        }
+}
+
 void Fader::resizeEvent(QResizeEvent *event)
 {
         faderSlider->setFixedSize(20, levelsImage.size().height() - 3);
@@ -96,6 +108,16 @@ void Fader::setFaderLevel(int level)
         faderSlider->setValue(level);
 }
 
+void Fader::updateLeveler(double val)
+{
+        val = fabs(val);
+        int  level = logValToLevel(val);
+        if (getChannelLevel(0) < level)
+                setChannelLevel(0, level);
+        if (getChannelLevel(0) < level)
+                setChannelLevel(1, level);
+}
+
 void Fader::setChannelLevel(int channel, int level)
 {
         if (channel == 0) {
@@ -103,9 +125,27 @@ void Fader::setChannelLevel(int channel, int level)
         } else {
                 rightChannelLevel = level;
         }
+        update();
 }
 
 void Fader::updateFader()
 {
-        setFaderLevel(100 * geonkickApi->limiterValue());
+        double val = geonkickApi->limiterValue();
+        int level;
+        setFaderLevel(level);
+}
+
+int Fader::logValToLevel(double val)
+{
+        int level;
+        if (20 * log10(val) < -60) {
+                level = 0;
+        } else {
+                double logVal = 20 * log10(geonkickApi->limiterValue());
+                double k = 70.0 / (1 - 0.07);
+                double b = 20.0 - k;
+                double x = (logVal - b) / k;
+                level = 100 * x;
+        }
+        return level;
 }

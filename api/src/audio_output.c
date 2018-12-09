@@ -114,6 +114,13 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                         }
                 }
         }
+
+        *val *= audio_output->limiter;
+        if (audio_output->limiter_callback != NULL
+            && audio_output->limiter_callback_arg != NULL
+            && audio_output->key_state == GKICK_KEY_STATE_PRESSED) {
+                audio_output->limiter_callback(audio_output->limiter_callback_arg, *val);
+        }
         gkick_audio_output_unlock(audio_output);
 
         return GEONKICK_OK;
@@ -153,6 +160,23 @@ gkick_audio_output_get_limiter(struct gkick_audio_output  *audio_output, gkick_r
 {
         gkick_audio_output_lock(audio_output);
         *limit = audio_output->limiter;
+        gkick_audio_output_unlock(audio_output);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
+                                        void (*callback)(void*, gkick_real val),
+                                        void *arg)
+{
+        if (audio_output == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_audio_output_lock(audio_output);
+        audio_output->limiter_callback = callback;
+        audio_output->limiter_callback_arg = arg;
         gkick_audio_output_unlock(audio_output);
         return GEONKICK_OK;
 }

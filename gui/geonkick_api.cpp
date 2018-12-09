@@ -51,7 +51,6 @@ bool GeonkickApi::init()
   	}
 
         setState(getDefaultState());
-        geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
         return true;
 }
 
@@ -120,6 +119,7 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
                 return;
         }
         geonkick_enable_synthesis(geonkickApi, 0);
+        GEONKICK_LOG_DEBUG("val " << state->getLimiterValue());
         setLimiterValue(state->getLimiterValue());
         setKickLength(state->getKickLength());
         setKickAmplitude(state->getKickAmplitude());
@@ -560,9 +560,20 @@ std::vector<gkick_real> GeonkickApi::getKickBuffer()
 void GeonkickApi::kickUpdatedCallback(void *arg)
 {
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
-        if (obj) {
+        if (obj)
                 obj->emitKickUpdated();
-        }
+}
+
+void GeonkickApi::limiterCallback(void *arg, gkick_real val)
+{
+        GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
+        if (obj)
+                obj->emitCurrentPlayingFrameVal(val);
+}
+
+void GeonkickApi::emitCurrentPlayingFrameVal(double val)
+{
+        emit currentPlayingFrameVal(val);
 }
 
 void GeonkickApi::emitKickUpdated()
@@ -710,4 +721,15 @@ double GeonkickApi::getDistortionDrive(void) const
         gkick_real drive;
         geonkick_distortion_get_drive(geonkickApi, &drive);
         return drive;
+}
+
+void GeonkickApi::registerCallbacks(bool b)
+{
+        if (b) {
+                geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
+                geonkick_set_kick_limiter_callback(geonkickApi, &GeonkickApi::limiterCallback, this);
+        } else {
+                geonkick_set_kick_buffer_callback(geonkickApi, NULL, NULL);
+                geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
+        }
 }

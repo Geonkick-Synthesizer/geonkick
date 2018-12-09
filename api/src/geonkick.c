@@ -562,12 +562,25 @@ geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size)
 enum geonkick_error
 geonkick_set_kick_buffer_callback(struct geonkick *kick, void (*callback)(void*), void *arg)
 {
-        if (kick  == NULL || callback == NULL || arg == NULL) {
+        if (kick == NULL) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
 
         return gkick_synth_set_buffer_callback(kick->synth, callback, arg);
+}
+
+enum geonkick_error
+geonkick_set_kick_limiter_callback(struct geonkick *kick,
+                                   void (*callback)(void*, gkick_real val),
+                                   void *arg)
+{
+        if (kick  == NULL) {
+                gkick_log_error("wrong arugments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_audio_set_limiter_callback(kick->audio, callback, arg);
 }
 
 enum geonkick_error

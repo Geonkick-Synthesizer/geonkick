@@ -51,11 +51,16 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
         GeonkickWidget(parent),
         geonkickApi(api)
 {
+        geonkickApi->registerCallbacks(true);
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
 }
 
 MainWindow::~MainWindow()
 {
+#ifdef GEONKICK_LV2_PLUGIN
+        if (geonkickApi)
+                geonkickApi->registerCallbacks(false);
+#endif
 }
 
 bool MainWindow::init(void)
@@ -170,6 +175,15 @@ void MainWindow::openPreset()
 
 void MainWindow::setLimiterValue(int value)
 {
-        geonkickApi->setLimiterValue(static_cast<double>(value) / 100);
+        double k = 70.0 / (1 - 0.07);
+        double b = 20.0 - k;
+        double x = static_cast<double>(value) / 100;
+        double logVal = k * x + b;
+        double val;
+        if (logVal < -50)
+                val = 0;
+        else
+                val = pow(10, logVal / 20);
+        geonkickApi->setLimiterValue(val);
 }
 

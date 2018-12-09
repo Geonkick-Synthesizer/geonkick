@@ -5,6 +5,7 @@ QT += widgets
 TARGET = geonkick_lv2
 INCLUDEPATH += .
 INCLUDEPATH += ../api/src/
+DEFINES += GEONKICK_LV2_PLUGIN
 
 CONFIG += shared plugin
 

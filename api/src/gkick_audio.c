@@ -79,8 +79,8 @@ gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit)
 
         if (limit < 0) {
                 limit = 0;
-        } else if (limit > 1.0) {
-                limit = 1.0;
+        } else if (limit > 10) {
+                limit = 10;
         }
 
         return gkick_audio_output_set_limiter(audio->audio_output, limit);
@@ -129,4 +129,16 @@ gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val)
         }
 
         return gkick_audio_output_get_frame(audio->audio_output, val);
+}
+
+enum geonkick_error
+gkick_audio_set_limiter_callback(struct gkick_audio *audio,
+                                 void (*callback)(void*, gkick_real val),
+                                 void *arg)
+{
+        if (audio == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_set_limiter_callback(audio->audio_output, callback, arg);
 }

@@ -54,3 +54,41 @@ What version 1.0 should include:
 * Platforms:
      - GNU/Linux [i]
 
+# Build and install
+
+The application is no ready for use but if you like
+to try it here are some steps:
+
+--- Build API first ---
+
+cd geonkick/api
+
+If you want for standalone + jack, uncomment out the line
+#DEFINES += -DGEONKICK_AUDIO_JACK from the API Makefile.
+If you want as a LV2 plugin leave it commented out.
+
+make - it will build the API static library
+
+--- Build gui ---
+
+cd geonkick
+mkdir build
+cd build
+
+--- stand-alone ---
+qmake ../gui/gui.pro
+make
+run geonkick executable
+
+--- for lv2 ---
+qmake ../gui/lv2.pro
+make
+
+--- install LV2 ---
+cp generated library libgeonkick_lv2.so to geonkick/lv2/geonkick.lv2/geonkick_lv2.so
+than copy entire folder geonkick.lv2 to your
+LV2 plugins. For example to /usr/local/lib/lv2/
+
+
+
+

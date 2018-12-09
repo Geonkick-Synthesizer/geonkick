@@ -248,6 +248,11 @@ enum geonkick_error
 geonkick_set_kick_buffer_callback(struct geonkick *kick, void (*callback)(void*), void *arg);
 
 enum geonkick_error
+geonkick_set_kick_limiter_callback(struct geonkick *kick,
+                                   void (*callback)(void*, gkick_real val),
+                                   void *arg);
+
+enum geonkick_error
 geonkick_set_limiter_value(struct geonkick *kick, gkick_real limit);
 
 enum geonkick_error

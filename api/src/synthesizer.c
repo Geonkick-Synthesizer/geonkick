@@ -952,7 +952,7 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
 enum geonkick_error
 gkick_synth_set_buffer_callback(struct gkick_synth *synth, void (*callback) (void*), void *args)
 {
-	if (synth == NULL || callback == NULL || args == NULL) {
+	if (synth == NULL) {
                 gkick_log_error("wrong arguments");
 		return GEONKICK_ERROR;
         }
@@ -1088,7 +1088,7 @@ void *gkick_synth_run(void *arg)
                         gkick_log_warning("can't copy buffer to audio");
                 }
                 synth->buffer_update = 0;
-                if (synth->buffer_callback != NULL || synth->callback_args != NULL) {
+                if (synth->buffer_callback != NULL && synth->callback_args != NULL) {
                         synth->buffer_callback(synth->callback_args);
                 }
                 gkick_synth_unlock(synth);

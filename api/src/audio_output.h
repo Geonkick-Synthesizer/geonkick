@@ -42,6 +42,8 @@ struct gkick_audio_output
 
         pthread_mutex_t lock;
         gkick_real limiter;
+        void (*limiter_callback) (void*, gkick_real val);
+        void *limiter_callback_arg;
         size_t buffer_index;
         char key_velocity;
         enum gkick_key_state key_state;
@@ -84,5 +86,10 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output);
 
 void gkick_audio_output_unlock(struct gkick_audio_output *audio_output);
+
+enum geonkick_error
+gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
+                                        void (*callback)(void*, gkick_real val),
+                                        void *arg);
 
 #endif // GKICK_AUDO_OUTPUT_H

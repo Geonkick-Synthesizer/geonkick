@@ -71,6 +71,7 @@ class GeonkickApi: public QObject {
   GeonkickApi(QObject *parent = nullptr);
   ~GeonkickApi();
   bool init();
+  void registerCallbacks(bool b);
   std::vector<Oscillator*> oscillators(void);
   bool isOscillatorEnabled(int index);
   QPolygonF oscillatorEvelopePoints(int oscillatorIndex, EnvelopeType envelope) const;
@@ -155,10 +156,13 @@ signals:
   void kickLengthUpdated(double length);
   void kickAmplitudeUpdated(double amplitude);
   void kickUpdated();
+  void currentPlayingFrameVal(double val);
 
 protected:
   static void kickUpdatedCallback(void *arg);
+  static void limiterCallback(void *arg, gkick_real val);
   void emitKickUpdated();
+  void emitCurrentPlayingFrameVal(double val);
   void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
   void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
 
