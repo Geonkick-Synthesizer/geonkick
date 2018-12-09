@@ -34,6 +34,7 @@
 #include <QProgressBar>
 #include <QFileDialog>
 #include <QFont>
+#include <QMessageBox>
 
 #include <sndfile.h>
 
@@ -52,7 +53,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
 {
         setWindowFlags(Qt::Dialog);
         setWindowModality(Qt::ApplicationModal);
-        setWindowTitle(tr("Export Kick"));
+        setWindowTitle(tr("Export"));
 
         auto mainLayout = new QVBoxLayout(this);
         mainLayout->setSpacing(20);
@@ -61,11 +62,11 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         exportProgress->setRange(0, 100);
         exportProgress->setTextVisible(false);
 
-        QFont font(":/urw_gothic_l_book.ttf");
-        setFont(font);
         auto locationLayout = new QHBoxLayout;
         locationLayout->addWidget(new QLabel(tr("Location"), this));
         locationEdit = new QLineEdit(this);
+        locationEdit->setText(QDir::currentPath());
+        locationEdit->setMinimumWidth(150);
         connect(locationEdit, SIGNAL(textChanged(const QString&)), this, SLOT(resetProgressBar()));
         locationLayout->addWidget(locationEdit);
         browseLocation = new GeonkickButton(this);
@@ -75,11 +76,13 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         locationLayout->addWidget(browseLocation);
         locationLayout->addWidget(new QLabel(tr("File name"), this));
         fileNameEdit = new QLineEdit(this);
-        fileNameEdit->setFont(font);
         connect(fileNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(resetProgressBar()));
         locationLayout->addWidget(fileNameEdit);
         locationLayout->setSpacing(0);
         locationLayout->addStretch();
+        locationLayout->insertSpacing(1, 10);
+        locationLayout->insertSpacing(4, 20);
+        locationLayout->insertSpacing(6, 10);
 
         auto formatLayout = new QHBoxLayout;
         formatLayout->addWidget(new QLabel(tr("Export format"), this));
@@ -102,8 +105,8 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         formatLayout->addWidget(stereoRadioButton);
 
         formatLayout->setSpacing(0);
-        formatLayout->insertSpacing(3, 16);
-        formatLayout->insertSpacing(4, 10);
+        formatLayout->insertSpacing(1, 10);
+        formatLayout->insertSpacing(3, 20);
         formatLayout->addStretch();
 
         auto buttonsLayout = new QHBoxLayout;
@@ -118,7 +121,6 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         buttonsLayout->addWidget(cancelButton);
         buttonsLayout->addWidget(exportButton);
 
-        //mainLayout->addWidget();
         mainLayout->addLayout(formatLayout);
         mainLayout->addLayout(locationLayout);
         mainLayout->addWidget(exportProgress);
@@ -153,17 +155,36 @@ void ExportWidget::browse()
         }
 }
 
+bool ExportWidget::validateInput()
+{
+        if (locationEdit->text().isEmpty()) {
+                QMessageBox::critical(this, tr("Error | Export"), tr("File location is empty"));
+                return false;
+        }
+
+        if (fileNameEdit->text().isEmpty()) {
+                QMessageBox::critical(this, tr("Error | Export"), tr("File name is empty"));
+                return false;
+        }
+
+        return true;
+}
+
 void ExportWidget::exportKick()
 {
         resetProgressBar();
         enableButtons(false);
 
+        if (!validateInput()) {
+                cancel();
+                return;
+        }
+
         SF_INFO sndinfo;
         sndinfo.samplerate = geonkickApi->getSampleRate();
         if (sndinfo.samplerate == 0) {
+                QMessageBox::critical(this, tr("Error | Export"), tr("Error on exporting kick"));
                 cancel();
-                showError();
-                GEONKICK_LOG_ERROR("can't get sample rate");
                 return;
         }
 
@@ -184,25 +205,21 @@ void ExportWidget::exportKick()
         }
 
         if (kickBuffer.empty()) {
+                QMessageBox::critical(this, tr("Error | Export"), tr("Error on exporting kick"));
                 cancel();
-                showError();
-                GEONKICK_LOG_ERROR("kick buffer is empty");
                 return;
         }
 
         if (!sf_format_check(&sndinfo)) {
+                QMessageBox::critical(this, tr("Error | Export"), tr("Error on exporting kick"));
                 cancel();
-                showError();
-                GEONKICK_LOG_ERROR("wrong sndinfo");
                 return;
         }
 
-        QString filePath = getFilePath();
-        SNDFILE *sndFile = sf_open(filePath.toLatin1().data(), SFM_WRITE, &sndinfo);
+        SNDFILE *sndFile = sf_open(getFilePath().toLatin1().data(), SFM_WRITE, &sndinfo);
         if (!sndFile) {
+                QMessageBox::critical(this, tr("Error | Export"), tr("Error on exporting kick"));
                 cancel();
-                showError();
-                GEONKICK_LOG_ERROR("can't open file");
                 return;
         }
 
@@ -219,9 +236,8 @@ void ExportWidget::exportKick()
                 n = sf_write_float(sndFile, kickBuffer.data() + i, chunk);
 #endif
                 if (n != chunk) {
+                        QMessageBox::critical(this, tr("Error | Export"), tr("Error on exporting kick"));
                         cancel();
-                        showError();
-                        GEONKICK_LOG_ERROR("error on writing to file");
                         break;
                 }
                 i += chunk;
@@ -265,12 +281,6 @@ int ExportWidget::exportFormat()
         default:
                 return SF_FORMAT_WAV | SF_FORMAT_PCM_24;
         }
-}
-
-void ExportWidget::showError()
-{
-        GEONKICK_LOG_ERROR("error");
-        cancel();
 }
 
 void ExportWidget::enableButtons(bool enable)

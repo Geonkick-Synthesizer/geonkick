@@ -51,13 +51,13 @@ class ExportWidget: public GeonkickWidget {
         void enableButtons(bool enable);
         QString getFilePath();
         QString fileSuffix();
+        bool validateInput();
 
  protected slots:
          void browse();
          void cancel();
          void exportKick();
          void resetProgressBar();
-         void showError();
 
  signals:
          void closeDialog();
