@@ -72,21 +72,30 @@ make - it will build the API static library
 --- Build gui ---
 
 cd geonkick
+
 mkdir build
+
 cd build
 
 --- stand-alone ---
+
 qmake ../gui/gui.pro
+
 make
+
 run geonkick executable
 
 --- for lv2 ---
+
 qmake ../gui/lv2.pro
+
 make
 
 --- install LV2 ---
+
 cp generated library libgeonkick_lv2.so to geonkick/lv2/geonkick.lv2/geonkick_lv2.so
 than copy entire folder geonkick.lv2 to your
+
 LV2 plugins. For example to /usr/local/lib/lv2/
 
 
