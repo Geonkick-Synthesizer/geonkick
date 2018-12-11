@@ -61,42 +61,41 @@ to try it here are some steps:
 
 --- Build API first ---
 
-cd geonkick/api
+    cd geonkick/api
 
-If you want for standalone + jack, uncomment out the line
-#DEFINES += -DGEONKICK_AUDIO_JACK from the API Makefile.
-If you want as a LV2 plugin leave it commented out.
+   If you want for standalone + jack, uncomment out the line
+   #DEFINES += -DGEONKICK_AUDIO_JACK from the API Makefile.
+   If you want as a LV2 plugin leave it commented out.
 
-make - it will build the API static library
+   make - it will build the API static library
 
 --- Build gui ---
 
-cd geonkick
+    cd geonkick
 
-mkdir build
+   mkdir build
 
-cd build
+   cd build
 
---- stand-alone ---
+--- for standalone ---
 
-qmake ../gui/gui.pro
+    qmake ../gui/gui.pro
 
-make
+    make
 
 run geonkick executable
 
 --- for lv2 ---
 
-qmake ../gui/lv2.pro
+    qmake ../gui/lv2.pro
 
-make
+    make
 
 --- install LV2 ---
 
-cp generated library libgeonkick_lv2.so to geonkick/lv2/geonkick.lv2/geonkick_lv2.so
-than copy entire folder geonkick.lv2 to your
-
-LV2 plugins. For example to /usr/local/lib/lv2/
+    cp generated library libgeonkick_lv2.so to geonkick/lv2/geonkick.lv2/geonkick_lv2.so
+    than copy entire folder geonkick.lv2 to your LV2 plugins.
+    For example to /usr/local/lib/lv2/
 
 
 

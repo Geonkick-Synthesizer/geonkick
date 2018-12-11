@@ -1413,8 +1413,11 @@ enum geonkick_error
 gkick_synth_compressor_set_attack(struct gkick_synth *synth, gkick_real attack)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_compressor_set_attack(synth->compressor, attack);
-        gkick_synth_wakeup_thread(synth);
+        gkick_compressor_is_enabled(synth->compressor, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 
@@ -1428,8 +1431,11 @@ enum geonkick_error
 gkick_synth_compressor_set_release(struct gkick_synth *synth, gkick_real release)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_compressor_set_release(synth->compressor, release);
-        gkick_synth_wakeup_thread(synth);
+        gkick_compressor_is_enabled(synth->compressor, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 
@@ -1443,8 +1449,11 @@ enum geonkick_error
 gkick_synth_compressor_set_threshold(struct gkick_synth *synth, gkick_real threshold)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_compressor_set_threshold(synth->compressor, threshold);
-        gkick_synth_wakeup_thread(synth);
+        gkick_compressor_is_enabled(synth->compressor, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 
@@ -1458,8 +1467,11 @@ enum geonkick_error
 gkick_synth_compressor_set_ratio(struct gkick_synth *synth, gkick_real ratio)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_compressor_set_ratio(synth->compressor, ratio);
-        gkick_synth_wakeup_thread(synth);
+        gkick_compressor_is_enabled(synth->compressor, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 
@@ -1473,8 +1485,11 @@ enum geonkick_error
 gkick_synth_compressor_set_knee(struct gkick_synth *synth, gkick_real knee)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_compressor_set_knee(synth->compressor, knee);
-        gkick_synth_wakeup_thread(synth);
+        gkick_compressor_is_enabled(synth->compressor, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 
@@ -1488,8 +1503,11 @@ enum geonkick_error
 gkick_synth_compressor_set_makeup(struct gkick_synth *synth, gkick_real makeup)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_compressor_set_makeup(synth->compressor, makeup);
-        gkick_synth_wakeup_thread(synth);
+        gkick_compressor_is_enabled(synth->compressor, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 
@@ -1518,8 +1536,11 @@ enum geonkick_error
 gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_distortion_set_volume(synth->distortion, volume);
-        gkick_synth_wakeup_thread(synth);
+        gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 
@@ -1533,8 +1554,11 @@ enum geonkick_error
 gkick_synth_distortion_set_drive(struct gkick_synth *synth, gkick_real drive)
 {
         enum geonkick_error res;
+        int enabled;
         res = gkick_distortion_set_drive(synth->distortion, drive);
-        gkick_synth_wakeup_thread(synth);
+        gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled)
+                gkick_synth_wakeup_thread(synth);
         return res;
 }
 

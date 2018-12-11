@@ -27,7 +27,6 @@
 #include "geonkick_state.h"
 
 #include <geonkick.h>
-
 #include <memory>
 
 GeonkickApi::GeonkickApi(QObject *parent) :
@@ -540,6 +539,7 @@ double GeonkickApi::limiterValue()
 void GeonkickApi::setLimiterValue(double value)
 {
         geonkick_set_limiter_value(geonkickApi, value);
+        emit kickUpdated();
 }
 
 void GeonkickApi::getKickBuffer(std::vector<gkick_real> &buffer)

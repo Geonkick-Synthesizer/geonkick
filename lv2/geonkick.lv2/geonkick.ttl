@@ -24,6 +24,7 @@
     doap:name "Geonkick";
     lv2:project <http://geontime.com/geonkick> ;
     lv2:extensionData state:interface ;
+    lv2:extensionData state:StateChanged ;
     doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
     ui:ui <http://geontime.com/geonkick#ui> ;
     lv2:port [
@@ -36,7 +37,7 @@
              lv2:name "MIDI In" ;
 	];
 
-	lv2:port [
+        lv2:port [
 		a lv2:AudioPort , lv2:OutputPort ;
 		lv2:index 1 ;
 		lv2:symbol "out_left" ;
@@ -48,8 +49,15 @@
 		lv2:index 2 ;
 		lv2:symbol "out_right" ;
 		lv2:name "Audio Right"
-	] .
+	];
 
+    lv2:port [
+	a lv2:OutputPort,  atom:AtomPort ;
+	atom:bufferType atom:Sequence ;
+	lv2:index 3 ;
+	lv2:symbol "notify" ;
+	lv2:name "Notify";
+    ].
 
 <http://geontime.com/geonkick#ui>
     a ui:Qt5UI ;

@@ -128,7 +128,6 @@ class GeonkickApi: public QObject {
   double getDistortionVolume() const;
   double getDistortionDrive() const;
 
-
 public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
