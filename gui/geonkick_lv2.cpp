@@ -440,7 +440,8 @@ gkick_state_restore(LV2_Handle                  instance,
                 LV2_URID type = 0;
                 const char *data = (const char*)retrieve(handle, geonkickLv2PLugin->getStateId(),
                                             &size, &type, &flags);
-                geonkickLv2PLugin->setStateData(QByteArray(data, size), flags);
+                if (data && size > 0)
+                        geonkickLv2PLugin->setStateData(QByteArray(data, size), flags);
         }
 }
 
