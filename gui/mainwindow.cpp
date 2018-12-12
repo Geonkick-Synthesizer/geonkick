@@ -187,3 +187,13 @@ void MainWindow::setLimiterValue(int value)
         geonkickApi->setLimiterValue(val);
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+        if (event->key() == Qt::Key_K) {
+                geonkickApi->setKeyPressed(true, 127);
+        } else if (event->modifiers() ==  Qt::ControlModifier
+                   && event->key() == Qt::Key_R) {
+                geonkickApi->setState(geonkickApi->getDefaultState());
+                emit updateGui();
+        }
+}

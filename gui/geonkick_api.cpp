@@ -118,7 +118,6 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
                 return;
         }
         geonkick_enable_synthesis(geonkickApi, 0);
-        GEONKICK_LOG_DEBUG("val " << state->getLimiterValue());
         setLimiterValue(state->getLimiterValue());
         setKickLength(state->getKickLength());
         setKickAmplitude(state->getKickAmplitude());

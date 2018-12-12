@@ -51,6 +51,9 @@ class MainWindow : public GeonkickWidget
       ~MainWindow();
       bool init(void);
 
+ protected:
+      void keyPressEvent(QKeyEvent *event);
+
  protected slots:
       void openExportDialog();
       void openPreset();
