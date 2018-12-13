@@ -1,3 +1,6 @@
+VPATH += $$PWD
+INCLUDEPATH += $$PWD
+
 # Input
 HEADERS += globals.h \
            geonkick_widget.h \
