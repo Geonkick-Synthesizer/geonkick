@@ -11,3 +11,6 @@ LIBS += -L../api/ -lgeonkick -lsndfile -ljack
 include(../src/gui.pri)
 
 SOURCES += main.cpp
+
+geonkick.depends = geonkickapi
+
