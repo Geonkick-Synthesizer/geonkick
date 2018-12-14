@@ -53,7 +53,7 @@ Note: [i] - implemented
      - WAV 16, 24, 32 bit [i]
      - FLAC 16, 24 bit [i]
 * Save preset in JSON format [i]
-* Open open preset from JSON format [i]
+* Open preset from JSON format [i]
 * Standalone [i]
 * Plugin
      - LV2 [i]
