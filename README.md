@@ -1,25 +1,27 @@
 # Geonkick
 
-Geonkick - a kick drum synthesizer.
-
-Author: Iurie Nistor
+Geonkick - a free software kick synthesizer.
 
 License: GPLv3
+
+Author: Iurie Nistor
 
 Home page: http://geontime.com
 
 ![Screenshot](misc/Screenshot.png)
 
-
 Status: Active development. No release yet.
 
-What version 1.0 should include:
+The first release will be Version 1.0. There will not be any beta versions.
+The application will be released only until all the points below are
+finished, including documentation.
 
-[i] - means implemented
-[p] - means partial implemented
+What Version 1.0 should include:
+
+Note: [i] - implemented
 
 * Two oscillators:
-     - since [i]
+     - sine [i]
      - square [i]
      - triangle [i]
      - sawtooth [i]
@@ -36,7 +38,7 @@ What version 1.0 should include:
      - low & hight pass filter [i]
      - kick length [i]
      - kick limiter [i]
-     - compression [p]
+     - compression
      - distortion [i]
 * Jack support:
      - 1 MIDI in (key velocity sensitive) [i]
@@ -44,59 +46,18 @@ What version 1.0 should include:
 * Export to WAVE [i]
      - stereo [i]
      - mono [i]
-     - WAV 16. 24. 23 bit [i]
+     - WAV 16, 24, 32 bit [i]
      - FLAC 16, 24 bit [i]
-* Save [i]
-* Open [i]
+* Save preset in JSON format [i]
+* Open open preset from JSON format [i]
 * Standalone [i]
 * Plugin
      - LV2 [i]
 * Platforms:
      - GNU/Linux [i]
-
-# Build and install
-
-The application is no ready for use but if you like
-to try it here are some steps:
-
---- Build API first ---
-
-    cd geonkick/api
-
-   If you want for standalone + jack, uncomment out the line
-   #DEFINES += -DGEONKICK_AUDIO_JACK from the API Makefile.
-   If you want as a LV2 plugin leave it commented out.
-
-   make - it will build the API static library
-
---- Build gui ---
-
-    cd geonkick
-
-   mkdir build
-
-   cd build
-
---- for standalone ---
-
-    qmake ../gui/gui.pro
-
-    make
-
-run geonkick executable
-
---- for lv2 ---
-
-    qmake ../gui/lv2.pro
-
-    make
-
---- install LV2 ---
-
-    cp generated library libgeonkick_lv2.so to geonkick/lv2/geonkick.lv2/geonkick_lv2.so
-    than copy entire folder geonkick.lv2 to your LV2 plugins.
-    For example to /usr/local/lib/lv2/
-
-
-
-
+* Deploy:
+  - GPLv2 source code with CMake build system
+* Documentation
+  - How to build and install from source
+  - Some technical insights of how the synthesizer is working and is built
+  - User guide
