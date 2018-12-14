@@ -65,3 +65,4 @@ Note: [i] - implemented
   - How to build and install from source
   - Some technical insights of how the synthesizer is working and is built
   - User guide
+  - FAQ
