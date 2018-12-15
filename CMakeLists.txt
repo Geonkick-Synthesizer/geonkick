@@ -29,14 +29,27 @@ if (ENABLE_LOGGING)
 endif()
 
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(PkgConfig REQUIRED)
+
 if (ENABLE_STANDALONE)
-  find_package(JACK REQUIRED)
+  pkg_check_modules(JACK jack)
+  if (NOT JACK_FOUND)
+    message(FATAL_ERROR "can't find jack library")
+  endif(NOT JACK_FOUND)
 endif()
+
 if (ENABLE_EXPORT)
-  find_package(SNDFILE REQUIRED)
+  pkg_check_modules(SNDFILE sndfile)
+  if (NOT SNDFILE_FOUND)
+    message(FATAL_ERROR "can't find sndfile library")
+  endif(NOT SNDFILE_FOUND)
 endif()
+
 if (ENABLE_LV2)
-  find_package(LV2 REQUIRED)
+  pkg_check_modules(LV2 lv2)
+  if (NOT LV2_FOUND)
+    message(FATAL_ERROR "can't find LV2 library")
+  endif(NOT LV2_FOUND)
 endif()
 
 #add_custom_command(OUTPUT <output-file>
@@ -48,23 +61,8 @@ endif()
 #  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/<subdir>
 #  )
 
-
-#add_subdirectory(standalone);
-#add_subdirectory(lv2);
-
-
-#include(${QT_USE_FILE})
-#add_definitions( ${QT_DEFINITIONS} )
-#include_directories( ${CMAKE_BINARY_DIR} )
+#add_subdirectory(standalone)
+#add_subdirectory(lv2)
 
 
-# Next, using precompiler, compiler and linker
-
-# using Qt meta-system (precompiler)
-#QT5_ADD_RESOURCES(RES_SOURCES ${RESOURCES} )
-#QT5_WRAP_CPP(MOC_SRCS ${COMMON_CODE_HEADERS} )
-
-# compile
-#add_executable(PROJECT_NAME ${COMMON_CODE_SOURCES} ${MOC_SRCS} ${RES_SOURCES})
-#target_link_libraries(PROJECT_NAME ${QT_LIBRARIES} )
 
