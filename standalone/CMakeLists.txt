@@ -1,0 +1,1 @@
+file(GLOB GKCIK_STANDALONE_SOURCES "*.cpp")

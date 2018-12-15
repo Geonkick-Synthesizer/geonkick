@@ -1,0 +1,1 @@
+file(GLOB GKICK_LV2_SOURCES "*.cpp")
