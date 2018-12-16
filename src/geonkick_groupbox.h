@@ -24,7 +24,7 @@
 #ifndef GEOBKICK_GROUPBOX_H
 #define GEOBKICK_GROUPBOX_H
 
-#include <geonkick_widget.h>
+#include "geonkick_widget.h"
 
 class GeonkickWidget;
 class QPaintEvent;
