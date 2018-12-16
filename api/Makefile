@@ -1,8 +1,9 @@
 CC = gcc
 INCLUDES =
 CFLAGS += -O0 -g -Wall -fPIC $(DEFINES) $(INCLUDES)
-TARGET = libgeonkick.a
 SRC = src
+BUILD = .
+TARGET = libgeonkick.a
 
 OBJECTS = gkick_log.o \
           envelope.o \
@@ -20,9 +21,10 @@ OBJECTS = gkick_log.o \
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	ar -cvq $(TARGET) *.o
+	cd $(BUILD) && ar -cvq $(TARGET) *.o
+
 %.o: $(SRC)/%.c
-	$(CC) -c $(CFLAGS)$<
+	$(CC) $(CFLAGS) -c $< -o $(BUILD)/$@
 
 install:
 	cp libgeonkick.a /usr/local/lib/
@@ -33,5 +35,5 @@ uninstall:
 	rm -fr /usr/local/include/geonkick.h
 
 clean:
-	rm -rf *.o $(TARGET)
+	rm -rf *.o $(TARGET) $(OBJECTS)
 

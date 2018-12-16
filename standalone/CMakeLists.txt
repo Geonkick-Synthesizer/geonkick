@@ -10,6 +10,6 @@ target_link_libraries(geonkick
   Qt5::Core
   Qt5::Gui
   Qt5::Widgets
-  ${CMAKE_BINARY_DIR}/libgeonkick_common.a
+  geonkick_common
   ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
 
