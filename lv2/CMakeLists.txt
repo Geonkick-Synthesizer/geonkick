@@ -1,11 +1,14 @@
 set(GKICK_LV2_SOURCES ${GKICK_LV2_DIR}/geonkick_lv2.cpp)
 
-add_library(geonkick_lv2.so SHARED
-  ${GKICK_LV2_SOURCES}
-  ${CMAKE_BINARY_DIR}/geonkick_common)
+add_library(geonkick_lv2 SHARED
+  ${GKICK_COMMON_HEADERS}
+  ${GKICK_COMMON_RESOURCES}
+  ${GKICK_LV2_SOURCES})
 
-target_link_libraries(geonkick_lv2.so
+set_target_properties(geonkick_lv2 PROPERTIES LINK_FLAGS "${GKICK_API_LINK_FLAGS}")
+target_link_libraries(geonkick_lv2
   Qt5::Core
   Qt5::Gui
   Qt5::Widgets
+  ${CMAKE_BINARY_DIR}/libgeonkick_common.a
   ${CMAKE_BINARY_DIR}/api/libgeonkick_lv2.a)

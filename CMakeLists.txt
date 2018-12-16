@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.7)
 project(geonkick VERSION 1.0.0)
 
 set(CMAKE_CXX_STANDARD 14)
-
+set(CMAKE_CXX_FLAGS "-O0 -g -Wall")
 set(GKICK_API_LINK_FLAGS "-lsndfile -lrt -lpthread -lm")
 
 set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
@@ -154,9 +154,9 @@ if (ENABLE_STANDALONE)
   add_subdirectory(standalone)
 endif (ENABLE_STANDALONE)
 
-#if (ENABLE_LV2)
-#  add_subdirectory(lv2)
-#endif (ENABLE_LV2)
+if (ENABLE_LV2)
+  add_subdirectory(lv2)
+endif (ENABLE_LV2)
 
 
 
