@@ -10,5 +10,9 @@ target_link_libraries(geonkick_lv2
   Qt5::Core
   Qt5::Gui
   Qt5::Widgets
-  geonkick_common
-  ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
+  geonkick_common)
+target_link_libraries(geonkick_lv2 ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
+add_dependencies(geonkick_lv2 api_lv2)
+
+install(DIRECTORY ${GKICK_LV2_DIR}/geonkick.lv2 DESTINATION /usr/local/lib/lv2)
+install(TARGETS geonkick_lv2 DESTINATION /usr/local/lib/lv2/geonkick.lv2)

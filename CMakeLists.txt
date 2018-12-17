@@ -118,8 +118,8 @@ if (ENABLE_STANDALONE)
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api/libgeonkick.a
     COMMAND mkdir -p api
     && cd ${GKICK_API_DIR}
-    && make DEFINES="${GKICK_API_FLAGS}" BUILD="${CMAKE_BINARY_DIR}/api" TARGET="libgeonkick.a")
-  add_custom_target(api_standalone ALL DEPENDS ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
+    && $(MAKE) DEFINES="${GKICK_API_FLAGS}" BUILD="${CMAKE_BINARY_DIR}/api" TARGET="libgeonkick.a")
+  add_custom_target(api_standalone DEPENDS ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
 endif(ENABLE_STANDALONE)
 
 # Define custom target to build the geonkick api for LV2.
@@ -127,8 +127,8 @@ if (ENABLE_LV2)
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a
     COMMAND mkdir -p api_lv2
     && cd ${GKICK_API_DIR}
-    && make DEFINES="${GKICK_API_FLAGS_LV2}" BUILD="${CMAKE_BINARY_DIR}/api_lv2" TARGET="libgeonkick_lv2.a")
-  add_custom_target(api_lv2 ALL DEPENDS ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
+    && $(MAKE) DEFINES="${GKICK_API_FLAGS_LV2}" BUILD="${CMAKE_BINARY_DIR}/api_lv2" TARGET="libgeonkick_lv2.a")
+  add_custom_target(api_lv2 DEPENDS ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
 endif(ENABLE_LV2)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
