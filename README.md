@@ -69,6 +69,8 @@ Note: [i] - implemented
       * Tutorial
   - Functional manual tests
   - Build and test on: Debian, Ubuntu, Fedora and KXStudio
+* Logo design
+  - The design of logo to be used as an application icon
 
 Note: The realease of version 1.0 will not provide install packages.
       This maybe added later after the release.
