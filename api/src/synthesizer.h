@@ -1,10 +1,10 @@
 /**
- * File name: gkick_synthesizer.h
+ * File name: synthesizer.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,7 +90,7 @@ struct gkick_synth {
         /**
          * Specifies if the kick synthesis is tuned off.
          * If is 0 any updates of the synthesizer parameters
-         * will not trigger the kick synthesisys.
+         * will not trigger the kick synthesis.
          */
         int synthesis_on;
 };
@@ -386,4 +386,4 @@ gkick_synth_distortion_set_drive(struct gkick_synth *synth, gkick_real drive);
 enum geonkick_error
 gkick_synth_distortion_get_drive(struct gkick_synth *synth, gkick_real *drive);
 
-#endif // GEONKICK_SYNTHESIZER_H
+#endif // SYNTHESIZER_H

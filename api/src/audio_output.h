@@ -50,7 +50,7 @@ struct gkick_audio_output
         int is_play;
 
         /**
-         * decay - note release time in measured in number of jack frames.
+         * decay - note release time measured in number of sample frames.
          * Relaxation curve for audio is liniear:
          *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,
          *    decay from GEKICK_NOTE_RELEASE_TIME to 0;

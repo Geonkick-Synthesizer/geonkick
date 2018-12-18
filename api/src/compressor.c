@@ -114,15 +114,6 @@ gkick_compressor_val(struct gkick_compressor *compressor,
         gkick_real sign;
 
         gkick_compressor_lock(compressor);
-
-        /*        gkick_log_debug("--------");
-        gkick_log_debug("state: %d", compressor->state);
-        gkick_log_debug("frames: %d", compressor->frames);
-        gkick_log_debug("atack: %d", compressor->attack);
-        gkick_log_debug("release: %d", compressor->release);
-        gkick_log_debug("threshold: %.5f", compressor->threshold);
-        gkick_log_debug("ratio: %.5f", compressor->ratio);*/
-
         threshold = pow(10, compressor->threshold / 20);
         if (fabs(compressor->threshold) < DBL_EPSILON || compressor->ratio <= 1) {
                 gkick_compressor_unlock(compressor);
@@ -165,11 +156,7 @@ gkick_compressor_val(struct gkick_compressor *compressor,
                 *out_val = in_val;
         }
 
-
-        //if (compressor->state != GKICK_COMPRESSOR_UNACTIVE)
-        //        *out_val *= compressor->makeup;
         gkick_compressor_unlock(compressor);
-
         *out_val = sign * (*out_val);
         return GEONKICK_OK;
 }

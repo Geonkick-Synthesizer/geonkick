@@ -1,6 +1,6 @@
 /**
  * File name: gkick_audio.h
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
@@ -32,7 +32,6 @@ struct gkick_jack;
 struct gkick_audio {
         struct gkick_audio_output *audio_output;
         struct gkick_jack *jack;
-        // other audio device
 };
 
 enum geonkick_error

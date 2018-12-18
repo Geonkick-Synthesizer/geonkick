@@ -1,10 +1,10 @@
 /**
  * File name: geonkick.c
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -164,21 +164,6 @@ geonkick_osc_envelope_add_point(struct geonkick *kick,
         gkick_synth_osc_env_add_point(kick->synth, osc_index,
                                       env_index, x, y);
         return GEONKICK_OK;
-}
-
-enum geonkick_error
-geonkick_update_envelope_point(struct geonkick *kick,
-			       enum geonkick_envelope_type type,
-			       size_t index,
-			       gkick_real x,
-			       gkick_real y)
-{
-        if (kick == NULL) {
-                return GEONKICK_ERROR;
-        }
-
-        return GEONKICK_OK;
-
 }
 
 enum geonkick_error
@@ -645,7 +630,6 @@ geonkick_set_osc_filter_cutoff_freq(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        gkick_log_debug("freq: %f", cutoff);
         return gkick_synth_set_osc_filter_cutoff(kick->synth, osc_index, cutoff);
 }
 
@@ -672,7 +656,6 @@ geonkick_set_osc_filter_factor(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        gkick_log_debug("factor: %f", factor);
         return gkick_synth_set_osc_filter_factor(kick->synth, osc_index, factor);
 }
 
@@ -723,7 +706,6 @@ geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate)
         }
 
         *sample_rate = GEONKICK_SAMPLE_RATE;
-
         return GEONKICK_OK;
 }
 

@@ -1,10 +1,10 @@
 /**
  * File name: envelope.c
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -176,7 +176,6 @@ gkick_envelope_get_points(struct gkick_envelope *env,
         size_t i;
 
         if (buff == NULL) {
-                gkick_log_error("buff null");
                 return;
         }
 

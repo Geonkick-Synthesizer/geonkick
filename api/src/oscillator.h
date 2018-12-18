@@ -39,8 +39,7 @@ enum geonkick_osc_state {
 struct gkick_oscillator {
         enum geonkick_osc_state state;
 	enum geonkick_osc_func_type func;
-        /* Used from Brownian noise */
-        gkick_real brownian;
+        gkick_real brownian; /* Used for Brownian noise */
 	gkick_real phase;
 	gkick_real sample_rate;
 	gkick_real frequency;
@@ -103,4 +102,4 @@ void gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
                                    const gkick_real *buff,
                                    size_t npoints);
 
-#endif
+#endif // GKICK_OSCILLATOR_H

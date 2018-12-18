@@ -1,5 +1,5 @@
 /**
- * File name: gkick_synthesizer.c
+ * File name: synthesizer.c
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)

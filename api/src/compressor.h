@@ -67,7 +67,8 @@ void gkick_compressor_lock(struct gkick_compressor *compressor);
 void gkick_compressor_unlock(struct gkick_compressor *compressor);
 
 enum geonkick_error
-gkick_compressor_set_state(struct gkick_compressor *compressor, enum gkick_compressor_state state);
+gkick_compressor_set_state(struct gkick_compressor *compressor,
+                           enum gkick_compressor_state state);
 
 enum geonkick_error
 gkick_compressor_enable(struct gkick_compressor *compressor, int enable);

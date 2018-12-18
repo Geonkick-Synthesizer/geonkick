@@ -1,5 +1,5 @@
 /**
- * File name: gkick_audio_output.c
+ * File name: audio_output.c
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)

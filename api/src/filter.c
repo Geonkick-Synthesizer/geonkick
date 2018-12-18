@@ -202,7 +202,6 @@ gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor)
         return GEONKICK_OK;
 }
 
-
 /**
  * gkick_filter_val function
  *
