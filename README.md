@@ -71,4 +71,4 @@ Note: [i] - implemented
   - Build and test on: Debian, Ubuntu, Fedora and KXStudio
 
 Note: The realease of version 1.0 will not provide install packages.
-      This maybe addeed later after the release.
+      This maybe added later after the release.
