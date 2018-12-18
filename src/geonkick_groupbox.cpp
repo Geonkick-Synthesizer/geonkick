@@ -69,6 +69,7 @@ GeonkickWidget* GeonkickGroupBox::addWidget(GeonkickWidget *widget, Qt::Alignmen
 {
         groupBoxLayout->addWidget(widget);
         setWidgetAlignment(widget, alignment);
+        return widget;
 }
 
 void GeonkickGroupBox::setPadding(int left, int top, int right, int buttom)

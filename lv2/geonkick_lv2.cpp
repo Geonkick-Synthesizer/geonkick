@@ -279,7 +279,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         }
 
         const LV2_Feature *feature;
-        while (feature = *features) {
+        while ((feature = *features)) {
                 if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
                         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
                         mainWindow = new MainWindow(geonkickLv2PLugin->getApi());
@@ -348,7 +348,7 @@ static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
         }
 
         const LV2_Feature *feature;
-        while (feature = *features) {
+        while ((feature = *features)) {
                 if (QByteArray(feature->URI) == QByteArray(LV2_URID__map)) {
                         auto uridMap = static_cast<LV2_URID_Map*>(feature->data);
                         if (uridMap && uridMap->map && uridMap->handle) {
@@ -435,14 +435,15 @@ gkick_state_restore(LV2_Handle                  instance,
                     const LV2_Feature* const*   features)
 {
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
-        if (geonkickLv2PLugin){
+        if (geonkickLv2PLugin) {
                 size_t size   = 0;
                 LV2_URID type = 0;
                 const char *data = (const char*)retrieve(handle, geonkickLv2PLugin->getStateId(),
-                                            &size, &type, &flags);
+                                                         &size, &type, &flags);
                 if (data && size > 0)
                         geonkickLv2PLugin->setStateData(QByteArray(data, size), flags);
         }
+        return LV2_STATE_SUCCESS;
 }
 
 static const void* gkick_extention_data(const char* uri)
@@ -451,7 +452,7 @@ static const void* gkick_extention_data(const char* uri)
         if (QByteArray(uri) == QByteArray(LV2_STATE__interface)) {
                 return &state;
         }
-        return NULL;
+        return nullptr;
 }
 
 static const LV2_Descriptor gkick_descriptor = {
@@ -470,7 +471,7 @@ const LV2_Descriptor* lv2_descriptor(uint32_t index)
 	switch (index)
         {
 	case 0:  return &gkick_descriptor;
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 

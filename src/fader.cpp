@@ -88,7 +88,7 @@ void Fader::resizeEvent(QResizeEvent *event)
 
 int Fader::getFaderLevel(void) const
 {
-        faderSlider->getValue();
+        return faderSlider->getValue();
 }
 
 int Fader::getChannelLevel(int channel) const
@@ -131,7 +131,7 @@ void Fader::setChannelLevel(int channel, int level)
 void Fader::updateFader()
 {
         double val = geonkickApi->limiterValue();
-        int level;
+        int level = logValToLevel(20 * log10(val));
         setFaderLevel(level);
 }
 

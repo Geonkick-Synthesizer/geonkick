@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
                 GEONKICK_LOG_ERROR("can't init API");
                 exit(1);
         }
-        GEONKICK_LOG_INFO("here");
 
         MainWindow window(api.get());
         if (!window.init()) {

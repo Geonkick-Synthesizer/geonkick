@@ -42,12 +42,14 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
             squareButton(nullptr),
             triangleButton(nullptr),
             sawtoothButton(nullptr),
-            filterTypeIsChecked(false),
+            noiseWhiteButton(nullptr),
+            noiseBrownianButton(nullptr),
             filterType(nullptr),
             kickQFactorKnob(nullptr),
             kickFrequencyKnob(nullptr),
             envelopeAmplitudeKnob(nullptr),
-            frequencyAmplitudeKnob(nullptr)
+            frequencyAmplitudeKnob(nullptr),
+            filterTypeIsChecked(false)
 {
         oscillatorCheckbox = new GeonkickCheckbox(this);
         connect(oscillatorCheckbox, SIGNAL(stateUpdated(bool)), osc, SLOT(enable(bool)));

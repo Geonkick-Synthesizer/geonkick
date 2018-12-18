@@ -42,7 +42,6 @@ void GeonkickSlider::paintWidget(QPaintEvent *event)
 {
         Q_UNUSED(event)
         QPainter painter(this);
-        int padding = 1;
         painter.setPen(QPen(QColor(40, 40, 40)));
         painter.drawRect(0, 0, width() - 1, height() - 1);
         if (sliderOrientation == Orientation::Horizontal) {

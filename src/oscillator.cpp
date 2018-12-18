@@ -163,5 +163,5 @@ bool Oscillator::isEnabled()
 
 double Oscillator::envelopeLength()
 {
-        geonkickApi->kickLength();
+        return geonkickApi->kickLength();
 }
