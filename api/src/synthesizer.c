@@ -1047,25 +1047,26 @@ void *gkick_synth_run(void *arg)
         gkick_log_info("synth thread routine started");
 
         while (1) {
-                if (!gkick_synth_is_running(synth)) {
+	        gkick_synth_lock(synth);
+		if (!synth->is_running) {
+		        gkick_synth_unlock(synth);
                         break;
-                } else if (!gkick_synth_is_update_buffer(synth)) {
-                        gkick_synth_lock(synth);
-                        pthread_cond_wait(&synth->condition_var, &synth->lock);
-                        synth->buffer_update = 0;
-                        gkick_synth_reset_oscillators(synth);
-                        gkick_compressor_set_state(synth->compressor, GKICK_COMPRESSOR_DEACTIVATED);
-                        gkick_synth_unlock(synth);
-                        if (!gkick_synth_is_running(synth)) {
-                                break;
-                        }
+		} else if (!synth->buffer_update) {
+		        pthread_cond_wait(&synth->condition_var, &synth->lock);
                 }
 
+		synth->buffer_update = 0;
+		gkick_synth_reset_oscillators(synth);
+		gkick_compressor_set_state(synth->compressor, GKICK_COMPRESSOR_DEACTIVATED);
+		gkick_synth_unlock(synth);
+
                 /**
-                 * Lock happens for every cycle in order not to block
-                 * for a long time the access to synth parameters.
-                 * The synth parmaters is supposed to change even
+                 * The lock happens for every cycle in order not to block
+                 * for a long time the access to the synth parameters.
+                 * The synth parmaters are supposed to change even
                  * during the synthesis of the kick.
+                 * The last update of the parameters will trigger a full
+                 * synthesis of the kick.
                  */
                 i = 0;
                 while (1) {
@@ -1087,7 +1088,6 @@ void *gkick_synth_run(void *arg)
                 if (!gkick_buffer_set_data(synth->output, synth->buffer, synth->buffer_size)) {
                         gkick_log_warning("can't copy buffer to audio");
                 }
-                synth->buffer_update = 0;
                 if (synth->buffer_callback != NULL && synth->callback_args != NULL) {
                         synth->buffer_callback(synth->callback_args);
                 }
