@@ -81,7 +81,7 @@ option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 
 # Enables the double precision calculation for API.
 # By default is single point precision.
-option(ENABLE_DOUIBLE_PRECISION "Enable double precision for API" OFF)
+option(ENABLE_DOUBLE_PRECISION "Enable double precision for API" OFF)
 
 if (ENABLE_LOGGING)
   set(DEFAULT_LOG_LEVEL "GEONKICK_LOG_LEVEL_DEBUG")
