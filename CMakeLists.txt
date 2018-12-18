@@ -156,7 +156,3 @@ if (ENABLE_LV2)
   add_subdirectory(lv2)
 endif (ENABLE_LV2)
 
-
-
-
-

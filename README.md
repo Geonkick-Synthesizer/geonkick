@@ -12,15 +12,15 @@ Author: Iurie Nistor
 
 Home page: http://geontime.com
 
-![Screenshot](misc/Screenshot.png)
-
 Status: Active development. No release yet.
 
-The first release will be Version 1.0. There will not be any beta versions.
+![Screenshot](misc/Screenshot.png)
+
+The first release will be version 1.0. There will not be any beta versions.
 The application will be released only until all the points below are
 finished, including documentation.
 
-What Version 1.0 should include:
+What version 1.0 should include:
 
 Note: [i] - implemented
 
@@ -60,9 +60,15 @@ Note: [i] - implemented
 * Platforms:
      - GNU/Linux [i]
 * Deploy:
-  - GPLv2 source code with CMake build system
-* Documentation
-  - How to build and install from source
-  - Some technical insights of how the synthesizer is working and is built
-  - User guide
-  - FAQ
+  - GPLv2 source code with CMake build system [i]
+  - Documentation
+      - How to build and install from source
+      - Some technical insights of how the synthesizer is working and is built
+      * User guide
+      * FAQ
+      * Tutorial
+  - Functional manual tests
+  - Build and test on: Debian, Ubuntu, Fedora and KXStudio
+
+Note: The realease of version 1.0 will not provide install packages.
+      This maybe addeed later after the release.
