@@ -259,12 +259,10 @@ bool Envelope::hasSelected(void) const
 
 void Envelope::selectPoint(const QPoint &point)
 {
-        GEONKICK_DEBUG_POINT(point);
         std::vector<QPointF>::size_type index = 0;
 	for (const auto& p : envelopePoints) {
 		if (hasPoint(p, point)) {
                         selectedPointIndex = index;
-                        GEONKICK_LOG_DEBUG("selected : " << selectedPointIndex);
                         pointSelected = true;
 			break;
 		}
@@ -342,9 +340,7 @@ void Envelope::setPoints(const QPolygonF &points)
 
 void Envelope::addPoint(const QPoint &point)
 {
-        GEONKICK_DEBUG_POINT(point);
         auto scaledPoint = scaleDown(point);
-        GEONKICK_DEBUG_POINT(scaledPoint);
         if (scaledPoint.y() < 0) {
                 scaledPoint.setY(0);
         }  else if (scaledPoint.y() > 1) {

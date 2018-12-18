@@ -264,7 +264,6 @@ private:
  * Creates and shows an instance of Geonkick GUI that takes
  * the geonkick API instance as a pointer.
  */
-
 static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                                          const char*               plugin_uri,
                                          const char*               bundle_path,

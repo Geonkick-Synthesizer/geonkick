@@ -1,10 +1,10 @@
 /**
  * File name: top_bar.h
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

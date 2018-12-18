@@ -4,7 +4,6 @@
 <file>checkbox_checked.png</file>
 <file>checkbox_unchecked_10x10.png</file>
 <file>checkbox_unchecked.png</file>
-<file>close_button.png</file>
 <file>compressor_attack_label.png</file>
 <file>compressor_goupbox_bk.png</file>
 <file>compressor_groupbox_label.png</file>
@@ -19,7 +18,6 @@
 <file>distortion_groupbox_label.png</file>
 <file>distortion_volume_label.png</file>
 <file>effects_groupbox_label.png</file>
-<file>envelope_bk.png</file>
 <file>export_active.png</file>
 <file>export_browse.png</file>
 <file>export_cancel.png</file>

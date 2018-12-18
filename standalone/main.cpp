@@ -1,10 +1,10 @@
 /**
  * File name: main.cpp
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
         MainWindow window(api.get());
         if (!window.init()) {
-                qDebug() << "can't init main window";
+                GEONKICK_LOG_ERROR("can't init main window");
                 exit(1);
         }
 

@@ -1,10 +1,10 @@
 /**
  * File name: geonkick_widget.cpp
- * Project: GeonKick (A kick synthesizer)
+ * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
- * This file is part of GeonKick.
+ * This file is part of Geonkick.
  *
  * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
         : QWidget(parent)
 {
-        // Later will get this info settings from the theme/skin.
+        // Later this kind of settings will be taken from from theme/skin.
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
         pal.setColor(QPalette::WindowText, Qt::white);
@@ -65,4 +65,3 @@ void GeonkickWidget::setBackgroundImage(const QPixmap &pixmap)
                 update();
         }
 }
-

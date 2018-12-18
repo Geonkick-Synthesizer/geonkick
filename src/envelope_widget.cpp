@@ -35,7 +35,9 @@
 #include <QPushButton>
 #include <QLabel>
 
-EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::vector<Oscillator*> &oscillators)
+EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
+                               GeonkickApi *api,
+                               std::vector<Oscillator*> &oscillators)
           : GeonkickWidget(parent),
           drawArea(nullptr),
           showAmplitudeEnvButton(nullptr),

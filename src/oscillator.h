@@ -82,4 +82,4 @@ class Oscillator: public QObject
           FilterType filterType;
 };
 
-#endif
+#endif // GEONKICK_OSCILLATOR_H
