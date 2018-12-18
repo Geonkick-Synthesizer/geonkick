@@ -72,16 +72,16 @@ set(GKICK_COMMON_SOURCES
 
 set(GKICK_COMMON_RESOURCES ${GKICK_COMMON_DIR}/resources/resources.qrc)
 
-# Disabling standalone build there also will no more be need to install jack dependence.
-option(ENABLE_STANDALONE "Enbale build for standalone application" ON)
-# Disabling LV2 plugin build there also will not be nedded to install LV2 library dependence.
-option(ENABLE_LV2 "Enbale build for LV2 plugin" ON)
+# Disabling standalone build there also will no more be need to install jack dependency.
+option(ENABLE_STANDALONE "Enable build for standalone application" ON)
+# Disabling LV2 plugin build there also will not be needed to install LV2 library dependency.
+option(ENABLE_LV2 "Enable build for LV2 plugin" ON)
 
-option(ENABLE_LOGGING    "Enbale logigng for API and GUI" ON)
+option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 
 # Enables the double precision calculation for API.
 # By default is single point precision.
-option(ENABLE_DOUIBLE_PRECISION "Enbale double precision for API" OFF)
+option(ENABLE_DOUBLE_PRECISION "Enable double precision for API" OFF)
 
 if (ENABLE_LOGGING)
   set(DEFAULT_LOG_LEVEL "GEONKICK_LOG_LEVEL_DEBUG")
