@@ -5,11 +5,13 @@ project(geonkick VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-O0 -g -Wall")
 set(GKICK_API_LINK_FLAGS "-lsndfile -lrt -lpthread -lm")
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
 set(GKICK_LV2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lv2)
+set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 
 set(GKICK_API_FLAGS "")
 set(GKICK_API_FLAGS_LV2 "")
@@ -161,3 +163,4 @@ if (ENABLE_LV2)
   add_subdirectory(lv2)
 endif (ENABLE_LV2)
 
+add_subdirectory(data)

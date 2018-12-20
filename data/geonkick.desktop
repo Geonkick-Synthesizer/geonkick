@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Geonkick
+GenericName=Kick Drum Synthesizer
+Comment=Synthesizes elements of percussion
+Icon=geonkick
+Type=Application
+Categories=AudioVideo;Audio;AudioVideoEditing;
+Exec=env UBUNTU_MENUPROXY=0 geonkick %F
+Terminal=false
+StartupNotify=false
+MimeType=application/x-geonkick-preset;

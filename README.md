@@ -14,7 +14,7 @@ Home page: http://geontime.com
 
 Status: Active development. No release yet.
 
-![Screenshot](misc/Screenshot.png)
+![Screenshot](data/screenshot.png)
 
 The first release will be version 1.0. There will not be any beta versions.
 The application will be released only until all the points below are
