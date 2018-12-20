@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
+<file>app_icon.png</file>
 <file>checkbox_checked_10x10.png</file>
 <file>checkbox_checked.png</file>
 <file>checkbox_unchecked_10x10.png</file>

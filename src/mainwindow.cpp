@@ -51,8 +51,10 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
         GeonkickWidget(parent),
         geonkickApi(api)
 {
+        setWindowTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
         setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
+        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 
 MainWindow::~MainWindow()
