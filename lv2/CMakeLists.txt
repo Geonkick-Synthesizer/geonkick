@@ -5,13 +5,13 @@ add_library(geonkick_lv2 SHARED
   ${GKICK_COMMON_RESOURCES}
   ${GKICK_LV2_SOURCES})
 
-set_target_properties(geonkick_lv2 PROPERTIES LINK_FLAGS "${GKICK_API_LINK_FLAGS}")
 target_link_libraries(geonkick_lv2
   Qt5::Core
   Qt5::Gui
   Qt5::Widgets
   geonkick_common)
 target_link_libraries(geonkick_lv2 ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
+target_link_libraries(geonkick_lv2 "-lsndfile -lrt -lm -ldl -lpthread")
 add_dependencies(geonkick_lv2 api_lv2)
 
 install(DIRECTORY ${GKICK_LV2_DIR}/geonkick.lv2 DESTINATION /usr/local/lib/lv2)

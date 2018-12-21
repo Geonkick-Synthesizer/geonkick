@@ -6,13 +6,13 @@ add_executable(geonkick
   ${GKICK_STANDALONE_SOURCES})
 
 add_dependencies(geonkick api_standalone)
-set_target_properties(geonkick PROPERTIES LINK_FLAGS "-ljack ${GKICK_API_LINK_FLAGS}")
 target_link_libraries(geonkick
   Qt5::Core
   Qt5::Gui
   Qt5::Widgets
   geonkick_common)
 target_link_libraries(geonkick ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
+target_link_libraries(geonkick "-ljack -lsndfile -lrt -lm -ldl -lpthread")
 
 install(TARGETS geonkick DESTINATION /usr/local/bin)
 
