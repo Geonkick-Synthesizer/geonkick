@@ -6,16 +6,15 @@ Details: Geonkick is a synthesizer that can synthesize elements
 	 of percussion. The most basic examples are: kick drums,
 	 snares, hit-hats, shakers, claps, steaks.
 
-         The synthesizer can run as a standalone application and as
-         a LV2 plugin. Standalone requires Jack server.
-
 License: GPLv3
 
 Author: Iurie Nistor
 
 Home page: http://geontime.com
 
-Status: Active development. No release yet.
+The synthesizer runs as a standalone application and requires Jack server.
+
+    Status: Active development. No release yet. Don't try this at home!
 
 ![Screenshot](data/screenshot.png)
 
@@ -58,22 +57,20 @@ Note: [i] - implemented
 * Save preset in JSON format [i]
 * Open preset from JSON format [i]
 * Standalone [i]
-* Plugin
-     - LV2 [i]
 * Platforms:
      - GNU/Linux [i]
 * Deploy:
-  - GPLv2 source code with CMake build system [i]
+  - GPLv3 source code with CMake build system [i]
   - Documentation
       - How to build and install from source
       - Some technical insights of how the synthesizer is working and is built
       * User guide
       * FAQ
       * Tutorial
-  - Functional manual tests
-  - Build and test on: Debian, Ubuntu, Fedora and KXStudio
+  - Testing on Debian, Ubuntu, Fedora, KXStudio and AV Linux
 * Logo design
   - Logo design to be used as an application icon [i]
 
-Note: The realease of version 1.0 will not provide install packages.
-      This maybe added later after the release.
+Note: The release of version 1.0 will not provide install packages.
+      This maybe added later after the release or if someone is
+      willing to create one to add it here.
