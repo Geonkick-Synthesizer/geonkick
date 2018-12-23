@@ -59,8 +59,10 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+#ifdef GEONKICK_LV2_PLUGIN
         if (geonkickApi)
                 geonkickApi->registerCallbacks(false);
+#endif
 }
 
 bool MainWindow::init(void)

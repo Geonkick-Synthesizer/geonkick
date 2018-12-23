@@ -9,9 +9,11 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
+set(GKICK_LV2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lv2)
 set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 
 set(GKICK_API_FLAGS "")
+set(GKICK_API_FLAGS_LV2 "")
 
 set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/geonkick_widget.h
@@ -71,6 +73,11 @@ set(GKICK_COMMON_SOURCES
 
 set(GKICK_COMMON_RESOURCES ${GKICK_COMMON_DIR}/resources/resources.qrc)
 
+# Disabling standalone build there also will no more be need to install jack dependency.
+option(ENABLE_STANDALONE "Enable build for standalone application" ON)
+# Disabling LV2 plugin build there also will not be needed to install LV2 library dependency.
+option(ENABLE_LV2 "Enable build for LV2 plugin" ON)
+
 option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 
 # Enables the double precision calculation for API.
@@ -79,11 +86,13 @@ option(ENABLE_DOUBLE_PRECISION "Enable double precision for API" OFF)
 
 if (ENABLE_DOUBLE_PRECISION)
   list(APPEND GKICK_API_FLAGS "-DGEONKICK_DOUBLE_PRECISION")
+  list(APPEND GKICK_API_FLAGS_LV2 "-DGEONKICK_DOUBLE_PRECISION")
 endif()
 
 if (ENABLE_LOGGING)
   set(DEFAULT_LOG_LEVEL "GEONKICK_LOG_LEVEL_DEBUG")
   list(APPEND GKICK_API_FLAGS "-D${DEFAULT_LOG_LEVEL} -DGKICK_LIB_LOG_FUNCTION")
+  list(APPEND GKICK_API_FLAGS_LV2 "-D${DEFAULT_LOG_LEVEL} -DGKICK_LIB_LOG_FUNCTION")
 endif()
 
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
@@ -93,19 +102,40 @@ if (NOT SNDFILE_FOUND)
     message(FATAL_ERROR "can't find sndfile library")
 endif(NOT SNDFILE_FOUND)
 
-pkg_check_modules(JACK jack)
+if (ENABLE_STANDALONE)
+  pkg_check_modules(JACK jack)
   if (NOT JACK_FOUND)
     message(FATAL_ERROR "can't find jack library")
   endif(NOT JACK_FOUND)
-list(APPEND GKICK_API_FLAGS "-DGEONKICK_AUDIO_JACK")
+  list(APPEND GKICK_API_FLAGS "-DGEONKICK_AUDIO_JACK")
+endif()
+
+if (ENABLE_LV2)
+  pkg_check_modules(LV2 lv2)
+  if (NOT LV2_FOUND)
+    message(FATAL_ERROR "can't find LV2 library")
+  endif(NOT LV2_FOUND)
+endif(ENABLE_LV2)
 
 include_directories(${GKICK_API_DIR}/src)
 
-add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api/libgeonkick.a
+# Define custom target to build the geonkick api for standalone.
+if (ENABLE_STANDALONE)
+  add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api/libgeonkick.a
     COMMAND mkdir -p api
     && cd ${GKICK_API_DIR}
     && $(MAKE) DEFINES="${GKICK_API_FLAGS}" BUILD="${CMAKE_BINARY_DIR}/api" TARGET="libgeonkick.a")
-add_custom_target(api_standalone DEPENDS ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
+  add_custom_target(api_standalone DEPENDS ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
+endif(ENABLE_STANDALONE)
+
+# Define custom target to build the geonkick api for LV2.
+if (ENABLE_LV2)
+  add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a
+    COMMAND mkdir -p api_lv2
+    && cd ${GKICK_API_DIR}
+    && $(MAKE) DEFINES="${GKICK_API_FLAGS_LV2}" BUILD="${CMAKE_BINARY_DIR}/api_lv2" TARGET="libgeonkick_lv2.a")
+  add_custom_target(api_lv2 DEPENDS ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
+endif(ENABLE_LV2)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -124,5 +154,12 @@ add_library(geonkick_common STATIC
   ${GKICK_COMMON_HEADERS}
   ${GKICK_COMMON_SOURCES})
 
-add_subdirectory(standalone)
+if (ENABLE_STANDALONE)
+  add_subdirectory(standalone)
+endif (ENABLE_STANDALONE)
+
+if (ENABLE_LV2)
+  add_subdirectory(lv2)
+endif (ENABLE_LV2)
+
 add_subdirectory(data)
