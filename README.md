@@ -59,10 +59,11 @@ Note: [i] - implemented
 * Open preset from JSON format [i]
 * Standalone [i]
 * Plugin
-     - LV2 [i]
+     - LV2 [i] - works only with hosts that provide Qt5.
+                 It works in Ardour but there is a need to compile
+                 Ardour with libsuil 0.1.x.
 * Platforms:
-     - GNU/Linux [i] - works only with hosts that provide Qt5(libsuil 1.x).
-                       It works in Ardour, but you'll need to compile Ardour with libsuil 1.x.
+     - GNU/Linux [i]
 * Deploy:
   - GPLv2 source code with CMake build system [i]
   - Documentation
