@@ -61,7 +61,8 @@ Note: [i] - implemented
 * Plugin
      - LV2 [i]
 * Platforms:
-     - GNU/Linux [i]
+     - GNU/Linux [i] - works only with hosts that provide Qt5(libsuil 1.x).
+                       It works in Ardour, but you'll need to compile Ardour with libsuil 1.x.
 * Deploy:
   - GPLv2 source code with CMake build system [i]
   - Documentation
