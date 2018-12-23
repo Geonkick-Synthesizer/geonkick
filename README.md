@@ -26,18 +26,18 @@ finished, including documentation.
 #### Features
 
 * Two oscillators
-     - sine, squre, triangle, sawtooth
+     - sine, square, triangle, saw-tooth
      - amplitude & frequency envelope
-     - low & hight pass filter
+     - low & high pass filter
 * Noise:
-     - white & browninan
+     - white & brownian
      - amplitude envelope
-     - low & hight pass filter
+     - low & high pass filter
 * General
      - amplitude envelope & kick length
-     - low & hight pass filter
+     - low & high pass filter
      - limiter
-     - compression - still in developemnt
+     - compression - still in development
      - distortion
 * Jack support:
      - 1 MIDI in, key velocity sensitive
@@ -57,32 +57,36 @@ finished, including documentation.
   - GPLv2 source code with CMake build system
 
 * Documentation
-      - How to build and install from source
-      - Some technical insights of how the synthesizer is working and is built
-      * User guide
-      * FAQ
-      * Tutorial
-- Functional manual tests
-- Build and test on: Debian, Ubuntu, Fedora and KXStudio, AV Linux
+    - How to build and install from source
+    - Some technical insights of how the synthesizer is working and is built
+    - User guide
+    - FAQ
+    - Tutorial
+* Testsing
+    - Build and test on Debian, Ubuntu, Fedora, KXStudio and AV Linux
+    - Test the LV2 plugin on listed distros in Ardour and QTractor, MusE
 * Logo design
   - Logo design to be used as an application icon
 
-Note: The realease version 1.0 will not provide install packages.
+Note: The release version 1.0 will not provide install packages.
       This will be added later after the release.
 
 #### Tests
 
-
 ##### Standalone
 
-* Debian 9.x  OK
-    - All depencecies were installed from repository. Build and running works.
-* Ubuntu 18.10 OK
-    - All depencecies were installed from repository. Build and running works.
+* Debian 9.x/64bit  [works]
+    - All dependences were installed from repository. Build and running works.
+* Ubuntu 18.10/64bit [works]
+    - All dependences were installed from repository. Build and running works.
+* Fedora 29 / 64 bit [works]
+    - All dependences were installed from repository. Build and running works.
 
 ##### LV2 Plugin
 
 * Debian 9.x
-    - Works in Ardour 5.12 built with Suil 0.10.x and Lilv that supports state change.
-    - Works in QTracktor 0.9.3 built from source. The state of the plugin is not saved comparing to Ardour.
-
+    - Ardour 5.12 (built from source with Suil 0.10.x and Lilv that supports state change)
+       - works
+    - QTractor 0.9.3 (built from source Suil 0.10.x and Lilv that supports state change)
+        - works
+        - isses: the state is not saved
