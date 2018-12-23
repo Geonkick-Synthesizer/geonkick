@@ -28,6 +28,7 @@
 #include <vector>
 #include <QPolygonF>
 #include <QObject>
+#include <QTimer>
 
 #include "geonkick.h"
 
@@ -161,12 +162,18 @@ protected:
   static void kickUpdatedCallback(void *arg);
   static void limiterCallback(void *arg, gkick_real val);
   void emitKickUpdated();
-  void emitCurrentPlayingFrameVal(double val);
   void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
   void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
+  void setLimiterVal(double val);
+
+protected slots:
+        void limiterTimeout();
 
 private:
   struct geonkick *geonkickApi;
+  QTimer limiterTimer;
+  std::atomic<bool> updateLimiterLeveler;
+  std::atomic<double> limiterLevelerVal;
 };
 
 #endif // GEONKICK_API_H

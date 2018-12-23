@@ -119,6 +119,7 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
         if (audio_output->limiter_callback != NULL
             && audio_output->limiter_callback_arg != NULL
             && audio_output->key_state == GKICK_KEY_STATE_PRESSED) {
+                /* Callback is atomic. It set the value and returns. */
                 audio_output->limiter_callback(audio_output->limiter_callback_arg, *val);
         }
         gkick_audio_output_unlock(audio_output);

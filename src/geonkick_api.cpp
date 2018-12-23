@@ -31,8 +31,12 @@
 
 GeonkickApi::GeonkickApi(QObject *parent) :
         QObject(parent),
-        geonkickApi(nullptr)
+        geonkickApi(nullptr),
+        updateLimiterLeveler(false),
+        limiterLevelerVal(0)
 {
+        connect(&limiterTimer, SIGNAL(timeout()), SLOT(limiterTimeout()));
+        limiterTimer.start(50);
 }
 
 GeonkickApi::~GeonkickApi()
@@ -567,12 +571,14 @@ void GeonkickApi::limiterCallback(void *arg, gkick_real val)
 {
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
-                obj->emitCurrentPlayingFrameVal(val);
+                obj->setLimiterVal(val);
 }
 
-void GeonkickApi::emitCurrentPlayingFrameVal(double val)
+void GeonkickApi::setLimiterVal(double val)
 {
-        emit currentPlayingFrameVal(val);
+        // Atomic operations only.
+        limiterLevelerVal = val;
+        updateLimiterLeveler = true;
 }
 
 void GeonkickApi::emitKickUpdated()
@@ -730,5 +736,13 @@ void GeonkickApi::registerCallbacks(bool b)
         } else {
                 geonkick_set_kick_buffer_callback(geonkickApi, NULL, NULL);
                 geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
+        }
+}
+
+void GeonkickApi::limiterTimeout()
+{
+        if (updateLimiterLeveler) {
+                updateLimiterLeveler = false;
+                emit currentPlayingFrameVal(limiterLevelerVal);
         }
 }

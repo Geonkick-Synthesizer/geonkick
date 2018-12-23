@@ -42,6 +42,7 @@ struct gkick_audio_output
 
         pthread_mutex_t lock;
         gkick_real limiter;
+        /* Callback must make only short atomic operations, no blocking. */
         void (*limiter_callback) (void*, gkick_real val);
         void *limiter_callback_arg;
         size_t buffer_index;
