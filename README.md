@@ -61,7 +61,7 @@ Note: [i] - implemented
 * Plugin
      - LV2 [i] - works only with hosts that provide Qt5 for LV2.
                  It works in Ardour but there is a need to compile
-                 Ardour with libsuil 0.1.x.
+                 Ardour with libsuil 0.10.x.
                  In order also to support notify host on parmeters change
                  there is a need to compile Ardour against
                  the lastest changes of Lilv library that implements
