@@ -57,11 +57,17 @@ Note: [i] - implemented
      - FLAC 16, 24 bit [i]
 * Save preset in JSON format [i]
 * Open preset from JSON format [i]
-* Standalone [i]
+* Standalone [i] - tested on Ubuntu and Debian and it works.
 * Plugin
-     - LV2 [i] - works only with hosts that provide Qt5.
+     - LV2 [i] - works only with hosts that provide Qt5 for LV2.
                  It works in Ardour but there is a need to compile
                  Ardour with libsuil 0.10.x.
+                 In order also to support notify host on parmeters change
+                 there is a need to compile Ardour against
+                 the lastest changes of Lilv library that implements
+                 StateChanged. Otherwise there is a need manually to trigger
+                 the change in order to save the state or change something
+                 in the track that triggres changes.
 * Platforms:
      - GNU/Linux [i]
 * Deploy:
