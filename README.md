@@ -23,65 +23,66 @@ The first release will be version 1.0. There will not be any beta versions.
 The application will be released only until all the points below are
 finished, including documentation.
 
-What version 1.0 should include:
+#### Features
 
-Note: [i] - implemented
-
-* Two oscillators:
-     - sine [i]
-     - square [i]
-     - triangle [i]
-     - sawtooth [i]
-     - amplitude envelope [i]
-     - frequency envelope [i]
-     - low & hight pass filter [i]
+* Two oscillators
+     - sine, squre, triangle, sawtooth
+     - amplitude & frequency envelope
+     - low & hight pass filter
 * Noise:
-     - white [i]
-     - browninan [i]
-     - amplitude envelope [i]
-     - low & hight pass filter [i]
-* Kick
-     - amplitude envelope [i]
-     - low & hight pass filter [i]
-     - kick length [i]
-     - kick limiter [i]
-     - compression
-     - distortion [i]
+     - white & browninan
+     - amplitude envelope
+     - low & hight pass filter
+* General
+     - amplitude envelope & kick length
+     - low & hight pass filter
+     - limiter
+     - compression - still in developemnt
+     - distortion
 * Jack support:
-     - 1 MIDI in (key velocity sensitive) [i]
-     - 2 audio out [i]
-* Export to WAVE [i]
-     - stereo [i]
-     - mono [i]
-     - WAV 16, 24, 32 bit [i]
-     - FLAC 16, 24 bit [i]
-* Save preset in JSON format [i]
-* Open preset from JSON format [i]
-* Standalone [i] - tested on Ubuntu and Debian and it works.
+     - 1 MIDI in, key velocity sensitive
+     - 2 audio out
+* Export
+     - stereo & mono
+     - WAV: 16, 24, 32 bit
+     - FLAC: 16, 24 bit
+     - Ogg Vorbis
+* Open & Save preset in JSON format
+* Standalone
 * Plugin
-     - LV2 [i] - works only with hosts that provide Qt5 for LV2.
-                 It works in Ardour but there is a need to compile
-                 Ardour with libsuil 0.1.x.
-                 In order also to support notify host on parmeters change
-                 there is a need to compile Ardour against
-                 the lastest changes of Lilv library that implements
-                 StateChanged. Otherwise there is a need manually to trigger
-                 the change in order to save the state or change something
-                 in the track that triggres changes.
+     - LV2
 * Platforms:
-     - GNU/Linux [i]
-* Deploy:
-  - GPLv2 source code with CMake build system [i]
-  - Documentation
+  - GNU/Linux
+* Build system:
+  - GPLv2 source code with CMake build system
+
+* Documentation
       - How to build and install from source
       - Some technical insights of how the synthesizer is working and is built
       * User guide
       * FAQ
       * Tutorial
-  - Functional manual tests
-  - Build and test on: Debian, Ubuntu, Fedora and KXStudio
+- Functional manual tests
+- Build and test on: Debian, Ubuntu, Fedora and KXStudio, AV Linux
 * Logo design
-  - Logo design to be used as an application icon [i]
+  - Logo design to be used as an application icon
 
-Note: The realease of version 1.0 will not provide install packages.
-      This maybe added later after the release.
+Note: The realease version 1.0 will not provide install packages.
+      This will be added later after the release.
+
+#### Tests
+
+
+##### Standalone
+
+* Debian 9.x  OK
+    - All depencecies were installed from repository. Build and running works.
+* Ubuntu 18.10 OK
+    - All depencecies were installed from repository. Build and running works.
+
+##### LV2 Plugin
+
+* Debian 9.x
+    - Works in Ardour 5.12 built with Suil 0.10.x and Lilv that supports state change.
+    - Works in QTracktor 0.9.3 built from source. The state of the plugin is not saved comparing to Ardour.
+
