@@ -82,6 +82,10 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
         return GEONKICK_OK;
 }
 
+/**
+ * Get autio frame gets only the current value of the kick from the kick buffer.
+ * Not synthesis is done by this function.
+ */
 enum geonkick_error
 gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real *val)
 {
@@ -93,6 +97,7 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
         if (!audio_output->is_play) {
                 *val = 0.0;
         } else {
+                /* Get the value from the kick buffer at the current index. */
                 *val = gkick_buffer_get_at(audio_output->buffer, audio_output->buffer_index, &is_end);
                 if (is_end) {
                         audio_output->buffer_index = 0;

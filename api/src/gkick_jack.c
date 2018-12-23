@@ -28,6 +28,14 @@ int
 gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg)
 {
+        /**
+         * Plays the kick buffer. This part of code is not doing any synthesis.
+         * The synthesis is done by the synthesizer in a separated
+         * thread that waites at a contidion variable until some parameter of
+         * the synthesizer is changed. At the end the thread copies the
+         * synthesised kick into the kick buffer that is shared.
+         */
+
         int i;
         gkick_real val;
         struct gkick_jack *jack;

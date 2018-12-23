@@ -26,6 +26,14 @@
 
 #include "geonkick_internal.h"
 
+/**
+ * Audio output (which is maybe not the best name)
+ * is an interface to an array that holds the all length synthesised kick.
+ * Is has nothing to do with any real audio interfaces.
+ * It provides access to the samples from the array in a "playable mode",
+ * i.e. in a state machine fasion.
+ */
+
 /* Decay time measured in number of audio frames / samples. */
 #define GEKICK_KEY_RELESE_DECAY_TIME 1000
 

@@ -1030,6 +1030,13 @@ int gkick_synth_is_running(struct gkick_synth *synth)
         return started;
 }
 
+/**
+ * The thread that synthesize the kick. The kick is synthesised
+ * form the start to end in one go. The thread than copies the
+ * result into a shared kick buffer and than waites at
+ * a contidion variable until some parameter
+ * of the synthesizer is changed.
+ */
 void *gkick_synth_run(void *arg)
 {
         size_t size;
@@ -1085,6 +1092,7 @@ void *gkick_synth_run(void *arg)
                 }
 
                 gkick_synth_lock(synth);
+                /* Copy the syntshised kick into the kick buffer. */
                 if (!gkick_buffer_set_data(synth->output, synth->buffer, synth->buffer_size)) {
                         gkick_log_warning("can't copy buffer to audio");
                 }
