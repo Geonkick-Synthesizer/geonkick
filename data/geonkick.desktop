@@ -2,7 +2,9 @@
 Version=1.0
 Name=Geonkick
 GenericName=Kick Drum Synthesizer
+GenericName[fr]=Synthétiseur de kick de batterie
 Comment=Synthesizes elements of percussion
+Comment[fr]=Synthétise les éléments de percussion
 Icon=geonkick
 Type=Application
 Categories=AudioVideo;Audio;AudioVideoEditing;
