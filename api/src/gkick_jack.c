@@ -45,9 +45,6 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 return 0;
         }
 
-        memset(buffers[0], 0, nframes * sizeof(jack_default_audio_sample_t));
-        memset(buffers[1], 0, nframes * sizeof(jack_default_audio_sample_t));
-
         port_buf = jack_port_get_buffer(jack->midi_in_port, nframes);
         events_count = jack_midi_get_event_count(port_buf);
         event_index = 0;
@@ -97,13 +94,7 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
 {
         enum geonkick_error error;
 
-        if (jack == NULL || channels_bufs == NULL) {
-                gkick_log_error("wrong arguments");
-                return GEONKICK_ERROR;
-        }
-
         error = GEONKICK_OK;
-        gkick_jack_lock(jack);
         if (jack->output_port_r == NULL || jack->output_port_l == NULL) {
                 gkick_log_error("output ports are undefined");
                 error = GEONKICK_ERROR;
@@ -113,7 +104,6 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
                 channels_bufs[1]
                         = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port_r, nframes);
         }
-        gkick_jack_unlock(jack);
 
         if (channels_bufs[0] == NULL || channels_bufs[1] == NULL) {
                 error = GEONKICK_ERROR;
