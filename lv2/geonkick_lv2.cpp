@@ -38,8 +38,6 @@
 #include <memory>
 
 #include <QObject>
-#include <QMutex>
-#include <QMutexLocker>
 #include <QApplication>
 
 #define GEONKICK_URI "http://geontime.com/geonkick"
@@ -238,20 +236,17 @@ class GeonkickLv2Plugin : public QObject
 protected:
         void setKickUpdated(bool b)
         {
-                QMutexLocker locker(&mutex);
                 kickIsUpdated = b;
         }
 
         bool isKickUpdated() const
         {
-                QMutexLocker locker(&mutex);
                 return kickIsUpdated;
         }
 
 protected slots:
         void kickUpdated()
         {
-                QMutexLocker locker(&mutex);
                 kickIsUpdated = true;
         }
 
@@ -271,8 +266,7 @@ private:
         };
 
         AtomInfo atomInfo;
-        mutable QMutex mutex;
-        bool kickIsUpdated;
+        std::atomic<bool> kickIsUpdated;
         static std::shared_ptr<QApplication> qtApplication;
         std::vector<const char*> qtApplicationArgs;
         int numberOfArguments;
