@@ -1,8 +1,8 @@
 /**
- * File name: globals.h
+ * File name: about.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
  *
  * This file is part of Geonkick.
  *
@@ -21,22 +21,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_GLOBALS_H
-#define GEONKICK_GLOBALS_H
+#ifndef GEONKICK_ABOUT_DIALOG_H
+#define GEONKICK_ABOUT_DIALOG_H
 
-#include <QString>
-#include <QDebug>
+#include "geonkick_widget.h"
 
-#include <memory>
+class AboutDialog: public GeonkickWidget {
+ Q_OBJECT
 
-#define GEOKICK_APP_NAME "Geonkick"
-#define GEOKICK_APP_VERION 0x010000
-#define GEOKICK_APP_VERION_STRING "1.0"
+ public:
+        AboutDialog(GeonkickWidget *parent);
+        ~AboutDialog();
+        int exec();
 
-#define GEONKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
-#define GEONKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
-#define GEONKICK_LOG_DEBUG(msg) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] " << msg
+ protected:
+        void closeEvent(QCloseEvent *event);
 
-#define GEONKICK_DEBUG_POINT(point) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] (" << point.x() << ", " << point.y() << ")"
+ protected slots:
 
-#endif // GEONKICK_GLOBALS_H
+ signals:
+         void closeDialog();
+};
+
+#endif // GEONKICK_ABOUT_H

@@ -69,6 +69,16 @@ TopBar::TopBar(GeonkickWidget *parent)
         buttonsLayout->addWidget(exportFileButton);
         buttonsLayout->setAlignment(exportFileButton, Qt::AlignLeft);
         connect(exportFileButton, SIGNAL(toggled(bool)), parent, SLOT(openExportDialog()));
+
+        // About button
+        auto aboutButton = new GeonkickButton(this);
+        aboutButton->setUnpressedImage(QPixmap(":/about.png"));
+        aboutButton->setCheckable(true);
+        buttonsLayout->addWidget(aboutButton);
+        buttonsLayout->setAlignment(aboutButton, Qt::AlignLeft);
+        connect(aboutButton, SIGNAL(toggled(bool)), parent, SLOT(openAboutDialog()));
+
+        // Preset name
         buttonsLayout->insertItem(6, new QSpacerItem(15, 1));
         presetNameLabel = new GeonkickLabel(this);
         buttonsLayout->addWidget(presetNameLabel);

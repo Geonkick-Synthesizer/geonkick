@@ -31,6 +31,7 @@
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
+#include "about.h"
 
 #include <QCloseEvent>
 #include <QMenu>
@@ -176,6 +177,12 @@ void MainWindow::openPreset()
         }
         file.close();
         emit updateGui();
+}
+
+void MainWindow::openAboutDialog()
+{
+        AboutDialog aboutDialog(this);
+        aboutDialog.exec();
 }
 
 void MainWindow::setLimiterValue(int value)

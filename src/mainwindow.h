@@ -59,6 +59,7 @@ class MainWindow : public GeonkickWidget
       void openExportDialog();
       void openPreset();
       void savePreset();
+      void openAboutDialog();
       void setLimiterValue(int value);
  signals:
       void updateGui();
