@@ -30,6 +30,7 @@
 #include <QObject>
 #include <QTimer>
 
+#include "globals.h"
 #include "geonkick.h"
 
 #include <memory>

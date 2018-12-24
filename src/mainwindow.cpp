@@ -105,7 +105,7 @@ void MainWindow::openExportDialog()
 
 void MainWindow::savePreset()
 {
-        QFileDialog fileDialog(this, tr("Save Preset"),
+        QFileDialog fileDialog(this, tr("Save Preset") + QString(" - ") + QString(GEOKICK_APP_NAME),
                                "./",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
@@ -123,7 +123,7 @@ void MainWindow::savePreset()
         QFileInfo fileInfo(files.first());
         if (fileInfo.baseName().isEmpty()) {
                 QMessageBox::critical(this,
-                                      "Error | Save Preset",
+                                      "Error | Save Preset" + QString(" - ") + QString(GEOKICK_APP_NAME),
                                       "Can't save preset. Wrong file format. File name format example: 'mykick.gkick'");
                 return;
         }
@@ -136,7 +136,7 @@ void MainWindow::savePreset()
 
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                QMessageBox::critical(this, "Error | Save Preset", "Can't save preset");
+                QMessageBox::critical(this, "Error | Save Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't save preset");
                 return;
         }
 
@@ -146,7 +146,7 @@ void MainWindow::savePreset()
 
 void MainWindow::openPreset()
 {
-        QFileDialog fileDialog(this, tr("Open Preset"), "./",
+        QFileDialog fileDialog(this, tr("Open Preset")  + QString(" - ") + QString(GEOKICK_APP_NAME), "./",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
         if (fileDialog.exec() == QDialog::Rejected)
@@ -154,20 +154,20 @@ void MainWindow::openPreset()
 
         QStringList files = fileDialog.selectedFiles();
         if (files.isEmpty() || files.first().isEmpty()) {
-                QMessageBox::critical(this, "Error | Open Preset", "Can't save preset");
+                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't save preset");
                 return;
         }
 
 
         QFile file(files.first());
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                QMessageBox::critical(this, "Error | Open Preset", "Can't open preset");
+                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't open preset");
                 return;
         }
 
         QJsonDocument document = QJsonDocument::fromJson(file.readAll());
         if (document.isNull()) {
-                QMessageBox::critical(this, "Error | Open Preset", "Wrong file contents");
+                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Wrong file contents");
         } else {
                 geonkickApi->setState(std::make_shared<GeonkickState>(document.toBinaryData()));
         }

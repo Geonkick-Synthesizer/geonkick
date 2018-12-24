@@ -52,6 +52,7 @@ class ExportWidget: public GeonkickWidget {
         QString getFilePath();
         QString fileSuffix();
         bool validateInput();
+        void closeEvent(QCloseEvent *event);
 
  protected slots:
          void browse();

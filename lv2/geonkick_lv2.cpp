@@ -34,9 +34,13 @@
 #include "geonkick_api.h"
 #include "geonkick_state.h"
 
+#include <vector>
+#include <memory>
+
 #include <QObject>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QApplication>
 
 #define GEONKICK_URI "http://geontime.com/geonkick"
 #define GEONKICK_URI_UI "http://geontime.com/geonkick#ui"
@@ -62,7 +66,9 @@ class GeonkickLv2Plugin : public QObject
                   leftChannel(nullptr),
                   rightChannel(nullptr),
                   atomInfo{0},
-                  kickIsUpdated(false)
+                  kickIsUpdated(false),
+                  qtApplicationArgs {GEOKICK_APP_NAME},
+                  numberOfArguments(qtApplicationArgs.size())
         {
                 connect(geonkickApi, SIGNAL(kickUpdated()), this, SLOT(kickUpdated()));
         }
@@ -218,6 +224,17 @@ class GeonkickLv2Plugin : public QObject
                 }
         }
 
+        bool qtAppExists() const
+        {
+                return QCoreApplication::instance() != nullptr;
+        }
+
+        void createApplication()
+        {
+                if (!qtAppExists())
+                        qtApplication = std::make_shared<QApplication>(numberOfArguments, const_cast<char**>(qtApplicationArgs.data()));
+        }
+
 protected:
         void setKickUpdated(bool b)
         {
@@ -256,11 +273,14 @@ private:
         AtomInfo atomInfo;
         mutable QMutex mutex;
         bool kickIsUpdated;
+        static std::shared_ptr<QApplication> qtApplication;
+        std::vector<const char*> qtApplicationArgs;
+        int numberOfArguments;
 };
 
+std::shared_ptr<QApplication> GeonkickLv2Plugin::qtApplication = nullptr;
+
 /**
- * Funcitons for LV2 UI plugin.
- *
  * Creates and shows an instance of Geonkick GUI that takes
  * the geonkick API instance as a pointer.
  */
@@ -281,6 +301,9 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         while ((feature = *features)) {
                 if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
                         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
+                        if (!geonkickLv2PLugin->qtAppExists()) {
+                                geonkickLv2PLugin->createApplication();
+                        }
                         mainWindow = new MainWindow(geonkickLv2PLugin->getApi());
                         if (!mainWindow->init()) {
                                 delete mainWindow;
