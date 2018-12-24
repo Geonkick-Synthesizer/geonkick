@@ -63,3 +63,12 @@ void GeonkickLabel::setImage(const QString &file)
         setImage(QPixmap(file));
 }
 
+void GeonkickLabel::setText(const QString &text)
+{
+        if (!widgetLabel) {
+                widgetLabel = new QLabel(this);
+                init();
+        }
+        widgetLabel->setText(text);
+}
+

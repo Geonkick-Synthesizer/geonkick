@@ -49,7 +49,8 @@
 
 MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
         GeonkickWidget(parent),
-        geonkickApi(api)
+        geonkickApi(api),
+        topBar(nullptr)
 {
         setWindowTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
@@ -59,10 +60,8 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-#ifdef GEONKICK_LV2_PLUGIN
         if (geonkickApi)
                 geonkickApi->registerCallbacks(false);
-#endif
 }
 
 bool MainWindow::init(void)
@@ -73,7 +72,8 @@ bool MainWindow::init(void)
         mainLayout->setContentsMargins(0, 0, 0, 0);
         mainLayout->setSpacing(0);
         setLayout(mainLayout);
-        mainLayout->addWidget(new TopBar(this));
+        topBar = new TopBar(this);
+        mainLayout->addWidget(topBar);
 
         // Create envelope widget.
         auto hBoxLayout = new QHBoxLayout;
@@ -142,6 +142,7 @@ void MainWindow::savePreset()
 
         file.write(geonkickApi->getState()->toJson());
         file.close();
+        topBar->setPresetName(QFileInfo(file).baseName());
 }
 
 void MainWindow::openPreset()
@@ -168,8 +169,10 @@ void MainWindow::openPreset()
         QJsonDocument document = QJsonDocument::fromJson(file.readAll());
         if (document.isNull()) {
                 QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Wrong file contents");
+                return;
         } else {
                 geonkickApi->setState(std::make_shared<GeonkickState>(document.toBinaryData()));
+                topBar->setPresetName(QFileInfo(file).baseName());
         }
         file.close();
         emit updateGui();
@@ -196,6 +199,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         } else if (event->modifiers() ==  Qt::ControlModifier
                    && event->key() == Qt::Key_R) {
                 geonkickApi->setState(geonkickApi->getDefaultState());
+                topBar->setPresetName("");
                 emit updateGui();
         }
 }

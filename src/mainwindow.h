@@ -40,6 +40,7 @@ class QRadioButton;
 class QComboBox;
 class QLabel;
 class GeonkickApi;
+class TopBar;
 
 class MainWindow : public GeonkickWidget
 {
@@ -70,6 +71,7 @@ class MainWindow : public GeonkickWidget
       std::vector<Oscillator*> oscillators;
       QVBoxLayout *centralWidgetLayout;
       QVector<QGroupBox*> envelopeGroupBox;
+      TopBar *topBar;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

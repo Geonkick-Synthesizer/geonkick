@@ -32,7 +32,8 @@ TopBar::TopBar(GeonkickWidget *parent)
         : GeonkickWidget(parent),
           openFileButton(nullptr),
           saveFileButton(nullptr),
-          exportFileButton(nullptr)
+          exportFileButton(nullptr),
+          presetNameLabel(nullptr)
 {
         if (parent) {
                 setFixedSize(parent->width() , 40);
@@ -68,9 +69,25 @@ TopBar::TopBar(GeonkickWidget *parent)
         buttonsLayout->addWidget(exportFileButton);
         buttonsLayout->setAlignment(exportFileButton, Qt::AlignLeft);
         connect(exportFileButton, SIGNAL(toggled(bool)), parent, SLOT(openExportDialog()));
+        buttonsLayout->insertItem(6, new QSpacerItem(15, 1));
+        presetNameLabel = new GeonkickLabel(this);
+        buttonsLayout->addWidget(presetNameLabel);
         buttonsLayout->addStretch(1);
 }
 
 TopBar::~TopBar()
 {
+}
+
+void TopBar::setPresetName(const QString &name)
+{
+        if (name.size() > 20) {
+                QString preset = name;
+                preset.truncate(20);
+                preset += "...";
+                presetNameLabel->setText(preset);
+        }
+        else {
+                presetNameLabel->setText(name);
+        }
 }

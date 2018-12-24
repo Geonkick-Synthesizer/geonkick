@@ -29,7 +29,7 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
         // Later this kind of settings will be taken from from theme/skin.
         QPalette pal;
         pal.setColor(QPalette::Background, QColor(68, 68, 70));
-        pal.setColor(QPalette::WindowText, Qt::white);
+        pal.setColor(QPalette::WindowText, QColor(210, 226, 226, 140));
         setAutoFillBackground(true);
         setPalette(pal);
 }

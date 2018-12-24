@@ -27,17 +27,20 @@
 #include "geonkick_widget.h"
 
 class GeonkickButton;
+class GeonkickLabel;
 
 class TopBar : public GeonkickWidget
 {
  public:
         TopBar(GeonkickWidget *parent);
         ~TopBar();
+        void setPresetName(const QString &name);
 
  private:
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
         GeonkickButton *exportFileButton;
+        GeonkickLabel* presetNameLabel;
 };
 
 #endif // GEONKICK_TOP_BAR_H
