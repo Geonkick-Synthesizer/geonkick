@@ -93,10 +93,10 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
         int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
         gkick_real decay_val;
 
-        gkick_audio_output_lock(audio_output);
         if (!audio_output->is_play) {
                 *val = 0.0;
         } else {
+                gkick_audio_output_lock(audio_output);
                 /* Get the value from the kick buffer at the current index. */
                 *val = gkick_buffer_get_at(audio_output->buffer, audio_output->buffer_index, &is_end);
                 if (is_end) {
@@ -118,8 +118,10 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                                 audio_output->is_play = 0;
                         }
                 }
+                gkick_audio_output_unlock(audio_output);
         }
 
+        gkick_audio_output_lock(audio_output);
         *val *= audio_output->limiter;
         if (audio_output->limiter_callback != NULL
             && audio_output->limiter_callback_arg != NULL

@@ -28,6 +28,8 @@
 #include "compressor.h"
 #include "distortion.h"
 
+#include <stdatomic.h>
+
 struct gkick_synth {
         gkick_real current_time;
         struct gkick_oscillator **oscillators;
@@ -60,7 +62,7 @@ struct gkick_synth {
         size_t buffer_size;
 
         /* To update or not the buffer. */
-        int buffer_update;
+        atomic_bool buffer_update;
 
 
         /* Kick smaples buffer. */
@@ -83,7 +85,7 @@ struct gkick_synth {
          * The synthesizer main thread.
          */
         pthread_t thread;
-        int is_running;
+        atomic_bool is_running;
 
         pthread_mutex_t lock;
         pthread_cond_t condition_var;
@@ -92,7 +94,7 @@ struct gkick_synth {
          * If is 0 any updates of the synthesizer parameters
          * will not trigger the kick synthesis.
          */
-        int synthesis_on;
+        atomic_bool synthesis_on;
 };
 
 enum geonkick_error

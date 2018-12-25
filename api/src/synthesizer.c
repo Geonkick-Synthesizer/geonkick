@@ -1014,20 +1014,12 @@ gkick_synth_stop(struct gkick_synth *synth)
 
 void gkick_synth_set_started(struct gkick_synth *synth, int started)
 {
-        gkick_synth_lock(synth);
         synth->is_running = started;
-        gkick_synth_unlock(synth);
 }
 
 int gkick_synth_is_running(struct gkick_synth *synth)
 {
-        int started;
-
-        gkick_synth_lock(synth);
-        started = synth->is_running;
-        gkick_synth_unlock(synth);
-
-        return started;
+        return synth->is_running;
 }
 
 /**
@@ -1152,17 +1144,7 @@ void gkick_synth_reset_oscillators(struct gkick_synth *synth)
 
 int gkick_synth_is_update_buffer(struct gkick_synth *synth)
 {
-        int update;
-
-        if (synth == NULL) {
-                return 0;
-        }
-
-        gkick_synth_lock(synth);
-        update = synth->buffer_update;
-        gkick_synth_unlock(synth);
-
-        return update;
+        return synth->buffer_update;
 }
 
 enum geonkick_error

@@ -56,7 +56,7 @@ struct gkick_audio_output
         size_t buffer_index;
         char key_velocity;
         enum gkick_key_state key_state;
-        int is_play;
+        atomic_bool is_play;
 
         /**
          * decay - note release time measured in number of sample frames.
