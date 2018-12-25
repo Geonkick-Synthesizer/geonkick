@@ -77,8 +77,10 @@ set(GKICK_COMMON_RESOURCES ${GKICK_COMMON_DIR}/resources/resources.qrc)
 
 # Disabling standalone build there also will no more be need to install jack dependency.
 option(ENABLE_STANDALONE "Enable build for standalone application" ON)
-# Disabling LV2 plugin build there also will not be needed to install LV2 library dependency.
-option(ENABLE_LV2 "Enable build for LV2 plugin" ON)
+
+# Not recommended for use. Qt support for LV2 is not sutable for this.
+# It may cause crashes for various reasons.
+option(ENABLE_LV2 "Enable build for LV2 plugin" OFF)
 
 option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 

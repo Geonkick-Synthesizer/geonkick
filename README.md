@@ -49,8 +49,6 @@ finished, including documentation.
      - Ogg Vorbis
 * Open & Save preset in JSON format
 * Standalone
-* Plugin
-     - LV2
 * Platforms:
   - GNU/Linux
 * Build system:
@@ -82,11 +80,3 @@ Note: The release version 1.0 will not provide install packages.
 * Fedora 29 / 64 bit [works]
     - All dependences were installed from repository. Build and running works.
 
-##### LV2 Plugin
-
-* Debian 9.x
-    - Ardour 5.12 (built from source with Suil 0.10.x and Lilv that supports state change)
-       - works
-    - QTractor 0.9.3 (built from source Suil 0.10.x and Lilv that supports state change)
-        - works
-        - isses: the state is not saved
