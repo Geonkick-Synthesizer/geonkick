@@ -64,9 +64,7 @@ class GeonkickLv2Plugin : public QObject
                   leftChannel(nullptr),
                   rightChannel(nullptr),
                   atomInfo{0},
-                  kickIsUpdated(false),
-                  qtApplicationArgs {GEOKICK_APP_NAME},
-                  numberOfArguments(qtApplicationArgs.size())
+                  kickIsUpdated(false)
         {
                 connect(geonkickApi, SIGNAL(kickUpdated()), this, SLOT(kickUpdated()));
         }
@@ -227,12 +225,6 @@ class GeonkickLv2Plugin : public QObject
                 return QCoreApplication::instance() != nullptr;
         }
 
-        void createApplication()
-        {
-                if (!qtAppExists())
-                        qtApplication = std::make_shared<QApplication>(numberOfArguments, const_cast<char**>(qtApplicationArgs.data()));
-        }
-
 protected:
         void setKickUpdated(bool b)
         {
@@ -267,12 +259,7 @@ private:
 
         AtomInfo atomInfo;
         std::atomic<bool> kickIsUpdated;
-        static std::shared_ptr<QApplication> qtApplication;
-        std::vector<const char*> qtApplicationArgs;
-        int numberOfArguments;
 };
-
-std::shared_ptr<QApplication> GeonkickLv2Plugin::qtApplication = nullptr;
 
 /**
  * Creates and shows an instance of Geonkick GUI that takes
@@ -296,7 +283,8 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                 if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
                         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
                         if (!geonkickLv2PLugin->qtAppExists()) {
-                                geonkickLv2PLugin->createApplication();
+                                GEONKICK_LOG_ERROR("the host doesn't provide Qt5 support");
+                                return nullptr;
                         }
                         mainWindow = new MainWindow(geonkickLv2PLugin->getApi());
                         if (!mainWindow->init()) {
