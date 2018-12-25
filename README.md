@@ -62,7 +62,6 @@ finished, including documentation.
     - Tutorial
 * Testsing
     - Build and test on Debian, Ubuntu, Fedora, KXStudio and AV Linux
-    - Test the LV2 plugin on listed distros in Ardour and QTractor, MusE
 * Logo design
   - Logo design to be used as an application icon
 
