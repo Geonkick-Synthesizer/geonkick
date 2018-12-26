@@ -88,7 +88,7 @@ void GeonkickState::parseKickObject(const auto &kick)
                 enableKickFilter(filter.toObject().take("enabled").toBool());
                 setKickFilterFrequency(filter.toObject().take("cutoff").toDouble());
                 setKickFilterQFactor(filter.toObject().take("factor").toDouble());
-                setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("factor").toInt()));
+                setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("type").toInt()));
         }
 
         auto compressor = kick.toObject().take("compressor");
@@ -138,7 +138,7 @@ void GeonkickState::parseOscillatorObject(int index, const auto &osc)
                 setOscillatorFilterEnabled(index, filter.toObject().take("enabled").toBool());
                 setOscillatorFilterCutOffFreq(index, filter.toObject().take("cutoff").toDouble());
                 setOscillatorFilterFactor(index, filter.toObject().take("factor").toDouble());
-                setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(filter.toObject().take("factor").toInt()));
+                setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(filter.toObject().take("type").toInt()));
         }
 }
 
