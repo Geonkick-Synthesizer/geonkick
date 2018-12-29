@@ -215,6 +215,7 @@ gkick_filter_val(struct gkick_filter *filter,
         gkick_real *l, *b, *h;
         gkick_real F, Q;
         size_t n;
+        gkick_real val;
 
         if (filter == NULL || out_val == NULL) {
                 gkick_log_error("wrong arguments");
@@ -243,14 +244,18 @@ gkick_filter_val(struct gkick_filter *filter,
         b[n] = F * h[n] + b[n - 1];
         l[n] = F * b[n] + l[n - 1];
 
-        if (filter->type == GEONKICK_FILTER_HIGH_PASS) {
-                *out_val = h[n];
-        } else if (filter->type == GEONKICK_FILTER_BAND_PASS) {
-                *out_val = b[n];
-        } else {
-                *out_val = l[n];
-        }
+        if (filter->type == GEONKICK_FILTER_HIGH_PASS)
+                val = h[n];
+        else if (filter->type == GEONKICK_FILTER_BAND_PASS)
+                val = b[n];
+        else
+                val = l[n];
         gkick_filter_unlock(filter);
+
+        if (fabs(val) > 1.0)
+                *out_val = 1.0;
+        else
+                *out_val = val;
 
         return GEONKICK_OK;
 }

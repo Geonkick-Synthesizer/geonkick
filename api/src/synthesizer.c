@@ -1056,6 +1056,7 @@ void *gkick_synth_run(void *arg)
 
 		synth->buffer_update = 0;
 		gkick_synth_reset_oscillators(synth);
+                gkick_filter_init(synth->filter);
 		gkick_compressor_set_state(synth->compressor, GKICK_COMPRESSOR_DEACTIVATED);
 		gkick_synth_unlock(synth);
 
@@ -1124,6 +1125,9 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
         gkick_compressor_is_enabled(synth->compressor, &enabled);
         if (enabled)
                 gkick_compressor_val(synth->compressor, val, &val);
+
+        if (fabs(val) > 1.0)
+                val = 1.0;
 
         return val;
 }

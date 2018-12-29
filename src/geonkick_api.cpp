@@ -101,11 +101,11 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
                 } else {
                         state->setOscillatorFunction(index, GeonkickApi::FunctionType::Sine);
                 }
-                state->setOscillatorAmplitue(index, 0.05);
-                state->setOscillatorFrequency(index, 5000);
+                state->setOscillatorAmplitue(index, 0.26);
+                state->setOscillatorFrequency(index, 800);
                 state->setOscillatorFilterEnabled(index, false);
                 state->setOscillatorFilterType(index, GeonkickApi::FilterType::LowPass);
-                state->setOscillatorFilterCutOffFreq(index, 5000);
+                state->setOscillatorFilterCutOffFreq(index, 800);
                 state->setOscillatorFilterFactor(index, 1);
                 state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Amplitude);
                 if (osc != GeonkickApi::OscillatorType::Noise) {
