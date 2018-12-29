@@ -137,7 +137,7 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
 
         f = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t / kick_len);
         osc->phase += (2 * M_PI * f) / (osc->sample_rate);
-        if (osc->phase > M_PI) {
+        if (osc->phase > 2 * M_PI) {
                 osc->phase -= 2 * M_PI;
         }
 }
@@ -191,28 +191,23 @@ gkick_real gkick_osc_func_sine(gkick_real phase)
 
 gkick_real gkick_osc_func_square(gkick_real phase)
 {
-        if (phase < 0) {
+        if (phase < M_PI)
                 return -1;
-        } else {
+        else
                 return 1;
-        }
 }
 
 gkick_real gkick_osc_func_triangle(gkick_real phase)
 {
-	gkick_real a = 1.0;
-
-	if (phase < M_PI) {
-		return -a + (2 * a / M_PI) * phase;
-	}
-	else {
-		return 3 * a - (2 * a / M_PI) * phase;
-	}
+	if (phase < M_PI)
+		return -1.0 + (2.0 / M_PI) * phase;
+	else
+		return 3.0 - (2.0 / M_PI) * phase;
 }
 
 gkick_real gkick_osc_func_sawtooth(gkick_real phase)
 {
-        return 1 - (1 / M_PI) * (phase - M_PI);
+        return 1.0 - (1.0 / M_PI) * phase;
 }
 
 gkick_real gkick_osc_func_noise_white(void)

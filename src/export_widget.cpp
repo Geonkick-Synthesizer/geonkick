@@ -139,7 +139,6 @@ ExportWidget::ExportResult ExportWidget::exec()
         QEventLoop eventLoop(this);
         connect(this, SIGNAL(closeDialog()), &eventLoop, SLOT(quit()));
         eventLoop.exec();
-        GEONKICK_LOG_DEBUG("end");
         return exportResult;
 }
 
