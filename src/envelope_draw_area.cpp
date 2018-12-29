@@ -31,7 +31,8 @@
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent)
           : GeonkickWidget(parent),
             currentEnvelope(nullptr),
-            kickGraph(nullptr)
+            kickGraph(nullptr),
+            hideEnvelope(false)
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -78,7 +79,7 @@ void EnvelopeWidgetDrawingArea::paintWidget(QPaintEvent *event)
                 kickGraph->draw(painter);
         }
 
-        if (currentEnvelope) {
+        if (currentEnvelope && !isHideEnvelope()) {
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
         }
 
@@ -172,4 +173,18 @@ void EnvelopeWidgetDrawingArea::setKickGraph(KickGraph *graph)
 KickGraph* EnvelopeWidgetDrawingArea::getKickGraph()
 {
         return kickGraph;
+}
+
+bool EnvelopeWidgetDrawingArea::isHideEnvelope() const
+{
+        return hideEnvelope;
+}
+
+void EnvelopeWidgetDrawingArea::setHideEnvelope(bool b)
+{
+        if (hideEnvelope != b)
+        {
+                hideEnvelope = b;
+                update();
+        }
 }

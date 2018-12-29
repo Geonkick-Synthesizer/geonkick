@@ -218,3 +218,8 @@ void EnvelopeWidget::showFrequencyEnvelope()
         }
 }
 
+void EnvelopeWidget::hideEnvelope(bool b)
+{
+        drawArea->setHideEnvelope(b);
+}
+

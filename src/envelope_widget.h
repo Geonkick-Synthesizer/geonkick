@@ -50,6 +50,7 @@ public:
      EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::vector<Oscillator*> &oscillators);
      ~EnvelopeWidget();
      void setBackgourndImage(const QPixmap &pixmap);
+     void hideEnvelope(bool b);
 
  signals:
      void update();

@@ -48,16 +48,19 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    const QRect getDrawingArea();
    void setKickGraph(KickGraph *graph);
    KickGraph* getKickGraph();
+   bool isHideEnvelope() const;
 
    public slots:
            void setEnvelope(std::shared_ptr<Envelope> &envelope);
            void envelopeUpdated();
+           void setHideEnvelope(bool b);
 
  private:
    std::shared_ptr<Envelope> currentEnvelope;
    KickGraph *kickGraph;
    QRect drawingArea;
    QPointF mousePoint;
+   bool hideEnvelope;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

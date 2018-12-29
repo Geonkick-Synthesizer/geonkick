@@ -41,6 +41,7 @@ class QComboBox;
 class QLabel;
 class GeonkickApi;
 class TopBar;
+class EnvelopeWidget;
 
 class MainWindow : public GeonkickWidget
 {
@@ -54,6 +55,7 @@ class MainWindow : public GeonkickWidget
 
  protected:
       void keyPressEvent(QKeyEvent *event);
+      void keyReleaseEvent(QKeyEvent *event);
 
  protected slots:
       void openExportDialog();
@@ -73,6 +75,7 @@ class MainWindow : public GeonkickWidget
       QVBoxLayout *centralWidgetLayout;
       QVector<QGroupBox*> envelopeGroupBox;
       TopBar *topBar;
+      EnvelopeWidget* envelopeWidget;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

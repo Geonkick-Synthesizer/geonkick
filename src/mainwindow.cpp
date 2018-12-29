@@ -51,7 +51,8 @@
 MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
         GeonkickWidget(parent),
         geonkickApi(api),
-        topBar(nullptr)
+        topBar(nullptr),
+        envelopeWidget(nullptr)
 {
         setWindowTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
@@ -80,7 +81,7 @@ bool MainWindow::init(void)
         auto hBoxLayout = new QHBoxLayout;
         hBoxLayout->setSpacing(0);
         hBoxLayout->setContentsMargins(0, 0, 0, 0);
-        auto envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
+        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
         envelopeWidget->setFixedSize(850, 340);
         hBoxLayout->addWidget(envelopeWidget);
@@ -208,5 +209,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 geonkickApi->setState(geonkickApi->getDefaultState());
                 topBar->setPresetName("");
                 emit updateGui();
+        } else if (event->modifiers() ==  Qt::ControlModifier
+                   && event->key() == Qt::Key_H) {
+                envelopeWidget->hideEnvelope(true);
+        }
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+        if (event->modifiers() ==  Qt::ControlModifier
+            && event->key() == Qt::Key_H) {
+                envelopeWidget->hideEnvelope(false);
         }
 }
