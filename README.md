@@ -6,21 +6,19 @@ Details: Geonkick is a synthesizer that can synthesize elements
 	 of percussion. The most basic examples are: kick drums,
 	 snares, hit-hats, shakers, claps, steaks.
 
-         The synthesizer requires Jack server in order to run.
-
 License: GPLv3
 
 Author: Iurie Nistor
 
 Home page: http://geontime.com
+Code repository: https://gitlab.com/iurie/geonkick
 
 Status: Active development. No release yet.
 
-![Screenshot](data/screenshot.png)
+Note: The release version 1.0 will not provide install packages.
+This will be added later after the release.
 
-The first release will be version 1.0. There will not be any beta versions.
-The application will be released only until all the points below are
-finished, including documentation.
+![Screenshot](data/screenshot.png)
 
 #### Features
 
@@ -53,28 +51,48 @@ finished, including documentation.
 * Build system:
   - GPLv2 source code with CMake build system
 
-* Documentation
-    - How to build and install from source
-    - Some technical insights of how the synthesizer is working and is built
-    - User guide
-    - FAQ
-    - Tutorial
-* Testsing
-    - Build and test on Debian, Ubuntu, Fedora, KXStudio and AV Linux
-* Logo design
-  - Logo design to be used as an application icon
+#### Requirements
 
-Note: The release version 1.0 will not provide install packages.
-      This will be added later after the release.
+In order Geonkick to run there is a need for:
+
+* GNU/Linux operating system
+* Jack server installed and running
+
+#### Install
+
+###### Install dependeces
+
+I order to build Geonkick there is a need to install the following development packages:
+* Qt5
+* libsndfile
+* JACK Audio Connection Kit
+
+On Debian, Ubuntu, Ubuntu Studio install:
+
+    apt-get install build-essential
+    apt-get install cmake
+    apt-get install qt5-default && qjackctl && libjack-dev && libsndfile-dev
+
+###### Build & install Geonkick
+
+Clone the code repository, compile and install
+
+        git clone git@gitlab.com:iurie/geonkick.git
+        mkdir geonkick/build
+        cd geonkick/build
+        cmake ../
+        make
+        make install
 
 #### Tests
+Here is a list of tests of the application on various GNU/Linux distributions
+in order to see if it builds with dependences installed from repository,
+installs, runs, and if there any issues.
 
-##### Standalone
-
-* Debian 9.x/64bit  [works]
-    - All dependences were installed from repository. Build and running works.
-* Ubuntu 18.10/64bit [works]
-    - All dependences were installed from repository. Build and running works.
-* Fedora 29 / 64 bit [works]
-    - All dependences were installed from repository. Build and running works.
+| Distribution  | Dependences  | Build  | Install  | Run  | Comments  |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| Debian 9.x/64bit  | repository  | OK  | OK  | OK  |   |
+| Ubuntu 18.10/64bit  | repository  | OK  | OK  | OK  |   |
+| Fedora 29 / 64 bit  | repository | OK  | OK  | OK  |   |
+| Ubuntu Studio  | repository  | OK  | OK  | OK  |   |
 
