@@ -25,7 +25,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/top_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
   ${GKICK_COMMON_DIR}/envelope_draw_area.h
-  ${GKICK_COMMON_DIR}/fader.h
+  ${GKICK_COMMON_DIR}/limiter.h
   ${GKICK_COMMON_DIR}/general_envelope.h
   ${GKICK_COMMON_DIR}/effects_group_box.h
   ${GKICK_COMMON_DIR}/compressor_group_box.h
@@ -54,7 +54,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/top_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
   ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
-  ${GKICK_COMMON_DIR}/fader.cpp
+  ${GKICK_COMMON_DIR}/limiter.cpp
   ${GKICK_COMMON_DIR}/general_envelope.cpp
   ${GKICK_COMMON_DIR}/effects_group_box.cpp
   ${GKICK_COMMON_DIR}/compressor_group_box.cpp
@@ -94,9 +94,10 @@ if (ENABLE_DOUBLE_PRECISION)
 endif()
 
 if (ENABLE_LOGGING)
-  set(DEFAULT_LOG_LEVEL "GEONKICK_LOG_LEVEL_DEBUG")
-  list(APPEND GKICK_API_FLAGS "-D${DEFAULT_LOG_LEVEL} -DGKICK_LIB_LOG_FUNCTION")
-  list(APPEND GKICK_API_FLAGS_LV2 "-D${DEFAULT_LOG_LEVEL} -DGKICK_LIB_LOG_FUNCTION")
+  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
+  list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+  list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_FUNCTION")
 endif()
 
 find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)

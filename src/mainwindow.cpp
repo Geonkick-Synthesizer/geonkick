@@ -27,7 +27,7 @@
 #include "general_group_box.h"
 #include "control_area.h"
 #include "top_bar.h"
-#include "fader.h"
+#include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
@@ -85,11 +85,10 @@ bool MainWindow::init(void)
         connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
         envelopeWidget->setFixedSize(850, 340);
         hBoxLayout->addWidget(envelopeWidget);
-        auto faderWidget = new Fader(geonkickApi, this);
-        connect(this, SIGNAL(updateGui()), faderWidget, SLOT(updateFader()));
-        faderWidget->setFixedSize(65, 340);
-        connect(faderWidget, SIGNAL(levelUpdated(int)), this, SLOT(setLimiterValue(int)));
-        hBoxLayout->addWidget(faderWidget);
+        auto limiterWidget = new Limiter(geonkickApi, this);
+        connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
+        limiterWidget->setFixedSize(65, 340);
+        hBoxLayout->addWidget(limiterWidget);
         mainLayout->addLayout(hBoxLayout);
 
         auto controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
@@ -184,20 +183,6 @@ void MainWindow::openAboutDialog()
 {
         AboutDialog aboutDialog(this);
         aboutDialog.exec();
-}
-
-void MainWindow::setLimiterValue(int value)
-{
-        double k = 70.0 / (1 - 0.07);
-        double b = 20.0 - k;
-        double x = static_cast<double>(value) / 100;
-        double logVal = k * x + b;
-        double val;
-        if (logVal < -50)
-                val = 0;
-        else
-                val = pow(10, logVal / 20);
-        geonkickApi->setLimiterValue(val);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)

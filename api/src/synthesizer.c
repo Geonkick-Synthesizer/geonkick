@@ -503,7 +503,6 @@ gkick_synth_set_osc_function(struct gkick_synth *synth,
                 gkick_synth_unlock(synth);
                 return GEONKICK_ERROR;
         } else {
-                gkick_log_debug("function: %d", type);
                 osc->func = type;
         }
 

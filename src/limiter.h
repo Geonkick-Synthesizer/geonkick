@@ -1,5 +1,5 @@
 /**
- * File name: fader.h
+ * File name: limiter.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_FADER_H
-#define GEONKICK_FADER_H
+#ifndef GEONKICK_LIMITER_H
+#define GEONKICK_LIMITER_H
 
 #include "geonkick_widget.h"
 
@@ -32,40 +32,41 @@ class GeonkickSlider;
 class GeonkickLevel;
 class GeonkickApi;
 
-class Fader: public GeonkickWidget
+class Limiter: public GeonkickWidget
 {
  Q_OBJECT
 
  public:
-        Fader(GeonkickApi *api, GeonkickWidget *parent = nullptr);
-        ~Fader();
-        int getFaderLevel(void) const;
-        int getChannelLevel(int channel) const;
+        Limiter(GeonkickApi *api, GeonkickWidget *parent = nullptr);
+        ~Limiter();
+        int getFaderValue(void) const;
+        int getMeterValue() const;
 
  public slots:
-        void setFaderLevel(int level);
-        void setChannelLevel(int channel, int level);
-        void updateFader();
+        void updateLimiter();
+        void setLimiterValue(int val);
 
  signals:
-        void levelUpdated(int level);
+        void limiterUpdated(int val);
 
  protected:
-        int logValToLevel(double val);
+        int toMeterValue(double val) const;
+
  protected slots:
-         void updateLeveler(double val);
-         void updateLevelerTimeout();
+         void updateMeter(double val);
+         void updateMeterTimeout();
+         void setFaderValue(int val);
+         void setMeterValue(int val);
 
  private:
-        void drawLevels(QPainter &painter);
+        void drawMeter(QPainter &painter);
         void paintWidget(QPaintEvent *event) final;
         void resizeEvent(QResizeEvent *event) final;
         GeonkickApi *geonkickApi;
         GeonkickSlider *faderSlider;
-        int leftChannelLevel;
-        int rightChannelLevel;
-        QPixmap levelsImage;
-        QTimer faderTimer;
+        int meterValue;
+        QPixmap meterImage;
+        QTimer meterTimer;
 };
 
-#endif // GEONKICK_FADER_H
+#endif // GEONKICK_LIMITER_H

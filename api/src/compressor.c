@@ -184,7 +184,6 @@ gkick_compressor_set_release(struct gkick_compressor *compressor, gkick_real rel
 {
         gkick_compressor_lock(compressor);
         compressor->release = GEONKICK_SAMPLE_RATE * release;
-        gkick_log_debug("release %d", compressor->release);
         gkick_compressor_unlock(compressor);
         return GEONKICK_OK;
 }
