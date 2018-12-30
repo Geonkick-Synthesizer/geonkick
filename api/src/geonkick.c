@@ -63,7 +63,7 @@ geonkick_create(struct geonkick **kick)
         }
 
         if (gkick_synth_start((*kick)->synth)) {
-                gkick_log_warning("can't start synthesizer");
+                gkick_log_error("can't start synthesizer");
                 geonkick_free(kick);
                 return GEONKICK_ERROR;
         }
@@ -935,4 +935,24 @@ geonkick_distortion_get_drive(struct geonkick *kick, gkick_real *drive)
                 return GEONKICK_ERROR;
         }
         return gkick_synth_distortion_get_drive(kick->synth, drive);
+}
+
+int geonkick_is_module_enabed(struct geonkick *kick, enum GEONKICK_MODULE module)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return 0;
+        }
+
+        switch (module)
+        {
+        case GEONKICK_MODULE_JACK:
+                if (kick->audio != NULL && kick->audio->jack != NULL)
+                        return 1;
+                else
+                        return 0;
+        break;
+        default:
+                return 0;
+        }
 }

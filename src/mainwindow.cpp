@@ -70,6 +70,12 @@ bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
 
+        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
+                QMessageBox::warning(this, "Warning - Geonkick", tr("Jack is not installed" \
+                                     " or not running. There is a need for jack server running " \
+                                     "in order to have audio output."),
+                                     QMessageBox::Ok);
+
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
         mainLayout->setContentsMargins(0, 0, 0, 0);
         mainLayout->setSpacing(0);

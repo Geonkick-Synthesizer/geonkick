@@ -33,7 +33,9 @@ GeonkickApi::GeonkickApi(QObject *parent) :
         QObject(parent),
         geonkickApi(nullptr),
         updateLimiterLeveler(false),
-        limiterLevelerVal(0)
+        limiterLevelerVal(0),
+        jackEnabled(false),
+        standaloneInstance(false)
 {
         connect(&limiterTimer, SIGNAL(timeout()), SLOT(limiterTimeout()));
         limiterTimer.start(50);
@@ -52,7 +54,7 @@ bool GeonkickApi::init()
 	        GEONKICK_LOG_ERROR("can't create geonkick API");
                 return false;
   	}
-
+        jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
         setState(getDefaultState());
         return true;
 }
@@ -745,4 +747,19 @@ void GeonkickApi::limiterTimeout()
                 updateLimiterLeveler = false;
                 emit currentPlayingFrameVal(limiterLevelerVal);
         }
+}
+
+bool GeonkickApi::isJackEnabled() const
+{
+        return jackEnabled;
+}
+
+void GeonkickApi::setStandalone(bool b)
+{
+        standaloneInstance = b;
+}
+
+bool GeonkickApi::isStandalone() const
+{
+        return standaloneInstance;
 }

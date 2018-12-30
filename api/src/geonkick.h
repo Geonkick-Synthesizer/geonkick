@@ -86,6 +86,11 @@ enum geonkick_osc_func_type {
         GEONKICK_OSC_FUNC_UNKNOWN        = 7
 };
 
+enum GEONKICK_MODULE {
+        GEONKICK_MODULE_UNKNOWN = 0,
+        GEONKICK_MODULE_JACK    = 1
+};
+
 struct geonkick;
 
 enum geonkick_error
@@ -364,6 +369,8 @@ geonkick_distortion_set_drive(struct geonkick *kick, gkick_real drive);
 
 enum geonkick_error
 geonkick_distortion_get_drive(struct geonkick *kick, gkick_real *drive);
+
+int geonkick_is_module_enabed(struct geonkick *kick, enum GEONKICK_MODULE module);
 
 #ifdef __cplusplus
 }

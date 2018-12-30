@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
         a.setFont(font);
 
         auto api = std::make_unique<GeonkickApi>();
+        api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");
                 exit(1);

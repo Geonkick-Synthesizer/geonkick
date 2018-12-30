@@ -130,6 +130,11 @@ class GeonkickApi: public QObject {
   double getDistortionVolume() const;
   double getDistortionDrive() const;
 
+  bool isJackEnabled() const;
+
+  void setStandalone(bool b);
+  bool isStandalone() const;
+
 public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
@@ -175,6 +180,8 @@ private:
   QTimer limiterTimer;
   std::atomic<bool> updateLimiterLeveler;
   std::atomic<double> limiterLevelerVal;
+  bool jackEnabled;
+  bool standaloneInstance;
 };
 
 #endif // GEONKICK_API_H
