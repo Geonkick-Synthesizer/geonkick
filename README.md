@@ -1,6 +1,6 @@
 # Geonkick
 
-Geonkick - a free software kick synthesizer.
+Geonkick - a free software percussion synthesizer.
 
 Details: Geonkick is a synthesizer that can synthesize elements
 	 of percussion. The most basic examples are: kick drums,
@@ -10,13 +10,9 @@ License: GPLv3
 
 Author: Iurie Nistor
 
-Home page: http://geontime.com
-Code repository: https://gitlab.com/iurie/geonkick
+Source code repository: https://gitlab.com/iurie/geonkick
 
 Status: Active development. No release yet.
-
-Note: The release version 1.0 will not provide install packages.
-This will be added later after the release.
 
 ![Screenshot](data/screenshot.png)
 
@@ -49,7 +45,7 @@ This will be added later after the release.
 * Platforms:
   - GNU/Linux
 * Build system:
-  - GPLv2 source code with CMake build system
+  - GPLv3 source code with CMake build system
 
 #### Requirements
 
