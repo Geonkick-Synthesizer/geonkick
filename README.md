@@ -49,10 +49,10 @@ Source code repository: https://gitlab.com/iurie/geonkick
 
 #### Requirements
 
-In order Geonkick to run there is a need for:
+In order Geonkick to run and operate correctly there is a need for:
 
 * GNU/Linux operating system
-* Jack server installed and running
+* Jack server installed and running at 48000 sample rate
 
 #### Install
 
