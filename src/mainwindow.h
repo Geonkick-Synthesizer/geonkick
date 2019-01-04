@@ -49,13 +49,14 @@ class MainWindow : public GeonkickWidget
 
  public:
 
-      MainWindow(GeonkickApi *api = nullptr, GeonkickWidget *parent = nullptr);
+      MainWindow(GeonkickApi *api = nullptr, const QString &preset = QString(), GeonkickWidget *parent = nullptr);
       ~MainWindow();
       bool init(void);
 
  protected:
       void keyPressEvent(QKeyEvent *event);
       void keyReleaseEvent(QKeyEvent *event);
+      void setPreset(const QString &fileName);
 
  protected slots:
       void openExportDialog();
@@ -75,6 +76,7 @@ class MainWindow : public GeonkickWidget
       QVector<QGroupBox*> envelopeGroupBox;
       TopBar *topBar;
       EnvelopeWidget* envelopeWidget;
+      QString presetName;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

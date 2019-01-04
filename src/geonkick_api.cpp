@@ -168,6 +168,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState()
         getOscillatorState(OscillatorType::Oscillator1, state);
         getOscillatorState(OscillatorType::Oscillator2, state);
         getOscillatorState(OscillatorType::Noise, state);
+        state->enableCompressor(isCompressorEnabled());
         state->setCompressorAttack(getCompressorAttack());
         state->setCompressorRelease(getCompressorRelease());
         state->setCompressorThreshold(getCompressorThreshold());

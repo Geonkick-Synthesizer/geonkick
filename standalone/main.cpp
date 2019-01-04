@@ -39,6 +39,11 @@ int main(int argc, char *argv[])
         font.setPixelSize(12);
         a.setFont(font);
 
+        QString preset;
+        if (QCoreApplication::arguments().size() > 1) {
+                preset = QCoreApplication::arguments().at(1);
+        }
+
         auto api = std::make_unique<GeonkickApi>();
         api->setStandalone(true);
         if (!api->init()) {
@@ -46,7 +51,7 @@ int main(int argc, char *argv[])
                 exit(1);
         }
 
-        MainWindow window(api.get());
+        MainWindow window(api.get(), preset);
         if (!window.init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 exit(1);

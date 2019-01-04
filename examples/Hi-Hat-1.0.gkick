@@ -1,0 +1,155 @@
+{
+    "kick": {
+        "ampl_env": {
+            "amplitude": 0.800000011920929,
+            "length": 300,
+            "points": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    0
+                ]
+            ]
+        },
+        "compressor": {
+            "attack": 0.009999999776482582,
+            "enabled": false,
+            "knee": 0,
+            "makeup": 1,
+            "ratio": 1,
+            "release": 0.009999999776482582,
+            "threshold": 0
+        },
+        "distortion": {
+            "drive": 0,
+            "enabled": false,
+            "volume": 10
+        },
+        "filter": {
+            "cutoff": 1686.3818359375,
+            "enabled": false,
+            "factor": 2.109999895095825,
+            "type": 1
+        },
+        "limiter": 0.28641071915626526
+    },
+    "osc0": {
+        "ampl_env": {
+            "amplitude": 0.25999999046325684,
+            "points": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ]
+            ]
+        },
+        "enabled": false,
+        "filter": {
+            "cutoff": 800,
+            "enabled": false,
+            "factor": 1,
+            "type": 0
+        },
+        "freq_env": {
+            "amplitude": 800,
+            "points": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ]
+            ]
+        },
+        "function": 0
+    },
+    "osc1": {
+        "ampl_env": {
+            "amplitude": 0.012511101551353931,
+            "points": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    0.09548386931419373,
+                    0.10000000149011612
+                ],
+                [
+                    1,
+                    0
+                ]
+            ]
+        },
+        "enabled": true,
+        "filter": {
+            "cutoff": 800,
+            "enabled": false,
+            "factor": 1,
+            "type": 0
+        },
+        "freq_env": {
+            "amplitude": 7311.2724609375,
+            "points": [
+                [
+                    0,
+                    1
+                ],
+                [
+                    1,
+                    1
+                ]
+            ]
+        },
+        "function": 0
+    },
+    "osc2": {
+        "ampl_env": {
+            "amplitude": 0.05999443307518959,
+            "points": [
+                [
+                    0,
+                    0
+                ],
+                [
+                    0.021935483440756798,
+                    0.18333333730697632
+                ],
+                [
+                    0.03612903133034706,
+                    0.34583333134651184
+                ],
+                [
+                    0.18451613187789917,
+                    0.07500000298023224
+                ],
+                [
+                    1,
+                    0
+                ]
+            ]
+        },
+        "enabled": true,
+        "filter": {
+            "cutoff": 13516.609375,
+            "enabled": true,
+            "factor": 0.35249999165534973,
+            "type": 1
+        },
+        "freq_env": {
+            "amplitude": 150,
+            "points": [
+            ]
+        },
+        "function": 4
+    }
+}

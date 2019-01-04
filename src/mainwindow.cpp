@@ -48,11 +48,12 @@
 #define GEONKICK_MAINWINDOW_WIDTH  940
 #define GEONKICK_MAINWINDOW_HEIGHT 760
 
-MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent) :
+MainWindow::MainWindow(GeonkickApi *api, const QString &preset, GeonkickWidget *parent) :
         GeonkickWidget(parent),
         geonkickApi(api),
         topBar(nullptr),
-        envelopeWidget(nullptr)
+        envelopeWidget(nullptr),
+        presetName(preset)
 {
         setWindowTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
@@ -101,6 +102,12 @@ bool MainWindow::init(void)
         connect(this, SIGNAL(updateGui()), controlAreaWidget, SIGNAL(update()));
         mainLayout->addSpacing(5);
         mainLayout->addWidget(controlAreaWidget);
+
+        if (!presetName.isEmpty()) {
+                setPreset(presetName);
+                emit updateGui();
+        }
+
         return true;
 }
 
@@ -113,7 +120,7 @@ void MainWindow::openExportDialog()
 void MainWindow::savePreset()
 {
         QFileDialog fileDialog(this, tr("Save Preset") + QString(" - ") + QString(GEOKICK_APP_NAME),
-                               "./",
+                               "",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
         if (fileDialog.exec() == QDialog::Rejected)
@@ -154,7 +161,7 @@ void MainWindow::savePreset()
 
 void MainWindow::openPreset()
 {
-        QFileDialog fileDialog(this, tr("Open Preset")  + QString(" - ") + QString(GEOKICK_APP_NAME), "./",
+        QFileDialog fileDialog(this, tr("Open Preset")  + QString(" - ") + QString(GEOKICK_APP_NAME), "",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
         if (fileDialog.exec() == QDialog::Rejected)
@@ -162,12 +169,17 @@ void MainWindow::openPreset()
 
         QStringList files = fileDialog.selectedFiles();
         if (files.isEmpty() || files.first().isEmpty()) {
-                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't save preset");
+                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't open preset");
                 return;
         }
 
+        setPreset(files.first());
+        emit updateGui();
+}
 
-        QFile file(files.first());
+void MainWindow::setPreset(const QString &fileName)
+{
+        QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't open preset");
                 return;
@@ -182,7 +194,6 @@ void MainWindow::openPreset()
                 topBar->setPresetName(QFileInfo(file).baseName());
         }
         file.close();
-        emit updateGui();
 }
 
 void MainWindow::openAboutDialog()
