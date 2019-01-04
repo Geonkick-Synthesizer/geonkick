@@ -8,11 +8,11 @@ Details: Geonkick is a synthesizer that can synthesize elements
 
 License: GPLv3
 
+Version: 1.0
+
 Author: Iurie Nistor
 
 Source code repository: https://gitlab.com/iurie/geonkick
-
-Status: Active development. No release yet.
 
 ![Screenshot](data/screenshot.png)
 
@@ -30,7 +30,7 @@ Status: Active development. No release yet.
      - amplitude envelope & kick length
      - low & high pass filter
      - limiter
-     - compression - still in development
+     - compression
      - distortion
 * Jack support:
      - 1 MIDI in, key velocity sensitive
@@ -91,4 +91,17 @@ installs, runs, and if there any issues.
 | Ubuntu 18.10/64bit  | repository  | OK  | OK  | OK  |   |
 | Fedora 29 / 64 bit  | repository | OK  | OK  | OK  |   |
 | Ubuntu Studio  | repository  | OK  | OK  | OK  |   |
+
+#### Short user guide
+
+###### Shortcut Keys
+
+* Ctrl + R - reload default state, clean everything
+* k - play kick
+* Ctrl + H - hide envelope, only kick graph is shown
+
+###### Examples
+
+Under the directory geonkick/examples there are some example presets that can be opened and play with.
+
 
