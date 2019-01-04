@@ -79,7 +79,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
         state->setCompressorThreshold(0);
         state->setCompressorRatio(1);
         state->setCompressorKnee(0);
-        state->setCompressorMakeup(0);
+        state->setCompressorMakeup(1);
         state->enableDistortion(false);
         state->setDistortionVolume(10);
         state->setDistortionDrive(0);

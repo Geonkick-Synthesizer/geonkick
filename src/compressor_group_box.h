@@ -39,19 +39,15 @@ class CompressorGroupBox: public GeonkickGroupBox
  public slots:
          void update();
          void setAttack(int val);
-         void setRelease(int val);
          void setThreshold(int val);
          void setRatio(int val);
-         void setKnee(int val);
          void setMakeup(int val);
 
  private:
         GeonkickApi *geonkickApi;
         GeonkickSlider *attackSlider;
-        GeonkickSlider *releaseSlider;
         GeonkickSlider *thresholdSlider;
         GeonkickSlider *ratioSlider;
-        GeonkickSlider *kneeSlider;
         GeonkickSlider *makeupSlider;
         GeonkickCheckbox *compressorCheckbox;
 };

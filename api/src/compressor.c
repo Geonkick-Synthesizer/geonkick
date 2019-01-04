@@ -115,9 +115,9 @@ gkick_compressor_val(struct gkick_compressor *compressor,
 
         gkick_compressor_lock(compressor);
         threshold = pow(10, compressor->threshold / 20);
-        if (fabs(compressor->threshold) < DBL_EPSILON || compressor->ratio <= 1) {
+        if (fabs(compressor->threshold) < DBL_EPSILON || compressor->ratio < 1) {
                 gkick_compressor_unlock(compressor);
-                *out_val = in_val;
+                *out_val = compressor->makeup * in_val;
                 return GEONKICK_OK;
         }
 
@@ -156,6 +156,7 @@ gkick_compressor_val(struct gkick_compressor *compressor,
                 *out_val = in_val;
         }
 
+        *out_val *= compressor->makeup;
         gkick_compressor_unlock(compressor);
         *out_val = sign * (*out_val);
         return GEONKICK_OK;
