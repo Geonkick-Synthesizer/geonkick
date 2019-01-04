@@ -96,9 +96,9 @@ installs, runs, and if there any issues.
 
 ###### Shortcut Keys
 
-* Ctrl + R - reload default state, clean everything
+* Ctrl + r - reload default state, clean everything
 * k - play kick
-* Ctrl + H - hide envelope, only kick graph is shown
+* Ctrl + h - hide envelope, only kick graph is shown
 
 ###### Examples
 
