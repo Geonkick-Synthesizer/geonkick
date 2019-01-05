@@ -92,6 +92,15 @@ installs, runs, and if there any issues.
 | Fedora 29 / 64 bit  | repository | OK  | OK  | OK  |   |
 | Ubuntu Studio  | repository  | OK  | OK  | OK  |   |
 
+#### Road map
+
+Here are a list of planned milestones and issues opened for them,
+dates when will be started and finished.
+
+* Version 1.0 - released
+* Version 1.x - https://gitlab.com/iurie/geonkick/milestones/3
+* Version 2.0 - https://gitlab.com/iurie/geonkick/milestones/2
+
 #### Short user guide
 
 ###### Shortcut Keys
@@ -108,5 +117,4 @@ installs, runs, and if there any issues.
 ###### Examples
 
 Under the directory geonkick/examples there are some example presets that can be opened and play with.
-
 
