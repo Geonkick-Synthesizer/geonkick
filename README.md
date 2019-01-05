@@ -100,6 +100,11 @@ installs, runs, and if there any issues.
 * k - play kick
 * Ctrl + h - hide envelope, only kick graph is shown
 
+###### Working with envelopes
+* Left double click to add a new point
+* Left click on the point and move the point
+* Right click on the point to remove it
+
 ###### Examples
 
 Under the directory geonkick/examples there are some example presets that can be opened and play with.
