@@ -114,6 +114,12 @@ dates when will be started and finished.
 * Left click on the point and move the point
 * Right click on the point to remove it
 
+###### Play the sound
+Geonkick uses Jack and will create two audio outputs and one MIDI input.
+If audio outputs are connected there are two ways to play the sound:
+   * by MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
+   * by pressing the key 'k'
+
 ###### Examples
 
 Under the directory geonkick/examples there are some example presets that can be opened and play with.
