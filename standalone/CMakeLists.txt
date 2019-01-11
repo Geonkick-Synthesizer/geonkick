@@ -14,5 +14,5 @@ target_link_libraries(geonkick
 target_link_libraries(geonkick ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
 target_link_libraries(geonkick "-ljack -lsndfile -lrt -lm -ldl -lpthread")
 
-install(TARGETS geonkick DESTINATION /usr/local/bin)
+install(TARGETS geonkick DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 

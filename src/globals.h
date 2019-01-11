@@ -30,8 +30,8 @@
 #include <memory>
 
 #define GEOKICK_APP_NAME "Geonkick"
-#define GEOKICK_APP_VERION 0x010000
-#define GEOKICK_APP_VERION_STRING "1.0"
+#define GEOKICK_APP_VERION 0x010100
+#define GEOKICK_APP_VERION_STRING "1.1"
 
 #define GEONKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
 #define GEONKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
