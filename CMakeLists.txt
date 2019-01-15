@@ -2,9 +2,14 @@ cmake_minimum_required (VERSION 3.7)
 
 project(geonkick VERSION 1.0.0)
 
+if (NOT CMAKE_BUILD_TYPE)
+  message(STATUS "no build type selected, default to Release")
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type Release" FORCE)
+endif()
+
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -O2")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
+set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS}")
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
@@ -86,7 +91,10 @@ option(ENABLE_STANDALONE "Enable build for standalone application" ON)
 # It may cause crashes for various reasons.
 option(ENABLE_LV2 "Enable build for LV2 plugin" OFF)
 
-option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Enable application logging")
+    option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
+endif()
 
 # Enables the double precision calculation for API.
 # By default is single point precision.
