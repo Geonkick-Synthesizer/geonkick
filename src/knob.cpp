@@ -59,6 +59,7 @@ void Knob::setKnobImage(const QPixmap &pixmap)
 void
 Knob::paintWidget(QPaintEvent *event)
 {
+        Q_UNUSED(event)
         QPainter painter(this);
         if (!knobPixmap.isNull()) {
                 painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
@@ -90,6 +91,7 @@ Knob::mousePressEvent(QMouseEvent *event)
 void
 Knob::mouseReleaseEvent(QMouseEvent *event)
 {
+        Q_UNUSED(event);
         isSelected = false;
 }
 

@@ -79,6 +79,7 @@ void Limiter::updateMeterTimeout()
 
 void Limiter::resizeEvent(QResizeEvent *event)
 {
+        Q_UNUSED(event);
         faderSlider->setFixedSize(20, meterImage.size().height() - 3);
         update();
 }

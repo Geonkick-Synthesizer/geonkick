@@ -39,7 +39,7 @@ gkick_envelope_create(void)
 gkick_real
 gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm)
 {
-	gkick_real x1, y1, x2, y2, ym;
+	gkick_real x1, y1 = 0, x2, y2 = 0, ym;
 	struct gkick_envelope_point *p;
 
 	if (envelope == NULL ||
@@ -81,11 +81,10 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm)
 		p = p->prev;
 	}
 
-	if (fabsl(x2 - x1) < DBL_EPSILON) {
-		return y1;
-	} else {
-		ym = (y1 * (x2 - xm) + y2 * (xm - x1)) / (x2 - x1);
-	}
+	if (fabsl(x2 - x1) < DBL_EPSILON)
+	        ym = y1;
+	else
+	        ym = (y1 * (x2 - xm) + y2 * (xm - x1)) / (x2 - x1);
 
 	return ym;
 }

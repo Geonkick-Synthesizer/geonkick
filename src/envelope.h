@@ -64,7 +64,7 @@ class Envelope: public QObject
         const QRect& getDrawingArea();
 
  public slots:
-         virtual void setEnvelopeLengh(double len) {}
+         virtual void setEnvelopeLengh(double len) { Q_UNUSED(len); }
          bool setType(Type type);
          void addSupportedType(Type type);
          void removeSupportedType(Type type);
