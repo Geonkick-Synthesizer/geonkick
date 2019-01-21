@@ -97,9 +97,7 @@ installs, runs, and if there any issues.
 Here are a list of planned milestones and issues opened for them,
 dates when will be started and finished.
 
-* Version 1.0 - released
-* Version 1.x - https://gitlab.com/iurie/geonkick/milestones/3
-* Version 2.0 - https://gitlab.com/iurie/geonkick/milestones/2
+Milestones: https://gitlab.com/iurie/geonkick/milestones
 
 #### Short user guide
 
