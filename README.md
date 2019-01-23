@@ -92,6 +92,10 @@ installs, runs, and if there any issues.
 | Fedora 29 / 64 bit  | repository | OK  | OK  | OK  |   |
 | Ubuntu Studio  | repository  | OK  | OK  | OK  |   |
 
+#### Packaging
+
+* [Package](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
+
 #### Road map
 
 Here are a list of planned milestones and issues opened for them,
