@@ -34,6 +34,8 @@
 #include "geonkick_api.h"
 #include "geonkick_state.h"
 
+#include <RkWidget.h>
+
 #include <vector>
 #include <memory>
 
@@ -273,7 +275,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                                          LV2UI_Widget*             widget,
                                          const LV2_Feature* const* features)
 {
-        MainWindow *mainWindow = nullptr;
+        RkWidget *mainWindow = nullptr;
         if (!features) {
                 return NULL;
         }
@@ -281,31 +283,32 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         const LV2_Feature *feature;
         while ((feature = *features)) {
                 if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
-                        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
-                        if (!geonkickLv2PLugin->qtAppExists()) {
+                        //                        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
+                        /*if (!geonkickLv2PLugin->qtAppExists()) {
                                 GEONKICK_LOG_ERROR("the host doesn't provide Qt5 support");
                                 return nullptr;
-                        }
-                        mainWindow = new MainWindow(geonkickLv2PLugin->getApi());
-                        if (!mainWindow->init()) {
-                                delete mainWindow;
-                                return nullptr;
-                        } else {
-                                mainWindow->show();
-                        }
+                                }*/
+                        GEONKICK_LOG_INFO("create RkWidget");
+                        mainWindow = new RkWidget();
+                        //if (!mainWindow->init()) {
+                        //        delete mainWindow;
+                        //        return nullptr;
+                        //} else {
+                        mainWindow->show();
+                                //}
                         break;
                 }
                 features++;
         }
 
-        *widget = mainWindow;
+        *widget = mainWindow->nativeWindow();
         return mainWindow;
 }
 
 static void gkick_cleanup_ui(LV2UI_Handle handle)
 {
         if (handle) {
-                delete static_cast<MainWindow*>(handle);
+                delete static_cast<RkWidget*>(handle);
         }
 }
 

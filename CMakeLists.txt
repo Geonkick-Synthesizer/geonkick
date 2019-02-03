@@ -89,7 +89,7 @@ option(ENABLE_STANDALONE "Enable build for standalone application" ON)
 
 # Not recommended for use. Qt support for LV2 is not sutable for this.
 # It may cause crashes for various reasons.
-option(ENABLE_LV2 "Enable build for LV2 plugin" OFF)
+option(ENABLE_LV2 "Enable build for LV2 plugin" ON)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
@@ -159,6 +159,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 add_definitions(-fPIC)
+include_directories(/usr/local/include/redkite)
 include_directories(${Qt5Core_INCLUDES}
   ${Qt5Core_INCLUDE_DIRS}
   ${Qt5Gui_INCLUDES}
