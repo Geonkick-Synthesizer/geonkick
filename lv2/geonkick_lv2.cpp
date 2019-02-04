@@ -275,33 +275,69 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                                          LV2UI_Widget*             widget,
                                          const LV2_Feature* const* features)
 {
-        RkWidget *mainWindow = nullptr;
+        //        RkWidget *mainWindow = nullptr;
         if (!features) {
                 return NULL;
         }
 
+        void *parent = nullptr;
         const LV2_Feature *feature;
         while ((feature = *features)) {
-                if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
+                //               if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
                         //                        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
                         /*if (!geonkickLv2PLugin->qtAppExists()) {
                                 GEONKICK_LOG_ERROR("the host doesn't provide Qt5 support");
                                 return nullptr;
                                 }*/
-                        GEONKICK_LOG_INFO("create RkWidget");
-                        mainWindow = new RkWidget();
-                        //if (!mainWindow->init()) {
-                        //        delete mainWindow;
-                        //        return nullptr;
-                        //} else {
-                        mainWindow->show();
                                 //}
+                //        break;
+                // }
+                if (std::string(feature->URI) == std::string(LV2_UI__parent)) {
+                        GEONKICK_LOG_INFO("parent found");
+                        parent = feature->data;
+                        GEONKICK_LOG_INFO("parent:" << parent);
                         break;
                 }
                 features++;
         }
 
-        *widget = mainWindow->nativeWindow();
+        std::string *mainWindow = new std::string("hehe");
+        const uintptr_t winId = (uintptr_t)parent;
+        Display* xDisplay = XOpenDisplay(nullptr);
+        int screenNumber = DefaultScreen(xDisplay);
+        //        Window xWindow = XCreateSimpleWindow(xDisplay, winId,
+        //                                   10, 10, 250, 250, 0,
+        //                                   997799,
+        //                                   997799);
+
+	Colormap cmap = XCreateColormap(
+		xDisplay, (uintptr_t)parent, CopyFromParent, AllocNone);
+
+	XSetWindowAttributes attr;
+	memset(&attr, 0, sizeof(XSetWindowAttributes));
+	attr.border_pixel = BlackPixel(xDisplay, screenNumber);
+	attr.colormap     = cmap;
+	attr.event_mask   = (ExposureMask | StructureNotifyMask |
+	                     EnterWindowMask | LeaveWindowMask |
+	                     KeyPressMask | KeyReleaseMask |
+	                     ButtonPressMask | ButtonReleaseMask |
+	                     PointerMotionMask | FocusChangeMask);
+
+
+        Window xWindow = XCreateWindow(xDisplay, (uintptr_t)parent, 0, 0, 250, 250, 0,
+                                       CopyFromParent,
+                                       CopyFromParent,
+                                       CopyFromParent,
+                                       CWBorderPixel | CWColormap | CWEventMask, &attr);
+
+        //        GEONKICK_LOG_INFO("create RkWidget");
+        //        mainWindow = new RkWidget(winId);
+        // mainWindow->show();
+        XSelectInput(xDisplay, xWindow, ExposureMask | KeyPressMask);
+        /* map (show) the window */
+        XMapWindow(xDisplay, xWindow);
+
+        *widget = (LV2UI_Widget)static_cast<uintptr_t>(xWindow);
         return mainWindow;
 }
 
@@ -320,12 +356,27 @@ static void gkick_port_event_ui(LV2UI_Handle ui,
 {
 }
 
+static int gkick_idle(LV2UI_Handle ui)
+{
+        // TODO: implement.
+        return 1;
+}
+
+static const void* gkick_extension_data(const char* uri)
+{
+    static const LV2UI_Idle_Interface idleInterface = {gkick_idle};
+
+    if (std::string(uri) == std::string(LV2_UI__idleInterface))
+            return &idleInterface;
+    return nullptr;
+}
+
 static const LV2UI_Descriptor gkick_descriptor_ui = {
 	GEONKICK_URI_UI,
 	gkick_instantiate_ui,
 	gkick_cleanup_ui,
 	gkick_port_event_ui,
-	NULL
+	gkick_extension_data
 };
 
 const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index)
