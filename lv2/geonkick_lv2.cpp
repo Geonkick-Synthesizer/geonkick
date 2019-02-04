@@ -263,6 +263,9 @@ private:
         std::atomic<bool> kickIsUpdated;
 };
 
+Display* xDisplay = nullptr;
+int screenNumber;
+
 /**
  * Creates and shows an instance of Geonkick GUI that takes
  * the geonkick API instance as a pointer.
@@ -283,15 +286,6 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         void *parent = nullptr;
         const LV2_Feature *feature;
         while ((feature = *features)) {
-                //               if (QByteArray(feature->URI) == QByteArray(LV2_INSTANCE_ACCESS_URI)) {
-                        //                        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
-                        /*if (!geonkickLv2PLugin->qtAppExists()) {
-                                GEONKICK_LOG_ERROR("the host doesn't provide Qt5 support");
-                                return nullptr;
-                                }*/
-                                //}
-                //        break;
-                // }
                 if (std::string(feature->URI) == std::string(LV2_UI__parent)) {
                         GEONKICK_LOG_INFO("parent found");
                         parent = feature->data;
@@ -301,34 +295,34 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                 features++;
         }
 
-        std::string *mainWindow = new std::string("hehe");
+        uintptr_t *mainWindow = new uintptr_t;
         const uintptr_t winId = (uintptr_t)parent;
-        Display* xDisplay = XOpenDisplay(nullptr);
-        int screenNumber = DefaultScreen(xDisplay);
-        //        Window xWindow = XCreateSimpleWindow(xDisplay, winId,
-        //                                   10, 10, 250, 250, 0,
-        //                                   997799,
-        //                                   997799);
+        xDisplay = XOpenDisplay(nullptr);
+        screenNumber = DefaultScreen(xDisplay);
+        Window xWindow = XCreateSimpleWindow(xDisplay, (uintptr_t)parent,
+                                           10, 10, 250, 250, 0,
+                                           997799,
+                                           997799);
 
-	Colormap cmap = XCreateColormap(
-		xDisplay, (uintptr_t)parent, CopyFromParent, AllocNone);
+	//Colormap cmap = XCreateColormap(
+        //		xDisplay, (uintptr_t)parent, CopyFromParent, AllocNone);
 
-	XSetWindowAttributes attr;
-	memset(&attr, 0, sizeof(XSetWindowAttributes));
-	attr.border_pixel = BlackPixel(xDisplay, screenNumber);
-	attr.colormap     = cmap;
-	attr.event_mask   = (ExposureMask | StructureNotifyMask |
-	                     EnterWindowMask | LeaveWindowMask |
-	                     KeyPressMask | KeyReleaseMask |
-	                     ButtonPressMask | ButtonReleaseMask |
-	                     PointerMotionMask | FocusChangeMask);
+//XSetWindowAttributes attr;
+//	memset(&attr, 0, sizeof(XSetWindowAttributes));
+//	attr.border_pixel = BlackPixel(xDisplay, screenNumber);
+//	attr.colormap     = cmap;
+//	attr.event_mask   = (ExposureMask | StructureNotifyMask |
+//	                     EnterWindowMask | LeaveWindowMask |
+//	                     KeyPressMask | KeyReleaseMask |
+//	                     ButtonPressMask | ButtonReleaseMask |
+//	                     PointerMotionMask | FocusChangeMask);
 
 
-        Window xWindow = XCreateWindow(xDisplay, (uintptr_t)parent, 0, 0, 250, 250, 0,
-                                       CopyFromParent,
-                                       CopyFromParent,
-                                       CopyFromParent,
-                                       CWBorderPixel | CWColormap | CWEventMask, &attr);
+//        Window xWindow = XCreateWindow(xDisplay, (uintptr_t)parent, 0, 0, 250, 250, 0,
+//                                       CopyFromParent,
+//                                       CopyFromParent,
+//                                       CopyFromParent,
+//                                       CWBorderPixel | CWColormap | CWEventMask, &attr);
 
         //        GEONKICK_LOG_INFO("create RkWidget");
         //        mainWindow = new RkWidget(winId);
@@ -338,13 +332,14 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         XMapWindow(xDisplay, xWindow);
 
         *widget = (LV2UI_Widget)static_cast<uintptr_t>(xWindow);
+        *mainWindow = static_cast<uintptr_t>(xWindow);
         return mainWindow;
 }
 
 static void gkick_cleanup_ui(LV2UI_Handle handle)
 {
         if (handle) {
-                delete static_cast<RkWidget*>(handle);
+                delete static_cast<uintptr_t*>(handle);
         }
 }
 
@@ -358,7 +353,16 @@ static void gkick_port_event_ui(LV2UI_Handle ui,
 
 static int gkick_idle(LV2UI_Handle ui)
 {
-        // TODO: implement.
+        uintptr_t window = *static_cast<uintptr_t*>(ui);
+        XEvent event;
+	while (XPending(xDisplay) > 0) {
+		XNextEvent(xDisplay, &event);
+                if (event.type == Expose) {
+                        XFillRectangle(xDisplay, (Window)window, DefaultGC(xDisplay, screenNumber), 20, 20, 10, 10);
+                                XDrawString(xDisplay, (Window)window, DefaultGC(xDisplay, screenNumber), 50, 50, "Hello!", strlen("Hello!"));
+                }
+        }
+
         return 1;
 }
 
