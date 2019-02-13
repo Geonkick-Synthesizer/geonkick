@@ -31,27 +31,23 @@
 #include <lv2/lv2plug.in/ns/ext/state/state.h>
 
 #include "mainwindow.h"
-#include "geonkick_api.h"
-#include "geonkick_state.h"
+//#include "geonkick_api.h"
+//#include "geonkick_state.h"
 
 #include <RkMain.h>
-#include <RkWidget.h>
 #include <RkPlatform.h>
 
 #include <vector>
 #include <memory>
-
-#include <QObject>
-#include <QApplication>
+#include <atomic>
 
 #define GEONKICK_URI "http://geontime.com/geonkick"
 #define GEONKICK_URI_UI "http://geontime.com/geonkick#ui"
 #define GEONKICK_URI_STATE "http://geontime.com/geonkick#state"
 #define GEONKICK_URI_STATE_CHANGED "http://lv2plug.in/ns/ext/state#StateChanged"
 
-class GeonkickLv2Plugin : public QObject
+class GeonkickLv2Plugin
 {
-  Q_OBJECT
   public:
         enum class PortType: int {
                 MidiIn            = 0,
@@ -60,9 +56,8 @@ class GeonkickLv2Plugin : public QObject
                 NotifyHostChannel = 3,
         };
 
-        GeonkickLv2Plugin()
-                : QObject(nullptr),
-                  geonkickApi(new GeonkickApi),
+        GeonkickLv2Plugin() :
+        //                  geonkickApi(new GeonkickApi),
                   midiIn(nullptr),
                   notifyHostChannel(nullptr),
                   leftChannel(nullptr),
@@ -70,18 +65,19 @@ class GeonkickLv2Plugin : public QObject
                   atomInfo{0},
                   kickIsUpdated(false)
         {
-                connect(geonkickApi, SIGNAL(kickUpdated()), this, SLOT(kickUpdated()));
-        }
-
-        bool init()
-        {
-                return geonkickApi->init();
+                //                connect(geonkickApi, SIGNAL(kickUpdated()), this, SLOT(kickUpdated()));
         }
 
         ~GeonkickLv2Plugin()
         {
-                if (geonkickApi)
-                        delete geonkickApi;
+                 //                if (geonkickApi)
+                //        delete geonkickApi;
+        }
+
+        bool init()
+        {
+                 //return geonkickApi->init();
+                return true;
         }
 
         void setAudioChannel(float *data, PortType port)
@@ -152,21 +148,21 @@ class GeonkickLv2Plugin : public QObject
                 return atomInfo.atomObject;
         }
 
-        void setStateData(const QByteArray &data, int flags = 0)
-        {
-                Q_UNUSED(flags);
-                geonkickApi->setState(data);
-        }
+        //        void setStateData(const QByteArray &data, int flags = 0)
+        //{
+        //        Q_UNUSED(flags);
+                //                geonkickApi->setState(data);
+        //}
 
-        QByteArray getStateData()
-        {
-                return geonkickApi->getState()->toRawData();
-        }
+        //        QByteArray getStateData()
+        //        {
+        //                return geonkickApi->getState()->toRawData();
+        //        }
 
-        GeonkickApi* getApi() const
-        {
-                return geonkickApi;
-        }
+        //        GeonkickApi* getApi() const
+        //{
+        //        return geonkickApi;
+        //}
 
         void processSamples(int nsamples)
         {
@@ -180,25 +176,25 @@ class GeonkickLv2Plugin : public QObject
                                 switch (lv2_midi_message_type(msg))
                                 {
                                 case LV2_MIDI_MSG_NOTE_ON:
-                                        geonkickApi->setKeyPressed(true, msg[2]);
+                                        //                                        geonkickApi->setKeyPressed(true, msg[2]);
                                                 break;
                                 case LV2_MIDI_MSG_NOTE_OFF:
-                                        geonkickApi->setKeyPressed(false, msg[2]);
+                                        //                                        geonkickApi->setKeyPressed(false, msg[2]);
                                                 break;
                                 default:
                                         break;
                                 }
                                 it = lv2_atom_sequence_next(it);
                         }
-                        auto val = geonkickApi->getAudioFrame();
-                        leftChannel[i]  = val;
-                        rightChannel[i] = val;
+                        //                        auto val = geonkickApi->getAudioFrame();
+                        //leftChannel[i]  = val;
+                        //rightChannel[i] = val;
                 }
 
-                if (isKickUpdated()) {
+                /*                if (isKickUpdated()) {
                         notifyHost();
                         setKickUpdated(false);
-                }
+                        }*/
         }
 
         void notifyHost() const
@@ -224,13 +220,8 @@ class GeonkickLv2Plugin : public QObject
                 }
         }
 
-        bool qtAppExists() const
-        {
-                return QCoreApplication::instance() != nullptr;
-        }
-
 protected:
-        void setKickUpdated(bool b)
+        /*        void setKickUpdated(bool b)
         {
                 kickIsUpdated = b;
         }
@@ -238,16 +229,10 @@ protected:
         bool isKickUpdated() const
         {
                 return kickIsUpdated;
-        }
-
-protected slots:
-        void kickUpdated()
-        {
-                kickIsUpdated = true;
-        }
+                }*/
 
 private:
-        GeonkickApi *geonkickApi;
+        //        GeonkickApi *geonkickApi;
         LV2_Atom_Sequence *midiIn;
         LV2_Atom_Sequence *notifyHostChannel;
         float *leftChannel;
@@ -265,9 +250,6 @@ private:
         std::atomic<bool> kickIsUpdated;
 };
 
-Display* xDisplay = nullptr;
-int screenNumber;
-
 /**
  * Creates and shows an instance of Geonkick GUI that takes
  * the geonkick API instance as a pointer.
@@ -280,9 +262,8 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                                          LV2UI_Widget*             widget,
                                          const LV2_Feature* const* features)
 {
-        //        RkWidget *mainWindow = nullptr;
         if (!features) {
-                return NULL;
+                return nullptr;
         }
 
         void *parent = nullptr;
@@ -291,26 +272,29 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                 if (std::string(feature->URI) == std::string(LV2_UI__parent)) {
                         GEONKICK_LOG_INFO("parent found");
                         parent = feature->data;
-                        GEONKICK_LOG_INFO("parent:" << parent);
                         break;
                 }
                 features++;
         }
 
-        // X11 specific code.
+        // Get the info about X Window parent window.
         const uintptr_t parentWinId = (uintptr_t)parent;
-        auto xDisplay = XOpenDisplay(nullptr);
-        auto screenNumber = DefaultScreen(xDisplay);
+        Display* xDisplay = XOpenDisplay(nullptr);
+        int screenNumber = DefaultScreen(xDisplay);
         auto info = rk_from_native_x11(xDisplay, screenNumber, parentWinId);
-        // ----
 
-        auto rkMain = new RkMain(0, 0);
-        auto myWidget = new RkWidget(info);
-        myWidget->show();
-        rkMain->setTopLevelWindow(myWidget);
-        auto nativeWindow = myWidget->nativeWindowInfo()->window;
-        *widget = (LV2UI_Widget)static_cast<uintptr_t>(nativeWindow);
-        return rkMain;
+        auto guiApp = new RkMain();
+        auto mainWidget = new MainWindow(info);
+        if (!guiApp->setTopLevelWindow(mainWidget)) {
+                GEONKICK_LOG_ERROR("can't create gui");
+                delete guiApp;
+                return nullptr;
+        }
+
+        mainWidget->show();
+        auto winId = mainWidget->nativeWindowInfo()->window;
+        *widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
+        return static_cast<LV2UI_Handle>(guiApp);
 }
 
 static void gkick_cleanup_ui(LV2UI_Handle handle)
@@ -378,7 +362,7 @@ static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
 
         const LV2_Feature *feature;
         while ((feature = *features)) {
-                if (QByteArray(feature->URI) == QByteArray(LV2_URID__map)) {
+                if (std::string(feature->URI) == std::string(LV2_URID__map)) {
                         auto uridMap = static_cast<LV2_URID_Map*>(feature->data);
                         if (uridMap && uridMap->map && uridMap->handle) {
                                 geonkickLv2PLugin->setStateId(uridMap->map(uridMap->handle, GEONKICK_URI_STATE));
@@ -447,10 +431,10 @@ gkick_state_save(LV2_Handle                instance,
 {
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
         if (geonkickLv2PLugin){
-                QByteArray stateData = geonkickLv2PLugin->getStateData();
-                store(handle, geonkickLv2PLugin->getStateId(), stateData.data(),
-                      stateData.size(), geonkickLv2PLugin->getAtomChunkId(),
-                      LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE);
+                //                QByteArray stateData = geonkickLv2PLugin->getStateData();
+                //                store(handle, geonkickLv2PLugin->getStateId(), stateData.data(),
+                //      stateData.size(), geonkickLv2PLugin->getAtomChunkId(),
+                //      LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE);
         }
 
         return LV2_STATE_SUCCESS;
@@ -463,7 +447,7 @@ gkick_state_restore(LV2_Handle                  instance,
                     uint32_t                    flags,
                     const LV2_Feature* const*   features)
 {
-        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
+        /*        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
         if (geonkickLv2PLugin) {
                 size_t size   = 0;
                 LV2_URID type = 0;
@@ -471,14 +455,14 @@ gkick_state_restore(LV2_Handle                  instance,
                                                          &size, &type, &flags);
                 if (data && size > 0)
                         geonkickLv2PLugin->setStateData(QByteArray(data, size), flags);
-        }
+                        }*/
         return LV2_STATE_SUCCESS;
 }
 
 static const void* gkick_extention_data(const char* uri)
 {
         static const LV2_State_Interface state = {gkick_state_save, gkick_state_restore};
-        if (QByteArray(uri) == QByteArray(LV2_STATE__interface)) {
+        if (std::string(uri) == std::string(LV2_STATE__interface)) {
                 return &state;
         }
         return nullptr;
@@ -504,4 +488,3 @@ const LV2_Descriptor* lv2_descriptor(uint32_t index)
 	}
 }
 
-#include "geonkick_lv2.moc"

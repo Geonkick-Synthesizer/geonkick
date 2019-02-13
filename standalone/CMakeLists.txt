@@ -6,13 +6,9 @@ add_executable(geonkick
   ${GKICK_STANDALONE_SOURCES})
 
 add_dependencies(geonkick api_standalone)
-target_link_libraries(geonkick
-  Qt5::Core
-  Qt5::Gui
-  Qt5::Widgets
-  geonkick_common)
+target_link_libraries(geonkick  geonkick_common)
 target_link_libraries(geonkick ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
-target_link_libraries(geonkick "-ljack -lsndfile -lrt -lm -ldl -lpthread")
+target_link_libraries(geonkick "-lredkite -lX11 -ljack -lsndfile -lrt -lm -ldl -lpthread")
 
 install(TARGETS geonkick DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 

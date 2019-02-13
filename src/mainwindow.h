@@ -24,59 +24,59 @@
 #ifndef GEONGKICK_MAINWINDOW_H
 #define GEONGKICK_MAINWINDOW_H
 
-#include "geonkick_widget.h"
-#include "oscillator.h"
-#include "envelope_widget.h"
+//#include "geonkick_widget.h"
+//#include "oscillator.h"
+//#include "envelope_widget.h"
 
-#include <QMainWindow>
+#include "globals.h"
 
-class OscillatorWidget;
+#include <RkWidget.h>
 
-class QPushButton;
-class QCloseEvent;
-class QVBoxLayout;
-class QGroupBox;
-class QRadioButton;
-class QComboBox;
-class QLabel;
-class GeonkickApi;
-class TopBar;
-class EnvelopeWidget;
+//class OscillatorWidget;
 
-class MainWindow : public GeonkickWidget
+//class QPushButton;
+//class QVBoxLayout;
+//class QGroupBox;
+//class QRadioButton;
+//class QComboBox;
+//class QLabel;
+//class GeonkickApi;
+//class TopBar;
+//class EnvelopeWidget;
+
+class MainWindow : public RkWidget
 {
-      Q_OBJECT
-
  public:
 
-      MainWindow(GeonkickApi *api = nullptr, const QString &preset = QString(), GeonkickWidget *parent = nullptr);
+      MainWindow(RkWidget *parent = nullptr);
+      MainWindow(const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
 
  protected:
-      void keyPressEvent(QKeyEvent *event);
-      void keyReleaseEvent(QKeyEvent *event);
-      void setPreset(const QString &fileName);
+      // void keyPressEvent(QKeyEvent *event);
+      // void keyReleaseEvent(QKeyEvent *event);
+      ///void setPreset(const QString &fileName);
 
- protected slots:
-      void openExportDialog();
-      void openPreset();
-      void savePreset();
-      void openAboutDialog();
- signals:
-      void updateGui();
+      // protected slots:
+         //      void openExportDialog();
+         //      void openPreset();
+         //      void savePreset();
+         //      void openAboutDialog();
+         // signals:
+         //      void updateGui();
 
  private:
-      void loadApiDefaultSettings();
-      void loadApiSettings();
+        //      void loadApiDefaultSettings();
+        //      void loadApiSettings();
 
-      GeonkickApi *geonkickApi;
-      std::vector<Oscillator*> oscillators;
-      QVBoxLayout *centralWidgetLayout;
-      QVector<QGroupBox*> envelopeGroupBox;
-      TopBar *topBar;
-      EnvelopeWidget* envelopeWidget;
-      QString presetName;
+        //      GeonkickApi *geonkickApi;
+        //      std::vector<Oscillator*> oscillators;
+        //      QVBoxLayout *centralWidgetLayout;
+        //      QVector<QGroupBox*> envelopeGroupBox;
+        //      TopBar *topBar;
+        //      EnvelopeWidget* envelopeWidget;
+        //      QString presetName;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

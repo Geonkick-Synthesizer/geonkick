@@ -24,19 +24,16 @@
 #ifndef GEONKICK_GLOBALS_H
 #define GEONKICK_GLOBALS_H
 
-#include <QString>
-#include <QDebug>
-
+#include <iostream>
+#include <string>
 #include <memory>
 
 #define GEOKICK_APP_NAME "Geonkick"
-#define GEOKICK_APP_VERION 0x010100
-#define GEOKICK_APP_VERION_STRING "1.1"
+#define GEOKICK_APP_VERION 0x020000
+#define GEOKICK_APP_VERION_STRING "2.0"
 
-#define GEONKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
-#define GEONKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
-#define GEONKICK_LOG_DEBUG(msg) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] " << msg
-
-#define GEONKICK_DEBUG_POINT(point) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] (" << point.x() << ", " << point.y() << ")"
+#define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
+#define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;
+#define GEONKICK_LOG_DEBUG(msg) std::cout << __PRETTY_FUNCTION__ << "[DEBUG] " << msg << std::endl;
 
 #endif // GEONKICK_GLOBALS_H
