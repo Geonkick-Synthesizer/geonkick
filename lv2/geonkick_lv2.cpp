@@ -166,7 +166,7 @@ class GeonkickLv2Plugin
 
         void processSamples(int nsamples)
         {
-                if (!midiIn)
+                /*                if (!midiIn)
                         return;
 
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
@@ -189,7 +189,7 @@ class GeonkickLv2Plugin
                         //                        auto val = geonkickApi->getAudioFrame();
                         //leftChannel[i]  = val;
                         //rightChannel[i] = val;
-                }
+                        }*/
 
                 /*                if (isKickUpdated()) {
                         notifyHost();
@@ -199,7 +199,7 @@ class GeonkickLv2Plugin
 
         void notifyHost() const
         {
-                if (!notifyHostChannel)
+                /*                if (!notifyHostChannel)
                         return;
 
                 auto sequence = static_cast<LV2_Atom_Sequence*>(notifyHostChannel);
@@ -218,6 +218,7 @@ class GeonkickLv2Plugin
                         atomObject->body.otype = getAtomStateChanged();
                         sequence->atom.size += neededAtomSize;
                 }
+                */
         }
 
 protected:
@@ -267,12 +268,21 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         }
 
         void *parent = nullptr;
+        LV2UI_Resize *resize = nullptr;
         const LV2_Feature *feature;
         while ((feature = *features)) {
                 if (std::string(feature->URI) == std::string(LV2_UI__parent)) {
-                        GEONKICK_LOG_INFO("parent found");
+                        GEONKICK_LOG_INFO("LV2_UI__parent: found");
                         parent = feature->data;
-                        break;
+                        if (resize)
+                                break;
+                }
+
+                if (std::string(feature->URI) == std::string(LV2_UI__resize)){
+                        GEONKICK_LOG_INFO("LV2_UI__resize: found");
+                        resize = (LV2UI_Resize*)feature->data;
+                        if (parent)
+                                break;
                 }
                 features++;
         }
@@ -294,11 +304,14 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         mainWidget->show();
         auto winId = mainWidget->nativeWindowInfo()->window;
         *widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
+        auto size = mainWidget->size();
+        resize->ui_resize(resize->handle, size.first, size.second);
         return static_cast<LV2UI_Handle>(guiApp);
 }
 
 static void gkick_cleanup_ui(LV2UI_Handle handle)
 {
+        GEONKICK_LOG_INFO("called");
         if (handle)
                 delete static_cast<RkMain*>(handle);
 }
@@ -314,7 +327,7 @@ static void gkick_port_event_ui(LV2UI_Handle ui,
 static int gkick_idle(LV2UI_Handle ui)
 {
         static_cast<RkMain*>(ui)->exec(false);
-        return 1;
+        return 0;
 }
 
 static const void* gkick_extension_data(const char* uri)
