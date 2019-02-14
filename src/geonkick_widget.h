@@ -26,27 +26,25 @@
 
 #include "globals.h"
 
-#include <QWidget>
-#include <QPainter>
-#include <QStyleOption>
-#include <memory>
+#include <RkWidget.h>
 
-class QPixmap;
+//class QPixmap;
+class RkPaintEvent;
+struct RkNativeWindowInfo;
 
-class GeonkickWidget: public QWidget
+class GeonkickWidget: public RkWidget
 {
- Q_OBJECT
-
  public:
-        GeonkickWidget(GeonkickWidget *parent = nullptr);
+        explicit GeonkickWidget(GeonkickWidget *parent = nullptr);
+        explicit GeonkickWidget(const RkNativeWindowInfo &info);
         virtual ~GeonkickWidget();
-        void setBackgroundImage(const QPixmap &pixmap);
-        void setBackgroundImage(const QString &file);
-        void paintEvent(QPaintEvent *event) final;
-        virtual void paintWidget(QPaintEvent *event);
+        //        void setBackgroundImage(const QPixmap &pixmap);
+        void setBackgroundImage(const std::string &file);
+        void paintEvent(const std::shared_ptr<RkPaintEvent> &event) final;
+        virtual void paintWidget(const std::shared_ptr<RkPaintEvent> &event);
 
- private:
-        QPixmap backgroundImage;
+        // private:
+        //        QPixmap backgroundImage;
 };
 
 #endif // GEONKICK_WIDGET_H

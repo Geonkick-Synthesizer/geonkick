@@ -25,7 +25,7 @@ set(GKICK_API_FLAGS "")
 set(GKICK_API_FLAGS_LV2 "")
 
 set(GKICK_COMMON_HEADERS
-#  ${GKICK_COMMON_DIR}/geonkick_widget.h
+  ${GKICK_COMMON_DIR}/geonkick_widget.h
 #  ${GKICK_COMMON_DIR}/geonkick_label.h
 #  ${GKICK_COMMON_DIR}/geonkick_slider.h
 #  ${GKICK_COMMON_DIR}/geonkick_button.h
@@ -54,7 +54,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/mainwindow.h)
 
 set(GKICK_COMMON_SOURCES
-#  ${GKICK_COMMON_DIR}/geonkick_widget.cpp
+  ${GKICK_COMMON_DIR}/geonkick_widget.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_label.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_button.cpp

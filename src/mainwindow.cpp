@@ -48,8 +48,8 @@
 #define GEONKICK_MAINWINDOW_WIDTH  940
 #define GEONKICK_MAINWINDOW_HEIGHT 760
 
-MainWindow::MainWindow(RkWidget *parent)
-        : RkWidget(parent)
+MainWindow::MainWindow(GeonkickWidget *parent)
+        : GeonkickWidget(parent)
         //        geonkickApi(api),
         //        topBar(nullptr),
         //        envelopeWidget(nullptr),
@@ -62,7 +62,7 @@ MainWindow::MainWindow(RkWidget *parent)
 }
 
 MainWindow::MainWindow(const RkNativeWindowInfo &info)
-        : RkWidget(info)
+        : GeonkickWidget(info)
         //        geonkickApi(api),
         //        topBar(nullptr),
         //        envelopeWidget(nullptr),

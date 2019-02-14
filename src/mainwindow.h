@@ -24,13 +24,11 @@
 #ifndef GEONGKICK_MAINWINDOW_H
 #define GEONGKICK_MAINWINDOW_H
 
-//#include "geonkick_widget.h"
+#include "geonkick_widget.h"
 //#include "oscillator.h"
 //#include "envelope_widget.h"
 
 #include "globals.h"
-
-#include <RkWidget.h>
 
 //class OscillatorWidget;
 
@@ -44,11 +42,11 @@
 //class TopBar;
 //class EnvelopeWidget;
 
-class MainWindow : public RkWidget
+class MainWindow : public GeonkickWidget
 {
  public:
 
-      MainWindow(RkWidget *parent = nullptr);
+      MainWindow(GeonkickWidget *parent = nullptr);
       MainWindow(const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
