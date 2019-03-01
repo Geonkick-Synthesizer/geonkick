@@ -8,7 +8,7 @@ Details: Geonkick is a synthesizer that can synthesize elements
 
 License: GPLv3
 
-Version: 1.0
+Version: 2.0
 
 Author: Iurie Nistor
 
