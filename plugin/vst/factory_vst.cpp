@@ -24,10 +24,9 @@
 #include "controller_vst.h"
 #include "processor_vst.h"
 #include "ids_vst.h"
-#include "version_vst.h"
 
-#include <pluginfactoryvst3.h>
-#include <fplatform.h>
+#include "public.sdk/source/main/pluginfactoryvst3.h"
+#include "pluginterfaces/base/fplatform.h"
 
 #define gkickPluginName		"Geonkick"
 #define gkickOriginalFilename	"Geonkick.vst3"
@@ -42,36 +41,36 @@
 #define gkickLegalCopyright	"Copyright (C) 2019 Iurie Nistor"
 #define gkickLegalTrademarks	"Licence GPLv3"
 
-BEGIN_FACTORY_DEF(stringCompanyName, stringCompanyWeb,	stringCompanyEmail)
+BEGIN_FACTORY_DEF(gkickCompanyName, gkickCompanyWeb, gkickCompanyEmail)
 
 DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstProcessorUID),
-           PClassInfo::kManyInstances,
-           kVstAudioEffectClass,
-           stringPluginName,
-           Vst::kDistributable,
-           PlugType::kFxInstrument,
-           GKICK_APP_VERSION_STR,
-           kVstVersionString,
-           GKickVstProcessor::createInstance)
+			PClassInfo::kManyInstances,
+			kVstAudioEffectClass,
+			gkickPluginName,
+			Vst::kDistributable,
+			"Fx",
+			"2.0.0",
+			kVstVersionString,
+			GKickVstProcessor::createInstance)
 
-DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstControllerUID),
-           PClassInfo::kManyInstances,
-           kVstComponentControllerClass,
-           stringPluginName "Controller",
-           0,
-           "",
-           GKICK_APP_VERSION_STR,
-           kVstVersionString,
-           GKickVstController::createInstance)
+		DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstControllerUID),
+			PClassInfo::kManyInstances,
+			kVstComponentControllerClass,
+			gkickPluginName "Controller",
+			0,
+			"",
+			"2.0.0",
+			kVstVersionString,
+			GKickVstController::createInstance)
 
-END_FACTORY
+		END_FACTORY
 
-bool InitModule()
-{
-	return true;
-}
+		bool InitModule()
+	{
+		return true;
+	}
 
-bool DeinitModule()
-{
-	return true;
-}
+	bool DeinitModule()
+	{
+		return true;
+	}

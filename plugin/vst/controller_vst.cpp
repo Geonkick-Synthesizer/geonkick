@@ -23,30 +23,35 @@
 
 #include "controller_vst.h"
 #include "ids_vst.h"
+#include "globals.h"
 
-#include <fstreamer.h>
-#include <ibstream.h>
+#include "base/source/fstreamer.h"
+#include "pluginterfaces/base/ibstream.h"
 
-tresult PLUGIN_API GKickVstController::initialize(FUnknown* context)
+namespace Steinberg
 {
-        GKICK_LOG_INFO("called");
-	auto res = EditController::initialize(context);
-        GKICK_LOG_INFO("init: " << res);
-	return kResultTrue;
-}
 
-IPlugView* PLUGIN_API GKickVstController::createView(const char* name)
-{
-        GKICK_LOG_INFO("called");
-	if (name && std::string(name) == std::string("editor")) {
-		return new VST3Editor(this, "view", "plug.uidesc");
+	tresult PLUGIN_API GKickVstController::initialize(FUnknown* context)
+	{
+		//GEONKICK_LOG_INFO("called");
+		EditController::initialize(context);
+//		GEONKICK_LOG_INFO("init: " << res);
+		return kResultTrue;
 	}
 
-	return nullptr;
-}
+	IPlugView* PLUGIN_API GKickVstController::createView(const char* name)
+	{
+		//GEONKICK_LOG_INFO("called");
+		//if (name && std::string(name) == std::string("editor"))
+		//	return new VST3Editor(this, "view", "plug.uidesc");
 
-tresult PLUGIN_API GKickVstController::setComponentState(IBStream* state)
-{
-        GKICK_LOG_INFO("called");
-	return kResultOk;
-}
+		return nullptr;
+	}
+
+	tresult PLUGIN_API GKickVstController::setComponentState(IBStream* state)
+	{
+		//GEONKICK_LOG_INFO("called");
+		return kResultOk;
+	}
+
+} // namesapce Steinberg

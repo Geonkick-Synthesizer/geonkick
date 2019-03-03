@@ -24,7 +24,11 @@
 #ifndef GEONKICK_PLUGIN_VST_IDS_H
 #define GEONKICK_PLUGIN_VST_IDS_H
 
-static const FUID GkickVstProcessorUID(0x41E3A6A2, 0xC1991743, 0xA64945DC, 0x3FB7D51D);
-static const FUID GkickVstControllerUID(0xFAF056D1, 0x245C8945, 0x916485C6, 0x714C768E);
+namespace Steinberg
+{
 
+static const FUID GKickVstProcessorUID(0x41E3A6A2, 0xC1991743, 0xA64945DC, 0x3FB7D51D);
+static const FUID GKickVstControllerUID(0xFAF056D1, 0x245C8945, 0x916485C6, 0x714C768E);
+
+} // namespace Steinberg
 #endif // GEONKICK_PLUGIN_VST_IDS_H

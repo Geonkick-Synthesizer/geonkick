@@ -24,19 +24,22 @@
 #ifndef GEONKICK_CONTROLLER_VST_H
 #define GEONKICK_CONTROLLER_VST_H
 
-#include <vsteditcontroller.h>
-#include <vst3editor.h>
+#include "public.sdk/source/vst/vsteditcontroller.h"
+//#include "vstgui4/vstgui/plugin-bindings/vst3editor.h"
 
-class GKickVstController : public Vst::EditController {
- public:
-	static FUnknown* createInstance(void*)
-	{
-		return (Vst::IEditController*)new PlugController();
-	}
+namespace Steinberg {
 
-	tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
-	IPlugView* PLUGIN_API createView(const char* name) SMTG_OVERRIDE;
-	tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE;
-};
+	class GKickVstController : public Vst::EditController {
+	public:
+		static FUnknown* createInstance(void*)
+		{
+			return (Vst::IEditController*)new GKickVstController();
+		}
 
+		tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
+		IPlugView* PLUGIN_API createView(const char* name) SMTG_OVERRIDE;
+		tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE;
+	};
+
+}
 #endif // GEONKICK_CONTROLLER_VST_H

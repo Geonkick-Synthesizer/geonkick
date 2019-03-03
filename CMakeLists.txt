@@ -2,9 +2,11 @@ cmake_minimum_required (VERSION 3.7)
 
 project(geonkick VERSION 1.1.0)
 
+# For Widnows. Temporary.
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_VERSION 1)
 set(GKICK_VST_SDK_PATH C:/VST_SDK/VST3_SDK)
+set(GKICK_REDKITE_SDK_PATH C:/redkite)
 
 option(GKICK_STANDALONE "Enable build for standalone" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -176,8 +178,15 @@ endif(GKICK_PLUGIN)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_definitions(-fPIC)
-include_directories(/usr/local/include/redkite)
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+    include_directories(${GKICK_VST_SDK_PATH})
+	include_directories(${GKICK_REDKITE_SDK_PATH}/include)
+	link_directories(${GKICK_VST_SDK_PATH}/build/lib/Debug)
+	link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
+else ()
+	add_definitions(-fPIC)
+    include_directories(/usr/local/include/redkite)
+endif()
 
 include_directories(${GKICK_COMMON_DIR})
 add_library(geonkick_common STATIC
