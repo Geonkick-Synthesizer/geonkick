@@ -1,5 +1,3 @@
-include(AddVST3Library)
-
 set(GKICK_VST_HEADERS
   ${GKICK_VST_DIR}/controller_vst.h
   ${GKICK_VST_DIR}/ids_vst.h
