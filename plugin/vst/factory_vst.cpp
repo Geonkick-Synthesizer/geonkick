@@ -44,33 +44,35 @@
 BEGIN_FACTORY_DEF(gkickCompanyName, gkickCompanyWeb, gkickCompanyEmail)
 
 DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstProcessorUID),
-			PClassInfo::kManyInstances,
-			kVstAudioEffectClass,
-			gkickPluginName,
-			Vst::kDistributable,
-			"Fx",
-			"2.0.0",
-			kVstVersionString,
-			GKickVstProcessor::createInstance)
+           PClassInfo::kManyInstances,
+           kVstAudioEffectClass,
+           gkickPluginName,
+           Vst::kDistributable,
+           "Fx",
+           "2.0.0",
+           kVstVersionString,
+           GKickVstProcessor::createInstance)
 
-		DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstControllerUID),
-			PClassInfo::kManyInstances,
-			kVstComponentControllerClass,
-			gkickPluginName "Controller",
-			0,
-			"",
-			"2.0.0",
-			kVstVersionString,
-			GKickVstController::createInstance)
+DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstControllerUID),
+           PClassInfo::kManyInstances,
+           kVstComponentControllerClass,
+           gkickPluginName "Controller",
+           0,
+           "",
+           "2.0.0",
+           kVstVersionString,
+           GKickVstController::createInstance)
 
-		END_FACTORY
+END_FACTORY
 
-		bool InitModule()
-	{
-		return true;
-	}
+bool InitModule()
+{
+        RK_LOG_INFO("called");
+        return true;
+}
 
-	bool DeinitModule()
-	{
-		return true;
-	}
+bool DeinitModule()
+{
+        RK_LOG_INFO("called");
+        return true;
+}

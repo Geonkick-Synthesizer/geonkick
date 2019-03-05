@@ -24,6 +24,8 @@
 #ifndef GEONKICK_PLUGIN_VST_IDS_H
 #define GEONKICK_PLUGIN_VST_IDS_H
 
+#include "RkLog.h"
+
 namespace Steinberg
 {
 

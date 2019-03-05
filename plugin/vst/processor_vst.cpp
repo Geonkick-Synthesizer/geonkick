@@ -31,64 +31,71 @@
 namespace Steinberg
 {
 
-	GKickVstProcessor::GKickVstProcessor()
-	{
-		setControllerClass(GKickVstControllerUID);
-	}
+GKickVstProcessor::GKickVstProcessor()
+{
+        RK_LOG_INFO("called");
+        setControllerClass(GKickVstControllerUID);
+}
 
-	tresult PLUGIN_API GKickVstProcessor::initialize(FUnknown* context)
-	{
-		auto res = AudioEffect::initialize(context);
-		if (res != kResultTrue)
-			return kResultFalse;
+tresult PLUGIN_API GKickVstProcessor::initialize(FUnknown* context)
+{
+        RK_LOG_INFO("called");
+        auto res = AudioEffect::initialize(context);
+        if (res != kResultTrue)
+                return kResultFalse;
 
-		addAudioInput(STR16("AudioInput"), Vst::SpeakerArr::kStereo);
-		addAudioOutput(STR16("AudioOutput"), Vst::SpeakerArr::kStereo);
+        addAudioInput(STR16("AudioInput"), Vst::SpeakerArr::kStereo);
+        addAudioOutput(STR16("AudioOutput"), Vst::SpeakerArr::kStereo);
 
-		return kResultTrue;
-	}
+        return kResultTrue;
+}
 
-	tresult PLUGIN_API GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
-		int32 numIns,
-		Vst::SpeakerArrangement* outputs,
-		int32 numOuts)
-	{
-		if (numIns == 1 && numOuts == 1 && inputs[0] == outputs[0])
-			return AudioEffect::setBusArrangements(inputs, numIns, outputs, numOuts);
-		return kResultFalse;
-	}
+tresult PLUGIN_API GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
+                                                         int32 numIns,
+                                                         Vst::SpeakerArrangement* outputs,
+                                                         int32 numOuts)
+{
+        RK_LOG_INFO("called");
+        if (numIns == 1 && numOuts == 1 && inputs[0] == outputs[0])
+                return AudioEffect::setBusArrangements(inputs, numIns, outputs, numOuts);
+        return kResultFalse;
+}
 
-	tresult PLUGIN_API GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
-	{
-		return AudioEffect::setupProcessing(setup);
-	}
+tresult PLUGIN_API GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
+{
+        RK_LOG_INFO("called");
+        return AudioEffect::setupProcessing(setup);
+}
 
-	tresult PLUGIN_API GKickVstProcessor::setActive(TBool state)
-	{
-		return AudioEffect::setActive(state);
-	}
+tresult PLUGIN_API GKickVstProcessor::setActive(TBool state)
+{
+        RK_LOG_INFO("called");
+        return AudioEffect::setActive(state);
+}
 
-	tresult PLUGIN_API GKickVstProcessor::process(Vst::ProcessData& data)
-	{
+tresult PLUGIN_API GKickVstProcessor::process(Vst::ProcessData& data)
+{
+        return kResultOk;
+}
+
+tresult PLUGIN_API GKickVstProcessor::setState(IBStream* state)
+{
+        RK_LOG_INFO("called");
+        if (!state)
+                return kResultFalse;
+        return kResultOk;
+}
+
+tresult PLUGIN_API GKickVstProcessor::getState(IBStream* state)
+{
+        RK_LOG_INFO("called");
 		return kResultOk;
-	}
-
-	tresult PLUGIN_API GKickVstProcessor::setState(IBStream* state)
-	{
-		if (!state)
-			return kResultFalse;
-
-		return kResultOk;
-	}
-
-	tresult PLUGIN_API GKickVstProcessor::getState(IBStream* state)
-	{
-		return kResultOk;
-	}
+}
 
 FUnknown* GKickVstProcessor::createInstance(void*)
 {
-		return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
+        RK_LOG_INFO("called");
+        return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
 }
 
 } // namespace Steinberg
