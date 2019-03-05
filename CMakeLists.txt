@@ -13,7 +13,7 @@ option(GKICK_PLUGIN "Enable build for plugin" ON)
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "no build type selected, set default to Release")
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type Release" FORCE)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type Release" FORCE)
 endif()
 
 set(CMAKE_CXX_STANDARD 14)
@@ -121,6 +121,9 @@ if (ENABLE_DOUBLE_PRECISION)
 endif()
 
 if (ENABLE_LOGGING)
+message(STATUS "set debug level")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
 #  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
 #  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
 #  list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_LEVEL_DEBUG")

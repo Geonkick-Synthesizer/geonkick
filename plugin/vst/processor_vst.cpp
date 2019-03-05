@@ -44,8 +44,8 @@ tresult PLUGIN_API GKickVstProcessor::initialize(FUnknown* context)
         if (res != kResultTrue)
                 return kResultFalse;
 
-        addAudioInput(STR16("AudioInput"), Vst::SpeakerArr::kStereo);
-        addAudioOutput(STR16("AudioOutput"), Vst::SpeakerArr::kStereo);
+        addAudioInput(STR16("AudioInputXX"), Vst::SpeakerArr::kStereo);
+        addAudioOutput(STR16("AudioOutputXX"), Vst::SpeakerArr::kStereo);
 
         return kResultTrue;
 }
