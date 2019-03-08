@@ -1,5 +1,5 @@
 /**
- * File name: controller_vst.cpp
+ * File name: controller_vst.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
@@ -21,35 +21,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "controller_vst.h"
+#ifndef GKICK_VST_CONTROLLER_H
+#define GKICK_VST_CONTROLLER_H
+
 #include "ids_vst.h"
-#include "globals.h"
 
-#include "base/source/fstreamer.h"
-#include "pluginterfaces/base/ibstream.h"
+#include "public.sdk/source/vst/vsteditcontroller.h"
 
-namespace Steinberg
-{
+class GKickVstController : public Vst::EditController {
+ public:
+        static FUnknown* createInstance(void*);
+        tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
+        IPlugView* PLUGIN_API createView(const char* name) SMTG_OVERRIDE;
+        tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE;
+};
 
-tresult PLUGIN_API GKickVstController::initialize(FUnknown* context)
-{
-        RK_LOG_INFO("called");
-        EditController::initialize(context);
-        return kResultTrue;
-}
-
-IPlugView* PLUGIN_API GKickVstController::createView(const char* name)
-{
-        RK_LOG_INFO("called");
-        //if (name && std::string(name) == std::string("editor"))
-        //	return new VST3Editor(this, "view", "plug.uidesc");
-        return nullptr;
-}
-
-tresult PLUGIN_API GKickVstController::setComponentState(IBStream* state)
-{
-        RK_LOG_INFO("called");
-        return kResultOk;
-}
-
-} // namesapce Steinberg
+#endif // GKICK_VST_CONTROLLER_H

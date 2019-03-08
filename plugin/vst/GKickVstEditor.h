@@ -1,5 +1,5 @@
 /**
- * File name: ids_vst.h
+ * File name: GKickVstEditor.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
@@ -21,16 +21,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_PLUGIN_VST_IDS_H
-#define GEONKICK_PLUGIN_VST_IDS_H
+#ifndef GKICK_VST_EDITOR_H
+#define GKICK_VST_EDITOR_H
 
-#include "RkLog.h"
+#include "public.sdk/source/vst/vsteditcontroller.h"
 
-namespace Steinberg
-{
+using namespace Steinberg;
 
-static const FUID GKickVstProcessorUID(0x41E3A6A2, 0xC1991743, 0xA64945DC, 0x3FB7D51D);
-static const FUID GKickVstControllerUID(0xFAF056D1, 0x245C8945, 0x916485C6, 0x714C768E);
+class MainWindow;
+class RkMain;
 
-} // namespace Steinberg
-#endif // GEONKICK_PLUGIN_VST_IDS_H
+class GKickVstEditor : public Vst::EditorView {
+ public:
+        GKickVstEditor(Vst::EditController *controller);
+        ~GKickVstEditor();
+
+        tresult PLUGIN_API isPlatformTypeSupported(Steinberg::FIDString type) final;
+        tresult PLUGIN_API attached(void* parent, FIDString type) final;
+        tresult PLUGIN_API removed() final;
+
+ private:
+        std::unique_ptr<RkMain> guiApp;
+};
+
+#endif // GKICK_VST_EDITOR_H

@@ -21,9 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "controller_vst.h"
-#include "processor_vst.h"
-#include "ids_vst.h"
+#include "GKickVstController.h"
+#include "GKickVstProcesstor.h"
+#include "VstIds.h"
 
 #include "public.sdk/source/main/pluginfactoryvst3.h"
 #include "pluginterfaces/base/fplatform.h"
