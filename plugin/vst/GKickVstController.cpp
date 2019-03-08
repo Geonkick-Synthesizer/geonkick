@@ -27,7 +27,7 @@
 #include "base/source/fstreamer.h"
 #include "pluginterfaces/base/ibstream.h"
 
-static FUnknown* PLUGIN_API GKickVstController::createInstance(void*)
+FUnknown* GKickVstController::createInstance(void*)
 {
         RK_LOG_INFO("called");
         return static_cast<Vst::IEditController*>(new GKickVstController());

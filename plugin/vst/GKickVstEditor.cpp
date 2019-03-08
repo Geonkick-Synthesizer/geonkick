@@ -29,7 +29,7 @@
 
 GKickVstEditor::GKickVstEditor(Vst::EditController *controller)
         : Vst::EditorView(controller)
-        , guiApp(nullptr);
+        , guiApp(nullptr)
 {
 }
 
@@ -37,19 +37,19 @@ GKickVstEditor::~GKickVstEditor()
 {
 }
 
-tresult PLUGIN_API GkickVstEditor::isPlatformTypeSupported(Steinberg::FIDString type)
+tresult PLUGIN_API GKickVstEditor::isPlatformTypeSupported(Steinberg::FIDString type)
 {
         RK_UNUSED(type);
-        return Steinberg::kResultTrue;
+        return kResultTrue;
 }
 
 tresult PLUGIN_API GKickVstEditor::attached(void* parent, FIDString type)
 {
-        guiApp = std::make_unique<RkMain>;
-        auto info = rk_from_native_win(nullptr, nullptr, reinterpret_cast<HWND>(parent);
+        guiApp = std::make_unique<RkMain>();
+        auto info = rk_from_native_win(nullptr, nullptr, reinterpret_cast<HWND>(parent));
         auto mainWindow = new MainWindow(info);
         if (!guiApp->setTopLevelWindow(mainWindow)) {
-                GEONKICK_LOG_ERROR("can't create gui");
+                RK_LOG_ERROR("can't create gui");
                 guiApp.reset(nullptr);
         }
         mainWindow->show();
@@ -61,6 +61,6 @@ tresult PLUGIN_API GKickVstEditor::removed()
 {
         if (guiApp)
                 guiApp.reset(nullptr);
+		return kResultOk;
 }
 
-#endif // GKICK_VST_EDITOR_H

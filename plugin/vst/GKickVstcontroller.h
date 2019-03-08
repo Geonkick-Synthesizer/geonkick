@@ -24,9 +24,11 @@
 #ifndef GKICK_VST_CONTROLLER_H
 #define GKICK_VST_CONTROLLER_H
 
-#include "ids_vst.h"
+#include "VstIds.h"
 
 #include "public.sdk/source/vst/vsteditcontroller.h"
+
+using namespace Steinberg;
 
 class GKickVstController : public Vst::EditController {
  public:

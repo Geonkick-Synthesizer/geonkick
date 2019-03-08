@@ -22,7 +22,7 @@
  */
 
 #include "GKickVstController.h"
-#include "GKickVstProcesstor.h"
+#include "GKickVstProcessor.h"
 #include "VstIds.h"
 
 #include "public.sdk/source/main/pluginfactoryvst3.h"

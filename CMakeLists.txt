@@ -158,6 +158,18 @@ if (GKICK_PLUGIN)
   endif()
 endif(GKICK_PLUGIN)
 
+# Check RekKite GUI Toolkit.
+# TODO...
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_WIN")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_WIN")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_FOR_SHARED")
+else ()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_GNU")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_GNU")
+endif ()
+
 include_directories(${GKICK_API_DIR}/src)
 
 # Define custom target to build the geonkick api for standalone.

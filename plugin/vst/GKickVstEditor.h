@@ -26,6 +26,8 @@
 
 #include "public.sdk/source/vst/vsteditcontroller.h"
 
+#include <memory>
+
 using namespace Steinberg;
 
 class MainWindow;

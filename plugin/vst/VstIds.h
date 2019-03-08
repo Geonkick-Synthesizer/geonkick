@@ -26,9 +26,11 @@
 
 #include "globals.h"
 
+#include "pluginterfaces/base/funknown.h"
+
 #include <RkLog.h>
 
-using namespace Steinberg
+using namespace Steinberg;
 
 static const FUID GKickVstProcessorUID(0x41E3A6A2, 0xC1991743, 0xA64945DC, 0x3FB7D51D);
 static const FUID GKickVstControllerUID(0xFAF056D1, 0x245C8945, 0x916485C6, 0x714C768E);
