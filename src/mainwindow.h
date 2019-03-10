@@ -39,7 +39,7 @@
 //class QComboBox;
 //class QLabel;
 //class GeonkickApi;
-//class TopBar;
+class TopBar;
 //class EnvelopeWidget;
 
 class MainWindow : public GeonkickWidget
@@ -72,7 +72,7 @@ class MainWindow : public GeonkickWidget
         //      std::vector<Oscillator*> oscillators;
         //      QVBoxLayout *centralWidgetLayout;
         //      QVector<QGroupBox*> envelopeGroupBox;
-        //      TopBar *topBar;
+                TopBar *topBar;
         //      EnvelopeWidget* envelopeWidget;
         //      QString presetName;
 };

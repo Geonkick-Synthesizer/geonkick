@@ -22,24 +22,23 @@
  */
 
 #include "top_bar.h"
-#include "geonkick_button.h"
-#include "geonkick_label.h"
+//#include "geonkick_button.h"
+//#include "geonkick_label.h"
 
-#include <QMouseEvent>
-#include <QHBoxLayout>
+//#include <QMouseEvent>
+//#include <QHBoxLayout>
 
 TopBar::TopBar(GeonkickWidget *parent)
         : GeonkickWidget(parent),
-          openFileButton(nullptr),
-          saveFileButton(nullptr),
-          exportFileButton(nullptr),
-          presetNameLabel(nullptr)
+          //          openFileButton(nullptr),
+          //          saveFileButton(nullptr),
+          //          exportFileButton(nullptr),
+          //          presetNameLabel(nullptr)
 {
-        if (parent) {
+        if (parent)
                 setFixedSize(parent->width() , 40);
-        }
 
-        auto buttonsLayout = new QHBoxLayout(this);
+        /*        auto buttonsLayout = new QHBoxLayout(this);
         buttonsLayout->setContentsMargins(15, 0, 0, 0);
         setLayout(buttonsLayout);
 
@@ -82,7 +81,7 @@ TopBar::TopBar(GeonkickWidget *parent)
         buttonsLayout->insertItem(6, new QSpacerItem(15, 1));
         presetNameLabel = new GeonkickLabel(this);
         buttonsLayout->addWidget(presetNameLabel);
-        buttonsLayout->addStretch(1);
+        buttonsLayout->addStretch(1);*/
 }
 
 TopBar::~TopBar()
@@ -91,7 +90,7 @@ TopBar::~TopBar()
 
 void TopBar::setPresetName(const QString &name)
 {
-        if (name.size() > 20) {
+        /*        if (name.size() > 20) {
                 QString preset = name;
                 preset.truncate(20);
                 preset += "...";
@@ -99,5 +98,5 @@ void TopBar::setPresetName(const QString &name)
         }
         else {
                 presetNameLabel->setText(name);
-        }
+                }*/
 }

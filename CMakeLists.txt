@@ -55,7 +55,7 @@ set(GKICK_COMMON_HEADERS
 #  ${GKICK_COMMON_DIR}/geonkick_button.h
 #  ${GKICK_COMMON_DIR}/geonkick_checkbox.h
 #  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
-#  ${GKICK_COMMON_DIR}/top_bar.h
+  ${GKICK_COMMON_DIR}/top_bar.h
 #  ${GKICK_COMMON_DIR}/control_area.h
 #  ${GKICK_COMMON_DIR}/envelope_draw_area.h
 #  ${GKICK_COMMON_DIR}/limiter.h
@@ -84,7 +84,7 @@ set(GKICK_COMMON_SOURCES
 #  ${GKICK_COMMON_DIR}/geonkick_button.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_checkbox.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
-#  ${GKICK_COMMON_DIR}/top_bar.cpp
+  ${GKICK_COMMON_DIR}/top_bar.cpp
 #  ${GKICK_COMMON_DIR}/control_area.cpp
 #  ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
 #  ${GKICK_COMMON_DIR}/limiter.cpp

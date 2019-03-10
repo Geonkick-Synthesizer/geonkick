@@ -26,8 +26,8 @@
 
 #include "geonkick_widget.h"
 
-class GeonkickButton;
-class GeonkickLabel;
+//class GeonkickButton;
+//class GeonkickLabel;
 
 class TopBar : public GeonkickWidget
 {
@@ -37,10 +37,10 @@ class TopBar : public GeonkickWidget
         void setPresetName(const QString &name);
 
  private:
-        GeonkickButton *openFileButton;
-        GeonkickButton *saveFileButton;
-        GeonkickButton *exportFileButton;
-        GeonkickLabel* presetNameLabel;
+        //        GeonkickButton *openFileButton;
+        //        GeonkickButton *saveFileButton;
+        //        GeonkickButton *exportFileButton;
+        //        GeonkickLabel* presetNameLabel;
 };
 
 #endif // GEONKICK_TOP_BAR_H

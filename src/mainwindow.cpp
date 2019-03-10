@@ -25,9 +25,9 @@
 /*#include "envelope_widget.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
-#include "control_area.h"
+#include "control_area.h"*/
 #include "top_bar.h"
-#include "limiter.h"
+/*#include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
@@ -37,10 +37,9 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
-#include <QAction>
-#include <QDebug>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
+#include <QAction>*/
+#include <RkVLayout.h>
+/*#include <QHBoxLayout>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QJsonDocument>*/
@@ -89,14 +88,13 @@ bool MainWindow::init(void)
                                      " or not running. There is a need for jack server running " \
                                      "in order to have audio output."),
                                      QMessageBox::Ok);
-
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-        mainLayout->setContentsMargins(0, 0, 0, 0);
-        mainLayout->setSpacing(0);
+*/
+	auto mainLayout = std::make_unique<RkVLayout>();
         setLayout(mainLayout);
         topBar = new TopBar(this);
         mainLayout->addWidget(topBar);
 
+        /*
         // Create envelope widget.
         auto hBoxLayout = new QHBoxLayout;
         hBoxLayout->setSpacing(0);
