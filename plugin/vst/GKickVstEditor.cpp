@@ -30,6 +30,7 @@
 GKickVstEditor::GKickVstEditor(Vst::EditController *controller)
         : Vst::EditorView(controller)
         , guiApp(nullptr)
+	    , mainWindow(nullptr)
 {
 }
 
@@ -47,13 +48,14 @@ tresult PLUGIN_API GKickVstEditor::attached(void* parent, FIDString type)
 {
         guiApp = std::make_unique<RkMain>();
         auto info = rk_from_native_win(nullptr, nullptr, reinterpret_cast<HWND>(parent));
-        auto mainWindow = new MainWindow(info);
+        mainWindow = new MainWindow(info);
         if (!guiApp->setTopLevelWindow(mainWindow)) {
                 RK_LOG_ERROR("can't create gui");
-                guiApp.reset(nullptr);
-        }
-        mainWindow->show();
-
+                guiApp.reset(nullptr);			
+        } else {
+			mainWindow->show();
+			RK_LOG_INFO("show mainWindow");
+		}
         return Vst::EditorView::attached(parent, type);
 }
 
@@ -62,5 +64,22 @@ tresult PLUGIN_API GKickVstEditor::removed()
         if (guiApp)
                 guiApp.reset(nullptr);
 		return kResultOk;
+}
+
+tresult PLUGIN_API GKickVstEditor::getSize(ViewRect* newSize)
+{
+	if (newSize == nullptr || mainWindow == nullptr)
+		return kResultFalse;
+
+	newSize->left   = mainWindow->x();
+	newSize->right  = mainWindow->x() + mainWindow->width();
+	newSize->top    = mainWindow->y();
+	newSize->bottom = mainWindow->y() + mainWindow->height();
+
+	RK_LOG_INFO("left   : " << newSize->left);
+	RK_LOG_INFO("right  : " << newSize->right);
+	RK_LOG_INFO("top    : " << newSize->top);
+	RK_LOG_INFO("bottom : " << newSize->bottom);
+	return kResultOk;
 }
 
