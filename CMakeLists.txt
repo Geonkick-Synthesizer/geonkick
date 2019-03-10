@@ -3,12 +3,12 @@ cmake_minimum_required (VERSION 3.7)
 project(geonkick VERSION 1.1.0)
 
 # For Widnows. Temporary.
-set(CMAKE_SYSTEM_NAME Windows)
-set(CMAKE_SYSTEM_VERSION 1)
-set(GKICK_VST_SDK_PATH C:/VST_SDK/VST3_SDK)
-set(GKICK_REDKITE_SDK_PATH C:/redkite)
+#set(CMAKE_SYSTEM_NAME Windows)
+#set(CMAKE_SYSTEM_VERSION 1)
+#set(GKICK_VST_SDK_PATH C:/VST_SDK/VST3_SDK)
+#set(GKICK_REDKITE_SDK_PATH C:/redkite)
 
-option(GKICK_STANDALONE "Enable build for standalone" OFF)
+option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 
 if (NOT CMAKE_BUILD_TYPE)
@@ -26,7 +26,7 @@ set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS}")
 
 set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-#set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
+set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
 
 if (GKICK_PLUGIN)
   if (CMAKE_SYSTEM_NAME MATCHES Windows)
@@ -132,11 +132,11 @@ endif()
 
 #find_package(redkite REQUIRED)
 
-#find_package(PkgConfig REQUIRED)
-#pkg_check_modules(SNDFILE sndfile)
-#if (NOT SNDFILE_FOUND)
-#    message(FATAL_ERROR "can't find sndfile library")
-#endif(NOT SNDFILE_FOUND)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SNDFILE sndfile)
+if (NOT SNDFILE_FOUND)
+    message(FATAL_ERROR "can't find sndfile library")
+endif(NOT SNDFILE_FOUND)
 
 if (GKICK_STANDALONE)
   pkg_check_modules(JACK jack)
@@ -210,12 +210,12 @@ add_library(geonkick_common STATIC
   ${GKICK_COMMON_HEADERS}
   ${GKICK_COMMON_SOURCES})
 
-if (GEONKICK_STANDALONE)
+if (GKICK_STANDALONE)
   add_subdirectory(standalone)
-endif (GEONKICK_STANDALONE)
+endif (GKICK_STANDALONE)
 
 if (GKICK_PLUGIN)
 	add_subdirectory(plugin)
 endif (GKICK_PLUGIN)
-      
+
 add_subdirectory(data)
