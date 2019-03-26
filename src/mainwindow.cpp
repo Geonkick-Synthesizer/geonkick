@@ -38,7 +38,7 @@
 #include <QMenuBar>
 #include <QToolBar>
 #include <QAction>*/
-#include <RkVLayout.h>
+//#include <RkVLayout.h>
 /*#include <QHBoxLayout>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -69,7 +69,8 @@ MainWindow::MainWindow(const RkNativeWindowInfo &info)
 {
         setTitle(GEOKICK_APP_NAME);
 //        geonkickApi->registerCallbacks(true);
-        setSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
+        setFixedWidth(GEONKICK_MAINWINDOW_WIDTH);
+        setFixedHeight(GEONKICK_MAINWINDOW_HEIGHT);
 //        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 
@@ -89,10 +90,10 @@ bool MainWindow::init(void)
                                      "in order to have audio output."),
                                      QMessageBox::Ok);
 */
-	auto mainLayout = std::make_unique<RkVLayout>();
-        setLayout(mainLayout);
-        topBar = new TopBar(this);
-        mainLayout->addWidget(topBar);
+        auto topBar = new TopBar(this);
+        topBar->setWidth(width());
+        topBar->setHeight(40);
+        topBar->show();
 
         /*
         // Create envelope widget.

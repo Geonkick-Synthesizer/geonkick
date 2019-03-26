@@ -34,7 +34,7 @@ class TopBar : public GeonkickWidget
  public:
         TopBar(GeonkickWidget *parent);
         ~TopBar();
-        void setPresetName(const QString &name);
+        void setPresetName(const std::string &name);
 
  private:
         //        GeonkickButton *openFileButton;

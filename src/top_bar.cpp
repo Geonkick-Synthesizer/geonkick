@@ -29,14 +29,12 @@
 //#include <QHBoxLayout>
 
 TopBar::TopBar(GeonkickWidget *parent)
-        : GeonkickWidget(parent),
-          //          openFileButton(nullptr),
+        : GeonkickWidget(parent)
+          //          openFileButton(ullptr),
           //          saveFileButton(nullptr),
           //          exportFileButton(nullptr),
           //          presetNameLabel(nullptr)
 {
-        if (parent)
-                setFixedSize(parent->width() , 40);
 
         /*        auto buttonsLayout = new QHBoxLayout(this);
         buttonsLayout->setContentsMargins(15, 0, 0, 0);
@@ -88,7 +86,7 @@ TopBar::~TopBar()
 {
 }
 
-void TopBar::setPresetName(const QString &name)
+void TopBar::setPresetName(const std::string &name)
 {
         /*        if (name.size() > 20) {
                 QString preset = name;
