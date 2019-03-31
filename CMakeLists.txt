@@ -26,6 +26,7 @@ set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS}")
 
 set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
 
 if (GKICK_PLUGIN)
@@ -49,7 +50,6 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 #set(GKICK_API_FLAGS_LV2 "")
 
 set(GKICK_COMMON_HEADERS
-  ${GKICK_COMMON_DIR}/geonkick_widget.h
 #  ${GKICK_COMMON_DIR}/geonkick_label.h
 #  ${GKICK_COMMON_DIR}/geonkick_slider.h
 #  ${GKICK_COMMON_DIR}/geonkick_button.h
@@ -205,10 +205,27 @@ else ()
     include_directories(/usr/local/include/redkite)
 endif()
 
+include(${GKICK_RC_DIR}/resources.rc)
+
+foreach(pngFile ${gkick_rc_png_files})
+  message(STATUS "convert file ${pngFile}")
+  get_filename_component(filename ${GKICK_RC_DIR}/${pngFile} NAME)
+  string(REPLACE "." "_" filename ${filename})
+  string(REPLACE " " "_" filename ${filename})
+  add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
+    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
+    && rkpng2c "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk_${filename}")
+    set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
+endforeach()
+
+add_custom_target(gkick_resources ALL DEPENDS ${GKICK_RC_OUTPUT})
+
 include_directories(${GKICK_COMMON_DIR})
 add_library(geonkick_common STATIC
   ${GKICK_COMMON_HEADERS}
-  ${GKICK_COMMON_SOURCES})
+  ${GKICK_COMMON_SOURCES}
+  ${GKICK_RC_OUTPUT})
+add_dependencies(geonkick_common gkick_resources)
 
 if (GKICK_STANDALONE)
   add_subdirectory(standalone)

@@ -91,8 +91,6 @@ bool MainWindow::init(void)
                                      QMessageBox::Ok);
 */
         auto topBar = new TopBar(this);
-        topBar->setWidth(width());
-        topBar->setHeight(40);
         topBar->show();
 
         /*

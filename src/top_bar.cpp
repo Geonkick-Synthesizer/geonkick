@@ -25,8 +25,11 @@
 //#include "geonkick_button.h"
 //#include "geonkick_label.h"
 
+#include "RkLabel.h"
 //#include <QMouseEvent>
 //#include <QHBoxLayout>
+
+extern unsigned char rk_logo_png[];
 
 TopBar::TopBar(GeonkickWidget *parent)
         : GeonkickWidget(parent)
@@ -35,18 +38,19 @@ TopBar::TopBar(GeonkickWidget *parent)
           //          exportFileButton(nullptr),
           //          presetNameLabel(nullptr)
 {
+        setFixedWidth(parent->width());
+        setFixedHeight(40);
 
-        /*        auto buttonsLayout = new QHBoxLayout(this);
-        buttonsLayout->setContentsMargins(15, 0, 0, 0);
-        setLayout(buttonsLayout);
+        auto logo = new RkLabel(this);
+        RkImage image(rk_logo_png, 120, 20);
+        logo->setSize(image.width(), image.height());
+        logo->setBackgroundColor(68, 68, 70);
+        logo->setImage(image);
+        logo->setX(10);
+        logo->setY((height() - logo->height()) / 2);
+        logo->show();
 
-        auto logo = new GeonkickLabel(this);
-        logo->setImage(QPixmap(":/logo.png"));
-        buttonsLayout->addWidget(logo);
-        buttonsLayout->setAlignment(logo, Qt::AlignLeft);
-        buttonsLayout->addSpacing(20);
-
-        openFileButton = new GeonkickButton(this);
+        /*        openFileButton = new GeonkickButton(this);
         openFileButton->setUnpressedImage(QPixmap(":/open_active.png"));
         openFileButton->setCheckable(true);
         buttonsLayout->addWidget(openFileButton);
