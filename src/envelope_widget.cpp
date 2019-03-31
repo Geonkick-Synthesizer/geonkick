@@ -44,7 +44,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
           showFrequencyEnvButton(nullptr)
 
 {
-        QVBoxLayout *envelopeLayout = new QVBoxLayout(this);
+        /*        QVBoxLayout *envelopeLayout = new QVBoxLayout(this);
         setLayout(envelopeLayout);
         envelopeLayout->setSpacing(0);
         envelopeLayout->setContentsMargins(0, 0, 0, 0);
@@ -74,7 +74,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         kickGraph->setDrawingArea(rect);
         drawArea->setKickGraph(kickGraph);
         createButtomMenu();
-        showGeneralEnvelope();
+        showGeneralEnvelope();*/
 }
 
 EnvelopeWidget::~EnvelopeWidget()

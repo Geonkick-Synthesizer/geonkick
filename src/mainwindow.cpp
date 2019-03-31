@@ -22,36 +22,26 @@
  */
 
 #include "mainwindow.h"
+#include "oscillator.h"
 /*#include "envelope_widget.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"*/
 #include "top_bar.h"
-/*#include "limiter.h"
-#include "export_widget.h"
+//#include "limiter.h"
+//#include "export_widget.h"
 #include "geonkick_api.h"
-#include "geonkick_state.h"
-#include "about.h"
-
-#include <QCloseEvent>
-#include <QMenu>
-#include <QMenuBar>
-#include <QToolBar>
-#include <QAction>*/
-//#include <RkVLayout.h>
-/*#include <QHBoxLayout>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QJsonDocument>*/
+//#include "geonkick_state.h"
+//#include "about.h"
 
 #define GEONKICK_MAINWINDOW_WIDTH  940
 #define GEONKICK_MAINWINDOW_HEIGHT 760
 
-MainWindow::MainWindow(GeonkickWidget *parent)
+MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickWidget(parent)
-        //        geonkickApi(api),
-        //        topBar(nullptr),
-        //        envelopeWidget(nullptr),
+        , geonkickApi{api}
+        , topBar{nullptr}
+          //        , envelopeWidget{nullptr}
         //        presetName(preset)
 {
         setTitle(GEOKICK_APP_NAME);
@@ -60,15 +50,15 @@ MainWindow::MainWindow(GeonkickWidget *parent)
 //        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 
-MainWindow::MainWindow(const RkNativeWindowInfo &info)
+        MainWindow::MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info)
         : GeonkickWidget(info)
-        //        geonkickApi(api),
-        //        topBar(nullptr),
-        //        envelopeWidget(nullptr),
-        //        presetName(preset)
+        , geonkickApi{api}
+        , topBar{nullptr}
+          //        , envelopeWidget{nullptr}
+          //        presetName(preset)
 {
         setTitle(GEOKICK_APP_NAME);
-//        geonkickApi->registerCallbacks(true);
+        geonkickApi->registerCallbacks(true);
         setFixedWidth(GEONKICK_MAINWINDOW_WIDTH);
         setFixedHeight(GEONKICK_MAINWINDOW_HEIGHT);
 //        setWindowIcon(QPixmap(":/app_icon.png"));
@@ -76,32 +66,29 @@ MainWindow::MainWindow(const RkNativeWindowInfo &info)
 
 MainWindow::~MainWindow()
 {
-//        if (geonkickApi)
-//                geonkickApi->registerCallbacks(false);
+        if (geonkickApi)
+                geonkickApi->registerCallbacks(false);
 }
 
 bool MainWindow::init(void)
 {
-/*        oscillators = geonkickApi->oscillators();
-
-        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
+        oscillators = geonkickApi->oscillators();
+        /*        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
                 QMessageBox::warning(this, "Warning - Geonkick", tr("Jack is not installed" \
                                      " or not running. There is a need for jack server running " \
                                      "in order to have audio output."),
                                      QMessageBox::Ok);
-*/
+        */
+
         auto topBar = new TopBar(this);
         topBar->show();
 
-        /*
         // Create envelope widget.
-        auto hBoxLayout = new QHBoxLayout;
-        hBoxLayout->setSpacing(0);
-        hBoxLayout->setContentsMargins(0, 0, 0, 0);
-        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
-        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
-        envelopeWidget->setFixedSize(850, 340);
-        hBoxLayout->addWidget(envelopeWidget);
+        //        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
+        //envelopeWidge->setY(topBar->y() + topBar->height());
+        //envelopeWidget->setFixedSize(850, 340);
+        //        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
+        /*        hBoxLayout->addWidget(envelopeWidget);
         auto limiterWidget = new Limiter(geonkickApi, this);
         connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
         limiterWidget->setFixedSize(65, 340);

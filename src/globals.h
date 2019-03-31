@@ -27,6 +27,10 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <vector>
+#include <atomic>
+
+#include "geonkick.h"
 
 #define GEOKICK_APP_NAME "Geonkick"
 #define GEOKICK_APP_VERION 0x020000
@@ -35,5 +39,10 @@
 #define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
 #define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;
 #define GEONKICK_LOG_DEBUG(msg) std::cout << __PRETTY_FUNCTION__ << "[DEBUG] " << msg << std::endl;
+
+using GKickPoint      = std::pair<int, int>;
+using GKickPoints     = std::vector<GKickPoint>;
+using GKickRealPoint  = std::pair<gkick_real, gkick_real>;
+using GKickRealPoints = std::vector<GKickRealPoint>;
 
 #endif // GEONKICK_GLOBALS_H

@@ -22,13 +22,14 @@
  */
 
 #include "mainwindow.h"
+#include "geonkick_api.h"
 //#include "geonkick_state.h"
 
 #include <RkMain.h>
 
 int main(int argc, char *argv[])
 {
-        RkMain a(argc, argv);
+        RkMain app(argc, argv);
 
         // QFontDatabase::addApplicationFont(":/urw_gothic_l_book.ttf");
         // QFont font("URW Gothic L");
@@ -40,24 +41,24 @@ int main(int argc, char *argv[])
         //        preset = QCoreApplication::arguments().at(1);
         //}
 
-        //        auto api = std::make_unique<GeonkickApi>();
-        //api->setStandalone(true);
-        //if (!api->init()) {
-        //        GEONKICK_LOG_ERROR("can't init API");
-        //        exit(1);
-        //}
+        auto api = std::make_unique<GeonkickApi>();
+        api->setStandalone(true);
+        if (!api->init()) {
+                GEONKICK_LOG_ERROR("can't init API");
+                exit(1);
+        }
 
-        auto window = new MainWindow();
+        auto window = new MainWindow(api.get());
         if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 exit(1);
         }
 
-        if (!a.setTopLevelWindow(window)) {
+        if (!app.setTopLevelWindow(window)) {
                 GEONKICK_LOG_ERROR("can't set application main window");
                 exit(1);
         }
 
         window->show();
-        return a.exec();
+        return app.exec();
 }

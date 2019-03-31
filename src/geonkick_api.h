@@ -24,22 +24,12 @@
 #ifndef GEONKICK_API_H
 #define GEONKICK_API_H
 
-#include <memory>
-#include <vector>
-#include <QPolygonF>
-#include <QObject>
-#include <QTimer>
-
 #include "globals.h"
-#include "geonkick.h"
-
-#include <memory>
 
 class Oscillator;
 class GeonkickState;
 
-class GeonkickApi: public QObject {
- Q_OBJECT
+class GeonkickApi {
 
  public:
 
@@ -70,19 +60,19 @@ class GeonkickApi: public QObject {
           HighPass = GEONKICK_FILTER_HIGH_PASS
   };
 
-  GeonkickApi(QObject *parent = nullptr);
+  GeonkickApi();
   ~GeonkickApi();
   bool init();
   void registerCallbacks(bool b);
-  std::vector<Oscillator*> oscillators(void);
+  std::vector<std::unique_ptr<Oscillator>> oscillators(void);
   bool isOscillatorEnabled(int index);
-  QPolygonF oscillatorEvelopePoints(int oscillatorIndex, EnvelopeType envelope) const;
-  void addOscillatorEnvelopePoint(int oscillatorIndex, EnvelopeType envelope, const QPointF &point);
+  GKickRealPoints oscillatorEvelopePoints(int oscillatorIndex, EnvelopeType envelope) const;
+  void addOscillatorEnvelopePoint(int oscillatorIndex, EnvelopeType envelope, const GKickRealPoint &point);
   void removeOscillatorEvelopePoint(int oscillatorIndex, EnvelopeType envelope, int pointIndex);
   void updateOscillatorEvelopePoint(int oscillatorIndex,
-                                     EnvelopeType envelope,
-                                     int pointIndex,
-                                     const QPointF &point);
+                                    EnvelopeType envelope,
+                                    int pointIndex,
+                                    const GKickRealPoint &point);
   GeonkickApi::FunctionType oscillatorFunction(int oscillatorIndex) const;
   double kickMaxLength(void) const;
   double kickLength(void) const;
@@ -91,14 +81,14 @@ class GeonkickApi: public QObject {
   double kickFilterFrequency(void) const;
   double kickFilterQFactor() const;
   FilterType kickFilterType() const;
-  QPolygonF getKickEnvelopePoints() const;
+  GKickRealPoints getKickEnvelopePoints() const;
   bool setOscillatorFrequency(int oscillatorIndex, double frequency);
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;
   void addKickEnvelopePoint(double x, double y);
   void removeKickEnvelopePoint(int pointIndex);
   void updateKickEnvelopePoint(int index, double x, double y);
-  void setOscillatorEvelopePoints(int index,  EnvelopeType envelope, const QPolygonF &points);
+  void setOscillatorEvelopePoints(int index, EnvelopeType envelope, const GKickRealPoints &points);
   void setOscillatorFunction(int oscillatorIndex, FunctionType function);
   void enableOscillator(int oscillatorIndex, bool enable);
   void enableOscillatorFilter(int oscillatorIndex, bool enable);
@@ -114,9 +104,9 @@ class GeonkickApi: public QObject {
   void getKickBuffer(std::vector<gkick_real> &buffer);
   std::vector<gkick_real> getKickBuffer();
   int getSampleRate();
-  static std::shared_ptr<GeonkickState> getDefaultState();
+  //  static std::shared_ptr<GeonkickState> getDefaultState();
   gkick_real getAudioFrame();
-  std::shared_ptr<GeonkickState> getState();
+  //  std::shared_ptr<GeonkickState> getState();
 
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
@@ -135,7 +125,7 @@ class GeonkickApi: public QObject {
   void setStandalone(bool b);
   bool isStandalone() const;
 
-public slots:
+  //public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
   void setLimiterValue(double value);
@@ -143,9 +133,9 @@ public slots:
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
-  void setState(const std::shared_ptr<GeonkickState> &state);
-  void setState(const QByteArray &data);
-  void setKickEnvelopePoints(const QPolygonF &points);
+  //  void setState(const std::shared_ptr<GeonkickState> &state);
+  // void setState(const std::vector<char> &data);
+  void setKickEnvelopePoints(const GKickRealPoints &points);
   void setKeyPressed(bool b, int velocity);
   void enableCompressor(bool enable);
   void setCompressorAttack(double attack);
@@ -158,26 +148,26 @@ public slots:
   void setDistortionVolume(double volume);
   void setDistortionDrive(double drive);
 
-signals:
+  /*signals:
   void kickLengthUpdated(double length);
   void kickAmplitudeUpdated(double amplitude);
   void kickUpdated();
-  void currentPlayingFrameVal(double val);
+  void currentPlayingFrameVal(double val);*/
 
 protected:
   static void kickUpdatedCallback(void *arg);
   static void limiterCallback(void *arg, gkick_real val);
   void emitKickUpdated();
-  void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
-  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
+  //  void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
+  //  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
   void setLimiterVal(double val);
 
-protected slots:
-        void limiterTimeout();
+  //  protected slots:
+    void limiterTimeout();
 
 private:
   struct geonkick *geonkickApi;
-  QTimer limiterTimer;
+  //  QTimer limiterTimer;
   std::atomic<bool> updateLimiterLeveler;
   std::atomic<double> limiterLevelerVal;
   bool jackEnabled;

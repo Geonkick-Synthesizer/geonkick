@@ -9,7 +9,7 @@ project(geonkick VERSION 1.1.0)
 #set(GKICK_REDKITE_SDK_PATH C:/redkite)
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
-option(GKICK_PLUGIN "Enable build for plugin" ON)
+option(GKICK_PLUGIN "Enable build for plugin" OFF)
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "no build type selected, set default to Release")
@@ -68,8 +68,8 @@ set(GKICK_COMMON_HEADERS
 #  ${GKICK_COMMON_DIR}/kick_graph.h
 #  ${GKICK_COMMON_DIR}/envelope_widget.h
 #  ${GKICK_COMMON_DIR}/knob.h
-#  ${GKICK_COMMON_DIR}/oscillator.h
-#  ${GKICK_COMMON_DIR}/geonkick_api.h
+   ${GKICK_COMMON_DIR}/oscillator.h
+   ${GKICK_COMMON_DIR}/geonkick_api.h
 #  ${GKICK_COMMON_DIR}/geonkick_state.h
 #  ${GKICK_COMMON_DIR}/oscillator_envelope.h
 #  ${GKICK_COMMON_DIR}/oscillator_group_box.h
@@ -97,8 +97,8 @@ set(GKICK_COMMON_SOURCES
 #  ${GKICK_COMMON_DIR}/kick_graph.cpp
 #  ${GKICK_COMMON_DIR}/envelope_widget.cpp
 #  ${GKICK_COMMON_DIR}/knob.cpp
-#  ${GKICK_COMMON_DIR}/oscillator.cpp
-#  ${GKICK_COMMON_DIR}/geonkick_api.cpp
+   ${GKICK_COMMON_DIR}/oscillator.cpp
+   ${GKICK_COMMON_DIR}/geonkick_api.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_state.cpp
 #  ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
 #  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp

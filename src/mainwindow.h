@@ -30,24 +30,17 @@
 
 #include "globals.h"
 
+class Oscillator;
 //class OscillatorWidget;
-
-//class QPushButton;
-//class QVBoxLayout;
-//class QGroupBox;
-//class QRadioButton;
-//class QComboBox;
-//class QLabel;
-//class GeonkickApi;
+class GeonkickApi;
 class TopBar;
-//class EnvelopeWidget;
+//class EnvelopeWidget
 
 class MainWindow : public GeonkickWidget
 {
  public:
-
-      MainWindow(GeonkickWidget *parent = nullptr);
-      MainWindow(const RkNativeWindowInfo &info);
+        explicit MainWindow(GeonkickApi *api, GeonkickWidget *parent = nullptr);
+        explicit MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
 
@@ -68,13 +61,11 @@ class MainWindow : public GeonkickWidget
         //      void loadApiDefaultSettings();
         //      void loadApiSettings();
 
-        //      GeonkickApi *geonkickApi;
-        //      std::vector<Oscillator*> oscillators;
-        //      QVBoxLayout *centralWidgetLayout;
-        //      QVector<QGroupBox*> envelopeGroupBox;
-                TopBar *topBar;
+      GeonkickApi *geonkickApi;
+      std::vector<std::unique_ptr<Oscillator>> oscillators;
+      TopBar *topBar;
         //      EnvelopeWidget* envelopeWidget;
-        //      QString presetName;
+      std::string presetName;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

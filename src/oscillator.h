@@ -24,15 +24,10 @@
 #ifndef GEONKICK_OSCILLATOR_H
 #define GEONKICK_OSCILLATOR_H
 
-#include <QPolygonF>
-#include <QObject>
-
 #include "geonkick_api.h"
 
-class Oscillator: public QObject
+class Oscillator
 {
-  Q_OBJECT
-
  public:
 
   using Type = GeonkickApi::OscillatorType;
@@ -40,10 +35,10 @@ class Oscillator: public QObject
   using EnvelopeType = GeonkickApi::EnvelopeType;
   using FilterType   = GeonkickApi::FilterType;
 
-  Oscillator(GeonkickApi *api, Oscillator::Type type);
+  explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
   ~Oscillator();
   Oscillator::FunctionType function();
-  QPolygonF envelopePoints(EnvelopeType type);
+  GKickRealPoints envelopePoints(EnvelopeType type);
   double amplitude(void);
   double frequency(void);
   void setType(Type type);
@@ -55,24 +50,24 @@ class Oscillator: public QObject
   bool isEnabled();
   double envelopeLength();
 
-  public slots:
-          void enable(bool b);
-          void setFunction(FunctionType func);
-          void setAmplitude(double amp);
-          void setFrequency(double freq);
-          void enableFilter(bool b);
-          void setFilterType(FilterType filter);
-          void setFilterFrequency(double f);
-          void setFilterQFactor(double factor);
-          void addEnvelopePoint(EnvelopeType envelope, double x, double y);
-          void removeEnvelopePoint(EnvelopeType envelope, int point_index);
-          void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
+  // public slots:
+  void enable(bool b);
+  void setFunction(FunctionType func);
+  void setAmplitude(double amp);
+  void setFrequency(double freq);
+  void enableFilter(bool b);
+  void setFilterType(FilterType filter);
+  void setFilterFrequency(double f);
+  void setFilterQFactor(double factor);
+  void addEnvelopePoint(EnvelopeType envelope, double x, double y);
+  void removeEnvelopePoint(EnvelopeType envelope, int point_index);
+  void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
 
- signals:
+  /* signals:
 	  void amplitudeUpdated(double v);
 	  void frequencyUpdated(double v);
           void kickLengthUpdated(double len);
-
+  */
  protected:
           int index();
           int envelopeIndex(EnvelopeType type);

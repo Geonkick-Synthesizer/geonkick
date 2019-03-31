@@ -23,12 +23,12 @@
 
 #include "oscillator.h"
 
-Oscillator::Oscillator(GeonkickApi *api, Type type) :
-        geonkickApi(api),
-        oscillatorType(type),
-        filterType(FilterType::LowPass)
+Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
+        : geonkickApi{api}
+        , oscillatorType{type}
+        , filterType{FilterType::LowPass}
 {
-        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(kickLengthUpdated(double)));
+        //        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(kickLengthUpdated(double)));
 }
 
 Oscillator::~Oscillator()
@@ -45,9 +45,9 @@ Oscillator::FunctionType Oscillator::function()
         return static_cast<FunctionType>(geonkickApi->oscillatorFunction(index()));
 }
 
-QPolygonF Oscillator::envelopePoints(EnvelopeType envelope)
+GKickRealPoints Oscillator::envelopePoints(EnvelopeType envelope)
 {
-        QPolygonF points;
+        GKickRealPoints points;
         points = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
         return points;
 }
@@ -55,21 +55,20 @@ QPolygonF Oscillator::envelopePoints(EnvelopeType envelope)
 void Oscillator::addEnvelopePoint(EnvelopeType envelope, double x, double y)
 {
         geonkickApi->addOscillatorEnvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-                                                QPointF(x, y));
+                                                GKickRealPoint(x, y));
 }
 
 void Oscillator::removeEnvelopePoint(EnvelopeType envelope, int point_index)
 {
-        if (geonkickApi) {
+        if (geonkickApi)
                 geonkickApi->removeOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
                                                           point_index);
-        }
 }
 
 void Oscillator::updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y)
 {
         geonkickApi->updateOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-                                                  point_index, QPointF(x, y));
+                                                  point_index, GKickRealPoint(x, y));
 }
 
 void Oscillator::setType(Oscillator::Type type)
@@ -84,9 +83,8 @@ Oscillator::Type Oscillator::type()
 
 void Oscillator::setAmplitude(double amp)
 {
-	if (geonkickApi->setOscillatorAmplitude(index(), amp)) {
-		emit amplitudeUpdated(amp);
-	}
+        //	if (geonkickApi->setOscillatorAmplitude(index(), amp))
+	//	emit amplitudeUpdated(amp);
 }
 
 double Oscillator::amplitude(void)
@@ -96,9 +94,8 @@ double Oscillator::amplitude(void)
 
 void Oscillator::setFrequency(double freq)
 {
-	if (geonkickApi->setOscillatorFrequency(index(), freq)) {
-		emit frequencyUpdated(freq);
-	}
+	//if (geonkickApi->setOscillatorFrequency(index(), freq))
+	//	emit frequencyUpdated(freq);
 }
 
 double Oscillator::frequency(void)
