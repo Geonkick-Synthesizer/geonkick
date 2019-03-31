@@ -29,7 +29,7 @@
 //#include <QMouseEvent>
 //#include <QHBoxLayout>
 
-extern unsigned char rk_logo_png[];
+extern const unsigned char rk_logo_png[];
 
 TopBar::TopBar(GeonkickWidget *parent)
         : GeonkickWidget(parent)
