@@ -46,7 +46,6 @@ TopBar::TopBar(GeonkickWidget *parent)
         logo->setSize(image.width(), image.height());
         logo->setBackgroundColor(68, 68, 70);
         logo->setImage(image);
-        logo->setX(10);
         logo->setY((height() - logo->height()) / 2);
         logo->show();
 

@@ -29,8 +29,6 @@
 #include <QDialog>
 
 class GeonkickApi;
-class QLineEdit;
-class GeonkickButton;
 class QComboBox;
 class QRadioButton;
 class QProgressBar;

@@ -25,19 +25,16 @@
 #define GEONKICK_ENVELOPE_WIDGET_H
 
 #include "oscillator.h"
-#include "oscillator_envelope.h"
-#include "envelope.h"
+//#include "oscillator_envelope.h"
 #include "geonkick_widget.h"
 
-#include <QWidget>
-#include <QMouseEvent>
 
 class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
+class Envelope;
 
 class EnvelopeWidget : public GeonkickWidget
 {
-   Q_OBJECT
 public:
 
      enum class EnvelopeType:int {
@@ -47,15 +44,13 @@ public:
                    General
      };
 
-     EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::vector<Oscillator*> &oscillators);
+     explicit EnvelopeWidget(GeonkickWidget *parent,
+                             GeonkickApi *api,
+                             const std::vector<std::unique_ptr<Oscillator>> &oscillators);
      ~EnvelopeWidget();
-     void setBackgourndImage(const QPixmap &pixmap);
      void hideEnvelope(bool b);
 
- signals:
-     void update();
-
- protected slots:
+     // protected slots:
      void showAmplitudeEnvelope();
      void showFrequencyEnvelope();
      void showGeneralEnvelope();

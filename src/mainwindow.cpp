@@ -23,10 +23,10 @@
 
 #include "mainwindow.h"
 #include "oscillator.h"
-/*#include "envelope_widget.h"
-#include "oscillator_group_box.h"
-#include "general_group_box.h"
-#include "control_area.h"*/
+#include "envelope_widget.h"
+//#include "oscillator_group_box.h"
+//#include "general_group_box.h"
+//#include "control_area.h"
 #include "top_bar.h"
 //#include "limiter.h"
 //#include "export_widget.h"
@@ -81,12 +81,15 @@ bool MainWindow::init(void)
         */
 
         auto topBar = new TopBar(this);
+        topBar->setX(15);
         topBar->show();
 
         // Create envelope widget.
-        //        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
-        //envelopeWidge->setY(topBar->y() + topBar->height());
-        //envelopeWidget->setFixedSize(850, 340);
+        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
+        envelopeWidget->setX(topBar->x());
+        envelopeWidget->setY(topBar->y() + topBar->height());
+        envelopeWidget->setFixedSize(std::make_pair(850, 340));
+        envelopeWidget->show();
         //        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
         /*        hBoxLayout->addWidget(envelopeWidget);
         auto limiterWidget = new Limiter(geonkickApi, this);

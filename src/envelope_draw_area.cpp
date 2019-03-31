@@ -25,23 +25,19 @@
 #include "envelope.h"
 #include "kick_graph.h"
 
-#include <QPainter>
-#include <QMouseEvent>
+#include <RkPainter.h>
+#include <RkEvent.h>
 
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent)
-          : GeonkickWidget(parent),
-            currentEnvelope(nullptr),
-            kickGraph(nullptr),
-            hideEnvelope(false)
+          : GeonkickWidget(parent)
+          , currentEnvelope{nullptr}
+          , kickGraph{nullptr}
+          , hideEnvelope{false}
 {
         setFixedSize(850, 300);
         int padding = 50;
-        drawingArea = QRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
-
-        QPalette pal;
-        pal.setColor(QPalette::Background, QColor(40, 40, 40));
-        setAutoFillBackground(true);
-        setPalette(pal);
+        drawingArea = RkRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
+        setBackgroundColor(40, 40, 40);
 }
 
 EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
@@ -66,32 +62,27 @@ void EnvelopeWidgetDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
         }
 }
 
-void EnvelopeWidgetDrawingArea::paintWidget(QPaintEvent *event)
+void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
         Q_UNUSED(event);
-        QPainter painter(this);
+        RkPainter painter(this)
 
-        if (currentEnvelope) {
+        if (currentEnvelope)
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Axies);
-        }
 
-        if (kickGraph) {
+        if (kickGraph)
                 kickGraph->draw(painter);
-        }
 
-        if (currentEnvelope && !isHideEnvelope()) {
+        if (currentEnvelope && !isHideEnvelope())
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
-        }
 
-        QPainter paint(this);
-        QPen pen(QPen(QColor(20, 20, 20, 255)));
-        pen.setWidth(1);
-        paint.setPen(pen);
+        RkPainter paint(this);
+        pen.setPenWidth(1);
+        paint.setPenColor(20, 20, 20, 255);
         paint.drawRect(0, 0, width() - 1, height() - 1);
 }
 
-void
-EnvelopeWidgetDrawingArea::mousePressEvent(QMouseEvent *event)
+void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         QPoint point(event->x() - drawingArea.x(),
                       drawingArea.bottomRight().y() - event->y());
@@ -107,40 +98,34 @@ EnvelopeWidgetDrawingArea::mousePressEvent(QMouseEvent *event)
         mousePoint.setY(event->y());
         if (currentEnvelope) {
                 currentEnvelope->selectPoint(point);
-                if (currentEnvelope->hasSelected()) {
+                if (currentEnvelope->hasSelected())
                         update();
-                }
         }
 }
 
-void
-EnvelopeWidgetDrawingArea::mouseReleaseEvent(QMouseEvent *event)
+void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        Q_UNUSED(event);
+        RK_UNUSED(event);
         if (currentEnvelope && currentEnvelope->hasSelected()) {
                 currentEnvelope->unselectPoint();
                 update();
         }
 }
 
-void
-EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(QMouseEvent *event)
+void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        if (event->button() != Qt::RightButton) {
-                QPoint point(event->x() - drawingArea.x(),
-                              drawingArea.bottomLeft().y() - event->y());
-                if (currentEnvelope) {
+        if (event->button() != RkMouseEvent::Type::RightButton) {
+                RkPoint point(event->x() - drawingArea.x(), drawingArea.bottomLeft().y() - event->y());
+                if (currentEnvelope)
                         currentEnvelope->addPoint(point);
-                }
                 update();
         }
 }
 
-void
-EnvelopeWidgetDrawingArea::mouseMoveEvent(QMouseEvent *event)
+void EnvelopeWidgetDrawingArea::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (currentEnvelope && currentEnvelope->hasSelected()) {
-                QPoint point(event->x() - drawingArea.x(), drawingArea.bottomLeft().y() - event->y());
+                RkPoint point(event->x() - drawingArea.x(), drawingArea.bottomLeft().y() - event->y());
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
@@ -167,7 +152,7 @@ void EnvelopeWidgetDrawingArea::setKickGraph(KickGraph *graph)
 {
         kickGraph = graph;
         kickGraph->setDrawingArea(drawingArea);
-        connect(kickGraph, SIGNAL(graphUpdated()), this, SLOT(update()));
+        //        connect(kickGraph, SIGNAL(graphUpdated()), this, SLOT(update()));
 }
 
 KickGraph* EnvelopeWidgetDrawingArea::getKickGraph()
@@ -182,8 +167,7 @@ bool EnvelopeWidgetDrawingArea::isHideEnvelope() const
 
 void EnvelopeWidgetDrawingArea::setHideEnvelope(bool b)
 {
-        if (hideEnvelope != b)
-        {
+        if (hideEnvelope != b) {
                 hideEnvelope = b;
                 update();
         }

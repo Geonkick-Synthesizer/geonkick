@@ -25,16 +25,12 @@
 #define GEONGKICK_MAINWINDOW_H
 
 #include "geonkick_widget.h"
-//#include "oscillator.h"
-//#include "envelope_widget.h"
-
-#include "globals.h"
 
 class Oscillator;
 //class OscillatorWidget;
 class GeonkickApi;
 class TopBar;
-//class EnvelopeWidget
+class EnvelopeWidget;
 
 class MainWindow : public GeonkickWidget
 {
@@ -64,7 +60,7 @@ class MainWindow : public GeonkickWidget
       GeonkickApi *geonkickApi;
       std::vector<std::unique_ptr<Oscillator>> oscillators;
       TopBar *topBar;
-        //      EnvelopeWidget* envelopeWidget;
+      EnvelopeWidget* envelopeWidget;
       std::string presetName;
 };
 
