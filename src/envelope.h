@@ -27,7 +27,6 @@
 #include "geonkick_api.h"
 
 #include <RkPainter.h>
-#include <RkRect.h>
 #include <RkRealPoint.h>
 
 #include <memory>
@@ -62,8 +61,8 @@ class Envelope
         bool isSupportedType(Type type) const;
         const RkRect& getDrawingArea();
 
- public slots:
-         virtual void setEnvelopeLengh(double len) { Q_UNUSED(len); }
+        // public slots:
+         virtual void setEnvelopeLengh(double len) { RK_UNUSED(len); }
          bool setType(Type type);
          void addSupportedType(Type type);
          void removeSupportedType(Type type);
@@ -71,10 +70,10 @@ class Envelope
          void removePoints();
          void setDrawingArea(const RkRect &rect);
          virtual void updatePoints() {};
- signals:
-         void envelopeLengthUpdated(double len);
-         void amplitudeUpdated(double amplitude);
-         void envelopeUpdated();
+         //  signals:
+         //         void envelopeLengthUpdated(double len);
+         //         void amplitudeUpdated(double amplitude);
+         //         void envelopeUpdated();
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -97,10 +96,10 @@ class Envelope
         void setDotRadius(int radius);
         double getLeftPointLimit(void) const;
         double getRightPointLimit(void) const;
-        QString frequencyToNote(double f);
+        std::string frequencyToNote(rk_real f);
 
  private:
-        QRect drawingArea;
+        RkRect drawingArea;
         std::vector<RkRealPoint> envelopePoints;
         int pointRadius;
         int dotRadius;
