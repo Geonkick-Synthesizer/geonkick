@@ -60,7 +60,7 @@ public:
 
  private:
    QPixmap knobPixmap;
-   QPoint lastPositionPoint;
+   RkPoint lastPositionPoint;
    double knobValueDegree;
    double rangeFrom;
    double rangeTo;

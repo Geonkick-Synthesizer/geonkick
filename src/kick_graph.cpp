@@ -78,7 +78,7 @@ void KickGraph::drawKickGraph()
         QPolygonF graphPoints;
         gkick_real k = static_cast<gkick_real>(w) / kickBuffer.size();
         for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
-                graphPoints << QPointF(k * i, h * (0.5 - kickBuffer[i]));
+                graphPoints << RkPointF(k * i, h * (0.5 - kickBuffer[i]));
         }
         painter.drawPolyline(graphPoints);
         painter.end();

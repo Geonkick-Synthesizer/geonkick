@@ -148,7 +148,7 @@ QPolygonF GeonkickState::parseEnvelopeArray(const auto &envelopeArray)
         for (auto it = envelopeArray.constBegin(); it != envelopeArray.constEnd(); ++it) {
                 auto point = it->toArray();
                 if (point.count() == 2) {
-                        points << QPointF(point.takeAt(0).toDouble(), point.takeAt(1).toDouble());
+                        points << RkPointF(point.takeAt(0).toDouble(), point.takeAt(1).toDouble());
                 }
         }
 
