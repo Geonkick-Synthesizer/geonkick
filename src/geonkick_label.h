@@ -34,12 +34,12 @@ class GeonkickLabel: public GeonkickWidget
 
  public:
         GeonkickLabel(GeonkickWidget *parent = nullptr);
-        GeonkickLabel(const QString &title, GeonkickWidget *parent = nullptr);
+        GeonkickLabel(const std::string &title, GeonkickWidget *parent = nullptr);
         virtual ~GeonkickLabel();
         void init();
         void setImage(const QPixmap &image);
-        void setImage(const QString &file);
-        void setText(const QString &text);
+        void setImage(const std::string &file);
+        void setText(const std::string &text);
 
  private:
         QLabel *widgetLabel;

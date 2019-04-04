@@ -43,7 +43,7 @@ class MainWindow : public GeonkickWidget
  protected:
       // void keyPressEvent(QKeyEvent *event);
       // void keyReleaseEvent(QKeyEvent *event);
-      ///void setPreset(const QString &fileName);
+      ///void setPreset(const std::string &fileName);
 
       // protected slots:
          //      void openExportDialog();

@@ -67,7 +67,7 @@ void Limiter::drawMeter(QPainter &painter)
         int meterPixels = meterInnerH * ((double)meterValue / 100);
         painter.fillRect(x + 2, meterPadding + 325 - meterPixels,
                          meterInnerW, meterPixels,
-                         QBrush(QColor(125, 200, 125)));
+                         QBrush(RkColor(125, 200, 125)));
 }
 
 void Limiter::updateMeterTimeout()

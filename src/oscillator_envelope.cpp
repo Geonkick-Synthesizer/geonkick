@@ -24,7 +24,7 @@
 #include "oscillator_envelope.h"
 #include "oscillator.h"
 
-OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const QRect &area)
+OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
         : Envelope(nullptr, area),
          oscillator(osc)
 {

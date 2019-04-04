@@ -42,15 +42,15 @@ void GeonkickSlider::paintWidget(QPaintEvent *event)
 {
         Q_UNUSED(event)
         QPainter painter(this);
-        painter.setPen(QPen(QColor(40, 40, 40)));
+        painter.setPen(RkPen(RkColor(40, 40, 40)));
         painter.drawRect(0, 0, width() - 1, height() - 1);
         if (sliderOrientation == Orientation::Horizontal) {
                 painter.fillRect(1, 1, sliderPixels, height() - 1 - 1,
-                                 QBrush(QColor(200, 200, 200)));
+                                 QBrush(RkColor(200, 200, 200)));
         } else {
                 painter.fillRect(1, height() - 1 - sliderPixels,
                                  width() - 2, sliderPixels,
-                                 QBrush(QColor(200, 200, 200)));
+                                 QBrush(RkColor(200, 200, 200)));
         }
 }
 

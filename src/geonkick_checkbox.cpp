@@ -56,7 +56,7 @@ void GeonkickCheckbox::setCheckboxLabelImage(const QPixmap &pixmap)
         checkboxLabel->setUnpressedImage(pixmap);
 }
 
-void GeonkickCheckbox::setCheckboxLabelImage(const QString &file)
+void GeonkickCheckbox::setCheckboxLabelImage(const std::string &file)
 {
         setCheckboxLabelImage(QPixmap(file));
 }
@@ -71,12 +71,12 @@ void GeonkickCheckbox::setUncheckedImage(const QPixmap &pixmap)
         checkboxButton->setUnpressedImage(pixmap);
 }
 
-void GeonkickCheckbox::setCheckedImage(const QString &file)
+void GeonkickCheckbox::setCheckedImage(const std::string &file)
 {
         setCheckedImage(QPixmap(file));
 }
 
-void GeonkickCheckbox::setUncheckedImage(const QString &file)
+void GeonkickCheckbox::setUncheckedImage(const std::string &file)
 {
         setUncheckedImage(QPixmap(file));
 }

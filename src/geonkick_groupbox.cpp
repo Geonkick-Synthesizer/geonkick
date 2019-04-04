@@ -36,7 +36,7 @@ GeonkickGroupBox::GeonkickGroupBox(GeonkickWidget *parent, Orientation orientati
         setLayout(mainLayout);
         setPadding(0, 0, 0, 0);
         QPalette pal;
-        pal.setColor(QPalette::Background, QColor(68, 68, 70));
+        pal.setColor(QPalette::Background, RkColor(68, 68, 70));
         setAutoFillBackground(true);
         setPalette(pal);
 

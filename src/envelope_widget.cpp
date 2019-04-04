@@ -40,7 +40,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         drawArea = new EnvelopeWidgetDrawingArea(this);
         drawArea->show();
 
-        /*        QRect rect = drawArea->getDrawingArea();
+        /*        RkRect rect = drawArea->getDrawingArea();
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
         std::shared_ptr<Envelope> envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
         connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));

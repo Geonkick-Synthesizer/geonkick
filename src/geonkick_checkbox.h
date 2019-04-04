@@ -37,11 +37,11 @@ class GeonkickCheckbox: public GeonkickWidget {
         GeonkickCheckbox(GeonkickWidget *parent = nullptr);
         virtual ~GeonkickCheckbox();
         void setCheckboxLabelImage(const QPixmap &pixmap);
-        void setCheckboxLabelImage(const QString &file);
+        void setCheckboxLabelImage(const std::string &file);
         void setCheckedImage(const QPixmap &pixmap);
         void setUncheckedImage(const QPixmap &pixmap);
-        void setCheckedImage(const QString &file);
-        void setUncheckedImage(const QString &file);
+        void setCheckedImage(const std::string &file);
+        void setUncheckedImage(const std::string &file);
         void setPadding(int left, int top, int right, int buttom);
 
  public slots:

@@ -54,7 +54,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
 {
         setWindowFlags(Qt::Dialog);
         setWindowModality(Qt::ApplicationModal);
-        setWindowTitle(tr("Export") + QString(" - ") + QString(GEOKICK_APP_NAME));
+        setWindowTitle(tr("Export") + std::string(" - ") + std::string(GEOKICK_APP_NAME));
 
         auto mainLayout = new QVBoxLayout(this);
         mainLayout->setSpacing(20);
@@ -68,7 +68,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         locationEdit = new QLineEdit(this);
         locationEdit->setText(QDir::currentPath());
         locationEdit->setMinimumWidth(150);
-        connect(locationEdit, SIGNAL(textChanged(const QString&)), this, SLOT(resetProgressBar()));
+        connect(locationEdit, SIGNAL(textChanged(const std::string&)), this, SLOT(resetProgressBar()));
         locationLayout->addWidget(locationEdit);
         browseLocation = new GeonkickButton(this);
         browseLocation->setCheckable(true);
@@ -77,7 +77,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         locationLayout->addWidget(browseLocation);
         locationLayout->addWidget(new QLabel(tr("File name"), this));
         fileNameEdit = new QLineEdit(this);
-        connect(fileNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(resetProgressBar()));
+        connect(fileNameEdit, SIGNAL(textChanged(const std::string&)), this, SLOT(resetProgressBar()));
         locationLayout->addWidget(fileNameEdit);
         locationLayout->setSpacing(0);
         locationLayout->addStretch();
@@ -144,13 +144,13 @@ ExportWidget::ExportResult ExportWidget::exec()
 
 void ExportWidget::browse()
 {
-        QFileDialog fileDialog(this, tr("Select Path") + QString(" - ") + QString(GEOKICK_APP_NAME));
+        QFileDialog fileDialog(this, tr("Select Path") + std::string(" - ") + std::string(GEOKICK_APP_NAME));
         fileDialog.setFileMode(QFileDialog::Directory);
         fileDialog.setOption(QFileDialog::ShowDirsOnly);
         fileDialog.setFilter(QDir::Dirs);
         fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
         fileDialog.exec();
-        QStringList paths = fileDialog.selectedFiles();
+        std::stringList paths = fileDialog.selectedFiles();
         if (!paths.isEmpty()) {
                 locationEdit->setText(paths.first());
         }
@@ -159,14 +159,14 @@ void ExportWidget::browse()
 bool ExportWidget::validateInput()
 {
         if (locationEdit->text().isEmpty()) {
-                QMessageBox::critical(this, tr("Error | Export") + QString(" - ")
-                                      + QString(GEOKICK_APP_NAME), tr("File location is empty"));
+                QMessageBox::critical(this, tr("Error | Export") + std::string(" - ")
+                                      + std::string(GEOKICK_APP_NAME), tr("File location is empty"));
                 return false;
         }
 
         if (fileNameEdit->text().isEmpty()) {
-                QMessageBox::critical(this, tr("Error | Export") + QString(" - ")
-                                      + QString(GEOKICK_APP_NAME), tr("File name is empty"));
+                QMessageBox::critical(this, tr("Error | Export") + std::string(" - ")
+                                      + std::string(GEOKICK_APP_NAME), tr("File name is empty"));
                 return false;
         }
 
@@ -187,7 +187,7 @@ void ExportWidget::exportKick()
         sndinfo.samplerate = geonkickApi->getSampleRate();
         if (sndinfo.samplerate == 0) {
                 QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME), tr("Error on exporting kick"));
+                                      + std::string(" - ") + std::string(GEOKICK_APP_NAME), tr("Error on exporting kick"));
                 cancel();
                 return;
         }
@@ -210,7 +210,7 @@ void ExportWidget::exportKick()
 
         if (kickBuffer.empty()) {
                 QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME)
+                                      + std::string(" - ") + std::string(GEOKICK_APP_NAME)
                                       , tr("Error on exporting kick"));
                 cancel();
                 return;
@@ -218,7 +218,7 @@ void ExportWidget::exportKick()
 
         if (!sf_format_check(&sndinfo)) {
                 QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME),
+                                      + std::string(" - ") + std::string(GEOKICK_APP_NAME),
                                       tr("Error on exporting kick"));
                 cancel();
                 return;
@@ -227,7 +227,7 @@ void ExportWidget::exportKick()
         SNDFILE *sndFile = sf_open(getFilePath().toLatin1().data(), SFM_WRITE, &sndinfo);
         if (!sndFile) {
                 QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME),
+                                      + std::string(" - ") + std::string(GEOKICK_APP_NAME),
                                       tr("Error on exporting kick"));
                 cancel();
                 return;
@@ -247,7 +247,7 @@ void ExportWidget::exportKick()
 #endif
                 if (n != chunk) {
                         QMessageBox::critical(this, tr("Error | Export")
-                                              + QString(" - ") + QString(GEOKICK_APP_NAME),
+                                              + std::string(" - ") + std::string(GEOKICK_APP_NAME),
                                               tr("Error on exporting kick"));
                         cancel();
                         break;
@@ -310,27 +310,27 @@ void ExportWidget::enableButtons(bool enable)
         formatComboBox->setEnabled(enable);
 }
 
-QString ExportWidget::getFilePath()
+std::string ExportWidget::getFilePath()
 {
         return locationEdit->text() + QDir::separator()
                 + fileNameEdit->text() + "." + fileSuffix();
 }
 
-QString ExportWidget::fileSuffix()
+std::string ExportWidget::fileSuffix()
 {
         switch (static_cast<ExportFormat>(formatComboBox->currentIndex()))
         {
         case ExportFormat::Flac16:
         case ExportFormat::Flac24:
-                return QString("flac");
+                return std::string("flac");
         case ExportFormat::Wav16:
         case ExportFormat::Wav24:
         case ExportFormat::Wav32:
-                return QString("wav");
+                return std::string("wav");
         case ExportFormat::Ogg:
-                return QString("ogg");
+                return std::string("ogg");
         default:
-                return QString();
+                return std::string();
         }
 }
 

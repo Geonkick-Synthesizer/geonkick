@@ -41,7 +41,7 @@ Knob::Knob(GeonkickWidget *parent)
           isSelected(false)
 {
         QPalette pal;
-        pal.setColor(QPalette::Background, QColor(68, 68, 70, 0));
+        pal.setColor(QPalette::Background, RkColor(68, 68, 70, 0));
         pal.setColor(QPalette::WindowText, Qt::white);
         setAutoFillBackground(true);
         setPalette(pal);

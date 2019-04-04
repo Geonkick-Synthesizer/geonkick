@@ -34,13 +34,13 @@ AboutDialog::AboutDialog(GeonkickWidget *parent)
 {
         setWindowFlags(Qt::Dialog);
         setWindowModality(Qt::ApplicationModal);
-        setWindowTitle(tr("About") + QString(" - ") + QString(GEOKICK_APP_NAME));
+        setWindowTitle(tr("About") + std::string(" - ") + std::string(GEOKICK_APP_NAME));
         auto mainLayout = new QVBoxLayout(this);
         auto label = new GeonkickLabel(this);
         label->setImage(QPixmap(":/logo_about.png"));
         mainLayout->addWidget(label, 0, Qt::AlignHCenter);
-        QString aboutTxt = "<h2>Geonkick v" + QString(GEOKICK_APP_VERION_STRING) + QString("</h2>")
-                + QString("<p>Geonkick - a free software percussion synthesizer</p> \
+        std::string aboutTxt = "<h2>Geonkick v" + std::string(GEOKICK_APP_VERION_STRING) + std::string("</h2>")
+                + std::string("<p>Geonkick - a free software percussion synthesizer</p> \
                           <p>Copyright (C) 2018 Iurie Nistor</p> \
                           <p>License: GNU General Public License Version 3</p>");
         mainLayout->addWidget(new GeonkickLabel(aboutTxt, this), 0, Qt::AlignHCenter);

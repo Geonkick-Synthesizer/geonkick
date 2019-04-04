@@ -92,7 +92,7 @@ TopBar::~TopBar()
 void TopBar::setPresetName(const std::string &name)
 {
         /*        if (name.size() > 20) {
-                QString preset = name;
+                std::string preset = name;
                 preset.truncate(20);
                 preset += "...";
                 presetNameLabel->setText(preset);

@@ -33,7 +33,7 @@ GeonkickLabel::GeonkickLabel(GeonkickWidget *parent)
         init();
 }
 
-GeonkickLabel::GeonkickLabel(const QString &title, GeonkickWidget *parent)
+GeonkickLabel::GeonkickLabel(const std::string &title, GeonkickWidget *parent)
         : GeonkickWidget(parent),
           widgetLabel(new QLabel(title, this))
 {
@@ -58,12 +58,12 @@ void GeonkickLabel::setImage(const QPixmap &image)
         setBackgroundImage(image);
 }
 
-void GeonkickLabel::setImage(const QString &file)
+void GeonkickLabel::setImage(const std::string &file)
 {
         setImage(QPixmap(file));
 }
 
-void GeonkickLabel::setText(const QString &text)
+void GeonkickLabel::setText(const std::string &text)
 {
         if (!widgetLabel) {
                 widgetLabel = new QLabel(this);

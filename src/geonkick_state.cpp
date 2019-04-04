@@ -62,7 +62,7 @@ GeonkickState::GeonkickState(const QByteArray &data) :
         QJsonObject object = document.object();
         parseKickObject(object.take("kick"));
         for (const auto& val: oscillators)
-                parseOscillatorObject(val.first, object.take("osc" + QString::number(val.first)));
+                parseOscillatorObject(val.first, object.take("osc" + std::string::number(val.first)));
 }
 
 void GeonkickState::parseKickObject(const auto &kick)
@@ -556,7 +556,7 @@ QJsonDocument GeonkickState::getJsonDocument() const
                 filter.insert("cutoff", oscillatorFilterCutOffFreq(index));
                 filter.insert("factor", oscillatorFilterFactor(index));
                 osc["filter"] = filter;
-                state["osc" + QString::number(index)] = osc;
+                state["osc" + std::string::number(index)] = osc;
         }
 
         QJsonObject kick;

@@ -42,7 +42,7 @@ public:
      void draw(QPainter &painter);
 
 public slots:
-     void setDrawingArea(const QRect &rect);
+     void setDrawingArea(const RkRect &rect);
 
  signals:
      void graphUpdated();
@@ -56,7 +56,7 @@ protected slots:
 private:
      GeonkickApi *geonkickApi;
      std::vector<gkick_real> kickBuffer;
-     QRect drawingArea;
+     RkRect drawingArea;
      QImage cacheGraphImage;
 };
 

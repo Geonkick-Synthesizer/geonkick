@@ -24,7 +24,7 @@
 #include "general_envelope.h"
 #include "oscillator.h"
 
-GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const QRect &area)
+GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         : Envelope(nullptr, area),
           geonkickApi(api)
 {

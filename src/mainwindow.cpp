@@ -119,14 +119,14 @@ bool MainWindow::init(void)
 
 void MainWindow::savePreset()
 {
-        QFileDialog fileDialog(this, tr("Save Preset") + QString(" - ") + QString(GEOKICK_APP_NAME),
+        QFileDialog fileDialog(this, tr("Save Preset") + std::string(" - ") + std::string(GEOKICK_APP_NAME),
                                "",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
         if (fileDialog.exec() == QDialog::Rejected)
                 return;
 
-        QStringList files = fileDialog.selectedFiles();
+        std::stringList files = fileDialog.selectedFiles();
         if (files.isEmpty() || files.first().isEmpty()) {
                 QMessageBox::critical(this,
                                       "Error | Save Preset",
@@ -137,12 +137,12 @@ void MainWindow::savePreset()
         QFileInfo fileInfo(files.first());
         if (fileInfo.baseName().isEmpty()) {
                 QMessageBox::critical(this,
-                                      "Error | Save Preset" + QString(" - ") + QString(GEOKICK_APP_NAME),
+                                      "Error | Save Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME),
                                       "Can't save preset. Wrong file format. File name format example: 'mykick.gkick'");
                 return;
         }
 
-        QString fileName;
+        std::string fileName;
         if (fileInfo.suffix().isEmpty() || fileInfo.suffix().toLower() != "gkick")
                 fileName = fileInfo.filePath() + ".gkick";
         else
@@ -150,7 +150,7 @@ void MainWindow::savePreset()
 
         QFile file(fileName);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                QMessageBox::critical(this, "Error | Save Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't save preset");
+                QMessageBox::critical(this, "Error | Save Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME), "Can't save preset");
                 return;
         }
 
@@ -161,15 +161,15 @@ void MainWindow::savePreset()
 
 void MainWindow::openPreset()
 {
-        QFileDialog fileDialog(this, tr("Open Preset")  + QString(" - ") + QString(GEOKICK_APP_NAME), "",
+        QFileDialog fileDialog(this, tr("Open Preset")  + std::string(" - ") + std::string(GEOKICK_APP_NAME), "",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
         if (fileDialog.exec() == QDialog::Rejected)
                 return;
 
-        QStringList files = fileDialog.selectedFiles();
+        std::stringList files = fileDialog.selectedFiles();
         if (files.isEmpty() || files.first().isEmpty()) {
-                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't open preset");
+                QMessageBox::critical(this, "Error | Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME), "Can't open preset");
                 return;
         }
 
@@ -177,17 +177,17 @@ void MainWindow::openPreset()
         emit updateGui();
 }
 
-void MainWindow::setPreset(const QString &fileName)
+void MainWindow::setPreset(const std::string &fileName)
 {
         QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't open preset");
+                QMessageBox::critical(this, "Error | Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME), "Can't open preset");
                 return;
         }
 
         QJsonDocument document = QJsonDocument::fromJson(file.readAll());
         if (document.isNull()) {
-                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Wrong file contents");
+                QMessageBox::critical(this, "Error | Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME), "Wrong file contents");
                 return;
         } else {
                 geonkickApi->setState(std::make_shared<GeonkickState>(document.toBinaryData()));

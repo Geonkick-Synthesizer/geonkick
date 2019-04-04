@@ -106,7 +106,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
         painter.setFont(font);
         painter.setPen(RkPen(RkColor(180, 180, 180, 200)));
         //        painter.drawText(point.x() + W() / 2 - 35, point.y() +  font.pixelSize() + 10,
-        //                 tr("Length, ") + QString::number(std::round(envelopeLengh())) + " ms");*/
+        //                 tr("Length, ") + std::string::number(std::round(envelopeLengh())) + " ms");*/
 }
 
 void Envelope::drawValueScale(RkPainter &painter)
@@ -129,7 +129,7 @@ void Envelope::drawValueScale(RkPainter &painter)
         //font.setPixelSize(10);
         //painter.setFont(font);
         int rectH = font.pixelSize() + 2;
-        painter.setPen(QPen(RkColor(110, 110, 110)));
+        painter.setPen(RkPen(RkColor(110, 110, 110)));
 
         if (type() == Type::Amplitude) {
                 double step = envelopeAmplitude() / 10;
@@ -145,7 +145,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         painter.setPen(pen);
                         painter.drawLine(x + 1, y, x + W(), y);
                         RkRect rect(x - 28,  y -  rectH / 2, 22, rectH);
-                        painter.setPen(QPen(RkColor(110, 110, 110)));
+                        painter.setPen(RkPen(RkColor(110, 110, 110)));
                         painter.drawText(rect,  Rk::AlignRight, std::to_string(i * step, 'f', 2));
                 }
         } else if (type() == Type::Frequency) {
@@ -168,7 +168,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         else
                                 rect = RkRect(x - 28, y - rectH / 2, 22, rectH);
                         painter.setPen(RkPen(RkColor(110, 110, 110)));
-                        QString text;
+                        std::string text;
                         if (value >= 1000)
                                 text = std::to_string(value / 1000) + "k";
                         else
@@ -214,16 +214,16 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
 {
         /*        if (type() == Envelope::Type::Amplitude) {
-                painter.drawText(point, QString::number(value, 'f', 2));
+                painter.drawText(point, std::string::number(value, 'f', 2));
         } else if (type() == Envelope::Type::Frequency) {
                 if (value < 20) {
                         painter.drawText(point, "20Hz " + frequencyToNote(20));
                 }
                 if (value >= 20 && value < 1000) {
-                        painter.drawText(point, QString::number(value, 'f', 0)
+                        painter.drawText(point, std::string::number(value, 'f', 0)
                                          + "Hz " + frequencyToNote(value));
                 } else if (value >= 1000 && value <= 20000) {
-                        painter.drawText(point, QString::number(value / 1000, 'f', 1) + "kHz "
+                        painter.drawText(point, std::string::number(value / 1000, 'f', 1) + "kHz "
                                          + frequencyToNote(value));
                 }
                 }*/

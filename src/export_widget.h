@@ -47,8 +47,8 @@ class ExportWidget: public GeonkickWidget {
  protected:
         int exportFormat();
         void enableButtons(bool enable);
-        QString getFilePath();
-        QString fileSuffix();
+        std::string getFilePath();
+        std::string fileSuffix();
         bool validateInput();
         void closeEvent(QCloseEvent *event);
 

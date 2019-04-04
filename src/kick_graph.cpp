@@ -44,7 +44,7 @@ void KickGraph::draw(QPainter &painter)
         }
 }
 
-void KickGraph::setDrawingArea(const QRect &rect)
+void KickGraph::setDrawingArea(const RkRect &rect)
 {
         drawingArea = rect;
         cacheGraphImage = QImage(drawingArea.size(),  QImage::Format_ARGB32_Premultiplied);
@@ -68,7 +68,7 @@ void KickGraph::drawKickGraph()
 
         cacheGraphImage.fill(Qt::transparent);
         QPainter painter(&cacheGraphImage);
-        QPen pen(QColor(59, 130, 4, 230));
+        RkPen pen(RkColor(59, 130, 4, 230));
         pen.setJoinStyle(Qt::MiterJoin);
         painter.setPen(pen);
         int w = drawingArea.width();

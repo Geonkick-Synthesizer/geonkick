@@ -26,7 +26,7 @@
 
 #include "geonkick_widget.h"
 
-#include <QWidget>
+#include <RkWidget>
 #include <QMouseEvent>
 
 class Knob : public GeonkickWidget
