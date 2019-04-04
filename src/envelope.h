@@ -26,16 +26,15 @@
 
 #include "geonkick_api.h"
 
-#include <QObject>
-#include <QPainter>
+#include <RkPainter.h>
+#include <RkRect.h>
+#include <RkRealPoint.h>
 
 #include <memory>
 #include <unordered_set>
 
-class Envelope: public QObject
+class Envelope
 {
-        Q_OBJECT
-
  public:
 
         enum class DrawLayer {
@@ -45,32 +44,32 @@ class Envelope: public QObject
 
         using Type = GeonkickApi::EnvelopeType;
 
-        Envelope(QObject *parent = nullptr, const QRect &area = QRect());
+        Envelope(const RkRect &area = RkRect());
         virtual ~Envelope();
         int W(void) const;
         int H(void) const;
         virtual double envelopeLengh(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
-        QPoint getOrigin(void) const;
-        void draw(QPainter &painter, DrawLayer layer);
+        RkPoint getOrigin(void) const;
+        void draw(RkPainter &painter, DrawLayer layer);
         bool hasSelected() const;
-        void selectPoint(const QPoint &point);
+        void selectPoint(const RkPoint &point);
         void unselectPoint(void);
         void moveSelectedPoint(int x, int y);
-        void addPoint(const QPoint &point);
-        void removePoint(const QPoint &point);
+        void addPoint(const RkPoint &point);
+        void removePoint(const RkPoint &point);
         Type type() const;
         bool isSupportedType(Type type) const;
-        const QRect& getDrawingArea();
+        const RkRect& getDrawingArea();
 
  public slots:
          virtual void setEnvelopeLengh(double len) { Q_UNUSED(len); }
          bool setType(Type type);
          void addSupportedType(Type type);
          void removeSupportedType(Type type);
-         void setPoints(const QPolygonF  &points);
+         void setPoints(const std::vector<RkRealPoint>  &points);
          void removePoints();
-         void setDrawingArea(const QRect &rect);
+         void setDrawingArea(const RkRect &rect);
          virtual void updatePoints() {};
  signals:
          void envelopeLengthUpdated(double len);
@@ -81,17 +80,17 @@ class Envelope: public QObject
         virtual void pointAddedEvent(double x, double y) = 0;
         virtual void pointUpdatedEvent(unsigned int index, double x, double y) = 0;
         virtual void pointRemovedEvent(unsigned int index)  = 0;
-        void drawAxies(QPainter &painter);
-        void drawScale(QPainter &painter);
-        void drawTimeScale(QPainter &painter);
-        void drawValueScale(QPainter &painter);
-        void drawPoints(QPainter &painter);
-        void drawPoint(QPainter &painter, const QPoint &point);
-        void drawPointValue(QPainter &painter, const QPoint &point, double value);
-        void drawLines(QPainter &painter);
-        QPointF scaleDown(const QPoint &point);
-        QPoint scaleUp(const QPointF &point);
-        bool hasPoint(const QPointF &point, const QPoint &p);
+        void drawAxies(RkPainter &painter);
+        void drawScale(RkPainter &painter);
+        void drawTimeScale(RkPainter &painter);
+        void drawValueScale(RkPainter &painter);
+        void drawPoints(RkPainter &painter);
+        void drawPoint(RkPainter &painter, const RkPoint &point);
+        void drawPointValue(RkPainter &painter, const RkPoint &point, double value);
+        void drawLines(RkPainter &painter);
+        RkRealPoint scaleDown(const RkPoint &point);
+        RkPoint scaleUp(const RkRealPoint &point);
+        bool hasPoint(const RkRealPoint &point, const RkPoint &p);
         int getPointRadius() const;
         void setPointRadius(int radius);
         int getDotRadius()  const;
@@ -102,10 +101,10 @@ class Envelope: public QObject
 
  private:
         QRect drawingArea;
-        std::vector<QPointF> envelopePoints;
+        std::vector<RkRealPoint> envelopePoints;
         int pointRadius;
         int dotRadius;
-        std::vector<QPointF>::size_type selectedPointIndex;
+        std::vector<RkRealPoint>::size_type selectedPointIndex;
         std::unordered_set<Type> supportedTypes;
         bool pointSelected;
         Type envelopeType;

@@ -38,7 +38,7 @@ class Oscillator
   explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
   ~Oscillator();
   Oscillator::FunctionType function();
-  GKickRealPoints envelopePoints(EnvelopeType type);
+  std::vector<RkRealPoint> envelopePoints(EnvelopeType type);
   double amplitude(void);
   double frequency(void);
   void setType(Type type);

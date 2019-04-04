@@ -59,7 +59,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         auto kickGraph = new KickGraph(this, api);
         kickGraph->setDrawingArea(rect);
         drawArea->setKickGraph(kickGraph);
-        /*
+
         createButtomMenu();
         showGeneralEnvelope();*/
 }

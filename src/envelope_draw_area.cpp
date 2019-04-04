@@ -143,7 +143,7 @@ std::shared_ptr<Envelope> EnvelopeWidgetDrawingArea::getEnvelope() const
         return currentEnvelope;
 }
 
-const QRect EnvelopeWidgetDrawingArea::getDrawingArea()
+const RkRect EnvelopeWidgetDrawingArea::getDrawingArea()
 {
         return drawingArea;
 }

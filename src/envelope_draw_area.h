@@ -27,6 +27,8 @@
 #include "globals.h"
 #include "geonkick_widget.h"
 
+#include "RkRect.h"
+
 class Envelope;
 class KickGraph;
 class RkMouseEvent;
@@ -34,11 +36,11 @@ class RkMouseEvent;
 class EnvelopeWidgetDrawingArea : public GeonkickWidget
 {
  public:
-   explicitEnvelopeWidgetDrawingArea(GeonkickWidget *parent);
+   EnvelopeWidgetDrawingArea(GeonkickWidget *parent);
    ~EnvelopeWidgetDrawingArea();
    void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
    std::shared_ptr<Envelope> getEnvelope() const;
-   const QRect getDrawingArea();
+   const RkRect getDrawingArea();
    void setKickGraph(KickGraph *graph);
    KickGraph* getKickGraph();
    bool isHideEnvelope() const;

@@ -57,14 +57,14 @@ set(GKICK_COMMON_HEADERS
 #  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
 #  ${GKICK_COMMON_DIR}/control_area.h
-#  ${GKICK_COMMON_DIR}/envelope_draw_area.h
+  ${GKICK_COMMON_DIR}/envelope_draw_area.h
 #  ${GKICK_COMMON_DIR}/limiter.h
 #  ${GKICK_COMMON_DIR}/general_envelope.h
 #  ${GKICK_COMMON_DIR}/effects_group_box.h
 #  ${GKICK_COMMON_DIR}/compressor_group_box.h
 #  ${GKICK_COMMON_DIR}/distortion_group_box.h
 #  ${GKICK_COMMON_DIR}/general_group_box.h
-#  ${GKICK_COMMON_DIR}/envelope.h
+   ${GKICK_COMMON_DIR}/envelope.h
 #  ${GKICK_COMMON_DIR}/kick_graph.h
    ${GKICK_COMMON_DIR}/envelope_widget.h
 #  ${GKICK_COMMON_DIR}/knob.h
@@ -86,14 +86,14 @@ set(GKICK_COMMON_SOURCES
 #  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
 #  ${GKICK_COMMON_DIR}/control_area.cpp
-#  ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
+  ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
 #  ${GKICK_COMMON_DIR}/limiter.cpp
 #  ${GKICK_COMMON_DIR}/general_envelope.cpp
 #  ${GKICK_COMMON_DIR}/effects_group_box.cpp
 #  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
 #  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
 #  ${GKICK_COMMON_DIR}/general_group_box.cpp
-#  ${GKICK_COMMON_DIR}/envelope.cpp
+   ${GKICK_COMMON_DIR}/envelope.cpp
 #  ${GKICK_COMMON_DIR}/kick_graph.cpp
    ${GKICK_COMMON_DIR}/envelope_widget.cpp
 #  ${GKICK_COMMON_DIR}/knob.cpp

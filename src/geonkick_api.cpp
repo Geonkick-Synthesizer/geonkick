@@ -227,16 +227,16 @@ std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
         return oscillators;
 }
 
-GKickRealPoints GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeType envelope) const
+std::vector<RkRealPoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeType envelope) const
 {
         gkick_real *buf;
-        GKickRealPoints points;
+        std::vector<RkRealPoint> points;
         size_t npoints = 0;
 
         geonkick_osc_envelope_get_points(geonkickApi, oscillatorIndex,
                                          static_cast<int>(envelope), &buf, &npoints);
         for (size_t i = 0; i < 2 * npoints; i += 2)
-                points.push_back(GKickRealPoint(buf[i], buf[i+1]));
+                points.push_back(RkRealPoint(buf[i], buf[i+1]));
 
         if (buf != NULL)
                 free(buf);
@@ -246,7 +246,7 @@ GKickRealPoints GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  Envel
 
 void GeonkickApi::setOscillatorEvelopePoints(int index,
                                              EnvelopeType envelope,
-                                             const GKickRealPoints &points)
+                                             const std::vector<RkRealPoint> &points)
 {
         if (points.empty())
                 return;
@@ -254,8 +254,8 @@ void GeonkickApi::setOscillatorEvelopePoints(int index,
         std::vector<gkick_real> data(2 * points.size() * sizeof(gkick_real), 0);
         gkick_real *buff = reinterpret_cast<gkick_real*>(data.data());
         for (decltype(points.size()) i = 0; i < points.size(); i++) {
-                buff[2 * i]     = points[i].first;
-                buff[2 * i + 1] = points[i].second;
+                buff[2 * i]     = points[i].x();
+                buff[2 * i + 1] = points[i].y();
         }
 
         geonkick_osc_envelope_set_points(geonkickApi, index, static_cast<int>(envelope), buff, points.size());
@@ -263,10 +263,10 @@ void GeonkickApi::setOscillatorEvelopePoints(int index,
 
 void GeonkickApi::addOscillatorEnvelopePoint(int oscillatorIndex,
                                              EnvelopeType envelope,
-                                             const GKickRealPoint &point)
+                                             const RkRealPoint &point)
 {
         geonkick_osc_envelope_add_point(geonkickApi, oscillatorIndex,
-                                        static_cast<int>(envelope), point.first, point.second);
+                                        static_cast<int>(envelope), point.x(), point.y());
 }
 
 void GeonkickApi::removeOscillatorEvelopePoint(int oscillatorIndex, EnvelopeType envelope, int pointIndex)
@@ -278,11 +278,11 @@ void GeonkickApi::removeOscillatorEvelopePoint(int oscillatorIndex, EnvelopeType
 void GeonkickApi::updateOscillatorEvelopePoint(int oscillatorIndex,
                                                EnvelopeType envelope,
                                                int pointIndex,
-                                               const GKickRealPoint &point)
+                                               const RkRealPoint &point)
 {
         geonkick_osc_envelope_update_point(geonkickApi, oscillatorIndex,
                                            static_cast<int>(envelope),
-                                           pointIndex, point.first, point.second);
+                                           pointIndex, point.x(), point.y());
 }
 
 
@@ -326,14 +326,14 @@ double GeonkickApi::kickAmplitude() const
         return static_cast<double>(amplitude);
 }
 
-GKickRealPoints GeonkickApi::getKickEnvelopePoints() const
+std::vector<RkRealPoint> GeonkickApi::getKickEnvelopePoints() const
 {
         gkick_real *buf;
-        GKickRealPoints points;
+        std::vector<RkRealPoint> points;
         size_t npoints = 0;
         geonkick_kick_envelope_get_points(geonkickApi, &buf, &npoints);
         for (auto i = 0; i < 2 * npoints; i += 2)
-                points.push_back(GKickRealPoint(buf[i], buf[i+1]));
+                points.push_back(RkRealPoint(buf[i], buf[i+1]));
 
         if (buf != NULL)
                 free(buf);
@@ -341,13 +341,13 @@ GKickRealPoints GeonkickApi::getKickEnvelopePoints() const
         return points;
 }
 
-void GeonkickApi::setKickEnvelopePoints(const GKickRealPoints &points)
+void GeonkickApi::setKickEnvelopePoints(const std::vector<RkRealPoint> &points)
 {
         std::vector<char> data(2 * points.size() * sizeof(gkick_real), 0);
         gkick_real *buff = reinterpret_cast<gkick_real*>(data.data());
         for (decltype(points.size()) i = 0; i < points.size(); i++) {
-                buff[2 * i]     = points[i].first;
-                buff[2 * i + 1] = points[i].second;
+                buff[2 * i]     = points[i].x();
+                buff[2 * i + 1] = points[i].y();
         }
 
         geonkick_kick_envelope_set_points(geonkickApi, buff, points.size());

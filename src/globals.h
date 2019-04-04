@@ -40,9 +40,4 @@
 #define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;
 #define GEONKICK_LOG_DEBUG(msg) std::cout << __PRETTY_FUNCTION__ << "[DEBUG] " << msg << std::endl;
 
-using GKickPoint      = std::pair<int, int>;
-using GKickPoints     = std::vector<GKickPoint>;
-using GKickRealPoint  = std::pair<gkick_real, gkick_real>;
-using GKickRealPoints = std::vector<GKickRealPoint>;
-
 #endif // GEONKICK_GLOBALS_H

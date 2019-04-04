@@ -24,8 +24,7 @@
 #include "envelope.h"
 #include "globals.h"
 
-Envelope::Envelope(QObject *object, const QRect &area)
-        : QObject(object),
+Envelope::Envelope(const RkRect &area)
           drawingArea(area),
           pointRadius(10),
           dotRadius(3),
@@ -51,12 +50,12 @@ int Envelope::H(void) const
         return drawingArea.height();
 }
 
-QPoint Envelope::getOrigin(void) const
+RkPoint Envelope::getOrigin(void) const
 {
         return drawingArea.bottomLeft();
 }
 
-void Envelope::draw(QPainter &painter, DrawLayer layer)
+void Envelope::draw(RkPainter &painter, DrawLayer layer)
 {
         if (layer == DrawLayer::Axies) {
                 drawAxies(painter);
@@ -67,52 +66,52 @@ void Envelope::draw(QPainter &painter, DrawLayer layer)
         }
 }
 
-void Envelope::drawAxies(QPainter & painter)
+void Envelope::drawAxies(RkPainter & painter)
 {
-        painter.setPen(QColor(125, 125, 125));
-        QPoint point = getOrigin();
+        painter.setPen(RkColor(125, 125, 125));
+        RkPoint point = getOrigin();
         painter.drawLine(point.x(), point.y(), point.x() + W() + 10, point.y());
         painter.drawLine(point.x(), point.y(), point.x(), point.y() - H() - 10);
 }
 
-void Envelope::drawScale(QPainter &painter)
+void Envelope::drawScale(RkPainter &painter)
 {
         drawTimeScale(painter);
         drawValueScale(painter);
 }
 
-void Envelope::drawTimeScale(QPainter &painter)
+void Envelope::drawTimeScale(RkPainter &painter)
 {
-        QFont font = painter.font();
+        RkFont font = painter.font();
         font.setPixelSize(10);
         painter.setFont(font);
 
         auto val = envelopeLengh() / 10;
         int dx = W() / 10;
-        QPoint point = getOrigin();
+        RkPoint point = getOrigin();
         int x  = point.x() + dx;
         for (auto i = 1; i <= 10; i++) {
-                QPen pen(QColor(80, 80, 80));
-                pen.setStyle(Qt::DotLine);
+                RkPen pen(RkColor(80, 80, 80));
+                pen.setStyle(RkPen::LineStyle::DotLine);
                 painter.setPen(pen);
                 painter.drawLine(x, point.y() - font.pixelSize() - 4, x, point.y() - H());
 
-                QRect rect(x - 12, point.y() - 12, 25, font.pixelSize());
-                painter.setPen(QPen(QColor(110, 110, 110)));
-                painter.drawText(rect, Qt::AlignCenter, QString::number(std::round(i * val)));
+                RkRect rect(x - 12, point.y() - 12, 25, font.pixelSize());
+                painter.setPen(RkColor(110, 110, 110));
+                painter.drawText(rect, Rk::AlignCenter, std::to_string(std::round(i * val)));
                 x += dx;
         }
 
         font.setPixelSize(12);
         painter.setFont(font);
-        painter.setPen(QPen(QColor(180, 180, 180, 200)));
+        painter.setPen(RkPen(RkColor(180, 180, 180, 200)));
         painter.drawText(point.x() + W() / 2 - 35, point.y() +  font.pixelSize() + 10,
                          tr("Length, ") + QString::number(std::round(envelopeLengh())) + " ms");
 }
 
-void Envelope::drawValueScale(QPainter &painter)
+void Envelope::drawValueScale(RkPainter &painter)
 {
-        QString text;
+        std::string text;
         if (type() == Type::Amplitude) {
                 text = tr("Amplitude");
         } else if (type() == Type::Frequency) {
@@ -126,11 +125,11 @@ void Envelope::drawValueScale(QPainter &painter)
         painter.rotate(90);
         painter.translate(-(getOrigin().x() - 30), -(getOrigin().y() - H() / 2 + 35));
 
-        QFont font = painter.font();
+        RkFont font = painter.font();
         font.setPixelSize(10);
         painter.setFont(font);
         int rectH = font.pixelSize() + 2;
-        painter.setPen(QPen(QColor(110, 110, 110)));
+        painter.setPen(QPen(RkColor(110, 110, 110)));
 
         if (type() == Type::Amplitude) {
                 double step = envelopeAmplitude() / 10;
@@ -141,82 +140,78 @@ void Envelope::drawValueScale(QPainter &painter)
                         if (amplitude > std::numeric_limits<double>::min()) {
                                 y = getOrigin().y() - H() * (i * step / amplitude);
                         }
-                        QPen pen(QColor(80, 80, 80));
-                        pen.setStyle(Qt::DotLine);
+                        RkPen pen(RkColor(80, 80, 80));
+                        pen.setStyle(RkPen::LineType::DotLine);
                         painter.setPen(pen);
                         painter.drawLine(x + 1, y, x + W(), y);
-                        QRect rect(x - 28,  y -  rectH / 2, 22, rectH);
+                        RkRect rect(x - 28,  y -  rectH / 2, 22, rectH);
                         painter.setPen(QPen(QColor(110, 110, 110)));
-                        painter.drawText(rect,  Qt::AlignRight, QString::number(i * step, 'f', 2));
+                        painter.drawText(rect,  Rk::AlignRight, std::to_string(i * step, 'f', 2));
                 }
         } else if (type() == Type::Frequency) {
                 std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
                 for (auto value : values) {
                         int x = getOrigin().x();
                         int y = getOrigin().y() - H() * (log10(value) - log10(20)) / (log10(envelopeAmplitude()) - log10(20));
-                        if (y < 0) {
+                        if (y < 0)
                                 break;
-                        }
 
-                        QPen pen(QColor(80, 80, 80));
-                        pen.setStyle(Qt::DotLine);
+                        RkPen pen(RkColor(80, 80, 80));
+                        pen.setLineType(RkPen::LineType::DotLine);
                         painter.setPen(pen);
-                        if (value != 20) {
+                        if (value != 20)
                                 painter.drawLine(x, y, x + W(), y);
-                        }
 
-                        QRect rect;
-                        if (value == 20) {
-                                rect = QRect(x - 28, y - rectH / 2, 22, rectH);
-                        } else {
-                                rect = QRect(x - 28, y - rectH / 2, 22, rectH);
-                        }
-                        painter.setPen(QPen(QColor(110, 110, 110)));
+                        RkRect rect;
+                        if (value == 20)
+                                rect = RkRect(x - 28, y - rectH / 2, 22, rectH);
+                        else
+                                rect = RkRect(x - 28, y - rectH / 2, 22, rectH);
+                        painter.setPen(RkPen(RkColor(110, 110, 110)));
                         QString text;
-                        if (value >= 1000) {
-                                text = QString::number(value / 1000) + "k";
-                        } else {
-                                text = QString::number(value);
-                        }
-                        painter.drawText(rect, Qt::AlignRight, text);
+                        if (value >= 1000)
+                                text = std::to_string(value / 1000) + "k";
+                        else
+                                text = std::to_string(value);
+                        painter.drawText(rect, Rk::AlignRight, text);
                 }
         }
 
 }
 
-void Envelope::drawPoints(QPainter &painter)
+void Envelope::drawPoints(RkPainter &painter)
 {
-        QPoint origin = getOrigin();
+        RkPoint origin = getOrigin();
 	for (const auto &point : envelopePoints) {
-                QPoint scaledPoint = scaleUp(point);
-                scaledPoint = QPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
+                RkPoint scaledPoint = scaleUp(point);
+                scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
 		drawPoint(painter, scaledPoint);
-                scaledPoint = QPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
+                scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
                 drawPointValue(painter, scaledPoint, point.y() * envelopeAmplitude());
         }
 }
 
-void Envelope::drawPoint(QPainter &painter, const QPoint &point)
+void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 {
         QPen pen;
         pen.setWidth(2);
         pen.setColor(QColor(200, 200, 200, 200));
-        painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
+        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
 	painter.setPen(pen);
 
         int r = getPointRadius();
-	QRect rect(point.x() - r, point.y() - r, 2 * r, 2 * r);
+	RkRect rect(point.x() - r, point.y() - r, 2 * r, 2 * r);
 	painter.drawEllipse(rect);
 
         QBrush brush = painter.brush();
         painter.setBrush(QColor(200, 200, 200, 200));
         r = getDotRadius();
-        rect = QRect(point.x() - r, point.y() - r, 2 * r, 2 * r);
+        rect = RkRect(point.x() - r, point.y() - r, 2 * r, 2 * r);
         painter.drawEllipse(rect);
         painter.setBrush(brush);
 }
 
-void Envelope::drawPointValue(QPainter &painter, const QPoint &point, double value)
+void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
 {
         if (type() == Envelope::Type::Amplitude) {
                 painter.drawText(point, QString::number(value, 'f', 2));
@@ -234,13 +229,13 @@ void Envelope::drawPointValue(QPainter &painter, const QPoint &point, double val
         }
 }
 
-void Envelope::drawLines(QPainter &painter)
+void Envelope::drawLines(RkPainter &painter)
 {
         QPolygon points;
-        QPoint origin = getOrigin();
+        RkPoint origin = getOrigin();
 	for (const auto& point : envelopePoints) {
                 auto scaledPoint = scaleUp(point);
-	        points << QPoint(origin.x() + scaledPoint.x(),
+	        points << RkPoint(origin.x() + scaledPoint.x(),
                                  origin.y() - scaledPoint.y());
 	}
 
@@ -248,7 +243,7 @@ void Envelope::drawLines(QPainter &painter)
 	pen.setWidth(2);
         pen.setColor(QColor(200, 200, 200, 200));
 	painter.setPen(pen);
-        painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
+        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
 	painter.drawPolyline(points);
 }
 
@@ -257,9 +252,9 @@ bool Envelope::hasSelected(void) const
 	return pointSelected;
 }
 
-void Envelope::selectPoint(const QPoint &point)
+void Envelope::selectPoint(const RkPoint &point)
 {
-        std::vector<QPointF>::size_type index = 0;
+        std::vector<RkRealPoint>::size_type index = 0;
 	for (const auto& p : envelopePoints) {
 		if (hasPoint(p, point)) {
                         selectedPointIndex = index;
@@ -309,7 +304,7 @@ void Envelope::moveSelectedPoint(int x, int y)
 		return;
 	}
 
-        auto scaledPoint = scaleDown(QPoint(x, y));
+        auto scaledPoint = scaleDown(RkPoint(x, y));
         auto &selectedPoint = envelopePoints[selectedPointIndex];
 	if (scaledPoint.x() < getLeftPointLimit()) {
                 selectedPoint.setX(getLeftPointLimit());
@@ -338,7 +333,7 @@ void Envelope::setPoints(const QPolygonF &points)
         }
 }
 
-void Envelope::addPoint(const QPoint &point)
+void Envelope::addPoint(const RkPoint &point)
 {
         auto scaledPoint = scaleDown(point);
         if (scaledPoint.y() < 0) {
@@ -370,9 +365,9 @@ void Envelope::addPoint(const QPoint &point)
 	pointAddedEvent(scaledPoint.x(), scaledPoint.y());
 }
 
-void Envelope::removePoint(const QPoint &point)
+void Envelope::removePoint(const RkPoint &point)
 {
-        std::vector<QPointF>::size_type index = 0;
+        std::vector<RkRealPoint>::size_type index = 0;
         for (const auto p: envelopePoints) {
 		if (hasPoint(p, point)) {
 			if (p != envelopePoints.front() && p != envelopePoints.back()) {
@@ -427,21 +422,21 @@ void Envelope::removePoints()
         envelopePoints.clear();
 }
 
-const QRect& Envelope::getDrawingArea()
+const RkRect& Envelope::getDrawingArea()
 {
         return drawingArea;
 }
 
-void Envelope::setDrawingArea(const QRect &rect)
+void Envelope::setDrawingArea(const RkRect &rect)
 {
         drawingArea = rect;
 }
 
-QPointF Envelope::scaleDown(const QPoint &point)
+RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
-        QPointF scaledPoint;
+        RkRealPoint scaledPoint;
         if (type() == Type::Amplitude) {
-                scaledPoint = QPointF(static_cast<double>(point.x()) / W(),
+                scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
                                       static_cast<double>(point.y()) / H());
         } else {
                 scaledPoint.setX(static_cast<double>(point.x()) / W());
@@ -453,7 +448,7 @@ QPointF Envelope::scaleDown(const QPoint &point)
         return scaledPoint;
 }
 
-QPoint Envelope::scaleUp(const QPointF &point)
+RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
         int x = 0;
         int y = 0;
@@ -473,12 +468,12 @@ QPoint Envelope::scaleUp(const QPointF &point)
                 y = k * H();
         }
 
-        return QPoint(x, y);
+        return RkPoint(x, y);
 }
 
-bool Envelope::hasPoint(const QPointF &point, const QPoint &p)
+bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)
 {
-        QPoint scaledPoint = scaleUp(point);
+        RkPoint scaledPoint = scaleUp(point);
         int r = getPointRadius();
 	if (pow(p.x() - scaledPoint.x(), 2) + pow(p.y() - scaledPoint.y(), 2) < pow(r, 2)) {
                 return true;

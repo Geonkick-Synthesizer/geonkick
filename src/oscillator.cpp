@@ -45,9 +45,9 @@ Oscillator::FunctionType Oscillator::function()
         return static_cast<FunctionType>(geonkickApi->oscillatorFunction(index()));
 }
 
-GKickRealPoints Oscillator::envelopePoints(EnvelopeType envelope)
+std::vector<RkRealPoint> Oscillator::envelopePoints(EnvelopeType envelope)
 {
-        GKickRealPoints points;
+        std::vector<RkRealPoint> points;
         points = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
         return points;
 }
@@ -55,7 +55,7 @@ GKickRealPoints Oscillator::envelopePoints(EnvelopeType envelope)
 void Oscillator::addEnvelopePoint(EnvelopeType envelope, double x, double y)
 {
         geonkickApi->addOscillatorEnvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-                                                GKickRealPoint(x, y));
+                                                RkRealPoint(x, y));
 }
 
 void Oscillator::removeEnvelopePoint(EnvelopeType envelope, int point_index)
@@ -68,7 +68,7 @@ void Oscillator::removeEnvelopePoint(EnvelopeType envelope, int point_index)
 void Oscillator::updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y)
 {
         geonkickApi->updateOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-                                                  point_index, GKickRealPoint(x, y));
+                                                  point_index, RkRealPoint(x, y));
 }
 
 void Oscillator::setType(Oscillator::Type type)
