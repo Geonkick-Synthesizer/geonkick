@@ -198,17 +198,12 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
         pen.setColor(RkColor(200, 200, 200, 200));
         //        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
 	painter.setPen(pen);
-
-        int r = getPointRadius();
-	RkRect rect(point.x() - r, point.y() - r, 2 * r, 2 * r);
-	painter.drawCircle(rect);
+	painter.drawCircle(point, getPointRadius());
 
         //        QBrush brush = painter.brush();
         // painter.setBrush(RkColor(200, 200, 200, 200));
-        r = getDotRadius();
-        rect = RkRect(point.x() - r, point.y() - r, 2 * r, 2 * r);
-        painter.drawCircle(rect);
-        painter.setBrush(brush);
+        painter.drawCircle(point, getDotRadius());
+        //        painter.setBrush(brush);
 }
 
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
@@ -235,7 +230,7 @@ void Envelope::drawLines(RkPainter &painter)
         RkPoint origin = getOrigin();
 	for (const auto& point : envelopePoints) {
                 auto scaledPoint = scaleUp(point);
-	        points.pus_back(RkPoint(origin.x() + scaledPoint.x(),
+	        points.push_back(RkPoint(origin.x() + scaledPoint.x(),
                                         origin.y() - scaledPoint.y()));
 	}
 
@@ -347,8 +342,8 @@ void Envelope::addPoint(const RkPoint &point)
 	} else if (scaledPoint.x() > envelopePoints.back().x()) {
                 envelopePoints.push_back(scaledPoint);
 	} else {
-		for (auto const it = envelopePoints.constBegin() ; it != envelopePoints.constEnd(); ++it) {
-			if (scaledPoint.x() < (*it)->x()) {
+		for (auto it = envelopePoints.begin(); it != envelopePoints.end(); ++it) {
+			if (scaledPoint.x() < it->x()) {
                                 envelopePoints.insert(it, scaledPoint);
                                 break;
 			}
@@ -360,16 +355,14 @@ void Envelope::addPoint(const RkPoint &point)
 
 void Envelope::removePoint(const RkPoint &point)
 {
-        std::vector<RkRealPoint>::size_type index = 0;
-        for (const auto p: envelopePoints) {
-		if (hasPoint(p, point)) {
-			if (p != envelopePoints.front() && p != envelopePoints.back()) {
-				envelopePoints.erase(envelopePoints.begin() + index);
-				pointRemovedEvent(index);
+        for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
+		if (hasPoint(envelopePoints[i], point)) {
+			if (decltype(envelopePoints.size()) i = 0 && i != envelopePoints.size() - 1) {
+				envelopePoints.erase(envelopePoints.begin() + i);
+                                //				pointRemovedEvent(i);
 			}
 			break;
 		}
-                index++;
         }
 }
 

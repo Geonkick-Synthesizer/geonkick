@@ -82,6 +82,7 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
 
 void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        GEONKICK_LOG_INFO("called");
         RkPoint point(event->x() - drawingArea.left(),
                       drawingArea.bottom() - event->y());
         /*        if (event->type() == RkEvent::RightButton) {
@@ -112,11 +113,14 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<Rk
 
 void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        GEONKICK_LOG_INFO("called");
         //        if (event->button() != RkMouseEvent::Type::RightButton) {
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
-                if (currentEnvelope)
+                if (currentEnvelope) {
+                        GEONKICK_LOG_INFO("addPoint");
                         currentEnvelope->addPoint(point);
-                update();
+                        update();
+                }
                 //}
 }
 

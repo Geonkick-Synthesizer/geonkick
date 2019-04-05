@@ -31,18 +31,16 @@ class GeonkickApi;
 
 class GeneralEnvelope: public Envelope
 {
-  Q_OBJECT
-
  public:
 
   GeneralEnvelope(GeonkickApi *api, const RkRect &area);
   ~GeneralEnvelope();
   double envelopeLengh(void) const;
 
-public slots:
+  //public slots:
   void setEnvelopeLengh(double len) final;
 
-protected slots:
+  //protected slots:
   void updatePoints() final;
 
  protected:

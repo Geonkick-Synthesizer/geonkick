@@ -22,7 +22,7 @@
  */
 
 #include "envelope_widget.h"
-//#include "general_envelope.h"
+#include "general_envelope.h"
 #include "envelope_draw_area.h"
 //#include "geonkick_button.h"
 //#include "kick_graph.h"
@@ -40,7 +40,8 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         drawArea = new EnvelopeWidgetDrawingArea(this);
         drawArea->show();
 
-        /*        RkRect rect = drawArea->getDrawingArea();
+        auto rect = drawArea->getDrawingArea();
+        /*
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
         std::shared_ptr<Envelope> envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
         connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
@@ -52,16 +53,16 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
         envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
         connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
+        envelopes.push_back(envelope);*/
+        auto envelope = std::make_shared<GeneralEnvelope>(api, rect);
+        //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.push_back(envelope);
-        envelope = std::make_shared<GeneralEnvelope>(api, rect);
-        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
-        envelopes.push_back(envelope);
-        auto kickGraph = new KickGraph(this, api);
+        /*auto kickGraph = new KickGraph(this, api);
         kickGraph->setDrawingArea(rect);
         drawArea->setKickGraph(kickGraph);
 
-        createButtomMenu();
-        showGeneralEnvelope();*/
+        createButtomMenu();*/
+        showGeneralEnvelope();
 }
 
 EnvelopeWidget::~EnvelopeWidget()
@@ -133,8 +134,8 @@ void EnvelopeWidget::showGeneralEnvelope()
         showAmplitudeEnvButton->setPressed(false);
         showAmplitudeEnvButton->hide();
         showFrequencyEnvButton->setPressed(false);
-        showFrequencyEnvButton->hide();
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::General)]);*/
+        showFrequencyEnvButton->hide();*/
+        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::General)]);
 }
 
 void EnvelopeWidget::showOsc1Envelope()
