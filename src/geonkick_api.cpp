@@ -51,7 +51,7 @@ bool GeonkickApi::init()
 	        GEONKICK_LOG_ERROR("can't create geonkick API");
                 return false;
   	}
-        jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
+        //        jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
         //        setState(getDefaultState());
         return true;
 }
@@ -219,11 +219,11 @@ void GeonkickApi::setOscillatorState(OscillatorType oscillator, const std::share
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
 {
         std::vector<std::unique_ptr<Oscillator>> oscillators;
-        size_t n = 0;
+        /*        size_t n = 0;
         geonkick_get_oscillators_number(geonkickApi, &n);
         for (size_t i = 0; i < n; i++)
                 oscillators.push_back(std::move(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i))));
-
+        */
         return oscillators;
 }
 
@@ -231,7 +231,7 @@ std::vector<RkRealPoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorInde
 {
         gkick_real *buf;
         std::vector<RkRealPoint> points;
-        size_t npoints = 0;
+        /*size_t npoints = 0;
 
         geonkick_osc_envelope_get_points(geonkickApi, oscillatorIndex,
                                          static_cast<int>(envelope), &buf, &npoints);
@@ -241,7 +241,7 @@ std::vector<RkRealPoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorInde
         if (buf != NULL)
                 free(buf);
 
-        RK_LOG_DEBUG("points size:" << points.size());
+                RK_LOG_DEBUG("points size:" << points.size());*/
         return points;
 }
 
@@ -344,14 +344,14 @@ std::vector<RkRealPoint> GeonkickApi::getKickEnvelopePoints() const
 
 void GeonkickApi::setKickEnvelopePoints(const std::vector<RkRealPoint> &points)
 {
-        std::vector<char> data(2 * points.size() * sizeof(gkick_real), 0);
-        gkick_real *buff = reinterpret_cast<gkick_real*>(data.data());
+        /*        std::vector<gkick_real> data(2 * points.size() * sizeof(gkick_real), 0);
+        auto *buff = data.data();
         for (decltype(points.size()) i = 0; i < points.size(); i++) {
                 buff[2 * i]     = points[i].x();
                 buff[2 * i + 1] = points[i].y();
         }
 
-        geonkick_kick_envelope_set_points(geonkickApi, buff, points.size());
+        geonkick_kick_envelope_set_points(geonkickApi, buff, points.size());*/
 }
 
 void GeonkickApi::enableKickFilter(bool b)

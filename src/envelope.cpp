@@ -33,7 +33,6 @@ Envelope::Envelope(const RkRect &area)
         , pointSelected{false}
         , envelopeType{Type::Amplitude}
 {
-        RK_LOG_INFO("called: size:" << envelopePoints.size());
 }
 
 Envelope::~Envelope()
@@ -57,21 +56,21 @@ RkPoint Envelope::getOrigin(void) const
 
 void Envelope::draw(RkPainter &painter, DrawLayer layer)
 {
-        /*        if (layer == DrawLayer::Axies) {
+        if (layer == DrawLayer::Axies) {
                 drawAxies(painter);
                 drawScale(painter);
         } else if (layer == DrawLayer::Envelope) {
                 drawPoints(painter);
-                //drawLines(painter);
-                }*/
+                drawLines(painter);
+        }
 }
 
 void Envelope::drawAxies(RkPainter & painter)
 {
-        /*        painter.setPen(RkColor(125, 125, 125));
+        painter.setPen(RkColor(125, 125, 125));
         RkPoint point = getOrigin();
         painter.drawLine(point.x(), point.y(), point.x() + W() + 10, point.y());
-        painter.drawLine(point.x(), point.y(), point.x(), point.y() - H() - 10);*/
+        painter.drawLine(point.x(), point.y(), point.x(), point.y() - H() - 10);
 }
 
 void Envelope::drawScale(RkPainter &painter)
@@ -182,14 +181,15 @@ void Envelope::drawValueScale(RkPainter &painter)
 void Envelope::drawPoints(RkPainter &painter)
 {
         RkPoint origin = getOrigin();
-        RK_LOG_INFO("envelopePoints.size() :" << envelopePoints.size());
-	/*for (const auto &point : envelopePoints) {
+	for (const auto &point : envelopePoints) {
                 RkPoint scaledPoint = scaleUp(point);
+                RK_LOG_DEBUG("point: (" << scaledPoint.x() << ", " << scaledPoint.y() << ")");
+                RK_LOG_DEBUG("origin: (" << origin.x() << ", " << origin.y() << ")");
                 scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
 		drawPoint(painter, scaledPoint);
-                scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
-                drawPointValue(painter, scaledPoint, point.y() * envelopeAmplitude());
-                }*/
+                //                scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
+                //                drawPointValue(painter, scaledPoint, point.y() * envelopeAmplitude());
+        }
 }
 
 void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
@@ -199,10 +199,11 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
         pen.setColor(RkColor(200, 200, 200, 200));
         //        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
 	painter.setPen(pen);
+        RK_LOG_DEBUG("point: " << point.x() << ", " << point.y());
 	painter.drawCircle(point, getPointRadius());
 
         //        QBrush brush = painter.brush();
-        // painter.setBrush(RkColor(200, 200, 200, 200));
+        //painter.setBrush(RkColor(200, 200, 200, 200));
         painter.drawCircle(point, getDotRadius());
         //        painter.setBrush(brush);
 }
@@ -227,7 +228,7 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 
 void Envelope::drawLines(RkPainter &painter)
 {
-        /*        std::vector<RkPoint> points;
+        std::vector<RkPoint> points;
         RkPoint origin = getOrigin();
 	for (const auto& point : envelopePoints) {
                 auto scaledPoint = scaleUp(point);
@@ -240,7 +241,7 @@ void Envelope::drawLines(RkPainter &painter)
         pen.setColor(RkColor(200, 200, 200, 200));
 	painter.setPen(pen);
         //        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
-	painter.drawPolyline(points);*/
+	painter.drawPolyline(points);
 }
 
 bool Envelope::hasSelected(void) const
@@ -326,7 +327,7 @@ void Envelope::setPoints(const std::vector<RkRealPoint> &points)
 void Envelope::addPoint(const RkPoint &point)
 {
         RK_LOG_INFO("envelopePoints.size() :" << envelopePoints.size());
-        /*        auto scaledPoint = scaleDown(point);
+        auto scaledPoint = scaleDown(point);
         if (scaledPoint.y() < 0)
                 scaledPoint.setY(0);
         else if (scaledPoint.y() > 1)
@@ -352,7 +353,6 @@ void Envelope::addPoint(const RkPoint &point)
 			}
 		}
 	}
-        */
         //	pointAddedEvent(scaledPoint.x(), scaledPoint.y());
 }
 
@@ -420,6 +420,7 @@ void Envelope::setDrawingArea(const RkRect &rect)
 
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
+        RK_LOG_INFO("called");
         RkRealPoint scaledPoint;
         if (type() == Type::Amplitude) {
                 scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
@@ -436,6 +437,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
+                RK_LOG_INFO("called");
         int x = 0;
         int y = 0;
         if (type() == Type::Amplitude) {

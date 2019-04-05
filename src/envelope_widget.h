@@ -61,7 +61,7 @@ public:
  private:
      void createButtomMenu();
      Envelope *currentEnvelope;
-     std::vector<std::shared_ptr<Envelope>> envelopes;
+     std::unordered_map<int, std::shared_ptr<Envelope>> envelopes;
      EnvelopeWidgetDrawingArea *drawArea;
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;

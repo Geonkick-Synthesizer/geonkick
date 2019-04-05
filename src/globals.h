@@ -29,6 +29,7 @@
 #include <memory>
 #include <vector>
 #include <atomic>
+#include <unordered_map>
 
 #include "geonkick.h"
 

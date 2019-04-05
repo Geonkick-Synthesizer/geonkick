@@ -56,7 +56,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelopes.push_back(envelope);*/
         auto envelope = std::make_shared<GeneralEnvelope>(api, rect);
         //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
-        envelopes.push_back(envelope);
+        envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
         /*auto kickGraph = new KickGraph(this, api);
         kickGraph->setDrawingArea(rect);
         drawArea->setKickGraph(kickGraph);
@@ -135,7 +135,10 @@ void EnvelopeWidget::showGeneralEnvelope()
         showAmplitudeEnvButton->hide();
         showFrequencyEnvButton->setPressed(false);
         showFrequencyEnvButton->hide();*/
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::General)]);
+
+        auto it = envelopes.find(static_cast<int>(EnvelopeType::General));
+        if (it != envelopes.end())
+                drawArea->setEnvelope(it->second);
 }
 
 void EnvelopeWidget::showOsc1Envelope()
@@ -170,7 +173,8 @@ void EnvelopeWidget::showOsc2Envelope()
         } else {
                 showAmplitudeEnvButton->setPressed(false);
                 showFrequencyEnvButton->setPressed(true);
-        }
+                }
+
         drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::Oscillator2)]);*/
 }
 
