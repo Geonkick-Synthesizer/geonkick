@@ -47,7 +47,7 @@ EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
 void EnvelopeWidgetDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
 {
         if (envelope) {
-                if (currentEnvelope)
+                //if (currentEnvelope)
                         // disconnect(currentEnvelope.get(), 0, this, 0);
                 currentEnvelope = envelope;
                 if (currentEnvelope) {

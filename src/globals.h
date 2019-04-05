@@ -32,6 +32,8 @@
 
 #include "geonkick.h"
 
+#include "RkLog.h"
+
 #define GEOKICK_APP_NAME "Geonkick"
 #define GEOKICK_APP_VERION 0x020000
 #define GEOKICK_APP_VERION_STRING "2.0"

@@ -48,27 +48,27 @@ Oscillator::FunctionType Oscillator::function()
 std::vector<RkRealPoint> Oscillator::envelopePoints(EnvelopeType envelope)
 {
         std::vector<RkRealPoint> points;
-        points = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
+        //points = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
         return points;
 }
 
 void Oscillator::addEnvelopePoint(EnvelopeType envelope, double x, double y)
 {
-        geonkickApi->addOscillatorEnvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-                                                RkRealPoint(x, y));
+        //geonkickApi->addOscillatorEnvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
+        //                                        RkRealPoint(x, y));
 }
 
 void Oscillator::removeEnvelopePoint(EnvelopeType envelope, int point_index)
 {
-        if (geonkickApi)
-                geonkickApi->removeOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-                                                          point_index);
+        //        if (geonkickApi)
+        //        geonkickApi->removeOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
+        //                                                          point_index);
 }
 
 void Oscillator::updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y)
 {
-        geonkickApi->updateOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-                                                  point_index, RkRealPoint(x, y));
+        //geonkickApi->updateOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
+        //                                          point_index, RkRealPoint(x, y));
 }
 
 void Oscillator::setType(Oscillator::Type type)
