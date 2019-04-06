@@ -88,7 +88,7 @@ bool MainWindow::init(void)
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(topBar->x());
         envelopeWidget->setY(topBar->y() + topBar->height());
-        envelopeWidget->setFixedSize(std::make_pair(850, 340));
+        envelopeWidget->setFixedSize(RkSize(850, 340));
         envelopeWidget->show();
         //        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
         /*        hBoxLayout->addWidget(envelopeWidget);
