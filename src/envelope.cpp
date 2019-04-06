@@ -58,7 +58,7 @@ void Envelope::draw(RkPainter &painter, DrawLayer layer)
 {
         if (layer == DrawLayer::Axies) {
                 drawAxies(painter);
-                drawScale(painter);
+                //                drawScale(painter);
         } else if (layer == DrawLayer::Envelope) {
                 drawPoints(painter);
                 drawLines(painter);
@@ -181,10 +181,14 @@ void Envelope::drawValueScale(RkPainter &painter)
 void Envelope::drawPoints(RkPainter &painter)
 {
         RkPoint origin = getOrigin();
+
+        RkPen pen;
+        pen.setWidth(2);
+        pen.setColor(RkColor(200, 200, 200, 200));
+	painter.setPen(pen);
+
 	for (const auto &point : envelopePoints) {
                 RkPoint scaledPoint = scaleUp(point);
-                RK_LOG_DEBUG("point: (" << scaledPoint.x() << ", " << scaledPoint.y() << ")");
-                RK_LOG_DEBUG("origin: (" << origin.x() << ", " << origin.y() << ")");
                 scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
 		drawPoint(painter, scaledPoint);
                 //                scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
@@ -194,12 +198,11 @@ void Envelope::drawPoints(RkPainter &painter)
 
 void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 {
-        RkPen pen;
-        pen.setWidth(2);
-        pen.setColor(RkColor(200, 200, 200, 200));
+        //        RkPen pen;
+        //pen.setWidth(2);
+        //pen.setColor(RkColor(200, 200, 200, 200));
         //        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
-	painter.setPen(pen);
-        RK_LOG_DEBUG("point: " << point.x() << ", " << point.y());
+	//painter.setPen(pen);
 	painter.drawCircle(point, getPointRadius());
 
         //        QBrush brush = painter.brush();
@@ -420,7 +423,6 @@ void Envelope::setDrawingArea(const RkRect &rect)
 
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
-        RK_LOG_INFO("called");
         RkRealPoint scaledPoint;
         if (type() == Type::Amplitude) {
                 scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
@@ -437,7 +439,6 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
-                RK_LOG_INFO("called");
         int x = 0;
         int y = 0;
         if (type() == Type::Amplitude) {

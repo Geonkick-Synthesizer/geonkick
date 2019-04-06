@@ -714,13 +714,13 @@ double GeonkickApi::getDistortionDrive(void) const
 
 void GeonkickApi::registerCallbacks(bool b)
 {
-        if (b) {
+        /*        if (b) {
                 geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
                 geonkick_set_kick_limiter_callback(geonkickApi, &GeonkickApi::limiterCallback, this);
         } else {
                 geonkick_set_kick_buffer_callback(geonkickApi, NULL, NULL);
                 geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
-        }
+                }*/
 }
 
 void GeonkickApi::limiterTimeout()

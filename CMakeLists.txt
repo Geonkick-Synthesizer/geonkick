@@ -108,7 +108,7 @@ set(GKICK_COMMON_SOURCES
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
-    option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
+    option(ENABLE_LOGGING    "Enable logging for API and GUI" OFF)
 endif()
 
 # Enables the double precision calculation for API.
@@ -121,9 +121,9 @@ if (ENABLE_DOUBLE_PRECISION)
 endif()
 
 if (ENABLE_LOGGING)
-message(STATUS "set debug level")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+#message(STATUS "set debug level")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
 #  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
 #  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
 #  list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_LEVEL_DEBUG")

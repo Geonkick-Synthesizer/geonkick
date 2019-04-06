@@ -42,7 +42,7 @@ TopBar::TopBar(GeonkickWidget *parent)
         setFixedHeight(40);
 
         auto logo = new RkLabel(this);
-        RkImage image(rk_logo_png, 120, 20);
+        RkImage image(120, 20, rk_logo_png);
         logo->setSize(image.width(), image.height());
         logo->setBackgroundColor(68, 68, 70);
         logo->setImage(image);

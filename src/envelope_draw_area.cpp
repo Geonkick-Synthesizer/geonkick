@@ -63,7 +63,9 @@ void EnvelopeWidgetDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
 void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
         RK_UNUSED(event);
-        RkPainter painter(this);
+        RkImage image(width(), height());
+        RkPainter painter(&image);
+        painter.fillRect(rect(), background());
 
         if (currentEnvelope)
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Axies);
@@ -78,6 +80,8 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
         pen.setPenWidth(1);
         paint.setPenColor(20, 20, 20, 255);
         paint.drawRect(0, 0, width() - 1, height() - 1);*/
+        RkPainter paint(this);
+        paint.drawImage(image, 0, 0);
 }
 
 void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
