@@ -24,6 +24,9 @@
 #include "envelope.h"
 #include "globals.h"
 
+#include <iomanip>
+#include <math.h>
+
 Envelope::Envelope(const RkRect &area)
         : drawingArea{area}
         , pointRadius{10}
@@ -67,7 +70,10 @@ void Envelope::draw(RkPainter &painter, DrawLayer layer)
 
 void Envelope::drawAxies(RkPainter & painter)
 {
-        painter.setPen(RkColor(125, 125, 125));
+        auto pen = painter.pen();
+        pen.setColor(RkColor(125, 125, 125));
+        pen.setWidth(1);
+        painter.setPen(pen);
         RkPoint point = getOrigin();
         painter.drawLine(point.x(), point.y(), point.x() + W() + 10, point.y());
         painter.drawLine(point.x(), point.y(), point.x(), point.y() - H() - 10);
@@ -110,24 +116,24 @@ void Envelope::drawTimeScale(RkPainter &painter)
 
 void Envelope::drawValueScale(RkPainter &painter)
 {
-        /*std::string text;
+        std::string text;
         if (type() == Type::Amplitude) {
-                text = tr("Amplitude");
+                text = "Amplitude";
         } else if (type() == Type::Frequency) {
-                text = tr("Frequency, Hz");
+                text = "Frequency, Hz";
         }
 
-        painter.translate(getOrigin().x() - 30, getOrigin().y() - H() / 2 + 35);
-        painter.rotate(-90);
+        painter.translate(RkPoint(getOrigin().x() - 30, getOrigin().y() - H() / 2 + 35));
+        painter.rotate(-M_PI / 2);
 
         painter.drawText(-5, -5, text);
-        painter.rotate(90);
-        painter.translate(-(getOrigin().x() - 30), -(getOrigin().y() - H() / 2 + 35));
+        painter.rotate(M_PI / 2);
+        painter.translate(RkPoint(-(getOrigin().x() - 30), -(getOrigin().y() - H() / 2 + 35)));
 
-        //RkFont font = painter.font();
-        //font.setPixelSize(10);
-        //painter.setFont(font);
-        int rectH = font.pixelSize() + 2;
+        RkFont font = painter.font();
+        font.setSize(10);
+        painter.setFont(font);
+        int rectH = font.size() + 2;
         painter.setPen(RkPen(RkColor(110, 110, 110)));
 
         if (type() == Type::Amplitude) {
@@ -140,12 +146,14 @@ void Envelope::drawValueScale(RkPainter &painter)
                                 y = getOrigin().y() - H() * (i * step / amplitude);
                         }
                         RkPen pen(RkColor(80, 80, 80));
-                        pen.setStyle(RkPen::LineType::DotLine);
+                        pen.setStyle(RkPen::PenStyle::DotLine);
                         painter.setPen(pen);
                         painter.drawLine(x + 1, y, x + W(), y);
                         RkRect rect(x - 28,  y -  rectH / 2, 22, rectH);
                         painter.setPen(RkPen(RkColor(110, 110, 110)));
-                        painter.drawText(rect,  Rk::AlignRight, std::to_string(i * step, 'f', 2));
+                        std::ostringstream ss;
+                        ss << std::setprecision(2) << i * step;
+                        painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
         } else if (type() == Type::Frequency) {
                 std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
@@ -156,7 +164,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                                 break;
 
                         RkPen pen(RkColor(80, 80, 80));
-                        pen.setLineType(RkPen::LineType::DotLine);
+                        pen.setStyle(RkPen::PenStyle::DotLine);
                         painter.setPen(pen);
                         if (value != 20)
                                 painter.drawLine(x, y, x + W(), y);
@@ -172,9 +180,9 @@ void Envelope::drawValueScale(RkPainter &painter)
                                 text = std::to_string(value / 1000) + "k";
                         else
                                 text = std::to_string(value);
-                        painter.drawText(rect, Rk::AlignRight, text);
+                        painter.drawText(rect, text, Rk::Alignment::AlignRight);
                 }
-                }*/
+        }
 
 }
 
