@@ -58,7 +58,7 @@ void Envelope::draw(RkPainter &painter, DrawLayer layer)
 {
         if (layer == DrawLayer::Axies) {
                 drawAxies(painter);
-                //                drawScale(painter);
+                drawScale(painter);
         } else if (layer == DrawLayer::Envelope) {
                 drawPoints(painter);
                 drawLines(painter);
@@ -81,31 +81,31 @@ void Envelope::drawScale(RkPainter &painter)
 
 void Envelope::drawTimeScale(RkPainter &painter)
 {
-        //        RkFont font = painter.font();
-        //font.setPixelSize(10);
-        //painter.setFont(font);
+        RkFont font = painter.font();
+        font.setSize(10);
+        painter.setFont(font);
 
-        /*auto val = envelopeLengh() / 10;
+        auto val = envelopeLengh() / 10;
         int dx = W() / 10;
         RkPoint point = getOrigin();
         int x  = point.x() + dx;
         for (auto i = 1; i <= 10; i++) {
                 RkPen pen(RkColor(80, 80, 80));
-                pen.setStyle(RkPen::LineStyle::DotLine);
+                pen.setStyle(RkPen::PenStyle::DotLine);
                 painter.setPen(pen);
-                painter.drawLine(x, point.y() - font.pixelSize() - 4, x, point.y() - H());
+                painter.drawLine(x, point.y() - font.size() - 4, x, point.y() - H());
 
-                RkRect rect(x - 12, point.y() - 12, 25, font.pixelSize());
+                RkRect rect(x - 12, point.y() - 12, 25, font.size());
                 painter.setPen(RkColor(110, 110, 110));
-                //                painter.drawText(rect, Rk::AlignCenter, std::to_string(std::round(i * val)));
+                painter.drawText(rect, std::to_string(std::llround(i * val)));
                 x += dx;
         }
 
-        font.setPixelSize(12);
+        font.setSize(12);
         painter.setFont(font);
         painter.setPen(RkPen(RkColor(180, 180, 180, 200)));
-        //        painter.drawText(point.x() + W() / 2 - 35, point.y() +  font.pixelSize() + 10,
-        //                 tr("Length, ") + std::string::number(std::round(envelopeLengh())) + " ms");*/
+        painter.drawText(point.x() + W() / 2 - 35, point.y() +  font.size() + 10,
+                         "Length, " + std::to_string(std::llround(envelopeLengh())) + " ms");
 }
 
 void Envelope::drawValueScale(RkPainter &painter)
@@ -231,8 +231,11 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 
 void Envelope::drawLines(RkPainter &painter)
 {
+        if (envelopePoints.size() < 2)
+                return;
+
         std::vector<RkPoint> points;
-        RkPoint origin = getOrigin();
+        auto origin = getOrigin();
 	for (const auto& point : envelopePoints) {
                 auto scaledPoint = scaleUp(point);
 	        points.push_back(RkPoint(origin.x() + scaledPoint.x(),
