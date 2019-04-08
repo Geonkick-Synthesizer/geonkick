@@ -199,20 +199,19 @@ void Envelope::drawPoints(RkPainter &painter)
                 RkPoint scaledPoint = scaleUp(point);
                 scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
 		drawPoint(painter, scaledPoint);
-                //                scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
-                //                drawPointValue(painter, scaledPoint, point.y() * envelopeAmplitude());
+                scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
+                drawPointValue(painter, scaledPoint, point.y() * envelopeAmplitude());
         }
 }
 
 void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 {
-        //        RkPen pen;
-        //pen.setWidth(2);
-        //pen.setColor(RkColor(200, 200, 200, 200));
-        //        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
-	//painter.setPen(pen);
+        auto pen = painter.pen();
+        pen.setWidth(2);
+        pen.setColor(RkColor(200, 200, 200, 200));
+        //painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
+	painter.setPen(pen);
 	painter.drawCircle(point, getPointRadius());
-
         //        QBrush brush = painter.brush();
         //painter.setBrush(RkColor(200, 200, 200, 200));
         painter.drawCircle(point, getDotRadius());
@@ -221,20 +220,22 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
 {
-        /*        if (type() == Envelope::Type::Amplitude) {
-                painter.drawText(point, std::string::number(value, 'f', 2));
+        if (type() == Envelope::Type::Amplitude) {
+                std::ostringstream ss;
+                ss << std::setprecision(2) << value;
+                painter.drawText(point.x(), point.y(), ss.str());
         } else if (type() == Envelope::Type::Frequency) {
-                if (value < 20) {
-                        painter.drawText(point, "20Hz " + frequencyToNote(20));
-                }
+                if (value < 20)
+                        painter.drawText(point.x(), point.y(), "20Hz " + frequencyToNote(20));
                 if (value >= 20 && value < 1000) {
-                        painter.drawText(point, std::string::number(value, 'f', 0)
+                        painter.drawText(point.x(), point.y(), std::to_string(std::llround(value))
                                          + "Hz " + frequencyToNote(value));
                 } else if (value >= 1000 && value <= 20000) {
-                        painter.drawText(point, std::string::number(value / 1000, 'f', 1) + "kHz "
-                                         + frequencyToNote(value));
+                        std::ostringstream ss;
+                        ss << std::setprecision(1) << value / 1000;
+                        painter.drawText(point.x(), point.y(), ss.str() + "kHz " + frequencyToNote(value));
                 }
-                }*/
+        }
 }
 
 void Envelope::drawLines(RkPainter &painter)
@@ -265,7 +266,7 @@ bool Envelope::hasSelected(void) const
 
 void Envelope::selectPoint(const RkPoint &point)
 {
-        /*        std::vector<RkRealPoint>::size_type index = 0;
+        std::vector<RkRealPoint>::size_type index = 0;
 	for (const auto& p : envelopePoints) {
 		if (hasPoint(p, point)) {
                         selectedPointIndex = index;
@@ -273,7 +274,7 @@ void Envelope::selectPoint(const RkPoint &point)
 			break;
 		}
                 index++;
-                }*/
+        }
 }
 
 void Envelope::unselectPoint(void)
@@ -311,7 +312,7 @@ void Envelope::moveSelectedPoint(int x, int y)
         if (!pointSelected || envelopePoints.empty())
 		return;
 
-        /*        auto scaledPoint = scaleDown(RkPoint(x, y));
+        auto scaledPoint = scaleDown(RkPoint(x, y));
         auto &selectedPoint = envelopePoints[selectedPointIndex];
 	if (scaledPoint.x() < getLeftPointLimit())
                 selectedPoint.setX(getLeftPointLimit());
@@ -327,20 +328,18 @@ void Envelope::moveSelectedPoint(int x, int y)
 	else
                 selectedPoint.setY(scaledPoint.y());
 
-                pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());*/
+        //                pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
 }
 
 void Envelope::setPoints(const std::vector<RkRealPoint> &points)
 {
-        /*        RK_LOG_INFO("called");
         removePoints();
         for (const auto &point : points)
-        envelopePoints.push_back(point);*/
+                envelopePoints.push_back(point);
 }
 
 void Envelope::addPoint(const RkPoint &point)
 {
-        RK_LOG_INFO("envelopePoints.size() :" << envelopePoints.size());
         auto scaledPoint = scaleDown(point);
         if (scaledPoint.y() < 0)
                 scaledPoint.setY(0);
@@ -372,7 +371,7 @@ void Envelope::addPoint(const RkPoint &point)
 
 void Envelope::removePoint(const RkPoint &point)
 {
-        /*for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
+        for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
 		if (hasPoint(envelopePoints[i], point)) {
 			if (decltype(envelopePoints.size()) i = 0 && i != envelopePoints.size() - 1) {
 				envelopePoints.erase(envelopePoints.begin() + i);
@@ -380,7 +379,7 @@ void Envelope::removePoint(const RkPoint &point)
 			}
 			break;
 		}
-                }*/
+        }
 }
 
 bool Envelope::setType(Type type)
