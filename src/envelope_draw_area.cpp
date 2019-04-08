@@ -86,16 +86,20 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
 
 void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        GEONKICK_LOG_INFO("called");
+        if (event->button() != RkMouseEvent::ButtonType::Right
+            && event->button() != RkMouseEvent::ButtonType::Left)
+                return;
+
         RkPoint point(event->x() - drawingArea.left(),
                       drawingArea.bottom() - event->y());
-        /*        if (event->type() == RkEvent::RightButton) {
+        if (event->button() == RkMouseEvent::ButtonType::Right) {
                 if (currentEnvelope) {
+                        RK_LOG_INFO("remove point");
                         currentEnvelope->removePoint(point);
                         update();
                 }
                 return;
-                }*/
+        }
 
         mousePoint.setX(event->x());
         mousePoint.setY(event->y());

@@ -373,7 +373,7 @@ void Envelope::removePoint(const RkPoint &point)
 {
         for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
 		if (hasPoint(envelopePoints[i], point)) {
-			if (decltype(envelopePoints.size()) i = 0 && i != envelopePoints.size() - 1) {
+			if (i != 0 && i != envelopePoints.size() - 1) {
 				envelopePoints.erase(envelopePoints.begin() + i);
                                 //				pointRemovedEvent(i);
 			}
