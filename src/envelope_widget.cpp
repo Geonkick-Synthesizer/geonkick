@@ -27,6 +27,11 @@
 //#include "geonkick_button.h"
 #include "kick_graph.h"
 
+extern const unsigned char show_ampl_env_active_png[];
+extern const unsigned char show_ampl_env_png[];
+extern const unsigned char show_freq_env_active_png[];
+extern const unsigned char show_freq_env_png[];
+
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
                                const std::vector<std::unique_ptr<Oscillator>> &oscillators)
@@ -59,7 +64,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
         auto graph = std::make_unique<KickGraph>(api);
         drawArea->setKickGraph(graph);
-        //        createButtomMenu();
+        createButtomMenu();
         showGeneralEnvelope();
 }
 
@@ -70,18 +75,20 @@ EnvelopeWidget::~EnvelopeWidget()
 
 void EnvelopeWidget::createButtomMenu()
 {
-        /*        auto buttomAreaWidget = new GeonkickWidget(this);
-        buttomAreaWidget->setContentsMargins(0, 0, 0, 0);
+        auto buttomAreaWidget = new GeonkickWidget(this);
+        buttomAreaWidget->setPosition(drawArea->x(), drawArea->y() + drawArea->height());
+        buttomAreaWidget->setFixedSize(drawArea->width(), 34);
+        buttomAreaWidget->show();
 
-        layout()->addWidget(buttomAreaWidget);
-        showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
-        connect(showAmplitudeEnvButton, SIGNAL(toggled(bool)), this, SLOT(showAmplitudeEnvelope()));
-        showAmplitudeEnvButton->setPressedImage(QPixmap(":/show_ampl_env_active.png"));
-        showAmplitudeEnvButton->setUnpressedImage(QPixmap(":/show_ampl_env.png"));
+        /*        showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
+        showAmplitudeEnvButton.addCallback("toggle", showAmplitudeEnvelope);
+        //        connect(showAmplitudeEnvButton, SIGNAL(toggled(bool)), this, SLOT(showAmplitudeEnvelope()));
+        showAmplitudeEnvButton->setPressedImage(RkImage(show_ampl_env_active_png));
+        showAmplitudeEnvButton->setUnpressedImage(RkImage(show_ampl_env_png));
         showFrequencyEnvButton = new GeonkickButton(buttomAreaWidget);
-        connect(showFrequencyEnvButton, SIGNAL(toggled(bool)), this, SLOT(showFrequencyEnvelope()));
-        showFrequencyEnvButton->setPressedImage(QPixmap(":/show_freq_env_active.png"));
-        showFrequencyEnvButton->setUnpressedImage(QPixmap(":/show_freq_env.png"));
+        //        connect(showFrequencyEnvButton, SIGNAL(toggled(bool)), this, SLOT(showFrequencyEnvelope()));
+        showFrequencyEnvButton->setPressedImage(RkImage(show_freq_env_active_png));
+        showFrequencyEnvButton->setUnpressedImage(RkIamge(show_freq_env_png));
         buttomAreaWidget->setFixedSize(drawArea->width(), showAmplitudeEnvButton->height() + 2);
 
         osccillator1EvelopesButton = new GeonkickButton(buttomAreaWidget);

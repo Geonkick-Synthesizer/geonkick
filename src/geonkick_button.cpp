@@ -40,7 +40,7 @@ void GeonkickButton::mousePressEvent(QMouseEvent * event)
         Q_UNUSED(event)
         if (isCheckable()) {
                 setPressed(!isPressed());
-                emit toggled(isPressed());
+                rk_do_action(toggled);
         } else if (!isPressed()) {
                 setPressed(true);
                 emit toggled(true);
