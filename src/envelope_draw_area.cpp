@@ -23,7 +23,7 @@
 
 #include "envelope_draw_area.h"
 #include "envelope.h"
-//#include "kick_graph.h"
+#include "kick_graph.h"
 
 #include <RkPainter.h>
 #include <RkEvent.h>
@@ -31,7 +31,7 @@
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent)
           : GeonkickWidget(parent)
           , currentEnvelope{nullptr}
-            //          , kickGraph{nullptr}
+          , kickGraph{nullptr}
           , hideEnvelope{false}
 {
         setFixedSize(850, 300);
@@ -70,8 +70,8 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
         if (currentEnvelope)
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Axies);
 
-        //        if (kickGraph)
-        //                kickGraph->draw(painter);
+        if (kickGraph)
+                kickGraph->draw(painter);
 
         if (currentEnvelope && !isHideEnvelope())
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
@@ -157,18 +157,18 @@ const RkRect EnvelopeWidgetDrawingArea::getDrawingArea()
         return drawingArea;
 }
 
-/*void EnvelopeWidgetDrawingArea::setKickGraph(KickGraph *graph)
+void EnvelopeWidgetDrawingArea::setKickGraph(std::unique_ptr<KickGraph> &graph)
 {
-        kickGraph = graph;
+        kickGraph = std::move(graph);
         kickGraph->setDrawingArea(drawingArea);
         //        connect(kickGraph, SIGNAL(graphUpdated()), this, SLOT(update()));
-        }*/
-
-/*KickGraph* EnvelopeWidgetDrawingArea::getKickGraph()
-{
-        return kickGraph;
 }
-*/
+
+KickGraph* EnvelopeWidgetDrawingArea::getKickGraph() const
+{
+        return kickGraph.get();
+}
+
 bool EnvelopeWidgetDrawingArea::isHideEnvelope() const
 {
         return hideEnvelope;

@@ -31,7 +31,7 @@
 #include "RkRealPoint.h"
 
 class Envelope;
-//class KickGraph;
+class KickGraph;
 class RkMouseEvent;
 
 class EnvelopeWidgetDrawingArea : public GeonkickWidget
@@ -42,8 +42,8 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
    std::shared_ptr<Envelope> getEnvelope() const;
    const RkRect getDrawingArea();
-   //   void setKickGraph(KickGraph *graph);
-   //   KickGraph* getKickGraph();
+   void setKickGraph(std::unique_ptr<KickGraph> &graph);
+   KickGraph* getKickGraph() const;
    bool isHideEnvelope() const;
 
    //   public slots:
@@ -59,7 +59,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
 
  private:
    std::shared_ptr<Envelope> currentEnvelope;
-   //   KickGraph *kickGraph;
+   std::unique_ptr<KickGraph> kickGraph;
    RkRect drawingArea;
    RkRealPoint mousePoint;
    bool hideEnvelope;

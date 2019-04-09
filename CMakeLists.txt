@@ -65,7 +65,7 @@ set(GKICK_COMMON_HEADERS
 #  ${GKICK_COMMON_DIR}/distortion_group_box.h
 #  ${GKICK_COMMON_DIR}/general_group_box.h
    ${GKICK_COMMON_DIR}/envelope.h
-#  ${GKICK_COMMON_DIR}/kick_graph.h
+   ${GKICK_COMMON_DIR}/kick_graph.h
    ${GKICK_COMMON_DIR}/envelope_widget.h
 #  ${GKICK_COMMON_DIR}/knob.h
    ${GKICK_COMMON_DIR}/oscillator.h
@@ -94,7 +94,7 @@ set(GKICK_COMMON_SOURCES
 #  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
 #  ${GKICK_COMMON_DIR}/general_group_box.cpp
    ${GKICK_COMMON_DIR}/envelope.cpp
-#  ${GKICK_COMMON_DIR}/kick_graph.cpp
+   ${GKICK_COMMON_DIR}/kick_graph.cpp
    ${GKICK_COMMON_DIR}/envelope_widget.cpp
 #  ${GKICK_COMMON_DIR}/knob.cpp
    ${GKICK_COMMON_DIR}/oscillator.cpp

@@ -25,7 +25,7 @@
 #include "general_envelope.h"
 #include "envelope_draw_area.h"
 //#include "geonkick_button.h"
-//#include "kick_graph.h"
+#include "kick_graph.h"
 
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
@@ -57,11 +57,9 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         auto envelope = std::make_shared<GeneralEnvelope>(api, rect);
         //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
-        /*auto kickGraph = new KickGraph(this, api);
-        kickGraph->setDrawingArea(rect);
-        drawArea->setKickGraph(kickGraph);
-
-        createButtomMenu();*/
+        auto graph = std::make_unique<KickGraph>(api);
+        drawArea->setKickGraph(graph);
+        //        createButtomMenu();
         showGeneralEnvelope();
 }
 
