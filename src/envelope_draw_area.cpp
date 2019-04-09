@@ -76,10 +76,12 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
         if (currentEnvelope && !isHideEnvelope())
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
 
-        /*        RkPainter paint(this);
-        pen.setPenWidth(1);
-        paint.setPenColor(20, 20, 20, 255);
-        paint.drawRect(0, 0, width() - 1, height() - 1);*/
+        auto pen = painter.pen();
+        pen.setWidth(1);
+        pen.setColor({20, 20, 20, 255});
+        painter.setPen(pen);
+        painter.drawRect({0, 0, width() - 1, height() - 1});
+
         RkPainter paint(this);
         paint.drawImage(image, 0, 0);
 }
@@ -94,7 +96,6 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMo
                       drawingArea.bottom() - event->y());
         if (event->button() == RkMouseEvent::ButtonType::Right) {
                 if (currentEnvelope) {
-                        RK_LOG_INFO("remove point");
                         currentEnvelope->removePoint(point);
                         update();
                 }
@@ -121,15 +122,13 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<Rk
 
 void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        //        if (event->button() != RkMouseEvent::Type::RightButton) {
-
+        if (event->button() != RkMouseEvent::ButtonType::Right) {
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
                 if (currentEnvelope) {
-                        GEONKICK_LOG_INFO("addPoint (" << point.x() << "," << point.y() << ")");
                         currentEnvelope->addPoint(point);
                         update();
                 }
-                //}
+        }
 }
 
 void EnvelopeWidgetDrawingArea::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
