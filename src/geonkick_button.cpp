@@ -22,12 +22,11 @@
  */
 
 #include "geonkick_button.h"
-#include "globals.h"
 
 GeonkickButton::GeonkickButton(GeonkickWidget *parent)
-        : GeonkickWidget(parent),
-          is_pressed(false),
-          is_checkable(false)
+        : GeonkickWidget(parent)
+        , is_pressed{false}
+        , is_checkable{false}
 {
 }
 
@@ -35,32 +34,32 @@ GeonkickButton::~GeonkickButton()
 {
 }
 
-void GeonkickButton::mousePressEvent(QMouseEvent * event)
+void GeonkickButton::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        Q_UNUSED(event)
+        RK_UNUSED(event);
         if (isCheckable()) {
                 setPressed(!isPressed());
-                rk_do_action(toggled);
+                toggled(isPressed());
         } else if (!isPressed()) {
                 setPressed(true);
-                emit toggled(true);
+                toggled(true);
         }
 }
 
-void GeonkickButton::setPressedImage(const QPixmap &pixmap)
+void GeonkickButton::setPressedImage(const RkImage &img)
 {
-        pressedImage = pixmap;
+        pressedImage = img;
         if (isPressed()) {
-                setFixedSize(pixmap.size().width(), pixmap.size().height());
+                setFixedSize(img.width(), img.height());
                 setBackgroundImage(pressedImage);
         }
 }
 
-void GeonkickButton::setUnpressedImage(const QPixmap &pixmap)
+void GeonkickButton::setUnpressedImage(const RkImage &img)
 {
-        unpressedImage = pixmap;
+        unpressedImage = img;
         if (!isPressed()) {
-                setFixedSize(pixmap.size().width(), pixmap.size().height());
+                setFixedSize(img.width(), img.height());
                 setBackgroundImage(unpressedImage);
         }
 }
@@ -68,11 +67,10 @@ void GeonkickButton::setUnpressedImage(const QPixmap &pixmap)
 void GeonkickButton::setPressed(bool pressed)
 {
         is_pressed = pressed;
-        if (is_pressed) {
+        if (is_pressed)
                 setBackgroundImage(pressedImage);
-        } else {
+        else
                 setBackgroundImage(unpressedImage);
-        }
         update();
 }
 

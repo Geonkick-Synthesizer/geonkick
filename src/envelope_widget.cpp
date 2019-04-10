@@ -24,13 +24,13 @@
 #include "envelope_widget.h"
 #include "general_envelope.h"
 #include "envelope_draw_area.h"
-//#include "geonkick_button.h"
+#include "geonkick_button.h"
 #include "kick_graph.h"
 
-extern const unsigned char show_ampl_env_active_png[];
-extern const unsigned char show_ampl_env_png[];
-extern const unsigned char show_freq_env_active_png[];
-extern const unsigned char show_freq_env_png[];
+extern const unsigned char rk_show_ampl_env_active_png[];
+extern const unsigned char rk_show_ampl_env_png[];
+extern const unsigned char rk_show_freq_env_active_png[];
+extern const unsigned char rk_show_freq_env_png[];
 
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
@@ -80,18 +80,24 @@ void EnvelopeWidget::createButtomMenu()
         buttomAreaWidget->setFixedSize(drawArea->width(), 34);
         buttomAreaWidget->show();
 
-        /*        showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
-        showAmplitudeEnvButton.addCallback("toggle", showAmplitudeEnvelope);
-        //        connect(showAmplitudeEnvButton, SIGNAL(toggled(bool)), this, SLOT(showAmplitudeEnvelope()));
-        showAmplitudeEnvButton->setPressedImage(RkImage(show_ampl_env_active_png));
-        showAmplitudeEnvButton->setUnpressedImage(RkImage(show_ampl_env_png));
+        showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
+        RK_ACT_BIND(showAmplitudeEnvButton, toggled, RK_ACT_ARGS(bool pressed), this, showAmplitudeEnvelope());
+        showAmplitudeEnvButton->setPressedImage(RkImage(90, 30, rk_show_ampl_env_active_png));
+        showAmplitudeEnvButton->setUnpressedImage(RkImage(90, 30, rk_show_ampl_env_png));
+        showAmplitudeEnvButton->setPosition(0, (buttomAreaWidget->height() - showAmplitudeEnvButton->height()) / 2);
+        showAmplitudeEnvButton->show();
+        
         showFrequencyEnvButton = new GeonkickButton(buttomAreaWidget);
-        //        connect(showFrequencyEnvButton, SIGNAL(toggled(bool)), this, SLOT(showFrequencyEnvelope()));
-        showFrequencyEnvButton->setPressedImage(RkImage(show_freq_env_active_png));
-        showFrequencyEnvButton->setUnpressedImage(RkIamge(show_freq_env_png));
-        buttomAreaWidget->setFixedSize(drawArea->width(), showAmplitudeEnvButton->height() + 2);
+        RK_ACT_BIND(showFrequencyEnvButton, toggled, RK_ACT_ARGS(bool pressed), this, showFrequencyEnvelope());
+        showFrequencyEnvButton->setPressedImage(RkImage(90, 30, rk_show_freq_env_active_png));
+        showFrequencyEnvButton->setUnpressedImage(RkImage(90, 30, rk_show_freq_env_png));
+        showFrequencyEnvButton->setPosition(showAmplitudeEnvButton->width() + 5,
+                                            (buttomAreaWidget->height() - showFrequencyEnvButton->height()) / 2);
+        showFrequencyEnvButton->show();
+        
+        //        buttomAreaWidget->setFixedSize(drawArea->width(), showAmplitudeEnvButton->height() + 2);
 
-        osccillator1EvelopesButton = new GeonkickButton(buttomAreaWidget);
+        /*osccillator1EvelopesButton = new GeonkickButton(buttomAreaWidget);
         connect(osccillator1EvelopesButton, SIGNAL(toggled(bool)), this, SLOT(showOsc1Envelope()));
         osccillator1EvelopesButton->setPressedImage(QPixmap(":/show_osc1_envelopes_button_active.png"));
         osccillator1EvelopesButton->setUnpressedImage(QPixmap(":/show_osc1_envelopes_button.png"));
@@ -133,13 +139,13 @@ void EnvelopeWidget::createButtomMenu()
 
 void EnvelopeWidget::showGeneralEnvelope()
 {
-        /*        osccillator1EvelopesButton->setPressed(false);
+        /**        osccillator1EvelopesButton->setPressed(false);
         osccillator2EvelopesButton->setPressed(false);
-        noiseEvelopesButton->setPressed(false);
+        noiseEvelopesButton->setPressed(false);*/
         showAmplitudeEnvButton->setPressed(false);
         showAmplitudeEnvButton->hide();
         showFrequencyEnvButton->setPressed(false);
-        showFrequencyEnvButton->hide();*/
+        showFrequencyEnvButton->hide();
 
         auto it = envelopes.find(static_cast<int>(EnvelopeType::General));
         if (it != envelopes.end())
@@ -197,23 +203,24 @@ void EnvelopeWidget::showNoiseEnvelope()
 
 void EnvelopeWidget::showAmplitudeEnvelope()
 {
-        /*        auto envelope = drawArea->getEnvelope();
+        RK_LOG_INFO("called");
+        auto envelope = drawArea->getEnvelope();
         showFrequencyEnvButton->setPressed(false);
         if (envelope && envelope->isSupportedType(Envelope::Type::Amplitude)) {
                 envelope->setType(Envelope::Type::Amplitude);
-                drawArea->update();
-                }*/
+                drawArea->updateArea();
+        }
 }
 
 void EnvelopeWidget::showFrequencyEnvelope()
 {
-        /*        auto envelope = drawArea->getEnvelope();
+        RK_LOG_INFO("called");
+        auto envelope = drawArea->getEnvelope();
         showAmplitudeEnvButton->setPressed(false);
         if (envelope && envelope->isSupportedType(Envelope::Type::Frequency)) {
                 envelope->setType(Envelope::Type::Frequency);
-                drawArea->update();
+                drawArea->updateArea();
         }
-        */
 }
 
 void EnvelopeWidget::hideEnvelope(bool b)

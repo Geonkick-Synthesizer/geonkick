@@ -27,8 +27,8 @@
 #include "globals.h"
 
 #include <RkWidget.h>
+#include <RkImage.h>
 
-//class QPixmap;
 class RkPaintEvent;
 struct RkNativeWindowInfo;
 
@@ -38,13 +38,13 @@ class GeonkickWidget: public RkWidget
         explicit GeonkickWidget(GeonkickWidget *parent = nullptr);
         explicit GeonkickWidget(const RkNativeWindowInfo &info);
         virtual ~GeonkickWidget();
-        //        void setBackgroundImage(const QPixmap &pixmap);
+        void setBackgroundImage(const RkImage &img);
         void setBackgroundImage(const std::string &file);
         void paintEvent(const std::shared_ptr<RkPaintEvent> &event) final;
         virtual void paintWidget(const std::shared_ptr<RkPaintEvent> &event);
 
-        // private:
-        //        QPixmap backgroundImage;
+private:
+        RkImage backgroundImage;
 };
 
 #endif // GEONKICK_WIDGET_H

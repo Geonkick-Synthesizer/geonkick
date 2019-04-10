@@ -50,6 +50,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void setEnvelope(std::shared_ptr<Envelope> &envelope);
    void envelopeUpdated();
    void setHideEnvelope(bool b);
+   void updateArea() { update(); }
 
  protected:
    void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;

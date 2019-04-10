@@ -23,6 +23,8 @@
 
 #include "geonkick_widget.h"
 
+#include <RkPainter.h>
+
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
         : RkWidget(parent)
 {
@@ -41,10 +43,12 @@ GeonkickWidget::~GeonkickWidget()
 
 void GeonkickWidget::paintEvent(const std::shared_ptr<RkPaintEvent> &event)
 {
-        //        QPainter painter(this);
-        //if (!backgroundImage.isNull()) {
-        //        painter.drawPixmap(0, 0, backgroundImage);
-        //}
+        {
+                RkPainter painter(this);
+                painter.fillRect(rect(), background());
+                if (!backgroundImage.isNull())
+                        painter.drawImage(backgroundImage, 0, 0);
+        }
 
         paintWidget(event);
 }
@@ -54,17 +58,11 @@ void GeonkickWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         RK_UNUSED(event);
 }
 
-void GeonkickWidget::setBackgroundImage(const std::string &file)
+void GeonkickWidget::setBackgroundImage(const RkImage &img)
 {
-        RK_UNUSED(file);
-        //        setBackgroundImage(QPixmap(file));
-}
-
-/*void GeonkickWidget::setBackgroundImage(const QPixmap &pixmap)
-{
-        if (!pixmap.isNull()) {
-                backgroundImage = pixmap;
+        if (!img.isNull()) {
+                backgroundImage = img;
                 update();
         }
 }
-*/
+
