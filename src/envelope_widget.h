@@ -25,7 +25,6 @@
 #define GEONKICK_ENVELOPE_WIDGET_H
 
 #include "oscillator.h"
-//#include "oscillator_envelope.h"
 #include "geonkick_widget.h"
 
 
@@ -50,13 +49,14 @@ public:
      ~EnvelopeWidget();
      void hideEnvelope(bool b);
 
-     // protected slots:
+ protected:
      void showAmplitudeEnvelope();
      void showFrequencyEnvelope();
      void showGeneralEnvelope();
      void showOsc1Envelope();
      void showOsc2Envelope();
      void showNoiseEnvelope();
+     Envelope* getEnvelope(EnvelopeType type);
 
  private:
      void createButtomMenu();

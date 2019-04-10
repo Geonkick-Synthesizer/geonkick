@@ -71,7 +71,7 @@ set(GKICK_COMMON_HEADERS
    ${GKICK_COMMON_DIR}/oscillator.h
    ${GKICK_COMMON_DIR}/geonkick_api.h
 #  ${GKICK_COMMON_DIR}/geonkick_state.h
-#  ${GKICK_COMMON_DIR}/oscillator_envelope.h
+   ${GKICK_COMMON_DIR}/oscillator_envelope.h
 #  ${GKICK_COMMON_DIR}/oscillator_group_box.h
 #  ${GKICK_COMMON_DIR}/about.h
 #  ${GKICK_COMMON_DIR}/export_widget.h
@@ -100,7 +100,7 @@ set(GKICK_COMMON_SOURCES
    ${GKICK_COMMON_DIR}/oscillator.cpp
    ${GKICK_COMMON_DIR}/geonkick_api.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_state.cpp
-#  ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
+   ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
 #  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
 #  ${GKICK_COMMON_DIR}/export_widget.cpp
 #  ${GKICK_COMMON_DIR}/about.cpp

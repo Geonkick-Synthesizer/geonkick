@@ -25,19 +25,18 @@
 #include "oscillator.h"
 
 OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
-        : Envelope(nullptr, area),
-         oscillator(osc)
+        : Envelope(area)
+        , oscillator{osc}
 {
-        connect(osc, SIGNAL(amplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
-        connect(osc, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
-        if (oscillator->type() == Oscillator::Type::Noise) {
+        //        connect(osc, SIGNAL(amplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
+        //        connect(osc, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
+        if (oscillator->type() == Oscillator::Type::Noise)
                 removeSupportedType(Envelope::Type::Frequency);
-        } else {
-                connect(osc, SIGNAL(frequencyUpdated(double)), this, SIGNAL(envelopeUpdated()));
-        }
+        //        else {
+                //connect(osc, SIGNAL(frequencyUpdated(double)), this, SIGNAL(envelopeUpdated()));
+        //}
         setType(Envelope::Type::Amplitude);
-        QPolygonF points = oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type()));
-        setPoints(points);
+        setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
 }
 
 OscillatorEnvelope::~OscillatorEnvelope()
@@ -46,8 +45,7 @@ OscillatorEnvelope::~OscillatorEnvelope()
 
 void OscillatorEnvelope::updatePoints()
 {
-        QPolygonF points = oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type()));
-        setPoints(points);
+        setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
 }
 
 void OscillatorEnvelope::pointAddedEvent(double x, double y)
@@ -73,9 +71,8 @@ double OscillatorEnvelope::envelopeLengh(void) const
 
 double OscillatorEnvelope::envelopeAmplitude() const
 {
-        if (type() == Type::Amplitude) {
+        if (type() == Type::Amplitude)
                 return oscillator->amplitude();
-        } else {
+        else
                 return oscillator->frequency();
-        }
 }

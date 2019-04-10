@@ -44,7 +44,7 @@ EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
 {
 }
 
-void EnvelopeWidgetDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
+void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
                 //if (currentEnvelope)
@@ -147,7 +147,7 @@ void EnvelopeWidgetDrawingArea::envelopeUpdated()
         update();
 }
 
-std::shared_ptr<Envelope> EnvelopeWidgetDrawingArea::getEnvelope() const
+Envelope* EnvelopeWidgetDrawingArea::getEnvelope() const
 {
         return currentEnvelope;
 }

@@ -26,27 +26,21 @@
 
 #include "envelope.h"
 
-#include <memory>
-
 class Oscillator;
 
 class OscillatorEnvelope: public Envelope
 {
-  Q_OBJECT
-
  public:
 
   OscillatorEnvelope(Oscillator* osc, const RkRect &area);
   ~OscillatorEnvelope();
   double envelopeLengh(void) const;
 
-  protected slots:
-          void updatePoints() final;
-
  protected:
-  void pointAddedEvent(double x, double y) override;
-  void pointUpdatedEvent(unsigned int index, double x, double y) override;
-  void pointRemovedEvent(unsigned int index) override;
+  void updatePoints() final;
+  void pointAddedEvent(double x, double y) final;
+  void pointUpdatedEvent(unsigned int index, double x, double y) final;
+  void pointRemovedEvent(unsigned int index) final;
   double envelopeAmplitude() const final;
 
  private:

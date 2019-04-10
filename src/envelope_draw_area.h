@@ -40,14 +40,12 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    EnvelopeWidgetDrawingArea(GeonkickWidget *parent);
    ~EnvelopeWidgetDrawingArea();
    void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
-   std::shared_ptr<Envelope> getEnvelope() const;
+   Envelope* getEnvelope() const;
    const RkRect getDrawingArea();
    void setKickGraph(std::unique_ptr<KickGraph> &graph);
    KickGraph* getKickGraph() const;
    bool isHideEnvelope() const;
-
-   //   public slots:
-   void setEnvelope(std::shared_ptr<Envelope> &envelope);
+   void setEnvelope(Envelope* envelope);
    void envelopeUpdated();
    void setHideEnvelope(bool b);
    void updateArea() { update(); }
@@ -59,7 +57,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
 
  private:
-   std::shared_ptr<Envelope> currentEnvelope;
+   Envelope* currentEnvelope;
    std::unique_ptr<KickGraph> kickGraph;
    RkRect drawingArea;
    RkRealPoint mousePoint;

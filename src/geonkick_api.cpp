@@ -219,11 +219,10 @@ void GeonkickApi::setOscillatorState(OscillatorType oscillator, const std::share
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
 {
         std::vector<std::unique_ptr<Oscillator>> oscillators;
-        /*        size_t n = 0;
+        size_t n = 0;
         geonkick_get_oscillators_number(geonkickApi, &n);
-        for (size_t i = 0; i < n; i++)
+        for (decltype(n) i = 0; i < n; i++)
                 oscillators.push_back(std::move(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i))));
-        */
         return oscillators;
 }
 
