@@ -29,7 +29,8 @@
 #include <geonkick.h>
 
 GeonkickApi::GeonkickApi()
-        : geonkickApi{nullptr}
+        : eventQueue{nullptr}
+        , geonkickApi{nullptr}
         , updateLimiterLeveler{false}
         , limiterLevelerVal{0}
         , jackEnabled{false}
@@ -41,6 +42,11 @@ GeonkickApi::~GeonkickApi()
 {
   	if (geonkickApi)
                 geonkick_free(&geonkickApi);
+}
+
+void GeonkickApi::setEventQueue(const std::shared_ptr<EventQueue> &evq)
+{
+        eventQueue = evq;
 }
 
 bool GeonkickApi::init()
@@ -564,7 +570,8 @@ void GeonkickApi::setLimiterVal(double val)
 
 void GeonkickApi::emitKickUpdated()
 {
-        //        emit kickUpdated();
+        if (actionsQueue)
+                actionsQueue->addAction([&](void){ kickUpdated() });
 }
 
 int GeonkickApi::getSampleRate()

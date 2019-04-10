@@ -30,6 +30,7 @@
 
 class Oscillator;
 class GeonkickState;
+class EventQueue;
 
 class GeonkickApi {
 
@@ -64,6 +65,7 @@ class GeonkickApi {
 
   GeonkickApi();
   ~GeonkickApi();
+  void setEventQueue(const std::shared_ptr<EventQueue> &evq);
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
@@ -167,6 +169,7 @@ protected:
   void limiterTimeout();
 
 private:
+  std::shared_ptr<EventQueue> eventQueue;
   struct geonkick *geonkickApi;
   std::atomic<bool> updateLimiterLeveler;
   std::atomic<double> limiterLevelerVal;
