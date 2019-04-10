@@ -106,9 +106,9 @@ class GeonkickApi {
   void getKickBuffer(std::vector<gkick_real> &buffer);
   std::vector<gkick_real> getKickBuffer();
   int getSampleRate();
-  //  static std::shared_ptr<GeonkickState> getDefaultState();
+  static std::shared_ptr<GeonkickState> getDefaultState();
   gkick_real getAudioFrame();
-  //  std::shared_ptr<GeonkickState> getState();
+  std::shared_ptr<GeonkickState> getState();
 
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
@@ -127,7 +127,6 @@ class GeonkickApi {
   void setStandalone(bool b);
   bool isStandalone() const;
 
-  //public slots:
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
   void setLimiterValue(double value);
@@ -135,8 +134,8 @@ class GeonkickApi {
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
-  //  void setState(const std::shared_ptr<GeonkickState> &state);
-  // void setState(const std::vector<char> &data);
+  void setState(const std::shared_ptr<GeonkickState> &state);
+  void setState(const std::vector<unsigned char> &data);
   void setKickEnvelopePoints(const std::vector<RkRealPoint> &points);
   void setKeyPressed(bool b, int velocity);
   void enableCompressor(bool enable);
@@ -160,16 +159,15 @@ protected:
   static void kickUpdatedCallback(void *arg);
   static void limiterCallback(void *arg, gkick_real val);
   void emitKickUpdated();
-  //  void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
-  //  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
+  void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
+  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
   void setLimiterVal(double val);
 
   //  protected slots:
-    void limiterTimeout();
+  void limiterTimeout();
 
 private:
   struct geonkick *geonkickApi;
-  //  QTimer limiterTimer;
   std::atomic<bool> updateLimiterLeveler;
   std::atomic<double> limiterLevelerVal;
   bool jackEnabled;

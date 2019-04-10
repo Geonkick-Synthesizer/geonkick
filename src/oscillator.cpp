@@ -54,21 +54,21 @@ std::vector<RkRealPoint> Oscillator::envelopePoints(EnvelopeType envelope)
 
 void Oscillator::addEnvelopePoint(EnvelopeType envelope, double x, double y)
 {
-        //geonkickApi->addOscillatorEnvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-        //                                        RkRealPoint(x, y));
+        geonkickApi->addOscillatorEnvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
+                                                RkRealPoint(x, y));
 }
 
 void Oscillator::removeEnvelopePoint(EnvelopeType envelope, int point_index)
 {
-        //        if (geonkickApi)
-        //        geonkickApi->removeOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-        //                                                          point_index);
+        if (geonkickApi)
+                geonkickApi->removeOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
+                                                          point_index);
 }
 
 void Oscillator::updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y)
 {
-        //geonkickApi->updateOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
-        //                                          point_index, RkRealPoint(x, y));
+        geonkickApi->updateOscillatorEvelopePoint(index(), static_cast<GeonkickApi::EnvelopeType>(envelope),
+                                                  point_index, RkRealPoint(x, y));
 }
 
 void Oscillator::setType(Oscillator::Type type)
@@ -83,8 +83,8 @@ Oscillator::Type Oscillator::type()
 
 void Oscillator::setAmplitude(double amp)
 {
-        //	if (geonkickApi->setOscillatorAmplitude(index(), amp))
-	//	emit amplitudeUpdated(amp);
+        if (geonkickApi->setOscillatorAmplitude(index(), amp))
+                amplitudeUpdated(amp);
 }
 
 double Oscillator::amplitude(void)
@@ -94,8 +94,8 @@ double Oscillator::amplitude(void)
 
 void Oscillator::setFrequency(double freq)
 {
-	//if (geonkickApi->setOscillatorFrequency(index(), freq))
-	//	emit frequencyUpdated(freq);
+	if (geonkickApi->setOscillatorFrequency(index(), freq))
+                frequencyUpdated(freq);
 }
 
 double Oscillator::frequency(void)

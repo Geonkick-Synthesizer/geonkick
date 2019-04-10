@@ -23,11 +23,6 @@
 
 #include "geonkick_state.h"
 
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QDebug>
-
 GeonkickState::GeonkickState() :
         limiterValue(0),
         kickLength(0),
@@ -44,7 +39,7 @@ GeonkickState::GeonkickState() :
 {
 }
 
-GeonkickState::GeonkickState(const QByteArray &data) :
+GeonkickState::GeonkickState(const std::vector<unsigend char> &data) :
         limiterValue(0),
         kickLength(0),
         kickAmplitude(0),
@@ -58,14 +53,14 @@ GeonkickState::GeonkickState(const QByteArray &data) :
             {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
         }
 {
-        QJsonDocument document = QJsonDocument::fromBinaryData(data);
+        /*        QJsonDocument document = QJsonDocument::fromBinaryData(data);
         QJsonObject object = document.object();
         parseKickObject(object.take("kick"));
         for (const auto& val: oscillators)
-                parseOscillatorObject(val.first, object.take("osc" + std::string::number(val.first)));
+        parseOscillatorObject(val.first, object.take("osc" + std::string::number(val.first)));*/
 }
 
-void GeonkickState::parseKickObject(const auto &kick)
+/*void GeonkickState::parseKickObject(const auto &kick)
 {
         if (kick.isNull() || !kick.isObject())
                 return;
@@ -154,7 +149,7 @@ QPolygonF GeonkickState::parseEnvelopeArray(const auto &envelopeArray)
 
         return points;
 }
-
+*/
 void GeonkickState::setLimiterValue(double val)
 {
         limiterValue = val;
@@ -238,9 +233,8 @@ QPolygonF GeonkickState::getKickEnvelopePoints() const
 std::shared_ptr<GeonkickState::Oscillator> GeonkickState::getOscillator(int index) const
 {
         auto it = oscillators.find(index);
-        if (it != oscillators.end()) {
+        if (it != oscillators.end())
                 return it->second;
-        }
 
         return nullptr;
 }
@@ -248,65 +242,57 @@ std::shared_ptr<GeonkickState::Oscillator> GeonkickState::getOscillator(int inde
 void GeonkickState::setOscillatorEnabled(int index, bool b)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->isEnabled = b;
-        }
 }
 
 void GeonkickState::setOscillatorFunction(int index, GeonkickApi::FunctionType type)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->function = type;
-        }
 }
 
 void GeonkickState::setOscillatorAmplitue(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->amplitude = val;
-        }
 }
 
 void GeonkickState::setOscillatorFrequency(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->frequency = val;
-        }
 }
 
 void GeonkickState::setOscillatorFilterEnabled(int index, bool b)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->isFilterEnabled = b;
-        }
 }
 
 void GeonkickState::setOscillatorFilterType(int index, GeonkickApi::FilterType type)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->filterType = type;
-        }
 }
 
 void GeonkickState::setOscillatorFilterCutOffFreq(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->filterFrequency = val;
-        }
 }
 
 void GeonkickState::setOscillatorFilterFactor(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->filterFactor = val;
-        }
 }
 
 void GeonkickState::setOscillatorEnvelopePoints(int index,
@@ -315,20 +301,18 @@ void GeonkickState::setOscillatorEnvelopePoints(int index,
 {
         auto oscillator = getOscillator(index);
         if (oscillator) {
-                if (envelope == GeonkickApi::EnvelopeType::Amplitude) {
+                if (envelope == GeonkickApi::EnvelopeType::Amplitude)
                         oscillator->amplitudeEnvelope = points;
-                } else {
+                else
                         oscillator->frequencyEnvelope = points;
-                }
         }
 }
 
 bool GeonkickState::isOscillatorEnabled(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->isEnabled;
-        }
 
         return false;
 }
@@ -336,9 +320,8 @@ bool GeonkickState::isOscillatorEnabled(int index) const
 GeonkickApi::FunctionType GeonkickState::oscillatorFunction(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->function;
-        }
 
         return GeonkickApi::FunctionType::Sine;
 }
@@ -346,58 +329,52 @@ GeonkickApi::FunctionType GeonkickState::oscillatorFunction(int index) const
 double GeonkickState::oscillatorAmplitue(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->amplitude;
-        }
         return 0;
 }
 
 double GeonkickState::oscillatorFrequency(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->frequency;
-        }
         return 0;
 }
 
 bool GeonkickState::isOscillatorFilterEnabled(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->isFilterEnabled;
-        }
         return false;
 }
 
 GeonkickApi::FilterType GeonkickState::oscillatorFilterType(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->filterType;
-        }
         return GeonkickApi::FilterType::LowPass;
 }
 
 double GeonkickState::oscillatorFilterCutOffFreq(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->filterFrequency;
-        }
         return 0;
 }
 
 double GeonkickState::oscillatorFilterFactor(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->filterFactor;
-        }
         return 0;
 }
 
-QPolygonF GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const
+std::vector<RkRealPoint> GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const
 {
         auto oscillator = getOscillator(index);
         if (oscillator) {
@@ -407,7 +384,7 @@ QPolygonF GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::Envelo
                         return oscillator->frequencyEnvelope;
         }
 
-        return QPolygonF();
+        return {};
 }
 
 void GeonkickState::enableCompressor(bool enable)
@@ -510,12 +487,12 @@ double GeonkickState::getDistortionDrive() const
         return distortion.drive;
 }
 
-QByteArray GeonkickState::toRawData() const
+std::vector<unsigend char> GeonkickState::toRawData() const
 {
-        return getJsonDocument().toBinaryData();
+        return {};//getJsonDocument().toBinaryData();
 }
 
-QByteArray GeonkickState::toJson() const
+/*QByteArray GeonkickState::toJson() const
 {
         return getJsonDocument().toJson();
 }
@@ -598,3 +575,4 @@ QJsonDocument GeonkickState::getJsonDocument() const
         state["kick"] = kick;
         return QJsonDocument(state);
 }
+*/

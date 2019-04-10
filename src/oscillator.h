@@ -50,7 +50,6 @@ class Oscillator
   bool isEnabled();
   double envelopeLength();
 
-  // public slots:
   void enable(bool b);
   void setFunction(FunctionType func);
   void setAmplitude(double amp);
@@ -63,11 +62,10 @@ class Oscillator
   void removeEnvelopePoint(EnvelopeType envelope, int point_index);
   void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
 
-  /* signals:
-	  void amplitudeUpdated(double v);
-	  void frequencyUpdated(double v);
-          void kickLengthUpdated(double len);
-  */
+  RK_DECL_ACT(amplitudeUpdated, amplitudeUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
+  RK_DECL_ACT(frequencyUpdated, frequencyUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
+  RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double len), RK_ARG_TYPE(double), RK_ARG_VAL(len));
+  
  protected:
           int index();
           int envelopeIndex(EnvelopeType type);

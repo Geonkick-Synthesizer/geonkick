@@ -28,14 +28,12 @@
 
 #include <unordered_map>
 
-#include <QJsonDocument>
-
 class GeonkickState
 {
  public:
 
         GeonkickState();
-        GeonkickState(const QByteArray &data);
+        GeonkickState(const std::vector<unsigned char> &data);
 
         void setLimiterValue(double val);
         void setKickLength(double val);
@@ -44,7 +42,7 @@ class GeonkickState
         void setKickFilterFrequency(double val);
         void setKickFilterQFactor(double val);
         void setKickFilterType(GeonkickApi::FilterType type);
-        void setKickEnvelopePoints(const QPolygonF &points);
+        void setKickEnvelopePoints(const std::vector<RkRealPoint> &points);
 
         double getLimiterValue() const;
         double getKickLength() const;
@@ -63,7 +61,7 @@ class GeonkickState
         void setOscillatorFilterType(int index, GeonkickApi::FilterType type);
         void setOscillatorFilterCutOffFreq(int index, double val);
         void setOscillatorFilterFactor(int index, double val);
-        void setOscillatorEnvelopePoints(int index, const QPolygonF &points, GeonkickApi::EnvelopeType envelope);
+        void setOscillatorEnvelopePoints(int index, const std::vector<RkRealPoint> &points, GeonkickApi::EnvelopeType envelope);
 
         bool isOscillatorEnabled(int index) const;
         GeonkickApi::FunctionType oscillatorFunction(int index) const;
@@ -97,14 +95,14 @@ class GeonkickState
         double getDistortionVolume() const;
         double getDistortionDrive() const;
 
-        QByteArray toRawData() const;
-        QByteArray toJson() const;
+        std::vector<unsigned char> toRawData() const;
+        //        QByteArray toJson() const;
 
-protected:
-        void parseKickObject(const auto &kick);
-        void parseOscillatorObject(int index, const auto &osc);
-        QPolygonF parseEnvelopeArray(const auto &envelopeArray);
-        QJsonDocument getJsonDocument() const;
+        //protected:
+        //        void parseKickObject(const auto &kick);
+        //        void parseOscillatorObject(int index, const auto &osc);
+        //        std::vector<RkRealPoint> parseEnvelopeArray(const auto &envelopeArray);
+        //        QJsonDocument getJsonDocument() const;
 
 private:
         struct Oscillator {
@@ -117,8 +115,8 @@ private:
                 GeonkickApi::FilterType filterType;
                 double filterFrequency;
                 double filterFactor;
-                QPolygonF amplitudeEnvelope;
-                QPolygonF frequencyEnvelope;
+                std::vector<RkRealPoint> amplitudeEnvelope;
+                std::vector<RkRealPoint> frequencyEnvelope;
         };
 
         struct Compressor {
