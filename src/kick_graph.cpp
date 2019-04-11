@@ -29,7 +29,7 @@ KickGraph::KickGraph(GeonkickApi *api)
         : geonkickApi{api}
         , kickBuffer{48000 * geonkickApi->kickLength() / 1000}
 {
-        //        connect(api, SIGNAL(kickUpdated()), this, SLOT(updateGraphBuffer()));
+        RK_ACT_BIND(api, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
         for (auto i = 0; i < 100; i++)
                 kickBuffer.push_back(1000 * (0.5 - sin(i)));
 }
@@ -40,25 +40,30 @@ KickGraph::~KickGraph()
 
 void KickGraph::draw(RkPainter &painter)
 {
-        if (!cacheGraphImage.isNull())
-                painter.drawImage(cacheGraphImage, drawingArea.topLeft().x(), drawingArea.topLeft().y());
+                if (!cacheGraphImage.isNull())
+                        painter.drawImage(cacheGraphImage, drawingArea.topLeft().x(), drawingArea.topLeft().y());
 }
 
 void KickGraph::setDrawingArea(const RkRect &rect)
 {
+        RK_LOG_INFO("called");
         drawingArea = rect;
         {
                 RkImage im(drawingArea.size());
                 cacheGraphImage = im;
         }
-        cacheGraphImage.fill(RkColor(0, 0, 0, 0));
-        geonkickApi->getKickBuffer(kickBuffer);
-        drawKickGraph();
+        //   cacheGraphImage.fill(RkColor(0, 0, 0, 0));
+        //geonkickApi->getKickBuffer(kickBuffer);
+        //        drawKickGraph();
 }
 
 void KickGraph::updateGraphBuffer()
 {
-        kickBuffer.resize(48000 * geonkickApi->kickLength() / 1000);
+        auto len = 48000 * geonkickApi->kickLength() / 1000;
+        if (kickBuffer.size() != len) {
+                RK_LOG_INFO("called");
+                kickBuffer.resize(len);
+        }
         geonkickApi->getKickBuffer(kickBuffer);
         drawKickGraph();
 }
@@ -70,17 +75,20 @@ void KickGraph::drawKickGraph()
 
         cacheGraphImage.fill(RkColor(0, 0, 0, 0));
         RkPainter painter(&cacheGraphImage);
-        RkPen pen(RkColor(59, 130, 4, 230));
+        //        painter.fillRect(RkRect(0, 0, cacheGraphImage.width(), cacheGraphImage.height()), RkColor(0, 0, 0, 0));
+        RkPen pen(RkColor(59, 130, 4, 255));
         //        pen.setJoinStyle(Qt::MiterJoin);
         painter.setPen(pen);
         int w = drawingArea.width();
         int h = drawingArea.height();
         //        painter.setRenderHints(QPainter::Antialiasing, true);
 
-        std::vector<RkPoint> graphPoints;
+        std::vector<RkPoint> graphPoints(kickBuffer.size());
         gkick_real k = static_cast<gkick_real>(w) / kickBuffer.size();
-        for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++)
-                graphPoints.push_back({k * i,  h * (0.5 - kickBuffer[i])});
+        for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
+                graphPoints[i].setX(k * i);
+                graphPoints[i].setY(h * (0.5 - kickBuffer[i]));
+        }
         painter.drawPolyline(graphPoints);
-        //        emit graphUpdated();
+                /*                emit graphUpdated();*/
 }

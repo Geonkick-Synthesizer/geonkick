@@ -29,6 +29,7 @@
 
 #include "RkRect.h"
 #include "RkRealPoint.h"
+#include "RkImage.h"
 
 class Envelope;
 class KickGraph;
@@ -62,6 +63,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    RkRect drawingArea;
    RkRealPoint mousePoint;
    bool hideEnvelope;
+   RkImage envelopeImage;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

@@ -51,7 +51,7 @@ class GeonkickState
         double getKickFilterFrequency() const;
         double getKickFilterQFactor() const;
         GeonkickApi::FilterType getKickFilterType() const;
-        QPolygonF getKickEnvelopePoints() const;
+        std::vector<RkRealPoint> getKickEnvelopePoints() const;
 
         void setOscillatorEnabled(int index, bool b);
         void setOscillatorFunction(int index, GeonkickApi::FunctionType type);
@@ -71,7 +71,7 @@ class GeonkickState
         GeonkickApi::FilterType oscillatorFilterType(int index) const;
         double oscillatorFilterCutOffFreq(int index) const;
         double oscillatorFilterFactor(int index) const;
-        QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
+        std::vector<RkRealPoint> oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
 
         void enableCompressor(bool enable);
         bool isCompressorEnabled() const;
@@ -144,7 +144,7 @@ private:
         double kickFilterFrequency;
         double kickFilterQFactor;
         GeonkickApi::FilterType kickFilterType;
-        QPolygonF kickEnvelopePoints;
+        std::vector<RkRealPoint> kickEnvelopePoints;
         std::unordered_map<int, std::shared_ptr<Oscillator>> oscillators;
         Compressor compressor;
         Distortion distortion;

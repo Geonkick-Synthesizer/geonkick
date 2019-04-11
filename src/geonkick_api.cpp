@@ -24,7 +24,9 @@
 #include "geonkick_api.h"
 #include "oscillator.h"
 #include "globals.h"
-//#include "geonkick_state.h"
+#include "geonkick_state.h"
+
+#include <RkEventQueue.h>
 
 #include <geonkick.h>
 
@@ -44,7 +46,7 @@ GeonkickApi::~GeonkickApi()
                 geonkick_free(&geonkickApi);
 }
 
-void GeonkickApi::setEventQueue(const std::shared_ptr<EventQueue> &evq)
+void GeonkickApi::setEventQueue(const std::shared_ptr<RkEventQueue> &evq)
 {
         eventQueue = evq;
 }
@@ -64,13 +66,13 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
 {
         std::shared_ptr<GeonkickState> state = std::make_shared<GeonkickState>();
         state->setLimiterValue(1.0);
-        state->setKickLength(300);
+        state->setKickLength(2000);
         state->setKickAmplitude(0.8);
         state->enableKickFilter(false);
         state->setKickFilterFrequency(200);
         state->setKickFilterQFactor(1.0);
         state->setKickFilterType(GeonkickApi::FilterType::LowPass);
-        std::vector<std::pair<gkick_real, gkick_real>> envelope;
+        std::vector<RkRealPoint> envelope;
         envelope.push_back({0, 1});
         envelope.push_back({1, 1});
         state->setKickEnvelopePoints(envelope);
@@ -147,7 +149,7 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         geonkick_enable_synthesis(geonkickApi, 1);
 }
 
-void GeonkickApi::setState(const std::vector<unsigend char> &data)
+void GeonkickApi::setState(const std::vector<unsigned char> &data)
 {
         setState(std::make_shared<GeonkickState>(data));
 }
@@ -340,7 +342,6 @@ std::vector<RkRealPoint> GeonkickApi::getKickEnvelopePoints() const
 
         if (buf != NULL)
                 free(buf);
-        RK_LOG_DEBUG("points size:" << points.size());
         return points;
 }
 
@@ -570,8 +571,8 @@ void GeonkickApi::setLimiterVal(double val)
 
 void GeonkickApi::emitKickUpdated()
 {
-        if (actionsQueue)
-                actionsQueue->addAction([&](void){ kickUpdated() });
+        if (eventQueue)
+                eventQueue->postAction([&](void){ kickUpdated(); });
 }
 
 int GeonkickApi::getSampleRate()

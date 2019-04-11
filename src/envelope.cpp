@@ -328,7 +328,7 @@ void Envelope::moveSelectedPoint(int x, int y)
 	else
                 selectedPoint.setY(scaledPoint.y());
 
-        //                pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
+        pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
 }
 
 void Envelope::setPoints(const std::vector<RkRealPoint> &points)
@@ -366,7 +366,7 @@ void Envelope::addPoint(const RkPoint &point)
 			}
 		}
 	}
-        //	pointAddedEvent(scaledPoint.x(), scaledPoint.y());
+        pointAddedEvent(scaledPoint.x(), scaledPoint.y());
 }
 
 void Envelope::removePoint(const RkPoint &point)
@@ -375,7 +375,7 @@ void Envelope::removePoint(const RkPoint &point)
 		if (hasPoint(envelopePoints[i], point)) {
 			if (i != 0 && i != envelopePoints.size() - 1) {
 				envelopePoints.erase(envelopePoints.begin() + i);
-                                //				pointRemovedEvent(i);
+                                pointRemovedEvent(i);
 			}
 			break;
 		}

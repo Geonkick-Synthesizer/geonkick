@@ -32,7 +32,7 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         //        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
         //        connect(geonkickApi, SIGNAL(kickAmplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
         setType(Envelope::Type::Amplitude);
-        //        setPoints(geonkickApi->getKickEnvelopePoints());
+        setPoints(geonkickApi->getKickEnvelopePoints());
 }
 
 GeneralEnvelope::~GeneralEnvelope()
@@ -72,5 +72,5 @@ double GeneralEnvelope::envelopeAmplitude(void) const
 
 void GeneralEnvelope::updatePoints()
 {
-        //        setPoints(geonkickApi->getKickEnvelopePoints());
+        setPoints(geonkickApi->getKickEnvelopePoints());
 }

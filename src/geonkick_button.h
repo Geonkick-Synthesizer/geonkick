@@ -37,7 +37,7 @@ class GeonkickButton: public GeonkickWidget
         void setUnpressedImage(const RkImage &img);
         bool isPressed() const;
         bool isCheckable();
-        
+
         RK_DECL_ACT(toggled, toggled(bool pressed), RK_ARG_TYPE(bool), RK_ARG_VAL(pressed));
         void setPressed(bool pressed);
         void setCheckable(bool checkable);

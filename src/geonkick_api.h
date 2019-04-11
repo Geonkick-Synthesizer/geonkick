@@ -30,7 +30,7 @@
 
 class Oscillator;
 class GeonkickState;
-class EventQueue;
+class RkEventQueue;
 
 class GeonkickApi {
 
@@ -65,7 +65,7 @@ class GeonkickApi {
 
   GeonkickApi();
   ~GeonkickApi();
-  void setEventQueue(const std::shared_ptr<EventQueue> &evq);
+  void setEventQueue(const std::shared_ptr<RkEventQueue> &evq);
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
@@ -151,11 +151,11 @@ class GeonkickApi {
   void setDistortionVolume(double volume);
   void setDistortionDrive(double drive);
 
-  /*signals:
-  void kickLengthUpdated(double length);
-  void kickAmplitudeUpdated(double amplitude);
-  void kickUpdated();
-  void currentPlayingFrameVal(double val);*/
+  //signals:
+  //void kickLengthUpdated(double length);
+  //void kickAmplitudeUpdated(double amplitude);
+  RK_DECL_ACT(kickUpdated, kickUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
+  //void currentPlayingFrameVal(double val);
 
 protected:
   static void kickUpdatedCallback(void *arg);
@@ -169,7 +169,7 @@ protected:
   void limiterTimeout();
 
 private:
-  std::shared_ptr<EventQueue> eventQueue;
+  std::shared_ptr<RkEventQueue> eventQueue;
   struct geonkick *geonkickApi;
   std::atomic<bool> updateLimiterLeveler;
   std::atomic<double> limiterLevelerVal;

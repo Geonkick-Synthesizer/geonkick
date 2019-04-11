@@ -39,7 +39,7 @@ GeonkickState::GeonkickState() :
 {
 }
 
-GeonkickState::GeonkickState(const std::vector<unsigend char> &data) :
+GeonkickState::GeonkickState(const std::vector<unsigned char> &data) :
         limiterValue(0),
         kickLength(0),
         kickAmplitude(0),
@@ -74,7 +74,7 @@ GeonkickState::GeonkickState(const std::vector<unsigend char> &data) :
         if (!envelope.isNull() && envelope.isObject()) {
                 setKickLength(envelope.toObject().take("length").toDouble());
                 setKickAmplitude(envelope.toObject().take("amplitude").toDouble());
-                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
+                std::vector<RkRealPoint> points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
                 setKickEnvelopePoints(points);
         }
 
@@ -115,7 +115,7 @@ void GeonkickState::parseOscillatorObject(int index, const auto &osc)
         auto envelope = osc.toObject().take("ampl_env");
         if (!envelope.isNull() && envelope.isObject()) {
                 setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
-                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
+                std::vector<RkRealPoint> points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
                 setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Amplitude);
         }
 
@@ -123,7 +123,7 @@ void GeonkickState::parseOscillatorObject(int index, const auto &osc)
                 envelope = osc.toObject().take("freq_env");
                 if (!envelope.isNull() && envelope.isObject()) {
                         setOscillatorFrequency(index, envelope.toObject().take("amplitude").toDouble());
-                        QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
+                        std::vector<RkRealPoint> points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
                         setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
                 }
         }
@@ -137,9 +137,9 @@ void GeonkickState::parseOscillatorObject(int index, const auto &osc)
         }
 }
 
-QPolygonF GeonkickState::parseEnvelopeArray(const auto &envelopeArray)
+std::vector<RkRealPoint> GeonkickState::parseEnvelopeArray(const auto &envelopeArray)
 {
-        QPolygonF points;
+        std::vector<RkRealPoint> points;
         for (auto it = envelopeArray.constBegin(); it != envelopeArray.constEnd(); ++it) {
                 auto point = it->toArray();
                 if (point.count() == 2) {
@@ -185,7 +185,7 @@ void GeonkickState::setKickFilterType(GeonkickApi::FilterType type)
         kickFilterType = type;
 }
 
-void GeonkickState::setKickEnvelopePoints(const QPolygonF &points)
+void GeonkickState::setKickEnvelopePoints(const std::vector<RkRealPoint> &points)
 {
         kickEnvelopePoints = points;
 }
@@ -225,7 +225,7 @@ GeonkickApi::FilterType GeonkickState::getKickFilterType() const
         return kickFilterType;
 }
 
-QPolygonF GeonkickState::getKickEnvelopePoints() const
+std::vector<RkRealPoint> GeonkickState::getKickEnvelopePoints() const
 {
         return kickEnvelopePoints;
 }
@@ -296,7 +296,7 @@ void GeonkickState::setOscillatorFilterFactor(int index, double val)
 }
 
 void GeonkickState::setOscillatorEnvelopePoints(int index,
-                                                const QPolygonF &points,
+                                                const std::vector<RkRealPoint> &points,
                                                 GeonkickApi::EnvelopeType envelope)
 {
         auto oscillator = getOscillator(index);
@@ -487,7 +487,7 @@ double GeonkickState::getDistortionDrive() const
         return distortion.drive;
 }
 
-std::vector<unsigend char> GeonkickState::toRawData() const
+std::vector<unsigned char> GeonkickState::toRawData() const
 {
         return {};//getJsonDocument().toBinaryData();
 }
