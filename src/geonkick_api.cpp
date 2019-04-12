@@ -66,7 +66,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
 {
         std::shared_ptr<GeonkickState> state = std::make_shared<GeonkickState>();
         state->setLimiterValue(1.0);
-        state->setKickLength(2000);
+        state->setKickLength(300);
         state->setKickAmplitude(0.8);
         state->enableKickFilter(false);
         state->setKickFilterFrequency(200);

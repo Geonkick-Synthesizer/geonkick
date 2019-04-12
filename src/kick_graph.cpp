@@ -30,8 +30,6 @@ KickGraph::KickGraph(GeonkickApi *api)
         , kickBuffer{48000 * geonkickApi->kickLength() / 1000}
 {
         RK_ACT_BIND(api, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
-        for (auto i = 0; i < 100; i++)
-                kickBuffer.push_back(1000 * (0.5 - sin(i)));
 }
 
 KickGraph::~KickGraph()
@@ -60,10 +58,8 @@ void KickGraph::setDrawingArea(const RkRect &rect)
 void KickGraph::updateGraphBuffer()
 {
         auto len = 48000 * geonkickApi->kickLength() / 1000;
-        if (kickBuffer.size() != len) {
-                RK_LOG_INFO("called");
+        if (kickBuffer.size() != len)
                 kickBuffer.resize(len);
-        }
         geonkickApi->getKickBuffer(kickBuffer);
         drawKickGraph();
 }
@@ -75,7 +71,6 @@ void KickGraph::drawKickGraph()
 
         cacheGraphImage.fill(RkColor(0, 0, 0, 0));
         RkPainter painter(&cacheGraphImage);
-        //        painter.fillRect(RkRect(0, 0, cacheGraphImage.width(), cacheGraphImage.height()), RkColor(0, 0, 0, 0));
         RkPen pen(RkColor(59, 130, 4, 255));
         //        pen.setJoinStyle(Qt::MiterJoin);
         painter.setPen(pen);
@@ -85,10 +80,35 @@ void KickGraph::drawKickGraph()
 
         std::vector<RkPoint> graphPoints(kickBuffer.size());
         gkick_real k = static_cast<gkick_real>(w) / kickBuffer.size();
+
+        // The loop reduces the size of the buffer but prevents antalising.
+        // For example, if there is 4s legnth kick, the buffer is reduced about 60 times.
+        int j = 0;
         for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
-                graphPoints[i].setX(k * i);
-                graphPoints[i].setY(h * (0.5 - kickBuffer[i]));
+                int x = k * i;
+                int y = h * (0.5 - kickBuffer[i]);
+                graphPoints[j++] = {x, y};
+
+                int i0 = i;
+                int ymin, ymax;
+                ymin = ymax = y;
+                while (++i < kickBuffer.size()) {
+                        if (x != static_cast<int>(k * i))
+                                break;
+                        y = h * (0.5 - kickBuffer[i]);
+                        if (ymin > y)
+                                ymin = y;
+                        if (ymax < y)
+                                ymax = y;
+                }
+
+                if (i - i0 > 4) {
+                        graphPoints[j++] = {x, ymin};
+                        graphPoints[j++] = {x, ymax};
+                        graphPoints[j++] = {x, y};
+                }
         }
+        graphPoints.resize(j);
         painter.drawPolyline(graphPoints);
-                /*                emit graphUpdated();*/
+        // emit graphUpdated();
 }

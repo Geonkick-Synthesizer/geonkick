@@ -70,7 +70,6 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
 
         envelopeImage.fill(background());
         RkPainter painter(&envelopeImage);
-        //        painter.fillRect(rect(), background());
 
         if (currentEnvelope)
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Axies);
