@@ -150,6 +150,7 @@ class GeonkickApi {
   void enableDistortion(bool enable);
   void setDistortionVolume(double volume);
   void setDistortionDrive(double drive);
+  std::shared_ptr<RkEventQueue> eventQueue;
 
   //signals:
   //void kickLengthUpdated(double length);
@@ -169,7 +170,6 @@ protected:
   void limiterTimeout();
 
 private:
-  std::shared_ptr<RkEventQueue> eventQueue;
   struct geonkick *geonkickApi;
   std::atomic<bool> updateLimiterLeveler;
   std::atomic<double> limiterLevelerVal;

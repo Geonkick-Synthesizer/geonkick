@@ -9,11 +9,11 @@ project(geonkick VERSION 1.1.0)
 #set(GKICK_REDKITE_SDK_PATH C:/redkite)
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
-option(GKICK_PLUGIN "Enable build for plugin" OFF)
+option(GKICK_PLUGIN "Enable build for plugin" ON)
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "no build type selected, set default to Release")
-  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type Release" FORCE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type Release" FORCE)
 endif()
 
 set(CMAKE_CXX_STANDARD 14)

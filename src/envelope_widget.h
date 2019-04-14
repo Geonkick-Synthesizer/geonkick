@@ -31,6 +31,7 @@
 class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
 class Envelope;
+class KickGraph;
 
 class EnvelopeWidget : public GeonkickWidget
 {
@@ -57,6 +58,7 @@ public:
      void showOsc2Envelope();
      void showNoiseEnvelope();
      Envelope* getEnvelope(EnvelopeType type);
+     void updateKickGraph(std::shared_ptr<RkImage> graphImage);
 
  private:
      void createButtomMenu();
@@ -69,6 +71,7 @@ public:
      GeonkickButton *osccillator2EvelopesButton;
      GeonkickButton *noiseEvelopesButton;
      GeonkickButton *generalEvelopesButton;
+     std::unique_ptr<KickGraph> kickGraph;
 };
 
 #endif

@@ -28,34 +28,33 @@
 
 #include <RkPainter.h>
 
-class QPixmap;
-class QImage;
+#include <condition_variable>
+
+class RkEventQueue;
 
 class KickGraph {
 
 public:
 
-     explicit KickGraph(GeonkickApi *api);
+        KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q);
      ~KickGraph();
-     void draw(RkPainter &painter);
-
-     //public slots:
-     void setDrawingArea(const RkRect &rect);
-
-     // signals:
-     //     void graphUpdated();
+     void start();
+     RK_DECL_ACT(graphUpdated, graphUpdated(std::shared_ptr<RkImage> graphImage),
+                 RK_ARG_TYPE(std::shared_ptr<RkImage>), RK_ARG_VAL(graphImage));
 
 protected:
      void drawKickGraph();
-
-     //protected slots:
      void updateGraphBuffer();
 
 private:
      GeonkickApi *geonkickApi;
+     std::unique_ptr<std::thread> graphThread;
+     std::mutex  graphMutex;
+     std::condition_variable threadConditionVar;
      std::vector<gkick_real> kickBuffer;
-     RkRect drawingArea;
-     RkImage cacheGraphImage;
+     RkSize graphSize;
+     std::atomic<bool> isRunning;
+     RkEventQueue* eventQueue;
 };
 
 #endif // GEONKICK_GRAPH

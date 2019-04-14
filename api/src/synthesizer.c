@@ -1045,6 +1045,8 @@ void *gkick_synth_run(void *arg)
         gkick_log_info("synth thread routine started");
 
         while (1) {
+                // Ignore too many updates. The last udpate will be processed.
+                usleep(40000);
 	        gkick_synth_lock(synth);
 		if (!synth->is_running) {
 		        gkick_synth_unlock(synth);

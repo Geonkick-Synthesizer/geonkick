@@ -50,7 +50,7 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent)
 //        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 
-        MainWindow::MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info)
+MainWindow::MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info)
         : GeonkickWidget(info)
         , geonkickApi{api}
         , topBar{nullptr}
@@ -58,7 +58,7 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent)
           //        presetName(preset)
 {
         setTitle(GEOKICK_APP_NAME);
-        //        geonkickApi->registerCallbacks(true);
+        geonkickApi->registerCallbacks(true);
         setFixedWidth(GEONKICK_MAINWINDOW_WIDTH);
         setFixedHeight(GEONKICK_MAINWINDOW_HEIGHT);
 //        setWindowIcon(QPixmap(":/app_icon.png"));

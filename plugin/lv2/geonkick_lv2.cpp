@@ -31,7 +31,7 @@
 #include <lv2/lv2plug.in/ns/ext/state/state.h>
 
 #include "mainwindow.h"
-//#include "geonkick_api.h"
+#include "geonkick_api.h"
 //#include "geonkick_state.h"
 
 #include <RkMain.h>
@@ -57,7 +57,7 @@ class GeonkickLv2Plugin
         };
 
         GeonkickLv2Plugin() :
-        //                  geonkickApi(new GeonkickApi),
+                  geonkickApi(new GeonkickApi),
                   midiIn(nullptr),
                   notifyHostChannel(nullptr),
                   leftChannel(nullptr),
@@ -70,14 +70,13 @@ class GeonkickLv2Plugin
 
         ~GeonkickLv2Plugin()
         {
-                 //                if (geonkickApi)
-                //        delete geonkickApi;
+                if (geonkickApi)
+                        delete geonkickApi;
         }
 
         bool init()
         {
-                 //return geonkickApi->init();
-                return true;
+                return geonkickApi->init();
         }
 
         void setAudioChannel(float *data, PortType port)
@@ -159,10 +158,10 @@ class GeonkickLv2Plugin
         //                return geonkickApi->getState()->toRawData();
         //        }
 
-        //        GeonkickApi* getApi() const
-        //{
-        //        return geonkickApi;
-        //}
+        GeonkickApi* getApi() const
+        {
+                return geonkickApi;
+        }
 
         void processSamples(int nsamples)
         {
@@ -233,7 +232,7 @@ protected:
                 }*/
 
 private:
-        //        GeonkickApi *geonkickApi;
+        GeonkickApi *geonkickApi;
         LV2_Atom_Sequence *midiIn;
         LV2_Atom_Sequence *notifyHostChannel;
         float *leftChannel;
@@ -263,6 +262,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                                          LV2UI_Widget*             widget,
                                          const LV2_Feature* const* features)
 {
+        GeonkickLv2Plugin *geonkickLv2PLugin = nullptr;
         if (!features) {
                 return nullptr;
         }
@@ -272,17 +272,21 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         const LV2_Feature *feature;
         while ((feature = *features)) {
                 if (std::string(feature->URI) == std::string(LV2_UI__parent)) {
-                        GEONKICK_LOG_INFO("LV2_UI__parent: found");
                         parent = feature->data;
                         if (resize)
                                 break;
                 }
 
                 if (std::string(feature->URI) == std::string(LV2_UI__resize)){
-                        GEONKICK_LOG_INFO("LV2_UI__resize: found");
                         resize = (LV2UI_Resize*)feature->data;
                         if (parent)
                                 break;
+                }
+
+                if (std::string(feature->URI) == std::string(LV2_INSTANCE_ACCESS_URI)) {
+                        geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
+                        if (!geonkickLv2PLugin)
+                                return nullptr;
                 }
                 features++;
         }
@@ -294,7 +298,13 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         auto info = rk_from_native_x11(xDisplay, screenNumber, parentWinId);
 
         auto guiApp = new RkMain();
-        auto mainWidget = new MainWindow(info);
+        geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue());
+        auto mainWidget = new MainWindow(geonkickLv2PLugin->getApi(), info);
+        if (!mainWidget->init()) {
+                GEONKICK_LOG_ERROR("can't init main window");
+                return nullptr;
+        }
+
         if (!guiApp->setTopLevelWindow(mainWidget)) {
                 GEONKICK_LOG_ERROR("can't create gui");
                 delete guiApp;
@@ -305,7 +315,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         auto winId = mainWidget->nativeWindowInfo()->window;
         *widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
         auto size = mainWidget->size();
-        resize->ui_resize(resize->handle, size.first, size.second);
+        resize->ui_resize(resize->handle, size.width(), size.height());
         return static_cast<LV2UI_Handle>(guiApp);
 }
 

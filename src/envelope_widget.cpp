@@ -48,6 +48,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
           , drawArea{nullptr}
           , showAmplitudeEnvButton{nullptr}
           , showFrequencyEnvButton{nullptr}
+          , kickGraph{nullptr}
 
 {
         // Create drawing area.
@@ -79,8 +80,12 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
 
-        auto graph = std::make_unique<KickGraph>(api);
-        drawArea->setKickGraph(graph);
+        kickGraph = std::make_unique<KickGraph>(api, rect.size(), eventQueue());
+        RK_ACT_BIND(kickGraph.get(),
+                    graphUpdated,
+                    RK_ACT_ARGS(std::shared_ptr<RkImage> graphImage),
+                    drawArea, updateKickGraph(graphImage));
+        kickGraph->start();
 
         createButtomMenu();
         showGeneralEnvelope();
@@ -88,7 +93,6 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
 
 EnvelopeWidget::~EnvelopeWidget()
 {
-
 }
 
 void EnvelopeWidget::createButtomMenu()
@@ -151,6 +155,12 @@ void EnvelopeWidget::createButtomMenu()
         osccillator1EvelopesButton->setPosition(osccillator2EvelopesButton->x() - osccillator1EvelopesButton->width(),
                                                 (buttomAreaWidget->height() - osccillator1EvelopesButton->height()) / 2);
         osccillator1EvelopesButton->show();
+}
+
+void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
+{
+        if (graphImage && !graphImage->isNull())
+                drawArea->updateKickGraph(graphImage);
 }
 
 Envelope* EnvelopeWidget::getEnvelope(EnvelopeType type)

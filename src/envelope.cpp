@@ -188,13 +188,11 @@ void Envelope::drawValueScale(RkPainter &painter)
 
 void Envelope::drawPoints(RkPainter &painter)
 {
-        RkPoint origin = getOrigin();
-
         RkPen pen;
         pen.setWidth(2);
         pen.setColor(RkColor(200, 200, 200, 200));
 	painter.setPen(pen);
-
+        RkPoint origin = getOrigin();
 	for (const auto &point : envelopePoints) {
                 RkPoint scaledPoint = scaleUp(point);
                 scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
@@ -206,16 +204,8 @@ void Envelope::drawPoints(RkPainter &painter)
 
 void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 {
-        auto pen = painter.pen();
-        pen.setWidth(2);
-        pen.setColor(RkColor(200, 200, 200, 200));
-        //painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
-	painter.setPen(pen);
-	painter.drawCircle(point, getPointRadius());
-        //        QBrush brush = painter.brush();
-        //painter.setBrush(RkColor(200, 200, 200, 200));
+        painter.drawCircle(point, getPointRadius());
         painter.drawCircle(point, getDotRadius());
-        //        painter.setBrush(brush);
 }
 
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)

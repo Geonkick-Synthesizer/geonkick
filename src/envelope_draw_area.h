@@ -43,8 +43,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
    Envelope* getEnvelope() const;
    const RkRect getDrawingArea();
-   void setKickGraph(std::unique_ptr<KickGraph> &graph);
-   KickGraph* getKickGraph() const;
+   void updateKickGraph(std::shared_ptr<RkImage> graphImage);
    bool isHideEnvelope() const;
    void setEnvelope(Envelope* envelope);
    void envelopeUpdated();
@@ -59,10 +58,10 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
 
  private:
    Envelope* currentEnvelope;
-   std::unique_ptr<KickGraph> kickGraph;
    RkRect drawingArea;
    RkRealPoint mousePoint;
    bool hideEnvelope;
+   std::shared_ptr<RkImage> kickGraphImage;
    RkImage envelopeImage;
 };
 
