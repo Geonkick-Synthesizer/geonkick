@@ -14,6 +14,9 @@ Author: Iurie Nistor
 
 Source code repository: https://gitlab.com/iurie/geonkick
 
+Note: Geonkick is migrating from Qt to [Redkite](https://gitlab.com/quamplex/redkite)
+      GUI toolkit for version 2.0. See the "devel" branch.
+
 ![Screenshot](data/screenshot.png)
 
 #### Features
