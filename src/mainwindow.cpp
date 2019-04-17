@@ -24,9 +24,9 @@
 #include "mainwindow.h"
 #include "oscillator.h"
 #include "envelope_widget.h"
-//#include "oscillator_group_box.h"
-//#include "general_group_box.h"
-//#include "control_area.h"
+#include "oscillator_group_box.h"
+#include "general_group_box.h"
+#include "control_area.h"
 #include "top_bar.h"
 //#include "limiter.h"
 //#include "export_widget.h"
@@ -91,22 +91,21 @@ bool MainWindow::init(void)
         envelopeWidget->setFixedSize(RkSize(850, 340));
         envelopeWidget->show();
         //        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
-        /*        hBoxLayout->addWidget(envelopeWidget);
-        auto limiterWidget = new Limiter(geonkickApi, this);
-        connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
-        limiterWidget->setFixedSize(65, 340);
-        hBoxLayout->addWidget(limiterWidget);
-        mainLayout->addLayout(hBoxLayout);
 
-        auto controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
-        connect(this, SIGNAL(updateGui()), controlAreaWidget, SIGNAL(update()));
-        mainLayout->addSpacing(5);
-        mainLayout->addWidget(controlAreaWidget);
+        //        auto limiterWidget = new Limiter(geonkickApi, this);
+        //        connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
+        //        limiterWidget->setFixedSize(65, 340);
 
-        if (!presetName.isEmpty()) {
-                setPreset(presetName);
-                emit updateGui();
-                }*/
+        auto controlAreaWidget = new ControlArea(this, RkSize(width(), height() - topBar->height() - envelopeWidget->height()),
+                                                 geonkickApi, oscillators);
+        controlAreaWidget->setPosition(0, envelopeWidget->y() + envelopeWidget->height());
+        RK_ACT_BIND(this, updateGui(), RK_ARGS(), controlAreaWidget, update());
+        controlAreaWidget->show();
+        
+        //        if (!presetName.isEmpty()) {
+        //        setPreset(presetName);
+        //        emit updateGui();
+        //        }
 
         return true;
 }
