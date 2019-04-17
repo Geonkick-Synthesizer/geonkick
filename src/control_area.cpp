@@ -28,42 +28,46 @@
 #include "effects_group_box.h"
 #include "geonkick_api.h"
 
-#include <QHBoxLayout>
-#include <QGridLayout>
-
 ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
+                         const RkSize &size,
                          std::vector<Oscillator*> &oscillators)
                          : GeonkickWidget(parent)
 {
-        auto mainLayout = new QHBoxLayout(this);
-        mainLayout->setSpacing(0);
-        mainLayout->setContentsMargins(10, 0, 10, 0);
-        setLayout(mainLayout);
+        setSize(size);
+        int groupBoxWidth = width() / 4 - 5;
+        int groupBoxX = 0;
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
         auto widget = new OscillatorGroupBox(this, oscillator);
-        connect(this, SIGNAL(update()), widget, SLOT(update()));
-        mainLayout->addWidget(widget);
-        mainLayout->setAlignment(widget, Qt::AlignTop);
+        widget->setSize(groupBoxWidth, height());
+        widget->setPosition(0, 0);
+        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
+        widget->show();
+
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
         widget = new OscillatorGroupBox(this, oscillator);
-        connect(this, SIGNAL(update()), widget, SLOT(update()));
-        mainLayout->addWidget(widget);
-        mainLayout->setAlignment(widget, Qt::AlignTop);
-
-        auto layoutGBox = new QGridLayout;
-        layoutGBox->setSpacing(0);
-        layoutGBox->setContentsMargins(0, 0, 0, 0);
-        mainLayout->addLayout(layoutGBox);
+        widget->setSize(groupBoxWidth, height());
+        widget->setPosition(5 + groupBoxWidth, 0);
+        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());        
+        widget->show();
+        
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
         widget = new OscillatorGroupBox(this, oscillator);
-        connect(this, SIGNAL(update()), widget, SLOT(update()));
-        layoutGBox->addWidget(widget, 0, 0);
+        widget->setSize(groupBoxWidth, height());
+        widget->setPosition(2 * (5 + groupBoxWidth), 0);
+        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
+        widget->show();
+
         auto generalWidget = new GeneralGroupBox(this, api);
-        connect(this, SIGNAL(update()), generalWidget, SLOT(update()));
-        layoutGBox->addWidget(generalWidget, 0, 1);
-        auto effectsWidget = new EffectsGroupBox(api, this);
-        connect(this, SIGNAL(update()), effectsWidget, SIGNAL(update()));
-        layoutGBox->addWidget(effectsWidget, 1, 0, 1, 2);
+        widget->setSize(groupBoxWidth, height());
+        widget->setPosition(3 * (5 + groupBoxWidth), 0);
+        RK_ACT_BIND(this, update(), RK_ARGS(), generalWidget, update());
+        generalWidget->show();
+
+        //        auto effectsWidget = new EffectsGroupBox(api, this);
+        //        widget->setSize(groupBoxWidth, height());
+        //        widget->setPosition(3 * (5 + groupBoxWidth), 0);
+        //        RK_ACT_BIND(this, update(), RK_ARGS(), effectsWidget, update());
+        //        effectsWidget->show();
 }
 
 ControlArea::~ControlArea()
