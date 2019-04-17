@@ -27,8 +27,6 @@
 #include "geonkick_widget.h"
 
 class GeonkickButton;
-class GeonkickLabel;
-class QHBoxLayout;
 
 class GeonkickCheckbox: public GeonkickWidget {
  Q_OBJECT
@@ -53,7 +51,6 @@ class GeonkickCheckbox: public GeonkickWidget {
  private:
         GeonkickButton *checkboxButton;
         GeonkickButton *checkboxLabel;
-        QHBoxLayout *mainLayout;
 };
 
 #endif // GEONKICK_CHECKBOX_H

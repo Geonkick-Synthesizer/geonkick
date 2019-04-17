@@ -98,7 +98,6 @@ bool MainWindow::init(void)
         controlAreaWidget->setPosition(0, envelopeWidget->y() + envelopeWidget->height());
         RK_ACT_BIND(this, updateGui(), RK_ARGS(), controlAreaWidget, update());
         controlAreaWidget->show();
-        
         //        if (!presetName.isEmpty()) {
         //        setPreset(presetName);
         //        emit updateGui();

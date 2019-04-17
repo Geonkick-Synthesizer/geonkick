@@ -50,58 +50,56 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 #set(GKICK_API_FLAGS_LV2 "")
 
 set(GKICK_COMMON_HEADERS
-#  ${GKICK_COMMON_DIR}/geonkick_label.h
 #  ${GKICK_COMMON_DIR}/geonkick_slider.h
    ${GKICK_COMMON_DIR}/geonkick_button.h
-#  ${GKICK_COMMON_DIR}/geonkick_checkbox.h
-#  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
+  ${GKICK_COMMON_DIR}/geonkick_checkbox.h
+  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
-#  ${GKICK_COMMON_DIR}/control_area.h
+  ${GKICK_COMMON_DIR}/control_area.h
   ${GKICK_COMMON_DIR}/envelope_draw_area.h
 #  ${GKICK_COMMON_DIR}/limiter.h
   ${GKICK_COMMON_DIR}/general_envelope.h
 #  ${GKICK_COMMON_DIR}/effects_group_box.h
 #  ${GKICK_COMMON_DIR}/compressor_group_box.h
 #  ${GKICK_COMMON_DIR}/distortion_group_box.h
-#  ${GKICK_COMMON_DIR}/general_group_box.h
+  ${GKICK_COMMON_DIR}/general_group_box.h
    ${GKICK_COMMON_DIR}/envelope.h
    ${GKICK_COMMON_DIR}/kick_graph.h
    ${GKICK_COMMON_DIR}/envelope_widget.h
-#  ${GKICK_COMMON_DIR}/knob.h
+  ${GKICK_COMMON_DIR}/knob.h
    ${GKICK_COMMON_DIR}/oscillator.h
    ${GKICK_COMMON_DIR}/geonkick_api.h
    ${GKICK_COMMON_DIR}/geonkick_state.h
    ${GKICK_COMMON_DIR}/oscillator_envelope.h
-#  ${GKICK_COMMON_DIR}/oscillator_group_box.h
+  ${GKICK_COMMON_DIR}/oscillator_group_box.h
 #  ${GKICK_COMMON_DIR}/about.h
 #  ${GKICK_COMMON_DIR}/export_widget.h
   ${GKICK_COMMON_DIR}/mainwindow.h)
 
 set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
-#  ${GKICK_COMMON_DIR}/geonkick_label.cpp
-#  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
-   ${GKICK_COMMON_DIR}/geonkick_button.cpp
-#  ${GKICK_COMMON_DIR}/geonkick_checkbox.cpp
-#  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
+  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
+  ${GKICK_COMMON_DIR}/geonkick_button.cpp
+  ${GKICK_COMMON_DIR}/geonkick_checkbox.cpp
+  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
-#  ${GKICK_COMMON_DIR}/control_area.cpp
+  ${GKICK_COMMON_DIR}/control_area.cpp
   ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
 #  ${GKICK_COMMON_DIR}/limiter.cpp
   ${GKICK_COMMON_DIR}/general_envelope.cpp
 #  ${GKICK_COMMON_DIR}/effects_group_box.cpp
 #  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
 #  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
-#  ${GKICK_COMMON_DIR}/general_group_box.cpp
+  ${GKICK_COMMON_DIR}/general_group_box.cpp
    ${GKICK_COMMON_DIR}/envelope.cpp
    ${GKICK_COMMON_DIR}/kick_graph.cpp
    ${GKICK_COMMON_DIR}/envelope_widget.cpp
-#  ${GKICK_COMMON_DIR}/knob.cpp
+   ${GKICK_COMMON_DIR}/knob.cpp
    ${GKICK_COMMON_DIR}/oscillator.cpp
    ${GKICK_COMMON_DIR}/geonkick_api.cpp
    ${GKICK_COMMON_DIR}/geonkick_state.cpp
    ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
-#  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
+   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
 #  ${GKICK_COMMON_DIR}/export_widget.cpp
 #  ${GKICK_COMMON_DIR}/about.cpp
   ${GKICK_COMMON_DIR}/mainwindow.cpp)
