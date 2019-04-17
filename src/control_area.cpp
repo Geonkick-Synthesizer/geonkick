@@ -29,36 +29,29 @@
 #include "geonkick_api.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
-                         const RkSize &size,
                          std::vector<Oscillator*> &oscillators)
                          : GeonkickWidget(parent)
 {
-        setSize(size);
-        int groupBoxWidth = width() / 4 - 5;
-        int groupBoxX = 0;
+        setFixedSize(940, 380);
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
         auto widget = new OscillatorGroupBox(this, oscillator);
-        widget->setSize(groupBoxWidth, height());
         widget->setPosition(0, 0);
         RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
         widget->show();
 
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setSize(groupBoxWidth, height());
         widget->setPosition(5 + groupBoxWidth, 0);
-        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());        
+        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
         widget->show();
-        
+
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setSize(groupBoxWidth, height());
         widget->setPosition(2 * (5 + groupBoxWidth), 0);
         RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
         widget->show();
 
         auto generalWidget = new GeneralGroupBox(this, api);
-        widget->setSize(groupBoxWidth, height());
         widget->setPosition(3 * (5 + groupBoxWidth), 0);
         RK_ACT_BIND(this, update(), RK_ARGS(), generalWidget, update());
         generalWidget->show();

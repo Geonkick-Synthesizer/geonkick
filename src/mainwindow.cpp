@@ -34,9 +34,6 @@
 //#include "geonkick_state.h"
 //#include "about.h"
 
-#define GEONKICK_MAINWINDOW_WIDTH  940
-#define GEONKICK_MAINWINDOW_HEIGHT 760
-
 MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickWidget(parent)
         , geonkickApi{api}
@@ -44,9 +41,9 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent)
         , envelopeWidget{nullptr}
         //        presetName(preset)
 {
+        setFixedSize(940, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
-        setSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
 //        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 

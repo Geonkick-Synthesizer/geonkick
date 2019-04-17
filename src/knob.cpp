@@ -23,10 +23,7 @@
 
 #include "knob.h"
 
-#include <QPainter>
-#include <QDebug>
-#include <QStyleOption>
-#include <math.h>
+#include <RkPainter.h>
 
 #define GEONKICK_KNOB_MAX_DEGREE 270
 #define GEONKICK_KNOB_MIN_DEGREE 0
@@ -34,50 +31,43 @@
 
 Knob::Knob(GeonkickWidget *parent)
           : GeonkickWidget(parent),
-	  knobValueDegree(GEONKICK_KNOB_MIN_DEGREE),
-          rangeFrom(0),
-          rangeTo(0),
-          rangeType(RangeType::Linear),
-          isSelected(false)
+          , knobValueDegree{GEONKICK_KNOB_MIN_DEGREE}
+          , rangeFrom{0}
+          , rangeTo{0}
+          , rangeType{RangeType::Linear}
+          , isSelected{false}
 {
-        QPalette pal;
-        pal.setColor(QPalette::Background, RkColor(68, 68, 70, 0));
-        pal.setColor(QPalette::WindowText, Qt::white);
-        setAutoFillBackground(true);
-        setPalette(pal);
 }
 
 Knob::~Knob()
 {
 }
 
-void Knob::setKnobImage(const QPixmap &pixmap)
+void Knob::setKnobImage(const RkImage &img)
 {
-        knobPixmap = pixmap;
+        knobImage = img;
 }
 
-void
-Knob::paintWidget(QPaintEvent *event)
+void Knob::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
         Q_UNUSED(event)
-        QPainter painter(this);
+        RkPainter painter(this);
         if (!knobPixmap.isNull()) {
-                painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
+                //                painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
                 painter.translate(width() / 2, height() / 2);
                 painter.rotate(knobValueDegree);
-                int x = (width() - knobPixmap.size().width()) / 2 - width() / 2;
-                int y = (height() - knobPixmap.size().height()) / 2 - height() / 2;
-                painter.drawPixmap(x, y, knobPixmap.size().width(), knobPixmap.size().height(), knobPixmap);
+                int x = (width() - knobPixmap.width()) / 2 - width() / 2;
+                int y = (height() - knobPixmap.height()) / 2 - height() / 2;
+                painter.drawImage(x, y, knobImage);
         }
 }
 
-void
-Knob::mousePressEvent(QMouseEvent *event)
+void Knob::mousePressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (!knobPixmap.isNull()) {
                 int xCenter = width() / 2;
                 int yCenter = height() / 2;
-                int r = knobPixmap.size().width() / 2;
+                int r = knobImage.width() / 2;
                 if ((event->x() - xCenter) * (event->x() - xCenter) +
                     (event->y() - yCenter) * (event->y() - yCenter) <=  r * r)
                 {
@@ -89,31 +79,31 @@ Knob::mousePressEvent(QMouseEvent *event)
 }
 
 void
-Knob::mouseReleaseEvent(QMouseEvent *event)
+Knob::mouseReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         Q_UNUSED(event);
         isSelected = false;
 }
 
 void
-Knob::mouseMoveEvent(QMouseEvent *event)
+Knob::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();
                 knobValueDegree -= 0.5 * dy;
-                if (knobValueDegree < GEONKICK_KNOB_MIN_DEGREE) {
+                if (knobValueDegree < GEONKICK_KNOB_MIN_DEGREE)
                         knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
-                } else if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE) {
+                else if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE)
                         knobValueDegree = GEONKICK_KNOB_MAX_DEGREE;
-                }
+
                 lastPositionPoint.setX(event->x());
                 lastPositionPoint.setY(event->y());
                 double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
                 if (getRangeType() == RangeType::Logarithmic) {
                         double logVal = log10(rangeFrom) + k * (log10(rangeTo) - log10(rangeFrom));
-                        emit valueUpdated(pow(10, logVal));
+                        valueUpdated(pow(10, logVal));
                 } else {
-                        emit valueUpdated(rangeFrom + k * (rangeTo - rangeFrom));
+                        valueUpdated(rangeFrom + k * (rangeTo - rangeFrom));
                 }
                 update();
         }
@@ -152,21 +142,19 @@ Knob::RangeType Knob::getRangeType() const
 
 void Knob::setCurrentValue(double val)
 {
-        if (val > rangeTo) {
+        if (val > rangeTo)
                 val = rangeTo;
-        } else if (val < rangeFrom) {
+        else if (val < rangeFrom)
                 val = rangeFrom;
-        }
 
         double k = 0;
         if (fabs(rangeTo - rangeFrom) < std::numeric_limits<double>::epsilon()) {
                 knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
         } else {
-                if (getRangeType() == RangeType::Logarithmic) {
+                if (getRangeType() == RangeType::Logarithmic)
                         k = (log10(val) - log10(rangeFrom)) / (log10(rangeTo) - log10(rangeFrom));
-                } else {
+                else
                         k = (val - rangeFrom) / (rangeTo - rangeFrom);
-                }
         }
         knobValueDegree = GEONKICK_KNOB_MIN_DEGREE + k * GEONKICK_KNOB_RANGE_DEGREE;
         update();

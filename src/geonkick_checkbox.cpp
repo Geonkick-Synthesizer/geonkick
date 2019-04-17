@@ -26,13 +26,10 @@
 #include "geonkick_button.h"
 #include "geonkick_label.h"
 
-#include <QHBoxLayout>
-
 GeonkickCheckbox::GeonkickCheckbox(GeonkickWidget *parent)
         : GeonkickWidget(parent),
-          checkboxButton(new GeonkickButton(this)),
-          checkboxLabel(new GeonkickButton(this)),
-          mainLayout(new QHBoxLayout(this))
+          checkboxButton{new GeonkickButton(this)},
+          checkboxLabel{new GeonkickButton(this)},
 {
         checkboxButton->setCheckable(true);
         checkboxLabel->setCheckable(true);
@@ -41,10 +38,10 @@ GeonkickCheckbox::GeonkickCheckbox(GeonkickWidget *parent)
         setLayout(mainLayout);
         mainLayout->addWidget(checkboxButton, 0, Qt::AlignLeft);
         mainLayout->addWidget(checkboxLabel, 0, Qt::AlignLeft);
-        connect(checkboxButton, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
-        connect(checkboxButton, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
-        connect(checkboxLabel, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
-        connect(checkboxLabel, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
+        RK_ACT_BIND(checkboxButton, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
+        RK_ACT_BIND(checkboxButton, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
+        RK_ACT_BIND(checkboxLabel, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
+        RK_ACT_BIND(checkboxLabel, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
 }
 
 GeonkickCheckbox::~GeonkickCheckbox()

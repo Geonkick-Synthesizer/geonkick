@@ -23,29 +23,11 @@
 
 #include "geonkick_groupbox.h"
 
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-
 GeonkickGroupBox::GeonkickGroupBox(GeonkickWidget *parent, Orientation orientation)
-        : GeonkickWidget(parent),
-          groupBoxOrientation(orientation),
-          groupBoxLabel(nullptr),
-          mainLayout(new QVBoxLayout(this)),
-          groupBoxLayout(nullptr)
+        : GeonkickWidget(parent)
+        , groupBoxOrientation{orientation}
+        ,  groupBoxLabel{nullptr}
 {
-        setLayout(mainLayout);
-        setPadding(0, 0, 0, 0);
-        QPalette pal;
-        pal.setColor(QPalette::Background, RkColor(68, 68, 70));
-        setAutoFillBackground(true);
-        setPalette(pal);
-
-        if (groupBoxOrientation == Orientation::Vertical) {
-                groupBoxLayout = new QVBoxLayout;
-        } else {
-                groupBoxLayout = new QHBoxLayout;
-        }
-        mainLayout->addLayout(groupBoxLayout);
 }
 
 GeonkickGroupBox::~GeonkickGroupBox()

@@ -28,7 +28,6 @@
 #include "geonkick_groupbox.h"
 
 class GKickOscillator;
-class QComboBox;
 class GeonkickWidget;
 class GeonkickButton;
 class GeonkickCheckbox;
@@ -36,23 +35,20 @@ class Knob;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
-        Q_OBJECT
  public:
         OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc);
         ~OscillatorGroupBox();
 
- public slots:
         void update();
-
- signals:
-        void oscillatorFunctionChanged(int index);
+        RK_DECL_ACT(oscillatorFunctionChanged,
+                    oscillatorFunctionChanged(int index),
+                    RK_ARG_TYPE(int),
+                    RK_ARG_VAL(index);
 
  protected:
         void createWaveFunctionGroupBox();
         void createEvelopeGroupBox();
         void createFilterGroupBox();
-
- protected slots:
         void setSineWave(bool pressed);
         void setSquareWave(bool pressed);
         void setTriangleWave(bool pressed);
