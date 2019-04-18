@@ -41,7 +41,7 @@ Source code repository: https://gitlab.com/iurie/geonkick
      - FLAC: 16, 24 bit
      - Ogg Vorbis
 * Open & Save preset in JSON format
-* Standalone
+* Standalone only (no LV2 or VST yet, planned for version 2.0)
 * Platforms:
   - GNU/Linux
 * Build system:
