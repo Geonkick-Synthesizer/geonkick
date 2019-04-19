@@ -35,18 +35,15 @@ class GeonkickButton;
 
 class GeneralGroupBox: public GeonkickGroupBox
 {
-        Q_OBJECT
  public:
         GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
         ~GeneralGroupBox();
 
-public slots:
         void update();
 
  protected:
         void createAplitudeEnvelopeHBox();
         void createFilterHBox();
- protected slots:
         void setFilterType(bool state);
 
  private:
@@ -59,4 +56,4 @@ public slots:
         GeonkickButton *filterType;
 };
 
-#endif
+#endif //GKICK_GENERAL_GROUP_BOX_H
