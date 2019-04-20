@@ -48,6 +48,7 @@ public:
    RangeType getRangeType() const;
    void setCurrentValue(double val);
    void setKnobImage(const RkImage &img);
+   void setKnobBackgroundImage(const RkImage &img);
 
    RK_DECL_ACT(valueUpdated, valueUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
 
@@ -59,6 +60,7 @@ public:
 
  private:
    RkImage knobImage;
+   RkImage knobBackground;
    RkPoint lastPositionPoint;
    double knobValueDegree;
    double rangeFrom;

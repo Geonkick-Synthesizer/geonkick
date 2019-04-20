@@ -77,12 +77,12 @@ bool MainWindow::init(void)
         */
 
         auto topBar = new TopBar(this);
-        topBar->setX(15);
+        topBar->setX(10);
         topBar->show();
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
-        envelopeWidget->setX(topBar->x());
+        envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(RkSize(850, 340));
         envelopeWidget->show();
@@ -93,7 +93,7 @@ bool MainWindow::init(void)
         //        limiterWidget->setFixedSize(65, 340);
 
         auto controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
-        controlAreaWidget->setPosition(0, envelopeWidget->y() + envelopeWidget->height());
+        controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, update());
         controlAreaWidget->show();
         //        if (!presetName.isEmpty()) {

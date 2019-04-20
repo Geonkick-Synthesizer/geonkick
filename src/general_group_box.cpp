@@ -53,7 +53,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         , filterType{nullptr}
 {
 
-        setFixedSize(230, 380);
+        setFixedSize(224, 380);
         //        auto label = new RkLabel(this);
         //        label->setImage(RkImage(64, 11, rk_general_groupbox_label_png));
         //        setGroupBoxLabel(label);
@@ -74,18 +74,18 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplitudeEnvelopeBox->show();
 
         kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-        kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         kickAmplitudeKnob->setFixedSize(80, 80);
-        kickAmplitudeKnob->setBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
+        kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
+        kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         kickAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
         kickAmplitudeKnob->setRange(0.01, 1.0);
         kickAmplitudeKnob->show();
         RK_ACT_BIND(kickAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val), geonkickApi, setKickAmplitude(val));
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
-        kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 20);
         kickLengthKnob->setFixedSize(80, 80);
-        kickLengthKnob->setBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
+        kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2);
+        kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         kickLengthKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
         kickLengthKnob->setRange(50, geonkickApi->kickMaxLength());
         kickLengthKnob->show();
@@ -95,7 +95,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 void GeneralGroupBox::createFilterHBox()
 {
         auto filterEnvelopeBox = new GeonkickWidget(this);
-        filterEnvelopeBox->setPosition(0, 130);
+        filterEnvelopeBox->setPosition(0, 145);
         filterEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_filter_png));
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->show();
@@ -111,7 +111,7 @@ void GeneralGroupBox::createFilterHBox()
         kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
         kickFrequencyKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         kickFrequencyKnob->setFixedSize(80, 80);
-        kickFrequencyKnob->setBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
+        kickFrequencyKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         kickFrequencyKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
         kickFrequencyKnob->setRange(200, 20000);
         kickFrequencyKnob->show();
@@ -122,7 +122,7 @@ void GeneralGroupBox::createFilterHBox()
         int h = 50;
         kickQFactorKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4);
         kickQFactorKnob->setFixedSize(w, h);
-        kickQFactorKnob->setBackgroundImage(RkImage(50, 50, rk_knob_bk_50x50_png));
+        kickQFactorKnob->setKnobBackgroundImage(RkImage(50, 50, rk_knob_bk_50x50_png));
         kickQFactorKnob->setKnobImage(RkImage(50, 50, rk_knob_50x50_png));
         kickQFactorKnob->setRange(0.01, 10);
         kickQFactorKnob->show();

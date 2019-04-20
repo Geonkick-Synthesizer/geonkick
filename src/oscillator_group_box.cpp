@@ -81,7 +81,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , frequencyAmplitudeKnob{nullptr}
            , filterTypeIsChecked{false}
 {
-        setFixedSize(230, 380);
+        setFixedSize(224, 380);
         //        oscillatorCheckbox = new GeonkickCheckbox(this);
         //        oscillatorCheckbox->setPosition(0, 0);
         //        RK_ACT_BIND(oscillatorCheckbox, stateUpdated, RK_ACT_ARGS(bool b), oscillator, enable(b));
@@ -163,7 +163,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         envelopeAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         envelopeAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         envelopeAmplitudeKnob->setFixedSize(80, 80);
-        envelopeAmplitudeKnob->setBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
+        envelopeAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         envelopeAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
         envelopeAmplitudeKnob->setRange(0.01, 1.0);
         envelopeAmplitudeKnob->show();
@@ -189,7 +189,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 frequencyAmplitudeKnob->setRangeType(Knob::RangeType::Logarithmic);
                 frequencyAmplitudeKnob->setSize(80, 80);
                 frequencyAmplitudeKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2);
-                frequencyAmplitudeKnob->setBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
+                frequencyAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
                 frequencyAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
                 frequencyAmplitudeKnob->setRange(200, 20000);
                 RK_ACT_BIND(frequencyAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val),
@@ -216,7 +216,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
         kickFrequencyKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         kickFrequencyKnob->setFixedSize(80, 80);
-        kickFrequencyKnob->setBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
+        kickFrequencyKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         kickFrequencyKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
         kickFrequencyKnob->setRange(200, 20000);
         kickFrequencyKnob->show();
@@ -227,7 +227,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         int h = 50;
         kickQFactorKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4);
         kickQFactorKnob->setFixedSize(w, h);
-        kickQFactorKnob->setBackgroundImage(RkImage(50, 50, rk_knob_bk_50x50_png));
+        kickQFactorKnob->setKnobBackgroundImage(RkImage(50, 50, rk_knob_bk_50x50_png));
         kickQFactorKnob->setKnobImage(RkImage(50, 50, rk_knob_50x50_png));
         kickQFactorKnob->setRange(0.01, 10);
         kickQFactorKnob->show();

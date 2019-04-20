@@ -49,17 +49,28 @@ void Knob::setKnobImage(const RkImage &img)
         knobImage = img;
 }
 
+void Knob::setKnobBackgroundImage(const RkImage &img)
+{
+        knobBackground = img;
+}
+
 void Knob::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
         RK_UNUSED(event);
-        RkPainter painter(this);
+        RkImage img(80, 80);
+        RkPainter painter(&img);
+        painter.fillRect(rect(), background());
         if (!knobImage.isNull()) {
+                painter.drawImage(knobBackground, 0, 0);
                 painter.translate(RkPoint(width() / 2, height() / 2));
-                painter.rotate(knobValueDegree);
+                painter.rotate((2 * M_PI / 360) * knobValueDegree);
                 int x = (width() - knobImage.width()) / 2 - width() / 2;
                 int y = (height() - knobImage.height()) / 2 - height() / 2;
                 painter.drawImage(knobImage, x, y);
         }
+
+        RkPainter paint(this);
+        paint.drawImage(img, 0, 0);
 }
 
 void Knob::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)

@@ -33,7 +33,7 @@ ControlArea::ControlArea(GeonkickWidget *parent,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
                          : GeonkickWidget(parent)
 {
-        setFixedSize(940, 380);
+        setFixedSize(920, 380);
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
         auto widget = new OscillatorGroupBox(this, oscillator);
         widget->setPosition(0, 0);
@@ -42,18 +42,18 @@ ControlArea::ControlArea(GeonkickWidget *parent,
 
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(5 + 230, 0);
+        widget->setPosition(8 + 224, 0);
         RK_ACT_BIND(this, update, RK_ACT_ARGS(), widget, update());
         widget->show();
 
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(2 * (5 + 230), 0);
+        widget->setPosition(2 * (8 + 224), 0);
         RK_ACT_BIND(this, update, RK_ACT_ARGS(), widget, update());
         widget->show();
 
         auto generalWidget = new GeneralGroupBox(this, api);
-        generalWidget->setPosition(3 * (5 + 230), 0);
+        generalWidget->setPosition(3 * (8 + 224), 0);
         RK_ACT_BIND(this, update, RK_ACT_ARGS(), generalWidget, update());
         generalWidget->show();
 
