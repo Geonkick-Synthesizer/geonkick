@@ -50,8 +50,7 @@ class MainWindow : public GeonkickWidget
          //      void openPreset();
          //      void savePreset();
          //      void openAboutDialog();
-         // signals:
-         //      void updateGui();
+      RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
         //      void loadApiDefaultSettings();

@@ -43,7 +43,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         RK_DECL_ACT(oscillatorFunctionChanged,
                     oscillatorFunctionChanged(int index),
                     RK_ARG_TYPE(int),
-                    RK_ARG_VAL(index);
+                    RK_ARG_VAL(index));
 
  protected:
         void createWaveFunctionGroupBox();

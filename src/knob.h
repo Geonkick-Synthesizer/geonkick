@@ -26,8 +26,10 @@
 
 #include "geonkick_widget.h"
 
-#include <RkWidget>
-#include <RkMouseButtonEvent.h>
+#include <RkWidget.h>
+#include <RkImage.h>
+
+class RkMouseEvent;
 
 class Knob : public GeonkickWidget
 {
@@ -45,14 +47,14 @@ public:
    void setRangeType(RangeType type);
    RangeType getRangeType() const;
    void setCurrentValue(double val);
-   void setKnobImage(const QPixmap &pixmap);
+   void setKnobImage(const RkImage &img);
 
    RK_DECL_ACT(valueUpdated, valueUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
 
  protected:
    void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
-   void mousePressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-   void mouseReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
    void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
 
  private:

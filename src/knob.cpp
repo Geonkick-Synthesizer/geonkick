@@ -24,13 +24,14 @@
 #include "knob.h"
 
 #include <RkPainter.h>
+#include <RkEvent.h>
 
 #define GEONKICK_KNOB_MAX_DEGREE 270
 #define GEONKICK_KNOB_MIN_DEGREE 0
 #define GEONKICK_KNOB_RANGE_DEGREE (GEONKICK_KNOB_MAX_DEGREE - GEONKICK_KNOB_MIN_DEGREE)
 
 Knob::Knob(GeonkickWidget *parent)
-          : GeonkickWidget(parent),
+          : GeonkickWidget(parent)
           , knobValueDegree{GEONKICK_KNOB_MIN_DEGREE}
           , rangeFrom{0}
           , rangeTo{0}
@@ -50,21 +51,20 @@ void Knob::setKnobImage(const RkImage &img)
 
 void Knob::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
-        Q_UNUSED(event)
+        RK_UNUSED(event);
         RkPainter painter(this);
-        if (!knobPixmap.isNull()) {
-                //                painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing, true);
-                painter.translate(width() / 2, height() / 2);
+        if (!knobImage.isNull()) {
+                painter.translate(RkPoint(width() / 2, height() / 2));
                 painter.rotate(knobValueDegree);
-                int x = (width() - knobPixmap.width()) / 2 - width() / 2;
-                int y = (height() - knobPixmap.height()) / 2 - height() / 2;
-                painter.drawImage(x, y, knobImage);
+                int x = (width() - knobImage.width()) / 2 - width() / 2;
+                int y = (height() - knobImage.height()) / 2 - height() / 2;
+                painter.drawImage(knobImage, x, y);
         }
 }
 
-void Knob::mousePressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void Knob::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        if (!knobPixmap.isNull()) {
+        if (!knobImage.isNull()) {
                 int xCenter = width() / 2;
                 int yCenter = height() / 2;
                 int r = knobImage.width() / 2;
@@ -78,15 +78,13 @@ void Knob::mousePressEvent(const std::shared_ptr<RkMouseEvent> &event)
         }
 }
 
-void
-Knob::mouseReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
+void Knob::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        Q_UNUSED(event);
+        RK_UNUSED(event);
         isSelected = false;
 }
 
-void
-Knob::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+void Knob::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();

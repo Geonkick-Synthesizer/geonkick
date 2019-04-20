@@ -25,35 +25,36 @@
 #include "control_area.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
-#include "effects_group_box.h"
+//#include "effects_group_box.h"
 #include "geonkick_api.h"
 
-ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
-                         std::vector<Oscillator*> &oscillators)
+ControlArea::ControlArea(GeonkickWidget *parent,
+                         GeonkickApi* api,
+                         const std::vector<std::unique_ptr<Oscillator>> &oscillators)
                          : GeonkickWidget(parent)
 {
         setFixedSize(940, 380);
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
         auto widget = new OscillatorGroupBox(this, oscillator);
         widget->setPosition(0, 0);
-        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
+        RK_ACT_BIND(this, update, RK_ACT_ARGS(), widget, update());
         widget->show();
 
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(5 + groupBoxWidth, 0);
-        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
+        widget->setPosition(5 + 230, 0);
+        RK_ACT_BIND(this, update, RK_ACT_ARGS(), widget, update());
         widget->show();
 
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(2 * (5 + groupBoxWidth), 0);
-        RK_ACT_BIND(this, update(), RK_ARGS(), widget, update());
+        widget->setPosition(2 * (5 + 230), 0);
+        RK_ACT_BIND(this, update, RK_ACT_ARGS(), widget, update());
         widget->show();
 
         auto generalWidget = new GeneralGroupBox(this, api);
-        widget->setPosition(3 * (5 + groupBoxWidth), 0);
-        RK_ACT_BIND(this, update(), RK_ARGS(), generalWidget, update());
+        generalWidget->setPosition(3 * (5 + 230), 0);
+        RK_ACT_BIND(this, update, RK_ACT_ARGS(), generalWidget, update());
         generalWidget->show();
 
         //        auto effectsWidget = new EffectsGroupBox(api, this);

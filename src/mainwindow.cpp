@@ -56,8 +56,7 @@ MainWindow::MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info)
 {
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
-        setFixedWidth(GEONKICK_MAINWINDOW_WIDTH);
-        setFixedHeight(GEONKICK_MAINWINDOW_HEIGHT);
+        setFixedSize(940, 760);
 //        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 
@@ -93,10 +92,9 @@ bool MainWindow::init(void)
         //        connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
         //        limiterWidget->setFixedSize(65, 340);
 
-        auto controlAreaWidget = new ControlArea(this, RkSize(width(), height() - topBar->height() - envelopeWidget->height()),
-                                                 geonkickApi, oscillators);
+        auto controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setPosition(0, envelopeWidget->y() + envelopeWidget->height());
-        RK_ACT_BIND(this, updateGui(), RK_ARGS(), controlAreaWidget, update());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, update());
         controlAreaWidget->show();
         //        if (!presetName.isEmpty()) {
         //        setPreset(presetName);

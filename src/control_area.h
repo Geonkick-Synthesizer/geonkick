@@ -33,9 +33,11 @@ class GeonkickApi;
 class ControlArea: public GeonkickWidget
 {
  public:
-     ControlArea(GeonkickWidget *parent, const RkSize &size, GeonkickApi* api, std::vector<Oscillator*> &oscillators);
-     ~ControlArea();
-     RK_DECL_ACT(update, update(), RK_ARG_TYPE(), RK_ARG_VAL());
+        ControlArea(GeonkickWidget *parent,
+                    GeonkickApi* api,
+                    const std::vector<std::unique_ptr<Oscillator>> &oscillators);
+        ~ControlArea();
+       RK_DECL_ACT(update, update(), RK_ARG_TYPE(), RK_ARG_VAL());
 };
 
 #endif

@@ -24,29 +24,28 @@
 #include "geonkick_api.h"
 #include "general_group_box.h"
 #include "knob.h"
-#include "geonkick_label.h"
-#include "geonkick_checkbox.h"
+//#include "geonkick_checkbox.h"
 #include "geonkick_button.h"
 
-extern const unsigned char* rk_hboxbk_ampl_env_png[];
-extern const unsigned char* rk_knob_bk_image_png[];
-extern const unsigned char* rk_knob_png[];
-extern const unsigned char* rk_knob_bk_image_png[];
-extern const unsigned char* rk_knob_png[];
-extern const unsigned char* rk_hboxbk_filter_png);
-extern const unsigned char* rk_checkbox_checked_png);
-extern const unsigned char* rk_checkbox_unchecked_png);
-extern const unsigned char* rk_knob_bk_image_png[];
-extern const unsigned char* rk_knob_png[];
-extern const unsigned char* rk_knob_bk_50x50_png[];
-extern const unsigned char* rk_knob_50x50_png[];
-extern const unsigned char* rk_filter_type_hp_png[];
-extern const unsigned char* rk_filter_type_lp_png[];
+extern const unsigned char rk_hboxbk_ampl_env_png[];
+extern const unsigned char rk_knob_bk_image_png[];
+extern const unsigned char rk_knob_png[];
+extern const unsigned char rk_knob_bk_image_png[];
+extern const unsigned char rk_knob_png[];
+extern const unsigned char rk_hboxbk_filter_png[];
+extern const unsigned char rk_checkbox_checked_png[];
+extern const unsigned char rk_checkbox_unchecked_png[];
+extern const unsigned char rk_knob_bk_image_png[];
+extern const unsigned char rk_knob_png[];
+extern const unsigned char rk_knob_bk_50x50_png[];
+extern const unsigned char rk_knob_50x50_png[];
+extern const unsigned char rk_filter_type_hp_png[];
+extern const unsigned char rk_filter_type_lp_png[];
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickGroupBox(parent)
         , geonkickApi{api}
-        , filterCheckbox{nullptr}
+          //        , filterCheckbox{nullptr}
         , kickAmplitudeKnob{nullptr}
         , kickLengthKnob{nullptr}
         , kickFrequencyKnob{nullptr}
@@ -55,9 +54,9 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
 {
 
         setFixedSize(230, 380);
-        auto label = new RkLabel(this);
-        label->setImage(RkImage(64, 11, rk_general_groupbox_label_png));
-        setGroupBoxLabel(label);
+        //        auto label = new RkLabel(this);
+        //        label->setImage(RkImage(64, 11, rk_general_groupbox_label_png));
+        //        setGroupBoxLabel(label);
         createAplitudeEnvelopeHBox();
         createFilterHBox();
 }
@@ -84,7 +83,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         RK_ACT_BIND(kickAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val), geonkickApi, setKickAmplitude(val));
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
-        kickLengthKnob->postion(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 20)
+        kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 20);
         kickLengthKnob->setFixedSize(80, 80);
         kickLengthKnob->setBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         kickLengthKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
@@ -101,12 +100,12 @@ void GeneralGroupBox::createFilterHBox()
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->show();
 
-        filterCheckbox = new GeonkickCheckbox(filterEnvelopeBox);
-        filterCheckbox->setPosition(10, 10);
-        filterCheckbox->setCheckedImage(12, 12, rk_checkbox_checked_png);
-        filterCheckbox->setUncheckedImage(12, 12, rk_checkbox_unchecked_png);
-        filterCheckbox->show();
-        RK_ACT_BIND(filterCheckbox, stateUpdated, RK_ACT_ARGS(bool b), geonkickApi, enableKickFilter(b));
+        //        filterCheckbox = new GeonkickCheckbox(filterEnvelopeBox);
+        //        filterCheckbox->setPosition(10, 10);
+        //        filterCheckbox->setCheckedImage(12, 12, rk_checkbox_checked_png);
+        //        filterCheckbox->setUncheckedImage(12, 12, rk_checkbox_unchecked_png);
+        //        filterCheckbox->show();
+        //        RK_ACT_BIND(filterCheckbox, stateUpdated, RK_ACT_ARGS(bool b), geonkickApi, enableKickFilter(b));
 
         kickFrequencyKnob = new Knob(filterEnvelopeBox);
         kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
@@ -131,7 +130,7 @@ void GeneralGroupBox::createFilterHBox()
 
         filterType = new GeonkickButton(filterEnvelopeBox);
         filterType->setCheckable(true);
-        RK_ACT_BIND(filterType, toggled, RK_ACT_ARGS((bool state), this, setFilterType(state));
+        RK_ACT_BIND(filterType, toggled, RK_ACT_ARGS(bool state), this, setFilterType(state));
         w = 80;
         h = 25;
         filterType->setPosition(224 / 2 + (224 / 2 - w) / 2, 112 - 200);
@@ -153,7 +152,7 @@ void GeneralGroupBox::update()
 {
         kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
         kickLengthKnob->setCurrentValue(geonkickApi->kickLength());
-        filterCheckbox->setChecked(geonkickApi->isKickFilterEnabled());
+        //        filterCheckbox->setChecked(geonkickApi->isKickFilterEnabled());
         kickFrequencyKnob->setCurrentValue(geonkickApi->kickFilterFrequency());
         kickQFactorKnob->setCurrentValue(geonkickApi->kickFilterQFactor());
         if (geonkickApi->kickFilterType() == Oscillator::FilterType::LowPass)
