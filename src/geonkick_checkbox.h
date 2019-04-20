@@ -29,8 +29,6 @@
 class GeonkickButton;
 
 class GeonkickCheckbox: public GeonkickWidget {
- Q_OBJECT
-
  public:
         GeonkickCheckbox(GeonkickWidget *parent = nullptr);
         virtual ~GeonkickCheckbox();
@@ -41,11 +39,7 @@ class GeonkickCheckbox: public GeonkickWidget {
         void setCheckedImage(const std::string &file);
         void setUncheckedImage(const std::string &file);
         void setPadding(int left, int top, int right, int buttom);
-
- public slots:
         void setChecked(bool checked);
-
- signals:
         void stateUpdated(bool state);
 
  private:

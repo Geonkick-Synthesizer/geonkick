@@ -57,7 +57,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         setFixedSize(230, 380);
         auto label = new RkLabel(this);
         label->setImage(RkImage(64, 11, rk_general_groupbox_label_png));
-        setGroupBoxLabel(label, Qt::AlignLeft);
+        setGroupBoxLabel(label);
         createAplitudeEnvelopeHBox();
         createFilterHBox();
 }
@@ -69,7 +69,7 @@ GeneralGroupBox::~GeneralGroupBox()
 void GeneralGroupBox::createAplitudeEnvelopeHBox()
 {
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
-        amplitudeEnvelopeBox->setPosition(0, 11);
+        amplitudeEnvelopeBox->setPosition(0, 12);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_ampl_env_png));
         amplitudeEnvelopeBox->show();

@@ -33,9 +33,6 @@ GeonkickCheckbox::GeonkickCheckbox(GeonkickWidget *parent)
 {
         checkboxButton->setCheckable(true);
         checkboxLabel->setCheckable(true);
-        setPadding(0, 0, 0, 0);
-        mainLayout->setSpacing(3);
-        setLayout(mainLayout);
         mainLayout->addWidget(checkboxButton, 0, Qt::AlignLeft);
         mainLayout->addWidget(checkboxLabel, 0, Qt::AlignLeft);
         RK_ACT_BIND(checkboxButton, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
