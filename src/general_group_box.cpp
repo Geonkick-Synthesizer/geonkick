@@ -68,7 +68,7 @@ GeneralGroupBox::~GeneralGroupBox()
 void GeneralGroupBox::createAplitudeEnvelopeHBox()
 {
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
-        amplitudeEnvelopeBox->setPosition(0, 12);
+        amplitudeEnvelopeBox->setPosition(0, 11);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_ampl_env_png));
         amplitudeEnvelopeBox->show();
@@ -95,7 +95,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 void GeneralGroupBox::createFilterHBox()
 {
         auto filterEnvelopeBox = new GeonkickWidget(this);
-        filterEnvelopeBox->setPosition(0, 145);
+        filterEnvelopeBox->setPosition(0, 144);
         filterEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_filter_png));
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->show();
@@ -118,11 +118,11 @@ void GeneralGroupBox::createFilterHBox()
         RK_ACT_BIND(kickFrequencyKnob, valueUpdated, RK_ACT_ARGS(double val), geonkickApi, setKickFilterFrequency(val));
 
         kickQFactorKnob = new Knob(filterEnvelopeBox);
-        int w = 50;
-        int h = 50;
-        kickQFactorKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4);
+        int w = 60;
+        int h = 60;
+        kickQFactorKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
         kickQFactorKnob->setFixedSize(w, h);
-        kickQFactorKnob->setKnobBackgroundImage(RkImage(50, 50, rk_knob_bk_50x50_png));
+        kickQFactorKnob->setKnobBackgroundImage(RkImage(w, h, rk_knob_bk_50x50_png));
         kickQFactorKnob->setKnobImage(RkImage(50, 50, rk_knob_50x50_png));
         kickQFactorKnob->setRange(0.01, 10);
         kickQFactorKnob->show();
@@ -133,7 +133,7 @@ void GeneralGroupBox::createFilterHBox()
         RK_ACT_BIND(filterType, toggled, RK_ACT_ARGS(bool state), this, setFilterType(state));
         w = 80;
         h = 25;
-        filterType->setPosition(224 / 2 + (224 / 2 - w) / 2, 112 - 200);
+        filterType->setPosition(224 / 2 + (224 / 2 - w) / 2, kickQFactorKnob->y() + kickQFactorKnob->height() + 15);
         filterType->setFixedSize(w, h);
         filterType->setPressedImage(RkImage(80, 25, rk_filter_type_hp_png));
         filterType->setUnpressedImage(RkImage(80, 25, rk_filter_type_lp_png));

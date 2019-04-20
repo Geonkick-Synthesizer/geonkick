@@ -153,12 +153,15 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 void OscillatorGroupBox::createEvelopeGroupBox()
 {
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
-        amplitudeEnvelopeBox->setPosition(0, 12);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
-        if (oscillator->type() == Oscillator::Type::Noise)
+        if (oscillator->type() == Oscillator::Type::Noise) {
                 amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_noise_env_png));
-        else
+                amplitudeEnvelopeBox->setPosition(0, 11);
+        } else {
                 amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_osc_env_png));
+                amplitudeEnvelopeBox->setPosition(0, 104);
+        }
+        amplitudeEnvelopeBox->show();
 
         envelopeAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         envelopeAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
@@ -170,15 +173,16 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         RK_ACT_BIND(envelopeAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val), oscillator, setAmplitude(val));
 
         if (oscillator->type() == Oscillator::Type::Noise) {
-                noiseWhiteButton = new GeonkickButton(this);
-                noiseWhiteButton->setPosition((224 / 2 - 80) / 2 + 80, 0);
+                noiseWhiteButton = new GeonkickButton(amplitudeEnvelopeBox);
+                noiseWhiteButton->setPosition(224 / 2 + (224 / 2 - 90) / 2 - 10, 27);
                 noiseWhiteButton->setFixedSize(90, 30);
                 noiseWhiteButton->setUnpressedImage(RkImage(90, 30, rk_noise_type_white_png));
                 noiseWhiteButton->setPressedImage(RkImage(90, 30, rk_noise_type_white_active_png));
                 RK_ACT_BIND(noiseWhiteButton, toggled, RK_ACT_ARGS(bool b), this, setNoiseWhite(b));
                 noiseWhiteButton->show();
-                noiseBrownianButton = new GeonkickButton(this);
-                noiseWhiteButton->setPosition((224 / 2 - 80) / 2 + 80, 40);
+                noiseBrownianButton = new GeonkickButton(amplitudeEnvelopeBox);
+                noiseBrownianButton->setPosition(224 / 2 + (224 / 2 - 90) / 2 - 10,
+                                                 noiseWhiteButton->y() + noiseWhiteButton->height() + 10);
                 noiseBrownianButton->setFixedSize(90, 30);
                 RK_ACT_BIND(noiseBrownianButton, toggled, RK_ACT_ARGS(bool b), this, setNoiseBrownian(b));
                 noiseBrownianButton->setUnpressedImage(RkImage(90, 30, rk_noise_type_brownian_png));
@@ -194,13 +198,17 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 frequencyAmplitudeKnob->setRange(200, 20000);
                 RK_ACT_BIND(frequencyAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val),
                             oscillator, setFrequency(val));
+                frequencyAmplitudeKnob->show();
         }
 }
 
 void OscillatorGroupBox::createFilterGroupBox()
 {
         auto filterEnvelopeBox = new GeonkickWidget(this);
-        filterEnvelopeBox->setPosition(0, 130);
+        if (oscillator->type() == Oscillator::Type::Noise)
+                filterEnvelopeBox->setPosition(0, 144);
+        else
+                filterEnvelopeBox->setPosition(0, 236);
         filterEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_filter_png));
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->show();
@@ -220,25 +228,25 @@ void OscillatorGroupBox::createFilterGroupBox()
         kickFrequencyKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
         kickFrequencyKnob->setRange(200, 20000);
         kickFrequencyKnob->show();
-        //        RK_ACT_BIND(kickFrequencyKnob, valueUpdated, RK_ACT_ARGS(double val), geonkickApi, setKickFilterFrequency(val));
+        RK_ACT_BIND(kickFrequencyKnob, valueUpdated, RK_ACT_ARGS(double val), oscillator, setFilterFrequency(val));
 
         kickQFactorKnob = new Knob(filterEnvelopeBox);
-        int w = 50;
-        int h = 50;
-        kickQFactorKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4);
+        int w = 60;
+        int h = 60;
+        kickQFactorKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
         kickQFactorKnob->setFixedSize(w, h);
-        kickQFactorKnob->setKnobBackgroundImage(RkImage(50, 50, rk_knob_bk_50x50_png));
+        kickQFactorKnob->setKnobBackgroundImage(RkImage(60, 60, rk_knob_bk_50x50_png));
         kickQFactorKnob->setKnobImage(RkImage(50, 50, rk_knob_50x50_png));
         kickQFactorKnob->setRange(0.01, 10);
         kickQFactorKnob->show();
-        //        RK_ACT_BIND(kickQFactorKnob, valueUpdated, RK_ACT_ARGS(double val), this, setOscillatorFilterQFactor(val));
+        RK_ACT_BIND(kickQFactorKnob, valueUpdated, RK_ACT_ARGS(double val), oscillator, setFilterQFactor(val));
 
         filterType = new GeonkickButton(filterEnvelopeBox);
         filterType->setCheckable(true);
         RK_ACT_BIND(filterType, toggled, RK_ACT_ARGS(bool state), this, setFilterType(state));
         w = 80;
         h = 25;
-        filterType->setPosition(224 / 2 + (224 / 2 - w) / 2, 112 - 200);
+        filterType->setPosition(224 / 2 + (224 / 2 - w) / 2, kickQFactorKnob->y() + kickQFactorKnob->height() + 15);
         filterType->setFixedSize(w, h);
         filterType->setPressedImage(RkImage(80, 25, rk_filter_type_hp_png));
         filterType->setUnpressedImage(RkImage(80, 25, rk_filter_type_lp_png));

@@ -14,9 +14,6 @@ Author: Iurie Nistor
 
 Source code repository: https://gitlab.com/iurie/geonkick
 
-Note: Geonkick is migrating from Qt to [Redkite](https://gitlab.com/quamplex/redkite)
-      GUI toolkit for version 2.0. See the "devel" branch.
-
 ![Screenshot](data/screenshot.png)
 
 #### Features
@@ -62,7 +59,7 @@ In order Geonkick to run and operate correctly there is a need for:
 ###### Install dependeces
 
 I order to build Geonkick there is a need to install the following development packages:
-* Qt5
+* Redkite GUI toolkit
 * libsndfile
 * JACK Audio Connection Kit
 
@@ -70,7 +67,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
     apt-get install build-essential
     apt-get install cmake
-    apt-get install qt5-default && qjackctl && libjack-dev && libsndfile-dev
+    apt-get install qjackctl && libjack-dev && libsndfile-dev
 
 ###### Build & install Geonkick
 
