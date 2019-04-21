@@ -27,6 +27,8 @@
 //#include "geonkick_checkbox.h"
 #include "geonkick_button.h"
 
+#include <RkLabel.h>
+
 extern const unsigned char rk_hboxbk_ampl_env_png[];
 extern const unsigned char rk_knob_bk_image_png[];
 extern const unsigned char rk_knob_png[];
@@ -41,6 +43,7 @@ extern const unsigned char rk_knob_bk_50x50_png[];
 extern const unsigned char rk_knob_50x50_png[];
 extern const unsigned char rk_filter_type_hp_png[];
 extern const unsigned char rk_filter_type_lp_png[];
+extern const unsigned char rk_general_groupbox_label_png[];
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickGroupBox(parent)
@@ -54,9 +57,11 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
 {
 
         setFixedSize(224, 380);
-        //        auto label = new RkLabel(this);
-        //        label->setImage(RkImage(64, 11, rk_general_groupbox_label_png));
-        //        setGroupBoxLabel(label);
+        auto label = new RkLabel(this);
+        label->setPosition(5, 0);
+        label->setSize(64, 11);
+        label->setImage(RkImage(64, 11, rk_general_groupbox_label_png));
+        label->show();
         createAplitudeEnvelopeHBox();
         createFilterHBox();
 }
@@ -68,7 +73,7 @@ GeneralGroupBox::~GeneralGroupBox()
 void GeneralGroupBox::createAplitudeEnvelopeHBox()
 {
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
-        amplitudeEnvelopeBox->setPosition(0, 11);
+        amplitudeEnvelopeBox->setPosition(0, 18);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_ampl_env_png));
         amplitudeEnvelopeBox->show();
@@ -95,7 +100,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 void GeneralGroupBox::createFilterHBox()
 {
         auto filterEnvelopeBox = new GeonkickWidget(this);
-        filterEnvelopeBox->setPosition(0, 144);
+        filterEnvelopeBox->setPosition(0, 151);
         filterEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_filter_png));
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->show();

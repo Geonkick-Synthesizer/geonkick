@@ -45,6 +45,7 @@ void GeonkickWidget::paintEvent(const std::shared_ptr<RkPaintEvent> &event)
 {
         if (!backgroundImage.isNull()) {
                 RkPainter painter(this);
+                painter.fillRect(rect(), background());
                 painter.drawImage(backgroundImage, 0, 0);
         }
 

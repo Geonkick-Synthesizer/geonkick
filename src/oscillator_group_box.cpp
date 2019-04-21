@@ -26,7 +26,8 @@
 #include "geonkick_widget.h"
 #include "geonkick_button.h"
 #include "knob.h"
-//#include "geonkick_checkbox.h"
+
+#include <RkLabel.h>
 
 extern const unsigned char rk_osc1_groupbox_label_png[];
 extern const unsigned char rk_wf_bk_hbox_png[];
@@ -82,7 +83,30 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , filterTypeIsChecked{false}
 {
         setFixedSize(224, 380);
-        //        oscillatorCheckbox = new GeonkickCheckbox(this);
+        oscillatorCheckbox = new GeonkickButton(this);
+        oscillatorCheckbox->setCheckable(true);
+        oscillatorCheckbox->setPosition(5, 0);
+        oscillatorCheckbox->setFixedSize(12, 12);
+        oscillatorCheckbox->setPressedImage(RkImage(12, 12, rk_checkbox_checked_png));
+        oscillatorCheckbox->setUnpressedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
+        oscillatorCheckbox->show();
+        RK_ACT_BIND(oscillatorCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, enable(b));
+
+        auto label = new RkLabel(this);
+        label->setBackgroundColor(68, 68, 70);
+        label->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 3, 0);
+        if (oscillator->type() == Oscillator::Type::Oscillator1) {
+                label->setSize(74, 11);
+                label->setImage(RkImage(74, 11, rk_osc1_groupbox_label_png));
+        } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
+                label->setSize(76, 11);
+                label->setImage(RkImage(76, 11, rk_osc2_groupbox_label_png));
+        } else {
+                label->setSize(37, 11);
+                label->setImage(RkImage(37, 11, rk_noise_groupbox_label_png));
+        }
+        label->show();
+
         //        oscillatorCheckbox->setPosition(0, 0);
         //        RK_ACT_BIND(oscillatorCheckbox, stateUpdated, RK_ACT_ARGS(bool b), oscillator, enable(b));
         //        if (oscillator->type() == Oscillator::Type::Oscillator1)
@@ -111,13 +135,13 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 {
         auto waveFunctionHBox = new GeonkickWidget(this);
         waveFunctionHBox->setFixedSize(224, 85);
-        waveFunctionHBox->setPosition(0, 11);
+        waveFunctionHBox->setPosition(0, 18);
         waveFunctionHBox->setBackgroundImage(RkImage(224, 85, rk_wf_bk_hbox_png));
         waveFunctionHBox->show();
 
         sineButton = new GeonkickButton(waveFunctionHBox);
         sineButton->setSize(90, 30);
-        sineButton->setPosition((waveFunctionHBox->width() / 2 - sineButton->width()) / 2, 22);
+        sineButton->setPosition((waveFunctionHBox->width() / 2 - sineButton->width()) / 2, 20);
         sineButton->setUnpressedImage(RkImage(90, 30, rk_wave_button_sine_png));
         sineButton->setPressedImage(RkImage(90, 30, rk_wave_button_sine_active_png));
         RK_ACT_BIND(sineButton, toggled, RK_ACT_ARGS(bool b), this, setSineWave(b));
@@ -156,10 +180,10 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         if (oscillator->type() == Oscillator::Type::Noise) {
                 amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_noise_env_png));
-                amplitudeEnvelopeBox->setPosition(0, 11);
+                amplitudeEnvelopeBox->setPosition(0, 18);
         } else {
                 amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_osc_env_png));
-                amplitudeEnvelopeBox->setPosition(0, 104);
+                amplitudeEnvelopeBox->setPosition(0, 111);
         }
         amplitudeEnvelopeBox->show();
 
@@ -206,9 +230,9 @@ void OscillatorGroupBox::createFilterGroupBox()
 {
         auto filterEnvelopeBox = new GeonkickWidget(this);
         if (oscillator->type() == Oscillator::Type::Noise)
-                filterEnvelopeBox->setPosition(0, 144);
+                filterEnvelopeBox->setPosition(0, 151);
         else
-                filterEnvelopeBox->setPosition(0, 236);
+                filterEnvelopeBox->setPosition(0, 243);
         filterEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_filter_png));
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->show();
@@ -326,12 +350,7 @@ void OscillatorGroupBox::setFilterType(bool state)
 
 void OscillatorGroupBox::update()
 {
-        //        if (oscillator->isEnabled())
-                //                oscillatorCheckbox->setChecked(true);
-        //        else
-                //                oscillatorCheckbox->setChecked(false);
-
-
+        oscillatorCheckbox->setPressed(oscillator->isEnabled());
         if (oscillator->type() == Oscillator::Type::Noise) {
                 noiseWhiteButton->setPressed(false);
                 noiseBrownianButton->setPressed(false);
@@ -361,8 +380,5 @@ void OscillatorGroupBox::update()
         //        filterCheckbox->setChecked(oscillator->isFilterEnabled());
         kickQFactorKnob->setCurrentValue(oscillator->filterQFactor());
         kickFrequencyKnob->setCurrentValue(oscillator->filterFrequency());
-        if (oscillator->filter() == Oscillator::FilterType::LowPass)
-                filterType->setPressed(false);
-        else
-                filterType->setPressed(true);
+        filterType->setPressed(oscillator->filter() != Oscillator::FilterType::LowPass);
 }

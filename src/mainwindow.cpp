@@ -93,7 +93,7 @@ bool MainWindow::init(void)
         //        limiterWidget->setFixedSize(65, 340);
 
         auto controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
-        controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
+        controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, update());
         controlAreaWidget->show();
         //        if (!presetName.isEmpty()) {
