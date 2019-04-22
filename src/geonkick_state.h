@@ -26,6 +26,10 @@
 
 #include "geonkick_api.h"
 
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+
 #include <unordered_map>
 
 class GeonkickState
@@ -99,7 +103,7 @@ class GeonkickState
         //        QByteArray toJson() const;
 
         //protected:
-        //        void parseKickObject(const auto &kick);
+        void parseKickObject(const rapidjson::Value &kick);
         //        void parseOscillatorObject(int index, const auto &osc);
         //        std::vector<RkRealPoint> parseEnvelopeArray(const auto &envelopeArray);
         //        QJsonDocument getJsonDocument() const;

@@ -53,22 +53,21 @@ GeonkickState::GeonkickState(const std::vector<unsigned char> &data) :
             {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
         }
 {
-        /*        QJsonDocument document = QJsonDocument::fromBinaryData(data);
-        QJsonObject object = document.object();
-        parseKickObject(object.take("kick"));
+        rapidjson::Document document;
+        document.Parse(data.c_str());
+        if (document.hasMember("kick") && document["kick"].isObject())
+                parseKickObject(document["kick"]);
         for (const auto& val: oscillators)
         parseOscillatorObject(val.first, object.take("osc" + std::string::number(val.first)));*/
 }
 
-/*void GeonkickState::parseKickObject(const auto &kick)
+void GeonkickState::parseKickObject(const rapidjson::Value &kick)
 {
         if (kick.isNull() || !kick.isObject())
                 return;
 
-        auto limiter = kick.toObject().take("limiter");
-        if (!limiter.isNull() && limiter.isDouble()) {
-                setLimiterValue(limiter.toDouble());
-        }
+        if (kick.hasMember("limiter") && kick["limiter"].isDouble())
+                setLimiterValue(kick["limiter"].GetDouble());
 
         auto envelope = kick.toObject().take("ampl_env");
         if (!envelope.isNull() && envelope.isObject()) {
