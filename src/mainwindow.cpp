@@ -62,8 +62,10 @@ MainWindow::MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info)
 
 MainWindow::~MainWindow()
 {
-        if (geonkickApi)
+        if (geonkickApi) {
                 geonkickApi->registerCallbacks(false);
+                RK_ACT_UNBIND_ALL(geonkickApi, kickUpdated);
+        }
 }
 
 bool MainWindow::init(void)
