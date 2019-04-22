@@ -156,7 +156,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
         } else if (type() == Type::Frequency) {
-                std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
+                std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 16000};
                 for (auto value : values) {
                         int x = getOrigin().x();
                         int y = getOrigin().y() - H() * (log10(value) - log10(20)) / (log10(envelopeAmplitude()) - log10(20));
@@ -222,7 +222,8 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
                                          + "Hz " + frequencyToNote(value));
                 } else if (value >= 1000 && value <= 20000) {
                         std::ostringstream ss;
-                        ss << std::setprecision(1) << value / 1000;
+                        ss.precision(1);
+                        ss << std::fixed << value / 1000;
                         painter.drawText(point.x(), point.y(), ss.str() + "kHz " + frequencyToNote(value));
                 }
         }
@@ -245,7 +246,6 @@ void Envelope::drawLines(RkPainter &painter)
 	pen.setWidth(2);
         pen.setColor(RkColor(200, 200, 200, 200));
 	painter.setPen(pen);
-        //        painter.setRenderHints(RkPainter::SmoothPixmapTransform | RkPainter::Antialiasing, true);
 	painter.drawPolyline(points);
 }
 
@@ -319,7 +319,7 @@ void Envelope::moveSelectedPoint(int x, int y)
                 selectedPoint.setY(scaledPoint.y());
 
         pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
-}
+
 
 void Envelope::setPoints(const std::vector<RkRealPoint> &points)
 {
