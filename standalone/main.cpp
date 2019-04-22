@@ -31,17 +31,7 @@ int main(int argc, char *argv[])
 {
         RkMain app(argc, argv);
 
-        // QFontDatabase::addApplicationFont(":/urw_gothic_l_book.ttf");
-        // QFont font("URW Gothic L");
-        // font.setPixelSize(12);
-        // a.setFont(font);
-
-        //        QString preset;
-        //if (QCoreApplication::arguments().size() > 1) {
-        //        preset = QCoreApplication::arguments().at(1);
-        //}
-
-        auto api = std::make_unique<GeonkickApi>();
+        auto api = new GeonkickApi;
         api->setEventQueue(app.eventQueue());
         api->setStandalone(true);
         if (!api->init()) {
@@ -49,7 +39,7 @@ int main(int argc, char *argv[])
                 exit(1);
         }
 
-        auto window = new MainWindow(api.get());
+        auto window = new MainWindow(api);
         if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 exit(1);

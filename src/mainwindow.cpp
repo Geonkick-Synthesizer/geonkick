@@ -65,6 +65,8 @@ MainWindow::~MainWindow()
         if (geonkickApi) {
                 geonkickApi->registerCallbacks(false);
                 RK_ACT_UNBIND_ALL(geonkickApi, kickUpdated);
+                if (geonkickApi->isStandalone())
+                        delete geonkickApi;
         }
 }
 
