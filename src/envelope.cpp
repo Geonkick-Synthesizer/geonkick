@@ -319,7 +319,7 @@ void Envelope::moveSelectedPoint(int x, int y)
                 selectedPoint.setY(scaledPoint.y());
 
         pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
-
+}
 
 void Envelope::setPoints(const std::vector<RkRealPoint> &points)
 {

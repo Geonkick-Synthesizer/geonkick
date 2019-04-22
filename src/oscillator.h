@@ -65,7 +65,7 @@ class Oscillator
   RK_DECL_ACT(amplitudeUpdated, amplitudeUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
   RK_DECL_ACT(frequencyUpdated, frequencyUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double len), RK_ARG_TYPE(double), RK_ARG_VAL(len));
-  
+
  protected:
           int index();
           int envelopeIndex(EnvelopeType type);

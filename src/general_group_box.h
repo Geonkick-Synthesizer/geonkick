@@ -48,7 +48,7 @@ class GeneralGroupBox: public GeonkickGroupBox
 
  private:
         GeonkickApi* geonkickApi;
-        //        GeonkickCheckbox *filterCheckbox;
+        GeonkickButton *filterCheckbox;
         Knob *kickAmplitudeKnob;
         Knob *kickLengthKnob;
         Knob *kickFrequencyKnob;

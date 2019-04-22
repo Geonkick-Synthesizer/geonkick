@@ -95,10 +95,10 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
 
         for (auto const &osc: oscillators) {
                 int index = static_cast<int>(osc);
-                //if (osc == GeonkickApi::OscillatorType::Oscillator1)
+                if (osc == GeonkickApi::OscillatorType::Oscillator1)
                         state->setOscillatorEnabled(index, true);
-                        //else
-                        // state->setOscillatorEnabled(index, false);
+                else
+                        state->setOscillatorEnabled(index, false);
 
                 if (osc == GeonkickApi::OscillatorType::Noise)
                         state->setOscillatorFunction(index, GeonkickApi::FunctionType::NoiseWhite);

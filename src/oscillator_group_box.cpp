@@ -107,19 +107,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         }
         label->show();
 
-        //        oscillatorCheckbox->setPosition(0, 0);
-        //        RK_ACT_BIND(oscillatorCheckbox, stateUpdated, RK_ACT_ARGS(bool b), oscillator, enable(b));
-        //        if (oscillator->type() == Oscillator::Type::Oscillator1)
-        //        oscillatorCheckbox->setCheckboxLabelImage(RkImage(74, 11, rk_osc1_groupbox_label_png));
-        //else if (oscillator->type() == Oscillator::Type::Oscillator2)
-        //        oscillatorCheckbox->setCheckboxLabelImage(RkImage(76, 11, rk_osc2_groupbox_label_png));
-        //else
-        //        oscillatorCheckbox->setCheckboxLabelImage(RkImage(37, 11, rk_noise_groupbox_label_png));
-        //oscillatorCheckbox->setCheckedImage(RkImage(12, 12, rk_checkbox_checked_png));
-        //oscillatorCheckbox->setUncheckedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
-        //setGroupBoxLabel(oscillatorCheckbox);
-        //oscillatorCheckbox->show();
-
         if (oscillator->type() != Oscillator::Type::Noise)
                 createWaveFunctionGroupBox();
         createEvelopeGroupBox();
@@ -237,12 +224,15 @@ void OscillatorGroupBox::createFilterGroupBox()
         filterEnvelopeBox->setFixedSize(224, 125);
         filterEnvelopeBox->show();
 
-        //        filterCheckbox = new GeonkickCheckbox(filterEnvelopeBox);
-        //        filterCheckbox->setPosition(10, 10);
-        //        filterCheckbox->setCheckedImage(12, 12, rk_checkbox_checked_png);
-        //        filterCheckbox->setUncheckedImage(12, 12, rk_checkbox_unchecked_png);
-        //        filterCheckbox->show();
-        //        RK_ACT_BIND(filterCheckbox, stateUpdated, RK_ACT_ARGS(bool b), geonkickApi, enableKickFilter(b));
+        filterCheckbox = new GeonkickButton(filterEnvelopeBox);
+        filterCheckbox->setCheckable(true);
+        filterCheckbox->setBackgroundColor(68, 68, 70);
+        filterCheckbox->setSize(10, 10);
+        filterCheckbox->setPosition(10, 10);
+        filterCheckbox->setPressedImage(RkImage(12, 12, rk_checkbox_checked_png));
+        filterCheckbox->setUnpressedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
+        filterCheckbox->show();
+        RK_ACT_BIND(filterCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, enableFilter(b));
 
         kickFrequencyKnob = new Knob(filterEnvelopeBox);
         kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
@@ -377,7 +367,7 @@ void OscillatorGroupBox::update()
         if (oscillator->type() != Oscillator::Type::Noise)
                 frequencyAmplitudeKnob->setCurrentValue(oscillator->frequency());
 
-        //        filterCheckbox->setChecked(oscillator->isFilterEnabled());
+        filterCheckbox->setPressed(oscillator->isFilterEnabled());
         kickQFactorKnob->setCurrentValue(oscillator->filterQFactor());
         kickFrequencyKnob->setCurrentValue(oscillator->filterFrequency());
         filterType->setPressed(oscillator->filter() != Oscillator::FilterType::LowPass);
