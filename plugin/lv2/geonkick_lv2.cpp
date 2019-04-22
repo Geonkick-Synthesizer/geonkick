@@ -165,7 +165,7 @@ class GeonkickLv2Plugin
 
         void processSamples(int nsamples)
         {
-                /*                if (!midiIn)
+                if (!midiIn)
                         return;
 
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
@@ -175,25 +175,25 @@ class GeonkickLv2Plugin
                                 switch (lv2_midi_message_type(msg))
                                 {
                                 case LV2_MIDI_MSG_NOTE_ON:
-                                        //                                        geonkickApi->setKeyPressed(true, msg[2]);
+                                        geonkickApi->setKeyPressed(true, msg[2]);
                                                 break;
                                 case LV2_MIDI_MSG_NOTE_OFF:
-                                        //                                        geonkickApi->setKeyPressed(false, msg[2]);
+                                        geonkickApi->setKeyPressed(false, msg[2]);
                                                 break;
                                 default:
                                         break;
                                 }
                                 it = lv2_atom_sequence_next(it);
                         }
-                        //                        auto val = geonkickApi->getAudioFrame();
-                        //leftChannel[i]  = val;
-                        //rightChannel[i] = val;
-                        }*/
+                        auto val = geonkickApi->getAudioFrame();
+                        leftChannel[i]  = val;
+                        rightChannel[i] = val;
+                }
 
-                /*                if (isKickUpdated()) {
-                        notifyHost();
-                        setKickUpdated(false);
-                        }*/
+                //                if (isKickUpdated()) {
+                //                        notifyHost();
+                //                        setKickUpdated(false);
+                //                }
         }
 
         void notifyHost() const
@@ -321,7 +321,6 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 
 static void gkick_cleanup_ui(LV2UI_Handle handle)
 {
-        GEONKICK_LOG_INFO("called");
         if (handle)
                 delete static_cast<RkMain*>(handle);
 }
