@@ -32,14 +32,14 @@ GeonkickState::GeonkickState() :
         kickFilterQFactor(0),
         kickFilterType(GeonkickApi::FilterType::LowPass),
         oscillators{
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
+            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<OscillatorInfo>()},
+            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<OscillatorInfo>()},
+            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<OscillatorInfo>()}
         }
 {
 }
 
-GeonkickState::GeonkickState(const std::vector<unsigned char> &data) :
+GeonkickState::GeonkickState(const std::string &data) :
         limiterValue(0),
         kickLength(0),
         kickAmplitude(0),
@@ -48,107 +48,156 @@ GeonkickState::GeonkickState(const std::vector<unsigned char> &data) :
         kickFilterQFactor(0),
         kickFilterType(GeonkickApi::FilterType::LowPass),
         oscillators{
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
+            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<OscillatorInfo>()},
+            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<OscillatorInfo>()},
+            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<OscillatorInfo>()}
         }
 {
         rapidjson::Document document;
         document.Parse(data.c_str());
-        if (document.hasMember("kick") && document["kick"].isObject())
-                parseKickObject(document["kick"]);
-        for (const auto& val: oscillators)
-        parseOscillatorObject(val.first, object.take("osc" + std::string::number(val.first)));*/
+        if (document.IsObject()) {
+                for (const auto &m: document.GetObject()) {
+                        if (m.name == "kick" && m.value.IsObject())
+                                parseKickObject(m.value);
+                        if (m.name == "osc1" || m.name == "osc2" || m.name == "osc3")
+                                parseOscillatorObject(m.name.GetString(), m.value);
+                }
+        }
 }
 
 void GeonkickState::parseKickObject(const rapidjson::Value &kick)
 {
-        if (kick.isNull() || !kick.isObject())
+        if (kick.IsNull() || !kick.IsObject())
                 return;
 
-        if (kick.hasMember("limiter") && kick["limiter"].isDouble())
-                setLimiterValue(kick["limiter"].GetDouble());
+        for (const auto &m: kick.GetObject()) {
+                if (m.name == "limiter" && m.value.IsDouble())
+                        setLimiterValue(m.value.GetDouble());
 
-        auto envelope = kick.toObject().take("ampl_env");
-        if (!envelope.isNull() && envelope.isObject()) {
-                setKickLength(envelope.toObject().take("length").toDouble());
-                setKickAmplitude(envelope.toObject().take("amplitude").toDouble());
-                std::vector<RkRealPoint> points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
-                setKickEnvelopePoints(points);
-        }
+                if (m.name == "ampl_env" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "length" && el.value.IsDouble())
+                                        setKickLength(el.value.GetDouble());
+                                if (el.name == "amplitude" && el.value.IsDouble())
+                                        setKickAmplitude(el.value.GetDouble());
+                                if (el.name == "points" && el.value.IsArray())
+                                        setKickEnvelopePoints(parseEnvelopeArray(el.value));
+                        }
+                }
 
-        auto filter = kick.toObject().take("filter");
-        if (!filter.isNull() && filter.isObject()) {
-                enableKickFilter(filter.toObject().take("enabled").toBool());
-                setKickFilterFrequency(filter.toObject().take("cutoff").toDouble());
-                setKickFilterQFactor(filter.toObject().take("factor").toDouble());
-                setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("type").toInt()));
-        }
+                if (m.name == "filter" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        enableKickFilter(el.value.GetBool());
+                                if (el.name == "cutoff" && el.value.IsDouble())
+                                        setKickFilterFrequency(el.value.GetDouble());
+                                if (el.name == "factor" && el.value.IsDouble())
+                                        setKickFilterQFactor(el.value.GetDouble());
+                                if (el.name == "type" && el.value.IsInt())
+                                        setKickFilterType(static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
+                        }
+                }
 
-        auto compressor = kick.toObject().take("compressor");
-        if (!compressor.isNull() && compressor.isObject()) {
-                enableCompressor(compressor.toObject().take("enabled").toBool());
-                setCompressorAttack(compressor.toObject().take("attack").toDouble());
-                setCompressorRelease(compressor.toObject().take("release").toDouble());
-                setCompressorThreshold(compressor.toObject().take("threshold").toDouble());
-                setCompressorRatio(compressor.toObject().take("ratio").toDouble());
-                setCompressorKnee(compressor.toObject().take("knee").toDouble());
-                setCompressorMakeup(compressor.toObject().take("makeup").toDouble());
-        }
+                if (m.name == "compressor" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        enableCompressor(el.value.GetBool());
+                                if (el.name == "attack" && el.value.IsDouble())
+                                        setCompressorAttack(el.value.GetDouble());
+                                if (el.name == "release" && el.value.IsDouble())
+                                        setCompressorRelease(el.value.GetDouble());
+                                if (el.name == "threshold" && el.value.IsDouble())
+                                        setCompressorThreshold(el.value.GetDouble());
+                                if (el.name == "ratio" && el.value.IsDouble())
+                                        setCompressorRatio(el.value.GetDouble());
+                                if (el.name == "knee" && el.value.IsDouble())
+                                        setCompressorKnee(el.value.GetDouble());
+                                if (el.name == "makeup" && el.value.IsDouble())
+                                        setCompressorMakeup(el.value.GetDouble());
 
-        auto distortion = kick.toObject().take("distortion");
-        if (!distortion.isNull() && distortion.isObject()) {
-                enableDistortion(distortion.toObject().take("enabled").toBool());
-                setDistortionVolume(distortion.toObject().take("volume").toDouble());
-                setDistortionDrive(distortion.toObject().take("drive").toDouble());
-        }
-}
+                        }
+                }
 
-void GeonkickState::parseOscillatorObject(int index, const auto &osc)
-{
-        if (osc.isNull() || !osc.isObject())
-                return;
-
-        setOscillatorEnabled(index, osc.toObject().take("enabled").toBool());
-        setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(osc.toObject().take("function").toInt()));
-        auto envelope = osc.toObject().take("ampl_env");
-        if (!envelope.isNull() && envelope.isObject()) {
-                setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
-                std::vector<RkRealPoint> points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
-                setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Amplitude);
-        }
-
-        if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise){
-                envelope = osc.toObject().take("freq_env");
-                if (!envelope.isNull() && envelope.isObject()) {
-                        setOscillatorFrequency(index, envelope.toObject().take("amplitude").toDouble());
-                        std::vector<RkRealPoint> points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
-                        setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
+                if (m.name == "compressor" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        enableDistortion(el.value.GetBool());
+                                if (el.name == "volume" && el.value.IsDouble())
+                                        setDistortionVolume(el.value.GetDouble());
+                                if (el.name == "drive" && el.value.IsDouble())
+                                        setDistortionDrive(el.value.GetDouble());
+                        }
                 }
         }
+}
 
-        auto filter = osc.toObject().take("filter");
-        if (!filter.isNull() && filter.isObject()) {
-                setOscillatorFilterEnabled(index, filter.toObject().take("enabled").toBool());
-                setOscillatorFilterCutOffFreq(index, filter.toObject().take("cutoff").toDouble());
-                setOscillatorFilterFactor(index, filter.toObject().take("factor").toDouble());
-                setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(filter.toObject().take("type").toInt()));
+void GeonkickState::parseOscillatorObject(const char *name,  const rapidjson::Value &osc)
+{
+        if (name == nullptr || osc.IsNull() || !osc.IsObject())
+                return;
+
+        int index = 0;
+        if (std::string(name) == std::string("osc1"))
+                index = 0;
+        else if(std::string(name) == std::string("osc2"))
+                index = 1;
+        else if (std::string(name) == std::string("osc3"))
+                index = 2;
+        else
+                return;
+
+        for (const auto &m: osc.GetObject()) {
+                if (m.name == "enabled" && m.value.IsBool())
+                        setOscillatorEnabled(index, m.value.GetBool());
+                if (m.name == "function" && m.value.IsInt())
+                        setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(m.value.GetInt()));
+                if (m.name == "ampl_env" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "amplitude" && el.value.IsDouble())
+                                        setOscillatorAmplitue(index, el.value.GetDouble());
+                                if (el.name == "points" && el.value.IsArray())
+                                        setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                    GeonkickApi::EnvelopeType::Amplitude);
+                        }
+                }
+
+                if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise) {
+                        if (m.name == "freq_env" && m.value.IsObject()) {
+                                for (const auto &el: m.value.GetObject()) {
+                                        if (el.name == "amplitude" && el.value.IsDouble())
+                                                setOscillatorFrequency(index, el.value.IsDouble());
+                                        if (el.name == "points" && el.value.IsArray())
+                                                setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                            GeonkickApi::EnvelopeType::Frequency);
+                                }
+                        }
+                }
+
+                if (m.name == "filter" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        setOscillatorFilterEnabled(index, el.value.GetBool());
+                                if (el.name == "cutoff" && el.value.IsDouble())
+                                        setOscillatorFilterCutOffFreq(index, el.value.IsDouble());
+                                if (el.name == "factor" && el.value.IsDouble())
+                                        setOscillatorFilterFactor(index, el.value.IsDouble());
+                                if (el.name == "type" && el.value.IsInt())
+                                        setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
+                        }
+                }
         }
 }
 
-std::vector<RkRealPoint> GeonkickState::parseEnvelopeArray(const auto &envelopeArray)
+std::vector<RkRealPoint> GeonkickState::parseEnvelopeArray(const rapidjson::Value &envelopeArray)
 {
         std::vector<RkRealPoint> points;
-        for (auto it = envelopeArray.constBegin(); it != envelopeArray.constEnd(); ++it) {
-                auto point = it->toArray();
-                if (point.count() == 2) {
-                        points << RkPointF(point.takeAt(0).toDouble(), point.takeAt(1).toDouble());
-                }
-        }
+        for (const auto &el: envelopeArray.GetArray())
+                if (el.IsArray() && el.GetArray().Size() == 2)
+                        points.emplace_back(RkRealPoint(el.GetArray()[0].GetDouble(), el.GetArray()[1].GetDouble()));
 
         return points;
 }
-*/
+
 void GeonkickState::setLimiterValue(double val)
 {
         limiterValue = val;
@@ -229,7 +278,7 @@ std::vector<RkRealPoint> GeonkickState::getKickEnvelopePoints() const
         return kickEnvelopePoints;
 }
 
-std::shared_ptr<GeonkickState::Oscillator> GeonkickState::getOscillator(int index) const
+std::shared_ptr<GeonkickState::OscillatorInfo> GeonkickState::getOscillator(int index) const
 {
         auto it = oscillators.find(index);
         if (it != oscillators.end())
@@ -486,22 +535,24 @@ double GeonkickState::getDistortionDrive() const
         return distortion.drive;
 }
 
-std::vector<unsigned char> GeonkickState::toRawData() const
+std::string GeonkickState::toRawData() const
 {
-        return {};//getJsonDocument().toBinaryData();
+        return "";//getJsonDocument().toBinaryData();
 }
 
-/*QByteArray GeonkickState::toJson() const
+std::string GeonkickState::toJson() const
 {
-        return getJsonDocument().toJson();
-}
-
-QJsonDocument GeonkickState::getJsonDocument() const
-{
-                QJsonObject state;
+        /*        rapidjson::Document state;
+        state.setObject();
         for (const auto& val: oscillators)
         {
-                QJsonObject osc;
+                rapidjson::Value
+
+
+
+
+
+                        osc;
                 int index = val.first;
                 osc["enabled"] = QJsonValue(isOscillatorEnabled(index));
                 osc["function"] = QJsonValue(static_cast<int>(oscillatorFunction(index)));
@@ -572,6 +623,7 @@ QJsonDocument GeonkickState::getJsonDocument() const
         kick["distortion"] = distortion;
 
         state["kick"] = kick;
-        return QJsonDocument(state);
+        return QJsonDocument(state);*/
+        return "";
 }
-*/
+

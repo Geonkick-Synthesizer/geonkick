@@ -137,7 +137,7 @@ class GeonkickApi {
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
   void setState(const std::shared_ptr<GeonkickState> &state);
-  void setState(const std::vector<unsigned char> &data);
+  void setState(const std::string &data);
   void setKickEnvelopePoints(const std::vector<RkRealPoint> &points);
   void setKeyPressed(bool b, int velocity);
   void enableCompressor(bool enable);

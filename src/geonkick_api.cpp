@@ -149,7 +149,7 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         geonkick_enable_synthesis(geonkickApi, 1);
 }
 
-void GeonkickApi::setState(const std::vector<unsigned char> &data)
+void GeonkickApi::setState(const std::string &data)
 {
         setState(std::make_shared<GeonkickState>(data));
 }

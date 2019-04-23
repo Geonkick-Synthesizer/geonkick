@@ -37,7 +37,7 @@ class GeonkickState
  public:
 
         GeonkickState();
-        GeonkickState(const std::vector<unsigned char> &data);
+        GeonkickState(const std::string &data);
 
         void setLimiterValue(double val);
         void setKickLength(double val);
@@ -65,7 +65,9 @@ class GeonkickState
         void setOscillatorFilterType(int index, GeonkickApi::FilterType type);
         void setOscillatorFilterCutOffFreq(int index, double val);
         void setOscillatorFilterFactor(int index, double val);
-        void setOscillatorEnvelopePoints(int index, const std::vector<RkRealPoint> &points, GeonkickApi::EnvelopeType envelope);
+        void setOscillatorEnvelopePoints(int index,
+                                         const std::vector<RkRealPoint> &points,
+                                         GeonkickApi::EnvelopeType envelope);
 
         bool isOscillatorEnabled(int index) const;
         GeonkickApi::FunctionType oscillatorFunction(int index) const;
@@ -99,17 +101,17 @@ class GeonkickState
         double getDistortionVolume() const;
         double getDistortionDrive() const;
 
-        std::vector<unsigned char> toRawData() const;
-        //        QByteArray toJson() const;
+        std::string toRawData() const;
+        std::string toJson() const;
 
-        //protected:
+ protected:
         void parseKickObject(const rapidjson::Value &kick);
-        //        void parseOscillatorObject(int index, const auto &osc);
-        //        std::vector<RkRealPoint> parseEnvelopeArray(const auto &envelopeArray);
+        void parseOscillatorObject(const char *name,  const rapidjson::Value &osc);
+        std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
         //        QJsonDocument getJsonDocument() const;
 
 private:
-        struct Oscillator {
+        struct OscillatorInfo {
                 GeonkickApi::OscillatorType type;
                 bool isEnabled;
                 GeonkickApi::FunctionType function;
@@ -122,6 +124,8 @@ private:
                 std::vector<RkRealPoint> amplitudeEnvelope;
                 std::vector<RkRealPoint> frequencyEnvelope;
         };
+
+        std::shared_ptr<OscillatorInfo> getOscillator(int index) const;
 
         struct Compressor {
                 bool enabled;
@@ -139,8 +143,6 @@ private:
                 double drive;
         };
 
-        std::shared_ptr<Oscillator> getOscillator(int index) const;
-
         double limiterValue;
         double kickLength;
         double kickAmplitude;
@@ -149,7 +151,7 @@ private:
         double kickFilterQFactor;
         GeonkickApi::FilterType kickFilterType;
         std::vector<RkRealPoint> kickEnvelopePoints;
-        std::unordered_map<int, std::shared_ptr<Oscillator>> oscillators;
+        std::unordered_map<int, std::shared_ptr<OscillatorInfo>> oscillators;
         Compressor compressor;
         Distortion distortion;
 };
