@@ -535,95 +535,95 @@ double GeonkickState::getDistortionDrive() const
         return distortion.drive;
 }
 
-std::string GeonkickState::toRawData() const
-{
-        return "";//getJsonDocument().toBinaryData();
-}
-
 std::string GeonkickState::toJson() const
 {
-        /*        rapidjson::Document state;
-        state.setObject();
-        for (const auto& val: oscillators)
-        {
-                rapidjson::Value
-
-
-
-
-
-                        osc;
-                int index = val.first;
-                osc["enabled"] = QJsonValue(isOscillatorEnabled(index));
-                osc["function"] = QJsonValue(static_cast<int>(oscillatorFunction(index)));
-
-                QJsonObject envelope;
-                envelope.insert("amplitude", oscillatorAmplitue(index));
-                auto points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Amplitude);
-                QJsonArray jsonArray;
-                for (const auto &point: points) {
-                        jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+        std::ostringstream jsonStream;
+        jsonStream << "{" << std::endl;
+        for (const auto& val: oscillators) {
+                jsonStream << "\"osc" << val.first << "\": {" << std::endl;
+                jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false");
+                jsonStream << "," << std::endl;
+                jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
+                jsonStream << "\"ampl_env\": {" << std::endl;
+                jsonStream << "\"amplitude\": "  << val.second->amplitude << std::endl;
+                jsonStream << "\"points\": [" << std::endl;
+                bool first = true;
+                for (const auto &point: val.second->amplitudeEnvelope) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << "[ " << point.x() << " , " << point.y() << "]";
                 }
-                envelope.insert("points", jsonArray);
-                osc["ampl_env"] = envelope;
+                jsonStream << "]" << std::endl; // points
+                jsonStream << "}," << std::endl; // ampl_env
 
-                envelope = QJsonObject();
-                envelope.insert("amplitude", oscillatorFrequency(index));
-                points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Frequency);
-                jsonArray = QJsonArray();
-                for (const auto &point: points) {
-                        jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+                jsonStream << "\"ampl_freq\": {" << std::endl;
+                jsonStream << "\"amplitude\": " << val.second->frequency << std::endl;
+                jsonStream << "\"points\": [" << std::endl;
+                first = true;
+                for (const auto &point: val.second->frequencyEnvelope) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << "[ " << point.x() << " , " << point.y() << "]";
                 }
-                envelope.insert("points", jsonArray);
-                osc["freq_env"] = envelope;
-
-                QJsonObject filter;
-                filter.insert("enabled", isOscillatorFilterEnabled(index));
-                filter.insert("type", static_cast<int>(static_cast<int>(oscillatorFilterType(index))));
-                filter.insert("cutoff", oscillatorFilterCutOffFreq(index));
-                filter.insert("factor", oscillatorFilterFactor(index));
-                osc["filter"] = filter;
-                state["osc" + std::string::number(index)] = osc;
+                jsonStream << "]" << std::endl; // points
+                jsonStream << "}," << std::endl; // freq_env
+                jsonStream << "\"filter\": {" << std::endl;
+                jsonStream << "\"enabled\": " << (val.second->isFilterEnabled ? "true" : "false");
+                jsonStream << ", " << std::endl;
+                jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
+                jsonStream << "\"cutoff\": " << val.second->filterFrequency << ", " << std::endl;
+                jsonStream << "\"factor\": " << val.second->filterFactor << ", " << std::endl;
+                jsonStream << "}" << std::endl;  // filter;
+                jsonStream << "}" << std::endl;  // osc;
+                jsonStream << "," << std::endl;
         }
 
-        QJsonObject kick;
-        kick["limiter"] = getLimiterValue();
-        QJsonObject envelope;
-        envelope.insert("length", static_cast<double>(getKickLength()));
-        envelope.insert("amplitude", static_cast<double>(getKickAmplitude()));
+        jsonStream << "\"kick\": {" << std::endl;
+        jsonStream << "\"limiter\": " << getLimiterValue() << ", " << std::endl;
+        jsonStream << "\"ampl_env\": {" << std::endl;
+        jsonStream << "\"amplitude\": " << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
+        jsonStream << "\"length\": " << static_cast<double>(getKickLength()) << ", " << std::endl;
         auto points = getKickEnvelopePoints();
-        QJsonArray jsonArray;
+        jsonStream << "\"points\": [" << std::endl;
+        bool first = true;
         for (const auto &point: points) {
-                jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ " << point.x() << " , " << point.y() << "]";
         }
-        envelope.insert("points", jsonArray);
-        kick["ampl_env"] = envelope;
+        jsonStream << "]" << std::endl; // points
+        jsonStream << "}," << std::endl; // ampl_env
 
-        QJsonObject filter;
-        filter.insert("enabled", isKickFilterEnabled());
-        filter.insert("type", static_cast<int>(getKickFilterType()));
-        filter.insert("cutoff", getKickFilterFrequency());
-        filter.insert("factor", getKickFilterQFactor());
-        kick["filter"] = filter;
+        jsonStream << "\"filter\": {" << std::endl;
+        jsonStream << "\"enabled\": " << (isKickFilterEnabled() ? "true" : "false");
+        jsonStream << ", " << std::endl;
+        jsonStream << "\"type\": " << static_cast<int>(getKickFilterType()) << ", " << std::endl;
+        jsonStream << "\"cutoff\": " << getKickFilterFrequency() << ", " << std::endl;
+        jsonStream << "\"factor\": " << getKickFilterQFactor() << ", " << std::endl;;
+        jsonStream << "}, " << std::endl;  // filter;
 
-        QJsonObject compressor;
-        compressor.insert("enabled", isCompressorEnabled());
-        compressor.insert("attack", getCompressorAttack());
-        compressor.insert("release", getCompressorRelease());
-        compressor.insert("threshold", getCompressorThreshold());
-        compressor.insert("ratio", getCompressorRatio());
-        compressor.insert("knee", getCompressorKnee());
-        compressor.insert("makeup", getCompressorMakeup());
-        kick["compressor"] = compressor;
+        jsonStream << "\"compressor\": {" << std::endl;
+        jsonStream << "\"enabled\": " << isCompressorEnabled() << std::endl;
+        jsonStream << "\"attack\": " << getCompressorAttack() << std::endl;
+        jsonStream << "\"release\": " << getCompressorRelease() << std::endl;
+        jsonStream << "\"threshold\": " << getCompressorThreshold() << std::endl;
+        jsonStream << "\"ratio\": " << getCompressorRatio() << std::endl;
+        jsonStream << "\"knee\": " << getCompressorKnee() << std::endl;
+        jsonStream << "\"makeup\": " << getCompressorMakeup() << std::endl;
+        jsonStream << "}, " << std::endl;
 
-        QJsonObject distortion;
-        distortion.insert("enabled", isDistortionEnabled());
-        distortion.insert("volume", getDistortionVolume());
-        distortion.insert("drive", getDistortionDrive());
-        kick["distortion"] = distortion;
+        jsonStream << "\"distortion\": {" << std::endl;
+        jsonStream << "\"enabled\": " << isDistortionEnabled() << ", " << std::endl;
+        jsonStream << "\"volume\": " << getDistortionVolume()  << ", " << std::endl;
+        jsonStream << "\"drive\": " << getDistortionDrive() << ", " << std::endl;
+        jsonStream << "}" << std::endl; // distortion
+        jsonStream << "}" << std::endl; // kick
 
-        state["kick"] = kick;
-        return QJsonDocument(state);*/
-        return "";
+        return jsonStream.str();
 }
-

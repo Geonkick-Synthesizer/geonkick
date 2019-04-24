@@ -100,15 +100,12 @@ class GeonkickState
         void setDistortionDrive(double drive);
         double getDistortionVolume() const;
         double getDistortionDrive() const;
-
-        std::string toRawData() const;
         std::string toJson() const;
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(const char *name,  const rapidjson::Value &osc);
         std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
-        //        QJsonDocument getJsonDocument() const;
 
 private:
         struct OscillatorInfo {
