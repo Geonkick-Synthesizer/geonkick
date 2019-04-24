@@ -663,6 +663,7 @@ double GeonkickApi::getCompressorRatio() const
 {
         gkick_real val;
         geonkick_compressor_get_ratio(geonkickApi, &val);
+        if (val < 0 )
         return val;
 }
 

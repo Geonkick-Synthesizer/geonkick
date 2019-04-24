@@ -32,7 +32,7 @@
 
 #include "mainwindow.h"
 #include "geonkick_api.h"
-//#include "geonkick_state.h"
+#include "geonkick_state.h"
 
 #include <RkMain.h>
 #include <RkPlatform.h>
@@ -65,7 +65,7 @@ class GeonkickLv2Plugin
                   atomInfo{0},
                   kickIsUpdated(false)
         {
-                //                connect(geonkickApi, SIGNAL(kickUpdated()), this, SLOT(kickUpdated()));
+                RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, kickUpdated());
         }
 
         ~GeonkickLv2Plugin()
@@ -147,16 +147,16 @@ class GeonkickLv2Plugin
                 return atomInfo.atomObject;
         }
 
-        //        void setStateData(const QByteArray &data, int flags = 0)
-        //{
-        //        Q_UNUSED(flags);
-                //                geonkickApi->setState(data);
-        //}
+        void setStateData(const std::string &data, int flags = 0)
+        {
+                RK_UNUSED(flags);
+                geonkickApi->setState(data);
+        }
 
-        //        QByteArray getStateData()
-        //        {
-        //                return geonkickApi->getState()->toRawData();
-        //        }
+        std::string getStateData()
+        {
+                return geonkickApi->getState()->toJson();
+        }
 
         GeonkickApi* getApi() const
         {
@@ -190,15 +190,15 @@ class GeonkickLv2Plugin
                         rightChannel[i] = val;
                 }
 
-                //                if (isKickUpdated()) {
-                //                        notifyHost();
-                //                        setKickUpdated(false);
-                //                }
+                if (isKickUpdated()) {
+                        notifyHost();
+                        setKickUpdated(false);
+                }
         }
 
         void notifyHost() const
         {
-                /*                if (!notifyHostChannel)
+                if (!notifyHostChannel)
                         return;
 
                 auto sequence = static_cast<LV2_Atom_Sequence*>(notifyHostChannel);
@@ -217,19 +217,23 @@ class GeonkickLv2Plugin
                         atomObject->body.otype = getAtomStateChanged();
                         sequence->atom.size += neededAtomSize;
                 }
-                */
         }
 
 protected:
-        /*        void setKickUpdated(bool b)
+        void setKickUpdated(bool b)
         {
                 kickIsUpdated = b;
+        }
+
+        void kickUpdated()
+        {
+                setKickUpdated(true);
         }
 
         bool isKickUpdated() const
         {
                 return kickIsUpdated;
-                }*/
+        }
 
 private:
         GeonkickApi *geonkickApi;
@@ -453,10 +457,11 @@ gkick_state_save(LV2_Handle                instance,
 {
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
         if (geonkickLv2PLugin){
-                //                QByteArray stateData = geonkickLv2PLugin->getStateData();
-                //                store(handle, geonkickLv2PLugin->getStateId(), stateData.data(),
-                //      stateData.size(), geonkickLv2PLugin->getAtomChunkId(),
-                //      LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE);
+                std::string stateData = geonkickLv2PLugin->getStateData();
+                RK_LOG_DEBUG("json:" << stateData);
+                store(handle, geonkickLv2PLugin->getStateId(), stateData.data(),
+                      stateData.size(), geonkickLv2PLugin->getAtomChunkId(),
+                      LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE);
         }
 
         return LV2_STATE_SUCCESS;
@@ -469,15 +474,16 @@ gkick_state_restore(LV2_Handle                  instance,
                     uint32_t                    flags,
                     const LV2_Feature* const*   features)
 {
-        /*        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
+        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
         if (geonkickLv2PLugin) {
                 size_t size   = 0;
                 LV2_URID type = 0;
                 const char *data = (const char*)retrieve(handle, geonkickLv2PLugin->getStateId(),
                                                          &size, &type, &flags);
                 if (data && size > 0)
-                        geonkickLv2PLugin->setStateData(QByteArray(data, size), flags);
-                        }*/
+                        geonkickLv2PLugin->setStateData(std::string(data, size), flags);
+                RK_LOG_DEBUG("json1:" << data);
+        }
         return LV2_STATE_SUCCESS;
 }
 

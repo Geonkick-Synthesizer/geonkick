@@ -24,34 +24,39 @@
 #include "geonkick_state.h"
 
 GeonkickState::GeonkickState() :
-        limiterValue(0),
-        kickLength(0),
-        kickAmplitude(0),
-        kickFilterEnabled(0),
-        kickFilterFrequency(0),
-        kickFilterQFactor(0),
-        kickFilterType(GeonkickApi::FilterType::LowPass),
-        oscillators{
+        limiterValue{0}
+        , kickLength{0}
+        , kickAmplitude{0}
+        , kickFilterEnabled{0}
+        , kickFilterFrequency{0}
+        , kickFilterQFactor{0}
+        , kickFilterType{GeonkickApi::FilterType::LowPass}
+        , oscillators{
             {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<OscillatorInfo>()},
             {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<OscillatorInfo>()},
             {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<OscillatorInfo>()}
         }
+        , compressor{false, 0, 0, 0, 0, 0, 0}
+        , distortion{false, 0, 0}
+
 {
 }
 
 GeonkickState::GeonkickState(const std::string &data) :
-        limiterValue(0),
-        kickLength(0),
-        kickAmplitude(0),
-        kickFilterEnabled(0),
-        kickFilterFrequency(0),
-        kickFilterQFactor(0),
-        kickFilterType(GeonkickApi::FilterType::LowPass),
-        oscillators{
+        limiterValue{0}
+        , kickLength{0}
+        , kickAmplitude{0}
+        , kickFilterEnabled{0}
+        , kickFilterFrequency{0}
+        , kickFilterQFactor{0}
+        , kickFilterType{GeonkickApi::FilterType::LowPass}
+        , oscillators{
             {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<OscillatorInfo>()},
             {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<OscillatorInfo>()},
             {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<OscillatorInfo>()}
         }
+        , compressor{false, 0, 0, 0, 0, 0, 0}
+        , distortion{false, 0, 0}
 {
         rapidjson::Document document;
         document.Parse(data.c_str());
@@ -545,7 +550,7 @@ std::string GeonkickState::toJson() const
                 jsonStream << "," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
                 jsonStream << "\"ampl_env\": {" << std::endl;
-                jsonStream << "\"amplitude\": "  << val.second->amplitude << std::endl;
+                jsonStream << "\"amplitude\": "  << val.second->amplitude << ", " << std::endl;
                 jsonStream << "\"points\": [" << std::endl;
                 bool first = true;
                 for (const auto &point: val.second->amplitudeEnvelope) {
@@ -559,7 +564,7 @@ std::string GeonkickState::toJson() const
                 jsonStream << "}," << std::endl; // ampl_env
 
                 jsonStream << "\"ampl_freq\": {" << std::endl;
-                jsonStream << "\"amplitude\": " << val.second->frequency << std::endl;
+                jsonStream << "\"amplitude\": " << val.second->frequency << ", " << std::endl;
                 jsonStream << "\"points\": [" << std::endl;
                 first = true;
                 for (const auto &point: val.second->frequencyEnvelope) {
@@ -576,7 +581,7 @@ std::string GeonkickState::toJson() const
                 jsonStream << ", " << std::endl;
                 jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
                 jsonStream << "\"cutoff\": " << val.second->filterFrequency << ", " << std::endl;
-                jsonStream << "\"factor\": " << val.second->filterFactor << ", " << std::endl;
+                jsonStream << "\"factor\": " << val.second->filterFactor << std::endl;
                 jsonStream << "}" << std::endl;  // filter;
                 jsonStream << "}" << std::endl;  // osc;
                 jsonStream << "," << std::endl;
@@ -605,25 +610,26 @@ std::string GeonkickState::toJson() const
         jsonStream << ", " << std::endl;
         jsonStream << "\"type\": " << static_cast<int>(getKickFilterType()) << ", " << std::endl;
         jsonStream << "\"cutoff\": " << getKickFilterFrequency() << ", " << std::endl;
-        jsonStream << "\"factor\": " << getKickFilterQFactor() << ", " << std::endl;;
+        jsonStream << "\"factor\": " << getKickFilterQFactor() << std::endl;;
         jsonStream << "}, " << std::endl;  // filter;
 
         jsonStream << "\"compressor\": {" << std::endl;
-        jsonStream << "\"enabled\": " << isCompressorEnabled() << std::endl;
-        jsonStream << "\"attack\": " << getCompressorAttack() << std::endl;
-        jsonStream << "\"release\": " << getCompressorRelease() << std::endl;
-        jsonStream << "\"threshold\": " << getCompressorThreshold() << std::endl;
-        jsonStream << "\"ratio\": " << getCompressorRatio() << std::endl;
-        jsonStream << "\"knee\": " << getCompressorKnee() << std::endl;
+        jsonStream << "\"enabled\": " << isCompressorEnabled() << ", " << std::endl;
+        jsonStream << "\"attack\": " << getCompressorAttack() << ", " << std::endl;
+        jsonStream << "\"release\": " << getCompressorRelease() << ", " << std::endl;
+        jsonStream << "\"threshold\": " << getCompressorThreshold() << ", " << std::endl;
+        jsonStream << "\"ratio\": " << getCompressorRatio() << ", " << std::endl;
+        jsonStream << "\"knee\": " << getCompressorKnee() << ", " << std::endl;
         jsonStream << "\"makeup\": " << getCompressorMakeup() << std::endl;
         jsonStream << "}, " << std::endl;
 
         jsonStream << "\"distortion\": {" << std::endl;
         jsonStream << "\"enabled\": " << isDistortionEnabled() << ", " << std::endl;
         jsonStream << "\"volume\": " << getDistortionVolume()  << ", " << std::endl;
-        jsonStream << "\"drive\": " << getDistortionDrive() << ", " << std::endl;
+        jsonStream << "\"drive\": " << getDistortionDrive() << std::endl;
         jsonStream << "}" << std::endl; // distortion
         jsonStream << "}" << std::endl; // kick
+        jsonStream << "}" << std::endl; // json
 
         return jsonStream.str();
 }
