@@ -70,10 +70,10 @@ class Envelope
          void removePoints();
          void setDrawingArea(const RkRect &rect);
          virtual void updatePoints() {};
-         //  signals:
-         //         void envelopeLengthUpdated(double len);
-         //         void amplitudeUpdated(double amplitude);
-         //         void envelopeUpdated();
+
+         RK_DECL_ACT(envelopeLengthUpdated, envelopeLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
+         RK_DECL_ACT(amplitudeUpdated, amplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
+         RK_DECL_ACT(envelopeUpdated, envelopeUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;

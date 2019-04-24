@@ -29,8 +29,8 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         ,  geonkickApi{api}
 {
         removeSupportedType(Envelope::Type::Frequency);
-        //        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
-        //        connect(geonkickApi, SIGNAL(kickAmplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
+        RK_ACT_BIND(geonkickApi, kickLengthUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
+        RK_ACT_BIND(geonkickApi, kickAmplitudeUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
         setType(Envelope::Type::Amplitude);
         setPoints(geonkickApi->getKickEnvelopePoints());
 }

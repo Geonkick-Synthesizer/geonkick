@@ -90,7 +90,7 @@ bool MainWindow::init(void)
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(RkSize(850, 340));
         envelopeWidget->show();
-        //        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, update());
 
         //        auto limiterWidget = new Limiter(geonkickApi, this);
         //        connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
@@ -101,9 +101,9 @@ bool MainWindow::init(void)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, update());
         controlAreaWidget->show();
         //        if (!presetName.isEmpty()) {
-        //        setPreset(presetName);
-        //        emit updateGui();
-        //        }
+        //                setPreset(presetName);
+        //                updateGui();
+        //         }
 
         return true;
 }

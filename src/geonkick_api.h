@@ -152,9 +152,8 @@ class GeonkickApi {
   void setDistortionDrive(double drive);
   std::shared_ptr<RkEventQueue> eventQueue;
 
-  //signals:
-  //void kickLengthUpdated(double length);
-  //void kickAmplitudeUpdated(double amplitude);
+  RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
+  RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickUpdated, kickUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
   //void currentPlayingFrameVal(double val);
 

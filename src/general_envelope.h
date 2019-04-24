@@ -37,10 +37,7 @@ class GeneralEnvelope: public Envelope
   ~GeneralEnvelope();
   double envelopeLengh(void) const;
 
-  //public slots:
   void setEnvelopeLengh(double len) final;
-
-  //protected slots:
   void updatePoints() final;
 
  protected:

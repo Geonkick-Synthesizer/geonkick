@@ -28,7 +28,7 @@ Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
         , oscillatorType{type}
         , filterType{FilterType::LowPass}
 {
-        //        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(kickLengthUpdated(double)));
+        RK_ACT_BIND(geonkickApi, kickLengthUpdated, RK_ACT_ARGS(double val), this, kickLengthUpdated(val));
 }
 
 Oscillator::~Oscillator()
