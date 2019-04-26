@@ -22,21 +22,22 @@
  */
 
 #include "top_bar.h"
-//#include "geonkick_button.h"
-//#include "geonkick_label.h"
+#include "geonkick_button.h"
 
 #include "RkLabel.h"
-//#include <QMouseEvent>
-//#include <QHBoxLayout>
 
 extern const unsigned char rk_logo_png[];
+extern const unsigned char rk_open_active_png[];
+extern const unsigned char rk_save_active_png[];
+extern const unsigned char rk_export_active_png[];
+extern const unsigned char rk_about_png[];
 
 TopBar::TopBar(GeonkickWidget *parent)
         : GeonkickWidget(parent)
-          //          openFileButton(ullptr),
-          //          saveFileButton(nullptr),
-          //          exportFileButton(nullptr),
-          //          presetNameLabel(nullptr)
+        , openFileButton{nullptr}
+        , saveFileButton{nullptr}
+        , exportFileButton{nullptr}
+        , presetNameLabel{nullptr}
 {
         setFixedWidth(parent->width());
         setFixedHeight(40);
@@ -49,40 +50,39 @@ TopBar::TopBar(GeonkickWidget *parent)
         logo->setY((height() - logo->height()) / 2);
         logo->show();
 
-        /*        openFileButton = new GeonkickButton(this);
-        openFileButton->setUnpressedImage(QPixmap(":/open_active.png"));
+        openFileButton = new GeonkickButton(this);
+        openFileButton->setSize(90, 30);
+        openFileButton->setX(logo->x() + logo->widht() + 5);
+        openFileButton->setY((height() - openFileButton->height()) / 2);
+        openFileButton->setUnpressedImage(RkImage(90, 30, rk_open_active_png));
         openFileButton->setCheckable(true);
-        buttonsLayout->addWidget(openFileButton);
-        buttonsLayout->setAlignment(openFileButton, Qt::AlignLeft);
-        connect(openFileButton, SIGNAL(toggled(bool)), parent, SLOT(openPreset()));
+        RK_ACT_BIND(openFileButton, toggled, RK_ACT_ARS(bool b), parent, openPreset());
 
         saveFileButton = new GeonkickButton(this);
-        saveFileButton->setUnpressedImage(QPixmap(":/save_active.png"));
+        saveFileButton->setSize(90, 30);
+        saveFileButton->setX(openFileButton->x() + openFileButton->width() + 5);
+        saveFileButton->setY(openFileButton->y());
+        saveFileButton->setUnpressedImage(RkImage(90, 30, rk_save_active_png));
         saveFileButton->setCheckable(true);
-        buttonsLayout->addWidget(saveFileButton);
-        buttonsLayout->setAlignment(saveFileButton, Qt::AlignLeft);
-        connect(saveFileButton, SIGNAL(toggled(bool)), parent, SLOT(savePreset()));
+        RK_ACT_BIND(saveFileButton, toggled, RK_ACT_ARS(bool b), parent, savePreset());
 
         exportFileButton = new GeonkickButton(this);
-        exportFileButton->setUnpressedImage(QPixmap(":/export_active.png"));
+        exportFileButton->setSize(90, 30);
+        exportFileButton>setX(saveFileButton->x() + saveFileButton->width() + 5);
+        exportFileButton->setY(saveFileButton->y());
+        exportFileButton->setUnpressedImage(RkImage(90, 30, rk_export_active_png));
         exportFileButton->setCheckable(true);
-        buttonsLayout->addWidget(exportFileButton);
-        buttonsLayout->setAlignment(exportFileButton, Qt::AlignLeft);
-        connect(exportFileButton, SIGNAL(toggled(bool)), parent, SLOT(openExportDialog()));
+        RK_ACT_BIND(exportFileButton, toggled, RK_ACT_ARS(bool b), parent, openExportDialog());
 
-        // About button
         auto aboutButton = new GeonkickButton(this);
-        aboutButton->setUnpressedImage(QPixmap(":/about.png"));
+        aboutButton->setSize(90, 30);
+        aboutButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
+        aboutButton->setY(exportFileButton->y());
+        aboutButton->setUnpressedImage(RkImage(90, 30, rk_about_png));
         aboutButton->setCheckable(true);
-        buttonsLayout->addWidget(aboutButton);
-        buttonsLayout->setAlignment(aboutButton, Qt::AlignLeft);
-        connect(aboutButton, SIGNAL(toggled(bool)), parent, SLOT(openAboutDialog()));
+        RK_ACT_BIND(aboutButton, toggled, RK_ACT_ARS(bool b), parent, openAboutDialog());
 
-        // Preset name
-        buttonsLayout->insertItem(6, new QSpacerItem(15, 1));
         presetNameLabel = new GeonkickLabel(this);
-        buttonsLayout->addWidget(presetNameLabel);
-        buttonsLayout->addStretch(1);*/
 }
 
 TopBar::~TopBar()
