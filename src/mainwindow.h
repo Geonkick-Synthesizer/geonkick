@@ -45,10 +45,10 @@ class MainWindow : public GeonkickWidget
       // void keyReleaseEvent(QKeyEvent *event);
 
       void showSaveFile();
+      void savePreset(const std::string &fileName);
       void setPreset(const std::string &fileName);
       void openExportDialog();
       void openPreset();
-      void savePreset();
       void openAboutDialog();
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 

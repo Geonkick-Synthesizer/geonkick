@@ -57,8 +57,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
 
 void FileDialog::onAccept()
 {
-        //                fileName = "testfile.gkick";
-                //seletedFile("testfile");
+        selectedFile("testfile.gkick");
         close();
 }
 

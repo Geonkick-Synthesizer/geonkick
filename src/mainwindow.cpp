@@ -116,8 +116,9 @@ void MainWindow::openExportDialog()
         //        exportDialog.exec();
 }
 
-void MainWindow::savePreset()
+void MainWindow::savePreset(const std::string &fileName)
 {
+        RK_LOG_DEBUG("preset:" << fileName);
         /*        QFileDialog fileDialog(this, tr("Save Preset") + std::string(" - ") + std::string(GEOKICK_APP_NAME),
                                "",
                                tr("Geonkick preset (*.gkick)"));
@@ -178,7 +179,8 @@ void MainWindow::openPreset()
 
 void MainWindow::showSaveFile()
 {
-        auto fileDialog = new FileDialog(this, FileDialog::Type::Save, "Save preset");
+        auto fileDialog = new FileDialog(this, FileDialog::Type::Save, "Save Preset");
+        RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, savePreset(file));
 }
 
 void MainWindow::setPreset(const std::string &fileName)
