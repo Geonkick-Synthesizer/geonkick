@@ -24,6 +24,8 @@
 #include "file_dialog.h"
 #include "geonkick_button.h"
 
+#include "RkLabel.h"
+
 extern const unsigned char rk_open_png[];
 extern const unsigned char rk_save_png[];
 extern const unsigned char rk_cancel_png[];
@@ -34,6 +36,20 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
 {
         setTitle(title);
         setFixedSize(600, 400);
+
+        if (dialogType == Type::Save) {
+                auto label = new RkLabel("Name:", this);
+                label->setBackgroundColor(background());
+                label->setFixedSize(50, 20);
+                label->setPosition(5, 15);
+                label->show();
+
+                auto fileEdit = new RkWidget(this);
+                fileEdit->setSize(width() - label->width() - 15, 25);
+                fileEdit->setX(label->x() + label->width() - 5);
+                fileEdit->setY(label->y() + label->height() / 2 - fileEdit->height() / 2);
+                fileEdit->show();
+        }
 
         auto acceptButton = new GeonkickButton(this);
         acceptButton->setFixedSize(90, 30);
