@@ -52,11 +52,11 @@ TopBar::TopBar(GeonkickWidget *parent)
 
         openFileButton = new GeonkickButton(this);
         openFileButton->setSize(90, 30);
-        openFileButton->setX(logo->x() + logo->widht() + 5);
+        openFileButton->setX(logo->x() + logo->width() + 5);
         openFileButton->setY((height() - openFileButton->height()) / 2);
         openFileButton->setUnpressedImage(RkImage(90, 30, rk_open_active_png));
         openFileButton->setCheckable(true);
-        RK_ACT_BIND(openFileButton, toggled, RK_ACT_ARS(bool b), parent, openPreset());
+        //        RK_ACT_BIND(openFileButton, toggled, RK_ACT_ARS(bool b), parent, openPreset());
 
         saveFileButton = new GeonkickButton(this);
         saveFileButton->setSize(90, 30);
@@ -64,15 +64,15 @@ TopBar::TopBar(GeonkickWidget *parent)
         saveFileButton->setY(openFileButton->y());
         saveFileButton->setUnpressedImage(RkImage(90, 30, rk_save_active_png));
         saveFileButton->setCheckable(true);
-        RK_ACT_BIND(saveFileButton, toggled, RK_ACT_ARS(bool b), parent, savePreset());
+        RK_ACT_BIND(saveFileButton, toggled, RK_ACT_ARGS(bool b), this, saveFile());
 
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setSize(90, 30);
-        exportFileButton>setX(saveFileButton->x() + saveFileButton->width() + 5);
+        exportFileButton->setX(saveFileButton->x() + saveFileButton->width() + 5);
         exportFileButton->setY(saveFileButton->y());
         exportFileButton->setUnpressedImage(RkImage(90, 30, rk_export_active_png));
         exportFileButton->setCheckable(true);
-        RK_ACT_BIND(exportFileButton, toggled, RK_ACT_ARS(bool b), parent, openExportDialog());
+        //        RK_ACT_BIND(exportFileButton, toggled, RK_ACT_ARS(bool b), parent, openExportDialog());
 
         auto aboutButton = new GeonkickButton(this);
         aboutButton->setSize(90, 30);
@@ -80,9 +80,9 @@ TopBar::TopBar(GeonkickWidget *parent)
         aboutButton->setY(exportFileButton->y());
         aboutButton->setUnpressedImage(RkImage(90, 30, rk_about_png));
         aboutButton->setCheckable(true);
-        RK_ACT_BIND(aboutButton, toggled, RK_ACT_ARS(bool b), parent, openAboutDialog());
+        //        RK_ACT_BIND(aboutButton, toggled, RK_ACT_ARS(bool b), parent, openAboutDialog());
 
-        presetNameLabel = new GeonkickLabel(this);
+        presetNameLabel = new RkLabel(this);
 }
 
 TopBar::~TopBar()

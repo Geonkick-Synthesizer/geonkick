@@ -28,6 +28,7 @@
 #include "general_group_box.h"
 #include "control_area.h"
 #include "top_bar.h"
+#include "file_dialog.h"
 //#include "limiter.h"
 //#include "export_widget.h"
 #include "geonkick_api.h"
@@ -83,6 +84,7 @@ bool MainWindow::init(void)
         auto topBar = new TopBar(this);
         topBar->setX(10);
         topBar->show();
+        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, showSaveFile());
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
@@ -108,15 +110,15 @@ bool MainWindow::init(void)
         return true;
 }
 
-/*void MainWindow::openExportDialog()
+void MainWindow::openExportDialog()
 {
-        ExportWidget exportDialog(this, geonkickApi);
-        exportDialog.exec();
+        //        ExportWidget exportDialog(this, geonkickApi);
+        //        exportDialog.exec();
 }
 
 void MainWindow::savePreset()
 {
-        QFileDialog fileDialog(this, tr("Save Preset") + std::string(" - ") + std::string(GEOKICK_APP_NAME),
+        /*        QFileDialog fileDialog(this, tr("Save Preset") + std::string(" - ") + std::string(GEOKICK_APP_NAME),
                                "",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
@@ -153,12 +155,12 @@ void MainWindow::savePreset()
 
         file.write(geonkickApi->getState()->toJson());
         file.close();
-        topBar->setPresetName(QFileInfo(file).baseName());
+        topBar->setPresetName(QFileInfo(file).baseName());*/
 }
 
 void MainWindow::openPreset()
 {
-        QFileDialog fileDialog(this, tr("Open Preset")  + std::string(" - ") + std::string(GEOKICK_APP_NAME), "",
+        /*        QFileDialog fileDialog(this, tr("Open Preset")  + std::string(" - ") + std::string(GEOKICK_APP_NAME), "",
                                tr("Geonkick preset (*.gkick)"));
         fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
         if (fileDialog.exec() == QDialog::Rejected)
@@ -171,12 +173,17 @@ void MainWindow::openPreset()
         }
 
         setPreset(files.first());
-        emit updateGui();
+        emit updateGui();*/
+}
+
+void MainWindow::showSaveFile()
+{
+        auto fileDialog = new FileDialog(this, FileDialog::Type::Save, "Save preset");
 }
 
 void MainWindow::setPreset(const std::string &fileName)
 {
-        QFile file(fileName);
+        /*        QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 QMessageBox::critical(this, "Error | Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME), "Can't open preset");
                 return;
@@ -190,16 +197,16 @@ void MainWindow::setPreset(const std::string &fileName)
                 geonkickApi->setState(std::make_shared<GeonkickState>(document.toBinaryData()));
                 topBar->setPresetName(QFileInfo(file).baseName());
         }
-        file.close();
+        file.close();*/
 }
 
 void MainWindow::openAboutDialog()
 {
-        AboutDialog aboutDialog(this);
-        aboutDialog.exec();
+        //        AboutDialog aboutDialog(this);
+        //        aboutDialog.exec();
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event)
+/*void MainWindow::keyPressEvent(QKeyEvent *event)
 {
         if (event->key() == Qt::Key_K) {
                 geonkickApi->setKeyPressed(true, 127);
@@ -211,7 +218,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         } else if (event->modifiers() ==  Qt::ControlModifier
                    && event->key() == Qt::Key_H) {
                 envelopeWidget->hideEnvelope(true);
-        }
+                }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)

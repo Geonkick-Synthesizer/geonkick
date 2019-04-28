@@ -25,14 +25,14 @@
 
 #include <RkPainter.h>
 
-GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
-        : RkWidget(parent)
+GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
+        : RkWidget(parent, flags)
 {
         setBackgroundColor(68, 68, 70);
 }
 
-GeonkickWidget::GeonkickWidget(const RkNativeWindowInfo &info)
-        : RkWidget(info)
+GeonkickWidget::GeonkickWidget(const RkNativeWindowInfo &info, Rk::WindowFlags flags)
+        : RkWidget(info, flags)
 {
         setBackgroundColor(68, 68, 70);
 }

@@ -28,6 +28,7 @@ GeonkickButton::GeonkickButton(GeonkickWidget *parent)
         , is_pressed{false}
         , is_checkable{false}
 {
+        show();
 }
 
 GeonkickButton::~GeonkickButton()

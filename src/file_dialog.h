@@ -1,8 +1,8 @@
 /**
- * File name: top_bar.h
+ * File name: file_dialog.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2019 Iurie Nistor (http://geontime.com)
  *
  * This file is part of Geonkick.
  *
@@ -21,27 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_TOP_BAR_H
-#define GEONKICK_TOP_BAR_H
+#ifndef GEONKICK_FILE_DIALOG_H
+#define GEONKICK_FILE_DIALOG_H
 
 #include "geonkick_widget.h"
 
-class RkLabel;
-class GeonkickButton;
-
-class TopBar : public GeonkickWidget
+class FileDialog: public GeonkickWidget
 {
  public:
-        TopBar(GeonkickWidget *parent);
-        ~TopBar();
-        void setPresetName(const std::string &name);
-        RK_DECL_ACT(saveFile, saveFile(), RK_ARG_TYPE(), RK_ARG_VAL());
+        enum class Type: int {
+                Save,
+                Open
+        };
+
+        explicit FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title);
+        ~FileDialog() = default;
+
+ protected:
+        void onAccept();
+        void onCancel();
 
  private:
-        GeonkickButton *openFileButton;
-        GeonkickButton *saveFileButton;
-        GeonkickButton *exportFileButton;
-        RkLabel* presetNameLabel;
+        Type dialogType;
 };
 
-#endif // GEONKICK_TOP_BAR_H
+#endif // GEONKICK_FILE_DIALOG_H

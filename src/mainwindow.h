@@ -43,13 +43,13 @@ class MainWindow : public GeonkickWidget
  protected:
       // void keyPressEvent(QKeyEvent *event);
       // void keyReleaseEvent(QKeyEvent *event);
-      ///void setPreset(const std::string &fileName);
 
-      // protected slots:
-         //      void openExportDialog();
-         //      void openPreset();
-         //      void savePreset();
-         //      void openAboutDialog();
+      void showSaveFile();
+      void setPreset(const std::string &fileName);
+      void openExportDialog();
+      void openPreset();
+      void savePreset();
+      void openAboutDialog();
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
