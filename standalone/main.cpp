@@ -39,14 +39,9 @@ int main(int argc, char *argv[])
                 exit(1);
         }
 
-        auto window = new MainWindow(api);
+        auto window = new MainWindow(&app, api);
         if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
-                exit(1);
-        }
-
-        if (!app.setTopLevelWindow(window)) {
-                GEONKICK_LOG_ERROR("can't set application main window");
                 exit(1);
         }
 

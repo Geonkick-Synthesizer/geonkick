@@ -303,15 +303,9 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 
         auto guiApp = new RkMain();
         geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue());
-        auto mainWidget = new MainWindow(geonkickLv2PLugin->getApi(), info);
+        auto mainWidget = new MainWindow(guiApp, geonkickLv2PLugin->getApi(), info);
         if (!mainWidget->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
-                return nullptr;
-        }
-
-        if (!guiApp->setTopLevelWindow(mainWidget)) {
-                GEONKICK_LOG_ERROR("can't create gui");
-                delete guiApp;
                 return nullptr;
         }
 

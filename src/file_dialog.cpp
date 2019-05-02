@@ -38,7 +38,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         setFixedSize(600, 400);
 
         if (dialogType == Type::Save) {
-                auto label = new RkLabel("Name:", this);
+                auto label = new RkLabel(this, "Name:");
                 label->setBackgroundColor(background());
                 label->setFixedSize(50, 20);
                 label->setPosition(5, 15);

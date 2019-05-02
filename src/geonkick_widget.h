@@ -35,8 +35,9 @@ struct RkNativeWindowInfo;
 class GeonkickWidget: public RkWidget
 {
  public:
-        explicit GeonkickWidget(GeonkickWidget *parent = nullptr, Rk::WindowFlags flags = Rk::WindowFlags::Widget);
-        explicit GeonkickWidget(const RkNativeWindowInfo &info, Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+        explicit GeonkickWidget(RkMain *app, Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+        explicit GeonkickWidget(RkMain *app, const RkNativeWindowInfo &info, Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+        explicit GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags = Rk::WindowFlags::Widget);
         virtual ~GeonkickWidget();
         void setBackgroundImage(const RkImage &img);
         void setBackgroundImage(const std::string &file);

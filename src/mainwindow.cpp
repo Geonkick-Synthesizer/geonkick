@@ -35,8 +35,8 @@
 //#include "geonkick_state.h"
 //#include "about.h"
 
-MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent)
-        : GeonkickWidget(parent)
+MainWindow::MainWindow(RkMain *app, GeonkickApi *api)
+        : GeonkickWidget(app)
         , geonkickApi{api}
         , topBar{nullptr}
         , envelopeWidget{nullptr}
@@ -48,8 +48,8 @@ MainWindow::MainWindow(GeonkickApi *api, GeonkickWidget *parent)
 //        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 
-MainWindow::MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info)
-        : GeonkickWidget(info)
+MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
+        : GeonkickWidget(app, info)
         , geonkickApi{api}
         , topBar{nullptr}
         , envelopeWidget{nullptr}

@@ -35,8 +35,8 @@ class EnvelopeWidget;
 class MainWindow : public GeonkickWidget
 {
  public:
-        explicit MainWindow(GeonkickApi *api, GeonkickWidget *parent = nullptr);
-        explicit MainWindow(GeonkickApi *api, const RkNativeWindowInfo &info);
+      explicit MainWindow(RkMain* app, GeonkickApi *api);
+      explicit MainWindow(RkMain* app, GeonkickApi *api, const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
 
