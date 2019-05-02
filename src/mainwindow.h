@@ -25,12 +25,14 @@
 #define GEONGKICK_MAINWINDOW_H
 
 #include "geonkick_widget.h"
+#include "file_dialog.h"
 
 class Oscillator;
 //class OscillatorWidget;
 class GeonkickApi;
 class TopBar;
 class EnvelopeWidget;
+class ControlArea;
 
 class MainWindow : public GeonkickWidget
 {
@@ -44,7 +46,8 @@ class MainWindow : public GeonkickWidget
       // void keyPressEvent(QKeyEvent *event);
       // void keyReleaseEvent(QKeyEvent *event);
 
-      void showSaveFile();
+      void openFileDialog(FileDialog::Type type);
+      void openPreset(const std::string &fileName);
       void savePreset(const std::string &fileName);
       void setPreset(const std::string &fileName);
       void openExportDialog();
@@ -60,6 +63,7 @@ class MainWindow : public GeonkickWidget
       std::vector<std::unique_ptr<Oscillator>> oscillators;
       TopBar *topBar;
       EnvelopeWidget* envelopeWidget;
+      ControlArea* controlAreaWidget;
       std::string presetName;
 };
 

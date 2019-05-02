@@ -54,7 +54,6 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         , kickQFactorKnob{nullptr}
         , filterType{nullptr}
 {
-
         setFixedSize(224, 380);
         auto label = new RkLabel(this);
         label->setPosition(5, 0);
@@ -63,6 +62,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         label->show();
         createAplitudeEnvelopeHBox();
         createFilterHBox();
+        updateGui();
 }
 
 GeneralGroupBox::~GeneralGroupBox()
@@ -155,7 +155,7 @@ void GeneralGroupBox::setFilterType(bool state)
                 geonkickApi->setKickFilterType(Oscillator::FilterType::LowPass);
 }
 
-void GeneralGroupBox::update()
+void GeneralGroupBox::updateGui()
 {
         kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
         kickLengthKnob->setCurrentValue(geonkickApi->kickLength());

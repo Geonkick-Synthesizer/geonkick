@@ -39,7 +39,7 @@ class GeneralGroupBox: public GeonkickGroupBox
         GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
         ~GeneralGroupBox();
 
-        void update();
+        void updateGui();
 
  protected:
         void createAplitudeEnvelopeHBox();

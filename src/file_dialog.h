@@ -26,6 +26,8 @@
 
 #include "geonkick_widget.h"
 
+class RkLineEdit;
+
 class FileDialog: public GeonkickWidget
 {
  public:
@@ -46,6 +48,7 @@ class FileDialog: public GeonkickWidget
         void onCancel();
 
  private:
+        RkLineEdit *fileNameEdit;
         Type dialogType;
 };
 

@@ -37,7 +37,7 @@ class ControlArea: public GeonkickWidget
                     GeonkickApi* api,
                     const std::vector<std::unique_ptr<Oscillator>> &oscillators);
         ~ControlArea();
-       RK_DECL_ACT(update, update(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 };
 
 #endif

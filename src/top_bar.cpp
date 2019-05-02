@@ -56,7 +56,7 @@ TopBar::TopBar(GeonkickWidget *parent)
         openFileButton->setY((height() - openFileButton->height()) / 2);
         openFileButton->setUnpressedImage(RkImage(90, 30, rk_open_active_png));
         openFileButton->setCheckable(true);
-        //        RK_ACT_BIND(openFileButton, toggled, RK_ACT_ARS(bool b), parent, openPreset());
+        RK_ACT_BIND(openFileButton, toggled, RK_ACT_ARGS(bool b), this, openFile());
 
         saveFileButton = new GeonkickButton(this);
         saveFileButton->setSize(90, 30);

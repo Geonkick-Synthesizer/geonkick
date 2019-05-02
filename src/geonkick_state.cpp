@@ -38,7 +38,6 @@ GeonkickState::GeonkickState() :
         }
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 0, 0}
-
 {
 }
 

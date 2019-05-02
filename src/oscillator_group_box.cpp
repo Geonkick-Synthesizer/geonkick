@@ -111,7 +111,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
                 createWaveFunctionGroupBox();
         createEvelopeGroupBox();
         createFilterGroupBox();
-        update();
+        updateGui();
 }
 
 OscillatorGroupBox::~OscillatorGroupBox()
@@ -338,7 +338,7 @@ void OscillatorGroupBox::setFilterType(bool state)
                 oscillator->setFilterType(Oscillator::FilterType::LowPass);
 }
 
-void OscillatorGroupBox::update()
+void OscillatorGroupBox::updateGui()
 {
         oscillatorCheckbox->setPressed(oscillator->isEnabled());
         if (oscillator->type() == Oscillator::Type::Noise) {
