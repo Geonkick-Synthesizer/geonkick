@@ -38,19 +38,17 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         setTitle(title);
         setFixedSize(600, 400);
 
-        if (dialogType == Type::Save) {
-                auto label = new RkLabel(this, "Name:");
-                label->setBackgroundColor(background());
-                label->setFixedSize(50, 20);
-                label->setPosition(5, 15);
-                label->show();
+        auto label = new RkLabel(this, "File: ");
+        label->setBackgroundColor(background());
+        label->setFixedSize(50, 20);
+        label->setPosition(5, 15);
+        label->show();
 
-                fileNameEdit = new RkLineEdit(this);
-                fileNameEdit->setSize(width() - label->width() - 15, 25);
-                fileNameEdit->setX(label->x() + label->width() - 5);
-                fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
-                fileNameEdit->show();
-        }
+        fileNameEdit = new RkLineEdit(this);
+        fileNameEdit->setSize(width() - label->width() - 15, 25);
+        fileNameEdit->setX(label->x() + label->width() - 5);
+        fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
+        fileNameEdit->show();
 
         auto acceptButton = new GeonkickButton(this);
         acceptButton->setFixedSize(90, 30);
@@ -74,10 +72,8 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
 
 void FileDialog::onAccept()
 {
-        if (dialogType == Type::Save)
+        if (!fileNameEdit->text().empty())
                 selectedFile(fileNameEdit->text());
-        else
-                selectedFile("testfile.gkick");
         close();
 }
 

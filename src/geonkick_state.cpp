@@ -23,6 +23,8 @@
 
 #include "geonkick_state.h"
 
+#include <iomanip>
+
 GeonkickState::GeonkickState() :
         limiterValue{0}
         , kickLength{0}
@@ -169,7 +171,7 @@ void GeonkickState::parseOscillatorObject(const char *name,  const rapidjson::Va
                         if (m.name == "freq_env" && m.value.IsObject()) {
                                 for (const auto &el: m.value.GetObject()) {
                                         if (el.name == "amplitude" && el.value.IsDouble())
-                                                setOscillatorFrequency(index, el.value.IsDouble());
+                                                setOscillatorFrequency(index, el.value.GetDouble());
                                         if (el.name == "points" && el.value.IsArray())
                                                 setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
                                                                             GeonkickApi::EnvelopeType::Frequency);
@@ -182,9 +184,9 @@ void GeonkickState::parseOscillatorObject(const char *name,  const rapidjson::Va
                                 if (el.name == "enabled" && el.value.IsBool())
                                         setOscillatorFilterEnabled(index, el.value.GetBool());
                                 if (el.name == "cutoff" && el.value.IsDouble())
-                                        setOscillatorFilterCutOffFreq(index, el.value.IsDouble());
+                                        setOscillatorFilterCutOffFreq(index, el.value.GetDouble());
                                 if (el.name == "factor" && el.value.IsDouble())
-                                        setOscillatorFilterFactor(index, el.value.IsDouble());
+                                        setOscillatorFilterFactor(index, el.value.GetDouble());
                                 if (el.name == "type" && el.value.IsInt())
                                         setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
                         }
@@ -544,12 +546,12 @@ std::string GeonkickState::toJson() const
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
         for (const auto& val: oscillators) {
-                jsonStream << "\"osc" << val.first << "\": {" << std::endl;
+                jsonStream << "\"osc" << val.first + 1 << "\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false");
                 jsonStream << "," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
                 jsonStream << "\"ampl_env\": {" << std::endl;
-                jsonStream << "\"amplitude\": "  << val.second->amplitude << ", " << std::endl;
+                jsonStream << "\"amplitude\": "  << std::fixed << std::setprecision(5) << val.second->amplitude << ", " << std::endl;
                 jsonStream << "\"points\": [" << std::endl;
                 bool first = true;
                 for (const auto &point: val.second->amplitudeEnvelope) {
@@ -557,12 +559,13 @@ std::string GeonkickState::toJson() const
                                 first = false;
                         else
                                 jsonStream << ", ";
-                        jsonStream << "[ " << point.x() << " , " << point.y() << "]";
+                        jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                                   << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
                 }
                 jsonStream << "]" << std::endl; // points
                 jsonStream << "}," << std::endl; // ampl_env
 
-                jsonStream << "\"ampl_freq\": {" << std::endl;
+                jsonStream << "\"freq_env\": {" << std::endl;
                 jsonStream << "\"amplitude\": " << val.second->frequency << ", " << std::endl;
                 jsonStream << "\"points\": [" << std::endl;
                 first = true;
@@ -571,7 +574,8 @@ std::string GeonkickState::toJson() const
                                 first = false;
                         else
                                 jsonStream << ", ";
-                        jsonStream << "[ " << point.x() << " , " << point.y() << "]";
+                        jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                                   << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
                 }
                 jsonStream << "]" << std::endl; // points
                 jsonStream << "}," << std::endl; // freq_env
@@ -579,18 +583,18 @@ std::string GeonkickState::toJson() const
                 jsonStream << "\"enabled\": " << (val.second->isFilterEnabled ? "true" : "false");
                 jsonStream << ", " << std::endl;
                 jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
-                jsonStream << "\"cutoff\": " << val.second->filterFrequency << ", " << std::endl;
-                jsonStream << "\"factor\": " << val.second->filterFactor << std::endl;
+                jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(5) << val.second->filterFrequency << ", " << std::endl;
+                jsonStream << "\"factor\": " << std::fixed << std::setprecision(5) << val.second->filterFactor << std::endl;
                 jsonStream << "}" << std::endl;  // filter;
                 jsonStream << "}" << std::endl;  // osc;
                 jsonStream << "," << std::endl;
         }
 
         jsonStream << "\"kick\": {" << std::endl;
-        jsonStream << "\"limiter\": " << getLimiterValue() << ", " << std::endl;
+        jsonStream << "\"limiter\": " << std::fixed << std::setprecision(5) << getLimiterValue() << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
-        jsonStream << "\"amplitude\": " << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
-        jsonStream << "\"length\": " << static_cast<double>(getKickLength()) << ", " << std::endl;
+        jsonStream << "\"amplitude\": " << std::fixed << std::setprecision(5) << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
+        jsonStream << "\"length\": " << std::fixed << std::setprecision(5) << static_cast<double>(getKickLength()) << ", " << std::endl;
         auto points = getKickEnvelopePoints();
         jsonStream << "\"points\": [" << std::endl;
         bool first = true;
@@ -599,7 +603,8 @@ std::string GeonkickState::toJson() const
                         first = false;
                 else
                         jsonStream << ", ";
-                jsonStream << "[ " << point.x() << " , " << point.y() << "]";
+                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
         }
         jsonStream << "]" << std::endl; // points
         jsonStream << "}," << std::endl; // ampl_env
@@ -608,24 +613,24 @@ std::string GeonkickState::toJson() const
         jsonStream << "\"enabled\": " << (isKickFilterEnabled() ? "true" : "false");
         jsonStream << ", " << std::endl;
         jsonStream << "\"type\": " << static_cast<int>(getKickFilterType()) << ", " << std::endl;
-        jsonStream << "\"cutoff\": " << getKickFilterFrequency() << ", " << std::endl;
-        jsonStream << "\"factor\": " << getKickFilterQFactor() << std::endl;;
+        jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(2) << getKickFilterFrequency() << ", " << std::endl;
+        jsonStream << "\"factor\": " << std::fixed << std::setprecision(2) << getKickFilterQFactor() << std::endl;;
         jsonStream << "}, " << std::endl;  // filter;
 
         jsonStream << "\"compressor\": {" << std::endl;
         jsonStream << "\"enabled\": " << isCompressorEnabled() << ", " << std::endl;
-        jsonStream << "\"attack\": " << getCompressorAttack() << ", " << std::endl;
-        jsonStream << "\"release\": " << getCompressorRelease() << ", " << std::endl;
-        jsonStream << "\"threshold\": " << getCompressorThreshold() << ", " << std::endl;
-        jsonStream << "\"ratio\": " << getCompressorRatio() << ", " << std::endl;
-        jsonStream << "\"knee\": " << getCompressorKnee() << ", " << std::endl;
-        jsonStream << "\"makeup\": " << getCompressorMakeup() << std::endl;
+        jsonStream << "\"attack\": " << std::fixed << std::setprecision(5) << getCompressorAttack() << ", " << std::endl;
+        jsonStream << "\"release\": " << std::fixed << std::setprecision(5) << getCompressorRelease() << ", " << std::endl;
+        jsonStream << "\"threshold\": " << std::fixed << std::setprecision(5) << getCompressorThreshold() << ", " << std::endl;
+        jsonStream << "\"ratio\": " << std::fixed << std::setprecision(5) << getCompressorRatio() << ", " << std::endl;
+        jsonStream << "\"knee\": " << std::fixed << std::setprecision(5) << getCompressorKnee() << ", " << std::endl;
+        jsonStream << "\"makeup\": " << std::fixed << std::setprecision(5) << getCompressorMakeup() << std::endl;
         jsonStream << "}, " << std::endl;
 
         jsonStream << "\"distortion\": {" << std::endl;
         jsonStream << "\"enabled\": " << isDistortionEnabled() << ", " << std::endl;
-        jsonStream << "\"volume\": " << getDistortionVolume()  << ", " << std::endl;
-        jsonStream << "\"drive\": " << getDistortionDrive() << std::endl;
+        jsonStream << "\"volume\": " << std::fixed << std::setprecision(5) << getDistortionVolume()  << ", " << std::endl;
+        jsonStream << "\"drive\": " << std::fixed << std::setprecision(5) << getDistortionDrive() << std::endl;
         jsonStream << "}" << std::endl; // distortion
         jsonStream << "}" << std::endl; // kick
         jsonStream << "}" << std::endl; // json
