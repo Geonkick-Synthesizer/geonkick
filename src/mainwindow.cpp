@@ -34,9 +34,6 @@
 #include "geonkick_state.h"
 //#include "about.h"
 
-#include <experimental/filesystem>
-#include <fstream>
-
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api)
         : GeonkickWidget(app)
         , geonkickApi{api}

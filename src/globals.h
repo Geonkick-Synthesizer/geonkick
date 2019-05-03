@@ -30,6 +30,8 @@
 #include <vector>
 #include <atomic>
 #include <unordered_map>
+#include <experimental/filesystem>
+#include <fstream>
 
 #include "geonkick.h"
 

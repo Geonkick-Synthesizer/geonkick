@@ -27,9 +27,17 @@
 #include "geonkick_widget.h"
 
 class RkLineEdit;
+class RkPaintEvent;
 
-class FileDialog: public GeonkickWidget
-{
+class FilesView: public GeonkickWidget {
+ public:
+        FilesView(GeonkickWidget *parent);
+
+ protected:
+        void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
+};
+
+class FileDialog: public GeonkickWidget {
  public:
         enum class Type: int {
                 Save,

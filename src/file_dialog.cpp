@@ -26,10 +26,52 @@
 
 #include <RkLabel.h>
 #include <RkLineEdit.h>
+#include <RkEvent.h>
+#include <RkPainter.h>
 
 extern const unsigned char rk_open_png[];
 extern const unsigned char rk_save_png[];
 extern const unsigned char rk_cancel_png[];
+
+FilesView::FilesView(GeonkickWidget *parent)
+        : GeonkickWidget(parent)
+{
+        setFixedSize(parent->width() - 20, parent->height() - 100);
+        setPosition(10, 50);
+        setBackgroundColor(50, 50, 50);
+        setBorderColor(40, 40, 40);
+        setBorderWidth(1);
+        show();
+}
+
+void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+{
+        RkPainter painter(this);
+        RkPen normalPen = painter.pen();
+        normalPen.setColor({150, 150, 150});
+        painter.setPen(normalPen);
+        RkPen selectedPen = normalPen;
+        selectedPen.setColor({200, 200, 200});
+
+        std::string path = std::experimental::filesystem::current_path();
+        int lineYPos = 0;
+        int lineSpacing = painter.font().size() / 2;
+        int lineHeight = painter.font().size();
+        bool lineSelected = false;
+        int lineIndex = 0;
+        for (const auto &entry : std::experimental::filesystem::directory_iterator(path)) {
+                std::string prefix = std::experimental::filesystem::is_directory(entry) ? "D | " : "F | ";
+                auto fileName = prefix + entry.path().filename().string();
+                if (lineIndex == 3)
+                        painter.setPen(selectedPen);
+                else
+                        painter.setPen(normalPen);
+                        
+                painter.drawText(RkRect(10, lineYPos, width() - 5, lineHeight), fileName, Rk::Alignment::AlignLeft);
+                lineYPos += lineHeight + lineSpacing;
+                lineIndex++;
+        }
+}
 
 FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
@@ -49,6 +91,8 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         fileNameEdit->setX(label->x() + label->width() - 5);
         fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
         fileNameEdit->show();
+
+        auto fileView = new FilesView(this);
 
         auto acceptButton = new GeonkickButton(this);
         acceptButton->setFixedSize(90, 30);
