@@ -125,7 +125,9 @@ void MainWindow::savePreset(const std::string &fileName)
 
         std::experimental::filesystem::path filePath(fileName);
         std::locale loc;
-        if (filePath.extension().empty() || (filePath.extension() != ".gkick" && filePath.extension() != ".GKICK"))
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkick"
+            && filePath.extension() != ".GKICK"))
                 filePath.replace_extension(".gkick");
 
         std::ofstream file;
@@ -147,7 +149,9 @@ void MainWindow::openPreset(const std::string &fileName)
         }
 
         std::experimental::filesystem::path filePath(fileName);
-        if (filePath.extension().empty() || (filePath.extension() != ".gkick" && filePath.extension() != ".GKICK")) {
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkick"
+            && filePath.extension() != ".GKICK")) {
                 RK_LOG_ERROR("Open Preset: " << "Can't open preset. Wrong file format.");
                 return;
         }

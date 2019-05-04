@@ -270,14 +270,6 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         pathLabel->setPosition(filesView->x(), 15);
         pathLabel->show();
 
-        if (dialogType == Type::Save) {
-                //                fileNameEdit = new RkLineEdit(this);
-                //                fileNameEdit->setSize(width() - label->width() - 15, 25);
-                //                fileNameEdit->setX(label->x() + label->width() - 5);
-                //                fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
-                //                fileNameEdit->show();
-        }
-
         auto acceptButton = new GeonkickButton(this);
         acceptButton->setFixedSize(90, 30);
         acceptButton->setPosition(width() - acceptButton->width() - 10,
@@ -295,6 +287,15 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         cancelButton->setUnpressedImage(RkImage(90, 30, rk_cancel_png));
         RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool pressed), this, onCancel());
         cancelButton->show();
+
+        if (dialogType == Type::Save) {
+                fileNameEdit = new RkLineEdit(this);
+                fileNameEdit->setSize(cancelButton->x() - 20, 20);
+                fileNameEdit->setX(filesView->x());
+                fileNameEdit->setY(cancelButton->y() + (cancelButton->height() - fileNameEdit->height()) / 2);
+                fileNameEdit->show();
+        }
+
         show();
 }
 
@@ -310,6 +311,10 @@ void FileDialog::onAccept()
                 if (!filesView->selectedFile().empty())
                         selectedFile(filesView->selectedFile());
         } else {
+                if (filesView->selectedFile().empty())
+                        selectedFile(filesView->getCurrentPath() / std::experimental::filesystem::path(fileNameEdit->text()));
+                else
+                        selectedFile(filesView->selectedFile());
         }
 
         close();
