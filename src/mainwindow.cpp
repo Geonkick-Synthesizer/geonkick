@@ -121,7 +121,7 @@ void MainWindow::savePreset(const std::string &fileName)
         if (fileName.size() < 6) {
                 RK_LOG_ERROR("Save Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
                 return;
-        } 
+        }
 
         std::experimental::filesystem::path filePath(fileName);
         std::locale loc;
@@ -141,6 +141,8 @@ void MainWindow::savePreset(const std::string &fileName)
 
 void MainWindow::openPreset(const std::string &fileName)
 {
+        RK_LOG_DEBUG("fileanme: " << fileName);
+        return;
         if (fileName.size() < 6) {
                 RK_LOG_ERROR("Open Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
                 return;

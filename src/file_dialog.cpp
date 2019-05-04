@@ -35,6 +35,8 @@ extern const unsigned char rk_cancel_png[];
 extern const unsigned char rk_scrollbar_button_up_png[];
 extern const unsigned char rk_scrollbar_button_down_png[];
 
+#define act
+
 FilesView::FilesView(GeonkickWidget *parent)
         : GeonkickWidget(parent)
         , selectedFileIndex{-1}
@@ -99,16 +101,11 @@ void FilesView::loadCurrentDirectory()
 
         filesList.clear();
 
-        if (currentPath.parent_path() != currentPath.root_path())
-                filesList.emplace_back(currentPath.parent_path());
-
-        for (const auto &entry : std::experimental::filesystem::directory_iterator(currentPath))
-                filesList.emplace_back(entry.path());
-        if (filesList.empty())
-                offsetIndex = -1;
-        else
-                offsetIndex = 0;
-        selectedFileIndex = -1;
+        for (const auto &entry : std::experimental::filesystem::directory_iterator(currentPath)) {
+                if (std::experimental::filesystem::is_directory(entry.path())
+                    || entry.path().extension() == ".gkick" || entry.path().extension() == ".GKICK")
+                        filesList.emplace_back(entry.path());
+        }
 
         if (!filesList.empty())
                 std::sort(filesList.begin(), filesList.end(),
@@ -123,6 +120,14 @@ void FilesView::loadCurrentDirectory()
                                 else
                                         return a > b; // TODO: convert to lowercase and compare.
                         });
+
+        if (currentPath.parent_path() != currentPath.root_path())
+                filesList.insert(filesList.begin(), currentPath.parent_path());
+        else
+                filesList.insert(filesList.begin(), currentPath.root_path());
+
+        offsetIndex = 0;
+        selectedFileIndex = -1;
 
         if (filesList.size() > fisibleLines)
                 showScrollBar(true);
@@ -165,6 +170,8 @@ void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
                 else
                         painter.setPen(normalPen);
 
+                if (index == 0)
+                        fileName = "[ " + fileName + ".. ]";
                 painter.drawText(RkRect(10, lineYPos, width() - 5, lineHeight), fileName, Rk::Alignment::AlignLeft);
                 lineYPos += lineHeight + lineSacing;
                 index++;
@@ -188,7 +195,10 @@ void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
         auto line = getLine(event->x(), event->y());
         if (line > -1) {
                 selectedFileIndex = offsetIndex + line;
-                loadCurrentDirectory();
+                if (!std::experimental::filesystem::is_directory(filesList[selectedFileIndex]))
+                        openFile(filesList[selectedFileIndex].string());
+                else
+                        loadCurrentDirectory();
                 update();
         }
 }
@@ -201,7 +211,7 @@ void FilesView::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
                 update();
 }
 
-int FilesView::getLine(int x, int y)
+int FilesView::getLine(int x, int y) const
 {
         if (x > 0 && x < width() - scrollBarWidth && y > 0 && y < height()) {
                 int line = y / (lineHeight + lineSacing);
@@ -210,6 +220,13 @@ int FilesView::getLine(int x, int y)
         }
 
         return -1;
+}
+
+std::string FilesView::selectedFile() const
+{
+        if (selectedFileIndex > -1)
+                return filesList[selectedFileIndex].string();
+        return std::string();
 }
 
 void FilesView::onLineUp()
@@ -230,9 +247,12 @@ void FilesView::onLineDown()
 FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
         , dialogType{type}
+        , filesView{nullptr}
 {
         setTitle(title);
         setFixedSize(600, 400);
+        filesView = new FilesView(this);
+        RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
 
         auto label = new RkLabel(this, "File: ");
         label->setBackgroundColor(background());
@@ -247,8 +267,6 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
                 fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
                 fileNameEdit->show();
         }
-
-        auto fileView = new FilesView(this);
 
         auto acceptButton = new GeonkickButton(this);
         acceptButton->setFixedSize(90, 30);
@@ -272,9 +290,9 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
 
 void FileDialog::onAccept()
 {
-        if (dialogType == Type::Save) {
-                if (!fileNameEdit->text().empty())
-                        selectedFile(fileNameEdit->text());
+        if (dialogType == Type::Open) {
+                if (!filesView->selectedFile().empty())
+                        selectedFile(filesView->selectedFile());
         } else {
         }
 

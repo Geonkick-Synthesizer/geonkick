@@ -34,6 +34,9 @@ class GeonkickButton;
 class FilesView: public GeonkickWidget {
  public:
         FilesView(GeonkickWidget *parent);
+        std::string selectedFile() const;
+        RK_DECL_ACT(openFile, openFile(const std::string &fileName),
+                    RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
 
  protected:
         void createScrollBar();
@@ -43,7 +46,7 @@ class FilesView: public GeonkickWidget {
         void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
         void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
         void loadCurrentDirectory();
-        int getLine(int x, int y);
+        int getLine(int x, int y) const;
 
         void onLineUp();
         void onLineDown();
@@ -82,6 +85,8 @@ class FileDialog: public GeonkickWidget {
 
  private:
         RkLineEdit *fileNameEdit;
-        Type dialogType;};
+        Type dialogType;
+        FilesView *filesView;
+};
 
 #endif // GEONKICK_FILE_DIALOG_H
