@@ -51,6 +51,7 @@ TopBar::TopBar(GeonkickWidget *parent)
         logo->show();
 
         openFileButton = new GeonkickButton(this);
+        openFileButton->show();
         openFileButton->setSize(90, 30);
         openFileButton->setX(logo->x() + logo->width() + 5);
         openFileButton->setY((height() - openFileButton->height()) / 2);

@@ -28,13 +28,38 @@
 
 class RkLineEdit;
 class RkPaintEvent;
+class RkMouseEvent;
+class GeonkickButton;
 
 class FilesView: public GeonkickWidget {
  public:
         FilesView(GeonkickWidget *parent);
 
  protected:
+        void createScrollBar();
+        void showScrollBar(bool b);
         void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
+        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        void loadCurrentDirectory();
+        int getLine(int x, int y);
+
+        void onLineUp();
+        void onLineDown();
+
+ private:
+        std::vector<std::experimental::filesystem::path> filesList;
+        int selectedFileIndex;
+        int hightlightLine;
+        int offsetIndex;
+        std::experimental::filesystem::path currentPath;
+        int lineHeight;
+        int lineSacing;
+        int fisibleLines;
+        GeonkickButton *topScrollBarButton;
+        GeonkickButton *bottomScrollBarButton;
+        int scrollBarWidth;
 };
 
 class FileDialog: public GeonkickWidget {
@@ -57,7 +82,6 @@ class FileDialog: public GeonkickWidget {
 
  private:
         RkLineEdit *fileNameEdit;
-        Type dialogType;
-};
+        Type dialogType;};
 
 #endif // GEONKICK_FILE_DIALOG_H

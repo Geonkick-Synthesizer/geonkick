@@ -32,6 +32,7 @@
 #include <unordered_map>
 #include <experimental/filesystem>
 #include <fstream>
+#include <algorithm>
 
 #include "geonkick.h"
 

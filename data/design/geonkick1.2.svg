@@ -3604,19 +3604,6 @@
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter4998-6-8-6-3-1-8-6-9-4-2-6-7-6"
-       x="-0.035999998"
-       width="1.072"
-       y="-0.035999998"
-       height="1.072">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.8056892"
-         id="feGaussianBlur5000-1-5-5-4-1-1-2-8-9-2-1-0-0" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
        id="filter5686-4-1-5-5-8-6-8-7-1-7-2-6-6"
        x="-1.1682857"
        width="3.3365715"
@@ -3679,6 +3666,58 @@
          stdDeviation="0.035058843"
          id="feGaussianBlur8831-2" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-7-3-5-9-8-2-9-6-0"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-9-5-6-7-9-9-77-8-9" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-8-7-0-7-3-0-6-0-3"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-3-0-6-6-6-2-7-2-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-8-7-0-7-3-0-6-0-3-2"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-3-0-6-6-6-2-7-2-6-0" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-7-3-5-9-8-2-9-6-0-2"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-9-5-6-7-9-9-77-8-9-3" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -3687,11 +3726,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.0423182"
-     inkscape:cx="500.83358"
-     inkscape:cy="420.32846"
+     inkscape:zoom="7.7630769"
+     inkscape:cx="450.75051"
+     inkscape:cy="180.59124"
      inkscape:document-units="px"
-     inkscape:current-layer="g26930"
+     inkscape:current-layer="g8163-9-4-1-2-0-2-2"
      showgrid="false"
      inkscape:window-width="1918"
      inkscape:window-height="1002"
@@ -8264,6 +8303,130 @@
                    x="113.74126"
                    y="417.70291"
                    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none">Hight Pass</tspan></text>
+            </g>
+            <g
+               style="display:inline"
+               id="g8163-9-4-1-2-0-2-2"
+               transform="matrix(1.6551641,0,0,1.6551641,139.86036,-186.88012)">
+              <rect
+                 style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.01506305;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-7-3-5-9-8-2-9-6-0)"
+                 id="rect4890-6-4-9-2-8-3-6-4-5-6"
+                 width="169.08815"
+                 height="45.917767"
+                 x="393.39212"
+                 y="679.59802"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761"
+                 transform="matrix(0,-0.03810113,0.08276926,0,-68.629441,277.55326)"
+                 ry="5.7939348"
+                 rx="12.586495"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_up.png" />
+              <rect
+                 style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.11315978;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                 id="rect4890-0-7-9-8-2-5-8-3-1"
+                 width="6.6196704"
+                 height="3.7358804"
+                 x="-262.6532"
+                 y="-12.347267"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761"
+                 transform="rotate(-90)"
+                 ry="0.47955969"
+                 rx="0.47955969"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_up.png" />
+              <rect
+                 style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6-0-3)"
+                 id="rect5044-3-8-6-8-1-8-8-4-8"
+                 width="152.8289"
+                 height="31.61977"
+                 x="398.68381"
+                 y="684.3606"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761"
+                 transform="matrix(0,-0.03988138,0.08313482,0,-68.687873,278.29093)"
+                 ry="5.7684579"
+                 rx="12.024652"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_up.png" />
+              <path
+                 sodipodi:type="star"
+                 style="opacity:0.98000004;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3.46722317;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.47843137;paint-order:normal"
+                 id="path5988"
+                 sodipodi:sides="3"
+                 sodipodi:cx="-10.493965"
+                 sodipodi:cy="259.36852"
+                 sodipodi:r1="1.6059521"
+                 sodipodi:r2="0.80297613"
+                 sodipodi:arg1="0.52359878"
+                 sodipodi:arg2="1.5707963"
+                 inkscape:flatsided="false"
+                 inkscape:rounded="0"
+                 inkscape:randomized="0"
+                 d="m -9.1031698,260.17151 -1.3907952,0 -1.390796,0 0.695398,-1.20447 0.695398,-1.20446 0.6953976,1.20446 z"
+                 inkscape:transform-center-x="2.0526524e-06"
+                 inkscape:transform-center-y="-0.66456802"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_up.png"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761" />
+              <rect
+                 style="display:inline;opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.01506305;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-7-3-5-9-8-2-9-6-0-2)"
+                 id="rect4890-6-4-9-2-8-3-6-4-5-6-7"
+                 width="169.08815"
+                 height="45.917767"
+                 x="393.39212"
+                 y="679.59802"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761"
+                 transform="matrix(0,0.03810113,0.08276926,0,-77.395457,242.52971)"
+                 ry="5.7939348"
+                 rx="12.586495"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_down.png" />
+              <rect
+                 style="display:inline;opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.11315978;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                 id="rect4890-0-7-9-8-2-5-8-3-1-5"
+                 width="6.6196704"
+                 height="3.7358801"
+                 x="257.42978"
+                 y="-21.113283"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761"
+                 transform="matrix(0,1,1,0,0,0)"
+                 ry="0.47955969"
+                 rx="0.47955969"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_down.png" />
+              <rect
+                 style="display:inline;opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6-0-3-2)"
+                 id="rect5044-3-8-6-8-1-8-8-4-8-9"
+                 width="152.8289"
+                 height="31.61977"
+                 x="398.68381"
+                 y="684.3606"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761"
+                 transform="matrix(0,0.03988138,0.08313482,0,-77.453887,241.79204)"
+                 ry="5.7684579"
+                 rx="12.024652"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_down.png" />
+              <path
+                 sodipodi:type="star"
+                 style="display:inline;opacity:0.98000004;fill:#282828;fill-opacity:1;stroke:none;stroke-width:3.46722317;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.47843137;paint-order:normal"
+                 id="path5988-2"
+                 sodipodi:sides="3"
+                 sodipodi:cx="-19.259981"
+                 sodipodi:cy="-260.71445"
+                 sodipodi:r1="1.6059521"
+                 sodipodi:r2="0.80297613"
+                 sodipodi:arg1="0.52359878"
+                 sodipodi:arg2="1.5707963"
+                 inkscape:flatsided="false"
+                 inkscape:rounded="0"
+                 inkscape:randomized="0"
+                 d="m -17.869186,-259.91147 -1.390795,0 -1.390796,0 0.695398,-1.20447 0.695398,-1.20446 0.695398,1.20446 z"
+                 inkscape:transform-center-x="2.0526524e-06"
+                 inkscape:transform-center-y="0.66457816"
+                 transform="scale(1,-1)"
+                 inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/scrollbar_button_down.png"
+                 inkscape:export-xdpi="37.09761"
+                 inkscape:export-ydpi="37.09761" />
             </g>
           </g>
           <g

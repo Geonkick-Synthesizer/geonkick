@@ -32,45 +32,199 @@
 extern const unsigned char rk_open_png[];
 extern const unsigned char rk_save_png[];
 extern const unsigned char rk_cancel_png[];
+extern const unsigned char rk_scrollbar_button_up_png[];
+extern const unsigned char rk_scrollbar_button_down_png[];
 
 FilesView::FilesView(GeonkickWidget *parent)
         : GeonkickWidget(parent)
+        , selectedFileIndex{-1}
+        , hightlightLine{-1}
+        , offsetIndex{-1}
+        , currentPath{std::experimental::filesystem::current_path()}
+        , lineHeight{15}
+        , lineSacing{lineHeight / 2}
+        , fisibleLines{0}
+        , topScrollBarButton{nullptr}
+        , bottomScrollBarButton{nullptr}
+        , scrollBarWidth{12}
 {
         setFixedSize(parent->width() - 20, parent->height() - 100);
+        fisibleLines = height() / (lineHeight + lineSacing);
         setPosition(10, 50);
         setBackgroundColor(50, 50, 50);
         setBorderColor(40, 40, 40);
         setBorderWidth(1);
+
+        createScrollBar();
+        showScrollBar(false);
+        loadCurrentDirectory();
         show();
+}
+
+void FilesView::createScrollBar()
+{
+        topScrollBarButton = new GeonkickButton(this);
+        topScrollBarButton->setUnpressedImage(RkImage(12, 17, rk_scrollbar_button_up_png));
+        topScrollBarButton->setSize(scrollBarWidth, ((float)3 / 2) * scrollBarWidth);
+        topScrollBarButton->setPosition(width() - scrollBarWidth, 0);
+        topScrollBarButton->setCheckable(true);
+        RK_ACT_BIND(topScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineUp());
+
+        bottomScrollBarButton = new GeonkickButton(this);
+        bottomScrollBarButton->setUnpressedImage(RkImage(12, 17, rk_scrollbar_button_down_png));
+        bottomScrollBarButton->setSize(scrollBarWidth, ((float)3 / 2) * scrollBarWidth);
+        bottomScrollBarButton->setPosition(width() - scrollBarWidth, height() -  bottomScrollBarButton->height());
+        bottomScrollBarButton->setCheckable(true);
+        RK_ACT_BIND(bottomScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineDown());
+}
+
+void FilesView::showScrollBar(bool b)
+{
+        if (b) {
+                topScrollBarButton->show();
+                bottomScrollBarButton->show();
+        } else {
+                topScrollBarButton->hide();
+                bottomScrollBarButton->hide();
+        }
+}
+
+void FilesView::loadCurrentDirectory()
+{
+        if (selectedFileIndex > -1)
+                currentPath = filesList[selectedFileIndex];
+
+        if (!std::experimental::filesystem::is_directory(currentPath))
+                return;
+
+        filesList.clear();
+
+        if (currentPath.parent_path() != currentPath.root_path())
+                filesList.emplace_back(currentPath.parent_path());
+
+        for (const auto &entry : std::experimental::filesystem::directory_iterator(currentPath))
+                filesList.emplace_back(entry.path());
+        if (filesList.empty())
+                offsetIndex = -1;
+        else
+                offsetIndex = 0;
+        selectedFileIndex = -1;
+
+        if (!filesList.empty())
+                std::sort(filesList.begin(), filesList.end(),
+                          [] (decltype(filesList)::value_type &a, decltype(filesList)::value_type &b) -> bool
+                        {
+                                if (std::experimental::filesystem::is_directory(b)
+                                    && !std::experimental::filesystem::is_directory(a))
+                                        return false;
+                                else if (!std::experimental::filesystem::is_directory(b)
+                                             && std::experimental::filesystem::is_directory(a))
+                                        return true;
+                                else
+                                        return a > b; // TODO: convert to lowercase and compare.
+                        });
+
+        if (filesList.size() > fisibleLines)
+                showScrollBar(true);
+        else
+                showScrollBar(false);
 }
 
 void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
-        RkPainter painter(this);
+        RkImage img(width(), height());
+        RkPainter painter(&img);
+        painter.fillRect(rect(), background());
         RkPen normalPen = painter.pen();
+        auto hightlightPen = normalPen;
+        hightlightPen.setColor({200, 200, 200});
         normalPen.setColor({150, 150, 150});
         painter.setPen(normalPen);
         RkPen selectedPen = normalPen;
-        selectedPen.setColor({200, 200, 200});
+        selectedPen.setColor({255, 255, 255});
+        auto font = painter.font();
+        font.setSize(lineHeight);
+        painter.setFont(font);
 
-        std::string path = std::experimental::filesystem::current_path();
         int lineYPos = 0;
-        int lineSpacing = painter.font().size() / 2;
-        int lineHeight = painter.font().size();
-        bool lineSelected = false;
-        int lineIndex = 0;
-        for (const auto &entry : std::experimental::filesystem::directory_iterator(path)) {
-                std::string prefix = std::experimental::filesystem::is_directory(entry) ? "D | " : "F | ";
-                auto fileName = prefix + entry.path().filename().string();
-                if (lineIndex == 3)
+        auto index = offsetIndex;
+        int line = 0;
+        while((index < filesList.size()) && (index - offsetIndex  < fisibleLines)) {
+                auto fileName = filesList[index].filename().string();
+                auto font = painter.font();
+                if (std::experimental::filesystem::is_directory(filesList[index]))
+                        font.setWeight(RkFont::Weight::Bold);
+                else
+                        font.setWeight(RkFont::Weight::Normal);
+                painter.setFont(font);
+
+                if (selectedFileIndex == index)
                         painter.setPen(selectedPen);
+                else if (hightlightLine == line)
+                        painter.setPen(hightlightPen);
                 else
                         painter.setPen(normalPen);
-                        
+
                 painter.drawText(RkRect(10, lineYPos, width() - 5, lineHeight), fileName, Rk::Alignment::AlignLeft);
-                lineYPos += lineHeight + lineSpacing;
-                lineIndex++;
+                lineYPos += lineHeight + lineSacing;
+                index++;
+                line++;
         }
+        RkPainter paint(this);
+        paint.drawImage(img, 0, 0);
+}
+
+void FilesView::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+{
+        auto line = getLine(event->x(), event->y());
+        if (line > -1) {
+                selectedFileIndex = offsetIndex + line;
+                update();
+        }
+}
+
+void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
+{
+        auto line = getLine(event->x(), event->y());
+        if (line > -1) {
+                selectedFileIndex = offsetIndex + line;
+                loadCurrentDirectory();
+                update();
+        }
+}
+
+void FilesView::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+{
+        auto line = hightlightLine;
+        hightlightLine = getLine(event->x(), event->y());
+        if (hightlightLine != line)
+                update();
+}
+
+int FilesView::getLine(int x, int y)
+{
+        if (x > 0 && x < width() - scrollBarWidth && y > 0 && y < height()) {
+                int line = y / (lineHeight + lineSacing);
+                if (line <= filesList.size() - (offsetIndex + 1))
+                        return line;
+        }
+
+        return -1;
+}
+
+void FilesView::onLineUp()
+{
+        offsetIndex--;
+        if (offsetIndex < 0)
+                offsetIndex = 0;
+        update();
+}
+
+void FilesView::onLineDown()
+{
+        if (offsetIndex + fisibleLines < filesList.size() - 1)
+                offsetIndex++;
+        update();
 }
 
 FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title)
@@ -86,11 +240,13 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         label->setPosition(5, 15);
         label->show();
 
-        fileNameEdit = new RkLineEdit(this);
-        fileNameEdit->setSize(width() - label->width() - 15, 25);
-        fileNameEdit->setX(label->x() + label->width() - 5);
-        fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
-        fileNameEdit->show();
+        if (dialogType == Type::Save) {
+                fileNameEdit = new RkLineEdit(this);
+                fileNameEdit->setSize(width() - label->width() - 15, 25);
+                fileNameEdit->setX(label->x() + label->width() - 5);
+                fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
+                fileNameEdit->show();
+        }
 
         auto fileView = new FilesView(this);
 
@@ -116,8 +272,12 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
 
 void FileDialog::onAccept()
 {
-        if (!fileNameEdit->text().empty())
-                selectedFile(fileNameEdit->text());
+        if (dialogType == Type::Save) {
+                if (!fileNameEdit->text().empty())
+                        selectedFile(fileNameEdit->text());
+        } else {
+        }
+
         close();
 }
 
@@ -125,4 +285,5 @@ void FileDialog::onCancel()
 {
         close();
 }
+
 
