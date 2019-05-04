@@ -90,7 +90,7 @@ void KickGraph::drawKickGraph()
                                 prev = p;
                         graphPoints[j++] = p;
 
-                        int i0 = i;
+                        /* int i0 = i;
                         int ymin, ymax;
                         ymin = ymax = y;
                         while (++i < kickBuffer.size()) {
@@ -107,7 +107,7 @@ void KickGraph::drawKickGraph()
                                 graphPoints[j++] = {x, ymin};
                                 graphPoints[j++] = {x, ymax};
                                 graphPoints[j++] = {x, y};
-                        }
+                                }*/
                 }
                 graphPoints.resize(j);
                 painter.drawPolyline(graphPoints);

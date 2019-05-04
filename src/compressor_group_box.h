@@ -29,19 +29,18 @@
 class GeonkickSlider;
 class GeonkickCheckbox;
 class GeonkickApi;
+class GeonkickButton;
 
 class CompressorGroupBox: public GeonkickGroupBox
 {
-        Q_OBJECT
  public:
-        CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent = nullptr);
+        CompressorGroupBox(GeonkickApi *api, GeonkickWidget* parent);
 
- public slots:
-         void update();
-         void setAttack(int val);
-         void setThreshold(int val);
-         void setRatio(int val);
-         void setMakeup(int val);
+        void updateGui();
+        void setAttack(int val);
+        void setThreshold(int val);
+        void setRatio(int val);
+        void setMakeup(int val);
 
  private:
         GeonkickApi *geonkickApi;
@@ -49,7 +48,7 @@ class CompressorGroupBox: public GeonkickGroupBox
         GeonkickSlider *thresholdSlider;
         GeonkickSlider *ratioSlider;
         GeonkickSlider *makeupSlider;
-        GeonkickCheckbox *compressorCheckbox;
+        GeonkickButton *compressorCheckbox;
 };
 
 #endif // GEONKICK_COMPRESSOR_WIDGET_H

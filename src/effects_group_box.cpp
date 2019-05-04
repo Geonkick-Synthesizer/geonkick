@@ -24,22 +24,18 @@
 #include "effects_group_box.h"
 #include "compressor_group_box.h"
 #include "distortion_group_box.h"
-#include "geonkick_label.h"
 #include "geonkick_api.h"
-
-#include <QHBoxLayout>
 
 EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent, Orientation::Horizontal)
         , geonkickApi(api)
 {
         auto compressor = new CompressorGroupBox(geonkickApi, this);
-        connect(this, SIGNAL(update()), compressor, SLOT(update()));
-        addWidget(compressor);
+        compressor->setPosition(0, 10);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), compressor, updateGui());
         auto distortion = new DistortionGroupBox(geonkickApi, this);
-        connect(this, SIGNAL(update()), distortion, SLOT(update()));
-        addWidget(distortion);
-        setPadding(10, 14, 0, 0);
+        distortion->setPosition(compressor->width() + 10, 10);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortion, updateGui());
 }
 
 EffectsGroupBox::~EffectsGroupBox()

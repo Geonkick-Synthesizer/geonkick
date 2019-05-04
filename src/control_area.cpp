@@ -25,7 +25,7 @@
 #include "control_area.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
-//#include "effects_group_box.h"
+#include "effects_group_box.h"
 #include "geonkick_api.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
@@ -57,11 +57,11 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), generalWidget, updateGui());
         generalWidget->show();
 
-        //        auto effectsWidget = new EffectsGroupBox(api, this);
-        //        widget->setSize(groupBoxWidth, height());
-        //        widget->setPosition(3 * (5 + groupBoxWidth), 0);
-        //        RK_ACT_BIND(this, update(), RK_ARGS(), effectsWidget, update());
-        //        effectsWidget->show();*/
+        auto effectsWidget = new EffectsGroupBox(api, this);
+        effectsWidget->setFixedSize(500, 82);
+        effectsWidget->setPosition(2 * (8 + 224), 285);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
+        effectsWidget->show();
 }
 
 ControlArea::~ControlArea()

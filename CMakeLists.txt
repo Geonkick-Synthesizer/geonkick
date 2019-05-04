@@ -59,9 +59,9 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/envelope_draw_area.h
   ${GKICK_COMMON_DIR}/limiter.h
   ${GKICK_COMMON_DIR}/general_envelope.h
-#  ${GKICK_COMMON_DIR}/effects_group_box.h
-#  ${GKICK_COMMON_DIR}/compressor_group_box.h
-#  ${GKICK_COMMON_DIR}/distortion_group_box.h
+  ${GKICK_COMMON_DIR}/effects_group_box.h
+  ${GKICK_COMMON_DIR}/compressor_group_box.h
+  ${GKICK_COMMON_DIR}/distortion_group_box.h
   ${GKICK_COMMON_DIR}/general_group_box.h
   ${GKICK_COMMON_DIR}/envelope.h
   ${GKICK_COMMON_DIR}/kick_graph.h
@@ -87,9 +87,9 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
   ${GKICK_COMMON_DIR}/limiter.cpp
   ${GKICK_COMMON_DIR}/general_envelope.cpp
-  #  ${GKICK_COMMON_DIR}/effects_group_box.cpp
-  #  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
-  #  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
+  ${GKICK_COMMON_DIR}/effects_group_box.cpp
+  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
+  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
   ${GKICK_COMMON_DIR}/general_group_box.cpp
   ${GKICK_COMMON_DIR}/envelope.cpp
   ${GKICK_COMMON_DIR}/kick_graph.cpp

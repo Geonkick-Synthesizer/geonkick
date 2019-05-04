@@ -23,70 +23,89 @@
 
 #include "compressor_group_box.h"
 #include "geonkick_slider.h"
-#include "geonkick_label.h"
-#include "geonkick_checkbox.h"
+#include "geonkick_button.h"
 #include "geonkick_api.h"
 
-#include <QGridLayout>
+#include <RkLabel.h>
+
+extern unsigned char rk_compressor_groupbox_label_png[];
+extern unsigned char rk_checkbox_checked_10x10_png[];
+extern unsigned char rk_checkbox_unchecked_10x10_png[];
+extern unsigned char rk_compressor_attack_label_png[];
+extern unsigned char rk_compressor_threshold_label_png[];
+extern unsigned char rk_compressor_ratio_label_png[];
+extern unsigned char rk_compressor_makeup_label_png[];
 
 CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
-        : GeonkickGroupBox(parent),
-          geonkickApi(api),
-          attackSlider(nullptr),
-          thresholdSlider(nullptr),
-          ratioSlider(nullptr),
-          makeupSlider(nullptr),
-          compressorCheckbox(new GeonkickCheckbox(this))
+        : GeonkickGroupBox(parent)
+        , geonkickApi{api}
+        , attackSlider{nullptr}
+        , thresholdSlider{nullptr}
+        , ratioSlider{nullptr}
+        , makeupSlider{nullptr}
+        , compressorCheckbox{nullptr}
 {
-        compressorCheckbox->setCheckedImage(":/checkbox_checked_10x10.png");
-        compressorCheckbox->setUncheckedImage(":/checkbox_unchecked_10x10.png");
-        compressorCheckbox->setCheckboxLabelImage(":/compressor_groupbox_label.png");
-        connect(compressorCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableCompressor(bool)));
-        setGroupBoxLabel(compressorCheckbox);
+        setFixedSize(224, 63);
+        compressorCheckbox = new GeonkickButton(this);
+        RK_ACT_BIND(compressorCheckbox,  toggled, RK_ACT_ARGS(bool b), geonkickApi, enableCompressor(b));
+        compressorCheckbox->setCheckable(true);
+        compressorCheckbox->setPressedImage(RkImage(10, 10, rk_checkbox_checked_10x10_png));
+        compressorCheckbox->setUnpressedImage(RkImage(10, 10, rk_checkbox_unchecked_10x10_png));
+        compressorCheckbox->setFixedSize(10, 10);
+        auto label = new RkLabel(this);
+        label->show();
+        label->setBackgroundColor(background());
+        label->setFixedSize(65, 11);
+        label->setImage(RkImage(65, 11, rk_compressor_groupbox_label_png));
+        label->setPosition((width() - label->width()) / 2, 0);
+        compressorCheckbox->setPosition(label->x() - 14, 0);
 
-        auto widget = new GeonkickWidget(this);
-        addWidget(widget);
-        auto gridLayout = new QGridLayout(widget);
-        widget->setLayout(gridLayout);
+        int sliderW = 60;
+        int sliderH = 12;
+        int yoffset = 10;
+        int labelD  = 5;
 
-        // Attack
-        auto attackLabel = new GeonkickLabel(widget);
-        attackLabel->setImage(":/compressor_attack_label.png");
-        gridLayout->addWidget(attackLabel, 0, 0, Qt::AlignRight);
-        attackSlider = new GeonkickSlider(widget);
-        connect(attackSlider, SIGNAL(valueUpdated(int)), this, SLOT(setAttack(int)));
+        attackSlider = new GeonkickSlider(this);
         attackSlider->setFixedSize(60, 12);
-        attackSlider->setValue(50);
-        gridLayout->addWidget(attackSlider, 0, 1, Qt::AlignLeft);
+        attackSlider->onSetValue(50);
+        attackSlider->setPosition((width() - 2 * sliderW) / 2 , yoffset + (height() - 2 * sliderH) / 3);
+        RK_ACT_BIND(attackSlider, valueUpdated, RK_ACT_ARGS(int val), this, setAttack(val));
+        auto attackLabel = new RkLabel(this);
+        attackLabel->show();
+        attackLabel->setImage(RkImage(33, 8, rk_compressor_attack_label_png));
+        attackLabel->setFixedSize(33, 8);
+        attackLabel->setPosition(attackSlider->x() - attackLabel->width() - labelD, attackSlider->y());
 
-        // Threshold
-        auto thresholdLabel = new GeonkickLabel(widget);
-        thresholdLabel->setImage(":/compressor_threshold_label.png");
-        gridLayout->addWidget(thresholdLabel, 1, 0, Qt::AlignRight);
-        thresholdSlider = new GeonkickSlider(widget);
-        connect(thresholdSlider, SIGNAL(valueUpdated(int)), this, SLOT(setThreshold(int)));
+        thresholdSlider = new GeonkickSlider(this);
         thresholdSlider->setFixedSize(60, 12);
-        gridLayout->addWidget(thresholdSlider, 1, 1, Qt::AlignLeft);
-        gridLayout->setColumnMinimumWidth(2, 10);
+        thresholdSlider->setPosition((width() - 2 * sliderW) / 2 , yoffset + (height() - 2 * sliderH) / 3 + sliderH + 6);
+        RK_ACT_BIND(thresholdSlider, valueUpdated, RK_ACT_ARGS(int value), this, setThreshold(value));
+        auto thresholdLabel = new RkLabel(this);
+        thresholdLabel->show();
+        thresholdLabel->setImage(RkImage(45, 8, rk_compressor_threshold_label_png));
+        thresholdLabel->setFixedSize(45, 8);
+        thresholdLabel->setPosition(thresholdSlider->x() - thresholdLabel->width() - labelD, thresholdSlider->y());
 
-        // Ratio
-        auto ratioLabel = new GeonkickLabel(widget);
-        ratioLabel->setImage(":/compressor_ratio_label.png");
-        gridLayout->addWidget(ratioLabel, 0, 3, Qt::AlignRight);
-        ratioSlider = new GeonkickSlider(widget);
-        connect(ratioSlider, SIGNAL(valueUpdated(int)), this, SLOT(setRatio(int)));
+        ratioSlider = new GeonkickSlider(this);
         ratioSlider->setFixedSize(60, 12);
-        gridLayout->addWidget(ratioSlider, 0, 4, Qt::AlignLeft);
+        ratioSlider->setPosition((width() - 2 * sliderW) + sliderW, yoffset + (height() - 2 * sliderH) / 3);
+        RK_ACT_BIND(ratioSlider, valueUpdated, RK_ACT_ARGS(int value), this, setRatio(value));
+        auto ratioLabel = new RkLabel(this);
+        ratioLabel->show();
+        ratioLabel->setImage(RkImage(24, 8, rk_compressor_ratio_label_png));
+        ratioLabel->setFixedSize(24, 8);
+        ratioLabel->setPosition(ratioSlider->x() - ratioLabel->width() - labelD, ratioSlider->y());
 
-        // Makeup
-        auto makeupLabel = new GeonkickLabel(widget);
-        makeupLabel->setImage(":/compressor_makeup_label.png");
-        gridLayout->addWidget(makeupLabel, 1, 3, Qt::AlignRight);
-        makeupSlider = new GeonkickSlider(widget);
-        connect(makeupSlider, SIGNAL(valueUpdated(int)), this, SLOT(setMakeup(int)));
+        makeupSlider = new GeonkickSlider(this);
         makeupSlider->setFixedSize(60, 12);
-        gridLayout->addWidget(makeupSlider, 1, 4, Qt::AlignLeft);
-        update();
+        makeupSlider->setPosition((width() - 2 * sliderW) + sliderW, yoffset + (height() - 2 * sliderH) / 3 + sliderH + 6);
+        RK_ACT_BIND(makeupSlider, valueUpdated, RK_ACT_ARGS(int value), this, setMakeup(value));
+        auto makeupLabel = new RkLabel(this);
+        makeupLabel->show();
+        makeupLabel->setImage(RkImage(40, 10, rk_compressor_makeup_label_png));
+        makeupLabel->setFixedSize(40, 10);
+        makeupLabel->setPosition(makeupSlider->x() - makeupLabel->width() - labelD, makeupSlider->y());
+        show();
 }
 
 void CompressorGroupBox::setAttack(int val)
@@ -112,11 +131,11 @@ void CompressorGroupBox::setMakeup(int val)
         geonkickApi->setCompressorMakeup(36 * (static_cast<double>(val) / 100));
 }
 
-void CompressorGroupBox::update()
+void CompressorGroupBox::updateGui()
 {
-        compressorCheckbox->setChecked(geonkickApi->isCompressorEnabled());
-        attackSlider->setValue(100 * (log10(1000 * geonkickApi->getCompressorAttack()) / log10(2000)));
-        thresholdSlider->setValue(100 * (1 - geonkickApi->getCompressorThreshold() / (-60)));
-        ratioSlider->setValue(100 * geonkickApi->getCompressorRatio() / 20);
-        makeupSlider->setValue(100 * geonkickApi->getCompressorMakeup() / 36);
+        compressorCheckbox->setPressed(geonkickApi->isCompressorEnabled());
+        attackSlider->onSetValue(100 * (log10(1000 * geonkickApi->getCompressorAttack()) / log10(2000)));
+        thresholdSlider->onSetValue(100 * (1 - geonkickApi->getCompressorThreshold() / (-60)));
+        ratioSlider->onSetValue(100 * geonkickApi->getCompressorRatio() / 20);
+        makeupSlider->onSetValue(100 * geonkickApi->getCompressorMakeup() / 36);
 }
