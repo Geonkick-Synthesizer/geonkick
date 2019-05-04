@@ -566,7 +566,6 @@ void GeonkickApi::limiterCallback(void *arg, gkick_real val)
 void GeonkickApi::setLimiterVal(double val)
 {
         limiterLevelerVal = val;
-        updateLimiterLeveler = true;
 }
 
 void GeonkickApi::emitKickUpdated()
@@ -725,14 +724,6 @@ void GeonkickApi::registerCallbacks(bool b)
         } else {
                 geonkick_set_kick_buffer_callback(geonkickApi, NULL, NULL);
                 geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
-        }
-}
-
-void GeonkickApi::limiterTimeout()
-{
-        if (updateLimiterLeveler) {
-                updateLimiterLeveler = false;
-                //                emit currentPlayingFrameVal(limiterLevelerVal);
         }
 }
 

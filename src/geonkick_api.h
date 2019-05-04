@@ -155,7 +155,9 @@ class GeonkickApi {
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickUpdated, kickUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
-  //void currentPlayingFrameVal(double val);
+  RK_DECL_ACT(currentPlayingFrameVal,
+              currentPlayingFrameVal(double val),
+              RK_ARG_TYPE(double), RK_ARG_VAL(val));
 
 protected:
   static void kickUpdatedCallback(void *arg);
@@ -164,9 +166,6 @@ protected:
   void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
   void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
   void setLimiterVal(double val);
-
-  //  protected slots:
-  void limiterTimeout();
 
 private:
   struct geonkick *geonkickApi;

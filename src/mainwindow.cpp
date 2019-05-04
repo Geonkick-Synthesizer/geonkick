@@ -28,7 +28,7 @@
 #include "general_group_box.h"
 #include "control_area.h"
 #include "top_bar.h"
-//#include "limiter.h"
+#include "limiter.h"
 //#include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
@@ -90,13 +90,14 @@ bool MainWindow::init(void)
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
-        envelopeWidget->setFixedSize(RkSize(850, 340));
+        envelopeWidget->setFixedSize(850, 340);
         envelopeWidget->show();
-        //        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, update());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, update());
 
-        //        auto limiterWidget = new Limiter(geonkickApi, this);
-        //        connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
-        //        limiterWidget->setFixedSize(65, 340);
+        auto limiterWidget = new Limiter(geonkickApi, this);
+        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8, envelopeWidget->y());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
+        limiterWidget->show();
 
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);

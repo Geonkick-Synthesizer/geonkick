@@ -26,47 +26,39 @@
 
 #include "geonkick_widget.h"
 
-#include <QTimer>
+#include <RkPainter.h>
 
 class GeonkickSlider;
 class GeonkickLevel;
 class GeonkickApi;
+class RkTimer;
 
 class Limiter: public GeonkickWidget
 {
- Q_OBJECT
-
  public:
-        Limiter(GeonkickApi *api, GeonkickWidget *parent = nullptr);
+        Limiter(GeonkickApi *api, GeonkickWidget *parent);
         ~Limiter();
         int getFaderValue(void) const;
         int getMeterValue() const;
 
- public slots:
-        void updateLimiter();
-        void setLimiterValue(int val);
-
- signals:
-        void limiterUpdated(int val);
+        RK_DECL_ACT(limiterUpdated, limiterUpdated(int val), RK_ARG_TYPE(int), RK_ARG_VAL(val));
+        void onUpdateLimiter();
+        void onSetLimiterValue(int val);
 
  protected:
         int toMeterValue(double val) const;
-
- protected slots:
-         void updateMeter(double val);
-         void updateMeterTimeout();
-         void setFaderValue(int val);
-         void setMeterValue(int val);
+        void onUpdateMeter(double val);
+        void onUpdateMeterTimeout();
+        void onSetFaderValue(int val);
+        void onSetMeterValue(int val);
 
  private:
-        void drawMeter(QPainter &painter);
-        void paintWidget(QPaintEvent *event) final;
-        void resizeEvent(QResizeEvent *event) final;
+        void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
         GeonkickApi *geonkickApi;
         GeonkickSlider *faderSlider;
         int meterValue;
-        QPixmap meterImage;
-        QTimer meterTimer;
+        RkTimer *meterTimer;
+        RkImage scaleImage;
 };
 
 #endif // GEONKICK_LIMITER_H

@@ -25,63 +25,58 @@
 #include "geonkick_slider.h"
 #include "geonkick_api.h"
 
+#include <RkTimer.h>
+
+extern unsigned char rk_meter_scale_png[];
+
 Limiter::Limiter(GeonkickApi *api, GeonkickWidget *parent)
-        : GeonkickWidget(parent),
-          geonkickApi(api),
-          faderSlider(new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)),
-          meterValue(0),
-          meterImage(":/meter_scale.png")
+        : GeonkickWidget(parent)
+        , geonkickApi{api}
+        , faderSlider{new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)}
+        , meterValue{0}
+        , meterTimer{new RkTimer(50, eventQueue())}
+        , scaleImage{40, 329, rk_meter_scale_png}
 {
-        faderSlider->move(0, 3);
-        connect(faderSlider, SIGNAL(valueUpdated(int)), this, SLOT(setLimiterValue(int)));
-        connect(geonkickApi, SIGNAL(currentPlayingFrameVal(double)), this, SLOT(updateMeter(double)));
-        connect(&meterTimer, SIGNAL(timeout()), this, SLOT(updateMeterTimeout()));
-        updateLimiter();
-        meterTimer.start(50);
+        setFixedSize(65, scaleImage.height());
+        faderSlider->setPosition(0, 0);
+        faderSlider->setFixedSize(20, height());
+        RK_ACT_BIND(faderSlider, valueUpdated, RK_ACT_ARGS(int val), this, onSetLimiterValue(val));
+        RK_ACT_BIND(geonkickApi, currentPlayingFrameVal, RK_ACT_ARGS(double val), this, onUpdateMeter(val));
+        RK_ACT_BIND(meterTimer, timeout, RK_ACT_ARGS(), this, onUpdateMeterTimeout());
+        onUpdateLimiter();
+        meterTimer->start();
 }
 
 Limiter::~Limiter()
 {
 }
 
-/**
- *  Draws two concentric filled rectangles for every channel.
- */
-void Limiter::paintWidget(QPaintEvent *event)
+void Limiter::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
-        Q_UNUSED(event)
-        QPainter painter(this);
-        painter.drawPixmap(faderSlider->x() + faderSlider->width() + 5, 0, meterImage);
-        drawMeter(painter);
-}
-
-void Limiter::drawMeter(QPainter &painter)
-{
+        RK_UNUSED(event);
+        RkImage img(width(), height());
+        RkPainter painter(&img);
+        painter.fillRect(rect(), background());
         int x = faderSlider->width() + 10;
         int meterWidth   = 7;
-        int meterHeight  = meterImage.size().height() - 4;
+        int meterHeight  = scaleImage.height() - 4;
         int meterPadding = 2;
         int meterInnerW  = meterWidth - 2 * meterPadding;
         int meterInnerH  = meterHeight - 2 * meterPadding;
 
-        int meterPixels = meterInnerH * ((double)meterValue / 100);
-        painter.fillRect(x + 2, meterPadding + 325 - meterPixels,
-                         meterInnerW, meterPixels,
-                         QBrush(RkColor(125, 200, 125)));
+        int meterPixels = meterInnerH * (static_cast<double>(meterValue) / 100);
+        painter.drawImage(scaleImage, 25, 0);
+        painter.fillRect(RkRect(x + 2, meterPadding + 325 - meterPixels,
+                                meterInnerW, meterPixels), RkColor(125, 200, 125));
+        RkPainter paint(this);
+        paint.drawImage(img, 0, 0);
 }
 
-void Limiter::updateMeterTimeout()
+void Limiter::onUpdateMeterTimeout()
 {
         int val = getMeterValue() - 1;
         if (val > -1)
-                setMeterValue(val);
-}
-
-void Limiter::resizeEvent(QResizeEvent *event)
-{
-        Q_UNUSED(event);
-        faderSlider->setFixedSize(20, meterImage.size().height() - 3);
-        update();
+                onSetMeterValue(val);
 }
 
 int Limiter::getFaderValue(void) const
@@ -94,31 +89,31 @@ int Limiter::getMeterValue() const
         return meterValue;
 }
 
-void Limiter::setFaderValue(int val)
+void Limiter::onSetFaderValue(int val)
 {
-        faderSlider->setValue(val);
+        faderSlider->onSetValue(50);
 }
 
-void Limiter::updateMeter(double val)
+void Limiter::onUpdateMeter(double val)
 {
         int value = toMeterValue(fabs(val));
         if (meterValue < value)
-                setMeterValue(value);
+                onSetMeterValue(value);
 }
 
-void Limiter::setMeterValue(int val)
+void Limiter::onSetMeterValue(int val)
 {
         meterValue = val;
         update();
 }
 
-void Limiter::updateLimiter()
+void Limiter::onUpdateLimiter()
 {
         double val = geonkickApi->limiterValue();
         if (val < 1e-3)
-                setFaderValue(0);
+                onSetFaderValue(0);
         else
-                setFaderValue(toMeterValue(val));
+                onSetFaderValue(toMeterValue(val));
 }
 
 int Limiter::toMeterValue(double val) const
@@ -135,7 +130,7 @@ int Limiter::toMeterValue(double val) const
         return value;
 }
 
-void Limiter::setLimiterValue(int val)
+void Limiter::onSetLimiterValue(int val)
 {
         double k = 70.0 / (1 - 0.07);
         double b = 20.0 - k;
