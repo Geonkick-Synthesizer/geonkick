@@ -30,13 +30,18 @@ class RkLineEdit;
 class RkPaintEvent;
 class RkMouseEvent;
 class GeonkickButton;
+class RkLabel;
 
 class FilesView: public GeonkickWidget {
  public:
         FilesView(GeonkickWidget *parent);
         std::string selectedFile() const;
+        std::string getCurrentPath() const;
         RK_DECL_ACT(openFile, openFile(const std::string &fileName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
+        RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &pathName),
+                    RK_ARG_TYPE(const std::string &), RK_ARG_VAL(pathName));
+
 
  protected:
         void createScrollBar();
@@ -82,11 +87,13 @@ class FileDialog: public GeonkickWidget {
  protected:
         void onAccept();
         void onCancel();
+        void onPathChanged(const std::string &pathName);
 
  private:
         RkLineEdit *fileNameEdit;
         Type dialogType;
         FilesView *filesView;
+        RkLabel *pathLabel;
 };
 
 #endif // GEONKICK_FILE_DIALOG_H

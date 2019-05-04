@@ -141,8 +141,6 @@ void MainWindow::savePreset(const std::string &fileName)
 
 void MainWindow::openPreset(const std::string &fileName)
 {
-        RK_LOG_DEBUG("fileanme: " << fileName);
-        return;
         if (fileName.size() < 6) {
                 RK_LOG_ERROR("Open Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
                 return;

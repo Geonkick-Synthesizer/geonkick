@@ -63,6 +63,11 @@ FilesView::FilesView(GeonkickWidget *parent)
         show();
 }
 
+std::string FilesView::getCurrentPath() const
+{
+        return currentPath.string();
+}
+
 void FilesView::createScrollBar()
 {
         topScrollBarButton = new GeonkickButton(this);
@@ -133,6 +138,8 @@ void FilesView::loadCurrentDirectory()
                 showScrollBar(true);
         else
                 showScrollBar(false);
+
+        currentPathChanged(currentPath.string());
 }
 
 void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -248,24 +255,27 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
         , dialogType{type}
         , filesView{nullptr}
+        , pathLabel{nullptr}
 {
         setTitle(title);
         setFixedSize(600, 400);
         filesView = new FilesView(this);
         RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
+        RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
+                    this, onPathChanged(pathName));
 
-        auto label = new RkLabel(this, "File: ");
-        label->setBackgroundColor(background());
-        label->setFixedSize(50, 20);
-        label->setPosition(5, 15);
-        label->show();
+        pathLabel = new RkLabel(this, "Path: " + filesView->getCurrentPath());
+        pathLabel->setBackgroundColor(background());
+        pathLabel->setFixedSize(filesView->width(), 20);
+        pathLabel->setPosition(filesView->x(), 15);
+        pathLabel->show();
 
         if (dialogType == Type::Save) {
-                fileNameEdit = new RkLineEdit(this);
-                fileNameEdit->setSize(width() - label->width() - 15, 25);
-                fileNameEdit->setX(label->x() + label->width() - 5);
-                fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
-                fileNameEdit->show();
+                //                fileNameEdit = new RkLineEdit(this);
+                //                fileNameEdit->setSize(width() - label->width() - 15, 25);
+                //                fileNameEdit->setX(label->x() + label->width() - 5);
+                //                fileNameEdit->setY(label->y() + label->height() / 2 - fileNameEdit->height() / 2);
+                //                fileNameEdit->show();
         }
 
         auto acceptButton = new GeonkickButton(this);
@@ -286,6 +296,12 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool pressed), this, onCancel());
         cancelButton->show();
         show();
+}
+
+void FileDialog::onPathChanged(const std::string &pathName)
+{
+        if (!pathName.empty())
+                pathLabel->setText("Path: " + pathName);
 }
 
 void FileDialog::onAccept()
