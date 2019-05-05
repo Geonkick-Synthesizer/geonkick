@@ -29,7 +29,7 @@
 #include "control_area.h"
 #include "top_bar.h"
 #include "limiter.h"
-#include "export_widget.h"
+//#include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
 #include "about.h"
@@ -117,7 +117,7 @@ bool MainWindow::init(void)
 
 void MainWindow::openExportDialog()
 {
-        new ExportWidget(this, geonkickApi);
+        //        new ExportWidget(this, geonkickApi);
 }
 
 void MainWindow::savePreset(const std::string &fileName)

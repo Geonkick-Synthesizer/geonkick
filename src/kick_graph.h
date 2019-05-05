@@ -44,7 +44,7 @@ public:
 
 protected:
      void drawKickGraph();
-     void updateGraphBuffer();
+     void updateGraphBuffer(std::vector<gkick_real> buffer);
 
 private:
      GeonkickApi *geonkickApi;

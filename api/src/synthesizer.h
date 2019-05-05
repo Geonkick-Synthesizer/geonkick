@@ -27,6 +27,7 @@
 #include "geonkick_internal.h"
 #include "compressor.h"
 #include "distortion.h"
+#include "audio_output.h"
 
 #include <stdatomic.h>
 
@@ -54,47 +55,54 @@ struct gkick_synth {
         /* General synthesizer amplitude envelope. */
         struct gkick_envelope *envelope;
 
-        /**
-         * Current kick samples buffer size which is calculated
-         * from the kick length in seconds and should not
-         * exceed the GEONKICK_MAX_BUFFER_SIZE.
-         */
-        size_t buffer_size;
+        /* /\** */
+        /*  * Current kick samples buffer size which is calculated */
+        /*  * from the kick length in seconds and should not */
+        /*  * exceed the GEONKICK_MAX_BUFFER_SIZE. */
+        /*  *\/ */
+        /* size_t buffer_size; */
 
         /* To update or not the buffer. */
         atomic_bool buffer_update;
 
 
-        /* Kick smaples buffer. */
-        gkick_real *buffer;
+        /**
+         * Kick smaples buffer where the synthesizer is doing the synthesis.
+         * It is swaped with one of the oudio output buffers atomically.
+         */
+        char* _Atomic buffer;
+        // Kick buffer size.
+        _Atomic size_t buffer_size;
 
         /**
          * Pointer to a funtion to be
          * called when kick synthesis is finished.
          */
-        void (*buffer_callback) (void*);
+        void (*buffer_callback) (void*, gkick_real *buff, size_t size);
         void *callback_args;
 
-        /* Output buffer for the synthesizer.
-         * The access to its internal buffer
-         * can be locked by other threads.
-         */
-        struct gkick_buffer *output;
-
         /**
-         * The synthesizer main thread.
+         * Audio output that is shared with audio thread
+         * in a lock-free manner (atomically swaping buffers).
          */
-        pthread_t thread;
-        atomic_bool is_running;
+        struct gkick_audio_output *output;
 
-        pthread_mutex_t lock;
-        pthread_cond_t condition_var;
+        atomic_bool is_running;
         /**
          * Specifies if the kick synthesis is tuned off.
          * If is 0 any updates of the synthesizer parameters
          * will not trigger the kick synthesis.
          */
         atomic_bool synthesis_on;
+
+
+        /**
+         * The synthesizer main thread.
+         */
+        pthread_t thread;
+
+        pthread_mutex_t lock;
+        pthread_cond_t condition_var;
 };
 
 enum geonkick_error
@@ -259,10 +267,12 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
                        size_t size);
 
 enum geonkick_error
-gkick_synth_set_buffer_callback(struct gkick_synth *synth, void (*callback) (void*), void *args);
+gkick_synth_set_buffer_callback(struct gkick_synth *synth,
+                                void (*callback) (void*, gkick_real *buff, size_t size),
+                                void *args);
 
 void gkick_synth_set_output(struct gkick_synth *synth,
-                            struct gkick_buffer *buffer);
+                            struct gkick_audio_output *output);
 
 enum geonkick_error
 gkick_synth_start(struct gkick_synth *synth);

@@ -56,18 +56,16 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         port_buf = jack_port_get_buffer(jack->midi_in_port, nframes);
         events_count = jack_midi_get_event_count(port_buf);
         event_index = 0;
-        if (events_count > 0) {
+        if (events_count > 0)
                 jack_midi_event_get(&event, port_buf, event_index);
-        }
 
         for (i = 0; i < nframes; i++) {
                 if (event.time == i && event_index < events_count) {
                         gkick_jack_get_note_info(&event, &note);
                         gkick_audio_output_key_pressed(jack->audio_output, note.state, note.velocity);
                         event_index++;
-                        if (event_index < events_count) {
+                        if (event_index < events_count)
                                 jack_midi_event_get(&event, port_buf, event_index);
-                        }
                 }
 
                 gkick_audio_output_get_frame(jack->audio_output, &val);

@@ -531,29 +531,15 @@ double GeonkickApi::limiterValue()
 void GeonkickApi::setLimiterValue(double value)
 {
         geonkick_set_limiter_value(geonkickApi, value);
-        //        emit kickUpdated();
 }
 
-void GeonkickApi::getKickBuffer(std::vector<gkick_real> &buffer)
+void GeonkickApi::kickUpdatedCallback(void *arg, gkick_real *buff, size_t size)
 {
-        geonkick_get_kick_buffer(geonkickApi, buffer.data(), buffer.size());
-}
-
-std::vector<gkick_real> GeonkickApi::getKickBuffer()
-{
-        std::vector<gkick_real> buffer;
-        size_t size;
-        geonkick_get_kick_buffer_size(geonkickApi, &size);
-        buffer.resize(size);
-        geonkick_get_kick_buffer(geonkickApi, buffer.data(), size);
-        return buffer;
-}
-
-void GeonkickApi::kickUpdatedCallback(void *arg)
-{
+        std::vector<gkick_real> buffer(size, 0);
+        std::memcpy(buffer.data(), buff, size * sizeof(gkick_real));
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
-                obj->emitKickUpdated();
+                obj->updateKickBuffer(std::move(buffer));
 }
 
 void GeonkickApi::limiterCallback(void *arg, gkick_real val)
@@ -568,10 +554,12 @@ void GeonkickApi::setLimiterVal(double val)
         limiterLevelerVal = val;
 }
 
-void GeonkickApi::emitKickUpdated()
+void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer)
 {
-        if (eventQueue)
+        if (eventQueue) {
+                eventQueue->postAction([=](void){ newKickBuffer(std::move(buffer)); });
                 eventQueue->postAction([&](void){ kickUpdated(); });
+        }
 }
 
 int GeonkickApi::getSampleRate()
@@ -720,10 +708,10 @@ void GeonkickApi::registerCallbacks(bool b)
 {
         if (b) {
                 geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
-                geonkick_set_kick_limiter_callback(geonkickApi, &GeonkickApi::limiterCallback, this);
+                //                geonkick_set_kick_limiter_callback(geonkickApi, &GeonkickApi::limiterCallback, this);
         } else {
                 geonkick_set_kick_buffer_callback(geonkickApi, NULL, NULL);
-                geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
+                //                geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
         }
 }
 

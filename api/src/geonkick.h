@@ -37,6 +37,7 @@ extern "C" {
 #include <math.h>
 #include <inttypes.h>
 #include <float.h>
+#include <stdbool.h>
 
 #include "gkick_log.h"
 
@@ -250,7 +251,9 @@ enum geonkick_error
 geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size);
 
 enum geonkick_error
-geonkick_set_kick_buffer_callback(struct geonkick *kick, void (*callback)(void*), void *arg);
+geonkick_set_kick_buffer_callback(struct geonkick *kick,
+                                  void (*callback)(void*, gkick_real *buff, size_t size),
+                                  void *arg);
 
 enum geonkick_error
 geonkick_set_kick_limiter_callback(struct geonkick *kick,

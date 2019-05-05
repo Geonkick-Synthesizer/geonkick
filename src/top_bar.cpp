@@ -73,7 +73,7 @@ TopBar::TopBar(GeonkickWidget *parent)
         exportFileButton->setY(saveFileButton->y());
         exportFileButton->setUnpressedImage(RkImage(90, 30, rk_export_active_png));
         exportFileButton->setCheckable(true);
-        RK_ACT_BIND(exportFileButton, toggled, RK_ACT_ARS(bool b), parent, openExport());
+        RK_ACT_BIND(exportFileButton, toggled, RK_ACT_ARGS(bool b), this, openExport());
 
         auto aboutButton = new GeonkickButton(this);
         aboutButton->setSize(90, 30);
@@ -92,12 +92,12 @@ TopBar::~TopBar()
 
 void TopBar::setPresetName(const std::string &name)
 {
-        if (name.size() > 20) {
+        /*        if (name.size() > 20) {
                 std::string preset = name;
                 preset.truncate(20);
                 preset += "...";
                 presetNameLabel->setText(preset);
         } else {
                 presetNameLabel->setText(name);
-        }
+                }*/
 }

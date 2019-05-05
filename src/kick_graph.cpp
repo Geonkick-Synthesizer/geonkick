@@ -35,7 +35,8 @@ KickGraph::KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q)
         , isRunning{true}
         , eventQueue{q}
 {
-        RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
+        RK_ACT_BIND(geonkickApi, newKickBuffer, RK_ACT_ARGS(std::vector<gkick_real> buff),
+                    this, updateGraphBuffer(std::move(buff)));
 }
 
 KickGraph::~KickGraph()
@@ -50,13 +51,10 @@ void KickGraph::start()
        graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
 }
 
-void KickGraph::updateGraphBuffer()
+void KickGraph::updateGraphBuffer(std::vector<gkick_real> buffer)
 {
         std::unique_lock<std::mutex> lock(graphMutex);
-        auto len = 48000 * geonkickApi->kickLength() / 1000;
-        if (kickBuffer.size() != len)
-                kickBuffer.resize(len);
-        geonkickApi->getKickBuffer(kickBuffer);
+        kickBuffer = std::move(buffer);
         threadConditionVar.notify_one();
 }
 
@@ -90,7 +88,7 @@ void KickGraph::drawKickGraph()
                                 prev = p;
                         graphPoints[j++] = p;
 
-                        /* int i0 = i;
+                        int i0 = i;
                         int ymin, ymax;
                         ymin = ymax = y;
                         while (++i < kickBuffer.size()) {
@@ -107,7 +105,7 @@ void KickGraph::drawKickGraph()
                                 graphPoints[j++] = {x, ymin};
                                 graphPoints[j++] = {x, ymax};
                                 graphPoints[j++] = {x, y};
-                                }*/
+                        }
                 }
                 graphPoints.resize(j);
                 painter.drawPolyline(graphPoints);

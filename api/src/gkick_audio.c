@@ -50,7 +50,7 @@ gkick_audio_create(struct gkick_audio** audio)
 
 #ifdef GEONKICK_AUDIO_JACK
         if (gkick_create_jack(&(*audio)->jack, (*audio)->audio_output) != GEONKICK_OK) {
-                gkick_log_warning("can't create jack. It is either not running or not installed");
+                gkick_log_warning("can't create jack module. Jack server is either not running or not installed");
         }
 #endif // GEONKICK_AUDIO_JACK
         return GEONKICK_OK;

@@ -28,14 +28,12 @@
 enum geonkick_error
 geonkick_create(struct geonkick **kick)
 {
-	if (kick == NULL) {
+	if (kick == NULL)
 		return GEONKICK_ERROR;
-	}
 
 	*kick = (struct geonkick*)malloc(sizeof(struct geonkick));
-	if (*kick == NULL) {
+	if (*kick == NULL)
 		return GEONKICK_ERROR_MEM_ALLOC;
-	}
 	memset(*kick, 0, sizeof(struct geonkick));
 	strcpy((*kick)->name, "Geonkick");
 
@@ -57,10 +55,9 @@ geonkick_create(struct geonkick **kick)
                 return GEONKICK_ERROR;
 	}
 
-        if ((*kick)->synth != NULL && (*kick)->audio != NULL) {
-                gkick_synth_set_output((*kick)->synth,
-                                       gkick_audio_get_buffer((*kick)->audio));
-        }
+        if ((*kick)->synth != NULL && (*kick)->audio != NULL)
+                gkick_synth_set_output((*kick)->synth, (*kick)->audio->audio_output);
+
 
         if (gkick_synth_start((*kick)->synth)) {
                 gkick_log_error("can't start synthesizer");
@@ -545,7 +542,9 @@ geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size)
 }
 
 enum geonkick_error
-geonkick_set_kick_buffer_callback(struct geonkick *kick, void (*callback)(void*), void *arg)
+geonkick_set_kick_buffer_callback(struct geonkick *kick,
+                                  void (*callback)(void*, gkick_real* buff, size_t size),
+                                  void *arg)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");

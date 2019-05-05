@@ -105,8 +105,6 @@ class GeonkickApi {
   double getOscillatorFilterFactor(int oscillatorIndex);
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
   double limiterValue();
-  void getKickBuffer(std::vector<gkick_real> &buffer);
-  std::vector<gkick_real> getKickBuffer();
   int getSampleRate();
   static std::shared_ptr<GeonkickState> getDefaultState();
   gkick_real getAudioFrame();
@@ -155,14 +153,18 @@ class GeonkickApi {
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickUpdated, kickUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
+  RK_DECL_ACT(newKickBuffer,
+              newKickBuffer(std::vector<gkick_real> buffer),
+              RK_ARG_TYPE(std::vector<gkick_real>),
+              RK_ARG_VAL(std::move(buffer)));
   RK_DECL_ACT(currentPlayingFrameVal,
               currentPlayingFrameVal(double val),
               RK_ARG_TYPE(double), RK_ARG_VAL(val));
 
 protected:
-  static void kickUpdatedCallback(void *arg);
+  static void kickUpdatedCallback(void *arg, gkick_real *buff, size_t size);
   static void limiterCallback(void *arg, gkick_real val);
-  void emitKickUpdated();
+  void updateKickBuffer(const std::vector<gkick_real> &&buffer);
   void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
   void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
   void setLimiterVal(double val);
