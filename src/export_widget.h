@@ -26,23 +26,13 @@
 
 #include "geonkick_widget.h"
 
-#include <QDialog>
-
 class GeonkickApi;
-class QComboBox;
-class QRadioButton;
-class QProgressBar;
-
+class RkLineEdit;
 
 class ExportWidget: public GeonkickWidget {
- Q_OBJECT
-
- using ExportResult = QDialog::DialogCode;
-
  public:
         ExportWidget(GeonkickWidget *parent, GeonkickApi *api);
         ~ExportWidget();
-        ExportResult exec();
 
  protected:
         int exportFormat();
@@ -50,16 +40,11 @@ class ExportWidget: public GeonkickWidget {
         std::string getFilePath();
         std::string fileSuffix();
         bool validateInput();
-        void closeEvent(QCloseEvent *event);
 
- protected slots:
-         void browse();
-         void cancel();
-         void exportKick();
-         void resetProgressBar();
-
- signals:
-         void closeDialog();
+        void browse();
+        void cancel();
+        void exportKick();
+        void resetProgressBar();
 
  private:
          enum class ExportFormat: int {
@@ -73,13 +58,12 @@ class ExportWidget: public GeonkickWidget {
 
         GeonkickApi *geonkickApi;
         ExportResult exportResult;
-        QLineEdit *locationEdit;
-        QLineEdit *fileNameEdit;
+        RkLineEdit *locationEdit;
+        RkLineEdit *fileNameEdit;
         GeonkickButton *browseLocation;
         QComboBox *formatComboBox;
-        QProgressBar *exportProgress;
-        QRadioButton *monoRadioButton;
-        QRadioButton *stereoRadioButton;
+        GeonkickButton *monoRadioButton;
+        GeonkickButton *stereoRadioButton;
         GeonkickButton *exportButton;
         GeonkickButton *cancelButton;
 };

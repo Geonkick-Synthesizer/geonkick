@@ -29,7 +29,7 @@
 #include "control_area.h"
 #include "top_bar.h"
 #include "limiter.h"
-//#include "export_widget.h"
+#include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
 #include "about.h"
@@ -56,9 +56,9 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , envelopeWidget{nullptr}
           //        presetName(preset)
 {
+        setFixedSize(940, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
-        setFixedSize(940, 760);
 //        setWindowIcon(QPixmap(":/app_icon.png"));
 }
 
@@ -88,6 +88,7 @@ bool MainWindow::init(void)
         RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Open));
         RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Save));
         RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
+        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openExportDialog());
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
@@ -116,8 +117,7 @@ bool MainWindow::init(void)
 
 void MainWindow::openExportDialog()
 {
-        //        ExportWidget exportDialog(this, geonkickApi);
-        //        exportDialog.exec();
+        new ExportWidget(this, geonkickApi);
 }
 
 void MainWindow::savePreset(const std::string &fileName)

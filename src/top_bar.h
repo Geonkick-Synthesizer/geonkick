@@ -38,6 +38,7 @@ class TopBar : public GeonkickWidget
         RK_DECL_ACT(saveFile, saveFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openFile, openFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openAbout, openAbout(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(openExport, openExport(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
         GeonkickButton *openFileButton;

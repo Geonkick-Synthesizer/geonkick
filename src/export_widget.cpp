@@ -24,60 +24,48 @@
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_button.h"
+#include "file_dialog.h"
 
-#include <QEventLoop>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QRadioButton>
-#include <QProgressBar>
-#include <QFileDialog>
-#include <QFont>
-#include <QMessageBox>
-#include <QCloseEvent>
+#include <RkLabel>
+#include <RkLineEdit>
 
 #include <sndfile.h>
 
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent),
-          geonkickApi(api),
-          exportResult(ExportResult::Rejected),
-          locationEdit(nullptr),
-          browseLocation(nullptr),
-          formatComboBox(nullptr),
-          exportProgress(nullptr),
-          monoRadioButton(nullptr),
-          stereoRadioButton(nullptr),
-          exportButton(nullptr),
-          cancelButton(nullptr)
+        , geonkickApi{api}
+        , exportResult(ExportResult::Rejected}
+        , ocationEdit(nullptr}
+        , rowseLocation{nullptr}
+        , formatComboBox{nullptr}
+        , exportProgress{nullptr}
+        , monoRadioButton{nullptr}
+        , stereoRadioButton{nullptr}
+        , exportButton{nullptr}
+        , cancelButton{nullpt}
 {
-        setWindowFlags(Qt::Dialog);
-        setWindowModality(Qt::ApplicationModal);
-        setWindowTitle(tr("Export") + std::string(" - ") + std::string(GEOKICK_APP_NAME));
+        setFixedSize(500, 200);
+        setTitle("Export - " + std::string(GEOKICK_APP_NAME));
 
-        auto mainLayout = new QVBoxLayout(this);
-        mainLayout->setSpacing(20);
-        exportProgress = new QProgressBar(this);
-        exportProgress->setMaximumHeight(5);
-        exportProgress->setRange(0, 100);
-        exportProgress->setTextVisible(false);
+        //        exportProgress = new QProgressBar(this);
+        //        exportProgress->setMaximumHeight(5);
+        //        exportProgress->setRange(0, 100);
+        //        exportProgress->setTextVisible(false);
 
-        auto locationLayout = new QHBoxLayout;
-        locationLayout->addWidget(new QLabel(tr("Location"), this));
-        locationEdit = new QLineEdit(this);
-        locationEdit->setText(QDir::currentPath());
-        locationEdit->setMinimumWidth(150);
-        connect(locationEdit, SIGNAL(textChanged(const std::string&)), this, SLOT(resetProgressBar()));
+        new RkLabel("Location", this);
+        locationEdit = new RkLineEdit(this);
+        locationEdit->setText(std::experimental::filesystem::current_path());
+        locationEdit->setSize(200, 25);
+        RK_ACT_BIND(locationEdit, textChanged(const std::string&)), this, SLOT(resetProgressBar()));
         locationLayout->addWidget(locationEdit);
         browseLocation = new GeonkickButton(this);
         browseLocation->setCheckable(true);
-        browseLocation->setUnpressedImage(QPixmap(":/export_browse.png"));
-        connect(browseLocation, SIGNAL(toggled(bool)), this, SLOT(browse()));
+        browseLocation->setUnpressedImage(RkImage(rk_export_browse_png));
+        RK_ACT_BIND(browseLocation, toggled(bool)), this, SLOT(browse()));
         locationLayout->addWidget(browseLocation);
         locationLayout->addWidget(new QLabel(tr("File name"), this));
         fileNameEdit = new QLineEdit(this);
-        connect(fileNameEdit, SIGNAL(textChanged(const std::string&)), this, SLOT(resetProgressBar()));
+        RK_ACT_BIND(fileNameEdit, textChanged(const std::string&)), this, SLOT(resetProgressBar()));
         locationLayout->addWidget(fileNameEdit);
         locationLayout->setSpacing(0);
         locationLayout->addStretch();
@@ -88,7 +76,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         auto formatLayout = new QHBoxLayout;
         formatLayout->addWidget(new QLabel(tr("Export format"), this));
         formatComboBox = new QComboBox(this);
-        connect(formatComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(resetProgressBar()));
+        RK_ACT_BIND(formatComboBox, currentIndexChanged(int)), this, SLOT(resetProgressBar()));
         formatComboBox->insertItem(static_cast<int>(ExportFormat::Flac16), tr("FLAC, 16 bit"));
         formatComboBox->insertItem(static_cast<int>(ExportFormat::Flac24), tr("FLAC, 24 bit"));
         formatComboBox->insertItem(static_cast<int>(ExportFormat::Wav16), tr("WAV, 16 bit"));
@@ -98,10 +86,10 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         formatComboBox->setCurrentIndex(static_cast<int>(ExportFormat::Wav16));
         formatLayout->addWidget(formatComboBox);
         monoRadioButton = new QRadioButton(tr("Mono"), this);
-        connect(monoRadioButton, SIGNAL(toggled(bool)), this, SLOT(resetProgressBar()));
+        RK_ACT_BIND(monoRadioButton, toggled(bool)), this, SLOT(resetProgressBar()));
         monoRadioButton->setChecked(true);
         stereoRadioButton = new QRadioButton(tr("Stereo"), this);
-        connect(stereoRadioButton, SIGNAL(toggled(bool)), this, SLOT(resetProgressBar()));
+        RK_ACT_BIND(stereoRadioButton, toggled(bool)), this, SLOT(resetProgressBar()));
         formatLayout->addWidget(monoRadioButton);
         formatLayout->addWidget(stereoRadioButton);
 
@@ -113,12 +101,12 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         auto buttonsLayout = new QHBoxLayout;
         exportButton = new GeonkickButton(this);
         exportButton->setCheckable(true);
-        exportButton->setUnpressedImage(QPixmap(":/export_export.png"));
-        connect(exportButton, SIGNAL(toggled(bool)), this, SLOT(exportKick()));
+        exportButton->setUnpressedImage(RkImage(rk_export_export_png));
+        RK_ACT_BIND(exportButton, toggled(bool)), this, SLOT(exportKick()));
         cancelButton = new GeonkickButton(this);
-        cancelButton->setUnpressedImage(QPixmap(":/export_cancel.png"));
+        cancelButton->setUnpressedImage(RkImage(rk_export_cancel_png));
         cancelButton->setCheckable(true);
-        connect(cancelButton, SIGNAL(toggled(bool)), this, SIGNAL(closeDialog()));
+        RK_ACT_BIND(cancelButton, toggled(bool)), this, closeDialog()));
         buttonsLayout->addWidget(cancelButton);
         buttonsLayout->addWidget(exportButton);
 
@@ -134,17 +122,9 @@ ExportWidget::~ExportWidget()
 {
 }
 
-ExportWidget::ExportResult ExportWidget::exec()
-{
-        QEventLoop eventLoop(this);
-        connect(this, SIGNAL(closeDialog()), &eventLoop, SLOT(quit()));
-        eventLoop.exec();
-        return exportResult;
-}
-
 void ExportWidget::browse()
 {
-        QFileDialog fileDialog(this, tr("Select Path") + std::string(" - ") + std::string(GEOKICK_APP_NAME));
+        FileDialog fileDialog(this, tr("Select Path") + std::string(" - ") + std::string(GEOKICK_APP_NAME));
         fileDialog.setFileMode(QFileDialog::Directory);
         fileDialog.setOption(QFileDialog::ShowDirsOnly);
         fileDialog.setFilter(QDir::Dirs);
@@ -332,10 +312,4 @@ std::string ExportWidget::fileSuffix()
         default:
                 return std::string();
         }
-}
-
-void ExportWidget::closeEvent(QCloseEvent *event)
-{
-        event->ignore();
-        emit closeDialog();
 }
