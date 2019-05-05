@@ -22,46 +22,21 @@
  */
 
 #include "about.h"
-#include "geonkick_label.h"
 
-#include <QEventLoop>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QCloseEvent>
+#include <RkLabel.h>
+
+extern unsigned char rk_logo_about_png[];
 
 AboutDialog::AboutDialog(GeonkickWidget *parent)
-        : GeonkickWidget(parent)
+        : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
 {
-        setWindowFlags(Qt::Dialog);
-        setWindowModality(Qt::ApplicationModal);
-        setWindowTitle(tr("About") + std::string(" - ") + std::string(GEOKICK_APP_NAME));
-        auto mainLayout = new QVBoxLayout(this);
-        auto label = new GeonkickLabel(this);
-        label->setImage(QPixmap(":/logo_about.png"));
-        mainLayout->addWidget(label, 0, Qt::AlignHCenter);
-        std::string aboutTxt = "<h2>Geonkick v" + std::string(GEOKICK_APP_VERION_STRING) + std::string("</h2>")
-                + std::string("<p>Geonkick - a free software percussion synthesizer</p> \
-                          <p>Copyright (C) 2018 Iurie Nistor</p> \
-                          <p>License: GNU General Public License Version 3</p>");
-        mainLayout->addWidget(new GeonkickLabel(aboutTxt, this), 0, Qt::AlignHCenter);
-        setLayout(mainLayout);
+        setFixedSize(340, 400);
+        setTitle(std::string("About - ") + std::string(GEOKICK_APP_NAME));
+        auto logo = new RkLabel(this);
+        logo->setImage(RkImage(300, 356, rk_logo_about_png));
+        logo->setFixedSize(300, 356);
+        logo->setBackgroundColor(background());
+        logo->setPosition((width() - logo->width()) / 2, (height() - logo->height()) / 2);
+        logo->show();
         show();
-}
-
-AboutDialog::~AboutDialog()
-{
-}
-
-int AboutDialog::exec()
-{
-        QEventLoop eventLoop(this);
-        connect(this, SIGNAL(closeDialog()), &eventLoop, SLOT(quit()));
-        eventLoop.exec();
-        return 0;
-}
-
-void AboutDialog::closeEvent(QCloseEvent *event)
-{
-        event->ignore();
-        emit closeDialog();
 }

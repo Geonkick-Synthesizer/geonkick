@@ -37,6 +37,7 @@ class TopBar : public GeonkickWidget
         void setPresetName(const std::string &name);
         RK_DECL_ACT(saveFile, saveFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openFile, openFile(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(openAbout, openAbout(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
         GeonkickButton *openFileButton;

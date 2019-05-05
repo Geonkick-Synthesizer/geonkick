@@ -81,7 +81,7 @@ TopBar::TopBar(GeonkickWidget *parent)
         aboutButton->setY(exportFileButton->y());
         aboutButton->setUnpressedImage(RkImage(90, 30, rk_about_png));
         aboutButton->setCheckable(true);
-        //        RK_ACT_BIND(aboutButton, toggled, RK_ACT_ARS(bool b), parent, openAboutDialog());
+        RK_ACT_BIND(aboutButton, toggled, RK_ACT_ARGS(bool b), this, openAbout());
 
         presetNameLabel = new RkLabel(this);
 }

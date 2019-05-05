@@ -28,11 +28,11 @@
 #include "file_dialog.h"
 
 class Oscillator;
-//class OscillatorWidget;
 class GeonkickApi;
 class TopBar;
 class EnvelopeWidget;
 class ControlArea;
+class RkKeyEvent;
 
 class MainWindow : public GeonkickWidget
 {
@@ -43,8 +43,8 @@ class MainWindow : public GeonkickWidget
       bool init(void);
 
  protected:
-      // void keyPressEvent(QKeyEvent *event);
-      // void keyReleaseEvent(QKeyEvent *event);
+      void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) final;
+      void keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event) final;
 
       void openFileDialog(FileDialog::Type type);
       void openPreset(const std::string &fileName);

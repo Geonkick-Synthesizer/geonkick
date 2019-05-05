@@ -32,7 +32,9 @@
 //#include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
-//#include "about.h"
+#include "about.h"
+
+#include <RkEvent.h>
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api)
         : GeonkickWidget(app)
@@ -85,6 +87,7 @@ bool MainWindow::init(void)
         topBar->show();
         RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Open));
         RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Save));
+        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
@@ -181,33 +184,31 @@ void MainWindow::openFileDialog(FileDialog::Type type)
                 RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, savePreset(file));
 }
 
-/*void MainWindow::openAboutDialog()
+void MainWindow::openAboutDialog()
 {
-        //        AboutDialog aboutDialog(this);
-        //        aboutDialog.exec();
+        new AboutDialog(this);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event)
+void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        if (event->key() == Qt::Key_K) {
+        if (event->key() == Rk::Key::Key_k) {
                 geonkickApi->setKeyPressed(true, 127);
-        } else if (event->modifiers() ==  Qt::ControlModifier
-                   && event->key() == Qt::Key_R) {
+        } else if (event->modifiers() ==  static_cast<int>(Rk::KeyModifiers::Control)
+                   && event->key() == Rk::Key::Key_r) {
                 geonkickApi->setState(geonkickApi->getDefaultState());
                 topBar->setPresetName("");
-                emit updateGui();
-        } else if (event->modifiers() ==  Qt::ControlModifier
-                   && event->key() == Qt::Key_H) {
+                updateGui();
+        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+                   && event->key() == Rk::Key::Key_h) {
                 envelopeWidget->hideEnvelope(true);
-                }
+        }
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent *event)
+void MainWindow::keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        if (event->modifiers() ==  Qt::ControlModifier
-            && event->key() == Qt::Key_H) {
+        if (event->modifiers() ==  static_cast<int>(Rk::KeyModifiers::Control)
+            && event->key() == Rk::Key::Key_h) {
                 envelopeWidget->hideEnvelope(false);
         }
 }
-*/
 
