@@ -33,6 +33,7 @@
 #include <experimental/filesystem>
 #include <fstream>
 #include <algorithm>
+#include <mutex>
 
 #include "geonkick.h"
 

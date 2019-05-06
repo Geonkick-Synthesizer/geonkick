@@ -46,9 +46,10 @@ GeonkickApi::~GeonkickApi()
                 geonkick_free(&geonkickApi);
 }
 
-void GeonkickApi::setEventQueue(const std::shared_ptr<RkEventQueue> &evq)
+void GeonkickApi::setEventQueue(RkEventQueue *queue)
 {
-        eventQueue = evq;
+        std::lock_guard<std::mutex> lock(eventQueueLock);
+        eventQueue = queue;
 }
 
 bool GeonkickApi::init()
@@ -556,6 +557,7 @@ void GeonkickApi::setLimiterVal(double val)
 
 void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer)
 {
+        std::lock_guard<std::mutex> lock(eventQueueLock);
         if (eventQueue) {
                 eventQueue->postAction([=](void){ newKickBuffer(std::move(buffer)); });
                 eventQueue->postAction([&](void){ kickUpdated(); });

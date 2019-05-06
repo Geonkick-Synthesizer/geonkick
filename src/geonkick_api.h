@@ -65,7 +65,7 @@ class GeonkickApi {
 
   GeonkickApi();
   ~GeonkickApi();
-  void setEventQueue(const std::shared_ptr<RkEventQueue> &evq);
+  void setEventQueue(RkEventQueue *queue);
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
@@ -148,7 +148,7 @@ class GeonkickApi {
   void enableDistortion(bool enable);
   void setDistortionVolume(double volume);
   void setDistortionDrive(double drive);
-  std::shared_ptr<RkEventQueue> eventQueue;
+  RkEventQueue *eventQueue;
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
@@ -175,6 +175,7 @@ private:
   std::atomic<double> limiterLevelerVal;
   bool jackEnabled;
   bool standaloneInstance;
+  std::mutex eventQueueLock;
 };
 
 #endif // GEONKICK_API_H

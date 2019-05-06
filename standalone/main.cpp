@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         RkMain app(argc, argv);
 
         auto api = new GeonkickApi;
-        api->setEventQueue(app.eventQueue());
+        api->setEventQueue(app.eventQueue().get());
         api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");

@@ -109,7 +109,7 @@ void KickGraph::drawKickGraph()
                 }
                 graphPoints.resize(j);
                 painter.drawPolyline(graphPoints);
-                     if (geonkickApi->eventQueue)
-                             geonkickApi->eventQueue->postAction([this, graphImage](void){ graphUpdated(graphImage); });
+                     if (eventQueue)
+                             eventQueue->postAction([this, graphImage](void){ graphUpdated(graphImage); });
         }
 }
