@@ -187,6 +187,7 @@ gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
 
 void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)
 {
+        gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
         char *buff = audio_output->updated_buffer;
         audio_output->updated_buffer = audio_output->playing_buffer;
         audio_output->playing_buffer = buff;
