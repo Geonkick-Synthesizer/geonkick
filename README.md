@@ -42,6 +42,8 @@ Source code repository: https://gitlab.com/iurie/geonkick
      - Ogg Vorbis
 * Open & Save preset in JSON format
 * Standalone
+* Plugin
+  - LV2
 * Platforms:
   - GNU/Linux
 * Build system:
@@ -51,15 +53,21 @@ Source code repository: https://gitlab.com/iurie/geonkick
 
 In order Geonkick to run and operate correctly there is a need for:
 
-* GNU/Linux operating system
-* Jack server installed and running at 48000 sample rate
+For standalone:
+    * GNU/Linux operating system
+    * Jack server installed and running at 48000 sample rate
+
+For plugin:
+    * GNU/Linux operaing system
+    * LV2 host. For example, a DAW that supports LV2 plugin format.
 
 #### Install
 
 ###### Install dependeces
 
 I order to build Geonkick there is a need to install the following development packages:
-* Redkite GUI toolkit
+
+* Redkite GUI toolkit. See the documentation of Redkite toolkit how to install it.
 * libsndfile
 * JACK Audio Connection Kit
 
@@ -125,4 +133,3 @@ If audio outputs are connected there are two ways to play the sound:
 ###### Examples
 
 Under the directory geonkick/examples there are some example presets that can be opened and play with.
-
