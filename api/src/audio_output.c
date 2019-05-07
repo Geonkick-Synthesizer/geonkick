@@ -103,9 +103,8 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
         int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
         gkick_real decay_val;
 
-        if (!audio_output->is_play) {
-                *val = 0.0;
-        } else {
+        *val = 0;
+        if (audio_output->is_play) {
                 if (gkick_buffer_is_end((struct gkick_buffer*)audio_output->playing_buffer)) {
                         audio_output->is_play = false;
                 } else {
@@ -125,6 +124,13 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
         }
 
         *val *= (gkick_real)audio_output->limiter / 1000000;
+
+        // Limit the output value.
+        if (*val > 1)
+                *val = 1;
+        else if (*val < -1)
+                *val = -1;
+
         if (audio_output->limiter_callback != NULL
             && audio_output->limiter_callback_arg != NULL
             && audio_output->key_state == GKICK_KEY_STATE_PRESSED) {
