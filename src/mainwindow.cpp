@@ -29,7 +29,7 @@
 #include "control_area.h"
 #include "top_bar.h"
 #include "limiter.h"
-//#include "export_widget.h"
+#include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_state.h"
 #include "about.h"
@@ -95,7 +95,7 @@ bool MainWindow::init(void)
         RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Open));
         RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Save));
         RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
-        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openExportDialog());
+        RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(), this, openExportDialog());
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
@@ -124,7 +124,7 @@ bool MainWindow::init(void)
 
 void MainWindow::openExportDialog()
 {
-        //        new ExportWidget(this, geonkickApi);
+        new ExportWidget(this, geonkickApi);
 }
 
 void MainWindow::savePreset(const std::string &fileName)

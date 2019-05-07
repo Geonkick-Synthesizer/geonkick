@@ -109,7 +109,7 @@ class GeonkickApi {
   static std::shared_ptr<GeonkickState> getDefaultState();
   // This function is called only from the audio thread.
   gkick_real getAudioFrame() const;
-  std::shared_ptr<GeonkickState> getState() const;
+  std::shared_ptr<GeonkickState> getState();
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -162,7 +162,7 @@ protected:
   static void limiterCallback(void *arg, gkick_real val);
   void updateKickBuffer(const std::vector<gkick_real> &&buffer);
   void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
-  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state) const;
+  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
   void setLimiterVal(double val);
 
 private:

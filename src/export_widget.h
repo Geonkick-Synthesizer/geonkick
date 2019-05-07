@@ -30,8 +30,23 @@ class GeonkickApi;
 class RkLineEdit;
 class RkLabel;
 class RkProgressBar;
+class GeonkickButton;
 
 class ExportWidget: public GeonkickWidget {
+        enum class ChannelsType: int {
+                Mono,
+                Stereo
+        };
+
+         enum class ExportFormat: int {
+                 Flac16 = 0,
+                 Flac24 = 1,
+                 Wav16  = 2,
+                 Wav24  = 3,
+                 Wav32  = 4,
+                 Ogg    = 5
+         };
+
  public:
         ExportWidget(GeonkickWidget *parent, GeonkickApi *api);
         ~ExportWidget();
@@ -40,7 +55,7 @@ class ExportWidget: public GeonkickWidget {
         void createFormatButtons();
         void setFormat(ExportFormat format);
         void createChannelsButtons();
-        void setChannels(ChannlesType channels);
+        void setChannels(ChannelsType channels);
         int exportFormat();
         void enableButtons(bool enable);
         std::string getFilePath();
@@ -54,39 +69,25 @@ class ExportWidget: public GeonkickWidget {
         void showError(const std::string &error = std::string());
 
  private:
-        enum class ChannelsType: int {
-                Mono,
-                Stereo
-        };
-        
-         enum class ExportFormat: int {
-                 Flac16 = 0,
-                 Flac24 = 1,
-                 Wav16  = 2,
-                 Wav24  = 3,
-                 Wav32  = 4,
-                 Ogg    = 5
-         };
-
         GeonkickApi *geonkickApi;
-        ExportResult exportResult;
+        /*        ExportResult exportResult;
         RkLineEdit *locationEdit;
         RkLineEdit *fileNameEdit;
-        GeonkickButton *browseLocation;
+        GeonkickButton *browseLocation;*/
         GeonkickButton *flac16Button;
-        GeonkickButton *flac242Button;
+        GeonkickButton *flac24Button;
         GeonkickButton *wav16Button;
-        GeonkickButton *wav242Button;
+        GeonkickButton *wav24Button;
         GeonkickButton *wav32Button;
         GeonkickButton *oggButton;
-        GeonkickButton *monoButton;
+        /*        GeonkickButton *monoButton;
         GeonkickButton *stereoButton;
         RkProgressBar  *progressBar;
         GeonkickButton *exportButton;
         GeonkickButton *cancelButton;
-        RkLabel *errorLabel;
+        RkLabel *errorLabel;*/
         ExportFormat selectedFormat;
-        ChannelsType channlesType;
+        //        ChannelsType channlesType;
 };
 
 #endif // GEONKICK_EXPORT_WIDGET_H

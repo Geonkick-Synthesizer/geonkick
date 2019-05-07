@@ -35,7 +35,7 @@ KickGraph::KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q)
         , isRunning{true}
         , eventQueue{q}
 {
-        RK_ACT_BIND(geonkickApi, kickUpdated(), RK_ACT_ARGS(), this, updateGraphBuffer());
+        RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
 }
 
 KickGraph::~KickGraph()
@@ -50,7 +50,7 @@ void KickGraph::start()
        graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
 }
 
-void KickGraph::updateGraphBuffer(std::vector<gkick_real> buffer)
+void KickGraph::updateGraphBuffer()
 {
         std::unique_lock<std::mutex> lock(graphMutex);
         kickBuffer = geonkickApi->getKickBuffer();

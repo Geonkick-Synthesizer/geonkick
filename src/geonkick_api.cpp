@@ -155,7 +155,7 @@ void GeonkickApi::setState(const std::string &data)
         setState(std::make_shared<GeonkickState>(data));
 }
 
-std::shared_ptr<GeonkickState> GeonkickApi::getState() const
+std::shared_ptr<GeonkickState> GeonkickApi::getState()
 {
         auto state = std::make_shared<GeonkickState>();
         state->setLimiterValue(limiterValue());
@@ -183,7 +183,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState() const
         return state;
 }
 
-void GeonkickApi::getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state) const
+void GeonkickApi::getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state)
 {
         int index = static_cast<int>(osc);
         state->setOscillatorEnabled(index, isOscillatorEnabled(index));
