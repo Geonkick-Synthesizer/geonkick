@@ -105,11 +105,11 @@ class GeonkickApi {
   double getOscillatorFilterFactor(int oscillatorIndex);
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
   double limiterValue();
-  int getSampleRate();
+  int getSampleRate() const;
   static std::shared_ptr<GeonkickState> getDefaultState();
-  gkick_real getAudioFrame();
-  std::shared_ptr<GeonkickState> getState();
-
+  // This function is called only from the audio thread.
+  gkick_real getAudioFrame() const;
+  std::shared_ptr<GeonkickState> getState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -117,16 +117,12 @@ class GeonkickApi {
   double getCompressorRatio() const;
   double getCompressorKnee() const;
   double getCompressorMakeup() const;
-
   bool isDistortionEnabled() const;
   double getDistortionVolume() const;
   double getDistortionDrive() const;
-
   bool isJackEnabled() const;
-
   void setStandalone(bool b);
   bool isStandalone() const;
-
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
   void setLimiterValue(double value);
@@ -148,7 +144,7 @@ class GeonkickApi {
   void enableDistortion(bool enable);
   void setDistortionVolume(double volume);
   void setDistortionDrive(double drive);
-  RkEventQueue *eventQueue;
+  std::vector<gkick_real> getKickBuffer() const;
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
@@ -166,7 +162,7 @@ protected:
   static void limiterCallback(void *arg, gkick_real val);
   void updateKickBuffer(const std::vector<gkick_real> &&buffer);
   void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
-  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
+  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state) const;
   void setLimiterVal(double val);
 
 private:
@@ -175,7 +171,9 @@ private:
   std::atomic<double> limiterLevelerVal;
   bool jackEnabled;
   bool standaloneInstance;
-  std::mutex eventQueueLock;
+  mutable std::mutex apiMutex;
+  RkEventQueue *eventQueue;
+  std::vector<gkick_real> kickBuffer;
 };
 
 #endif // GEONKICK_API_H

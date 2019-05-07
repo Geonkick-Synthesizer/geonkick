@@ -28,6 +28,8 @@
 
 class GeonkickApi;
 class RkLineEdit;
+class RkLabel;
+class RkProgressBar;
 
 class ExportWidget: public GeonkickWidget {
  public:
@@ -35,6 +37,10 @@ class ExportWidget: public GeonkickWidget {
         ~ExportWidget();
 
  protected:
+        void createFormatButtons();
+        void setFormat(ExportFormat format);
+        void createChannelsButtons();
+        void setChannels(ChannlesType channels);
         int exportFormat();
         void enableButtons(bool enable);
         std::string getFilePath();
@@ -45,8 +51,14 @@ class ExportWidget: public GeonkickWidget {
         void cancel();
         void exportKick();
         void resetProgressBar();
+        void showError(const std::string &error = std::string());
 
  private:
+        enum class ChannelsType: int {
+                Mono,
+                Stereo
+        };
+        
          enum class ExportFormat: int {
                  Flac16 = 0,
                  Flac24 = 1,
@@ -61,11 +73,20 @@ class ExportWidget: public GeonkickWidget {
         RkLineEdit *locationEdit;
         RkLineEdit *fileNameEdit;
         GeonkickButton *browseLocation;
-        QComboBox *formatComboBox;
-        GeonkickButton *monoRadioButton;
-        GeonkickButton *stereoRadioButton;
+        GeonkickButton *flac16Button;
+        GeonkickButton *flac242Button;
+        GeonkickButton *wav16Button;
+        GeonkickButton *wav242Button;
+        GeonkickButton *wav32Button;
+        GeonkickButton *oggButton;
+        GeonkickButton *monoButton;
+        GeonkickButton *stereoButton;
+        RkProgressBar  *progressBar;
         GeonkickButton *exportButton;
         GeonkickButton *cancelButton;
+        RkLabel *errorLabel;
+        ExportFormat selectedFormat;
+        ChannelsType channlesType;
 };
 
 #endif // GEONKICK_EXPORT_WIDGET_H
