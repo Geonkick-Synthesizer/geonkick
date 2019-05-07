@@ -1,5 +1,4 @@
 CC = gcc
-INCLUDES = -DGKICK_LIB_LOG_LEVEL_TRACE -DGKICK_LIB_LOG_FUNCTION
 CFLAGS += -O2 -Wall -fPIC -fvisibility=hidden $(DEFINES) $(INCLUDES)
 SRC = src
 BUILD = .
