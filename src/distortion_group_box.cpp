@@ -28,11 +28,11 @@
 
 #include <RkLabel.h>
 
-extern unsigned char rk_distortion_goupbox_label_png[];
-extern unsigned char rk_checkbox_checked_10x10_png[];
-extern unsigned char rk_checkbox_unchecked_10x10_png[];
-extern unsigned char rk_distortion_volume_label_png[];
-extern unsigned char rk_distortion_drive_label_png[];
+extern const unsigned char rk_distortion_goupbox_label_png[];
+extern const unsigned char rk_checkbox_checked_10x10_png[];
+extern const unsigned char rk_checkbox_unchecked_10x10_png[];
+extern const unsigned char rk_distortion_volume_label_png[];
+extern const unsigned char rk_distortion_drive_label_png[];
 
 DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent)

@@ -57,37 +57,35 @@ class ExportWidget: public GeonkickWidget {
         void createChannelsButtons();
         void setChannels(ChannelsType channels);
         int exportFormat();
-        void enableButtons(bool enable);
         std::string getFilePath();
         std::string fileSuffix();
         bool validateInput();
+        void setLocation(const std::string &location);
 
         void browse();
-        void cancel();
         void exportKick();
         void resetProgressBar();
         void showError(const std::string &error = std::string());
 
  private:
         GeonkickApi *geonkickApi;
-        /*        ExportResult exportResult;
         RkLineEdit *locationEdit;
         RkLineEdit *fileNameEdit;
-        GeonkickButton *browseLocation;*/
+        GeonkickButton *browseLocation;
         GeonkickButton *flac16Button;
         GeonkickButton *flac24Button;
         GeonkickButton *wav16Button;
         GeonkickButton *wav24Button;
         GeonkickButton *wav32Button;
         GeonkickButton *oggButton;
-        /*        GeonkickButton *monoButton;
+        GeonkickButton *monoButton;
         GeonkickButton *stereoButton;
         RkProgressBar  *progressBar;
         GeonkickButton *exportButton;
         GeonkickButton *cancelButton;
-        RkLabel *errorLabel;*/
+        RkLabel *errorLabel;
         ExportFormat selectedFormat;
-        //        ChannelsType channlesType;
+        ChannelsType channelsType;
 };
 
 #endif // GEONKICK_EXPORT_WIDGET_H

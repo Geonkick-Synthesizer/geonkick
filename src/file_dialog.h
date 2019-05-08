@@ -57,11 +57,11 @@ class FilesView: public GeonkickWidget {
         void onLineDown();
 
  private:
-        std::vector<std::experimental::filesystem::path> filesList;
+        std::vector<std::filesystem::path> filesList;
         int selectedFileIndex;
         int hightlightLine;
         int offsetIndex;
-        std::experimental::filesystem::path currentPath;
+        std::filesystem::path currentPath;
         int lineHeight;
         int lineSacing;
         int fisibleLines;

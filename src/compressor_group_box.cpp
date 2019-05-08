@@ -28,13 +28,13 @@
 
 #include <RkLabel.h>
 
-extern unsigned char rk_compressor_groupbox_label_png[];
-extern unsigned char rk_checkbox_checked_10x10_png[];
-extern unsigned char rk_checkbox_unchecked_10x10_png[];
-extern unsigned char rk_compressor_attack_label_png[];
-extern unsigned char rk_compressor_threshold_label_png[];
-extern unsigned char rk_compressor_ratio_label_png[];
-extern unsigned char rk_compressor_makeup_label_png[];
+extern const unsigned char rk_compressor_groupbox_label_png[];
+extern const unsigned char rk_checkbox_checked_10x10_png[];
+extern const unsigned char rk_checkbox_unchecked_10x10_png[];
+extern const unsigned char rk_compressor_attack_label_png[];
+extern const unsigned char rk_compressor_threshold_label_png[];
+extern const unsigned char rk_compressor_ratio_label_png[];
+extern const unsigned char rk_compressor_makeup_label_png[];
 
 CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent)

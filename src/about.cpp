@@ -25,7 +25,7 @@
 
 #include <RkLabel.h>
 
-extern unsigned char rk_logo_about_png[];
+extern const unsigned char rk_logo_about_png[];
 
 AboutDialog::AboutDialog(GeonkickWidget *parent)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)

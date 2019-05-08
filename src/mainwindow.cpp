@@ -134,7 +134,7 @@ void MainWindow::savePreset(const std::string &fileName)
                 return;
         }
 
-        std::experimental::filesystem::path filePath(fileName);
+        std::filesystem::path filePath(fileName);
         std::locale loc;
         if (filePath.extension().empty()
             || (filePath.extension() != ".gkick"
@@ -142,7 +142,7 @@ void MainWindow::savePreset(const std::string &fileName)
                 filePath.replace_extension(".gkick");
 
         std::ofstream file;
-        file.open(std::experimental::filesystem::absolute(filePath));
+        file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
                 RK_LOG_ERROR("Error | Save Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't save preset");
                 return;
@@ -159,7 +159,7 @@ void MainWindow::openPreset(const std::string &fileName)
                 return;
         }
 
-        std::experimental::filesystem::path filePath(fileName);
+        std::filesystem::path filePath(fileName);
         if (filePath.extension().empty()
             || (filePath.extension() != ".gkick"
             && filePath.extension() != ".GKICK")) {
@@ -168,7 +168,7 @@ void MainWindow::openPreset(const std::string &fileName)
         }
 
         std::ifstream file;
-        file.open(std::experimental::filesystem::absolute(filePath));
+        file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
                 RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't open preset.");
                 return;

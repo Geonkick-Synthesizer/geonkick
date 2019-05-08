@@ -42,7 +42,7 @@ FilesView::FilesView(GeonkickWidget *parent)
         , selectedFileIndex{-1}
         , hightlightLine{-1}
         , offsetIndex{-1}
-        , currentPath{std::experimental::filesystem::current_path()}
+        , currentPath{std::filesystem::current_path()}
         , lineHeight{15}
         , lineSacing{lineHeight / 2}
         , fisibleLines{0}
@@ -101,13 +101,13 @@ void FilesView::loadCurrentDirectory()
         if (selectedFileIndex > -1)
                 currentPath = filesList[selectedFileIndex];
 
-        if (!std::experimental::filesystem::is_directory(currentPath))
+        if (!std::filesystem::is_directory(currentPath))
                 return;
 
         filesList.clear();
 
-        for (const auto &entry : std::experimental::filesystem::directory_iterator(currentPath)) {
-                if (std::experimental::filesystem::is_directory(entry.path())
+        for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
+                if (std::filesystem::is_directory(entry.path())
                     || entry.path().extension() == ".gkick" || entry.path().extension() == ".GKICK")
                         filesList.emplace_back(entry.path());
         }
@@ -116,11 +116,11 @@ void FilesView::loadCurrentDirectory()
                 std::sort(filesList.begin(), filesList.end(),
                           [] (decltype(filesList)::value_type &a, decltype(filesList)::value_type &b) -> bool
                         {
-                                if (std::experimental::filesystem::is_directory(b)
-                                    && !std::experimental::filesystem::is_directory(a))
+                                if (std::filesystem::is_directory(b)
+                                    && !std::filesystem::is_directory(a))
                                         return false;
-                                else if (!std::experimental::filesystem::is_directory(b)
-                                             && std::experimental::filesystem::is_directory(a))
+                                else if (!std::filesystem::is_directory(b)
+                                             && std::filesystem::is_directory(a))
                                         return true;
                                 else
                                         return a > b; // TODO: convert to lowercase and compare.
@@ -164,7 +164,7 @@ void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         while((index < filesList.size()) && (index - offsetIndex  < fisibleLines)) {
                 auto fileName = filesList[index].filename().string();
                 auto font = painter.font();
-                if (std::experimental::filesystem::is_directory(filesList[index]))
+                if (std::filesystem::is_directory(filesList[index]))
                         font.setWeight(RkFont::Weight::Bold);
                 else
                         font.setWeight(RkFont::Weight::Normal);
@@ -202,7 +202,7 @@ void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
         auto line = getLine(event->x(), event->y());
         if (line > -1) {
                 selectedFileIndex = offsetIndex + line;
-                if (!std::experimental::filesystem::is_directory(filesList[selectedFileIndex]))
+                if (!std::filesystem::is_directory(filesList[selectedFileIndex]))
                         openFile(filesList[selectedFileIndex].string());
                 else
                         loadCurrentDirectory();
@@ -312,7 +312,7 @@ void FileDialog::onAccept()
                         selectedFile(filesView->selectedFile());
         } else {
                 if (filesView->selectedFile().empty())
-                        selectedFile(filesView->getCurrentPath() / std::experimental::filesystem::path(fileNameEdit->text()));
+                        selectedFile(filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text()));
                 else
                         selectedFile(filesView->selectedFile());
         }

@@ -30,7 +30,12 @@
 #include <vector>
 #include <atomic>
 #include <unordered_map>
+#if defined(GCC_VERSION) && GCC_VERSION >= 800000
+#include <filesystem>
+#else
 #include <experimental/filesystem>
+#define filesystem experimental::filesystem
+#endif // GCC_VERSION >= 800000
 #include <fstream>
 #include <algorithm>
 #include <mutex>
