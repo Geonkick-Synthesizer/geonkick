@@ -1071,6 +1071,11 @@ void *gkick_synth_run(void *arg)
                                 break;
                         } else {
                                 gkick_real val = gkick_synth_get_value(synth, (gkick_real)(i * dt));
+                                gkick_log_debug("val %f", val);
+                                if (val > 0.3)
+                                        val = 0.3;
+                                else if (val < -0.3)
+                                        val = -0.3;
                                 gkick_buffer_push_back((struct gkick_buffer*)synth->buffer, val);
                                 i++;
                                 gkick_synth_unlock(synth);

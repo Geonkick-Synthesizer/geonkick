@@ -83,6 +83,9 @@ class FileDialog: public GeonkickWidget {
                     selectedFile(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
                     RK_ARG_VAL(file));
+        std::string currentDirectory() const;
+        std::string filePath() const;
+        void exec();
 
  protected:
         void onAccept();
@@ -94,6 +97,8 @@ class FileDialog: public GeonkickWidget {
         Type dialogType;
         FilesView *filesView;
         RkLabel *pathLabel;
+        bool isClosed;
+        std::string pathSelected;
 };
 
 #endif // GEONKICK_FILE_DIALOG_H

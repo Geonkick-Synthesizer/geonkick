@@ -28,6 +28,7 @@
 
 #include <RkLabel.h>
 #include <RkLineEdit.h>
+#include <RkProgressBar.h>
 
 #include <sndfile.h>
 
@@ -59,7 +60,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         , exportButton{nullptr}
         , cancelButton{nullptr}
         , errorLabel{nullptr}
-          //        , progressBar{nullptr}
+        , progressBar{nullptr}
         , selectedFormat{ExportFormat::Wav16}
         , channelsType{ChannelsType::Mono}
 {
@@ -96,15 +97,13 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         createFormatButtons();
         createChannelsButtons();
 
-        /*progressBar = new RkProgressBar(this);
-        progressBar->setFixedSize(widht() - 50, 5);
-        progressBar->setPosition();
+        progressBar = new RkProgressBar(this);
+        progressBar->setFixedSize(width() - 50, 4);
+        progressBar->setPosition(25, 122);
         progressBar->setRange(0, 100);
-        progressBar->setMarginWidth(1);
-        progressBar->setMarginColor(40, 40, 40);
+        progressBar->setBorderWidth(1);
+        progressBar->setBorderColor(40, 40, 40);
         progressBar->setBackgroundColor(background());
-        progressBar->setProgressColor(0, 200, 0);
-        progressBar->show();*/
 
         exportButton = new GeonkickButton(this);
         exportButton->setCheckable(true);
@@ -118,7 +117,6 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         cancelButton->setUnpressedImage(RkImage(90, 30, rk_export_cancel_png));
         RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool b), this, close());
         show();
-        showError("Can't export kick");
 }
 
 ExportWidget::~ExportWidget()
@@ -236,13 +234,13 @@ void ExportWidget::setChannels(ChannelsType channels)
 void ExportWidget::browse()
 {
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select Path - " + std::string(GEOKICK_APP_NAME));
-        RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, setLocation(file));
+        fileDialog->exec();
+        locationEdit->setText(fileDialog->currentDirectory());
 }
 
 void ExportWidget::setLocation(const std::string &location)
 {
-        GEONKICK_LOG_INFO("location: " << location);
-        locationEdit->setText(location);
+
 }
 
 bool ExportWidget::validateInput()
@@ -262,7 +260,6 @@ bool ExportWidget::validateInput()
 
 void ExportWidget::exportKick()
 {
-        GEONKICK_LOG_INFO("called");
         resetProgressBar();
         if (!validateInput())
                 return;
@@ -270,7 +267,7 @@ void ExportWidget::exportKick()
         SF_INFO sndinfo;
         sndinfo.samplerate = geonkickApi->getSampleRate();
         if (sndinfo.samplerate == 0) {
-                showError("Error on exporting kick");
+                showError("Error on exporting kick3");
                 return;
         }
 
@@ -290,15 +287,15 @@ void ExportWidget::exportKick()
                 kickBuffer = std::move(tempBuffer);
         }
 
-        if (kickBuffer.empty() || !sf_format_check(&sndinfo)) {   
-                showError("Error: error on exporting kick");
+        if (kickBuffer.empty() || !sf_format_check(&sndinfo)) {
+                GEONKICK_LOG_ERROR("size: " << kickBuffer.size());
+                showError("Error: error on exporting kick33");
                 return;
         }
 
-        GEONKICK_LOG_DEBUG("getFilePath()" << getFilePath());
         SNDFILE *sndFile = sf_open(getFilePath().c_str(), SFM_WRITE, &sndinfo);
         if (!sndFile) {
-                showError("Error on exporting kick");
+                showError("Error on exporting kick2");
                 return;
         }
 
@@ -315,11 +312,12 @@ void ExportWidget::exportKick()
                 n = sf_write_float(sndFile, kickBuffer.data() + i, chunk);
 #endif
                 if (n != chunk) {
-                        showError("Error on exporting kick");
+                        showError("Error on exporting kick1");
                         break;
                 }
                 i += chunk;
-                //                exportProgress->setValue(100 * (static_cast<float>(i) / kickBuffer.size()));
+                progressBar->setValue(100 * (static_cast<float>(i) / kickBuffer.size()));
+                eventQueue()->processQueue();
         }
 
         sf_close(sndFile);
@@ -328,7 +326,7 @@ void ExportWidget::exportKick()
 
 void ExportWidget::resetProgressBar()
 {
-        //        progressBar->reset();
+        progressBar->reset();
 }
 
 int ExportWidget::exportFormat()

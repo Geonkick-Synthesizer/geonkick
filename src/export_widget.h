@@ -31,6 +31,7 @@ class RkLineEdit;
 class RkLabel;
 class RkProgressBar;
 class GeonkickButton;
+class RkProgressBar;
 
 class ExportWidget: public GeonkickWidget {
         enum class ChannelsType: int {

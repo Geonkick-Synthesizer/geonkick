@@ -185,10 +185,11 @@ void MainWindow::openPreset(const std::string &fileName)
 void MainWindow::openFileDialog(FileDialog::Type type)
 {
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Preset" : "Save Preset");
+        fileDialog->exec();
         if (type == FileDialog::Type::Open)
-                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, openPreset(file));
+                openPreset(fileDialog->filePath());
         else
-                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, savePreset(file));
+                savePreset(fileDialog->filePath());
 }
 
 void MainWindow::openAboutDialog()

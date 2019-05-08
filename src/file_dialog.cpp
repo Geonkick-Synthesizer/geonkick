@@ -256,6 +256,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         , dialogType{type}
         , filesView{nullptr}
         , pathLabel{nullptr}
+        , isClosed{false}
 {
         setTitle(title);
         setFixedSize(600, 400);
@@ -309,20 +310,39 @@ void FileDialog::onAccept()
 {
         if (dialogType == Type::Open) {
                 if (!filesView->selectedFile().empty())
-                        selectedFile(filesView->selectedFile());
+                        pathSelected = filesView->selectedFile();
         } else {
                 if (filesView->selectedFile().empty())
-                        selectedFile(filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text()));
+                        pathSelected = filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text());
                 else
-                        selectedFile(filesView->selectedFile());
+                        pathSelected = filesView->selectedFile();
         }
 
-        close();
+        selectedFile(pathSelected);
+        isClosed = true;
 }
 
 void FileDialog::onCancel()
 {
-        close();
+        isClosed = true;
 }
 
+std::string FileDialog::currentDirectory() const
+{
+        return filesView->getCurrentPath();
+}
+
+std::string FileDialog::filePath() const
+{
+        return pathSelected;
+}
+
+void FileDialog::exec()
+{
+        while (!isClosed) {
+                eventQueue()->processQueue();
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        }
+        close();
+}
 
