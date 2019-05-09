@@ -145,6 +145,7 @@ class GeonkickApi {
   void setDistortionVolume(double volume);
   void setDistortionDrive(double drive);
   std::vector<gkick_real> getKickBuffer() const;
+  void triggerSynthesis();
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));

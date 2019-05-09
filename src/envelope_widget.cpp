@@ -26,7 +26,6 @@
 #include "oscillator_envelope.h"
 #include "envelope_draw_area.h"
 #include "geonkick_button.h"
-#include "kick_graph.h"
 
 extern const unsigned char rk_show_ampl_env_active_png[];
 extern const unsigned char rk_show_ampl_env_png[];
@@ -48,11 +47,9 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
           , drawArea{nullptr}
           , showAmplitudeEnvButton{nullptr}
           , showFrequencyEnvButton{nullptr}
-          , kickGraph{nullptr}
-
 {
         // Create drawing area.
-        drawArea = new EnvelopeWidgetDrawingArea(this);
+        drawArea = new EnvelopeWidgetDrawingArea(this, api);
         drawArea->show();
 
         auto rect = drawArea->getDrawingArea();
@@ -79,14 +76,6 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(api, rect));
         //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
-
-        kickGraph = std::make_unique<KickGraph>(api, rect.size(), eventQueue());
-        RK_ACT_BIND(kickGraph.get(),
-                    graphUpdated,
-                    RK_ACT_ARGS(std::shared_ptr<RkImage> graphImage),
-                    drawArea, updateKickGraph(graphImage));
-        kickGraph->start();
-
         createButtomMenu();
         showGeneralEnvelope();
 }

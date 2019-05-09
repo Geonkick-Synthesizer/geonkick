@@ -937,11 +937,10 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
 
         gkick_synth_lock(synth);
 
-        if (size >= synth->buffer_size) {
+        if (size >= synth->buffer_size)
                 memcpy(buffer, synth->buffer, synth->buffer_size * sizeof(gkick_real));
-        } else {
+        else
                 memcpy(buffer, synth->buffer, size * sizeof(gkick_real));
-        }
 
         gkick_synth_unlock(synth);
 

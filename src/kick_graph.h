@@ -41,10 +41,10 @@ public:
      void start();
      RK_DECL_ACT(graphUpdated, graphUpdated(std::shared_ptr<RkImage> graphImage),
                  RK_ARG_TYPE(std::shared_ptr<RkImage>), RK_ARG_VAL(graphImage));
+     void updateGraphBuffer();
 
 protected:
      void drawKickGraph();
-     void updateGraphBuffer();
 
 private:
      GeonkickApi *geonkickApi;
@@ -55,6 +55,7 @@ private:
      RkSize graphSize;
      std::atomic<bool> isRunning;
      RkEventQueue* eventQueue;
+     std::atomic<bool> updateGraph;
 };
 
 #endif // GEONKICK_GRAPH

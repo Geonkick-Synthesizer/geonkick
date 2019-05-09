@@ -47,6 +47,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api)
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
 //        setWindowIcon(QPixmap(":/app_icon.png"));
+        show();
 }
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
@@ -60,6 +61,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
 //        setWindowIcon(QPixmap(":/app_icon.png"));
+        show();
 }
 
 MainWindow::~MainWindow()

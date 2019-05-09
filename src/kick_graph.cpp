@@ -34,6 +34,7 @@ KickGraph::KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q)
         , graphSize{size}
         , isRunning{true}
         , eventQueue{q}
+        , updateGraph{true}
 {
         RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
 }
@@ -47,14 +48,18 @@ KickGraph::~KickGraph()
 
 void KickGraph::start()
 {
-       updateGraphBuffer();
        graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
 }
 
 void KickGraph::updateGraphBuffer()
 {
+        if (!graphThread)
+                start();
         std::unique_lock<std::mutex> lock(graphMutex);
         kickBuffer = geonkickApi->getKickBuffer();
+        updateGraph = true;
+        if (kickBuffer.empty())
+                geonkickApi->triggerSynthesis();
         threadConditionVar.notify_one();
 }
 
@@ -64,7 +69,8 @@ void KickGraph::drawKickGraph()
                 // Ignore too many updates. The last udpate will be processed.
                 std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
-                threadConditionVar.wait(lock);
+                if (!updateGraph)
+                        threadConditionVar.wait(lock);
                 if (!isRunning)
                         break;
 
@@ -111,5 +117,6 @@ void KickGraph::drawKickGraph()
                 painter.drawPolyline(graphPoints);
                 if (eventQueue)
                         eventQueue->postAction([this, graphImage](void){ graphUpdated(graphImage); });
+                updateGraph = false;
         }
 }

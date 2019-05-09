@@ -34,11 +34,13 @@
 class Envelope;
 class KickGraph;
 class RkMouseEvent;
+class KickGraph;
+class GeonkickApi;
 
 class EnvelopeWidgetDrawingArea : public GeonkickWidget
 {
  public:
-   EnvelopeWidgetDrawingArea(GeonkickWidget *parent);
+   EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api);
    ~EnvelopeWidgetDrawingArea();
    void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
    Envelope* getEnvelope() const;
@@ -63,6 +65,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    bool hideEnvelope;
    std::shared_ptr<RkImage> kickGraphImage;
    RkImage envelopeImage;
+   std::unique_ptr<KickGraph> kickGraphics;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

@@ -309,7 +309,6 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                 return nullptr;
         }
 
-        mainWidget->show();
         auto winId = mainWidget->nativeWindowInfo()->window;
         *widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
         auto size = mainWidget->size();

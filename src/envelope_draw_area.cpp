@@ -23,20 +23,28 @@
 
 #include "envelope_draw_area.h"
 #include "envelope.h"
+#include "kick_graph.h"
 
 #include <RkPainter.h>
 #include <RkEvent.h>
 
-EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent)
+EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api)
           : GeonkickWidget(parent)
           , currentEnvelope{nullptr}
           , hideEnvelope{false}
           , kickGraphImage{nullptr}
+          , kickGraphics{nullptr}
 {
         setFixedSize(850, 300);
         int padding = 50;
         drawingArea = RkRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
         setBackgroundColor(40, 40, 40);
+
+        kickGraphics = std::make_unique<KickGraph>(api, drawingArea.size(), eventQueue());
+        RK_ACT_BIND(kickGraphics.get(),
+                    graphUpdated,
+                    RK_ACT_ARGS(std::shared_ptr<RkImage> graphImage),
+                    this, updateKickGraph(graphImage));
 }
 
 EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
@@ -72,6 +80,8 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
 
         if (kickGraphImage && !kickGraphImage->isNull())
                 painter.drawImage(*kickGraphImage.get(), drawingArea.topLeft().x(), drawingArea.topLeft().y());
+        else
+                kickGraphics->updateGraphBuffer();
 
         if (currentEnvelope)
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Axies);
