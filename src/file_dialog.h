@@ -29,6 +29,7 @@
 class RkLineEdit;
 class RkPaintEvent;
 class RkMouseEvent;
+class RkCloseEvent;
 class GeonkickButton;
 class RkLabel;
 
@@ -91,6 +92,7 @@ class FileDialog: public GeonkickWidget {
         void onAccept();
         void onCancel();
         void onPathChanged(const std::string &pathName);
+        void closeEvent(const std::shared_ptr<RkCloseEvent> &event) final;
 
  private:
         RkLineEdit *fileNameEdit;

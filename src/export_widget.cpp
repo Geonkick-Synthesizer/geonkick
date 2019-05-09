@@ -75,6 +75,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         errorLabel->hide();
 
         locationEdit = new RkLineEdit(this);
+        locationEdit->setTitle("locationEdit");
         locationEdit->show();
         locationEdit->setText(std::filesystem::current_path());
         locationEdit->setSize(120, 25);
@@ -88,6 +89,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         RK_ACT_BIND(browseLocation, toggled, RK_ACT_ARGS(bool b), this, browse());
 
         fileNameEdit = new RkLineEdit(this);
+        fileNameEdit->setTitle("fileNameEdit");
         fileNameEdit->show();
         fileNameEdit->setFixedSize(100, 25);
         fileNameEdit->setPosition(380, 54);

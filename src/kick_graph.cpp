@@ -47,6 +47,7 @@ KickGraph::~KickGraph()
 
 void KickGraph::start()
 {
+       updateGraphBuffer();
        graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
 }
 
@@ -108,7 +109,7 @@ void KickGraph::drawKickGraph()
                 }
                 graphPoints.resize(j);
                 painter.drawPolyline(graphPoints);
-                     if (eventQueue)
-                             eventQueue->postAction([this, graphImage](void){ graphUpdated(graphImage); });
+                if (eventQueue)
+                        eventQueue->postAction([this, graphImage](void){ graphUpdated(graphImage); });
         }
 }

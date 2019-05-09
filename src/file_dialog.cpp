@@ -327,6 +327,11 @@ void FileDialog::onCancel()
         isClosed = true;
 }
 
+void FileDialog::closeEvent(const std::shared_ptr<RkCloseEvent> &event)
+{
+        isClosed = true;
+}
+
 std::string FileDialog::currentDirectory() const
 {
         return filesView->getCurrentPath();
