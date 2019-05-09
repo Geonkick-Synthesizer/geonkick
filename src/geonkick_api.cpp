@@ -711,6 +711,9 @@ void GeonkickApi::registerCallbacks(bool b)
         if (b) {
                 geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
                 //                geonkick_set_kick_limiter_callback(geonkickApi, &GeonkickApi::limiterCallback, this);
+                // Force the sinthesizer to regenerate the kick and call
+                // the kickUpdatedCallback in order to set the kickBuffer.
+                geonkick_enable_synthesis(geonkickApi, 1);
         } else {
                 geonkick_set_kick_buffer_callback(geonkickApi, NULL, NULL);
                 //                geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
