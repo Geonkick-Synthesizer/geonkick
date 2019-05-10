@@ -72,6 +72,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         errorLabel->setFixedSize(150, 15);
         errorLabel->setBackgroundColor(background());
         errorLabel->setPosition(width() - 180, 105);
+        errorLabel->setTextColor({200, 0, 0});
         errorLabel->hide();
 
         locationEdit = new RkLineEdit(this);
@@ -379,8 +380,11 @@ void ExportWidget::showError(const std::string &error)
 {
         if (error.empty()) {
                 errorLabel->hide();
+                progressBar->setProgressColor({52, 116, 209});
         } else {
                 errorLabel->setText(error);
                 errorLabel->show();
+                progressBar->setProgressColor({200, 0, 0});
+                progressBar->setValue(100);
         }
 }
