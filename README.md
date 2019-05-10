@@ -13,7 +13,9 @@ Version: 1.1
 Author: Iurie Nistor
 
 Source code repository: https://gitlab.com/quamplex/geonkick
+
 Latest releases can be found on "master" branch or "tags".
+
 The development of new releases is going on branch "develop".
 
 ![Screenshot](data/screenshot.png)
