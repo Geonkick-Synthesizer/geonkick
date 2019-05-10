@@ -13,6 +13,8 @@ Version: 2.0
 Author: Iurie Nistor
 
 Source code repository: https://gitlab.com/iurie/geonkick
+Latest releases can be found on "master" branch or "tags".
+The development of new releases is going on branch "develop".
 
 ![Screenshot](data/screenshot.png)
 
