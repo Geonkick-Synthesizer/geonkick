@@ -490,7 +490,6 @@ gkick_synth_set_osc_function(struct gkick_synth *synth,
                              enum geonkick_osc_func_type type)
 {
         struct gkick_oscillator *osc;
-
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -539,6 +538,59 @@ gkick_synth_get_osc_function(struct gkick_synth *synth,
 
         gkick_synth_unlock(synth);
 
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_set_osc_phase(struct gkick_synth *synth,
+                          size_t osc_index,
+                          gkick_real phase)
+{
+        struct gkick_oscillator *osc;
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (osc == NULL) {
+                gkick_log_error("can't get oscilaltor");
+                gkick_synth_unlock(synth);
+                return GEONKICK_ERROR;
+        } else {
+                osc->initial_phase = phase;
+        }
+
+        if (osc->state == GEONKICK_OSC_STATE_ENABLED)
+                gkick_synth_wakeup_thread(synth);
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_get_osc_phase(struct gkick_synth *synth,
+                          size_t osc_index,
+                          gkick_real *phase)
+{
+        struct gkick_oscillator *osc;
+        if (synth == NULL || phase == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (osc == NULL) {
+                gkick_log_error("can't get oscilaltor");
+                gkick_synth_unlock(synth);
+                return GEONKICK_ERROR;
+        } else {
+                *phase = osc->initial_phase;
+        }
+
+        gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
 
@@ -1145,13 +1197,11 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
 void gkick_synth_reset_oscillators(struct gkick_synth *synth)
 {
         int i = 0;
-
-        if (synth == NULL) {
+        if (synth == NULL)
                 return;
-        }
 
         for (i = 0; i < synth->oscillators_number; i++) {
-                (synth->oscillators[i])->phase = 0.0;
+                (synth->oscillators[i])->phase = (synth->oscillators[i])->initial_phase;
                 gkick_filter_init(synth->oscillators[i]->filter);
         }
 }

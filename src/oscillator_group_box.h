@@ -32,6 +32,7 @@ class GeonkickWidget;
 class GeonkickButton;
 class GeonkickCheckbox;
 class Knob;
+class GeonkickSlider;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -53,6 +54,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void setSquareWave(bool pressed);
         void setTriangleWave(bool pressed);
         void setSawtoothWave(bool pressed);
+        void setOscillatorPhase(int value);
         void setNoiseWhite(bool pressed);
         void setNoiseBrownian(bool pressed);
         void groupBoxLabelUpdated(bool state);
@@ -66,6 +68,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *squareButton;
         GeonkickButton *triangleButton;
         GeonkickButton *sawtoothButton;
+        GeonkickSlider *phaseSlider;
         GeonkickButton *noiseWhiteButton;
         GeonkickButton *noiseBrownianButton;
         GeonkickButton *filterType;

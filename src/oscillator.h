@@ -37,21 +37,23 @@ class Oscillator
 
   explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
   ~Oscillator();
-  Oscillator::FunctionType function();
-  std::vector<RkRealPoint> envelopePoints(EnvelopeType type);
-  double amplitude(void);
-  double frequency(void);
+  Oscillator::FunctionType function() const;
+  std::vector<RkRealPoint> envelopePoints(EnvelopeType type) const;
+  double amplitude(void) const;
+  double frequency(void) const;
   void setType(Type type);
-  Oscillator::Type type(void);
-  bool isFilterEnabled();
-  Oscillator::FilterType filter();
-  double filterFrequency(void);
-  double filterQFactor();
-  bool isEnabled();
-  double envelopeLength();
+  Oscillator::Type type(void) const;
+  bool isFilterEnabled() const;
+  Oscillator::FilterType filter() const;
+  double filterFrequency(void) const;
+  double filterQFactor() const;
+  bool isEnabled() const;
+  double envelopeLength() const;
 
   void enable(bool b);
   void setFunction(FunctionType func);
+  void setPhase(gkick_real phase);
+  gkick_real getPhase() const;
   void setAmplitude(double amp);
   void setFrequency(double freq);
   void enableFilter(bool b);
@@ -67,8 +69,8 @@ class Oscillator
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double len), RK_ARG_TYPE(double), RK_ARG_VAL(len));
 
  protected:
-          int index();
-          int envelopeIndex(EnvelopeType type);
+          int index() const;
+          int envelopeIndex(EnvelopeType type) const;
  private:
 	  GeonkickApi *geonkickApi;
           Type oscillatorType;

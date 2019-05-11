@@ -59,6 +59,7 @@ class GeonkickState
 
         void setOscillatorEnabled(int index, bool b);
         void setOscillatorFunction(int index, GeonkickApi::FunctionType type);
+        void setOscillatorPhase(int index, double phase);
         void setOscillatorAmplitue(int index, double val);
         void setOscillatorFrequency(int index, double val);
         void setOscillatorFilterEnabled(int index, bool b);
@@ -72,6 +73,7 @@ class GeonkickState
         bool isOscillatorEnabled(int index) const;
         GeonkickApi::FunctionType oscillatorFunction(int index) const;
         double oscillatorAmplitue(int index) const;
+        double oscillatorPhase(int index) const;
         double oscillatorFrequency(int index) const;
         bool isOscillatorFilterEnabled(int index) const;
         GeonkickApi::FilterType oscillatorFilterType(int index) const;
@@ -109,9 +111,21 @@ class GeonkickState
 
 private:
         struct OscillatorInfo {
+              OscillatorInfo()
+              : type{GeonkickApi::OscillatorType::Oscillator1}
+                , isEnabled{false}
+                , function{GeonkickApi::FunctionType::Sine}
+                , phase{0}
+                , amplitude{0}
+                , frequency{0}
+                , isFilterEnabled{false}
+                , filterType{GeonkickApi::FilterType::LowPass}
+                , filterFrequency{0}
+                , filterFactor{0} {}
                 GeonkickApi::OscillatorType type;
                 bool isEnabled;
                 GeonkickApi::FunctionType function;
+                double phase;
                 double amplitude;
                 double frequency;
                 bool isFilterEnabled;

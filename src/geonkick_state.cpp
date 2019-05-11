@@ -157,6 +157,8 @@ void GeonkickState::parseOscillatorObject(const char *name,  const rapidjson::Va
                         setOscillatorEnabled(index, m.value.GetBool());
                 if (m.name == "function" && m.value.IsInt())
                         setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(m.value.GetInt()));
+                if (m.name == "phase" && m.value.IsDouble())
+                        setOscillatorPhase(index, m.value.GetDouble());
                 if (m.name == "ampl_env" && m.value.IsObject()) {
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "amplitude" && el.value.IsDouble())
@@ -307,6 +309,13 @@ void GeonkickState::setOscillatorFunction(int index, GeonkickApi::FunctionType t
                 oscillator->function = type;
 }
 
+void GeonkickState::setOscillatorPhase(int index, double phase)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->phase = phase;
+}
+
 void GeonkickState::setOscillatorAmplitue(int index, double val)
 {
         auto oscillator = getOscillator(index);
@@ -378,6 +387,15 @@ GeonkickApi::FunctionType GeonkickState::oscillatorFunction(int index) const
                 return oscillator->function;
 
         return GeonkickApi::FunctionType::Sine;
+}
+
+double GeonkickState::oscillatorPhase(int index) const
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                return oscillator->phase;
+
+        return 0;
 }
 
 double GeonkickState::oscillatorAmplitue(int index) const
@@ -550,6 +568,7 @@ std::string GeonkickState::toJson() const
                 jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false");
                 jsonStream << "," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
+                jsonStream <<  "\"phase\": " << std::fixed << std::setprecision(5) << val.second->phase << ", " << std::endl;
                 jsonStream << "\"ampl_env\": {" << std::endl;
                 jsonStream << "\"amplitude\": "  << std::fixed << std::setprecision(5) << val.second->amplitude << ", " << std::endl;
                 jsonStream << "\"points\": [" << std::endl;

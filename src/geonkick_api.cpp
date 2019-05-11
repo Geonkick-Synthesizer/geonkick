@@ -101,10 +101,12 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
                 else
                         state->setOscillatorEnabled(index, false);
 
-                if (osc == GeonkickApi::OscillatorType::Noise)
+                if (osc == GeonkickApi::OscillatorType::Noise) {
                         state->setOscillatorFunction(index, GeonkickApi::FunctionType::NoiseWhite);
-                else
+                } else {
                         state->setOscillatorFunction(index, GeonkickApi::FunctionType::Sine);
+                        state->setOscillatorPhase(index, 0);
+                }
 
                 state->setOscillatorAmplitue(index, 0.26);
                 state->setOscillatorFrequency(index, 800);
@@ -188,6 +190,8 @@ void GeonkickApi::getOscillatorState(OscillatorType osc, const std::shared_ptr<G
         int index = static_cast<int>(osc);
         state->setOscillatorEnabled(index, isOscillatorEnabled(index));
         state->setOscillatorFunction(index, oscillatorFunction(index));
+        if (osc != OscillatorType::Noise)
+                state->setOscillatorPhase(index, oscillatorPhase(index));
         state->setOscillatorAmplitue(index, oscillatorAmplitude(index));
         state->setOscillatorFrequency(index, oscillatorFrequency(index));
         state->setOscillatorFilterEnabled(index, isOscillatorFilterEnabled(index));
@@ -207,6 +211,8 @@ void GeonkickApi::setOscillatorState(OscillatorType oscillator, const std::share
         auto osc = static_cast<int>(oscillator);
         enableOscillator(osc, state->isOscillatorEnabled(static_cast<int>(osc)));
         setOscillatorFunction(osc, state->oscillatorFunction(static_cast<int>(osc)));
+        if (oscillator != OscillatorType::Noise)
+                setOscillatorPhase(osc, state->oscillatorPhase(static_cast<int>(osc)));
         setOscillatorAmplitude(osc, state->oscillatorAmplitue(static_cast<int>(osc)));
         if (oscillator != OscillatorType::Noise)
                 setOscillatorFrequency(osc, state->oscillatorFrequency(static_cast<int>(osc)));
@@ -295,12 +301,24 @@ void GeonkickApi::setOscillatorFunction(int oscillatorIndex, FunctionType functi
                                   static_cast<enum geonkick_osc_func_type>(function));
 }
 
+void GeonkickApi::setOscillatorPhase(int oscillatorIndex, gkick_real phase)
+{
+        geonkick_set_osc_phase(geonkickApi, oscillatorIndex, phase);
+}
+
 GeonkickApi::FunctionType GeonkickApi::oscillatorFunction(int oscillatorIndex) const
 {
 
         enum geonkick_osc_func_type function;
         geonkick_get_osc_function(geonkickApi, oscillatorIndex, &function);
         return static_cast<FunctionType>(function);
+}
+
+gkick_real GeonkickApi::oscillatorPhase(int oscillatorIndex) const
+{
+        gkick_real phase = 0;
+        geonkick_get_osc_phase(geonkickApi, oscillatorIndex, &phase);
+        return phase;
 }
 
 void GeonkickApi::setKickLength(double length)

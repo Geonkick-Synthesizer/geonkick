@@ -22,6 +22,7 @@ The development of new releases is going on branch "develop".
 
 * Two oscillators
      - sine, square, triangle, saw-tooth
+     - initial phase
      - amplitude & frequency envelope
      - low & high pass filter
 * Noise:

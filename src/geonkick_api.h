@@ -78,6 +78,7 @@ class GeonkickApi {
                                     int pointIndex,
                                     const RkRealPoint &point);
   GeonkickApi::FunctionType oscillatorFunction(int oscillatorIndex) const;
+  gkick_real oscillatorPhase(int oscillatorIndex) const;
   double kickMaxLength(void) const;
   double kickLength(void) const;
   double kickAmplitude() const;
@@ -94,6 +95,7 @@ class GeonkickApi {
   void updateKickEnvelopePoint(int index, double x, double y);
   void setOscillatorEvelopePoints(int index, EnvelopeType envelope, const std::vector<RkRealPoint> &points);
   void setOscillatorFunction(int oscillatorIndex, FunctionType function);
+  void setOscillatorPhase(int oscillatorIndex, gkick_real phase);
   void enableOscillator(int oscillatorIndex, bool enable);
   void enableOscillatorFilter(int oscillatorIndex, bool enable);
   bool isOscillatorFilterEnabled(int oscillatorIndex);

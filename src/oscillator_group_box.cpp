@@ -75,6 +75,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , squareButton{nullptr}
            , triangleButton{nullptr}
            , sawtoothButton{nullptr}
+           , phaseSlider{nullptr}
            , noiseWhiteButton{nullptr}
            , noiseBrownianButton{nullptr}
            , filterType{nullptr}
@@ -172,11 +173,12 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         phaseLabel->setImage(RkImage(phaseLabel->size(), rk_phase_label_png));
         phaseLabel->show();
 
-        auto phaseSlider = new GeonkickSlider(waveFunctionHBox);
+        phaseSlider = new GeonkickSlider(waveFunctionHBox);
         phaseSlider->setFixedSize(140, 8);
         phaseSlider->onSetValue(50);
         phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
         phaseSlider->show();
+        RK_ACT_BIND(phaseSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorPhase(value));
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()
@@ -325,6 +327,11 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
         }
 }
 
+void OscillatorGroupBox::setOscillatorPhase(int value)
+{
+        oscillator->setPhase((static_cast<gkick_real>(value) / 100) * (2 * M_PI));
+}
+
 void OscillatorGroupBox::setNoiseWhite(bool pressed)
 {
         if (pressed) {
@@ -379,6 +386,7 @@ void OscillatorGroupBox::updateGui()
                         triangleButton->setPressed(true);
                 else if (oscillator->function() == Oscillator::FunctionType::Sawtooth)
                         sawtoothButton->setPressed(true);
+                phaseSlider->onSetValue(100 * oscillator->getPhase() / (2 * M_PI));
         }
 
         envelopeAmplitudeKnob->setCurrentValue(oscillator->amplitude());
