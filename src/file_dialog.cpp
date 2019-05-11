@@ -104,12 +104,17 @@ void FilesView::loadCurrentDirectory()
         if (!std::filesystem::is_directory(currentPath))
                 return;
 
-        filesList.clear();
-
-        for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
-                if (std::filesystem::is_directory(entry.path())
-                    || entry.path().extension() == ".gkick" || entry.path().extension() == ".GKICK")
-                        filesList.emplace_back(entry.path());
+        decltype(filesList) files;
+        try {
+                for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
+                        if (std::filesystem::is_directory(entry.path())
+                            || entry.path().extension() == ".gkick" || entry.path().extension() == ".GKICK")
+                                files.emplace_back(entry.path());
+                }
+                filesList = files;
+        } catch(...) {
+                GEONKICK_LOG_ERROR("error on reading directory");
+                files.clear();
         }
 
         if (!filesList.empty())
