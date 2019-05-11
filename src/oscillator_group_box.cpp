@@ -26,6 +26,7 @@
 #include "geonkick_widget.h"
 #include "geonkick_button.h"
 #include "knob.h"
+#include "geonkick_slider.h"
 
 #include <RkLabel.h>
 
@@ -42,6 +43,7 @@ extern const unsigned char rk_wave_button_square_active_png[];
 extern const unsigned char rk_wave_button_triangle_png[];
 extern const unsigned char rk_wave_button_triangle_active_png[];
 extern const unsigned char rk_wave_button_sawtooth_png[];
+extern const unsigned char rk_phase_label_png[];
 extern const unsigned char rk_wave_button_sawtooth_active_png[];
 extern const unsigned char rk_hboxbk_noise_env_png[];
 extern const unsigned char rk_hboxbk_osc_env_png[];
@@ -121,44 +123,60 @@ OscillatorGroupBox::~OscillatorGroupBox()
 void OscillatorGroupBox::createWaveFunctionGroupBox()
 {
         auto waveFunctionHBox = new GeonkickWidget(this);
+        waveFunctionHBox->setBackgroundColor(67, 68, 68);
         waveFunctionHBox->setFixedSize(224, 85);
         waveFunctionHBox->setPosition(0, 18);
-        waveFunctionHBox->setBackgroundImage(RkImage(224, 85, rk_wf_bk_hbox_png));
+        waveFunctionHBox->setBackgroundImage(RkImage(waveFunctionHBox->size(), rk_wf_bk_hbox_png));
         waveFunctionHBox->show();
 
         sineButton = new GeonkickButton(waveFunctionHBox);
-        sineButton->setSize(90, 30);
-        sineButton->setPosition((waveFunctionHBox->width() / 2 - sineButton->width()) / 2, 20);
-        sineButton->setUnpressedImage(RkImage(90, 30, rk_wave_button_sine_png));
-        sineButton->setPressedImage(RkImage(90, 30, rk_wave_button_sine_active_png));
+        sineButton->setBackgroundColor(waveFunctionHBox->background());
+        sineButton->setFixedSize(67, 14);
+        sineButton->setPosition(24, 25);
+        sineButton->setUnpressedImage(RkImage(sineButton->size(), rk_wave_button_sine_png));
+        sineButton->setPressedImage(RkImage(sineButton->size(), rk_wave_button_sine_active_png));
         RK_ACT_BIND(sineButton, toggled, RK_ACT_ARGS(bool b), this, setSineWave(b));
         sineButton->show();
 
         squareButton = new GeonkickButton(waveFunctionHBox);
-        squareButton->setFixedSize(90, 30);
-        squareButton->setPosition((waveFunctionHBox->width() / 2 - squareButton->width()) / 2,
-                                  21 + squareButton->height());
-        squareButton->setUnpressedImage(RkImage(90, 30, rk_wave_button_square_png));
-        squareButton->setPressedImage(RkImage(90, 30, rk_wave_button_square_active_png));
+        squareButton->setBackgroundColor(waveFunctionHBox->background());
+        squareButton->setFixedSize(67, 14);
+        squareButton->setPosition(sineButton->x(),  sineButton->y() + sineButton->height() + 5);
+        squareButton->setUnpressedImage(RkImage(squareButton->size(), rk_wave_button_square_png));
+        squareButton->setPressedImage(RkImage(squareButton->size(), rk_wave_button_square_active_png));
         RK_ACT_BIND(squareButton, toggled, RK_ACT_ARGS(bool b), this, setSquareWave(b));
         squareButton->show();
 
         triangleButton = new GeonkickButton(waveFunctionHBox);
-        triangleButton->setSize(90, 30);
-        triangleButton->setPosition(waveFunctionHBox->width() / 2 + (waveFunctionHBox->width() / 2 - triangleButton->width()) / 2, 22);
-        triangleButton->setUnpressedImage(RkImage(90, 30, rk_wave_button_triangle_png));
-        triangleButton->setPressedImage(RkImage(90, 30, rk_wave_button_triangle_active_png));
+        triangleButton->setBackgroundColor(waveFunctionHBox->background());
+        triangleButton->setFixedSize(67, 14);
+        triangleButton->setPosition(sineButton->x() + 100, sineButton->y());
+        triangleButton->setUnpressedImage(RkImage(triangleButton->size(), rk_wave_button_triangle_png));
+        triangleButton->setPressedImage(RkImage(triangleButton->size(), rk_wave_button_triangle_active_png));
         RK_ACT_BIND(triangleButton, toggled, RK_ACT_ARGS(bool b), this, setTriangleWave(b));
         triangleButton->show();
 
         sawtoothButton = new GeonkickButton(waveFunctionHBox);
-        sawtoothButton->setSize(90, 30);
-        sawtoothButton->setPosition(waveFunctionHBox->width() / 2 + (waveFunctionHBox->width() / 2 - sawtoothButton->width()) / 2,
-                                    21 + sawtoothButton->height());
-        sawtoothButton->setUnpressedImage(RkImage(90, 30, rk_wave_button_sawtooth_png));
-        sawtoothButton->setPressedImage(RkImage(90, 30, rk_wave_button_sawtooth_active_png));
+        sawtoothButton->setBackgroundColor(waveFunctionHBox->background());
+        sawtoothButton->setSize(67, 14);
+        sawtoothButton->setPosition(sineButton->x() + 100, sineButton->y() + sineButton->height() + 5);
+        sawtoothButton->setUnpressedImage(RkImage(sawtoothButton->size(), rk_wave_button_sawtooth_png));
+        sawtoothButton->setPressedImage(RkImage(sawtoothButton->size(), rk_wave_button_sawtooth_active_png));
         RK_ACT_BIND(sawtoothButton, toggled, RK_ACT_ARGS(bool b), this, setSawtoothWave(b));
         sawtoothButton->show();
+
+        auto phaseLabel = new RkLabel(waveFunctionHBox);
+        phaseLabel->setFixedSize(30, 8);
+        phaseLabel->setPosition(sineButton->x(), sawtoothButton->y() + sawtoothButton->height() + 8);
+        phaseLabel->setBackgroundColor(waveFunctionHBox->background());
+        phaseLabel->setImage(RkImage(phaseLabel->size(), rk_phase_label_png));
+        phaseLabel->show();
+
+        auto phaseSlider = new GeonkickSlider(waveFunctionHBox);
+        phaseSlider->setFixedSize(140, 8);
+        phaseSlider->onSetValue(50);
+        phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
+        phaseSlider->show();
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()

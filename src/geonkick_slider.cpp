@@ -47,7 +47,7 @@ void GeonkickSlider::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         RkImage img(width(), height());
         RkPainter painter(&img);
         painter.fillRect(rect(), background());
-        painter.setPen(RkPen(RkColor(20, 20, 20)));
+        painter.setPen(RkPen(RkColor(40, 40, 40)));
         painter.drawRect({0, 0, width() - 1, height() - 1});
         if (sliderOrientation == Orientation::Horizontal)
                 painter.fillRect(RkRect(1, 1, sliderPixels, height() - 1 - 1),
