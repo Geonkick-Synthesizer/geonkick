@@ -251,7 +251,7 @@ std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
         size_t n = 0;
         geonkick_get_oscillators_number(geonkickApi, &n);
         for (decltype(n) i = 0; i < n; i++)
-                oscillators.push_back(std::move(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i))));
+                oscillators.push_back(std::move(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i % GKICK_OSC_GROUP_SIZE))));
         return oscillators;
 }
 
@@ -260,7 +260,9 @@ std::vector<RkRealPoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorInde
         gkick_real *buf;
         std::vector<RkRealPoint> points;
         size_t npoints = 0;
-        geonkick_osc_envelope_get_points(geonkickApi, oscillatorIndex, static_cast<int>(envelope), &buf, &npoints);
+        geonkick_osc_envelope_get_points(geonkickApi,
+                                         getOscIndex(oscillatorIndex),
+                                         static_cast<int>(envelope), &buf, &npoints);
         for (decltype(npoints) i = 0; i < 2 * npoints; i += 2)
                 points.push_back(RkRealPoint(buf[i], buf[i+1]));
 
@@ -284,20 +286,21 @@ void GeonkickApi::setOscillatorEvelopePoints(int index,
                 buff[2 * i + 1] = points[i].y();
         }
 
-        geonkick_osc_envelope_set_points(geonkickApi, index, static_cast<int>(envelope), buff, points.size());
+        geonkick_osc_envelope_set_points(geonkickApi, getOscIndex(index),
+                                         static_cast<int>(envelope), buff, points.size());
 }
 
 void GeonkickApi::addOscillatorEnvelopePoint(int oscillatorIndex,
                                              EnvelopeType envelope,
                                              const RkRealPoint &point)
 {
-        geonkick_osc_envelope_add_point(geonkickApi, oscillatorIndex,
+        geonkick_osc_envelope_add_point(geonkickApi, getOscIndex(oscillatorIndex),
                                         static_cast<int>(envelope), point.x(), point.y());
 }
 
 void GeonkickApi::removeOscillatorEvelopePoint(int oscillatorIndex, EnvelopeType envelope, int pointIndex)
 {
-        geonkick_osc_envelope_remove_point(geonkickApi, oscillatorIndex,
+        geonkick_osc_envelope_remove_point(geonkickApi, getOscIndex(oscillatorIndex),
                                            static_cast<int>(envelope), pointIndex);
 }
 
@@ -306,7 +309,7 @@ void GeonkickApi::updateOscillatorEvelopePoint(int oscillatorIndex,
                                                int pointIndex,
                                                const RkRealPoint &point)
 {
-        geonkick_osc_envelope_update_point(geonkickApi, oscillatorIndex,
+        geonkick_osc_envelope_update_point(geonkickApi, getOscIndex(oscillatorIndex),
                                            static_cast<int>(envelope),
                                            pointIndex, point.x(), point.y());
 }
@@ -314,28 +317,28 @@ void GeonkickApi::updateOscillatorEvelopePoint(int oscillatorIndex,
 
 void GeonkickApi::setOscillatorFunction(int oscillatorIndex, FunctionType function)
 {
-        geonkick_set_osc_function(geonkickApi, oscillatorIndex,
+        geonkick_set_osc_function(geonkickApi, getOscIndex(oscillatorIndex),
                                   static_cast<enum geonkick_osc_func_type>(function));
 }
 
 void GeonkickApi::setOscillatorPhase(int oscillatorIndex, gkick_real phase)
 {
-        geonkick_set_osc_phase(geonkickApi, oscillatorIndex, phase);
+        geonkick_set_osc_phase(geonkickApi, getOscIndex(oscillatorIndex), phase);
+}
+
+gkick_real GeonkickApi::oscillatorPhase(int oscillatorIndex) const
+{
+        gkick_real phase = 0;
+        geonkick_get_osc_phase(geonkickApi, getOscIndex(oscillatorIndex), &phase);
+        return phase;
 }
 
 GeonkickApi::FunctionType GeonkickApi::oscillatorFunction(int oscillatorIndex) const
 {
 
         enum geonkick_osc_func_type function;
-        geonkick_get_osc_function(geonkickApi, oscillatorIndex, &function);
+        geonkick_get_osc_function(geonkickApi, getOscIndex(oscillatorIndex), &function);
         return static_cast<FunctionType>(function);
-}
-
-gkick_real GeonkickApi::oscillatorPhase(int oscillatorIndex) const
-{
-        gkick_real phase = 0;
-        geonkick_get_osc_phase(geonkickApi, oscillatorIndex, &phase);
-        return phase;
 }
 
 void GeonkickApi::setKickLength(double length)

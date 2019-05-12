@@ -31,6 +31,12 @@ extern const unsigned char rk_open_active_png[];
 extern const unsigned char rk_save_active_png[];
 extern const unsigned char rk_export_active_png[];
 extern const unsigned char rk_about_png[];
+extern const unsigned char rk_topbar_layer1_png[];
+extern const unsigned char rk_topbar_layer2_png[];
+extern const unsigned char rk_topbar_layer3_png[];
+extern const unsigned char rk_topbar_layer1_disabled_png[];
+extern const unsigned char rk_topbar_layer2_disabled_png[];
+extern const unsigned char rk_topbar_layer3_disabled_png[];
 
 TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent)
@@ -101,24 +107,27 @@ void TopBar::createLyersButtons()
         int layersX = width() - 180;
         int layersSpace = 5;
         layer1Button = new GeonkickButton(this);
-        layer1Button->setSize(32, 24);
-        layer1Button->setBackgroundColor(255, 255, 255);
+        layer1Button->setBackgroundColor(background());
+        layer1Button->setSize(24, 24);
         layer1Button->setPosition(layersX, (height() - layer1Button->height()) / 2);
-        //        layer1Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer1Button->setUnpressedImage(RkImage(layer1Button->size(), rk_topbar_layer1_disabled_png));
+        layer1Button->setPressedImage(RkImage(layer1Button->size(), rk_topbar_layer1_png));
         layer1Button->setCheckable(true);
 
         layer2Button = new GeonkickButton(this);
-        layer2Button->setSize(32, 24);
-        layer2Button->setBackgroundColor(255, 255, 255);
+        layer2Button->setBackgroundColor(background());
+        layer2Button->setSize(24, 24);
         layer2Button->setPosition(layer1Button->x() + layer1Button->width() + layersSpace, layer1Button->y());
-        //        layer2Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer2Button->setUnpressedImage(RkImage(layer2Button->size(), rk_topbar_layer2_disabled_png));
+        layer2Button->setPressedImage(RkImage(layer2Button->size(), rk_topbar_layer2_png));
         layer2Button->setCheckable(true);
 
         layer3Button = new GeonkickButton(this);
-        layer3Button->setBackgroundColor(255, 255, 255);
-        layer3Button->setSize(32, 24);
+        layer3Button->setBackgroundColor(background());
+        layer3Button->setSize(24, 24);
         layer3Button->setPosition(layer2Button->x() + layer2Button->width() + layersSpace, layer2Button->y());
-        //        layer3Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer3Button->setUnpressedImage(RkImage(layer3Button->size(), rk_topbar_layer3_disabled_png));
+        layer3Button->setPressedImage(RkImage(layer3Button->size(), rk_topbar_layer3_png));
         layer3Button->setCheckable(true);
 
         RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b),
