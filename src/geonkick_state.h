@@ -103,6 +103,8 @@ class GeonkickState
         double getDistortionVolume() const;
         double getDistortionDrive() const;
         std::string toJson() const;
+        void setLayerEnabled(GeonkickApi::Layer layer, bool b);
+        bool isLayerEnabled(GeonkickApi::Layer layer) const;
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
@@ -110,6 +112,7 @@ class GeonkickState
         std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
 
 private:
+        void initOscillators();
         struct OscillatorInfo {
               OscillatorInfo()
               : type{GeonkickApi::OscillatorType::Oscillator1}
@@ -165,6 +168,7 @@ private:
         std::unordered_map<int, std::shared_ptr<OscillatorInfo>> oscillators;
         Compressor compressor;
         Distortion distortion;
+        std::vector<bool> layers;
 };
 
 #endif // GEONKICK_STATE_H

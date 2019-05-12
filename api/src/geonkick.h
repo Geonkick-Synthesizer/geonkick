@@ -389,10 +389,10 @@ geonkick_distortion_get_drive(struct geonkick *kick, gkick_real *drive);
 int geonkick_is_module_enabed(struct geonkick *kick, enum GEONKICK_MODULE module);
 
 enum geonkick_error
-geonkick_enable_group(struct gkick_synth *synth, size_t index, bool enable);
+geonkick_enable_group(struct geonkick *kick, size_t index, bool enable);
 
 enum geonkick_error
-geonkick_group_enbaled(struct gkick_synth *synth, size_t index, bool *enabled);
+geonkick_group_enabled(struct geonkick *kick, size_t index, bool *enabled);
 
 #ifdef __cplusplus
 }

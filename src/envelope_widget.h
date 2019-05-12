@@ -26,6 +26,7 @@
 
 #include "oscillator.h"
 #include "geonkick_widget.h"
+#include "geonkick_api.h"
 
 
 class EnvelopeWidgetDrawingArea;
@@ -48,6 +49,7 @@ public:
                              const std::vector<std::unique_ptr<Oscillator>> &oscillators);
      ~EnvelopeWidget();
      void hideEnvelope(bool b);
+     void updateGui();
 
  protected:
      void showAmplitudeEnvelope();
@@ -58,6 +60,8 @@ public:
      void showNoiseEnvelope();
      Envelope* getEnvelope(EnvelopeType type);
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
+     void createLayersButtons(GeonkickWidget *buttomAreaWidget);
+     void setLayer(GeonkickApi::Layer layer);
 
  private:
      void createButtomMenu();
@@ -70,6 +74,10 @@ public:
      GeonkickButton *osccillator2EvelopesButton;
      GeonkickButton *noiseEvelopesButton;
      GeonkickButton *generalEvelopesButton;
+     GeonkickButton *layer1Button;
+     GeonkickButton *layer2Button;
+     GeonkickButton *layer3Button;
+     GeonkickApi *geonkickApi;
 };
 
 #endif

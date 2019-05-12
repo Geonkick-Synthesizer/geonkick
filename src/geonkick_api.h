@@ -161,7 +161,7 @@ class GeonkickApi {
   Layer layer() const;
   void enbaleLayer(Layer layer, bool enable = true);
   bool isLayerEnabled(Layer layer) const;
-  int getOscIndex() const;
+  int getOscIndex(int index) const;
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
@@ -178,8 +178,12 @@ protected:
   static void kickUpdatedCallback(void *arg, gkick_real *buff, size_t size);
   static void limiterCallback(void *arg, gkick_real val);
   void updateKickBuffer(const std::vector<gkick_real> &&buffer);
-  void setOscillatorState(OscillatorType oscillator, const std::shared_ptr<GeonkickState> &state);
-  void getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state);
+  void setOscillatorState(Layer layer,
+                          OscillatorType oscillator,
+                          const std::shared_ptr<GeonkickState> &state);
+  void getOscillatorState(Layer layer,
+                          OscillatorType osc,
+                          const std::shared_ptr<GeonkickState> &state);
   void setLimiterVal(double val);
 
 private:
@@ -191,13 +195,7 @@ private:
   mutable std::mutex apiMutex;
   RkEventQueue *eventQueue;
   std::vector<gkick_real> kickBuffer;
-
-  struct Layers {
-          GeonkickApi::Layer layer;
-          bool enabled;
-  };
   Layer currentLayer;
-  std::vector<Layers> apiLayers;
 };
 
 #endif // GEONKICK_API_H

@@ -37,7 +37,6 @@ GeonkickApi::GeonkickApi()
         , jackEnabled{false}
         , standaloneInstance{false}
         , eventQueue{nullptr}
-        , apiLayers{Layer::Layer1, false}, {Layer::Layer2, false}, {Layer::Layer3, false}}
         , currentLayer{Layer::Layer1}
 {
 }
@@ -96,10 +95,10 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
                 GeonkickApi::OscillatorType::Noise
         };
 
-        std::vector<GeonkickApi::OscillatorType> layers = {
+        std::vector<GeonkickApi::Layer> layers = {
                 GeonkickApi::Layer::Layer1,
                 GeonkickApi::Layer::Layer2,
-                GeonkickApi::layer::Layer3
+                GeonkickApi::Layer::Layer3
         };
 
 
@@ -136,6 +135,8 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
                 return;
 
         geonkick_enable_synthesis(geonkickApi, 0);
+        for (int i = 0; i < 3; i++)
+                enbaleLayer(static_cast<Layer>(i), state->isLayerEnabled(static_cast<Layer>(i)));
         setLimiterValue(state->getLimiterValue());
         setKickLength(state->getKickLength());
         setKickAmplitude(state->getKickAmplitude());
@@ -145,9 +146,9 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         setKickFilterType(state->getKickFilterType());
         setKickEnvelopePoints(state->getKickEnvelopePoints());
         for (int i = 0; i < 3; i++) {
-                setOscillatorState(static_cast<int>(i), OscillatorType::Oscillator1, state);
-                setOscillatorState(static_cast<int>(i), OscillatorType::Oscillator2, state);
-                setOscillatorState(static_cast<int>(i), OscillatorType::Noise, state);
+                setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator1, state);
+                setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator2, state);
+                setOscillatorState(static_cast<Layer>(i), OscillatorType::Noise, state);
         }
         enableCompressor(state->isCompressorEnabled());
         setCompressorAttack(state->getCompressorAttack());
@@ -178,9 +179,11 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState()
         state->setKickFilterQFactor(kickFilterQFactor());
         state->setKickFilterType(kickFilterType());
         state->setKickEnvelopePoints(getKickEnvelopePoints());
-        getOscillatorState(Layer::layer1, OscillatorType::Oscillator1, state);
-        getOscillatorState(layer, OscillatorType::Oscillator2, state);
-        getOscillatorState(layer, OscillatorType::Noise, state);
+        for (int i = 0; i < 3; i++) {
+                getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator1, state);
+                getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator2, state);
+                getOscillatorState(static_cast<Layer>(i), OscillatorType::Noise, state);
+        }
         state->enableCompressor(isCompressorEnabled());
         state->setCompressorAttack(getCompressorAttack());
         state->setCompressorRelease(getCompressorRelease());
@@ -195,9 +198,11 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState()
         return state;
 }
 
-void GeonkickApi::getOscillatorState(OscillatorType osc, const std::shared_ptr<GeonkickState> &state)
+void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
+                                     OscillatorType osc,
+                                     const std::shared_ptr<GeonkickState> &state)
 {
-        int index = static_cast<int>(osc);
+        auto index = static_cast<int>(osc) + GKICK_OSC_GROUP_SIZE * static_cast<int>(layer);
         state->setOscillatorEnabled(index, isOscillatorEnabled(index));
         state->setOscillatorFunction(index, oscillatorFunction(index));
         if (osc != OscillatorType::Noise)
@@ -220,7 +225,7 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
                                      OscillatorType oscillator,
                                      const std::shared_ptr<GeonkickState> &state)
 {
-        auto osc = static_cast<int>(oscillator) + GKICK_OSC_GROUP_SIZE * layer;
+        auto osc = static_cast<int>(oscillator) + GKICK_OSC_GROUP_SIZE * static_cast<int>(layer);
         enableOscillator(osc, state->isOscillatorEnabled(static_cast<int>(osc)));
         setOscillatorFunction(osc, state->oscillatorFunction(static_cast<int>(osc)));
         if (oscillator != OscillatorType::Noise)
@@ -456,7 +461,6 @@ bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
 
 void GeonkickApi::enableOscillator(int oscillatorIndex, bool enable)
 {
-        int index = 3 * static_cast<int>(currnetLayer);
         if (enable)
                 geonkick_enable_oscillator(geonkickApi, getOscIndex(oscillatorIndex));
         else
@@ -775,6 +779,7 @@ void GeonkickApi::triggerSynthesis()
 void GeonkickApi::setLayer(Layer layer)
 {
         currentLayer = layer;
+        GEONKICK_LOG_DEBUG("Current layer: " << static_cast<int>(currentLayer));
 }
 
 GeonkickApi::Layer GeonkickApi::layer() const
@@ -784,13 +789,15 @@ GeonkickApi::Layer GeonkickApi::layer() const
 
 void GeonkickApi::enbaleLayer(Layer layer, bool enable)
 {
-        geonkick_group_enable(geonkickApi, static_cast<int>(layer), enable);
+        GEONKICK_LOG_DEBUG("Enable layer: " << static_cast<int>(layer)  << ",  " << enable);
+        geonkick_enable_group(geonkickApi, static_cast<int>(layer), enable);
 }
 
 bool GeonkickApi::isLayerEnabled(Layer layer) const
 {
-        bool enbaled = false;
-        geonkick_group_enable(geonkickApi, static_cast<int>(layer), &enabled);
+        bool enabled = false;
+        geonkick_group_enabled(geonkickApi, static_cast<int>(layer), &enabled);
+        GEONKICK_LOG_DEBUG("Enable layer: " << static_cast<int>(layer)  << ",  " << enabled);
         return enabled;
 }
 

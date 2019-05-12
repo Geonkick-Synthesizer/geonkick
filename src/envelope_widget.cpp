@@ -44,12 +44,21 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
                                const std::vector<std::unique_ptr<Oscillator>> &oscillators)
           : GeonkickWidget(parent)
+          , currentEnvelope{nullptr}
           , drawArea{nullptr}
           , showAmplitudeEnvButton{nullptr}
           , showFrequencyEnvButton{nullptr}
+          , osccillator1EvelopesButton{nullptr}
+          , osccillator2EvelopesButton{nullptr}
+          , noiseEvelopesButton{nullptr}
+          , generalEvelopesButton{nullptr}
+          , layer1Button{nullptr}
+          , layer2Button{nullptr}
+          , layer3Button{nullptr}
+          , geonkickApi{api}
 {
         // Create drawing area.
-        drawArea = new EnvelopeWidgetDrawingArea(this, api);
+        drawArea = new EnvelopeWidgetDrawingArea(this, geonkickApi);
         drawArea->show();
 
         auto rect = drawArea->getDrawingArea();
@@ -73,7 +82,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelopes.insert({static_cast<int>(EnvelopeType::Noise), envelope});
 
         // General nevelope
-        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(api, rect));
+        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(geonkickApi, rect));
         //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
         createButtomMenu();
@@ -144,6 +153,7 @@ void EnvelopeWidget::createButtomMenu()
         osccillator1EvelopesButton->setPosition(osccillator2EvelopesButton->x() - osccillator1EvelopesButton->width(),
                                                 (buttomAreaWidget->height() - osccillator1EvelopesButton->height()) / 2);
         osccillator1EvelopesButton->show();
+        createLayersButtons(buttomAreaWidget);
 }
 
 void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
@@ -244,3 +254,49 @@ void EnvelopeWidget::hideEnvelope(bool b)
 {
         drawArea->setHideEnvelope(b);
 }
+
+void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
+{
+        int layersSpace = 5;
+        int layersX = osccillator1EvelopesButton->x() - 3 * layersSpace - 3 * 24 - 10;
+        layer1Button = new GeonkickButton(buttomAreaWidget);
+        layer1Button->setSize(24, 24);
+        layer1Button->setBackgroundColor(255, 255, 255);
+        layer1Button->setPosition(layersX, (buttomAreaWidget->height() - layer1Button->height()) / 2);
+        //        layer1Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer1Button->setCheckable(true);
+        RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer1));
+
+        layer2Button = new GeonkickButton(buttomAreaWidget);
+        layer2Button->setSize(24, 24);
+        layer2Button->setBackgroundColor(255, 255, 255);
+        layer2Button->setPosition(layer1Button->x() + layer1Button->width() + layersSpace, layer1Button->y());
+        //        layer2Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer2Button->setCheckable(true);
+        RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer2));
+
+        layer3Button = new GeonkickButton(buttomAreaWidget);
+        layer3Button->setBackgroundColor(255, 255, 255);
+        layer3Button->setSize(24, 24);
+        layer3Button->setPosition(layer2Button->x() + layer2Button->width() + layersSpace, layer2Button->y());
+        //        layer3Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer3Button->setCheckable(true);
+        RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer3));
+}
+
+void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
+{
+        layer1Button->setPressed(GeonkickApi::Layer::Layer1 == layer);
+        layer2Button->setPressed(GeonkickApi::Layer::Layer2 == layer);
+        layer3Button->setPressed(GeonkickApi::Layer::Layer3 == layer);
+        geonkickApi->setLayer(layer);
+}
+
+void EnvelopeWidget::updateGui()
+{
+        //        auto layer = geonkickApi->layer();
+        //        layer1Button->setPressed(GeonkickApi::Layer::Layer1 == layer);
+        //        layer2Button->setPressed(GeonkickApi::Layer::Layer2 == layer);
+        //        layer3Button->setPressed(GeonkickApi::Layer::Layer3 == layer);
+}
+

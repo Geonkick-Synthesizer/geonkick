@@ -246,7 +246,7 @@ gkick_synth_enable_oscillator(struct gkick_synth *synth, size_t index, int enabl
         else
                 gkick_osc_set_state(osc, GEONKICK_OSC_STATE_DISABLED);
 
-        if (synth->osc_groups[osc / GKICK_OSC_GROUP_SIZE])
+        if (synth->osc_groups[index / GKICK_OSC_GROUP_SIZE])
                 gkick_synth_wakeup_thread(synth);
 	gkick_synth_unlock(synth);
 
@@ -1129,7 +1129,6 @@ void *gkick_synth_run(void *arg)
                                 break;
                         } else {
                                 gkick_real val = gkick_synth_get_value(synth, (gkick_real)(i * dt));
-                                gkick_log_debug("val %f", val);
                                 if (val > 0.3)
                                         val = 0.3;
                                 else if (val < -0.3)
@@ -1171,7 +1170,7 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
 {
         gkick_real val = 0;
         for (size_t i = 0; i < synth->oscillators_number; i++) {
-                if (synth->groups[i / GKICK_OSC_GROUP_SIZE]
+                if (synth->osc_groups[i / GKICK_OSC_GROUP_SIZE]
                     && gkick_osc_enabled(synth->oscillators[i])) {
                         val += gkick_osc_value(synth->oscillators[i],
                                               t, synth->length);
@@ -1639,18 +1638,18 @@ enum geonkick_error
 gkick_synth_enable_group(struct gkick_synth *synth, size_t index, bool enable)
 {
         gkick_synth_lock(synth);
+        gkick_log_debug("group = %d, %d", index, enable);
         synth->osc_groups[index] = enable;
-        if (enabled)
-                gkick_synth_wakeup_thread(synth);
+        gkick_synth_wakeup_thread(synth);
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_synth_group_enbaled(struct gkick_synth *synth, size_t index, bool *enabled)
+gkick_synth_group_enabled(struct gkick_synth *synth, size_t index, bool *enabled)
 {
         gkick_synth_lock(synth);
-        enabled = synth->osc_groups[index];
+        *enabled = synth->osc_groups[index];
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }

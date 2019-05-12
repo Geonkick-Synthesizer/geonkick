@@ -90,28 +90,26 @@ bool MainWindow::init(void)
                                      "in order to have audio output."),
                                      QMessageBox::Ok);
         */
-
-        auto topBar = new TopBar(this);
+        auto topBar = new TopBar(this, geonkickApi);
         topBar->setX(10);
         topBar->show();
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
         RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Open));
         RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Save));
         RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(), this, openExportDialog());
-
+        RK_ACT_BIND(topBar, layerSelected, RK_ACT_ARGS(GeonkickApi::Layer layer, bool b), geonkickApi, enbaleLayer(layer, b));
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 340);
         envelopeWidget->show();
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, update());
-
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         auto limiterWidget = new Limiter(geonkickApi, this);
         limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8, envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
-
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
@@ -120,7 +118,6 @@ bool MainWindow::init(void)
         //                setPreset(presetName);
         //                updateGui();
         //         }
-
         return true;
 }
 

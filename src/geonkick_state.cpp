@@ -33,14 +33,11 @@ GeonkickState::GeonkickState() :
         , kickFilterFrequency{0}
         , kickFilterQFactor{0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
-        , oscillators{
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<OscillatorInfo>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<OscillatorInfo>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<OscillatorInfo>()}
-        }
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 0, 0}
+        , layers{false, false, false}
 {
+        initOscillators();
 }
 
 GeonkickState::GeonkickState(const std::string &data) :
@@ -51,14 +48,11 @@ GeonkickState::GeonkickState(const std::string &data) :
         , kickFilterFrequency{0}
         , kickFilterQFactor{0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
-        , oscillators{
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<OscillatorInfo>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<OscillatorInfo>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<OscillatorInfo>()}
-        }
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 0, 0}
+        , layers{false, false, false}
 {
+        initOscillators();
         rapidjson::Document document;
         document.Parse(data.c_str());
         if (document.IsObject()) {
@@ -71,6 +65,21 @@ GeonkickState::GeonkickState(const std::string &data) :
         }
 }
 
+void GeonkickState::initOscillators()
+{
+        for (int i = 0; i < layers.size(); i++) {
+                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator1)
+                                        + GKICK_OSC_GROUP_SIZE * i,
+                                        std::make_shared<OscillatorInfo>()});
+                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator2)
+                                        + GKICK_OSC_GROUP_SIZE * i,
+                                        std::make_shared<OscillatorInfo>()});
+                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Noise)
+                                        + GKICK_OSC_GROUP_SIZE * i,
+                                        std::make_shared<OscillatorInfo>()});
+        }
+}
+
 void GeonkickState::parseKickObject(const rapidjson::Value &kick)
 {
         if (kick.IsNull() || !kick.IsObject())
@@ -80,10 +89,11 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                 if (m.name == "limiter" && m.value.IsDouble())
                         setLimiterValue(m.value.GetDouble());
 
+                layers = {false, false, false};
                 if (m.name == "layers" && m.value.IsArray()) {
                         for (const auto &el: m.value.GetArray())
-                                if (el.isInt())
-                                        enableLayer(static_cast<GeonkickApi::Layer>(el.getInt()));
+                                if (el.IsInt())
+                                        setLayerEnabled(static_cast<GeonkickApi::Layer>(el.GetInt()), true);
                 }
 
                 if (m.name == "ampl_env" && m.value.IsObject()) {
@@ -616,13 +626,25 @@ std::string GeonkickState::toJson() const
         }
 
         jsonStream << "\"kick\": {" << std::endl;
+        jsonStream << "\"layers\": [";
+        bool first = true;
+        for (int i = 0; i < layers.size(); i++) {
+                if (layers[i]) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << i;
+                }
+        }
+        jsonStream << "]," << std::endl;
         jsonStream << "\"limiter\": " << std::fixed << std::setprecision(5) << getLimiterValue() << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
         jsonStream << "\"amplitude\": " << std::fixed << std::setprecision(5) << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
         jsonStream << "\"length\": " << std::fixed << std::setprecision(5) << static_cast<double>(getKickLength()) << ", " << std::endl;
         auto points = getKickEnvelopePoints();
         jsonStream << "\"points\": [" << std::endl;
-        bool first = true;
+        first = true;
         for (const auto &point: points) {
                 if (first)
                         first = false;
@@ -661,4 +683,20 @@ std::string GeonkickState::toJson() const
         jsonStream << "}" << std::endl; // json
 
         return jsonStream.str();
+}
+
+void GeonkickState::setLayerEnabled(GeonkickApi::Layer layer, bool b)
+{
+        int index = static_cast<int>(layer);
+        if (index > -1 && index < layers.size() - 1)
+                layers[static_cast<int>(layer)] = b;
+}
+
+bool GeonkickState::isLayerEnabled(GeonkickApi::Layer layer) const
+{
+        int index = static_cast<int>(layer);
+        if (index > -1 && index < layers.size() - 1)
+                return layers[static_cast<int>(layer)];
+        else
+                return false;
 }
