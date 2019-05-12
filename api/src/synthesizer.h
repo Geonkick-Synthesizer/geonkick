@@ -36,6 +36,9 @@ struct gkick_synth {
         struct gkick_oscillator **oscillators;
         size_t oscillators_number;
 
+        /* Groups of oscillators. */
+        bool gkick_osc_group osc_groups[GKICK_OSC_GROUPS_NUMBER];
+
         /* Kick general amplitude */
         gkick_real amplitude;
 
@@ -55,23 +58,15 @@ struct gkick_synth {
         /* General synthesizer amplitude envelope. */
         struct gkick_envelope *envelope;
 
-        /* /\** */
-        /*  * Current kick samples buffer size which is calculated */
-        /*  * from the kick length in seconds and should not */
-        /*  * exceed the GEONKICK_MAX_BUFFER_SIZE. */
-        /*  *\/ */
-        /* size_t buffer_size; */
-
         /* To update or not the buffer. */
         atomic_bool buffer_update;
-
 
         /**
          * Kick smaples buffer where the synthesizer is doing the synthesis.
          * It is swaped with one of the oudio output buffers atomically.
          */
         char* _Atomic buffer;
-        // Kick buffer size.
+        /* Kick buffer size. */
         _Atomic size_t buffer_size;
 
         /**
@@ -94,7 +89,6 @@ struct gkick_synth {
          * will not trigger the kick synthesis.
          */
         atomic_bool synthesis_on;
-
 
         /**
          * The synthesizer main thread.
@@ -407,5 +401,11 @@ gkick_synth_distortion_set_drive(struct gkick_synth *synth, gkick_real drive);
 
 enum geonkick_error
 gkick_synth_distortion_get_drive(struct gkick_synth *synth, gkick_real *drive);
+
+enum geonkick_error
+gkick_synth_enable_group(struct gkick_synth *synth, size_t index, bool enable);
+
+enum geonkick_error
+gkick_synth_group_enbaled(struct gkick_synth *synth, size_t index, bool *enabled);
 
 #endif // SYNTHESIZER_H

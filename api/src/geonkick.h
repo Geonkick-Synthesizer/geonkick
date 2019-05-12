@@ -92,6 +92,9 @@ enum GEONKICK_MODULE {
         GEONKICK_MODULE_JACK    = 1
 };
 
+#define GKICK_OSC_GROUPS_NUMBER 3
+#define GKICK_OSC_GROUP_SIZE 3
+
 struct geonkick;
 
 enum geonkick_error
@@ -384,6 +387,12 @@ enum geonkick_error
 geonkick_distortion_get_drive(struct geonkick *kick, gkick_real *drive);
 
 int geonkick_is_module_enabed(struct geonkick *kick, enum GEONKICK_MODULE module);
+
+enum geonkick_error
+geonkick_enable_group(struct gkick_synth *synth, size_t index, bool enable);
+
+enum geonkick_error
+geonkick_group_enbaled(struct gkick_synth *synth, size_t index, bool *enabled);
 
 #ifdef __cplusplus
 }

@@ -222,6 +222,10 @@ gkick_filter_val(struct gkick_filter *filter,
                 return GEONKICK_ERROR;
         }
 
+        // Limit the filter value in the cases when becomes unstable.
+        if (in_val > 1)
+                return in_val;
+
         gkick_filter_lock(filter);
 
         l = filter->queue_l;

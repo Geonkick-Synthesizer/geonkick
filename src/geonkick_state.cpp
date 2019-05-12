@@ -80,6 +80,12 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                 if (m.name == "limiter" && m.value.IsDouble())
                         setLimiterValue(m.value.GetDouble());
 
+                if (m.name == "layers" && m.value.IsArray()) {
+                        for (const auto &el: m.value.GetArray())
+                                if (el.isInt())
+                                        enableLayer(static_cast<GeonkickApi::Layer>(el.getInt()));
+                }
+
                 if (m.name == "ampl_env" && m.value.IsObject()) {
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "length" && el.value.IsDouble())

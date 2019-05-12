@@ -978,3 +978,29 @@ int geonkick_is_module_enabed(struct geonkick *kick, enum GEONKICK_MODULE module
                 return 0;
         }
 }
+
+enum geonkick_error
+geonkick_enable_group(struct geonkick *kick, size_t index, bool enable)
+{
+        if (kick == NULL || index < 0 || index > GKICK_GROUPS_NUMBER - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        if (kick->synth != NULL)
+                return gkick_synth_enable_group(kick->synth, index, enable);
+        return GEONKICK_ERROR;
+}
+
+enum geonkick_error
+geonkick_group_enbaled(struct geonkick *kick, size_t index, bool *enabled)
+{
+        if (kick == NULL || index < 0 || index > GKICK_GROUPS_NUMBER - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        if (kick->synth != NULL)
+                return gkick_synth_enable_group(kick->synth, index, enabled);
+        return GEONKICK_ERROR;
+}

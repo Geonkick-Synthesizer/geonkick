@@ -52,6 +52,20 @@ struct gkick_oscillator {
 	pthread_mutex_t lock;
 };
 
+struct gkick_osc_group {
+        /* Group index */
+        size_t index;
+
+        /* Group size, i.e. number of oscillators in the group. */
+        size_t size;
+
+        /* Specify if the group is enbaled. */
+        bool enabled;
+
+        /* List of oscillators in the group. */
+        struct gkick_oscillator **oscillators;
+}
+
 struct gkick_oscillator
 *gkick_osc_create(void);
 

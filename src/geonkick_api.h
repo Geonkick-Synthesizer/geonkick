@@ -36,6 +36,15 @@ class GeonkickApi {
 
  public:
 
+  // Adding more layers there is a need to change
+  // the GKICK_OSC_GROUP_NUMBER in the API.
+  // Currently is set to 3, i.e. index = 0, 1, and 2.
+  enum class Layer: int {
+                Layer1 = 0,
+                Layer2 = 1,
+                Layer3 = 2
+  };
+
   enum class OscillatorType: int {
          Oscillator1 = 0,
          Oscillator2 = 1,
@@ -148,6 +157,11 @@ class GeonkickApi {
   void setDistortionDrive(double drive);
   std::vector<gkick_real> getKickBuffer() const;
   void triggerSynthesis();
+  void setLayer(Layer layer);
+  Layer layer() const;
+  void enbaleLayer(Layer layer, bool enable = true);
+  bool isLayerEnabled(Layer layer) const;
+  int getOscIndex() const;
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
@@ -177,6 +191,13 @@ private:
   mutable std::mutex apiMutex;
   RkEventQueue *eventQueue;
   std::vector<gkick_real> kickBuffer;
+
+  struct Layers {
+          GeonkickApi::Layer layer;
+          bool enabled;
+  };
+  Layer currentLayer;
+  std::vector<Layers> apiLayers;
 };
 
 #endif // GEONKICK_API_H

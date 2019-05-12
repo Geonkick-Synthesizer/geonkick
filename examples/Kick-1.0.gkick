@@ -34,7 +34,9 @@
             "factor": 1,
             "type": 0
         },
-        "limiter": 1
+        "limiter": 1,
+        "layers" : [0, 1]
+        }
     },
     "osc0": {
         "ampl_env": {
