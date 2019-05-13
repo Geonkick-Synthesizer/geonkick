@@ -195,7 +195,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         amplitudeEnvelopeBox->show();
 
         envelopeAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-        envelopeAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
+        envelopeAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
         envelopeAmplitudeKnob->setFixedSize(80, 80);
         envelopeAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         envelopeAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
@@ -223,7 +223,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 frequencyAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
                 frequencyAmplitudeKnob->setRangeType(Knob::RangeType::Logarithmic);
                 frequencyAmplitudeKnob->setSize(80, 80);
-                frequencyAmplitudeKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2);
+                frequencyAmplitudeKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
                 frequencyAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
                 frequencyAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
                 frequencyAmplitudeKnob->setRange(200, 16000);
