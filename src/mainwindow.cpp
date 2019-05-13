@@ -199,15 +199,15 @@ void MainWindow::openAboutDialog()
 
 void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        if (event->key() == Rk::Key::Key_k) {
+        if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
                 geonkickApi->setKeyPressed(true, 127);
         } else if (event->modifiers() ==  static_cast<int>(Rk::KeyModifiers::Control)
-                   && event->key() == Rk::Key::Key_r) {
+                   && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
                 geonkickApi->setState(geonkickApi->getDefaultState());
                 topBar->setPresetName("");
                 updateGui();
         } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
-                   && event->key() == Rk::Key::Key_h) {
+                   && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(true);
         }
 }
@@ -215,7 +215,7 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 void MainWindow::keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
         if (event->modifiers() ==  static_cast<int>(Rk::KeyModifiers::Control)
-            && event->key() == Rk::Key::Key_h) {
+            && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(false);
         }
 }
