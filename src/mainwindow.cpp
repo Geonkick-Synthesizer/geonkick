@@ -209,6 +209,18 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
         } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(true);
+        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
+                openFileDialog(FileDialog::Type::Open);
+        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
+                openFileDialog(FileDialog::Type::Save);
+        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
+                openExportDialog();
+        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_a || event->key() == Rk::Key::Key_A)) {
+                           openAboutDialog();
         }
 }
 
