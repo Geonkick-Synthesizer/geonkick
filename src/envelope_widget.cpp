@@ -39,6 +39,12 @@ extern const unsigned char rk_show_noise_envelopes_button_active_png[];
 extern const unsigned char rk_show_noise_envelopes_button_png[];
 extern const unsigned char rk_show_general_envelopes_button_active_png[];
 extern const unsigned char rk_show_general_envelopes_button_png[];
+extern const unsigned char rk_layer1_png[];
+extern const unsigned char rk_layer1_disabled_png[];
+extern const unsigned char rk_layer2_png[];
+extern const unsigned char rk_layer2_disabled_png[];
+extern const unsigned char rk_layer3_png[];
+extern const unsigned char rk_layer3_disabled_png[];
 
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
@@ -66,24 +72,20 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         // Oscillator1 envelope
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
         auto envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::Oscillator1), envelope});
 
         // Oscillator2 envelope
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
         envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        //connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::Oscillator2), envelope});
 
         // Noise envelope
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
         envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        //connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::Noise), envelope});
 
         // General nevelope
         envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(geonkickApi, rect));
-        //        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
         envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
         createButtomMenu();
         showGeneralEnvelope();
@@ -261,25 +263,29 @@ void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
         int layersX = osccillator1EvelopesButton->x() - 3 * layersSpace - 3 * 24 - 10;
         layer1Button = new GeonkickButton(buttomAreaWidget);
         layer1Button->setSize(24, 24);
-        layer1Button->setBackgroundColor(255, 255, 255);
+        layer1Button->setBackgroundColor(buttomAreaWidget->background());
         layer1Button->setPosition(layersX, (buttomAreaWidget->height() - layer1Button->height()) / 2);
-        //        layer1Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer1Button->setUnpressedImage(RkImage(layer1Button->size(), rk_layer1_disabled_png));
+        layer1Button->setPressedImage(RkImage(layer1Button->size(), rk_layer1_png));
         layer1Button->setCheckable(true);
+        layer1Button->setPressed(true);
         RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer1));
 
         layer2Button = new GeonkickButton(buttomAreaWidget);
         layer2Button->setSize(24, 24);
-        layer2Button->setBackgroundColor(255, 255, 255);
+        layer2Button->setBackgroundColor(buttomAreaWidget->background());
         layer2Button->setPosition(layer1Button->x() + layer1Button->width() + layersSpace, layer1Button->y());
-        //        layer2Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer2Button->setUnpressedImage(RkImage(layer2Button->size(), rk_layer2_disabled_png));
+        layer2Button->setPressedImage(RkImage(layer2Button->size(), rk_layer2_png));
         layer2Button->setCheckable(true);
         RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer2));
 
         layer3Button = new GeonkickButton(buttomAreaWidget);
-        layer3Button->setBackgroundColor(255, 255, 255);
+        layer3Button->setBackgroundColor(buttomAreaWidget->background());
         layer3Button->setSize(24, 24);
         layer3Button->setPosition(layer2Button->x() + layer2Button->width() + layersSpace, layer2Button->y());
-        //        layer3Button->setUnpressedImage(RkImage(90, 30, rk_about_png));
+        layer3Button->setUnpressedImage(RkImage(layer3Button->size(), rk_layer3_disabled_png));
+        layer3Button->setPressedImage(RkImage(layer3Button->size(), rk_layer3_png));
         layer3Button->setCheckable(true);
         RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer3));
 }
@@ -295,10 +301,6 @@ void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
 
 void EnvelopeWidget::updateGui()
 {
-        //        auto layer = geonkickApi->layer();
-        //        layer1Button->setPressed(GeonkickApi::Layer::Layer1 == layer);
-        //        layer2Button->setPressed(GeonkickApi::Layer::Layer2 == layer);
-        //        layer3Button->setPressed(GeonkickApi::Layer::Layer3 == layer);
         if (drawArea->getEnvelope()) {
                 drawArea->getEnvelope()->updatePoints();
                 drawArea->update();
