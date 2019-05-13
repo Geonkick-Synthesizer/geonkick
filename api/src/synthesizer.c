@@ -1638,7 +1638,6 @@ enum geonkick_error
 gkick_synth_enable_group(struct gkick_synth *synth, size_t index, bool enable)
 {
         gkick_synth_lock(synth);
-        gkick_log_debug("group = %d, %d", index, enable);
         synth->osc_groups[index] = enable;
         gkick_synth_wakeup_thread(synth);
         gkick_synth_unlock(synth);

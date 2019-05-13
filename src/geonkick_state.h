@@ -105,10 +105,11 @@ class GeonkickState
         std::string toJson() const;
         void setLayerEnabled(GeonkickApi::Layer layer, bool b);
         bool isLayerEnabled(GeonkickApi::Layer layer) const;
+        void setCurrentLayer(GeonkickApi::Layer layer);
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
-        void parseOscillatorObject(const char *name,  const rapidjson::Value &osc);
+        void parseOscillatorObject(int index,  const rapidjson::Value &osc);
         std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
 
 private:
@@ -169,6 +170,7 @@ private:
         Compressor compressor;
         Distortion distortion;
         std::vector<bool> layers;
+        GeonkickApi::Layer currentLayer;
 };
 
 #endif // GEONKICK_STATE_H

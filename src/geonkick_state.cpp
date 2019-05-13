@@ -36,6 +36,7 @@ GeonkickState::GeonkickState() :
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 0, 0}
         , layers{false, false, false}
+        , currentLayer{GeonkickApi::Layer::Layer1}
 {
         initOscillators();
 }
@@ -51,6 +52,7 @@ GeonkickState::GeonkickState(const std::string &data) :
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 0, 0}
         , layers{false, false, false}
+        , currentLayer{GeonkickApi::Layer::Layer1}
 {
         initOscillators();
         rapidjson::Document document;
@@ -59,8 +61,15 @@ GeonkickState::GeonkickState(const std::string &data) :
                 for (const auto &m: document.GetObject()) {
                         if (m.name == "kick" && m.value.IsObject())
                                 parseKickObject(m.value);
-                        if (m.name == "osc1" || m.name == "osc2" || m.name == "osc3")
-                                parseOscillatorObject(m.name.GetString(), m.value);
+                        for (auto i = 0; i < layers.size(); i++) {
+                                setCurrentLayer(static_cast<GeonkickApi::Layer>(i));
+                                if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                        parseOscillatorObject(0, m.value);
+                                if (m.name == ("osc" + std::to_string(1 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                        parseOscillatorObject(1, m.value);
+                                if (m.name == ("osc" + std::to_string(2 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                        parseOscillatorObject(2, m.value);
+                        }
                 }
         }
 }
@@ -89,8 +98,8 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                 if (m.name == "limiter" && m.value.IsDouble())
                         setLimiterValue(m.value.GetDouble());
 
-                layers = {false, false, false};
                 if (m.name == "layers" && m.value.IsArray()) {
+                        layers = {false, false, false};
                         for (const auto &el: m.value.GetArray())
                                 if (el.IsInt())
                                         setLayerEnabled(static_cast<GeonkickApi::Layer>(el.GetInt()), true);
@@ -153,19 +162,9 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
         }
 }
 
-void GeonkickState::parseOscillatorObject(const char *name,  const rapidjson::Value &osc)
+void GeonkickState::parseOscillatorObject(int index,  const rapidjson::Value &osc)
 {
-        if (name == nullptr || osc.IsNull() || !osc.IsObject())
-                return;
-
-        int index = 0;
-        if (std::string(name) == std::string("osc1"))
-                index = 0;
-        else if(std::string(name) == std::string("osc2"))
-                index = 1;
-        else if (std::string(name) == std::string("osc3"))
-                index = 2;
-        else
+        if (osc.IsNull() || !osc.IsObject())
                 return;
 
         for (const auto &m: osc.GetObject()) {
@@ -304,6 +303,7 @@ std::vector<RkRealPoint> GeonkickState::getKickEnvelopePoints() const
 
 std::shared_ptr<GeonkickState::OscillatorInfo> GeonkickState::getOscillator(int index) const
 {
+        index += GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);
         auto it = oscillators.find(index);
         if (it != oscillators.end())
                 return it->second;
@@ -580,7 +580,7 @@ std::string GeonkickState::toJson() const
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
         for (const auto& val: oscillators) {
-                jsonStream << "\"osc" << val.first + 1 << "\": {" << std::endl;
+                jsonStream << "\"osc" << val.first << "\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false");
                 jsonStream << "," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
@@ -688,15 +688,20 @@ std::string GeonkickState::toJson() const
 void GeonkickState::setLayerEnabled(GeonkickApi::Layer layer, bool b)
 {
         int index = static_cast<int>(layer);
-        if (index > -1 && index < layers.size() - 1)
-                layers[static_cast<int>(layer)] = b;
+        if (index > -1 && index < layers.size())
+                layers[index] = b;
 }
 
 bool GeonkickState::isLayerEnabled(GeonkickApi::Layer layer) const
 {
         int index = static_cast<int>(layer);
-        if (index > -1 && index < layers.size() - 1)
-                return layers[static_cast<int>(layer)];
+        if (index > -1 && index < layers.size())
+                return layers[index];
         else
                 return false;
+}
+
+void GeonkickState::setCurrentLayer(GeonkickApi::Layer layer)
+{
+        currentLayer = layer;
 }
