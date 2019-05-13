@@ -106,6 +106,7 @@ bool MainWindow::init(void)
         envelopeWidget->setFixedSize(850, 340);
         envelopeWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
+        RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
         auto limiterWidget = new Limiter(geonkickApi, this);
         limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8, envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());

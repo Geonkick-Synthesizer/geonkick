@@ -54,16 +54,9 @@ EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
 void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
-                //if (currentEnvelope)
-                        // disconnect(currentEnvelope.get(), 0, this, 0);
                 currentEnvelope = envelope;
-                if (currentEnvelope) {
-                        /*                        connect(currentEnvelope.get(), SIGNAL(envelopeUpdated()),
-                                this, SLOT(envelopeUpdated()));
-                        connect(currentEnvelope.get(), SIGNAL(envelopeUpdated()),
-                        this, SLOT(envelopeUpdated()));*/
+                if (currentEnvelope)
                         update();
-                }
         }
 }
 

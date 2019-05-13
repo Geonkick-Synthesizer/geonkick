@@ -290,6 +290,7 @@ void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
         layer2Button->setPressed(GeonkickApi::Layer::Layer2 == layer);
         layer3Button->setPressed(GeonkickApi::Layer::Layer3 == layer);
         geonkickApi->setLayer(layer);
+        action requestUpdateGui();
 }
 
 void EnvelopeWidget::updateGui()
@@ -298,5 +299,9 @@ void EnvelopeWidget::updateGui()
         //        layer1Button->setPressed(GeonkickApi::Layer::Layer1 == layer);
         //        layer2Button->setPressed(GeonkickApi::Layer::Layer2 == layer);
         //        layer3Button->setPressed(GeonkickApi::Layer::Layer3 == layer);
+        if (drawArea->getEnvelope()) {
+                drawArea->getEnvelope()->updatePoints();
+                drawArea->update();
+        }
 }
 

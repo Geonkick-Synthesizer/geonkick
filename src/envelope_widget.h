@@ -50,6 +50,7 @@ public:
      ~EnvelopeWidget();
      void hideEnvelope(bool b);
      void updateGui();
+     RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
      void showAmplitudeEnvelope();
