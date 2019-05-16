@@ -199,26 +199,28 @@ void MainWindow::openAboutDialog()
 
 void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
+        GEONKICK_LOG_DEBUG("called: " << static_cast<unsigned char>(event->key()));
+        GEONKICK_LOG_DEBUG("modiff: " << (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)));
         if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
                 geonkickApi->setKeyPressed(true, 127);
-        } else if (event->modifiers() ==  static_cast<int>(Rk::KeyModifiers::Control)
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
                 geonkickApi->setState(geonkickApi->getDefaultState());
                 topBar->setPresetName("");
                 updateGui();
-        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(true);
-        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
                 openFileDialog(FileDialog::Type::Open);
-        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
                 openFileDialog(FileDialog::Type::Save);
-        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
                 openExportDialog();
-        } else if (event->modifiers() == static_cast<int>(Rk::KeyModifiers::Control)
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_a || event->key() == Rk::Key::Key_A)) {
                            openAboutDialog();
         }
@@ -226,7 +228,7 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 
 void MainWindow::keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        if (event->modifiers() ==  static_cast<int>(Rk::KeyModifiers::Control)
+        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
             && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(false);
         }

@@ -237,6 +237,8 @@ void ExportWidget::setChannels(ChannelsType channels)
 void ExportWidget::browse()
 {
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select Path - " + std::string(GEOKICK_APP_NAME));
+        locationEdit->setFocus(false);
+        fileNameEdit->setFocus(false);
         fileDialog->exec();
         locationEdit->setText(fileDialog->currentDirectory());
 }

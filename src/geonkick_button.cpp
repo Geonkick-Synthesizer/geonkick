@@ -29,6 +29,7 @@ GeonkickButton::GeonkickButton(GeonkickWidget *parent)
         , is_checkable{false}
 {
         show();
+        setFocus(false);
 }
 
 GeonkickButton::~GeonkickButton()
