@@ -34,6 +34,12 @@
 #include "geonkick_state.h"
 #include "about.h"
 
+#include <RkPlatform.h>
+
+#include <X11/keysym.h>
+#include <X11/keysymdef.h>
+#include <X11/XKBlib.h>
+
 #include <RkEvent.h>
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api)
@@ -119,6 +125,25 @@ bool MainWindow::init(void)
         //                setPreset(presetName);
         //                updateGui();
         //         }
+
+        // TODO: Key shortcut feature will be implemented in the next version of Redkite.
+        auto info = nativeWindowInfo();
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_o), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_O), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_h), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_H), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_k), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_K), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_a), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_A), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_e), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_E), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_r), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_R), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_s), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XFlush(info->display);
+
         return true;
 }
 
