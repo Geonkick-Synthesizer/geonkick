@@ -192,14 +192,18 @@ void EnvelopeWidget::showOsc1Envelope()
         showFrequencyEnvButton->show();
         showAmplitudeEnvButton->show();
         auto envelope = getEnvelope(EnvelopeType::Oscillator1);
-        if (envelope && envelope->type() == Envelope::Type::Amplitude) {
-                showAmplitudeEnvButton->setPressed(true);
-                showFrequencyEnvButton->setPressed(false);
-        } else {
-                showAmplitudeEnvButton->setPressed(false);
-                showFrequencyEnvButton->setPressed(true);
+        if (envelope) {
+                if (showAmplitudeEnvButton->isPressed()) {
+                        envelope->setType(Envelope::Type::Amplitude);
+                        showFrequencyEnvButton->setPressed(false);
+                } else if (showFrequencyEnvButton->isPressed()) {
+                        envelope->setType(Envelope::Type::Frequency);
+                        showAmplitudeEnvButton->setPressed(false);
+                } else {
+                        showAmplitudeEnvButton->setPressed(true);
+                }
+                drawArea->setEnvelope(envelope);
         }
-        drawArea->setEnvelope(envelope);
 }
 
 void EnvelopeWidget::showOsc2Envelope()
@@ -210,14 +214,18 @@ void EnvelopeWidget::showOsc2Envelope()
         showFrequencyEnvButton->show();
         showAmplitudeEnvButton->show();
         auto envelope = getEnvelope(EnvelopeType::Oscillator2);
-        if (envelope->type() == Envelope::Type::Amplitude) {
-                showAmplitudeEnvButton->setPressed(true);
-                showFrequencyEnvButton->setPressed(false);
-        } else {
-                showAmplitudeEnvButton->setPressed(false);
-                showFrequencyEnvButton->setPressed(true);
+        if (envelope) {
+                if (showAmplitudeEnvButton->isPressed()) {
+                        envelope->setType(Envelope::Type::Amplitude);
+                        showFrequencyEnvButton->setPressed(false);
+                } else if (showFrequencyEnvButton->isPressed()) {
+                        envelope->setType(Envelope::Type::Frequency);
+                        showAmplitudeEnvButton->setPressed(false);
+                } else {
+                        showAmplitudeEnvButton->setPressed(true);
+                }
+                drawArea->setEnvelope(envelope);
         }
-        drawArea->setEnvelope(envelope);
 }
 
 void EnvelopeWidget::showNoiseEnvelope()
@@ -225,9 +233,7 @@ void EnvelopeWidget::showNoiseEnvelope()
         generalEvelopesButton->setPressed(false);
         osccillator1EvelopesButton->setPressed(false);
         osccillator2EvelopesButton->setPressed(false);
-        showAmplitudeEnvButton->setPressed(false);
         showAmplitudeEnvButton->hide();
-        showFrequencyEnvButton->setPressed(false);
         showFrequencyEnvButton->hide();
         drawArea->setEnvelope(getEnvelope(EnvelopeType::Noise));
 }
@@ -301,9 +307,16 @@ void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
 
 void EnvelopeWidget::updateGui()
 {
-        if (drawArea->getEnvelope()) {
-                drawArea->getEnvelope()->updatePoints();
-                drawArea->update();
+        for (const auto &envelope: envelopes) {
+                if (envelope.second->isSupportedType(Envelope::Type::Amplitude)) {
+                        envelope.second->setType(Envelope::Type::Amplitude);
+                        envelope.second->updatePoints();
+                }
+                if (envelope.second->isSupportedType(Envelope::Type::Frequency)) {
+                        envelope.second->setType(Envelope::Type::Frequency);
+                        envelope.second->updatePoints();
+                }
         }
+        drawArea->update();
 }
 

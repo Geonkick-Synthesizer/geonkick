@@ -224,8 +224,6 @@ void MainWindow::openAboutDialog()
 
 void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        GEONKICK_LOG_DEBUG("called: " << static_cast<unsigned char>(event->key()));
-        GEONKICK_LOG_DEBUG("modiff: " << (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)));
         if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
                 geonkickApi->setKeyPressed(true, 127);
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
