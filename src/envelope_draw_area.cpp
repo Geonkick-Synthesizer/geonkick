@@ -128,6 +128,10 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<Rk
 
 void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->button() != RkMouseEvent::ButtonType::Right
+            && event->button() != RkMouseEvent::ButtonType::Left)
+                return;
+
         if (event->button() != RkMouseEvent::ButtonType::Right) {
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
                 if (currentEnvelope) {
