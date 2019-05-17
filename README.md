@@ -8,7 +8,7 @@ Details: Geonkick is a synthesizer that can synthesize elements
 
 License: GPLv3
 
-Version: 2.0
+Version: 1.5
 
 Author: Iurie Nistor
 
@@ -20,12 +20,13 @@ The development of new releases is going on branch "develop".
 
 #### Features
 
-* Two oscillators
+* Three layers
+* Two oscillators per layer
      - sine, square, triangle, saw-tooth
      - initial phase
      - amplitude & frequency envelope
      - low & high pass filter
-* Noise:
+* One noise generator per layer
      - white & brownian
      - amplitude envelope
      - low & high pass filter
@@ -56,11 +57,11 @@ The development of new releases is going on branch "develop".
 
 In order Geonkick to run and operate correctly there is a need for:
 
-For standalone:
+Standalone:
     * GNU/Linux operating system
     * Jack server installed and running at 48000 sample rate
 
-For plugin:
+Plugin:
     * GNU/Linux operaing system
     * LV2 host. For example, a DAW that supports LV2 plugin format.
 
@@ -72,7 +73,7 @@ I order to build Geonkick there is a need to install the following development p
 
 * Redkite GUI toolkit. See the documentation of Redkite toolkit how to install it.
 * libsndfile
-* JACK Audio Connection Kit
+* JACK Audio Connection Kit (optional if building only for LV2)
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
@@ -119,7 +120,7 @@ Milestones: https://gitlab.com/iurie/geonkick/milestones
 ###### Shortcut Keys
 
 * Ctrl + r - reload default state, clean everything
-* k - play kick
+* Ctrl + k - play kick
 * Ctrl + h - hide envelope, only kick graph is shown
 
 ###### Working with envelopes
@@ -131,7 +132,9 @@ Milestones: https://gitlab.com/iurie/geonkick/milestones
 Geonkick uses Jack and will create two audio outputs and one MIDI input.
 If audio outputs are connected there are two ways to play the sound:
    * by MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
-   * by pressing the key 'k'
+   * by pressing the key 'Ctrl + k'
+
+Throught host/LV2 or a DAW.
 
 ###### Examples
 
