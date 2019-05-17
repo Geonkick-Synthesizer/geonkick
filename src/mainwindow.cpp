@@ -209,6 +209,9 @@ void MainWindow::openFileDialog(FileDialog::Type type)
 {
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Preset" : "Save Preset");
         fileDialog->exec();
+        if (fileDialog->acceptStatus() == FileDialog::AcceptStatus::Cancel)
+                return;
+
         if (type == FileDialog::Type::Open)
                 openPreset(fileDialog->filePath());
         else

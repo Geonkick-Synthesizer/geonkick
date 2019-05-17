@@ -29,8 +29,8 @@
 #include <RkEvent.h>
 #include <RkPainter.h>
 
-extern const unsigned char rk_open_png[];
-extern const unsigned char rk_save_png[];
+extern const unsigned char rk_open_active_png[];
+extern const unsigned char rk_save_active_png[];
 extern const unsigned char rk_cancel_png[];
 extern const unsigned char rk_scrollbar_button_up_png[];
 extern const unsigned char rk_scrollbar_button_down_png[];
@@ -262,6 +262,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         , filesView{nullptr}
         , pathLabel{nullptr}
         , isClosed{false}
+        , status{AcceptStatus::Cancel}
 {
         setTitle(title);
         setFixedSize(600, 400);
@@ -281,9 +282,9 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         acceptButton->setPosition(width() - acceptButton->width() - 10,
                                   height() - acceptButton->height() - 5);
         if (dialogType == Type::Save)
-                acceptButton->setUnpressedImage(RkImage(90, 30, rk_save_png));
+                acceptButton->setUnpressedImage(RkImage(90, 30, rk_save_active_png));
         else
-                acceptButton->setUnpressedImage(RkImage(90, 30, rk_open_png));
+                acceptButton->setUnpressedImage(RkImage(90, 30, rk_open_active_png));
         RK_ACT_BIND(acceptButton, toggled, RK_ACT_ARGS(bool pressed), this, onAccept());
         acceptButton->show();
 
@@ -313,6 +314,7 @@ void FileDialog::onPathChanged(const std::string &pathName)
 
 void FileDialog::onAccept()
 {
+        status = AcceptStatus::Accept;
         if (dialogType == Type::Open) {
                 if (!filesView->selectedFile().empty())
                         pathSelected = filesView->selectedFile();
@@ -329,11 +331,13 @@ void FileDialog::onAccept()
 
 void FileDialog::onCancel()
 {
+        status = AcceptStatus::Cancel;
         isClosed = true;
 }
 
 void FileDialog::closeEvent(const std::shared_ptr<RkCloseEvent> &event)
 {
+        status = AcceptStatus::Cancel;
         isClosed = true;
 }
 
@@ -354,5 +358,10 @@ void FileDialog::exec()
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
         close();
+}
+
+FileDialog::AcceptStatus FileDialog::acceptStatus() const
+{
+        return status;
 }
 

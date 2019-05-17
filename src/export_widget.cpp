@@ -240,6 +240,9 @@ void ExportWidget::browse()
         locationEdit->setFocus(false);
         fileNameEdit->setFocus(false);
         fileDialog->exec();
+        if (fileDialog->acceptStatus() == FileDialog::AcceptStatus::Cancel)
+                return;
+
         locationEdit->setText(fileDialog->currentDirectory());
 }
 

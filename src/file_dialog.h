@@ -78,6 +78,11 @@ class FileDialog: public GeonkickWidget {
                 Open
         };
 
+        enum class AcceptStatus: int {
+                Cancel,
+                Accept
+        };
+
         explicit FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title);
         ~FileDialog() = default;
         RK_DECL_ACT(selectedFile,
@@ -87,6 +92,7 @@ class FileDialog: public GeonkickWidget {
         std::string currentDirectory() const;
         std::string filePath() const;
         void exec();
+        AcceptStatus acceptStatus() const;
 
  protected:
         void onAccept();
@@ -101,6 +107,7 @@ class FileDialog: public GeonkickWidget {
         RkLabel *pathLabel;
         bool isClosed;
         std::string pathSelected;
+        AcceptStatus status;
 };
 
 #endif // GEONKICK_FILE_DIALOG_H
