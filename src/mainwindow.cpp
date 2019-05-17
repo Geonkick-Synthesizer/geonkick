@@ -42,12 +42,12 @@
 
 #include <RkEvent.h>
 
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api)
+MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
         : GeonkickWidget(app)
         , geonkickApi{api}
         , topBar{nullptr}
         , envelopeWidget{nullptr}
-        //        presetName(preset)
+        , presetName{preset}
 {
         setFixedSize(940, 760);
         setTitle(GEOKICK_APP_NAME);
@@ -61,7 +61,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , geonkickApi{api}
         , topBar{nullptr}
         , envelopeWidget{nullptr}
-          //        presetName(preset)
+        , presetName{std::string()}
 {
         setFixedSize(940, 760);
         setTitle(GEOKICK_APP_NAME);
@@ -96,7 +96,7 @@ bool MainWindow::init(void)
                                      "in order to have audio output."),
                                      QMessageBox::Ok);
         */
-        auto topBar = new TopBar(this, geonkickApi);
+        topBar = new TopBar(this, geonkickApi);
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
@@ -121,10 +121,6 @@ bool MainWindow::init(void)
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         controlAreaWidget->show();
-        //        if (!presetName.isEmpty()) {
-        //                setPreset(presetName);
-        //                updateGui();
-        //         }
 
         // TODO: Key shortcut feature will be implemented in the next version of Redkite.
         auto info = nativeWindowInfo();
@@ -144,6 +140,8 @@ bool MainWindow::init(void)
         XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
         XFlush(info->display);
 
+        if (geonkickApi->isStandalone() && !presetName.empty())
+                openPreset(presetName);
         return true;
 }
 
@@ -202,7 +200,7 @@ void MainWindow::openPreset(const std::string &fileName)
         std::string fileData((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
         auto state = std::make_shared<GeonkickState>(fileData);
         geonkickApi->setState(state);
-        //                topBar->setPresetName(QFileInfo(file).baseName());
+        topBar->setPresetName(filePath.stem());
         file.close();
         updateGui();
 }

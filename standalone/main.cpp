@@ -23,13 +23,16 @@
 
 #include "mainwindow.h"
 #include "geonkick_api.h"
-//#include "geonkick_state.h"
 
 #include <RkMain.h>
 
 int main(int argc, char *argv[])
 {
         RkMain app(argc, argv);
+
+        std::string preset;
+        if (argc == 2)
+                preset = argv[1];
 
         auto api = new GeonkickApi;
         api->setEventQueue(app.eventQueue().get());
@@ -39,7 +42,7 @@ int main(int argc, char *argv[])
                 exit(1);
         }
 
-        auto window = new MainWindow(&app, api);
+        auto window = new MainWindow(&app, api, preset);
         if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 exit(1);
