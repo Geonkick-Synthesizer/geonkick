@@ -265,6 +265,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         , status{AcceptStatus::Cancel}
 {
         setTitle(title);
+
         setFixedSize(600, 400);
         filesView = new FilesView(this);
         RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
@@ -275,6 +276,8 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         pathLabel->setBackgroundColor(background());
         pathLabel->setFixedSize(filesView->width(), 20);
         pathLabel->setPosition(filesView->x(), 15);
+        pathLabel->setFont(font());
+        pathLabel->setTextColor(textColor());
         pathLabel->show();
 
         auto acceptButton = new GeonkickButton(this);
@@ -297,6 +300,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
 
         if (dialogType == Type::Save) {
                 fileNameEdit = new RkLineEdit(this);
+                fileNameEdit->setFont(font());
                 fileNameEdit->setSize(cancelButton->x() - 20, 20);
                 fileNameEdit->setX(filesView->x());
                 fileNameEdit->setY(cancelButton->y() + (cancelButton->height() - fileNameEdit->height()) / 2);

@@ -29,18 +29,30 @@ GeonkickWidget::GeonkickWidget(RkMain *app, const RkNativeWindowInfo &info, Rk::
         : RkWidget(app, info, flags)
 {
         setBackgroundColor(68, 68, 70);
+        setTextColor({210, 226, 226, 140});
+        auto f = font();
+        f.setSize(12);
+        setFont(f);
 }
 
 GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
         : RkWidget(app, flags)
 {
         setBackgroundColor(68, 68, 70);
+        setTextColor({210, 226, 226, 140});
+        auto f = font();
+        f.setSize(12);
+        setFont(f);
 }
 
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
         : RkWidget(parent, flags)
 {
         setBackgroundColor(68, 68, 70);
+        setTextColor({210, 226, 226, 140});
+        auto f = font();
+        f.setSize(12);
+        setFont(f);
 }
 
 GeonkickWidget::~GeonkickWidget()
