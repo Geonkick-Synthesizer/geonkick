@@ -305,6 +305,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
                 fileNameEdit->setX(filesView->x());
                 fileNameEdit->setY(cancelButton->y() + (cancelButton->height() - fileNameEdit->height()) / 2);
                 fileNameEdit->show();
+                RK_ACT_BIND(fileNameEdit, enterPressed, RK_ACT_ARGS(), this, onAccept());
         }
 
         show();
@@ -323,7 +324,7 @@ void FileDialog::onAccept()
                 if (!filesView->selectedFile().empty())
                         pathSelected = filesView->selectedFile();
         } else {
-                if (filesView->selectedFile().empty())
+                if (filesView->selectedFile().empty() || !fileNameEdit->text().empty())
                         pathSelected = filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text());
                 else
                         pathSelected = filesView->selectedFile();
