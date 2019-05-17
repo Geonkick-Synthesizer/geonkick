@@ -34,17 +34,19 @@ Limiter::Limiter(GeonkickApi *api, GeonkickWidget *parent)
         , geonkickApi{api}
         , faderSlider{new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)}
         , meterValue{0}
-        , meterTimer{new RkTimer(50, eventQueue())}
+        , meterTimer{std::make_unique<RkTimer>(30, eventQueue())}
+        , levelerValueTimer{std::make_unique<RkTimer>(40, eventQueue())}
         , scaleImage{40, 329, rk_meter_scale_png}
 {
         setFixedSize(65, scaleImage.height());
         faderSlider->setPosition(0, 0);
         faderSlider->setFixedSize(20, height());
         RK_ACT_BIND(faderSlider, valueUpdated, RK_ACT_ARGS(int val), this, onSetLimiterValue(val));
-        RK_ACT_BIND(geonkickApi, currentPlayingFrameVal, RK_ACT_ARGS(double val), this, onUpdateMeter(val));
+        RK_ACT_BIND(levelerValueTimer, timeout, RK_ACT_ARGS(), this, onUpdateMeter());
         RK_ACT_BIND(meterTimer, timeout, RK_ACT_ARGS(), this, onUpdateMeterTimeout());
         onUpdateLimiter();
         meterTimer->start();
+        levelerValueTimer->start();
 }
 
 Limiter::~Limiter()
@@ -94,9 +96,9 @@ void Limiter::onSetFaderValue(int val)
         faderSlider->onSetValue(50);
 }
 
-void Limiter::onUpdateMeter(double val)
+void Limiter::onUpdateMeter()
 {
-        int value = toMeterValue(fabs(val));
+        int value = toMeterValue(std::fabs(geonkickApi->getLimiterLevelerValue()));
         if (meterValue < value)
                 onSetMeterValue(value);
 }

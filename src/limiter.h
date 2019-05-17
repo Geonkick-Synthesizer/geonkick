@@ -47,7 +47,7 @@ class Limiter: public GeonkickWidget
 
  protected:
         int toMeterValue(double val) const;
-        void onUpdateMeter(double val);
+        void onUpdateMeter();
         void onUpdateMeterTimeout();
         void onSetFaderValue(int val);
         void onSetMeterValue(int val);
@@ -57,7 +57,8 @@ class Limiter: public GeonkickWidget
         GeonkickApi *geonkickApi;
         GeonkickSlider *faderSlider;
         int meterValue;
-        RkTimer *meterTimer;
+        std::unique_ptr<RkTimer> meterTimer;
+        std::unique_ptr<RkTimer> levelerValueTimer;
         RkImage scaleImage;
 };
 

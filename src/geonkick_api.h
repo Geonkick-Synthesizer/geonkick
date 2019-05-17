@@ -162,6 +162,7 @@ class GeonkickApi {
   void enbaleLayer(Layer layer, bool enable = true);
   bool isLayerEnabled(Layer layer) const;
   int getOscIndex(int index) const;
+  double getLimiterLevelerValue() const;
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));

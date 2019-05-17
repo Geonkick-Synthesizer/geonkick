@@ -600,6 +600,11 @@ void GeonkickApi::setLimiterVal(double val)
         limiterLevelerVal = val;
 }
 
+double GeonkickApi::getLimiterLevelerValue() const
+{
+        return limiterLevelerVal;
+}
+
 void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer)
 {
         std::lock_guard<std::mutex> lock(apiMutex);
@@ -760,12 +765,10 @@ void GeonkickApi::registerCallbacks(bool b)
 {
         if (b) {
                 geonkick_set_kick_buffer_callback(geonkickApi, &GeonkickApi::kickUpdatedCallback, this);
-                //                geonkick_set_kick_limiter_callback(geonkickApi, &GeonkickApi::limiterCallback, this);
-                // Force the sinthesizer to regenerate the kick and call
-                // the kickUpdatedCallback in order to set the kickBuffer.
+                geonkick_set_kick_limiter_callback(geonkickApi, &GeonkickApi::limiterCallback, this);
         } else {
                 geonkick_set_kick_buffer_callback(geonkickApi, NULL, NULL);
-                //                geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
+                geonkick_set_kick_limiter_callback(geonkickApi, NULL, NULL);
         }
 }
 
