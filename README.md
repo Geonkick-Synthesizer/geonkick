@@ -12,7 +12,7 @@ Version: 1.5
 
 Author: Iurie Nistor
 
-Source code repository: https://gitlab.com/iurie/geonkick
+Source code repository: https://github.com/quamplex/geonkick
 Latest releases can be found on "master" branch or "tags".
 The development of new releases is going on branch "develop".
 
@@ -106,14 +106,14 @@ installs, runs, and if there any issues.
 
 #### Packaging
 
-* [Package](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
+* [Package, version 1.0](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
 
 #### Road map
 
 Here are a list of planned milestones and issues opened for them,
 dates when will be started and finished.
 
-Milestones: https://gitlab.com/iurie/geonkick/milestones
+Milestones: https://github.com/quamplex/geonkick/milestones
 
 #### Short user guide
 
@@ -130,11 +130,10 @@ Milestones: https://gitlab.com/iurie/geonkick/milestones
 
 ###### Play the sound
 Geonkick uses Jack and will create two audio outputs and one MIDI input.
-If audio outputs are connected there are two ways to play the sound:
+If audio outputs are connected there are three ways to play the sound:
    * by MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
    * by pressing the key 'Ctrl + k'
-
-Throught host/LV2 or a DAW.
+   * Throught host/LV2 or a DAW.
 
 ###### Examples
 
