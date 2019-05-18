@@ -52,7 +52,6 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
         setFixedSize(940, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
-//        setWindowIcon(QPixmap(":/app_icon.png"));
         show();
 }
 
@@ -66,7 +65,6 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         setFixedSize(940, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
-//        setWindowIcon(QPixmap(":/app_icon.png"));
         show();
 }
 
@@ -90,12 +88,11 @@ MainWindow::~MainWindow()
 bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
-        /*        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
-                QMessageBox::warning(this, "Warning - Geonkick", tr("Jack is not installed" \
-                                     " or not running. There is a need for jack server running " \
-                                     "in order to have audio output."),
-                                     QMessageBox::Ok);
-        */
+        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
+                GEONKICK_LOG_INFO("Jack is not installed or not running. "
+                                  << "There is a need for jack server running "
+                                  << "in order to have audio output.");
+
         topBar = new TopBar(this, geonkickApi);
         topBar->setX(10);
         topBar->show();
@@ -105,6 +102,7 @@ bool MainWindow::init(void)
         RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(), this, openExportDialog());
         RK_ACT_BIND(topBar, layerSelected, RK_ACT_ARGS(GeonkickApi::Layer layer, bool b), geonkickApi, enbaleLayer(layer, b));
+
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(10);

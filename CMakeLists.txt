@@ -1,12 +1,8 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 1.1.0)
+project(geonkick VERSION 1.5.0)
 
-# For Widnows. Temporary.
-#set(CMAKE_SYSTEM_NAME Windows)
-#set(CMAKE_SYSTEM_VERSION 1)
-#set(GKICK_VST_SDK_PATH C:/VST_SDK/VST3_SDK)
-#set(GKICK_REDKITE_SDK_PATH C:/redkite)
+# NOTE: for version v1.5 vst/Windows is not implemented yet.
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -20,9 +16,9 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS} -fvisibility=hidden")
 
-#if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-#  set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
-#endif()
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
+endif()
 
 set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -45,9 +41,6 @@ if (GKICK_PLUGIN)
 endif(GKICK_PLUGIN)
 
 set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
-
-#set(GKICK_API_FLAGS "")
-#set(GKICK_API_FLAGS_LV2 "")
 
 set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/geonkick_slider.h
@@ -114,21 +107,19 @@ endif()
 option(ENABLE_DOUBLE_PRECISION "Enable double precision for API" OFF)
 
 if (ENABLE_DOUBLE_PRECISION)
-#  list(APPEND GKICK_API_FLAGS "-DGEONKICK_DOUBLE_PRECISION")
-#  list(APPEND GKICK_API_FLAGS_LV2 "-DGEONKICK_DOUBLE_PRECISION")
+  list(APPEND GKICK_API_FLAGS "-DGEONKICK_DOUBLE_PRECISION")
+  list(APPEND GKICK_API_FLAGS_LV2 "-DGEONKICK_DOUBLE_PRECISION")
 endif()
 
 if (ENABLE_LOGGING)
-message(STATUS "set debug level")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
-list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
-list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_LEVEL_DEBUG")
-list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_FUNCTION")
+  message(STATUS "set debug level")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
+  list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+  list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_FUNCTION")
 endif()
-
-#find_package(redkite REQUIRED)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SNDFILE sndfile)
@@ -156,8 +147,6 @@ if (GKICK_PLUGIN)
   endif()
 endif(GKICK_PLUGIN)
 
-# Check RekKite GUI Toolkit.
-# TODO...
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_WIN")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_WIN")
@@ -194,12 +183,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     include_directories(${GKICK_VST_SDK_PATH})
-	include_directories(${GKICK_REDKITE_SDK_PATH}/include)
-	link_directories(${GKICK_VST_SDK_PATH}/build/lib/Debug)
-	link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
+    include_directories(${GKICK_REDKITE_SDK_PATH}/include)
+    link_directories(${GKICK_VST_SDK_PATH}/build/lib/Debug)
+    link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
 else ()
-	add_definitions(-fPIC)
-    include_directories(/usr/local/include/redkite)
+  add_definitions(-fPIC)
+  include_directories(/usr/local/include/redkite)
 endif()
 
 include(${GKICK_RC_DIR}/resources.rc)

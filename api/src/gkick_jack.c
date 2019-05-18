@@ -99,7 +99,6 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
                               jack_nframes_t nframes)
 {
         enum geonkick_error error;
-
         error = GEONKICK_OK;
         if (jack->output_port_r == NULL || jack->output_port_l == NULL) {
                 gkick_log_error("output ports are undefined");
@@ -111,9 +110,8 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
                         = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port_r, nframes);
         }
 
-        if (channels_bufs[0] == NULL || channels_bufs[1] == NULL) {
+        if (channels_bufs[0] == NULL || channels_bufs[1] == NULL)
                 error = GEONKICK_ERROR;
-        }
 
         return error;
 }
@@ -122,9 +120,8 @@ void
 gkick_jack_get_note_info(jack_midi_event_t *event,
                          struct gkick_note_info *note)
 {
-        if (event == NULL || note == NULL) {
+        if (event == NULL || note == NULL)
                 return;
-        }
 
         note->state = GKICK_KEY_STATE_DEFAULT;
         if (((*(event->buffer) & 0xf0)) == 0x90) {
@@ -173,11 +170,10 @@ gkick_jack_enable_midi_in(struct gkick_jack *jack, const char *name)
                 return GEONKICK_ERROR;
         }
 
-        if (name == NULL) {
+        if (name == NULL)
                 midi_name = "midi_in";
-        } else {
+        else
                 midi_name = name;
-        }
 
         error = GEONKICK_OK;
         gkick_jack_lock(jack);
@@ -194,7 +190,6 @@ gkick_jack_enable_midi_in(struct gkick_jack *jack, const char *name)
                 gkick_log_warning("midi in is already set");
         }
         gkick_jack_unlock(jack);
-
         return error;
 }
 
@@ -225,7 +220,6 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
                 gkick_log_warning("output ports already created");
         }
         gkick_jack_unlock(jack);
-
         return error;
 }
 
@@ -238,9 +232,8 @@ gkick_create_jack(struct gkick_jack **jack, struct gkick_audio_output *audio_out
         }
 
         *jack = (struct gkick_jack*)malloc(sizeof(struct gkick_jack));
-        if (*jack == NULL) {
+        if (*jack == NULL)
                 return GEONKICK_ERROR;
-        }
         memset(*jack, 0, sizeof(struct gkick_jack));
         (*jack)->sample_rate = GEONKICK_SAMPLE_RATE;
 
@@ -320,14 +313,12 @@ void gkick_jack_free(struct gkick_jack **jack)
 
 void gkick_jack_lock(struct gkick_jack *jack)
 {
-        if (jack != NULL) {
+        if (jack != NULL)
                 pthread_mutex_lock(&jack->lock);
-        }
 }
 
 void gkick_jack_unlock(struct gkick_jack *jack)
 {
-        if (jack != NULL) {
+        if (jack != NULL)
                 pthread_mutex_unlock(&jack->lock);
-        }
 }

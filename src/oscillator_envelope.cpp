@@ -28,13 +28,8 @@ OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
         : Envelope(area)
         , oscillator{osc}
 {
-        //        connect(osc, SIGNAL(amplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
-        //        connect(osc, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
         if (oscillator->type() == Oscillator::Type::Noise)
                 removeSupportedType(Envelope::Type::Frequency);
-        //        else {
-                //connect(osc, SIGNAL(frequencyUpdated(double)), this, SIGNAL(envelopeUpdated()));
-        //}
         setType(Envelope::Type::Amplitude);
         setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
 }

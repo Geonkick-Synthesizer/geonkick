@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEON_KICK_INTERNAL_H
-#define GEON_KICK_INTERNAL_H
+#ifndef GEONKICK_INTERNAL_H
+#define GEONKICK_INTERNAL_H
 
 #include "geonkick.h"
 #include "synthesizer.h"
@@ -47,4 +47,4 @@ struct geonkick {
 void geonkick_lock(struct geonkick *kick);
 void geonkick_unlock(struct geonkick *kick);
 
-#endif // GEON_KICK_INTERNAL_H
+#endif // GEONKICK_INTERNAL_H

@@ -62,7 +62,6 @@ double GeneralEnvelope::envelopeLengh(void) const
 void GeneralEnvelope::setEnvelopeLengh(double len)
 {
         geonkickApi->setKickLength(len);
-        //        emit envelopeLengthUpdated(len);
 }
 
 double GeneralEnvelope::envelopeAmplitude(void) const

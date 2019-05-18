@@ -275,17 +275,11 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         LV2UI_Resize *resize = nullptr;
         const LV2_Feature *feature;
         while ((feature = *features)) {
-                if (std::string(feature->URI) == std::string(LV2_UI__parent)) {
+                if (std::string(feature->URI) == std::string(LV2_UI__parent))
                         parent = feature->data;
-                        if (resize)
-                                break;
-                }
 
-                if (std::string(feature->URI) == std::string(LV2_UI__resize)){
+                if (std::string(feature->URI) == std::string(LV2_UI__resize))
                         resize = (LV2UI_Resize*)feature->data;
-                        if (parent)
-                                break;
-                }
 
                 if (std::string(feature->URI) == std::string(LV2_INSTANCE_ACCESS_URI)) {
                         geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
@@ -306,6 +300,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         auto mainWidget = new MainWindow(guiApp, geonkickLv2PLugin->getApi(), info);
         if (!mainWidget->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
+                delete guiApp;
                 return nullptr;
         }
 
@@ -355,11 +350,10 @@ static const LV2UI_Descriptor gkick_descriptor_ui = {
 
 const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index)
 {
-	switch (index) {
-	case 0:
-		return &gkick_descriptor_ui;
-	default:
-		return NULL;
+	switch (index)
+        {
+	case 0:	return &gkick_descriptor_ui;
+	default: return NULL;
         }
 }
 
@@ -451,7 +445,6 @@ gkick_state_save(LV2_Handle                instance,
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
         if (geonkickLv2PLugin){
                 std::string stateData = geonkickLv2PLugin->getStateData();
-                RK_LOG_DEBUG("json:" << stateData);
                 store(handle, geonkickLv2PLugin->getStateId(), stateData.data(),
                       stateData.size(), geonkickLv2PLugin->getAtomChunkId(),
                       LV2_STATE_IS_POD | LV2_STATE_IS_PORTABLE);
@@ -475,7 +468,6 @@ gkick_state_restore(LV2_Handle                  instance,
                                                          &size, &type, &flags);
                 if (data && size > 0)
                         geonkickLv2PLugin->setStateData(std::string(data, size), flags);
-                RK_LOG_DEBUG("json1:" << data);
         }
         return LV2_STATE_SUCCESS;
 }
@@ -483,9 +475,8 @@ gkick_state_restore(LV2_Handle                  instance,
 static const void* gkick_extention_data(const char* uri)
 {
         static const LV2_State_Interface state = {gkick_state_save, gkick_state_restore};
-        if (std::string(uri) == std::string(LV2_STATE__interface)) {
+        if (std::string(uri) == std::string(LV2_STATE__interface))
                 return &state;
-        }
         return nullptr;
 }
 
@@ -508,4 +499,3 @@ const LV2_Descriptor* lv2_descriptor(uint32_t index)
 	default: return nullptr;
 	}
 }
-

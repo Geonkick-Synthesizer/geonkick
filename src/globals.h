@@ -45,8 +45,8 @@
 #include "RkLog.h"
 
 #define GEOKICK_APP_NAME "Geonkick"
-#define GEOKICK_APP_VERION 0x020000
-#define GEOKICK_APP_VERION_STRING "2.0"
+#define GEOKICK_APP_VERION 0x010500
+#define GEOKICK_APP_VERION_STRING "1.5"
 
 #define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
 #define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;

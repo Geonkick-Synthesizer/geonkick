@@ -49,9 +49,8 @@ gkick_audio_create(struct gkick_audio** audio)
         }
 
 #ifdef GEONKICK_AUDIO_JACK
-        if (gkick_create_jack(&(*audio)->jack, (*audio)->audio_output) != GEONKICK_OK) {
+        if (gkick_create_jack(&(*audio)->jack, (*audio)->audio_output) != GEONKICK_OK)
                 gkick_log_warning("can't create jack module. Jack server is either not running or not installed");
-        }
 #endif // GEONKICK_AUDIO_JACK
         return GEONKICK_OK;
 }
@@ -76,11 +75,10 @@ gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit)
                return GEONKICK_ERROR;
         }
 
-        if (limit < 0) {
+        if (limit < 0)
                 limit = 0;
-        } else if (limit > 10) {
+        else if (limit > 10)
                 limit = 10;
-        }
 
         return gkick_audio_output_set_limiter(audio->audio_output, limit);
 }
