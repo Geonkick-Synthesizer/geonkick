@@ -27,11 +27,11 @@
 #include "oscillator.h"
 #include "geonkick_widget.h"
 #include "geonkick_api.h"
+#include "envelope.h"
 
 
 class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
-class Envelope;
 
 class EnvelopeWidget : public GeonkickWidget
 {
@@ -53,12 +53,8 @@ public:
      RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
-     void showAmplitudeEnvelope();
-     void showFrequencyEnvelope();
-     void showGeneralEnvelope();
-     void showOsc1Envelope();
-     void showOsc2Envelope();
-     void showNoiseEnvelope();
+     void showEnvelopeType(Envelope::Type type);
+     void showEnvelope(EnvelopeType type);
      Envelope* getEnvelope(EnvelopeType type);
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);

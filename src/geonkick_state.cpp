@@ -149,7 +149,7 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                         }
                 }
 
-                if (m.name == "compressor" && m.value.IsObject()) {
+                if (m.name == "distortion" && m.value.IsObject()) {
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "enabled" && el.value.IsBool())
                                         enableDistortion(el.value.GetBool());
@@ -675,7 +675,7 @@ std::string GeonkickState::toJson() const
         jsonStream << "}, " << std::endl;
 
         jsonStream << "\"distortion\": {" << std::endl;
-        jsonStream << "\"enabled\": " << isDistortionEnabled() << ", " << std::endl;
+        jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"volume\": " << std::fixed << std::setprecision(5) << getDistortionVolume()  << ", " << std::endl;
         jsonStream << "\"drive\": " << std::fixed << std::setprecision(5) << getDistortionDrive() << std::endl;
         jsonStream << "}" << std::endl; // distortion

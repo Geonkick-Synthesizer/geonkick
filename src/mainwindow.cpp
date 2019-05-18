@@ -142,6 +142,7 @@ bool MainWindow::init(void)
 
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
+        updateGui();
         return true;
 }
 
