@@ -199,7 +199,8 @@ void MainWindow::openPreset(const std::string &fileName)
         }
 
         std::string fileData((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
-        auto state = std::make_shared<GeonkickState>(fileData);
+        auto state = std::make_shared<GeonkickState>();
+        state->loadData(fileData);
         geonkickApi->setState(state);
         topBar->setPresetName(filePath.stem());
         file.close();

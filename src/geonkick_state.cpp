@@ -27,11 +27,11 @@
 
 GeonkickState::GeonkickState() :
         limiterValue{0}
-        , kickLength{0}
-        , kickAmplitude{0}
+        , kickLength{50}
+        , kickAmplitude{0.8}
         , kickFilterEnabled{0}
-        , kickFilterFrequency{0}
-        , kickFilterQFactor{0}
+        , kickFilterFrequency{200}
+        , kickFilterQFactor{1.0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 0, 0}
@@ -41,20 +41,8 @@ GeonkickState::GeonkickState() :
         initOscillators();
 }
 
-GeonkickState::GeonkickState(const std::string &data) :
-        limiterValue{0}
-        , kickLength{0}
-        , kickAmplitude{0}
-        , kickFilterEnabled{0}
-        , kickFilterFrequency{0}
-        , kickFilterQFactor{0}
-        , kickFilterType{GeonkickApi::FilterType::LowPass}
-        , compressor{false, 0, 0, 0, 0, 0, 0}
-        , distortion{false, 0, 0}
-        , layers{false, false, false}
-        , currentLayer{GeonkickApi::Layer::Layer1}
+void GeonkickState::loadData(const std::string &data)
 {
-        initOscillators();
         rapidjson::Document document;
         document.Parse(data.c_str());
         if (document.IsObject()) {
@@ -72,6 +60,7 @@ GeonkickState::GeonkickState(const std::string &data) :
                         }
                 }
         }
+
 }
 
 void GeonkickState::initOscillators()

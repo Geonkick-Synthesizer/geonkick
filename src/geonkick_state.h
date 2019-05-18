@@ -37,8 +37,7 @@ class GeonkickState
  public:
 
         GeonkickState();
-        GeonkickState(const std::string &data);
-
+        void loadData(const std::string &data);
         void setLimiterValue(double val);
         void setKickLength(double val);
         void setKickAmplitude(double val);
@@ -120,12 +119,12 @@ private:
                 , isEnabled{false}
                 , function{GeonkickApi::FunctionType::Sine}
                 , phase{0}
-                , amplitude{0}
-                , frequency{0}
+                , amplitude{0.8}
+                , frequency{200}
                 , isFilterEnabled{false}
                 , filterType{GeonkickApi::FilterType::LowPass}
-                , filterFrequency{0}
-                , filterFactor{0} {}
+                , filterFrequency{200}
+                , filterFactor{1.0} {}
                 GeonkickApi::OscillatorType type;
                 bool isEnabled;
                 GeonkickApi::FunctionType function;

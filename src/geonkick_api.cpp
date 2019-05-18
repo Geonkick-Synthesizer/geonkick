@@ -165,7 +165,9 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
 
 void GeonkickApi::setState(const std::string &data)
 {
-        setState(std::make_shared<GeonkickState>(data));
+        auto state = getDefaultState();
+        state->loadData(data);
+        setState(state);
 }
 
 std::shared_ptr<GeonkickState> GeonkickApi::getState()
@@ -224,7 +226,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
                 points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::Frequency);
                 state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
         }
-        currentLayer = layer;
+        currentLayer = temp;
 }
 
 void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
