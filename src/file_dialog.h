@@ -65,7 +65,7 @@ class FilesView: public GeonkickWidget {
         std::filesystem::path currentPath;
         int lineHeight;
         int lineSacing;
-        int fisibleLines;
+        decltype(filesList.size()) visibleLines;
         GeonkickButton *topScrollBarButton;
         GeonkickButton *bottomScrollBarButton;
         int scrollBarWidth;

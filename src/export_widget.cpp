@@ -57,10 +57,10 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         , oggButton{nullptr}
         , monoButton{nullptr}
         , stereoButton{nullptr}
+        , progressBar{nullptr}
         , exportButton{nullptr}
         , cancelButton{nullptr}
         , errorLabel{nullptr}
-        , progressBar{nullptr}
         , selectedFormat{ExportFormat::Wav16}
         , channelsType{ChannelsType::Mono}
 {

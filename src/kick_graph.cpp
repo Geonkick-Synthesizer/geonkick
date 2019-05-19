@@ -30,7 +30,6 @@
 KickGraph::KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q)
         : geonkickApi{api}
         , graphThread{nullptr}
-        , kickBuffer{48000 * geonkickApi->kickLength() / 1000}
         , graphSize{size}
         , isRunning{true}
         , eventQueue{q}
@@ -73,6 +72,11 @@ void KickGraph::drawKickGraph()
                         threadConditionVar.wait(lock);
                 if (!isRunning)
                         break;
+
+                if (kickBuffer.empty()) {
+                        updateGraph = false;
+                        continue;
+                }
 
                 auto graphImage = std::make_shared<RkImage>(graphSize.width(), graphSize.height());
                 RkPainter painter(graphImage.get());

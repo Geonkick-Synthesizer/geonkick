@@ -45,13 +45,13 @@ FilesView::FilesView(GeonkickWidget *parent)
         , currentPath{std::filesystem::current_path()}
         , lineHeight{15}
         , lineSacing{lineHeight / 2}
-        , fisibleLines{0}
+        , visibleLines{0}
         , topScrollBarButton{nullptr}
         , bottomScrollBarButton{nullptr}
         , scrollBarWidth{12}
 {
         setFixedSize(parent->width() - 20, parent->height() - 100);
-        fisibleLines = height() / (lineHeight + lineSacing);
+        visibleLines = height() / (lineHeight + lineSacing);
         setPosition(10, 50);
         setBackgroundColor(50, 50, 50);
         setBorderColor(40, 40, 40);
@@ -139,7 +139,7 @@ void FilesView::loadCurrentDirectory()
         offsetIndex = 0;
         selectedFileIndex = -1;
 
-        if (filesList.size() > fisibleLines)
+        if (filesList.size() > visibleLines)
                 showScrollBar(true);
         else
                 showScrollBar(false);
@@ -166,7 +166,8 @@ void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         int lineYPos = 0;
         auto index = offsetIndex;
         int line = 0;
-        while((index < filesList.size()) && (index - offsetIndex  < fisibleLines)) {
+        while(index >= 0 && (static_cast<decltype(filesList.size())>(index) < filesList.size())
+              && (static_cast<decltype(visibleLines)>(index - offsetIndex) < visibleLines)) {
                 auto fileName = filesList[index].filename().string();
                 auto font = painter.font();
                 if (std::filesystem::is_directory(filesList[index]))
@@ -226,8 +227,8 @@ void FilesView::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 int FilesView::getLine(int x, int y) const
 {
         if (x > 0 && x < width() - scrollBarWidth && y > 0 && y < height()) {
-                int line = y / (lineHeight + lineSacing);
-                if (line <= filesList.size() - (offsetIndex + 1))
+                decltype(filesList.size()) line = y / (lineHeight + lineSacing);
+                if (line <= filesList.size() - static_cast<decltype(filesList.size())>(offsetIndex + 1))
                         return line;
         }
 
@@ -251,7 +252,7 @@ void FilesView::onLineUp()
 
 void FilesView::onLineDown()
 {
-        if (offsetIndex + fisibleLines < filesList.size() - 1)
+        if (offsetIndex + visibleLines < filesList.size() - 1)
                 offsetIndex++;
         update();
 }

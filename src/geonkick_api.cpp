@@ -383,7 +383,7 @@ std::vector<RkRealPoint> GeonkickApi::getKickEnvelopePoints() const
         std::vector<RkRealPoint> points;
         size_t npoints = 0;
         geonkick_kick_envelope_get_points(geonkickApi, &buf, &npoints);
-        for (auto i = 0; i < 2 * npoints; i += 2)
+        for (decltype(npoints) i = 0; i < 2 * npoints; i += 2)
                 points.push_back(RkRealPoint(buf[i], buf[i+1]));
 
         if (buf)

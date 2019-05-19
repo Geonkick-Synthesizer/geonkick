@@ -49,7 +49,7 @@ void GeonkickState::loadData(const std::string &data)
                 for (const auto &m: document.GetObject()) {
                         if (m.name == "kick" && m.value.IsObject())
                                 parseKickObject(m.value);
-                        for (auto i = 0; i < layers.size(); i++) {
+                        for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
                                 setCurrentLayer(static_cast<GeonkickApi::Layer>(i));
                                 if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str())
                                         parseOscillatorObject(0, m.value);
@@ -65,7 +65,7 @@ void GeonkickState::loadData(const std::string &data)
 
 void GeonkickState::initOscillators()
 {
-        for (int i = 0; i < layers.size(); i++) {
+        for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
                 oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator1)
                                         + GKICK_OSC_GROUP_SIZE * i,
                                         std::make_shared<OscillatorInfo>()});
@@ -617,7 +617,7 @@ std::string GeonkickState::toJson() const
         jsonStream << "\"kick\": {" << std::endl;
         jsonStream << "\"layers\": [";
         bool first = true;
-        for (int i = 0; i < layers.size(); i++) {
+        for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
                 if (layers[i]) {
                         if (first)
                                 first = false;
@@ -676,15 +676,15 @@ std::string GeonkickState::toJson() const
 
 void GeonkickState::setLayerEnabled(GeonkickApi::Layer layer, bool b)
 {
-        int index = static_cast<int>(layer);
-        if (index > -1 && index < layers.size())
+        decltype(layers.size()) index = static_cast<int>(layer);
+        if (index >= 0 && index < layers.size())
                 layers[index] = b;
 }
 
 bool GeonkickState::isLayerEnabled(GeonkickApi::Layer layer) const
 {
-        int index = static_cast<int>(layer);
-        if (index > -1 && index < layers.size())
+        decltype(layers.size()) index = static_cast<int>(layer);
+        if (index >= 0 && index < layers.size())
                 return layers[index];
         else
                 return false;
