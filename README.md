@@ -73,6 +73,7 @@ I order to build Geonkick there is a need to install the following development p
 
 * Redkite GUI toolkit. See the documentation of Redkite toolkit how to install it.
 * libsndfile
+* RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for LV2)
 
 On Debian, Ubuntu, Ubuntu Studio install:
@@ -80,6 +81,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
     apt-get install build-essential
     apt-get install cmake
     apt-get install qjackctl && libjack-dev && libsndfile-dev
+    apt-get install rapidjson-dev
 
 ###### Build & install Geonkick
 
@@ -106,7 +108,7 @@ installs, runs, and if there any issues.
 
 #### Packaging
 
-* [Package, version 1.0](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
+* [Package, for older version 1.0](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
 
 #### Road map
 
