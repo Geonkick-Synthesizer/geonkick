@@ -1,8 +1,8 @@
 /**
- * File name: geonkick_label.h
+ * File name: VstIds.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
  *
  * This file is part of Geonkick.
  *
@@ -21,28 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_LABEL_H
-#define GEONKICK_LABEL_H
+#ifndef GEONKICK_VST_IDS_H
+#define GEONKICK_VST_IDS_H
 
-#include "geonkick_widget.h"
+#include "globals.h"
 
-class QLabel;
+#include "pluginterfaces/base/funknown.h"
 
-class GeonkickLabel: public GeonkickWidget
-{
- Q_OBJECT
+#include <RkLog.h>
 
- public:
-        GeonkickLabel(GeonkickWidget *parent = nullptr);
-        GeonkickLabel(const QString &title, GeonkickWidget *parent = nullptr);
-        virtual ~GeonkickLabel();
-        void init();
-        void setImage(const QPixmap &image);
-        void setImage(const QString &file);
-        void setText(const QString &text);
+using namespace Steinberg;
 
- private:
-        QLabel *widgetLabel;
-};
+static const FUID GKickVstProcessorUID(0x41E3A6A2, 0xC1991743, 0xA64945DC, 0x3FB7D51D);
+static const FUID GKickVstControllerUID(0xFAF056D1, 0x245C8945, 0x916485C6, 0x714C768E);
 
-#endif // GEONKICK_LABEL_H
+#endif // GEONKICK_VST_IDS_H

@@ -25,58 +25,43 @@
 #define GEONGKICK_MAINWINDOW_H
 
 #include "geonkick_widget.h"
-#include "oscillator.h"
-#include "envelope_widget.h"
+#include "file_dialog.h"
 
-#include <QMainWindow>
-
-class OscillatorWidget;
-
-class QPushButton;
-class QCloseEvent;
-class QVBoxLayout;
-class QGroupBox;
-class QRadioButton;
-class QComboBox;
-class QLabel;
+class Oscillator;
 class GeonkickApi;
 class TopBar;
 class EnvelopeWidget;
+class ControlArea;
+class RkKeyEvent;
 
 class MainWindow : public GeonkickWidget
 {
-      Q_OBJECT
-
  public:
-
-      MainWindow(GeonkickApi *api = nullptr, const QString &preset = QString(), GeonkickWidget *parent = nullptr);
+        explicit MainWindow(RkMain* app, GeonkickApi *api, std::string preset = std::string());
+      explicit MainWindow(RkMain* app, GeonkickApi *api, const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
 
  protected:
-      void keyPressEvent(QKeyEvent *event);
-      void keyReleaseEvent(QKeyEvent *event);
-      void setPreset(const QString &fileName);
+      void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) final;
+      void keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event) final;
 
- protected slots:
+      void openFileDialog(FileDialog::Type type);
+      void openPreset(const std::string &fileName);
+      void savePreset(const std::string &fileName);
+      void setPreset(const std::string &fileName);
       void openExportDialog();
       void openPreset();
-      void savePreset();
       void openAboutDialog();
- signals:
-      void updateGui();
+      RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
-      void loadApiDefaultSettings();
-      void loadApiSettings();
-
       GeonkickApi *geonkickApi;
-      std::vector<Oscillator*> oscillators;
-      QVBoxLayout *centralWidgetLayout;
-      QVector<QGroupBox*> envelopeGroupBox;
+      std::vector<std::unique_ptr<Oscillator>> oscillators;
       TopBar *topBar;
       EnvelopeWidget* envelopeWidget;
-      QString presetName;
+      ControlArea* controlAreaWidget;
+      std::string presetName;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

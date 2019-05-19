@@ -26,17 +26,18 @@
 
 #include "geonkick_api.h"
 
-#include <unordered_map>
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
 
-#include <QJsonDocument>
+#include <unordered_map>
 
 class GeonkickState
 {
  public:
 
         GeonkickState();
-        GeonkickState(const QByteArray &data);
-
+        void loadData(const std::string &data);
         void setLimiterValue(double val);
         void setKickLength(double val);
         void setKickAmplitude(double val);
@@ -44,7 +45,7 @@ class GeonkickState
         void setKickFilterFrequency(double val);
         void setKickFilterQFactor(double val);
         void setKickFilterType(GeonkickApi::FilterType type);
-        void setKickEnvelopePoints(const QPolygonF &points);
+        void setKickEnvelopePoints(const std::vector<RkRealPoint> &points);
 
         double getLimiterValue() const;
         double getKickLength() const;
@@ -53,27 +54,31 @@ class GeonkickState
         double getKickFilterFrequency() const;
         double getKickFilterQFactor() const;
         GeonkickApi::FilterType getKickFilterType() const;
-        QPolygonF getKickEnvelopePoints() const;
+        std::vector<RkRealPoint> getKickEnvelopePoints() const;
 
         void setOscillatorEnabled(int index, bool b);
         void setOscillatorFunction(int index, GeonkickApi::FunctionType type);
+        void setOscillatorPhase(int index, double phase);
         void setOscillatorAmplitue(int index, double val);
         void setOscillatorFrequency(int index, double val);
         void setOscillatorFilterEnabled(int index, bool b);
         void setOscillatorFilterType(int index, GeonkickApi::FilterType type);
         void setOscillatorFilterCutOffFreq(int index, double val);
         void setOscillatorFilterFactor(int index, double val);
-        void setOscillatorEnvelopePoints(int index, const QPolygonF &points, GeonkickApi::EnvelopeType envelope);
+        void setOscillatorEnvelopePoints(int index,
+                                         const std::vector<RkRealPoint> &points,
+                                         GeonkickApi::EnvelopeType envelope);
 
         bool isOscillatorEnabled(int index) const;
         GeonkickApi::FunctionType oscillatorFunction(int index) const;
         double oscillatorAmplitue(int index) const;
+        double oscillatorPhase(int index) const;
         double oscillatorFrequency(int index) const;
         bool isOscillatorFilterEnabled(int index) const;
         GeonkickApi::FilterType oscillatorFilterType(int index) const;
         double oscillatorFilterCutOffFreq(int index) const;
         double oscillatorFilterFactor(int index) const;
-        QPolygonF oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
+        std::vector<RkRealPoint> oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
 
         void enableCompressor(bool enable);
         bool isCompressorEnabled() const;
@@ -96,30 +101,45 @@ class GeonkickState
         void setDistortionDrive(double drive);
         double getDistortionVolume() const;
         double getDistortionDrive() const;
+        std::string toJson() const;
+        void setLayerEnabled(GeonkickApi::Layer layer, bool b);
+        bool isLayerEnabled(GeonkickApi::Layer layer) const;
+        void setCurrentLayer(GeonkickApi::Layer layer);
 
-        QByteArray toRawData() const;
-        QByteArray toJson() const;
-
-protected:
-        void parseKickObject(const auto &kick);
-        void parseOscillatorObject(int index, const auto &osc);
-        QPolygonF parseEnvelopeArray(const auto &envelopeArray);
-        QJsonDocument getJsonDocument() const;
+ protected:
+        void parseKickObject(const rapidjson::Value &kick);
+        void parseOscillatorObject(int index,  const rapidjson::Value &osc);
+        std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
 
 private:
-        struct Oscillator {
+        void initOscillators();
+        struct OscillatorInfo {
+              OscillatorInfo()
+              : type{GeonkickApi::OscillatorType::Oscillator1}
+                , isEnabled{false}
+                , function{GeonkickApi::FunctionType::Sine}
+                , phase{0}
+                , amplitude{0.8}
+                , frequency{200}
+                , isFilterEnabled{false}
+                , filterType{GeonkickApi::FilterType::LowPass}
+                , filterFrequency{200}
+                , filterFactor{1.0} {}
                 GeonkickApi::OscillatorType type;
                 bool isEnabled;
                 GeonkickApi::FunctionType function;
+                double phase;
                 double amplitude;
                 double frequency;
                 bool isFilterEnabled;
                 GeonkickApi::FilterType filterType;
                 double filterFrequency;
                 double filterFactor;
-                QPolygonF amplitudeEnvelope;
-                QPolygonF frequencyEnvelope;
+                std::vector<RkRealPoint> amplitudeEnvelope;
+                std::vector<RkRealPoint> frequencyEnvelope;
         };
+
+        std::shared_ptr<OscillatorInfo> getOscillator(int index) const;
 
         struct Compressor {
                 bool enabled;
@@ -137,8 +157,6 @@ private:
                 double drive;
         };
 
-        std::shared_ptr<Oscillator> getOscillator(int index) const;
-
         double limiterValue;
         double kickLength;
         double kickAmplitude;
@@ -146,10 +164,12 @@ private:
         double kickFilterFrequency;
         double kickFilterQFactor;
         GeonkickApi::FilterType kickFilterType;
-        QPolygonF kickEnvelopePoints;
-        std::unordered_map<int, std::shared_ptr<Oscillator>> oscillators;
+        std::vector<RkRealPoint> kickEnvelopePoints;
+        std::unordered_map<int, std::shared_ptr<OscillatorInfo>> oscillators;
         Compressor compressor;
         Distortion distortion;
+        std::vector<bool> layers;
+        GeonkickApi::Layer currentLayer;
 };
 
 #endif // GEONKICK_STATE_H

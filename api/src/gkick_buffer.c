@@ -36,15 +36,10 @@ void gkick_buffer_new(struct gkick_buffer **buffer, int size)
                 return;
         }
         (*buffer)->max_size = size;
-        (*buffer)->size = size;
+        (*buffer)->size = (*buffer)->max_size;
+        (*buffer)->currentIndex = 0;
 
-        if (pthread_mutex_init(&(*buffer)->lock, NULL) != 0) {
-                gkick_log_error("error on init mutex");
-                gkick_buffer_free(buffer);
-                return;
-	}
-
-        (*buffer)->buff = (gkick_real*)malloc(sizeof(gkick_real) * size);
+        (*buffer)->buff = (gkick_real*)malloc(sizeof(gkick_real) * (*buffer)->max_size);
         if ((*buffer)->buff == NULL) {
                 gkick_log_error("can't allocate memory");
                 gkick_buffer_free(buffer);
@@ -54,66 +49,64 @@ void gkick_buffer_new(struct gkick_buffer **buffer, int size)
 
 void gkick_buffer_free(struct gkick_buffer **buffer)
 {
-        if (buffer == NULL || *buffer == NULL) {
+        if (buffer == NULL || *buffer == NULL)
                 return;
-        }
-
-        if ((*buffer)->buff != NULL) {
+        if ((*buffer)->buff != NULL)
                 free((*buffer)->buff);
-        }
-        pthread_mutex_destroy(&(*buffer)->lock);
         free(*buffer);
         *buffer = NULL;
 }
 
-int gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size)
+void gkick_buffer_reset(struct gkick_buffer *buffer)
 {
-        if (buffer == NULL || data == NULL) {
-                return 0;
-        }
+        buffer->currentIndex = 0;
+}
 
-        if (size < 1) {
-                return 1;
-        }
+void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size)
+{
+        if (buffer == NULL || data == NULL || size < 1)
+                return;
 
-        pthread_mutex_lock(&buffer->lock);
         if (size <= buffer->max_size) {
                 memcpy(buffer->buff, data, sizeof(gkick_real) * size);
                 buffer->size = size;
-        } else {
-                gkick_log_error("maximum allowed buffer size");
-                pthread_mutex_unlock(&buffer->lock);
-                return 0;
         }
-
-        pthread_mutex_unlock(&buffer->lock);
-        return 1;
+        buffer->currentIndex = 0;
 }
 
-gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index, size_t *is_end)
+gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer)
 {
-        gkick_real val;
-
-        if (buffer == NULL) {
-                if (is_end != NULL) {
-                        *is_end = 1;
-                }
+        if (buffer->size < 1 || buffer->currentIndex > buffer->size - 1)
                 return 0;
-        }
-
-        if (is_end != NULL) {
-                *is_end = 1;
-        }
-
-        val = 0;
-        pthread_mutex_lock(&buffer->lock);
-        if (index < buffer->size) {
-                if (is_end != NULL) {
-                        *is_end = 0;
-                }
-                val = buffer->buff[index];
-        }
-        pthread_mutex_unlock(&buffer->lock);
-
-        return val;
+        else
+                return buffer->buff[buffer->currentIndex++];
 }
+
+void gkick_buffer_set_size(struct gkick_buffer *buffer, size_t size)
+{
+        if (size < 1)
+                buffer->size = 0;
+        else if (size > buffer->max_size)
+                buffer->size = buffer->max_size;
+        else
+                buffer->size = size;
+        buffer->currentIndex = 0;
+}
+
+size_t gkick_buffer_size(struct gkick_buffer *buffer)
+{
+        return buffer->size;
+}
+
+void gkick_buffer_push_back(struct gkick_buffer *buffer, gkick_real val)
+{
+        if (buffer->size < 1 || buffer->currentIndex > buffer->size - 1)
+                return;
+        buffer->buff[buffer->currentIndex++] = val;
+}
+
+bool gkick_buffer_is_end(struct gkick_buffer *buffer)
+{
+        return (buffer->size < 1) || (buffer->currentIndex > buffer->size - 1);
+}
+

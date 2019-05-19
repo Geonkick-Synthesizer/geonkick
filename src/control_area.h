@@ -27,20 +27,17 @@
 #include "envelope.h"
 #include "geonkick_widget.h"
 
-#include <memory>
-
 class Oscillator;
 class GeonkickApi;
 
 class ControlArea: public GeonkickWidget
 {
- Q_OBJECT
  public:
-     ControlArea(GeonkickWidget *parent, GeonkickApi* api, std::vector<Oscillator*> &oscillators);
-     ~ControlArea();
-
-signals:
-     void update();
+        ControlArea(GeonkickWidget *parent,
+                    GeonkickApi* api,
+                    const std::vector<std::unique_ptr<Oscillator>> &oscillators);
+        ~ControlArea();
+        RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 };
 
 #endif

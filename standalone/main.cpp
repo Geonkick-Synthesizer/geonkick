@@ -22,41 +22,31 @@
  */
 
 #include "mainwindow.h"
-#include "geonkick_state.h"
+#include "geonkick_api.h"
 
-#include <QApplication>
-#include <QDebug>
-#include <QPushButton>
-#include <QVector>
-#include <QFontDatabase>
+#include <RkMain.h>
 
 int main(int argc, char *argv[])
 {
-        QApplication a(argc, argv);
+        RkMain app(argc, argv);
 
-        QFontDatabase::addApplicationFont(":/urw_gothic_l_book.ttf");
-        QFont font("URW Gothic L");
-        font.setPixelSize(12);
-        a.setFont(font);
+        std::string preset;
+        if (argc == 2)
+                preset = argv[1];
 
-        QString preset;
-        if (QCoreApplication::arguments().size() > 1) {
-                preset = QCoreApplication::arguments().at(1);
-        }
-
-        auto api = std::make_unique<GeonkickApi>();
+        auto api = new GeonkickApi;
+        api->setEventQueue(app.eventQueue().get());
         api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");
                 exit(1);
         }
 
-        MainWindow window(api.get(), preset);
-        if (!window.init()) {
+        auto window = new MainWindow(&app, api, preset);
+        if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 exit(1);
         }
 
-        window.show();
-        return a.exec();
+        return app.exec();
 }

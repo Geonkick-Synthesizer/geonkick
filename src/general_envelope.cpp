@@ -24,13 +24,13 @@
 #include "general_envelope.h"
 #include "oscillator.h"
 
-GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const QRect &area)
-        : Envelope(nullptr, area),
-          geonkickApi(api)
+GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
+        : Envelope(area)
+        ,  geonkickApi{api}
 {
         removeSupportedType(Envelope::Type::Frequency);
-        connect(geonkickApi, SIGNAL(kickLengthUpdated(double)), this, SIGNAL(envelopeUpdated()));
-        connect(geonkickApi, SIGNAL(kickAmplitudeUpdated(double)), this, SIGNAL(envelopeUpdated()));
+        RK_ACT_BIND(geonkickApi, kickLengthUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
+        RK_ACT_BIND(geonkickApi, kickAmplitudeUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
         setType(Envelope::Type::Amplitude);
         setPoints(geonkickApi->getKickEnvelopePoints());
 }
@@ -62,7 +62,6 @@ double GeneralEnvelope::envelopeLengh(void) const
 void GeneralEnvelope::setEnvelopeLengh(double len)
 {
         geonkickApi->setKickLength(len);
-        emit envelopeLengthUpdated(len);
 }
 
 double GeneralEnvelope::envelopeAmplitude(void) const

@@ -71,4 +71,4 @@ void gkick_envelope_update_point(struct gkick_envelope *env,
                                  gkick_real x,
                                  gkick_real y);
 
-#endif
+#endif // GKICK_ENVELOPE_H

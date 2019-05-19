@@ -1,15 +1,20 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 1.1.0)
+project(geonkick VERSION 1.5.0)
+
+# NOTE: for version v1.5 vst/Windows is not implemented yet.
+
+option(GKICK_STANDALONE "Enable build for standalone" ON)
+option(GKICK_PLUGIN "Enable build for plugin" ON)
 
 if (NOT CMAKE_BUILD_TYPE)
-  message(STATUS "no build type selected, default to Release")
+  message(STATUS "no build type selected, set default to Release")
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type Release" FORCE)
 endif()
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS}")
-set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS} -fvisibility=hidden")
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
@@ -17,19 +22,30 @@ endif()
 
 set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
-set(GKICK_LV2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lv2)
+
+if (GKICK_PLUGIN)
+  if (CMAKE_SYSTEM_NAME MATCHES Windows)
+      if (GKICK_VST_SDK_PATH)
+          list(APPEND CMAKE_MODULE_PATH "${GKICK_VST_SDK_PATH}/cmake/modules")
+          include(Global)
+          include(AddVST3Library)
+      else(GKICK_VST_SDK_PATH)
+          message(FATAL " GKICK_VST_SDK_PATH was not set")
+      endif(GKICK_VST_SDK_PATH)
+      set(GKICK_VST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/plugin/vst)
+  else()
+      set(GKICK_LV2_DIR ${CMAKE_CURRENT_SOURCE_DIR}/plugin/lv2)
+  endif()
+endif(GKICK_PLUGIN)
+
 set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 
-set(GKICK_API_FLAGS "")
-set(GKICK_API_FLAGS_LV2 "")
-
 set(GKICK_COMMON_HEADERS
-  ${GKICK_COMMON_DIR}/geonkick_widget.h
-  ${GKICK_COMMON_DIR}/geonkick_label.h
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
-  ${GKICK_COMMON_DIR}/geonkick_checkbox.h
+  ${GKICK_COMMON_DIR}/file_dialog.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
@@ -55,10 +71,9 @@ set(GKICK_COMMON_HEADERS
 
 set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
-  ${GKICK_COMMON_DIR}/geonkick_label.cpp
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
-  ${GKICK_COMMON_DIR}/geonkick_checkbox.cpp
+  ${GKICK_COMMON_DIR}/file_dialog.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
@@ -82,15 +97,6 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/about.cpp
   ${GKICK_COMMON_DIR}/mainwindow.cpp)
 
-set(GKICK_COMMON_RESOURCES ${GKICK_COMMON_DIR}/resources/resources.qrc)
-
-# Disabling standalone build there also will no more be need to install jack dependency.
-option(ENABLE_STANDALONE "Enable build for standalone application" ON)
-
-# Not recommended for use. Qt support for LV2 is not sutable for this.
-# It may cause crashes for various reasons.
-option(ENABLE_LV2 "Enable build for LV2 plugin" OFF)
-
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
     option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
@@ -106,20 +112,22 @@ if (ENABLE_DOUBLE_PRECISION)
 endif()
 
 if (ENABLE_LOGGING)
+  message(STATUS "set debug level")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
   list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
   list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
   list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_LEVEL_DEBUG")
   list(APPEND GKICK_API_FLAGS_LV2 "-DGKICK_LIB_LOG_FUNCTION")
 endif()
 
-find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SNDFILE sndfile)
 if (NOT SNDFILE_FOUND)
     message(FATAL_ERROR "can't find sndfile library")
 endif(NOT SNDFILE_FOUND)
 
-if (ENABLE_STANDALONE)
+if (GKICK_STANDALONE)
   pkg_check_modules(JACK jack)
   if (NOT JACK_FOUND)
     message(FATAL_ERROR "can't find jack library")
@@ -127,56 +135,90 @@ if (ENABLE_STANDALONE)
   list(APPEND GKICK_API_FLAGS "-DGEONKICK_AUDIO_JACK")
 endif()
 
-if (ENABLE_LV2)
-  pkg_check_modules(LV2 lv2)
-  if (NOT LV2_FOUND)
-    message(FATAL_ERROR "can't find LV2 library")
-  endif(NOT LV2_FOUND)
-endif(ENABLE_LV2)
+if (GKICK_PLUGIN)
+  if(CMAKE_SYSTEM_NAME MATCHES Windows)
+	message(STATUS "Checking for VST SDK...")
+  else()
+	message(STATUS "Checking for LV2 library...")
+	pkg_check_modules(LV2 lv2)
+	if (NOT LV2_FOUND)
+		message(FATAL_ERROR "can't find LV2 library")
+	endif(NOT LV2_FOUND)
+  endif()
+endif(GKICK_PLUGIN)
+
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_WIN")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_WIN")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_FOR_SHARED")
+else ()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_GNU")
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_GNU")
+endif ()
 
 include_directories(${GKICK_API_DIR}/src)
 
 # Define custom target to build the geonkick api for standalone.
-if (ENABLE_STANDALONE)
+if (GKICK_STANDALONE)
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api/libgeonkick.a
     COMMAND mkdir -p api
     && cd ${GKICK_API_DIR}
     && $(MAKE) DEFINES="${GKICK_API_FLAGS}" BUILD="${CMAKE_BINARY_DIR}/api" TARGET="libgeonkick.a")
   add_custom_target(api_standalone DEPENDS ${CMAKE_BINARY_DIR}/api/libgeonkick.a)
-endif(ENABLE_STANDALONE)
+endif(GKICK_STANDALONE)
 
-# Define custom target to build the geonkick api for LV2.
-if (ENABLE_LV2)
-  add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a
-    COMMAND mkdir -p api_lv2
-    && cd ${GKICK_API_DIR}
-    && $(MAKE) DEFINES="${GKICK_API_FLAGS_LV2}" BUILD="${CMAKE_BINARY_DIR}/api_lv2" TARGET="libgeonkick_lv2.a")
-  add_custom_target(api_lv2 DEPENDS ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
-endif(ENABLE_LV2)
+if (GKICK_PLUGIN)
+  if(CMAKE_SYSTEM_NAME MATCHES Windows)
+	message(STATUS "not implemented yet")
+  else()
+	add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a
+		COMMAND mkdir -p api_lv2
+		&& cd ${GKICK_API_DIR}
+		&& $(MAKE) DEFINES="${GKICK_API_FLAGS_LV2}" BUILD="${CMAKE_BINARY_DIR}/api_lv2" TARGET="libgeonkick_lv2.a")
+	add_custom_target(api_lv2 DEPENDS ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
+  endif()
+endif(GKICK_PLUGIN)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 
-add_definitions(-fPIC)
-include_directories(${Qt5Core_INCLUDES}
-  ${Qt5Core_INCLUDE_DIRS}
-  ${Qt5Gui_INCLUDES}
-  ${Qt5Gui_INCLUDE_DIRS}
-  ${Qt5Widgets_INCLUDES}
-  ${Qt5Widgets_INCLUDE_DIRS})
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+    include_directories(${GKICK_VST_SDK_PATH})
+    include_directories(${GKICK_REDKITE_SDK_PATH}/include)
+    link_directories(${GKICK_VST_SDK_PATH}/build/lib/Debug)
+    link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
+else ()
+  add_definitions(-fPIC)
+  include_directories(/usr/local/include/redkite)
+endif()
+
+include(${GKICK_RC_DIR}/resources.rc)
+
+foreach(pngFile ${gkick_rc_png_files})
+  message(STATUS "convert file ${pngFile}")
+  get_filename_component(filename ${GKICK_RC_DIR}/${pngFile} NAME)
+  string(REPLACE "." "_" filename ${filename})
+  string(REPLACE " " "_" filename ${filename})
+  add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
+    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
+    && rkpng2c "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk_${filename}")
+    set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
+endforeach()
+
+add_custom_target(gkick_resources ALL DEPENDS ${GKICK_RC_OUTPUT})
 
 include_directories(${GKICK_COMMON_DIR})
 add_library(geonkick_common STATIC
   ${GKICK_COMMON_HEADERS}
-  ${GKICK_COMMON_SOURCES})
+  ${GKICK_COMMON_SOURCES}
+  ${GKICK_RC_OUTPUT})
+add_dependencies(geonkick_common gkick_resources)
 
-if (ENABLE_STANDALONE)
+if (GKICK_STANDALONE)
   add_subdirectory(standalone)
-endif (ENABLE_STANDALONE)
+endif (GKICK_STANDALONE)
 
-if (ENABLE_LV2)
-  add_subdirectory(lv2)
-endif (ENABLE_LV2)
+if (GKICK_PLUGIN)
+	add_subdirectory(plugin)
+endif (GKICK_PLUGIN)
 
 add_subdirectory(data)

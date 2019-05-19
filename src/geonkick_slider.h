@@ -26,39 +26,33 @@
 
 #include "geonkick_widget.h"
 
-class QMouseEvent;
+class RkMouseEvent;
 
 class GeonkickSlider: public GeonkickWidget
 {
- Q_OBJECT
-
  public:
         enum class Orientation:char {
                Horizontal,
                Vertical
         };
 
-        GeonkickSlider(GeonkickWidget *parent = nullptr,
-                        Orientation orientation = Orientation::Horizontal);
+        GeonkickSlider(GeonkickWidget *parent,
+                       Orientation orientation = Orientation::Horizontal);
         ~GeonkickSlider();
-        void paintWidget(QPaintEvent *event) override;
+        void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
         int getValue() const;
-
- public slots:
-        void setValue(int value);
-
- signals:
-        void valueUpdated(int value);
+        void onSetValue(int value);
+        RK_DECL_ACT(valueUpdated, valueUpdated(int value),
+                    RK_ARG_TYPE(int), RK_ARG_VAL(value));
 
  protected:
         int  calculateValue(int x, int y);
+        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        int pixelsFromValue() const;
 
  private:
-        void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
-        void resizeEvent(QResizeEvent *event);
-        int pixelsFromValue();
         Orientation sliderOrientation;
         bool isSelected;
         int sliderValue;

@@ -23,48 +23,67 @@
 
 #include "distortion_group_box.h"
 #include "geonkick_slider.h"
-#include "geonkick_label.h"
-#include "geonkick_checkbox.h"
+#include "geonkick_button.h"
 #include "geonkick_api.h"
 
-#include <QGridLayout>
+#include <RkLabel.h>
+
+extern const unsigned char rk_distortion_goupbox_label_png[];
+extern const unsigned char rk_checkbox_checked_10x10_png[];
+extern const unsigned char rk_checkbox_unchecked_10x10_png[];
+extern const unsigned char rk_distortion_volume_label_png[];
+extern const unsigned char rk_distortion_drive_label_png[];
 
 DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
-        : GeonkickGroupBox(parent),
-          geonkickApi(api),
-          volumeSlider(nullptr),
-          driveSlider(nullptr),
-          distortionCheckbox(new GeonkickCheckbox(this))
+        : GeonkickGroupBox(parent)
+        , geonkickApi{api}
+        , volumeSlider{nullptr}
+        , driveSlider{nullptr}
+        , distortionCheckbox{nullptr}
 {
-        distortionCheckbox->setCheckedImage(":/checkbox_checked_10x10.png");
-        distortionCheckbox->setUncheckedImage(":/checkbox_unchecked_10x10.png");
-        distortionCheckbox->setCheckboxLabelImage(":/distortion_groupbox_label.png");
-        connect(distortionCheckbox, SIGNAL(stateUpdated(bool)), geonkickApi, SLOT(enableDistortion(bool)));
-        setGroupBoxLabel(distortionCheckbox);
+        setFixedSize(224, 63);
+        distortionCheckbox = new GeonkickButton(this);
+        RK_ACT_BIND(distortionCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi, enableDistortion(b));
+        distortionCheckbox->setCheckable(true);
+        distortionCheckbox->setPressedImage(RkImage(10, 10, rk_checkbox_checked_10x10_png));
+        distortionCheckbox->setUnpressedImage(RkImage(10, 10, rk_checkbox_unchecked_10x10_png));
+        distortionCheckbox->setFixedSize(10, 10);
+        auto label = new RkLabel(this);
+        label->show();
+        label->setBackgroundColor(background());
+        label->setImage(RkImage(50, 9, rk_distortion_goupbox_label_png));
+        label->setFixedSize(50, 9);
+        label->setPosition((width() - label->width()) / 2, 0);
+        distortionCheckbox->setPosition(label->x() - 14, 0);
 
-        auto widget = new GeonkickWidget(this);
-        addWidget(widget);
-        auto gridLayout = new QGridLayout(widget);
-        widget->setLayout(gridLayout);
+        int sliderW = 60;
+        int sliderH = 12;
+        int yoffset = -2;
+        int labelD  = 5;
 
         // Volume
-        auto volumeLabel = new GeonkickLabel(widget);
-        volumeLabel->setImage(":/distortion_volume_label.png");
-        gridLayout->addWidget(volumeLabel, 0, 0, Qt::AlignRight);
-        volumeSlider = new GeonkickSlider(widget);
-        connect(volumeSlider, SIGNAL(valueUpdated(int)), this, SLOT(setVolume(int)));
-        volumeSlider->setFixedSize(60, 12);
-        volumeSlider->setValue(50);
-        gridLayout->addWidget(volumeSlider, 0, 1, Qt::AlignLeft);
+        volumeSlider = new GeonkickSlider(this);
+        volumeSlider->setFixedSize(sliderW, sliderH);
+        volumeSlider->setPosition(width() / 2 + labelD / 2 - 30, yoffset + (height() - sliderH) / 2);
+        volumeSlider->onSetValue(50);
+        RK_ACT_BIND(volumeSlider, valueUpdated, RK_ACT_ARGS(int val), this, setVolume(val));
+        auto volumeLabel = new RkLabel(this);
+        volumeLabel->show();
+        volumeLabel->setImage(RkImage(38, 8, rk_distortion_volume_label_png));
+        volumeLabel->setFixedSize(38, 8);
+        volumeLabel->setPosition(volumeSlider->x() - volumeLabel->width() - labelD, volumeSlider->y());
 
         // Drive
-        auto driveLabel = new GeonkickLabel(widget);
-        driveLabel->setImage(":/distortion_drive_label.png");
-        gridLayout->addWidget(driveLabel, 1, 0, Qt::AlignRight);
-        driveSlider = new GeonkickSlider(widget);
-        connect(driveSlider, SIGNAL(valueUpdated(int)), this, SLOT(setDrive(int)));
-        driveSlider->setFixedSize(60, 12);
-        gridLayout->addWidget(driveSlider, 1, 1, Qt::AlignLeft);
+        driveSlider = new GeonkickSlider(this);
+        driveSlider->setFixedSize(sliderW, sliderH);
+        driveSlider->setPosition(width() / 2 + labelD / 2 - 30, yoffset + (height() - sliderH) / 2 + sliderH + 6);
+        RK_ACT_BIND(driveSlider, valueUpdated, RK_ACT_ARGS(int val), this, setDrive(val));
+        auto driveLabel = new RkLabel(this);
+        driveLabel->show();
+        driveLabel->setImage(RkImage(24, 8, rk_distortion_drive_label_png));
+        driveLabel->setFixedSize(24, 8);
+        driveLabel->setPosition(driveSlider->x() - driveLabel->width() - labelD, driveSlider->y());
+        show();
 }
 
 DistortionGroupBox::~DistortionGroupBox()
@@ -83,15 +102,15 @@ void DistortionGroupBox::setDrive(int val)
         geonkickApi->setDistortionDrive(val);
 }
 
-void DistortionGroupBox::update()
+void DistortionGroupBox::updateGui()
 {
-        distortionCheckbox->setChecked(geonkickApi->isDistortionEnabled());
+        distortionCheckbox->setPressed(geonkickApi->isDistortionEnabled());
         double volume = geonkickApi->getDistortionVolume();
         double logVal;
         if (volume > 0)
                 logVal = 20 * log10(volume);
         else
                 logVal = 60;
-        volumeSlider->setValue(100 * (60 - fabs(logVal)) / 60);
-        driveSlider->setValue(geonkickApi->getDistortionDrive());
+        volumeSlider->onSetValue(100 * (60 - fabs(logVal)) / 60);
+        driveSlider->onSetValue(geonkickApi->getDistortionDrive());
 }

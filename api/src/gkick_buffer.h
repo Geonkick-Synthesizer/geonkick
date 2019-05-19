@@ -29,20 +29,42 @@
 struct gkick_buffer {
         gkick_real *buff;
 
-        /* Real fixed size alwayse bigger than size. */
+        /**
+         * Real allocated fixed size, alwayse bigger than current size.
+         * Never changes during the life-time of the buffer.
+         */
         size_t max_size;
 
-        /* Current size set for the buffer. */
+        /**
+         * Current position in the buffer.
+         */
+        size_t currentIndex;
+
+        /**
+         * Current size of the buffer. Can change during
+         * the life-time of the buffer.
+         */
         size_t size;
-        pthread_mutex_t lock;
 };
 
 void gkick_buffer_new(struct gkick_buffer **buffer, int size);
 
 void gkick_buffer_free(struct gkick_buffer **buffer);
 
-int gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size);
+void gkick_buffer_reset(struct gkick_buffer *buffer);
+
+void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size);
 
 gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index, size_t *is_end);
+
+gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer);
+
+void gkick_buffer_set_size(struct gkick_buffer *buffer, size_t size);
+
+size_t gkick_buffer_size(struct gkick_buffer *buffer);
+
+void gkick_buffer_push_back(struct gkick_buffer *buffer, gkick_real val);
+
+bool gkick_buffer_is_end(struct gkick_buffer *buffer);
 
 #endif // GKICK_BUFFER_H

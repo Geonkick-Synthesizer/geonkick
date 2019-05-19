@@ -25,62 +25,102 @@
 #include "geonkick_api.h"
 #include "globals.h"
 
-KickGraph::KickGraph(QObject *parent, GeonkickApi *api)
-        : QObject(parent),
-          geonkickApi(api),
-          kickBuffer(48000 * geonkickApi->kickLength() / 1000)
+#include <RkEventQueue.h>
+
+KickGraph::KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q)
+        : geonkickApi{api}
+        , graphThread{nullptr}
+        , graphSize{size}
+        , isRunning{true}
+        , eventQueue{q}
+        , updateGraph{true}
 {
-        connect(api, SIGNAL(kickUpdated()), this, SLOT(updateGraphBuffer()));
+        RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
 }
 
 KickGraph::~KickGraph()
 {
+        isRunning = false;
+        threadConditionVar.notify_one();
+        graphThread->join();
 }
 
-void KickGraph::draw(QPainter &painter)
+void KickGraph::start()
 {
-        if (!cacheGraphImage.isNull()) {
-                painter.drawImage(drawingArea, cacheGraphImage);
-        }
-}
-
-void KickGraph::setDrawingArea(const QRect &rect)
-{
-        drawingArea = rect;
-        cacheGraphImage = QImage(drawingArea.size(),  QImage::Format_ARGB32_Premultiplied);
-        cacheGraphImage.fill(Qt::transparent);
-        geonkickApi->getKickBuffer(kickBuffer);
-        drawKickGraph();
+       graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
 }
 
 void KickGraph::updateGraphBuffer()
 {
-        kickBuffer.resize(48000 * geonkickApi->kickLength() / 1000);
-        geonkickApi->getKickBuffer(kickBuffer);
-        drawKickGraph();
+        if (!graphThread)
+                start();
+        std::unique_lock<std::mutex> lock(graphMutex);
+        kickBuffer = geonkickApi->getKickBuffer();
+        updateGraph = true;
+        if (kickBuffer.empty())
+                geonkickApi->triggerSynthesis();
+        threadConditionVar.notify_one();
 }
 
 void KickGraph::drawKickGraph()
 {
-        if (kickBuffer.empty()) {
-                return;
-        }
+        while (isRunning) {
+                // Ignore too many updates. The last udpate will be processed.
+                std::this_thread::sleep_for(std::chrono::milliseconds(60));
+                std::unique_lock<std::mutex> lock(graphMutex);
+                if (!updateGraph)
+                        threadConditionVar.wait(lock);
+                if (!isRunning)
+                        break;
 
-        cacheGraphImage.fill(Qt::transparent);
-        QPainter painter(&cacheGraphImage);
-        QPen pen(QColor(59, 130, 4, 230));
-        pen.setJoinStyle(Qt::MiterJoin);
-        painter.setPen(pen);
-        int w = drawingArea.width();
-        int h = drawingArea.height();
-        painter.setRenderHints(QPainter::Antialiasing, true);
+                if (kickBuffer.empty()) {
+                        updateGraph = false;
+                        continue;
+                }
 
-        QPolygonF graphPoints;
-        gkick_real k = static_cast<gkick_real>(w) / kickBuffer.size();
-        for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
-                graphPoints << QPointF(k * i, h * (0.5 - kickBuffer[i]));
+                auto graphImage = std::make_shared<RkImage>(graphSize.width(), graphSize.height());
+                RkPainter painter(graphImage.get());
+                RkPen pen(RkColor(59, 130, 4, 255));
+                painter.setPen(pen);
+
+                std::vector<RkPoint> graphPoints(kickBuffer.size());
+                gkick_real k = static_cast<gkick_real>(graphSize.width()) / kickBuffer.size();
+
+                int j = 0;
+                RkPoint prev;
+                for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
+                        int x = k * i;
+                        int y = graphSize.height() * (0.5 - kickBuffer[i]);
+                        RkPoint p(k * i, graphSize.height() * (0.5 - kickBuffer[i]));
+                        if (p == prev)
+                                continue;
+                        else
+                                prev = p;
+                        graphPoints[j++] = p;
+
+                        int i0 = i;
+                        int ymin, ymax;
+                        ymin = ymax = y;
+                        while (++i < kickBuffer.size()) {
+                                if (x != static_cast<int>(k * i))
+                                        break;
+                                y = graphSize.height() * (0.5 - kickBuffer[i]);
+                                if (ymin > y)
+                                        ymin = y;
+                                if (ymax < y)
+                                        ymax = y;
+                        }
+
+                        if (i - i0 > 4) {
+                                graphPoints[j++] = {x, ymin};
+                                graphPoints[j++] = {x, ymax};
+                                graphPoints[j++] = {x, y};
+                        }
+                }
+                graphPoints.resize(j);
+                painter.drawPolyline(graphPoints);
+                if (eventQueue)
+                        eventQueue->postAction([this, graphImage](void){ graphUpdated(graphImage); });
+                updateGraph = false;
         }
-        painter.drawPolyline(graphPoints);
-        painter.end();
-        emit graphUpdated();
 }

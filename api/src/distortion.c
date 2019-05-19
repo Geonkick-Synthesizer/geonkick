@@ -84,7 +84,6 @@ gkick_distortion_is_enabled(struct gkick_distortion *distortion, int *enabled)
         return GEONKICK_OK;
 }
 
-
 enum geonkick_error
 gkick_distortion_val(struct gkick_distortion *distortion,
                      gkick_real in_val,
@@ -92,9 +91,8 @@ gkick_distortion_val(struct gkick_distortion *distortion,
 {
         gkick_real x = in_val;
         gkick_distortion_lock(distortion);
-        if (distortion->drive > 0) {
+        if (distortion->drive > 0)
                 x *= distortion->drive;
-        }
 
         if (x > 1.0)
                 x = 1.0;

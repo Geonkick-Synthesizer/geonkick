@@ -29,9 +29,8 @@ gkick_envelope_create(void)
 	struct gkick_envelope *envelope;
 
 	envelope = (struct gkick_envelope*)malloc(sizeof(struct gkick_envelope));
-	if (envelope == NULL) {
+	if (envelope == NULL)
 		return NULL;
-	}
 	memset(envelope, 0, sizeof(struct gkick_envelope));
 	return envelope;
 }
@@ -96,23 +95,19 @@ gkick_envelope_add_point(struct gkick_envelope *envelope,
 {
 	struct gkick_envelope_point *point;
 
-	if (envelope == NULL) {
+	if (envelope == NULL)
 		return NULL;
-	}
-
 	point = (struct gkick_envelope_point*)malloc(sizeof(struct gkick_envelope_point));
-	if (point == NULL) {
+	if (point == NULL)
 		return NULL;
-	}
 	point->x = x;
 	point->y = y;
         point->next = point->prev = NULL;
 
-	if (envelope->first == NULL ||  envelope->last == NULL) {
+	if (envelope->first == NULL ||  envelope->last == NULL)
 		envelope->first = envelope->last = point;
-	} else {
+	else
 		gkick_envelope_add_sorted(envelope, point);
-	}
 	envelope->npoints++;
 
 	return point;
@@ -151,9 +146,8 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 void gkick_envelope_destroy(struct gkick_envelope *envelope)
 {
 	struct gkick_envelope_point *point;
-	if (envelope == NULL) {
+	if (envelope == NULL)
 		return;
-	}
 
 	if (envelope->npoints != 0) {
 		while (envelope->first != NULL) {
@@ -174,14 +168,12 @@ gkick_envelope_get_points(struct gkick_envelope *env,
         gkick_real *points;
         size_t i;
 
-        if (buff == NULL) {
+        if (buff == NULL)
                 return;
-        }
 
         *buff = NULL;
-        if (env->npoints < 1) {
+        if (env->npoints < 1)
                 return;
-        }
 
         points = (gkick_real *)malloc(sizeof(gkick_real) * (2 * env->npoints));
         memset(points, 0, sizeof(gkick_real) * (2 * env->npoints));
@@ -205,14 +197,12 @@ gkick_envelope_set_points(struct gkick_envelope *env,
 {
         size_t i;
 
-        if (env == NULL || buff == NULL) {
+        if (env == NULL || buff == NULL)
                 return;
-        }
 
         gkick_envelope_clear(env);
-        for (i = 0; i < npoints; i++) {
+        for (i = 0; i < npoints; i++)
                 gkick_envelope_add_point(env, buff[2 * i], buff[2 * i + 1]);
-        }
 }
 
 void gkick_envelope_clear(struct gkick_envelope* env)
@@ -234,13 +224,11 @@ gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
         struct gkick_envelope_point *p;
         size_t i;
 
-        if (env == NULL) {
+        if (env == NULL)
                 return;
-        }
 
-        if (!(index >= 0 && index < env->npoints)) {
+        if (!(index >= 0 && index < env->npoints))
                 return;
-        }
 
         p = env->first;
         i = 0;
@@ -272,13 +260,11 @@ gkick_envelope_update_point(struct gkick_envelope *env,
         struct gkick_envelope_point *p;
         size_t i;
 
-        if (env == NULL) {
+        if (env == NULL)
                 return;
-        }
 
-        if (!(index >= 0 && index < env->npoints)) {
+        if (!(index >= 0 && index < env->npoints))
                 return;
-        }
 
         p = env->first;
         i = 0;

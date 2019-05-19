@@ -24,19 +24,36 @@
 #ifndef GEONKICK_GLOBALS_H
 #define GEONKICK_GLOBALS_H
 
-#include <QString>
-#include <QDebug>
-
+#include <iostream>
+#include <string>
 #include <memory>
+#include <vector>
+#include <atomic>
+#include <unordered_map>
+#if defined(GCC_VERSION) && GCC_VERSION >= 800000
+#include <filesystem>
+#else
+#include <experimental/filesystem>
+#define filesystem experimental::filesystem
+#endif // GCC_VERSION >= 800000
+#include <fstream>
+#include <algorithm>
+#include <mutex>
+
+#include "geonkick.h"
+
+#include "RkLog.h"
 
 #define GEOKICK_APP_NAME "Geonkick"
-#define GEOKICK_APP_VERION 0x010100
-#define GEOKICK_APP_VERION_STRING "1.1"
+#define GEOKICK_APP_VERION 0x010500
+#define GEOKICK_APP_VERION_STRING "1.5"
 
-#define GEONKICK_LOG_INFO(msg) qDebug() << __PRETTY_FUNCTION__ << "[INFO] " << msg
-#define GEONKICK_LOG_ERROR(msg) qDebug() << __PRETTY_FUNCTION__ << "[ERROR] " << msg
-#define GEONKICK_LOG_DEBUG(msg) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] " << msg
-
-#define GEONKICK_DEBUG_POINT(point) qDebug() << __PRETTY_FUNCTION__ << "[DEBUG] (" << point.x() << ", " << point.y() << ")"
-
+#ifdef GKICK_LIB_LOG_LEVEL_DEBUG
+#define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
+#define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;
+#define GEONKICK_LOG_DEBUG(msg) std::cout << __PRETTY_FUNCTION__ << "[DEBUG] " << msg << std::endl;
+#else
+#define GEONKICK_LOG_INFO(msg) std::cout << "[INFO] " << msg << std::endl;
+#define GEONKICK_LOG_ERROR(msg) std::cout << "[ERROR] " << msg << std::endl;
+#endif //  // GKICK_LIB_LOG_LEVEL_DEBUG
 #endif // GEONKICK_GLOBALS_H

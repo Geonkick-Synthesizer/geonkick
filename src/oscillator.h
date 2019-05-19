@@ -24,15 +24,10 @@
 #ifndef GEONKICK_OSCILLATOR_H
 #define GEONKICK_OSCILLATOR_H
 
-#include <QPolygonF>
-#include <QObject>
-
 #include "geonkick_api.h"
 
-class Oscillator: public QObject
+class Oscillator
 {
-  Q_OBJECT
-
  public:
 
   using Type = GeonkickApi::OscillatorType;
@@ -40,42 +35,42 @@ class Oscillator: public QObject
   using EnvelopeType = GeonkickApi::EnvelopeType;
   using FilterType   = GeonkickApi::FilterType;
 
-  Oscillator(GeonkickApi *api, Oscillator::Type type);
+  explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
   ~Oscillator();
-  Oscillator::FunctionType function();
-  QPolygonF envelopePoints(EnvelopeType type);
-  double amplitude(void);
-  double frequency(void);
+  Oscillator::FunctionType function() const;
+  std::vector<RkRealPoint> envelopePoints(EnvelopeType type) const;
+  double amplitude(void) const;
+  double frequency(void) const;
   void setType(Type type);
-  Oscillator::Type type(void);
-  bool isFilterEnabled();
-  Oscillator::FilterType filter();
-  double filterFrequency(void);
-  double filterQFactor();
-  bool isEnabled();
-  double envelopeLength();
+  Oscillator::Type type(void) const;
+  bool isFilterEnabled() const;
+  Oscillator::FilterType filter() const;
+  double filterFrequency(void) const;
+  double filterQFactor() const;
+  bool isEnabled() const;
+  double envelopeLength() const;
 
-  public slots:
-          void enable(bool b);
-          void setFunction(FunctionType func);
-          void setAmplitude(double amp);
-          void setFrequency(double freq);
-          void enableFilter(bool b);
-          void setFilterType(FilterType filter);
-          void setFilterFrequency(double f);
-          void setFilterQFactor(double factor);
-          void addEnvelopePoint(EnvelopeType envelope, double x, double y);
-          void removeEnvelopePoint(EnvelopeType envelope, int point_index);
-          void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
+  void enable(bool b);
+  void setFunction(FunctionType func);
+  void setPhase(gkick_real phase);
+  gkick_real getPhase() const;
+  void setAmplitude(double amp);
+  void setFrequency(double freq);
+  void enableFilter(bool b);
+  void setFilterType(FilterType filter);
+  void setFilterFrequency(double f);
+  void setFilterQFactor(double factor);
+  void addEnvelopePoint(EnvelopeType envelope, double x, double y);
+  void removeEnvelopePoint(EnvelopeType envelope, int point_index);
+  void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
 
- signals:
-	  void amplitudeUpdated(double v);
-	  void frequencyUpdated(double v);
-          void kickLengthUpdated(double len);
+  RK_DECL_ACT(amplitudeUpdated, amplitudeUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
+  RK_DECL_ACT(frequencyUpdated, frequencyUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
+  RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double len), RK_ARG_TYPE(double), RK_ARG_VAL(len));
 
  protected:
-          int index();
-          int envelopeIndex(EnvelopeType type);
+          int index() const;
+          int envelopeIndex(EnvelopeType type) const;
  private:
 	  GeonkickApi *geonkickApi;
           Type oscillatorType;

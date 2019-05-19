@@ -23,134 +23,189 @@
 
 #include "geonkick_state.h"
 
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QDebug>
+#include <iomanip>
 
 GeonkickState::GeonkickState() :
-        limiterValue(0),
-        kickLength(0),
-        kickAmplitude(0),
-        kickFilterEnabled(0),
-        kickFilterFrequency(0),
-        kickFilterQFactor(0),
-        kickFilterType(GeonkickApi::FilterType::LowPass),
-        oscillators{
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
-        }
+        limiterValue{0}
+        , kickLength{50}
+        , kickAmplitude{0.8}
+        , kickFilterEnabled{0}
+        , kickFilterFrequency{200}
+        , kickFilterQFactor{1.0}
+        , kickFilterType{GeonkickApi::FilterType::LowPass}
+        , compressor{false, 0, 0, 0, 0, 0, 0}
+        , distortion{false, 0, 0}
+        , layers{false, false, false}
+        , currentLayer{GeonkickApi::Layer::Layer1}
 {
+        initOscillators();
 }
 
-GeonkickState::GeonkickState(const QByteArray &data) :
-        limiterValue(0),
-        kickLength(0),
-        kickAmplitude(0),
-        kickFilterEnabled(0),
-        kickFilterFrequency(0),
-        kickFilterQFactor(0),
-        kickFilterType(GeonkickApi::FilterType::LowPass),
-        oscillators{
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator1), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Oscillator2), std::make_shared<Oscillator>()},
-            {static_cast<int>(GeonkickApi::OscillatorType::Noise), std::make_shared<Oscillator>()}
-        }
+void GeonkickState::loadData(const std::string &data)
 {
-        QJsonDocument document = QJsonDocument::fromBinaryData(data);
-        QJsonObject object = document.object();
-        parseKickObject(object.take("kick"));
-        for (const auto& val: oscillators)
-                parseOscillatorObject(val.first, object.take("osc" + QString::number(val.first)));
-}
-
-void GeonkickState::parseKickObject(const auto &kick)
-{
-        if (kick.isNull() || !kick.isObject())
-                return;
-
-        auto limiter = kick.toObject().take("limiter");
-        if (!limiter.isNull() && limiter.isDouble()) {
-                setLimiterValue(limiter.toDouble());
-        }
-
-        auto envelope = kick.toObject().take("ampl_env");
-        if (!envelope.isNull() && envelope.isObject()) {
-                setKickLength(envelope.toObject().take("length").toDouble());
-                setKickAmplitude(envelope.toObject().take("amplitude").toDouble());
-                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
-                setKickEnvelopePoints(points);
-        }
-
-        auto filter = kick.toObject().take("filter");
-        if (!filter.isNull() && filter.isObject()) {
-                enableKickFilter(filter.toObject().take("enabled").toBool());
-                setKickFilterFrequency(filter.toObject().take("cutoff").toDouble());
-                setKickFilterQFactor(filter.toObject().take("factor").toDouble());
-                setKickFilterType(static_cast<GeonkickApi::FilterType>(filter.toObject().take("type").toInt()));
-        }
-
-        auto compressor = kick.toObject().take("compressor");
-        if (!compressor.isNull() && compressor.isObject()) {
-                enableCompressor(compressor.toObject().take("enabled").toBool());
-                setCompressorAttack(compressor.toObject().take("attack").toDouble());
-                setCompressorRelease(compressor.toObject().take("release").toDouble());
-                setCompressorThreshold(compressor.toObject().take("threshold").toDouble());
-                setCompressorRatio(compressor.toObject().take("ratio").toDouble());
-                setCompressorKnee(compressor.toObject().take("knee").toDouble());
-                setCompressorMakeup(compressor.toObject().take("makeup").toDouble());
-        }
-
-        auto distortion = kick.toObject().take("distortion");
-        if (!distortion.isNull() && distortion.isObject()) {
-                enableDistortion(distortion.toObject().take("enabled").toBool());
-                setDistortionVolume(distortion.toObject().take("volume").toDouble());
-                setDistortionDrive(distortion.toObject().take("drive").toDouble());
-        }
-}
-
-void GeonkickState::parseOscillatorObject(int index, const auto &osc)
-{
-        if (osc.isNull() || !osc.isObject())
-                return;
-
-        setOscillatorEnabled(index, osc.toObject().take("enabled").toBool());
-        setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(osc.toObject().take("function").toInt()));
-        auto envelope = osc.toObject().take("ampl_env");
-        if (!envelope.isNull() && envelope.isObject()) {
-                setOscillatorAmplitue(index, envelope.toObject().take("amplitude").toDouble());
-                QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
-                setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Amplitude);
-        }
-
-        if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise){
-                envelope = osc.toObject().take("freq_env");
-                if (!envelope.isNull() && envelope.isObject()) {
-                        setOscillatorFrequency(index, envelope.toObject().take("amplitude").toDouble());
-                        QPolygonF points = parseEnvelopeArray(envelope.toObject().take("points").toArray());
-                        setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
+        rapidjson::Document document;
+        document.Parse(data.c_str());
+        if (document.IsObject()) {
+                for (const auto &m: document.GetObject()) {
+                        if (m.name == "kick" && m.value.IsObject())
+                                parseKickObject(m.value);
+                        for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
+                                setCurrentLayer(static_cast<GeonkickApi::Layer>(i));
+                                if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                        parseOscillatorObject(0, m.value);
+                                if (m.name == ("osc" + std::to_string(1 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                        parseOscillatorObject(1, m.value);
+                                if (m.name == ("osc" + std::to_string(2 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                        parseOscillatorObject(2, m.value);
+                        }
                 }
         }
 
-        auto filter = osc.toObject().take("filter");
-        if (!filter.isNull() && filter.isObject()) {
-                setOscillatorFilterEnabled(index, filter.toObject().take("enabled").toBool());
-                setOscillatorFilterCutOffFreq(index, filter.toObject().take("cutoff").toDouble());
-                setOscillatorFilterFactor(index, filter.toObject().take("factor").toDouble());
-                setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(filter.toObject().take("type").toInt()));
+}
+
+void GeonkickState::initOscillators()
+{
+        for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
+                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator1)
+                                        + GKICK_OSC_GROUP_SIZE * i,
+                                        std::make_shared<OscillatorInfo>()});
+                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator2)
+                                        + GKICK_OSC_GROUP_SIZE * i,
+                                        std::make_shared<OscillatorInfo>()});
+                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Noise)
+                                        + GKICK_OSC_GROUP_SIZE * i,
+                                        std::make_shared<OscillatorInfo>()});
         }
 }
 
-QPolygonF GeonkickState::parseEnvelopeArray(const auto &envelopeArray)
+void GeonkickState::parseKickObject(const rapidjson::Value &kick)
 {
-        QPolygonF points;
-        for (auto it = envelopeArray.constBegin(); it != envelopeArray.constEnd(); ++it) {
-                auto point = it->toArray();
-                if (point.count() == 2) {
-                        points << QPointF(point.takeAt(0).toDouble(), point.takeAt(1).toDouble());
+        if (kick.IsNull() || !kick.IsObject())
+                return;
+
+        for (const auto &m: kick.GetObject()) {
+                if (m.name == "limiter" && m.value.IsDouble())
+                        setLimiterValue(m.value.GetDouble());
+
+                if (m.name == "layers" && m.value.IsArray()) {
+                        layers = {false, false, false};
+                        for (const auto &el: m.value.GetArray())
+                                if (el.IsInt())
+                                        setLayerEnabled(static_cast<GeonkickApi::Layer>(el.GetInt()), true);
+                }
+
+                if (m.name == "ampl_env" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "length" && el.value.IsDouble())
+                                        setKickLength(el.value.GetDouble());
+                                if (el.name == "amplitude" && el.value.IsDouble())
+                                        setKickAmplitude(el.value.GetDouble());
+                                if (el.name == "points" && el.value.IsArray())
+                                        setKickEnvelopePoints(parseEnvelopeArray(el.value));
+                        }
+                }
+
+                if (m.name == "filter" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        enableKickFilter(el.value.GetBool());
+                                if (el.name == "cutoff" && el.value.IsDouble())
+                                        setKickFilterFrequency(el.value.GetDouble());
+                                if (el.name == "factor" && el.value.IsDouble())
+                                        setKickFilterQFactor(el.value.GetDouble());
+                                if (el.name == "type" && el.value.IsInt())
+                                        setKickFilterType(static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
+                        }
+                }
+
+                if (m.name == "compressor" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        enableCompressor(el.value.GetBool());
+                                if (el.name == "attack" && el.value.IsDouble())
+                                        setCompressorAttack(el.value.GetDouble());
+                                if (el.name == "release" && el.value.IsDouble())
+                                        setCompressorRelease(el.value.GetDouble());
+                                if (el.name == "threshold" && el.value.IsDouble())
+                                        setCompressorThreshold(el.value.GetDouble());
+                                if (el.name == "ratio" && el.value.IsDouble())
+                                        setCompressorRatio(el.value.GetDouble());
+                                if (el.name == "knee" && el.value.IsDouble())
+                                        setCompressorKnee(el.value.GetDouble());
+                                if (el.name == "makeup" && el.value.IsDouble())
+                                        setCompressorMakeup(el.value.GetDouble());
+
+                        }
+                }
+
+                if (m.name == "distortion" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        enableDistortion(el.value.GetBool());
+                                if (el.name == "volume" && el.value.IsDouble())
+                                        setDistortionVolume(el.value.GetDouble());
+                                if (el.name == "drive" && el.value.IsDouble())
+                                        setDistortionDrive(el.value.GetDouble());
+                        }
                 }
         }
+}
+
+void GeonkickState::parseOscillatorObject(int index,  const rapidjson::Value &osc)
+{
+        if (osc.IsNull() || !osc.IsObject())
+                return;
+
+        for (const auto &m: osc.GetObject()) {
+                if (m.name == "enabled" && m.value.IsBool())
+                        setOscillatorEnabled(index, m.value.GetBool());
+                if (m.name == "function" && m.value.IsInt())
+                        setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(m.value.GetInt()));
+                if (m.name == "phase" && m.value.IsDouble())
+                        setOscillatorPhase(index, m.value.GetDouble());
+                if (m.name == "ampl_env" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "amplitude" && el.value.IsDouble())
+                                        setOscillatorAmplitue(index, el.value.GetDouble());
+                                if (el.name == "points" && el.value.IsArray())
+                                        setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                    GeonkickApi::EnvelopeType::Amplitude);
+                        }
+                }
+
+                if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise) {
+                        if (m.name == "freq_env" && m.value.IsObject()) {
+                                for (const auto &el: m.value.GetObject()) {
+                                        if (el.name == "amplitude" && el.value.IsDouble())
+                                                setOscillatorFrequency(index, el.value.GetDouble());
+                                        if (el.name == "points" && el.value.IsArray())
+                                                setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                            GeonkickApi::EnvelopeType::Frequency);
+                                }
+                        }
+                }
+
+                if (m.name == "filter" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "enabled" && el.value.IsBool())
+                                        setOscillatorFilterEnabled(index, el.value.GetBool());
+                                if (el.name == "cutoff" && el.value.IsDouble())
+                                        setOscillatorFilterCutOffFreq(index, el.value.GetDouble());
+                                if (el.name == "factor" && el.value.IsDouble())
+                                        setOscillatorFilterFactor(index, el.value.GetDouble());
+                                if (el.name == "type" && el.value.IsInt())
+                                        setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
+                        }
+                }
+        }
+}
+
+std::vector<RkRealPoint> GeonkickState::parseEnvelopeArray(const rapidjson::Value &envelopeArray)
+{
+        std::vector<RkRealPoint> points;
+        for (const auto &el: envelopeArray.GetArray())
+                if (el.IsArray() && el.GetArray().Size() == 2)
+                        points.emplace_back(RkRealPoint(el.GetArray()[0].GetDouble(), el.GetArray()[1].GetDouble()));
 
         return points;
 }
@@ -190,7 +245,7 @@ void GeonkickState::setKickFilterType(GeonkickApi::FilterType type)
         kickFilterType = type;
 }
 
-void GeonkickState::setKickEnvelopePoints(const QPolygonF &points)
+void GeonkickState::setKickEnvelopePoints(const std::vector<RkRealPoint> &points)
 {
         kickEnvelopePoints = points;
 }
@@ -230,17 +285,17 @@ GeonkickApi::FilterType GeonkickState::getKickFilterType() const
         return kickFilterType;
 }
 
-QPolygonF GeonkickState::getKickEnvelopePoints() const
+std::vector<RkRealPoint> GeonkickState::getKickEnvelopePoints() const
 {
         return kickEnvelopePoints;
 }
 
-std::shared_ptr<GeonkickState::Oscillator> GeonkickState::getOscillator(int index) const
+std::shared_ptr<GeonkickState::OscillatorInfo> GeonkickState::getOscillator(int index) const
 {
+        index += GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);
         auto it = oscillators.find(index);
-        if (it != oscillators.end()) {
+        if (it != oscillators.end())
                 return it->second;
-        }
 
         return nullptr;
 }
@@ -248,87 +303,84 @@ std::shared_ptr<GeonkickState::Oscillator> GeonkickState::getOscillator(int inde
 void GeonkickState::setOscillatorEnabled(int index, bool b)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->isEnabled = b;
-        }
 }
 
 void GeonkickState::setOscillatorFunction(int index, GeonkickApi::FunctionType type)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->function = type;
-        }
+}
+
+void GeonkickState::setOscillatorPhase(int index, double phase)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->phase = phase;
 }
 
 void GeonkickState::setOscillatorAmplitue(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->amplitude = val;
-        }
 }
 
 void GeonkickState::setOscillatorFrequency(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->frequency = val;
-        }
 }
 
 void GeonkickState::setOscillatorFilterEnabled(int index, bool b)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->isFilterEnabled = b;
-        }
 }
 
 void GeonkickState::setOscillatorFilterType(int index, GeonkickApi::FilterType type)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->filterType = type;
-        }
 }
 
 void GeonkickState::setOscillatorFilterCutOffFreq(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->filterFrequency = val;
-        }
 }
 
 void GeonkickState::setOscillatorFilterFactor(int index, double val)
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 oscillator->filterFactor = val;
-        }
 }
 
 void GeonkickState::setOscillatorEnvelopePoints(int index,
-                                                const QPolygonF &points,
+                                                const std::vector<RkRealPoint> &points,
                                                 GeonkickApi::EnvelopeType envelope)
 {
         auto oscillator = getOscillator(index);
         if (oscillator) {
-                if (envelope == GeonkickApi::EnvelopeType::Amplitude) {
+                if (envelope == GeonkickApi::EnvelopeType::Amplitude)
                         oscillator->amplitudeEnvelope = points;
-                } else {
+                else
                         oscillator->frequencyEnvelope = points;
-                }
         }
 }
 
 bool GeonkickState::isOscillatorEnabled(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->isEnabled;
-        }
 
         return false;
 }
@@ -336,68 +388,70 @@ bool GeonkickState::isOscillatorEnabled(int index) const
 GeonkickApi::FunctionType GeonkickState::oscillatorFunction(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->function;
-        }
 
         return GeonkickApi::FunctionType::Sine;
+}
+
+double GeonkickState::oscillatorPhase(int index) const
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                return oscillator->phase;
+
+        return 0;
 }
 
 double GeonkickState::oscillatorAmplitue(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->amplitude;
-        }
         return 0;
 }
 
 double GeonkickState::oscillatorFrequency(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->frequency;
-        }
         return 0;
 }
 
 bool GeonkickState::isOscillatorFilterEnabled(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->isFilterEnabled;
-        }
         return false;
 }
 
 GeonkickApi::FilterType GeonkickState::oscillatorFilterType(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->filterType;
-        }
         return GeonkickApi::FilterType::LowPass;
 }
 
 double GeonkickState::oscillatorFilterCutOffFreq(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->filterFrequency;
-        }
         return 0;
 }
 
 double GeonkickState::oscillatorFilterFactor(int index) const
 {
         auto oscillator = getOscillator(index);
-        if (oscillator) {
+        if (oscillator)
                 return oscillator->filterFactor;
-        }
         return 0;
 }
 
-QPolygonF GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const
+std::vector<RkRealPoint> GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const
 {
         auto oscillator = getOscillator(index);
         if (oscillator) {
@@ -407,7 +461,7 @@ QPolygonF GeonkickState::oscillatorEnvelopePoints(int index, GeonkickApi::Envelo
                         return oscillator->frequencyEnvelope;
         }
 
-        return QPolygonF();
+        return {};
 }
 
 void GeonkickState::enableCompressor(bool enable)
@@ -510,91 +564,133 @@ double GeonkickState::getDistortionDrive() const
         return distortion.drive;
 }
 
-QByteArray GeonkickState::toRawData() const
+std::string GeonkickState::toJson() const
 {
-        return getJsonDocument().toBinaryData();
-}
-
-QByteArray GeonkickState::toJson() const
-{
-        return getJsonDocument().toJson();
-}
-
-QJsonDocument GeonkickState::getJsonDocument() const
-{
-                QJsonObject state;
-        for (const auto& val: oscillators)
-        {
-                QJsonObject osc;
-                int index = val.first;
-                osc["enabled"] = QJsonValue(isOscillatorEnabled(index));
-                osc["function"] = QJsonValue(static_cast<int>(oscillatorFunction(index)));
-
-                QJsonObject envelope;
-                envelope.insert("amplitude", oscillatorAmplitue(index));
-                auto points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Amplitude);
-                QJsonArray jsonArray;
-                for (const auto &point: points) {
-                        jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+        std::ostringstream jsonStream;
+        jsonStream << "{" << std::endl;
+        for (const auto& val: oscillators) {
+                jsonStream << "\"osc" << val.first << "\": {" << std::endl;
+                jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false");
+                jsonStream << "," << std::endl;
+                jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
+                jsonStream <<  "\"phase\": " << std::fixed << std::setprecision(5) << val.second->phase << ", " << std::endl;
+                jsonStream << "\"ampl_env\": {" << std::endl;
+                jsonStream << "\"amplitude\": "  << std::fixed << std::setprecision(5) << val.second->amplitude << ", " << std::endl;
+                jsonStream << "\"points\": [" << std::endl;
+                bool first = true;
+                for (const auto &point: val.second->amplitudeEnvelope) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                                   << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
                 }
-                envelope.insert("points", jsonArray);
-                osc["ampl_env"] = envelope;
+                jsonStream << "]" << std::endl; // points
+                jsonStream << "}," << std::endl; // ampl_env
 
-                envelope = QJsonObject();
-                envelope.insert("amplitude", oscillatorFrequency(index));
-                points = oscillatorEnvelopePoints(index, GeonkickApi::EnvelopeType::Frequency);
-                jsonArray = QJsonArray();
-                for (const auto &point: points) {
-                        jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+                jsonStream << "\"freq_env\": {" << std::endl;
+                jsonStream << "\"amplitude\": " << val.second->frequency << ", " << std::endl;
+                jsonStream << "\"points\": [" << std::endl;
+                first = true;
+                for (const auto &point: val.second->frequencyEnvelope) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                                   << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
                 }
-                envelope.insert("points", jsonArray);
-                osc["freq_env"] = envelope;
-
-                QJsonObject filter;
-                filter.insert("enabled", isOscillatorFilterEnabled(index));
-                filter.insert("type", static_cast<int>(static_cast<int>(oscillatorFilterType(index))));
-                filter.insert("cutoff", oscillatorFilterCutOffFreq(index));
-                filter.insert("factor", oscillatorFilterFactor(index));
-                osc["filter"] = filter;
-                state["osc" + QString::number(index)] = osc;
+                jsonStream << "]" << std::endl; // points
+                jsonStream << "}," << std::endl; // freq_env
+                jsonStream << "\"filter\": {" << std::endl;
+                jsonStream << "\"enabled\": " << (val.second->isFilterEnabled ? "true" : "false");
+                jsonStream << ", " << std::endl;
+                jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
+                jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(5) << val.second->filterFrequency << ", " << std::endl;
+                jsonStream << "\"factor\": " << std::fixed << std::setprecision(5) << val.second->filterFactor << std::endl;
+                jsonStream << "}" << std::endl;  // filter;
+                jsonStream << "}" << std::endl;  // osc;
+                jsonStream << "," << std::endl;
         }
 
-        QJsonObject kick;
-        kick["limiter"] = getLimiterValue();
-        QJsonObject envelope;
-        envelope.insert("length", static_cast<double>(getKickLength()));
-        envelope.insert("amplitude", static_cast<double>(getKickAmplitude()));
+        jsonStream << "\"kick\": {" << std::endl;
+        jsonStream << "\"layers\": [";
+        bool first = true;
+        for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
+                if (layers[i]) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << i;
+                }
+        }
+        jsonStream << "]," << std::endl;
+        jsonStream << "\"limiter\": " << std::fixed << std::setprecision(5) << getLimiterValue() << ", " << std::endl;
+        jsonStream << "\"ampl_env\": {" << std::endl;
+        jsonStream << "\"amplitude\": " << std::fixed << std::setprecision(5) << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
+        jsonStream << "\"length\": " << std::fixed << std::setprecision(5) << static_cast<double>(getKickLength()) << ", " << std::endl;
         auto points = getKickEnvelopePoints();
-        QJsonArray jsonArray;
+        jsonStream << "\"points\": [" << std::endl;
+        first = true;
         for (const auto &point: points) {
-                jsonArray.push_back(QJsonValue(QJsonArray({{point.x(), point.y()}})));
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
         }
-        envelope.insert("points", jsonArray);
-        kick["ampl_env"] = envelope;
+        jsonStream << "]" << std::endl; // points
+        jsonStream << "}," << std::endl; // ampl_env
 
-        QJsonObject filter;
-        filter.insert("enabled", isKickFilterEnabled());
-        filter.insert("type", static_cast<int>(getKickFilterType()));
-        filter.insert("cutoff", getKickFilterFrequency());
-        filter.insert("factor", getKickFilterQFactor());
-        kick["filter"] = filter;
+        jsonStream << "\"filter\": {" << std::endl;
+        jsonStream << "\"enabled\": " << (isKickFilterEnabled() ? "true" : "false");
+        jsonStream << ", " << std::endl;
+        jsonStream << "\"type\": " << static_cast<int>(getKickFilterType()) << ", " << std::endl;
+        jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(2) << getKickFilterFrequency() << ", " << std::endl;
+        jsonStream << "\"factor\": " << std::fixed << std::setprecision(2) << getKickFilterQFactor() << std::endl;;
+        jsonStream << "}, " << std::endl;  // filter;
 
-        QJsonObject compressor;
-        compressor.insert("enabled", isCompressorEnabled());
-        compressor.insert("attack", getCompressorAttack());
-        compressor.insert("release", getCompressorRelease());
-        compressor.insert("threshold", getCompressorThreshold());
-        compressor.insert("ratio", getCompressorRatio());
-        compressor.insert("knee", getCompressorKnee());
-        compressor.insert("makeup", getCompressorMakeup());
-        kick["compressor"] = compressor;
+        jsonStream << "\"compressor\": {" << std::endl;
+        jsonStream << "\"enabled\": " << isCompressorEnabled() << ", " << std::endl;
+        jsonStream << "\"attack\": " << std::fixed << std::setprecision(5) << getCompressorAttack() << ", " << std::endl;
+        jsonStream << "\"release\": " << std::fixed << std::setprecision(5) << getCompressorRelease() << ", " << std::endl;
+        jsonStream << "\"threshold\": " << std::fixed << std::setprecision(5) << getCompressorThreshold() << ", " << std::endl;
+        jsonStream << "\"ratio\": " << std::fixed << std::setprecision(5) << getCompressorRatio() << ", " << std::endl;
+        jsonStream << "\"knee\": " << std::fixed << std::setprecision(5) << getCompressorKnee() << ", " << std::endl;
+        jsonStream << "\"makeup\": " << std::fixed << std::setprecision(5) << getCompressorMakeup() << std::endl;
+        jsonStream << "}, " << std::endl;
 
-        QJsonObject distortion;
-        distortion.insert("enabled", isDistortionEnabled());
-        distortion.insert("volume", getDistortionVolume());
-        distortion.insert("drive", getDistortionDrive());
-        kick["distortion"] = distortion;
+        jsonStream << "\"distortion\": {" << std::endl;
+        jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
+        jsonStream << "\"volume\": " << std::fixed << std::setprecision(5) << getDistortionVolume()  << ", " << std::endl;
+        jsonStream << "\"drive\": " << std::fixed << std::setprecision(5) << getDistortionDrive() << std::endl;
+        jsonStream << "}" << std::endl; // distortion
+        jsonStream << "}" << std::endl; // kick
+        jsonStream << "}" << std::endl; // json
 
-        state["kick"] = kick;
-        return QJsonDocument(state);
+        return jsonStream.str();
+}
+
+void GeonkickState::setLayerEnabled(GeonkickApi::Layer layer, bool b)
+{
+        decltype(layers.size()) index = static_cast<int>(layer);
+        if (index >= 0 && index < layers.size())
+                layers[index] = b;
+}
+
+bool GeonkickState::isLayerEnabled(GeonkickApi::Layer layer) const
+{
+        decltype(layers.size()) index = static_cast<int>(layer);
+        if (index >= 0 && index < layers.size())
+                return layers[index];
+        else
+                return false;
+}
+
+void GeonkickState::setCurrentLayer(GeonkickApi::Layer layer)
+{
+        currentLayer = layer;
 }

@@ -26,38 +26,36 @@
 
 #include "geonkick_api.h"
 
-#include <QObject>
-#include <QPainter>
+#include <RkPainter.h>
 
-class QPixmap;
-class QImage;
+#include <condition_variable>
 
-class KickGraph : public QObject {
-   Q_OBJECT
+class RkEventQueue;
+
+class KickGraph {
 
 public:
 
-     KickGraph(QObject *parent, GeonkickApi *api);
+        KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q);
      ~KickGraph();
-     void draw(QPainter &painter);
-
-public slots:
-     void setDrawingArea(const QRect &rect);
-
- signals:
-     void graphUpdated();
+     void start();
+     RK_DECL_ACT(graphUpdated, graphUpdated(std::shared_ptr<RkImage> graphImage),
+                 RK_ARG_TYPE(std::shared_ptr<RkImage>), RK_ARG_VAL(graphImage));
+     void updateGraphBuffer();
 
 protected:
      void drawKickGraph();
 
-protected slots:
-     void updateGraphBuffer();
-
 private:
      GeonkickApi *geonkickApi;
+     std::unique_ptr<std::thread> graphThread;
+     std::mutex  graphMutex;
+     std::condition_variable threadConditionVar;
      std::vector<gkick_real> kickBuffer;
-     QRect drawingArea;
-     QImage cacheGraphImage;
+     RkSize graphSize;
+     std::atomic<bool> isRunning;
+     RkEventQueue* eventQueue;
+     std::atomic<bool> updateGraph;
 };
 
 #endif // GEONKICK_GRAPH

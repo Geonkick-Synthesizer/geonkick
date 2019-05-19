@@ -29,24 +29,23 @@
 class GeonkickSlider;
 class GeonkickCheckbox;
 class GeonkickApi;
+class GeonkickButton;
 
 class DistortionGroupBox: public GeonkickGroupBox
 {
-        Q_OBJECT
  public:
-        DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent = nullptr);
+        DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent);
         ~DistortionGroupBox();
 
- public slots:
-         void update();
-         void setVolume(int val);
-         void setDrive(int val);
+        void updateGui();
+        void setVolume(int val);
+        void setDrive(int val);
 
  private:
         GeonkickApi *geonkickApi;
         GeonkickSlider *volumeSlider;
         GeonkickSlider *driveSlider;
-        GeonkickCheckbox *distortionCheckbox;
+        GeonkickButton *distortionCheckbox;
 };
 
 #endif // GEONKICK_DISTORTION_WIDGET_H

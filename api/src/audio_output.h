@@ -46,17 +46,18 @@ struct gkick_note_info {
 
 struct gkick_audio_output
 {
-        struct gkick_buffer *buffer;
+        // On this buffer the synthesizer is  copying
+        char* _Atomic updated_buffer;
+        char* _Atomic playing_buffer;
+        _Atomic bool buffer_updated;
 
-        pthread_mutex_t lock;
-        gkick_real limiter;
         /* Callback must make only short atomic operations, no blocking. */
         void (*limiter_callback) (void*, gkick_real val);
         void *limiter_callback_arg;
-        size_t buffer_index;
-        char key_velocity;
+        _Atomic char key_velocity;
+        // Key state is changed only by the audio thread.
         enum gkick_key_state key_state;
-        atomic_bool is_play;
+        _Atomic bool is_play;
 
         /**
          * decay - note release time measured in number of sample frames.
@@ -64,7 +65,9 @@ struct gkick_audio_output
          *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,
          *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
          */
-        int decay;
+        _Atomic int decay;
+        _Atomic int limiter;
+        pthread_mutex_t lock;
 };
 
 /**
@@ -100,5 +103,7 @@ enum geonkick_error
 gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
                                         void (*callback)(void*, gkick_real val),
                                         void *arg);
+
+void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output);
 
 #endif // GKICK_AUDO_OUTPUT_H

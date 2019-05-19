@@ -3837,9 +3837,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="17.821127"
-     inkscape:cx="1346.7443"
-     inkscape:cy="150.64496"
+     inkscape:zoom="6.3168886"
+     inkscape:cx="989.42711"
+     inkscape:cy="501.74305"
      inkscape:document-units="px"
      inkscape:current-layer="g5343-6-0-4-5-0"
      showgrid="false"
@@ -7056,7 +7056,7 @@
         <rect
            ry="1.7863976"
            rx="1.7863976"
-           style="opacity:1;fill:#464444;fill-opacity:1;stroke:#292828;stroke-width:0.11611584;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="opacity:1;fill:#464444;fill-opacity:1;stroke:#292828;stroke-width:0.11615208;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="rect4510-9-0-8-0-5-1-4-1-1-2-2"
            width="59.00716"
            height="32.931206"
@@ -12627,8 +12627,8 @@
            id="rect4639-9-3"
            width="249.34802"
            height="61.804832"
-           x="524.08679"
-           y="654.45166"
+           x="426.33096"
+           y="506.78625"
            rx="7.197587"
            ry="7.0000005" />
         <text
@@ -12678,13 +12678,16 @@
         <text
            xml:space="preserve"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.2919426px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d3c26f;fill-opacity:1;stroke:none;stroke-width:0.32162321"
-           x="614.76019"
-           y="667.65369"
-           id="text4694-2-2-1"><tspan
+           x="519.08429"
+           y="616.07196"
+           id="text4694-2-2-1"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/compressor_groupbox_label.png"
+           inkscape:export-xdpi="118.57211"
+           inkscape:export-ydpi="118.57211"><tspan
              sodipodi:role="line"
              id="tspan4692-7-6-2"
-             x="614.76019"
-             y="667.65369"
+             x="519.08429"
+             y="616.07196"
              style="fill:#d3c26f;fill-opacity:1;stroke-width:0.32162321">Compressor</tspan></text>
         <text
            xml:space="preserve"
@@ -12863,6 +12866,32 @@
              x="589.93884"
              y="674.87793" />
         </g>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32.44848251px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.01401508"
+           x="529.46375"
+           y="633.38147"
+           id="text22254"
+           transform="scale(1.0140151,0.98617857)"><tspan
+             sodipodi:role="line"
+             id="tspan22252"
+             x="529.46375"
+             y="663.52356"
+             style="stroke-width:1.01401508" /></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.2919426px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d3c26f;fill-opacity:1;stroke:none;stroke-width:0.32162321"
+           x="42.531864"
+           y="462.74142"
+           id="text4694-2-2-1-3"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/distortion_goupbox_label.png"
+           inkscape:export-xdpi="111.7487"
+           inkscape:export-ydpi="111.7487"><tspan
+             sodipodi:role="line"
+             id="tspan4692-7-6-2-6"
+             x="42.531864"
+             y="462.74142"
+             style="fill:#d3c26f;fill-opacity:1;stroke-width:0.32162321">Distortion</tspan></text>
       </g>
       <rect
          inkscape:export-ydpi="96"

@@ -136,7 +136,6 @@ gkick_filter_get_type(struct gkick_filter *filter, enum gkick_filter_type *type)
         gkick_filter_lock(filter);
         *type = filter->type;
         gkick_filter_unlock(filter);
-
         return GEONKICK_OK;
 }
 
@@ -152,7 +151,6 @@ gkick_filter_set_cutoff_freq(struct gkick_filter *filter, gkick_real cutoff)
         filter->cutoff_freq = cutoff;
         gkick_filter_update_coefficents(filter);
         gkick_filter_unlock(filter);
-
         return GEONKICK_OK;
 }
 
@@ -168,7 +166,6 @@ gkick_filter_set_factor(struct gkick_filter *filter, gkick_real factor)
         filter->factor = factor;
         gkick_filter_update_coefficents(filter);
         gkick_filter_unlock(filter);
-
         return GEONKICK_OK;
 }
 
@@ -183,7 +180,6 @@ gkick_filter_get_cutoff_freq(struct gkick_filter *filter, gkick_real *cutoff)
         gkick_filter_lock(filter);
         *cutoff = filter->cutoff_freq;
         gkick_filter_unlock(filter);
-
         return GEONKICK_OK;
 }
 
@@ -198,7 +194,6 @@ gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor)
         gkick_filter_lock(filter);
         *factor = filter->factor;
         gkick_filter_unlock(filter);
-
         return GEONKICK_OK;
 }
 
@@ -221,6 +216,10 @@ gkick_filter_val(struct gkick_filter *filter,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
+        // Limit the filter value in the cases when becomes unstable.
+        if (in_val > 1)
+                return in_val;
 
         gkick_filter_lock(filter);
 

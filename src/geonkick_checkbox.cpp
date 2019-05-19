@@ -26,25 +26,19 @@
 #include "geonkick_button.h"
 #include "geonkick_label.h"
 
-#include <QHBoxLayout>
-
 GeonkickCheckbox::GeonkickCheckbox(GeonkickWidget *parent)
         : GeonkickWidget(parent),
-          checkboxButton(new GeonkickButton(this)),
-          checkboxLabel(new GeonkickButton(this)),
-          mainLayout(new QHBoxLayout(this))
+          checkboxButton{new GeonkickButton(this)},
+          checkboxLabel{new GeonkickButton(this)},
 {
         checkboxButton->setCheckable(true);
         checkboxLabel->setCheckable(true);
-        setPadding(0, 0, 0, 0);
-        mainLayout->setSpacing(3);
-        setLayout(mainLayout);
         mainLayout->addWidget(checkboxButton, 0, Qt::AlignLeft);
         mainLayout->addWidget(checkboxLabel, 0, Qt::AlignLeft);
-        connect(checkboxButton, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
-        connect(checkboxButton, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
-        connect(checkboxLabel, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
-        connect(checkboxLabel, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
+        RK_ACT_BIND(checkboxButton, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
+        RK_ACT_BIND(checkboxButton, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
+        RK_ACT_BIND(checkboxLabel, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
+        RK_ACT_BIND(checkboxLabel, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
 }
 
 GeonkickCheckbox::~GeonkickCheckbox()
@@ -56,7 +50,7 @@ void GeonkickCheckbox::setCheckboxLabelImage(const QPixmap &pixmap)
         checkboxLabel->setUnpressedImage(pixmap);
 }
 
-void GeonkickCheckbox::setCheckboxLabelImage(const QString &file)
+void GeonkickCheckbox::setCheckboxLabelImage(const std::string &file)
 {
         setCheckboxLabelImage(QPixmap(file));
 }
@@ -71,12 +65,12 @@ void GeonkickCheckbox::setUncheckedImage(const QPixmap &pixmap)
         checkboxButton->setUnpressedImage(pixmap);
 }
 
-void GeonkickCheckbox::setCheckedImage(const QString &file)
+void GeonkickCheckbox::setCheckedImage(const std::string &file)
 {
         setCheckedImage(QPixmap(file));
 }
 
-void GeonkickCheckbox::setUncheckedImage(const QString &file)
+void GeonkickCheckbox::setUncheckedImage(const std::string &file)
 {
         setUncheckedImage(QPixmap(file));
 }

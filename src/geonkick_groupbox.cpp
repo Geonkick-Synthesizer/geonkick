@@ -23,29 +23,11 @@
 
 #include "geonkick_groupbox.h"
 
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-
 GeonkickGroupBox::GeonkickGroupBox(GeonkickWidget *parent, Orientation orientation)
-        : GeonkickWidget(parent),
-          groupBoxOrientation(orientation),
-          groupBoxLabel(nullptr),
-          mainLayout(new QVBoxLayout(this)),
-          groupBoxLayout(nullptr)
+        : GeonkickWidget(parent)
+        , groupBoxOrientation{orientation}
+        , groupBoxLabel{nullptr}
 {
-        setLayout(mainLayout);
-        setPadding(0, 0, 0, 0);
-        QPalette pal;
-        pal.setColor(QPalette::Background, QColor(68, 68, 70));
-        setAutoFillBackground(true);
-        setPalette(pal);
-
-        if (groupBoxOrientation == Orientation::Vertical) {
-                groupBoxLayout = new QVBoxLayout;
-        } else {
-                groupBoxLayout = new QHBoxLayout;
-        }
-        mainLayout->addLayout(groupBoxLayout);
 }
 
 GeonkickGroupBox::~GeonkickGroupBox()
@@ -57,29 +39,13 @@ GeonkickWidget* GeonkickGroupBox::getGroupBoxLabel()
         return groupBoxLabel;
 }
 
-void GeonkickGroupBox::setGroupBoxLabel(GeonkickWidget *label, Qt::Alignment alignment)
+void GeonkickGroupBox::setGroupBoxLabel(GeonkickWidget *label)
 {
-        if (label) {
+        if (label)
                 groupBoxLabel = label;
-                mainLayout->insertWidget(0, groupBoxLabel, 0, alignment);
-        }
 }
 
-GeonkickWidget* GeonkickGroupBox::addWidget(GeonkickWidget *widget, Qt::Alignment alignment)
+GeonkickWidget* GeonkickGroupBox::addWidget(GeonkickWidget *widget)
 {
-        groupBoxLayout->addWidget(widget);
-        setWidgetAlignment(widget, alignment);
         return widget;
 }
-
-void GeonkickGroupBox::setPadding(int left, int top, int right, int buttom)
-{
-        mainLayout->setContentsMargins(left, top, right, buttom);
-}
-
-void GeonkickGroupBox::setWidgetAlignment(GeonkickWidget *widget,
-                                          Qt::Alignment alignment)
-{
-        groupBoxLayout->setAlignment(widget, alignment);
-}
-

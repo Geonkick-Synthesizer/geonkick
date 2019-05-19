@@ -22,6 +22,7 @@
  */
 
 #include "mainwindow.h"
+#include "oscillator.h"
 #include "envelope_widget.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
@@ -33,194 +34,227 @@
 #include "geonkick_state.h"
 #include "about.h"
 
-#include <QCloseEvent>
-#include <QMenu>
-#include <QMenuBar>
-#include <QToolBar>
-#include <QAction>
-#include <QDebug>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QJsonDocument>
+#include <RkPlatform.h>
 
-#define GEONKICK_MAINWINDOW_WIDTH  940
-#define GEONKICK_MAINWINDOW_HEIGHT 760
+#include <X11/keysym.h>
+#include <X11/keysymdef.h>
+#include <X11/XKBlib.h>
 
-MainWindow::MainWindow(GeonkickApi *api, const QString &preset, GeonkickWidget *parent) :
-        GeonkickWidget(parent),
-        geonkickApi(api),
-        topBar(nullptr),
-        envelopeWidget(nullptr),
-        presetName(preset)
+#include <RkEvent.h>
+
+MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
+        : GeonkickWidget(app)
+        , geonkickApi{api}
+        , topBar{nullptr}
+        , envelopeWidget{nullptr}
+        , presetName{preset}
 {
-        setWindowTitle(GEOKICK_APP_NAME);
+        setFixedSize(940, 760);
+        setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
-        setFixedSize(GEONKICK_MAINWINDOW_WIDTH, GEONKICK_MAINWINDOW_HEIGHT);
-        setWindowIcon(QPixmap(":/app_icon.png"));
+        show();
+}
+
+MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
+        : GeonkickWidget(app, info)
+        , geonkickApi{api}
+        , topBar{nullptr}
+        , envelopeWidget{nullptr}
+        , presetName{std::string()}
+{
+        setFixedSize(940, 760);
+        setTitle(GEOKICK_APP_NAME);
+        geonkickApi->registerCallbacks(true);
+        show();
 }
 
 MainWindow::~MainWindow()
 {
-        if (geonkickApi)
+        if (geonkickApi) {
                 geonkickApi->registerCallbacks(false);
+                geonkickApi->setEventQueue(nullptr);
+                // Since for plugins the api is not destroyed there
+                // is a need to unbind from the GUI that is being detryied.
+                RK_ACT_UNBIND_ALL(geonkickApi, kickLengthUpdated);
+                RK_ACT_UNBIND_ALL(geonkickApi, kickAmplitudeUpdated);
+                RK_ACT_UNBIND_ALL(geonkickApi, kickUpdated);
+                RK_ACT_UNBIND_ALL(geonkickApi, newKickBuffer);
+                RK_ACT_UNBIND_ALL(geonkickApi, currentPlayingFrameVal);
+                if (geonkickApi->isStandalone())
+                        delete geonkickApi;
+        }
 }
 
 bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
-
         if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
-                QMessageBox::warning(this, "Warning - Geonkick", tr("Jack is not installed" \
-                                     " or not running. There is a need for jack server running " \
-                                     "in order to have audio output."),
-                                     QMessageBox::Ok);
+                GEONKICK_LOG_INFO("Jack is not installed or not running. "
+                                  << "There is a need for jack server running "
+                                  << "in order to have audio output.");
 
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-        mainLayout->setContentsMargins(0, 0, 0, 0);
-        mainLayout->setSpacing(0);
-        setLayout(mainLayout);
-        topBar = new TopBar(this);
-        mainLayout->addWidget(topBar);
+        topBar = new TopBar(this, geonkickApi);
+        topBar->setX(10);
+        topBar->show();
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
+        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Open));
+        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Save));
+        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
+        RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(), this, openExportDialog());
+        RK_ACT_BIND(topBar, layerSelected, RK_ACT_ARGS(GeonkickApi::Layer layer, bool b), geonkickApi, enbaleLayer(layer, b));
 
         // Create envelope widget.
-        auto hBoxLayout = new QHBoxLayout;
-        hBoxLayout->setSpacing(0);
-        hBoxLayout->setContentsMargins(0, 0, 0, 0);
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
-        connect(this, SIGNAL(updateGui()), envelopeWidget, SIGNAL(update()));
+        envelopeWidget->setX(10);
+        envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 340);
-        hBoxLayout->addWidget(envelopeWidget);
+        envelopeWidget->show();
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
+        RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
         auto limiterWidget = new Limiter(geonkickApi, this);
-        connect(this, SIGNAL(updateGui()), limiterWidget, SLOT(updateLimiter()));
-        limiterWidget->setFixedSize(65, 340);
-        hBoxLayout->addWidget(limiterWidget);
-        mainLayout->addLayout(hBoxLayout);
+        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8, envelopeWidget->y());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
+        limiterWidget->show();
+        controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
+        controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
+        controlAreaWidget->show();
 
-        auto controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
-        connect(this, SIGNAL(updateGui()), controlAreaWidget, SIGNAL(update()));
-        mainLayout->addSpacing(5);
-        mainLayout->addWidget(controlAreaWidget);
+        // TODO: Key shortcut feature will be implemented in the next version of Redkite.
+        auto info = nativeWindowInfo();
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_o), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_O), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_h), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_H), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_k), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_K), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_a), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_A), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_e), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_E), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_r), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_R), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_s), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XFlush(info->display);
 
-        if (!presetName.isEmpty()) {
-                setPreset(presetName);
-                emit updateGui();
-        }
-
+        if (geonkickApi->isStandalone() && !presetName.empty())
+                openPreset(presetName);
+        updateGui();
         return true;
 }
 
 void MainWindow::openExportDialog()
 {
-        ExportWidget exportDialog(this, geonkickApi);
-        exportDialog.exec();
+        new ExportWidget(this, geonkickApi);
 }
 
-void MainWindow::savePreset()
+void MainWindow::savePreset(const std::string &fileName)
 {
-        QFileDialog fileDialog(this, tr("Save Preset") + QString(" - ") + QString(GEOKICK_APP_NAME),
-                               "",
-                               tr("Geonkick preset (*.gkick)"));
-        fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-        if (fileDialog.exec() == QDialog::Rejected)
-                return;
-
-        QStringList files = fileDialog.selectedFiles();
-        if (files.isEmpty() || files.first().isEmpty()) {
-                QMessageBox::critical(this,
-                                      "Error | Save Preset",
-                                      "Can't save preset. Empty file name. File name format example: 'mykick.gkick'");
+        if (fileName.size() < 6) {
+                RK_LOG_ERROR("Save Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
                 return;
         }
 
-        QFileInfo fileInfo(files.first());
-        if (fileInfo.baseName().isEmpty()) {
-                QMessageBox::critical(this,
-                                      "Error | Save Preset" + QString(" - ") + QString(GEOKICK_APP_NAME),
-                                      "Can't save preset. Wrong file format. File name format example: 'mykick.gkick'");
+        std::filesystem::path filePath(fileName);
+        std::locale loc;
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkick"
+            && filePath.extension() != ".GKICK"))
+                filePath.replace_extension(".gkick");
+
+        std::ofstream file;
+        file.open(std::filesystem::absolute(filePath));
+        if (!file.is_open()) {
+                RK_LOG_ERROR("Error | Save Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't save preset");
+                return;
+        }
+        file << geonkickApi->getState()->toJson();
+        file.close();
+        topBar->setPresetName(filePath.filename());
+}
+
+void MainWindow::openPreset(const std::string &fileName)
+{
+        if (fileName.size() < 6) {
+                RK_LOG_ERROR("Open Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
                 return;
         }
 
-        QString fileName;
-        if (fileInfo.suffix().isEmpty() || fileInfo.suffix().toLower() != "gkick")
-                fileName = fileInfo.filePath() + ".gkick";
+        std::filesystem::path filePath(fileName);
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkick"
+            && filePath.extension() != ".GKICK")) {
+                RK_LOG_ERROR("Open Preset: " << "Can't open preset. Wrong file format.");
+                return;
+        }
+
+        std::ifstream file;
+        file.open(std::filesystem::absolute(filePath));
+        if (!file.is_open()) {
+                RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't open preset.");
+                return;
+        }
+
+        std::string fileData((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+        auto state = std::make_shared<GeonkickState>();
+        state->loadData(fileData);
+        geonkickApi->setState(state);
+        topBar->setPresetName(filePath.stem());
+        file.close();
+        updateGui();
+}
+
+void MainWindow::openFileDialog(FileDialog::Type type)
+{
+        auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Preset" : "Save Preset");
+        fileDialog->exec();
+        if (fileDialog->acceptStatus() == FileDialog::AcceptStatus::Cancel)
+                return;
+
+        if (type == FileDialog::Type::Open)
+                openPreset(fileDialog->filePath());
         else
-                fileName = fileInfo.filePath();
-
-        QFile file(fileName);
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                QMessageBox::critical(this, "Error | Save Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't save preset");
-                return;
-        }
-
-        file.write(geonkickApi->getState()->toJson());
-        file.close();
-        topBar->setPresetName(QFileInfo(file).baseName());
-}
-
-void MainWindow::openPreset()
-{
-        QFileDialog fileDialog(this, tr("Open Preset")  + QString(" - ") + QString(GEOKICK_APP_NAME), "",
-                               tr("Geonkick preset (*.gkick)"));
-        fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-        if (fileDialog.exec() == QDialog::Rejected)
-                return;
-
-        QStringList files = fileDialog.selectedFiles();
-        if (files.isEmpty() || files.first().isEmpty()) {
-                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't open preset");
-                return;
-        }
-
-        setPreset(files.first());
-        emit updateGui();
-}
-
-void MainWindow::setPreset(const QString &fileName)
-{
-        QFile file(fileName);
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Can't open preset");
-                return;
-        }
-
-        QJsonDocument document = QJsonDocument::fromJson(file.readAll());
-        if (document.isNull()) {
-                QMessageBox::critical(this, "Error | Open Preset" + QString(" - ") + QString(GEOKICK_APP_NAME), "Wrong file contents");
-                return;
-        } else {
-                geonkickApi->setState(std::make_shared<GeonkickState>(document.toBinaryData()));
-                topBar->setPresetName(QFileInfo(file).baseName());
-        }
-        file.close();
+                savePreset(fileDialog->filePath());
 }
 
 void MainWindow::openAboutDialog()
 {
-        AboutDialog aboutDialog(this);
-        aboutDialog.exec();
+        new AboutDialog(this);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *event)
+void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        if (event->key() == Qt::Key_K) {
+        if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
                 geonkickApi->setKeyPressed(true, 127);
-        } else if (event->modifiers() ==  Qt::ControlModifier
-                   && event->key() == Qt::Key_R) {
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
                 geonkickApi->setState(geonkickApi->getDefaultState());
                 topBar->setPresetName("");
-                emit updateGui();
-        } else if (event->modifiers() ==  Qt::ControlModifier
-                   && event->key() == Qt::Key_H) {
+                updateGui();
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(true);
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
+                openFileDialog(FileDialog::Type::Open);
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
+                openFileDialog(FileDialog::Type::Save);
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
+                openExportDialog();
+        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                   && (event->key() == Rk::Key::Key_a || event->key() == Rk::Key::Key_A)) {
+                           openAboutDialog();
         }
 }
 
-void MainWindow::keyReleaseEvent(QKeyEvent *event)
+void MainWindow::keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        if (event->modifiers() ==  Qt::ControlModifier
-            && event->key() == Qt::Key_H) {
+        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+            && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(false);
         }
 }
+

@@ -28,42 +28,40 @@
 #include "effects_group_box.h"
 #include "geonkick_api.h"
 
-#include <QHBoxLayout>
-#include <QGridLayout>
-
-ControlArea::ControlArea(GeonkickWidget *parent, GeonkickApi* api,
-                         std::vector<Oscillator*> &oscillators)
+ControlArea::ControlArea(GeonkickWidget *parent,
+                         GeonkickApi* api,
+                         const std::vector<std::unique_ptr<Oscillator>> &oscillators)
                          : GeonkickWidget(parent)
 {
-        auto mainLayout = new QHBoxLayout(this);
-        mainLayout->setSpacing(0);
-        mainLayout->setContentsMargins(10, 0, 10, 0);
-        setLayout(mainLayout);
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
+        setFixedSize(920, 380);
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
         auto widget = new OscillatorGroupBox(this, oscillator);
-        connect(this, SIGNAL(update()), widget, SLOT(update()));
-        mainLayout->addWidget(widget);
-        mainLayout->setAlignment(widget, Qt::AlignTop);
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
-        widget = new OscillatorGroupBox(this, oscillator);
-        connect(this, SIGNAL(update()), widget, SLOT(update()));
-        mainLayout->addWidget(widget);
-        mainLayout->setAlignment(widget, Qt::AlignTop);
+        widget->setPosition(0, 0);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
+        widget->show();
 
-        auto layoutGBox = new QGridLayout;
-        layoutGBox->setSpacing(0);
-        layoutGBox->setContentsMargins(0, 0, 0, 0);
-        mainLayout->addLayout(layoutGBox);
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        connect(this, SIGNAL(update()), widget, SLOT(update()));
-        layoutGBox->addWidget(widget, 0, 0);
+        widget->setPosition(8 + 224, 0);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
+        widget->show();
+
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
+        widget = new OscillatorGroupBox(this, oscillator);
+        widget->setPosition(2 * (8 + 224), 0);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
+        widget->show();
+
         auto generalWidget = new GeneralGroupBox(this, api);
-        connect(this, SIGNAL(update()), generalWidget, SLOT(update()));
-        layoutGBox->addWidget(generalWidget, 0, 1);
+        generalWidget->setPosition(3 * (8 + 224), 0);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), generalWidget, updateGui());
+        generalWidget->show();
+
         auto effectsWidget = new EffectsGroupBox(api, this);
-        connect(this, SIGNAL(update()), effectsWidget, SIGNAL(update()));
-        layoutGBox->addWidget(effectsWidget, 1, 0, 1, 2);
+        effectsWidget->setFixedSize(500, 82);
+        effectsWidget->setPosition(2 * (8 + 224), 285);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
+        effectsWidget->show();
 }
 
 ControlArea::~ControlArea()

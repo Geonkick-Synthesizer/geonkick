@@ -23,203 +23,251 @@
 
 #include "envelope_widget.h"
 #include "general_envelope.h"
+#include "oscillator_envelope.h"
 #include "envelope_draw_area.h"
 #include "geonkick_button.h"
-#include "kick_graph.h"
 
-#include <QPainter>
-#include <QPolygonF>
-#include <QPainterPath>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QPushButton>
-#include <QLabel>
+extern const unsigned char rk_show_ampl_env_active_png[];
+extern const unsigned char rk_show_ampl_env_png[];
+extern const unsigned char rk_show_freq_env_active_png[];
+extern const unsigned char rk_show_freq_env_png[];
+extern const unsigned char rk_show_osc1_envelopes_button_active_png[];
+extern const unsigned char rk_show_osc1_envelopes_button_png[];
+extern const unsigned char rk_show_osc2_envelopes_button_active_png[];
+extern const unsigned char rk_show_osc2_envelopes_button_png[];
+extern const unsigned char rk_show_noise_envelopes_button_active_png[];
+extern const unsigned char rk_show_noise_envelopes_button_png[];
+extern const unsigned char rk_show_general_envelopes_button_active_png[];
+extern const unsigned char rk_show_general_envelopes_button_png[];
+extern const unsigned char rk_layer1_png[];
+extern const unsigned char rk_layer1_disabled_png[];
+extern const unsigned char rk_layer2_png[];
+extern const unsigned char rk_layer2_disabled_png[];
+extern const unsigned char rk_layer3_png[];
+extern const unsigned char rk_layer3_disabled_png[];
 
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
-                               std::vector<Oscillator*> &oscillators)
-          : GeonkickWidget(parent),
-          drawArea(nullptr),
-          showAmplitudeEnvButton(nullptr),
-          showFrequencyEnvButton(nullptr)
-
+                               const std::vector<std::unique_ptr<Oscillator>> &oscillators)
+          : GeonkickWidget(parent)
+          , currentEnvelope{nullptr}
+          , drawArea{nullptr}
+          , showAmplitudeEnvButton{nullptr}
+          , showFrequencyEnvButton{nullptr}
+          , osccillator1EvelopesButton{nullptr}
+          , osccillator2EvelopesButton{nullptr}
+          , noiseEvelopesButton{nullptr}
+          , generalEvelopesButton{nullptr}
+          , layer1Button{nullptr}
+          , layer2Button{nullptr}
+          , layer3Button{nullptr}
+          , geonkickApi{api}
 {
-        QVBoxLayout *envelopeLayout = new QVBoxLayout(this);
-        setLayout(envelopeLayout);
-        envelopeLayout->setSpacing(0);
-        envelopeLayout->setContentsMargins(0, 0, 0, 0);
-
         // Create drawing area.
-        drawArea = new EnvelopeWidgetDrawingArea(this);
-        drawArea->setContentsMargins(0, 0, 0, 0);
-        envelopeLayout->addWidget(drawArea);
+        drawArea = new EnvelopeWidgetDrawingArea(this, geonkickApi);
+        drawArea->show();
 
-        QRect rect = drawArea->getDrawingArea();
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)];
-        std::shared_ptr<Envelope> envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
-        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
-        envelopes.push_back(envelope);
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)];
-        envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
-        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
-        envelopes.push_back(envelope);
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)];
-        envelope = std::make_shared<OscillatorEnvelope>(oscillator, rect);
-        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
-        envelopes.push_back(envelope);
-        envelope = std::make_shared<GeneralEnvelope>(api, rect);
-        connect(this, SIGNAL(update()), envelope.get(), SLOT(updatePoints()));
-        envelopes.push_back(envelope);
-        auto kickGraph = new KickGraph(this, api);
-        kickGraph->setDrawingArea(rect);
-        drawArea->setKickGraph(kickGraph);
+        auto rect = drawArea->getDrawingArea();
+
+        // Oscillator1 envelope
+        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
+        auto envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        envelopes.insert({static_cast<int>(EnvelopeType::Oscillator1), envelope});
+
+        // Oscillator2 envelope
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
+        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        envelopes.insert({static_cast<int>(EnvelopeType::Oscillator2), envelope});
+
+        // Noise envelope
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
+        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
+        envelopes.insert({static_cast<int>(EnvelopeType::Noise), envelope});
+
+        // General nevelope
+        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(geonkickApi, rect));
+        envelopes.insert({static_cast<int>(EnvelopeType::General), envelope});
         createButtomMenu();
-        showGeneralEnvelope();
+        showEnvelope(EnvelopeType::General);
 }
 
 EnvelopeWidget::~EnvelopeWidget()
 {
-
 }
 
 void EnvelopeWidget::createButtomMenu()
 {
         auto buttomAreaWidget = new GeonkickWidget(this);
-        buttomAreaWidget->setContentsMargins(0, 0, 0, 0);
+        buttomAreaWidget->setPosition(drawArea->x(), drawArea->y() + drawArea->height());
+        buttomAreaWidget->setFixedSize(drawArea->width(), 34);
+        buttomAreaWidget->show();
 
-        layout()->addWidget(buttomAreaWidget);
+        // Amplitude Envelope button
         showAmplitudeEnvButton = new GeonkickButton(buttomAreaWidget);
-        connect(showAmplitudeEnvButton, SIGNAL(toggled(bool)), this, SLOT(showAmplitudeEnvelope()));
-        showAmplitudeEnvButton->setPressedImage(QPixmap(":/show_ampl_env_active.png"));
-        showAmplitudeEnvButton->setUnpressedImage(QPixmap(":/show_ampl_env.png"));
+        RK_ACT_BIND(showAmplitudeEnvButton, toggled, RK_ACT_ARGS(bool pressed), this, showEnvelopeType(Envelope::Type::Amplitude));
+        showAmplitudeEnvButton->setPressedImage(RkImage(90, 30, rk_show_ampl_env_active_png));
+        showAmplitudeEnvButton->setUnpressedImage(RkImage(90, 30, rk_show_ampl_env_png));
+        showAmplitudeEnvButton->setPosition(0, (buttomAreaWidget->height() - showAmplitudeEnvButton->height()) / 2);
+        showAmplitudeEnvButton->show();
+        showAmplitudeEnvButton->setPressed(true);
+
+        // Frequency Envelope button
         showFrequencyEnvButton = new GeonkickButton(buttomAreaWidget);
-        connect(showFrequencyEnvButton, SIGNAL(toggled(bool)), this, SLOT(showFrequencyEnvelope()));
-        showFrequencyEnvButton->setPressedImage(QPixmap(":/show_freq_env_active.png"));
-        showFrequencyEnvButton->setUnpressedImage(QPixmap(":/show_freq_env.png"));
-        buttomAreaWidget->setFixedSize(drawArea->width(), showAmplitudeEnvButton->height() + 2);
+        RK_ACT_BIND(showFrequencyEnvButton, toggled, RK_ACT_ARGS(bool pressed), this, showEnvelopeType(Envelope::Type::Frequency));
+        showFrequencyEnvButton->setPressedImage(RkImage(90, 30, rk_show_freq_env_active_png));
+        showFrequencyEnvButton->setUnpressedImage(RkImage(90, 30, rk_show_freq_env_png));
+        showFrequencyEnvButton->setPosition(showAmplitudeEnvButton->width(),
+                                            (buttomAreaWidget->height() - showFrequencyEnvButton->height()) / 2);
+        showFrequencyEnvButton->show();
 
-        osccillator1EvelopesButton = new GeonkickButton(buttomAreaWidget);
-        connect(osccillator1EvelopesButton, SIGNAL(toggled(bool)), this, SLOT(showOsc1Envelope()));
-        osccillator1EvelopesButton->setPressedImage(QPixmap(":/show_osc1_envelopes_button_active.png"));
-        osccillator1EvelopesButton->setUnpressedImage(QPixmap(":/show_osc1_envelopes_button.png"));
-
-        osccillator2EvelopesButton = new GeonkickButton(buttomAreaWidget);
-        connect(osccillator2EvelopesButton, SIGNAL(toggled(bool)), this, SLOT(showOsc2Envelope()));
-        osccillator2EvelopesButton->setPressedImage(QPixmap(":/show_osc2_envelopes_button_active.png"));
-        osccillator2EvelopesButton->setUnpressedImage(QPixmap(":/show_osc2_envelopes_button.png"));
-
-        noiseEvelopesButton = new GeonkickButton(buttomAreaWidget);
-        connect(noiseEvelopesButton, SIGNAL(toggled(bool)), this, SLOT(showNoiseEnvelope()));
-        noiseEvelopesButton->setPressedImage(QPixmap(":/show_noise_envelopes_button_active.png"));
-        noiseEvelopesButton->setUnpressedImage(QPixmap(":/show_noise_envelopes_button.png"));
-
+        // General envelope button
         generalEvelopesButton = new GeonkickButton(buttomAreaWidget);
         generalEvelopesButton->setPressed(true);
-        connect(generalEvelopesButton, SIGNAL(toggled(bool)), this, SLOT(showGeneralEnvelope()));
-        generalEvelopesButton->setPressedImage(QPixmap(":/show_general_envelopes_button_active.png"));
-        generalEvelopesButton->setUnpressedImage(QPixmap(":/show_general_envelopes_button.png"));
+        RK_ACT_BIND(generalEvelopesButton, toggled, RK_ACT_ARGS(bool pressed),
+                    this, showEnvelope(EnvelopeType::General));
+        generalEvelopesButton->setPressedImage(RkImage(90, 30, rk_show_general_envelopes_button_active_png));
+        generalEvelopesButton->setUnpressedImage(RkImage(90, 30, rk_show_general_envelopes_button_png));
+        generalEvelopesButton->setPosition(buttomAreaWidget->width() - generalEvelopesButton->width(),
+                                           (buttomAreaWidget->height() - generalEvelopesButton->height()) / 2);
+        generalEvelopesButton->show();
 
-        QHBoxLayout *buttomAreaLayout = new QHBoxLayout(buttomAreaWidget);
-        buttomAreaLayout->addWidget(showAmplitudeEnvButton);
-        buttomAreaLayout->setAlignment(showAmplitudeEnvButton, Qt::AlignLeft);
-        buttomAreaLayout->addWidget(showFrequencyEnvButton);
-        buttomAreaLayout->setAlignment(showFrequencyEnvButton, Qt::AlignLeft);
-        buttomAreaLayout->addStretch(1);
-        buttomAreaLayout->addWidget(osccillator1EvelopesButton);
-        buttomAreaLayout->setAlignment(osccillator1EvelopesButton, Qt::AlignRight);
-        buttomAreaLayout->addWidget(osccillator2EvelopesButton);
-        buttomAreaLayout->setAlignment(osccillator2EvelopesButton, Qt::AlignRight);
-        buttomAreaLayout->addWidget(noiseEvelopesButton);
-        buttomAreaLayout->setAlignment(noiseEvelopesButton, Qt::AlignRight);
-        buttomAreaLayout->addWidget(generalEvelopesButton);
-        buttomAreaLayout->setAlignment(generalEvelopesButton, Qt::AlignRight);
-        buttomAreaWidget->setLayout(buttomAreaLayout);
-        buttomAreaLayout->setSpacing(0);
-        buttomAreaLayout->setContentsMargins(0, 0, 0, 0);
+        // Noise envelope button
+        noiseEvelopesButton = new GeonkickButton(buttomAreaWidget);
+        RK_ACT_BIND(noiseEvelopesButton, toggled, RK_ACT_ARGS(bool pressed),
+                    this, showEnvelope(EnvelopeType::Noise));
+        noiseEvelopesButton->setPressedImage(RkImage(90, 30, rk_show_noise_envelopes_button_active_png));
+        noiseEvelopesButton->setUnpressedImage(RkImage(90, 30, rk_show_noise_envelopes_button_png));
+        noiseEvelopesButton->setPosition(generalEvelopesButton->x() - noiseEvelopesButton->width(),
+                                         (buttomAreaWidget->height() - noiseEvelopesButton->height()) / 2);
+        noiseEvelopesButton->show();
+
+        // Oscillator2 envelopes button
+        osccillator2EvelopesButton = new GeonkickButton(buttomAreaWidget);
+        RK_ACT_BIND(osccillator2EvelopesButton, toggled, RK_ACT_ARGS(bool pressed),
+                    this, showEnvelope(EnvelopeType::Oscillator2));
+        osccillator2EvelopesButton->setPressedImage(RkImage(90, 30, rk_show_osc2_envelopes_button_active_png));
+        osccillator2EvelopesButton->setUnpressedImage(RkImage(90, 30, rk_show_osc2_envelopes_button_png));
+        osccillator2EvelopesButton->setPosition(noiseEvelopesButton->x() - osccillator2EvelopesButton->width(),
+                                                (buttomAreaWidget->height() - osccillator2EvelopesButton->height()) / 2);
+        osccillator2EvelopesButton->show();
+
+        // Oscillator1 envelopes button
+        osccillator1EvelopesButton = new GeonkickButton(buttomAreaWidget);
+        RK_ACT_BIND(osccillator1EvelopesButton, toggled, RK_ACT_ARGS(bool pressed),
+                    this, showEnvelope(EnvelopeType::Oscillator1));
+        osccillator1EvelopesButton->setPressedImage(RkImage(90, 30, rk_show_osc1_envelopes_button_active_png));
+        osccillator1EvelopesButton->setUnpressedImage(RkImage(90, 30, rk_show_osc1_envelopes_button_png));
+        osccillator1EvelopesButton->setPosition(osccillator2EvelopesButton->x() - osccillator1EvelopesButton->width(),
+                                                (buttomAreaWidget->height() - osccillator1EvelopesButton->height()) / 2);
+        osccillator1EvelopesButton->show();
+        createLayersButtons(buttomAreaWidget);
 }
 
-void EnvelopeWidget::showGeneralEnvelope()
+void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
 {
-        osccillator1EvelopesButton->setPressed(false);
-        osccillator2EvelopesButton->setPressed(false);
-        noiseEvelopesButton->setPressed(false);
-        showAmplitudeEnvButton->setPressed(false);
-        showAmplitudeEnvButton->hide();
-        showFrequencyEnvButton->setPressed(false);
-        showFrequencyEnvButton->hide();
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::General)]);
+        if (graphImage && !graphImage->isNull())
+                drawArea->updateKickGraph(graphImage);
 }
 
-void EnvelopeWidget::showOsc1Envelope()
+Envelope* EnvelopeWidget::getEnvelope(EnvelopeType type)
 {
-        generalEvelopesButton->setPressed(false);
-        osccillator2EvelopesButton->setPressed(false);
-        noiseEvelopesButton->setPressed(false);
-        showFrequencyEnvButton->show();
-        showAmplitudeEnvButton->show();
-        if (envelopes[static_cast<int>(EnvelopeType::Oscillator1)]->type()
-            == Envelope::Type::Amplitude) {
-                showAmplitudeEnvButton->setPressed(true);
-                showFrequencyEnvButton->setPressed(false);
-        } else {
-                showAmplitudeEnvButton->setPressed(false);
-                showFrequencyEnvButton->setPressed(true);
+        auto res = envelopes.find(static_cast<int>(type));
+        if (res != envelopes.end())
+                return res->second.get();
+        return nullptr;
+}
+
+
+void EnvelopeWidget::showEnvelope(EnvelopeType type)
+{
+        generalEvelopesButton->setPressed(type == EnvelopeType::General);
+        osccillator1EvelopesButton->setPressed(type == EnvelopeType::Oscillator1);
+        osccillator2EvelopesButton->setPressed(type == EnvelopeType::Oscillator2);
+        noiseEvelopesButton->setPressed(type == EnvelopeType::Noise);
+        auto envelope = getEnvelope(type);
+        if (envelope) {
+                drawArea->setEnvelope(envelope);
+                showEnvelopeType(envelope->type());
         }
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::Oscillator1)]);
+
 }
 
-void EnvelopeWidget::showOsc2Envelope()
-{
-        generalEvelopesButton->setPressed(false);
-        osccillator1EvelopesButton->setPressed(false);
-        noiseEvelopesButton->setPressed(false);
-        showFrequencyEnvButton->show();
-        showAmplitudeEnvButton->show();
-        if (envelopes[static_cast<int>(EnvelopeType::Oscillator2)]->type()
-            == Envelope::Type::Amplitude) {
-                showAmplitudeEnvButton->setPressed(true);
-                showFrequencyEnvButton->setPressed(false);
-        } else {
-                showAmplitudeEnvButton->setPressed(false);
-                showFrequencyEnvButton->setPressed(true);
-        }
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::Oscillator2)]);
-}
-
-void EnvelopeWidget::showNoiseEnvelope()
-{
-        generalEvelopesButton->setPressed(false);
-        osccillator1EvelopesButton->setPressed(false);
-        osccillator2EvelopesButton->setPressed(false);
-        showAmplitudeEnvButton->setPressed(false);
-        showAmplitudeEnvButton->hide();
-        showFrequencyEnvButton->setPressed(false);
-        showFrequencyEnvButton->hide();
-        drawArea->setEnvelope(envelopes[static_cast<int>(EnvelopeType::Noise)]);
-}
-
-void EnvelopeWidget::showAmplitudeEnvelope()
+void EnvelopeWidget::showEnvelopeType(Envelope::Type type)
 {
         auto envelope = drawArea->getEnvelope();
-        showFrequencyEnvButton->setPressed(false);
-        if (envelope && envelope->isSupportedType(Envelope::Type::Amplitude)) {
-                envelope->setType(Envelope::Type::Amplitude);
-                drawArea->update();
+        showAmplitudeEnvButton->setPressed(type == Envelope::Type::Amplitude);
+        showFrequencyEnvButton->setPressed(type == Envelope::Type::Frequency);
+        if (!envelope->isSupportedType(Envelope::Type::Frequency)) {
+                showAmplitudeEnvButton->hide();
+                showFrequencyEnvButton->hide();
+        } else {
+                showAmplitudeEnvButton->show();
+                showFrequencyEnvButton->show();
         }
-}
-
-void EnvelopeWidget::showFrequencyEnvelope()
-{
-        auto envelope = drawArea->getEnvelope();
-        showAmplitudeEnvButton->setPressed(false);
-        if (envelope && envelope->isSupportedType(Envelope::Type::Frequency)) {
-                envelope->setType(Envelope::Type::Frequency);
-                drawArea->update();
-        }
+        if (envelope && envelope->isSupportedType(Envelope::Type::Amplitude))
+                envelope->setType(type);
+        drawArea->update();
 }
 
 void EnvelopeWidget::hideEnvelope(bool b)
 {
         drawArea->setHideEnvelope(b);
+}
+
+void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
+{
+        int layersSpace = 5;
+        int layersX = osccillator1EvelopesButton->x() - 3 * layersSpace - 3 * 24 - 10;
+        layer1Button = new GeonkickButton(buttomAreaWidget);
+        layer1Button->setSize(24, 24);
+        layer1Button->setBackgroundColor(buttomAreaWidget->background());
+        layer1Button->setPosition(layersX, (buttomAreaWidget->height() - layer1Button->height()) / 2);
+        layer1Button->setUnpressedImage(RkImage(layer1Button->size(), rk_layer1_disabled_png));
+        layer1Button->setPressedImage(RkImage(layer1Button->size(), rk_layer1_png));
+        layer1Button->setCheckable(true);
+        layer1Button->setPressed(true);
+        RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer1));
+
+        layer2Button = new GeonkickButton(buttomAreaWidget);
+        layer2Button->setSize(24, 24);
+        layer2Button->setBackgroundColor(buttomAreaWidget->background());
+        layer2Button->setPosition(layer1Button->x() + layer1Button->width() + layersSpace, layer1Button->y());
+        layer2Button->setUnpressedImage(RkImage(layer2Button->size(), rk_layer2_disabled_png));
+        layer2Button->setPressedImage(RkImage(layer2Button->size(), rk_layer2_png));
+        layer2Button->setCheckable(true);
+        RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer2));
+
+        layer3Button = new GeonkickButton(buttomAreaWidget);
+        layer3Button->setBackgroundColor(buttomAreaWidget->background());
+        layer3Button->setSize(24, 24);
+        layer3Button->setPosition(layer2Button->x() + layer2Button->width() + layersSpace, layer2Button->y());
+        layer3Button->setUnpressedImage(RkImage(layer3Button->size(), rk_layer3_disabled_png));
+        layer3Button->setPressedImage(RkImage(layer3Button->size(), rk_layer3_png));
+        layer3Button->setCheckable(true);
+        RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b), this, setLayer(GeonkickApi::Layer::Layer3));
+}
+
+void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
+{
+        layer1Button->setPressed(GeonkickApi::Layer::Layer1 == layer);
+        layer2Button->setPressed(GeonkickApi::Layer::Layer2 == layer);
+        layer3Button->setPressed(GeonkickApi::Layer::Layer3 == layer);
+        geonkickApi->setLayer(layer);
+        action requestUpdateGui();
+}
+
+void EnvelopeWidget::updateGui()
+{
+        for (const auto &envelope: envelopes) {
+                if (envelope.second->isSupportedType(Envelope::Type::Amplitude)) {
+                        envelope.second->setType(Envelope::Type::Amplitude);
+                        envelope.second->updatePoints();
+                }
+                if (envelope.second->isSupportedType(Envelope::Type::Frequency)) {
+                        envelope.second->setType(Envelope::Type::Frequency);
+                        envelope.second->updatePoints();
+                }
+        }
+        drawArea->update();
 }
 

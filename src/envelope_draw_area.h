@@ -27,40 +27,44 @@
 #include "globals.h"
 #include "geonkick_widget.h"
 
-#include <memory>
+#include "RkRect.h"
+#include "RkRealPoint.h"
+#include "RkImage.h"
 
 class Envelope;
 class KickGraph;
+class RkMouseEvent;
+class KickGraph;
+class GeonkickApi;
 
 class EnvelopeWidgetDrawingArea : public GeonkickWidget
 {
-   Q_OBJECT
-
  public:
-   EnvelopeWidgetDrawingArea(GeonkickWidget *parent);
+   EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api);
    ~EnvelopeWidgetDrawingArea();
-   void paintWidget(QPaintEvent *event) override;
-   void mousePressEvent(QMouseEvent *event);
-   void mouseReleaseEvent(QMouseEvent *event);
-   void mouseDoubleClickEvent(QMouseEvent *event);
-   void mouseMoveEvent(QMouseEvent *event);
-   std::shared_ptr<Envelope> getEnvelope() const;
-   const QRect getDrawingArea();
-   void setKickGraph(KickGraph *graph);
-   KickGraph* getKickGraph();
+   void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
+   Envelope* getEnvelope() const;
+   const RkRect getDrawingArea();
+   void updateKickGraph(std::shared_ptr<RkImage> graphImage);
    bool isHideEnvelope() const;
+   void setEnvelope(Envelope* envelope);
+   void envelopeUpdated();
+   void setHideEnvelope(bool b);
 
-   public slots:
-           void setEnvelope(std::shared_ptr<Envelope> &envelope);
-           void envelopeUpdated();
-           void setHideEnvelope(bool b);
+ protected:
+   void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
 
  private:
-   std::shared_ptr<Envelope> currentEnvelope;
-   KickGraph *kickGraph;
-   QRect drawingArea;
-   QPointF mousePoint;
+   Envelope* currentEnvelope;
+   RkRect drawingArea;
+   RkRealPoint mousePoint;
    bool hideEnvelope;
+   std::shared_ptr<RkImage> kickGraphImage;
+   RkImage envelopeImage;
+   std::unique_ptr<KickGraph> kickGraphics;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

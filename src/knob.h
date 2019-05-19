@@ -26,13 +26,13 @@
 
 #include "geonkick_widget.h"
 
-#include <QWidget>
-#include <QMouseEvent>
+#include <RkWidget.h>
+#include <RkImage.h>
+
+class RkMouseEvent;
 
 class Knob : public GeonkickWidget
 {
-   Q_OBJECT
-
 public:
 
    enum RangeType: int {
@@ -47,20 +47,21 @@ public:
    void setRangeType(RangeType type);
    RangeType getRangeType() const;
    void setCurrentValue(double val);
-   void setKnobImage(const QPixmap &pixmap);
+   void setKnobImage(const RkImage &img);
+   void setKnobBackgroundImage(const RkImage &img);
 
- signals:
-     void valueUpdated(double v);
+   RK_DECL_ACT(valueUpdated, valueUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
 
  protected:
-   void paintWidget(QPaintEvent *event) override;
-   void mousePressEvent(QMouseEvent *event);
-   void mouseReleaseEvent(QMouseEvent *event);
-   void mouseMoveEvent(QMouseEvent *event);
+   void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
+   void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
 
  private:
-   QPixmap knobPixmap;
-   QPoint lastPositionPoint;
+   RkImage knobImage;
+   RkImage knobBackground;
+   RkPoint lastPositionPoint;
    double knobValueDegree;
    double rangeFrom;
    double rangeTo;

@@ -23,45 +23,63 @@
 
 #include "geonkick_widget.h"
 
-GeonkickWidget::GeonkickWidget(GeonkickWidget *parent)
-        : QWidget(parent)
+#include <RkPainter.h>
+
+GeonkickWidget::GeonkickWidget(RkMain *app, const RkNativeWindowInfo &info, Rk::WindowFlags flags)
+        : RkWidget(app, info, flags)
 {
-        // Later this kind of settings will be taken from from theme/skin.
-        QPalette pal;
-        pal.setColor(QPalette::Background, QColor(68, 68, 70));
-        pal.setColor(QPalette::WindowText, QColor(210, 226, 226, 140));
-        setAutoFillBackground(true);
-        setPalette(pal);
+        setBackgroundColor(68, 68, 70);
+        setTextColor({210, 226, 226, 140});
+        auto f = font();
+        f.setSize(12);
+        setFont(f);
+}
+
+GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
+        : RkWidget(app, flags)
+{
+        setBackgroundColor(68, 68, 70);
+        setTextColor({210, 226, 226, 140});
+        auto f = font();
+        f.setSize(12);
+        setFont(f);
+}
+
+GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
+        : RkWidget(parent, flags)
+{
+        setBackgroundColor(68, 68, 70);
+        setTextColor({210, 226, 226, 140});
+        auto f = font();
+        f.setSize(12);
+        setFont(f);
 }
 
 GeonkickWidget::~GeonkickWidget()
 {
 }
 
-void GeonkickWidget::paintEvent(QPaintEvent *event)
+void GeonkickWidget::paintEvent(const std::shared_ptr<RkPaintEvent> &event)
 {
-        QPainter painter(this);
         if (!backgroundImage.isNull()) {
-                painter.drawPixmap(0, 0, backgroundImage);
+                RkPainter painter(this);
+                painter.fillRect(rect(), background());
+                painter.drawImage(backgroundImage, 0, 0);
         }
 
         paintWidget(event);
 }
 
-void GeonkickWidget::paintWidget(QPaintEvent *event)
+void GeonkickWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
-        Q_UNUSED(event)
+        RK_UNUSED(event);
 }
 
-void GeonkickWidget::setBackgroundImage(const QString &file)
+void GeonkickWidget::setBackgroundImage(const RkImage &img)
 {
-        setBackgroundImage(QPixmap(file));
-}
-
-void GeonkickWidget::setBackgroundImage(const QPixmap &pixmap)
-{
-        if (!pixmap.isNull()) {
-                backgroundImage = pixmap;
+        if (!img.isNull()) {
+                backgroundImage = img;
                 update();
         }
 }
+

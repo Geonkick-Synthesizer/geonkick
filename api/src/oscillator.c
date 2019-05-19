@@ -37,7 +37,8 @@ struct gkick_oscillator
 
         osc->state = GEONKICK_OSC_STATE_ENABLED;
         osc->func = GEONKICK_OSC_FUNC_SINE;
-        osc->phase = 0.0;
+        osc->initial_phase = 0;
+        osc->phase = osc->initial_phase;
         osc->sample_rate = GEONKICK_SAMPLE_RATE;
         osc->amplitude = GKICK_OSC_DEFAULT_AMPLITUDE;
         osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
@@ -62,15 +63,12 @@ struct gkick_oscillator
 void gkick_osc_free(struct gkick_oscillator **osc)
 {
         size_t i;
-
-        if (osc == NULL || *osc == NULL) {
+        if (osc == NULL || *osc == NULL)
                 return;
-        }
 
         if ((*osc)->envelopes != NULL) {
-                for (i = 0; i < (*osc)->env_number; i++) {
+                for (i = 0; i < (*osc)->env_number; i++)
                         gkick_envelope_destroy((*osc)->envelopes[i]);
-                }
                 free((*osc)->envelopes);
                 gkick_filter_free(&(*osc)->filter);
         }
@@ -90,17 +88,15 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
         size_t i;
         struct gkick_envelope *env;
 
-        if (osc->env_number < 1) {
+        if (osc->env_number < 1)
                 return GEONKICK_ERROR;
-        }
 
         osc->envelopes = (struct gkick_envelope**)malloc(sizeof(struct gkick_envelope*) *osc->env_number);
-        if (osc->envelopes == NULL) {
+        if (osc->envelopes == NULL)
                 return GEONKICK_ERROR_MEM_ALLOC;
-        }
         memset(osc->envelopes, 0, sizeof(struct gkick_envelope*) * osc->env_number);
 
-        for(i = 0; i < osc->env_number; i++) {
+        for (i = 0; i < osc->env_number; i++) {
                 env = gkick_envelope_create();
                 if (env == NULL) {
                         return GEONKICK_ERROR;
@@ -118,13 +114,11 @@ enum geonkick_error gkick_osc_create_envelopes(struct gkick_oscillator *osc)
 struct gkick_envelope*
 gkick_osc_get_envelope(struct gkick_oscillator *osc,  size_t env_index)
 {
-        if (osc == NULL) {
+        if (osc == NULL)
                 return NULL;
-        }
 
-        if (env_index >= 0 && env_index < osc->env_number) {
+        if (env_index >= 0 && env_index < osc->env_number)
                 return osc->envelopes[env_index];
-        }
 
         return NULL;
 }
@@ -134,12 +128,10 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
 			       gkick_real kick_len)
 {
         gkick_real f;
-
         f = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t / kick_len);
         osc->phase += (2 * M_PI * f) / (osc->sample_rate);
-        if (osc->phase > 2 * M_PI) {
+        if (osc->phase > 2 * M_PI)
                 osc->phase -= 2 * M_PI;
-        }
 }
 
 gkick_real gkick_osc_value(struct gkick_oscillator *osc,
@@ -177,9 +169,8 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
                 v = amp * gkick_osc_func_sine(osc->phase);
         };
 
-        if (osc->filter_enabled) {
+        if (osc->filter_enabled)
                 gkick_filter_val(osc->filter, v, &v);
-        }
 
         return v;
 }
@@ -213,9 +204,8 @@ gkick_real gkick_osc_func_sawtooth(gkick_real phase)
 gkick_real gkick_osc_func_noise_white(void)
 {
         int sign = 1;
-        if (rand() % 2) {
+        if (rand() % 2)
                 sign = -1;
-        }
 
         return sign * ((gkick_real)(rand() % RAND_MAX)) / RAND_MAX;
 }
@@ -229,9 +219,8 @@ gkick_real gkick_osc_func_noise_brownian(gkick_real *previous)
 {
         gkick_real sign = 1;
         gkick_real walk;
-        if (rand() % 2) {
+        if (rand() % 2)
                 sign = -1;
-        }
 
         walk = sign * 0.1 * (((gkick_real)(rand() % RAND_MAX)) / RAND_MAX);
         if (*previous + walk > 1.0 || *previous + walk < -1.0)
@@ -247,13 +236,11 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      gkick_real **buff,
 			      size_t *npoints)
 {
-        if (buff != NULL) {
+        if (buff != NULL)
                 *buff = NULL;
-        }
 
-        if (env_index >= 0 && env_index < osc->env_number) {
+        if (env_index >= 0 && env_index < osc->env_number)
                 gkick_envelope_get_points(osc->envelopes[env_index], buff, npoints);
-        }
 }
 
 void
@@ -265,20 +252,17 @@ gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
         if (buff == NULL)
                 return;
 
-        if (env_index >= 0 && env_index < osc->env_number) {
+        if (env_index >= 0 && env_index < osc->env_number)
                 gkick_envelope_set_points(osc->envelopes[env_index], buff, npoints);
-        }
 }
 
 int  gkick_osc_enabled(struct gkick_oscillator *osc)
 {
-        if (osc == NULL) {
+        if (osc == NULL)
                 return 0;
-        }
 
-        if (osc->state == GEONKICK_OSC_STATE_ENABLED) {
+        if (osc->state == GEONKICK_OSC_STATE_ENABLED)
                 return 1;
-        }
 
         return 0;
 }

@@ -27,20 +27,8 @@
 #include "geonkick_widget.h"
 
 class AboutDialog: public GeonkickWidget {
- Q_OBJECT
-
  public:
         AboutDialog(GeonkickWidget *parent);
-        ~AboutDialog();
-        int exec();
-
- protected:
-        void closeEvent(QCloseEvent *event);
-
- protected slots:
-
- signals:
-         void closeDialog();
 };
 
 #endif // GEONKICK_ABOUT_H

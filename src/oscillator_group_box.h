@@ -28,35 +28,33 @@
 #include "geonkick_groupbox.h"
 
 class GKickOscillator;
-class QComboBox;
 class GeonkickWidget;
 class GeonkickButton;
 class GeonkickCheckbox;
 class Knob;
+class GeonkickSlider;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
-        Q_OBJECT
  public:
         OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc);
         ~OscillatorGroupBox();
 
- public slots:
-        void update();
-
- signals:
-        void oscillatorFunctionChanged(int index);
+        void updateGui();
+        RK_DECL_ACT(oscillatorFunctionChanged,
+                    oscillatorFunctionChanged(int index),
+                    RK_ARG_TYPE(int),
+                    RK_ARG_VAL(index));
 
  protected:
         void createWaveFunctionGroupBox();
         void createEvelopeGroupBox();
         void createFilterGroupBox();
-
- protected slots:
         void setSineWave(bool pressed);
         void setSquareWave(bool pressed);
         void setTriangleWave(bool pressed);
         void setSawtoothWave(bool pressed);
+        void setOscillatorPhase(int value);
         void setNoiseWhite(bool pressed);
         void setNoiseBrownian(bool pressed);
         void groupBoxLabelUpdated(bool state);
@@ -64,12 +62,13 @@ class OscillatorGroupBox: public GeonkickGroupBox
 
  private:
         Oscillator *oscillator;
-        GeonkickCheckbox *oscillatorCheckbox;
-        GeonkickCheckbox *filterCheckbox;
+        GeonkickButton *oscillatorCheckbox;
+        GeonkickButton *filterCheckbox;
         GeonkickButton *sineButton;
         GeonkickButton *squareButton;
         GeonkickButton *triangleButton;
         GeonkickButton *sawtoothButton;
+        GeonkickSlider *phaseSlider;
         GeonkickButton *noiseWhiteButton;
         GeonkickButton *noiseBrownianButton;
         GeonkickButton *filterType;

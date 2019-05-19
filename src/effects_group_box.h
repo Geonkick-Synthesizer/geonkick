@@ -30,12 +30,10 @@ class GeonkickApi;
 
 class EffectsGroupBox: public GeonkickGroupBox
 {
-        Q_OBJECT
  public:
         EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent);
         ~EffectsGroupBox();
- signals:
-        void update();
+        RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
         GeonkickApi *geonkickApi;

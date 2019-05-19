@@ -25,19 +25,16 @@
 #define GEONKICK_ENVELOPE_WIDGET_H
 
 #include "oscillator.h"
-#include "oscillator_envelope.h"
-#include "envelope.h"
 #include "geonkick_widget.h"
+#include "geonkick_api.h"
+#include "envelope.h"
 
-#include <QWidget>
-#include <QMouseEvent>
 
 class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
 
 class EnvelopeWidget : public GeonkickWidget
 {
-   Q_OBJECT
 public:
 
      enum class EnvelopeType:int {
@@ -47,26 +44,26 @@ public:
                    General
      };
 
-     EnvelopeWidget(GeonkickWidget *parent, GeonkickApi *api, std::vector<Oscillator*> &oscillators);
+     explicit EnvelopeWidget(GeonkickWidget *parent,
+                             GeonkickApi *api,
+                             const std::vector<std::unique_ptr<Oscillator>> &oscillators);
      ~EnvelopeWidget();
-     void setBackgourndImage(const QPixmap &pixmap);
      void hideEnvelope(bool b);
+     void updateGui();
+     RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
- signals:
-     void update();
-
- protected slots:
-     void showAmplitudeEnvelope();
-     void showFrequencyEnvelope();
-     void showGeneralEnvelope();
-     void showOsc1Envelope();
-     void showOsc2Envelope();
-     void showNoiseEnvelope();
+ protected:
+     void showEnvelopeType(Envelope::Type type);
+     void showEnvelope(EnvelopeType type);
+     Envelope* getEnvelope(EnvelopeType type);
+     void updateKickGraph(std::shared_ptr<RkImage> graphImage);
+     void createLayersButtons(GeonkickWidget *buttomAreaWidget);
+     void setLayer(GeonkickApi::Layer layer);
 
  private:
      void createButtomMenu();
      Envelope *currentEnvelope;
-     std::vector<std::shared_ptr<Envelope>> envelopes;
+     std::unordered_map<int, std::shared_ptr<Envelope>> envelopes;
      EnvelopeWidgetDrawingArea *drawArea;
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;
@@ -74,6 +71,10 @@ public:
      GeonkickButton *osccillator2EvelopesButton;
      GeonkickButton *noiseEvelopesButton;
      GeonkickButton *generalEvelopesButton;
+     GeonkickButton *layer1Button;
+     GeonkickButton *layer2Button;
+     GeonkickButton *layer3Button;
+     GeonkickApi *geonkickApi;
 };
 
 #endif

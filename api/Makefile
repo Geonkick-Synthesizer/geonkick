@@ -1,6 +1,5 @@
 CC = gcc
-INCLUDES =
-CFLAGS += -O2 -Wall -fPIC $(DEFINES) $(INCLUDES)
+CFLAGS += -g -O2 -Wall -fPIC -fvisibility=hidden $(DEFINES) $(INCLUDES)
 SRC = src
 BUILD = .
 TARGET = libgeonkick.a

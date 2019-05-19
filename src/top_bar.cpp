@@ -23,81 +23,145 @@
 
 #include "top_bar.h"
 #include "geonkick_button.h"
-#include "geonkick_label.h"
 
-#include <QMouseEvent>
-#include <QHBoxLayout>
+#include "RkLabel.h"
 
-TopBar::TopBar(GeonkickWidget *parent)
-        : GeonkickWidget(parent),
-          openFileButton(nullptr),
-          saveFileButton(nullptr),
-          exportFileButton(nullptr),
-          presetNameLabel(nullptr)
+extern const unsigned char rk_logo_png[];
+extern const unsigned char rk_open_active_png[];
+extern const unsigned char rk_save_active_png[];
+extern const unsigned char rk_export_active_png[];
+extern const unsigned char rk_about_png[];
+extern const unsigned char rk_topbar_layer1_png[];
+extern const unsigned char rk_topbar_layer2_png[];
+extern const unsigned char rk_topbar_layer3_png[];
+extern const unsigned char rk_topbar_layer1_disabled_png[];
+extern const unsigned char rk_topbar_layer2_disabled_png[];
+extern const unsigned char rk_topbar_layer3_disabled_png[];
+
+TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
+        : GeonkickWidget(parent)
+        , openFileButton{nullptr}
+        , saveFileButton{nullptr}
+        , exportFileButton{nullptr}
+        , presetNameLabel{nullptr}
+        , layer1Button{nullptr}
+        , layer2Button{nullptr}
+        , layer3Button{nullptr}
+        , geonkickApi{api}
 {
-        if (parent) {
-                setFixedSize(parent->width() , 40);
-        }
+        setFixedWidth(parent->width());
+        setFixedHeight(40);
 
-        auto buttonsLayout = new QHBoxLayout(this);
-        buttonsLayout->setContentsMargins(15, 0, 0, 0);
-        setLayout(buttonsLayout);
-
-        auto logo = new GeonkickLabel(this);
-        logo->setImage(QPixmap(":/logo.png"));
-        buttonsLayout->addWidget(logo);
-        buttonsLayout->setAlignment(logo, Qt::AlignLeft);
-        buttonsLayout->addSpacing(20);
+        auto logo = new RkLabel(this);
+        RkImage image(120, 20, rk_logo_png);
+        logo->setSize(image.width(), image.height());
+        logo->setBackgroundColor(68, 68, 70);
+        logo->setImage(image);
+        logo->setY((height() - logo->height()) / 2);
+        logo->show();
 
         openFileButton = new GeonkickButton(this);
-        openFileButton->setUnpressedImage(QPixmap(":/open_active.png"));
+        openFileButton->show();
+        openFileButton->setSize(90, 30);
+        openFileButton->setX(logo->x() + logo->width() + 5);
+        openFileButton->setY((height() - openFileButton->height()) / 2);
+        openFileButton->setUnpressedImage(RkImage(90, 30, rk_open_active_png));
         openFileButton->setCheckable(true);
-        buttonsLayout->addWidget(openFileButton);
-        buttonsLayout->setAlignment(openFileButton, Qt::AlignLeft);
-        connect(openFileButton, SIGNAL(toggled(bool)), parent, SLOT(openPreset()));
+        RK_ACT_BIND(openFileButton, toggled, RK_ACT_ARGS(bool b), this, openFile());
 
         saveFileButton = new GeonkickButton(this);
-        saveFileButton->setUnpressedImage(QPixmap(":/save_active.png"));
+        saveFileButton->setSize(90, 30);
+        saveFileButton->setX(openFileButton->x() + openFileButton->width() + 5);
+        saveFileButton->setY(openFileButton->y());
+        saveFileButton->setUnpressedImage(RkImage(90, 30, rk_save_active_png));
         saveFileButton->setCheckable(true);
-        buttonsLayout->addWidget(saveFileButton);
-        buttonsLayout->setAlignment(saveFileButton, Qt::AlignLeft);
-        connect(saveFileButton, SIGNAL(toggled(bool)), parent, SLOT(savePreset()));
+        RK_ACT_BIND(saveFileButton, toggled, RK_ACT_ARGS(bool b), this, saveFile());
 
         exportFileButton = new GeonkickButton(this);
-        exportFileButton->setUnpressedImage(QPixmap(":/export_active.png"));
+        exportFileButton->setSize(90, 30);
+        exportFileButton->setX(saveFileButton->x() + saveFileButton->width() + 5);
+        exportFileButton->setY(saveFileButton->y());
+        exportFileButton->setUnpressedImage(RkImage(90, 30, rk_export_active_png));
         exportFileButton->setCheckable(true);
-        buttonsLayout->addWidget(exportFileButton);
-        buttonsLayout->setAlignment(exportFileButton, Qt::AlignLeft);
-        connect(exportFileButton, SIGNAL(toggled(bool)), parent, SLOT(openExportDialog()));
+        RK_ACT_BIND(exportFileButton, toggled, RK_ACT_ARGS(bool b), this, openExport());
 
-        // About button
         auto aboutButton = new GeonkickButton(this);
-        aboutButton->setUnpressedImage(QPixmap(":/about.png"));
+        aboutButton->setSize(90, 30);
+        aboutButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
+        aboutButton->setY(exportFileButton->y());
+        aboutButton->setUnpressedImage(RkImage(90, 30, rk_about_png));
         aboutButton->setCheckable(true);
-        buttonsLayout->addWidget(aboutButton);
-        buttonsLayout->setAlignment(aboutButton, Qt::AlignLeft);
-        connect(aboutButton, SIGNAL(toggled(bool)), parent, SLOT(openAboutDialog()));
+        RK_ACT_BIND(aboutButton, toggled, RK_ACT_ARGS(bool b), this, openAbout());
 
-        // Preset name
-        buttonsLayout->insertItem(6, new QSpacerItem(15, 1));
-        presetNameLabel = new GeonkickLabel(this);
-        buttonsLayout->addWidget(presetNameLabel);
-        buttonsLayout->addStretch(1);
+        presetNameLabel = new RkLabel(this);
+        presetNameLabel->setBackgroundColor(background());
+        presetNameLabel->setTextColor({210, 226, 226, 140});
+        auto font = presetNameLabel->font();
+        font.setSize(12);
+        presetNameLabel->setFont(font);
+        presetNameLabel->setSize(250, 30);
+        presetNameLabel->setPosition(aboutButton->x() + aboutButton->width() + 5,
+                                     (height() - presetNameLabel->height()) / 2);
+        presetNameLabel->show();
+        createLyersButtons();
+        updateGui();
 }
 
 TopBar::~TopBar()
 {
 }
 
-void TopBar::setPresetName(const QString &name)
+void TopBar::createLyersButtons()
+{
+        int layersX = width() - 180;
+        int layersSpace = 5;
+        layer1Button = new GeonkickButton(this);
+        layer1Button->setBackgroundColor(background());
+        layer1Button->setSize(24, 24);
+        layer1Button->setPosition(layersX, (height() - layer1Button->height()) / 2);
+        layer1Button->setUnpressedImage(RkImage(layer1Button->size(), rk_topbar_layer1_disabled_png));
+        layer1Button->setPressedImage(RkImage(layer1Button->size(), rk_topbar_layer1_png));
+        layer1Button->setCheckable(true);
+
+        layer2Button = new GeonkickButton(this);
+        layer2Button->setBackgroundColor(background());
+        layer2Button->setSize(24, 24);
+        layer2Button->setPosition(layer1Button->x() + layer1Button->width() + layersSpace, layer1Button->y());
+        layer2Button->setUnpressedImage(RkImage(layer2Button->size(), rk_topbar_layer2_disabled_png));
+        layer2Button->setPressedImage(RkImage(layer2Button->size(), rk_topbar_layer2_png));
+        layer2Button->setCheckable(true);
+
+        layer3Button = new GeonkickButton(this);
+        layer3Button->setBackgroundColor(background());
+        layer3Button->setSize(24, 24);
+        layer3Button->setPosition(layer2Button->x() + layer2Button->width() + layersSpace, layer2Button->y());
+        layer3Button->setUnpressedImage(RkImage(layer3Button->size(), rk_topbar_layer3_disabled_png));
+        layer3Button->setPressedImage(RkImage(layer3Button->size(), rk_topbar_layer3_png));
+        layer3Button->setCheckable(true);
+
+        RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b),
+                    geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer1, b));
+        RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b),
+                    geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer3, b));
+        RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b),
+                    geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer2, b));
+}
+
+void TopBar::setPresetName(const std::string &name)
 {
         if (name.size() > 20) {
-                QString preset = name;
-                preset.truncate(20);
+                std::string preset = name;
+                preset.resize(15);
                 preset += "...";
                 presetNameLabel->setText(preset);
-        }
-        else {
+        } else {
                 presetNameLabel->setText(name);
         }
+}
+
+void TopBar::updateGui()
+{
+        layer1Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer1));
+        layer2Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer2));
+        layer3Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer3));
 }

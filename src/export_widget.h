@@ -26,44 +26,19 @@
 
 #include "geonkick_widget.h"
 
-#include <QDialog>
-
 class GeonkickApi;
-class QLineEdit;
+class RkLineEdit;
+class RkLabel;
+class RkProgressBar;
 class GeonkickButton;
-class QComboBox;
-class QRadioButton;
-class QProgressBar;
-
+class RkProgressBar;
 
 class ExportWidget: public GeonkickWidget {
- Q_OBJECT
+        enum class ChannelsType: int {
+                Mono,
+                Stereo
+        };
 
- using ExportResult = QDialog::DialogCode;
-
- public:
-        ExportWidget(GeonkickWidget *parent, GeonkickApi *api);
-        ~ExportWidget();
-        ExportResult exec();
-
- protected:
-        int exportFormat();
-        void enableButtons(bool enable);
-        QString getFilePath();
-        QString fileSuffix();
-        bool validateInput();
-        void closeEvent(QCloseEvent *event);
-
- protected slots:
-         void browse();
-         void cancel();
-         void exportKick();
-         void resetProgressBar();
-
- signals:
-         void closeDialog();
-
- private:
          enum class ExportFormat: int {
                  Flac16 = 0,
                  Flac24 = 1,
@@ -73,17 +48,45 @@ class ExportWidget: public GeonkickWidget {
                  Ogg    = 5
          };
 
+ public:
+        ExportWidget(GeonkickWidget *parent, GeonkickApi *api);
+        ~ExportWidget();
+
+ protected:
+        void createFormatButtons();
+        void setFormat(ExportFormat format);
+        void createChannelsButtons();
+        void setChannels(ChannelsType channels);
+        int exportFormat();
+        std::string getFilePath();
+        std::string fileSuffix();
+        bool validateInput();
+        void setLocation(const std::string &location);
+
+        void browse();
+        void exportKick();
+        void resetProgressBar();
+        void showError(const std::string &error = std::string());
+
+ private:
         GeonkickApi *geonkickApi;
-        ExportResult exportResult;
-        QLineEdit *locationEdit;
-        QLineEdit *fileNameEdit;
+        RkLineEdit *locationEdit;
+        RkLineEdit *fileNameEdit;
         GeonkickButton *browseLocation;
-        QComboBox *formatComboBox;
-        QProgressBar *exportProgress;
-        QRadioButton *monoRadioButton;
-        QRadioButton *stereoRadioButton;
+        GeonkickButton *flac16Button;
+        GeonkickButton *flac24Button;
+        GeonkickButton *wav16Button;
+        GeonkickButton *wav24Button;
+        GeonkickButton *wav32Button;
+        GeonkickButton *oggButton;
+        GeonkickButton *monoButton;
+        GeonkickButton *stereoButton;
+        RkProgressBar  *progressBar;
         GeonkickButton *exportButton;
         GeonkickButton *cancelButton;
+        RkLabel *errorLabel;
+        ExportFormat selectedFormat;
+        ChannelsType channelsType;
 };
 
 #endif // GEONKICK_EXPORT_WIDGET_H

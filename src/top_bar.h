@@ -25,22 +25,37 @@
 #define GEONKICK_TOP_BAR_H
 
 #include "geonkick_widget.h"
+#include "geonkick_api.h"
 
+class RkLabel;
 class GeonkickButton;
-class GeonkickLabel;
 
 class TopBar : public GeonkickWidget
 {
  public:
-        TopBar(GeonkickWidget *parent);
+        TopBar(GeonkickWidget *parent, GeonkickApi *geonkickApi);
         ~TopBar();
-        void setPresetName(const QString &name);
+        void setPresetName(const std::string &name);
+        RK_DECL_ACT(saveFile, saveFile(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(openFile, openFile(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(openAbout, openAbout(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(openExport, openExport(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(layerSelected, layerSelected(GeonkickApi::Layer layer, bool b),
+                    RK_ARG_TYPE(GeonkickApi::Layer, bool), RK_ARG_VAL(layer, b));
+        void updateGui();
+
+ protected:
+        void createLyersButtons();
 
  private:
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
         GeonkickButton *exportFileButton;
-        GeonkickLabel* presetNameLabel;
+        RkLabel* presetNameLabel;
+        GeonkickButton *layer1Button;
+        GeonkickButton *layer2Button;
+        GeonkickButton *layer3Button;
+        GeonkickApi *geonkickApi;
 };
 
 #endif // GEONKICK_TOP_BAR_H

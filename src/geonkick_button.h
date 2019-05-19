@@ -26,33 +26,30 @@
 
 #include "geonkick_widget.h"
 
+#include <RkImage.h>
+
 class GeonkickButton: public GeonkickWidget
 {
- Q_OBJECT
-
  public:
         GeonkickButton(GeonkickWidget *parent = nullptr);
         virtual ~GeonkickButton();
-        void setPressedImage(const QPixmap &pixmap);
-        void setUnpressedImage(const QPixmap &pixmap);
+        void setPressedImage(const RkImage &img);
+        void setUnpressedImage(const RkImage &img);
         bool isPressed() const;
         bool isCheckable();
 
-public slots:
+        RK_DECL_ACT(toggled, toggled(bool pressed), RK_ARG_TYPE(bool), RK_ARG_VAL(pressed));
         void setPressed(bool pressed);
         void setCheckable(bool checkable);
 
- signals:
-        void toggled(bool pressed);
-
  protected:
-        void mousePressEvent(QMouseEvent * event) override;
+        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
 
  private:
         bool is_pressed;
         bool is_checkable;
-        QPixmap pressedImage;
-        QPixmap unpressedImage;
+        RkImage pressedImage;
+        RkImage unpressedImage;
 };
 
 #endif // GEONKICK_BUTTON_H

@@ -24,109 +24,103 @@
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_button.h"
+#include "file_dialog.h"
 
-#include <QEventLoop>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QComboBox>
-#include <QRadioButton>
-#include <QProgressBar>
-#include <QFileDialog>
-#include <QFont>
-#include <QMessageBox>
-#include <QCloseEvent>
+#include <RkLabel.h>
+#include <RkLineEdit.h>
+#include <RkProgressBar.h>
 
 #include <sndfile.h>
 
+extern const unsigned char rk_export_bk_png[];
+extern const unsigned char rk_export_format_unpressed_png[];
+const auto rk_mono_unpressed_png = rk_export_format_unpressed_png;
+const auto rk_stereo_unpressed_png = rk_export_format_unpressed_png;
+extern const unsigned char rk_export_format_pressed_png[];
+const auto rk_mono_pressed_png = rk_export_format_pressed_png;
+const auto rk_stereo_pressed_png = rk_export_format_pressed_png;
+extern const unsigned char rk_export_browse_png[];
+extern const unsigned char rk_export_active_png[];
+extern const unsigned char rk_export_cancel_png[];
+
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
-        : GeonkickWidget(parent),
-          geonkickApi(api),
-          exportResult(ExportResult::Rejected),
-          locationEdit(nullptr),
-          browseLocation(nullptr),
-          formatComboBox(nullptr),
-          exportProgress(nullptr),
-          monoRadioButton(nullptr),
-          stereoRadioButton(nullptr),
-          exportButton(nullptr),
-          cancelButton(nullptr)
+        : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
+        , geonkickApi{api}
+        , locationEdit{nullptr}
+        , fileNameEdit{nullptr}
+        , browseLocation{nullptr}
+        , flac16Button{nullptr}
+        , flac24Button{nullptr}
+        , wav16Button{nullptr}
+        , wav24Button{nullptr}
+        , wav32Button{nullptr}
+        , oggButton{nullptr}
+        , monoButton{nullptr}
+        , stereoButton{nullptr}
+        , progressBar{nullptr}
+        , exportButton{nullptr}
+        , cancelButton{nullptr}
+        , errorLabel{nullptr}
+        , selectedFormat{ExportFormat::Wav16}
+        , channelsType{ChannelsType::Mono}
 {
-        setWindowFlags(Qt::Dialog);
-        setWindowModality(Qt::ApplicationModal);
-        setWindowTitle(tr("Export") + QString(" - ") + QString(GEOKICK_APP_NAME));
+        setFixedSize(521, 184);
+        setTitle("Export - " + std::string(GEOKICK_APP_NAME));
+        setBackgroundImage(RkImage(521, 184, rk_export_bk_png));
 
-        auto mainLayout = new QVBoxLayout(this);
-        mainLayout->setSpacing(20);
-        exportProgress = new QProgressBar(this);
-        exportProgress->setMaximumHeight(5);
-        exportProgress->setRange(0, 100);
-        exportProgress->setTextVisible(false);
+        errorLabel = new RkLabel(this);
+        errorLabel->setFixedSize(150, 15);
+        errorLabel->setBackgroundColor(background());
+        errorLabel->setPosition(width() - 180, 105);
+        errorLabel->setTextColor({200, 0, 0});
+        errorLabel->hide();
 
-        auto locationLayout = new QHBoxLayout;
-        locationLayout->addWidget(new QLabel(tr("Location"), this));
-        locationEdit = new QLineEdit(this);
-        locationEdit->setText(QDir::currentPath());
-        locationEdit->setMinimumWidth(150);
-        connect(locationEdit, SIGNAL(textChanged(const QString&)), this, SLOT(resetProgressBar()));
-        locationLayout->addWidget(locationEdit);
+        locationEdit = new RkLineEdit(this);
+        locationEdit->setFont(font());
+        locationEdit->setTitle("locationEdit");
+        locationEdit->show();
+        locationEdit->setText(std::filesystem::current_path());
+        locationEdit->setSize(120, 25);
+        locationEdit->setPosition(82, 54);
+        RK_ACT_BIND(locationEdit, textEdited, RK_ACT_ARGS(const std::string& text), this, resetProgressBar());
+
         browseLocation = new GeonkickButton(this);
         browseLocation->setCheckable(true);
-        browseLocation->setUnpressedImage(QPixmap(":/export_browse.png"));
-        connect(browseLocation, SIGNAL(toggled(bool)), this, SLOT(browse()));
-        locationLayout->addWidget(browseLocation);
-        locationLayout->addWidget(new QLabel(tr("File name"), this));
-        fileNameEdit = new QLineEdit(this);
-        connect(fileNameEdit, SIGNAL(textChanged(const QString&)), this, SLOT(resetProgressBar()));
-        locationLayout->addWidget(fileNameEdit);
-        locationLayout->setSpacing(0);
-        locationLayout->addStretch();
-        locationLayout->insertSpacing(1, 10);
-        locationLayout->insertSpacing(4, 20);
-        locationLayout->insertSpacing(6, 10);
+        browseLocation->setUnpressedImage(RkImage(90, 30, rk_export_browse_png));
+        browseLocation->setPosition(205, 52);
+        RK_ACT_BIND(browseLocation, toggled, RK_ACT_ARGS(bool b), this, browse());
 
-        auto formatLayout = new QHBoxLayout;
-        formatLayout->addWidget(new QLabel(tr("Export format"), this));
-        formatComboBox = new QComboBox(this);
-        connect(formatComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(resetProgressBar()));
-        formatComboBox->insertItem(static_cast<int>(ExportFormat::Flac16), tr("FLAC, 16 bit"));
-        formatComboBox->insertItem(static_cast<int>(ExportFormat::Flac24), tr("FLAC, 24 bit"));
-        formatComboBox->insertItem(static_cast<int>(ExportFormat::Wav16), tr("WAV, 16 bit"));
-        formatComboBox->insertItem(static_cast<int>(ExportFormat::Wav24), tr("WAV, 24 bit"));
-        formatComboBox->insertItem(static_cast<int>(ExportFormat::Wav32), tr("WAV, 32 bit"));
-        formatComboBox->insertItem(static_cast<int>(ExportFormat::Ogg), tr("Ogg Vorbis"));
-        formatComboBox->setCurrentIndex(static_cast<int>(ExportFormat::Wav16));
-        formatLayout->addWidget(formatComboBox);
-        monoRadioButton = new QRadioButton(tr("Mono"), this);
-        connect(monoRadioButton, SIGNAL(toggled(bool)), this, SLOT(resetProgressBar()));
-        monoRadioButton->setChecked(true);
-        stereoRadioButton = new QRadioButton(tr("Stereo"), this);
-        connect(stereoRadioButton, SIGNAL(toggled(bool)), this, SLOT(resetProgressBar()));
-        formatLayout->addWidget(monoRadioButton);
-        formatLayout->addWidget(stereoRadioButton);
+        fileNameEdit = new RkLineEdit(this);
+        fileNameEdit->setFont(font());
+        fileNameEdit->setTitle("fileNameEdit");
+        fileNameEdit->show();
+        fileNameEdit->setFixedSize(100, 25);
+        fileNameEdit->setPosition(380, 54);
+        RK_ACT_BIND(fileNameEdit, textEdited, RK_ACT_ARGS(const std::string& text), this, resetProgressBar());
+        RK_ACT_BIND(fileNameEdit, textEdited, RK_ACT_ARGS(const std::string& text), this, showError());
 
-        formatLayout->setSpacing(0);
-        formatLayout->insertSpacing(1, 10);
-        formatLayout->insertSpacing(3, 20);
-        formatLayout->addStretch();
+        createFormatButtons();
+        createChannelsButtons();
 
-        auto buttonsLayout = new QHBoxLayout;
+        progressBar = new RkProgressBar(this);
+        progressBar->setFixedSize(width() - 50, 4);
+        progressBar->setPosition(25, 122);
+        progressBar->setRange(0, 100);
+        progressBar->setBorderWidth(1);
+        progressBar->setBorderColor(40, 40, 40);
+        progressBar->setBackgroundColor(background());
+
         exportButton = new GeonkickButton(this);
         exportButton->setCheckable(true);
-        exportButton->setUnpressedImage(QPixmap(":/export_export.png"));
-        connect(exportButton, SIGNAL(toggled(bool)), this, SLOT(exportKick()));
-        cancelButton = new GeonkickButton(this);
-        cancelButton->setUnpressedImage(QPixmap(":/export_cancel.png"));
-        cancelButton->setCheckable(true);
-        connect(cancelButton, SIGNAL(toggled(bool)), this, SIGNAL(closeDialog()));
-        buttonsLayout->addWidget(cancelButton);
-        buttonsLayout->addWidget(exportButton);
+        exportButton->setPosition((width() - 2 * 90 - 45) / 2, height() - 50);
+        exportButton->setUnpressedImage(RkImage(90, 30, rk_export_active_png));
+        RK_ACT_BIND(exportButton, toggled, RK_ACT_ARGS(bool b), this, exportKick());
 
-        mainLayout->addLayout(formatLayout);
-        mainLayout->addLayout(locationLayout);
-        mainLayout->addWidget(exportProgress);
-        mainLayout->addLayout(buttonsLayout);
-        setLayout(mainLayout);
+        cancelButton = new GeonkickButton(this);
+        cancelButton->setCheckable(true);
+        cancelButton->setPosition((width() - 2 * 90 - 45) / 2 + 90 + 45, height() - 50);
+        cancelButton->setUnpressedImage(RkImage(90, 30, rk_export_cancel_png));
+        RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool b), this, close());
         show();
 }
 
@@ -134,39 +128,140 @@ ExportWidget::~ExportWidget()
 {
 }
 
-ExportWidget::ExportResult ExportWidget::exec()
+void ExportWidget::createFormatButtons()
 {
-        QEventLoop eventLoop(this);
-        connect(this, SIGNAL(closeDialog()), &eventLoop, SLOT(quit()));
-        eventLoop.exec();
-        return exportResult;
+        int y = 19;
+        flac16Button = new GeonkickButton(this);
+        flac16Button->setPressed(ExportFormat::Flac16 == selectedFormat);
+        flac16Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
+        flac16Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
+        flac16Button->setFixedSize(14, 12);
+        flac16Button->setPosition(34, y);
+        RK_ACT_BIND(flac16Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Flac16));
+
+        flac24Button = new GeonkickButton(this);
+        flac24Button->setPressed(ExportFormat::Flac24 == selectedFormat);
+        flac24Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
+        flac24Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
+        flac24Button->setFixedSize(14, 12);
+        flac24Button->setPosition(34 + 79, y);
+        RK_ACT_BIND(flac24Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Flac24));
+
+        wav16Button = new GeonkickButton(this);
+        wav16Button->setPressed(ExportFormat::Wav16 == selectedFormat);
+        wav16Button->setPressed(true);
+        wav16Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
+        wav16Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
+        wav16Button->setFixedSize(14, 12);
+        wav16Button->setPosition(34 + 2 * 79, y);
+        RK_ACT_BIND(wav16Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Wav16));
+
+        wav24Button = new GeonkickButton(this);
+        wav24Button->setPressed(ExportFormat::Wav24 == selectedFormat);
+        wav24Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
+        wav24Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
+        wav24Button->setFixedSize(14, 12);
+        wav24Button->setPosition(34 + 3 * 79, y);
+        RK_ACT_BIND(wav24Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Wav24));
+
+        wav32Button = new GeonkickButton(this);
+        wav32Button->setPressed(ExportFormat::Wav32 == selectedFormat);
+        wav32Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
+        wav32Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
+        wav32Button->setFixedSize(14, 12);
+        wav32Button->setPosition(34 + 4 * 79, y);
+        RK_ACT_BIND(wav32Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Wav32));
+
+        oggButton = new GeonkickButton(this);
+        oggButton->setPressed(ExportFormat::Ogg == selectedFormat);
+        oggButton->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
+        oggButton->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
+        oggButton->setFixedSize(14, 12);
+        oggButton->setPosition(34 + 5 * 79, y);
+        RK_ACT_BIND(oggButton, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Ogg));
+}
+
+void ExportWidget::setFormat(ExportFormat format)
+{
+        if (selectedFormat == format)
+                return;
+
+        flac16Button->setPressed(ExportFormat::Flac16 == format);
+        flac24Button->setPressed(ExportFormat::Flac24 == format);
+        wav16Button->setPressed(ExportFormat::Wav16 == format);
+        wav24Button->setPressed(ExportFormat::Wav24 == format);
+        wav32Button->setPressed(ExportFormat::Wav32 == format);
+        oggButton->setPressed(ExportFormat::Ogg == format);
+        selectedFormat = format;
+        resetProgressBar();
+        showError();
+}
+
+void ExportWidget::createChannelsButtons()
+{
+        int y = 95;
+        int x = 192;
+        monoButton = new GeonkickButton(this);
+        monoButton->setPressed(ChannelsType::Mono == channelsType);
+        monoButton->setFixedSize(14, 12);
+        monoButton->setPosition(x , y);
+        monoButton->setUnpressedImage(RkImage(12, 12, rk_mono_unpressed_png));
+        monoButton->setPressedImage(RkImage(12, 12, rk_mono_pressed_png));
+        RK_ACT_BIND(monoButton, toggled, RK_ACT_ARGS(bool b), this, setChannels(ChannelsType::Mono));
+
+        stereoButton = new GeonkickButton(this);
+        stereoButton->setPressed(ChannelsType::Stereo == channelsType);
+        stereoButton->setFixedSize(12, 12);
+        stereoButton->setPosition(x + 66, y);
+        stereoButton->setUnpressedImage(RkImage(12, 12, rk_stereo_unpressed_png));
+        stereoButton->setPressedImage(RkImage(12, 12, rk_stereo_pressed_png));
+        RK_ACT_BIND(stereoButton, toggled, RK_ACT_ARGS(bool b), this, setChannels(ChannelsType::Stereo));
+}
+
+void ExportWidget::setChannels(ChannelsType channels)
+{
+        if (channels == channelsType)
+                return;
+
+        if (channels == ChannelsType::Stereo) {
+                stereoButton->setPressed(true);
+                monoButton->setPressed(false);
+        } else {
+                stereoButton->setPressed(false);
+                monoButton->setPressed(true);
+        }
+
+        channelsType = channels;
+        resetProgressBar();
+        showError();
 }
 
 void ExportWidget::browse()
 {
-        QFileDialog fileDialog(this, tr("Select Path") + QString(" - ") + QString(GEOKICK_APP_NAME));
-        fileDialog.setFileMode(QFileDialog::Directory);
-        fileDialog.setOption(QFileDialog::ShowDirsOnly);
-        fileDialog.setFilter(QDir::Dirs);
-        fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-        fileDialog.exec();
-        QStringList paths = fileDialog.selectedFiles();
-        if (!paths.isEmpty()) {
-                locationEdit->setText(paths.first());
-        }
+        auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select Path - " + std::string(GEOKICK_APP_NAME));
+        locationEdit->setFocus(false);
+        fileNameEdit->setFocus(false);
+        fileDialog->exec();
+        if (fileDialog->acceptStatus() == FileDialog::AcceptStatus::Cancel)
+                return;
+
+        locationEdit->setText(fileDialog->currentDirectory());
+}
+
+void ExportWidget::setLocation(const std::string &location)
+{
+
 }
 
 bool ExportWidget::validateInput()
 {
-        if (locationEdit->text().isEmpty()) {
-                QMessageBox::critical(this, tr("Error | Export") + QString(" - ")
-                                      + QString(GEOKICK_APP_NAME), tr("File location is empty"));
+        if (locationEdit->text().empty()) {
+                showError("File location is empty");
                 return false;
         }
 
-        if (fileNameEdit->text().isEmpty()) {
-                QMessageBox::critical(this, tr("Error | Export") + QString(" - ")
-                                      + QString(GEOKICK_APP_NAME), tr("File name is empty"));
+        if (fileNameEdit->text().empty()) {
+                showError("File name is empty");
                 return false;
         }
 
@@ -176,26 +271,20 @@ bool ExportWidget::validateInput()
 void ExportWidget::exportKick()
 {
         resetProgressBar();
-        enableButtons(false);
-
-        if (!validateInput()) {
-                cancel();
+        if (!validateInput())
                 return;
-        }
 
         SF_INFO sndinfo;
         sndinfo.samplerate = geonkickApi->getSampleRate();
         if (sndinfo.samplerate == 0) {
-                QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME), tr("Error on exporting kick"));
-                cancel();
+                showError("Error on exporting kick3");
                 return;
         }
 
-        sndinfo.channels   = monoRadioButton->isChecked() ? 1 : 2;
+        sndinfo.channels   = channelsType == ChannelsType::Mono ? 1 : 2;
         sndinfo.format     = exportFormat();
 
-        std::vector<gkick_real> tempBuffer = geonkickApi->getKickBuffer();
+        auto tempBuffer = geonkickApi->getKickBuffer();
         std::vector<gkick_real> kickBuffer;
         if (sndinfo.channels == 2) {
                 kickBuffer.resize(2 * tempBuffer.size());
@@ -208,28 +297,15 @@ void ExportWidget::exportKick()
                 kickBuffer = std::move(tempBuffer);
         }
 
-        if (kickBuffer.empty()) {
-                QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME)
-                                      , tr("Error on exporting kick"));
-                cancel();
+        if (kickBuffer.empty() || !sf_format_check(&sndinfo)) {
+                GEONKICK_LOG_ERROR("size: " << kickBuffer.size());
+                showError("Error: error on exporting kick33");
                 return;
         }
 
-        if (!sf_format_check(&sndinfo)) {
-                QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME),
-                                      tr("Error on exporting kick"));
-                cancel();
-                return;
-        }
-
-        SNDFILE *sndFile = sf_open(getFilePath().toLatin1().data(), SFM_WRITE, &sndinfo);
+        SNDFILE *sndFile = sf_open(getFilePath().c_str(), SFM_WRITE, &sndinfo);
         if (!sndFile) {
-                QMessageBox::critical(this, tr("Error | Export")
-                                      + QString(" - ") + QString(GEOKICK_APP_NAME),
-                                      tr("Error on exporting kick"));
-                cancel();
+                showError("Error on exporting kick2");
                 return;
         }
 
@@ -246,37 +322,26 @@ void ExportWidget::exportKick()
                 n = sf_write_float(sndFile, kickBuffer.data() + i, chunk);
 #endif
                 if (n != chunk) {
-                        QMessageBox::critical(this, tr("Error | Export")
-                                              + QString(" - ") + QString(GEOKICK_APP_NAME),
-                                              tr("Error on exporting kick"));
-                        cancel();
+                        showError("Error on exporting kick1");
                         break;
                 }
                 i += chunk;
-                exportProgress->setValue(100 * (static_cast<float>(i) / kickBuffer.size()));
+                progressBar->setValue(100 * (static_cast<float>(i) / kickBuffer.size()));
+                eventQueue()->processQueue();
         }
 
         sf_close(sndFile);
-        enableButtons(true);
-}
-
-void ExportWidget::cancel()
-{
-        if (!exportButton->isEnabled()) {
-                enableButtons(true);
-        } else {
-                emit closeDialog();
-        }
+        close();
 }
 
 void ExportWidget::resetProgressBar()
 {
-        exportProgress->setValue(0);
+        progressBar->reset();
 }
 
 int ExportWidget::exportFormat()
 {
-        switch (static_cast<ExportFormat>(formatComboBox->currentIndex()))
+        switch (selectedFormat)
         {
         case ExportFormat::Flac16:
                 return SF_FORMAT_FLAC | SF_FORMAT_PCM_16;
@@ -295,47 +360,38 @@ int ExportWidget::exportFormat()
         }
 }
 
-void ExportWidget::enableButtons(bool enable)
+std::string ExportWidget::getFilePath()
 {
-        exportButton->setEnabled(enable);
-        if (enable) {
-                cancelButton->setUnpressedImage(QPixmap(":/export_cancel.png"));
-        } else {
-                cancelButton->setUnpressedImage(QPixmap(":/export_stop.png"));
-        }
-        monoRadioButton->setEnabled(enable);
-        stereoRadioButton->setEnabled(enable);
-        locationEdit->setEnabled(enable);
-        browseLocation->setEnabled(enable);
-        formatComboBox->setEnabled(enable);
+        return std::filesystem::path(locationEdit->text()) / std::filesystem::path(fileNameEdit->text() + "." + fileSuffix());
 }
 
-QString ExportWidget::getFilePath()
+std::string ExportWidget::fileSuffix()
 {
-        return locationEdit->text() + QDir::separator()
-                + fileNameEdit->text() + "." + fileSuffix();
-}
-
-QString ExportWidget::fileSuffix()
-{
-        switch (static_cast<ExportFormat>(formatComboBox->currentIndex()))
+        switch (selectedFormat)
         {
         case ExportFormat::Flac16:
         case ExportFormat::Flac24:
-                return QString("flac");
+                return std::string("flac");
         case ExportFormat::Wav16:
         case ExportFormat::Wav24:
         case ExportFormat::Wav32:
-                return QString("wav");
+                return std::string("wav");
         case ExportFormat::Ogg:
-                return QString("ogg");
+                return std::string("ogg");
         default:
-                return QString();
+                return std::string();
         }
 }
 
-void ExportWidget::closeEvent(QCloseEvent *event)
+void ExportWidget::showError(const std::string &error)
 {
-        event->ignore();
-        emit closeDialog();
+        if (error.empty()) {
+                errorLabel->hide();
+                progressBar->setProgressColor({52, 116, 209});
+        } else {
+                errorLabel->setText(error);
+                errorLabel->show();
+                progressBar->setProgressColor({200, 0, 0});
+                progressBar->setValue(100);
+        }
 }

@@ -25,77 +25,82 @@
 #include "envelope.h"
 #include "kick_graph.h"
 
-#include <QPainter>
-#include <QMouseEvent>
+#include <RkPainter.h>
+#include <RkEvent.h>
 
-EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent)
-          : GeonkickWidget(parent),
-            currentEnvelope(nullptr),
-            kickGraph(nullptr),
-            hideEnvelope(false)
+EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api)
+          : GeonkickWidget(parent)
+          , currentEnvelope{nullptr}
+          , hideEnvelope{false}
+          , kickGraphImage{nullptr}
+          , kickGraphics{nullptr}
 {
         setFixedSize(850, 300);
         int padding = 50;
-        drawingArea = QRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
+        drawingArea = RkRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
+        setBackgroundColor(40, 40, 40);
 
-        QPalette pal;
-        pal.setColor(QPalette::Background, QColor(40, 40, 40));
-        setAutoFillBackground(true);
-        setPalette(pal);
+        kickGraphics = std::make_unique<KickGraph>(api, drawingArea.size(), eventQueue());
+        RK_ACT_BIND(kickGraphics.get(),
+                    graphUpdated,
+                    RK_ACT_ARGS(std::shared_ptr<RkImage> graphImage),
+                    this, updateKickGraph(graphImage));
 }
 
 EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
 {
 }
 
-void EnvelopeWidgetDrawingArea::setEnvelope(std::shared_ptr<Envelope> &envelope)
+void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
-                if (currentEnvelope) {
-                        disconnect(currentEnvelope.get(), 0, this, 0);
-                }
-
                 currentEnvelope = envelope;
-                if (currentEnvelope) {
-                        connect(currentEnvelope.get(), SIGNAL(envelopeUpdated()),
-                                this, SLOT(envelopeUpdated()));
-                        connect(currentEnvelope.get(), SIGNAL(envelopeUpdated()),
-                                this, SLOT(envelopeUpdated()));
+                if (currentEnvelope)
                         update();
-                }
         }
 }
 
-void EnvelopeWidgetDrawingArea::paintWidget(QPaintEvent *event)
+void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
-        Q_UNUSED(event);
-        QPainter painter(this);
+        RK_UNUSED(event);
+        if (width() != envelopeImage.width() || height() != envelopeImage.height()) {
+                RkImage im(size());
+                envelopeImage = im;
+        }
 
-        if (currentEnvelope) {
+        RkPainter painter(&envelopeImage);
+        painter.fillRect(rect(), background());
+
+        if (kickGraphImage && !kickGraphImage->isNull())
+                painter.drawImage(*kickGraphImage.get(), drawingArea.topLeft().x(), drawingArea.topLeft().y());
+        else
+                kickGraphics->updateGraphBuffer();
+
+        if (currentEnvelope)
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Axies);
-        }
 
-        if (kickGraph) {
-                kickGraph->draw(painter);
-        }
-
-        if (currentEnvelope && !isHideEnvelope()) {
+        if (currentEnvelope && !isHideEnvelope())
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
-        }
 
-        QPainter paint(this);
-        QPen pen(QPen(QColor(20, 20, 20, 255)));
+        auto pen = painter.pen();
         pen.setWidth(1);
-        paint.setPen(pen);
-        paint.drawRect(0, 0, width() - 1, height() - 1);
+        pen.setColor({20, 20, 20, 255});
+        painter.setPen(pen);
+        painter.drawRect({0, 0, width() - 1, height() - 1});
+
+        RkPainter paint(this);
+        paint.drawImage(envelopeImage, 0, 0);
 }
 
-void
-EnvelopeWidgetDrawingArea::mousePressEvent(QMouseEvent *event)
+void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        QPoint point(event->x() - drawingArea.x(),
-                      drawingArea.bottomRight().y() - event->y());
-        if (event->button() == Qt::RightButton) {
+        if (event->button() != RkMouseEvent::ButtonType::Right
+            && event->button() != RkMouseEvent::ButtonType::Left)
+                return;
+
+        RkPoint point(event->x() - drawingArea.left(),
+                      drawingArea.bottom() - event->y());
+        if (event->button() == RkMouseEvent::ButtonType::Right) {
                 if (currentEnvelope) {
                         currentEnvelope->removePoint(point);
                         update();
@@ -107,40 +112,39 @@ EnvelopeWidgetDrawingArea::mousePressEvent(QMouseEvent *event)
         mousePoint.setY(event->y());
         if (currentEnvelope) {
                 currentEnvelope->selectPoint(point);
-                if (currentEnvelope->hasSelected()) {
+                if (currentEnvelope->hasSelected())
                         update();
-                }
         }
 }
 
-void
-EnvelopeWidgetDrawingArea::mouseReleaseEvent(QMouseEvent *event)
+void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        Q_UNUSED(event);
+        RK_UNUSED(event);
         if (currentEnvelope && currentEnvelope->hasSelected()) {
                 currentEnvelope->unselectPoint();
                 update();
         }
 }
 
-void
-EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(QMouseEvent *event)
+void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        if (event->button() != Qt::RightButton) {
-                QPoint point(event->x() - drawingArea.x(),
-                              drawingArea.bottomLeft().y() - event->y());
+        if (event->button() != RkMouseEvent::ButtonType::Right
+            && event->button() != RkMouseEvent::ButtonType::Left)
+                return;
+
+        if (event->button() != RkMouseEvent::ButtonType::Right) {
+                RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
                 if (currentEnvelope) {
                         currentEnvelope->addPoint(point);
+                        update();
                 }
-                update();
         }
 }
 
-void
-EnvelopeWidgetDrawingArea::mouseMoveEvent(QMouseEvent *event)
+void EnvelopeWidgetDrawingArea::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (currentEnvelope && currentEnvelope->hasSelected()) {
-                QPoint point(event->x() - drawingArea.x(), drawingArea.bottomLeft().y() - event->y());
+                RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
@@ -153,26 +157,20 @@ void EnvelopeWidgetDrawingArea::envelopeUpdated()
         update();
 }
 
-std::shared_ptr<Envelope> EnvelopeWidgetDrawingArea::getEnvelope() const
+Envelope* EnvelopeWidgetDrawingArea::getEnvelope() const
 {
         return currentEnvelope;
 }
 
-const QRect EnvelopeWidgetDrawingArea::getDrawingArea()
+const RkRect EnvelopeWidgetDrawingArea::getDrawingArea()
 {
         return drawingArea;
 }
 
-void EnvelopeWidgetDrawingArea::setKickGraph(KickGraph *graph)
+void EnvelopeWidgetDrawingArea::updateKickGraph(std::shared_ptr<RkImage> graphImage)
 {
-        kickGraph = graph;
-        kickGraph->setDrawingArea(drawingArea);
-        connect(kickGraph, SIGNAL(graphUpdated()), this, SLOT(update()));
-}
-
-KickGraph* EnvelopeWidgetDrawingArea::getKickGraph()
-{
-        return kickGraph;
+        kickGraphImage = graphImage;
+        update();
 }
 
 bool EnvelopeWidgetDrawingArea::isHideEnvelope() const
@@ -182,8 +180,7 @@ bool EnvelopeWidgetDrawingArea::isHideEnvelope() const
 
 void EnvelopeWidgetDrawingArea::setHideEnvelope(bool b)
 {
-        if (hideEnvelope != b)
-        {
+        if (hideEnvelope != b) {
                 hideEnvelope = b;
                 update();
         }

@@ -37,6 +37,7 @@ extern "C" {
 #include <math.h>
 #include <inttypes.h>
 #include <float.h>
+#include <stdbool.h>
 
 #include "gkick_log.h"
 
@@ -48,7 +49,7 @@ typedef float gkick_real;
 
 #define GEONKICK_UNUSED(expr) (void)expr
 
-#define GEONKICK_API_VERSION 0x010100
+#define GEONKICK_API_VERSION 0x010500
 #define GEONKICK_API_NAME "Geonkick"
 
 enum geonkick_error {
@@ -90,6 +91,9 @@ enum GEONKICK_MODULE {
         GEONKICK_MODULE_UNKNOWN = 0,
         GEONKICK_MODULE_JACK    = 1
 };
+
+#define GKICK_OSC_GROUPS_NUMBER 3
+#define GKICK_OSC_GROUP_SIZE 3
 
 struct geonkick;
 
@@ -160,6 +164,16 @@ enum geonkick_error
 geonkick_get_osc_function(struct geonkick *kick,
 			  size_t osc_index,
 			  enum geonkick_osc_func_type *type);
+
+enum geonkick_error
+geonkick_set_osc_phase(struct geonkick *kick,
+                       size_t osc_index,
+                       gkick_real phase);
+
+enum geonkick_error
+geonkick_get_osc_phase(struct geonkick *kick,
+                       size_t osc_index,
+                       gkick_real *phase);
 
 enum geonkick_error
 geonkick_set_length(struct geonkick *kick, gkick_real len);
@@ -250,7 +264,9 @@ enum geonkick_error
 geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size);
 
 enum geonkick_error
-geonkick_set_kick_buffer_callback(struct geonkick *kick, void (*callback)(void*), void *arg);
+geonkick_set_kick_buffer_callback(struct geonkick *kick,
+                                  void (*callback)(void*, gkick_real *buff, size_t size),
+                                  void *arg);
 
 enum geonkick_error
 geonkick_set_kick_limiter_callback(struct geonkick *kick,
@@ -371,6 +387,12 @@ enum geonkick_error
 geonkick_distortion_get_drive(struct geonkick *kick, gkick_real *drive);
 
 int geonkick_is_module_enabed(struct geonkick *kick, enum GEONKICK_MODULE module);
+
+enum geonkick_error
+geonkick_enable_group(struct geonkick *kick, size_t index, bool enable);
+
+enum geonkick_error
+geonkick_group_enabled(struct geonkick *kick, size_t index, bool *enabled);
 
 #ifdef __cplusplus
 }

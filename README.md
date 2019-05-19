@@ -8,11 +8,11 @@ Details: Geonkick is a synthesizer that can synthesize elements
 
 License: GPLv3
 
-Version: 1.1
+Version: 1.5
 
 Author: Iurie Nistor
 
-Source code repository: https://gitlab.com/quamplex/geonkick
+Source code repository: https://github.com/quamplex/geonkick
 
 Latest releases can be found on "master" branch or "tags".
 
@@ -22,11 +22,13 @@ The development of new releases is going on branch "develop".
 
 #### Features
 
-* Two oscillators
+* Three layers
+* Two oscillators per layer
      - sine, square, triangle, saw-tooth
+     - initial phase
      - amplitude & frequency envelope
      - low & high pass filter
-* Noise:
+* One noise generator per layer
      - white & brownian
      - amplitude envelope
      - low & high pass filter
@@ -45,7 +47,9 @@ The development of new releases is going on branch "develop".
      - FLAC: 16, 24 bit
      - Ogg Vorbis
 * Open & Save preset in JSON format
-* Standalone only (no LV2 or VST yet, planned for version 2.0)
+* Standalone
+* Plugin
+  - LV2
 * Platforms:
   - GNU/Linux
 * Build system:
@@ -55,23 +59,31 @@ The development of new releases is going on branch "develop".
 
 In order Geonkick to run and operate correctly there is a need for:
 
-* GNU/Linux operating system
-* Jack server installed and running at 48000 sample rate
+Standalone:
+    * GNU/Linux operating system
+    * Jack server installed and running at 48000 sample rate
+
+Plugin:
+    * GNU/Linux operaing system
+    * LV2 host. For example, a DAW that supports LV2 plugin format.
 
 #### Install
 
 ###### Install dependeces
 
 I order to build Geonkick there is a need to install the following development packages:
-* Qt5
+
+* [Redkite](https://github.com/quamplex/redkite) GUI toolkit. See the documentation of Redkite toolkit how to install it.
 * libsndfile
-* JACK Audio Connection Kit
+* RapidJSON (version >= 1.1)
+* JACK Audio Connection Kit (optional if building only for LV2)
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
     apt-get install build-essential
     apt-get install cmake
-    apt-get install qt5-default && qjackctl && libjack-dev && libsndfile-dev
+    apt-get install qjackctl && libjack-dev && libsndfile-dev
+    apt-get install rapidjson-dev
 
 ###### Build & install Geonkick
 
@@ -98,21 +110,21 @@ installs, runs, and if there any issues.
 
 #### Packaging
 
-* [Package](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
+* [Package, for older version 1.0](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
 
 #### Road map
 
 Here are a list of planned milestones and issues opened for them,
 dates when will be started and finished.
 
-Milestones: https://gitlab.com/iurie/geonkick/milestones
+Milestones: https://github.com/quamplex/geonkick/milestones
 
 #### Short user guide
 
 ###### Shortcut Keys
 
 * Ctrl + r - reload default state, clean everything
-* k - play kick
+* Ctrl + k - play kick
 * Ctrl + h - hide envelope, only kick graph is shown
 
 ###### Working with envelopes
@@ -122,11 +134,11 @@ Milestones: https://gitlab.com/iurie/geonkick/milestones
 
 ###### Play the sound
 Geonkick uses Jack and will create two audio outputs and one MIDI input.
-If audio outputs are connected there are two ways to play the sound:
+If audio outputs are connected there are three ways to play the sound:
    * by MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
-   * by pressing the key 'k'
+   * by pressing the key 'Ctrl + k'
+   * Throught host/LV2 or a DAW.
 
 ###### Examples
 
 Under the directory geonkick/examples there are some example presets that can be opened and play with.
-
