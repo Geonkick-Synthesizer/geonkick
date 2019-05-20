@@ -151,9 +151,9 @@ Milestones: https://github.com/quamplex/geonkick/milestones
 ###### Play the sound
 Geonkick uses Jack and will create two audio outputs and one MIDI input.
 If audio outputs are connected there are three ways to play the sound:
-   * by MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
-   * by pressing the key 'Ctrl + k'
-   * Throught host/LV2 or a DAW.
+   * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
+   * pressing the key 'Ctrl + k'
+   * host/LV2 or a DAW.
 
 ###### Examples
 
