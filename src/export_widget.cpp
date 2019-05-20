@@ -238,19 +238,18 @@ void ExportWidget::setChannels(ChannelsType channels)
 
 void ExportWidget::browse()
 {
-        auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select Path - " + std::string(GEOKICK_APP_NAME));
         locationEdit->setFocus(false);
         fileNameEdit->setFocus(false);
-        fileDialog->exec();
-        if (fileDialog->acceptStatus() == FileDialog::AcceptStatus::Cancel)
-                return;
-
-        locationEdit->setText(fileDialog->currentDirectory());
+        auto fileDialog = new FileDialog(this, FileDialog::Type::Open,
+                                         "Select Path - " + std::string(GEOKICK_APP_NAME));
+        RK_ACT_BIND(fileDialog, selectedFile,
+                    RK_ACT_ARGS(const std::string &file), this,
+                    setLocation(fileDialog->currentDirectory()));
 }
 
 void ExportWidget::setLocation(const std::string &location)
 {
-
+        locationEdit->setText(location);
 }
 
 bool ExportWidget::validateInput()

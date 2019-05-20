@@ -262,7 +262,6 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         , dialogType{type}
         , filesView{nullptr}
         , pathLabel{nullptr}
-        , isClosed{false}
         , status{AcceptStatus::Cancel}
 {
         setTitle(title);
@@ -332,19 +331,19 @@ void FileDialog::onAccept()
         }
 
         selectedFile(pathSelected);
-        isClosed = true;
+        close();
 }
 
 void FileDialog::onCancel()
 {
         status = AcceptStatus::Cancel;
-        isClosed = true;
+        close();
 }
 
 void FileDialog::closeEvent(const std::shared_ptr<RkCloseEvent> &event)
 {
         status = AcceptStatus::Cancel;
-        isClosed = true;
+        close();
 }
 
 std::string FileDialog::currentDirectory() const
@@ -355,15 +354,6 @@ std::string FileDialog::currentDirectory() const
 std::string FileDialog::filePath() const
 {
         return pathSelected;
-}
-
-void FileDialog::exec()
-{
-        while (!isClosed) {
-                eventQueue()->processQueue();
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        }
-        close();
 }
 
 FileDialog::AcceptStatus FileDialog::acceptStatus() const
