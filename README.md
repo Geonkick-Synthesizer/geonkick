@@ -20,6 +20,10 @@ The development of new releases is going on branch "develop".
 
 ![Screenshot](data/screenshot.png)
 
+Geonkick on Ardour DAW / Ubuntu
+
+![Screenshot](data/screenshot_on_ardour.png)
+
 #### Features
 
 * Three layers
@@ -77,6 +81,7 @@ I order to build Geonkick there is a need to install the following development p
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for LV2)
+* LV2 development library
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
@@ -84,6 +89,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
     apt-get install cmake
     apt-get install qjackctl && libjack-dev && libsndfile-dev
     apt-get install rapidjson-dev
+    apt-get install lv2-dev
 
 ###### Build & install Geonkick
 
