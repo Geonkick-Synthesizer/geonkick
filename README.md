@@ -102,6 +102,16 @@ Clone the code repository, compile and install
         make
         make install
 
+NOTE: after every update from the repository over the old code
+      there is a need to proper clean the build in order
+      to generate the resources and the
+      static API library used by the project, i.e.
+
+     cd build
+     rm -fr ./*
+     cmake ../
+     make
+
 #### Tests
 Here is a list of tests of the application on various GNU/Linux distributions
 in order to see if it builds with dependences installed from repository,
