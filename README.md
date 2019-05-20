@@ -95,7 +95,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the code repository, compile and install
 
-        git clone git@gitlab.com:iurie/geonkick.git
+        git clone git@github.com:quamplex/geonkick.git
         mkdir geonkick/build
         cd geonkick/build
         cmake ../
