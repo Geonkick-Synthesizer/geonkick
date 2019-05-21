@@ -192,6 +192,10 @@ gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
 
 void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)
 {
+        // Not really going to work without lock.
+        // later something to be implemented.
+        // anyway the lock is used only to swap between updated buffer
+        gkick_audio_output_lock(audio_output);
         gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
         char *buff = audio_output->updated_buffer;
         audio_output->updated_buffer = audio_output->playing_buffer;
@@ -203,4 +207,5 @@ void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)
                         audio_output->playing_buffer = buff;
         }
         gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
+        gkick_audio_output_unlock(audio_output);
 }

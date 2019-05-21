@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 1.5.0)
+project(geonkick VERSION 1.5.2)
 
 # NOTE: for version v1.5 vst/Windows is not implemented yet.
 

@@ -1157,9 +1157,14 @@ void *gkick_synth_run(void *arg)
 
 
                 // Swap buffers between synthesizer and audio output.
+                // Not really going to work without lock.
+                // later something to be implemented.
+                // anyway the lock is used only to swap between updated buffer.
+                gkick_audio_output_lock(synth->output);
                 char* buff = synth->output->updated_buffer;
                 synth->output->updated_buffer = synth->buffer;
                 synth->buffer = buff;
+                gkick_audio_output_unlock(synth->output);
                 gkick_synth_unlock(synth);
         }
 
