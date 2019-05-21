@@ -61,6 +61,20 @@ void GeonkickSlider::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 
 void GeonkickSlider::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->button() == RkMouseEvent::ButtonType::WheelUp
+            || event->button() == RkMouseEvent::ButtonType::WheelDown) {
+                sliderValue += event->button() == RkMouseEvent::ButtonType::WheelUp ? 2 : -2;
+                onSetValue(sliderValue);
+                if (sliderValue < 0)
+                        sliderValue = 0;
+                else if (sliderValue > 100)
+                        sliderValue = 100;
+                sliderPixels = pixelsFromValue();
+                valueUpdated(sliderValue);
+                update();
+                return;
+        }
+
         if (event->x() >= 0 && event->x() < width()
             && event->y() >= 0 && event->y() < height()) {
                 int value = calculateValue(event->x(), event->y());

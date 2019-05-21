@@ -49,6 +49,7 @@ public:
    void setCurrentValue(double val);
    void setKnobImage(const RkImage &img);
    void setKnobBackgroundImage(const RkImage &img);
+   void rotateKnob(int degree);
 
    RK_DECL_ACT(valueUpdated, valueUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
 

@@ -73,8 +73,32 @@ void Knob::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         paint.drawImage(img, 0, 0);
 }
 
+void Knob::rotateKnob(int degree)
+{
+        knobValueDegree += degree;
+        if (knobValueDegree < GEONKICK_KNOB_MIN_DEGREE)
+                knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
+        else if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE)
+                knobValueDegree = GEONKICK_KNOB_MAX_DEGREE;
+
+        double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
+        if (getRangeType() == RangeType::Logarithmic) {
+                double logVal = log10(rangeFrom) + k * (log10(rangeTo) - log10(rangeFrom));
+                valueUpdated(pow(10, logVal));
+        } else {
+                valueUpdated(rangeFrom + k * (rangeTo - rangeFrom));
+        }
+}
+
 void Knob::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->button() == RkMouseEvent::ButtonType::WheelUp
+            || event->button() == RkMouseEvent::ButtonType::WheelDown) {
+                rotateKnob(event->button() == RkMouseEvent::ButtonType::WheelUp ? 2 : -2);
+                update();
+                return;
+        }
+        
         if (!knobImage.isNull()) {
                 int xCenter = width() / 2;
                 int yCenter = height() / 2;
@@ -99,21 +123,9 @@ void Knob::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();
-                knobValueDegree -= 0.5 * dy;
-                if (knobValueDegree < GEONKICK_KNOB_MIN_DEGREE)
-                        knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
-                else if (knobValueDegree > GEONKICK_KNOB_MAX_DEGREE)
-                        knobValueDegree = GEONKICK_KNOB_MAX_DEGREE;
-
+                rotateKnob(-0.5 * dy);
                 lastPositionPoint.setX(event->x());
                 lastPositionPoint.setY(event->y());
-                double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
-                if (getRangeType() == RangeType::Logarithmic) {
-                        double logVal = log10(rangeFrom) + k * (log10(rangeTo) - log10(rangeFrom));
-                        valueUpdated(pow(10, logVal));
-                } else {
-                        valueUpdated(rangeFrom + k * (rangeTo - rangeFrom));
-                }
                 update();
         }
 }
