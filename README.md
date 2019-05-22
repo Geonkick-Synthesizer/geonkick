@@ -14,9 +14,9 @@ Author: Iurie Nistor
 
 Source code repository: https://github.com/quamplex/geonkick
 
-Latest releases can be found on "master" branch or "tags".
+Latest releases can be found on ["master" branch](https://github.com/quamplex/geonkick/commits/master) or [tags](https://github.com/quamplex/geonkick/tags).
 
-The development of new releases is going on branch "develop".
+The development of new releases is going on ["develop" branch](https://github.com/quamplex/geonkick/commits/develop).
 
 ![Screenshot](data/screenshot.png)
 
@@ -68,14 +68,14 @@ Standalone:
     * Jack server installed and running at 48000 sample rate
 
 Plugin:
-    * GNU/Linux operaing system
+    * GNU/Linux operating system
     * LV2 host. For example, a DAW that supports LV2 plugin format.
 
 #### Install
 
-###### Install dependeces
+###### Install dependencies
 
-I order to build Geonkick there is a need to install the following development packages:
+In order to build Geonkick there is a need to install the following development packages:
 
 * [Redkite](https://github.com/quamplex/redkite) GUI toolkit. See the documentation of Redkite toolkit how to install it.
 * libsndfile
@@ -114,7 +114,7 @@ NOTE: after every update from the repository over the old code
 
 #### Tests
 Here is a list of tests of the application on various GNU/Linux distributions
-in order to see if it builds with dependences installed from repository,
+in order to see if it builds with dependencies installed from repository,
 installs, runs, and if there any issues.
 
 | Distribution  | Dependences  | Build  | Install  | Run  | Comments  |
@@ -157,4 +157,4 @@ If audio outputs are connected there are three ways to play the sound:
 
 ###### Examples
 
-Under the directory geonkick/examples there are some example presets that can be opened and play with.
+Under the directory geonkick/examples, there are some example presets that can be opened and play with.
