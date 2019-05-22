@@ -3,7 +3,7 @@
 Geonkick - a free software percussion synthesizer.
 
 Details: Geonkick is a synthesizer that can synthesize elements
-	 of percussion. The most basic examples are: kick drums,
+	 of percussion. The most basic examples are: kicks,
 	 snares, hit-hats, shakers, claps, steaks.
 
 License: GPLv3
@@ -12,7 +12,10 @@ Version: 1.5
 
 Author: Iurie Nistor
 
-Source code repository: https://github.com/quamplex/geonkick
+Source code repository:
+
+* https://gitlab.com/quamplex/geonkick
+* https://github.com/quamplex/geonkick
 
 Latest releases can be found on ["master" branch](https://github.com/quamplex/geonkick/commits/master) or [tags](https://github.com/quamplex/geonkick/tags).
 
@@ -29,7 +32,7 @@ Geonkick on Ardour DAW / Ubuntu
 * Three layers
 * Two oscillators per layer
      - sine, square, triangle, saw-tooth
-     - initial phase
+     - initial phase control
      - amplitude & frequency envelope
      - low & high pass filter
 * One noise generator per layer
@@ -64,12 +67,12 @@ Geonkick on Ardour DAW / Ubuntu
 In order Geonkick to run and operate correctly there is a need for:
 
 Standalone:
-    * GNU/Linux operating system
-    * Jack server installed and running at 48000 sample rate
+* GNU/Linux operating system
+* Jack server installed and running at 48000 sample rate
 
 Plugin:
-    * GNU/Linux operating system
-    * LV2 host. For example, a DAW that supports LV2 plugin format.
+ * GNU/Linux operating system
+* LV2 host. For example, a DAW that supports LV2 plugin format.
 
 #### Install
 
@@ -102,10 +105,10 @@ Clone the code repository, compile and install
         make
         make install
 
-NOTE: after every update from the repository over the old code
-      there is a need to proper clean the build in order
+Note: after every update from the repository over the old code
+      there is a need to clean the build in order
       to generate the resources and the
-      static API library used by the project, i.e.
+      static API library used by the project:
 
      cd build
      rm -fr ./*
@@ -130,7 +133,7 @@ installs, runs, and if there any issues.
 
 #### Road map
 
-Here are a list of planned milestones and issues opened for them,
+Here is a list of planned milestones and issues opened for them,
 dates when will be started and finished.
 
 Milestones: https://github.com/quamplex/geonkick/milestones
@@ -140,21 +143,30 @@ Milestones: https://github.com/quamplex/geonkick/milestones
 ###### Shortcut Keys
 
 * Ctrl + r - reload default state, clean everything
-* Ctrl + k - play kick
-* Ctrl + h - hide envelope, only kick graph is shown
+* Ctrl + k - play 
+* Ctrl + h - hide envelope, only the graph is shown
+* Ctrl + o - open file browser dialog
+* Ctrl + s - open save dialog
+* Ctrl + e - open export dialog
+* Ctrl + a - open about dialog
+
+Note: especially when running as plugin be sure the focus to be on the main Geonkick window.
 
 ###### Working with envelopes
+
 * Left double click to add a new point
 * Left click on the point and move the point
 * Right click on the point to remove it
 
 ###### Play the sound
-Geonkick uses Jack and will create two audio outputs and one MIDI input.
+
+Geonkick standalone uses  Jack and will create two audio outputs and one MIDI input.
 If audio outputs are connected there are three ways to play the sound:
    * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
    * pressing the key 'Ctrl + k'
-   * host/LV2 or a DAW.
+   * by means of a DAW if used as LV2
 
 ###### Examples
 
-Under the directory geonkick/examples, there are some example presets that can be opened and play with.
+Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
+
