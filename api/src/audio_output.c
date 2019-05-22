@@ -193,14 +193,17 @@ gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
 void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)
 {
         gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
-        char *buff = audio_output->updated_buffer;
-        audio_output->updated_buffer = audio_output->playing_buffer;
-        audio_output->playing_buffer = buff;
-        if (gkick_buffer_size((struct gkick_buffer*)audio_output->playing_buffer) < 1
-            || !gkick_buffer_is_end((struct gkick_buffer*)audio_output->playing_buffer)) {
-                        buff = audio_output->updated_buffer;
-                        audio_output->updated_buffer = audio_output->playing_buffer;
-                        audio_output->playing_buffer = buff;
+        // Try lock. If succesfull, swap buffers. If not, continue with the current one to play
+        // until the next key press (i.e. next bit).
+        if (pthread_mutex_trylock(&audio_output->lock) == 0) {
+                // Test if the updated buffer is full. Otherwise it means that it was not updated.
+                if (gkick_buffer_size((struct gkick_buffer*)audio_output->updated_buffer) > 0
+                    && gkick_buffer_is_end((struct gkick_buffer*)audio_output->updated_buffer)) {
+                                        char *buff = audio_output->updated_buffer;
+                                        audio_output->updated_buffer = audio_output->playing_buffer;
+                                        audio_output->playing_buffer = buff;
+                }
+                gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
+                gkick_audio_output_unlock(audio_output);
         }
-        gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
 }

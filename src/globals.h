@@ -46,7 +46,7 @@
 
 #define GEOKICK_APP_NAME "Geonkick"
 #define GEOKICK_APP_VERION 0x010600
-#define GEOKICK_APP_VERION_STRING "1.6"
+#define GEOKICK_APP_VERION_STRING "1.6.0"
 
 #ifdef GKICK_LIB_LOG_LEVEL_DEBUG
 #define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
