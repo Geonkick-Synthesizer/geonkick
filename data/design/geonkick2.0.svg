@@ -4029,6 +4029,45 @@
        x2="91.733017"
        y2="163.3607"
        gradientTransform="translate(9.2100616,-1.5650926)" />
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-7-9-0-3"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-3-6-8-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-6-0-2-7"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-7-4-1-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-8-2-7-35"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-5-47-1-6" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -4037,9 +4076,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.3953244"
-     inkscape:cx="386.86071"
-     inkscape:cy="466.31136"
+     inkscape:zoom="10.996945"
+     inkscape:cx="1122.3785"
+     inkscape:cy="153.91195"
      inkscape:document-units="px"
      inkscape:current-layer="g24485"
      showgrid="false"
@@ -14986,6 +15025,50 @@
          style="display:inline;opacity:0.70999995;fill:#6f6d6d;fill-opacity:1;stroke:none;stroke-width:0.31569889;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          rx="0.79374999"
          ry="0.79374999" />
+      <rect
+         ry="9.3728256"
+         rx="10.743702"
+         y="569.65753"
+         x="-1152.8154"
+         height="45.917767"
+         width="169.08815"
+         id="rect4890-6-7-64-0-29"
+         style="display:inline;opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-8-2-7-35)"
+         transform="matrix(0.11588692,0,0,0.11354422,421.29342,183.92981)" />
+      <rect
+         ry="1.0642302"
+         rx="1.2450545"
+         y="248.47842"
+         x="287.58636"
+         height="5.213697"
+         width="19.595104"
+         id="rect4890-4-25-1-1"
+         style="display:inline;opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.23021944;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/show_filter_env.png"
+         inkscape:export-xdpi="139.64955"
+         inkscape:export-ydpi="139.64955" />
+      <rect
+         ry="10.000007"
+         rx="10.000007"
+         y="574.4201"
+         x="-1147.5237"
+         height="31.61977"
+         width="152.8289"
+         id="rect5044-9-16-3-2"
+         style="display:inline;opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-6-0-2-7)"
+         transform="matrix(0.11588692,0,0,0.11354422,421.29342,183.92981)" />
+      <text
+         transform="matrix(0.07012886,0,0,0.06871118,280.63088,223.05417)"
+         id="text10105-4-0-1-4-7"
+         y="417.70291"
+         x="113.74126"
+         style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:0.76099997;fill:#d1d1cf;fill-opacity:1;stroke:none;stroke-width:0.41765422;filter:url(#filter10330-7-9-0-3)"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d1d1cf;fill-opacity:1;stroke-width:0.41765422"
+           y="417.70291"
+           x="113.74126"
+           id="tspan10103-9-1-37-8-0"
+           sodipodi:role="line">Filter Envelope</tspan></text>
     </g>
   </g>
 </svg>

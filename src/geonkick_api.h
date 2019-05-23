@@ -64,7 +64,8 @@ class GeonkickApi {
 
   enum class EnvelopeType:int {
           Amplitude = GEONKICK_AMPLITUDE_ENVELOPE,
-          Frequency = GEONKICK_FREQUENCY_ENVELOPE
+          Frequency = GEONKICK_FREQUENCY_ENVELOPE,
+          Filter    = 3//GEONKICK_FREQUENCY_ENVELOPE
   };
 
   enum class FilterType:int {

@@ -32,7 +32,7 @@ Envelope::Envelope(const RkRect &area)
         , pointRadius{10}
         , dotRadius{3}
         , selectedPointIndex{0}
-        , supportedTypes({Type::Amplitude, Type::Frequency})
+        , supportedTypes({Type::Amplitude, Type::Frequency, Type::Filter})
         , pointSelected{false}
         , envelopeType{Type::Amplitude}
 {
@@ -119,7 +119,7 @@ void Envelope::drawValueScale(RkPainter &painter)
         std::string text;
         if (type() == Type::Amplitude) {
                 text = "Amplitude";
-        } else if (type() == Type::Frequency) {
+        } else if (type() == Type::Frequency || type() == Type::Filter) {
                 text = "Frequency, Hz";
         }
 
@@ -155,7 +155,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         ss << std::setprecision(2) << i * step;
                         painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
-        } else if (type() == Type::Frequency) {
+        } else if (type() == Type::Frequency || type() == Type::Filter) {
                 std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 16000};
                 for (auto value : values) {
                         int x = getOrigin().x();
@@ -214,7 +214,7 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
                 std::ostringstream ss;
                 ss << std::setprecision(2) << value;
                 painter.drawText(point.x(), point.y(), ss.str());
-        } else if (type() == Envelope::Type::Frequency) {
+        } else if (type() == Envelope::Type::Frequency || type() == Type::Filter) {
                 if (value < 20)
                         painter.drawText(point.x(), point.y(), "20Hz " + frequencyToNote(20));
                 if (value >= 20 && value < 1000) {
