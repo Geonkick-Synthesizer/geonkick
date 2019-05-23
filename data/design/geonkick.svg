@@ -3829,6 +3829,45 @@
          stdDeviation="0.23845105"
          id="feGaussianBlur10332-1-1-6-3-0-5" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-7-3-5-9-8-2-9-3"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-9-5-6-7-9-9-77-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-8-7-0-7-3-0-6-7"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-3-0-6-6-6-2-7-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-0-8-2-7-8-8-3-3"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-1-1-6-3-0-3-6-5" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -3837,14 +3876,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.3168886"
-     inkscape:cx="989.42711"
-     inkscape:cy="501.74305"
+     inkscape:zoom="3.8189555"
+     inkscape:cx="1255.6569"
+     inkscape:cy="302.0933"
      inkscape:document-units="px"
-     inkscape:current-layer="g5343-6-0-4-5-0"
+     inkscape:current-layer="g8163-9-4-1-2-0-6"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1002"
+     inkscape:window-width="1022"
+     inkscape:window-height="690"
      inkscape:window-x="0"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
@@ -6718,6 +6757,61 @@
            rx="4.1206598"
            ry="4.4376335"
            transform="matrix(0.21214568,0,0,0.21214568,310.7392,365.17018)" />
+        <g
+           style="display:inline"
+           id="g8163-9-4-1-2-0-6"
+           transform="matrix(1.6551641,0,0,1.6551641,269.91117,-215.7561)">
+          <rect
+             style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.01506305;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-7-3-5-9-8-2-9-3)"
+             id="rect4890-6-4-9-2-8-3-6-4-2"
+             width="169.08815"
+             height="45.917767"
+             x="393.39212"
+             y="679.59802"
+             rx="10.743702"
+             ry="9.3728256"
+             inkscape:export-xdpi="29.256962"
+             inkscape:export-ydpi="29.256962"
+             transform="matrix(0.07056594,0,0,0.08276926,-44.205343,204.01344)" />
+          <rect
+             style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.154;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="rect4890-0-7-9-8-2-5-8-9"
+             width="12.260089"
+             height="3.7358804"
+             x="-16.609371"
+             y="260.29562"
+             rx="0.77899462"
+             ry="0.76257521"
+             inkscape:export-xdpi="98.893501"
+             inkscape:export-ydpi="98.893501"
+             inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/filter_type_hp.png" />
+          <rect
+             style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6-7)"
+             id="rect5044-3-8-6-8-1-8-8-1"
+             width="152.8289"
+             height="31.61977"
+             x="398.68381"
+             y="684.3606"
+             rx="10.000007"
+             ry="10.000007"
+             inkscape:export-xdpi="29.256962"
+             inkscape:export-ydpi="29.256962"
+             transform="matrix(0.07386309,0,0,0.08313482,-45.571552,203.95501)" />
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.76099997;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter10330-0-8-2-7-8-8-3-3)"
+             x="113.74126"
+             y="417.70291"
+             id="text10105-4-4-2-5-9-5-7-8-2"
+             transform="matrix(0.04911965,0,0,0.04911965,-20.044026,242.1048)"
+             inkscape:export-xdpi="29.256962"
+             inkscape:export-ydpi="29.256962"><tspan
+               sodipodi:role="line"
+               id="tspan10103-9-9-5-5-7-9-9-9-7"
+               x="113.74126"
+               y="417.70291"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none">High Pass</tspan></text>
+        </g>
       </g>
       <g
          style="display:inline"

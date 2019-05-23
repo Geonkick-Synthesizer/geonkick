@@ -3818,6 +3818,32 @@
          stdDeviation="0.23845105"
          id="feGaussianBlur10332-3-6-8-31-6-1" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-0-8-2-7-8-8-3-3"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-1-1-6-3-0-3-6-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-8-7-0-7-3-0-6-7"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-3-0-6-6-6-2-7-5" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -3826,20 +3852,21 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.9887218"
-     inkscape:cx="1375.8862"
-     inkscape:cy="-410.12548"
+     inkscape:zoom="6.8279048"
+     inkscape:cx="1153.2877"
+     inkscape:cy="297.26531"
      inkscape:document-units="px"
-     inkscape:current-layer="g26930"
+     inkscape:current-layer="g5343-6-0-4-3"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1002"
+     inkscape:window-width="1022"
+     inkscape:window-height="690"
      inkscape:window-x="0"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
      showguides="true"
      units="px"
-     inkscape:guide-bbox="true">
+     inkscape:guide-bbox="true"
+     inkscape:snap-page="true">
     <inkscape:grid
        type="xygrid"
        id="grid8181" />
@@ -7881,59 +7908,94 @@
                    id="tspan9161-9-3-0-8-0-2-7-9-7-0-6-5-6"
                    sodipodi:role="line">Q</tspan></text>
             </g>
-            <g
-               id="g8163-9-4-1-2-0"
-               transform="matrix(1.6551641,0,0,1.6551641,276.69255,-231.13494)">
-              <rect
-                 style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.01506305;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-7-3-5-9-8-2-9)"
-                 id="rect4890-6-4-9-2-8-3-6-4"
-                 width="169.08815"
-                 height="45.917767"
-                 x="393.39212"
-                 y="679.59802"
-                 rx="10.743702"
-                 ry="9.3728256"
-                 inkscape:export-xdpi="29.256962"
-                 inkscape:export-ydpi="29.256962"
-                 transform="matrix(0.07056594,0,0,0.08276926,-44.205343,204.01344)" />
-              <rect
-                 style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.154;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-                 id="rect4890-0-7-9-8-2-5-8"
-                 width="12.260089"
-                 height="3.7358804"
-                 x="-16.609371"
-                 y="260.29562"
-                 rx="0.77899462"
-                 ry="0.76257521"
-                 inkscape:export-xdpi="29.256962"
-                 inkscape:export-ydpi="29.256962" />
-              <rect
-                 style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6)"
-                 id="rect5044-3-8-6-8-1-8-8"
-                 width="152.8289"
-                 height="31.61977"
-                 x="398.68381"
-                 y="684.3606"
-                 rx="10.000007"
-                 ry="10.000007"
-                 inkscape:export-xdpi="29.256962"
-                 inkscape:export-ydpi="29.256962"
-                 transform="matrix(0.07386309,0,0,0.08313482,-45.571552,203.95501)" />
-              <text
-                 xml:space="preserve"
-                 style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.76099997;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter10330-0-8-2-7-8-8-3)"
-                 x="113.74126"
+            <rect
+               transform="matrix(0.11679821,0,0,0.13699671,203.52545,106.54078)"
+               inkscape:export-ydpi="29.256962"
+               inkscape:export-xdpi="29.256962"
+               ry="9.3728256"
+               rx="10.743702"
+               y="679.59802"
+               x="393.39212"
+               height="45.917767"
+               width="169.08815"
+               id="rect4890-6-4-9-2-8-3-6-4"
+               style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.01506305;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-7-3-5-9-8-2-9)" />
+            <rect
+               inkscape:export-ydpi="29.256962"
+               inkscape:export-xdpi="29.256962"
+               ry="1.2621871"
+               rx="1.289364"
+               y="199.69704"
+               x="249.20131"
+               height="6.183495"
+               width="20.292459"
+               id="rect4890-0-7-9-8-2-5-8"
+               style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.25489527;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <rect
+               transform="matrix(0.12225553,0,0,0.13760177,201.26415,106.44407)"
+               inkscape:export-ydpi="29.256962"
+               inkscape:export-xdpi="29.256962"
+               ry="10.000007"
+               rx="10.000007"
+               y="684.3606"
+               x="398.68381"
+               height="31.61977"
+               width="152.8289"
+               id="rect5044-3-8-6-8-1-8-8"
+               style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6)" />
+            <text
+               inkscape:export-ydpi="29.256962"
+               inkscape:export-xdpi="29.256962"
+               transform="matrix(0.08130108,0,0,0.08130108,243.5164,169.58823)"
+               id="text10105-4-4-2-5-9-5-7-8"
+               y="417.70291"
+               x="113.74126"
+               style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.76099997;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter10330-0-8-2-7-8-8-3)"
+               xml:space="preserve"><tspan
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none"
                  y="417.70291"
-                 id="text10105-4-4-2-5-9-5-7-8"
-                 transform="matrix(0.04911965,0,0,0.04911965,-20.341494,242.1048)"
-                 inkscape:export-xdpi="29.256962"
-                 inkscape:export-ydpi="29.256962"><tspan
-                   sodipodi:role="line"
-                   id="tspan10103-9-9-5-5-7-9-9-9"
-                   x="113.74126"
-                   y="417.70291"
-                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none">Hight Pass</tspan></text>
-            </g>
+                 x="113.74126"
+                 id="tspan10103-9-9-5-5-7-9-9-9"
+                 sodipodi:role="line">High Pass</tspan></text>
+            <rect
+               inkscape:export-ydpi="98.893654"
+               inkscape:export-xdpi="98.893654"
+               ry="1.2621871"
+               rx="1.289364"
+               y="212.6964"
+               x="228.80399"
+               height="6.1834946"
+               width="20.292459"
+               id="rect4890-0-7-9-8-2-5-8-35"
+               style="display:inline;opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.25489527;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+               inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/filter_type_hp.png" />
+            <rect
+               transform="matrix(0.12225553,0,0,0.13760177,180.86682,119.44345)"
+               inkscape:export-ydpi="29.256962"
+               inkscape:export-xdpi="29.256962"
+               ry="10.000007"
+               rx="10.000007"
+               y="684.3606"
+               x="398.68381"
+               height="31.61977"
+               width="152.8289"
+               id="rect5044-3-8-6-8-1-8-8-6"
+               style="display:inline;opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6-7)" />
+            <text
+               inkscape:export-ydpi="98.893654"
+               inkscape:export-xdpi="98.893654"
+               transform="matrix(0.08130108,0,0,0.08130108,223.11907,182.58761)"
+               id="text10105-4-4-2-5-9-5-7-8-2"
+               y="417.70291"
+               x="113.74126"
+               style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:0.76099997;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter10330-0-8-2-7-8-8-3-3)"
+               xml:space="preserve"
+               inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/filter_type_hp.png"><tspan
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none"
+                 y="417.70291"
+                 x="113.74126"
+                 id="tspan10103-9-9-5-5-7-9-9-9-9"
+                 sodipodi:role="line">High Pass</tspan></text>
             <ellipse
                style="opacity:0.91500005;fill:#77bb80;fill-opacity:1;stroke:none;stroke-width:0.84206176;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter16738-4-3-6-2-8-5)"
                id="path10686-5-1-5-6-7-9-6-7"
