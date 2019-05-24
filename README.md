@@ -23,10 +23,6 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 ![Screenshot](data/screenshot.png)
 
-Geonkick on Ardour DAW / Ubuntu
-
-![Screenshot](data/screenshot_on_ardour.png)
-
 #### Features
 
 * Three layers
