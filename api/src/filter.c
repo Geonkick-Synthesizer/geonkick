@@ -85,7 +85,7 @@ gkick_filter_init(struct gkick_filter *filter)
 void gkick_filter_free(struct gkick_filter **filter)
 {
         if (filter != NULL && *filter != NULL) {
-                gkick_envelope_destroy(filter->cutoff_env);
+                gkick_envelope_destroy((*filter)->cutoff_env);
                 pthread_mutex_destroy(&(*filter)->lock);
                 free(*filter);
                 *filter = NULL;

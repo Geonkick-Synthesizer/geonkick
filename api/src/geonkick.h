@@ -217,22 +217,29 @@ geonkick_get_kick_filter_type(struct geonkick *kick, enum gkick_filter_type *typ
 
 enum geonkick_error
 geonkick_kick_envelope_get_points(struct geonkick *kick,
+                                  enum geonkick_envelope_type env_type,
                                   gkick_real **buf,
                                   size_t *npoints);
 
 enum geonkick_error
 geonkick_kick_envelope_set_points(struct geonkick *kick,
+                                  enum geonkick_envelope_type env_type,
                                   const gkick_real *buff,
                                   size_t npoints);
 
 enum geonkick_error
-geonkick_kick_add_env_point(struct geonkick *kick, gkick_real x, gkick_real y);
+geonkick_kick_add_env_point(struct geonkick *kick,
+                            enum geonkick_envelope_type env_type,
+                            gkick_real x, gkick_real y);
 
 enum geonkick_error
-geonkick_kick_remove_env_point(struct geonkick *kick, size_t index);
+geonkick_kick_remove_env_point(struct geonkick *kick,
+                               enum geonkick_envelope_type env_type,
+                               size_t index);
 
 enum geonkick_error
 geonkick_kick_update_env_point(struct geonkick *kick,
+                               enum geonkick_envelope_type env_type,
                                size_t index,
                                gkick_real x,
                                gkick_real y);

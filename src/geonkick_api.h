@@ -65,7 +65,7 @@ class GeonkickApi {
   enum class EnvelopeType:int {
           Amplitude = GEONKICK_AMPLITUDE_ENVELOPE,
           Frequency = GEONKICK_FREQUENCY_ENVELOPE,
-          Filter    = 3//GEONKICK_FREQUENCY_ENVELOPE
+          FilterCutOff = GEONKICK_FILTER_CUTOFF_ENVELOPE
   };
 
   enum class FilterType:int {
@@ -96,13 +96,13 @@ class GeonkickApi {
   double kickFilterFrequency(void) const;
   double kickFilterQFactor() const;
   FilterType kickFilterType() const;
-  std::vector<RkRealPoint> getKickEnvelopePoints() const;
+  std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
   bool setOscillatorFrequency(int oscillatorIndex, double frequency);
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;
-  void addKickEnvelopePoint(double x, double y);
-  void removeKickEnvelopePoint(int pointIndex);
-  void updateKickEnvelopePoint(int index, double x, double y);
+  void addKickEnvelopePoint(EnvelopeType envelope, double x, double y);
+  void removeKickEnvelopePoint(EnvelopeType envelope, int pointIndex);
+  void updateKickEnvelopePoint(EnvelopeType envelope, int index, double x, double y);
   void setOscillatorEvelopePoints(int index, EnvelopeType envelope, const std::vector<RkRealPoint> &points);
   void setOscillatorFunction(int oscillatorIndex, FunctionType function);
   void setOscillatorPhase(int oscillatorIndex, gkick_real phase);
@@ -144,7 +144,7 @@ class GeonkickApi {
   void setKickFilterType(FilterType type);
   void setState(const std::shared_ptr<GeonkickState> &state);
   void setState(const std::string &data);
-  void setKickEnvelopePoints(const std::vector<RkRealPoint> &points);
+  void setKickEnvelopePoints(EnvelopeType envelope, const std::vector<RkRealPoint> &points);
   void setKeyPressed(bool b, int velocity);
   void enableCompressor(bool enable);
   void setCompressorAttack(double attack);

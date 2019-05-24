@@ -25,6 +25,7 @@
 #define GEONKICK_FILTER_H
 
 #include "geonkick_internal.h"
+#include "envelope.h"
 
 #define GEONKICK_DEFAULT_FILTER_CUTOFF_FREQ (350.0)
 #define GEONKICK_DEFAULT_FILTER_FACTOR      (1.0)
@@ -48,7 +49,6 @@ struct gkick_filter {
 
         /* Filter cutoff envelope. */
         struct gkick_envelope *cutoff_env;
-        
         pthread_mutex_t lock;
 };
 

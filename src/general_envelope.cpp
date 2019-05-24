@@ -32,7 +32,7 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         RK_ACT_BIND(geonkickApi, kickLengthUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
         RK_ACT_BIND(geonkickApi, kickAmplitudeUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
         setType(Envelope::Type::Amplitude);
-        setPoints(geonkickApi->getKickEnvelopePoints());
+        setPoints(geonkickApi->getKickEnvelopePoints(type()));
 }
 
 GeneralEnvelope::~GeneralEnvelope()
@@ -41,17 +41,17 @@ GeneralEnvelope::~GeneralEnvelope()
 
 void GeneralEnvelope::pointAddedEvent(double x, double y)
 {
-        geonkickApi->addKickEnvelopePoint(x, y);
+        geonkickApi->addKickEnvelopePoint(type(), x, y);
 }
 
 void GeneralEnvelope::pointUpdatedEvent(unsigned int index, double x, double y)
 {
-        geonkickApi->updateKickEnvelopePoint(index, x, y);
+        geonkickApi->updateKickEnvelopePoint(type(), index, x, y);
 }
 
 void GeneralEnvelope::pointRemovedEvent(unsigned int index)
 {
-        geonkickApi->removeKickEnvelopePoint(index);
+        geonkickApi->removeKickEnvelopePoint(type(), index);
 }
 
 double GeneralEnvelope::envelopeLengh(void) const
@@ -66,10 +66,14 @@ void GeneralEnvelope::setEnvelopeLengh(double len)
 
 double GeneralEnvelope::envelopeAmplitude(void) const
 {
-        return geonkickApi->kickAmplitude();
+        if (type() == Envelope::Type::Amplitude)
+                return geonkickApi->kickAmplitude();
+        else if (type() == Envelope::Type::FilterCutOff)
+                return geonkickApi->kickFilterFrequency();
+        return 0;
 }
 
 void GeneralEnvelope::updatePoints()
 {
-        setPoints(geonkickApi->getKickEnvelopePoints());
+        setPoints(geonkickApi->getKickEnvelopePoints(type()));
 }

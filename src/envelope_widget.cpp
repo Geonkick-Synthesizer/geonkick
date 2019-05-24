@@ -114,7 +114,7 @@ void EnvelopeWidget::createButtomMenu()
 
         // Frequency Envelope button
         showFrequencyEnvButton = new GeonkickButton(buttomAreaWidget);
-        RK_ACT_BIND(showFrequencyEnvButton, toggled, RK_ACT_ARGS(bool pressed), this, showEnvelopeType(Envelope::Type::Filter));
+        RK_ACT_BIND(showFrequencyEnvButton, toggled, RK_ACT_ARGS(bool pressed), this, showEnvelopeType(Envelope::Type::FilterCutOff));
         showFrequencyEnvButton->setPressedImage(RkImage(90, 30, rk_show_freq_env_active_png));
         showFrequencyEnvButton->setUnpressedImage(RkImage(90, 30, rk_show_freq_env_png));
         showFrequencyEnvButton->setPosition(showAmplitudeEnvButton->width(),
@@ -123,7 +123,8 @@ void EnvelopeWidget::createButtomMenu()
 
         // Filter Envelope.
         showFilterEnvButton = new GeonkickButton(buttomAreaWidget);
-        //        RK_ACT_BIND(showFilterEnvButton, toggled, RK_ACT_ARGS(bool pressed), this, showEnvelopeType(Envelope::Type::Frequency));
+        RK_ACT_BIND(showFilterEnvButton, toggled, RK_ACT_ARGS(bool pressed),
+                    this, showEnvelopeType(Envelope::Type::FilterCutOff));
         showFilterEnvButton->setPressedImage(RkImage(109, 30, rk_show_filter_env_png));
         showFilterEnvButton->setUnpressedImage(RkImage(109, 30, rk_show_filter_env_png));
         showFilterEnvButton->setPosition(showAmplitudeEnvButton->x() + showAmplitudeEnvButton->width(),
@@ -206,7 +207,7 @@ void EnvelopeWidget::showEnvelopeType(Envelope::Type type)
 {
         auto envelope = drawArea->getEnvelope();
         showAmplitudeEnvButton->setPressed(type == Envelope::Type::Amplitude);
-        showFilterEnvButton->setPressed(type == Envelope::Type::Filter);
+        showFilterEnvButton->setPressed(type == Envelope::Type::FilterCutOff);
         showFrequencyEnvButton->setPressed(type == Envelope::Type::Frequency);
         if (!envelope->isSupportedType(Envelope::Type::Frequency)) {
                 showFrequencyEnvButton->hide();
