@@ -140,8 +140,11 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
 {
         gkick_real amp;
         gkick_real v;
+        gkick_real env_x;
 
-        amp = osc->amplitude * gkick_envelope_get_value(osc->envelopes[0], t / kick_len);
+        // Caluclate the x corrdinate between 0 and 1.0 for the envelope.
+        env_x = t / kick_len;
+        amp = osc->amplitude * gkick_envelope_get_value(osc->envelopes[0], env_x);
         v = 0.0;
         switch (osc->func) {
         case GEONKICK_OSC_FUNC_SINE:
@@ -170,7 +173,7 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
         };
 
         if (osc->filter_enabled)
-                gkick_filter_val(osc->filter, v, &v);
+                gkick_filter_val(osc->filter, v, &v, env_x);
 
         return v;
 }
@@ -239,7 +242,9 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
         if (buff != NULL)
                 *buff = NULL;
 
-        if (env_index >= 0 && env_index < osc->env_number)
+        if (env_index == GEONKICK_FILTER_CUTOFF_ENVELOPE)
+                gkick_envelope_get_points(osc->filter->cutoff_env, buff, npoints);
+        else if (env_index == GEONKICK_AMPLITUDE_ENVELOPE || env_index == GEONKICK_FREQUENCY_ENVELOPE)
                 gkick_envelope_get_points(osc->envelopes[env_index], buff, npoints);
 }
 
@@ -252,7 +257,9 @@ gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
         if (buff == NULL)
                 return;
 
-        if (env_index >= 0 && env_index < osc->env_number)
+        if (env_index == GEONKICK_FILTER_CUTOFF_ENVELOPE)
+                gkick_envelope_set_points(osc->filter->cutoff_env, buff, npoints);
+        else if (env_index == GEONKICK_AMPLITUDE_ENVELOPE || env_index == GEONKICK_FREQUENCY_ENVELOPE)
                 gkick_envelope_set_points(osc->envelopes[env_index], buff, npoints);
 }
 

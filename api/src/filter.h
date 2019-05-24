@@ -45,6 +45,10 @@ struct gkick_filter {
 
         /* Filter coefficients. See the code how they are calculated. */
         gkick_real coefficients[2];
+
+        /* Filter cutoff envelope. */
+        struct gkick_envelope *cutoff_env;
+        
         pthread_mutex_t lock;
 };
 
@@ -84,6 +88,7 @@ gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor);
 enum geonkick_error
 gkick_filter_val(struct gkick_filter *filter,
                  gkick_real in_val,
-                 gkick_real *out_val);
+                 gkick_real *out_val,
+                 gkick_real env_x);
 
 #endif // GEONKICK_FILTER_H

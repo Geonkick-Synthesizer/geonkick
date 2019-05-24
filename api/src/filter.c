@@ -40,6 +40,16 @@ gkick_filter_new(struct gkick_filter **filter)
         (*filter)->type = GEONKICK_FILTER_LOW_PASS;
         (*filter)->queue_empty = 1;
 
+        (*filter)->cutoff_env = gkick_envelope_create();
+        if ((*filter)->cutoff_env == NULL) {
+                gkick_log_error("can't create filter cutoff envelope")
+                gkick_filter_free(filter);
+                return GEONKICK_ERROR;
+        } else {
+                gkick_envelope_add_point((*filter)->cutoff_env, 0.0, 1.0);
+                gkick_envelope_add_point((*filter)->cutoff_env, 1.0, 1.0);
+        }
+
         if (pthread_mutex_init(&(*filter)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
                 gkick_filter_free(filter);
@@ -75,6 +85,7 @@ gkick_filter_init(struct gkick_filter *filter)
 void gkick_filter_free(struct gkick_filter **filter)
 {
         if (filter != NULL && *filter != NULL) {
+                gkick_envelope_destroy(filter->cutoff_env);
                 pthread_mutex_destroy(&(*filter)->lock);
                 free(*filter);
                 *filter = NULL;
@@ -205,7 +216,8 @@ gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor)
 enum geonkick_error
 gkick_filter_val(struct gkick_filter *filter,
                  gkick_real in_val,
-                 gkick_real *out_val)
+                 gkick_real *out_val,
+                 gkick_real env_x)
 {
         gkick_real *l, *b, *h;
         gkick_real F, Q;
@@ -226,7 +238,7 @@ gkick_filter_val(struct gkick_filter *filter,
         l = filter->queue_l;
         b = filter->queue_b;
         h = filter->queue_h;
-        F = filter->coefficients[0];
+        F = gkick_envelope_get_value(filter->cutoff_env, env_x) * filter->coefficients[0];
         Q = filter->coefficients[1];
         n = 1;
         if (filter->queue_empty) {

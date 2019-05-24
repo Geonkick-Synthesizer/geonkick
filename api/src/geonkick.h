@@ -67,7 +67,8 @@ enum gkick_key_state {
 
 enum geonkick_envelope_type {
         GEONKICK_AMPLITUDE_ENVELOPE = 0,
-        GEONKICK_FREQUENCY_ENVELOPE = 1
+        GEONKICK_FREQUENCY_ENVELOPE = 1,
+        GEONKICK_FILTER_CUTOFF_ENVELOPE = 2
 };
 
 enum gkick_filter_type {
