@@ -25,19 +25,19 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 #### Features
 
-* Three layers
-* Two oscillators per layer
+* 3 layers
+* 2 oscillators per layer
      - sine, square, triangle, saw-tooth
      - initial phase control
      - amplitude & frequency envelope
-     - low & high pass filter
+     - low & high pass filter, cutoff envelope
 * One noise generator per layer
      - white & brownian
      - amplitude envelope
-     - low & high pass filter
+     - low & high pass filter, cutoff envelope
 * General
      - amplitude envelope & kick length
-     - low & high pass filter
+     - low & high pass filter, cutoff envelope
      - limiter
      - compression
      - distortion
@@ -56,7 +56,7 @@ The development of new releases is going on ["develop" branch](https://github.co
 * Platforms:
   - GNU/Linux
 * Build system:
-  - GPLv3 source code with CMake build system
+  - CMake
 
 #### Requirements
 
@@ -68,7 +68,7 @@ Standalone:
 
 Plugin:
  * GNU/Linux operating system
-* LV2 host. For example, a DAW that supports LV2 plugin format.
+ * LV2 host. For example, a DAW that supports LV2 plugin format.
 
 #### Install
 
@@ -139,7 +139,7 @@ Milestones: https://github.com/quamplex/geonkick/milestones
 ###### Shortcut Keys
 
 * Ctrl + r - reload default state, clean everything
-* Ctrl + k - play 
+* Ctrl + k - play
 * Ctrl + h - hide envelope, only the graph is shown
 * Ctrl + o - open file browser dialog
 * Ctrl + s - open save dialog
@@ -156,7 +156,7 @@ Note: especially when running as plugin be sure the focus to be on the main Geon
 
 ###### Play the sound
 
-Geonkick standalone uses  Jack and will create two audio outputs and one MIDI input.
+Geonkick standalone uses Jack and will create two audio outputs and one MIDI input.
 If audio outputs are connected there are three ways to play the sound:
    * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
    * pressing the key 'Ctrl + k'
