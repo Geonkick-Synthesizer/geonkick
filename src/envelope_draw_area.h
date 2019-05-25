@@ -56,8 +56,10 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
    void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
    void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   std::string getEnvStateText() const;
 
  private:
+   GeonkickApi* geonkickApi;
    Envelope* currentEnvelope;
    RkRect drawingArea;
    RkRealPoint mousePoint;

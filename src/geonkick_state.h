@@ -45,7 +45,7 @@ class GeonkickState
         void setKickFilterFrequency(double val);
         void setKickFilterQFactor(double val);
         void setKickFilterType(GeonkickApi::FilterType type);
-        void setKickEnvelopePoints(const std::vector<RkRealPoint> &points);
+        void setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope, const std::vector<RkRealPoint> &points);
 
         double getLimiterValue() const;
         double getKickLength() const;
@@ -54,7 +54,7 @@ class GeonkickState
         double getKickFilterFrequency() const;
         double getKickFilterQFactor() const;
         GeonkickApi::FilterType getKickFilterType() const;
-        std::vector<RkRealPoint> getKickEnvelopePoints() const;
+        std::vector<RkRealPoint> getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const;
 
         void setOscillatorEnabled(int index, bool b);
         void setOscillatorFunction(int index, GeonkickApi::FunctionType type);
@@ -110,6 +110,8 @@ class GeonkickState
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(int index,  const rapidjson::Value &osc);
         std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
+        void oscJson(std::ostringstream &jsonStream) const;
+        void kickJson(std::ostringstream &jsonStream) const;
 
 private:
         void initOscillators();
@@ -137,6 +139,7 @@ private:
                 double filterFactor;
                 std::vector<RkRealPoint> amplitudeEnvelope;
                 std::vector<RkRealPoint> frequencyEnvelope;
+                std::vector<RkRealPoint> filterCutOffEnvelope;
         };
 
         std::shared_ptr<OscillatorInfo> getOscillator(int index) const;
@@ -164,6 +167,7 @@ private:
         double kickFilterFrequency;
         double kickFilterQFactor;
         GeonkickApi::FilterType kickFilterType;
+        std::vector<RkRealPoint> kickFilterCutOffEnvelope;
         std::vector<RkRealPoint> kickEnvelopePoints;
         std::unordered_map<int, std::shared_ptr<OscillatorInfo>> oscillators;
         Compressor compressor;

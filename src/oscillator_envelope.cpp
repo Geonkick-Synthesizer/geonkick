@@ -68,6 +68,9 @@ double OscillatorEnvelope::envelopeAmplitude() const
 {
         if (type() == Type::Amplitude)
                 return oscillator->amplitude();
-        else
+        else if (type() == Type::Frequency)
                 return oscillator->frequency();
+        else
+                return oscillator->filterFrequency();
+        return 0;
 }

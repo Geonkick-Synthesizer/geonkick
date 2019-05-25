@@ -32,8 +32,9 @@ Envelope::Envelope(const RkRect &area)
         , pointRadius{10}
         , dotRadius{3}
         , selectedPointIndex{0}
-        , supportedTypes({Type::Amplitude, Type::Frequency})
+        , supportedTypes({Type::Amplitude, Type::Frequency, Type::FilterCutOff})
         , pointSelected{false}
+        , envelopeCategory{Category::Oscillator1}
         , envelopeType{Type::Amplitude}
 {
 }
@@ -117,11 +118,10 @@ void Envelope::drawTimeScale(RkPainter &painter)
 void Envelope::drawValueScale(RkPainter &painter)
 {
         std::string text;
-        if (type() == Type::Amplitude) {
+        if (type() == Type::Amplitude)
                 text = "Amplitude";
-        } else if (type() == Type::Frequency) {
+        else if (type() == Type::Frequency || type() == Type::FilterCutOff)
                 text = "Frequency, Hz";
-        }
 
         painter.translate(RkPoint(getOrigin().x() - 30, getOrigin().y() - H() / 2 + 35));
         painter.rotate(-M_PI / 2);
@@ -155,7 +155,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         ss << std::setprecision(2) << i * step;
                         painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
-        } else if (type() == Type::Frequency) {
+        } else if (type() == Type::Frequency || type() == Type::FilterCutOff) {
                 std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 16000};
                 for (auto value : values) {
                         int x = getOrigin().x();
@@ -190,7 +190,7 @@ void Envelope::drawPoints(RkPainter &painter)
 {
         RkPen pen;
         pen.setWidth(2);
-        pen.setColor(RkColor(200, 200, 200, 200));
+        pen.setColor(RkColor(200, 200, 200, 150));
 	painter.setPen(pen);
         RkPoint origin = getOrigin();
 	for (const auto &point : envelopePoints) {
@@ -214,7 +214,7 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
                 std::ostringstream ss;
                 ss << std::setprecision(2) << value;
                 painter.drawText(point.x(), point.y(), ss.str());
-        } else if (type() == Envelope::Type::Frequency) {
+        } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
                 if (value < 20)
                         painter.drawText(point.x(), point.y(), "20Hz " + frequencyToNote(20));
                 if (value >= 20 && value < 1000) {
@@ -244,7 +244,7 @@ void Envelope::drawLines(RkPainter &painter)
 
 	auto pen = painter.pen();
 	pen.setWidth(2);
-        pen.setColor(RkColor(200, 200, 200, 200));
+        pen.setColor(RkColor(200, 200, 200, 150));
 	painter.setPen(pen);
 	painter.drawPolyline(points);
 }
@@ -372,14 +372,22 @@ void Envelope::removePoint(const RkPoint &point)
         }
 }
 
-bool Envelope::setType(Type type)
+void Envelope::setCategory(Envelope::Category cat)
+{
+        envelopeCategory = cat;
+}
+
+void Envelope::setType(Type type)
 {
         if (isSupportedType(type)) {
                 envelopeType = type;
                 updatePoints();
-                return true;
         }
-        return false;
+}
+
+Envelope::Category Envelope::category(void) const
+{
+	return envelopeCategory;
 }
 
 Envelope::Type Envelope::type(void) const

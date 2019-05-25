@@ -42,6 +42,12 @@ class Envelope
         };
 
         using Type = GeonkickApi::EnvelopeType;
+        enum class Category:int {
+                Oscillator1 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator1),
+                Oscillator2 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator2),
+                Noise       = static_cast<int>(GeonkickApi::OscillatorType::Noise),
+                General
+        };
 
         Envelope(const RkRect &area = RkRect());
         virtual ~Envelope();
@@ -57,19 +63,20 @@ class Envelope
         void moveSelectedPoint(int x, int y);
         void addPoint(const RkPoint &point);
         void removePoint(const RkPoint &point);
+        Category category() const;
         Type type() const;
         bool isSupportedType(Type type) const;
         const RkRect& getDrawingArea();
 
-        // public slots:
-         virtual void setEnvelopeLengh(double len) { RK_UNUSED(len); }
-         bool setType(Type type);
-         void addSupportedType(Type type);
-         void removeSupportedType(Type type);
-         void setPoints(const std::vector<RkRealPoint>  &points);
-         void removePoints();
-         void setDrawingArea(const RkRect &rect);
-         virtual void updatePoints() {};
+        virtual void setEnvelopeLengh(double len) { RK_UNUSED(len); }
+        void setCategory(Category cat);
+        void setType(Type type);
+        void addSupportedType(Type type);
+        void removeSupportedType(Type type);
+        void setPoints(const std::vector<RkRealPoint>  &points);
+        void removePoints();
+        void setDrawingArea(const RkRect &rect);
+        virtual void updatePoints() {};
 
          RK_DECL_ACT(envelopeLengthUpdated, envelopeLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
          RK_DECL_ACT(amplitudeUpdated, amplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
@@ -106,6 +113,7 @@ class Envelope
         std::vector<RkRealPoint>::size_type selectedPointIndex;
         std::unordered_set<Type> supportedTypes;
         bool pointSelected;
+        Category envelopeCategory;
         Type envelopeType;
 };
 

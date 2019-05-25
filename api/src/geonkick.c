@@ -386,6 +386,7 @@ geonkick_get_kick_filter_type(struct geonkick *kick, enum gkick_filter_type *typ
 
 enum geonkick_error
 geonkick_kick_envelope_get_points(struct geonkick *kick,
+                                  enum geonkick_envelope_type env_type,
                                   gkick_real **buf,
                                   size_t *npoints)
 {
@@ -393,41 +394,48 @@ geonkick_kick_envelope_get_points(struct geonkick *kick,
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_synth_kick_envelope_get_points(kick->synth, buf, npoints);
+        return gkick_synth_kick_envelope_get_points(kick->synth, env_type, buf, npoints);
 }
 
 enum geonkick_error
 geonkick_kick_envelope_set_points(struct geonkick *kick,
+                                  enum geonkick_envelope_type env_type,
                                   const gkick_real *buff,
                                   size_t npoints)
 {
         if (kick == NULL || buff == NULL || npoints == 0)
                 return GEONKICK_ERROR;
-        return gkick_synth_kick_envelope_set_points(kick->synth, buff, npoints);
+        return gkick_synth_kick_envelope_set_points(kick->synth, env_type, buff, npoints);
 }
 
 enum geonkick_error
-geonkick_kick_add_env_point(struct geonkick *kick, gkick_real x, gkick_real y)
+geonkick_kick_add_env_point(struct geonkick *kick,
+                            enum geonkick_envelope_type env_type,
+                            gkick_real x,
+                            gkick_real y)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_synth_kick_add_env_point(kick->synth, x, y);
+        return gkick_synth_kick_add_env_point(kick->synth, env_type, x, y);
 }
 
 enum geonkick_error
-geonkick_kick_remove_env_point(struct geonkick *kick, size_t index)
+geonkick_kick_remove_env_point(struct geonkick *kick,
+                               enum geonkick_envelope_type env_type,
+                               size_t index)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_synth_kick_remove_env_point(kick->synth, index);
+        return gkick_synth_kick_remove_env_point(kick->synth, env_type, index);
 }
 
 enum geonkick_error
 geonkick_kick_update_env_point(struct geonkick *kick,
+                               enum geonkick_envelope_type env_type,
                                size_t index,
                                gkick_real x,
                                gkick_real y)
@@ -436,7 +444,7 @@ geonkick_kick_update_env_point(struct geonkick *kick,
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_synth_kick_update_env_point(kick->synth, index, x, y);
+        return gkick_synth_kick_update_env_point(kick->synth, env_type, index, x, y);
 }
 
 enum geonkick_error
