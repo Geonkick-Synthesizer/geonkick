@@ -199,7 +199,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         envelopeAmplitudeKnob->setFixedSize(80, 80);
         envelopeAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         envelopeAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
-        envelopeAmplitudeKnob->setRange(0.01, 1.0);
+        envelopeAmplitudeKnob->setRange(0, 1.0);
         envelopeAmplitudeKnob->show();
         RK_ACT_BIND(envelopeAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val), oscillator, setAmplitude(val));
 

@@ -37,13 +37,6 @@ class EnvelopeWidget : public GeonkickWidget
 {
 public:
 
-     enum class EnvelopeCategory:int {
-                   Oscillator1 = static_cast<int>(Oscillator::Type::Oscillator1),
-                   Oscillator2 = static_cast<int>(Oscillator::Type::Oscillator2),
-                   Noise       = static_cast<int>(Oscillator::Type::Noise),
-                   General
-     };
-
      explicit EnvelopeWidget(GeonkickWidget *parent,
                              GeonkickApi *api,
                              const std::vector<std::unique_ptr<Oscillator>> &oscillators);
@@ -54,8 +47,8 @@ public:
 
  protected:
      void showEnvelopeType(Envelope::Type type);
-     void showEnvelope(EnvelopeCategory type);
-     Envelope* getEnvelope(EnvelopeCategory type);
+     void showEnvelope(Envelope::Category type);
+     Envelope* getEnvelope(Envelope::Category type);
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
      void setLayer(GeonkickApi::Layer layer);

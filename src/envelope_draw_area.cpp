@@ -30,6 +30,7 @@
 
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api)
           : GeonkickWidget(parent)
+          , geonkickApi{api}
           , currentEnvelope{nullptr}
           , hideEnvelope{false}
           , kickGraphImage{nullptr}
@@ -40,7 +41,7 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
         drawingArea = RkRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
         setBackgroundColor(40, 40, 40);
 
-        kickGraphics = std::make_unique<KickGraph>(api, drawingArea.size(), eventQueue());
+        kickGraphics = std::make_unique<KickGraph>(geonkickApi, drawingArea.size(), eventQueue());
         RK_ACT_BIND(kickGraphics.get(),
                     graphUpdated,
                     RK_ACT_ARGS(std::shared_ptr<RkImage> graphImage),
@@ -82,6 +83,7 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
         if (currentEnvelope && !isHideEnvelope())
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
 
+        painter.drawText(55, height() - 12, getEnvStateText());
         auto pen = painter.pen();
         pen.setWidth(1);
         pen.setColor({20, 20, 20, 255});
@@ -90,6 +92,29 @@ void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> 
 
         RkPainter paint(this);
         paint.drawImage(envelopeImage, 0, 0);
+}
+
+std::string EnvelopeWidgetDrawingArea::getEnvStateText() const
+{
+        std::string str = "L" + std::to_string(static_cast<int>(geonkickApi->layer()) + 1) + " / ";
+        if (currentEnvelope->category() == Envelope::Category::Oscillator1)
+                str += "OSC1";
+        else if (currentEnvelope->category() == Envelope::Category::Oscillator2)
+                str += "OSC2";
+        else if (currentEnvelope->category() == Envelope::Category::Noise)
+                str += "NOISE";
+        else
+                str += "GEN";
+
+        str += " / ";
+        if (currentEnvelope->type() == Envelope::Type::Amplitude)
+                str += "AENV";
+        else if (currentEnvelope->type() == Envelope::Type::Frequency)
+                str += "FENV";
+        else
+                str += "CFENV";
+
+        return str;
 }
 
 void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)

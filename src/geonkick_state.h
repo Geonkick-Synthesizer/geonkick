@@ -110,11 +110,8 @@ class GeonkickState
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(int index,  const rapidjson::Value &osc);
         std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
-        //        void envelopeJson(std::ostringstream &jsonStream,
-        //                          double amplitude,
-        //                          const std::vector<RkRealPoint> &points,
-        //                          const std::string &name);
-        //        void kickJson(std::ostringstream &jsonStream);
+        void oscJson(std::ostringstream &jsonStream) const;
+        void kickJson(std::ostringstream &jsonStream) const;
 
 private:
         void initOscillators();
@@ -138,12 +135,11 @@ private:
                 double frequency;
                 bool isFilterEnabled;
                 GeonkickApi::FilterType filterType;
-                std::vector<RkRealPoint> filterCutOffEnvelope;
                 double filterFrequency;
                 double filterFactor;
                 std::vector<RkRealPoint> amplitudeEnvelope;
                 std::vector<RkRealPoint> frequencyEnvelope;
-                std::vector<RkRealPoint> filterCutOfEnvelope;
+                std::vector<RkRealPoint> filterCutOffEnvelope;
         };
 
         std::shared_ptr<OscillatorInfo> getOscillator(int index) const;

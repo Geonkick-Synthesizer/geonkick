@@ -82,7 +82,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         kickAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
-        kickAmplitudeKnob->setRange(0.01, 1.0);
+        kickAmplitudeKnob->setRange(0, 1.0);
         kickAmplitudeKnob->show();
         RK_ACT_BIND(kickAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val), geonkickApi, setKickAmplitude(val));
 

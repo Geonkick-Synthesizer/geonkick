@@ -83,7 +83,7 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
         if (kick.IsNull() || !kick.IsObject())
                 return;
 
-        /*        for (const auto &m: kick.GetObject()) {
+        for (const auto &m: kick.GetObject()) {
                 if (m.name == "limiter" && m.value.IsDouble())
                         setLimiterValue(m.value.GetDouble());
 
@@ -108,7 +108,6 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                 }
 
                 if (m.name == "filter" && m.value.IsObject()) {
-                        auto filter = parseFilterObject(el.value);
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "enabled" && el.value.IsBool())
                                         enableKickFilter(el.value.GetBool());
@@ -118,10 +117,9 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                                         setKickFilterQFactor(el.value.GetDouble());
                                 if (el.name == "type" && el.value.IsInt())
                                         setKickFilterType(static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
-                                if (el.name == "cutoff_env" && el.value.IsObject()) {
-                                        auto filter = parseFilterObject(el.value);
-                                        setKickEnvelopePoints(GeonckickApi::EnvelopeType::FilterCutOff, filter.cutOffEnvelope
-                                                              parseEnvelope(el.value));
+                                if (el.name == "cutoff_env" && el.value.IsArray()) {
+                                        setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff,
+                                                              parseEnvelopeArray(el.value));
                                 }
                         }
                 }
@@ -156,7 +154,7 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                                         setDistortionDrive(el.value.GetDouble());
                         }
                 }
-                }*/
+        }
 }
 
 void GeonkickState::parseOscillatorObject(int index,  const rapidjson::Value &osc)
@@ -203,6 +201,11 @@ void GeonkickState::parseOscillatorObject(int index,  const rapidjson::Value &os
                                         setOscillatorFilterFactor(index, el.value.GetDouble());
                                 if (el.name == "type" && el.value.IsInt())
                                         setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
+                                if (el.name == "cutoff_env" && el.value.IsArray()) {
+                                        setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                    GeonkickApi::EnvelopeType::FilterCutOff);
+                                }
+
                         }
                 }
         }
@@ -298,10 +301,10 @@ GeonkickApi::FilterType GeonkickState::getKickFilterType() const
 
 std::vector<RkRealPoint> GeonkickState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
 {
-        if (envelope == GeonkickApi::EnvelopeType::Amplitude)
-                return kickEnvelopePoints;
-        else if (envelope == GeonkickApi::EnvelopeType::FilterCutOff)
+        if (envelope == GeonkickApi::EnvelopeType::FilterCutOff)
                 return kickFilterCutOffEnvelope;
+        else
+                return kickEnvelopePoints;
 }
 
 std::shared_ptr<GeonkickState::OscillatorInfo> GeonkickState::getOscillator(int index) const
@@ -385,8 +388,10 @@ void GeonkickState::setOscillatorEnvelopePoints(int index,
         if (oscillator) {
                 if (envelope == GeonkickApi::EnvelopeType::Amplitude)
                         oscillator->amplitudeEnvelope = points;
-                else
+                else if (envelope == GeonkickApi::EnvelopeType::Frequency)
                         oscillator->frequencyEnvelope = points;
+                else
+                        oscillator->filterCutOffEnvelope = points;
         }
 }
 
@@ -471,8 +476,10 @@ std::vector<RkRealPoint> GeonkickState::oscillatorEnvelopePoints(int index, Geon
         if (oscillator) {
                 if (type == GeonkickApi::EnvelopeType::Amplitude)
                         return oscillator->amplitudeEnvelope;
-                else
+                else if (type == GeonkickApi::EnvelopeType::Frequency)
                         return oscillator->frequencyEnvelope;
+                else
+                        return oscillator->filterCutOffEnvelope;
         }
 
         return {};
@@ -580,8 +587,16 @@ double GeonkickState::getDistortionDrive() const
 
 std::string GeonkickState::toJson() const
 {
-                std::ostringstream jsonStream;
-                  /*        jsonStream << "{" << std::endl;
+        std::ostringstream jsonStream;
+        jsonStream << "{" << std::endl;
+        oscJson(jsonStream);
+        kickJson(jsonStream);
+        jsonStream << "}" << std::endl;
+        return jsonStream.str();
+}
+
+void GeonkickState::oscJson(std::ostringstream &jsonStream) const
+{
         for (const auto& val: oscillators) {
                 jsonStream << "\"osc" << val.first << "\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false");
@@ -622,18 +637,25 @@ std::string GeonkickState::toJson() const
                 jsonStream << ", " << std::endl;
                 jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
                 jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(5) << val.second->filterFrequency << ", " << std::endl;
+                jsonStream << "\"cutoff_env\": [";
+                first = true;
+                for (const auto &point: val.second->filterCutOffEnvelope) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                                   << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+                }
+                jsonStream << "], " << std::endl;
                 jsonStream << "\"factor\": " << std::fixed << std::setprecision(5) << val.second->filterFactor << std::endl;
                 jsonStream << "}" << std::endl;  // filter;
                 jsonStream << "}" << std::endl;  // osc;
                 jsonStream << "," << std::endl;
         }
-        kickJson(jsonStream);
-        jsonStream << "}" << std::endl; // json
-        */
-        return jsonStream.str();
 }
 
-/*void GeonckickState::kickJson(std::ostringstream &jsonStream)
+void GeonkickState::kickJson(std::ostringstream &jsonStream) const
 {
         jsonStream << "\"kick\": {" << std::endl;
         jsonStream << "\"layers\": [";
@@ -649,10 +671,22 @@ std::string GeonkickState::toJson() const
         }
         jsonStream << "]," << std::endl;
         jsonStream << "\"limiter\": " << std::fixed << std::setprecision(5) << getLimiterValue() << ", " << std::endl;
-        envelopeJson(jsonStream, static_cast<double>(getKickAmplitude()),
-                     getKickEnvelopePoints(GeonkickApi::Envelopetype::Amplitude),
-                     "ampl_env");
-        jsonStream << "," << std::endl;
+        jsonStream << "\"ampl_env\": {" << std::endl;
+        jsonStream << "\"amplitude\": " << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
+        jsonStream << "\"length\": " << static_cast<double>(getKickLength()) << ", " << std::endl;
+        auto points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::Amplitude);
+        jsonStream << "\"points\": [";
+        first = true;
+        for (const auto &point: points) {
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+        }
+
+        jsonStream << "]}, " << std::endl;
 
         jsonStream << "\"filter\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isKickFilterEnabled() ? "true" : "false");
@@ -660,11 +694,19 @@ std::string GeonkickState::toJson() const
         jsonStream << "\"type\": " << static_cast<int>(getKickFilterType()) << ", " << std::endl;
         jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(2) << getKickFilterFrequency() << ", " << std::endl;
         jsonStream << "\"factor\": " << std::fixed << std::setprecision(2) << getKickFilterQFactor() << ", " << std::endl;
-        envelopeJson(jsonStream, getKickFilterFrequency(),
-                     getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCuttoOff),
-                     "cutoff_env");
+        points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff);
+        jsonStream << "\"cutoff_env\": [";
+        first = true;
+        for (const auto &point: points) {
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+        }
+        jsonStream << "]" << std::endl; // points
         jsonStream << "}, " << std::endl;  // filter;
-
         jsonStream << "\"compressor\": {" << std::endl;
         jsonStream << "\"enabled\": " << isCompressorEnabled() << ", " << std::endl;
         jsonStream << "\"attack\": " << std::fixed << std::setprecision(5) << getCompressorAttack() << ", " << std::endl;
@@ -682,27 +724,6 @@ std::string GeonkickState::toJson() const
         jsonStream << "}" << std::endl; // distortion
         jsonStream << "}" << std::endl; // kick
 }
-
-void GeonkickState::envelopeJson(std::ostringstream &jsonStream,
-                                 double amplitude,
-                                 const std::vector<RkRealPoint> &points,
-                                 const std::string &name)
-{
-        jsonStream << "\"" << name << "\": {" << std::endl;
-        jsonStream << "\"amplitude\": " << std::fixed << std::setprecision(5) << amplitude << ", " << std::endl;
-        jsonStream << "\"points\": [" << std::endl;
-        first = true;
-        for (const auto &point: points) {
-                if (first)
-                        first = false;
-                else
-                        jsonStream << ", ";
-                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
-                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
-        }
-        jsonStream << "]" << std::endl; // points
-        jsonStream << "}" << std::endl;
-        }*/
 
 void GeonkickState::setLayerEnabled(GeonkickApi::Layer layer, bool b)
 {

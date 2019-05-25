@@ -235,6 +235,8 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
                 points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::Frequency);
                 state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
         }
+        points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::FilterCutOff);
+        state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::FilterCutOff);
         currentLayer = temp;
 }
 
