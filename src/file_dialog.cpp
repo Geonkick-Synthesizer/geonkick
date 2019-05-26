@@ -68,6 +68,12 @@ std::string FilesView::getCurrentPath() const
         return currentPath.string();
 }
 
+void FilesView::setCurrentPath(const std::string &path)
+{
+        currentPath = path;
+        loadCurrentDirectory();
+}
+
 void FilesView::createScrollBar()
 {
         topScrollBarButton = new GeonkickButton(this);
@@ -349,6 +355,11 @@ void FileDialog::closeEvent(const std::shared_ptr<RkCloseEvent> &event)
 std::string FileDialog::currentDirectory() const
 {
         return filesView->getCurrentPath();
+}
+
+void FileDialog::setCurrentDirectoy(const std::string &path)
+{
+        filesView->setCurrentPath(path);
 }
 
 std::string FileDialog::filePath() const

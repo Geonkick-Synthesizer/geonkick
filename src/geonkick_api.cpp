@@ -837,3 +837,16 @@ int GeonkickApi::getOscIndex(int index) const
 {
         return index + GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);
 }
+
+std::filesystem::path GeonkickApi::currentWorkingPath(const std::string &key) const
+{
+        auto it = workingPaths.find(key);
+        if (it != workingPaths.end())
+                return it->second;
+        return std::filesystem::current_path();
+}
+
+void GeonkickApi::setCurrentWorkingPath(const std::string &key, const std::filesystem::path &path)
+{
+        workingPaths[key] = path;
+}

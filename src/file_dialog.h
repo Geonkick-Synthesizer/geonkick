@@ -38,6 +38,7 @@ class FilesView: public GeonkickWidget {
         FilesView(GeonkickWidget *parent);
         std::string selectedFile() const;
         std::string getCurrentPath() const;
+        void setCurrentPath(const std::string &path);
         RK_DECL_ACT(openFile, openFile(const std::string &fileName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
         RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &pathName),
@@ -90,6 +91,7 @@ class FileDialog: public GeonkickWidget {
                     RK_ARG_TYPE(const std::string&),
                     RK_ARG_VAL(file));
         std::string currentDirectory() const;
+        void setCurrentDirectoy(const std::string &path);
         std::string filePath() const;
         AcceptStatus acceptStatus() const;
 

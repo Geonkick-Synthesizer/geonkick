@@ -164,6 +164,8 @@ class GeonkickApi {
   bool isLayerEnabled(Layer layer) const;
   int getOscIndex(int index) const;
   double getLimiterLevelerValue() const;
+  std::filesystem::path currentWorkingPath(const std::string &key) const;
+  void setCurrentWorkingPath(const std::string &key, const std::filesystem::path &path);
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
@@ -198,6 +200,13 @@ private:
   RkEventQueue *eventQueue;
   std::vector<gkick_real> kickBuffer;
   Layer currentLayer;
+
+  /**
+   * Current working paths for entire application.
+   * Since on plugins the GUI is closed, there is a need to
+   * store this path in API instance.
+   */
+  std::unordered_map<std::string, std::filesystem::path> workingPaths;
 };
 
 #endif // GEONKICK_API_H

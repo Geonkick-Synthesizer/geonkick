@@ -62,6 +62,7 @@ class MainWindow : public GeonkickWidget
       EnvelopeWidget* envelopeWidget;
       ControlArea* controlAreaWidget;
       std::string presetName;
+      std::string currentWorkingPath;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

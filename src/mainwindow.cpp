@@ -172,6 +172,7 @@ void MainWindow::savePreset(const std::string &fileName)
         file << geonkickApi->getState()->toJson();
         file.close();
         topBar->setPresetName(filePath.filename());
+        geonkickApi->setCurrentWorkingPath("SavePreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
 }
 
 void MainWindow::openPreset(const std::string &fileName)
@@ -202,16 +203,20 @@ void MainWindow::openPreset(const std::string &fileName)
         geonkickApi->setState(state);
         topBar->setPresetName(filePath.stem());
         file.close();
+        geonkickApi->setCurrentWorkingPath("OpenPreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
         updateGui();
 }
 
 void MainWindow::openFileDialog(FileDialog::Type type)
 {
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Preset" : "Save Preset");
-        if (type == FileDialog::Type::Open)
+        if (type == FileDialog::Type::Open) {
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset"));
                 RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, openPreset(file));
-        else
+        } else {
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset"));
                 RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, savePreset(file));
+        }
 }
 
 void MainWindow::openAboutDialog()

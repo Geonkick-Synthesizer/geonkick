@@ -79,7 +79,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         locationEdit->setFont(font());
         locationEdit->setTitle("locationEdit");
         locationEdit->show();
-        locationEdit->setText(std::filesystem::current_path());
+        locationEdit->setText(geonkickApi->currentWorkingPath("ExportDialog/Location"));
         locationEdit->setSize(120, 25);
         locationEdit->setPosition(82, 54);
         RK_ACT_BIND(locationEdit, textEdited, RK_ACT_ARGS(const std::string& text), this, resetProgressBar());
@@ -242,6 +242,7 @@ void ExportWidget::browse()
         fileNameEdit->setFocus(false);
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open,
                                          "Select Path - " + std::string(GEOKICK_APP_NAME));
+        fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location"));
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file), this,
                     setLocation(fileDialog->currentDirectory()));
@@ -250,6 +251,7 @@ void ExportWidget::browse()
 void ExportWidget::setLocation(const std::string &location)
 {
         locationEdit->setText(location);
+        geonkickApi->setCurrentWorkingPath("ExportDialog/Location", std::filesystem::path(location));
 }
 
 bool ExportWidget::validateInput()
