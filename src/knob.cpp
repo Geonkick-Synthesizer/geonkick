@@ -98,7 +98,7 @@ void Knob::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
                 update();
                 return;
         }
-        
+
         if (!knobImage.isNull()) {
                 int xCenter = width() / 2;
                 int yCenter = height() / 2;

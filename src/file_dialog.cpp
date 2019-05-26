@@ -202,6 +202,14 @@ void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 
 void FilesView::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->button() == RkMouseEvent::ButtonType::WheelUp) {
+                onLineUp();
+                return;
+        } else if(event->button() == RkMouseEvent::ButtonType::WheelDown) {
+                onLineDown();
+                return;
+        }
+
         auto line = getLine(event->x(), event->y());
         if (line > -1) {
                 selectedFileIndex = offsetIndex + line;
@@ -211,6 +219,14 @@ void FilesView::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
 
 void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->button() == RkMouseEvent::ButtonType::WheelUp) {
+                onLineUp();
+                return;
+        } else if(event->button() == RkMouseEvent::ButtonType::WheelDown) {
+                onLineDown();
+                return;
+        }
+
         auto line = getLine(event->x(), event->y());
         if (line > -1) {
                 selectedFileIndex = offsetIndex + line;
