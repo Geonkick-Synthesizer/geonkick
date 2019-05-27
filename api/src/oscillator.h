@@ -28,7 +28,7 @@
 #include "envelope.h"
 #include "filter.h"
 
-#define GKICK_OSC_DEFAULT_AMPLITUDE   0.005
+#define GKICK_OSC_DEFAULT_AMPLITUDE   1.0
 #define GKICK_OSC_DEFAULT_FREQUENCY   150
 
 enum geonkick_osc_state {

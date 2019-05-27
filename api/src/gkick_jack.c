@@ -47,8 +47,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         jack_nframes_t events_count;
         jack_midi_event_t event;
 
-        if (gkick_jack_get_output_buffers(jack, buffers, nframes)
-            != GEONKICK_OK) {
+        if (gkick_jack_get_output_buffers(jack, buffers, nframes) != GEONKICK_OK) {
                 gkick_log_error("can't get output jack buffers");
                 return 0;
         }
@@ -69,6 +68,9 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 }
 
                 gkick_audio_output_get_frame(jack->audio_output, &val);
+                val *= 0.1;
+                if (val > 0.1)
+                        val = 0.1;
                 buffers[0][i] = (jack_default_audio_sample_t) (val);
                 buffers[1][i] = (jack_default_audio_sample_t) (val);
         }

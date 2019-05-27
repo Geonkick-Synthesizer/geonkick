@@ -1160,8 +1160,8 @@ void *gkick_synth_run(void *arg)
                 gkick_filter_init(synth->filter);
 		gkick_compressor_set_state(synth->compressor, GKICK_COMPRESSOR_DEACTIVATED);
                 gkick_synth_unlock(synth);
-                // Synthesize the kick into the kick buffer.
 
+                // Synthesize the kick into the kick buffer.
                 i = 0;
                 while (1) {
                         gkick_synth_lock(synth);
@@ -1170,10 +1170,10 @@ void *gkick_synth_run(void *arg)
                                 break;
                         } else {
                                 gkick_real val = gkick_synth_get_value(synth, (gkick_real)(i * dt));
-                                if (val > 0.3)
-                                        val = 0.3;
-                                else if (val < -0.3)
-                                        val = -0.3;
+                                if (val > 1.0)
+                                        val = 1.0;
+                                else if (val < -1.0)
+                                        val = -1.0;
                                 gkick_buffer_push_back((struct gkick_buffer*)synth->buffer, val);
                                 i++;
                                 gkick_synth_unlock(synth);

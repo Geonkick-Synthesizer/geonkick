@@ -124,13 +124,6 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
         }
 
         *val *= (gkick_real)audio_output->limiter / 1000000;
-
-        // Limit the output value.
-        if (*val > 1)
-                *val = 1;
-        else if (*val < -1)
-                *val = -1;
-
         if (audio_output->limiter_callback != NULL
             && audio_output->limiter_callback_arg != NULL) {
                 /* Callback is atomic. It sets the value and returns. */

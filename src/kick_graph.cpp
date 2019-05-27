@@ -90,8 +90,8 @@ void KickGraph::drawKickGraph()
                 RkPoint prev;
                 for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
                         int x = k * i;
-                        int y = graphSize.height() * (0.5 - kickBuffer[i]);
-                        RkPoint p(k * i, graphSize.height() * (0.5 - kickBuffer[i]));
+                        int y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
+                        RkPoint p(k * i, graphSize.height() * 0.5 * (1 - kickBuffer[i]));
                         if (p == prev)
                                 continue;
                         else
@@ -104,7 +104,7 @@ void KickGraph::drawKickGraph()
                         while (++i < kickBuffer.size()) {
                                 if (x != static_cast<int>(k * i))
                                         break;
-                                y = graphSize.height() * (0.5 - kickBuffer[i]);
+                                y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
                                 if (ymin > y)
                                         ymin = y;
                                 if (ymax < y)
