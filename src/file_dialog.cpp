@@ -230,11 +230,7 @@ void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
         auto line = getLine(event->x(), event->y());
         if (line > -1) {
                 selectedFileIndex = offsetIndex + line;
-                if (!std::filesystem::is_directory(filesList[selectedFileIndex]))
-                        openFile(filesList[selectedFileIndex].string());
-                else
-                        loadCurrentDirectory();
-                update();
+                openSelectedFile();
         }
 }
 
@@ -244,6 +240,38 @@ void FilesView::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
         hightlightLine = getLine(event->x(), event->y());
         if (hightlightLine != line)
                 update();
+}
+
+void FilesView::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
+{
+        if (!filesList.empty() && (event->key() == Rk::Key::Key_Down || event->key() == Rk::Key::Key_Up)) {
+                event->key() == Rk::Key::Key_Down ? selectedFileIndex++ : selectedFileIndex--;
+                if (selectedFileIndex > -1 && static_cast<decltype(filesList.size())>(selectedFileIndex) > filesList.size() - 1)
+                        selectedFileIndex = filesList.size() - 1;
+                else if (selectedFileIndex < 0)
+                        selectedFileIndex = 0;
+                if (selectedFileIndex < offsetIndex
+                    || static_cast<decltype(filesList.size())>(selectedFileIndex) > offsetIndex + visibleLines - 1) {
+                        offsetIndex = selectedFileIndex;
+                }
+                update();
+                return;
+        }
+
+        if (event->key() == Rk::Key::Key_Return)
+                openSelectedFile();
+}
+
+void FilesView::openSelectedFile()
+{
+        if (!filesList.empty() && selectedFileIndex > -1
+            && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()) {
+                if (!std::filesystem::is_directory(filesList[selectedFileIndex]))
+                        action openFile(filesList[selectedFileIndex].string());
+                else
+                        loadCurrentDirectory();
+                update();
+        }
 }
 
 int FilesView::getLine(int x, int y) const
@@ -274,7 +302,7 @@ void FilesView::onLineUp()
 
 void FilesView::onLineDown()
 {
-        if (offsetIndex + visibleLines < filesList.size() - 1)
+        if (offsetIndex + visibleLines < filesList.size())
                 offsetIndex++;
         update();
 }

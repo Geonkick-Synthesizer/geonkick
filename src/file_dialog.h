@@ -52,11 +52,12 @@ class FilesView: public GeonkickWidget {
         void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
         void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
         void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) final;
         void loadCurrentDirectory();
         int getLine(int x, int y) const;
-
         void onLineUp();
         void onLineDown();
+        void openSelectedFile();
 
  private:
         std::vector<std::filesystem::path> filesList;
