@@ -32,6 +32,7 @@ class RkMouseEvent;
 class RkCloseEvent;
 class GeonkickButton;
 class RkLabel;
+class GeonkickSlider;
 
 class FilesView: public GeonkickWidget {
  public:
@@ -58,6 +59,8 @@ class FilesView: public GeonkickWidget {
         void onLineUp();
         void onLineDown();
         void openSelectedFile();
+        void scrollBarChanged(int val);
+        void updateScrollBar();
 
  private:
         std::vector<std::filesystem::path> filesList;
@@ -71,6 +74,8 @@ class FilesView: public GeonkickWidget {
         GeonkickButton *topScrollBarButton;
         GeonkickButton *bottomScrollBarButton;
         int scrollBarWidth;
+        GeonkickSlider *scrollBar;
+        bool isScrollBarVisible;
 };
 
 class FileDialog: public GeonkickWidget {

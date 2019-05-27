@@ -23,6 +23,7 @@
 
 #include "file_dialog.h"
 #include "geonkick_button.h"
+#include "geonkick_slider.h"
 
 #include <RkLabel.h>
 #include <RkLineEdit.h>
@@ -49,6 +50,8 @@ FilesView::FilesView(GeonkickWidget *parent)
         , topScrollBarButton{nullptr}
         , bottomScrollBarButton{nullptr}
         , scrollBarWidth{12}
+        , scrollBar{nullptr}
+        , isScrollBarVisible{false}
 {
         setFixedSize(parent->width() - 20, parent->height() - 100);
         visibleLines = height() / (lineHeight + lineSacing);
@@ -89,16 +92,45 @@ void FilesView::createScrollBar()
         bottomScrollBarButton->setPosition(width() - scrollBarWidth, height() -  bottomScrollBarButton->height());
         bottomScrollBarButton->setCheckable(true);
         RK_ACT_BIND(bottomScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineDown());
+
+        scrollBar = new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical);
+        scrollBar->setSize(scrollBarWidth, bottomScrollBarButton->y() - topScrollBarButton->y() - topScrollBarButton->height());
+        scrollBar->setPosition(topScrollBarButton->x(), topScrollBarButton->y() + topScrollBarButton->height());
+        RK_ACT_BIND(scrollBar, valueUpdated, RK_ACT_ARGS(int val), this, scrollBarChanged(val));
 }
 
 void FilesView::showScrollBar(bool b)
 {
-        if (b) {
+        isScrollBarVisible = b;
+        if (isScrollBarVisible) {
                 topScrollBarButton->show();
                 bottomScrollBarButton->show();
+                scrollBar->show();
+                scrollBar->onSetValue(0);
+                updateScrollBar();
         } else {
                 topScrollBarButton->hide();
                 bottomScrollBarButton->hide();
+                scrollBar->hide();
+        }
+}
+
+void FilesView::updateScrollBar()
+{
+        if (isScrollBarVisible) {
+                if (filesList.empty() || offsetIndex < 0)
+                        scrollBar->onSetValue(100);
+                else
+                        scrollBar->onSetValue(100 - (double)(offsetIndex) / (filesList.size() - visibleLines) * 100);
+        }
+}
+
+void FilesView::scrollBarChanged(int val)
+{
+        val = 100 - val;
+        if (filesList.size() > visibleLines) {
+                offsetIndex = ((double)val / 100) * (filesList.size() - visibleLines);
+                update();
         }
 }
 
@@ -236,6 +268,12 @@ void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
 
 void FilesView::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->x() > width() - scrollBarWidth) {
+                hightlightLine = -1;
+                update();
+                return;
+        }
+
         auto line = hightlightLine;
         hightlightLine = getLine(event->x(), event->y());
         if (hightlightLine != line)
@@ -255,6 +293,7 @@ void FilesView::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
                         offsetIndex = selectedFileIndex;
                 }
                 update();
+                updateScrollBar();
                 return;
         }
 
@@ -297,6 +336,7 @@ void FilesView::onLineUp()
         offsetIndex--;
         if (offsetIndex < 0)
                 offsetIndex = 0;
+        updateScrollBar();
         update();
 }
 
@@ -304,6 +344,7 @@ void FilesView::onLineDown()
 {
         if (offsetIndex + visibleLines < filesList.size())
                 offsetIndex++;
+        updateScrollBar();
         update();
 }
 
