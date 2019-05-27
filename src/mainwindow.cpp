@@ -171,7 +171,7 @@ void MainWindow::savePreset(const std::string &fileName)
         }
         file << geonkickApi->getState()->toJson();
         file.close();
-        topBar->setPresetName(filePath.filename());
+        topBar->setPresetName(filePath.stem());
         geonkickApi->setCurrentWorkingPath("SavePreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
 }
 

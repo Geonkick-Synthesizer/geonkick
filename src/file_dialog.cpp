@@ -175,8 +175,7 @@ void FilesView::loadCurrentDirectory()
                 filesList.insert(filesList.begin(), currentPath.root_path());
 
         offsetIndex = 0;
-        selectedFileIndex = -1;
-
+        selectedFileIndex = 0;
         if (filesList.size() > visibleLines)
                 showScrollBar(true);
         else
@@ -411,18 +410,21 @@ void FileDialog::onPathChanged(const std::string &pathName)
 void FileDialog::onAccept()
 {
         status = AcceptStatus::Accept;
-        if (dialogType == Type::Open) {
-                if (!filesView->selectedFile().empty())
-                        pathSelected = filesView->selectedFile();
+        if (dialogType == Type::Open && !filesView->selectedFile().empty()) {
+                pathSelected = filesView->selectedFile();
+                action selectedFile(pathSelected);
+                close();
         } else {
-                if (filesView->selectedFile().empty() || !fileNameEdit->text().empty())
+                if (!fileNameEdit->text().empty()) {
                         pathSelected = filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text());
-                else
+                        action selectedFile(pathSelected);
+                        close();
+                } else if (!filesView->selectedFile().empty() && !std::filesystem::is_directory(filesView->selectedFile())) {
                         pathSelected = filesView->selectedFile();
+                        action selectedFile(pathSelected);
+                        close();
+                }
         }
-
-        selectedFile(pathSelected);
-        close();
 }
 
 void FileDialog::onCancel()
