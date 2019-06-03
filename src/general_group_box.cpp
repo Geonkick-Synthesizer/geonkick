@@ -120,7 +120,7 @@ void GeneralGroupBox::createFilterHBox()
         kickFrequencyKnob->setFixedSize(80, 80);
         kickFrequencyKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
         kickFrequencyKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
-        kickFrequencyKnob->setRange(200, 20000);
+        kickFrequencyKnob->setRange(20, 20000);
         kickFrequencyKnob->show();
         RK_ACT_BIND(kickFrequencyKnob, valueUpdated, RK_ACT_ARGS(double val), geonkickApi, setKickFilterFrequency(val));
 

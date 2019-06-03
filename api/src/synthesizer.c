@@ -1170,10 +1170,12 @@ void *gkick_synth_run(void *arg)
                                 break;
                         } else {
                                 gkick_real val = gkick_synth_get_value(synth, (gkick_real)(i * dt));
-                                if (val > 1.0)
-                                        val = 1.0;
+                                if (isnan(val))
+                                        val = 0;
+                                else if (val > 1.0)
+                                        val = 1;
                                 else if (val < -1.0)
-                                        val = -1.0;
+                                        val = -1;
                                 gkick_buffer_push_back((struct gkick_buffer*)synth->buffer, val);
                                 i++;
                                 gkick_synth_unlock(synth);
@@ -1239,9 +1241,6 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
         gkick_compressor_is_enabled(synth->compressor, &enabled);
         if (enabled)
                 gkick_compressor_val(synth->compressor, val, &val);
-
-        if (fabs(val) > 1.0)
-                val = 1.0;
 
         return val;
 }

@@ -224,6 +224,11 @@ gkick_filter_val(struct gkick_filter *filter,
         size_t n;
         gkick_real val;
 
+        if (in_val > 1.0 || in_val < -1.0 || isnan(val)) {
+                *out_val = 0;
+                return GEONKICK_ERROR;
+        }
+
         if (filter == NULL || out_val == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -257,14 +262,8 @@ gkick_filter_val(struct gkick_filter *filter,
                 val = b[n];
         else
                 val = l[n];
+        *out_val = val;
         gkick_filter_unlock(filter);
-
-        if (val > 1.0)
-                *out_val = 1.0;
-        else if (val < -1.0)
-                *out_val = -1.0;
-        else
-                *out_val = val;
 
         return GEONKICK_OK;
 }

@@ -2,9 +2,9 @@
 
 Geonkick - a free software percussion synthesizer.
 
-Details: Geonkick is a synthesizer that can synthesize elements
-	 of percussion. The most basic examples are: kicks,
-	 snares, hit-hats, shakers, claps, steaks.
+Geonkick is a synthesizer that can synthesize elements
+of percussion. The most basic examples are: kicks,
+snares, hit-hats, shakers, claps, steaks.
 
 License: GPLv3
 
@@ -25,6 +25,8 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 #### Features
 
+* Additive and subtractive synthesis
+* Monophonic, not sensitive to key pitch
 * 3 layers
 * 2 oscillators per layer
      - sine, square, triangle, saw-tooth
@@ -165,4 +167,26 @@ If audio outputs are connected there are three ways to play the sound:
 ###### Examples
 
 Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
+
+#### Other technical notes
+
+* Geonkick synthesizer is designed for percussion, i.e. makes use of the fact that percussion instruments don't generate  lasting sounds, and most of the time percussion is periodic. Thus, the work flow of the sound synthesis is optimized to this, and differs from the synthesizers that are designed for synthesis of other kinds of instruments.
+
+* Filters become unstable for some extremal combination of cutoff frequency and Q parameter. If the filters become unstable the percussion graph may show a maximum continuous line or various kinds of distortion. There is a need to work with Q factor in order to use the cutoff in the desired range.
+
+* If the sound exceeds the range -1.0 - 1.0, the sound is hard limited to value 1.0 or -1.0. This can also be seen in the percussion graph.
+
+* Compressor and drive are applied per total (compressor is the last one), and there is a need to work with general settings amplitude envelope to make the input right for these two effects. For now it is recommended to use a dedicated drive or compressor instead if the result of using them is not the desired.
+
+* When a key is pressed, there no synthesis is going on, Geonkick plays the generated percussion that is kept in memory. Synthesis takes place only if some controls are changed.
+
+* If the key is released before all the percussion length is played, Geonkick will apply a 30ms linear decay to avoid sharp cut of the sound. Pressing MIDI keys with a frequency more than 30Hz, may result in artifacts depending of the shape of the synthesized percussion.
+
+* If the controls are changed during the play of the bit, there will not be any change in the sound during the play of the current bit, the next bit/bits will contain the change, i.e. the next press of the keys. This is done to avoid distortion of the shape of the current generated bit. This effect of no change is more evident when the percussion length is big, like 4 seconds.
+
+* Geonkick is monophonic. Pressing more keys at once will not result in the desired sound or even no sound.
+
+* Geonkick is not sensitive to key pitch. Pressing keys with different pitch will result in the same percussion sound.
+
+* Geonkick does not support multichannel.
 
