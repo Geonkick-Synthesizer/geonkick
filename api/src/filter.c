@@ -259,8 +259,10 @@ gkick_filter_val(struct gkick_filter *filter,
                 val = l[n];
         gkick_filter_unlock(filter);
 
-        if (fabs(val) > 1.0)
+        if (val > 1.0)
                 *out_val = 1.0;
+        else if (val < -1.0)
+                *out_val = -1.0;
         else
                 *out_val = val;
 
