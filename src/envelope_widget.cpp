@@ -275,14 +275,10 @@ void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
 void EnvelopeWidget::updateGui()
 {
         for (const auto &envelope: envelopes) {
-                if (envelope.second->isSupportedType(Envelope::Type::Amplitude)) {
-                        envelope.second->setType(Envelope::Type::Amplitude);
+                if (envelope.second->isSupportedType(Envelope::Type::Amplitude))
                         envelope.second->updatePoints();
-                }
-                if (envelope.second->isSupportedType(Envelope::Type::Frequency)) {
-                        envelope.second->setType(Envelope::Type::Frequency);
+                if (envelope.second->isSupportedType(Envelope::Type::Frequency))
                         envelope.second->updatePoints();
-                }
         }
         drawArea->update();
 }
