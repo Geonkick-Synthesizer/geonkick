@@ -59,10 +59,8 @@ FilesView::FilesView(GeonkickWidget *parent)
         setBackgroundColor(50, 50, 50);
         setBorderColor(40, 40, 40);
         setBorderWidth(1);
-
         createScrollBar();
         showScrollBar(false);
-        loadCurrentDirectory();
         show();
 }
 
