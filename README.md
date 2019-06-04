@@ -180,7 +180,7 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 
 * When a key is pressed, there no synthesis is going on, Geonkick plays the generated percussion that is kept in memory. Synthesis takes place only if some controls are changed.
 
-* If the key is released before all the percussion length is played, Geonkick will apply a 30ms linear decay to avoid sharp cut of the sound. Pressing MIDI keys with a frequency more than 30Hz, may result in artifacts depending of the shape of the synthesized percussion.
+* If the key is released before all the percussion length is played, Geonkick will apply a 30ms linear decay to avoid sharp cut of the sound.
 
 * If the controls are changed during the play of the bit, there will not be any change in the sound during the play of the current bit, the next bit/bits will contain the change, i.e. the next press of the keys. This is done to avoid distortion of the shape of the current generated bit. This effect of no change is more evident when the percussion length is big, like 4 seconds.
 
