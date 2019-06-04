@@ -93,7 +93,7 @@ int Limiter::getMeterValue() const
 
 void Limiter::onSetFaderValue(int val)
 {
-        faderSlider->onSetValue(50);
+        faderSlider->onSetValue(val);
 }
 
 void Limiter::onUpdateMeter()
@@ -122,7 +122,6 @@ int Limiter::toMeterValue(double val) const
 {
         if (val < 1e-3)
                 return 0;
-
         double logVal = 20 * log10(val);
         const double k = 70.0 / (1 - 0.07);
         const double b = 20.0 - k;
