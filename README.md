@@ -182,7 +182,7 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 
 * If the key is released before all the percussion length is played, Geonkick will apply a 30ms linear decay to avoid sharp cut of the sound.
 
-* If the controls are changed during the play of the bit, there will not be any change in the sound during the play of the current bit, the next bit/bits will contain the change, i.e. the next press of the keys. This is done to avoid distortion of the shape of the current generated bit. This effect of no change is more evident when the percussion length is big, like 4 seconds.
+* If the controls are changed during the play of the beat, there will not be any change in the sound during the play of the current beat, the next beat/beats will contain the change, i.e. the next press of the keys. This is done to avoid distortion of the shape of the current generated beat (percussion). This effect of no change is more evident when the percussion length is big, like 4 seconds.
 
 * Geonkick is monophonic. Pressing more keys at once will not result in the desired sound or even no sound.
 
