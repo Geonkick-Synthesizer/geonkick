@@ -25,8 +25,7 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 #### Features
 
-* Additive and subtractive synthesis
-* Monophonic, not sensitive to key pitch
+* Monophonic
 * 3 layers
 * 2 oscillators per layer
      - sine, square, triangle, saw-tooth
