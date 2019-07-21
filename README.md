@@ -23,6 +23,10 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 ![Screenshot](data/screenshot.png)
 
+#### Download
+
+[Geonkick 64-bit, LV2 & standalone](data/bin/geonkick.zip)
+
 #### Features
 
 * Additive and subtractive synthesis
