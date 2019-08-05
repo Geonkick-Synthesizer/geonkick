@@ -304,7 +304,13 @@ void ExportWidget::exportKick()
                 return;
         }
 
-        SNDFILE *sndFile = sf_open(getFilePath().c_str(), SFM_WRITE, &sndinfo);
+        auto filePath = getFilePath();
+        if (filePath.empty()) {
+                showError("Wrong file name format");
+                return;
+        }
+
+        SNDFILE *sndFile = sf_open(filePath.c_str(), SFM_WRITE, &sndinfo);
         if (!sndFile) {
                 showError("Error on exporting kick2");
                 return;
@@ -363,7 +369,10 @@ int ExportWidget::exportFormat()
 
 std::string ExportWidget::getFilePath()
 {
-        return std::filesystem::path(locationEdit->text()) / std::filesystem::path(fileNameEdit->text() + "." + fileSuffix());
+        std::string filename = std::filesystem::path(fileNameEdit->text()).stem();
+        if (filename.empty())
+                return "";
+        return std::filesystem::path(locationEdit->text()) / std::filesystem::path(filename + "." + fileSuffix());
 }
 
 std::string ExportWidget::fileSuffix()
