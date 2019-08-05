@@ -369,10 +369,17 @@ int ExportWidget::exportFormat()
 
 std::string ExportWidget::getFilePath()
 {
-        std::string filename = std::filesystem::path(fileNameEdit->text()).stem();
-        if (filename.empty())
-                return "";
-        return std::filesystem::path(locationEdit->text()) / std::filesystem::path(filename + "." + fileSuffix());
+        auto path = std::filesystem::path(fileNameEdit->text());
+        std::string ext = path.extension();
+        if (ext == ".wav" || ext == ".WAV"
+            || ext == ".flac" || ext == ".FLAC"
+            || ext == ".ogg" || ext == ".OGG") {
+                path.replace_extension("." + fileSuffix());
+        } else {
+                path = std::filesystem::path(path.string() + "." + fileSuffix());
+        }
+
+        return std::filesystem::path(locationEdit->text()) / path;
 }
 
 std::string ExportWidget::fileSuffix()
