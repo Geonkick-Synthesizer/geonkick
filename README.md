@@ -8,7 +8,7 @@ snares, hit-hats, shakers, claps, sticks.
 
 License: GPLv3
 
-Version: 1.6
+Version: 1.6.1
 
 Author: Iurie Nistor
 
@@ -192,4 +192,3 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 * Geonkick is not sensitive to key pitch. Pressing keys with different pitch will result in the same percussion sound.
 
 * Geonkick does not support multichannel.
-

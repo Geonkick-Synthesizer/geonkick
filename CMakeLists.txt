@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 1.6.0)
+project(geonkick VERSION 1.6.1)
 
-# NOTE: for version v1.5 vst/Windows is not implemented yet.
+# NOTE:  vst/Windows is not implemented yet.
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)

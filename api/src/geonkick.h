@@ -49,7 +49,7 @@ typedef float gkick_real;
 
 #define GEONKICK_UNUSED(expr) (void)expr
 
-#define GEONKICK_API_VERSION 0x010600
+#define GEONKICK_API_VERSION 0x010601
 #define GEONKICK_API_NAME "Geonkick"
 
 enum geonkick_error {
