@@ -25,7 +25,7 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 #### Download
 
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/quamplex/geonkick/releases/download/v1.6/geonkick-1.6_GNU+Linux_64bit.zip)
+[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/quamplex/geonkick/releases/download/v1.6/geonkick-1.6.1_GNU+Linux_64bit.zip)
 
 #### Features
 
