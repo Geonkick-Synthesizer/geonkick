@@ -91,7 +91,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
     apt-get install build-essential
     apt-get install cmake
-    apt-get install qjackctl && libjack-dev && libsndfile-dev
+    apt-get install qjackctl libjack-dev libsndfile-dev
     apt-get install rapidjson-dev
     apt-get install lv2-dev
 
