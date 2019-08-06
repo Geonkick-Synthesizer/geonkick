@@ -63,6 +63,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
  private:
         Oscillator *oscillator;
         GeonkickButton *oscillatorCheckbox;
+        GeonkickButton *fmCheckbox;
         Filter *filterBox;
         GeonkickButton *sineButton;
         GeonkickButton *squareButton;

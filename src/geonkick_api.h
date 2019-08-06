@@ -99,6 +99,8 @@ class GeonkickApi {
   FilterType kickFilterType() const;
   std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
   bool setOscillatorFrequency(int oscillatorIndex, double frequency);
+  void setOscillatorAsFm(int oscillatorIndex, bool b);
+  bool isOscillatorAsFm(int oscillatorIndex) const;
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;
   void addKickEnvelopePoint(EnvelopeType envelope, double x, double y);

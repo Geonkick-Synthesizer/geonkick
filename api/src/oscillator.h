@@ -45,6 +45,13 @@ struct gkick_oscillator {
 	gkick_real sample_rate;
 	gkick_real frequency;
 	gkick_real amplitude;
+
+        /* FM input value for this OSC. */
+        gkick_real fm_input;
+
+        /* Specifies if this OSC is a FM source to other oscillator. */
+        bool is_fm;
+
 	size_t env_number;
 	struct gkick_envelope **envelopes;
         struct gkick_filter *filter;

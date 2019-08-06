@@ -54,11 +54,13 @@ extern const unsigned char rk_noise_type_brownian_active_png[];
 extern const unsigned char rk_checkbox_checked_png[];
 extern const unsigned char rk_checkbox_unchecked_png[];
 extern const unsigned char rk_knob_bk_image_png[];
+extern const unsigned char rk_osc1_to_osc2_label_png[];
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           : GeonkickGroupBox{parent}
            , oscillator{osc}
            , oscillatorCheckbox{nullptr}
+           , fmCheckbox{nullptr}
            , filterBox{nullptr}
            , sineButton{nullptr}
            , squareButton{nullptr}
@@ -87,6 +89,22 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         if (oscillator->type() == Oscillator::Type::Oscillator1) {
                 label->setSize(74, 11);
                 label->setImage(RkImage(74, 11, rk_osc1_groupbox_label_png));
+
+                fmCheckbox = new GeonkickButton(this);
+                fmCheckbox->setCheckable(true);
+                fmCheckbox->setPosition(label->x() + label->width() + 10, 0);
+                fmCheckbox->setFixedSize(12, 12);
+                fmCheckbox->setPressedImage(RkImage(12, 12, rk_checkbox_checked_png));
+                fmCheckbox->setUnpressedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
+                fmCheckbox->show();
+                RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
+
+                auto fmLabel = new RkLabel(this);
+                fmLabel->setBackgroundColor(68, 68, 70);
+                fmLabel->setSize(103, 11);
+                fmLabel->setPosition(fmCheckbox->x() + fmCheckbox->width(), 0);
+                fmLabel->setImage(RkImage(103, 11, rk_osc1_to_osc2_label_png));
+                fmLabel->show();
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 label->setSize(76, 11);
                 label->setImage(RkImage(76, 11, rk_osc2_groupbox_label_png));
@@ -332,6 +350,9 @@ void OscillatorGroupBox::updateGui()
         envelopeAmplitudeKnob->setCurrentValue(oscillator->amplitude());
         if (oscillator->type() != Oscillator::Type::Noise)
                 frequencyAmplitudeKnob->setCurrentValue(oscillator->frequency());
+
+        if (oscillator->type() == Oscillator::Type::Oscillator1)
+                fmCheckbox->setPressed(oscillator->isFm());
 
         filterBox->enable(oscillator->isFilterEnabled());
         filterBox->setResonance(oscillator->filterQFactor());

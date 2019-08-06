@@ -69,6 +69,8 @@ class GeonkickState
                                          const std::vector<RkRealPoint> &points,
                                          GeonkickApi::EnvelopeType envelope);
 
+        bool isOscillatorAsFm(int index) const;
+        void setOscillatorAsFm(int index, bool b);
         bool isOscillatorEnabled(int index) const;
         GeonkickApi::FunctionType oscillatorFunction(int index) const;
         double oscillatorAmplitue(int index) const;
@@ -119,6 +121,7 @@ private:
               OscillatorInfo()
               : type{GeonkickApi::OscillatorType::Oscillator1}
                 , isEnabled{false}
+                , isFm{false}
                 , function{GeonkickApi::FunctionType::Sine}
                 , phase{0}
                 , amplitude{0.8}
@@ -129,6 +132,7 @@ private:
                 , filterFactor{1.0} {}
                 GeonkickApi::OscillatorType type;
                 bool isEnabled;
+                bool isFm;
                 GeonkickApi::FunctionType function;
                 double phase;
                 double amplitude;

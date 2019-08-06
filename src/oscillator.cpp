@@ -35,6 +35,16 @@ Oscillator::~Oscillator()
 {
 }
 
+void Oscillator::setAsFm(bool b)
+{
+        geonkickApi->setOscillatorAsFm(index(), b);
+}
+
+bool Oscillator::isFm() const
+{
+        return geonkickApi->isOscillatorAsFm(index());
+}
+
 void Oscillator::setFunction(FunctionType func)
 {
         geonkickApi->setOscillatorFunction(index(), static_cast<GeonkickApi::FunctionType>(func));

@@ -237,6 +237,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         }
         points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::FilterCutOff);
         state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::FilterCutOff);
+        state->setOscillatorAsFm(index, isOscillatorAsFm(index));
         currentLayer = temp;
 }
 
@@ -268,6 +269,7 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         }
         setOscillatorEvelopePoints(osc, EnvelopeType::FilterCutOff,
                                    state->oscillatorEnvelopePoints(static_cast<int>(osc), EnvelopeType::FilterCutOff));
+        setOscillatorAsFm(osc, state->isOscillatorAsFm(static_cast<int>(osc)));
 
         currentLayer = temp;
 }
@@ -489,6 +491,18 @@ bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
 		return false;
 
 	return true;
+}
+
+void GeonkickApi::setOscillatorAsFm(int oscillatorIndex, bool b)
+{
+        geonkick_osc_set_fm(geonkickApi, getOscIndex(oscillatorIndex), b);
+}
+
+bool GeonkickApi::isOscillatorAsFm(int oscillatorIndex) const
+{
+        bool fm = false;
+        geonkick_osc_is_fm(geonkickApi, getOscIndex(oscillatorIndex), &fm);
+        return fm;
 }
 
 void GeonkickApi::enableOscillator(int oscillatorIndex, bool enable)

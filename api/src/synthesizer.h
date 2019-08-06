@@ -129,6 +129,12 @@ gkick_synth_osc_get_env(struct gkick_synth *synth,
                         size_t env_index);
 
 enum geonkick_error
+gkick_synth_osc_set_fm(struct gkick_synth *synth, size_t index, bool is_fm);
+
+enum geonkick_error
+gkick_synth_osc_is_fm(struct gkick_synth *synth, size_t index, bool *is_fm);
+
+enum geonkick_error
 gkick_synth_osc_envelope_points(struct gkick_synth *synth,
                                 int osc_index,
                                 int env_index,

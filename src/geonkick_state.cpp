@@ -165,6 +165,8 @@ void GeonkickState::parseOscillatorObject(int index,  const rapidjson::Value &os
         for (const auto &m: osc.GetObject()) {
                 if (m.name == "enabled" && m.value.IsBool())
                         setOscillatorEnabled(index, m.value.GetBool());
+                if (m.name == "is_fm" && m.value.IsBool())
+                        setOscillatorAsFm(index, m.value.GetBool());
                 if (m.name == "function" && m.value.IsInt())
                         setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(m.value.GetInt()));
                 if (m.name == "phase" && m.value.IsDouble())
@@ -395,6 +397,21 @@ void GeonkickState::setOscillatorEnvelopePoints(int index,
         }
 }
 
+bool GeonkickState::isOscillatorAsFm(int index) const
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                return oscillator->isFm;
+        return false;
+}
+
+void GeonkickState::setOscillatorAsFm(int index, bool b)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+               oscillator->isFm = b;
+}
+
 bool GeonkickState::isOscillatorEnabled(int index) const
 {
         auto oscillator = getOscillator(index);
@@ -599,8 +616,8 @@ void GeonkickState::oscJson(std::ostringstream &jsonStream) const
 {
         for (const auto& val: oscillators) {
                 jsonStream << "\"osc" << val.first << "\": {" << std::endl;
-                jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false");
-                jsonStream << "," << std::endl;
+                jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false") << ", " << std::endl;
+                jsonStream << "\"is_fm\": " << (val.second->isFm ? "true" : "false") << ", " << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
                 jsonStream <<  "\"phase\": " << std::fixed << std::setprecision(5) << val.second->phase << ", " << std::endl;
                 jsonStream << "\"ampl_env\": {" << std::endl;

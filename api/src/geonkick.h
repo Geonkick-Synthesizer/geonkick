@@ -157,6 +157,12 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 				   gkick_real y);
 
 enum geonkick_error
+geonkick_osc_set_fm(struct geonkick *kick, size_t index, bool is_fm);
+
+enum geonkick_error
+geonkick_osc_is_fm(struct geonkick *kick, size_t index, bool *is_fm);
+
+enum geonkick_error
 geonkick_set_osc_function(struct geonkick *kick,
 			  size_t osc_index,
 			  enum geonkick_osc_func_type type);

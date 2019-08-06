@@ -51,6 +51,8 @@ class Oscillator
   double envelopeLength() const;
 
   void enable(bool b);
+  void setAsFm(bool b);
+  bool isFm() const;
   void setFunction(FunctionType func);
   void setPhase(gkick_real phase);
   gkick_real getPhase() const;

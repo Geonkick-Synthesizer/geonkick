@@ -30,9 +30,8 @@ struct gkick_oscillator
         struct gkick_oscillator *osc;
 
         osc = (struct gkick_oscillator*)malloc(sizeof(struct gkick_oscillator));
-        if (osc == NULL) {
+        if (osc == NULL)
                 return NULL;
-        }
         memset(osc, 0, sizeof(struct gkick_oscillator));
 
         osc->state = GEONKICK_OSC_STATE_ENABLED;
@@ -44,6 +43,8 @@ struct gkick_oscillator
         osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
         osc->env_number = 2;
         osc->brownian = 0;
+        osc->is_fm = false;
+        osc->fm_input = 0;
 
         if (gkick_osc_create_envelopes(osc) != GEONKICK_OK) {
                 gkick_osc_free(&osc);
@@ -56,7 +57,6 @@ struct gkick_oscillator
 		return NULL;
         }
         osc->filter_enabled = 0;
-
         return osc;
 }
 
@@ -129,6 +129,7 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
 {
         gkick_real f;
         f = osc->frequency * gkick_envelope_get_value(osc->envelopes[1], t / kick_len);
+        f += f * osc->fm_input;
         osc->phase += (2 * M_PI * f) / (osc->sample_rate);
         if (osc->phase > 2 * M_PI)
                 osc->phase -= 2 * M_PI;

@@ -284,6 +284,44 @@ gkick_synth_osc_is_enabled(struct gkick_synth *synth, size_t index, int *enabled
         return GEONKICK_OK;
 }
 
+enum geonkick_error
+gkick_synth_osc_set_fm(struct gkick_synth *synth, size_t index, bool is_fm)
+{
+        gkick_synth_lock(synth);
+	struct gkick_oscillator* osc = gkick_synth_get_oscillator(synth, index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		gkick_synth_unlock(synth);
+		return GEONKICK_ERROR;
+	}
+
+        osc->is_fm = is_fm;
+        if (osc->state == GEONKICK_OSC_STATE_ENABLED)
+                gkick_synth_wakeup_thread(synth);
+	gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_osc_is_fm(struct gkick_synth *synth, size_t index, bool *is_fm)
+{
+        gkick_synth_lock(synth);
+	struct gkick_oscillator* osc = gkick_synth_get_oscillator(synth, index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		gkick_synth_unlock(synth);
+		return GEONKICK_ERROR;
+	}
+
+        *is_fm = osc->is_fm;
+        if (osc->state == GEONKICK_OSC_STATE_ENABLED)
+                gkick_synth_wakeup_thread(synth);
+	gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
 struct gkick_envelope*
 gkick_synth_osc_get_env(struct gkick_synth *synth,
                         size_t osc_index,
@@ -1218,13 +1256,18 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
 {
         gkick_real val = 0;
         gkick_real env_x = 0;
-        for (size_t i = 0; i < synth->oscillators_number; i++) {
-                if (synth->osc_groups[i / GKICK_OSC_GROUP_SIZE]
-                    && gkick_osc_enabled(synth->oscillators[i])) {
-                        val += gkick_osc_value(synth->oscillators[i],
-                                              t, synth->length);
-                        gkick_osc_increment_phase(synth->oscillators[i], t,
-                                                  synth->length);
+        gkick_real fm_val = 0;
+        size_t n = synth->oscillators_number;
+        for (size_t i = 0; i < n; i++) {
+                if (synth->osc_groups[i / GKICK_OSC_GROUP_SIZE] && gkick_osc_enabled(synth->oscillators[i])) {
+                        if (synth->oscillators[i]->is_fm && i % 3 == 0 && i + 1 < n) {
+                                fm_val = gkick_osc_value(synth->oscillators[i], t, synth->length);
+                                synth->oscillators[i + 1]->fm_input = fm_val;
+                        } else {
+                                val += gkick_osc_value(synth->oscillators[i],
+                                                       t, synth->length);
+                        }
+                        gkick_osc_increment_phase(synth->oscillators[i], t, synth->length);
                 }
         }
 
@@ -1253,6 +1296,7 @@ void gkick_synth_reset_oscillators(struct gkick_synth *synth)
 
         for (i = 0; i < synth->oscillators_number; i++) {
                 (synth->oscillators[i])->phase = (synth->oscillators[i])->initial_phase;
+                (synth->oscillators[i])->fm_input = 0;
                 gkick_filter_init(synth->oscillators[i]->filter);
         }
 }
