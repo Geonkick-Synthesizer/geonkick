@@ -235,7 +235,13 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 
 void OscillatorGroupBox::createFilterGroupBox()
 {
-        auto filterEnvelopeBox = new GeonkickWidget(this);
+        auto filter = new GeonkickFilter(this);
+        if (oscillator->type() == Oscillator::Type::Noise)
+                filter->setPosition(0, 151);
+        else
+                filter->setPosition(0, 243);
+
+        /*        auto filterEnvelopeBox = new GeonkickWidget(this);
         if (oscillator->type() == Oscillator::Type::Noise)
                 filterEnvelopeBox->setPosition(0, 151);
         else
@@ -285,6 +291,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         filterType->setPressedImage(RkImage(80, 25, rk_filter_type_hp_png));
         filterType->setUnpressedImage(RkImage(80, 25, rk_filter_type_lp_png));
         filterType->show();
+        */
 }
 
 void OscillatorGroupBox::setSineWave(bool pressed)

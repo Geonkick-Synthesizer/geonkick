@@ -70,7 +70,8 @@ class GeonkickApi {
 
   enum class FilterType:int {
           LowPass  = GEONKICK_FILTER_LOW_PASS,
-          HighPass = GEONKICK_FILTER_HIGH_PASS
+          HighPass = GEONKICK_FILTER_HIGH_PASS,
+          BandPass = GEONKICK_FILTER_BAND_PASS
   };
 
   GeonkickApi();

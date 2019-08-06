@@ -192,3 +192,13 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 * Geonkick is not sensitive to key pitch. Pressing keys with different pitch will result in the same percussion sound.
 
 * Geonkick does not support multichannel.
+
+### Thank you
+
+Here are the list of people that contrinuted with good
+features ideas that significally improved Geonkick:
+
+[unfa](https://soundcloud.com/unfa) - for multiple noise layers
+[David Runge](https://gitlab.com/dvzrv) - for cutoff filter envelop
+[Christopher Arndt](https://chrisarndt.de/) - for band pass filter
+[Robin Gareus](http://gareus.org/) - for many suggestions regarding real-time audio
