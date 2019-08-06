@@ -35,11 +35,11 @@ The development of new releases is going on ["develop" branch](https://github.co
      - sine, square, triangle, saw-tooth
      - initial phase control
      - amplitude & frequency envelope
-     - low & high pass filter, cutoff envelope
+     - low, band and high pass filter, cutoff envelope
 * One noise generator per layer
      - white & brownian
      - amplitude envelope
-     - low & high pass filter, cutoff envelope
+     - low, band and high pass filter, cutoff envelope
 * General
      - amplitude envelope & kick length
      - low & high pass filter, cutoff envelope
@@ -193,14 +193,14 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 
 * Geonkick does not support multichannel.
 
-### Thank you
+### Thank you!
 
-Here are the list of people that contributed with
+Here is the list of people that contributed with
 features ideas that significally improved Geonkick.
 
 [unfa](https://soundcloud.com/unfa) - for multiple noise layers
 
-[David Runge](https://gitlab.com/dvzrv) - for cutoff filter envelop
+[David Runge](https://gitlab.com/dvzrv) - for cutoff filter envelope
 
 [Christopher Arndt](https://chrisarndt.de/) - for band pass filter
 
