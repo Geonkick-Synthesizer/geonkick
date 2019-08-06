@@ -8,7 +8,7 @@ snares, hit-hats, shakers, claps, sticks.
 
 License: GPLv3
 
-Version: 1.6
+Version: 1.6.1
 
 Author: Iurie Nistor
 
@@ -25,7 +25,7 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 #### Download
 
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/quamplex/geonkick/releases/download/v1.6/geonkick-1.6_GNU+Linux_64bit.zip)
+[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/quamplex/geonkick/releases/download/v1.6/geonkick-1.6.1_GNU+Linux_64bit.zip)
 
 #### Features
 
@@ -35,11 +35,11 @@ The development of new releases is going on ["develop" branch](https://github.co
      - sine, square, triangle, saw-tooth
      - initial phase control
      - amplitude & frequency envelope
-     - low & high pass filter, cutoff envelope
+     - low, band and high pass filter, cutoff envelope
 * One noise generator per layer
      - white & brownian
      - amplitude envelope
-     - low & high pass filter, cutoff envelope
+     - low, band and high pass filter, cutoff envelope
 * General
      - amplitude envelope & kick length
      - low & high pass filter, cutoff envelope
@@ -130,7 +130,7 @@ installs, runs, and if there any issues.
 
 #### Packaging
 
-* [Package, for older version 1.0](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
+* [Package](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
 
 #### Road map
 
@@ -193,3 +193,15 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 
 * Geonkick does not support multichannel.
 
+### Thank you!
+
+Here is the list of people that contributed with
+features ideas that significally improved Geonkick.
+
+[unfa](https://soundcloud.com/unfa) - for multiple noise layers
+
+[David Runge](https://gitlab.com/dvzrv) - for cutoff filter envelope
+
+[Christopher Arndt](https://chrisarndt.de/) - for band pass filter
+
+[Robin Gareus](http://gareus.org/) - for many suggestions regarding real-time audio

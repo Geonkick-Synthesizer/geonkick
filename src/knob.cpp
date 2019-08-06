@@ -38,6 +38,7 @@ Knob::Knob(GeonkickWidget *parent)
           , rangeType{RangeType::Linear}
           , isSelected{false}
 {
+        show();
 }
 
 Knob::~Knob()

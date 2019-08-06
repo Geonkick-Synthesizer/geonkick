@@ -15,7 +15,7 @@
    viewBox="0 0 270.93333 211.1375"
    version="1.1"
    id="svg14595"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="geonkick2.0.svg">
   <defs
      id="defs14589">
@@ -2725,19 +2725,6 @@
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter10330-7-2-56-3-5"
-       x="-0.013693905"
-       width="1.0273879"
-       y="-0.021728534"
-       height="1.0434572">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.23845105"
-         id="feGaussianBlur10332-3-1-3-6-0" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
        id="filter10330-7-2-56-39-9"
        x="-0.013693905"
        width="1.0273879"
@@ -4319,16 +4306,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.3007197"
-     inkscape:cx="295.04645"
-     inkscape:cy="665.83115"
+     inkscape:zoom="8.0247773"
+     inkscape:cx="468.49187"
+     inkscape:cy="635.13184"
      inkscape:document-units="px"
-     inkscape:current-layer="g8163-9-4-1-2-0-8"
+     inkscape:current-layer="g24485"
      showgrid="false"
-     inkscape:window-width="1918"
-     inkscape:window-height="1002"
+     inkscape:window-width="1920"
+     inkscape:window-height="995"
      inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-y="28"
      inkscape:window-maximized="1"
      showguides="false"
      units="px"
@@ -15772,6 +15759,241 @@
            x="113.74126"
            y="417.70291"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none">Filter Cutoff</tspan></text>
+      <g
+         id="g6870"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp_checked.png"
+         inkscape:export-xdpi="107.30572"
+         inkscape:export-ydpi="107.30572">
+        <text
+           inkscape:export-ydpi="107.30572"
+           inkscape:export-xdpi="107.30572"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+           x="110.00851"
+           y="116.45766"
+           id="text10105-4-0-91-9-1-1-3-8-5-5-8-3"><tspan
+             sodipodi:role="line"
+             id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-6"
+             x="110.00851"
+             y="116.45766"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671">LP</tspan></text>
+        <circle
+           style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="path7464-49-1-7"
+           cx="107.53864"
+           cy="115.41485"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
+           inkscape:export-xdpi="107.30572"
+           inkscape:export-ydpi="107.30572"
+           r="1.5674129" />
+        <rect
+           style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.01667786;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="rect7280-5-5"
+           width="7.0928497"
+           height="3.7729778"
+           x="105.97958"
+           y="113.52837"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
+           inkscape:export-xdpi="107.30572"
+           inkscape:export-ydpi="107.30572" />
+      </g>
+      <g
+         id="g6877"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_bp.png"
+         inkscape:export-xdpi="94.794815"
+         inkscape:export-ydpi="94.794815"
+         transform="matrix(1.1220138,0,0,1.1220138,-13.989979,-14.312379)">
+        <text
+           inkscape:export-ydpi="94.794815"
+           inkscape:export-xdpi="94.794815"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_bp_checked.png"
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+           x="118.60817"
+           y="116.45766"
+           id="text10105-4-0-91-9-1-1-3-8-5-5-8-3-6"><tspan
+             sodipodi:role="line"
+             id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-6-2"
+             x="118.60817"
+             y="116.45766"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671">BP</tspan></text>
+        <circle
+           style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="path7464-49-1-7-9"
+           cx="116.22644"
+           cy="115.41485"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_bp_checked.png"
+           inkscape:export-xdpi="94.794815"
+           inkscape:export-ydpi="94.794815"
+           r="1.567413" />
+        <rect
+           style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.01667797;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="rect7280-5-5-2"
+           width="7.0929408"
+           height="3.7729781"
+           x="114.66737"
+           y="113.52837"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_bp_checked.png"
+           inkscape:export-xdpi="94.794815"
+           inkscape:export-ydpi="94.794815" />
+      </g>
+      <g
+         id="g6884"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_hp.png"
+         inkscape:export-xdpi="106.34357"
+         inkscape:export-ydpi="106.34357">
+        <text
+           inkscape:export-ydpi="106.34357"
+           inkscape:export-xdpi="106.34357"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_hp_checked.png"
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+           x="127.03794"
+           y="116.45766"
+           id="text10105-4-0-91-9-1-1-3-8-5-5-8-3-7"><tspan
+             sodipodi:role="line"
+             id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-6-0"
+             x="127.03794"
+             y="116.45766"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671">HP</tspan></text>
+        <circle
+           style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="path7464-49-1-7-93"
+           cx="124.96371"
+           cy="115.41485"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_hp_checked.png"
+           inkscape:export-xdpi="106.34357"
+           inkscape:export-ydpi="106.34357"
+           r="1.567413" />
+        <rect
+           style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.01667797;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="rect7280-5-5-0"
+           width="7.0929408"
+           height="3.7729781"
+           x="123.40464"
+           y="113.52837"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_hp_checked.png"
+           inkscape:export-xdpi="106.34357"
+           inkscape:export-ydpi="106.34357" />
+      </g>
+      <g
+         transform="translate(-2.0153431,4.0553943)"
+         style="display:inline"
+         id="g6870-7"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
+         inkscape:export-xdpi="92.998291"
+         inkscape:export-ydpi="92.998291">
+        <text
+           inkscape:export-ydpi="92.998291"
+           inkscape:export-xdpi="92.998291"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+           x="110.00851"
+           y="116.45766"
+           id="text10105-4-0-91-9-1-1-3-8-5-5-8-3-3"><tspan
+             sodipodi:role="line"
+             id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-6-6"
+             x="110.00851"
+             y="116.45766"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671">LP</tspan></text>
+        <circle
+           style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="path7464-49-1-7-1"
+           cx="107.53864"
+           cy="115.41485"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
+           inkscape:export-xdpi="92.998291"
+           inkscape:export-ydpi="92.998291"
+           r="1.5674129" />
+        <rect
+           style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.01667786;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="rect7280-5-5-9"
+           width="7.0928497"
+           height="3.7729778"
+           x="105.97958"
+           y="113.52837"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
+           inkscape:export-xdpi="92.998291"
+           inkscape:export-ydpi="92.998291" />
+      </g>
+      <g
+         transform="translate(-2.0153431,4.0553943)"
+         style="display:inline"
+         id="g6877-3"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_bp.png"
+         inkscape:export-xdpi="92.998291"
+         inkscape:export-ydpi="92.998291">
+        <text
+           inkscape:export-ydpi="193.34676"
+           inkscape:export-xdpi="193.34676"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+           x="118.69633"
+           y="116.45766"
+           id="text10105-4-0-91-9-1-1-3-8-5-5-8-3-6-1"><tspan
+             sodipodi:role="line"
+             id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-6-2-9"
+             x="118.69633"
+             y="116.45766"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671">BP</tspan></text>
+        <circle
+           style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="path7464-49-1-7-9-4"
+           cx="116.22644"
+           cy="115.41485"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
+           inkscape:export-xdpi="193.34676"
+           inkscape:export-ydpi="193.34676"
+           r="1.567413" />
+        <rect
+           style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.01667797;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="rect7280-5-5-2-8"
+           width="7.0929408"
+           height="3.7729781"
+           x="114.66737"
+           y="113.52837" />
+      </g>
+      <g
+         transform="translate(-2.0153431,4.0553943)"
+         style="display:inline"
+         id="g6884-4"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_hp.png"
+         inkscape:export-xdpi="92.998291"
+         inkscape:export-ydpi="92.998291">
+        <text
+           inkscape:export-ydpi="193.34676"
+           inkscape:export-xdpi="193.34676"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+           x="127.43359"
+           y="116.45766"
+           id="text10105-4-0-91-9-1-1-3-8-5-5-8-3-7-5"><tspan
+             sodipodi:role="line"
+             id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-6-0-0"
+             x="127.43359"
+             y="116.45766"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671">HP</tspan></text>
+        <circle
+           style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="path7464-49-1-7-93-3"
+           cx="124.96371"
+           cy="115.41485"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
+           inkscape:export-xdpi="193.34676"
+           inkscape:export-ydpi="193.34676"
+           r="1.567413" />
+        <rect
+           style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:none;stroke-width:0.01667797;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+           id="rect7280-5-5-0-1"
+           width="7.0929408"
+           height="3.7729781"
+           x="123.40464"
+           y="113.52837" />
+      </g>
     </g>
   </g>
 </svg>

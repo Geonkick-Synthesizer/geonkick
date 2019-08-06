@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 1.6.0)
+project(geonkick VERSION 1.6.1)
 
-# NOTE: for version v1.5 vst/Windows is not implemented yet.
+# NOTE:  vst/Windows is not implemented yet.
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -46,6 +46,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
   ${GKICK_COMMON_DIR}/file_dialog.h
+  ${GKICK_COMMON_DIR}/filter.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
@@ -74,6 +75,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
   ${GKICK_COMMON_DIR}/file_dialog.cpp
+  ${GKICK_COMMON_DIR}/filter.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp

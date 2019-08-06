@@ -304,7 +304,13 @@ void ExportWidget::exportKick()
                 return;
         }
 
-        SNDFILE *sndFile = sf_open(getFilePath().c_str(), SFM_WRITE, &sndinfo);
+        auto filePath = getFilePath();
+        if (filePath.empty()) {
+                showError("Wrong file name format");
+                return;
+        }
+
+        SNDFILE *sndFile = sf_open(filePath.c_str(), SFM_WRITE, &sndinfo);
         if (!sndFile) {
                 showError("Error on exporting kick2");
                 return;
@@ -363,7 +369,17 @@ int ExportWidget::exportFormat()
 
 std::string ExportWidget::getFilePath()
 {
-        return std::filesystem::path(locationEdit->text()) / std::filesystem::path(fileNameEdit->text() + "." + fileSuffix());
+        auto path = std::filesystem::path(fileNameEdit->text());
+        std::string ext = path.extension();
+        if (ext == ".wav" || ext == ".WAV"
+            || ext == ".flac" || ext == ".FLAC"
+            || ext == ".ogg" || ext == ".OGG") {
+                path.replace_extension("." + fileSuffix());
+        } else {
+                path = std::filesystem::path(path.string() + "." + fileSuffix());
+        }
+
+        return std::filesystem::path(locationEdit->text()) / path;
 }
 
 std::string ExportWidget::fileSuffix()
