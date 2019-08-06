@@ -34,7 +34,8 @@ extern const unsigned char rk_knob_bk_50x50_png[];
 extern const unsigned char rk_knob_50x50_png[];
 
 Filter::Filter(GeonkickWidget *parent)
-        : filterCheckbox{nullptr}
+        : GeonkickWidget(parent)
+        , filterCheckbox{nullptr}
         , cutOffKnob{nullptr}
         , resonanceKnob{nullptr}
 {
@@ -61,7 +62,7 @@ Filter::Filter(GeonkickWidget *parent)
         cutOffKnob->show();
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), this, cutOffChanged(val));
 
-        resonanceKnob = new Knob(filterEnvelopeBox);
+        resonanceKnob = new Knob(this);
         int w = 60;
         int h = 60;
         resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
@@ -87,12 +88,12 @@ bool Filter::isEnabled() const
 
 void Filter::setCutOff(double val)
 {
-        frequencyKnob->setCurrentValue(val);
+        cutOffKnob->setCurrentValue(val);
 }
 
 double Filter::cutOff() const
 {
-        return frequencyKnob->getValue();
+        return cutOffKnob->getValue();
 }
 
 void Filter::setResonance(double val)
@@ -102,7 +103,7 @@ void Filter::setResonance(double val)
 
 double Filter::resonance() const
 {
-        resonanceKnob->getValue();
+        return resonanceKnob->getValue();
 }
 
 void Filter::setType(GeonkickApi::FilterType type)
@@ -111,4 +112,16 @@ void Filter::setType(GeonkickApi::FilterType type)
 
 GeonkickApi::FilterType Filter::type() const
 {
+        return GeonkickApi::FilterType::LowPass;
 }
+
+void Filter::setCutOffRange(double from, double to)
+{
+        cutOffKnob->setRange(from, to);
+}
+
+void Filter::setResonanceRange(double from, double to)
+{
+        resonanceKnob->setRange(from, to);
+}
+

@@ -33,6 +33,7 @@ class GeonkickButton;
 class GeonkickCheckbox;
 class Knob;
 class GeonkickSlider;
+class Filter;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -58,12 +59,11 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void setNoiseWhite(bool pressed);
         void setNoiseBrownian(bool pressed);
         void groupBoxLabelUpdated(bool state);
-        void setFilterType(bool state);
 
  private:
         Oscillator *oscillator;
         GeonkickButton *oscillatorCheckbox;
-        GeonkickButton *filterCheckbox;
+        Filter *filterBox;
         GeonkickButton *sineButton;
         GeonkickButton *squareButton;
         GeonkickButton *triangleButton;
@@ -71,9 +71,6 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickSlider *phaseSlider;
         GeonkickButton *noiseWhiteButton;
         GeonkickButton *noiseBrownianButton;
-        GeonkickButton *filterType;
-        Knob *kickQFactorKnob;
-        Knob *kickFrequencyKnob;
         Knob *envelopeAmplitudeKnob;
         Knob *frequencyAmplitudeKnob;
         bool filterTypeIsChecked;

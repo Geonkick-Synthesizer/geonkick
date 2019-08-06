@@ -27,6 +27,7 @@
 #include "geonkick_button.h"
 #include "knob.h"
 #include "geonkick_slider.h"
+#include "filter.h"
 
 #include <RkLabel.h>
 
@@ -34,8 +35,6 @@ extern const unsigned char rk_osc1_groupbox_label_png[];
 extern const unsigned char rk_wf_bk_hbox_png[];
 extern const unsigned char rk_osc2_groupbox_label_png[];
 extern const unsigned char rk_noise_groupbox_label_png[];
-extern const unsigned char rk_checkbox_checked_png[];
-extern const unsigned char rk_checkbox_unchecked_png[];
 extern const unsigned char rk_wave_button_sine_png[];
 extern const unsigned char rk_wave_button_sine_active_png[];
 extern const unsigned char rk_wave_button_square_png[];
@@ -47,30 +46,20 @@ extern const unsigned char rk_phase_label_png[];
 extern const unsigned char rk_wave_button_sawtooth_active_png[];
 extern const unsigned char rk_hboxbk_noise_env_png[];
 extern const unsigned char rk_hboxbk_osc_env_png[];
-extern const unsigned char rk_knob_bk_image_png[];
 extern const unsigned char rk_knob_png[];
 extern const unsigned char rk_noise_type_white_png[];
 extern const unsigned char rk_noise_type_white_active_png[];
 extern const unsigned char rk_noise_type_brownian_png[];
 extern const unsigned char rk_noise_type_brownian_active_png[];
-extern const unsigned char rk_knob_bk_image_png[];
-extern const unsigned char rk_knob_png[];
 extern const unsigned char rk_checkbox_checked_png[];
 extern const unsigned char rk_checkbox_unchecked_png[];
 extern const unsigned char rk_knob_bk_image_png[];
-extern const unsigned char rk_knob_png[];
-extern const unsigned char rk_knob_bk_50x50_png[];
-extern const unsigned char rk_knob_bk_50x50_png[];
-extern const unsigned char rk_knob_50x50_png[];
-extern const unsigned char rk_filter_type_hp_png[];
-extern const unsigned char rk_filter_type_lp_png[];
-extern const unsigned char rk_hboxbk_filter_png[];
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           : GeonkickGroupBox{parent}
            , oscillator{osc}
            , oscillatorCheckbox{nullptr}
-           , filterCheckbox{nullptr}
+           , filterBox{nullptr}
            , sineButton{nullptr}
            , squareButton{nullptr}
            , triangleButton{nullptr}
@@ -78,9 +67,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , phaseSlider{nullptr}
            , noiseWhiteButton{nullptr}
            , noiseBrownianButton{nullptr}
-           , filterType{nullptr}
-           , kickQFactorKnob{nullptr}
-           , kickFrequencyKnob{nullptr}
            , envelopeAmplitudeKnob{nullptr}
            , frequencyAmplitudeKnob{nullptr}
            , filterTypeIsChecked{false}
@@ -235,63 +221,18 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 
 void OscillatorGroupBox::createFilterGroupBox()
 {
-        auto filter = new GeonkickFilter(this);
+        filterBox = new Filter(this);
         if (oscillator->type() == Oscillator::Type::Noise)
-                filter->setPosition(0, 151);
+                filterBox->setPosition(0, 151);
         else
-                filter->setPosition(0, 243);
-
-        /*        auto filterEnvelopeBox = new GeonkickWidget(this);
-        if (oscillator->type() == Oscillator::Type::Noise)
-                filterEnvelopeBox->setPosition(0, 151);
-        else
-                filterEnvelopeBox->setPosition(0, 243);
-        filterEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_filter_png));
-        filterEnvelopeBox->setFixedSize(224, 125);
-        filterEnvelopeBox->show();
-
-        filterCheckbox = new GeonkickButton(filterEnvelopeBox);
-        filterCheckbox->setCheckable(true);
-        filterCheckbox->setBackgroundColor(68, 68, 70);
-        filterCheckbox->setSize(10, 10);
-        filterCheckbox->setPosition(10, 10);
-        filterCheckbox->setPressedImage(RkImage(12, 12, rk_checkbox_checked_png));
-        filterCheckbox->setUnpressedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
-        filterCheckbox->show();
-        RK_ACT_BIND(filterCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, enableFilter(b));
-
-        kickFrequencyKnob = new Knob(filterEnvelopeBox);
-        kickFrequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
-        kickFrequencyKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
-        kickFrequencyKnob->setFixedSize(80, 80);
-        kickFrequencyKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
-        kickFrequencyKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
-        kickFrequencyKnob->setRange(20, 20000);
-        kickFrequencyKnob->show();
-        RK_ACT_BIND(kickFrequencyKnob, valueUpdated, RK_ACT_ARGS(double val), oscillator, setFilterFrequency(val));
-
-        kickQFactorKnob = new Knob(filterEnvelopeBox);
-        int w = 60;
-        int h = 60;
-        kickQFactorKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
-        kickQFactorKnob->setFixedSize(w, h);
-        kickQFactorKnob->setKnobBackgroundImage(RkImage(60, 60, rk_knob_bk_50x50_png));
-        kickQFactorKnob->setKnobImage(RkImage(50, 50, rk_knob_50x50_png));
-        kickQFactorKnob->setRange(0.01, 10);
-        kickQFactorKnob->show();
-        RK_ACT_BIND(kickQFactorKnob, valueUpdated, RK_ACT_ARGS(double val), oscillator, setFilterQFactor(val));
-
-        filterType = new GeonkickButton(filterEnvelopeBox);
-        filterType->setCheckable(true);
-        RK_ACT_BIND(filterType, toggled, RK_ACT_ARGS(bool state), this, setFilterType(state));
-        w = 80;
-        h = 25;
-        filterType->setPosition(224 / 2 + (224 / 2 - w) / 2, kickQFactorKnob->y() + kickQFactorKnob->height() + 15);
-        filterType->setFixedSize(w, h);
-        filterType->setPressedImage(RkImage(80, 25, rk_filter_type_hp_png));
-        filterType->setUnpressedImage(RkImage(80, 25, rk_filter_type_lp_png));
-        filterType->show();
-        */
+                filterBox->setPosition(0, 243);
+        filterBox->setCutOffRange(20, 20000);
+        filterBox->setResonanceRange(0.01, 10);
+        RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b), oscillator, enableFilter(b));
+        RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val), oscillator, setFilterFrequency(val));
+        RK_ACT_BIND(filterBox, resonanceChanged, RK_ACT_ARGS(double val), oscillator, setFilterQFactor(val));
+        RK_ACT_BIND(filterBox, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type),
+                    oscillator, setFilterType(type));
 }
 
 void OscillatorGroupBox::setSineWave(bool pressed)
@@ -358,16 +299,8 @@ void OscillatorGroupBox::setNoiseBrownian(bool pressed)
 void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 {
         if (filterTypeIsChecked && state == true)
-                filterType->setPressed(true);
+                filterBox->enable(true);
         oscillator->enable(state);
-}
-
-void OscillatorGroupBox::setFilterType(bool state)
-{
-        if (state)
-                oscillator->setFilterType(Oscillator::FilterType::HighPass);
-        else
-                oscillator->setFilterType(Oscillator::FilterType::LowPass);
 }
 
 void OscillatorGroupBox::updateGui()
@@ -400,8 +333,8 @@ void OscillatorGroupBox::updateGui()
         if (oscillator->type() != Oscillator::Type::Noise)
                 frequencyAmplitudeKnob->setCurrentValue(oscillator->frequency());
 
-        filterCheckbox->setPressed(oscillator->isFilterEnabled());
-        kickQFactorKnob->setCurrentValue(oscillator->filterQFactor());
-        kickFrequencyKnob->setCurrentValue(oscillator->filterFrequency());
-        filterType->setPressed(oscillator->filter() != Oscillator::FilterType::LowPass);
+        filterBox->enable(oscillator->isFilterEnabled());
+        filterBox->setResonance(oscillator->filterQFactor());
+        filterBox->setCutOff(oscillator->filterFrequency());
+        filterBox->setType(oscillator->filter());
 }

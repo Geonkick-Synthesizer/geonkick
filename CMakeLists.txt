@@ -46,6 +46,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
   ${GKICK_COMMON_DIR}/file_dialog.h
+  ${GKICK_COMMON_DIR}/filter.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
@@ -74,6 +75,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
   ${GKICK_COMMON_DIR}/file_dialog.cpp
+  ${GKICK_COMMON_DIR}/filter.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp

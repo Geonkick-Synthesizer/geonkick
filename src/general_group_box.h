@@ -32,28 +32,24 @@ class GeonkickApi;
 class GeonkickCheckbox;
 class Knob;
 class GeonkickButton;
+class Filter;
 
 class GeneralGroupBox: public GeonkickGroupBox
 {
  public:
         GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
         ~GeneralGroupBox();
-
         void updateGui();
 
  protected:
         void createAplitudeEnvelopeHBox();
         void createFilterHBox();
-        void setFilterType(bool state);
 
  private:
         GeonkickApi* geonkickApi;
-        GeonkickButton *filterCheckbox;
+        Filter *filterBox;
         Knob *kickAmplitudeKnob;
         Knob *kickLengthKnob;
-        Knob *kickFrequencyKnob;
-        Knob *kickQFactorKnob;
-        GeonkickButton *filterType;
 };
 
 #endif //GKICK_GENERAL_GROUP_BOX_H

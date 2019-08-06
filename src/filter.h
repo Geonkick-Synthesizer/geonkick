@@ -42,11 +42,16 @@ class Filter: public GeonkickWidget
         void setResonance(double val);
         double resonance() const;
         void setType(GeonkickApi::FilterType type);
+        void setCutOffRange(double from, double to);
+        void setResonanceRange(double from, double to);
+
         GeonkickApi::FilterType type() const;
         RK_DECL_ACT(enabled, enabled(bool b), RK_ARG_TYPE(bool), RK_ARG_VAL(b));
-        RK_DECL_ACT(cutoffChanged, cutoffChanged(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
+        RK_DECL_ACT(cutOffChanged, cutOffChanged(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
         RK_DECL_ACT(resonanceChanged, resonanceChanged(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
-        RK_DECL_ACT(typeChanged, typeChanged(GeonkickApi::FilterType type), RK_ARG_TYPE(FilterType), RK_ARG_VAL(val));
+        RK_DECL_ACT(typeChanged, typeChanged(GeonkickApi::FilterType type),
+                    RK_ARG_TYPE(GeonkickApi::FilterType),
+                    RK_ARG_VAL(type));
 
  private:
         GeonkickButton *filterCheckbox;

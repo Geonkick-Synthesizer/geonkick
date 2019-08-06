@@ -25,34 +25,24 @@
 #include "general_group_box.h"
 #include "knob.h"
 #include "geonkick_button.h"
+#include "filter.h"
 
 #include <RkLabel.h>
 
 extern const unsigned char rk_hboxbk_ampl_env_png[];
-extern const unsigned char rk_knob_bk_image_png[];
-extern const unsigned char rk_knob_png[];
-extern const unsigned char rk_knob_bk_image_png[];
-extern const unsigned char rk_knob_png[];
 extern const unsigned char rk_hboxbk_filter_png[];
 extern const unsigned char rk_checkbox_checked_png[];
 extern const unsigned char rk_checkbox_unchecked_png[];
 extern const unsigned char rk_knob_bk_image_png[];
 extern const unsigned char rk_knob_png[];
-extern const unsigned char rk_knob_bk_50x50_png[];
-extern const unsigned char rk_knob_50x50_png[];
-extern const unsigned char rk_filter_type_hp_png[];
-extern const unsigned char rk_filter_type_lp_png[];
 extern const unsigned char rk_general_groupbox_label_png[];
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickGroupBox(parent)
         , geonkickApi{api}
-        , filterCheckbox{nullptr}
+        , filterBox{nullptr}
         , kickAmplitudeKnob{nullptr}
         , kickLengthKnob{nullptr}
-        , kickFrequencyKnob{nullptr}
-        , kickQFactorKnob{nullptr}
-        , filterType{nullptr}
 {
         setFixedSize(224, 380);
         auto label = new RkLabel(this);
@@ -98,34 +88,23 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 
 void GeneralGroupBox::createFilterHBox()
 {
-        filter = new Filter(this);
-        filter->setCutOffRange(20, 20000);
-        filter->setResonanceRange(0.01, 10);
-        filter->setPosition(0, 151);
-        RK_ACT_BIND(filter, cutoffChanged, RK_ACT_ARGS(double val), geonkickApi, setKickFilterFrequency(val));
-        RK_ACT_BIND(filter, resonanceChanged, RK_ACT_ARGS(double val), geonkickApi, setKickFilterQFactor(val));
-        RK_ACT_BIND(filter, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type), geonkickApi, setKickFilterQFactor(val));
-}
-
-void GeneralGroupBox::setFilterType(bool state)
-{
-        if (state)
-                geonkickApi->setKickFilterType(Oscillator::FilterType::HighPass);
-        else
-                geonkickApi->setKickFilterType(Oscillator::FilterType::LowPass);
+        filterBox = new Filter(this);
+        filterBox->setCutOffRange(20, 20000);
+        filterBox->setResonanceRange(0.01, 10);
+        filterBox->setPosition(0, 151);
+        RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b), geonkickApi, enableKickFilter(b));
+        RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val), geonkickApi, setKickFilterFrequency(val));
+        RK_ACT_BIND(filterBox, resonanceChanged, RK_ACT_ARGS(double val), geonkickApi, setKickFilterQFactor(val));
+        RK_ACT_BIND(filterBox, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type), geonkickApi, setKickFilterType(type));
 }
 
 void GeneralGroupBox::updateGui()
 {
         kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
         kickLengthKnob->setCurrentValue(geonkickApi->kickLength());
-        filterCheckbox->setPressed(geonkickApi->isKickFilterEnabled());
-        kickFrequencyKnob->setCurrentValue(geonkickApi->kickFilterFrequency());
-        kickQFactorKnob->setCurrentValue(geonkickApi->kickFilterQFactor());
-        if (geonkickApi->kickFilterType() == Oscillator::FilterType::LowPass)
-                filterType->setPressed(false);
-        else
-                filterType->setPressed(true);
-
+        filterBox->enable(geonkickApi->isKickFilterEnabled());
+        filterBox->setCutOff(geonkickApi->kickFilterFrequency());
+        filterBox->setResonance(geonkickApi->kickFilterQFactor());
+        filterBox->setType(geonkickApi->kickFilterType());
 }
 
