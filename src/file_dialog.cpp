@@ -141,10 +141,12 @@ void FilesView::loadCurrentDirectory()
                 return;
 
         decltype(filesList) files;
+        decltype(filesList) dirs;
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
-                        if (std::filesystem::is_directory(entry.path())
-                            || entry.path().extension() == ".gkick" || entry.path().extension() == ".GKICK")
+                        if (std::filesystem::is_directory(entry.path()))
+                                dirs.emplace_back(entry.path());
+                        else if (entry.path().extension() == ".gkick" || entry.path().extension() == ".GKICK")
                                 files.emplace_back(entry.path());
                 }
                 filesList = files;
@@ -153,20 +155,24 @@ void FilesView::loadCurrentDirectory()
                 files.clear();
         }
 
-        if (!filesList.empty())
-                std::sort(filesList.begin(), filesList.end(),
-                          [] (decltype(filesList)::value_type &a, decltype(filesList)::value_type &b) -> bool
+        if (!files.empty()) {
+                std::sort(files.begin(), files.end(),
+                          [] (decltype(files)::value_type &a, decltype(files)::value_type &b) -> bool
                         {
-                                if (std::filesystem::is_directory(b)
-                                    && !std::filesystem::is_directory(a))
-                                        return false;
-                                else if (!std::filesystem::is_directory(b)
-                                             && std::filesystem::is_directory(a))
-                                        return true;
-                                else
-                                        return a > b; // TODO: convert to lowercase and compare.
+                                        return a < b;
                         });
+        }
 
+        if (!dirs.empty()) {
+                std::sort(dirs.begin(), dirs.end(),
+                          [] (decltype(dirs)::value_type &a, decltype(dirs)::value_type &b) -> bool
+                        {
+                                        return a < b;
+                        });
+        }
+
+        filesList = std::move(dirs);
+        filesList.insert(filesList.end(), files.begin(), files.end());
         if (currentPath.parent_path() != currentPath.root_path())
                 filesList.insert(filesList.begin(), currentPath.parent_path());
         else
@@ -174,11 +180,7 @@ void FilesView::loadCurrentDirectory()
 
         offsetIndex = 0;
         selectedFileIndex = 0;
-        if (filesList.size() > visibleLines)
-                showScrollBar(true);
-        else
-                showScrollBar(false);
-
+        showScrollBar(filesList.size() > visibleLines);
         currentPathChanged(currentPath.string());
 }
 
