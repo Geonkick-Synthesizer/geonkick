@@ -53,10 +53,16 @@ class Filter: public GeonkickWidget
                     RK_ARG_TYPE(GeonkickApi::FilterType),
                     RK_ARG_VAL(type));
 
+ protected:
+        void setFilterType(GeonkickApi::FilterType type, bool b);
+
  private:
         GeonkickButton *filterCheckbox;
         Knob *cutOffKnob;
         Knob *resonanceKnob;
+        GeonkickButton *lpFilterButton;
+        GeonkickButton *hpFilterButton;
+        GeonkickButton *bpFilterButton;
 };
 
 #endif // GEONKICK_FILTER_H

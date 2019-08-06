@@ -30,6 +30,10 @@ export_format_unpressed.png
 meter_scale.png
 filter_type_hp.png
 filter_type_lp.png
+filter_type_bp.png
+filter_type_hp_checked.png
+filter_type_lp_checked.png
+filter_type_bp_checked.png
 general_groupbox_label.png
 hboxbk_ampl_env.png
 hboxbk_compressor.png
