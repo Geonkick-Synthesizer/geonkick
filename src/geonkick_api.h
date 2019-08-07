@@ -183,6 +183,9 @@ class GeonkickApi {
               currentPlayingFrameVal(double val),
               RK_ARG_TYPE(double), RK_ARG_VAL(val));
 
+   void setSettings(const std::string &key, const std::string &value);
+   std::string getSettings(const std::string &key) const;
+
 protected:
   static void kickUpdatedCallback(void *arg, gkick_real *buff, size_t size);
   static void limiterCallback(void *arg, gkick_real val);
@@ -212,6 +215,7 @@ private:
    * store this path in API instance.
    */
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
+  std::unordered_map<std::string, std::string> apiSettings;
 };
 
 #endif // GEONKICK_API_H

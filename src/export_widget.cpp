@@ -62,8 +62,16 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         , cancelButton{nullptr}
         , errorLabel{nullptr}
         , selectedFormat{ExportFormat::Wav16}
-        , channelsType{ChannelsType::Mono}
+        , channelsType{ChannelsType::Stereo}
 {
+        std::string format = geonkickApi->getSettings("ExportDialog/Format");
+        if (!format.empty())
+                selectedFormat = static_cast<ExportFormat>(std::stoi(format));
+
+        std::string channel = geonkickApi->getSettings("ExportDialog/Channel");
+        if (!channel.empty())
+                channelsType = static_cast<ChannelsType>(std::stoi(channel));
+
         setFixedSize(521, 184);
         setTitle("Export - " + std::string(GEOKICK_APP_NAME));
         setBackgroundImage(RkImage(521, 184, rk_export_bk_png));
@@ -96,6 +104,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         fileNameEdit->show();
         fileNameEdit->setFixedSize(100, 25);
         fileNameEdit->setPosition(380, 54);
+        fileNameEdit->setText(geonkickApi->getSettings("ExportDialog/FileName"));
         RK_ACT_BIND(fileNameEdit, textEdited, RK_ACT_ARGS(const std::string& text), this, resetProgressBar());
         RK_ACT_BIND(fileNameEdit, textEdited, RK_ACT_ARGS(const std::string& text), this, showError());
 
@@ -149,7 +158,6 @@ void ExportWidget::createFormatButtons()
 
         wav16Button = new GeonkickButton(this);
         wav16Button->setPressed(ExportFormat::Wav16 == selectedFormat);
-        wav16Button->setPressed(true);
         wav16Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
         wav16Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
         wav16Button->setFixedSize(14, 12);
@@ -339,6 +347,11 @@ void ExportWidget::exportKick()
 
         sf_close(sndFile);
         close();
+
+        if (!fileNameEdit->text().empty())
+                geonkickApi->setSettings("ExportDialog/FileName", fileNameEdit->text());
+        geonkickApi->setSettings("ExportDialog/Format", std::to_string(static_cast<int>(selectedFormat)));
+        geonkickApi->setSettings("ExportDialog/Channel", std::to_string(static_cast<int>(channelsType)));
 }
 
 void ExportWidget::resetProgressBar()

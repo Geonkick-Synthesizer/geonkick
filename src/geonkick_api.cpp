@@ -881,3 +881,18 @@ void GeonkickApi::setCurrentWorkingPath(const std::string &key, const std::files
 {
         workingPaths[key] = path;
 }
+
+void GeonkickApi::setSettings(const std::string &key, const std::string &value)
+{
+        apiSettings[key] = value;
+}
+
+std::string GeonkickApi::getSettings(const std::string &key) const
+{
+        auto it = apiSettings.find(key);
+        if (it != apiSettings.end())
+                return it->second;
+        return "";
+}
+
+

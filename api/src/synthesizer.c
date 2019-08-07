@@ -1754,6 +1754,7 @@ geonkick_synth_group_set_amplitude(struct gkick_synth *synth, size_t index, gkic
         synth->osc_groups_amplitude[index] = amplitude;
         gkick_synth_wakeup_thread(synth);
         gkick_synth_unlock(synth);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -1762,4 +1763,5 @@ geonkick_synth_group_get_amplitude(struct gkick_synth *synth, size_t index, gkic
         gkick_synth_lock(synth);
         *amplitude = synth->osc_groups_amplitude[index];
         gkick_synth_unlock(synth);
+        return GEONKICK_OK;
 }
