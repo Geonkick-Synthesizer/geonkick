@@ -224,7 +224,7 @@ gkick_filter_val(struct gkick_filter *filter,
         size_t n;
         gkick_real val;
 
-        if (in_val > 1.0 || in_val < -1.0 || isnan(val)) {
+        if (isnan(in_val) || in_val > 1.0 || in_val < -1.0) {
                 *out_val = 0;
                 return GEONKICK_ERROR;
         }

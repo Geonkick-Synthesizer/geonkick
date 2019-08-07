@@ -5,8 +5,7 @@ add_library(geonkick_lv2 SHARED
   ${GKICK_COMMON_RESOURCES}
   ${GKICK_LV2_SOURCES})
 
-target_link_libraries(geonkick_lv2  geonkick_common)
-target_link_libraries(geonkick_lv2 ${CMAKE_BINARY_DIR}/api_lv2/libgeonkick_lv2.a)
+target_link_libraries(geonkick_lv2  geonkick_common api_lv2)
 target_link_libraries(geonkick_lv2 "-lstdc++fs")
 target_link_libraries(geonkick_lv2 "-lredkite -lX11 -lsndfile -lrt -lm -ldl -lpthread -lcairo")
 add_dependencies(geonkick_lv2 api_lv2)

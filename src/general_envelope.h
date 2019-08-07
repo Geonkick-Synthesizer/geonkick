@@ -35,15 +35,15 @@ class GeneralEnvelope: public Envelope
 
   GeneralEnvelope(GeonkickApi *api, const RkRect &area);
   ~GeneralEnvelope();
-  double envelopeLengh(void) const;
+  double envelopeLengh(void) const final;
 
   void setEnvelopeLengh(double len) final;
   void updatePoints() final;
 
  protected:
-  void pointAddedEvent(double x, double y) override;
-  void pointUpdatedEvent(unsigned int index, double x, double y) override;
-  void pointRemovedEvent(unsigned int index) override;
+  void pointAddedEvent(double x, double y) final;
+  void pointUpdatedEvent(unsigned int index, double x, double y) final;
+  void pointRemovedEvent(unsigned int index) final;
   double envelopeAmplitude(void) const final;
 
  private:

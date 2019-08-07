@@ -280,7 +280,7 @@ std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
         size_t n = 0;
         geonkick_get_oscillators_number(geonkickApi, &n);
         for (decltype(n) i = 0; i < n; i++)
-                oscillators.push_back(std::move(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i % GKICK_OSC_GROUP_SIZE))));
+                oscillators.push_back(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i % GKICK_OSC_GROUP_SIZE)));
         return oscillators;
 }
 

@@ -52,7 +52,6 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
                                const std::vector<std::unique_ptr<Oscillator>> &oscillators)
           : GeonkickWidget(parent)
-          , currentEnvelope{nullptr}
           , drawArea{nullptr}
           , showAmplitudeEnvButton{nullptr}
           , showFrequencyEnvButton{nullptr}
