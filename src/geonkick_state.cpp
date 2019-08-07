@@ -36,6 +36,7 @@ GeonkickState::GeonkickState() :
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 0, 0}
         , layers{false, false, false}
+        , layersAmplitude{1.0, 1.0, 1.0}
         , currentLayer{GeonkickApi::Layer::Layer1}
 {
         initOscillators();
@@ -93,6 +94,17 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                                 if (el.IsInt())
                                         setLayerEnabled(static_cast<GeonkickApi::Layer>(el.GetInt()), true);
                 }
+
+                if (m.name == "layers_amplitude" && m.value.IsArray()) {
+                        layersAmplitude = {1.0, 1.0, 1.0};
+                        int i = 0;
+                        for (const auto &el: m.value.GetArray()) {
+                                if (el.IsDouble())
+                                        setLayerAmplitude(static_cast<GeonkickApi::Layer>(i), el.GetDouble());
+                                i++;
+                        }
+                }
+
 
                 if (m.name == "ampl_env" && m.value.IsObject()) {
                         for (const auto &el: m.value.GetObject()) {
@@ -687,6 +699,18 @@ void GeonkickState::kickJson(std::ostringstream &jsonStream) const
                 }
         }
         jsonStream << "]," << std::endl;
+
+        jsonStream << "\"layers_amplitude\": [";
+        first = true;
+        for (decltype(layersAmplitude.size()) i = 0; i < layersAmplitude.size(); i++) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << std::fixed << std::setprecision(5) << layersAmplitude[i];
+        }
+        jsonStream << "]," << std::endl;
+
         jsonStream << "\"limiter\": " << std::fixed << std::setprecision(5) << getLimiterValue() << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
         jsonStream << "\"amplitude\": " << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
@@ -744,14 +768,14 @@ void GeonkickState::kickJson(std::ostringstream &jsonStream) const
 
 void GeonkickState::setLayerEnabled(GeonkickApi::Layer layer, bool b)
 {
-        decltype(layers.size()) index = static_cast<int>(layer);
+        auto index = static_cast<decltype(layers.size())>(layer);
         if (index >= 0 && index < layers.size())
                 layers[index] = b;
 }
 
 bool GeonkickState::isLayerEnabled(GeonkickApi::Layer layer) const
 {
-        decltype(layers.size()) index = static_cast<int>(layer);
+        auto index = static_cast<decltype(layers.size())>(layer);
         if (index >= 0 && index < layers.size())
                 return layers[index];
         else
@@ -762,3 +786,19 @@ void GeonkickState::setCurrentLayer(GeonkickApi::Layer layer)
 {
         currentLayer = layer;
 }
+
+void GeonkickState::setLayerAmplitude(GeonkickApi::Layer layer, double amplitude)
+{
+        auto index = static_cast<decltype(layersAmplitude.size())>(layer);
+        if (index >= 0 && index < layersAmplitude.size())
+                layersAmplitude[index] = amplitude;
+}
+
+double GeonkickState::getLayerAmplitude(GeonkickApi::Layer layer) const
+{
+        auto index = static_cast<decltype(layersAmplitude.size())>(layer);
+        if (index >= 0 && index < layersAmplitude.size())
+                return layersAmplitude[index];
+        return 0;
+}
+

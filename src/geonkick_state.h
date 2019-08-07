@@ -107,6 +107,8 @@ class GeonkickState
         void setLayerEnabled(GeonkickApi::Layer layer, bool b);
         bool isLayerEnabled(GeonkickApi::Layer layer) const;
         void setCurrentLayer(GeonkickApi::Layer layer);
+        void setLayerAmplitude(GeonkickApi::Layer layer, double amplitude);
+        double getLayerAmplitude(GeonkickApi::Layer layer) const;
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
@@ -177,6 +179,7 @@ private:
         Compressor compressor;
         Distortion distortion;
         std::vector<bool> layers;
+        std::vector<double> layersAmplitude;
         GeonkickApi::Layer currentLayer;
 };
 
