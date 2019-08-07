@@ -14,18 +14,18 @@ Author: Iurie Nistor
 
 Source code repository:
 
-* https://gitlab.com/quamplex/geonkick
-* https://github.com/quamplex/geonkick
+* https://gitlab.com/iurie/geonkick
+* https://github.com/iurienistor/geonkick
 
-Latest releases can be found on ["master" branch](https://github.com/quamplex/geonkick/commits/master) or [tags](https://github.com/quamplex/geonkick/tags).
+Latest releases can be found on ["master" branch](https://github.com/iurienistor/geonkick/commits/master) or [tags](https://github.com/iurienistor/geonkick/tags).
 
-The development of new releases is going on ["develop" branch](https://github.com/quamplex/geonkick/commits/develop).
+The development of new releases is going on ["develop" branch](https://github.com/iurienistor/geonkick/commits/develop).
 
 ![Screenshot](data/screenshot.png)
 
 #### Download
 
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/quamplex/geonkick/releases/download/v1.6/geonkick-1.6.1_GNU+Linux_64bit.zip)
+[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/iurienistor/geonkick/releases/download/v1.6/geonkick-1.6.1_GNU+Linux_64bit.zip)
 
 #### Features
 
@@ -84,7 +84,7 @@ Plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-* [Redkite](https://github.com/quamplex/redkite) GUI toolkit. See the documentation of Redkite toolkit how to install it.
+* [Redkite](https://github.com/iurienistor/redkite) GUI toolkit. See the documentation of Redkite toolkit how to install it.
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for LV2)
@@ -102,7 +102,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the code repository, compile and install
 
-        git clone https://github.com/quamplex/geonkick.git
+        git clone https://github.com/iurienistor/geonkick.git
         mkdir geonkick/build
         cd geonkick/build
         cmake ../
@@ -126,7 +126,7 @@ installs, runs, and if there any issues.
 
 | Distribution  | Dependences  | Build  | Install  | Run  | Comments  |
 |:-:|:-:|:-:|:-:|:-:|:-:|
-| Debian 9.x/64bit  | repository  | OK  | OK  | OK  |   |
+| Debian 10.0/64bit  | repository  | OK  | OK  | OK  |   |
 | Ubuntu 18.10/64bit  | repository  | OK  | OK  | OK  |   |
 | Fedora 29 / 64 bit  | repository | OK  | OK  | OK  |   |
 | Ubuntu Studio  | repository  | OK  | OK  | OK  |   |
@@ -140,7 +140,7 @@ installs, runs, and if there any issues.
 Here is a list of planned milestones and issues opened for them,
 dates when will be started and finished.
 
-Milestones: https://github.com/quamplex/geonkick/milestones
+Milestones: https://github.com/iurienistor/geonkick/milestones
 
 #### Short user guide
 
