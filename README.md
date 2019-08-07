@@ -190,7 +190,7 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 
 * If the controls are changed during the play of the beat, there will not be any change in the sound during the play of the current beat, the next beat/beats will contain the change, i.e. the next press of the keys. This is done to avoid distortion of the shape of the current generated beat (percussion). This effect of no change is more evident when the percussion length is big, like 4 seconds.
 
-* FM Synthesis is be enabled by pressing OSC1->OSC2 for evrey layer separtely. When pressing OSC1->OSC2 the output of Oscillator 1 will be redirected to modulate the frequency of Oscillator 2.
+* FM Synthesis is enabled by pressing OSC1->OSC2 for evrey layer separtely. When pressing OSC1->OSC2 the output of Oscillator 1 will be redirected to modulate the frequency of Oscillator 2.
 Oscillator 2 must be enabled in order to see the result in the graph.
 
 * Geonkick is monophonic. Pressing more keys at once will not result in the desired sound or even no sound.
