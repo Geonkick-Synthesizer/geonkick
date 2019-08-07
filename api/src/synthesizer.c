@@ -44,6 +44,8 @@ gkick_synth_new(struct gkick_synth **synth)
         (*synth)->amplitude = 1.0;
         (*synth)->synthesis_on = 0;
         (*synth)->buffer_size = (size_t)((*synth)->length * GEONKICK_SAMPLE_RATE);
+        for (size_t i = 0; i < GKICK_OSC_GROUPS_NUMBER; i++)
+                (*synth)->osc_groups_amplitude[i] = 1.0;
 
         if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
@@ -1264,8 +1266,9 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
                                 fm_val = gkick_osc_value(synth->oscillators[i], t, synth->length);
                                 synth->oscillators[i + 1]->fm_input = fm_val;
                         } else {
-                                val += gkick_osc_value(synth->oscillators[i],
-                                                       t, synth->length);
+                                gkick_real group_ampl = synth->osc_groups_amplitude[i / GKICK_OSC_GROUP_SIZE];
+                                val += group_ampl * gkick_osc_value(synth->oscillators[i],
+                                                                    t, synth->length);
                         }
                         gkick_osc_increment_phase(synth->oscillators[i], t, synth->length);
                 }
@@ -1744,3 +1747,19 @@ gkick_synth_group_enabled(struct gkick_synth *synth, size_t index, bool *enabled
         return GEONKICK_OK;
 }
 
+enum geonkick_error
+geonkick_synth_group_set_amplitude(struct gkick_synth *synth, size_t index, gkick_real amplitude)
+{
+        gkick_synth_lock(synth);
+        synth->osc_groups_amplitude[index] = amplitude;
+        gkick_synth_wakeup_thread(synth);
+        gkick_synth_unlock(synth);
+}
+
+enum geonkick_error
+geonkick_synth_group_get_amplitude(struct gkick_synth *synth, size_t index, gkick_real *amplitude)
+{
+        gkick_synth_lock(synth);
+        *amplitude = synth->osc_groups_amplitude[index];
+        gkick_synth_unlock(synth);
+}

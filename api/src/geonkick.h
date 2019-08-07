@@ -408,6 +408,12 @@ geonkick_enable_group(struct geonkick *kick, size_t index, bool enable);
 enum geonkick_error
 geonkick_group_enabled(struct geonkick *kick, size_t index, bool *enabled);
 
+enum geonkick_error
+geonkick_group_set_amplitude(struct geonkick *kick, size_t index, gkick_real amplitude);
+
+enum geonkick_error
+geonkick_group_get_amplitude(struct geonkick *kick, size_t index, gkick_real *amplitude);
+
 #ifdef __cplusplus
 }
 #endif

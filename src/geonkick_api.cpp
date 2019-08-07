@@ -837,11 +837,14 @@ GeonkickApi::Layer GeonkickApi::layer() const
 
 void GeonkickApi::setLayerAmplitude(Layer layer, double amplitude)
 {
+        geonkick_group_set_amplitude(geonkickApi, static_cast<size_t>(layer), amplitude);
 }
 
 double GeonkickApi::getLayerAmplitude(Layer layer) const
 {
-        return 0.5;
+        gkick_real amplitude = 0;
+        geonkick_group_get_amplitude(geonkickApi, static_cast<size_t>(layer), &amplitude);
+        return amplitude;
 }
 
 void GeonkickApi::enbaleLayer(Layer layer, bool enable)

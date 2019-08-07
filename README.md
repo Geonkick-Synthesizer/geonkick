@@ -31,6 +31,7 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 * Monophonic
 * 3 layers
+* Layers Mixer
 * 2 oscillators per layer
      - sine, square, triangle, saw-tooth
      - initial phase control

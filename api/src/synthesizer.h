@@ -39,6 +39,9 @@ struct gkick_synth {
         /* Groups of oscillators. */
         bool osc_groups[GKICK_OSC_GROUPS_NUMBER];
 
+        /* Total amplitude for every group of oscillatos. */
+        gkick_real osc_groups_amplitude[GKICK_OSC_GROUPS_NUMBER];
+
         /* Kick general amplitude */
         gkick_real amplitude;
 
@@ -421,5 +424,11 @@ gkick_synth_enable_group(struct gkick_synth *synth, size_t index, bool enable);
 
 enum geonkick_error
 gkick_synth_group_enabled(struct gkick_synth *synth, size_t index, bool *enabled);
+
+enum geonkick_error
+geonkick_synth_group_set_amplitude(struct gkick_synth *synth, size_t index, gkick_real amplitude);
+
+enum geonkick_error
+geonkick_synth_group_get_amplitude(struct gkick_synth *synth, size_t index, gkick_real *amplitude);
 
 #endif // SYNTHESIZER_H

@@ -949,3 +949,26 @@ geonkick_group_enabled(struct geonkick *kick, size_t index, bool *enabled)
                 return gkick_synth_group_enabled(kick->synth, index, enabled);
         return GEONKICK_ERROR;
 }
+
+enum geonkick_error
+geonkick_group_set_amplitude(struct geonkick *kick, size_t index, gkick_real amplitude)
+{
+        if (kick == NULL || index < 0 || index > GKICK_OSC_GROUPS_NUMBER - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return geonkick_synth_group_set_amplitude(kick->synth, index, amplitude);
+}
+
+enum geonkick_error
+geonkick_group_get_amplitude(struct geonkick *kick, size_t index, gkick_real *amplitude)
+{
+        if (kick == NULL || index < 0 || index > GKICK_OSC_GROUPS_NUMBER - 1
+            || amplitude == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return geonkick_synth_group_get_amplitude(kick->synth, index, amplitude);
+}
