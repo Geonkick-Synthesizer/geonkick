@@ -163,6 +163,8 @@ class GeonkickApi {
   void triggerSynthesis();
   void setLayer(Layer layer);
   Layer layer() const;
+  void setLayerAmplitude(Layer layer, double amplitude);
+  double getLayerAmplitude(Layer layer) const;
   void enbaleLayer(Layer layer, bool enable = true);
   bool isLayerEnabled(Layer layer) const;
   int getOscIndex(int index) const;
