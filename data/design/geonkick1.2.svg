@@ -15,7 +15,7 @@
    viewBox="0 0 270.93333 211.1375"
    version="1.1"
    id="svg14595"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="geonkick1.2.svg">
   <defs
      id="defs14589">
@@ -3852,16 +3852,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.3553075"
+     inkscape:zoom="0.82482678"
      inkscape:cx="1464.3055"
-     inkscape:cy="-397.37398"
+     inkscape:cy="-374.20923"
      inkscape:document-units="px"
      inkscape:current-layer="g26930"
      showgrid="false"
-     inkscape:window-width="1022"
-     inkscape:window-height="690"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
      inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      showguides="true"
      units="px"
@@ -8553,18 +8553,18 @@
              r="55.82803"
              inkscape:export-xdpi="50.913998"
              inkscape:export-ydpi="50.913998"
-             inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/logo_about.png"
+             inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
              transform="rotate(-40.023209)" />
           <path
              style="opacity:0.15;fill:#dadcda;fill-opacity:1;stroke:#ebebec;stroke-width:3.29727554;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
              d="m 387.69332,320.90752 a 49.805589,49.709105 0 0 0 -32.10277,11.64264 49.805589,49.709105 0 0 0 -16.64576,27.64393 49.805589,49.709105 0 0 1 68.68576,7.22157 49.805589,49.709105 0 0 1 10.53529,42.39032 49.805589,49.709105 0 0 0 1.4844,-1.12294 49.805589,49.709105 0 0 0 6.11049,-70.03421 49.805589,49.709105 0 0 0 -38.06741,-17.74131 z"
              id="path17689-54"
              inkscape:connector-curvature="0"
-             inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/logo_about.png"
+             inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
              inkscape:export-xdpi="50.913998"
              inkscape:export-ydpi="50.913998" />
           <g
-             inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/logo_about.png"
+             inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
              inkscape:export-xdpi="50.913998"
              inkscape:export-ydpi="50.913998"
              id="g6747"
@@ -8594,7 +8594,7 @@
              r="52.045177"
              inkscape:export-xdpi="50.913998"
              inkscape:export-ydpi="50.913998"
-             inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/logo_about.png"
+             inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
              transform="rotate(-112.77522)" />
           <text
              xml:space="preserve"
@@ -8602,21 +8602,21 @@
              x="312.35983"
              y="453.93289"
              id="text10785"
-             inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/logo_about.png"
+             inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
              inkscape:export-xdpi="50.913998"
              inkscape:export-ydpi="50.913998"><tspan
                sodipodi:role="line"
                id="tspan10783"
                x="312.35983"
                y="453.93289"
-               style="font-weight:bold;fill:#c8c8c8;fill-opacity:1;stroke-width:0.26458335">Geonkick v1.6 </tspan></text>
+               style="font-weight:bold;fill:#c8c8c8;fill-opacity:1;stroke-width:0.26458335">Geonkick v1.8 </tspan></text>
           <text
              xml:space="preserve"
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666718px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#c8c8c8;fill-opacity:1;stroke:none;stroke-width:0.26458335"
              x="312.33444"
              y="469.69003"
              id="text10789"
-             inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/logo_about.png"
+             inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
              inkscape:export-xdpi="50.913998"
              inkscape:export-ydpi="50.913998"><tspan
                sodipodi:role="line"
@@ -10456,6 +10456,17 @@
                  inkscape:export-ydpi="110.63879" />
             </g>
           </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+             x="258.12317"
+             y="352.57132"
+             id="text11976"><tspan
+               sodipodi:role="line"
+               id="tspan11974"
+               x="258.12317"
+               y="360.43619"
+               style="stroke-width:0.26458332"></tspan></text>
         </g>
       </g>
     </g>
