@@ -176,7 +176,7 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 
 #### Other technical notes
 
-There is the block diagram of the synthesizer.
+The block diagram of the synthesizer.
 
 ![Screenshot](data/doc/diagram.png)
 
