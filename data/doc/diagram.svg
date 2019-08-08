@@ -856,11 +856,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.9789121"
-     inkscape:cx="280.68916"
-     inkscape:cy="914.97853"
+     inkscape:zoom="3.9578242"
+     inkscape:cx="136.03741"
+     inkscape:cy="943.27691"
      inkscape:document-units="mm"
-     inkscape:current-layer="g3687"
+     inkscape:current-layer="g3680"
      showgrid="false"
      showguides="false"
      inkscape:window-width="1920"
@@ -876,7 +876,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -912,7 +912,7 @@
              id="tspan1561"
              x="76.734772"
              y="51.273884"
-             style="stroke-width:0.03304245">Layer Mixer</tspan></text>
+             style="stroke-width:0.03304245">Layers Mixer</tspan></text>
       </g>
       <g
          transform="translate(4.1677458)"
@@ -949,7 +949,7 @@
                  id="tspan1561-7"
                  x="15.04148"
                  y="16.22052"
-                 style="stroke-width:0.03304245">Oscillator1</tspan></text>
+                 style="stroke-width:0.03304245">Oscillator 1</tspan></text>
             <rect
                style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
                id="rect1693"
@@ -1073,7 +1073,7 @@
                  id="tspan1561-7-97-8"
                  x="25.664448"
                  y="15.326482"
-                 style="stroke-width:0.03304245">Ampltidue </tspan><tspan
+                 style="stroke-width:0.03304245">Amplitude </tspan><tspan
                  sodipodi:role="line"
                  x="25.664448"
                  y="16.64818"
@@ -1198,7 +1198,7 @@
                  id="tspan1561-7-7"
                  x="15.04148"
                  y="16.22052"
-                 style="stroke-width:0.03304245">Oscillator1</tspan></text>
+                 style="stroke-width:0.03304245">Oscillator 2</tspan></text>
             <rect
                style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
                id="rect1693-2"
@@ -1216,7 +1216,7 @@
                  id="tspan1561-7-97-6"
                  x="24.606113"
                  y="14.797316"
-                 style="stroke-width:0.03304245">Ampltidue </tspan><tspan
+                 style="stroke-width:0.03304245">Amplitude </tspan><tspan
                  sodipodi:role="line"
                  x="24.606113"
                  y="16.119013"
@@ -1337,7 +1337,7 @@
                  id="tspan1561-7-77"
                  x="15.04148"
                  y="16.22052"
-                 style="stroke-width:0.03304245">Oscillator1</tspan></text>
+                 style="stroke-width:0.03304245">Oscillator 1</tspan></text>
             <rect
                style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
                id="rect1693-5"
@@ -1355,7 +1355,7 @@
                  id="tspan1561-7-97-81"
                  x="24.606113"
                  y="14.797316"
-                 style="stroke-width:0.03304245">Ampltidue </tspan><tspan
+                 style="stroke-width:0.03304245">Amplitude </tspan><tspan
                  sodipodi:role="line"
                  x="24.606113"
                  y="16.119013"
@@ -1586,7 +1586,7 @@
                  id="tspan1561-7-7-9"
                  x="15.04148"
                  y="16.22052"
-                 style="stroke-width:0.03304245">Oscillator1</tspan></text>
+                 style="stroke-width:0.03304245">Oscillator 2</tspan></text>
             <rect
                style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
                id="rect1693-2-1"
@@ -1604,7 +1604,7 @@
                  id="tspan1561-7-97-6-6"
                  x="24.606113"
                  y="14.797316"
-                 style="stroke-width:0.03304245">Ampltidue </tspan><tspan
+                 style="stroke-width:0.03304245">Amplitude </tspan><tspan
                  sodipodi:role="line"
                  x="24.606113"
                  y="16.119013"
@@ -1725,7 +1725,7 @@
                  id="tspan1561-7-4"
                  x="15.04148"
                  y="16.22052"
-                 style="stroke-width:0.03304245">Oscillator1</tspan></text>
+                 style="stroke-width:0.03304245">Oscillator 1</tspan></text>
             <rect
                style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
                id="rect1693-8"
@@ -1743,7 +1743,7 @@
                  id="tspan1561-7-97-4"
                  x="24.606113"
                  y="14.797316"
-                 style="stroke-width:0.03304245">Ampltidue </tspan><tspan
+                 style="stroke-width:0.03304245">Amplitude </tspan><tspan
                  sodipodi:role="line"
                  x="24.606113"
                  y="16.119013"
@@ -1849,7 +1849,7 @@
                  id="tspan1561-7-97-8-6"
                  x="25.664448"
                  y="15.326482"
-                 style="stroke-width:0.03304245">Ampltidue </tspan><tspan
+                 style="stroke-width:0.03304245">Amplitude </tspan><tspan
                  sodipodi:role="line"
                  x="25.664448"
                  y="16.64818"
@@ -1974,7 +1974,7 @@
                  id="tspan1561-7-7-4"
                  x="15.04148"
                  y="16.22052"
-                 style="stroke-width:0.03304245">Oscillator1</tspan></text>
+                 style="stroke-width:0.03304245">Oscillator 2</tspan></text>
             <rect
                style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
                id="rect1693-2-12"
@@ -1992,7 +1992,7 @@
                  id="tspan1561-7-97-6-8"
                  x="24.606113"
                  y="14.797316"
-                 style="stroke-width:0.03304245">Ampltidue </tspan><tspan
+                 style="stroke-width:0.03304245">Amplitude </tspan><tspan
                  sodipodi:role="line"
                  x="24.606113"
                  y="16.119013"
@@ -2088,8 +2088,8 @@
       <path
          inkscape:connector-curvature="0"
          id="path3706"
-         d="m 71.278204,23.503905 c 0,28.052845 0,28.052845 0,28.052845 v 0 c 3.507606,0 3.507606,0 3.507606,0"
-         style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker5114)"
+         d="m 71.279912,23.487087 c 0,28.08568 0,28.08568 0,28.08568 v 0 c 3.131771,0 3.131771,0 3.131771,0"
+         style="fill:none;stroke:#000000;stroke-width:0.25015324px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker5114)"
          inkscape:export-xdpi="325.15485"
          inkscape:export-ydpi="325.15485" />
       <path
@@ -2149,7 +2149,7 @@
                id="tspan8191"
                x="77.22126"
                y="74.396812"
-               style="stroke-width:0.26458332"></tspan></text>
+               style="stroke-width:0.26458332" /></text>
         </g>
         <g
            id="g3692"
