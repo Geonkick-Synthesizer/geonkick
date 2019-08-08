@@ -856,9 +856,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.9578242"
-     inkscape:cx="136.03741"
-     inkscape:cy="943.27691"
+     inkscape:zoom="1.9789121"
+     inkscape:cx="271.9531"
+     inkscape:cy="940.82464"
      inkscape:document-units="mm"
      inkscape:current-layer="g3680"
      showgrid="false"
@@ -901,13 +901,17 @@
            height="9.7640696"
            x="41.927582"
            y="-84.633324"
-           transform="rotate(90)" />
+           transform="rotate(90)"
+           inkscape:export-xdpi="325.15485"
+           inkscape:export-ydpi="325.15485" />
         <text
            xml:space="preserve"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.0573585px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.03304245"
            x="76.734772"
            y="51.273884"
-           id="text1563"><tspan
+           id="text1563"
+           inkscape:export-xdpi="325.15485"
+           inkscape:export-ydpi="325.15485"><tspan
              sodipodi:role="line"
              id="tspan1561"
              x="76.734772"
