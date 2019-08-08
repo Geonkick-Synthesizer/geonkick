@@ -174,6 +174,10 @@ If audio outputs are connected there are three ways to play the sound:
 
 Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
 
+#### Block diagram
+
+![Screenshot](data/doc/diagram.png)
+
 #### Other technical notes
 
 * Geonkick synthesizer is designed for percussion, i.e. makes use of the fact that percussion instruments don't generate  lasting sounds, and most of the time percussion is periodic. Thus, the workflow of the sound synthesis is optimized to this, and differs from the synthesizers that are designed for synthesis of other kinds of instruments.
