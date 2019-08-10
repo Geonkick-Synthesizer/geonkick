@@ -113,7 +113,7 @@ gkick_audio_key_pressed(struct gkick_audio *audio, int pressed, int velocity)
                return GEONKICK_ERROR;
         }
 
-        gkick_audio_output_key_pressed(audio->audio_output, pressed, velocity);
+        //        gkick_audio_output_key_pressed(audio->audio_output, key);
         return GEONKICK_OK;
 }
 

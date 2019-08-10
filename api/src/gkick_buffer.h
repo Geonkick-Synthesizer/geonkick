@@ -39,6 +39,7 @@ struct gkick_buffer {
          * Current position in the buffer.
          */
         size_t currentIndex;
+        gkick_real floatIndex;
 
         /**
          * Current size of the buffer. Can change during
@@ -58,6 +59,8 @@ void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t
 gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index, size_t *is_end);
 
 gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer);
+
+gkick_real gkick_buffer_get_next1(struct gkick_buffer *buffer, gkick_real factor);
 
 void gkick_buffer_set_size(struct gkick_buffer *buffer, size_t size);
 

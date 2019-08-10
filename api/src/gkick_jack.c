@@ -62,7 +62,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 if (event.time == i && event_index < events_count) {
                         memset(&note, 0, sizeof(struct gkick_note_info));
                         gkick_jack_get_note_info(&event, &note);
-                        gkick_audio_output_key_pressed(jack->audio_output, note.state, note.velocity);
+                        gkick_audio_output_key_pressed(jack->audio_output, &note);
                         event_index++;
                         if (event_index < events_count)
                                 jack_midi_event_get(&event, port_buf, event_index);
