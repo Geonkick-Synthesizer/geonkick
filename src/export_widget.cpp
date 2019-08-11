@@ -284,6 +284,7 @@ void ExportWidget::exportKick()
                 return;
 
         SF_INFO sndinfo;
+        memset(&sndinfo, 0, sizeof(sndinfo));
         sndinfo.samplerate = geonkickApi->getSampleRate();
         if (sndinfo.samplerate == 0) {
                 showError("Error on exporting kick3");
@@ -294,6 +295,7 @@ void ExportWidget::exportKick()
         sndinfo.format     = exportFormat();
 
         auto tempBuffer = geonkickApi->getKickBuffer();
+        sndinfo.frames = tempBuffer.size();
         std::vector<gkick_real> kickBuffer;
         if (sndinfo.channels == 2) {
                 kickBuffer.resize(2 * tempBuffer.size());
@@ -307,7 +309,6 @@ void ExportWidget::exportKick()
         }
 
         if (kickBuffer.empty() || !sf_format_check(&sndinfo)) {
-                GEONKICK_LOG_ERROR("size: " << kickBuffer.size());
                 showError("Error: error on exporting kick33");
                 return;
         }
@@ -324,26 +325,16 @@ void ExportWidget::exportKick()
                 return;
         }
 
-        size_t chunk = kickBuffer.size() / 100;
-        size_t i = 0;
         size_t n;
-        while (i < kickBuffer.size()) {
-                if (i + chunk >= kickBuffer.size()) {
-                        chunk = kickBuffer.size() - i;
-                }
 #ifdef GEONKICK_DOUBLE_PRECISION
-                n = sf_write_double(sndFile, kickBuffer.data() + i, chunk);
+        n = sf_write_double(sndFile, kickBuffer.data(), kickBuffer.size());
 #else
-                n = sf_write_float(sndFile, kickBuffer.data() + i, chunk);
+        n = sf_write_float(sndFile, kickBuffer.data(), kickBuffer.size());
 #endif
-                if (n != chunk) {
-                        showError("Error on exporting kick1");
-                        break;
-                }
-                i += chunk;
-                progressBar->setValue(100 * (static_cast<float>(i) / kickBuffer.size()));
-                eventQueue()->processQueue();
-        }
+        if (n != kickBuffer.size())
+                showError("Error on exporting");
+        else
+                progressBar->setValue(100);
 
         sf_close(sndFile);
         close();
