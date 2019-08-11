@@ -8,7 +8,7 @@ snares, hit-hats, shakers, claps, sticks.
 
 License: GPLv3
 
-Version: 1.8.0
+Version: 1.8
 
 Author: Iurie Nistor
 
@@ -17,9 +17,12 @@ Source code repository:
 * https://gitlab.com/iurie/geonkick
 * https://github.com/iurienistor/geonkick
 
-Latest releases can be found on ["master" branch](https://github.com/iurienistor/geonkick/commits/master) or [tags](https://github.com/iurienistor/geonkick/tags).
+Latest releases can be found on [tags](https://github.com/iurienistor/geonkick/tags).
 
-The development of new releases is going on ["develop" branch](https://github.com/iurienistor/geonkick/commits/develop).
+Latest stable features added are on ["master" branch](https://github.com/iurienistor/geonkick/commits/master)
+
+The development is going on ["develop" branch](https://github.com/iurienistor/geonkick/commits/develop)
+or feature (feat/feature_name) branches
 
 ![Screenshot](data/screenshot.png)
 
