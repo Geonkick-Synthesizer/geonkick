@@ -25,7 +25,7 @@ The development of new releases is going on ["develop" branch](https://github.co
 
 #### Download
 
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](data/bin/Geonkick-1.8.0-GNU+Linux-64bit.zip)
+[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/iurienistor/geonkick/releases/download/v1.8.1/geonkick-1.8.1_GNU+Linux_64bit.zip)
 
 #### Features
 
