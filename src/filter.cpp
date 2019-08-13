@@ -184,6 +184,9 @@ void Filter::setResonanceRange(double from, double to)
 void Filter::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (event->button() == RkMouseEvent::ButtonType::Right
-            || event->button() == RkMouseEvent::ButtonType::Left)
-                enable(!isEnabled());
+            || event->button() == RkMouseEvent::ButtonType::Left) {
+                bool b = !isEnabled();
+                enable(b);
+                enabled(b);
+        }
 }
