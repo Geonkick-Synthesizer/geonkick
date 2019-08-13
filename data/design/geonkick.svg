@@ -15,7 +15,7 @@
    viewBox="0 0 270.93333 211.1375"
    version="1.1"
    id="svg14595"
-   inkscape:version="0.92.1 r15371"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="geonkick.svg">
   <defs
      id="defs14589">
@@ -3868,6 +3868,214 @@
          stdDeviation="0.23845105"
          id="feGaussianBlur10332-3-6-8-7" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-2"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-3" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6-7"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6-7-2"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1-5-9" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-2-3"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-3-1" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6-7-6"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1-5-1" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-2-0"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-3-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-2-6"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-3-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6-7-69"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1-5-3" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-2-3-7"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-3-1-4" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6-7-2-5"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1-5-9-2" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-2-0-5"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-3-6-4" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6-7-6-7"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1-5-1-4" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-7"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-17" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-74-3-3-6-2"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-3-6-6-1-7" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -3876,16 +4084,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="9.6813622"
-     inkscape:cx="895.50973"
-     inkscape:cy="642.78969"
+     inkscape:zoom="1.6659069"
+     inkscape:cx="445.78722"
+     inkscape:cy="210.24165"
      inkscape:document-units="px"
-     inkscape:current-layer="g8163-9-4-1-2-0-6"
+     inkscape:current-layer="g5154-9-4"
      showgrid="false"
-     inkscape:window-width="1022"
-     inkscape:window-height="690"
+     inkscape:window-width="1920"
+     inkscape:window-height="995"
      inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-y="28"
      inkscape:window-maximized="1"
      showguides="false"
      units="px"
@@ -13538,7 +13746,7 @@
          inkscape:connector-curvature="0" />
       <path
          style="fill:none;stroke:#525255;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 631.20934,213.71713 v 16.125 l 64.24266,0 v -15.61037 l -34.82313,0"
+         d="m 631.20934,213.71713 v 16.125 H 695.452 v -15.61037 h -34.82313"
          id="path11575"
          inkscape:connector-curvature="0" />
       <text
@@ -13561,7 +13769,7 @@
          cx="217.09576"
          cy="146.42635"
          r="0.58431405"
-         transform="matrix(1.6895901,0,0,1.6895901,292.48313,-2.8665664)"
+         transform="matrix(1.6895901,0,0,1.6895901,251.81737,11.563221)"
          inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
          inkscape:export-xdpi="134.93715"
          inkscape:export-ydpi="134.93715" />
@@ -14326,6 +14534,509 @@
              x="113.74126"
              y="417.70291"
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none">Low Pass</tspan></text>
+      </g>
+      <g
+         id="g5154"
+         style="display:inline">
+        <g
+           id="g5159"
+           transform="translate(-5.9203702)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3)"
+             id="path8795-94-7-3"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(-5.9203702,-5.6825633)"
+           style="display:inline"
+           id="g5159-8">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6)"
+             id="path8795-94-7-3-0"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+      </g>
+      <g
+         transform="translate(-1.1230439,12.769029)"
+         style="display:inline"
+         id="g5154-9">
+        <g
+           id="g5159-2"
+           transform="translate(-5.9203702)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-2"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-8"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 1</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-2)"
+             id="path8795-94-7-3-9"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(-5.9203702,-5.6825633)"
+           style="display:inline"
+           id="g5159-8-7">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7-3"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92-6"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 1</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-7)"
+             id="path8795-94-7-3-0-1"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           style="display:inline"
+           id="g5159-2-9"
+           transform="translate(19.4738,-4.0429596)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-2-4"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-8-7"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Noise</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-2-3)"
+             id="path8795-94-7-3-9-8"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(19.4738,-9.7255196)"
+           style="display:inline"
+           id="g5159-8-7-4">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7-3-5"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92-6-0"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Noise</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-7-2)"
+             id="path8795-94-7-3-0-1-3"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           style="display:inline"
+           id="g5159-2-3"
+           transform="translate(21.083222,-19.147901)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-2-2"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-8-0"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc-&gt;Osc2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-2-0)"
+             id="path8795-94-7-3-9-6"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(21.083222,-24.830461)"
+           style="display:inline"
+           id="g5159-8-7-1">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7-3-55"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92-6-4"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc-&gt;Osc2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-7-6)"
+             id="path8795-94-7-3-0-1-7"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+      </g>
+      <g
+         transform="translate(-35.538011,-81.115857)"
+         style="display:inline"
+         id="g5154-9-4">
+        <g
+           id="g5159-2-30"
+           transform="translate(-10.682871,-3.7041668)"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/osc1_radio_button_active.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-2-7"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-8-8"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 1</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-2-6)"
+             id="path8795-94-7-3-9-68"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(-10.682871,-9.3867302)"
+           style="display:inline"
+           id="g5159-8-7-8"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/osc1_radio_button.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7-3-4"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92-6-3"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 1</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-7-69)"
+             id="path8795-94-7-3-0-1-1"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           style="display:inline"
+           id="g5159-2-9-4"
+           transform="translate(19.4738,-4.0429596)"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/noise_radio_active.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-2-4-9"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-8-7-2"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Noise</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-2-3-7)"
+             id="path8795-94-7-3-9-8-0"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(19.4738,-9.7255196)"
+           style="display:inline"
+           id="g5159-8-7-4-6"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/noise_radio.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7-3-5-8"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92-6-0-9"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Noise</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-7-2-5)"
+             id="path8795-94-7-3-0-1-3-2"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           style="display:inline"
+           id="g5159-2-3-6"
+           transform="translate(21.083222,-19.147901)"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/fm_radio_active.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-2-2-6"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-8-0-4"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc1-&gt;Osc2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-2-0-5)"
+             id="path8795-94-7-3-9-6-9"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(21.083222,-24.830461)"
+           style="display:inline"
+           id="g5159-8-7-1-5"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/fm_radio.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7-3-55-0"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92-6-4-4"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc1-&gt;Osc2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-7-6-7)"
+             id="path8795-94-7-3-0-1-7-8"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+      </g>
+      <g
+         transform="translate(-40.323469,-69.407605)"
+         id="g5154-2"
+         style="display:inline">
+        <g
+           id="g5159-26"
+           transform="translate(-5.9203702)"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/osc2_radio_button_active.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-1"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-0"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-7)"
+             id="path8795-94-7-3-6"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
+        <g
+           transform="translate(-5.9203702,-5.6825633)"
+           style="display:inline"
+           id="g5159-8-1"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/osc2_radio_button.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
+             x="123.83334"
+             y="245.70854"
+             id="text8717-5-7-7-5"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/osc2_groupbox_label.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96"><tspan
+               sodipodi:role="line"
+               id="tspan8715-3-5-92-9"
+               x="123.83334"
+               y="245.70854"
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Oscillator 2</tspan></text>
+          <circle
+             style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-2)"
+             id="path8795-94-7-3-0-4"
+             cx="217.09576"
+             cy="146.42635"
+             r="0.58431405"
+             transform="matrix(1.6895901,0,0,1.6895901,-244.60017,-3.1220143)"
+             inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/build/themes/geontime/checkbox_unchecked.png"
+             inkscape:export-xdpi="134.93715"
+             inkscape:export-ydpi="134.93715" />
+        </g>
       </g>
     </g>
   </g>

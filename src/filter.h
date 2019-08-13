@@ -55,6 +55,7 @@ class Filter: public GeonkickWidget
 
  protected:
         void setFilterType(GeonkickApi::FilterType type, bool b);
+        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
 
  private:
         GeonkickButton *filterCheckbox;
