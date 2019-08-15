@@ -137,6 +137,7 @@ installs, runs, and if there any issues.
 #### Packaging
 
 * [Package](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
+* [Port](https://www.freshports.org/audio/geonkick-lv2/) for FreeBSD by yuri@FreeBSD.org
 
 #### Road map
 
