@@ -69,6 +69,13 @@ or feature (feat/feature_name) branches
 * Build system:
   - CMake
 
+#### Demo & Examples
+
+Here a is [list of videos](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about how it works.
+
+Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
+
+
 #### Requirements
 
 In order Geonkick to run and operate correctly there is a need for:
@@ -173,10 +180,6 @@ If audio outputs are connected there are three ways to play the sound:
    * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
    * pressing the key 'Ctrl + k'
    * by means of a DAW if used as LV2
-
-###### Examples
-
-Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
 
 #### Other technical notes
 
