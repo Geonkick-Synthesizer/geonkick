@@ -1,6 +1,6 @@
 # Geonkick
 
-Geonkick - a free software percussion synthesizer.
+Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
 
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
