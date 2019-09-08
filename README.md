@@ -129,22 +129,13 @@ Note: after every update from the repository over the old code
      cmake ../
      make
 
-#### Tests
-Here is a list of tests of the application on various GNU/Linux distributions
-in order to see if it builds with dependencies installed from repository,
-installs, runs, and if there any issues.
-
-| Distribution  | Dependences  | Build  | Install  | Run  | Comments  |
-|:-:|:-:|:-:|:-:|:-:|:-:|
-| Debian 10.0/64bit  | repository  | OK  | OK  | OK  |   |
-| Ubuntu 18.10/64bit  | repository  | OK  | OK  | OK  |   |
-| Fedora 29 / 64 bit  | repository | OK  | OK  | OK  |   |
-| Ubuntu Studio  | repository  | OK  | OK  | OK  |   |
-
 #### Packaging
 
-* [Package](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
-* [Port](https://www.freshports.org/audio/geonkick-lv2/) for FreeBSD by yuri@FreeBSD.org
+Geonkick can be found in the following repositories:
+
+* [ArchLinux](https://www.archlinux.org/packages/community/x86_64/geonkick/) by David Runge
+* [FreeBSD](https://www.freshports.org/audio/geonkick-lv2/) by yuri@FreeBSD.org
+* [OpenSUSE](https://build.opensuse.org/repositories/home:opensuseitalia:daw/geonkick) by Fabio Pesari
 
 #### Road map
 
