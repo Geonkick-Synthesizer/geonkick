@@ -14,7 +14,7 @@ Author: Iurie Nistor
 
 Source code repository:
 
-https://gitlab.com/iurie/geonkick
+https://gitlab.com/geontime/geonkick
 
 Latest releases can be found on [tags](https://gitlab.com/geontime/geonkick/-/tags).
 
@@ -27,7 +27,7 @@ or feature (feat/feature_name) branches.
 
 #### Download
 
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/iurienistor/geonkick/releases/download/v1.8.1/geonkick-1.8.1_GNU+Linux_64bit.zip)
+[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://gitlab.com/geontime/geonkick/uploads/9bf2af16a9839984c8b080a0e4a7f0c5/geonkick-1.8.1_GNU+Linux_64bit.zip)
 
 #### Features
 
