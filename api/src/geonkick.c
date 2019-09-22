@@ -505,13 +505,16 @@ geonkick_get_osc_frequency(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_key_pressed(struct geonkick *kick, int pressed, int velocity)
+geonkick_key_pressed(struct geonkick *kick,
+                     bool pressed,
+                     int note,
+                     int velocity)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_audio_key_pressed(kick->audio, pressed, velocity);
+        return gkick_audio_key_pressed(kick->audio, pressed, note, velocity);
 }
 
 enum geonkick_error

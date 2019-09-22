@@ -5,7 +5,7 @@ project(geonkick VERSION 1.8.3)
 # NOTE:  vst/Windows is not implemented yet.
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
-option(GKICK_PLUGIN "Enable build for plugin" OFF)
+option(GKICK_PLUGIN "Enable build for plugin" ON)
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "no build type selected, set default to Release")

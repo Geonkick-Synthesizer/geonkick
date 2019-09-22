@@ -79,13 +79,12 @@ void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t
 
 gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer)
 {
-        if (buffer->size < 1 || buffer->currentIndex > buffer->size - 1)
-                return 0;
-        else {
-                gkick_real val = buffer->buff[buffer->currentIndex++];
+        gkick_real val = 0;
+        if (buffer->size > 0 && buffer->currentIndex < buffer->size) {
+                val = buffer->buff[buffer->currentIndex++];
                 buffer->floatIndex = buffer->currentIndex;
-                return val;
         }
+        return val;
 }
 
 gkick_real gkick_buffer_stretch_get_next(struct gkick_buffer *buffer, gkick_real factor)

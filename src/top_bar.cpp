@@ -50,6 +50,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         , layer2Button{nullptr}
         , layer3Button{nullptr}
         , geonkickApi{api}
+        , tuneCheckbox{nullptr}
 {
         setFixedWidth(parent->width());
         setFixedHeight(40);
@@ -108,10 +109,10 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
 
         createLyersButtons();
 
-        auto tuneCheckbox = new GeonkickButton(this);
+        tuneCheckbox = new GeonkickButton(this);
         tuneCheckbox->setCheckable(true);
         tuneCheckbox->setFixedSize(46, 11);
-        tuneCheckbox->setPosition(width() - tuneCheckbox->width() - 5, (height() - tuneCheckbox->height()) / 2);
+        tuneCheckbox->setPosition(width() - tuneCheckbox->width() - 30, (height() - tuneCheckbox->height()) / 2);
         tuneCheckbox->setPressedImage(RkImage(tuneCheckbox->size(), rk_tune_checkbox_on_png));
         tuneCheckbox->setUnpressedImage(RkImage(tuneCheckbox->size(), rk_tune_checkbox_off_png));
         tuneCheckbox->show();
@@ -177,4 +178,5 @@ void TopBar::updateGui()
         layer1Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer1));
         layer2Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer2));
         layer3Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer3));
+        tuneCheckbox->setPressed(geonkickApi->isAudioOutputTuned());
 }

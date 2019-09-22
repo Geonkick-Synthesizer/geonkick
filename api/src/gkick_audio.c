@@ -106,14 +106,22 @@ gkick_audio_get_buffer(struct gkick_audio *audio)
 }
 
 enum geonkick_error
-gkick_audio_key_pressed(struct gkick_audio *audio, int pressed, int velocity)
+gkick_audio_key_pressed(struct gkick_audio *audio,
+                        bool pressed,
+                        int note,
+                        int velocity)
 {
         if (audio == NULL) {
                gkick_log_error("wrong arguments");
                return GEONKICK_ERROR;
         }
 
-        //        gkick_audio_output_key_pressed(audio->audio_output, key);
+        struct gkick_note_info key;
+        key.channel     = 1;
+        key.note_number = note;
+        key.velocity    = velocity;
+        key.state = pressed ? GKICK_KEY_STATE_PRESSED : GKICK_KEY_STATE_RELEASED;
+        gkick_audio_output_key_pressed(audio->audio_output, &key);
         return GEONKICK_OK;
 }
 

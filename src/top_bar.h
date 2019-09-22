@@ -56,6 +56,7 @@ class TopBar : public GeonkickWidget
         GeonkickButton *layer2Button;
         GeonkickButton *layer3Button;
         GeonkickApi *geonkickApi;
+        GeonkickButton *tuneCheckbox;
 };
 
 #endif // GEONKICK_TOP_BAR_H

@@ -184,6 +184,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState()
 {
         auto state = std::make_shared<GeonkickState>();
         state->setLimiterValue(limiterValue());
+        state->tuneOutput(isAudioOutputTuned());
         for (int i = 0; i < 3; i++) {
                 state->setLayerEnabled(static_cast<Layer>(i), isLayerEnabled(static_cast<Layer>(i)));
                 state->setLayerAmplitude(static_cast<Layer>(i), getLayerAmplitude(static_cast<Layer>(i)));
@@ -668,9 +669,9 @@ int GeonkickApi::getSampleRate() const
         return sampleRate;
 }
 
-void GeonkickApi::setKeyPressed(bool b, int velocity)
+void GeonkickApi::setKeyPressed(bool b, int note, int velocity)
 {
-        geonkick_key_pressed(geonkickApi, b, velocity);
+        geonkick_key_pressed(geonkickApi, b, note, velocity);
 }
 
 // This function is called only from the audio thread.

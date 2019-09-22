@@ -61,6 +61,7 @@ or feature (feat/feature_name) branches.
      - Ogg Vorbis
 * Open & Save preset in JSON format
 * Standalone
+* Pitch to note (see below technical notes)
 * Plugin
   - LV2
 * Platforms:
@@ -148,7 +149,6 @@ Milestones: https://github.com/iurienistor/geonkick/milestones
 ###### Shortcut Keys
 
 * Ctrl + r - reload default state, clean everything
-* Ctrl + k - play
 * Ctrl + h - hide envelope, only the graph is shown
 * Ctrl + o - open file browser dialog
 * Ctrl + s - open save dialog
@@ -168,7 +168,6 @@ Note: especially when running as plugin be sure the focus to be on the main Geon
 Geonkick standalone uses Jack and will create two audio outputs and one MIDI input.
 If audio outputs are connected there are three ways to play the sound:
    * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
-   * pressing the key 'Ctrl + k'
    * by means of a DAW if used as LV2
 
 #### Other technical notes
@@ -200,6 +199,10 @@ Oscillator 2 must be enabled in order to see the result in the graph.
 * Geonkick is not sensitive to key pitch. Pressing keys with different pitch will result in the same percussion sound.
 
 * Geonkick does not support multichannel.
+
+* If the option "Tune" is enabled than Geonkick will tune the percussion sound in accordance
+  with the note. The central note (un-tuned) is A4. If the percussion sound is
+  more like a tone, tuning above A4 may not work very well.
 
 ### Thank you!
 

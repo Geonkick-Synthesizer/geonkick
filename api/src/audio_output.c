@@ -80,7 +80,11 @@ enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                struct gkick_note_info *key)
 {
-        audio_output->key = *key;
+        if (key->state == GKICK_KEY_STATE_PRESSED) {
+                audio_output->key = *key;
+        } else {
+                audio_output->key.state = key->state;
+        }
         if (audio_output->key.state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->is_play = true;
                 gkick_audio_swap_buffers(audio_output);

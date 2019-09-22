@@ -4298,6 +4298,19 @@
          stdDeviation="3.2250887"
          id="feGaussianBlur5199-9-5-6-7-9-9-77-0-3-2" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter8829-3"
+       x="-0.071999997"
+       width="1.1440001"
+       y="-0.071999997"
+       height="1.1440001">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.035058843"
+         id="feGaussianBlur8831-5" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -4306,9 +4319,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.6993333"
-     inkscape:cx="542.13672"
-     inkscape:cy="617.0081"
+     inkscape:zoom="1.3878577"
+     inkscape:cx="641.45078"
+     inkscape:cy="321.39461"
      inkscape:document-units="px"
      inkscape:current-layer="g24485"
      showgrid="false"
@@ -8124,7 +8137,10 @@
          cx="217.09576"
          cy="146.42635"
          r="0.58431405"
-         transform="matrix(1.6895901,0,0,1.6895901,-291.7207,-98.300317)" />
+         transform="matrix(1.6895901,0,0,1.6895901,-233.37669,-14.87168)"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/tune_checkbox.png"
+         inkscape:export-xdpi="110.68004"
+         inkscape:export-ydpi="110.68004" />
       <text
          inkscape:export-ydpi="29.256962"
          inkscape:export-xdpi="29.256962"
@@ -8155,27 +8171,27 @@
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d5e58f;fill-opacity:1;stroke:none;stroke-width:0.03512268"
          x="127.13139"
-         y="213.54276"
+         y="196.08032"
          id="text9163-7-2-43-3-9-9-8-0-9-2-7-9"
          inkscape:export-xdpi="29.256962"
          inkscape:export-ydpi="29.256962"><tspan
            sodipodi:role="line"
            id="tspan9161-6-6-5-2-22-7-1-8-6-93-3-0"
            x="127.13139"
-           y="213.54276"
+           y="196.08032"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268">Filter</tspan></text>
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d5e58f;fill-opacity:1;stroke:none;stroke-width:0.03512268"
          x="127.13139"
-         y="209.45528"
+         y="191.99284"
          id="text9163-7-2-43-3-9-9-8-0-9-2-7-9-9"
          inkscape:export-xdpi="29.256962"
          inkscape:export-ydpi="29.256962"><tspan
            sodipodi:role="line"
            id="tspan9161-6-6-5-2-22-7-1-8-6-93-3-0-1"
            x="127.13139"
-           y="209.45528"
+           y="191.99284"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268">Envelope</tspan></text>
       <text
          xml:space="preserve"
@@ -13122,7 +13138,7 @@
       <rect
          ry="0.31501353"
          rx="0.57796198"
-         y="150.48563"
+         y="123.49828"
          x="169.27629"
          height="2.7813368"
          width="20.022499"
@@ -13130,85 +13146,85 @@
          style="display:inline;opacity:1;fill:#484749;fill-opacity:1;stroke:#1a191c;stroke-width:0.05259218;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.37444937" />
       <text
          id="text4694-1-6"
-         y="202.6188"
+         y="166.56888"
          x="126.66151"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:0.71042413px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02220075"
          xml:space="preserve"
-         transform="scale(1.3357974,0.74861651)"><tspan
+         transform="scale(1.3357974,0.7486165)"><tspan
            style="stroke-width:0.02220075"
-           y="202.6188"
+           y="166.56888"
            x="126.66151"
            id="tspan4692-2-7"
            sodipodi:role="line">Attack</tspan></text>
       <text
          id="text4694-3-7-5"
-         y="203.39108"
+         y="167.34116"
          x="126.17027"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:0.73466045px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02295814"
          xml:space="preserve"
-         transform="scale(1.3357974,0.74861651)"><tspan
+         transform="scale(1.3357974,0.7486165)"><tspan
            style="stroke-width:0.02295814"
-           y="203.39108"
+           y="167.34116"
            x="126.17027"
            id="tspan4692-5-0-3"
            sodipodi:role="line">Release</tspan></text>
       <text
          id="text4694-3-6-93-5"
-         y="204.21375"
+         y="168.16382"
          x="133.51183"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:0.65969098px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02061534"
          xml:space="preserve"
-         transform="scale(1.3357974,0.74861651)"><tspan
+         transform="scale(1.3357974,0.7486165)"><tspan
            style="stroke-width:0.02061534"
-           y="204.21375"
+           y="168.16382"
            x="133.51183"
            id="tspan4692-5-2-6-6"
            sodipodi:role="line">Makeup</tspan></text>
       <text
          id="text4694-3-6-9-0-2"
-         y="204.17517"
+         y="168.12524"
          x="125.88464"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:0.6884675px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02151461"
          xml:space="preserve"
-         transform="scale(1.3357974,0.74861651)"><tspan
+         transform="scale(1.3357974,0.7486165)"><tspan
            style="stroke-width:0.02151461"
-           y="204.17517"
+           y="168.12524"
            x="125.88464"
            id="tspan4692-5-2-1-6-9"
            sodipodi:role="line">Threshold</tspan></text>
       <text
          id="text4694-2-2-1"
-         y="201.81223"
+         y="165.7623"
          x="130.91708"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:0.61868429px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d3c26f;fill-opacity:1;stroke:none;stroke-width:0.01933388"
          xml:space="preserve"
-         transform="scale(1.3357974,0.74861651)"><tspan
+         transform="scale(1.3357974,0.7486165)"><tspan
            style="fill:#d3c26f;fill-opacity:1;stroke-width:0.01933388"
-           y="201.81223"
+           y="165.7623"
            x="130.91708"
            id="tspan4692-7-6-2"
            sodipodi:role="line">Compressor</tspan></text>
       <text
          id="text4694-3-6-93-5-3"
-         y="203.46165"
+         y="167.41173"
          x="134.58226"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:0.65969098px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02061534"
          xml:space="preserve"
-         transform="scale(1.3357974,0.74861651)"><tspan
+         transform="scale(1.3357974,0.7486165)"><tspan
            style="stroke-width:0.02061534"
-           y="203.46165"
+           y="167.41173"
            x="134.58226"
            id="tspan4692-5-2-6-6-7"
            sodipodi:role="line">Knee</tspan></text>
       <text
          id="text4694-3-6-93-5-3-5"
-         y="202.69769"
+         y="166.64777"
          x="134.52187"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:0.65969098px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02061534"
          xml:space="preserve"
-         transform="scale(1.3357974,0.74861651)"><tspan
+         transform="scale(1.3357974,0.7486165)"><tspan
            style="stroke-width:0.02061534"
-           y="202.69769"
+           y="166.64777"
            x="134.52187"
            id="tspan4692-5-2-6-6-7-9"
            sodipodi:role="line">Ratio</tspan></text>
@@ -13218,126 +13234,126 @@
          width="4.8678837"
          height="0.35199103"
          x="172.45798"
-         y="151.36331" />
+         y="124.37596" />
       <rect
          style="opacity:1;fill:#65686b;fill-opacity:1;stroke:none;stroke-width:0.06346074;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689"
          width="4.6395969"
          height="0.25319082"
          x="172.57684"
-         y="151.41452" />
+         y="124.42716" />
       <rect
          style="display:inline;opacity:1;fill:#bcbcbd;fill-opacity:1;stroke:none;stroke-width:0.0388898;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-2"
          width="1.7423669"
          height="0.25319186"
          x="172.57684"
-         y="151.41452" />
+         y="124.42716" />
       <rect
          style="opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.06325377;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8676-8"
          width="4.8678837"
          height="0.35199103"
          x="172.45798"
-         y="151.94229" />
+         y="124.95495" />
       <rect
          style="opacity:1;fill:#65686b;fill-opacity:1;stroke:none;stroke-width:0.06346074;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-9"
          width="4.6395969"
          height="0.25319082"
          x="172.57684"
-         y="151.9935" />
+         y="125.00616" />
       <rect
          style="display:inline;opacity:1;fill:#bcbcbd;fill-opacity:1;stroke:none;stroke-width:0.05352183;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-2-7"
          width="3.3001225"
          height="0.25319186"
          x="172.57684"
-         y="151.9935" />
+         y="125.00616" />
       <rect
          style="opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.06325377;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8676-6"
          width="4.8678837"
          height="0.35199103"
          x="172.45798"
-         y="152.52127" />
+         y="125.53394" />
       <rect
          style="opacity:1;fill:#65686b;fill-opacity:1;stroke:none;stroke-width:0.06346074;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-1"
          width="4.6395969"
          height="0.25319082"
          x="172.57684"
-         y="152.57248" />
+         y="125.58514" />
       <rect
          style="display:inline;opacity:1;fill:#bcbcbd;fill-opacity:1;stroke:none;stroke-width:0.0303589;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-2-2"
          width="1.061794"
          height="0.25319186"
          x="172.57684"
-         y="152.57248" />
+         y="125.58514" />
       <rect
          style="opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.06325377;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8676-3"
          width="4.8678837"
          height="0.35199103"
          x="182.08287"
-         y="151.41072" />
+         y="124.42339" />
       <rect
          style="opacity:1;fill:#65686b;fill-opacity:1;stroke:none;stroke-width:0.06346074;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-19"
          width="4.6395969"
          height="0.25319082"
          x="182.20174"
-         y="151.46194" />
+         y="124.47459" />
       <rect
          style="display:inline;opacity:1;fill:#bcbcbd;fill-opacity:1;stroke:none;stroke-width:0.0388898;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-2-4"
          width="1.7423669"
          height="0.25319186"
          x="182.20174"
-         y="151.46194" />
+         y="124.47459" />
       <rect
          style="opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.06325377;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8676-8-8"
          width="4.8678837"
          height="0.35199103"
          x="182.08287"
-         y="151.98972" />
+         y="125.00238" />
       <rect
          style="opacity:1;fill:#65686b;fill-opacity:1;stroke:none;stroke-width:0.06346074;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-9-4"
          width="4.6395969"
          height="0.25319082"
          x="182.20174"
-         y="152.04092" />
+         y="125.05358" />
       <rect
          style="display:inline;opacity:1;fill:#bcbcbd;fill-opacity:1;stroke:none;stroke-width:0.05352183;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-2-7-5"
          width="3.3001225"
          height="0.25319186"
          x="182.20174"
-         y="152.04092" />
+         y="125.05358" />
       <rect
          style="opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.06325377;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8676-6-3"
          width="4.8678837"
          height="0.35199103"
          x="182.08287"
-         y="152.5687" />
+         y="125.58137" />
       <rect
          style="opacity:1;fill:#65686b;fill-opacity:1;stroke:none;stroke-width:0.06346074;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-1-6"
          width="4.6395969"
          height="0.25319082"
          x="182.20174"
-         y="152.61993" />
+         y="125.63258" />
       <rect
          style="display:inline;opacity:1;fill:#bcbcbd;fill-opacity:1;stroke:none;stroke-width:0.0303589;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492"
          id="rect8689-2-2-1"
          width="1.061794"
          height="0.25319186"
          x="182.20174"
-         y="152.61993" />
+         y="125.63258" />
       <rect
          y="168.9614"
          x="170.2485"
@@ -13350,7 +13366,7 @@
          inkscape:export-ydpi="51.48151" />
       <text
          id="text4694-2-2"
-         y="188.53329"
+         y="171.31216"
          x="182.67433"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.93628883px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#d3c26f;fill-opacity:1;stroke:none;stroke-width:0.18550903"
          xml:space="preserve"
@@ -13359,7 +13375,7 @@
          inkscape:export-xdpi="51.48151"
          inkscape:export-ydpi="51.48151"><tspan
            style="fill:#d3c26f;fill-opacity:1;stroke-width:0.18550903"
-           y="188.53329"
+           y="171.31216"
            x="182.67433"
            id="tspan4692-7-6"
            sodipodi:role="line">Layers Mixer</tspan></text>
@@ -14465,12 +14481,12 @@
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:2.2084856px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02588069"
          x="111.52737"
-         y="179.76952"
+         y="162.30708"
          id="text10105-4-0-91-9-1-1-3-8-5-5"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-5-7-9-4-9"
            x="111.52737"
-           y="179.76952"
+           y="162.30708"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.2084856px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02588069">Sine</tspan></text>
       <text
          inkscape:export-ydpi="162.49495"
@@ -14481,7 +14497,7 @@
          x="113.74126"
          y="417.70291"
          id="text10105-4-0-91-9-1-8-6-8-4-4-0"
-         transform="matrix(0.06196593,0,0,0.06196593,126.11617,153.90331)"><tspan
+         transform="matrix(0.06196593,0,0,0.06196593,126.11617,136.44078)"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-57-0-5-7-3-9"
            x="113.74126"
@@ -14496,7 +14512,7 @@
          x="113.74126"
          y="417.70291"
          id="text10105-4-0-91-9-1-8-65-1-8-7"
-         transform="matrix(0.06196593,0,0,0.06196593,113.59327,153.93154)"><tspan
+         transform="matrix(0.06196593,0,0,0.06196593,113.59327,136.46901)"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-57-4-2-6-7"
            x="113.74126"
@@ -14511,7 +14527,7 @@
          x="113.74126"
          y="417.70291"
          id="text10105-4-0-91-9-1-3-0-4-1"
-         transform="matrix(0.06196593,0,0,0.06196593,139.07137,153.92295)"><tspan
+         transform="matrix(0.06196593,0,0,0.06196593,139.07137,136.46042)"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-0-3-3-5"
            x="113.74126"
@@ -14521,7 +14537,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-49"
          cx="110.25135"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
          inkscape:export-xdpi="193.34676"
          inkscape:export-ydpi="193.34676"
@@ -14530,7 +14546,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-5-1"
          cx="131.59395"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_triangle_active.png"
          inkscape:export-xdpi="162.49495"
          inkscape:export-ydpi="162.49495"
@@ -14539,7 +14555,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-0-1"
          cx="119.38887"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_square_active.png"
          inkscape:export-xdpi="164.11937"
          inkscape:export-ydpi="164.11937"
@@ -14548,7 +14564,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-4-9"
          cx="144.60622"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sawtooth_active.png"
          inkscape:export-xdpi="191.23529"
          inkscape:export-ydpi="191.23529"
@@ -14557,7 +14573,7 @@
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.89182001;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7784-8-77"
          cx="119.38887"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_square_active.png"
          inkscape:export-xdpi="164.11937"
          inkscape:export-ydpi="164.11937"
@@ -14566,7 +14582,7 @@
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.89182001;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7784-8-7-6"
          cx="110.25135"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
          inkscape:export-xdpi="193.34676"
          inkscape:export-ydpi="193.34676"
@@ -14575,7 +14591,7 @@
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.89182001;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7784-8-2-7"
          cx="131.59395"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_triangle_active.png"
          inkscape:export-xdpi="162.49495"
          inkscape:export-ydpi="162.49495"
@@ -14584,7 +14600,7 @@
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:0.89182001;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7784-8-72-3"
          cx="144.60622"
-         cy="179.03477"
+         cy="161.57234"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sawtooth_active.png"
          inkscape:export-xdpi="191.23529"
          inkscape:export-ydpi="191.23529"
@@ -14596,12 +14612,12 @@
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:2.2084856px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02588069"
          x="112.24397"
-         y="185.43892"
+         y="167.97649"
          id="text10105-4-0-91-9-1-1-3-8-5-5-1"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-5-7-9-4-9-2"
            x="112.24397"
-           y="185.43892"
+           y="167.97649"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.2084856px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02588069">Sine</tspan></text>
       <text
          inkscape:export-ydpi="161.7525"
@@ -14612,7 +14628,7 @@
          x="113.74126"
          y="417.70291"
          id="text10105-4-0-91-9-1-8-6-8-4-4-0-7"
-         transform="matrix(0.06196593,0,0,0.06196593,126.83277,159.57271)"><tspan
+         transform="matrix(0.06196593,0,0,0.06196593,126.83277,142.11018)"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-57-0-5-7-3-9-0"
            x="113.74126"
@@ -14627,7 +14643,7 @@
          x="113.74126"
          y="417.70291"
          id="text10105-4-0-91-9-1-8-65-1-8-7-9"
-         transform="matrix(0.06196593,0,0,0.06196593,114.30987,159.60094)"><tspan
+         transform="matrix(0.06196593,0,0,0.06196593,114.30987,142.13841)"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-57-4-2-6-7-3"
            x="113.74126"
@@ -14642,7 +14658,7 @@
          x="113.74126"
          y="417.70291"
          id="text10105-4-0-91-9-1-3-0-4-1-6"
-         transform="matrix(0.06196593,0,0,0.06196593,139.78797,159.59235)"><tspan
+         transform="matrix(0.06196593,0,0,0.06196593,139.78797,142.12982)"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-0-3-3-5-0"
            x="113.74126"
@@ -14652,7 +14668,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-49-2"
          cx="110.96795"
-         cy="184.70418"
+         cy="167.24174"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine.png"
          inkscape:export-xdpi="193.34651"
          inkscape:export-ydpi="193.34651"
@@ -14661,7 +14677,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-5-1-6"
          cx="132.31055"
-         cy="184.70418"
+         cy="167.24174"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_triangle.png"
          inkscape:export-xdpi="161.7525"
          inkscape:export-ydpi="161.7525"
@@ -14670,7 +14686,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-0-1-1"
          cx="120.10547"
-         cy="184.70418"
+         cy="167.24174"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_square.png"
          inkscape:export-xdpi="164.11937"
          inkscape:export-ydpi="164.11937"
@@ -14679,7 +14695,7 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.76209849;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-4-9-8"
          cx="145.32281"
-         cy="184.70418"
+         cy="167.24174"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sawtooth.png"
          inkscape:export-xdpi="191.23505"
          inkscape:export-ydpi="191.23505"
@@ -14687,7 +14703,7 @@
       <rect
          inkscape:export-ydpi="96.002083"
          inkscape:export-xdpi="96.002083"
-         y="155.09869"
+         y="137.63626"
          x="165.21782"
          height="22.376707"
          width="59.15379"
@@ -14700,17 +14716,17 @@
          inkscape:export-ydpi="29.256962"
          inkscape:export-xdpi="29.256962"
          id="text9163-7-2-43-3-9-9-8-0-9-2-7-9-9-3-5-37"
-         y="161.03809"
+         y="139.34238"
          x="125.82875"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d5e58f;fill-opacity:1;stroke:none;stroke-width:0.03512268"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268"
-           y="161.03809"
+           y="139.34238"
            x="125.82875"
            id="tspan9161-6-6-5-2-22-7-1-8-6-93-3-0-1-1-0-5"
            sodipodi:role="line">Wave Function</tspan></text>
       <rect
-         y="169.79535"
+         y="152.33292"
          x="120.93848"
          height="1.7074906"
          width="42.130524"
@@ -14725,7 +14741,7 @@
          x="113.74126"
          y="417.70291"
          id="text10105-4-0-91-9-1-8-6-8-4-4-0-73"
-         transform="matrix(0.06787031,0,0,0.06787031,112.90483,137.33254)"><tspan
+         transform="matrix(0.06787031,0,0,0.06787031,112.90483,119.87001)"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-57-0-5-7-3-9-6"
            x="113.74126"
@@ -14735,14 +14751,14 @@
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
          id="path7464-49-1-6"
          cx="118.43157"
-         cy="164.74898"
+         cy="147.28654"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_triangle.png"
          inkscape:export-xdpi="95.085938"
          inkscape:export-ydpi="95.085938"
          r="1.5674127" />
       <g
          id="g7367"
-         transform="translate(-0.09275577,18.366884)">
+         transform="translate(-0.09275577,0.90438395)">
         <text
            transform="matrix(0.06787031,0,0,0.06787031,138.44162,119.72389)"
            id="text10105-4-0-91-9-1-3-0-4-1-9"
@@ -14784,7 +14800,7 @@
          width="17.897491"
          height="3.7631974"
          x="141.95174"
-         y="163.54427" />
+         y="146.08183" />
       <rect
          inkscape:export-ydpi="89.552147"
          inkscape:export-xdpi="89.552147"
@@ -14800,12 +14816,12 @@
          inkscape:export-xdpi="89.552147"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/topbar_layer1.png"
          id="text8879"
-         y="170.15759"
+         y="152.69516"
          x="101.59664"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.90535498px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#00000e;fill-opacity:1;stroke:none;stroke-width:0.27225626;stroke-miterlimit:4;stroke-dasharray:none"
          xml:space="preserve"><tspan
            style="fill:#00000e;fill-opacity:1;stroke-width:0.27225626;stroke-miterlimit:4;stroke-dasharray:none"
-           y="170.15759"
+           y="152.69516"
            x="101.59664"
            id="tspan8877"
            sodipodi:role="line">L1</tspan></text>
@@ -14813,7 +14829,7 @@
          inkscape:export-ydpi="96"
          inkscape:export-xdpi="96"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/topbar_laye1_disabled.png"
-         y="165.03807"
+         y="147.57564"
          x="108.43999"
          height="6.3499999"
          width="6.3499999"
@@ -14824,12 +14840,12 @@
          inkscape:export-xdpi="96"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/topbar_laye1_disabled.png"
          id="text8879-6"
-         y="170.0256"
+         y="152.56317"
          x="109.42502"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.90535498px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#373738;fill-opacity:1;stroke:none;stroke-width:0.15329234"
          xml:space="preserve"><tspan
            style="fill:#373738;fill-opacity:1;stroke-width:0.15329234"
-           y="170.0256"
+           y="152.56317"
            x="109.42502"
            id="tspan8877-7"
            sodipodi:role="line">L1</tspan></text>
@@ -14837,7 +14853,7 @@
          inkscape:export-ydpi="96"
          inkscape:export-xdpi="96"
          inkscape:export-filename="/home/iurie/proj/geonkick/src/resources/layer1.png"
-         y="194.233"
+         y="176.77057"
          x="107.43037"
          height="6.3499999"
          width="6.3499999"
@@ -14872,7 +14888,7 @@
            id="tspan8877-7-7"
            sodipodi:role="line">L1</tspan></text>
       <rect
-         y="162.88286"
+         y="145.42043"
          x="116.82618"
          height="3.7631974"
          width="17.897491"
@@ -14880,7 +14896,7 @@
          style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <text
          id="text10105-4-0-91-9-1-1-3-8-5-5-8"
-         y="160.55188"
+         y="143.08945"
          x="120.85024"
          style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
          xml:space="preserve"
@@ -14888,7 +14904,7 @@
          inkscape:export-xdpi="193.34676"
          inkscape:export-ydpi="193.34676"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="160.55188"
+           y="143.08945"
            x="120.85024"
            id="tspan10103-9-1-9-08-2-5-7-9-4-9-9"
            sodipodi:role="line">Sine</tspan></text>
@@ -14897,7 +14913,7 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="159.58725"
+         cy="142.12482"
          cx="118.38036"
          id="path7464-49-1"
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
@@ -14906,19 +14922,19 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="159.58725"
+         cy="142.12482"
          cx="118.38036"
          id="path7784-8-7-6-4"
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <rect
-         y="157.64934"
+         y="140.1869"
          x="116.82618"
          height="3.7631974"
          width="17.897491"
          id="rect7280-5"
          style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0.02645833;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <text
-         transform="matrix(0.06787031,0,0,0.06787031,138.11094,132.08556)"
+         transform="matrix(0.06787031,0,0,0.06787031,138.11094,114.62303)"
          id="text10105-4-0-91-9-1-8-65-1-8-7-1"
          y="417.70291"
          x="113.74126"
@@ -14937,7 +14953,7 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="159.53093"
+         cy="142.0685"
          cx="143.45471"
          id="path7464-49-1-3"
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
@@ -14946,12 +14962,12 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="159.53093"
+         cy="142.0685"
          cx="143.45471"
          id="path7784-8-7-6-4-2"
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <rect
-         y="157.64934"
+         y="140.1869"
          x="141.90053"
          height="3.7631974"
          width="17.897491"
@@ -14959,7 +14975,7 @@
          style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <text
          id="text10105-4-0-91-9-1-1-3-8-5-5-8-4"
-         y="152.77829"
+         y="131.08258"
          x="124.5219"
          style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
          xml:space="preserve"
@@ -14967,7 +14983,7 @@
          inkscape:export-xdpi="193.34676"
          inkscape:export-ydpi="193.34676"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="152.77829"
+           y="131.08258"
            x="124.5219"
            id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5"
            sodipodi:role="line">Sine</tspan></text>
@@ -14976,7 +14992,7 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="151.81366"
+         cy="130.11795"
          cx="122.05202"
          id="path7464-49-1-2"
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
@@ -14985,12 +15001,12 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="151.81366"
+         cy="130.11795"
          cx="122.05202"
          id="path7784-8-7-6-4-5"
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <rect
-         y="149.87575"
+         y="128.18004"
          x="120.49783"
          height="3.7631974"
          width="17.897491"
@@ -14998,7 +15014,7 @@
          style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <text
          id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-4"
-         y="152.82951"
+         y="131.1338"
          x="143.82855"
          style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
          xml:space="preserve"
@@ -15006,7 +15022,7 @@
          inkscape:export-xdpi="193.34676"
          inkscape:export-ydpi="193.34676"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="152.82951"
+           y="131.1338"
            x="143.82855"
            id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-3"
            sodipodi:role="line">Sine</tspan></text>
@@ -15015,12 +15031,12 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="151.86488"
+         cy="130.16917"
          cx="141.35867"
          id="path7464-49-1-2-0"
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <rect
-         y="149.92697"
+         y="128.23126"
          x="139.80449"
          height="3.7631974"
          width="17.897491"
@@ -15028,7 +15044,7 @@
          style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <text
          id="text10105-4-0-91-9-1-1-3-8-5-5-8-8"
-         y="146.88904"
+         y="125.19329"
          x="124.16342"
          style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
          xml:space="preserve"
@@ -15036,7 +15052,7 @@
          inkscape:export-xdpi="193.34676"
          inkscape:export-ydpi="193.34676"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="146.88904"
+           y="125.19329"
            x="124.16342"
            id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-4"
            sodipodi:role="line">Sine</tspan></text>
@@ -15045,7 +15061,7 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="145.92441"
+         cy="124.22866"
          cx="121.69354"
          id="path7464-49-1-31"
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
@@ -15054,19 +15070,19 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="145.92441"
+         cy="124.22866"
          cx="121.69354"
          id="path7784-8-7-6-4-49"
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <rect
-         y="143.98653"
+         y="122.29075"
          x="120.13936"
          height="3.7631974"
          width="17.897491"
          id="rect7280-5-2"
          style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <text
-         transform="matrix(0.06787031,0,0,0.06787031,104.21931,128.40896)"
+         transform="matrix(0.06787031,0,0,0.06787031,104.21931,106.71307)"
          id="text10105-4-0-91-9-1-8-65-1-8-7-1-5"
          y="417.70291"
          x="113.74126"
@@ -15085,7 +15101,7 @@
          inkscape:export-ydpi="95.015724"
          inkscape:export-xdpi="95.015724"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_square.png"
-         cy="155.85425"
+         cy="134.15854"
          cx="109.56308"
          id="path7464-49-1-3-8"
          style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
@@ -15094,12 +15110,12 @@
          inkscape:export-ydpi="193.34676"
          inkscape:export-xdpi="193.34676"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="155.85425"
+         cy="134.15854"
          cx="109.56308"
          id="path7784-8-7-6-4-2-7"
          style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
       <rect
-         y="153.97266"
+         y="132.27695"
          x="108.0089"
          height="3.7631974"
          width="17.897491"
@@ -15109,7 +15125,7 @@
          inkscape:export-ydpi="96"
          inkscape:export-xdpi="96"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/topbar_laye1_disabled.png"
-         y="174.6082"
+         y="157.14577"
          x="109.9278"
          height="6.3499999"
          width="6.3499999"
@@ -15750,8 +15766,7 @@
          id="g6870"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp_checked.png"
          inkscape:export-xdpi="107.30572"
-         inkscape:export-ydpi="107.30572"
-         transform="translate(0,21.695834)">
+         inkscape:export-ydpi="107.30572">
         <text
            inkscape:export-ydpi="107.30572"
            inkscape:export-xdpi="107.30572"
@@ -15791,7 +15806,7 @@
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_bp.png"
          inkscape:export-xdpi="94.794815"
          inkscape:export-ydpi="94.794815"
-         transform="matrix(1.1220138,0,0,1.1220138,-13.989979,7.3834572)">
+         transform="matrix(1.1220138,0,0,1.1220138,-13.989979,-14.312379)">
         <text
            inkscape:export-ydpi="94.794815"
            inkscape:export-xdpi="94.794815"
@@ -15830,8 +15845,7 @@
          id="g6884"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_hp.png"
          inkscape:export-xdpi="106.34357"
-         inkscape:export-ydpi="106.34357"
-         transform="translate(0,21.695834)">
+         inkscape:export-ydpi="106.34357">
         <text
            inkscape:export-ydpi="106.34357"
            inkscape:export-xdpi="106.34357"
@@ -15867,7 +15881,7 @@
            inkscape:export-ydpi="106.34357" />
       </g>
       <g
-         transform="translate(-2.0153431,21.517895)"
+         transform="translate(-2.0153431,4.0553943)"
          style="display:inline"
          id="g6870-7"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_lp.png"
@@ -15908,7 +15922,7 @@
            inkscape:export-ydpi="92.998291" />
       </g>
       <g
-         transform="translate(-2.0153431,25.75123)"
+         transform="translate(-2.0153431,4.0553943)"
          style="display:inline"
          id="g6877-3"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_bp.png"
@@ -15946,7 +15960,7 @@
            y="113.52837" />
       </g>
       <g
-         transform="translate(-2.0153431,25.75123)"
+         transform="translate(-2.0153431,4.0553943)"
          style="display:inline"
          id="g6884-4"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/filter_type_hp.png"
@@ -15984,7 +15998,7 @@
            y="113.52837" />
       </g>
       <g
-         transform="matrix(1.6229995,0,0,1.6229995,-1.6186935,12.176372)"
+         transform="matrix(1.6229995,0,0,1.6229995,-1.6186935,-5.2861277)"
          style="display:inline"
          id="g6870-6"
          inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/layers_mixer.png"
@@ -16012,12 +16026,12 @@
          xml:space="preserve"
          style="font-style:normal;font-weight:normal;font-size:4.58046532px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.04600671"
          x="171.85538"
-         y="209.73769"
+         y="192.27525"
          id="text10105-4-0-91-9-1-1-3-8-5-5-8-3-75-1"><tspan
            sodipodi:role="line"
            id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-6-3-8"
            x="171.85538"
-           y="209.73769"
+           y="192.27525"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58046532px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.04600671">L2</tspan></text>
       <text
          inkscape:export-ydpi="51.48151"
@@ -16034,813 +16048,43 @@
            y="200.33286"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58046532px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.04600671">L3</tspan></text>
       <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-6"
-         y="136.69409"
-         x="145.93515"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/tune_checkbox.png"
          xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-ydpi="193.34676"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="136.69409"
-           x="145.93515"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-9"
-           sodipodi:role="line">WAV32</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.35689926px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;opacity:0.62999998;fill:#faffff;fill-opacity:1;stroke:none;stroke-width:0.06294185"
+         x="135.32481"
+         y="233.74738"
+         id="text10652-7-9-5-7"
+         inkscape:export-xdpi="110.68004"
+         inkscape:export-ydpi="110.68004"><tspan
+           sodipodi:role="line"
+           id="tspan10650-9-1-6-5"
+           x="135.32481"
+           y="233.74738"
+           style="font-size:3.35689926px;fill:#faffff;fill-opacity:1;stroke-width:0.06294185">Tune</tspan></text>
       <circle
-         r="1.567413"
-         inkscape:export-ydpi="193.34676"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="135.72943"
-         cx="143.46527"
-         id="path7464-49-1-2-9-3"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="193.34676"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="135.72943"
-         cx="143.46527"
-         id="path7784-8-7-6-4-5-4-7"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="133.79153"
-         x="141.91109"
-         height="3.7631974"
-         width="17.897491"
-         id="rect7280-5-4-7-45"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
+         style="display:inline;opacity:1;fill:#778580;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-3)"
+         id="path8795-6"
+         cx="217.09576"
+         cy="146.42635"
+         r="0.58431405"
+         transform="matrix(1.6895901,0,0,1.6895901,-239.20773,-3.5969768)"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/tune_checkbox_off.png"
+         inkscape:export-xdpi="110.68004"
+         inkscape:export-ydpi="110.68004" />
       <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-4-8-2"
-         y="136.7453"
-         x="165.24181"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/tune_checkbox_off.png"
          xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-ydpi="193.34676"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="136.7453"
-           x="165.24181"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-3-4-5"
-           sodipodi:role="line">WAV32</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="193.34676"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="135.7807"
-         cx="162.77193"
-         id="path7464-49-1-2-0-5-4"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-7"
-         y="142.91472"
-         x="146.66768"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-ydpi="193.34676"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="142.91472"
-           x="146.66768"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-4"
-           sodipodi:role="line">OGG</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="193.34676"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="141.95009"
-         cx="144.1978"
-         id="path7464-49-1-2-9-4"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="193.34676"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="141.95009"
-         cx="144.1978"
-         id="path7784-8-7-6-4-5-4-3"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="140.01218"
-         x="142.64362"
-         height="3.7631974"
-         width="17.897491"
-         id="rect7280-5-4-7-07"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-4-8-8"
-         y="142.96596"
-         x="165.97433"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-ydpi="193.34676"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="142.96596"
-           x="165.97433"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-3-4-68"
-           sodipodi:role="line">OGG</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="193.34676"
-         inkscape:export-xdpi="193.34676"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sine_active.png"
-         cy="142.00137"
-         cx="163.50446"
-         id="path7464-49-1-2-0-5-8"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4"
-         y="88.685257"
-         x="150.29256"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="88.685257"
-           x="150.29256"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31"
-           sodipodi:role="line">FLAC 16</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button.png"
-         cy="87.720634"
-         cx="147.82268"
-         id="path7464-49-1-2-9-49"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="85.782722"
-         x="146.26849"
-         height="3.7631974"
-         width="14.151238"
-         id="rect7280-5-4-7-06"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button.png"
-         cy="87.782707"
-         cx="171.06601"
-         id="path7464-49-1-2-9-49-5"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9"
-         y="96.439133"
-         x="131.15016"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac24_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="96.439133"
-           x="131.15016"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0"
-           sodipodi:role="line">FLAC 24</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac24_radio_button_active.png"
-         cy="95.47451"
-         cx="128.68028"
-         id="path7464-49-1-2-9-49-9"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac24_radio_button_active.png"
-         cy="95.47451"
-         cx="128.68028"
-         id="path7784-8-7-6-4-5-4-2-1"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="93.536598"
-         x="127.12611"
-         height="3.7631974"
-         width="15.241127"
-         id="rect7280-5-4-7-06-7"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac24_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3"
-         y="103.67937"
-         x="133.13483"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav16_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="103.67937"
-           x="133.13483"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6"
-           sodipodi:role="line">WAV 16</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav16_radio_button_active.png"
-         cy="102.71474"
-         cx="130.66498"
-         id="path7464-49-1-2-9-49-9-5"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav16_radio_button_active.png"
-         cy="102.71474"
-         cx="130.66498"
-         id="path7784-8-7-6-4-5-4-2-1-6"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="100.77683"
-         x="129.11081"
-         height="3.7631974"
-         width="14.618334"
-         id="rect7280-5-4-7-06-7-3"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav16_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8"
-         y="110.66225"
-         x="134.27863"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav24_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="110.66225"
-           x="134.27863"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8"
-           sodipodi:role="line">WAV 24</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav24_radio_button_active.png"
-         cy="109.69762"
-         cx="131.80879"
-         id="path7464-49-1-2-9-49-9-5-5"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav24_radio_button_active.png"
-         cy="109.69762"
-         cx="131.80879"
-         id="path7784-8-7-6-4-5-4-2-1-6-0"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="107.75972"
-         x="130.25464"
-         height="3.7631974"
-         width="14.618334"
-         id="rect7280-5-4-7-06-7-3-9"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav24_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8"
-         y="117.92706"
-         x="133.9106"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav32_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="117.92706"
-           x="133.9106"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4"
-           sodipodi:role="line">WAV 32</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav32_radio_button_active.png"
-         cy="116.96243"
-         cx="131.44078"
-         id="path7464-49-1-2-9-49-9-5-5-8"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav32_radio_button_active.png"
-         cy="116.96243"
-         cx="131.44078"
-         id="path7784-8-7-6-4-5-4-2-1-6-0-1"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="115.02451"
-         x="129.88667"
-         height="3.7631974"
-         width="14.618334"
-         id="rect7280-5-4-7-06-7-3-9-0"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav32_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4"
-         y="126.67566"
-         x="133.63074"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="126.67566"
-           x="133.63074"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7"
-           sodipodi:role="line">OGG</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         cy="125.71103"
-         cx="131.16093"
-         id="path7464-49-1-2-9-49-9-5-5-8-6"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         cy="125.71103"
-         cx="131.16093"
-         id="path7784-8-7-6-4-5-4-2-1-6-0-1-3"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="123.77311"
-         x="129.60683"
-         height="3.7631974"
-         width="12.127161"
-         id="rect7280-5-4-7-06-7-3-9-0-1"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4-1"
-         y="126.67566"
-         x="157.32951"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="126.67566"
-           x="157.32951"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7-7"
-           sodipodi:role="line">OGG</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button.png"
-         cy="125.71103"
-         cx="154.85971"
-         id="path7464-49-1-2-9-49-9-5-5-8-6-8"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="123.77311"
-         x="153.3056"
-         height="3.7631974"
-         width="12.127161"
-         id="rect7280-5-4-7-06-7-3-9-0-1-7"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4-3"
-         y="117.33376"
-         x="186.95256"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="117.33376"
-           x="186.95256"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7-6"
-           sodipodi:role="line">OGG</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         cy="116.36913"
-         cx="184.48276"
-         id="path7464-49-1-2-9-49-9-5-5-8-6-7"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         cy="116.36913"
-         cx="184.48276"
-         id="path7784-8-7-6-4-5-4-2-1-6-0-1-3-5"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="114.43121"
-         x="182.92865"
-         height="3.7631974"
-         width="12.127161"
-         id="rect7280-5-4-7-06-7-3-9-0-1-3"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4-1-5"
-         y="117.33376"
-         x="210.65134"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="117.33376"
-           x="210.65134"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7-7-6"
-           sodipodi:role="line">OGG</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button.png"
-         cy="116.36913"
-         cx="208.18153"
-         id="path7464-49-1-2-9-49-9-5-5-8-6-8-2"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="114.43121"
-         x="206.62743"
-         height="3.7631974"
-         width="12.127161"
-         id="rect7280-5-4-7-06-7-3-9-0-1-7-9"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/ogg_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4-3-2"
-         y="89.775162"
-         x="190.49324"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/mono_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="89.775162"
-           x="190.49324"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7-6-6"
-           sodipodi:role="line">Mono</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/mono_radio_button_active.png"
-         cy="88.810532"
-         cx="188.02344"
-         id="path7464-49-1-2-9-49-9-5-5-8-6-7-1"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/mono_radio_button_active.png"
-         cy="88.810532"
-         cx="188.02344"
-         id="path7784-8-7-6-4-5-4-2-1-6-0-1-3-5-8"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="86.872612"
-         x="186.46933"
-         height="3.7631974"
-         width="12.127161"
-         id="rect7280-5-4-7-06-7-3-9-0-1-3-7"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/mono_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4-3-2-9"
-         y="89.152374"
-         x="208.08716"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/mono_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="89.152374"
-           x="208.08716"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7-6-6-2"
-           sodipodi:role="line">Mono</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/mono_radio_button.png"
-         cy="88.187744"
-         cx="205.61736"
-         id="path7464-49-1-2-9-49-9-5-5-8-6-7-1-0"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="86.249825"
-         x="204.06325"
-         height="3.7631974"
-         width="12.127161"
-         id="rect7280-5-4-7-06-7-3-9-0-1-3-7-3"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/mono_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4-3-2-7"
-         y="99.428459"
-         x="184.88811"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/stereo_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="99.428459"
-           x="184.88811"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7-6-6-5"
-           sodipodi:role="line">Stereo</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/stereo_radio_button_active.png"
-         cy="98.463829"
-         cx="182.4183"
-         id="path7464-49-1-2-9-49-9-5-5-8-6-7-1-9"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/stereo_radio_button_active.png"
-         cy="98.463829"
-         cx="182.4183"
-         id="path7784-8-7-6-4-5-4-2-1-6-0-1-3-5-8-2"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="96.525909"
-         x="180.8642"
-         height="3.7631974"
-         width="13.21705"
-         id="rect7280-5-4-7-06-7-3-9-0-1-3-7-2"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/stereo_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-4-3-2-7-8"
-         y="100.98544"
-         x="203.02696"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/stereo_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="100.98544"
-           x="203.02696"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-7-6-6-5-9"
-           sodipodi:role="line">Stereo</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/stereo_radio_button.png"
-         cy="100.02081"
-         cx="200.55716"
-         id="path7464-49-1-2-9-49-9-5-5-8-6-7-1-9-7"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="98.082893"
-         x="199.00305"
-         height="3.7631974"
-         width="13.21705"
-         id="rect7280-5-4-7-06-7-3-9-0-1-3-7-2-6"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/stereo_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-1"
-         y="89.619453"
-         x="126.35014"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="89.619453"
-           x="126.35014"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-2"
-           sodipodi:role="line">FLAC 16</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button_active.png"
-         cy="88.654831"
-         cx="123.88026"
-         id="path7464-49-1-2-9-49-93"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <circle
-         r="0.88175309"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button_active.png"
-         cy="88.654831"
-         cx="123.88026"
-         id="path7784-8-7-6-4-5-4-2-19"
-         style="display:inline;opacity:1;fill:#383837;fill-opacity:1;stroke:none;stroke-width:1.50948918;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="86.716919"
-         x="122.32608"
-         height="3.7631974"
-         width="14.151238"
-         id="rect7280-5-4-7-06-4"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac16_radio_button_active.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-7"
-         y="96.003082"
-         x="152.81223"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac24_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="96.003082"
-           x="152.81223"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-8"
-           sodipodi:role="line">FLAC 24</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac24_radio_button.png"
-         cy="95.03846"
-         cx="150.34235"
-         id="path7464-49-1-2-9-49-9-4"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="93.100548"
-         x="148.78816"
-         height="3.7631974"
-         width="15.241127"
-         id="rect7280-5-4-7-06-7-0"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/flac24_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-36"
-         y="110.79441"
-         x="156.78664"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav24_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="110.79441"
-           x="156.78664"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-1"
-           sodipodi:role="line">WAV 24</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav24_radio_button.png"
-         cy="109.82978"
-         cx="154.3168"
-         id="path7464-49-1-2-9-49-9-5-5-0"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="107.89188"
-         x="152.76265"
-         height="3.7631974"
-         width="14.618334"
-         id="rect7280-5-4-7-06-7-3-9-3"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav24_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-8-8-2"
-         y="118.42365"
-         x="158.23106"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav32_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="118.42365"
-           x="158.23106"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-8-4-0"
-           sodipodi:role="line">WAV 32</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav32_radio_button.png"
-         cy="117.45902"
-         cx="155.76125"
-         id="path7464-49-1-2-9-49-9-5-5-8-61"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="115.5211"
-         x="154.20714"
-         height="3.7631974"
-         width="14.618334"
-         id="rect7280-5-4-7-06-7-3-9-0-5"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav32_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
-      <text
-         id="text10105-4-0-91-9-1-1-3-8-5-5-8-4-3-4-9-3-6"
-         y="103.9437"
-         x="153.73514"
-         style="font-style:normal;font-weight:normal;font-size:2.82222223px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.02834671"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav16_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.02834671"
-           y="103.9437"
-           x="153.73514"
-           id="tspan10103-9-1-9-08-2-5-7-9-4-9-9-5-1-31-0-6-9"
-           sodipodi:role="line">WAV 16</tspan></text>
-      <circle
-         r="1.567413"
-         inkscape:export-ydpi="107.59322"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav16_radio_button.png"
-         cy="102.97906"
-         cx="151.26529"
-         id="path7464-49-1-2-9-49-9-5-3"
-         style="display:inline;opacity:0.80100002;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.28992331;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-      <rect
-         y="101.04116"
-         x="149.71112"
-         height="3.7631974"
-         width="14.618334"
-         id="rect7280-5-4-7-06-7-3-4"
-         style="display:inline;opacity:1;fill:none;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wav16_radio_button.png"
-         inkscape:export-xdpi="107.59322"
-         inkscape:export-ydpi="107.59322" />
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.35689926px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;opacity:0.62999998;fill:#faffff;fill-opacity:1;stroke:none;stroke-width:0.06294185"
+         x="129.49376"
+         y="245.02208"
+         id="text10652-7-9-5-7-2"
+         inkscape:export-xdpi="110.68004"
+         inkscape:export-ydpi="110.68004"><tspan
+           sodipodi:role="line"
+           id="tspan10650-9-1-6-5-9"
+           x="129.49376"
+           y="245.02208"
+           style="font-size:3.35689926px;fill:#faffff;fill-opacity:1;stroke-width:0.06294185">Tune</tspan></text>
     </g>
   </g>
 </svg>
