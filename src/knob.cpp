@@ -124,7 +124,7 @@ void Knob::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();
-                rotateKnob(-0.5 * dy);
+                rotateKnob(-dy);
                 lastPositionPoint.setX(event->x());
                 lastPositionPoint.setY(event->y());
                 update();

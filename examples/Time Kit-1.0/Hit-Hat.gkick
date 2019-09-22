@@ -1,0 +1,248 @@
+{
+"osc8": {
+"enabled": false, 
+"is_fm": false, 
+"function": 4,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.26000, 
+"points": [
+[ 0.00000 , 0.24167], [ 1.00000 , 1.00000]]
+},
+"freq_env": {
+"amplitude": 150.00000, 
+"points": [
+]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc7": {
+"enabled": false, 
+"is_fm": false, 
+"function": 0,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.26000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"freq_env": {
+"amplitude": 800.00000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc6": {
+"enabled": true, 
+"is_fm": false, 
+"function": 0,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.26000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"freq_env": {
+"amplitude": 800.00000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc1": {
+"enabled": true, 
+"is_fm": false, 
+"function": 1,
+"phase": 0.62832, 
+"ampl_env": {
+"amplitude": 0.16246, 
+"points": [
+[ 0.00000 , 0.63333], [ 0.02452 , 0.05833], [ 0.18581 , 0.07083], [ 1.00000 , 0.00000]]
+},
+"freq_env": {
+"amplitude": 7391.48926, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"filter": {
+"enabled": true, 
+"type": 1, 
+"cutoff": 531.26624, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 0.55600
+}
+}
+,
+"osc0": {
+"enabled": false, 
+"is_fm": false, 
+"function": 1,
+"phase": 2.01062, 
+"ampl_env": {
+"amplitude": 0.15926, 
+"points": [
+[ 0.00129 , 0.02917], [ 1.00000 , 0.00000]]
+},
+"freq_env": {
+"amplitude": 7962.24023, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc2": {
+"enabled": true, 
+"is_fm": false, 
+"function": 4,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.32222, 
+"points": [
+[ 0.00000 , 0.06250], [ 0.02581 , 0.12500], [ 0.13290 , 0.08333], [ 1.00000 , 0.00000]]
+},
+"freq_env": {
+"amplitude": 150.00000, 
+"points": [
+]
+},
+"filter": {
+"enabled": true, 
+"type": 2, 
+"cutoff": 7039.38037, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc3": {
+"enabled": true, 
+"is_fm": false, 
+"function": 0,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.26000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"freq_env": {
+"amplitude": 800.00000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc4": {
+"enabled": false, 
+"is_fm": false, 
+"function": 0,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.26000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"freq_env": {
+"amplitude": 800.00000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc5": {
+"enabled": false, 
+"is_fm": false, 
+"function": 4,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.26000, 
+"points": [
+[ 0.00000 , 1.00000], [ 0.40387 , 0.32500], [ 1.00000 , 0.00000]]
+},
+"freq_env": {
+"amplitude": 150.00000, 
+"points": [
+]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"kick": {
+"layers": [0],
+"layers_amplitude": [1.00000, 1.00000, 1.00000],
+"limiter": 0.96354, 
+"ampl_env": {
+"amplitude": 0.90370, 
+"length": 314.62961, 
+"points": [[ 0.00000 , 1.00000], [ 1.00000 , 0.99167]]}, 
+"filter": {
+"enabled": true, 
+"type": 2, 
+"cutoff": 5709.33, 
+"factor": 0.85, 
+"cutoff_env": [[ 0.00000 , 1.00000], [ 0.84000 , 0.77625], [ 1.00000 , 1.00000]]
+}, 
+"compressor": {
+"enabled": 0, 
+"attack": 0.01000, 
+"release": 0.01000, 
+"threshold": 0.00000, 
+"ratio": 1.00000, 
+"knee": 0.00000, 
+"makeup": 1.00000
+}, 
+"distortion": {
+"enabled": false, 
+"volume": 0.01047, 
+"drive": 13.00000
+}
+}
+}

@@ -31,10 +31,15 @@
 
 #include <RkLabel.h>
 
-extern const unsigned char rk_osc1_groupbox_label_png[];
+extern const unsigned char rk_osc1_radio_button_png[];
+extern const unsigned char rk_osc1_radio_button_active_png[];
+extern const unsigned char rk_osc2_radio_button_png[];
+extern const unsigned char rk_osc2_radio_button_active_png[];
+extern const unsigned char rk_noise_radio_button_png[];
+extern const unsigned char rk_noise_radio_button_active_png[];
+extern const unsigned char rk_fm_radio_button_png[];
+extern const unsigned char rk_fm_radio_button_active_png[];
 extern const unsigned char rk_wf_bk_hbox_png[];
-extern const unsigned char rk_osc2_groupbox_label_png[];
-extern const unsigned char rk_noise_groupbox_label_png[];
 extern const unsigned char rk_wave_button_sine_png[];
 extern const unsigned char rk_wave_button_sine_active_png[];
 extern const unsigned char rk_wave_button_square_png[];
@@ -51,10 +56,7 @@ extern const unsigned char rk_noise_type_white_png[];
 extern const unsigned char rk_noise_type_white_active_png[];
 extern const unsigned char rk_noise_type_brownian_png[];
 extern const unsigned char rk_noise_type_brownian_active_png[];
-extern const unsigned char rk_checkbox_checked_png[];
-extern const unsigned char rk_checkbox_unchecked_png[];
 extern const unsigned char rk_knob_bk_image_png[];
-extern const unsigned char rk_osc1_to_osc2_label_png[];
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           : GeonkickGroupBox{parent}
@@ -77,42 +79,29 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         oscillatorCheckbox = new GeonkickButton(this);
         oscillatorCheckbox->setCheckable(true);
         oscillatorCheckbox->setPosition(5, 0);
-        oscillatorCheckbox->setFixedSize(12, 12);
-        oscillatorCheckbox->setPressedImage(RkImage(12, 12, rk_checkbox_checked_png));
-        oscillatorCheckbox->setUnpressedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
-        oscillatorCheckbox->show();
         RK_ACT_BIND(oscillatorCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, enable(b));
 
-        auto label = new RkLabel(this);
-        label->setBackgroundColor(68, 68, 70);
-        label->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 3, 0);
         if (oscillator->type() == Oscillator::Type::Oscillator1) {
-                label->setSize(74, 11);
-                label->setImage(RkImage(74, 11, rk_osc1_groupbox_label_png));
+                oscillatorCheckbox->setFixedSize(85, 11);
+                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(), rk_osc1_radio_button_active_png));
+                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(), rk_osc1_radio_button_png));
 
                 fmCheckbox = new GeonkickButton(this);
                 fmCheckbox->setCheckable(true);
-                fmCheckbox->setPosition(label->x() + label->width() + 10, 0);
-                fmCheckbox->setFixedSize(12, 12);
-                fmCheckbox->setPressedImage(RkImage(12, 12, rk_checkbox_checked_png));
-                fmCheckbox->setUnpressedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
-                fmCheckbox->show();
+                fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 20, 0);
+                fmCheckbox->setFixedSize(87, 11);
+                fmCheckbox->setPressedImage(RkImage(87, 11, rk_fm_radio_button_active_png));
+                fmCheckbox->setUnpressedImage(RkImage(87, 11, rk_fm_radio_button_png));
                 RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
-
-                auto fmLabel = new RkLabel(this);
-                fmLabel->setBackgroundColor(68, 68, 70);
-                fmLabel->setSize(103, 11);
-                fmLabel->setPosition(fmCheckbox->x() + fmCheckbox->width(), 0);
-                fmLabel->setImage(RkImage(103, 11, rk_osc1_to_osc2_label_png));
-                fmLabel->show();
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
-                label->setSize(76, 11);
-                label->setImage(RkImage(76, 11, rk_osc2_groupbox_label_png));
+                oscillatorCheckbox->setFixedSize(87, 11);
+                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(), rk_osc2_radio_button_active_png));
+                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(), rk_osc2_radio_button_png));
         } else {
-                label->setSize(37, 11);
-                label->setImage(RkImage(37, 11, rk_noise_groupbox_label_png));
+                oscillatorCheckbox->setFixedSize(48, 11);
+                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(), rk_noise_radio_button_active_png));
+                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(), rk_noise_radio_button_png));
         }
-        label->show();
 
         if (oscillator->type() != Oscillator::Type::Noise)
                 createWaveFunctionGroupBox();

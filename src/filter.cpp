@@ -25,6 +25,8 @@
 #include "geonkick_button.h"
 #include "knob.h"
 
+#include <RkEvent.h>
+
 extern const unsigned char rk_knob_png[];
 extern const unsigned char rk_knob_bk_image_png[];
 extern const unsigned char rk_hboxbk_filter_png[];
@@ -179,3 +181,12 @@ void Filter::setResonanceRange(double from, double to)
         resonanceKnob->setRange(from, to);
 }
 
+void Filter::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+{
+        if (event->button() == RkMouseEvent::ButtonType::Right
+            || event->button() == RkMouseEvent::ButtonType::Left) {
+                bool b = !isEnabled();
+                enable(b);
+                enabled(b);
+        }
+}

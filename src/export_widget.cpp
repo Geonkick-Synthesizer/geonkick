@@ -34,14 +34,26 @@
 
 extern const unsigned char rk_export_bk_png[];
 extern const unsigned char rk_export_format_unpressed_png[];
-const auto rk_mono_unpressed_png = rk_export_format_unpressed_png;
-const auto rk_stereo_unpressed_png = rk_export_format_unpressed_png;
 extern const unsigned char rk_export_format_pressed_png[];
-const auto rk_mono_pressed_png = rk_export_format_pressed_png;
-const auto rk_stereo_pressed_png = rk_export_format_pressed_png;
 extern const unsigned char rk_export_browse_png[];
 extern const unsigned char rk_export_active_png[];
 extern const unsigned char rk_export_cancel_png[];
+extern const unsigned char rk_flac16_radio_button_png[];
+extern const unsigned char rk_flac16_radio_button_active_png[];
+extern const unsigned char rk_flac24_radio_button_png[];
+extern const unsigned char rk_flac24_radio_button_active_png[];
+extern const unsigned char rk_wav16_radio_button_png[];
+extern const unsigned char rk_wav16_radio_button_active_png[];
+extern const unsigned char rk_wav24_radio_button_png[];
+extern const unsigned char rk_wav24_radio_button_active_png[];
+extern const unsigned char rk_wav32_radio_button_png[];
+extern const unsigned char rk_wav32_radio_button_active_png[];
+extern const unsigned char rk_ogg_radio_button_png[];
+extern const unsigned char rk_ogg_radio_button_active_png[];
+extern const unsigned char rk_mono_radio_button_png[];
+extern const unsigned char rk_mono_radio_button_active_png[];
+extern const unsigned char rk_stereo_radio_button_png[];
+extern const unsigned char rk_stereo_radio_button_active_png[];
 
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
@@ -142,49 +154,49 @@ void ExportWidget::createFormatButtons()
         int y = 19;
         flac16Button = new GeonkickButton(this);
         flac16Button->setPressed(ExportFormat::Flac16 == selectedFormat);
-        flac16Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
-        flac16Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
-        flac16Button->setFixedSize(14, 12);
+        flac16Button->setFixedSize(63, 16);
+        flac16Button->setUnpressedImage(RkImage(flac16Button->size(), rk_flac16_radio_button_png));
+        flac16Button->setPressedImage(RkImage(flac16Button->size(), rk_flac16_radio_button_active_png));
         flac16Button->setPosition(34, y);
         RK_ACT_BIND(flac16Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Flac16));
 
         flac24Button = new GeonkickButton(this);
         flac24Button->setPressed(ExportFormat::Flac24 == selectedFormat);
-        flac24Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
-        flac24Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
-        flac24Button->setFixedSize(14, 12);
+        flac24Button->setFixedSize(65, 16);
+        flac24Button->setUnpressedImage(RkImage(flac24Button->size(), rk_flac24_radio_button_png));
+        flac24Button->setPressedImage(RkImage(flac24Button->size(), rk_flac24_radio_button_active_png));
         flac24Button->setPosition(34 + 79, y);
         RK_ACT_BIND(flac24Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Flac24));
 
         wav16Button = new GeonkickButton(this);
         wav16Button->setPressed(ExportFormat::Wav16 == selectedFormat);
-        wav16Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
-        wav16Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
-        wav16Button->setFixedSize(14, 12);
+        wav16Button->setFixedSize(62, 16);
+        wav16Button->setUnpressedImage(RkImage(wav16Button->size(), rk_wav16_radio_button_png));
+        wav16Button->setPressedImage(RkImage(wav16Button->size(), rk_wav16_radio_button_active_png));
         wav16Button->setPosition(34 + 2 * 79, y);
         RK_ACT_BIND(wav16Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Wav16));
 
         wav24Button = new GeonkickButton(this);
         wav24Button->setPressed(ExportFormat::Wav24 == selectedFormat);
-        wav24Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
-        wav24Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
-        wav24Button->setFixedSize(14, 12);
+        wav24Button->setFixedSize(62, 16);
+        wav24Button->setUnpressedImage(RkImage(wav24Button->size(), rk_wav24_radio_button_png));
+        wav24Button->setPressedImage(RkImage(wav24Button->size(), rk_wav24_radio_button_active_png));
         wav24Button->setPosition(34 + 3 * 79, y);
         RK_ACT_BIND(wav24Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Wav24));
 
         wav32Button = new GeonkickButton(this);
         wav32Button->setPressed(ExportFormat::Wav32 == selectedFormat);
-        wav32Button->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
-        wav32Button->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
-        wav32Button->setFixedSize(14, 12);
+        wav32Button->setFixedSize(62, 16);
+        wav32Button->setUnpressedImage(RkImage(wav32Button->size(), rk_wav32_radio_button_png));
+        wav32Button->setPressedImage(RkImage(wav32Button->size(), rk_wav32_radio_button_active_png));
         wav32Button->setPosition(34 + 4 * 79, y);
         RK_ACT_BIND(wav32Button, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Wav32));
 
         oggButton = new GeonkickButton(this);
         oggButton->setPressed(ExportFormat::Ogg == selectedFormat);
-        oggButton->setUnpressedImage(RkImage(12, 12, rk_export_format_unpressed_png));
-        oggButton->setPressedImage(RkImage(12, 12, rk_export_format_pressed_png));
-        oggButton->setFixedSize(14, 12);
+        oggButton->setFixedSize(51, 16);
+        oggButton->setUnpressedImage(RkImage(oggButton->size(), rk_ogg_radio_button_png));
+        oggButton->setPressedImage(RkImage(oggButton->size(), rk_ogg_radio_button_active_png));
         oggButton->setPosition(34 + 5 * 79, y);
         RK_ACT_BIND(oggButton, toggled, RK_ACT_ARGS(bool b), this, setFormat(ExportFormat::Ogg));
 }
@@ -211,18 +223,18 @@ void ExportWidget::createChannelsButtons()
         int x = 192;
         monoButton = new GeonkickButton(this);
         monoButton->setPressed(ChannelsType::Mono == channelsType);
-        monoButton->setFixedSize(14, 12);
+        monoButton->setFixedSize(51, 16);
         monoButton->setPosition(x , y);
-        monoButton->setUnpressedImage(RkImage(12, 12, rk_mono_unpressed_png));
-        monoButton->setPressedImage(RkImage(12, 12, rk_mono_pressed_png));
+        monoButton->setUnpressedImage(RkImage(monoButton->size(), rk_mono_radio_button_png));
+        monoButton->setPressedImage(RkImage(monoButton->size(), rk_mono_radio_button_active_png));
         RK_ACT_BIND(monoButton, toggled, RK_ACT_ARGS(bool b), this, setChannels(ChannelsType::Mono));
 
         stereoButton = new GeonkickButton(this);
         stereoButton->setPressed(ChannelsType::Stereo == channelsType);
-        stereoButton->setFixedSize(12, 12);
+        stereoButton->setFixedSize(56, 16);
         stereoButton->setPosition(x + 66, y);
-        stereoButton->setUnpressedImage(RkImage(12, 12, rk_stereo_unpressed_png));
-        stereoButton->setPressedImage(RkImage(12, 12, rk_stereo_pressed_png));
+        stereoButton->setUnpressedImage(RkImage(stereoButton->size(), rk_stereo_radio_button_png));
+        stereoButton->setPressedImage(RkImage(stereoButton->size(), rk_stereo_radio_button_active_png));
         RK_ACT_BIND(stereoButton, toggled, RK_ACT_ARGS(bool b), this, setChannels(ChannelsType::Stereo));
 }
 
@@ -284,6 +296,7 @@ void ExportWidget::exportKick()
                 return;
 
         SF_INFO sndinfo;
+        memset(&sndinfo, 0, sizeof(sndinfo));
         sndinfo.samplerate = geonkickApi->getSampleRate();
         if (sndinfo.samplerate == 0) {
                 showError("Error on exporting kick3");
@@ -294,6 +307,7 @@ void ExportWidget::exportKick()
         sndinfo.format     = exportFormat();
 
         auto tempBuffer = geonkickApi->getKickBuffer();
+        sndinfo.frames = tempBuffer.size();
         std::vector<gkick_real> kickBuffer;
         if (sndinfo.channels == 2) {
                 kickBuffer.resize(2 * tempBuffer.size());
@@ -307,7 +321,6 @@ void ExportWidget::exportKick()
         }
 
         if (kickBuffer.empty() || !sf_format_check(&sndinfo)) {
-                GEONKICK_LOG_ERROR("size: " << kickBuffer.size());
                 showError("Error: error on exporting kick33");
                 return;
         }
@@ -324,26 +337,16 @@ void ExportWidget::exportKick()
                 return;
         }
 
-        size_t chunk = kickBuffer.size() / 100;
-        size_t i = 0;
         size_t n;
-        while (i < kickBuffer.size()) {
-                if (i + chunk >= kickBuffer.size()) {
-                        chunk = kickBuffer.size() - i;
-                }
 #ifdef GEONKICK_DOUBLE_PRECISION
-                n = sf_write_double(sndFile, kickBuffer.data() + i, chunk);
+        n = sf_write_double(sndFile, kickBuffer.data(), kickBuffer.size());
 #else
-                n = sf_write_float(sndFile, kickBuffer.data() + i, chunk);
+        n = sf_write_float(sndFile, kickBuffer.data(), kickBuffer.size());
 #endif
-                if (n != chunk) {
-                        showError("Error on exporting kick1");
-                        break;
-                }
-                i += chunk;
-                progressBar->setValue(100 * (static_cast<float>(i) / kickBuffer.size()));
-                eventQueue()->processQueue();
-        }
+        if (n != kickBuffer.size())
+                showError("Error on exporting");
+        else
+                progressBar->setValue(100);
 
         sf_close(sndFile);
         close();

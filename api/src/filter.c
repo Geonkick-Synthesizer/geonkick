@@ -42,7 +42,7 @@ gkick_filter_new(struct gkick_filter **filter)
 
         (*filter)->cutoff_env = gkick_envelope_create();
         if ((*filter)->cutoff_env == NULL) {
-                gkick_log_error("can't create filter cutoff envelope")
+                gkick_log_error("can't create filter cutoff envelope");
                 gkick_filter_free(filter);
                 return GEONKICK_ERROR;
         } else {

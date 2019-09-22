@@ -1,6 +1,6 @@
 # Geonkick
 
-Geonkick - a free software percussion synthesizer.
+Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
 
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
@@ -8,24 +8,26 @@ snares, hit-hats, shakers, claps, sticks.
 
 License: GPLv3
 
-Version: 1.8.0
+Version: 1.8.1
 
 Author: Iurie Nistor
 
 Source code repository:
 
-* https://gitlab.com/iurie/geonkick
-* https://github.com/iurienistor/geonkick
+https://gitlab.com/geontime/geonkick
 
-Latest releases can be found on ["master" branch](https://github.com/iurienistor/geonkick/commits/master) or [tags](https://github.com/iurienistor/geonkick/tags).
+Latest releases can be found on [tags](https://gitlab.com/geontime/geonkick/-/tags).
 
-The development of new releases is going on ["develop" branch](https://github.com/iurienistor/geonkick/commits/develop).
+Latest stable features added are on ["master" branch](https://gitlab.com/geontime/geonkick/commits/master)
+
+The development is going on ["develop" branch](https://gitlab.com/geontime/geonkick/commits/develop)
+or feature (feat/feature_name) branches.
 
 ![Screenshot](data/screenshot.png)
 
 #### Download
 
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](data/bin/Geonkick-1.8.0-GNU+Linux-64bit.zip)
+[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://gitlab.com/geontime/geonkick/uploads/9bf2af16a9839984c8b080a0e4a7f0c5/geonkick-1.8.1_GNU+Linux_64bit.zip)
 
 #### Features
 
@@ -65,6 +67,13 @@ The development of new releases is going on ["develop" branch](https://github.co
   - GNU/Linux
 * Build system:
   - CMake
+
+#### Demo & Examples
+
+Here a is [list of videos](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about how it works.
+
+Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
+
 
 #### Requirements
 
@@ -119,21 +128,13 @@ Note: after every update from the repository over the old code
      cmake ../
      make
 
-#### Tests
-Here is a list of tests of the application on various GNU/Linux distributions
-in order to see if it builds with dependencies installed from repository,
-installs, runs, and if there any issues.
-
-| Distribution  | Dependences  | Build  | Install  | Run  | Comments  |
-|:-:|:-:|:-:|:-:|:-:|:-:|
-| Debian 10.0/64bit  | repository  | OK  | OK  | OK  |   |
-| Ubuntu 18.10/64bit  | repository  | OK  | OK  | OK  |   |
-| Fedora 29 / 64 bit  | repository | OK  | OK  | OK  |   |
-| Ubuntu Studio  | repository  | OK  | OK  | OK  |   |
-
 #### Packaging
 
-* [Package](https://www.archlinux.org/packages/community/x86_64/geonkick/) for ArchLinux community repository by David Runge
+Geonkick can be found in the following repositories:
+
+* [ArchLinux](https://www.archlinux.org/packages/community/x86_64/geonkick/) by David Runge
+* [FreeBSD](https://www.freshports.org/audio/geonkick-lv2/) by yuri@FreeBSD.org
+* [OpenSUSE](https://build.opensuse.org/repositories/home:opensuseitalia:daw/geonkick) by Fabio Pesari
 
 #### Road map
 
@@ -169,10 +170,6 @@ If audio outputs are connected there are three ways to play the sound:
    * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
    * pressing the key 'Ctrl + k'
    * by means of a DAW if used as LV2
-
-###### Examples
-
-Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
 
 #### Other technical notes
 
