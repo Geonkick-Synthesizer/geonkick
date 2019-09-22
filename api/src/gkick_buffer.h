@@ -60,7 +60,7 @@ gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index, size_
 
 gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer);
 
-gkick_real gkick_buffer_get_next1(struct gkick_buffer *buffer, gkick_real factor);
+gkick_real gkick_buffer_stretch_get_next(struct gkick_buffer *buffer, gkick_real factor);
 
 void gkick_buffer_set_size(struct gkick_buffer *buffer, size_t size);
 

@@ -414,6 +414,12 @@ geonkick_group_set_amplitude(struct geonkick *kick, size_t index, gkick_real amp
 enum geonkick_error
 geonkick_group_get_amplitude(struct geonkick *kick, size_t index, gkick_real *amplitude);
 
+enum geonkick_error
+geonkick_tune_audio_output(struct geonkick *kick, bool tune);
+
+enum geonkick_error
+geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune);
+
 #ifdef __cplusplus
 }
 #endif

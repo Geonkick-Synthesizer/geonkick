@@ -93,7 +93,7 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
 gkick_real
 gkick_audio_output_tune_factor(int note_number)
 {
-        return pow(2.0, (double)(note_number - 69) / 12.0);
+        return pow(2.0, (gkick_real)(note_number - 69) / 12.0);
 }
 
 /**
@@ -113,7 +113,10 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                         audio_output->is_play = false;
                 } else {
                         gkick_real factor = gkick_audio_output_tune_factor(audio_output->key.note_number);
-                        *val = gkick_buffer_get_next1((struct gkick_buffer*)audio_output->playing_buffer, factor);
+                        if (audio_output->tune)
+                                *val = gkick_buffer_stretch_get_next((struct gkick_buffer*)audio_output->playing_buffer, factor);
+                        else
+                                *val = gkick_buffer_get_next((struct gkick_buffer*)audio_output->playing_buffer);
                         if (audio_output->key.state == GKICK_KEY_STATE_RELEASED)
                                 decay_val = - 1.0 * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
                         else
@@ -204,4 +207,14 @@ void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)
                 gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
                 gkick_audio_output_unlock(audio_output);
         }
+}
+
+void gkick_audio_tune_output(struct gkick_audio_output *audio_output, bool tune)
+{
+        audio_output->tune = tune;
+}
+
+bool gkick_audio_is_tune_output(struct gkick_audio_output *audio_output)
+{
+        return audio_output->tune;
 }

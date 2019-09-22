@@ -109,6 +109,8 @@ class GeonkickState
         void setCurrentLayer(GeonkickApi::Layer layer);
         void setLayerAmplitude(GeonkickApi::Layer layer, double amplitude);
         double getLayerAmplitude(GeonkickApi::Layer layer) const;
+        void tuneOutput(bool tune);
+        bool isOutputTuned() const;
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
@@ -181,6 +183,7 @@ private:
         std::vector<bool> layers;
         std::vector<double> layersAmplitude;
         GeonkickApi::Layer currentLayer;
+        bool tunedOutput;
 };
 
 #endif // GEONKICK_STATE_H

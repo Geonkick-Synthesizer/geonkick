@@ -88,7 +88,7 @@ gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer)
         }
 }
 
-gkick_real gkick_buffer_get_next1(struct gkick_buffer *buffer, gkick_real factor)
+gkick_real gkick_buffer_stretch_get_next(struct gkick_buffer *buffer, gkick_real factor)
 {
         if (buffer->size < 1 || buffer->currentIndex > buffer->size - 1)
                 return 0;
@@ -103,7 +103,7 @@ gkick_real gkick_buffer_get_next1(struct gkick_buffer *buffer, gkick_real factor
         }
 
         buffer->floatIndex += factor;
-        buffer->currentIndex = buffer->floatIndex;
+        buffer->currentIndex = buffer->floatIndex + 0.5;
         return val;
 }
 

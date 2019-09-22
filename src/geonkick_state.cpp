@@ -38,6 +38,7 @@ GeonkickState::GeonkickState() :
         , layers{false, false, false}
         , layersAmplitude{1.0, 1.0, 1.0}
         , currentLayer{GeonkickApi::Layer::Layer1}
+        , tunedOutput{false}
 {
         initOscillators();
 }
@@ -87,6 +88,9 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
         for (const auto &m: kick.GetObject()) {
                 if (m.name == "limiter" && m.value.IsDouble())
                         setLimiterValue(m.value.GetDouble());
+
+                if (m.name == "tuned_output" && m.value.IsBool())
+                        tuneOutput(m.value.GetBool());
 
                 if (m.name == "layers" && m.value.IsArray()) {
                         layers = {false, false, false};
@@ -712,6 +716,7 @@ void GeonkickState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "]," << std::endl;
 
         jsonStream << "\"limiter\": " << std::fixed << std::setprecision(5) << getLimiterValue() << ", " << std::endl;
+        jsonStream << "\"tuned_output\": " << (isOutputTuned() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
         jsonStream << "\"amplitude\": " << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
         jsonStream << "\"length\": " << static_cast<double>(getKickLength()) << ", " << std::endl;
@@ -800,5 +805,15 @@ double GeonkickState::getLayerAmplitude(GeonkickApi::Layer layer) const
         if (index >= 0 && index < layersAmplitude.size())
                 return layersAmplitude[index];
         return 0;
+}
+
+void GeonkickState::tuneOutput(bool tune)
+{
+        tunedOutput = tune;
+}
+
+bool GeonkickState::isOutputTuned() const
+{
+        return tunedOutput;
 }
 

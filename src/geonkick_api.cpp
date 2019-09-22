@@ -68,6 +68,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
 {
         std::shared_ptr<GeonkickState> state = std::make_shared<GeonkickState>();
         state->setLimiterValue(1.0);
+        state->tuneOutput(false);
         state->setKickLength(300);
         state->setKickAmplitude(0.8);
         state->enableKickFilter(false);
@@ -143,6 +144,7 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
                 setLayerAmplitude(static_cast<Layer>(i), state->getLayerAmplitude(static_cast<Layer>(i)));
         }
         setLimiterValue(state->getLimiterValue());
+        tuneAudioOutput(state->isOutputTuned());
         setKickLength(state->getKickLength());
         setKickAmplitude(state->getKickAmplitude());
         enableKickFilter(state->isKickFilterEnabled());
@@ -895,4 +897,14 @@ std::string GeonkickApi::getSettings(const std::string &key) const
         return "";
 }
 
+void GeonkickApi::tuneAudioOutput(bool tune)
+{
+        geonkick_tune_audio_output(geonkickApi, tune);
+}
 
+bool GeonkickApi::isAudioOutputTuned() const
+{
+        bool tune = false;
+        geonkick_is_audio_output_tuned(geonkickApi, &tune);
+        return tune;
+}

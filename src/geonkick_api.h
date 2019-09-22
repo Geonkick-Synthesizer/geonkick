@@ -171,6 +171,8 @@ class GeonkickApi {
   double getLimiterLevelerValue() const;
   std::filesystem::path currentWorkingPath(const std::string &key) const;
   void setCurrentWorkingPath(const std::string &key, const std::filesystem::path &path);
+  void tuneAudioOutput(bool tune);
+  bool isAudioOutputTuned() const;
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));

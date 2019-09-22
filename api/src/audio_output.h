@@ -58,6 +58,12 @@ struct gkick_audio_output
         struct gkick_note_info key;
         _Atomic bool is_play;
 
+        /*
+         * Specifies if to tune output in accordance with
+         * the note (central note is A4).
+         */
+        _Atomic bool tune;
+
         /**
          * decay - note release time measured in number of sample frames.
          * Relaxation curve for audio is liniear:
@@ -105,5 +111,9 @@ gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
                                         void *arg);
 
 void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output);
+
+void gkick_audio_tune_output(struct gkick_audio_output *audio_output, bool tune);
+
+bool gkick_audio_is_tune_output(struct gkick_audio_output *audio_output);
 
 #endif // GKICK_AUDO_OUTPUT_H

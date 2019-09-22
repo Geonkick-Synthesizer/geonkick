@@ -972,3 +972,39 @@ geonkick_group_get_amplitude(struct geonkick *kick, size_t index, gkick_real *am
 
         return geonkick_synth_group_get_amplitude(kick->synth, index, amplitude);
 }
+
+enum geonkick_error
+geonkick_tune_audio_output(struct geonkick *kick, bool tune)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        if (kick->audio == NULL || kick->audio->audio_output == NULL) {
+                gkick_log_error("audio output was not created");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_audio_tune_output(kick->audio->audio_output, tune);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune)
+{
+        if (kick == NULL || tune == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        if (kick->audio == NULL || kick->audio->audio_output == NULL) {
+                gkick_log_error("audio output was not created");
+                return GEONKICK_ERROR;
+        } else {
+                *tune = gkick_audio_is_tune_output(kick->audio->audio_output);
+        }
+
+        return GEONKICK_OK;
+}
+

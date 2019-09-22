@@ -37,6 +37,8 @@ extern const unsigned char rk_topbar_layer3_png[];
 extern const unsigned char rk_topbar_layer1_disabled_png[];
 extern const unsigned char rk_topbar_layer2_disabled_png[];
 extern const unsigned char rk_topbar_layer3_disabled_png[];
+extern const unsigned char rk_tune_checkbox_on_png[];
+extern const unsigned char rk_tune_checkbox_off_png[];
 
 TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent)
@@ -103,7 +105,18 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         presetNameLabel->setPosition(aboutButton->x() + aboutButton->width() + 5,
                                      (height() - presetNameLabel->height()) / 2);
         presetNameLabel->show();
+
         createLyersButtons();
+
+        auto tuneCheckbox = new GeonkickButton(this);
+        tuneCheckbox->setCheckable(true);
+        tuneCheckbox->setFixedSize(46, 11);
+        tuneCheckbox->setPosition(width() - tuneCheckbox->width() - 5, (height() - tuneCheckbox->height()) / 2);
+        tuneCheckbox->setPressedImage(RkImage(tuneCheckbox->size(), rk_tune_checkbox_on_png));
+        tuneCheckbox->setUnpressedImage(RkImage(tuneCheckbox->size(), rk_tune_checkbox_off_png));
+        tuneCheckbox->show();
+        RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi, tuneAudioOutput(b));
+
         updateGui();
 }
 
