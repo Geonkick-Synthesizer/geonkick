@@ -77,6 +77,19 @@ void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t
         buffer->floatIndex = 0.0f;
 }
 
+void gkick_buffer_set_at(struct gkick_buffer *buffer,  size_t index, gkick_real val)
+{
+        if (buffer != NULL && buffer->size > 0 && index >=0 && index < buffer->size)
+                buffer->buff[index] = val;
+}
+
+gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index)
+{
+        if (buffer != NULL && buffer->size > 0 && index >=0 && index < buffer->size)
+                return buffer->buff[index];
+        return 0.0;
+}
+
 gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer)
 {
         gkick_real val = 0;
@@ -118,6 +131,11 @@ void gkick_buffer_set_size(struct gkick_buffer *buffer, size_t size)
         buffer->floatIndex = 0.0f;
 }
 
+size_t gkick_buffer_index(struct gkick_buffer *buffer)
+{
+        return buffer->currentIndex;
+}
+
 size_t gkick_buffer_size(struct gkick_buffer *buffer)
 {
         return buffer->size;
@@ -135,4 +153,3 @@ bool gkick_buffer_is_end(struct gkick_buffer *buffer)
 {
         return (buffer->size < 1) || (buffer->currentIndex > buffer->size - 1);
 }
-

@@ -1201,7 +1201,7 @@ void *gkick_synth_run(void *arg)
 		gkick_compressor_set_state(synth->compressor, GKICK_COMPRESSOR_DEACTIVATED);
                 gkick_synth_unlock(synth);
 
-                // Synthesize the kick into the kick buffer.
+                // Synthesize the percussion into the buffer.
                 i = 0;
                 while (1) {
                         gkick_synth_lock(synth);
@@ -1225,7 +1225,7 @@ void *gkick_synth_run(void *arg)
                 gkick_synth_lock(synth);
 
                 // Call callback that is subscribed to take
-                // the content of the updated kick buffer.
+                // the content of the updated precussion buffer.
                 if (synth->buffer_callback != NULL && synth->callback_args != NULL)
                         synth->buffer_callback(synth->callback_args,
                                                ((struct gkick_buffer*)synth->buffer)->buff,
@@ -1238,11 +1238,6 @@ void *gkick_synth_run(void *arg)
                         continue;
                 }
 
-
-                // Swap buffers between synthesizer and audio output.
-                // Not really going to work without lock.
-                // later something to be implemented.
-                // anyway the lock is used only to swap between updated buffer.
                 gkick_audio_output_lock(synth->output);
                 char* buff = synth->output->updated_buffer;
                 synth->output->updated_buffer = synth->buffer;

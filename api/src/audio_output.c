@@ -37,6 +37,7 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
                 return GEONKICK_ERROR;
         }
         memset(*audio_output, 0, sizeof(struct gkick_audio_output));
+        (*audio_output)->decay = -1;
 
         gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer, GEONKICK_MAX_KICK_BUFFER_SIZE);
         if ((*audio_output)->updated_buffer == NULL) {
@@ -82,15 +83,13 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
 {
         if (key->state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->key = *key;
-        } else {
-                audio_output->key.state = key->state;
-        }
-        if (audio_output->key.state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->is_play = true;
                 gkick_audio_swap_buffers(audio_output);
         } else {
                 audio_output->decay = GEKICK_KEY_RELESE_DECAY_TIME;
+                audio_output->key.state = key->state;
         }
+
         return GEONKICK_OK;
 }
 
@@ -116,11 +115,18 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                 if (gkick_buffer_is_end((struct gkick_buffer*)audio_output->playing_buffer)) {
                         audio_output->is_play = false;
                 } else {
+                        struct gkick_buffer *buff = (struct gkick_buffer*)audio_output->playing_buffer;
                         gkick_real factor = gkick_audio_output_tune_factor(audio_output->key.note_number);
                         if (audio_output->tune)
-                                *val = gkick_buffer_stretch_get_next((struct gkick_buffer*)audio_output->playing_buffer, factor);
+                                *val = gkick_buffer_stretch_get_next(buff, factor);
                         else
-                                *val = gkick_buffer_get_next((struct gkick_buffer*)audio_output->playing_buffer);
+                                *val = gkick_buffer_get_next(buff);
+
+                        if (gkick_buffer_size(buff) - gkick_buffer_index(buff) == GEKICK_KEY_RELESE_DECAY_TIME) {
+                                audio_output->decay = GEKICK_KEY_RELESE_DECAY_TIME;
+                                audio_output->key.state = GKICK_KEY_STATE_RELEASED;
+                        }
+
                         if (audio_output->key.state == GKICK_KEY_STATE_RELEASED)
                                 decay_val = - 1.0 * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
                         else

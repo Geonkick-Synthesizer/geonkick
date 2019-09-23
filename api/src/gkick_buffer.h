@@ -56,7 +56,9 @@ void gkick_buffer_reset(struct gkick_buffer *buffer);
 
 void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size);
 
-gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index, size_t *is_end);
+void gkick_buffer_set_at(struct gkick_buffer *buffer,  size_t index, gkick_real val);
+
+gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index);
 
 gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer);
 
@@ -65,6 +67,8 @@ gkick_real gkick_buffer_stretch_get_next(struct gkick_buffer *buffer, gkick_real
 void gkick_buffer_set_size(struct gkick_buffer *buffer, size_t size);
 
 size_t gkick_buffer_size(struct gkick_buffer *buffer);
+
+size_t gkick_buffer_index(struct gkick_buffer *buffer);
 
 void gkick_buffer_push_back(struct gkick_buffer *buffer, gkick_real val);
 
