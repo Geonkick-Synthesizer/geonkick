@@ -144,10 +144,12 @@ void FilesView::loadCurrentDirectory()
         decltype(filesList) dirs;
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
-                        if (std::filesystem::is_directory(entry.path()))
+                        if (std::filesystem::is_directory(entry.path())) {
                                 dirs.emplace_back(entry.path());
-                        else if (entry.path().extension() == ".gkick" || entry.path().extension() == ".GKICK")
+                        } else if (std::find(fileFilters.begin(), fileFilters.end(), entry.path().extension())
+                                   != fileFilters.end()) {
                                 files.emplace_back(entry.path());
+                        }
                 }
                 filesList = files;
         } catch(...) {
@@ -347,6 +349,11 @@ void FilesView::onLineDown()
         update();
 }
 
+void FilesView::setFilters(const std::vector<std::string> &filters)
+{
+        fileFilters = filters;
+}
+
 FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
         , dialogType{type}
@@ -459,3 +466,7 @@ FileDialog::AcceptStatus FileDialog::acceptStatus() const
         return status;
 }
 
+void FileDialog::setFilters(const std::vector<std::string> &filters)
+{
+        filesView->setFilters(filters);
+}

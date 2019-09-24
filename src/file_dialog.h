@@ -44,7 +44,7 @@ class FilesView: public GeonkickWidget {
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
         RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &pathName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(pathName));
-
+        void setFilters(const std::vector<std::string> &filters);
 
  protected:
         void createScrollBar();
@@ -76,6 +76,7 @@ class FilesView: public GeonkickWidget {
         int scrollBarWidth;
         GeonkickSlider *scrollBar;
         bool isScrollBarVisible;
+        std::vector<std::string> fileFilters;
 };
 
 class FileDialog: public GeonkickWidget {
@@ -100,6 +101,7 @@ class FileDialog: public GeonkickWidget {
         void setCurrentDirectoy(const std::string &path);
         std::string filePath() const;
         AcceptStatus acceptStatus() const;
+        void setFilters(const std::vector<std::string> &filters);
 
  protected:
         void onAccept();

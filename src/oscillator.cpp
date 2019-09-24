@@ -186,4 +186,12 @@ double Oscillator::envelopeLength() const
 void Oscillator::setSample(const std::string &file)
 {
         geonkickApi->setOscillatorSample(file, index());
+        auto path = std::filesystem::path(file);
+        geonkickApi->setCurrentWorkingPath("Samples", path.has_parent_path() ? path.parent_path() : path);
+        GEONKICK_LOG_INFO("file:" << file);
+}
+
+std::string Oscillator::samplesPath() const
+{
+        return geonkickApi->currentWorkingPath("Samples");
 }

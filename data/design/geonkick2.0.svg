@@ -4275,19 +4275,6 @@
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter10330-7-2-56-3-4-0-9-0-1-7-3"
-       x="-0.013693905"
-       width="1.0273879"
-       y="-0.021728534"
-       height="1.0434572">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.23845105"
-         id="feGaussianBlur10332-3-1-3-6-7-3-3-7-0-59-6" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
        id="filter10330-7-2-56-3-4-0-9-0-1-7-9"
        x="-0.013693905"
        width="1.0273879"
@@ -4324,6 +4311,71 @@
          stdDeviation="0.23845105"
          id="feGaussianBlur10332-3-1-3-6-7-3-3-7-0-59-3-2" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-7-2-56-3-4-0-9-0-1-7-9-3"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-3-1-3-6-7-3-3-7-0-59-3-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-8-9-9-9-3"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-5-4-4-8-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-6-20-9-0-6"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-7-6-5-2-2" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-7-5-5-4-9"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-3-9-7-9-1" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter11206"
+       x="-0.1008"
+       width="1.2016"
+       y="-0.50399999"
+       height="2.008">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.35779496"
+         id="feGaussianBlur11208" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -4332,9 +4384,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.6608685"
-     inkscape:cx="636.95293"
-     inkscape:cy="585.76422"
+     inkscape:zoom="2.6628352"
+     inkscape:cx="718.7467"
+     inkscape:cy="686.68876"
      inkscape:document-units="px"
      inkscape:current-layer="g24485"
      showgrid="false"
@@ -16132,45 +16184,105 @@
          inkscape:export-xdpi="95.015762"
          inkscape:export-ydpi="95.015762" />
       <rect
-         y="108.19239"
+         y="108.37253"
          x="136.11577"
-         height="3.7631974"
+         height="3.7631688"
          width="17.897491"
          id="rect7280-5-6-61-36"
-         style="display:inline;opacity:1;fill:#959599;fill-opacity:1;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sample_active.png"
+         style="display:inline;opacity:1;fill:#ffffff;fill-opacity:0;stroke:#292828;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/button_browse_sample.png"
          inkscape:export-xdpi="95.015678"
          inkscape:export-ydpi="95.015678" />
-      <text
-         transform="matrix(0.06787031,0,0,0.06787031,148.038,88.814362)"
-         id="text10105-4-0-91-9-1-8-65-1-8-7-1-6-93"
-         y="417.70291"
-         x="113.74126"
-         style="font-style:normal;font-weight:normal;font-size:41.58257294px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.41765422;filter:url(#filter10330-7-2-56-3-4-0-9-0-1-7-9-1)"
-         xml:space="preserve"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/wave_button_sample_active.png"
-         inkscape:export-xdpi="95.015678"
-         inkscape:export-ydpi="95.015678"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:41.58257294px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#c3c2be;fill-opacity:1;stroke-width:0.41765422"
-           y="417.70291"
-           x="113.74126"
-           id="tspan10103-9-1-9-08-2-57-4-2-6-7-2-0-1"
-           sodipodi:role="line">Load</tspan></text>
       <path
          sodipodi:type="star"
-         style="opacity:0.82999998;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.04245153;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:0.1273546, 0.04245153;stroke-dashoffset:0;stroke-opacity:0.43137255;paint-order:normal"
-         id="path5666"
+         style="opacity:0.82999998;fill:#c1c6c8;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:0.29999999, 0.1;stroke-dashoffset:0;stroke-opacity:0.43137255;paint-order:normal"
+         id="path11030"
          sodipodi:sides="3"
-         sodipodi:cx="145.11421"
-         sodipodi:cy="110.31313"
-         sodipodi:r1="0.86533898"
-         sodipodi:r2="1.730678"
-         sodipodi:arg1="1.5707963"
-         sodipodi:arg2="2.6179939"
+         sodipodi:cx="153.311"
+         sodipodi:cy="117.82991"
+         sodipodi:r1="14.241432"
+         sodipodi:r2="7.1207161"
+         sodipodi:arg1="0.78539816"
+         sodipodi:arg2="1.8325957"
          inkscape:flatsided="false"
          inkscape:rounded="0"
          inkscape:randomized="0"
-         d="m 145.11421,111.17847 -1.49881,0 0.74941,-1.29801 0.7494,-1.298 0.74941,1.298 0.7494,1.29801 z" />
+         d="m 163.38122,127.90012 -11.91319,-3.19213 -11.91319,-3.19213 8.72106,-8.72106 8.72106,-8.72106 3.19213,11.91319 z"
+         inkscape:transform-center-y="-0.47787441"
+         transform="matrix(0.12964746,-0.03473893,0.03473893,0.12964746,141.07466,94.356273)" />
+      <rect
+         style="opacity:0.997;fill:#818282;fill-opacity:1;stroke:#5f6164;stroke-width:0.1000125;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+         id="rect11032"
+         width="11.534454"
+         height="3.4395833"
+         x="138.23897"
+         y="108.53432"
+         rx="0.79374999"
+         ry="0.79374999"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/button_browse_sample.png"
+         inkscape:export-xdpi="95.015678"
+         inkscape:export-ydpi="95.015678" />
+      <rect
+         style="opacity:0.537;fill:#9e9e9e;fill-opacity:1;stroke:none;stroke-width:0.1000125;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;filter:url(#filter11206)"
+         id="rect11046"
+         width="8.5189276"
+         height="1.7037855"
+         x="139.98894"
+         y="109.40222"
+         rx="0.79374999"
+         ry="0.79374999"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/button_browse_sample.png"
+         inkscape:export-xdpi="95.015678"
+         inkscape:export-ydpi="95.015678" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.58611107px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         x="142.10138"
+         y="110.54304"
+         id="text11036"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/button_browse_sample.png"
+         inkscape:export-xdpi="95.015678"
+         inkscape:export-ydpi="95.015678"><tspan
+           sodipodi:role="line"
+           id="tspan11034"
+           x="142.10138"
+           y="110.54304"
+           style="font-size:4.58611107px;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332">...</tspan></text>
+      <g
+         style="display:inline"
+         id="g9610-5-0-3-2"
+         transform="matrix(0.08931988,0,0,0.08931988,233.41075,38.894001)"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/button_browse_sample.png"
+         inkscape:export-xdpi="95.015678"
+         inkscape:export-ydpi="95.015678">
+        <rect
+           ry="9.3728256"
+           rx="10.743702"
+           y="569.65753"
+           x="-1152.8154"
+           height="45.917767"
+           width="169.08815"
+           id="rect4890-6-7-6-0-5-7"
+           style="opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-8-9-9-9-3)" />
+        <rect
+           ry="9.3728256"
+           rx="10.743702"
+           y="568.48877"
+           x="-1153.7717"
+           height="45.917767"
+           width="169.08815"
+           id="rect4890-4-1-6-9-0"
+           style="opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:2.00697637;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <rect
+           ry="10.000007"
+           rx="10.000007"
+           y="574.4201"
+           x="-1147.5237"
+           height="31.61977"
+           width="152.8289"
+           id="rect5044-9-1-4-4-93"
+           style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-6-20-9-0-6)" />
+      </g>
     </g>
   </g>
 </svg>

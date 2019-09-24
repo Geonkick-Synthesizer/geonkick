@@ -210,6 +210,7 @@ void MainWindow::openPreset(const std::string &fileName)
 void MainWindow::openFileDialog(FileDialog::Type type)
 {
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Preset" : "Save Preset");
+        fileDialog->setFilters({".gkick", ".GKICK"});
         if (type == FileDialog::Type::Open) {
                 fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset"));
                 RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, openPreset(file));

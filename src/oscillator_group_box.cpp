@@ -28,6 +28,7 @@
 #include "knob.h"
 #include "geonkick_slider.h"
 #include "filter.h"
+#include "file_dialog.h"
 
 #include <RkLabel.h>
 
@@ -51,6 +52,7 @@ extern const unsigned char rk_phase_label_png[];
 extern const unsigned char rk_wave_button_sample_png[];
 extern const unsigned char rk_wave_button_sample_active_png[];
 extern const unsigned char rk_wave_button_sawtooth_active_png[];
+extern const unsigned char rk_button_browse_sample_png[];
 extern const unsigned char rk_hboxbk_noise_env_png[];
 extern const unsigned char rk_hboxbk_osc_env_png[];
 extern const unsigned char rk_knob_png[];
@@ -130,7 +132,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sineButton = new GeonkickButton(waveFunctionHBox);
         sineButton->setBackgroundColor(waveFunctionHBox->background());
         sineButton->setFixedSize(67, 14);
-        sineButton->setPosition(24, 25);
+        sineButton->setPosition(20, 25);
         sineButton->setUnpressedImage(RkImage(sineButton->size(), rk_wave_button_sine_png));
         sineButton->setPressedImage(RkImage(sineButton->size(), rk_wave_button_sine_active_png));
         RK_ACT_BIND(sineButton, toggled, RK_ACT_ARGS(bool b), this, setSineWave(b));
@@ -172,11 +174,11 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setSampleFunction(b));
 
         sampleBrowseButton = new GeonkickButton(waveFunctionHBox);
+        sampleBrowseButton->setCheckable(true);
         sampleBrowseButton->setBackgroundColor(waveFunctionHBox->background());
         sampleBrowseButton->setFixedSize(67, 14);
         sampleBrowseButton->setPosition(triangleButton->x() + 73, sampleButton->y() + sampleButton->height() + 5);
-        sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(), rk_wave_button_triangle_png));
-        sampleBrowseButton->setPressedImage(RkImage(sampleBrowseButton->size(), rk_wave_button_triangle_active_png));
+        sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(), rk_button_browse_sample_png));
         RK_ACT_BIND(sampleBrowseButton, toggled, RK_ACT_ARGS(bool b), this, browseSample());
 
         auto phaseLabel = new RkLabel(waveFunctionHBox);
@@ -187,7 +189,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         phaseLabel->show();
 
         phaseSlider = new GeonkickSlider(waveFunctionHBox);
-        phaseSlider->setFixedSize(140, 8);
+        phaseSlider->setFixedSize(150, 8);
         phaseSlider->onSetValue(50);
         phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
         phaseSlider->show();
@@ -379,5 +381,9 @@ void OscillatorGroupBox::updateGui()
 
 void OscillatorGroupBox::browseSample()
 {
-        oscillator->setSample("/home/iurie/projects/sample.wav");
+        auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select sample");
+        fileDialog->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
+        GEONKICK_LOG_INFO("path:" << oscillator->samplesPath());
+        fileDialog->setCurrentDirectoy(oscillator->samplesPath());
+        RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), oscillator, setSample(file));
 }
