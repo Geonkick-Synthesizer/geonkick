@@ -85,7 +85,7 @@ enum geonkick_osc_func_type {
         GEONKICK_OSC_FUNC_NOISE_WHITE    = 4,
         GEONKICK_OSC_FUNC_NOISE_PINK     = 5,
         GEONKICK_OSC_FUNC_NOISE_BROWNIAN = 6,
-        GEONKICK_OSC_FUNC_UNKNOWN        = 7
+        GEONKICK_OSC_FUNC_SAMPLE         = 7
 };
 
 enum GEONKICK_MODULE {
@@ -422,6 +422,12 @@ geonkick_tune_audio_output(struct geonkick *kick, bool tune);
 
 enum geonkick_error
 geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune);
+
+enum geonkick_error
+geonkick_set_osc_sample(struct geonkick *kick,
+                        size_t osc_index,
+                        gkick_real *data,
+                        size_t size);
 
 #ifdef __cplusplus
 }

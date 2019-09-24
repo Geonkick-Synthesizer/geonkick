@@ -1011,3 +1011,16 @@ geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune)
         return GEONKICK_OK;
 }
 
+enum geonkick_error
+geonkick_set_osc_sample(struct geonkick *kick,
+                        size_t osc_index,
+                        gkick_real *data,
+                        size_t size)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return geonkick_set_osc_sample(kick->synth, osc_index, data, size);
+}

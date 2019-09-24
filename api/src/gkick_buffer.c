@@ -69,10 +69,11 @@ void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t
         if (buffer == NULL || data == NULL || size < 1)
                 return;
 
-        if (size <= buffer->max_size) {
-                memcpy(buffer->buff, data, sizeof(gkick_real) * size);
-                buffer->size = size;
-        }
+        if (size > buffer->max_size)
+                size = buffer->max_size;
+        memcpy(buffer->buff, data, sizeof(gkick_real) * size);
+        buffer->size = size;
+
         buffer->currentIndex = 0;
         buffer->floatIndex = 0.0f;
 }

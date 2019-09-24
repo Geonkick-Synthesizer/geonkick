@@ -169,6 +169,10 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
         case GEONKICK_OSC_FUNC_NOISE_BROWNIAN:
                 v = amp * gkick_osc_func_noise_brownian(&(osc)->brownian);
                 break;
+        case GEONKICK_OSC_FUNC_SAMPLE:
+                if (&(osc)->sample != NULL)
+                        v = amp * gkick_osc_func_sample(&(osc)->sample);
+                break;
         default:
                 v = amp * gkick_osc_func_sine(osc->phase);
         };
@@ -232,6 +236,12 @@ gkick_real gkick_osc_func_noise_brownian(gkick_real *previous)
         else
                 *previous += walk;
         return *previous;
+}
+
+gkick_real
+gkick_osc_func_sample(struct gkick_buffer *sample)
+{
+        return gkick_buffer_get_next(sample);
 }
 
 void

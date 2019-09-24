@@ -46,6 +46,8 @@ struct gkick_oscillator {
 	gkick_real frequency;
 	gkick_real amplitude;
 
+        struct gkick_buffer *smaple;
+
         /* FM input value for this OSC. */
         gkick_real fm_input;
 
@@ -90,15 +92,23 @@ gkick_osc_func_sine(gkick_real phase);
 gkick_real
 gkick_osc_func_square(gkick_real phase);
 
-gkick_real gkick_osc_func_triangle(gkick_real phase);
+gkick_real
+gkick_osc_func_triangle(gkick_real phase);
 
-gkick_real gkick_osc_func_sawtooth(gkick_real phase);
+gkick_real
+gkick_osc_func_sawtooth(gkick_real phase);
 
-gkick_real gkick_osc_func_noise_white(void);
+gkick_real
+gkick_osc_func_noise_white(void);
 
-gkick_real gkick_osc_func_noise_pink(void);
+gkick_real
+gkick_osc_func_noise_pink(void);
 
-gkick_real gkick_osc_func_noise_brownian(gkick_real *previous);
+gkick_real
+gkick_osc_func_noise_brownian(gkick_real *previous);
+
+gkick_real
+gkick_osc_func_sample(struct gkick_buffer *sample);
 
 void gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
                                    size_t env_index,

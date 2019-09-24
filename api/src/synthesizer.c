@@ -1288,14 +1288,16 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
 
 void gkick_synth_reset_oscillators(struct gkick_synth *synth)
 {
-        int i = 0;
         if (synth == NULL)
                 return;
 
-        for (i = 0; i < synth->oscillators_number; i++) {
-                (synth->oscillators[i])->phase = (synth->oscillators[i])->initial_phase;
-                (synth->oscillators[i])->fm_input = 0;
-                gkick_filter_init(synth->oscillators[i]->filter);
+        for (size_t i = 0; i < synth->oscillators_number; i++) {
+                struct gkick_oscillator *osc = synth->oscillators[i];
+                osc->phase = osc->initial_phase;
+                osc->fm_input = 0;
+                gkick_filter_init(osc->filter);
+                if (osc->sample != NULL)
+                        gkick_buffer_reset(osc->sample);
         }
 }
 
@@ -1753,10 +1755,37 @@ geonkick_synth_group_set_amplitude(struct gkick_synth *synth, size_t index, gkic
 }
 
 enum geonkick_error
-geonkick_synth_group_get_amplitude(struct gkick_synth *synth, size_t index, gkick_real *amplitude)
+geonkick_synth_group_get_amplitude(struct gkick_synth *synth,
+                                   size_t index,
+                                   gkick_real *amplitude)
 {
         gkick_synth_lock(synth);
         *amplitude = synth->osc_groups_amplitude[index];
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_synth_set_osc_sample(struct gkick_synth *synth,
+                              size_t osc_index,
+                              gkick_real *data,
+                              size_t size)
+{
+        gkick_synth_lock(synth);
+        struct gkick_oscillator *osc = gkick_synth_get_oscillator(synth, osc_index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		gkick_synth_unlock(synth);
+		return GEONKICK_ERROR;
+	}
+
+        if (osc->sample == NULL)
+                gkick_buffer_new(&buff, GEONKICK_MAX_KICK_BUFFER_SIZE);
+        gkick_buffer_set_data(osc->sample, data, size);
+
+        if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
+            && osc->state == GEONKICK_OSC_STATE_ENABLED)
+                gkick_synth_wakeup_thread(synth);
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
