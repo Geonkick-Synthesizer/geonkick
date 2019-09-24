@@ -1017,10 +1017,10 @@ geonkick_set_osc_sample(struct geonkick *kick,
                         gkick_real *data,
                         size_t size)
 {
-        if (kick == NULL) {
+        if (kick == NULL || data == NULL || size < 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        return geonkick_set_osc_sample(kick->synth, osc_index, data, size);
+        return geonkick_synth_set_osc_sample(kick->synth, osc_index, data, size);
 }

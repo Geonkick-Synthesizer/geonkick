@@ -29,6 +29,7 @@
 #include <RkEventQueue.h>
 
 #include <geonkick.h>
+#include <sndfile.h>
 
 GeonkickApi::GeonkickApi()
         :geonkickApi{nullptr}
@@ -908,4 +909,40 @@ bool GeonkickApi::isAudioOutputTuned() const
         bool tune = false;
         geonkick_is_audio_output_tuned(geonkickApi, &tune);
         return tune;
+}
+
+void GeonkickApi::setOscillatorSample(const std::string &file, int oscillatorIndex)
+{
+        int rateRate = 48000;
+        geonkick_get_sample_rate(geonkickApi, &rateRate);
+        std::vector<gkick_real> sampleData = loadSample(file, kickMaxLength() / 1000, rateRate, 1);
+        if (!sampleData.empty()) {
+                geonkick_set_osc_sample(geonkickApi,
+                                        getOscIndex(oscillatorIndex),
+                                        sampleData.data(),
+                                        sampleData.size());
+        }
+}
+
+std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
+                                                double length,
+                                                int smapleRate,
+                                                int channels)
+{
+        GEONKICK_UNUSED(channels);
+
+        SF_INFO sndinfo;
+        memset(&sndinfo, 0, sizeof(sndinfo));
+        SNDFILE *sndFile = sf_open(file.c_str(), SFM_READ, &sndinfo);
+        if (!sndFile) {
+                GEONKICK_LOG_ERROR("can't open samle file");
+                return std::vector<gkick_real>();
+        }
+
+        std::vector<float> data(smapleRate * length, 0.0f);
+        auto n = sf_read_float(sndFile, data.data(), data.size());
+        sf_close(sndFile);
+        if (n > 0)
+                return data;
+        return std::vector<gkick_real>();
 }

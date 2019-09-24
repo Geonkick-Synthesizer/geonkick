@@ -65,6 +65,7 @@ class Oscillator
   void addEnvelopePoint(EnvelopeType envelope, double x, double y);
   void removeEnvelopePoint(EnvelopeType envelope, int point_index);
   void updateEnvelopePoint(EnvelopeType envelope, int point_index, double x, double y);
+  void setSample(const std::string &file);
 
   RK_DECL_ACT(amplitudeUpdated, amplitudeUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
   RK_DECL_ACT(frequencyUpdated, frequencyUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));

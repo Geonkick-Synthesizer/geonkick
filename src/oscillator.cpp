@@ -182,3 +182,8 @@ double Oscillator::envelopeLength() const
 {
         return geonkickApi->kickLength();
 }
+
+void Oscillator::setSample(const std::string &file)
+{
+        geonkickApi->setOscillatorSample(file, index());
+}

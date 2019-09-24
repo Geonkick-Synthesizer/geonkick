@@ -59,7 +59,7 @@ class GeonkickApi {
           NoiseWhite    = GEONKICK_OSC_FUNC_NOISE_WHITE,
           NoisePink     = GEONKICK_OSC_FUNC_NOISE_PINK,
           NoiseBrownian = GEONKICK_OSC_FUNC_NOISE_BROWNIAN,
-          Unknown       = GEONKICK_OSC_FUNC_UNKNOWN
+          Sample        = GEONKICK_OSC_FUNC_SAMPLE,
   };
 
   enum class EnvelopeType:int {
@@ -90,6 +90,7 @@ class GeonkickApi {
                                     const RkRealPoint &point);
   GeonkickApi::FunctionType oscillatorFunction(int oscillatorIndex) const;
   gkick_real oscillatorPhase(int oscillatorIndex) const;
+  void setOscillatorSample(const std::string &file, int oscillatorIndex);
   double kickMaxLength(void) const;
   double kickLength(void) const;
   double kickAmplitude() const;
@@ -199,6 +200,10 @@ protected:
                           OscillatorType osc,
                           const std::shared_ptr<GeonkickState> &state);
   void setLimiterVal(double val);
+  static std::vector<gkick_real> loadSample(const std::string &file,
+                                            double length = 4.0,
+                                            int smapleRate = 48000,
+                                            int channels = 1);
 
 private:
   struct geonkick *geonkickApi;

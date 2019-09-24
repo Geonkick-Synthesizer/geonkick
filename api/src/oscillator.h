@@ -46,7 +46,7 @@ struct gkick_oscillator {
 	gkick_real frequency;
 	gkick_real amplitude;
 
-        struct gkick_buffer *smaple;
+        struct gkick_buffer *sample;
 
         /* FM input value for this OSC. */
         gkick_real fm_input;
