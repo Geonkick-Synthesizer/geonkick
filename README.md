@@ -112,7 +112,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the code repository, compile and install
 
-        git clone https://github.com/iurienistor/geonkick.git
+        git clone https://gitlab.com/geontime/geonkick.git
         mkdir geonkick/build
         cd geonkick/build
         cmake ../
