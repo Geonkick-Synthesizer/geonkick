@@ -111,6 +111,8 @@ class GeonkickState
         double getLayerAmplitude(GeonkickApi::Layer layer) const;
         void tuneOutput(bool tune);
         bool isOutputTuned() const;
+        static std::vector<float> fromBase64F(const std::string &str);
+        static std::string toBase64F(const std::vector<float> &data);
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
@@ -135,6 +137,7 @@ private:
                 , filterFrequency{200}
                 , filterFactor{1.0} {}
                 GeonkickApi::OscillatorType type;
+                std::vector<float> sample;
                 bool isEnabled;
                 bool isFm;
                 GeonkickApi::FunctionType function;

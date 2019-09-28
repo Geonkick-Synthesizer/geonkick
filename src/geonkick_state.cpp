@@ -183,6 +183,8 @@ void GeonkickState::parseOscillatorObject(int index,  const rapidjson::Value &os
                         setOscillatorEnabled(index, m.value.GetBool());
                 if (m.name == "is_fm" && m.value.IsBool())
                         setOscillatorAsFm(index, m.value.GetBool());
+                if (m.name == "sample" && m.value.IsString())
+                        setOscillatorSample(fromBase64F(std::string(m.value.GetString()));
                 if (m.name == "function" && m.value.IsInt())
                         setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(m.value.GetInt()));
                 if (m.name == "phase" && m.value.IsDouble())
@@ -634,6 +636,8 @@ void GeonkickState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream << "\"osc" << val.first << "\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false") << ", " << std::endl;
                 jsonStream << "\"is_fm\": " << (val.second->isFm ? "true" : "false") << ", " << std::endl;
+                if (val.second->function == GeonkickApi::FunctionType::Sample && !val.second.sample.empty())
+                        jsonStream <<  "\"smaple\": \"" << toBase64(val.second.sample) << "\"," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
                 jsonStream <<  "\"phase\": " << std::fixed << std::setprecision(5) << val.second->phase << ", " << std::endl;
                 jsonStream << "\"ampl_env\": {" << std::endl;
@@ -817,3 +821,21 @@ bool GeonkickState::isOutputTuned() const
         return tunedOutput;
 }
 
+std::vector<float> GeonkickState::fromBase64F(const std::string &str)
+{
+        base64::decode d;
+        char *out_data;
+        d.decode(static_cast<char*>(str.c_str()), str.size(), out_data);
+        std::vectorstr = out_data;
+        delete[] base64;
+        return std::vector<float>(out_data, );
+
+}
+
+std::string GeonkickState::toBase64F(const std::vector<float> &data)
+{
+        size_t len = 0;
+        auto base64 = base64_encode(static_cast<char*>(data.data()), data.size() * sizeof(float), &len);
+        if (len > 0 && base54 != nullptr)
+                return std::string(base64, len);
+}
