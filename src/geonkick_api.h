@@ -184,9 +184,10 @@ class GeonkickApi {
   RK_DECL_ACT(currentPlayingFrameVal,
               currentPlayingFrameVal(double val),
               RK_ARG_TYPE(double), RK_ARG_VAL(val));
+  RK_DECL_ACT(stateChanged, stateChanged(), RK_ARG_TYPE(), RK_ARG_VAL());
 
-   void setSettings(const std::string &key, const std::string &value);
-   std::string getSettings(const std::string &key) const;
+  void setSettings(const std::string &key, const std::string &value);
+  std::string getSettings(const std::string &key) const;
 
 protected:
   static void kickUpdatedCallback(void *arg, gkick_real *buff, size_t size);
