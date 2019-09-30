@@ -135,7 +135,7 @@ Geonkick can be found in the following repositories:
 
 * [ArchLinux](https://www.archlinux.org/packages/community/x86_64/geonkick/) by David Runge
 * [FreeBSD](https://www.freshports.org/audio/geonkick-lv2/) by yuri@FreeBSD.org
-* [OpenSUSE](https://build.opensuse.org/repositories/home:opensuseitalia:daw/geonkick) by Fabio Pesari
+* [OpenSUSE](https://build.opensuse.org/package/show/home:geekositalia:daw/geonkick) by Fabio Pesari
 
 #### Road map
 
