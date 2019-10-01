@@ -196,13 +196,11 @@ Oscillator 2 must be enabled in order to see the result in the graph.
 
 * Geonkick is monophonic. Pressing more keys at once will not result in the desired sound or even no sound.
 
-* Geonkick is not sensitive to key pitch. Pressing keys with different pitch will result in the same percussion sound.
-
 * Geonkick does not support multichannel.
 
-* If the option "Tune" is enabled than Geonkick will tune the percussion sound in accordance
-  with the note. The central note (un-tuned) is A4. If the percussion sound is
-  more like a tone, tuning above A4 may not work very well.
+* If the option "Tune" is enabled than Geonkick will tune pitch relative to A4.
+  The central note (un-tuned) is A4. If the percussion sound is more like a tone,
+  tuning above A4 may contain unwanted high frequencies.
 
 ### Thank you!
 
