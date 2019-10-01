@@ -94,7 +94,7 @@ Plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-* [Redkite](https://github.com/iurienistor/redkite) GUI toolkit. See the documentation of Redkite toolkit how to install it.
+* [Redkite](https://gitlab.com/geontime/redkite) GUI toolkit. See the documentation of Redkite toolkit how to install it.
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for LV2)
@@ -112,7 +112,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the code repository, compile and install
 
-        git clone https://github.com/iurienistor/geonkick.git
+        git clone https://gitlab.com/geontime/geonkick.git
         mkdir geonkick/build
         cd geonkick/build
         cmake ../
@@ -135,7 +135,7 @@ Geonkick can be found in the following repositories:
 
 * [ArchLinux](https://www.archlinux.org/packages/community/x86_64/geonkick/) by David Runge
 * [FreeBSD](https://www.freshports.org/audio/geonkick-lv2/) by yuri@FreeBSD.org
-* [OpenSUSE](https://build.opensuse.org/repositories/home:opensuseitalia:daw/geonkick) by Fabio Pesari
+* [OpenSUSE](https://build.opensuse.org/package/show/home:geekositalia:daw/geonkick) by Fabio Pesari
 
 #### Road map
 
@@ -196,13 +196,11 @@ Oscillator 2 must be enabled in order to see the result in the graph.
 
 * Geonkick is monophonic. Pressing more keys at once will not result in the desired sound or even no sound.
 
-* Geonkick is not sensitive to key pitch. Pressing keys with different pitch will result in the same percussion sound.
-
 * Geonkick does not support multichannel.
 
-* If the option "Tune" is enabled than Geonkick will tune the percussion sound in accordance
-  with the note. The central note (un-tuned) is A4. If the percussion sound is
-  more like a tone, tuning above A4 may not work very well.
+* If the option "Tune" is enabled than Geonkick will tune pitch relative to A4.
+  The central note (un-tuned) is A4. If the percussion sound is more like a tone,
+  tuning above A4 may contain unwanted high frequencies.
 
 ### Thank you!
 
