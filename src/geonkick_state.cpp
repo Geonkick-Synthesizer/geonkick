@@ -22,6 +22,7 @@
  */
 
 #include "geonkick_state.h"
+#include "base64.h"
 
 #include <iomanip>
 
@@ -823,19 +824,26 @@ bool GeonkickState::isOutputTuned() const
 
 std::vector<float> GeonkickState::fromBase64F(const std::string &str)
 {
-        base64::decode d;
-        char *out_data;
-        d.decode(static_cast<char*>(str.c_str()), str.size(), out_data);
-        std::vectorstr = out_data;
-        delete[] base64;
-        return std::vector<float>(out_data, );
-
+        size_t len;
+        auto data_str = base64_decode(str.c_str(), str.size(), &len);
+        if (data_str && len > sizeof(float)) {
+                std::vector<float> data(static_cast<float>(data_str),
+                                        static_cast<float>(data_str) + len / sizeof(float));
+                free(data_str);
+                return data;
+        }
+        return {};
 }
 
 std::string GeonkickState::toBase64F(const std::vector<float> &data)
 {
-        size_t len = 0;
-        auto base64 = base64_encode(static_cast<char*>(data.data()), data.size() * sizeof(float), &len);
-        if (len > 0 && base54 != nullptr)
-                return std::string(base64, len);
+        size_t len;
+        auto base64 = base64_encode(static_cast<const char*>(data.data()),
+                                    data.size() * sizeof(float), &len);
+        if (base64  && len > 0) {
+                auto str = std::move(std::string(base64, len));
+                free(base64);
+                return str;
+        }
+        return {};
 }
