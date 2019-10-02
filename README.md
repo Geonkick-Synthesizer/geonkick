@@ -137,13 +137,6 @@ Geonkick can be found in the following repositories:
 * [FreeBSD](https://www.freshports.org/audio/geonkick-lv2/) by yuri@FreeBSD.org
 * [OpenSUSE](https://build.opensuse.org/package/show/home:geekositalia:daw/geonkick) by Fabio Pesari
 
-#### Road map
-
-Here is a list of planned milestones and issues opened for them,
-dates when will be started and finished.
-
-Milestones: https://github.com/iurienistor/geonkick/milestones
-
 #### Short user guide
 
 ###### Shortcut Keys
