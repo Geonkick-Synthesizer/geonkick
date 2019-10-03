@@ -35,7 +35,7 @@ or feature (feat/feature_name) branches.
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
-     - sine, square, triangle, saw-tooth
+     - sine, square, triangle, saw-tooth, sample (wav, ogg, flac)
      - initial phase control
      - amplitude & frequency envelope
      - low, band and high pass filter, cutoff envelope
@@ -175,8 +175,6 @@ The block diagram of the synthesizer.
 * Filters become unstable for some extremal combination of cutoff frequency and Q parameter. If the filters become unstable the percussion graph may show a maximum continuous line or various kinds of distortion. There is a need to work with Q factor in order to use the cutoff in the desired range.
 
 * If the sound exceeds the range -1.0 - 1.0, the sound is hard limited to value 1.0 or -1.0. This can also be seen in the percussion graph.
-
-* Compressor and drive are applied per total (compressor is the last one), and there is a need to work with general settings amplitude envelope to make the input right for these two effects. For now it is recommended to use a dedicated drive or compressor instead if the result of using them is not the desired.
 
 * When a key is pressed, there no synthesis is going on, Geonkick plays the generated percussion that is kept in memory. Synthesis takes place only if some controls are changed.
 
