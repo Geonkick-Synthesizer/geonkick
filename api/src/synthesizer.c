@@ -1768,7 +1768,7 @@ geonkick_synth_group_get_amplitude(struct gkick_synth *synth,
 enum geonkick_error
 geonkick_synth_set_osc_sample(struct gkick_synth *synth,
                               size_t osc_index,
-                              gkick_real *data,
+                              const gkick_real *data,
                               size_t size)
 {
         gkick_synth_lock(synth);
@@ -1813,14 +1813,14 @@ geonkick_synth_get_osc_sample(struct gkick_synth *synth,
 
         *size = gkick_buffer_size(osc->sample);
         if (*size > 0) {
-                data = (gkick_real*)malloc(sizeof(gkick_real) * (*size));
-                if (data == NULL) {
+                *data = (gkick_real*)malloc(sizeof(gkick_real) * (*size));
+                if (*data == NULL) {
                         gkick_log_error("can't allocate memory");
                         *size = 0;
                         gkick_synth_unlock(synth);
                         return GEONKICK_ERROR;
                 }
-                memcpy(data, osc->sample->buff, sizeof(gkick_real) * (*size));
+                memcpy(*data, osc->sample->buff, sizeof(gkick_real) * (*size));
         }
         gkick_synth_unlock(synth);
 

@@ -426,7 +426,7 @@ geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune);
 enum geonkick_error
 geonkick_set_osc_sample(struct geonkick *kick,
                         size_t osc_index,
-                        gkick_real *data,
+                        const gkick_real *data,
                         size_t size);
 
 enum geonkick_error

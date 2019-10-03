@@ -638,7 +638,7 @@ void GeonkickState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false") << ", " << std::endl;
                 jsonStream << "\"is_fm\": " << (val.second->isFm ? "true" : "false") << ", " << std::endl;
                 if (val.second->function == GeonkickApi::FunctionType::Sample && !val.second->sample.empty())
-                        jsonStream <<  "\"smaple\": \"" << toBase64F(val.second->sample) << "\"," << std::endl;
+                        jsonStream <<  "\"sample\": \"" << toBase64F(val.second->sample) << "\"," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
                 jsonStream <<  "\"phase\": " << std::fixed << std::setprecision(5) << val.second->phase << ", " << std::endl;
                 jsonStream << "\"ampl_env\": {" << std::endl;
@@ -843,14 +843,21 @@ std::string GeonkickState::toBase64F(const std::vector<float> &data)
         if (base64  && len > 0) {
                 auto str = std::move(std::string(reinterpret_cast<const char*>(base64), len));
                 free(base64);
+                str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
                 return str;
         }
         return {};
 }
 
-void GeonkickState::setOscillatorSample(int index, const std::vector<float> &sample)
+void GeonkickState::setOscillatorSample(int oscillatorIndex, const std::vector<float> &sample)
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getOscillator(oscillatorIndex);
         if (oscillator)
-                oscillator->sample = std::move(sample);
+                oscillator->sample = sample;
+}
+
+std::vector<float> GeonkickState::getOscillatorSample(int oscillatorIndex) const
+{
+        auto oscillator = getOscillator(oscillatorIndex);
+        return oscillator->sample;
 }

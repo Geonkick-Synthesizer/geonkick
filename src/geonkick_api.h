@@ -88,9 +88,11 @@ class GeonkickApi {
                                     EnvelopeType envelope,
                                     int pointIndex,
                                     const RkRealPoint &point);
-  GeonkickApi::FunctionType oscillatorFunction(int oscillatorIndex) const;
+  FunctionType oscillatorFunction(int oscillatorIndex) const;
   gkick_real oscillatorPhase(int oscillatorIndex) const;
   void setOscillatorSample(const std::string &file, int oscillatorIndex);
+  void setOscillatorSample(const std::vector<float> &sample, int oscillatorIndex);
+  std::vector<float> getOscillatorSample(int oscillatorIndex) const;
   double kickMaxLength(void) const;
   double kickLength(void) const;
   double kickAmplitude() const;

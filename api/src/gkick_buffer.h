@@ -54,7 +54,7 @@ void gkick_buffer_free(struct gkick_buffer **buffer);
 
 void gkick_buffer_reset(struct gkick_buffer *buffer);
 
-void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size);
+void gkick_buffer_set_data(struct gkick_buffer *buffer, const gkick_real *data, size_t size);
 
 void gkick_buffer_set_at(struct gkick_buffer *buffer,  size_t index, gkick_real val);
 

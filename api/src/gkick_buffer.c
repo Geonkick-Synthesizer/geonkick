@@ -64,7 +64,7 @@ void gkick_buffer_reset(struct gkick_buffer *buffer)
         buffer->floatIndex = 0.0f;
 }
 
-void gkick_buffer_set_data(struct gkick_buffer *buffer, gkick_real *data, size_t size)
+void gkick_buffer_set_data(struct gkick_buffer *buffer, const gkick_real *data, size_t size)
 {
         if (buffer == NULL || data == NULL || size < 1)
                 return;

@@ -230,7 +230,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         state->setCurrentLayer(layer);
         state->setOscillatorEnabled(index, isOscillatorEnabled(index));
         state->setOscillatorFunction(index, oscillatorFunction(index));
-        state->setOscillatorSample(getOscillatorSample(index), index);
+        state->setOscillatorSample(index, getOscillatorSample(index));
         if (osc != OscillatorType::Noise)
                 state->setOscillatorPhase(index, oscillatorPhase(index));
         state->setOscillatorAmplitue(index, oscillatorAmplitude(index));
@@ -261,7 +261,7 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         state->setCurrentLayer(layer);
         enableOscillator(osc, state->isOscillatorEnabled(osc));
         setOscillatorFunction(osc, state->oscillatorFunction(osc));
-        setOscillatorSample(state->getOscillatorSample(osc));
+        setOscillatorSample(state->getOscillatorSample(osc), osc);
         if (oscillator != OscillatorType::Noise)
                 setOscillatorPhase(osc, state->oscillatorPhase(osc));
         setOscillatorAmplitude(osc, state->oscillatorAmplitue(osc));
@@ -280,7 +280,7 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         }
         setOscillatorEvelopePoints(osc, EnvelopeType::FilterCutOff,
                                    state->oscillatorEnvelopePoints(osc, EnvelopeType::FilterCutOff));
-        setOscillatorAsFm(osc, state->isOscillatorAsFm(osc)));
+        setOscillatorAsFm(osc, state->isOscillatorAsFm(osc));
 
         currentLayer = temp;
 }
@@ -926,12 +926,22 @@ void GeonkickApi::setOscillatorSample(const std::string &file, int oscillatorInd
         }
 }
 
-void GeonkickApi::setOscillatorSample(const std::<float> &sample, int oscillatorIndex)
+void GeonkickApi::setOscillatorSample(const std::vector<float> &sample, int oscillatorIndex)
 {
         geonkick_set_osc_sample(geonkickApi,
                                 getOscIndex(oscillatorIndex),
                                 sample.data(),
                                 sample.size());
+}
+
+std::vector<float> GeonkickApi::getOscillatorSample(int oscillatorIndex) const
+{
+        gkick_real *data = nullptr;
+        size_t size = 0;
+        geonkick_get_osc_sample(geonkickApi, getOscIndex(oscillatorIndex), &data, &size);
+        if (data)
+                return std::vector<float>(data, data + size);
+        return {};
 }
 
 std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
