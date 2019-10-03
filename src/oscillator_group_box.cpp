@@ -383,7 +383,6 @@ void OscillatorGroupBox::browseSample()
 {
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select sample");
         fileDialog->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
-        GEONKICK_LOG_INFO("path:" << oscillator->samplesPath());
         fileDialog->setCurrentDirectoy(oscillator->samplesPath());
         RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), oscillator, setSample(file));
 }

@@ -170,8 +170,12 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
                 v = amp * gkick_osc_func_noise_brownian(&(osc)->brownian);
                 break;
         case GEONKICK_OSC_FUNC_SAMPLE:
-                if (osc->sample != NULL)
-                        v = amp * gkick_osc_func_sample(osc->sample);
+                if (osc->sample != NULL) {
+                        if (t > (0.5 * osc->initial_phase / (2 * M_PI)) * kick_len)
+                                v = amp * gkick_osc_func_sample(osc->sample);
+                        else
+                                v = 0.0;
+                }
                 break;
         default:
                 v = amp * gkick_osc_func_sine(osc->phase);
