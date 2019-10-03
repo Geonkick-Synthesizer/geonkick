@@ -35,7 +35,7 @@ or feature (feat/feature_name) branches.
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
-     - sine, square, triangle, saw-tooth
+     - sine, square, triangle, saw-tooth, sample (wav, ogg, flac)
      - initial phase control
      - amplitude & frequency envelope
      - low, band and high pass filter, cutoff envelope
