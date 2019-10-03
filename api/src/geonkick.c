@@ -1024,3 +1024,18 @@ geonkick_set_osc_sample(struct geonkick *kick,
 
         return geonkick_synth_set_osc_sample(kick->synth, osc_index, data, size);
 }
+
+enum geonkick_error
+geonkick_get_osc_sample(struct geonkick *kick,
+                        size_t osc_index,
+                        gkick_real **data,
+                        size_t *size)
+{
+        if (kick == NULL || data == NULL || size == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return geonkick_synth_get_osc_sample(kick->synth, osc_index, data, size);
+}
+

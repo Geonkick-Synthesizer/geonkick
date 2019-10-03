@@ -24,6 +24,7 @@ set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
+set(GKICK_UTILS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/utils)
 
 if (GKICK_PLUGIN)
   if (CMAKE_SYSTEM_NAME MATCHES Windows)
@@ -43,6 +44,7 @@ endif(GKICK_PLUGIN)
 set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 
 set(GKICK_COMMON_HEADERS
+  ${GKICK_UTILS_DIR}/base64.h
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
   ${GKICK_COMMON_DIR}/file_dialog.h
@@ -72,6 +74,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/mainwindow.h)
 
 set(GKICK_COMMON_SOURCES
+  ${GKICK_UTILS_DIR}/base64.cpp
   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
@@ -161,6 +164,7 @@ else ()
 endif ()
 
 include_directories(${GKICK_API_DIR}/src)
+include_directories(${GKICK_UTILS_DIR})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-fPIC)
 add_subdirectory(api)

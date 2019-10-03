@@ -6,10 +6,8 @@
  * See README for more details.
  */
 
-#include "includes.h"
 #include <stdint.h>
 
-#include "os.h"
 #include "base64.h"
 
 static const unsigned char base64_table[65] =
@@ -36,7 +34,7 @@ static unsigned char * base64_gen_encode(const unsigned char *src, size_t len,
 	olen++; /* nul termination */
 	if (olen < len)
 		return NULL; /* integer overflow */
-	out = os_malloc(olen);
+	out = (unsigned char*)malloc(olen);
 	if (out == NULL)
 		return NULL;
 
@@ -92,7 +90,7 @@ static unsigned char * base64_gen_decode(const unsigned char *src, size_t len,
 	int pad = 0;
 	size_t extra_pad;
 
-	os_memset(dtable, 0x80, 256);
+	memset(dtable, 0x80, 256);
 	for (i = 0; i < sizeof(base64_table) - 1; i++)
 		dtable[table[i]] = (unsigned char) i;
 	dtable['='] = 0;
@@ -108,7 +106,7 @@ static unsigned char * base64_gen_decode(const unsigned char *src, size_t len,
 	extra_pad = (4 - count % 4) % 4;
 
 	olen = (count + extra_pad) / 4 * 3;
-	pos = out = os_malloc(olen);
+	pos = out = (unsigned char*)malloc(olen);
 	if (out == NULL)
 		return NULL;
 
@@ -140,7 +138,7 @@ static unsigned char * base64_gen_decode(const unsigned char *src, size_t len,
 					pos -= 2;
 				else {
 					/* Invalid padding */
-					os_free(out);
+					free(out);
 					return NULL;
 				}
 				break;

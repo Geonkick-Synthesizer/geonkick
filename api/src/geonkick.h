@@ -429,6 +429,12 @@ geonkick_set_osc_sample(struct geonkick *kick,
                         gkick_real *data,
                         size_t size);
 
+enum geonkick_error
+geonkick_get_osc_sample(struct geonkick *kick,
+                        size_t osc_index,
+                        gkick_real **data,
+                        size_t *size);
+
 #ifdef __cplusplus
 }
 #endif

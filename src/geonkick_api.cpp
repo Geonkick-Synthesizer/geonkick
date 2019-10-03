@@ -230,6 +230,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         state->setCurrentLayer(layer);
         state->setOscillatorEnabled(index, isOscillatorEnabled(index));
         state->setOscillatorFunction(index, oscillatorFunction(index));
+        state->setOscillatorSample(getOscillatorSample(index), index);
         if (osc != OscillatorType::Noise)
                 state->setOscillatorPhase(index, oscillatorPhase(index));
         state->setOscillatorAmplitue(index, oscillatorAmplitude(index));
@@ -258,27 +259,28 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         currentLayer = layer;
         auto osc = static_cast<int>(oscillator);
         state->setCurrentLayer(layer);
-        enableOscillator(osc, state->isOscillatorEnabled(static_cast<int>(osc)));
-        setOscillatorFunction(osc, state->oscillatorFunction(static_cast<int>(osc)));
+        enableOscillator(osc, state->isOscillatorEnabled(osc));
+        setOscillatorFunction(osc, state->oscillatorFunction(osc));
+        setOscillatorSample(state->getOscillatorSample(osc));
         if (oscillator != OscillatorType::Noise)
-                setOscillatorPhase(osc, state->oscillatorPhase(static_cast<int>(osc)));
-        setOscillatorAmplitude(osc, state->oscillatorAmplitue(static_cast<int>(osc)));
+                setOscillatorPhase(osc, state->oscillatorPhase(osc));
+        setOscillatorAmplitude(osc, state->oscillatorAmplitue(osc));
         if (oscillator != OscillatorType::Noise)
-                setOscillatorFrequency(osc, state->oscillatorFrequency(static_cast<int>(osc)));
-        enableOscillatorFilter(osc, state->isOscillatorFilterEnabled(static_cast<int>(osc)));
-        setOscillatorFilterType(osc, state->oscillatorFilterType(static_cast<int>(osc)));
-        setOscillatorFilterCutOffFreq(osc, state->oscillatorFilterCutOffFreq(static_cast<int>(osc)));
-        setOscillatorFilterFactor(osc, state->oscillatorFilterFactor(static_cast<int>(osc)));
+                setOscillatorFrequency(osc, state->oscillatorFrequency(osc));
+        enableOscillatorFilter(osc, state->isOscillatorFilterEnabled(osc));
+        setOscillatorFilterType(osc, state->oscillatorFilterType(osc));
+        setOscillatorFilterCutOffFreq(osc, state->oscillatorFilterCutOffFreq(osc));
+        setOscillatorFilterFactor(osc, state->oscillatorFilterFactor(osc));
         setOscillatorEvelopePoints(osc, EnvelopeType::Amplitude,
-                                   state->oscillatorEnvelopePoints(static_cast<int>(osc), EnvelopeType::Amplitude));
+                                   state->oscillatorEnvelopePoints(osc, EnvelopeType::Amplitude));
         if (oscillator != OscillatorType::Noise) {
                 setOscillatorEvelopePoints(osc, EnvelopeType::Frequency,
-                                           state->oscillatorEnvelopePoints(static_cast<int>(osc),
+                                           state->oscillatorEnvelopePoints(osc,
                                            EnvelopeType::Frequency));
         }
         setOscillatorEvelopePoints(osc, EnvelopeType::FilterCutOff,
-                                   state->oscillatorEnvelopePoints(static_cast<int>(osc), EnvelopeType::FilterCutOff));
-        setOscillatorAsFm(osc, state->isOscillatorAsFm(static_cast<int>(osc)));
+                                   state->oscillatorEnvelopePoints(osc, EnvelopeType::FilterCutOff));
+        setOscillatorAsFm(osc, state->isOscillatorAsFm(osc)));
 
         currentLayer = temp;
 }
@@ -922,6 +924,14 @@ void GeonkickApi::setOscillatorSample(const std::string &file, int oscillatorInd
                                         sampleData.data(),
                                         sampleData.size());
         }
+}
+
+void GeonkickApi::setOscillatorSample(const std::<float> &sample, int oscillatorIndex)
+{
+        geonkick_set_osc_sample(geonkickApi,
+                                getOscIndex(oscillatorIndex),
+                                sample.data(),
+                                sample.size());
 }
 
 std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,

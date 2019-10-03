@@ -81,7 +81,7 @@ class GeonkickState
         double oscillatorFilterCutOffFreq(int index) const;
         double oscillatorFilterFactor(int index) const;
         std::vector<RkRealPoint> oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
-
+        void setOscillatorSample(const std::vector<float> &sample, int oscillatorIndex);
         void enableCompressor(bool enable);
         bool isCompressorEnabled() const;
         void setCompressorAttack(double attack);

@@ -437,5 +437,12 @@ geonkick_synth_set_osc_sample(struct gkick_synth *synth,
                               gkick_real *data,
                               size_t size);
 
+enum geonkick_error
+geonkick_synth_get_osc_sample(struct gkick_synth *synth,
+                              size_t osc_index,
+                              gkick_real **data,
+                              size_t *size)
+
+
 
 #endif // SYNTHESIZER_H
