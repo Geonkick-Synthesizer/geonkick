@@ -118,24 +118,50 @@ void CompressorGroupBox::setAttack(int val)
 
 void CompressorGroupBox::setThreshold(int val)
 {
-        geonkickApi->setCompressorThreshold(-60 * (1 - (static_cast<double>(val) / 100)));
+        double db = -60.0 * static_cast<double>(100 - val) / 100;
+        geonkickApi->setCompressorThreshold(pow(10, db / 20));
 }
 
 void CompressorGroupBox::setRatio(int val)
 {
-        geonkickApi->setCompressorRatio(20 * static_cast<double>(val) / 100);
+        double v = log2(19) * static_cast<double>(val) / 100;
+        geonkickApi->setCompressorRatio(pow(2, v));
 }
 
 void CompressorGroupBox::setMakeup(int val)
 {
-        geonkickApi->setCompressorMakeup(36 * (static_cast<double>(val) / 100));
+        double db = 36.0 * static_cast<double>(val) / 100;
+        geonkickApi->setCompressorMakeup(pow(10, db / 20));
 }
 
 void CompressorGroupBox::updateGui()
 {
         compressorCheckbox->setPressed(geonkickApi->isCompressorEnabled());
+
+        // Attack
         attackSlider->onSetValue(100 * (log10(1000 * geonkickApi->getCompressorAttack()) / log10(2000)));
-        thresholdSlider->onSetValue(100 * (1 - geonkickApi->getCompressorThreshold() / (-60)));
-        ratioSlider->onSetValue(100 * geonkickApi->getCompressorRatio() / 20);
-        makeupSlider->onSetValue(100 * geonkickApi->getCompressorMakeup() / 36);
+
+        // Threshold
+        auto threshold = geonkickApi->getCompressorThreshold();
+        double db = 0;
+        if (threshold < std::numeric_limits<decltype(geonkickApi->getCompressorThreshold())>::min())
+                db = -60;
+        else
+                db = 20.0 * log10(threshold);
+        thresholdSlider->onSetValue(100 - 100 * (db / -60));
+
+        // Ratio
+        double ratio = geonkickApi->getCompressorRatio();
+        if (ratio < 1.0)
+                ratio = 0;
+        else
+                ratio = log2(ratio);
+        ratioSlider->onSetValue(100 * ratio / log2(19));
+
+        // Makeup
+        double makeup = geonkickApi->getCompressorMakeup();
+        if (makeup < 1.0)
+                makeup = 1.0;
+        db = 20 * log10(makeup);
+        makeupSlider->onSetValue(100 * (db / 36));
 }
