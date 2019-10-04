@@ -37,13 +37,12 @@ gkick_compressor_new(struct gkick_compressor **compressor)
                 return GEONKICK_ERROR;
         }
 
-        (*compressor)->state     = GKICK_COMPRESSOR_DEACTIVATED;
         (*compressor)->attack    = 0.01 * GEONKICK_SAMPLE_RATE;
         (*compressor)->release   = 0.01 * GEONKICK_SAMPLE_RATE;
-        (*compressor)->threshold = 0;
-        (*compressor)->ratio     = 1;
-        (*compressor)->knee      = 0;
-        (*compressor)->makeup    = 1;
+        (*compressor)->threshold = 0.0;
+        (*compressor)->ratio     = 1.0;
+        (*compressor)->knee      = 0.0;
+        (*compressor)->makeup    = 1.0;
 
         if (pthread_mutex_init(&(*compressor)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
@@ -75,20 +74,10 @@ void gkick_compressor_unlock(struct gkick_compressor *compressor)
 }
 
 enum geonkick_error
-gkick_compressor_set_state(struct gkick_compressor *compressor, enum gkick_compressor_state state)
-{
-        gkick_compressor_lock(compressor);
-        compressor->state = GKICK_COMPRESSOR_UNACTIVE;
-        gkick_compressor_unlock(compressor);
-        return GEONKICK_OK;
-}
-
-enum geonkick_error
 gkick_compressor_enable(struct gkick_compressor *compressor, int enable)
 {
         gkick_compressor_lock(compressor);
         compressor->enabled = enable;
-        compressor->state = GKICK_COMPRESSOR_UNACTIVE;
         gkick_compressor_unlock(compressor);
         return GEONKICK_OK;
 }
@@ -108,51 +97,28 @@ gkick_compressor_val(struct gkick_compressor *compressor,
                      gkick_real in_val,
                      gkick_real *out_val)
 {
-        gkick_real threshold;
-        gkick_real diff;
-        gkick_real ratio;
-        gkick_real sign;
-
         gkick_compressor_lock(compressor);
-        threshold = pow(10, compressor->threshold / 20);
-        if (fabs(compressor->threshold) < DBL_EPSILON || compressor->ratio < 1) {
+        gkick_real threshold = compressor->threshold;
+        if (fabs(compressor->threshold) < DBL_EPSILON || compressor->ratio < 1.0) {
                 gkick_compressor_unlock(compressor);
                 *out_val = compressor->makeup * in_val;
                 return GEONKICK_OK;
         }
 
-        sign = in_val > 0 ? 1 : -1;
+        gkick_real sign = in_val >= 0.0 ? 1.0 : -1.0;
         in_val = fabs(in_val);
 
-        if (in_val > threshold && compressor->state != GKICK_COMPRESSOR_ACTIVATED) {
-                compressor->frames = 0;
-                compressor->state = GKICK_COMPRESSOR_ACTIVATED;
-
-        } else if (in_val <= threshold && compressor->state != GKICK_COMPRESSOR_DEACTIVATED) {
-                compressor->frames = 0;
-                compressor->state = GKICK_COMPRESSOR_DEACTIVATED;
-        }
-
-        if (compressor->state == GKICK_COMPRESSOR_ACTIVATED) {
-                if (compressor->frames <= compressor->attack) {
-                        if (compressor->attack > 0)
-                                ratio =  exp((gkick_real)compressor->frames * log(compressor->ratio) / compressor->attack);
-                        else
-                                ratio = compressor->ratio;
+        if (in_val > threshold) {
+                gkick_real ratio = compressor->ratio;
+                if (compressor->frames <= compressor->attack && compressor->attack > 0) {
+                        // Linear increase of the ratio.
+                        ratio = 1.0 + ((compressor->ratio - 1.0) / compressor->attack) * compressor->frames;
                         compressor->frames++;
-                } else {
-                        ratio = compressor->ratio;
                 }
-                diff = fabs(in_val - threshold);
-                diff /= ratio;
+                gkick_real diff = (in_val - threshold) / ratio;
                 *out_val = threshold + diff;
-        } else if (compressor->frames < compressor->release && compressor->release > 0 && compressor->state == GKICK_COMPRESSOR_DEACTIVATED) {
-                ratio = compressor->ratio * exp((-log(compressor->ratio) / compressor->release) * (compressor->release - compressor->frames));
-                diff = fabs(in_val - threshold);
-                diff /= ratio;
-                *out_val = in_val + diff;
-                compressor->frames++;
         } else {
+                compressor->frames = 0;
                 *out_val = in_val;
         }
 
@@ -220,7 +186,10 @@ enum geonkick_error
 gkick_compressor_set_ratio(struct gkick_compressor *compressor, gkick_real ratio)
 {
         gkick_compressor_lock(compressor);
-        compressor->ratio = ratio;
+        if (ratio < 1.0)
+                compressor->ratio = 1.0;
+        else
+                compressor->ratio = ratio;
         gkick_compressor_unlock(compressor);
         return GEONKICK_OK;
 }

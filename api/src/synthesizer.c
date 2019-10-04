@@ -1161,13 +1161,6 @@ int gkick_synth_is_running(struct gkick_synth *synth)
         return synth->is_running;
 }
 
-/**
- * The thread that synthesizes the kick. The kick is synthesised
- * from the start to end in one go. The thread than swaps atomically the buffer with
- * one from audio output thread. The thread waites at
- * a contidion variable until some parameter
- * of the synthesizer is changed.
- */
 void *gkick_synth_run(void *arg)
 {
         size_t i;
@@ -1198,7 +1191,6 @@ void *gkick_synth_run(void *arg)
                 dt = synth->length / synth->buffer_size;
 		gkick_synth_reset_oscillators(synth);
                 gkick_filter_init(synth->filter);
-		gkick_compressor_set_state(synth->compressor, GKICK_COMPRESSOR_DEACTIVATED);
                 gkick_synth_unlock(synth);
 
                 // Synthesize the percussion into the buffer.
@@ -1224,7 +1216,7 @@ void *gkick_synth_run(void *arg)
 
                 gkick_synth_lock(synth);
 
-                // Call callback that is subscribed to take
+                // Call the callback that is subscribed to take
                 // the content of the updated precussion buffer.
                 if (synth->buffer_callback != NULL && synth->callback_args != NULL)
                         synth->buffer_callback(synth->callback_args,

@@ -764,7 +764,7 @@ double GeonkickApi::getCompressorKnee() const
 
 double GeonkickApi::getCompressorMakeup() const
 {
-        gkick_real val = 0;
+        gkick_real val = 1.0;
         geonkick_compressor_get_makeup(geonkickApi, &val);
         return val;
 }
@@ -928,10 +928,12 @@ void GeonkickApi::setOscillatorSample(const std::string &file, int oscillatorInd
 
 void GeonkickApi::setOscillatorSample(const std::vector<float> &sample, int oscillatorIndex)
 {
-        geonkick_set_osc_sample(geonkickApi,
-                                getOscIndex(oscillatorIndex),
-                                sample.data(),
-                                sample.size());
+        if (!sample.empty()) {
+                geonkick_set_osc_sample(geonkickApi,
+                                        getOscIndex(oscillatorIndex),
+                                        sample.data(),
+                                        sample.size());
+        }
 }
 
 std::vector<float> GeonkickApi::getOscillatorSample(int oscillatorIndex) const

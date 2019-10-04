@@ -26,12 +26,6 @@
 
 #include "geonkick_internal.h"
 
-enum gkick_compressor_state {
-        GKICK_COMPRESSOR_UNACTIVE,
-        GKICK_COMPRESSOR_ACTIVATED,
-        GKICK_COMPRESSOR_DEACTIVATED
-};
-
 struct gkick_compressor {
         int enabled;
 
@@ -52,7 +46,6 @@ struct gkick_compressor {
         uint64_t frames;
         /* The frame/sample at which the compressor is deactivated. */
         uint64_t deactivation;
-        enum gkick_compressor_state state;
         pthread_mutex_t lock;
 };
 
@@ -65,10 +58,6 @@ gkick_compressor_free(struct gkick_compressor **compressor);
 void gkick_compressor_lock(struct gkick_compressor *compressor);
 
 void gkick_compressor_unlock(struct gkick_compressor *compressor);
-
-enum geonkick_error
-gkick_compressor_set_state(struct gkick_compressor *compressor,
-                           enum gkick_compressor_state state);
 
 enum geonkick_error
 gkick_compressor_enable(struct gkick_compressor *compressor, int enable);
