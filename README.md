@@ -28,7 +28,7 @@ or feature (feat/feature_name) branches.
 
 #### Download
 
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://gitlab.com/geontime/geonkick/uploads/9bf2af16a9839984c8b080a0e4a7f0c5/geonkick-1.8.1_GNU+Linux_64bit.zip)
+[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/geontime/geonkick/releases/download/v1.9.0/geonkick-1.9.0_GNU+Linux_64bit.zip)
 
 #### Features
 
