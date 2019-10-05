@@ -99,7 +99,8 @@ gkick_distortion_val(struct gkick_distortion *distortion,
         else if (x < -1.0)
                 x = -1.0;
 
-        *out_val = distortion->volume  * (x < 0 ? -1 : 1) * (1.0 - exp(- 4 * log(10) * fabs(x)));
+        *out_val= (x < 0 ? -1 : 1) * (1.0 - exp(-4.0 * log(10) * fabs(x)));
+        *out_val *= distortion->volume;
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }

@@ -99,7 +99,8 @@ void DistortionGroupBox::setVolume(int val)
 
 void DistortionGroupBox::setDrive(int val)
 {
-        geonkickApi->setDistortionDrive(val);
+        double db =  36.0 * static_cast<double>(val) / 100.0;
+        geonkickApi->setDistortionDrive(pow(10, db / 20));
 }
 
 void DistortionGroupBox::updateGui()
@@ -112,5 +113,10 @@ void DistortionGroupBox::updateGui()
         else
                 logVal = 60;
         volumeSlider->onSetValue(100 * (60 - fabs(logVal)) / 60);
-        driveSlider->onSetValue(geonkickApi->getDistortionDrive());
+        auto distortion = geonkickApi->getDistortionDrive();
+        if (distortion < std::numeric_limits<decltype(distortion)>::min())
+                distortion = 0;
+        else
+                distortion = 20 * log10(distortion);
+        driveSlider->onSetValue(100 * distortion / 36);
 }

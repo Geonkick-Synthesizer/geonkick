@@ -71,6 +71,7 @@ void gkick_osc_free(struct gkick_oscillator **osc)
                         gkick_envelope_destroy((*osc)->envelopes[i]);
                 free((*osc)->envelopes);
                 gkick_filter_free(&(*osc)->filter);
+                gkick_buffer_free(&(*osc)->sample);
         }
 
         free(*osc);
