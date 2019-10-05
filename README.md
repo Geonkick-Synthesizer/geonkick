@@ -5,6 +5,7 @@ Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) per
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
 snares, hit-hats, shakers, claps, sticks.
+Also, it can play and mix samples.
 
 License: GPLv3
 
