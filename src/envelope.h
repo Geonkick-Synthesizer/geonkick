@@ -57,7 +57,9 @@ class Envelope
         virtual double envelopeAmplitude(void) const { return 0;}
         RkPoint getOrigin(void) const;
         void draw(RkPainter &painter, DrawLayer layer);
+        void overPoint(const RkPoint &point);
         bool hasSelected() const;
+        bool hasOverPoint() const;
         void selectPoint(const RkPoint &point);
         void unselectPoint(void);
         void moveSelectedPoint(int x, int y);
@@ -112,6 +114,8 @@ class Envelope
         int dotRadius;
         std::vector<RkRealPoint>::size_type selectedPointIndex;
         std::unordered_set<Type> supportedTypes;
+        std::vector<RkRealPoint>::size_type overPointIndex;
+        bool isOverPoint;
         bool pointSelected;
         Category envelopeCategory;
         Type envelopeType;

@@ -33,6 +33,8 @@ Envelope::Envelope(const RkRect &area)
         , dotRadius{3}
         , selectedPointIndex{0}
         , supportedTypes({Type::Amplitude, Type::Frequency, Type::FilterCutOff})
+        , overPointIndex{0}
+        , isOverPoint{false}
         , pointSelected{false}
         , envelopeCategory{Category::Oscillator1}
         , envelopeType{Type::Amplitude}
@@ -191,14 +193,26 @@ void Envelope::drawPoints(RkPainter &painter)
         RkPen pen;
         pen.setWidth(2);
         pen.setColor(RkColor(200, 200, 200, 150));
-	painter.setPen(pen);
         RkPoint origin = getOrigin();
-	for (const auto &point : envelopePoints) {
-                RkPoint scaledPoint = scaleUp(point);
+	for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
+                if (pointSelected && i == selectedPointIndex) {
+                        RkPen penSeleted;
+                        penSeleted.setWidth(2);
+                        penSeleted.setColor(RkColor(255, 255, 255, 255));
+                        painter.setPen(penSeleted);
+                } else if (!pointSelected && isOverPoint && i == overPointIndex) {
+                        RkPen penSeleted;
+                        penSeleted.setWidth(2);
+                        penSeleted.setColor(RkColor(230, 230, 230, 200));
+                        painter.setPen(penSeleted);
+                } else {
+                        painter.setPen(pen);
+                }
+                RkPoint scaledPoint = scaleUp(envelopePoints[i]);
                 scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
 		drawPoint(painter, scaledPoint);
                 scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
-                drawPointValue(painter, scaledPoint, point.y() * envelopeAmplitude());
+                drawPointValue(painter, scaledPoint, envelopePoints[i].y() * envelopeAmplitude());
         }
 }
 
@@ -249,6 +263,24 @@ void Envelope::drawLines(RkPainter &painter)
 	painter.drawPolyline(points);
 }
 
+void Envelope::overPoint(const RkPoint &point)
+{
+        overPointIndex = 0;
+        isOverPoint = false;
+	for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
+		if (hasPoint(envelopePoints[i], point)) {
+                        overPointIndex = i;
+                        isOverPoint = true;
+			break;
+		}
+        }
+}
+
+bool Envelope::hasOverPoint() const
+{
+        return isOverPoint;
+}
+
 bool Envelope::hasSelected(void) const
 {
 	return pointSelected;
@@ -259,8 +291,8 @@ void Envelope::selectPoint(const RkPoint &point)
         std::vector<RkRealPoint>::size_type index = 0;
 	for (const auto& p : envelopePoints) {
 		if (hasPoint(p, point)) {
-                        selectedPointIndex = index;
-                        pointSelected = true;
+                        selectedPointIndex = overPointIndex = index;
+                        pointSelected = isOverPoint = true;
 			break;
 		}
                 index++;
@@ -269,8 +301,7 @@ void Envelope::selectPoint(const RkPoint &point)
 
 void Envelope::unselectPoint(void)
 {
-        if (pointSelected)
-                pointSelected = false;
+        pointSelected = false;
 }
 
 double Envelope::getLeftPointLimit(void) const

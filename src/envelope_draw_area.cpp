@@ -144,11 +144,20 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMo
 
 void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        RK_UNUSED(event);
-        if (currentEnvelope && currentEnvelope->hasSelected()) {
+        if (!currentEnvelope)
+                return;
+
+        auto toUpdate = false;
+        if (currentEnvelope->hasSelected()) {
                 currentEnvelope->unselectPoint();
-                update();
+                toUpdate = true;
         }
+
+        if (currentEnvelope->hasOverPoint())
+                toUpdate = true;
+
+        if (toUpdate)
+                update();
 }
 
 void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
@@ -161,6 +170,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMo
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
                 if (currentEnvelope) {
                         currentEnvelope->addPoint(point);
+                        currentEnvelope->selectPoint(point);
                         update();
                 }
         }
@@ -168,11 +178,18 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMo
 
 void EnvelopeWidgetDrawingArea::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        if (currentEnvelope && currentEnvelope->hasSelected()) {
-                RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
+        if (!currentEnvelope)
+                return;
+
+        RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
+        currentEnvelope->overPoint(point);
+
+        if (currentEnvelope->hasSelected()) {
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
+                update();
+        } else if (currentEnvelope->hasOverPoint()) {
                 update();
         }
 }
