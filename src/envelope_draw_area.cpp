@@ -182,16 +182,18 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(const std::shared_ptr<RkMouseEven
                 return;
 
         RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
-        currentEnvelope->overPoint(point);
-
         if (currentEnvelope->hasSelected()) {
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
                 update();
-        } else if (currentEnvelope->hasOverPoint()) {
-                update();
+		return;
         }
+
+	auto overPoint = currentEnvelope->hasOverPoint();
+        currentEnvelope->overPoint(point);
+	if (overPoint != currentEnvelope->hasOverPoint())
+		update();
 }
 
 void EnvelopeWidgetDrawingArea::envelopeUpdated()
