@@ -62,13 +62,11 @@ or feature (feat/feature_name) branches.
      - Ogg Vorbis
 * Open & Save preset in JSON format
 * Standalone
-* Pitch to note (see below technical notes)
+* Pitch to note
 * Plugin
   - LV2
 * Platforms:
   - GNU/Linux
-* Build system:
-  - CMake
 
 #### Demo & Examples
 
@@ -82,6 +80,7 @@ Under the directory geonkick/examples, it is gathered some example presets that 
 In order Geonkick to run and operate correctly there is a need for:
 
 Standalone:
+
 * GNU/Linux operating system
 * Jack server installed and running at 48000 sample rate
 
@@ -119,16 +118,6 @@ Clone the code repository, compile and install
         cmake ../
         make
         make install
-
-Note: after every update from the repository over the old code
-      there is a need to clean the build in order
-      to generate the resources and the
-      static API library used by the project:
-
-     cd build
-     rm -fr ./*
-     cmake ../
-     make
 
 #### Packaging
 
@@ -193,16 +182,3 @@ Oscillator 2 must be enabled in order to see the result in the graph.
 * If the option "Tune" is enabled than Geonkick will tune pitch relative to A4.
   The central note (un-tuned) is A4. If the percussion sound is more like a tone,
   tuning above A4 may contain unwanted high frequencies.
-
-### Thank you!
-
-Here is the list of people that contributed with
-features ideas that significally improved Geonkick.
-
-[unfa](https://soundcloud.com/unfa) - for multiple noise layers
-
-[David Runge](https://gitlab.com/dvzrv) - for cutoff filter envelope
-
-[Christopher Arndt](https://chrisarndt.de/) - for band pass filter
-
-[Robin Gareus](http://gareus.org/) - for many suggestions regarding real-time audio
