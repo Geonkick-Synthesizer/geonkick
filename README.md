@@ -13,6 +13,12 @@ License: GPLv3
 
 Version: 1.9.0
 
+If you have any idea about a good feature or you found an issue, please, submit it:
+
+* on [GitLab](https://gitlab.com/geontime/geonkick/issues)
+* on [GitHub](https://github.com/geontime/geonkick/issues)
+* or just send a message to iurie@geontime.com
+
 ![Screenshot](data/screenshot.png)
 
 #### Download
