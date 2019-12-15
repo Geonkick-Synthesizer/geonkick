@@ -7,11 +7,15 @@ of percussion. The most basic examples are: kicks,
 snares, hit-hats, shakers, claps, sticks.
 Also, it can play and mix samples.
 
+Author: Iurie Nistor
+
 License: GPLv3
 
 Version: 1.9.0
 
-Author: Iurie Nistor
+![Screenshot](data/screenshot.png)
+
+#### Download
 
 Source code repository:
 
@@ -24,9 +28,7 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
 The development is going on ["develop" branch](https://gitlab.com/geontime/geonkick/commits/develop)
 or feature (feat/feature_name) branches.
 
-![Screenshot](data/screenshot.png)
-
-#### Download
+Binary:
 
 [Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/geontime/geonkick/releases/download/v1.9.0/geonkick-1.9.0_GNU+Linux_64bit.zip)
 
