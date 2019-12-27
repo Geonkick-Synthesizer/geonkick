@@ -5,15 +5,15 @@ Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) per
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
 snares, hit-hats, shakers, claps, sticks.
-Also, it can play and mix samples.
+Also, it can play samples.
 
 Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 1.9.0
+Version: 1.9.2
 
-If you have any idea about a good feature or you found an issue, please, submit it:
+If you have an idea about a feature or found an issue, please, submit it:
 
 * on [GitLab](https://gitlab.com/geontime/geonkick/issues)
 * on [GitHub](https://github.com/geontime/geonkick/issues)
@@ -33,10 +33,6 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
 
 The development is going on ["develop" branch](https://gitlab.com/geontime/geonkick/commits/develop)
 or feature (feat/feature_name) branches.
-
-Binary:
-
-[Geonkick 64-bit, GNU/Linux, LV2 & standalone](https://github.com/geontime/geonkick/releases/download/v1.9.0/geonkick-1.9.0_GNU+Linux_64bit.zip)
 
 #### Features
 
@@ -81,7 +77,6 @@ Binary:
 Here a is [list of videos](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about how it works.
 
 Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
-
 
 #### Requirements
 
@@ -146,7 +141,7 @@ Geonkick can be found in the following repositories:
 * Ctrl + e - open export dialog
 * Ctrl + a - open about dialog
 
-Note: especially when running as plugin be sure the focus to be on the main Geonkick window.
+Note: when running as plugin be sure the focus to be on the main Geonkick window.
 
 ###### Working with envelopes
 
@@ -159,7 +154,7 @@ Note: especially when running as plugin be sure the focus to be on the main Geon
 Geonkick standalone uses Jack and will create two audio outputs and one MIDI input.
 If audio outputs are connected there are three ways to play the sound:
    * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
-   * by means of a DAW if used as LV2
+   * by means of a host that supports LV2 plugin format
 
 #### Other technical notes
 
@@ -167,8 +162,6 @@ The block diagram of the synthesizer.
 
 ![Screenshot](data/doc/diagram.png)
 
-
-* Geonkick synthesizer is designed for percussion, i.e. makes use of the fact that percussion instruments don't generate  lasting sounds, and most of the time percussion is periodic. Thus, the workflow of the sound synthesis is optimized to this, and differs from the synthesizers that are designed for synthesis of other kinds of instruments.
 
 * Filters become unstable for some extremal combination of cutoff frequency and Q parameter. If the filters become unstable the percussion graph may show a maximum continuous line or various kinds of distortion. There is a need to work with Q factor in order to use the cutoff in the desired range.
 
@@ -178,15 +171,15 @@ The block diagram of the synthesizer.
 
 * If the key is released before all the percussion length is played, Geonkick will apply a 30ms linear decay to avoid sharp cut of the sound.
 
-* If the controls are changed during the play of the beat, there will not be any change in the sound during the play of the current beat, the next beat/beats will contain the change, i.e. the next press of the keys. This is done to avoid distortion of the shape of the current generated beat (percussion). This effect of no change is more evident when the percussion length is big, like 4 seconds.
+* If the controls are changed during the play of the beat, there will not be any change in the sound during the play of the current beat, the next beat/beats will contain the change, i.e. the next press of the keys.
 
 * FM Synthesis is enabled by pressing OSC1->OSC2 for evrey layer separtely. When pressing OSC1->OSC2 the output of Oscillator 1 will be redirected to modulate the frequency of Oscillator 2.
 Oscillator 2 must be enabled in order to see the result in the graph.
 
-* Geonkick is monophonic. Pressing more keys at once will not result in the desired sound or even no sound.
+* Geonkick is monophonic.
 
 * Geonkick does not support multichannel.
 
-* If the option "Tune" is enabled than Geonkick will tune pitch relative to A4.
-  The central note (un-tuned) is A4. If the percussion sound is more like a tone,
-  tuning above A4 may contain unwanted high frequencies.
+* If the option "Tune" is enabled than Geonkick will tune the pitch relative to key A4.
+  If the percussion sound is more like a tone, tuning above A4 may contain unwanted high
+  frequencies.
