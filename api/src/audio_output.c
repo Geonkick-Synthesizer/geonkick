@@ -38,6 +38,7 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
         }
         memset(*audio_output, 0, sizeof(struct gkick_audio_output));
         (*audio_output)->decay = -1;
+        (*audio_output)->play = false;
 
         gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer, GEONKICK_MAX_KICK_BUFFER_SIZE);
         if ((*audio_output)->updated_buffer == NULL) {
@@ -93,6 +94,13 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
         return GEONKICK_OK;
 }
 
+enum geonkick_error
+gkick_audio_output_play(struct gkick_audio_output *audio_output)
+{
+        audio_output->play = true;
+        return GEONKICK_OK;
+}
+
 gkick_real
 gkick_audio_output_tune_factor(int note_number)
 {
@@ -102,13 +110,23 @@ gkick_audio_output_tune_factor(int note_number)
 /**
  * Gets autio frame gets only the current value
  * of the kick from the kick buffer.
- * Not synthesis is done by this function. There is no lock called in this function.
+ * No synthesis is done by this function. There is no lock called in this function.
  */
 enum geonkick_error
 gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real *val)
 {
         int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
         gkick_real decay_val;
+
+        if (audio_output->play) {
+                struct gkick_note_info key;
+                key.channel     = 1;
+                key.note_number = 69;
+                key.velocity    = 127;
+                key.state       = GKICK_KEY_STATE_PRESSED;
+                gkick_audio_output_key_pressed(audio_output, &key);
+                audio_output->play = false;
+        }
 
         *val = 0;
         if (audio_output->is_play) {
@@ -142,11 +160,8 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
         }
 
         *val *= (gkick_real)audio_output->limiter / 1000000;
-        if (audio_output->limiter_callback != NULL
-            && audio_output->limiter_callback_arg != NULL) {
-                /* Callback is atomic. It sets the value and returns. */
+        if (audio_output->limiter_callback != NULL && audio_output->limiter_callback_arg != NULL)
                 audio_output->limiter_callback(audio_output->limiter_callback_arg, *val);
-        }
 
         return GEONKICK_OK;
 }

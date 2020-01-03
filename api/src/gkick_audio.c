@@ -106,6 +106,17 @@ gkick_audio_get_buffer(struct gkick_audio *audio)
 }
 
 enum geonkick_error
+gkick_audio_play(struct gkick_audio *audio)
+{
+        if (audio == NULL) {
+               gkick_log_error("wrong arguments");
+               return GEONKICK_ERROR;
+        }
+
+        return gkick_audio_output_play(audio->audio_output);
+}
+
+enum geonkick_error
 gkick_audio_key_pressed(struct gkick_audio *audio,
                         bool pressed,
                         int note,

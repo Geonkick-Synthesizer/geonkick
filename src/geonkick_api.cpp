@@ -672,9 +672,15 @@ int GeonkickApi::getSampleRate() const
         return sampleRate;
 }
 
+// This function is called only from the audio thread.
 void GeonkickApi::setKeyPressed(bool b, int note, int velocity)
 {
         geonkick_key_pressed(geonkickApi, b, note, velocity);
+}
+
+void GeonkickApi::playKick()
+{
+        geonkick_play(geonkickApi);
 }
 
 // This function is called only from the audio thread.

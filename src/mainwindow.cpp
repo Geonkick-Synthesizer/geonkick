@@ -230,9 +230,7 @@ void MainWindow::openAboutDialog()
 void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
         if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
-                /* Key press: note number A4, velocity maximum. */
-                // geonkickApi->setKeyPressed(true, 69, 127); TODO: make this call thread-safe.
-                // for now this function is called only from the audio thread.
+                geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
                 geonkickApi->setState(geonkickApi->getDefaultState());

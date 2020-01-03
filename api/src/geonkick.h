@@ -269,6 +269,10 @@ geonkick_get_osc_frequency(struct geonkick *kick,
                            gkick_real *v);
 
 enum geonkick_error
+geonkick_play(struct geonkick *kick);
+
+/* This function must be called only from the audio thread. */
+enum geonkick_error
 geonkick_key_pressed(struct geonkick *kick,
                      bool pressed,
                      int note,

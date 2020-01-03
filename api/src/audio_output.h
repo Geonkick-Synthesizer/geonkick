@@ -54,9 +54,18 @@ struct gkick_audio_output
         /* Callback must make only short atomic operations, no blocking. */
         void (*limiter_callback) (void*, gkick_real val);
         void *limiter_callback_arg;
-        // Note info is changed only by the audio thread.
+
+        /* Note info is changed only by the audio thread. */
         struct gkick_note_info key;
+
+        /* Specifies if the audio output is in the playing state (the percussion is playing) */
         _Atomic bool is_play;
+
+        /**
+         * Triggers the audio thread to start to play
+         * the precussion with maximum key velocity.
+         */
+        _Atomic bool play;
 
         /*
          * Specifies if to tune output in accordance with
@@ -94,6 +103,9 @@ gkick_audio_output_get_buffer(struct gkick_audio_output  *audio_output);
 
 enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output, struct gkick_note_info *key);
+
+enum geonkick_error
+gkick_audio_output_play(struct gkick_audio_output *audio_output);
 
 gkick_real
 gkick_audio_output_tune_factor(int note_number);

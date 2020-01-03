@@ -49,6 +49,9 @@ struct gkick_buffer*
 gkick_audio_get_buffer(struct gkick_audio *audio);
 
 enum geonkick_error
+gkick_audio_play(struct gkick_audio *audio);
+
+enum geonkick_error
 gkick_audio_key_pressed(struct gkick_audio *audio,
                         bool pressed,
                         int note,
