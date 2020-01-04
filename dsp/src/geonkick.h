@@ -96,6 +96,13 @@ enum GEONKICK_MODULE {
 #define GKICK_OSC_GROUPS_NUMBER 3
 #define GKICK_OSC_GROUP_SIZE 3
 
+enum geonkick_channel_type {
+        GEONKICK_CHANNEL_AUDIO_INPUT  = 0,
+        GEONKICK_CHANNEL_AUDIO_OUTPUT = 1,
+        GEONKICK_CHANNEL_MIDI_INPUT   = 2,
+        GEONKICK_CHANNEL_MIDI_OUTPUT  = 3
+};
+
 struct geonkick;
 
 enum geonkick_error
@@ -438,6 +445,9 @@ geonkick_get_osc_sample(struct geonkick *kick,
                         size_t osc_index,
                         gkick_real **data,
                         size_t *size);
+
+enum geonkick_error
+geonkick_add_channel(const char *name, enum geonkick_channel_type type);
 
 #ifdef __cplusplus
 }

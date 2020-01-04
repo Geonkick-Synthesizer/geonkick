@@ -33,6 +33,7 @@
 #include "geonkick_api.h"
 #include "geonkick_state.h"
 #include "about.h"
+#include "right_bar.h"
 
 #include <RkPlatform.h>
 
@@ -49,7 +50,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
         , envelopeWidget{nullptr}
         , presetName{preset}
 {
-        setFixedSize(940, 760);
+        setFixedSize(950, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
         show();
@@ -94,7 +95,6 @@ bool MainWindow::init(void)
                 GEONKICK_LOG_INFO("Jack is not installed or not running. "
                                   << "There is a need for jack server running "
                                   << "in order to have audio output.");
-
         topBar = new TopBar(this, geonkickApi);
         topBar->setX(10);
         topBar->show();
@@ -104,6 +104,9 @@ bool MainWindow::init(void)
         RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(), this, openExportDialog());
         RK_ACT_BIND(topBar, layerSelected, RK_ACT_ARGS(GeonkickApi::Layer layer, bool b), geonkickApi, enbaleLayer(layer, b));
+
+        auto rightBar = new RightBar(this);
+        rightBar->show();
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
@@ -117,9 +120,12 @@ bool MainWindow::init(void)
         limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8, envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
+
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
+        RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
+        RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showChannelSettings());
         controlAreaWidget->show();
 
         // TODO: Key shortcut feature will be implemented in the next version of Redkite.

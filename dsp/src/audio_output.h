@@ -46,7 +46,7 @@ struct gkick_note_info {
 
 struct gkick_audio_output
 {
-        // On this buffer the synthesizer is  copying
+        // On this buffer the synthesizer is copying.
         char* _Atomic updated_buffer;
         char* _Atomic playing_buffer;
         _Atomic bool buffer_updated;

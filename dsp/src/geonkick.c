@@ -1049,3 +1049,8 @@ geonkick_get_osc_sample(struct geonkick *kick,
         return geonkick_synth_get_osc_sample(kick->synth, osc_index, data, size);
 }
 
+enum geonkick_error
+geonkick_add_channel(const char *name, enum geonkick_channel_type type)
+{
+        
+}

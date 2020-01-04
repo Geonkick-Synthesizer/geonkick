@@ -20,7 +20,7 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
 endif()
 
-set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
+set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dsp)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
@@ -51,6 +51,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/filter.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
+  ${GKICK_COMMON_DIR}/right_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
   ${GKICK_COMMON_DIR}/envelope_draw_area.h
   ${GKICK_COMMON_DIR}/limiter.h
@@ -82,6 +83,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/filter.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
+  ${GKICK_COMMON_DIR}/right_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
   ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
   ${GKICK_COMMON_DIR}/limiter.cpp
@@ -167,7 +169,7 @@ include_directories(${GKICK_API_DIR}/src)
 include_directories(${GKICK_UTILS_DIR})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-fPIC)
-add_subdirectory(api)
+add_subdirectory(dsp)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     include_directories(${GKICK_VST_SDK_PATH})
