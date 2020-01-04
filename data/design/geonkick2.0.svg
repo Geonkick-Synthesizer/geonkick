@@ -4353,19 +4353,6 @@
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter8829-2-2-7-30-7"
-       x="-0.071999997"
-       width="1.1440001"
-       y="-0.071999997"
-       height="1.1440001">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.035058843"
-         id="feGaussianBlur8831-7-5-4-92-2" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
        id="filter8829-2-2-7-88-5-9"
        x="-0.071999997"
        width="1.1440001"
@@ -4449,9 +4436,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.94145441"
-     inkscape:cx="2504.0467"
-     inkscape:cy="330.767"
+     inkscape:zoom="4.4095618"
+     inkscape:cx="2907.525"
+     inkscape:cy="130.69028"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -16360,7 +16347,7 @@
            height="272.98187"
            width="40.363079"
            id="rect7766" /></flowRegion><flowPara
-         id="flowPara7768"></flowPara></flowRoot>    <text
+         id="flowPara7768" /></flowRoot>    <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-7"
        y="409.01865"
@@ -17049,5 +17036,55 @@
          id="path8795-86-4-4-0-6-5"
          style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-2-2-7-88-5-22)" />
     </g>
+    <rect
+       style="display:inline;opacity:1;fill:#464444;fill-opacity:1;stroke:#2b2b2b;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4510-9-0-8-0-5-1-4-1-1-1-3-9-9-3"
+       width="3.900604"
+       height="33.152939"
+       x="781.16937"
+       y="242.99229"
+       inkscape:export-xdpi="90.353798"
+       inkscape:export-ydpi="90.353798"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/controls_button.png" />
+    <rect
+       style="display:inline;opacity:1;fill:#464444;fill-opacity:1;stroke:#2b2b2b;stroke-width:0.2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4510-9-0-8-0-5-1-4-1-1-1-3-9-9-3-7"
+       width="3.900604"
+       height="33.152935"
+       x="770.77802"
+       y="242.70497"
+       inkscape:export-xdpi="90.353798"
+       inkscape:export-ydpi="90.353798"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/channels_button.png" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88637996px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.14573926"
+       x="-268.17926"
+       y="774.16431"
+       id="text10500-5"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/channels_button.png"
+       inkscape:export-xdpi="90.353798"
+       inkscape:export-ydpi="90.353798"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan10498-3"
+         x="-268.17926"
+         y="774.16431"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.14573926">Channels</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.88637996px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.14573926"
+       x="-267.29358"
+       y="784.55566"
+       id="text10500-5-5"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/controls_button.png"
+       inkscape:export-xdpi="90.353798"
+       inkscape:export-ydpi="90.353798"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan10498-3-6"
+         x="-267.29358"
+         y="784.55566"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.14573926">Controls</tspan></text>
   </g>
 </svg>
