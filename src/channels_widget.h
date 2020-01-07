@@ -1,5 +1,5 @@
 /**
- * File name: control_area.h
+ * File name: channels_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
@@ -21,31 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_CONTROL_AREA_H
-#define GKICK_CONTROL_AREA_H
+#ifndef CHANNELS_WIDGET_H
+#define CHANNELS_WIDGET_H
 
-#include "envelope.h"
 #include "geonkick_widget.h"
 
-class Oscillator;
 class GeonkickApi;
-class ContorlsWidget;
-class ChannelsWidget;
 
-class ControlArea: public GeonkickWidget
+class ChannelsWidget: public GeonkickWidget
 {
  public:
-        ControlArea(GeonkickWidget *parent,
-                    GeonkickApi* api,
-                    const std::vector<std::unique_ptr<Oscillator>> &oscillators);
-        ~ControlArea() = default;
+        ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api);
+        ~ChannelsWidget() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
-        void showControls();
-        void showChannelsSettings();
 
+ protected:
+	void paintWidget(const std::shared_ptr<RkPaintEvent> &event) override;
+	void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+	void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+	void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) override;
  private:
-        ContorlsWidget *controlsWidget;
-        ChannelsWidget *channelWidget;
+	GeonkickApi* geonkickApi;
 };
 
-#define // GKICK_CONTROL_AREA_H
+#endif // CHANNELS_WIDGET_H
