@@ -39,6 +39,7 @@
 #include <fstream>
 #include <algorithm>
 #include <mutex>
+#include <string_view>
 
 #include "geonkick.h"
 

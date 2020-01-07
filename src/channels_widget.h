@@ -25,6 +25,7 @@
 #define CHANNELS_WIDGET_H
 
 #include "geonkick_widget.h"
+#include "RkPainter.h"
 
 class GeonkickApi;
 
@@ -41,6 +42,7 @@ class ChannelsWidget: public GeonkickWidget
 	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
 	void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) override;
 	void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+        void drawKeys(RkPainter &painter);
  private:
 	GeonkickApi* geonkickApi;
 };

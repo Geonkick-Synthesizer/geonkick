@@ -32,6 +32,35 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 void ChannelsWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
 	RK_UNUSED(event);
+        RkPainter painter(this);
+        auto font = painter.font();
+        font.setSize(14);
+        painter.setFont(font);
+        drawKeys(painter);
+        //        drawChannels(painter);
+}
+
+void ChannelsWidget::drawKeys(RkPainter &painter)
+{
+        constexpr std::array<std::string_view, 16> keys {"A4", "A#4", "B4", "C4",
+                        "C#4", "D4", "D#4","E4",
+                        "F4", "F#4", "G4", "G#4",
+                        "A5", "A#5", "B5", "C5"};
+
+        int gridWidth = 10;
+        int x = 180;
+        for (const auto &key: keys) {
+                painter.drawText(x, 30, std::string(key));
+                x += painter.getTextWidth(std::string(key)) + gridWidth;
+        }
+
+        x = 130;
+        int y = 30 + painter.font().size();
+        for (int i = 0;  i < 16; i++) {
+                painter.drawText(x, y, "Kick " + std::to_string(i));
+                y += painter.font().size() + 5;
+        }
+
 }
 
 void ChannelsWidget::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
