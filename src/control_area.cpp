@@ -21,23 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "oscillator.h"
 #include "control_area.h"
-#include "oscillator_group_box.h"
-#include "general_group_box.h"
-#include "effects_group_box.h"
-#include "geonkick_api.h"
+#include "controls_widget.h"
+#include "channels_widget.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
                          GeonkickApi* api,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
-        : GeonkickWidget(parent),
-          controlsWidget{new ControlsWidget(this)}
-        , channelsSettingsWidget{new ChannelsWidget(this)}
+        : GeonkickWidget(parent)
+        , controlsWidget{new ControlsWidget(this, api, oscillators)}
+        , channelsWidget{new ChannelsWidget(this, api)}
 {
         setFixedSize(920, 360);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), channelWidget, updateGui());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), channelsWidget, updateGui());
+        controlsWidget->setSize({width(), height()});
+        channelsWidget->setSize({width(), height()});
         showControls();
 }
 
@@ -47,7 +46,7 @@ void ControlArea::showControls()
         channelsWidget->hide();
 }
 
-void ControlArea::showChannelsSettings()
+void ControlArea::showChannels()
 {
         controlsWidget->hide();
         channelsWidget->show();

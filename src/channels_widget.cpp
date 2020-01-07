@@ -2,7 +2,7 @@
  * File name: channels_widget.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *

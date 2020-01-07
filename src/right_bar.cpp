@@ -46,6 +46,6 @@ RightBar::RightBar(GeonkickWidget *parent)
         channelSettingsButton->setPosition({0, controlsButton->height() + controlsButton->y() + 12});
         channelSettingsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(channels_button)));
         channelSettingsButton->setCheckable(true);
-        RK_ACT_BIND(channelSettingsButton, toggled, RK_ACT_ARGS(bool b), this, showChannelSettings());
+        RK_ACT_BIND(channelSettingsButton, toggled, RK_ACT_ARGS(bool b), this, showChannels());
 }
 

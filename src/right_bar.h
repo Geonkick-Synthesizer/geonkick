@@ -32,7 +32,7 @@ class RightBar : public GeonkickWidget
         RightBar(GeonkickWidget *parent);
         ~RightBar() = default;
         RK_DECL_ACT(showControls, showControls(), RK_ARG_TYPE(), RK_ARG_VAL());
-        RK_DECL_ACT(showChannelSettings, showChannelSettings(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(showChannels, showChannels(), RK_ARG_TYPE(), RK_ARG_VAL());
 };
 
 #endif // GEONKICK_RIGHT_BAR_H

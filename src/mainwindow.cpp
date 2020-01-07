@@ -125,7 +125,7 @@ bool MainWindow::init(void)
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
-        RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showChannelSettings());
+        RK_ACT_BIND(rightBar, showChannels, RK_ACT_ARGS(), controlAreaWidget, showChannels());
         controlAreaWidget->show();
 
         // TODO: Key shortcut feature will be implemented in the next version of Redkite.

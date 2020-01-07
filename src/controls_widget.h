@@ -1,8 +1,8 @@
 /**
- * File name: control_area.h
+ * File name: controls_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,31 +21,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_CONTROL_AREA_H
-#define GKICK_CONTROL_AREA_H
+#ifndef CONTROLS_WIDGET_H
+#define CONTROLS_WIDGET_H
 
-#include "envelope.h"
 #include "geonkick_widget.h"
 
-class Oscillator;
 class GeonkickApi;
-class ControlsWidget;
-class ChannelsWidget;
+class Oscillator;
 
-class ControlArea: public GeonkickWidget
+class ControlsWidget: public GeonkickWidget
 {
  public:
-        ControlArea(GeonkickWidget *parent,
-                    GeonkickApi* api,
-                    const std::vector<std::unique_ptr<Oscillator>> &oscillators);
-        ~ControlArea() = default;
+        ControlsWidget(GeonkickWidget *parent,
+                       GeonkickApi* api,
+                       const std::vector<std::unique_ptr<Oscillator>> &oscillators);
+        ~ControlsWidget() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
-        void showControls();
-        void showChannels();
-
  private:
-        ControlsWidget *controlsWidget;
-        ChannelsWidget *channelsWidget;
+	GeonkickApi* geonkickApi;
 };
 
-#endif // GKICK_CONTROL_AREA_H
+#endif // CONTROLS_WIDGET_H
