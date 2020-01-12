@@ -27,6 +27,10 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
 	, geonkickApi{api}
 {
+        constexpr std::array<std::string_view, 16> keys {"A4", "A#4", "B4", "C4",
+                        "C#4", "D4", "D#4", "E4",
+                        "F4", "F#4", "G4", "G#4",
+                        "A5", "A#5", "B5", "C5"};
 }
 
 void ChannelsWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -37,48 +41,88 @@ void ChannelsWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         font.setSize(14);
         painter.setFont(font);
         drawKeys(painter);
-        //        drawChannels(painter);
+        drawChannels(painter);
+        drawConnections(painter);
 }
 
 void ChannelsWidget::drawKeys(RkPainter &painter)
 {
-        constexpr std::array<std::string_view, 16> keys {"A4", "A#4", "B4", "C4",
-                        "C#4", "D4", "D#4","E4",
-                        "F4", "F#4", "G4", "G#4",
-                        "A5", "A#5", "B5", "C5"};
-
-        int gridWidth = 10;
-        int x = 180;
-        for (const auto &key: keys) {
-                painter.drawText(x, 30, std::string(key));
-                x += painter.getTextWidth(std::string(key)) + gridWidth;
+        int i = 0;
+        for (const auto &key: midiKeys) {
+                if (i % 2)
+                        painter.fillRect(key.rect, {200, 200, 200});
+                else
+                        painter.fillRect(key.rect, {180, 180, 180});
+                RkRect txtRect(rect.x(), 30, key.rect.width(), painter.font().size());
+                painter.drawText(txtRect, std::string(key.name));
         }
-
-        x = 130;
-        int y = 30 + painter.font().size();
-        for (int i = 0;  i < 16; i++) {
-                painter.drawText(x, y, "Kick " + std::to_string(i));
-                y += painter.font().size() + 5;
-        }
-
 }
 
-void ChannelsWidget::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+void ChannelsWidget::drawChannels(RkPainter &painter)
 {
-	RK_UNUSED(event);
+        int i = 0;
+        for (const auto &channel: channelsList) {
+                if (i % 2)
+                        painter.fillRect(channel.rect, {200, 200, 200});
+                else
+                        painter.fillRect(channel.rect, {180, 180, 180});
+                RkRect txtRect = channel.rect;
+                txtRect.setWidth(180);
+                painter.drawText(txtRect, std::string(channel.name));
+        }
+}
+
+void ChannelsWidget::drawConnections(RkPainter &painter)
+{
+        for (auto k = 0; k < midiKeys.size(); k++) {
+                for(auto ch = 0; ch < channelsList.size(); ch++) {
+                        auto point = getIntersectionPoint(midiKeys[k], channelsList[ch]);
+                        if (connectionMatrix[ch][k])
+                                drawConnection(painter, point);
+                }
+        }
+}
+
+void ChannelsWidget::drawConnection(RkPainter &painter, const RkPoint &point)
+{
+        painter.drawCicle(point);
 }
 
 void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-	RK_UNUSED(event);
+	auto channel = getChannel(event->x(), event->y());
+        if (channel) {
+                auto key = getChannelKey(event->x(), event->y());
+                if (key) {
+                        connectionMatrix[channel->id][key->id] = !connectionMatrix[channel->id][key->id];
+                        update();
+                }
+        }
 }
 
-void ChannelsWidget::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
+Channel* ChannelsWidget::getChannel(int x, int y)
 {
-	RK_UNUSED(event);
+        for (const auto &ch: channelsList) {
+                if (x > ch.rect.left() && x < ch.rect.right()
+                    && y > ch.rect.top() && y < ch.rect.bottom()) {
+                        return &ch;
+                }
+        }
+                return nullptr;
 }
 
-void ChannelsWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
+Key* ChannelsWidget::getKey(int x, int y)
 {
-	RK_UNUSED(event);
+        for (const auto &key: midiKeys) {
+                if (x > key.rect.left() && x < key.rect.right()
+                    && y > key.rect.top() && y < key.rect.bottom()) {
+                        return &key;
+                }
+        }
+        return nullptr;
+}
+
+RkPoint ChannelsWidget::getIntersectionPoint(const ChannelKey &key, const Channel &channel)
+{
+        return {key.rect.x() + key.rect.width() / 2, channel.rect.y() + channel.rect.height() / 2};
 }

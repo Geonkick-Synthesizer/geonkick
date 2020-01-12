@@ -38,13 +38,32 @@ class ChannelsWidget: public GeonkickWidget
 
  protected:
 	void paintWidget(const std::shared_ptr<RkPaintEvent> &event) override;
-	void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) override;
 	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
-	void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) override;
-	void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) override;
         void drawKeys(RkPainter &painter);
+        void drawChannels(RkPainter &painter);
+        void drawConnections(RkPainter &painter);
+        void drawConnection(RkPainter &painter, const RkPoint &point);
+        Channel* getChannel(int x, int y);
+        Key* getKey(int x, int y);
+
  private:
+
+        struct ChannelKey {
+                int id;
+                std::string name;
+                RkRect rect;
+        };
+
+        struct Channel {
+                int id;
+                std::string name;
+                RkRect rect;
+        };
+
 	GeonkickApi* geonkickApi;
+        std::vector<ChannelKey> midiKeys;
+        std::vector<Channel> channelsList;
+        std::vector<std::vector<bool>> connectionMatrix;
 };
 
 #endif // CHANNELS_WIDGET_H
