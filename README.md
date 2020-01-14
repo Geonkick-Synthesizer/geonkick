@@ -74,7 +74,7 @@ or feature (feat/feature_name) branches.
 
 #### Demo & Examples
 
-Here a is [list of videos](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about how it works.
+Here is a [list of videos](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about how it works.
 
 Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
 
