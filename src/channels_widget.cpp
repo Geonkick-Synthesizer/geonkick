@@ -23,6 +23,8 @@
 
 #include "channels_widget.h"
 
+#include <RkEvent.h>
+
 ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
 	, geonkickApi{api}
@@ -53,7 +55,7 @@ void ChannelsWidget::drawKeys(RkPainter &painter)
                         painter.fillRect(key.rect, {200, 200, 200});
                 else
                         painter.fillRect(key.rect, {180, 180, 180});
-                RkRect txtRect(rect.x(), 30, key.rect.width(), painter.font().size());
+                RkRect txtRect(rect().left(), 30, key.rect.width(), painter.font().size());
                 painter.drawText(txtRect, std::string(key.name));
         }
 }
@@ -74,8 +76,8 @@ void ChannelsWidget::drawChannels(RkPainter &painter)
 
 void ChannelsWidget::drawConnections(RkPainter &painter)
 {
-        for (auto k = 0; k < midiKeys.size(); k++) {
-                for(auto ch = 0; ch < channelsList.size(); ch++) {
+        for (decltype(midiKeys.size()) k = 0; k < midiKeys.size(); k++) {
+                for(decltype(channelsList.size()) ch = 0; ch < channelsList.size(); ch++) {
                         auto point = getIntersectionPoint(midiKeys[k], channelsList[ch]);
                         if (connectionMatrix[ch][k])
                                 drawConnection(painter, point);
@@ -85,14 +87,14 @@ void ChannelsWidget::drawConnections(RkPainter &painter)
 
 void ChannelsWidget::drawConnection(RkPainter &painter, const RkPoint &point)
 {
-        painter.drawCicle(point);
+        painter.drawCircle(point,  10);
 }
 
 void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-	auto channel = getChannel(event->x(), event->y());
+	const auto *channel = getChannel(event->x(), event->y());
         if (channel) {
-                auto key = getChannelKey(event->x(), event->y());
+                const auto *key = getKey(event->x(), event->y());
                 if (key) {
                         connectionMatrix[channel->id][key->id] = !connectionMatrix[channel->id][key->id];
                         update();
@@ -100,7 +102,7 @@ void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
         }
 }
 
-Channel* ChannelsWidget::getChannel(int x, int y)
+const ChannelsWidget::Channel* ChannelsWidget::getChannel(int x, int y) const
 {
         for (const auto &ch: channelsList) {
                 if (x > ch.rect.left() && x < ch.rect.right()
@@ -111,7 +113,7 @@ Channel* ChannelsWidget::getChannel(int x, int y)
                 return nullptr;
 }
 
-Key* ChannelsWidget::getKey(int x, int y)
+const ChannelsWidget::ChannelKey* ChannelsWidget::getKey(int x, int y) const
 {
         for (const auto &key: midiKeys) {
                 if (x > key.rect.left() && x < key.rect.right()
@@ -122,7 +124,7 @@ Key* ChannelsWidget::getKey(int x, int y)
         return nullptr;
 }
 
-RkPoint ChannelsWidget::getIntersectionPoint(const ChannelKey &key, const Channel &channel)
+RkPoint ChannelsWidget::getIntersectionPoint(const ChannelKey &key, const Channel &channel) const
 {
-        return {key.rect.x() + key.rect.width() / 2, channel.rect.y() + channel.rect.height() / 2};
+        return {key.rect.left() + key.rect.width() / 2, channel.rect.top() + channel.rect.height() / 2};
 }

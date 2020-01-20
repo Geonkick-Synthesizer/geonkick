@@ -31,23 +31,6 @@ class GeonkickApi;
 
 class ChannelsWidget: public GeonkickWidget
 {
- public:
-        ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api);
-        ~ChannelsWidget() = default;
-        RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
-
- protected:
-	void paintWidget(const std::shared_ptr<RkPaintEvent> &event) override;
-	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
-        void drawKeys(RkPainter &painter);
-        void drawChannels(RkPainter &painter);
-        void drawConnections(RkPainter &painter);
-        void drawConnection(RkPainter &painter, const RkPoint &point);
-        Channel* getChannel(int x, int y);
-        Key* getKey(int x, int y);
-
- private:
-
         struct ChannelKey {
                 int id;
                 std::string name;
@@ -60,6 +43,23 @@ class ChannelsWidget: public GeonkickWidget
                 RkRect rect;
         };
 
+ public:
+        ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api);
+        ~ChannelsWidget() = default;
+        RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+
+ protected:
+	void paintWidget(const std::shared_ptr<RkPaintEvent> &event) override;
+	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+        void drawKeys(RkPainter &painter);
+        void drawChannels(RkPainter &painter);
+        void drawConnections(RkPainter &painter);
+        void drawConnection(RkPainter &painter, const RkPoint &point);
+        const Channel* getChannel(int x, int y) const ;
+        const ChannelKey* getKey(int x, int y) const;
+        RkPoint getIntersectionPoint(const ChannelKey &key, const Channel &channel) const;
+
+ private:
 	GeonkickApi* geonkickApi;
         std::vector<ChannelKey> midiKeys;
         std::vector<Channel> channelsList;
