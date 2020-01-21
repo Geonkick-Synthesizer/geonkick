@@ -24,65 +24,120 @@
 #include "channels_widget.h"
 
 #include <RkEvent.h>
+#include <RkImage.h>
 
 ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
 	, geonkickApi{api}
 {
-        constexpr std::array<std::string_view, 16> keys {"A4", "A#4", "B4", "C4",
+        createKeys();
+        createChannels();
+}
+
+void ChannelsWidget::createKeys()
+{
+        constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C4",
                         "C#4", "D4", "D#4", "E4",
                         "F4", "F#4", "G4", "G#4",
-                        "A5", "A#5", "B5", "C5"};
+                        "A5", "A#5", "B5", "C5", "Any"};
+
+        int x = 255;
+        constexpr int keyWidth = 30;
+        for (const auto &key: keys) {
+                ChannelKey midiKey;
+                midiKey.id = 0;
+                midiKey.name = key;
+                midiKey.rect = RkRect(x, 0, keyWidth, height() - 50);
+                midiKeys.push_back(midiKey);
+                x += keyWidth;
+        }
+}
+
+void ChannelsWidget::createChannels()
+{
+        constexpr std::array<std::string_view, 5> channels {"Kick",
+                        "Snare", "Hit-Hat", "Macaras", "Crash"};
+
+        int y = 30;
+        constexpr int channelHeight = 30;
+        for (const auto &ch: channels) {
+                Channel channel;
+                channel.id = 0;
+                channel.name = ch;
+                channel.rect = RkRect(180, y, 600, channelHeight);
+                channelsList.push_back(channel);
+                y += channelHeight;
+        }
 }
 
 void ChannelsWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
 	RK_UNUSED(event);
+        RkImage img(size());
+        RkPainter paint(&img);
+        paint.fillRect(rect(), background());
+        drawKeys(paint);
+        drawChannels(paint);
+        drawConnections(paint);
         RkPainter painter(this);
-        auto font = painter.font();
-        font.setSize(14);
-        painter.setFont(font);
-        drawKeys(painter);
-        drawChannels(painter);
-        drawConnections(painter);
+        painter.drawImage(img, 0, 0);
 }
 
 void ChannelsWidget::drawKeys(RkPainter &painter)
 {
+        auto pen = painter.pen();
+        pen.setColor({200, 200, 200});
+
+        auto font = painter.font();
+        font.setSize(12);
+        painter.setFont(font);
+
         int i = 0;
         for (const auto &key: midiKeys) {
                 if (i % 2)
-                        painter.fillRect(key.rect, {200, 200, 200});
+                        painter.fillRect(key.rect, {60, 60, 60});
                 else
-                        painter.fillRect(key.rect, {180, 180, 180});
-                RkRect txtRect(rect().left(), 30, key.rect.width(), painter.font().size());
+                        painter.fillRect(key.rect, {50, 50, 50});
+                RkRect txtRect(key.rect.left(), 10, key.rect.width(), painter.font().size());
+                painter.setPen(pen);
                 painter.drawText(txtRect, std::string(key.name));
+                i++;
         }
 }
 
 void ChannelsWidget::drawChannels(RkPainter &painter)
 {
+        auto pen = painter.pen();
+        pen.setColor({60, 60, 60});
+        auto txtPen = painter.pen();
+        txtPen.setColor({200, 200, 200});
+
+        painter.setPen(pen);
+
         int i = 0;
         for (const auto &channel: channelsList) {
+                //                painter.setPen(pen);
                 if (i % 2)
-                        painter.fillRect(channel.rect, {200, 200, 200});
+                        painter.fillRect(channel.rect, {200, 200, 200, 80});
                 else
-                        painter.fillRect(channel.rect, {180, 180, 180});
-                RkRect txtRect = channel.rect;
-                txtRect.setWidth(180);
-                painter.drawText(txtRect, std::string(channel.name));
+                        painter.fillRect(channel.rect, {160, 160, 160, 80});
+                //                RkRect txtRect = channel.rect;
+                //                txtRect.setWidth(300);
+                //                painter.setPen(txtPen);
+                //                painter.drawText(txtRect, std::string(channel.name), Rk::Alignment::AlignLeft);
+                i++;
         }
 }
 
 void ChannelsWidget::drawConnections(RkPainter &painter)
 {
-        for (decltype(midiKeys.size()) k = 0; k < midiKeys.size(); k++) {
-                for(decltype(channelsList.size()) ch = 0; ch < channelsList.size(); ch++) {
-                        auto point = getIntersectionPoint(midiKeys[k], channelsList[ch]);
-                        if (connectionMatrix[ch][k])
-                                drawConnection(painter, point);
-                }
-        }
+        // for (decltype(midiKeys.size()) k = 0; k < midiKeys.size(); k++) {
+        //         for(decltype(channelsList.size()) ch = 0; ch < channelsList.size(); ch++) {
+        //                 auto point = getIntersectionPoint(midiKeys[k], channelsList[ch]);
+        //                 if (connectionMatrix[ch][k])
+        //                         drawConnection(painter, point);
+        //         }
+        // }
 }
 
 void ChannelsWidget::drawConnection(RkPainter &painter, const RkPoint &point)
@@ -96,7 +151,7 @@ void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
         if (channel) {
                 const auto *key = getKey(event->x(), event->y());
                 if (key) {
-                        connectionMatrix[channel->id][key->id] = !connectionMatrix[channel->id][key->id];
+                        //                        connectionMatrix[channel->id][key->id] = !connectionMatrix[channel->id][key->id];
                         update();
                 }
         }

@@ -58,6 +58,8 @@ class ChannelsWidget: public GeonkickWidget
         const Channel* getChannel(int x, int y) const ;
         const ChannelKey* getKey(int x, int y) const;
         RkPoint getIntersectionPoint(const ChannelKey &key, const Channel &channel) const;
+        void createKeys();
+        void createChannels();
 
  private:
 	GeonkickApi* geonkickApi;
