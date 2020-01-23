@@ -32,13 +32,13 @@ class GeonkickApi;
 class ChannelsWidget: public GeonkickWidget
 {
         struct ChannelKey {
-                int id;
+                size_t id;
                 std::string name;
                 RkRect rect;
         };
 
         struct Channel {
-                int id;
+                size_t id;
                 std::string name;
                 RkRect rect;
         };
@@ -65,7 +65,7 @@ class ChannelsWidget: public GeonkickWidget
 	GeonkickApi* geonkickApi;
         std::vector<ChannelKey> midiKeys;
         std::vector<Channel> channelsList;
-        std::vector<std::vector<bool>> connectionMatrix;
+        std::vector<std::array<bool, 17>> connectionMatrix;
 };
 
 #endif // CHANNELS_WIDGET_H

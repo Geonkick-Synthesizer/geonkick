@@ -43,9 +43,10 @@ void ChannelsWidget::createKeys()
 
         int x = 255;
         constexpr int keyWidth = 30;
+        int i = 0;
         for (const auto &key: keys) {
                 ChannelKey midiKey;
-                midiKey.id = 0;
+                midiKey.id = i++;
                 midiKey.name = key;
                 midiKey.rect = RkRect(x, 0, keyWidth, height() - 50);
                 midiKeys.push_back(midiKey);
@@ -60,12 +61,17 @@ void ChannelsWidget::createChannels()
 
         int y = 30;
         constexpr int channelHeight = 30;
+        int i = 0;
         for (const auto &ch: channels) {
                 Channel channel;
-                channel.id = 0;
+                channel.id = i++;
                 channel.name = ch;
                 channel.rect = RkRect(180, y, 600, channelHeight);
                 channelsList.push_back(channel);
+                connectionMatrix.push_back({false, false, false, false,
+                                            false, false, false, false,
+                                            false, false, false, false,
+                                            false, false, false, false, false});
                 y += channelHeight;
         }
 }
@@ -131,28 +137,43 @@ void ChannelsWidget::drawChannels(RkPainter &painter)
 
 void ChannelsWidget::drawConnections(RkPainter &painter)
 {
-        // for (decltype(midiKeys.size()) k = 0; k < midiKeys.size(); k++) {
-        //         for(decltype(channelsList.size()) ch = 0; ch < channelsList.size(); ch++) {
-        //                 auto point = getIntersectionPoint(midiKeys[k], channelsList[ch]);
-        //                 if (connectionMatrix[ch][k])
-        //                         drawConnection(painter, point);
-        //         }
-        // }
+        for (decltype(midiKeys.size()) k = 0; k < midiKeys.size(); k++) {
+                for(decltype(channelsList.size()) ch = 0; ch < channelsList.size(); ch++) {
+                        auto point = getIntersectionPoint(midiKeys[k], channelsList[ch]);
+                        if (connectionMatrix[ch][k])
+                                drawConnection(painter, point);
+                }
+        }
 }
 
 void ChannelsWidget::drawConnection(RkPainter &painter, const RkPoint &point)
 {
-        painter.drawCircle(point,  10);
+        auto pen = painter.pen();
+        pen.setColor({50, 160, 50});
+        pen.setWidth(8);
+        painter.setPen(pen);
+        painter.drawCircle(point,  6);
 }
 
 void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->button() != RkMouseEvent::ButtonType::Left)
+                return;
+
 	const auto *channel = getChannel(event->x(), event->y());
         if (channel) {
                 const auto *key = getKey(event->x(), event->y());
                 if (key) {
-                        //                        connectionMatrix[channel->id][key->id] = !connectionMatrix[channel->id][key->id];
-                        update();
+                        if (channel->id < connectionMatrix.size()
+                            && key->id < connectionMatrix[channel->id].size()) {
+                                if (connectionMatrix[channel->id][key->id]) {
+                                        connectionMatrix[channel->id][key->id] = false;
+                                } else {
+                                        connectionMatrix[channel->id].fill(false);
+                                        connectionMatrix[channel->id][key->id] = true;
+                                }
+                                update();
+                        }
                 }
         }
 }
