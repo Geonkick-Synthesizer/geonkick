@@ -25,11 +25,23 @@
 
 #include <RkEvent.h>
 #include <RkImage.h>
+#include <RkLineEdit.h>
+
+// TODO: load from file.
+constexpr std::array<std::string_view, 5> channels {"Kick",
+		"Snare", "Hit-Hat", "Macaras", "Crash"};
+
 
 ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
 	, geonkickApi{api}
+	, keyWidth{30}
+	, channelHeight{30}
+	, channesNameWidth{100}
+	, editChannel{new RkLineEdit(this)}
+	, editedChannel{nullptr}
 {
+	RK_ACT_BIND(editChannel, editingFinished, RK_ACT_ARGS(), this, updateChannelName());
         createKeys();
         createChannels();
 }
@@ -41,14 +53,13 @@ void ChannelsWidget::createKeys()
                         "F4", "F#4", "G4", "G#4",
                         "A5", "A#5", "B5", "C5", "Any"};
 
-        int x = 255;
-        constexpr int keyWidth = 30;
+	int x = channesNameWidth;
         int i = 0;
         for (const auto &key: keys) {
                 ChannelKey midiKey;
                 midiKey.id = i++;
                 midiKey.name = key;
-                midiKey.rect = RkRect(x, 0, keyWidth, height() - 50);
+                midiKey.rect = RkRect(x, 0, keyWidth, channelHeight * 5 + keyWidth);
                 midiKeys.push_back(midiKey);
                 x += keyWidth;
         }
@@ -56,17 +67,13 @@ void ChannelsWidget::createKeys()
 
 void ChannelsWidget::createChannels()
 {
-        constexpr std::array<std::string_view, 5> channels {"Kick",
-                        "Snare", "Hit-Hat", "Macaras", "Crash"};
-
-        int y = 30;
-        constexpr int channelHeight = 30;
+	int y = 30;
         int i = 0;
         for (const auto &ch: channels) {
                 Channel channel;
                 channel.id = i++;
                 channel.name = ch;
-                channel.rect = RkRect(180, y, 600, channelHeight);
+                channel.rect = RkRect(0, y, channesNameWidth + keyWidth * 17, channelHeight);
                 channelsList.push_back(channel);
                 connectionMatrix.push_back({false, false, false, false,
                                             false, false, false, false,
@@ -122,15 +129,16 @@ void ChannelsWidget::drawChannels(RkPainter &painter)
 
         int i = 0;
         for (const auto &channel: channelsList) {
-                //                painter.setPen(pen);
+		painter.setPen(pen);
                 if (i % 2)
                         painter.fillRect(channel.rect, {200, 200, 200, 80});
                 else
                         painter.fillRect(channel.rect, {160, 160, 160, 80});
-                //                RkRect txtRect = channel.rect;
-                //                txtRect.setWidth(300);
-                //                painter.setPen(txtPen);
-                //                painter.drawText(txtRect, std::string(channel.name), Rk::Alignment::AlignLeft);
+		RkRect txtRect = channel.rect;
+		txtRect.setWidth(300);
+		txtRect.setTopLeft(RkPoint(txtRect.left() + 5, txtRect.top()));
+		painter.setPen(txtPen);
+		painter.drawText(txtRect, std::string(channel.name), Rk::Alignment::AlignLeft);
                 i++;
         }
 }
@@ -157,6 +165,7 @@ void ChannelsWidget::drawConnection(RkPainter &painter, const RkPoint &point)
 
 void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+	updateChannelName();
         if (event->button() != RkMouseEvent::ButtonType::Left)
                 return;
 
@@ -178,9 +187,38 @@ void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
         }
 }
 
-const ChannelsWidget::Channel* ChannelsWidget::getChannel(int x, int y) const
+void ChannelsWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        for (const auto &ch: channelsList) {
+	if (event->button() != RkMouseEvent::ButtonType::Left)
+		return;
+
+	editedChannel = getChannel(event->x(), event->y());
+	if (editedChannel && event->x() < channesNameWidth) {
+                editChannel->setText(editedChannel->name);
+		editChannel->setSize({channesNameWidth, channelHeight});
+		editChannel->setPosition(editedChannel->rect.topLeft());
+		editChannel->show();
+		editChannel->setFocus();
+	}
+}
+
+void ChannelsWidget::updateChannelName()
+{
+	GEONKICK_LOG_INFO("called");
+	if (editedChannel) {
+		auto name = editChannel->text();
+		if (!name.empty()) {
+			editedChannel->name = name;
+			editChannel->hide();
+			editChannel->setFocus(false);
+		}
+		update();
+	}
+}
+
+ChannelsWidget::Channel* ChannelsWidget::getChannel(int x, int y)
+{
+        for (auto &ch: channelsList) {
                 if (x > ch.rect.left() && x < ch.rect.right()
                     && y > ch.rect.top() && y < ch.rect.bottom()) {
                         return &ch;

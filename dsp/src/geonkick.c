@@ -1052,5 +1052,5 @@ geonkick_get_osc_sample(struct geonkick *kick,
 enum geonkick_error
 geonkick_add_channel(const char *name, enum geonkick_channel_type type)
 {
-        
+	return GEONKICK_OK;
 }

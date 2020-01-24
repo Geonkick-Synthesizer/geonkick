@@ -28,6 +28,7 @@
 #include "RkPainter.h"
 
 class GeonkickApi;
+class RkLineEdit;
 
 class ChannelsWidget: public GeonkickWidget
 {
@@ -51,21 +52,28 @@ class ChannelsWidget: public GeonkickWidget
  protected:
 	void paintWidget(const std::shared_ptr<RkPaintEvent> &event) override;
 	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+	void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) override;
         void drawKeys(RkPainter &painter);
         void drawChannels(RkPainter &painter);
         void drawConnections(RkPainter &painter);
         void drawConnection(RkPainter &painter, const RkPoint &point);
-        const Channel* getChannel(int x, int y) const ;
+        Channel* getChannel(int x, int y);
         const ChannelKey* getKey(int x, int y) const;
         RkPoint getIntersectionPoint(const ChannelKey &key, const Channel &channel) const;
         void createKeys();
         void createChannels();
+	void updateChannelName();
 
  private:
 	GeonkickApi* geonkickApi;
         std::vector<ChannelKey> midiKeys;
         std::vector<Channel> channelsList;
         std::vector<std::array<bool, 17>> connectionMatrix;
+	int keyWidth;
+	int channelHeight;
+	int channesNameWidth;
+	RkLineEdit *editChannel;
+	Channel *editedChannel;
 };
 
 #endif // CHANNELS_WIDGET_H
