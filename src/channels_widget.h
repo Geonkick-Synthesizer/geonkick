@@ -29,6 +29,7 @@
 
 class GeonkickApi;
 class RkLineEdit;
+class GeonkickButton;
 
 class ChannelsWidget: public GeonkickWidget
 {
@@ -63,6 +64,7 @@ class ChannelsWidget: public GeonkickWidget
         void createKeys();
         void createChannels();
 	void updateChannelName();
+        void addChannel();
 
  private:
 	GeonkickApi* geonkickApi;
@@ -74,6 +76,7 @@ class ChannelsWidget: public GeonkickWidget
 	int channesNameWidth;
 	RkLineEdit *editChannel;
 	Channel *editedChannel;
+        GeonkickButton *addButton;
 };
 
 #endif // CHANNELS_WIDGET_H

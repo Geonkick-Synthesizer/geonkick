@@ -11,7 +11,7 @@ Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 1.9.2
+Version: 1.10
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -134,7 +134,7 @@ Geonkick can be found in the following repositories:
 
 ###### Shortcut Keys
 
-* Ctrl + k - play the percussion sound
+* k - play the percussion sound
 * Ctrl + r - reload default state, clean everything
 * Ctrl + h - hide envelope, only the graph is shown
 * Ctrl + o - open file browser dialog

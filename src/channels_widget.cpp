@@ -22,6 +22,7 @@
  */
 
 #include "channels_widget.h"
+#include "geonkick_button.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>
@@ -30,6 +31,8 @@
 // TODO: load from file.
 constexpr std::array<std::string_view, 5> channels {"Kick",
 		"Snare", "Hit-Hat", "Macaras", "Crash"};
+
+RK_DECLARE_IMAGE_RC(add_channel_button);
 
 
 ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
@@ -40,10 +43,17 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	, channesNameWidth{100}
 	, editChannel{new RkLineEdit(this)}
 	, editedChannel{nullptr}
+        , addButton{nullptr}
 {
 	RK_ACT_BIND(editChannel, editingFinished, RK_ACT_ARGS(), this, updateChannelName());
         createKeys();
         createChannels();
+
+        addButton = new GeonkickButton(this);
+        addButton->setSize(30, 30);
+        addButton->setPosition({0, 0});
+        addButton->setUnpressedImage(RkImage(30, 30, RK_IMAGE_RC(add_channel_button)));
+        RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addChannel());
 }
 
 void ChannelsWidget::createKeys()
@@ -67,7 +77,7 @@ void ChannelsWidget::createKeys()
 
 void ChannelsWidget::createChannels()
 {
-	int y = 30;
+	int y = keyWidth;
         int i = 0;
         for (const auto &ch: channels) {
                 Channel channel;
@@ -214,6 +224,20 @@ void ChannelsWidget::updateChannelName()
 		}
 		update();
 	}
+}
+
+void ChannelsWidget::addChannel()
+{
+        Channel channel;
+        channel.id = channelsList.size();
+        channel.name = "Unknown";
+        channel.rect = RkRect(0, keyWidth + channelsList.size() * channelHeight,
+                              channesNameWidth + keyWidth * 17, channelHeight);
+        channelsList.push_back(channel);
+        connectionMatrix.push_back({false, false, false, false,
+                                            false, false, false, false,
+                                            false, false, false, false,
+                                            false, false, false, false, false});
 }
 
 ChannelsWidget::Channel* ChannelsWidget::getChannel(int x, int y)
