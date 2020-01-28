@@ -134,7 +134,7 @@ Geonkick can be found in the following repositories:
 
 ###### Shortcut Keys
 
-* Ctrl + k - play the percussion sound
+* k - play the percussion sound
 * Ctrl + r - reload default state, clean everything
 * Ctrl + h - hide envelope, only the graph is shown
 * Ctrl + o - open file browser dialog
