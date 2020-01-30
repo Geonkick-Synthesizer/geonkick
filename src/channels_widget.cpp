@@ -39,7 +39,7 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
 	, geonkickApi{api}
 	, keyWidth{30}
-	, channelHeight{30}
+	, channelHeight{20}
 	, channesNameWidth{100}
 	, editChannel{new RkLineEdit(this)}
 	, editedChannel{nullptr}
@@ -50,6 +50,7 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
         createChannels();
 
         addButton = new GeonkickButton(this);
+	addButton->setCheckable(true);
         addButton->setSize(30, 30);
         addButton->setPosition({0, 0});
         addButton->setUnpressedImage(RkImage(30, 30, RK_IMAGE_RC(add_channel_button)));
@@ -170,7 +171,7 @@ void ChannelsWidget::drawConnection(RkPainter &painter, const RkPoint &point)
         pen.setColor({50, 160, 50});
         pen.setWidth(8);
         painter.setPen(pen);
-        painter.drawCircle(point,  6);
+        painter.drawCircle(point,  4);
 }
 
 void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
@@ -214,7 +215,6 @@ void ChannelsWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &
 
 void ChannelsWidget::updateChannelName()
 {
-	GEONKICK_LOG_INFO("called");
 	if (editedChannel) {
 		auto name = editChannel->text();
 		if (!name.empty()) {
@@ -228,6 +228,9 @@ void ChannelsWidget::updateChannelName()
 
 void ChannelsWidget::addChannel()
 {
+	if (channelsList.size() + 1 > midiKeys.size() - 1)
+		return;
+	
         Channel channel;
         channel.id = channelsList.size();
         channel.name = "Unknown";
@@ -238,6 +241,11 @@ void ChannelsWidget::addChannel()
                                             false, false, false, false,
                                             false, false, false, false,
                                             false, false, false, false, false});
+	for (auto &key: midiKeys)
+                key.rect.setHeight(channelHeight * channelsList.size() + keyWidth);
+
+	update();
+	GEONKICK_LOG_INFO("addChannell");
 }
 
 ChannelsWidget::Channel* ChannelsWidget::getChannel(int x, int y)
