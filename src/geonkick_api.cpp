@@ -919,6 +919,11 @@ bool GeonkickApi::isAudioOutputTuned() const
         return tune;
 }
 
+void GeonkickApi::setCurrentPercussion(int index)
+{
+        geonkick_set_current_percussion(geonkickApi, index);
+}
+
 void GeonkickApi::setOscillatorSample(const std::string &file, int oscillatorIndex)
 {
         int rateRate = 48000;

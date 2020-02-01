@@ -45,6 +45,10 @@ struct geonkick {
         // The list of synths of available synths.
         struct gkick_synth *synths[GEONKICK_MAX_PERCUSSIONS];
         struct gkick_audio *audio;
+
+        // Current controllable percussion index.
+        _Atomic size_t per_index;
+
         pthread_mutex_t lock;
 };
 

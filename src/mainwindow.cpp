@@ -235,7 +235,14 @@ void MainWindow::openAboutDialog()
 
 void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
+        static int i = 0;
         if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
+                // TEMPORARY --->
+                geonkickApi->setCurrentPercussion(i++);
+                updateGui();
+                if (i > 15)
+                        i = 0;
+                // TEMPORARY <---
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {

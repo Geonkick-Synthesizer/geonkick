@@ -451,7 +451,7 @@ geonkick_get_osc_sample(struct geonkick *kick,
                         size_t *size);
 
 enum geonkick_error
-geonkick_add_channel(const char *name, enum geonkick_channel_type type);
+geonkick_set_current_percussion(struct geonkick *kick, int index);
 
 #ifdef __cplusplus
 }
