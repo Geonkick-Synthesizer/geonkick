@@ -49,15 +49,19 @@ geonkick_create(struct geonkick **kick)
 		return GEONKICK_ERROR;
 	}
 
-        if (gkick_synth_new(&(*kick)->synth) != GEONKICK_OK) {
-                gkick_log_error("can't create oscillators");
-                geonkick_free(kick);
-                return GEONKICK_ERROR;
-	}
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                if (gkick_synth_new(&(*kick)->synths[i]) != GEONKICK_OK) {
+                        gkick_log_error("can't create synthesizer %u", i);
+                        geonkick_free(kick);
+                        return GEONKICK_ERROR;
+                }
+        }
 
-        if ((*kick)->synth != NULL && (*kick)->audio != NULL)
-                gkick_synth_set_output((*kick)->synth, (*kick)->audio->audio_output);
+        // Set the first synth as controllable.
+        (*kick)->synth = (*kick)->synths[0];
 
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+                gkick_synth_set_output((*kick)->synths[i], (*kick)->audio->audio_outputs[i]);
 
         if (gkick_synth_start((*kick)->synth)) {
                 gkick_log_error("can't start synthesizer");
@@ -71,7 +75,8 @@ geonkick_create(struct geonkick **kick)
 void geonkick_free(struct geonkick **kick)
 {
         if (kick != NULL && *kick != NULL) {
-                gkick_synth_free(&((*kick)->synth));
+                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+                        gkick_synth_free(&((*kick)->synths[i]));
                 gkick_audio_free(&((*kick)->audio));
                 pthread_mutex_destroy(&(*kick)->lock);
                 free(*kick);
@@ -994,12 +999,12 @@ geonkick_tune_audio_output(struct geonkick *kick, bool tune)
                 return GEONKICK_ERROR;
         }
 
-        if (kick->audio == NULL || kick->audio->audio_output == NULL) {
-                gkick_log_error("audio output was not created");
-                return GEONKICK_ERROR;
-        }
+        /* if (kick->audio == NULL || kick->audio->audio_output == NULL) { */
+        /*         gkick_log_error("audio output was not created"); */
+        /*         return GEONKICK_ERROR; */
+        /* } */
 
-        gkick_audio_tune_output(kick->audio->audio_output, tune);
+        /* gkick_audio_tune_output(kick->audio->audio_output, tune); */
         return GEONKICK_OK;
 }
 
@@ -1011,12 +1016,12 @@ geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune)
                 return GEONKICK_ERROR;
         }
 
-        if (kick->audio == NULL || kick->audio->audio_output == NULL) {
-                gkick_log_error("audio output was not created");
-                return GEONKICK_ERROR;
-        } else {
-                *tune = gkick_audio_is_tune_output(kick->audio->audio_output);
-        }
+        /* if (kick->audio == NULL || kick->audio->audio_output == NULL) { */
+        /*         gkick_log_error("audio output was not created"); */
+        /*         return GEONKICK_ERROR; */
+        /* } else { */
+        /*         *tune = gkick_audio_is_tune_output(kick->audio->audio_output); */
+        /* } */
 
         return GEONKICK_OK;
 }

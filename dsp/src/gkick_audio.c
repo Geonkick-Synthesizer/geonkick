@@ -42,14 +42,16 @@ gkick_audio_create(struct gkick_audio** audio)
 	}
         memset(*audio, 0, sizeof(struct gkick_audio));
 
-        if (gkick_audio_output_create(&(*audio)->audio_output) != GEONKICK_OK) {
-                gkick_log_error("can't create audio output");
-                gkick_audio_free(audio);
-                return GEONKICK_ERROR;
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                if (gkick_audio_output_create(&(*audio)->audio_outputs[i]) != GEONKICK_OK) {
+                        gkick_log_error("can't create audio output");
+                        gkick_audio_free(audio);
+                        return GEONKICK_ERROR;
+                }
         }
 
 #ifdef GEONKICK_AUDIO_JACK
-        if (gkick_create_jack(&(*audio)->jack, (*audio)->audio_output) != GEONKICK_OK)
+        if (gkick_create_jack(&(*audio)->jack, (*audio)->audio_outputs[0]) != GEONKICK_OK)
                 gkick_log_warning("can't create jack module. Jack server is either not running or not installed");
 #endif // GEONKICK_AUDIO_JACK
         return GEONKICK_OK;
@@ -61,7 +63,8 @@ void gkick_audio_free(struct gkick_audio** audio)
 #ifdef GEONKICK_AUDIO_JACK
                 gkick_jack_free(&(*audio)->jack);
 #endif // GEONKICK_AUDIO_JACK
-                gkick_audio_output_free(&(*audio)->audio_output);
+                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+                        gkick_audio_output_free(&(*audio)->audio_outputs[i]);
                 free(*audio);
                 *audio = NULL;
         }
@@ -80,7 +83,9 @@ gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit)
         else if (limit > 10)
                 limit = 10;
 
-        return gkick_audio_output_set_limiter(audio->audio_output, limit);
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+                gkick_audio_output_set_limiter(audio->audio_outputs[i], limit);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -91,7 +96,7 @@ gkick_audio_get_limiter_val(struct gkick_audio *audio, gkick_real *limit)
                return GEONKICK_ERROR;
         }
 
-        return gkick_audio_output_get_limiter(audio->audio_output, limit);
+        return gkick_audio_output_get_limiter(audio->audio_outputs[0], limit);
 }
 
 struct gkick_buffer*
@@ -102,18 +107,18 @@ gkick_audio_get_buffer(struct gkick_audio *audio)
                 return NULL;
         }
 
-        return gkick_audio_output_get_buffer(audio->audio_output);
+        return gkick_audio_output_get_buffer(audio->audio_outputs[0]);
 }
 
 enum geonkick_error
 gkick_audio_play(struct gkick_audio *audio)
 {
         if (audio == NULL) {
-               gkick_log_error("wrong arguments");
-               return GEONKICK_ERROR;
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
         }
 
-        return gkick_audio_output_play(audio->audio_output);
+        return gkick_audio_output_play(audio->audio_outputs[0]);
 }
 
 enum geonkick_error
@@ -123,8 +128,8 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
                         int velocity)
 {
         if (audio == NULL) {
-               gkick_log_error("wrong arguments");
-               return GEONKICK_ERROR;
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
         }
 
         struct gkick_note_info key;
@@ -132,7 +137,7 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
         key.note_number = note;
         key.velocity    = velocity;
         key.state = pressed ? GKICK_KEY_STATE_PRESSED : GKICK_KEY_STATE_RELEASED;
-        gkick_audio_output_key_pressed(audio->audio_output, &key);
+        gkick_audio_output_key_pressed(audio->audio_outputs[0], &key);
         return GEONKICK_OK;
 }
 
@@ -144,7 +149,14 @@ gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val)
                 return GEONKICK_ERROR;
         }
 
-        return gkick_audio_output_get_frame(audio->audio_output, val);
+        *val = 0;
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                gkick_real v = 0.0f;
+                gkick_audio_output_get_frame(audio->audio_outputs[i], &v);
+                *val += v;
+        }
+
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -156,5 +168,5 @@ gkick_audio_set_limiter_callback(struct gkick_audio *audio,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_audio_output_set_limiter_callback(audio->audio_output, callback, arg);
+        return gkick_audio_output_set_limiter_callback(audio->audio_outputs[0], callback, arg);
 }

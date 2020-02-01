@@ -39,7 +39,11 @@
 
 struct geonkick {
         char name[30];
+        // Current synth that can by controlled.
         struct gkick_synth *synth;
+
+        // The list of synths of available synths.
+        struct gkick_synth *synths[GEONKICK_MAX_PERCUSSIONS];
         struct gkick_audio *audio;
         pthread_mutex_t lock;
 };
