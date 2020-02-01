@@ -144,6 +144,8 @@ void FilesView::loadCurrentDirectory()
         decltype(filesList) dirs;
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
+			if (entry.path().empty())
+				continue;
                         if (std::filesystem::is_directory(entry.path())) {
                                 dirs.emplace_back(entry.path());
                         } else if (std::find(fileFilters.begin(), fileFilters.end(), entry.path().extension())
@@ -175,9 +177,10 @@ void FilesView::loadCurrentDirectory()
 
         filesList = std::move(dirs);
         filesList.insert(filesList.end(), files.begin(), files.end());
-        if (currentPath.parent_path() != currentPath.root_path())
+        if (currentPath.parent_path() != currentPath.root_path()
+	    && !currentPath.parent_path().empty())
                 filesList.insert(filesList.begin(), currentPath.parent_path());
-        else
+        else if (!currentPath.root_path().empty())
                 filesList.insert(filesList.begin(), currentPath.root_path());
 
         offsetIndex = 0;
@@ -305,7 +308,8 @@ void FilesView::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 void FilesView::openSelectedFile()
 {
         if (!filesList.empty() && selectedFileIndex > -1
-            && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()) {
+            && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()
+	    && !filesList[selectedFileIndex].empty()) {
                 if (!std::filesystem::is_directory(filesList[selectedFileIndex]))
                         action openFile(filesList[selectedFileIndex].string());
                 else
