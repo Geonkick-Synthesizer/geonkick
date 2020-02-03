@@ -54,6 +54,7 @@ geonkick_create(struct geonkick **kick)
                         geonkick_free(kick);
                         return GEONKICK_ERROR;
                 }
+		(*kick)->synths[i]->id = i;
         }
 
         // Set the first synth as controllable.
@@ -62,11 +63,13 @@ geonkick_create(struct geonkick **kick)
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
                 gkick_synth_set_output((*kick)->synths[i], (*kick)->audio->audio_outputs[i]);
 
-        if (gkick_synth_start((*kick)->synth)) {
-                gkick_log_error("can't start synthesizer");
-                geonkick_free(kick);
-                return GEONKICK_ERROR;
-        }
+	/* for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) { */
+	/* 	if (gkick_synth_start((*kick)->synths[i])) { */
+	/* 		gkick_log_error("can't start synthesizer"); */
+	/* 		geonkick_free(kick); */
+	/* 		return GEONKICK_ERROR; */
+	/* 	} */
+	/* } */
 
 	return GEONKICK_OK;
 }
@@ -564,7 +567,10 @@ geonkick_set_kick_buffer_callback(struct geonkick *kick,
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_synth_set_buffer_callback(kick->synths[kick->per_index], callback, arg);
+
+	for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+		gkick_synth_set_buffer_callback(kick->synths[i], callback, arg);
+	return GEONKICK_OK;
 }
 
 enum geonkick_error
