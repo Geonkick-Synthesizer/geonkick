@@ -2,7 +2,7 @@
  * File name: geonkick.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -35,6 +35,7 @@ geonkick_create(struct geonkick **kick)
 	if (*kick == NULL)
 		return GEONKICK_ERROR_MEM_ALLOC;
 	strcpy((*kick)->name, "Geonkick");
+	(*kick)->update_buffers = true;
 
 	if (pthread_mutex_init(&(*kick)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
@@ -63,13 +64,17 @@ geonkick_create(struct geonkick **kick)
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
                 gkick_synth_set_output((*kick)->synths[i], (*kick)->audio->audio_outputs[i]);
 
-	/* for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) { */
-	/* 	if (gkick_synth_start((*kick)->synths[i])) { */
-	/* 		gkick_log_error("can't start synthesizer"); */
-	/* 		geonkick_free(kick); */
-	/* 		return GEONKICK_ERROR; */
-	/* 	} */
-	/* } */
+	if (geonkick_worker_init(*kick) != GEONKICK_OK) {
+		gkick_log_error("can't init worker");
+		geonkick_free(kick);
+		return GEONKICK_ERROR;
+	}
+
+	if (geonkick_worker_start(*kick) != GEONKICK_OK) {
+		gkick_log_error("can't start worker");
+		geonkick_free(kick);
+		return GEONKICK_ERROR;
+	}
 
 	return GEONKICK_OK;
 }
@@ -77,10 +82,11 @@ geonkick_create(struct geonkick **kick)
 void geonkick_free(struct geonkick **kick)
 {
         if (kick != NULL && *kick != NULL) {
+		geonkick_worker_destroy(*kick);
                 for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
                         gkick_synth_free(&((*kick)->synths[i]));
                 gkick_audio_free(&((*kick)->audio));
-                pthread_mutex_destroy(&(*kick)->lock);
+		pthread_mutex_destroy(&(*kick)->lock);
                 free(*kick);
                 *kick = NULL;
         }
@@ -1069,4 +1075,67 @@ geonkick_set_current_percussion(struct geonkick *kick, int index)
 
         kick->per_index = index;
 	return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_worker_init(struct geonkick *kick)
+{
+	if (kick == NULL)
+		return GEONKICK_ERROR;
+
+	geonkick_lock(kick);
+	struct gkick_worker *worker = &kick->worker;
+	worker->running = false;
+        if (pthread_cond_init(worker->condition_var, NULL) != 0) {
+                gkick_log_error("can't init worker condition variable");
+		geonkick_unlock(kick);
+		return GEONKICK_ERROR;
+	}
+	worker->cond_var_initilized = true;
+	geonkick_unlock(kick);
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_worker_start(struct geonkick *kick)
+{
+        if (pthread_create(kick->worker.thread, NULL, geonkick_worker_thread, kick) != 0) {
+                gkick_log_error("can't create worker thread");
+                return GEONKICK_ERROR;
+        }
+}
+
+void geonkick_worker_destroy(struct geonkick *worker)
+{
+	if (worker->running)
+		worker->running = false;
+	pthread_join(worker->thread);
+
+	geonkick_lock(kick);
+	if (worker->cond_var_initilized)
+		pthread_cond_destroy(worker->condition_var);
+	worker->cond_var_initilized = false;
+	geonkick_unlock(kick);
+}
+
+void *geonkick_worker_thread(void *arg)
+{
+	if (arg == NULL) {
+		gkick_log_error("wrong arugments");
+		return NULL;
+	}
+
+	struct geonkick *kick = (struct geonkick*)arg;
+	struct gkick_worker *worker = &kick->worker;
+	while (worker->running) {
+		// Ignore too many updates. The last udpates will be processed.
+                usleep(40000);
+		if (!kick->update_buffers)
+		        pthread_cond_wait(worker->condition_var, &kick->lock);
+		for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS i++) {
+			struct gkick_synth *synth = synths[i];
+			if (synth != NULL && synth->is_active && synth->update_buffer)
+				gkick_synth_process(synth);
+		}
+	}
 }

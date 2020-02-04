@@ -37,6 +37,18 @@
 #define GEONKICK_MAX_LENGTH 4.0
 #define GEONKICK_MAX_KICK_BUFFER_SIZE  (4 * GEONKICK_SAMPLE_RATE)
 
+struct gkick_worker {
+	/* The worker thread. */
+        pthread_t thread;
+
+	/* Condition variable used for worker thread. */
+        pthread_cond_t condition_var;
+	bool cond_var_initilized;
+
+	/* Specifies if the worker is running. */
+	atomic_bool running;
+};
+
 struct geonkick {
         char name[30];
         // Current synth that can by controlled.
@@ -46,13 +58,32 @@ struct geonkick {
         struct gkick_synth *synths[GEONKICK_MAX_PERCUSSIONS];
         struct gkick_audio *audio;
 
-        // Current controllable percussion index.
+        /* Current controllable percussion index. */
         _Atomic size_t per_index;
 
+        /**
+         * Specifies if the synthesis is tuned off.
+         * If is false any updates of the synthesizers parameters
+         * will not trigger the perucssions synthesis.
+         */
+        atomic_bool synthesis_on;
+
+	/* Global worker for all synths. */
+	struct gkick_worker worker;
+
+	/* Specifies if to update the percussions buffer. */
+	atomic_bool update_buffers;
         pthread_mutex_t lock;
 };
 
 void geonkick_lock(struct geonkick *kick);
+
 void geonkick_unlock(struct geonkick *kick);
+
+void geonkick_worker_init(struct geonkick *kick);
+
+void geonkick_worker_start(struct geonkick *kick);
+
+void geonkick_worker_destroy(struct geonkick *kick);
 
 #endif // GEONKICK_INTERNAL_H
