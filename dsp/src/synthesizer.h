@@ -33,6 +33,8 @@
 
 struct gkick_synth {
 	size_t id;
+	/* Speciafies if synthesizer is active. */
+	atomic_bool is_active;
         gkick_real current_time;
         struct gkick_oscillator **oscillators;
         size_t oscillators_number;
@@ -291,7 +293,7 @@ void gkick_synth_set_output(struct gkick_synth *synth,
                             struct gkick_audio_output *output);
 
 enum geonkick_error
-gkick_synth_process(void *synth);
+gkick_synth_process(struct gkick_synth *synth);
 
 gkick_real
 gkick_synth_get_value(struct gkick_synth *synth, gkick_real t);
@@ -341,10 +343,6 @@ enum geonkick_error
 gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
                                   size_t osc_index,
                                   int *enabled);
-
-enum geonkick_error
-gkick_synth_enable_synthesis(struct gkick_synth *synth,
-			     int enable);
 
 enum geonkick_error
 gkick_synth_compressor_enable(struct gkick_synth *synth,

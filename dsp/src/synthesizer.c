@@ -42,7 +42,6 @@ gkick_synth_new(struct gkick_synth **synth)
 	(*synth)->oscillators_number = GKICK_OSC_GROUPS_NUMBER * GKICK_OSC_GROUP_SIZE;
         (*synth)->buffer_update = 0;
         (*synth)->amplitude = 1.0;
-        (*synth)->synthesis_on = 0;
         (*synth)->buffer_size = (size_t)((*synth)->length * GEONKICK_SAMPLE_RATE);
         for (size_t i = 0; i < GKICK_OSC_GROUPS_NUMBER; i++)
                 (*synth)->osc_groups_amplitude[i] = 1.0;
@@ -107,7 +106,6 @@ void gkick_synth_free(struct gkick_synth **synth)
         size_t i;
 
         if (synth != NULL && *synth != NULL) {
-                gkick_synth_stop(*synth);
                 if ((*synth)->oscillators != NULL) {
                         for (i = 0; i < (*synth)->oscillators_number; i++) {
                                 gkick_osc_free(&((*synth)->oscillators[i]));
@@ -1010,10 +1008,10 @@ gkick_synth_set_buffer_callback(struct gkick_synth *synth,
 		return GEONKICK_ERROR;
         }
 
-        gkick_synth_lock(synth);
-        synth->buffer_callback = callback;
-        synth->callback_args = args;
-        gkick_synth_unlock(synth);
+	//        gkick_synth_lock(synth);
+	//        synth->buffer_callback = callback;
+	//        synth->callback_args = args;
+	//        gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
 }
@@ -1028,22 +1026,7 @@ void gkick_synth_set_output(struct gkick_synth *synth, struct gkick_audio_output
 }
 
 enum geonkick_error
-gkick_synth_start(struct gkick_synth *synth)
-{
-        if (synth == NULL) {
-                gkick_log_error("wrong arugment");
-                return GEONKICK_ERROR;
-        }
-
-        if (pthread_create(&synth->thread, NULL, gkick_synth_run, synth) != 0) {
-                gkick_log_error("can't create synthesizer thread");
-                return GEONKICK_ERROR;
-        }
-
-        return GEONKICK_OK;
-}
-
-void gkick_synth_process(struct gkick_synth *synth)
+gkick_synth_process(struct gkick_synth *synth)
 {
 	if (synth == NULL)
 		return GEONKICK_ERROR;
@@ -1355,21 +1338,6 @@ gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
 }
 
 enum geonkick_error
-gkick_synth_enable_synthesis(struct gkick_synth *synth, int enable)
-{
-        if (synth == NULL) {
-                gkick_log_error("wrong arugments");
-                return GEONKICK_ERROR;
-        }
-
-        gkick_synth_lock(synth);
-        synth->synthesis_on = enable;
-        gkick_synth_unlock(synth);
-
-        return GEONKICK_OK;
-}
-
-enum geonkick_error
 gkick_synth_compressor_enable(struct gkick_synth *synth, int enable)
 {
         enum geonkick_error res;
@@ -1471,7 +1439,6 @@ enum geonkick_error
 gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume)
 {
         return gkick_distortion_set_volume(synth->distortion, volume);
-        gkick_distortion_is_enabled(synth->distortion, &enabled);
 }
 
 enum geonkick_error

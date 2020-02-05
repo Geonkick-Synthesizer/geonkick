@@ -30,6 +30,7 @@
 #include "gkick_buffer.h"
 
 #include <pthread.h>
+#include <stdatomic.h>
 
 #define GEONKICK_SAMPLE_RATE 48000
 
@@ -80,10 +81,14 @@ void geonkick_lock(struct geonkick *kick);
 
 void geonkick_unlock(struct geonkick *kick);
 
-void geonkick_worker_init(struct geonkick *kick);
+enum geonkick_error
+geonkick_worker_init(struct geonkick *kick);
 
-void geonkick_worker_start(struct geonkick *kick);
+enum geonkick_error
+geonkick_worker_start(struct geonkick *kick);
 
 void geonkick_worker_destroy(struct geonkick *kick);
+
+void *geonkick_worker_thread(void *arg);
 
 #endif // GEONKICK_INTERNAL_H
