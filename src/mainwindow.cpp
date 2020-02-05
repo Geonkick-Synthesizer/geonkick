@@ -91,10 +91,11 @@ MainWindow::~MainWindow()
 bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
-        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
+        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled()) {
                 GEONKICK_LOG_INFO("Jack is not installed or not running. "
                                   << "There is a need for jack server running "
                                   << "in order to have audio output.");
+        }
         topBar = new TopBar(this, geonkickApi);
         topBar->setX(10);
         topBar->show();

@@ -88,7 +88,6 @@ void geonkick_free(struct geonkick **kick)
                 gkick_audio_free(&((*kick)->audio));
 		pthread_mutex_destroy(&(*kick)->lock);
                 free(*kick);
-                *kick = NULL;
         }
 }
 
@@ -484,7 +483,11 @@ geonkick_set_osc_frequency(struct geonkick *kick,
 {
 	if (kick == NULL)
 		return GEONKICK_ERROR;
-	return gkick_synth_set_osc_frequency(kick->synths[kick->per_index], osc_index, v);
+        gkick_synth_set_osc_frequency(kick->synths[kick->per_index], osc_index, v);
+        geonkick_lock(kick);
+        geonkick_worker_wakeup(kick);
+        geonkick_unlock(kick);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -725,6 +728,7 @@ enum geonkick_error
 geonkick_enable_synthesis(struct geonkick *kick, int enable)
 {
 	kick->synthesis_on  = enable;
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -1103,6 +1107,7 @@ geonkick_worker_start(struct geonkick *kick)
                 gkick_log_error("can't create worker thread");
                 return GEONKICK_ERROR;
         }
+        return GEONKICK_OK;
 }
 
 void geonkick_worker_destroy(struct geonkick *kick)
@@ -1110,6 +1115,9 @@ void geonkick_worker_destroy(struct geonkick *kick)
 	struct gkick_worker *worker = &kick->worker;
 	if (worker->running)
 		worker->running = false;
+        geonkick_lock(kick);
+        geonkick_worker_wakeup(kick);
+        geonkick_unlock(kick);
 	pthread_join(worker->thread, NULL);
 
 	geonkick_lock(kick);
@@ -1125,18 +1133,43 @@ void *geonkick_worker_thread(void *arg)
 		gkick_log_error("wrong arugments");
 		return NULL;
 	}
+        gkick_log_debug("worker thread started");
 
 	struct geonkick *kick = (struct geonkick*)arg;
 	struct gkick_worker *worker = &kick->worker;
+        kick->update_buffers = true;
+        worker->running = true;
 	while (worker->running) {
-		// Ignore too many updates. The last udpates will be processed.
+		/* Ignore too many updates. The last udpates will be processed. */
                 usleep(40000);
-		if (!kick->update_buffers)
+		if (!kick->update_buffers) {
 		        pthread_cond_wait(&worker->condition_var, &kick->lock);
+                        geonkick_unlock(kick);
+                        if (!worker->running)
+                                break;
+                }
+
+                struct gkick_synth *synth = kick->synths[kick->per_index];
+                /* Prioritize the synthesis for the current controllable synthesizer. */
+                if (synth != NULL && synth->is_active && synth->buffer_update)
+                        gkick_synth_process(synth);
+
 		for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-			struct gkick_synth *synth =kick->synths[i];
+                        if (i == kick->per_index)
+                                continue;
+                        synth = kick->synths[i];
 			if (synth != NULL && synth->is_active && synth->buffer_update)
 				gkick_synth_process(synth);
 		}
+                kick->update_buffers = false;
 	}
+
+        gkick_log_debug("worker thread stopped");
+        return NULL;
+}
+
+void geonkick_worker_wakeup(struct geonkick *kick)
+{
+        kick->update_buffers = true;
+        pthread_cond_signal(&kick->worker.condition_var);
 }

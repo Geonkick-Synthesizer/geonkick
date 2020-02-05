@@ -43,6 +43,8 @@ gkick_synth_new(struct gkick_synth **synth)
         (*synth)->buffer_update = 0;
         (*synth)->amplitude = 1.0;
         (*synth)->buffer_size = (size_t)((*synth)->length * GEONKICK_SAMPLE_RATE);
+        (*synth)->buffer_update = true;
+        (*synth)->is_active = true;
         for (size_t i = 0; i < GKICK_OSC_GROUPS_NUMBER; i++)
                 (*synth)->osc_groups_amplitude[i] = 1.0;
 
@@ -884,6 +886,8 @@ gkick_synth_set_osc_frequency(struct gkick_synth *synth,
 		return GEONKICK_ERROR;
 	}
 	osc->frequency = v;
+        if (gkick_osc_enabled(osc))
+                synth->buffer_update = true;
 	gkick_synth_unlock(synth);
 	return GEONKICK_OK;
 }
@@ -1032,6 +1036,7 @@ gkick_synth_process(struct gkick_synth *synth)
 		return GEONKICK_ERROR;
 
 	gkick_synth_lock(synth);
+        gkick_log_debug("synth[%u]: synthesize" , synth->id);
 	synth->buffer_update = 0;
 	gkick_buffer_set_size((struct gkick_buffer*)synth->buffer, synth->buffer_size);
 	gkick_real dt = synth->length / synth->buffer_size;
@@ -1056,8 +1061,8 @@ gkick_synth_process(struct gkick_synth *synth)
 				val = -1;
 			gkick_buffer_push_back((struct gkick_buffer*)synth->buffer, val);
 			i++;
-			gkick_synth_unlock(synth);
 		}
+                gkick_synth_unlock(synth);
 	}
 
 	gkick_synth_lock(synth);
@@ -1066,6 +1071,7 @@ gkick_synth_process(struct gkick_synth *synth)
 	synth->output->updated_buffer = synth->buffer;
 	synth->buffer = buff;
 	gkick_audio_output_unlock(synth->output);
+        synth->buffer_update = false;
 	gkick_synth_unlock(synth);
 
 	return GEONKICK_OK;

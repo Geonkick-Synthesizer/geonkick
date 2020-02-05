@@ -91,4 +91,6 @@ void geonkick_worker_destroy(struct geonkick *kick);
 
 void *geonkick_worker_thread(void *arg);
 
+void geonkick_worker_wakeup(struct geonkick *kick);
+
 #endif // GEONKICK_INTERNAL_H
