@@ -936,6 +936,8 @@ gkick_synth_set_osc_amplitude(struct gkick_synth *synth,
 		return GEONKICK_ERROR;
 	}
 	osc->amplitude = v;
+	if (gkick_osc_enabled(osc))
+                synth->buffer_update = true;
 	gkick_synth_unlock(synth);
 	return GEONKICK_OK;
 }

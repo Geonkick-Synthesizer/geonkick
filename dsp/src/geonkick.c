@@ -481,12 +481,21 @@ geonkick_set_osc_frequency(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real v)
 {
-	if (kick == NULL)
+	if (kick == NULL) {
+		gkick_log_error("wrong arguments");
 		return GEONKICK_ERROR;
-        gkick_synth_set_osc_frequency(kick->synths[kick->per_index], osc_index, v);
-        geonkick_lock(kick);
-        geonkick_worker_wakeup(kick);
-        geonkick_unlock(kick);
+	}
+
+	struct gkick_synth *synth = kick->synths[kick->per_index];
+	if (synth != NULL) {
+		enum geonkick_error res = gkick_synth_set_osc_frequency(synth, osc_index, v);
+		if (res != GEONKICK_OK)
+			return res;
+		geonkick_lock(kick);
+		if (synth->buffer_update)
+			geonkick_worker_wakeup(kick);
+		geonkick_unlock(kick);
+	}
         return GEONKICK_OK;
 }
 
@@ -495,9 +504,22 @@ geonkick_set_osc_amplitude(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real v)
 {
-	if (kick == NULL)
+	if (kick == NULL) {
+		gkick_log_error("wrong arguments");
 		return GEONKICK_ERROR;
-	return gkick_synth_set_osc_amplitude(kick->synths[kick->per_index], osc_index, v);
+	}
+
+	struct gkick_synth *synth = kick->synths[kick->per_index];
+	if (synth != NULL) {
+		enum geonkick_error res = gkick_synth_set_osc_amplitude(synth, osc_index, v);
+		if (res != GEONKICK_OK)
+			return res;
+		geonkick_lock(kick);
+		if (synth->buffer_update)
+			geonkick_worker_wakeup(kick);
+		geonkick_unlock(kick);
+	}
+	return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -577,8 +599,10 @@ geonkick_set_kick_buffer_callback(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-	//	for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
-		//		gkick_synth_set_buffer_callback(kick->synths[i], callback, arg);
+	geonkick_lock(kick);
+	kick->buffer_callback = callback;
+        kick->callback_args = arg;
+	geonkick_unlock(kick);
 	return GEONKICK_OK;
 }
 
@@ -727,7 +751,15 @@ geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate)
 enum geonkick_error
 geonkick_enable_synthesis(struct geonkick *kick, int enable)
 {
-	kick->synthesis_on  = enable;
+	if (kick == NULL) {
+		gkick_log_error("");
+		return GEONKICK_ERROR;
+	}
+
+	geonkick_lock(kick);
+	kick->synthesis_on = enable;
+	geonkick_worker_wakeup(kick);
+	geonkick_unlock(kick);
         return GEONKICK_OK;
 }
 
@@ -1151,8 +1183,16 @@ void *geonkick_worker_thread(void *arg)
 
                 struct gkick_synth *synth = kick->synths[kick->per_index];
                 /* Prioritize the synthesis for the current controllable synthesizer. */
-                if (synth != NULL && synth->is_active && synth->buffer_update)
+                if (synth != NULL && synth->is_active && synth->buffer_update) {
                         gkick_synth_process(synth);
+			gkick_synth_lock(synth);
+			if (kick->buffer_callback != NULL && kick->callback_args != NULL) {
+				kick->buffer_callback(kick->callback_args,
+						      ((struct gkick_buffer*)synth->buffer)->buff,
+						      synth->buffer_size);
+			}
+			gkick_synth_unlock(synth);
+		}
 
 		for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                         if (i == kick->per_index)

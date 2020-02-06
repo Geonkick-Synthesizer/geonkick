@@ -74,6 +74,15 @@ struct geonkick {
 
 	/* Specifies if to update the percussions buffer. */
 	atomic_bool update_buffers;
+
+	/**
+         * Pointer to a funtion to be
+         * called when the current controllable
+         * synth has finished the synthesis.
+         */
+        void (*buffer_callback) (void*, gkick_real *buff, size_t size);
+        void *callback_args;
+
         pthread_mutex_t lock;
 };
 
