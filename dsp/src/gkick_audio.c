@@ -23,6 +23,7 @@
 
 #include "gkick_audio.h"
 #include "audio_output.h"
+#include "mixer.h"
 #ifdef GEONKICK_AUDIO_JACK
 #include "gkick_jack.h"
 #endif

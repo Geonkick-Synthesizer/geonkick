@@ -57,8 +57,11 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 gkick_mixer_get_frame(jack->mixer, val, 2);
                 val[0] *= 0.1f;
 		val[1] *= 0.1f;
-                if (val > 0.1f)
-                        val = 0.1f;
+                if (val[0] > 0.1f)
+                        val[0] = 0.1f;
+		if (val[1] > 0.1f)
+			val[1] = 0.1f;
+
                 buffers[0][i] = (jack_default_audio_sample_t)(val[0]);
                 buffers[1][i] = (jack_default_audio_sample_t)(val[1]);
         }
@@ -216,7 +219,7 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
 enum geonkick_error
 gkick_create_jack(struct gkick_jack **jack, struct gkick_mixer *mixer)
 {
-        if (jack == NULL || audio_output == NULL) {
+        if (jack == NULL || mixer == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }

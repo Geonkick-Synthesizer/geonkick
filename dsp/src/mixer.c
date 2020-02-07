@@ -31,6 +31,16 @@ gkick_mixer_create(struct gkick_mixer **mixer)
 		gkick_log_error("can't allocate memory");
 		return GEONKICK_ERROR_MEM_ALLOC;
 	}
+
+	int key = 50;
+	for (size_t i = 0; i < 127; i++) {
+		if (key > 15)
+			key = 0;
+		(*mixer)->connection_matrix[i] = key;
+		key++;
+	}
+		
+	return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -40,11 +50,11 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 	if (note->note_number < 0 || note->note_number > 127)
 		return GEONKICK_ERROR;
 		
-	size_t index = mixer->connection_matrix[note->note_number];
+	size_t index = mixer->connection_matrix[(size_t)note->note_number];
 	if (index > GEONKICK_MAX_PERCUSSIONS)
 		return GEONKICK_ERROR;
 
-	gkick_audio_output *output = mixer->audio_outputs[index];
+	struct gkick_audio_output *output = mixer->audio_outputs[index];
 	if (output->enabled)
 		return gkick_audio_output_key_pressed(output, note);
 	return GEONKICK_OK;
@@ -52,15 +62,17 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 
 enum geonkick_error
 gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      gkick_real **out_channels,
+		      gkick_real *out_channels,
 		      size_t n_channels)
 {
 	gkick_real out_val = 0.0f;
 	for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-		gkick_audio_output *out = mixer->audio_outputs[i];
-		gkick_real val = 0.0f;
-		gkick_audio_output_get_frame(out, &val);
-		out_val += val;
+		struct gkick_audio_output *out = mixer->audio_outputs[i];
+		if (out->enabled) {
+			gkick_real val = 0.0f;
+			gkick_audio_output_get_frame(out, &val);
+			out_val += val;
+		}
 	}
 
 	for (size_t ch = 0; ch < n_channels; ch++)
@@ -69,12 +81,12 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
         return GEONKICK_OK;
 }
 
-enum geonkick_error
+void
 gkick_mixer_free(struct gkick_mixer **mixer)
 {
-	if (mixer != NULL && *free != NULL) {
-		free(*free);
-		*free = NULL;
+	if (mixer != NULL && *mixer != NULL) {
+		free(*mixer);
+		*mixer = NULL;
 	}
 }
 

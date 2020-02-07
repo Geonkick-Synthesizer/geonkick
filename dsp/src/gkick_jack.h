@@ -67,7 +67,7 @@ enum geonkick_error
 gkick_jack_create_output_ports(struct gkick_jack *jack);
 
 enum geonkick_error
-gkick_create_jack(struct gkick_jack **jack, struct gkick_audio_output *audio_output);
+gkick_create_jack(struct gkick_jack **jack, struct gkick_mixer *mixer);
 
 int gkick_jack_is_midi_in_enabled(struct gkick_jack *jack);
 

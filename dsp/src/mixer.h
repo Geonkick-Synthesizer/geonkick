@@ -21,11 +21,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#ifndef GKICK_MIXER_H
+#define GKICK_MIXER_H
+
 #include "audio_output.h"
 
 struct gkick_mixer {
-	struct gkick_audio_output *audio_outputs[GEONKICK_MAX_PERCUSSIONS];
-	char connection_matrix[127];
+	struct gkick_audio_output **audio_outputs;
+	size_t connection_matrix[127];
 };
 
 enum geonkick_error
@@ -37,9 +40,10 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 
 enum geonkick_error
 gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      gkick_real **out_channels,
+		      gkick_real *out_channels,
 		      size_t n_channels);
 
-enum geonkick_error
+void
 gkick_mixer_free(struct gkick_mixer **mixer);
 
+#endif // GKICK_MIXER_H

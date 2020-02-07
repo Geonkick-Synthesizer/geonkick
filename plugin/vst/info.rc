@@ -28,9 +28,9 @@ BEGIN
             VALUE "FileDescription",  "geonkick VST3\0"
             VALUE "InternalName",     "geonkick VST3\0"
             VALUE "ProductName",      "geonkick VST3\0"
-            VALUE "CompanyName",      "Quamplex\0"
+            VALUE "CompanyName",      "Geontime\0"
             VALUE "LegalCopyright",   "GPL\0"
-            VALUE "LegalTrademarks",  "Quamplex\0"
+            VALUE "LegalTrademarks",  "Geontime\0"
         END
     END
     BLOCK "VarFileInfo"

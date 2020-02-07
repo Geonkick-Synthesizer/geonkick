@@ -2,7 +2,7 @@
  * File name: VstIds.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
+ * Copyright (C) 2019 Iurie Nistor <http://goentime.com>
  *
  * This file is part of Geonkick.
  *
