@@ -46,6 +46,9 @@ struct gkick_note_info {
 
 struct gkick_audio_output
 {
+	/* Specifies if this audio output is active. */
+        _Atomic bool enabled;
+	
         // On this buffer the synthesizer is copying.
         char* _Atomic updated_buffer;
         char* _Atomic playing_buffer;
@@ -58,7 +61,10 @@ struct gkick_audio_output
         /* Note info is changed only by the audio thread. */
         struct gkick_note_info key;
 
-        /* Specifies if the audio output is in the playing state (the percussion is playing) */
+        /**
+         * Specifies if the audio output is in the
+         * playing state (the percussion is playing)
+         */
         _Atomic bool is_play;
 
         /**

@@ -1,0 +1,45 @@
+/**
+ * File name: mixer.h
+ * Project: Geonkick (A kick synthesizer)
+ *
+ * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
+ *
+ * This file is part of Geonkick.
+ *
+ * GeonKick is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+
+#include "audio_output.h"
+
+struct gkick_mixer {
+	struct gkick_audio_output *audio_outputs[GEONKICK_MAX_PERCUSSIONS];
+	char connection_matrix[127];
+};
+
+enum geonkick_error
+gkick_mixer_create(struct gkick_mixer **mixer);
+
+enum geonkick_error
+gkick_mixer_key_pressed(struct gkick_mixer *mixer,
+			struct gkick_note_info *note);
+
+enum geonkick_error
+gkick_mixer_get_frame(struct gkick_mixer *mixer,
+		      gkick_real **out_channels,
+		      size_t n_channels);
+
+enum geonkick_error
+gkick_mixer_free(struct gkick_mixer **mixer);
+

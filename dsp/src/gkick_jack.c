@@ -28,52 +28,39 @@ int
 gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg)
 {
-        /**
-         * Plays the kick buffer. This part of code is not doing any synthesis.
-         * The synthesis is done by the synthesizer in a separated
-         * thread that waites at a contidion variable until some parameter of
-         * the synthesizer is changed. At the end the thread copies the
-         * synthesised kick into the kick buffer that is shared.
-         */
-
-        int i;
-        gkick_real val;
-        struct gkick_jack *jack;
-        jack_default_audio_sample_t *buffers[2];
-        jack = (struct gkick_jack*)arg;
-        struct gkick_note_info note;
-        void* port_buf;
-        jack_nframes_t event_index;
-        jack_nframes_t events_count;
-        jack_midi_event_t event;
-
+        struct gkick_jack *jack = (struct gkick_jack*)arg;
+	jack_default_audio_sample_t *buffers[2];
         if (gkick_jack_get_output_buffers(jack, buffers, nframes) != GEONKICK_OK) {
                 gkick_log_error("can't get output jack buffers");
                 return 0;
         }
-
-        port_buf = jack_port_get_buffer(jack->midi_in_port, nframes);
-        events_count = jack_midi_get_event_count(port_buf);
-        event_index = 0;
+        void* port_buf = jack_port_get_buffer(jack->midi_in_port, nframes);
+	
+	jack_midi_event_t event;
+	jack_nframes_t events_count = jack_midi_get_event_count(port_buf);
+        jack_nframes_t event_index  = 0;
         if (events_count > 0)
                 jack_midi_event_get(&event, port_buf, event_index);
 
-        for (i = 0; i < nframes; i++) {
+        for (size_t i = 0; i < nframes; i++) {
                 if (event.time == i && event_index < events_count) {
+			struct gkick_note_info note;
                         memset(&note, 0, sizeof(struct gkick_note_info));
                         gkick_jack_get_note_info(&event, &note);
-                        gkick_audio_output_key_pressed(jack->audio_output, &note);
+                        gkick_mixer_key_pressed(jack->mixer, &note);
                         event_index++;
                         if (event_index < events_count)
                                 jack_midi_event_get(&event, port_buf, event_index);
                 }
 
-                gkick_audio_output_get_frame(jack->audio_output, &val);
-                val *= 0.1;
-                if (val > 0.1)
-                        val = 0.1;
-                buffers[0][i] = (jack_default_audio_sample_t) (val);
-                buffers[1][i] = (jack_default_audio_sample_t) (val);
+		gkick_real val[2];
+                gkick_mixer_get_frame(jack->mixer, val, 2);
+                val[0] *= 0.1f;
+		val[1] *= 0.1f;
+                if (val > 0.1f)
+                        val = 0.1f;
+                buffers[0][i] = (jack_default_audio_sample_t)(val[0]);
+                buffers[1][i] = (jack_default_audio_sample_t)(val[1]);
         }
 
         return 0;
@@ -227,7 +214,7 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
 }
 
 enum geonkick_error
-gkick_create_jack(struct gkick_jack **jack, struct gkick_audio_output *audio_output)
+gkick_create_jack(struct gkick_jack **jack, struct gkick_mixer *mixer)
 {
         if (jack == NULL || audio_output == NULL) {
                 gkick_log_error("wrong arguments");
@@ -262,7 +249,7 @@ gkick_create_jack(struct gkick_jack **jack, struct gkick_audio_output *audio_out
                 gkick_jack_free(jack);
                 return GEONKICK_ERROR;
         }
-        (*jack)->audio_output = audio_output;
+        (*jack)->mixer = mixer;
 
         gkick_jack_enable_midi_in(*jack, "midi_in");
                 if (jack_activate((*jack)->client) != 0) {

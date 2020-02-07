@@ -25,7 +25,7 @@
 #define GKICK_JACK_H
 
 #include "geonkick_internal.h"
-#include "audio_output.h"
+#include "mixer.h"
 
 #include <jack/jack.h>
 #include <jack/midiport.h>
@@ -36,7 +36,7 @@ struct gkick_jack {
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;
-        struct gkick_audio_output *audio_output;
+        struct gkick_mixer *mixer;
         pthread_mutex_t lock;
 };
 

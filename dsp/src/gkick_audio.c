@@ -48,11 +48,20 @@ gkick_audio_create(struct gkick_audio** audio)
                         gkick_audio_free(audio);
                         return GEONKICK_ERROR;
                 }
+		(*audio)->audio_outputs[i]->enabled = true;
         }
 
+	if (gkick_mixer_create(&(*audio)->mixer) != GEONKICK_OK) {
+		gkick_log_error("can't create mixer");
+		gkick_audio_free(audio);
+		return GEONKICK_ERROR;
+	}
+	(*audio)->mixer->audio_outputs = (*audio)->audio_outputs;
+
 #ifdef GEONKICK_AUDIO_JACK
-        if (gkick_create_jack(&(*audio)->jack, (*audio)->audio_outputs[0]) != GEONKICK_OK)
-                gkick_log_warning("can't create jack module. Jack server is either not running or not installed");
+        if (gkick_create_jack(&(*audio)->jack, (*audio)->mixer) != GEONKICK_OK)
+                gkick_log_warning("can't create jack module. "
+				  "Jack server is either not running or not installed");
 #endif // GEONKICK_AUDIO_JACK
         return GEONKICK_OK;
 }
@@ -63,6 +72,7 @@ void gkick_audio_free(struct gkick_audio** audio)
 #ifdef GEONKICK_AUDIO_JACK
                 gkick_jack_free(&(*audio)->jack);
 #endif // GEONKICK_AUDIO_JACK
+		gkick_mixer_free(&(*audio)->mixer);
                 for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
                         gkick_audio_output_free(&(*audio)->audio_outputs[i]);
                 free(*audio);

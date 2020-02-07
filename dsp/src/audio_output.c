@@ -37,8 +37,9 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
                 return GEONKICK_ERROR;
         }
         memset(*audio_output, 0, sizeof(struct gkick_audio_output));
-        (*audio_output)->decay = -1;
-        (*audio_output)->play = false;
+        (*audio_output)->decay   = -1;
+        (*audio_output)->play    = false;
+	(*audio_output)->enabled = false;
 
         gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer, GEONKICK_MAX_KICK_BUFFER_SIZE);
         if ((*audio_output)->updated_buffer == NULL) {

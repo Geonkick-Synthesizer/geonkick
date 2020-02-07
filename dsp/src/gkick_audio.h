@@ -28,9 +28,11 @@
 
 struct audio_output;
 struct gkick_jack;
+struct gkick_mixer;
 
 struct gkick_audio {
         struct gkick_audio_output *audio_outputs[GEONKICK_MAX_PERCUSSIONS];
+	struct gkick_mixer *mixer;
         struct gkick_jack *jack;
 };
 
