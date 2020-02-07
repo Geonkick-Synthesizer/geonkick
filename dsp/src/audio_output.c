@@ -160,10 +160,6 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                 }
         }
 
-        *val *= (gkick_real)audio_output->limiter / 1000000;
-        if (audio_output->limiter_callback != NULL && audio_output->limiter_callback_arg != NULL)
-                audio_output->limiter_callback(audio_output->limiter_callback_arg, *val);
-
         return GEONKICK_OK;
 }
 
@@ -183,38 +179,6 @@ struct gkick_buffer*
 gkick_audio_output_get_buffer(struct gkick_audio_output  *audio_output)
 {
         return (struct gkick_buffer*)audio_output->playing_buffer;
-}
-
-enum geonkick_error
-gkick_audio_output_set_limiter(struct gkick_audio_output  *audio_output, gkick_real limit)
-{
-        audio_output->limiter = limit * 1000000;
-        return GEONKICK_OK;
-}
-
-enum geonkick_error
-gkick_audio_output_get_limiter(struct gkick_audio_output  *audio_output, gkick_real *limit)
-{
-        int val = audio_output->limiter;
-        *limit = (gkick_real)val / 1000000;
-        return GEONKICK_OK;
-}
-
-enum geonkick_error
-gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
-                                        void (*callback)(void*, gkick_real val),
-                                        void *arg)
-{
-        if (audio_output == NULL) {
-                gkick_log_error("wrong arguments");
-                return GEONKICK_ERROR;
-        }
-
-        gkick_audio_output_lock(audio_output);
-        audio_output->limiter_callback = callback;
-        audio_output->limiter_callback_arg = arg;
-        gkick_audio_output_unlock(audio_output);
-        return GEONKICK_OK;
 }
 
 void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)

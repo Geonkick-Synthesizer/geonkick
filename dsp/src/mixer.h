@@ -29,6 +29,9 @@
 struct gkick_mixer {
 	struct gkick_audio_output **audio_outputs;
 	size_t connection_matrix[127];
+	_Atomic int limiter;
+        void (*limiter_callback) (void*, gkick_real val);
+        void *limiter_callback_arg;
 };
 
 enum geonkick_error
@@ -45,5 +48,16 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
 
 void
 gkick_mixer_free(struct gkick_mixer **mixer);
+
+enum geonkick_error
+gkick_mixer_limiter_set(struct gkick_mixer *mixer, gkick_real val);
+
+enum geonkick_error
+gkick_mixer_limiter_get(struct gkick_mixer *mixer, gkick_real *val);
+
+enum geonkick_error
+gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
+				 void (*callback)(void*, gkick_real val),
+				 void *arg);
 
 #endif // GKICK_MIXER_H

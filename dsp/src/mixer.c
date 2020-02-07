@@ -75,6 +75,10 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
 		}
 	}
 
+	out_val *= (gkick_real)mixer->limiter / 1000000;
+        if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL)
+                mixer->limiter_callback(mixer->limiter_callback_arg, out_val);
+
 	for (size_t ch = 0; ch < n_channels; ch++)
 		out_channels[ch] = out_val;
 	
@@ -90,3 +94,26 @@ gkick_mixer_free(struct gkick_mixer **mixer)
 	}
 }
 
+enum geonkick_error
+gkick_mixer_limiter_set(struct gkick_mixer *mixer, gkick_real val)
+{
+	mixer->limiter = 1000000 * val;
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_limiter_get(struct gkick_mixer *mixer, gkick_real *val)
+{
+	*val = (gkick_real)mixer->limiter / 1000000;
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
+				 void (*callback)(void*, gkick_real val),
+				 void *arg)
+{
+        mixer->limiter_callback = callback;
+        mixer->limiter_callback_arg = arg;
+        return GEONKICK_OK;
+}

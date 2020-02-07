@@ -54,10 +54,6 @@ struct gkick_audio_output
         char* _Atomic playing_buffer;
         _Atomic bool buffer_updated;
 
-        /* Callback must make only short atomic operations, no blocking. */
-        void (*limiter_callback) (void*, gkick_real val);
-        void *limiter_callback_arg;
-
         /* Note info is changed only by the audio thread. */
         struct gkick_note_info key;
 
@@ -86,7 +82,6 @@ struct gkick_audio_output
          *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
          */
         _Atomic int decay;
-        _Atomic int limiter;
         pthread_mutex_t lock;
 };
 
@@ -97,12 +92,6 @@ enum geonkick_error
 gkick_audio_output_create(struct gkick_audio_output **audio_output);
 
 void gkick_audio_output_free(struct gkick_audio_output **audio_output);
-
-enum geonkick_error
-gkick_audio_output_set_limiter(struct gkick_audio_output  *audio_output, gkick_real limit);
-
-enum geonkick_error
-gkick_audio_output_get_limiter(struct gkick_audio_output  *audio_output, gkick_real *limit);
 
 struct gkick_buffer*
 gkick_audio_output_get_buffer(struct gkick_audio_output  *audio_output);
@@ -122,11 +111,6 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output);
 
 void gkick_audio_output_unlock(struct gkick_audio_output *audio_output);
-
-enum geonkick_error
-gkick_audio_output_set_limiter_callback(struct gkick_audio_output *audio_output,
-                                        void (*callback)(void*, gkick_real val),
-                                        void *arg);
 
 void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output);
 
