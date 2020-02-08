@@ -48,7 +48,7 @@ struct gkick_audio_output
 {
 	/* Specifies if this audio output is active. */
         _Atomic bool enabled;
-	
+
         // On this buffer the synthesizer is copying.
         char* _Atomic updated_buffer;
         char* _Atomic playing_buffer;

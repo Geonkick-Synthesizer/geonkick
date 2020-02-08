@@ -35,7 +35,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 return 0;
         }
         void* port_buf = jack_port_get_buffer(jack->midi_in_port, nframes);
-	
+
 	jack_midi_event_t event;
 	jack_nframes_t events_count = jack_midi_get_event_count(port_buf);
         jack_nframes_t event_index  = 0;

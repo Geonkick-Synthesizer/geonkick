@@ -103,7 +103,7 @@ enum geonkick_channel_type {
         GEONKICK_CHANNEL_MIDI_OUTPUT  = 3
 };
 
-// Maximum number of percussions the Geonkick
+// Maximum number of percussions the Geonkick instance
 // instance can generate and play.
 #define GEONKICK_MAX_PERCUSSIONS 16
 

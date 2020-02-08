@@ -117,7 +117,11 @@ gkick_audio_play(struct gkick_audio *audio)
                 return GEONKICK_ERROR;
         }
 
-        return gkick_audio_output_play(audio->audio_outputs[0]);
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                if (audio->audio_outputs[i]->enabled)
+                        gkick_audio_output_play(audio->audio_outputs[i]);
+        }
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
