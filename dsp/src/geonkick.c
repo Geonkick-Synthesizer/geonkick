@@ -1294,8 +1294,10 @@ geonkick_worker_init(struct geonkick *kick)
 enum geonkick_error
 geonkick_worker_start(struct geonkick *kick)
 {
+        kick->worker.running = true;
         if (pthread_create(&kick->worker.thread, NULL, geonkick_worker_thread, kick) != 0) {
                 gkick_log_error("can't create worker thread");
+                kick->worker.running = false;
                 return GEONKICK_ERROR;
         }
         return GEONKICK_OK;
@@ -1328,8 +1330,6 @@ void *geonkick_worker_thread(void *arg)
 
 	struct geonkick *kick = (struct geonkick*)arg;
 	struct gkick_worker *worker = &kick->worker;
-        kick->update_buffers = true;
-        worker->running = true;
 	while (worker->running) {
 		/* Ignore too many updates. The last udpates will be processed. */
                 usleep(40000);
@@ -1340,27 +1340,22 @@ void *geonkick_worker_thread(void *arg)
                                 break;
                 }
 
-                struct gkick_synth *synth = kick->synths[kick->per_index];
                 /* Prioritize the synthesis for the current controllable synthesizer. */
+                struct gkick_synth *synth = kick->synths[kick->per_index];
                 if (synth != NULL && synth->is_active && synth->buffer_update) {
-                        gkick_synth_process(synth);
-			gkick_synth_lock(synth);
-			if (kick->buffer_callback != NULL && kick->callback_args != NULL) {
-				kick->buffer_callback(kick->callback_args,
-						      ((struct gkick_buffer*)synth->buffer)->buff,
-						      synth->buffer_size);
-			}
-			gkick_synth_unlock(synth);
-		}
+                        kick->update_buffers = false;
+                        gkick_synth_process(synth, kick->buffer_callback, kick->callback_args);
+                }
 
-		for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                         if (i == kick->per_index)
                                 continue;
                         synth = kick->synths[i];
-			if (synth != NULL && synth->is_active && synth->buffer_update)
-				gkick_synth_process(synth);
-		}
-                kick->update_buffers = false;
+                        if (synth != NULL && synth->is_active && synth->buffer_update) {
+                                kick->update_buffers = false;
+                                gkick_synth_process(synth, NULL, NULL);
+                        }
+                }
 	}
 
         gkick_log_debug("worker thread stopped");

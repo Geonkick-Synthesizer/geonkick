@@ -653,7 +653,6 @@ void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer)
 {
         std::lock_guard<std::mutex> lock(apiMutex);
         kickBuffer = buffer;
-        GEONKICK_LOG_INFO("GeonkickApi::updated: size: " << kickBuffer.size());
         if (eventQueue)
                 eventQueue->postAction([&](void){ kickUpdated(); });
 }

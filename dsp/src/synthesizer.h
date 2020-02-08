@@ -293,7 +293,9 @@ void gkick_synth_set_output(struct gkick_synth *synth,
                             struct gkick_audio_output *output);
 
 enum geonkick_error
-gkick_synth_process(struct gkick_synth *synth);
+gkick_synth_process(struct gkick_synth *synth,
+                    void (*callback)(void*, gkick_real *buff, size_t size),
+                    void *args);
 
 gkick_real
 gkick_synth_get_value(struct gkick_synth *synth, gkick_real t);

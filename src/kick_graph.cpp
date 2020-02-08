@@ -52,12 +52,10 @@ void KickGraph::start()
 
 void KickGraph::updateGraphBuffer()
 {
-        GEONKICK_LOG_INFO("updated");
         if (!graphThread)
                 start();
         std::unique_lock<std::mutex> lock(graphMutex);
         kickBuffer = geonkickApi->getKickBuffer();
-        GEONKICK_LOG_INFO("updated: size: " << kickBuffer.size());
         updateGraph = true;
         if (kickBuffer.empty())
                 geonkickApi->triggerSynthesis();

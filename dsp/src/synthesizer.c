@@ -1076,14 +1076,16 @@ void gkick_synth_set_output(struct gkick_synth *synth, struct gkick_audio_output
 }
 
 enum geonkick_error
-gkick_synth_process(struct gkick_synth *synth)
+gkick_synth_process(struct gkick_synth *synth,
+                    void (*callback)(void*, gkick_real *buff, size_t size),
+                    void *args)
 {
 	if (synth == NULL)
 		return GEONKICK_ERROR;
 
 	gkick_synth_lock(synth);
         gkick_log_debug("synth[%u]: synthesize" , synth->id);
-	synth->buffer_update = 0;
+	synth->buffer_update = false;
 	gkick_buffer_set_size((struct gkick_buffer*)synth->buffer, synth->buffer_size);
 	gkick_real dt = synth->length / synth->buffer_size;
 	gkick_synth_reset_oscillators(synth);
@@ -1112,12 +1114,17 @@ gkick_synth_process(struct gkick_synth *synth)
 	}
 
 	gkick_synth_lock(synth);
-	gkick_audio_output_lock(synth->output);
-	char* buff = synth->output->updated_buffer;
-	synth->output->updated_buffer = synth->buffer;
-	synth->buffer = buff;
-	gkick_audio_output_unlock(synth->output);
-        synth->buffer_update = false;
+        if (callback != NULL && args != NULL)
+                callback(args, ((struct gkick_buffer*)synth->buffer)->buff, synth->buffer_size);
+        // Check if the synthesizer parameters
+        // were not updated during synthesis.
+        if (!synth->buffer_update) {
+                gkick_audio_output_lock(synth->output);
+                char* buff = synth->output->updated_buffer;
+                synth->output->updated_buffer = synth->buffer;
+                synth->buffer = buff;
+                gkick_audio_output_unlock(synth->output);
+        }
 	gkick_synth_unlock(synth);
 
 	return GEONKICK_OK;
