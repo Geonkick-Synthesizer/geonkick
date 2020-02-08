@@ -52,10 +52,12 @@ void KickGraph::start()
 
 void KickGraph::updateGraphBuffer()
 {
+        GEONKICK_LOG_INFO("updated");
         if (!graphThread)
                 start();
         std::unique_lock<std::mutex> lock(graphMutex);
         kickBuffer = geonkickApi->getKickBuffer();
+        GEONKICK_LOG_INFO("updated: size: " << kickBuffer.size());
         updateGraph = true;
         if (kickBuffer.empty())
                 geonkickApi->triggerSynthesis();
@@ -86,6 +88,11 @@ void KickGraph::drawKickGraph()
                 std::vector<RkPoint> graphPoints(kickBuffer.size());
                 gkick_real k = static_cast<gkick_real>(graphSize.width()) / kickBuffer.size();
 
+                /**
+                 * In this loop there is an implementation of an antialiasing algorithm
+                 * that reduces in most of the cases antialiasing,
+                 * and at the same reduces and normalizes the size of the buffer.
+                 */
                 int j = 0;
                 RkPoint prev;
                 for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {

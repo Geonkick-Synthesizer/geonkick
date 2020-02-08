@@ -37,7 +37,7 @@ class RkKeyEvent;
 class MainWindow : public GeonkickWidget
 {
  public:
-        explicit MainWindow(RkMain* app, GeonkickApi *api, std::string preset = std::string());
+      explicit MainWindow(RkMain* app, GeonkickApi *api, std::string preset = std::string());
       explicit MainWindow(RkMain* app, GeonkickApi *api, const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
