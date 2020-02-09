@@ -453,6 +453,12 @@ geonkick_get_osc_sample(struct geonkick *kick,
 enum geonkick_error
 geonkick_set_current_percussion(struct geonkick *kick, int index);
 
+enum geonkick_error
+geonkick_unused_percussion(struct geonkick *kick, int *index);
+
+enum geonkick_error
+geonkick_enable_percussion(struct geonkick *kick, int index, bool enable);
+
 #ifdef __cplusplus
 }
 #endif

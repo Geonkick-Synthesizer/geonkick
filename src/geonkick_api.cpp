@@ -894,6 +894,18 @@ void GeonkickApi::setCurrentWorkingPath(const std::string &key, const std::files
         workingPaths[key] = path;
 }
 
+int GeonkickApi::getUnusedPercussion() const
+{
+        int index;
+        geonkick_unused_percussion(geonkickApi, &index);
+        return index;
+}
+
+void GeonkickApi::enablePercussion(int index, bool enable = true)
+{
+        geonkick_enable_percussion(geonkickApi, index, enable);
+}
+
 void GeonkickApi::setSettings(const std::string &key, const std::string &value)
 {
         apiSettings[key] = value;

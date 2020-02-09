@@ -179,6 +179,8 @@ class GeonkickApi {
   void tuneAudioOutput(bool tune);
   bool isAudioOutputTuned() const;
   void setCurrentPercussion(int index);
+  int getUnusedPercussion() const
+  void enablePercussion(int index, bool enable = true);
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));

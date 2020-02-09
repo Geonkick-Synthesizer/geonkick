@@ -1371,3 +1371,31 @@ void geonkick_worker_wakeup(struct geonkick *kick)
                 geonkick_unlock(kick);
         }
 }
+
+enum geonkick_error
+geonkick_unused_percussion(struct geonkick *kick, int *index)
+{
+        if (kick == NULL || index == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                if (kick->synths[i]->is_active) {
+                        *index = i;
+                        return GEONKICK_OK;
+                }
+        }
+        *index = -1;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_enable_percussion(struct geonkick *kick, int index, bool enable)
+{
+        if (kick == NULL || index < GEONKICK_MAX_PERCUSSIONS) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        kick->synths[index]->is_active = enable;
+}

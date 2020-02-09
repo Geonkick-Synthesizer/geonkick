@@ -230,9 +230,11 @@ void ChannelsWidget::addChannel()
 {
 	if (channelsList.size() + 1 > midiKeys.size() - 1)
 		return;
-	
+
         Channel channel;
-        channel.id = channelsList.size();
+        channel.id = geonkickApi->getUnusedPercussion();
+        if (channel.id < 1)
+                return;
         channel.name = "Unknown";
         channel.rect = RkRect(0, keyWidth + channelsList.size() * channelHeight,
                               channesNameWidth + keyWidth * 17, channelHeight);
@@ -243,6 +245,7 @@ void ChannelsWidget::addChannel()
                                             false, false, false, false, false});
 	for (auto &key: midiKeys)
                 key.rect.setHeight(channelHeight * channelsList.size() + keyWidth);
+        geonkickApi->enablePercussion(channel.id);
 
 	update();
 	GEONKICK_LOG_INFO("addChannell");

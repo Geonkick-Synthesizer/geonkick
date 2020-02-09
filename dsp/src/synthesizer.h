@@ -32,7 +32,6 @@
 #include <stdatomic.h>
 
 struct gkick_synth {
-	size_t id;
 	/* Speciafies if synthesizer is active. */
 	atomic_bool is_active;
         gkick_real current_time;
