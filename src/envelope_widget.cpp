@@ -273,10 +273,13 @@ void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
 
 void EnvelopeWidget::updateGui()
 {
+	GEONKICK_LOG_INFO("called");
         for (const auto &envelope: envelopes) {
                 if (envelope.second->isSupportedType(Envelope::Type::Amplitude))
                         envelope.second->updatePoints();
                 if (envelope.second->isSupportedType(Envelope::Type::Frequency))
+                        envelope.second->updatePoints();
+		if (envelope.second->isSupportedType(Envelope::Type::FilterCutOff))
                         envelope.second->updatePoints();
         }
         drawArea->update();

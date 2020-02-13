@@ -53,6 +53,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
         setFixedSize(950, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
+	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         show();
 }
 

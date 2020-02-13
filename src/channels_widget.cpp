@@ -183,6 +183,11 @@ void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
 
 	const auto *channel = getChannel(event->x(), event->y());
         if (channel) {
+		if (event->x() < channesNameWidth) {
+			geonkickApi->setCurrentPercussion(channel->id);
+			return;
+		}
+
                 const auto *key = getKey(event->x(), event->y());
                 if (key) {
                         if (channel->id < connectionMatrix.size()
