@@ -63,10 +63,12 @@ bool GeonkickApi::init()
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
 	geonkick_enable_synthesis(geonkickApi, 0);
 	auto n = getPercussionsNumber();
-	for (size_t i = 0; i < n; i++) {
-		setCurrentPercussion(i);
+	for (decltype(n) i = 0; i < n; i++) {
+		geonkick_enable_percussion(geonkickApi, i, true);
+		geonkick_set_current_percussion(geonkickApi, i);
 		setState(getDefaultState());
 	}
+	geonkick_set_current_percussion(geonkickApi, 0);
 	geonkick_enable_synthesis(geonkickApi, 1);
         return true;
 }
@@ -943,6 +945,7 @@ bool GeonkickApi::isAudioOutputTuned() const
 void GeonkickApi::setCurrentPercussion(int index)
 {
         geonkick_set_current_percussion(geonkickApi, index);
+	action stateChanged();
 }
 
 void GeonkickApi::setOscillatorSample(const std::string &file, int oscillatorIndex)

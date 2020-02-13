@@ -1267,7 +1267,15 @@ geonkick_set_current_percussion(struct geonkick *kick, size_t index)
                 return GEONKICK_ERROR;
         }
 
-        kick->per_index = index;
+	kick->per_index = index;
+	struct gkick_synth *synth = kick->synths[kick->per_index];
+	gkick_synth_lock(synth);
+        if (kick->buffer_callback != NULL && kick->callback_args != NULL) {
+                kick->buffer_callback(kick->callback_args,
+				      ((struct gkick_buffer*)synth->buffer)->buff,
+				      synth->buffer_size);
+	}
+	gkick_synth_unlock(synth);
 	return GEONKICK_OK;
 }
 
