@@ -178,8 +178,9 @@ class GeonkickApi {
   void setCurrentWorkingPath(const std::string &key, const std::filesystem::path &path);
   void tuneAudioOutput(bool tune);
   bool isAudioOutputTuned() const;
+  size_t getPercussionsNumber() const;
   void setCurrentPercussion(int index);
-  int getUnusedPercussion() const
+  int getUnusedPercussion() const;
   void enablePercussion(int index, bool enable = true);
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));

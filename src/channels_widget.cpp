@@ -23,6 +23,7 @@
 
 #include "channels_widget.h"
 #include "geonkick_button.h"
+#include "geonkick_api.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>

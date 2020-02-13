@@ -61,7 +61,13 @@ bool GeonkickApi::init()
                 return false;
   	}
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
-        setState(getDefaultState());
+	geonkick_enable_synthesis(geonkickApi, 0);
+	auto n = getPercussionsNumber();
+	for (size_t i = 0; i < n; i++) {
+		setCurrentPercussion(i);
+		setState(getDefaultState());
+	}
+	geonkick_enable_synthesis(geonkickApi, 1);
         return true;
 }
 
@@ -139,7 +145,6 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         if (!state)
                 return;
 
-        geonkick_enable_synthesis(geonkickApi, 0);
         for (int i = 0; i < 3; i++) {
                 enbaleLayer(static_cast<Layer>(i), state->isLayerEnabled(static_cast<Layer>(i)));
                 setLayerAmplitude(static_cast<Layer>(i), state->getLayerAmplitude(static_cast<Layer>(i)));
@@ -171,7 +176,6 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         enableDistortion(state->isDistortionEnabled());
         setDistortionVolume(state->getDistortionVolume());
         setDistortionDrive(state->getDistortionDrive());
-        geonkick_enable_synthesis(geonkickApi, 1);
 }
 
 void GeonkickApi::setState(const std::string &data)
@@ -894,6 +898,11 @@ void GeonkickApi::setCurrentWorkingPath(const std::string &key, const std::files
         workingPaths[key] = path;
 }
 
+size_t GeonkickApi::getPercussionsNumber() const
+{
+	return geonkick_percussion_number(geonkickApi);
+}
+
 int GeonkickApi::getUnusedPercussion() const
 {
         int index;
@@ -901,7 +910,7 @@ int GeonkickApi::getUnusedPercussion() const
         return index;
 }
 
-void GeonkickApi::enablePercussion(int index, bool enable = true)
+void GeonkickApi::enablePercussion(int index, bool enable)
 {
         geonkick_enable_percussion(geonkickApi, index, enable);
 }

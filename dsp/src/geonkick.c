@@ -57,7 +57,6 @@ geonkick_create(struct geonkick **kick)
                         geonkick_free(kick);
                         return GEONKICK_ERROR;
                 }
-		(*kick)->synths[i]->id = i;
         }
 
         // Set the first synth as controllable.
@@ -1261,7 +1260,7 @@ geonkick_get_osc_sample(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_set_current_percussion(struct geonkick *kick, int index)
+geonkick_set_current_percussion(struct geonkick *kick, size_t index)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arguments");
@@ -1380,22 +1379,29 @@ geonkick_unused_percussion(struct geonkick *kick, int *index)
                 return GEONKICK_ERROR;
         }
 
+	*index = 0;
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 if (kick->synths[i]->is_active) {
                         *index = i;
                         return GEONKICK_OK;
                 }
         }
-        *index = -1;
-        return GEONKICK_OK;
+	*index = -1;
+        return GEONKICK_ERROR;
 }
 
 enum geonkick_error
-geonkick_enable_percussion(struct geonkick *kick, int index, bool enable)
+geonkick_enable_percussion(struct geonkick *kick, size_t index, bool enable)
 {
-        if (kick == NULL || index < GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || index > GEONKICK_MAX_PERCUSSIONS - 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
         kick->synths[index]->is_active = enable;
+	return GEONKICK_OK;
+}
+
+size_t geonkick_percussion_number(struct geonkick *kick)
+{
+	return GEONKICK_MAX_PERCUSSIONS;
 }
