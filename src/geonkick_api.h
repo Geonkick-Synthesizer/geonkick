@@ -136,6 +136,7 @@ class GeonkickApi {
   double getCompressorKnee() const;
   double getCompressorMakeup() const;
   bool isDistortionEnabled() const;
+  double getDistortionInLimiter() const;
   double getDistortionVolume() const;
   double getDistortionDrive() const;
   bool isJackEnabled() const;
@@ -163,6 +164,7 @@ class GeonkickApi {
   void setCompressorMakeup(double makeup);
   void enableDistortion(bool enable);
   void setDistortionVolume(double volume);
+  void setDistortionInLimiter(double limit);
   void setDistortionDrive(double drive);
   std::vector<gkick_real> getKickBuffer() const;
   void triggerSynthesis();

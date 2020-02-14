@@ -89,7 +89,8 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
         state->setCompressorKnee(0);
         state->setCompressorMakeup(1);
         state->enableDistortion(false);
-        state->setDistortionVolume(0.1);
+        state->setDistortionVolume(0.1);w
+					       
         state->setDistortionDrive(0);
 
         std::vector<GeonkickApi::OscillatorType> oscillators = {

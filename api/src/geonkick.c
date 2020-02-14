@@ -878,6 +878,26 @@ geonkick_distortion_is_enabled(struct geonkick *kick, int *enabled)
 }
 
 enum geonkick_error
+geonkick_distortion_set_in_limiter(struct geonkick *kick, gkick_real limit)
+{
+	if (kick == NULL) {
+		gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+	}
+	return gkick_synth_distortion_get_in_limiter(kick->synth);
+}
+
+enum geonkick_error
+geonkick_distortion_get_in_limiter(struct geonkick *kick, gkick_real *limit)
+{
+	if (kick == NULL || limit == NULL) {
+		gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+	}
+	return gkick_synth_distortion_set_in_limiter(kick->synth);
+}
+
+enum geonkick_error
 geonkick_distortion_set_volume(struct geonkick *kick, gkick_real volume)
 {
         if (kick == NULL) {

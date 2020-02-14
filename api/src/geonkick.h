@@ -396,6 +396,12 @@ enum geonkick_error
 geonkick_distortion_is_enabled(struct geonkick *kick, int *enabled);
 
 enum geonkick_error
+geonkick_distortion_set_in_limiter(struct geonkick *kick, gkick_real limit);
+
+enum geonkick_error
+geonkick_distortion_get_in_limiter(struct geonkick *kick, gkick_real *limit);
+
+enum geonkick_error
 geonkick_distortion_set_volume(struct geonkick *kick, gkick_real volume);
 
 enum geonkick_error
