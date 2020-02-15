@@ -884,7 +884,7 @@ geonkick_distortion_set_in_limiter(struct geonkick *kick, gkick_real limit)
 		gkick_log_error("wrong arguments");
 		return GEONKICK_ERROR;
 	}
-	return gkick_synth_distortion_get_in_limiter(kick->synth);
+	return gkick_synth_distortion_set_in_limiter(kick->synth, limit);
 }
 
 enum geonkick_error
@@ -894,7 +894,7 @@ geonkick_distortion_get_in_limiter(struct geonkick *kick, gkick_real *limit)
 		gkick_log_error("wrong arguments");
 		return GEONKICK_ERROR;
 	}
-	return gkick_synth_distortion_set_in_limiter(kick->synth);
+	return gkick_synth_distortion_get_in_limiter(kick->synth, limit);
 }
 
 enum geonkick_error
@@ -1068,4 +1068,3 @@ geonkick_get_osc_sample(struct geonkick *kick,
 
         return geonkick_synth_get_osc_sample(kick->synth, osc_index, data, size);
 }
-

@@ -89,8 +89,8 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
         state->setCompressorKnee(0);
         state->setCompressorMakeup(1);
         state->enableDistortion(false);
-        state->setDistortionVolume(0.1);w
-					       
+        state->setDistortionVolume(0.1);
+        state->setDistortionInLimiter(1.0);
         state->setDistortionDrive(0);
 
         std::vector<GeonkickApi::OscillatorType> oscillators = {
@@ -170,6 +170,7 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         setCompressorKnee(state->getCompressorKnee());
         setCompressorMakeup(state->getCompressorMakeup());
         enableDistortion(state->isDistortionEnabled());
+        setDistortionInLimiter(state->getDistortionInLimiter());
         setDistortionVolume(state->getDistortionVolume());
         setDistortionDrive(state->getDistortionDrive());
         geonkick_enable_synthesis(geonkickApi, 1);
@@ -215,6 +216,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState()
         state->setCompressorKnee(getCompressorKnee());
         state->setCompressorMakeup(getCompressorMakeup());
         state->enableDistortion(isDistortionEnabled());
+        state->setDistortionInLimiter(getDistortionInLimiter());
         state->setDistortionVolume(getDistortionVolume());
         state->setDistortionDrive(getDistortionDrive());
 
@@ -786,6 +788,18 @@ bool GeonkickApi::isDistortionEnabled() const
         int enabled = false;
         geonkick_distortion_is_enabled(geonkickApi, &enabled);
         return enabled;
+}
+
+void GeonkickApi::setDistortionInLimiter(double limit)
+{
+        geonkick_distortion_set_in_limiter(geonkickApi, limit);
+}
+
+double GeonkickApi::getDistortionInLimiter() const
+{
+        gkick_real limit = 0.0f;
+        geonkick_distortion_get_in_limiter(geonkickApi, &limit);
+        return limit;
 }
 
 void GeonkickApi::setDistortionVolume(double volume)
