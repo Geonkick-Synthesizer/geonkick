@@ -40,10 +40,12 @@ class DistortionGroupBox: public GeonkickGroupBox
         void updateGui();
         void setVolume(int val);
         void setDrive(int val);
+        void setInLimiter(int val);
 
  private:
         GeonkickApi *geonkickApi;
         GeonkickSlider *volumeSlider;
+        GeonkickSlider *inLimiterSlider;
         GeonkickSlider *driveSlider;
         GeonkickButton *distortionCheckbox;
 };

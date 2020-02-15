@@ -15,7 +15,7 @@
    viewBox="0 0 270.93333 211.1375"
    version="1.1"
    id="svg14595"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="geonkick2.0.svg">
   <defs
      id="defs14589">
@@ -4301,32 +4301,6 @@
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter10330-7-2-56-3-4-0-9-0-1-7-9-1"
-       x="-0.013693905"
-       width="1.0273879"
-       y="-0.021728534"
-       height="1.0434572">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.23845105"
-         id="feGaussianBlur10332-3-1-3-6-7-3-3-7-0-59-3-2" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter10330-7-2-56-3-4-0-9-0-1-7-9-3"
-       x="-0.013693905"
-       width="1.0273879"
-       y="-0.021728534"
-       height="1.0434572">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.23845105"
-         id="feGaussianBlur10332-3-1-3-6-7-3-3-7-0-59-3-6" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
        id="filter5197-8-9-9-9-3"
        x="-0.0457762"
        width="1.0915524"
@@ -4353,19 +4327,6 @@
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter10330-7-5-5-4-9"
-       x="-0.013693905"
-       width="1.0273879"
-       y="-0.021728534"
-       height="1.0434572">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.23845105"
-         id="feGaussianBlur10332-3-9-7-9-1" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
        id="filter11206"
        x="-0.1008"
        width="1.2016"
@@ -4384,16 +4345,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.6628352"
-     inkscape:cx="718.7467"
-     inkscape:cy="686.68876"
+     inkscape:zoom="1.6367866"
+     inkscape:cx="525.33117"
+     inkscape:cy="167.14319"
      inkscape:document-units="px"
      inkscape:current-layer="g24485"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="995"
+     inkscape:window-height="1000"
      inkscape:window-x="0"
-     inkscape:window-y="28"
+     inkscape:window-y="26"
      inkscape:window-maximized="1"
      showguides="true"
      units="px"
@@ -13645,18 +13606,18 @@
       <text
          inkscape:export-ydpi="85.175934"
          inkscape:export-xdpi="85.175934"
-         inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/compressor_ratio_label.png"
+         inkscape:export-filename="/home/iurie/Desktop/dist.png"
          id="text4694-1-6-7-0"
          y="215.96545"
-         x="127.18531"
+         x="127.72189"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.08364224px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.09636382"
          xml:space="preserve"
          transform="scale(0.9861786,1.0140151)"><tspan
            style="stroke-width:0.09636382"
            y="215.96545"
-           x="127.18531"
+           x="127.72189"
            id="tspan4692-2-7-5-4"
-           sodipodi:role="line">Ratio</tspan></text>
+           sodipodi:role="line">Input</tspan></text>
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d5e58f;fill-opacity:1;stroke:none;stroke-width:0.03512268"
@@ -16283,6 +16244,21 @@
            id="rect5044-9-1-4-4-93"
            style="opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-6-20-9-0-6)" />
       </g>
+      <text
+         inkscape:export-ydpi="85.175934"
+         inkscape:export-xdpi="85.175934"
+         inkscape:export-filename="/home/iurie/Desktop/Geontime/geonkick/gui/resources/themes/geontime/compressor_ratio_label.png"
+         id="text4694-1-6-7-0-1"
+         y="239.92538"
+         x="148.94261"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.08364224px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c3c2be;fill-opacity:1;stroke:none;stroke-width:0.09636382"
+         xml:space="preserve"
+         transform="scale(0.9861786,1.0140151)"><tspan
+           style="stroke-width:0.09636382"
+           y="239.92538"
+           x="148.94261"
+           id="tspan4692-2-7-5-4-2"
+           sodipodi:role="line">Input</tspan></text>
     </g>
   </g>
 </svg>
