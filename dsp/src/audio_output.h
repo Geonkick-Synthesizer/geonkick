@@ -57,6 +57,9 @@ struct gkick_audio_output
         /* Note info is changed only by the audio thread. */
         struct gkick_note_info key;
 
+        /* The key number that triggres playing. */
+        _Atomic char playing_key;
+
         /**
          * Specifies if the audio output is in the
          * playing state (the percussion is playing)
@@ -112,10 +115,13 @@ void gkick_audio_output_lock(struct gkick_audio_output *audio_output);
 
 void gkick_audio_output_unlock(struct gkick_audio_output *audio_output);
 
-void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output);
+void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output);
 
-void gkick_audio_tune_output(struct gkick_audio_output *audio_output, bool tune);
+enum geonkick_error
+gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, char key);
 
-bool gkick_audio_is_tune_output(struct gkick_audio_output *audio_output);
+void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune);
+
+bool gkick_audio_output_is_tune_output(struct gkick_audio_output *audio_output);
 
 #endif // GKICK_AUDO_OUTPUT_H

@@ -407,6 +407,12 @@ enum geonkick_error
 geonkick_distortion_is_enabled(struct geonkick *kick, int *enabled);
 
 enum geonkick_error
+geonkick_distortion_set_in_limiter(struct geonkick *kick, gkick_real limit);
+
+enum geonkick_error
+geonkick_distortion_get_in_limiter(struct geonkick *kick, gkick_real *limit);
+
+enum geonkick_error
 geonkick_distortion_set_volume(struct geonkick *kick, gkick_real volume);
 
 enum geonkick_error
@@ -460,6 +466,9 @@ enum geonkick_error
 geonkick_enable_percussion(struct geonkick *kick, size_t index, bool enable);
 
 size_t geonkick_percussion_number(struct geonkick *kick);
+
+enum geonkick_error
+geonkick_set_playing_key(struct geonkick *kick, size_t id, char key);
 
 #ifdef __cplusplus
 }

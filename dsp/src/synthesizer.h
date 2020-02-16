@@ -410,8 +410,13 @@ gkick_synth_distortion_is_enabled(struct gkick_synth *synth,
 				  int *enabled);
 
 enum geonkick_error
-gkick_synth_distortion_set_volume(struct gkick_synth *synth,
-				  gkick_real volume);
+gkick_synth_distortion_get_in_limiter(struct gkick_synth *synth, gkick_real *limit);
+
+enum geonkick_error
+gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth, gkick_real limit);
+
+enum geonkick_error
+gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume);
 
 enum geonkick_error
 gkick_synth_distortion_get_volume(struct gkick_synth *synth,

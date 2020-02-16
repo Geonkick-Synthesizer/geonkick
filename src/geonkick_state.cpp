@@ -35,7 +35,7 @@ GeonkickState::GeonkickState() :
         , kickFilterQFactor{1.0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
         , compressor{false, 0, 0, 0, 0, 0, 0}
-        , distortion{false, 0, 0}
+        , distortion{false, 1.0, 0, 0}
         , layers{false, false, false}
         , layersAmplitude{1.0, 1.0, 1.0}
         , currentLayer{GeonkickApi::Layer::Layer1}
@@ -165,6 +165,8 @@ void GeonkickState::parseKickObject(const rapidjson::Value &kick)
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "enabled" && el.value.IsBool())
                                         enableDistortion(el.value.GetBool());
+                                if (el.name == "in_limiter" && el.value.IsDouble())
+                                        setDistortionInLimiter(el.value.GetDouble());
                                 if (el.name == "volume" && el.value.IsDouble())
                                         setDistortionVolume(el.value.GetDouble());
                                 if (el.name == "drive" && el.value.IsDouble())
@@ -601,6 +603,11 @@ bool GeonkickState::isDistortionEnabled() const
         return distortion.enabled;
 }
 
+void GeonkickState::setDistortionInLimiter(double limit)
+{
+        distortion.in_limiter = limit;
+}
+
 void GeonkickState::setDistortionVolume(double volume)
 {
         distortion.volume = volume;
@@ -609,6 +616,11 @@ void GeonkickState::setDistortionVolume(double volume)
 void GeonkickState::setDistortionDrive(double drive)
 {
         distortion.drive = drive;
+}
+
+double GeonkickState::getDistortionInLimiter() const
+{
+        return distortion.in_limiter;
 }
 
 double GeonkickState::getDistortionVolume() const
@@ -770,6 +782,7 @@ void GeonkickState::kickJson(std::ostringstream &jsonStream) const
 
         jsonStream << "\"distortion\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
+        jsonStream << "\"in_limiter\": " << std::fixed << std::setprecision(5) << getDistortionInLimiter()  << ", " << std::endl;
         jsonStream << "\"volume\": " << std::fixed << std::setprecision(5) << getDistortionVolume()  << ", " << std::endl;
         jsonStream << "\"drive\": " << std::fixed << std::setprecision(5) << getDistortionDrive() << std::endl;
         jsonStream << "}" << std::endl; // distortion

@@ -28,6 +28,8 @@
 
 struct gkick_distortion {
         int enabled;
+	/* Input limiter for distortion. */
+	gkick_real in_limiter;
         gkick_real volume;
         gkick_real drive;
         pthread_mutex_t lock;
@@ -59,6 +61,12 @@ gkick_distortion_set_volume(struct gkick_distortion *distortion, gkick_real volu
 
 enum geonkick_error
 gkick_distortion_get_volume(struct gkick_distortion *distortion, gkick_real *volume);
+
+enum geonkick_error
+gkick_distortion_set_in_limiter(struct gkick_distortion *distortion, gkick_real limit);
+
+enum geonkick_error
+gkick_distortion_get_in_limiter(struct gkick_distortion *distortion, gkick_real *limit);
 
 enum geonkick_error
 gkick_distortion_set_drive(struct gkick_distortion *distortion, gkick_real drive);

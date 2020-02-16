@@ -15,7 +15,7 @@
    viewBox="0 0 270.93333 211.1375"
    version="1.1"
    id="svg14595"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="geonkick.svg">
   <defs
      id="defs14589">
@@ -4084,16 +4084,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.6659069"
-     inkscape:cx="445.78722"
+     inkscape:zoom="0.83295345"
+     inkscape:cx="2309.1203"
      inkscape:cy="210.24165"
      inkscape:document-units="px"
-     inkscape:current-layer="g5154-9-4"
+     inkscape:current-layer="g24485"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="995"
+     inkscape:window-height="1000"
      inkscape:window-x="0"
-     inkscape:window-y="28"
+     inkscape:window-y="26"
      inkscape:window-maximized="1"
      showguides="false"
      units="px"
@@ -14718,7 +14718,7 @@
         <g
            style="display:inline"
            id="g5159-2-3"
-           transform="translate(21.083222,-19.147901)">
+           transform="translate(3.6207159,-24.439571)">
           <text
              xml:space="preserve"
              style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.87023497px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#afafaf;fill-opacity:1;stroke:none;stroke-width:0.12094484"
@@ -14732,7 +14732,7 @@
                id="tspan8715-3-5-8-0"
                x="123.83334"
                y="245.70854"
-               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc-&gt;Osc2</tspan></text>
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc1 -&gt; Osc 2</tspan></text>
           <circle
              style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43137255;filter:url(#filter8829-74-3-3-2-0)"
              id="path8795-94-7-3-9-6"
@@ -14745,7 +14745,7 @@
              inkscape:export-ydpi="134.93715" />
         </g>
         <g
-           transform="translate(21.083222,-24.830461)"
+           transform="translate(3.0915492,-30.122131)"
            style="display:inline"
            id="g5159-8-7-1">
           <text
@@ -14761,7 +14761,7 @@
                id="tspan8715-3-5-92-6-4"
                x="123.83334"
                y="245.70854"
-               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc-&gt;Osc2</tspan></text>
+               style="fill:#afafaf;fill-opacity:1;stroke-width:0.12094484">Osc1 -&gt; Osc 2</tspan></text>
           <circle
              style="display:inline;opacity:1;fill:#777979;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-74-3-3-6-7-6)"
              id="path8795-94-7-3-0-1-7"

@@ -79,20 +79,24 @@ void ChannelsWidget::createKeys()
 
 void ChannelsWidget::createChannels()
 {
-	int y = keyWidth;
-        int i = 0;
+        /*	int y = keyWidth;
         for (const auto &ch: channels) {
                 Channel channel;
-                channel.id = i++;
+                channel.id = geonkickApi->getUnusedPercussion();
+                GEONKICK_LOG_INFO("channel: " << channel.id);
+                if (channel.id < 1)
+                        return;
+                geonkickApi->setPercussionPlayingKey(channel.id, 0);
+                geonkickApi->enablePercussion(channel.id);
                 channel.name = ch;
                 channel.rect = RkRect(0, y, channesNameWidth + keyWidth * 17, channelHeight);
                 channelsList.push_back(channel);
                 connectionMatrix.push_back({false, false, false, false,
                                             false, false, false, false,
                                             false, false, false, false,
-                                            false, false, false, false, false});
+                                            false, false, false, false, true});
                 y += channelHeight;
-        }
+                }*/
 }
 
 void ChannelsWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -183,20 +187,25 @@ void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
 
 	const auto *channel = getChannel(event->x(), event->y());
         if (channel) {
+                GEONKICK_LOG_INFO("channel");
 		if (event->x() < channesNameWidth) {
 			geonkickApi->setCurrentPercussion(channel->id);
 			return;
 		}
 
+                GEONKICK_LOG_INFO("channel1");
                 const auto *key = getKey(event->x(), event->y());
                 if (key) {
+                        GEONKICK_LOG_INFO("channel1.1: " << channel->id);
                         if (channel->id < connectionMatrix.size()
                             && key->id < connectionMatrix[channel->id].size()) {
                                 if (connectionMatrix[channel->id][key->id]) {
                                         connectionMatrix[channel->id][key->id] = false;
+                                        GEONKICK_LOG_INFO("channel2.1");
                                 } else {
                                         connectionMatrix[channel->id].fill(false);
                                         connectionMatrix[channel->id][key->id] = true;
+                                        GEONKICK_LOG_INFO("channel2.1");
                                 }
                                 update();
                         }
@@ -251,6 +260,7 @@ void ChannelsWidget::addChannel()
                                             false, false, false, false, false});
 	for (auto &key: midiKeys)
                 key.rect.setHeight(channelHeight * channelsList.size() + keyWidth);
+        geonkickApi->setPercussionPlayingKey(channel.id, 0);
         geonkickApi->enablePercussion(channel.id);
 
 	update();

@@ -101,7 +101,9 @@ class GeonkickState
         void enableDistortion(bool enable);
         bool isDistortionEnabled() const;
         void setDistortionVolume(double volume);
+        void setDistortionInLimiter(double limit);
         void setDistortionDrive(double drive);
+        double getDistortionInLimiter() const;
         double getDistortionVolume() const;
         double getDistortionDrive() const;
         std::string toJson() const;
@@ -168,6 +170,7 @@ private:
 
         struct Distortion {
                 bool enabled;
+                double in_limiter;
                 double volume;
                 double drive;
         };

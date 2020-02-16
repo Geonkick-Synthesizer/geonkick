@@ -83,10 +83,17 @@ enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                struct gkick_note_info *key)
 {
+        if (!audio_output->tune) {
+                if ((key->note_number < 0)
+                    || (audio_output->playing_key > 0
+                    && key->note_number != audio_output->playing_key))
+                        return GEONKICK_OK;
+        }
+
         if (key->state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->key = *key;
                 audio_output->is_play = true;
-                gkick_audio_swap_buffers(audio_output);
+                gkick_audio_output_swap_buffers(audio_output);
         } else {
                 audio_output->decay = GEKICK_KEY_RELESE_DECAY_TIME;
                 audio_output->key.state = key->state;
@@ -181,7 +188,7 @@ gkick_audio_output_get_buffer(struct gkick_audio_output  *audio_output)
         return (struct gkick_buffer*)audio_output->playing_buffer;
 }
 
-void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)
+void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output)
 {
         gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
         // Try lock. If succesfull, swap buffers. If not, continue with the current one to play
@@ -199,12 +206,20 @@ void gkick_audio_swap_buffers(struct gkick_audio_output *audio_output)
         }
 }
 
-void gkick_audio_tune_output(struct gkick_audio_output *audio_output, bool tune)
+enum geonkick_error
+gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, char key)
+{
+        audio_output->playing_key = key;
+        return GEONKICK_OK;
+}
+
+void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune)
 {
         audio_output->tune = tune;
 }
 
-bool gkick_audio_is_tune_output(struct gkick_audio_output *audio_output)
+bool gkick_audio_output_is_tune_output(struct gkick_audio_output *audio_output)
 {
         return audio_output->tune;
 }
+

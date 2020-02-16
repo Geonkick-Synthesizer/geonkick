@@ -24,6 +24,7 @@
 #include "geonkick_internal.h"
 #include "synthesizer.h"
 #include "gkick_audio.h"
+#include "audio_output.h"
 
 enum geonkick_error
 geonkick_create(struct geonkick **kick)
@@ -1070,6 +1071,26 @@ geonkick_distortion_is_enabled(struct geonkick *kick, int *enabled)
 }
 
 enum geonkick_error
+geonkick_distortion_set_in_limiter(struct geonkick *kick, gkick_real limit)
+{
+	if (kick == NULL) {
+		gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+	}
+	return gkick_synth_distortion_set_in_limiter(kick->synth, limit);
+}
+
+enum geonkick_error
+geonkick_distortion_get_in_limiter(struct geonkick *kick, gkick_real *limit)
+{
+	if (kick == NULL || limit == NULL) {
+		gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+	}
+	return gkick_synth_distortion_get_in_limiter(kick->synth, limit);
+}
+
+enum geonkick_error
 geonkick_distortion_set_volume(struct geonkick *kick, gkick_real volume)
 {
         if (kick == NULL) {
@@ -1382,19 +1403,20 @@ void geonkick_worker_wakeup(struct geonkick *kick)
 enum geonkick_error
 geonkick_unused_percussion(struct geonkick *kick, int *index)
 {
+        gkick_log_info("called");
         if (kick == NULL || index == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-	*index = 0;
+	*index = -1;
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                if (kick->synths[i]->is_active) {
+                if (!kick->synths[i]->is_active) {
+                        gkick_log_info("%d", i);
                         *index = i;
                         return GEONKICK_OK;
                 }
         }
-	*index = -1;
         return GEONKICK_ERROR;
 }
 
@@ -1412,4 +1434,14 @@ geonkick_enable_percussion(struct geonkick *kick, size_t index, bool enable)
 size_t geonkick_percussion_number(struct geonkick *kick)
 {
 	return GEONKICK_MAX_PERCUSSIONS;
+}
+
+enum geonkick_error
+geonkick_set_playing_key(struct geonkick *kick, size_t id, char key)
+{
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_set_playing_key(kick->synths[id]->output, key);
 }

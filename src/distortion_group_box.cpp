@@ -31,6 +31,7 @@
 extern const unsigned char rk_distortion_goupbox_label_png[];
 extern const unsigned char rk_checkbox_checked_10x10_png[];
 extern const unsigned char rk_checkbox_unchecked_10x10_png[];
+extern const unsigned char rk_distortion_in_limiter_png[];
 extern const unsigned char rk_distortion_volume_label_png[];
 extern const unsigned char rk_distortion_drive_label_png[];
 
@@ -58,13 +59,26 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         int sliderW = 60;
         int sliderH = 12;
-        int yoffset = -2;
+        int yoffset = 2;
         int labelD  = 5;
+
+        // In limiter
+        inLimiterSlider = new GeonkickSlider(this);
+        inLimiterSlider->setFixedSize(sliderW, sliderH);
+        inLimiterSlider->setPosition(width() / 2 + labelD / 2 - 12, yoffset + (height() - sliderH) / 3);
+        inLimiterSlider->onSetValue(50);
+        RK_ACT_BIND(inLimiterSlider, valueUpdated, RK_ACT_ARGS(int val), this, setInLimiter(val));
+        auto inLimiterLabel = new RkLabel(this);
+        inLimiterLabel->show();
+        inLimiterLabel->setImage(RkImage(24, 10, rk_distortion_in_limiter_png));
+        inLimiterLabel->setFixedSize(24, 10);
+        inLimiterLabel->setPosition(inLimiterSlider->x() - inLimiterLabel->width() - labelD, inLimiterSlider->y());
+
 
         // Volume
         volumeSlider = new GeonkickSlider(this);
         volumeSlider->setFixedSize(sliderW, sliderH);
-        volumeSlider->setPosition(width() / 2 + labelD / 2 - 12, yoffset + (height() - sliderH) / 2);
+        volumeSlider->setPosition(width() / 2 + labelD / 2 - 12, yoffset + (height() - sliderH) / 3 + sliderH + 4);
         volumeSlider->onSetValue(50);
         RK_ACT_BIND(volumeSlider, valueUpdated, RK_ACT_ARGS(int val), this, setVolume(val));
         auto volumeLabel = new RkLabel(this);
@@ -76,7 +90,7 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         // Drive
         driveSlider = new GeonkickSlider(this);
         driveSlider->setFixedSize(sliderW, sliderH);
-        driveSlider->setPosition(width() / 2 + labelD / 2 - 12, yoffset + (height() - sliderH) / 2 + sliderH + 6);
+        driveSlider->setPosition(width() / 2 + labelD / 2 - 12, yoffset + (height() - sliderH) / 3 + 2 * sliderH + 8);
         RK_ACT_BIND(driveSlider, valueUpdated, RK_ACT_ARGS(int val), this, setDrive(val));
         auto driveLabel = new RkLabel(this);
         driveLabel->show();
@@ -88,6 +102,13 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
 DistortionGroupBox::~DistortionGroupBox()
 {
+}
+
+void DistortionGroupBox::setInLimiter(int val)
+{
+        double logVal = -60 * (1.0 - (static_cast<double>(val) / 100));
+        double limit = pow(10, logVal / 20);
+        geonkickApi->setDistortionInLimiter(limit);
 }
 
 void DistortionGroupBox::setVolume(int val)
@@ -106,13 +127,26 @@ void DistortionGroupBox::setDrive(int val)
 void DistortionGroupBox::updateGui()
 {
         distortionCheckbox->setPressed(geonkickApi->isDistortionEnabled());
-        double volume = geonkickApi->getDistortionVolume();
+
+        // In Limiter
+        double limit = geonkickApi->getDistortionInLimiter();
         double logVal;
+        if (limit > 0)
+                logVal = 20 * log10(limit);
+        else
+                logVal = 60;
+        inLimiterSlider->onSetValue(100 * (60 - fabs(logVal)) / 60);
+
+
+        // Volume
+        double volume = geonkickApi->getDistortionVolume();
         if (volume > 0)
                 logVal = 20 * log10(volume);
         else
                 logVal = 60;
         volumeSlider->onSetValue(100 * (60 - fabs(logVal)) / 60);
+
+        // Drive
         auto distortion = geonkickApi->getDistortionDrive();
         if (distortion < std::numeric_limits<decltype(distortion)>::min())
                 distortion = 0;

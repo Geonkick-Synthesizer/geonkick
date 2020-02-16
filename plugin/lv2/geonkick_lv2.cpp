@@ -168,19 +168,18 @@ class GeonkickLv2Plugin
         {
                 if (!midiIn)
                         return;
-
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
                 for (auto i = 0; i < nsamples; i++) {
-                        if (it->time.frames == i && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
+                        while (it->time.frames == i && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
                                 const uint8_t* const msg = (const uint8_t*)(it + 1);
                                 switch (lv2_midi_message_type(msg))
                                 {
                                 case LV2_MIDI_MSG_NOTE_ON:
                                         geonkickApi->setKeyPressed(true, msg[1], msg[2]);
-                                                break;
+                                        break;
                                 case LV2_MIDI_MSG_NOTE_OFF:
                                         geonkickApi->setKeyPressed(false, msg[1], msg[2]);
-                                                break;
+                                        break;
                                 default:
                                         break;
                                 }

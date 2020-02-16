@@ -43,7 +43,7 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 jack_midi_event_get(&event, port_buf, event_index);
 
         for (size_t i = 0; i < nframes; i++) {
-                if (event.time == i && event_index < events_count) {
+                while (event.time == i && event_index < events_count) {
 			struct gkick_note_info note;
                         memset(&note, 0, sizeof(struct gkick_note_info));
                         gkick_jack_get_note_info(&event, &note);

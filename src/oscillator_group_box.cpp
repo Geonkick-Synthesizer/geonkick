@@ -38,8 +38,8 @@ extern const unsigned char rk_osc2_radio_button_png[];
 extern const unsigned char rk_osc2_radio_button_active_png[];
 extern const unsigned char rk_noise_radio_button_png[];
 extern const unsigned char rk_noise_radio_button_active_png[];
-extern const unsigned char rk_fm_radio_button_png[];
-extern const unsigned char rk_fm_radio_button_active_png[];
+extern const unsigned char rk_fm_radio_png[];
+extern const unsigned char rk_fm_radio_active_png[];
 extern const unsigned char rk_wf_bk_hbox_png[];
 extern const unsigned char rk_wave_button_sine_png[];
 extern const unsigned char rk_wave_button_sine_active_png[];
@@ -95,9 +95,9 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
                 fmCheckbox = new GeonkickButton(this);
                 fmCheckbox->setCheckable(true);
                 fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 20, 0);
-                fmCheckbox->setFixedSize(87, 11);
-                fmCheckbox->setPressedImage(RkImage(87, 11, rk_fm_radio_button_active_png));
-                fmCheckbox->setUnpressedImage(RkImage(87, 11, rk_fm_radio_button_png));
+                fmCheckbox->setFixedSize(95, 11);
+                fmCheckbox->setPressedImage(RkImage(95, 11, rk_fm_radio_active_png));
+                fmCheckbox->setUnpressedImage(RkImage(95, 11, rk_fm_radio_png));
                 RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 oscillatorCheckbox->setFixedSize(87, 11);
