@@ -1,0 +1,71 @@
+{
+"name": "TimeKit",
+"Author": "Geontime",
+"url": "http://geontime.com",
+"percussions": [
+        {
+                "id": 0
+                "name": "Clap",
+                "file": "Clap.gkick"
+                "key": 69
+                "enabled": true
+                "limiter": 0.01
+        },
+        {
+                "id": 1
+                "name": "Hit-Hat-Closed",
+                "file": "Hit-Hat-Closed.gkick"
+                "key": 70
+                "enabled": true
+                "limiter": 0.01
+        },
+        {
+                "id": 2
+                "name": "Hit-Hat-Open",
+                "file": "Hit-Hat-Open.gkick"
+                "key": 71
+                "enabled": true
+                "limiter": 0.01
+        },
+        {
+                "id": 3
+                "name": "Kick",
+                "file": "Kick.gkick"
+                "key": 71
+                "enabled": true
+                "limiter": 0.01
+        },
+        {
+                "id": 3
+                "name": "Kick",
+                "file": "Kick.gkick"
+                "key": 71
+                "enabled": true
+                "limiter": 0.01
+        },
+        {
+                "id": 4
+                "name": "Shaker",
+                "file": "Shaker.gkick"
+                "key": 72
+                "enabled": true
+                "limiter": 0.01
+        },
+        {
+                "id": 5
+                "name": "Snare",
+                "file": "Snare.gkick"
+                "key": 73
+                "enabled": true
+                "limiter": 0.01
+        },
+        {
+                "id": 5
+                "name": "SnareT",
+                "file": "SnareT.gkick"
+                "key": 74
+                "enabled": true
+                "limiter": 0.01
+        }
+  ]
+}
