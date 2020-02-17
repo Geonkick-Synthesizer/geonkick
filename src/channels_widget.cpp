@@ -1,6 +1,6 @@
 /**
  * File name: channels_widget.cpp
- * Project: Geonkick (A kick synthesizer)
+ * Project: Geonkick (a percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
  *
@@ -28,6 +28,7 @@
 #include <RkEvent.h>
 #include <RkImage.h>
 #include <RkLineEdit.h>
+#include <RkButton.h>
 
 // TODO: load from file.
 constexpr std::array<std::string_view, 5> channels {"Kick",
@@ -45,17 +46,37 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	, editChannel{new RkLineEdit(this)}
 	, editedChannel{nullptr}
         , addButton{nullptr}
+        , openKitButton{nullptr}
+        , saveKitButton{nullptr}
 {
 	RK_ACT_BIND(editChannel, editingFinished, RK_ACT_ARGS(), this, updateChannelName());
         createKeys();
         createChannels();
 
-        addButton = new GeonkickButton(this);
+        addButton = new RkButton(this);
 	addButton->setCheckable(true);
-        addButton->setSize(30, 30);
-        addButton->setPosition({0, 0});
-        addButton->setUnpressedImage(RkImage(30, 30, RK_IMAGE_RC(add_channel_button)));
+        addButton->setSize(16, 16);
+        addButton->setPosition({10, 10});
+        addButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_channel_button)));
         RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addChannel());
+        addButton->show();
+
+        openKitButton = new RkButton(this);
+	openKitButton->setCheckable(true);
+        openKitButton->setSize(16, 16);
+        openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
+        openKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_channel_button)));
+        RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b), this, openFileDialog(FileDialog::Type::Open));
+        openKitButton->show();
+
+        saveKitButton = new RkButton(this);
+	saveKitButton->setCheckable(true);
+        saveKitButton->setSize(16, 16);
+        saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
+        saveKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_channel_button)));
+        RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b), this, openFileDialog(FileDialog::Type::Save));
+        saveKitButton->show();
+
 }
 
 void ChannelsWidget::createKeys()
@@ -293,3 +314,27 @@ RkPoint ChannelsWidget::getIntersectionPoint(const ChannelKey &key, const Channe
 {
         return {key.rect.left() + key.rect.width() / 2, channel.rect.top() + channel.rect.height() / 2};
 }
+
+void ChannelsWidget::openFileDialog(FileDialog::Type type)
+{
+        auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
+        fileDialog->setFilters({".gkit", ".GKIT"});
+        if (type == FileDialog::Type::Open) {
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenKit"));
+                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, openKit(file));
+        } else {
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SaveKit"));
+                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, saveKit(file));
+        }
+}
+
+void ChannelsWidget::openKit(const std::string &file)
+{
+        GEONKICK_LOG_INFO("file:" << file);
+}
+
+void ChannelsWidget::saveKit(const std::string &file)
+{
+        GEONKICK_LOG_INFO("file:" << file);
+}
+

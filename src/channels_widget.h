@@ -25,11 +25,13 @@
 #define CHANNELS_WIDGET_H
 
 #include "geonkick_widget.h"
+#include "file_dialog.h"
+
 #include "RkPainter.h"
 
 class GeonkickApi;
 class RkLineEdit;
-class GeonkickButton;
+class RkButton;
 
 class ChannelsWidget: public GeonkickWidget
 {
@@ -65,6 +67,9 @@ class ChannelsWidget: public GeonkickWidget
         void createChannels();
 	void updateChannelName();
         void addChannel();
+        void openFileDialog(FileDialog::Type type);
+        void openKit(const std::string &file);
+        void saveKit(const std::string &file);
 
  private:
 	GeonkickApi* geonkickApi;
@@ -76,7 +81,9 @@ class ChannelsWidget: public GeonkickWidget
 	int channesNameWidth;
 	RkLineEdit *editChannel;
 	Channel *editedChannel;
-        GeonkickButton *addButton;
+        RkButton *addButton;
+        RkButton *openKitButton;
+        RkButton *saveKitButton;
 };
 
 #endif // CHANNELS_WIDGET_H
