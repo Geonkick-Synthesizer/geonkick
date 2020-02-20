@@ -330,7 +330,87 @@ void ChannelsWidget::openFileDialog(FileDialog::Type type)
 
 void ChannelsWidget::openKit(const std::string &file)
 {
-        GEONKICK_LOG_INFO("file:" << file);
+        if (file.size() < 6) {
+                RK_LOG_ERROR("can't open preset. File name empty or wrong format.");
+                return;
+        }
+
+        std::filesystem::path filePath(file);
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkit"
+            && filePath.extension() != ".GKIT")) {
+                RK_LOG_ERROR("can't open kit. Wrong file format.");
+                return;
+        }
+
+        std::ifstream sfile;
+        sfile.open(std::filesystem::absolute(filePath));
+        if (!sfile.is_open()) {
+                RK_LOG_ERROR("can't open kit.");
+                return;
+        }
+        std::string fileData((std::istreambuf_iterator<char>(sfile)), (std::istreambuf_iterator<char>()));
+        sfile.close();
+
+        auto kit = parseKit(fileData);
+        if (!kit.list.empty()) {
+                for (const auto &per: kit.list)
+                        addPercussion(per);
+        }
+
+        geonkickApi->setCurrentWorkingPath("OpenKit", filePath.has_parent_path() ? filePath.parent_path() : filePath);
+        updateGui();
+}
+
+ChannelsWidget::Kit ChannelsWidget::parseKit(std::string &fileData)
+{
+        rapidjson::Document document;
+        Kit kit;
+        document.Parse(fileData.c_str());
+        if (document.IsObject()) {
+                for (const auto &m: document.GetObject()) {
+                        if (m.name == "name" && m.value.IsString())
+                                kit.name = m.value.GetString();
+                        if (m.name == "author" && m.value.IsString())
+                                kit.author = m.value.GetString();
+                        if (m.name == "url" && m.value.IsString())
+                                kit.url = m.value.GetString();
+                        if (m.name == "percussions" && m.value.IsArray())
+                                kit.list = parsePercussions(m.value);
+                }
+        }
+}
+
+std::vector<ChannelsWidget::Percussion> ChannelsWidget::parsePercussions(const rapidjson::Value &envelopeArray)
+{
+        std::vector<Percussions> percussions;
+        for (const auto &el: envelopeArray.GetArray()) {
+                if (el.IsObject()) {
+                        Percussion per;
+                        for (const auto &m: document.GetObject()) {
+                                if (m.name == "id" && m.value.IsInt())
+                                        per.id = m.value.GetInt();
+                                if (m.name == "name" && m.value.IsString())
+                                        per.name = m.value.GetString();
+                                if (m.name == "file" && m.value.IsString())
+                                        per.file = m.value.GetString();
+                                if (m.name == "key" && m.value.IsInt())
+                                        per.key = m.value.GetInt();
+                                if (m.name == "enabled" && m.value.IsBool())
+                                        per.enabled = m.value.GetBool();
+                                if (m.name == "limiter" && m.value.IsDouble())
+                                        per.limiter = m.value.GetDouble();
+                        }
+                        percussions.push_back(per);
+                }
+        }
+
+        return percussions;
+
+}
+
+void ChannelsWidget::addPercussion(const Percussion &per)
+{
 }
 
 void ChannelsWidget::saveKit(const std::string &file)

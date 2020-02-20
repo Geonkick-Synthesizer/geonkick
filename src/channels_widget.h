@@ -47,6 +47,22 @@ class ChannelsWidget: public GeonkickWidget
                 RkRect rect;
         };
 
+        struct Percussion {
+                size_t id;
+                std::string name;
+                std::string file;
+                char key;
+                bool enabled;
+                double limiter;
+        }
+
+        struct Kit {
+                std::string name;
+                std::string author;
+                std::string url;
+                std::list<Percussion> list;
+        };
+
  public:
         ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api);
         ~ChannelsWidget() = default;

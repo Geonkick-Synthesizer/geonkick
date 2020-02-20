@@ -161,7 +161,7 @@ void MainWindow::openExportDialog()
 
 void MainWindow::savePreset(const std::string &fileName)
 {
-        if (fileName.size() < 6) {
+        if (fileName.size() < 7) {
                 RK_LOG_ERROR("Save Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
                 return;
         }
@@ -187,8 +187,8 @@ void MainWindow::savePreset(const std::string &fileName)
 
 void MainWindow::openPreset(const std::string &fileName)
 {
-        if (fileName.size() < 6) {
-                RK_LOG_ERROR("Open Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
+        if (fileName.size() < 7) {
+                RK_LOG_ERROR("Open Preset: " << "Can't open preset. File name empty or wrong format. Format example: 'mykick.gkick'");
                 return;
         }
 
