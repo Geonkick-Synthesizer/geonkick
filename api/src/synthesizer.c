@@ -1196,7 +1196,16 @@ void *gkick_synth_run(void *arg)
                 // Synthesize the percussion into the buffer.
                 i = 0;
                 while (1) {
-                        gkick_synth_lock(synth);
+                        /**
+                         * Try lock in order not too block the GUI thread for too long time.
+                         * In the case when there are too many OSC and effects GUI animation will seem
+                         * that is gloing slow.
+                         */
+                        if (pthread_mutex_trylock(&synth->lock) != 0) {
+                                usleep(50);
+                                continue;
+                        }
+
                         if (gkick_buffer_is_end((struct gkick_buffer*)synth->buffer)) {
                                 gkick_synth_unlock(synth);
                                 break;
