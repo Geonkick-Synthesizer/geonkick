@@ -1199,7 +1199,7 @@ void *gkick_synth_run(void *arg)
                         /**
                          * Try lock in order not too block the GUI thread for too long time.
                          * In the case when there are too many OSC and effects GUI animation will seem
-                         * that is gloing slow.
+                         * that is slow.
                          */
                         if (pthread_mutex_trylock(&synth->lock) != 0) {
                                 usleep(50);
