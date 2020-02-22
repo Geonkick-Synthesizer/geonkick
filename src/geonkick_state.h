@@ -35,8 +35,8 @@
 class GeonkickState
 {
  public:
-
         GeonkickState();
+        bool loadFile(const std::string &file);
         void loadData(const std::string &data);
         void setLimiterValue(double val);
         void setKickLength(double val);

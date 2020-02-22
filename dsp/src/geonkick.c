@@ -854,7 +854,7 @@ geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate)
 }
 
 enum geonkick_error
-geonkick_enable_synthesis(struct geonkick *kick, int enable)
+geonkick_enable_synthesis(struct geonkick *kick, bool enable)
 {
 	if (kick == NULL) {
 		gkick_log_error("");
@@ -1297,6 +1297,18 @@ geonkick_set_current_percussion(struct geonkick *kick, size_t index)
 				      synth->buffer_size);
 	}
 	gkick_synth_unlock(synth);
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_get_current_percussion(struct geonkick *kick, size_t *index)
+{
+        if (kick == NULL || index == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+	*index = kick->per_index;
 	return GEONKICK_OK;
 }
 

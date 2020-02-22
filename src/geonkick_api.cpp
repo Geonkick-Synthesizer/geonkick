@@ -147,6 +147,18 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
         return state;
 }
 
+void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state,
+                           size_t percussionId)
+{
+	geonkick_enable_synthesis(geonkickApi, false);
+        auto currentId = currentPercussion();
+        geonkick_set_current_percussion(geonkickApi, percussionId);
+        setState(state);
+        geonkick_enable_percussion(geonkickApi, percussionId, true);
+        geonkick_set_current_percussion(geonkickApi, currentId);
+	geonkick_enable_synthesis(geonkickApi, true);
+}
+
 void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
 {
         if (!state)
@@ -970,6 +982,13 @@ void GeonkickApi::setCurrentPercussion(int index)
 {
         geonkick_set_current_percussion(geonkickApi, index);
 	action stateChanged();
+}
+
+size_t GeonkickApi::currentPercussion() const
+{
+        size_t index = 0;
+        geonkick_get_current_percussion(geonkickApi, &index);
+        return index;
 }
 
 void GeonkickApi::setOscillatorSample(const std::string &file, int oscillatorIndex)

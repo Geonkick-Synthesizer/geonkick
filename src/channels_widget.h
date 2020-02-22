@@ -27,6 +27,10 @@
 #include "geonkick_widget.h"
 #include "file_dialog.h"
 
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+
 #include "RkPainter.h"
 
 class GeonkickApi;
@@ -54,13 +58,13 @@ class ChannelsWidget: public GeonkickWidget
                 char key;
                 bool enabled;
                 double limiter;
-        }
+        };
 
         struct Kit {
                 std::string name;
                 std::string author;
                 std::string url;
-                std::list<Percussion> list;
+                std::vector<Percussion> list;
         };
 
  public:
@@ -86,6 +90,9 @@ class ChannelsWidget: public GeonkickWidget
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
+        Kit parseKit(std::string &fileData);
+        std::vector<Percussion> parsePercussions(const rapidjson::Value &envelopeArray);
+        void addPercussion(const Percussion &per);
 
  private:
 	GeonkickApi* geonkickApi;

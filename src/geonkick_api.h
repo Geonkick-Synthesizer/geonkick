@@ -1,8 +1,8 @@
 /**
  * File name: geonkick_api.h
- * Project: Geonkick (A kick synthesizer)
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -127,6 +127,8 @@ class GeonkickApi {
   static std::shared_ptr<GeonkickState> getDefaultState();
   // This function is called only from the audio thread.
   gkick_real getAudioFrame() const;
+  // This function is called only from the audio thread.
+  void setKeyPressed(bool b, int note, int velocity);
   std::shared_ptr<GeonkickState> getState();
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
@@ -150,10 +152,9 @@ class GeonkickApi {
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
   void setState(const std::shared_ptr<GeonkickState> &state);
+  void setState(const std::shared_ptr<GeonkickState> &state, size_t percussionId);
   void setState(const std::string &data);
   void setKickEnvelopePoints(EnvelopeType envelope, const std::vector<RkRealPoint> &points);
-  // This function must be called only from the audio thread.
-  void setKeyPressed(bool b, int note, int velocity);
   void playKick();
   void enableCompressor(bool enable);
   void setCompressorAttack(double attack);
@@ -182,6 +183,7 @@ class GeonkickApi {
   bool isAudioOutputTuned() const;
   size_t getPercussionsNumber() const;
   void setCurrentPercussion(int index);
+  size_t currentPercussion() const;
   int getUnusedPercussion() const;
   void enablePercussion(int index, bool enable = true);
   void setPercussionPlayingKey(int index, int key);

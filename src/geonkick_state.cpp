@@ -44,6 +44,33 @@ GeonkickState::GeonkickState() :
         initOscillators();
 }
 
+bool GeonkickState::loadFile(const std::string &file)
+{
+        if (file.size() < 7) {
+                RK_LOG_ERROR("can't open preset.");
+                return false;
+        }
+
+        std::filesystem::path filePath(file);
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkick"
+            && filePath.extension() != ".GKICK")) {
+                RK_LOG_ERROR("can't open preset. Wrong file format.");
+                return false;
+        }
+
+        std::ifstream sfile;
+        sfile.open(std::filesystem::absolute(filePath));
+        if (!sfile.is_open()) {
+                RK_LOG_ERROR("can't open preset.");
+                return false;
+        }
+
+        std::string fileData((std::istreambuf_iterator<char>(sfile)), (std::istreambuf_iterator<char>()));
+        loadData(fileData);
+        return true;
+}
+
 void GeonkickState::loadData(const std::string &data)
 {
         rapidjson::Document document;

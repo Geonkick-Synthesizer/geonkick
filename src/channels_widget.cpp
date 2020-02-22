@@ -24,6 +24,7 @@
 #include "channels_widget.h"
 #include "geonkick_button.h"
 #include "geonkick_api.h"
+#include "geonkick_state.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>
@@ -379,15 +380,16 @@ ChannelsWidget::Kit ChannelsWidget::parseKit(std::string &fileData)
                                 kit.list = parsePercussions(m.value);
                 }
         }
+        return kit;
 }
 
 std::vector<ChannelsWidget::Percussion> ChannelsWidget::parsePercussions(const rapidjson::Value &envelopeArray)
 {
-        std::vector<Percussions> percussions;
+        std::vector<Percussion> percussions;
         for (const auto &el: envelopeArray.GetArray()) {
                 if (el.IsObject()) {
                         Percussion per;
-                        for (const auto &m: document.GetObject()) {
+                        for (const auto &m: el.GetObject()) {
                                 if (m.name == "id" && m.value.IsInt())
                                         per.id = m.value.GetInt();
                                 if (m.name == "name" && m.value.IsString())
@@ -411,10 +413,21 @@ std::vector<ChannelsWidget::Percussion> ChannelsWidget::parsePercussions(const r
 
 void ChannelsWidget::addPercussion(const Percussion &per)
 {
+        if (per.id > geonkickApi->getPercussionsNumber()) {
+                RK_LOG_ERROR("invalid percussion id: " < per.id);
+                return;
+        }
+
+        auto state = std::make_shared<GeonkickState>();
+        if (!state->loadFile(per.file)) {
+                RK_LOG_ERROR("can't load percussion file: " << file);
+                return;
+        }
+        geonkickApi->setState(state, per.id);
 }
 
 void ChannelsWidget::saveKit(const std::string &file)
 {
-        GEONKICK_LOG_INFO("file:" << file);
+        RK_LOG_ERROR("file:" << file);
 }
 

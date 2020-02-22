@@ -353,7 +353,7 @@ enum geonkick_error
 geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate);
 
 enum geonkick_error
-geonkick_enable_synthesis(struct geonkick *kick, int enable);
+geonkick_enable_synthesis(struct geonkick *kick, bool enable);
 
 enum geonkick_error
 geonkick_get_audio_frame(struct geonkick *kick, gkick_real *val);
@@ -458,6 +458,9 @@ geonkick_get_osc_sample(struct geonkick *kick,
 
 enum geonkick_error
 geonkick_set_current_percussion(struct geonkick *kick, size_t index);
+
+enum geonkick_error
+geonkick_get_current_percussion(struct geonkick *kick, size_t *index);
 
 enum geonkick_error
 geonkick_unused_percussion(struct geonkick *kick, int *index);
