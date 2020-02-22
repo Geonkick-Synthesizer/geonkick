@@ -1091,21 +1091,37 @@ gkick_synth_process(struct gkick_synth *synth,
 	gkick_filter_init(synth->filter);
 	gkick_synth_unlock(synth);
 
-	// Synthesize the percussion into the buffer.
+	/* Synthesize the percussion into the synthesizer buffer. */
 	size_t i = 0;
+        size_t tries = 0;
 	while (1) {
-		gkick_synth_lock(synth);
+                /**
+                 * Try lock in order not too block the access
+                 * of the synthesizer parameters for too long time.
+                 */
+                if (pthread_mutex_trylock(&synth->lock) != 0) {
+                        usleep(50);
+                        /**
+                         * Check how many tries for locking to avoind infinite loop.
+                         * It should be maximum around 30ms.
+                         */
+                        if (++tries > 600)
+                                break;
+                        else
+                                continue;
+                }
+
 		if (gkick_buffer_is_end((struct gkick_buffer*)synth->buffer)) {
 			gkick_synth_unlock(synth);
 			break;
 		} else {
 			gkick_real val = gkick_synth_get_value(synth, (gkick_real)(i * dt));
 			if (isnan(val))
-				val = 0;
+				val = 0.0f;
 			else if (val > 1.0)
-				val = 1;
-			else if (val < -1.0)
-				val = -1;
+				val = 1.0f;
+			else if (val < -1.0f)
+				val = -1.0f;
 			gkick_buffer_push_back((struct gkick_buffer*)synth->buffer, val);
 			i++;
 		}
@@ -1115,8 +1131,12 @@ gkick_synth_process(struct gkick_synth *synth,
 	gkick_synth_lock(synth);
         if (callback != NULL && args != NULL)
                 callback(args, ((struct gkick_buffer*)synth->buffer)->buff, synth->buffer_size);
-        // Check if the synthesizer parameters
-        // were not updated during synthesis.
+
+        /**
+         * Don't update the output audio buffer if
+         * the synthesizer parameters
+         * were updated during the synthesis.
+         */
         if (!synth->buffer_update) {
                 gkick_audio_output_lock(synth->output);
                 char* buff = synth->output->updated_buffer;

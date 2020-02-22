@@ -375,13 +375,13 @@ void Envelope::addPoint(const RkPoint &point)
                 envelopePoints.insert(envelopePoints.begin(), scaledPoint);
         } else if (envelopePoints.empty()) {
                 envelopePoints.push_back(scaledPoint);
-	} else if (scaledPoint.x() < envelopePoints[0].x()) {
+	} else if (scaledPoint.x() <= envelopePoints[0].x()) {
                 envelopePoints.insert(envelopePoints.begin(), scaledPoint);
-	} else if (scaledPoint.x() > envelopePoints.back().x()) {
+	} else if (scaledPoint.x() >= envelopePoints.back().x()) {
                 envelopePoints.push_back(scaledPoint);
 	} else {
 		for (auto it = envelopePoints.begin(); it != envelopePoints.end(); ++it) {
-			if (scaledPoint.x() < it->x()) {
+			if (scaledPoint.x() <= it->x()) {
                                 envelopePoints.insert(it, scaledPoint);
                                 break;
 			}

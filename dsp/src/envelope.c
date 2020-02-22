@@ -109,7 +109,6 @@ gkick_envelope_add_point(struct gkick_envelope *envelope,
 	else
 		gkick_envelope_add_sorted(envelope, point);
 	envelope->npoints++;
-
 	return point;
 }
 
