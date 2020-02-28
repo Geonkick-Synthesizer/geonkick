@@ -113,9 +113,10 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 ###### Build & install Geonkick
 
-Clone the code repository, compile and install
+First build and install [Redkite](https://github.com/geontime/redkite).
 
-        first build and install [Redkite](https://github.com/geontime/redkite)
+Clone the Geonkick code repository, compile and install
+
         git clone https://gitlab.com/geontime/geonkick.git
         mkdir geonkick/build
         cd geonkick/build
