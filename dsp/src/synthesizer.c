@@ -44,7 +44,7 @@ gkick_synth_new(struct gkick_synth **synth)
         (*synth)->amplitude = 1.0;
         (*synth)->buffer_size = (size_t)((*synth)->length * GEONKICK_SAMPLE_RATE);
         (*synth)->buffer_update = false;
-        (*synth)->is_active = true;
+        (*synth)->is_active = false;
         for (size_t i = 0; i < GKICK_OSC_GROUPS_NUMBER; i++)
                 (*synth)->osc_groups_amplitude[i] = 1.0;
 
@@ -370,6 +370,10 @@ gkick_synth_osc_envelope_set_points(struct gkick_synth *synth,
                 return GEONKICK_ERROR;
         }
         gkick_osc_set_envelope_points(osc, env_index, buf, npoints);
+        if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
+            && osc->state == GEONKICK_OSC_STATE_ENABLED) {
+                synth->buffer_update = true;
+        }
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
@@ -838,6 +842,7 @@ gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
                 gkick_envelope_set_points(synth->envelope, buf, npoints);
         else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 gkick_envelope_set_points(synth->filter->cutoff_env, buf, npoints);
+        synth->buffer_update = true;
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -1076,9 +1081,7 @@ void gkick_synth_set_output(struct gkick_synth *synth, struct gkick_audio_output
 }
 
 enum geonkick_error
-gkick_synth_process(struct gkick_synth *synth,
-                    void (*callback)(void*, gkick_real *buff, size_t size),
-                    void *args)
+gkick_synth_process(struct gkick_synth *synth)
 {
 	if (synth == NULL)
 		return GEONKICK_ERROR;
@@ -1129,8 +1132,12 @@ gkick_synth_process(struct gkick_synth *synth,
 	}
 
 	gkick_synth_lock(synth);
-        if (callback != NULL && args != NULL)
-                callback(args, ((struct gkick_buffer*)synth->buffer)->buff, synth->buffer_size);
+        if (synth->buffer_callback != NULL && synth->callback_args != NULL) {
+                synth->buffer_callback(synth->callback_args,
+                                       ((struct gkick_buffer*)synth->buffer)->buff,
+                                       synth->buffer_size,
+                                       synth->id);
+        }
 
         /**
          * Don't update the output audio buffer if

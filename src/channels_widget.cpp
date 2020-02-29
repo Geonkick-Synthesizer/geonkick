@@ -59,7 +59,7 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
         addButton->setSize(16, 16);
         addButton->setPosition({10, 10});
         addButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_channel_button)));
-        RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addChannel());
+        //        RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addChannel());
         addButton->show();
 
         openKitButton = new RkButton(this);
@@ -209,25 +209,20 @@ void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
 
 	const auto *channel = getChannel(event->x(), event->y());
         if (channel) {
-                GEONKICK_LOG_INFO("channel");
 		if (event->x() < channesNameWidth) {
 			geonkickApi->setCurrentPercussion(channel->id);
 			return;
 		}
 
-                GEONKICK_LOG_INFO("channel1");
                 const auto *key = getKey(event->x(), event->y());
                 if (key) {
-                        GEONKICK_LOG_INFO("channel1.1: " << channel->id);
                         if (channel->id < connectionMatrix.size()
                             && key->id < connectionMatrix[channel->id].size()) {
                                 if (connectionMatrix[channel->id][key->id]) {
                                         connectionMatrix[channel->id][key->id] = false;
-                                        GEONKICK_LOG_INFO("channel2.1");
                                 } else {
                                         connectionMatrix[channel->id].fill(false);
                                         connectionMatrix[channel->id][key->id] = true;
-                                        GEONKICK_LOG_INFO("channel2.1");
                                 }
                                 update();
                         }
@@ -263,30 +258,24 @@ void ChannelsWidget::updateChannelName()
 	}
 }
 
-void ChannelsWidget::addChannel()
+void ChannelsWidget::addChannel(const Percussion &per)
 {
 	if (channelsList.size() + 1 > midiKeys.size() - 1)
 		return;
 
         Channel channel;
-        channel.id = geonkickApi->getUnusedPercussion();
-        if (channel.id < 1)
-                return;
-        channel.name = "Unknown";
+        channel.id = per.id;
+        channel.name = per.name;
         channel.rect = RkRect(0, keyWidth + channelsList.size() * channelHeight,
                               channesNameWidth + keyWidth * 17, channelHeight);
         channelsList.push_back(channel);
         connectionMatrix.push_back({false, false, false, false,
                                             false, false, false, false,
                                             false, false, false, false,
-                                            false, false, false, false, false});
+                                            false, false, false, false, true});
 	for (auto &key: midiKeys)
                 key.rect.setHeight(channelHeight * channelsList.size() + keyWidth);
-        geonkickApi->setPercussionPlayingKey(channel.id, 0);
-        geonkickApi->enablePercussion(channel.id);
-
-	update();
-	GEONKICK_LOG_INFO("addChannell");
+        update();
 }
 
 ChannelsWidget::Channel* ChannelsWidget::getChannel(int x, int y)
@@ -427,11 +416,12 @@ void ChannelsWidget::addPercussion(const Percussion &per)
                 RK_LOG_ERROR("can't load percussion file: " << per.file);
                 return;
         }
-        geonkickApi->setState(state, per.id);
+        geonkickApi->setState(state, per.id, per.key);
+        addChannel(per);
 }
 
 void ChannelsWidget::saveKit(const std::string &file)
 {
-        RK_LOG_ERROR("file:" << file);
+        RK_LOG_INFO("file:" << file);
 }
 

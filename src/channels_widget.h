@@ -86,7 +86,7 @@ class ChannelsWidget: public GeonkickWidget
         void createKeys();
         void createChannels();
 	void updateChannelName();
-        void addChannel();
+        void addChannel(const Percussion &per);
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);

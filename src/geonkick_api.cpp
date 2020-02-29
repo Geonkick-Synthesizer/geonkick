@@ -64,6 +64,7 @@ bool GeonkickApi::init()
 	geonkick_enable_synthesis(geonkickApi, 0);
 
 	auto n = getPercussionsNumber();
+        kickBuffers = std::vector<std::vector<gkick_real>>(n);
 	for (decltype(n) i = 0; i < n; i++) {
 		geonkick_set_current_percussion(geonkickApi, i);
 		setState(getDefaultState());
@@ -148,15 +149,17 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
 }
 
 void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state,
-                           size_t percussionId)
+                           size_t percussionId,
+                           unsigned char key)
 {
-	geonkick_enable_synthesis(geonkickApi, false);
+        geonkick_enable_synthesis(geonkickApi, false);
         auto currentId = currentPercussion();
+        geonkick_enable_percussion(geonkickApi, percussionId, true);
         geonkick_set_current_percussion(geonkickApi, percussionId);
         setState(state);
-        geonkick_enable_percussion(geonkickApi, percussionId, true);
+        geonkick_set_playing_key(geonkickApi, percussionId, key);
         geonkick_set_current_percussion(geonkickApi, currentId);
-	geonkick_enable_synthesis(geonkickApi, true);
+        geonkick_enable_synthesis(geonkickApi, true);
 }
 
 void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
@@ -648,13 +651,13 @@ void GeonkickApi::setLimiterValue(double value)
         geonkick_set_limiter_value(geonkickApi, value);
 }
 
-void GeonkickApi::kickUpdatedCallback(void *arg, gkick_real *buff, size_t size)
+void GeonkickApi::kickUpdatedCallback(void *arg, gkick_real *buff, size_t size, size_t id)
 {
         std::vector<gkick_real> buffer(size, 0);
         std::memcpy(buffer.data(), buff, size * sizeof(gkick_real));
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
-                obj->updateKickBuffer(std::move(buffer));
+                obj->updateKickBuffer(std::move(buffer), id);
 }
 
 void GeonkickApi::limiterCallback(void *arg, gkick_real val)
@@ -674,18 +677,19 @@ double GeonkickApi::getLimiterLevelerValue() const
         return limiterLevelerVal;
 }
 
-void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer)
+void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id)
 {
         std::lock_guard<std::mutex> lock(apiMutex);
-        kickBuffer = buffer;
-        if (eventQueue)
+        if (id < getPercussionsNumber())
+                kickBuffers[id] = buffer;
+        if (eventQueue && id == currentPercussion())
                 eventQueue->postAction([&](void){ kickUpdated(); });
 }
 
 std::vector<gkick_real> GeonkickApi::getKickBuffer() const
 {
         std::lock_guard<std::mutex> lock(apiMutex);
-        return kickBuffer;
+        return kickBuffers[currentPercussion()];
 }
 
 int GeonkickApi::getSampleRate() const
@@ -981,7 +985,8 @@ bool GeonkickApi::isAudioOutputTuned() const
 void GeonkickApi::setCurrentPercussion(int index)
 {
         geonkick_set_current_percussion(geonkickApi, index);
-	action stateChanged();
+        if (eventQueue)
+                eventQueue->postAction([&](void){ kickUpdated(); });
 }
 
 size_t GeonkickApi::currentPercussion() const

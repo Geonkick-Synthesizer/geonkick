@@ -32,14 +32,6 @@ gkick_mixer_create(struct gkick_mixer **mixer)
 		return GEONKICK_ERROR_MEM_ALLOC;
 	}
 
-	int key = 50;
-	for (size_t i = 0; i < 127; i++) {
-		if (key > 15)
-			key = 0;
-		(*mixer)->connection_matrix[i] = key;
-		key++;
-	}
-		
 	return GEONKICK_OK;
 }
 
@@ -49,14 +41,12 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 {
 	if (note->note_number < 0 || note->note_number > 127)
 		return GEONKICK_ERROR;
-		
-	size_t index = mixer->connection_matrix[(size_t)note->note_number];
-	if (index > GEONKICK_MAX_PERCUSSIONS)
-		return GEONKICK_ERROR;
 
-	struct gkick_audio_output *output = mixer->audio_outputs[index];
-	if (output->enabled)
-		return gkick_audio_output_key_pressed(output, note);
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                struct gkick_audio_output *output = mixer->audio_outputs[i];
+                if (output->enabled && output->playing_key == note->note_number)
+                        gkick_audio_output_key_pressed(output, note);
+        }
 	return GEONKICK_OK;
 }
 
@@ -81,7 +71,7 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
 
 	for (size_t ch = 0; ch < n_channels; ch++)
 		out_channels[ch] = out_val;
-	
+
         return GEONKICK_OK;
 }
 

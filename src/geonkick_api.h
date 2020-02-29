@@ -152,7 +152,9 @@ class GeonkickApi {
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
   void setState(const std::shared_ptr<GeonkickState> &state);
-  void setState(const std::shared_ptr<GeonkickState> &state, size_t percussionId);
+  void setState(const std::shared_ptr<GeonkickState> &state,
+                size_t percussionId,
+                unsigned char key);
   void setState(const std::string &data);
   void setKickEnvelopePoints(EnvelopeType envelope, const std::vector<RkRealPoint> &points);
   void playKick();
@@ -204,9 +206,9 @@ class GeonkickApi {
   std::string getSettings(const std::string &key) const;
 
 protected:
-  static void kickUpdatedCallback(void *arg, gkick_real *buff, size_t size);
+  static void kickUpdatedCallback(void *arg, gkick_real *buff, size_t size, size_t id);
   static void limiterCallback(void *arg, gkick_real val);
-  void updateKickBuffer(const std::vector<gkick_real> &&buffer);
+  void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
   void setOscillatorState(Layer layer,
                           OscillatorType oscillator,
                           const std::shared_ptr<GeonkickState> &state);
@@ -227,7 +229,7 @@ private:
   bool standaloneInstance;
   mutable std::mutex apiMutex;
   RkEventQueue *eventQueue;
-  std::vector<gkick_real> kickBuffer;
+  std::vector<std::vector<gkick_real>> kickBuffers;
   Layer currentLayer;
 
   /**

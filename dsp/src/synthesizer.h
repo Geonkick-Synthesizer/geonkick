@@ -32,6 +32,8 @@
 #include <stdatomic.h>
 
 struct gkick_synth {
+        _Atomic size_t id;
+
 	/* Speciafies if synthesizer is active. */
 	atomic_bool is_active;
         gkick_real current_time;
@@ -79,6 +81,13 @@ struct gkick_synth {
          * in a lock-free manner (atomically swaping buffers).
          */
         struct gkick_audio_output *output;
+
+        /**
+         * Pointer to a funtion to be
+         * called when the synth has finished the synthesis.
+         */
+        void (*buffer_callback) (void*, gkick_real *buff, size_t size, size_t id);
+        void *callback_args;
 
         pthread_mutex_t lock;
 };
@@ -292,9 +301,7 @@ void gkick_synth_set_output(struct gkick_synth *synth,
                             struct gkick_audio_output *output);
 
 enum geonkick_error
-gkick_synth_process(struct gkick_synth *synth,
-                    void (*callback)(void*, gkick_real *buff, size_t size),
-                    void *args);
+gkick_synth_process(struct gkick_synth *synth);
 
 gkick_real
 gkick_synth_get_value(struct gkick_synth *synth, gkick_real t);

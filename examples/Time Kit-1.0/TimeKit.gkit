@@ -30,15 +30,7 @@
 			"id": 3,
 			"name": "Kick",
 			"file": "Kick.gkick",
-			"key": 71,
-			"enabled": true,
-			"limiter": 0.01
-		},
-		{
-			"id": 3,
-			"name": "Kick",
-			"file": "Kick.gkick",
-			"key": 71,
+			"key": 72,
 			"enabled": true,
 			"limiter": 0.01
 		},
@@ -46,7 +38,7 @@
 			"id": 4,
 			"name": "Shaker",
 			"file": "Shaker.gkick",
-			"key": 72,
+			"key": 73,
 			"enabled": true,
 			"limiter": 0.01
 		},
@@ -54,12 +46,12 @@
 			"id": 5,
 			"name": "Snare",
 			"file": "Snare.gkick",
-			"key": 73,
+			"key": 74,
 			"enabled": true,
 			"limiter": 0.01
 		},
 		{
-			"id": 5,
+			"id": 6,
 			"name": "SnareT",
 			"file": "SnareT.gkick",
 			"key": 74,
