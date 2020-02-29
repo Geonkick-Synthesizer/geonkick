@@ -90,8 +90,9 @@ class ChannelsWidget: public GeonkickWidget
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
-        Kit parseKit(std::string &fileData);
-        std::vector<Percussion> parsePercussions(const rapidjson::Value &envelopeArray);
+        Kit parseKit(std::string &fileData, const std::filesystem::path &path);
+        std::vector<Percussion> parsePercussions(const rapidjson::Value &envelopeArray,
+                                                 const std::filesystem::path &path);
         void addPercussion(const Percussion &per);
 
  private:

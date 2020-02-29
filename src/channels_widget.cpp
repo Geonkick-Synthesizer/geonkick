@@ -353,7 +353,7 @@ void ChannelsWidget::openKit(const std::string &file)
         std::string fileData((std::istreambuf_iterator<char>(sfile)), (std::istreambuf_iterator<char>()));
         sfile.close();
 
-        auto kit = parseKit(fileData);
+        auto kit = parseKit(fileData, filePath.parent_path());
         if (!kit.list.empty()) {
                 for (const auto &per: kit.list)
                         addPercussion(per);
@@ -363,7 +363,9 @@ void ChannelsWidget::openKit(const std::string &file)
         updateGui();
 }
 
-ChannelsWidget::Kit ChannelsWidget::parseKit(std::string &fileData)
+ChannelsWidget::Kit
+ChannelsWidget::parseKit(std::string &fileData,
+                         const std::filesystem::path &path)
 {
         rapidjson::Document document;
         Kit kit;
@@ -377,13 +379,15 @@ ChannelsWidget::Kit ChannelsWidget::parseKit(std::string &fileData)
                         if (m.name == "url" && m.value.IsString())
                                 kit.url = m.value.GetString();
                         if (m.name == "percussions" && m.value.IsArray())
-                                kit.list = parsePercussions(m.value);
+                                kit.list = parsePercussions(m.value, path);
                 }
         }
         return kit;
 }
 
-std::vector<ChannelsWidget::Percussion> ChannelsWidget::parsePercussions(const rapidjson::Value &envelopeArray)
+std::vector<ChannelsWidget::Percussion>
+ChannelsWidget::parsePercussions(const rapidjson::Value &envelopeArray,
+                                 const std::filesystem::path &path)
 {
         std::vector<Percussion> percussions;
         for (const auto &el: envelopeArray.GetArray()) {
@@ -395,7 +399,7 @@ std::vector<ChannelsWidget::Percussion> ChannelsWidget::parsePercussions(const r
                                 if (m.name == "name" && m.value.IsString())
                                         per.name = m.value.GetString();
                                 if (m.name == "file" && m.value.IsString())
-                                        per.file = m.value.GetString();
+                                        per.file = path / std::filesystem::path(m.value.GetString());
                                 if (m.name == "key" && m.value.IsInt())
                                         per.key = m.value.GetInt();
                                 if (m.name == "enabled" && m.value.IsBool())
@@ -414,13 +418,13 @@ std::vector<ChannelsWidget::Percussion> ChannelsWidget::parsePercussions(const r
 void ChannelsWidget::addPercussion(const Percussion &per)
 {
         if (per.id > geonkickApi->getPercussionsNumber()) {
-                RK_LOG_ERROR("invalid percussion id: " < per.id);
+                RK_LOG_ERROR("invalid percussion id: " << per.id);
                 return;
         }
 
         auto state = std::make_shared<GeonkickState>();
         if (!state->loadFile(per.file)) {
-                RK_LOG_ERROR("can't load percussion file: " << file);
+                RK_LOG_ERROR("can't load percussion file: " << per.file);
                 return;
         }
         geonkickApi->setState(state, per.id);
