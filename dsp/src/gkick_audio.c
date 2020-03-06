@@ -140,8 +140,7 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
         key.note_number = note;
         key.velocity    = velocity;
         key.state = pressed ? GKICK_KEY_STATE_PRESSED : GKICK_KEY_STATE_RELEASED;
-        gkick_audio_output_key_pressed(audio->audio_outputs[0], &key);
-        return GEONKICK_OK;
+        return gkick_mixer_key_pressed(audio->mixer, &key);
 }
 
 enum geonkick_error

@@ -61,7 +61,7 @@ bool GeonkickApi::init()
                 return false;
   	}
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
-	geonkick_enable_synthesis(geonkickApi, 0);
+	geonkick_enable_synthesis(geonkickApi, false);
 
 	auto n = getPercussionsNumber();
         kickBuffers = std::vector<std::vector<gkick_real>>(n);
@@ -73,8 +73,7 @@ bool GeonkickApi::init()
         // Set the first the percussion by default controllable.
 	geonkick_set_current_percussion(geonkickApi, 0);
         geonkick_enable_percussion(geonkickApi, 0, true);
-
-	geonkick_enable_synthesis(geonkickApi, 1);
+	geonkick_enable_synthesis(geonkickApi, true);
         return true;
 }
 
@@ -880,7 +879,7 @@ bool GeonkickApi::isStandalone() const
 
 void GeonkickApi::triggerSynthesis()
 {
-        geonkick_enable_synthesis(geonkickApi, 1);
+        geonkick_enable_synthesis(geonkickApi, true);
 }
 
 void GeonkickApi::setLayer(Layer layer)
@@ -987,6 +986,7 @@ void GeonkickApi::setCurrentPercussion(int index)
         geonkick_set_current_percussion(geonkickApi, index);
         if (eventQueue)
                 eventQueue->postAction([&](void){ kickUpdated(); });
+        action stateChanged();
 }
 
 size_t GeonkickApi::currentPercussion() const

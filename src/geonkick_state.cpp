@@ -798,7 +798,7 @@ void GeonkickState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "]" << std::endl; // points
         jsonStream << "}, " << std::endl;  // filter;
         jsonStream << "\"compressor\": {" << std::endl;
-        jsonStream << "\"enabled\": " << isCompressorEnabled() << ", " << std::endl;
+        jsonStream << "\"enabled\": " << (isCompressorEnabled() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"attack\": " << std::fixed << std::setprecision(5) << getCompressorAttack() << ", " << std::endl;
         jsonStream << "\"release\": " << std::fixed << std::setprecision(5) << getCompressorRelease() << ", " << std::endl;
         jsonStream << "\"threshold\": " << std::fixed << std::setprecision(5) << getCompressorThreshold() << ", " << std::endl;

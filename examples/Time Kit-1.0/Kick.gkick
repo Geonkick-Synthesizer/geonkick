@@ -219,6 +219,7 @@
 "layers": [0],
 "layers_amplitude": [1.00000, 1.00000, 1.00000],
 "limiter": 0.96354, 
+"tuned_output": false, 
 "ampl_env": {
 "amplitude": 0.01481, 
 "length": 651.11115, 
@@ -231,7 +232,7 @@
 "cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
 }, 
 "compressor": {
-"enabled": 0, 
+"enabled": false, 
 "attack": 0.00146, 
 "release": 0.01000, 
 "threshold": -17.40000, 
@@ -241,6 +242,7 @@
 }, 
 "distortion": {
 "enabled": true, 
+"in_limiter": 1.00000, 
 "volume": 0.66069, 
 "drive": 8.00000
 }

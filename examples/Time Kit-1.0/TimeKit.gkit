@@ -3,7 +3,7 @@
 	"Author": "Geontime",
 	"url": "http://geontime.com",
 	"percussions": [
-		{
+		 {
 			"id": 0,
 			"name": "Hit-Hat-Closed",
 			"file": "Hit-Hat-Closed.gkick",
@@ -29,14 +29,6 @@
 		},
 		{
 			"id": 3,
-			"name": "Kick",
-			"file": "Kick.gkick",
-			"key": 72,
-			"enabled": true,
-			"limiter": 0.01
-		},
-		{
-			"id": 4,
 			"name": "Shaker",
 			"file": "Shaker.gkick",
 			"key": 73,
@@ -44,18 +36,26 @@
 			"limiter": 0.01
 		},
 		{
-			"id": 5,
+			"id": 4,
 			"name": "Snare",
 			"file": "Snare.gkick",
 			"key": 74,
 			"enabled": true,
 			"limiter": 0.01
 		},
+                {
+                        "id": 5,
+                        "name": "Kick",
+			"file": "Kick.gkick",
+			"key": 75,
+			"enabled": true,
+			"limiter": 0.01
+                },
 		{
 			"id": 6,
 			"name": "SnareT",
 			"file": "SnareT.gkick",
-			"key": 75,
+			"key": 76,
 			"enabled": true,
 			"limiter": 0.01
 		}
