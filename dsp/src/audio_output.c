@@ -83,13 +83,6 @@ enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                struct gkick_note_info *key)
 {
-        if (!audio_output->tune) {
-                if ((key->note_number < 0)
-                    || (audio_output->playing_key > 0
-                    && key->note_number != audio_output->playing_key))
-                        return GEONKICK_OK;
-        }
-
         if (key->state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->key = *key;
                 audio_output->is_play = true;
@@ -210,6 +203,7 @@ enum geonkick_error
 gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, char key)
 {
         audio_output->playing_key = key;
+        gkick_log_info("key: %d", key);
         return GEONKICK_OK;
 }
 

@@ -2,18 +2,19 @@
 	"name": "TimeKit",
 	"Author": "Geontime",
 	"url": "http://geontime.com",
-	"percussions": [{
+	"percussions": [
+		{
 			"id": 0,
-			"name": "Clap",
-			"file": "Clap.gkick",
+			"name": "Hit-Hat-Closed",
+			"file": "Hit-Hat-Closed.gkick",
 			"key": 69,
 			"enabled": true,
 			"limiter": 0.01
 		},
-		{
+                {
 			"id": 1,
-			"name": "Hit-Hat-Closed",
-			"file": "Hit-Hat-Closed.gkick",
+			"name": "Clap",
+			"file": "Clap.gkick",
 			"key": 70,
 			"enabled": true,
 			"limiter": 0.01
@@ -54,7 +55,7 @@
 			"id": 6,
 			"name": "SnareT",
 			"file": "SnareT.gkick",
-			"key": 74,
+			"key": 75,
 			"enabled": true,
 			"limiter": 0.01
 		}

@@ -1452,5 +1452,6 @@ geonkick_set_playing_key(struct geonkick *kick, size_t id, char key)
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+        gkick_log_info("synth id: %d, key: %d", id, key);
         return gkick_audio_output_set_playing_key(kick->synths[id]->output, key);
 }

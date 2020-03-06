@@ -44,7 +44,8 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
-                if (output->enabled && output->playing_key == note->note_number)
+                if (output->enabled && (output->playing_key == -1
+                    || output->playing_key == note->note_number))
                         gkick_audio_output_key_pressed(output, note);
         }
 	return GEONKICK_OK;

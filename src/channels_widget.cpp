@@ -31,12 +31,7 @@
 #include <RkLineEdit.h>
 #include <RkButton.h>
 
-// TODO: load from file.
-constexpr std::array<std::string_view, 5> channels {"Kick",
-		"Snare", "Hit-Hat", "Macaras", "Crash"};
-
 RK_DECLARE_IMAGE_RC(add_channel_button);
-
 
 ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
@@ -224,6 +219,8 @@ void ChannelsWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
                                         connectionMatrix[channel->id].fill(false);
                                         connectionMatrix[channel->id][key->id] = true;
                                 }
+                                int k = key->id < (midiKeys.size() - 1) ? (key->id + 69) : -1;
+                                geonkickApi->setPercussionPlayingKey(channel->id, k);
                                 update();
                         }
                 }
@@ -269,10 +266,11 @@ void ChannelsWidget::addChannel(const Percussion &per)
         channel.rect = RkRect(0, keyWidth + channelsList.size() * channelHeight,
                               channesNameWidth + keyWidth * 17, channelHeight);
         channelsList.push_back(channel);
-        connectionMatrix.push_back({false, false, false, false,
-                                            false, false, false, false,
-                                            false, false, false, false,
-                                            false, false, false, false, true});
+        std::array<bool, 17> connection;
+        connection.fill(false);
+        if (per.key - 69 > -1 && static_cast<decltype(connection.size())>(per.key - 69) < connection.size())
+                connection[per.key - 69] = true;
+        connectionMatrix.push_back(std::move(connection));
 	for (auto &key: midiKeys)
                 key.rect.setHeight(channelHeight * channelsList.size() + keyWidth);
         update();
