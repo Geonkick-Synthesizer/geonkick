@@ -84,7 +84,6 @@ class ChannelsWidget: public GeonkickWidget
         const ChannelKey* getKey(int x, int y) const;
         RkPoint getIntersectionPoint(const ChannelKey &key, const Channel &channel) const;
         void createKeys();
-        void createChannels();
 	void updateChannelName();
         void addChannel(const Percussion &per);
         void openFileDialog(FileDialog::Type type);

@@ -46,8 +46,11 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
         , saveKitButton{nullptr}
 {
 	RK_ACT_BIND(editChannel, editingFinished, RK_ACT_ARGS(), this, updateChannelName());
+
         createKeys();
-        createChannels();
+        geonkickApi->enablePercussion(0, true);
+        geonkickApi->setPercussionPlayingKey(0, -1);
+        addChannel({0, "Default", "", -1, true, 1.0});
 
         addButton = new RkButton(this);
 	addButton->setCheckable(true);
@@ -92,28 +95,6 @@ void ChannelsWidget::createKeys()
                 midiKeys.push_back(midiKey);
                 x += keyWidth;
         }
-}
-
-void ChannelsWidget::createChannels()
-{
-        /*	int y = keyWidth;
-        for (const auto &ch: channels) {
-                Channel channel;
-                channel.id = geonkickApi->getUnusedPercussion();
-                GEONKICK_LOG_INFO("channel: " << channel.id);
-                if (channel.id < 1)
-                        return;
-                geonkickApi->setPercussionPlayingKey(channel.id, 0);
-                geonkickApi->enablePercussion(channel.id);
-                channel.name = ch;
-                channel.rect = RkRect(0, y, channesNameWidth + keyWidth * 17, channelHeight);
-                channelsList.push_back(channel);
-                connectionMatrix.push_back({false, false, false, false,
-                                            false, false, false, false,
-                                            false, false, false, false,
-                                            false, false, false, false, true});
-                y += channelHeight;
-                }*/
 }
 
 void ChannelsWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -268,8 +249,10 @@ void ChannelsWidget::addChannel(const Percussion &per)
         channelsList.push_back(channel);
         std::array<bool, 17> connection;
         connection.fill(false);
-        if (per.key - 69 > -1 && static_cast<decltype(connection.size())>(per.key - 69) < connection.size())
+        if (per.key - 69 > -1 && static_cast<decltype(connection.size())>(per.key - 69) < connection.size() - 1)
                 connection[per.key - 69] = true;
+        else
+                connection[connection.size() - 1] = true;
         connectionMatrix.push_back(std::move(connection));
 	for (auto &key: midiKeys)
                 key.rect.setHeight(channelHeight * channelsList.size() + keyWidth);
