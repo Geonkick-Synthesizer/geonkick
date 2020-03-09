@@ -1,5 +1,5 @@
 /**
- * File name: channels_widget.h
+ * File name: kit_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef CHANNELS_WIDGET_H
-#define CHANNELS_WIDGET_H
+#ifndef KIT_WIDGET_H
+#define KIT_WIDGET_H
 
 #include "geonkick_widget.h"
 #include "file_dialog.h"
@@ -37,18 +37,11 @@ class GeonkickApi;
 class RkLineEdit;
 class RkButton;
 
-class ChannelsWidget: public GeonkickWidget
+class KitWidget: public GeonkickWidget
 {
-        struct ChannelKey {
-                size_t id;
+        struct KeyInfo {
                 std::string name;
-                RkRect rect;
-        };
-
-        struct Channel {
-                size_t id;
-                std::string name;
-                RkRect rect;
+                char key;
         };
 
         struct Percussion {
@@ -68,8 +61,8 @@ class ChannelsWidget: public GeonkickWidget
         };
 
  public:
-        ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api);
-        ~ChannelsWidget() = default;
+        KitWidget(GeonkickWidget *parent, GeonkickApi* api);
+        ~KitWidget() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
@@ -77,37 +70,37 @@ class ChannelsWidget: public GeonkickWidget
 	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
 	void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) override;
         void drawKeys(RkPainter &painter);
-        void drawChannels(RkPainter &painter);
+        void drawPercussions(RkPainter &painter);
         void drawConnections(RkPainter &painter);
         void drawConnection(RkPainter &painter, const RkPoint &point);
-        Channel* getChannel(int x, int y);
-        const ChannelKey* getKey(int x, int y) const;
-        RkPoint getIntersectionPoint(const ChannelKey &key, const Channel &channel) const;
+        Percussion* getPercussion(int x, int y) const;
+        const KeyInfo* getKey(int x, int y) const;
+        RkPoint getIntersectionPoint(const PercussionKey &key, const Percussion &percussion) const;
         void createKeys();
-	void updateChannelName();
-        void addChannel(const Percussion &per);
+	void updatePercussionName();
+        void addPercussion(const Percussion &per);
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
         Kit parseKit(std::string &fileData, const std::filesystem::path &path);
         std::vector<Percussion> parsePercussions(const rapidjson::Value &envelopeArray,
                                                  const std::filesystem::path &path);
-        void addPercussion(const Percussion &per);
         void addNewPercussion();
+        void removePercussion(int id);
+        void copyPercussion(int id);
 
  private:
 	GeonkickApi* geonkickApi;
-        std::vector<ChannelKey> midiKeys;
-        std::vector<Channel> channelsList;
-        std::vector<std::array<bool, 17>> connectionMatrix;
+        std::vector<KeyInfo> midiKeys;
+        std::vector<Percussion> kitList;
 	int keyWidth;
-	int channelHeight;
+	int percussionHeight;
 	int channesNameWidth;
-	RkLineEdit *editChannel;
-	Channel *editedChannel;
+	RkLineEdit *editPercussion;
+	Percussion *editedPercussion;
         RkButton *addButton;
         RkButton *openKitButton;
         RkButton *saveKitButton;
 };
 
-#endif // CHANNELS_WIDGET_H
+#endif // KIT_WIDGET_H

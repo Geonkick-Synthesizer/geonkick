@@ -2,7 +2,7 @@
  * File name: control_area.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -23,32 +23,32 @@
 
 #include "control_area.h"
 #include "controls_widget.h"
-#include "channels_widget.h"
+#include "kit_widget.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
                          GeonkickApi* api,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
         , controlsWidget{new ControlsWidget(this, api, oscillators)}
-        , channelsWidget{new ChannelsWidget(this, api)}
+        , kitWidget{new KitWidget(this, api)}
 {
         setFixedSize(920, 360);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), channelsWidget, updateGui());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), kitWidget, updateGui());
         controlsWidget->setSize({width(), height()});
-        channelsWidget->setSize({width(), height()});
+        kitWidget->setSize({width(), height()});
         showControls();
 }
 
 void ControlArea::showControls()
 {
         controlsWidget->show();
-        channelsWidget->hide();
+        kitWidget->hide();
 }
 
-void ControlArea::showChannels()
+void ControlArea::showKit()
 {
         controlsWidget->hide();
-        channelsWidget->show();
+        kitWidget->show();
 }
 

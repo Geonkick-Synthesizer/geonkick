@@ -30,7 +30,7 @@
 class Oscillator;
 class GeonkickApi;
 class ControlsWidget;
-class ChannelsWidget;
+class KitWidget;
 
 class ControlArea: public GeonkickWidget
 {
@@ -45,7 +45,7 @@ class ControlArea: public GeonkickWidget
 
  private:
         ControlsWidget *controlsWidget;
-        ChannelsWidget *channelsWidget;
+        KitWidget *kitWidget;
 };
 
 #endif // GKICK_CONTROL_AREA_H
