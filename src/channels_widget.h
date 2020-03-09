@@ -93,6 +93,7 @@ class ChannelsWidget: public GeonkickWidget
         std::vector<Percussion> parsePercussions(const rapidjson::Value &envelopeArray,
                                                  const std::filesystem::path &path);
         void addPercussion(const Percussion &per);
+        void addNewPercussion();
 
  private:
 	GeonkickApi* geonkickApi;

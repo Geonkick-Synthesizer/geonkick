@@ -57,7 +57,7 @@ ChannelsWidget::ChannelsWidget(GeonkickWidget *parent, GeonkickApi* api)
         addButton->setSize(16, 16);
         addButton->setPosition({10, 10});
         addButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_channel_button)));
-        //        RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addChannel());
+        RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addNewPercussion());
         addButton->show();
 
         openKitButton = new RkButton(this);
@@ -388,6 +388,18 @@ ChannelsWidget::parsePercussions(const rapidjson::Value &envelopeArray,
 
         return percussions;
 
+}
+
+void ChannelsWidget::addNewPercussion()
+{
+        int id = geonkickApi->getUnusedPercussion();
+        if (id < 0)
+                return;
+        geonkickApi->enablePercussion(id, true);
+        geonkickApi->setCurrentPercussion(id);
+        geonkickApi->setState(geonkickApi->getDefaultState());
+        geonkickApi->setPercussionPlayingKey(id, -1);
+        addChannel({static_cast<size_t>(id), "Default", "", -1, true, 1.0});
 }
 
 void ChannelsWidget::addPercussion(const Percussion &per)
