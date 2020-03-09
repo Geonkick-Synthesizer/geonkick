@@ -342,6 +342,11 @@ void ChannelsWidget::openKit(const std::string &file)
 
         auto kit = parseKit(fileData, filePath.parent_path());
         if (!kit.list.empty()) {
+                connectionMatrix.clear();
+                channelsList.clear();
+                auto n = geonkickApi->getPercussionsNumber();
+                for (decltype(n) i = 0; i < n; i++)
+                        geonkickApi->enablePercussion(i, false);
                 for (const auto &per: kit.list)
                         addPercussion(per);
         }
