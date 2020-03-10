@@ -41,7 +41,7 @@ class ControlArea: public GeonkickWidget
         ~ControlArea() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
         void showControls();
-        void showChannels();
+        void showKit();
 
  private:
         ControlsWidget *controlsWidget;
