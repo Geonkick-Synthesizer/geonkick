@@ -74,7 +74,7 @@ class KitWidget: public GeonkickWidget
         void drawConnections(RkPainter &painter);
         void drawConnection(RkPainter &painter, const RkPoint &point);
         Percussion* getPercussion(int x, int y) const;
-        const KeyInfo* getKey(int x, int y) const;
+        const KeyInfo* getKey(int x) const;
         RkPoint getIntersectionPoint(const PercussionKey &key, const Percussion &percussion) const;
         void createKeys();
 	void updatePercussionName();
@@ -95,6 +95,7 @@ class KitWidget: public GeonkickWidget
         std::vector<Percussion> kitList;
 	int keyWidth;
 	int percussionHeight;
+        int percussionWidth;
 	int channesNameWidth;
 	RkLineEdit *editPercussion;
 	Percussion *editedPercussion;
