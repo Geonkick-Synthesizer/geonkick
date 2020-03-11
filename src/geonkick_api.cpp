@@ -207,6 +207,19 @@ void GeonkickApi::setState(const std::string &data)
         setState(state);
 }
 
+std::shared_ptr<GeonkickState> GeonkickApi::getState(size_t id)
+{
+        if (id == currentPercussion()) {
+                return getState();
+        } else {
+                auto tmpId = currentPercussion();
+                geonkick_set_current_percussion(geonkickApi, id);
+                auto state = getState();
+                geonkick_set_current_percussion(geonkickApi, tpmId);
+                return state;
+        }
+}
+
 std::shared_ptr<GeonkickState> GeonkickApi::getState()
 {
         auto state = std::make_shared<GeonkickState>();
@@ -310,6 +323,15 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         setOscillatorAsFm(osc, state->isOscillatorAsFm(osc));
 
         currentLayer = temp;
+}
+
+std::unique_ptr<KitState> GeonkickApi::getKitState() const
+{
+        
+}
+
+void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
+{
 }
 
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)

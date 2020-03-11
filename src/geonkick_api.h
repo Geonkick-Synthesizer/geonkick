@@ -129,6 +129,7 @@ class GeonkickApi {
   gkick_real getAudioFrame() const;
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
+  std::shared_ptr<GeonkickState> getState(size_t id);
   std::shared_ptr<GeonkickState> getState();
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
@@ -155,6 +156,8 @@ class GeonkickApi {
   void setState(const std::shared_ptr<GeonkickState> &state,
                 size_t percussionId,
                 unsigned char key);
+  std::unique_ptr<KitState> getKitState() const;
+  void setKitState(const std::unique_ptr<KitState> &state);
   void setState(const std::string &data);
   void setKickEnvelopePoints(EnvelopeType envelope, const std::vector<RkRealPoint> &points);
   void playKick();

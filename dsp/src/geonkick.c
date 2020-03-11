@@ -1290,8 +1290,6 @@ geonkick_set_current_percussion(struct geonkick *kick, size_t index)
 
 	kick->per_index = index;
 	struct gkick_synth *synth = kick->synths[kick->per_index];
-	gkick_synth_lock(synth);
-	gkick_synth_unlock(synth);
 	return GEONKICK_OK;
 }
 

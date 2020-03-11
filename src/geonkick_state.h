@@ -193,4 +193,17 @@ private:
         bool tunedOutput;
 };
 
+class KitState {
+ public:
+        KitState();
+        bool open(const std::string &file);
+        bool save(const std::string &file);
+        bool fromJson(const std::string &jsonData);
+        std::string toJson() const;
+        void addPercussion(std::unique_ptr<GeonkickState> &percussion);
+
+ private:
+        std::vector<std::unique_ptr<GeonkickState>> percussionsList;
+};
+
 #endif // GEONKICK_STATE_H

@@ -4425,7 +4425,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="18.455487"
      inkscape:cx="2874.56"
-     inkscape:cy="-127.54733"
+     inkscape:cy="-147.05372"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -17074,5 +17074,25 @@
          id="rect3466-9"
          style="display:inline;opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:#c7cac9;stroke-width:0.6994707;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     </g>
+    <rect
+       style="display:inline;opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:none;stroke-width:0.18314178;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3"
+       width="7.2684388"
+       height="7.2684388"
+       x="754.42615"
+       y="333.96619"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/add_per_button.png"
+       inkscape:export-xdpi="55.912964"
+       inkscape:export-ydpi="55.912964" />
+    <path
+       style="fill:none;stroke:#c7cac9;stroke-width:0.87691188;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 755.20057,337.60041 c 5.71959,0 5.71959,0 5.71959,0"
+       id="path3397-7"
+       inkscape:connector-curvature="0" />
+    <path
+       style="display:inline;fill:none;stroke:#c7cac9;stroke-width:0.87691188;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 758.06037,334.84748 c 0,5.50586 0,5.50586 0,5.50586"
+       id="path3397-3-5"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

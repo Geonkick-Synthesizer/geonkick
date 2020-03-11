@@ -2,7 +2,7 @@
  * File name: geonkick_lv2.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -150,13 +150,13 @@ class GeonkickLv2Plugin
         void setStateData(const std::string &data, int flags = 0)
         {
                 RK_UNUSED(flags);
-                geonkickApi->setState(data);
+                geonkickApi->setKitState(data);
                 action geonkickApi->stateChanged();
         }
 
         std::string getStateData()
         {
-                return geonkickApi->getState()->toJson();
+                return geonkickApi->getKitState();
         }
 
         GeonkickApi* getApi() const

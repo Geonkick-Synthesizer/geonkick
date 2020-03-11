@@ -325,96 +325,23 @@ void KitWidget::openFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        if (file.size() < 6) {
-                RK_LOG_ERROR("can't open preset. File name empty or wrong format.");
+        auto kit = std::shared_ptr<KitState>();
+        if (kit->open(file))
+                RK_LOG_ERROR("can't open kit");
                 return;
         }
 
-        std::filesystem::path filePath(file);
-        if (filePath.extension().empty()
-            || (filePath.extension() != ".gkit"
-            && filePath.extension() != ".GKIT")) {
-                RK_LOG_ERROR("can't open kit. Wrong file format.");
-                return;
-        }
+        for (const auto &per: kit->percussions())
+                addPercussion(per);
 
-        std::ifstream sfile;
-        sfile.open(std::filesystem::absolute(filePath));
-        if (!sfile.is_open()) {
-                RK_LOG_ERROR("can't open kit.");
-                return;
-        }
-        std::string fileData((std::istreambuf_iterator<char>(sfile)),
-                             (std::istreambuf_iterator<char>()));
-        sfile.close();
-
-        auto kit = parseKit(fileData, filePath.parent_path());
-        if (!kit.list.empty()) {
-                kitList.clear();
-                auto n = geonkickApi->getPercussionsNumber();
-                for (decltype(n) i = 0; i < n; i++)
-                        geonkickApi->enablePercussion(i, false);
-                for (const auto &per: kit.list)
-                        addPercussion(per);
-        }
-
+        auto filePath = std::filesustem::path(file);
         auto path = filePath.has_parent_path() ? filePath.parent_path() : filePath;
+        geonkickApi->setKitState(state);
         geonkickApi->setCurrentWorkingPath("OpenKit", path);
         editPercussion->setText("");
         updateGui();
 }
 
-KitWidget::Kit
-KitWidget::parseKit(std::string &fileData,
-                         const std::filesystem::path &path)
-{
-        rapidjson::Document document;
-        Kit kit;
-        document.Parse(fileData.c_str());
-        if (document.IsObject()) {
-                for (const auto &m: document.GetObject()) {
-                        if (m.name == "name" && m.value.IsString())
-                                kit.name = m.value.GetString();
-                        if (m.name == "author" && m.value.IsString())
-                                kit.author = m.value.GetString();
-                        if (m.name == "url" && m.value.IsString())
-                                kit.url = m.value.GetString();
-                        if (m.name == "percussions" && m.value.IsArray())
-                                kit.list = parsePercussions(m.value, path);
-                }
-        }
-        return kit;
-}
-
-std::vector<KitWidget::Percussion>
-KitWidget::parsePercussions(const rapidjson::Value &envelopeArray,
-                                 const std::filesystem::path &path)
-{
-        std::vector<Percussion> percussions;
-        for (const auto &el: envelopeArray.GetArray()) {
-                if (el.IsObject()) {
-                        Percussion per;
-                        for (const auto &m: el.GetObject()) {
-                                if (m.name == "id" && m.value.IsInt())
-                                        per.id = m.value.GetInt();
-                                if (m.name == "name" && m.value.IsString())
-                                        per.name = m.value.GetString();
-                                if (m.name == "file" && m.value.IsString())
-                                        per.file = path / std::filesystem::path(m.value.GetString());
-                                if (m.name == "key" && m.value.IsInt())
-                                        per.key = m.value.GetInt();
-                                if (m.name == "enabled" && m.value.IsBool())
-                                        per.enabled = m.value.GetBool();
-                                if (m.name == "limiter" && m.value.IsDouble())
-                                        per.limiter = m.value.GetDouble();
-                        }
-                        percussions.push_back(per);
-                }
-        }
-
-        return percussions;
-
-}
 
 void KitWidget::addNewPercussion()
 {
@@ -446,13 +373,15 @@ void KitWidget::copyPercussion(const Percussion &per)
 {
         auto newId = geonkickApi->getUnusedPercussion();
         if (newId > - 1) {
-                geonkickApi->setState(geonkickApi->getState(), newId, per.key);
+                geonkickApi->setState(geonkickApi->getState(per.id), newId);
+                geonkickApi->setPlayingKey(per.id, newId);
                 kitList.push_back(per);
         }
 }
 
 void KitWidget::saveKit(const std::string &file)
 {
-        RK_LOG_INFO("file:" << file);
+        auto state = geonkickApi->getKitState();
+        state->save(file);
 }
 
