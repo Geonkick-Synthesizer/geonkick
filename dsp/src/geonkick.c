@@ -1432,6 +1432,21 @@ geonkick_enable_percussion(struct geonkick *kick, size_t index, bool enable)
 	return GEONKICK_OK;
 }
 
+enum geonkick_error
+geonkick_is_percussion_enabled(struct geonkick *kick,
+                               size_t index,
+                               bool *enable)
+{
+        if (kick == NULL || enable == NULL || index > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        *enable = kick->synths[index]->is_enabled;
+
+}
+
+
 size_t geonkick_percussion_number(struct geonkick *kick)
 {
 	return GEONKICK_MAX_PERCUSSIONS;

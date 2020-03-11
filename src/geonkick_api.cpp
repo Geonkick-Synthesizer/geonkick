@@ -327,7 +327,18 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
 
 std::unique_ptr<KitState> GeonkickApi::getKitState() const
 {
-        
+        auto kit = std::make_unique<KitState>();
+        kit->setName(getKitName());
+        kit->setAuthor(getKitAuthor());
+        kit->setKitUrl(getKitUrl());
+        auto n = getPercussionNumber();
+        for (decltype(n) i = 0; i < n; i++) {
+                bool enabled = false;
+                geonkick_is_percussion_enabled(geonkickApi, &enabled);
+                if (enabled)
+                        kit->addPercussion(getState(i));
+        }
+        return kit;
 }
 
 void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)

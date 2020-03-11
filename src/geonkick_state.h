@@ -203,7 +203,7 @@ class KitState {
         void addPercussion(std::unique_ptr<GeonkickState> &percussion);
 
  private:
-        std::vector<std::unique_ptr<GeonkickState>> percussionsList;
+        std::vector<std::shared_ptr<GeonkickState>> percussionsList;
 };
 
 #endif // GEONKICK_STATE_H

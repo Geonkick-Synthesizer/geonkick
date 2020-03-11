@@ -466,7 +466,14 @@ enum geonkick_error
 geonkick_unused_percussion(struct geonkick *kick, int *index);
 
 enum geonkick_error
-geonkick_enable_percussion(struct geonkick *kick, size_t index, bool enable);
+geonkick_enable_percussion(struct geonkick *kick,
+                           size_t index,
+                           bool enable);
+
+enum geonkick_error
+geonkick_is_percussion_enabled(struct geonkick *kick,
+                               size_t index,
+                               bool *enable);
 
 size_t geonkick_percussion_number(struct geonkick *kick);
 
