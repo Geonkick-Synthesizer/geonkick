@@ -195,15 +195,24 @@ private:
 
 class KitState {
  public:
-        KitState();
         bool open(const std::string &file);
         bool save(const std::string &file);
         bool fromJson(const std::string &jsonData);
         std::string toJson() const;
         void addPercussion(std::unique_ptr<GeonkickState> &percussion);
+        void setName(std::string &name);
+        std::string name() const;
+        void setAuthor(std::string &name);
+        std::string author() const;
+        void setUrl(std::string &name);
+        std::string url() const;
+        std::vector<std::shared_ptr<GeonkickState>>& percussions();
 
  private:
         std::vector<std::shared_ptr<GeonkickState>> percussionsList;
+        std::string kitName;
+        std::string kitAuthor;
+        std::string kitUrl;
 };
 
 #endif // GEONKICK_STATE_H
