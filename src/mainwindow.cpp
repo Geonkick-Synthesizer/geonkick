@@ -161,28 +161,12 @@ void MainWindow::openExportDialog()
 
 void MainWindow::savePreset(const std::string &fileName)
 {
-        if (fileName.size() < 7) {
-                RK_LOG_ERROR("Save Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
-                return;
+        auto state = geonkickApi->getState();
+        if (state->save(fileName)) {
+                std::filesystem::path filePath(fileName);
+                topBar->setPresetName(filePath.stem());
+                geonkickApi->setCurrentWorkingPath("SavePreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
         }
-
-        std::filesystem::path filePath(fileName);
-        std::locale loc;
-        if (filePath.extension().empty()
-            || (filePath.extension() != ".gkick"
-            && filePath.extension() != ".GKICK"))
-                filePath.replace_extension(".gkick");
-
-        std::ofstream file;
-        file.open(std::filesystem::absolute(filePath));
-        if (!file.is_open()) {
-                RK_LOG_ERROR("Error | Save Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't save preset");
-                return;
-        }
-        file << geonkickApi->getState()->toJson();
-        file.close();
-        topBar->setPresetName(filePath.stem());
-        geonkickApi->setCurrentWorkingPath("SavePreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
 }
 
 void MainWindow::openPreset(const std::string &fileName)

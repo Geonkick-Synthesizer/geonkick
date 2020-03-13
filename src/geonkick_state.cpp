@@ -96,6 +96,46 @@ void GeonkickState::loadData(const std::string &data)
 
 }
 
+size_t GeonkickState::getId() const
+{
+        return kickId;
+}
+
+void GeonkickState::setId(size_t id)
+{
+        kickId = id;
+}
+
+std::string GeonkickState::getName() const
+{
+        return kickName;
+}
+
+void GeonkickState::setName(const std::string &name)
+{
+        kickname = name
+}
+
+char GeonkickState::getPlayingKey() const
+{
+        return playingKey;
+}
+
+void GeonkickState::setPlayingKey(char key)
+{
+        playingKey = key;
+}
+
+bool GeonkickState::isKickEnabled() const
+{
+        return kickEnabled;
+}
+
+void GeonkickState::enableKick(bool b)
+{
+        kickEnabled = b;
+}
+
 void GeonkickState::initOscillators()
 {
         for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
@@ -892,6 +932,30 @@ std::string GeonkickState::toBase64F(const std::vector<float> &data)
         return {};
 }
 
+bool GeonkickState::save(const std::string &fileName)
+{
+        if (fileName.size() < 7) {
+                RK_LOG_ERROR("file name is wrong");
+                return false;
+        }
+
+        std::filesystem::path filePath(fileName);
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkick"
+            && filePath.extension() != ".GKICK"))
+                filePath.replace_extension(".gkick");
+
+        std::ofstream file;
+        file.open(std::filesystem::absolute(filePath));
+        if (!file.is_open()) {
+                RK_LOG_ERROR("can't open file for saving: " << file);
+                return false;
+        }
+        file << toJson();
+        file.close();
+        return true;
+}
+
 void GeonkickState::setOscillatorSample(int oscillatorIndex, const std::vector<float> &sample)
 {
         auto oscillator = getOscillator(oscillatorIndex);
@@ -977,10 +1041,40 @@ KitWidget::parsePercussions(const rapidjson::Value &envelopeArray,
 
 bool KitState::save(const std::string &file)
 {
+        if (fileName.size() < 6) {
+                RK_LOG_ERROR("can't save kit. Wrong file name");
+                return false;
+        }
+
+        std::filesystem::path filePath(file);
+        if (filePath.extension().empty()
+            || (filePath.extension() != ".gkit"
+            && filePath.extension() != ".GKIT"))
+                filePath.replace_extension(".gkit");
+
+        std::ofstream file;
+        file.open(std::filesystem::absolute(filePath));
+        if (!file.is_open()) {
+                RK_LOG_ERROR("can't open file for saving: " << file);
+                return false;
+        }
+        std::ostringstream stream;
+        getKitObject(stream);
+        file << stream;
+        file.close();
+
+        std::filesystem::path filePath(file);
+        auto path = filePath.has_parent_path() ? filePath.parent_path() : filePath;
+        for (auto &per: percussionList)
+                per->save(path / std::filesystem::path(per->name() + ".gkick"));
+
+        return true;
 }
 
-void KitState::getKitObject(std::ostringstream &jsonStream)
+std::ostringstream
+KitState::getKitObject()
 {
+        std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
 	jsonStream <<  "\"name\": \"" << kitName << "\"," << std::endl;
         jsonStream <<  "\"author\": \"" << kitAuthor << "\"," << std::endl;
@@ -988,15 +1082,16 @@ void KitState::getKitObject(std::ostringstream &jsonStream)
         jsonStream <<  "\"percussions\": [" << std::endl;
         for (auto i = 0; i < percussionsList.size(); i++) {
                 jsonStream << "{" << std::endl;
-		jsonStream <<	"\"id\": " << percussionsList[i]->id() << "," << std::endl;
-                jsonStream <<	"\"name\": \"" << percussionsList[i]->name() << "\"," << std::endl;
-                jsonStream <<	"\"file\": \"" << percussionsList[i]->name() << ".gkick\"," << std::endl;
+		jsonStream <<	"\"id\": " << percussionsList[i]->getId() << "," << std::endl;
+                jsonStream <<	"\"name\": \"" << percussionsList[i]->getName() << "\"," << std::endl;
+                jsonStream <<	"\"file\": \"" << percussionsList[i]->getName() << ".gkick\"," << std::endl;
                 jsonStream <<	"\"key\": " << percussionsList[i]->getPlayingKey() << "," << std::endl;
-                jsonStream <<	"\"enabled\": " << (percussionsList[i]->isEnabled() ? "true" : "false") << std::endl;
+                jsonStream <<	"\"enabled\": " << (percussionsList[i]->isKickEnabled() ? "true" : "false") << std::endl;
                 jsonStream << "}" << (i < percussionsList.size() ? "," : "") << std::endl;
         }
         jsonStream <<  "]" << std::endl;
         jsonStream <<  "}" << std::endl;
+        return jsonStream;
 }
 
 bool KitState::fromJson(const std::string &jsonData)

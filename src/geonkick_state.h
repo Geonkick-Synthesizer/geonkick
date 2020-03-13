@@ -38,6 +38,14 @@ class GeonkickState
         GeonkickState();
         bool loadFile(const std::string &file);
         void loadData(const std::string &data);
+        size_t getId() const;
+        void setId(size_t id);
+        std::string getName() const;
+        void setName(const std::string &name);
+        char getPlayingKey() const;
+        void setPlayingKey(char key);
+        bool isKickEnabled() const;
+        void enableKick(bool b);
         void setLimiterValue(double val);
         void setKickLength(double val);
         void setKickAmplitude(double val);
@@ -116,6 +124,7 @@ class GeonkickState
         bool isOutputTuned() const;
         static std::vector<float> fromBase64F(const std::string &str);
         static std::string toBase64F(const std::vector<float> &data);
+        void save();
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
@@ -175,6 +184,11 @@ private:
                 double drive;
         };
 
+        size_t kickId;
+        std::string kickName;
+        char playingKey;
+        bool kickEnabled;
+
         double limiterValue;
         double kickLength;
         double kickAmplitude;
@@ -207,6 +221,14 @@ class KitState {
         void setUrl(std::string &name);
         std::string url() const;
         std::vector<std::shared_ptr<GeonkickState>>& percussions();
+
+ protected:
+        parseKit(std::string &fileData, const std::filesystem::path &path);
+        std::vector<KitWidget::Percussion>
+        parsePercussions(const rapidjson::Value &envelopeArray,
+                         const std::filesystem::path &path);
+        std::ostringstream getKitObject() const;
+
 
  private:
         std::vector<std::shared_ptr<GeonkickState>> percussionsList;
