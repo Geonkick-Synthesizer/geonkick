@@ -29,7 +29,7 @@
 #include <RkRealPoint.h>
 
 class Oscillator;
-class GeonkickState;
+class PercussionState;
 class RkEventQueue;
 
 class GeonkickApi {
@@ -124,13 +124,14 @@ class GeonkickApi {
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
   double limiterValue();
   int getSampleRate() const;
-  static std::shared_ptr<GeonkickState> getDefaultState();
+  static std::shared_ptr<KitState> GeonkickApi::getDefaultKitState();
+  static std::shared_ptr<PercussionState> getDefaultState();
   // This function is called only from the audio thread.
   gkick_real getAudioFrame() const;
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
-  std::shared_ptr<GeonkickState> getState(size_t id);
-  std::shared_ptr<GeonkickState> getState();
+  std::shared_ptr<PercussionState> getState(size_t id);
+  std::shared_ptr<PercussionState> getState();
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -152,8 +153,8 @@ class GeonkickApi {
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
-  void setState(const std::shared_ptr<GeonkickState> &state);
-  void setState(const std::shared_ptr<GeonkickState> &state,
+  void setState(const std::shared_ptr<PercussionState> &state);
+  void setState(const std::shared_ptr<PercussionState> &state,
                 size_t percussionId,
                 unsigned char key);
   std::unique_ptr<KitState> getKitState() const;
@@ -214,10 +215,10 @@ protected:
   void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
   void setOscillatorState(Layer layer,
                           OscillatorType oscillator,
-                          const std::shared_ptr<GeonkickState> &state);
+                          const std::shared_ptr<PercussionState> &state);
   void getOscillatorState(Layer layer,
                           OscillatorType osc,
-                          const std::shared_ptr<GeonkickState> &state);
+                          const std::shared_ptr<PercussionState> &state);
   void setLimiterVal(double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,

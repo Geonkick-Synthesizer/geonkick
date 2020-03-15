@@ -24,7 +24,7 @@
 #include "kit_widget.h"
 #include "geonkick_button.h"
 #include "geonkick_api.h"
-#include "geonkick_state.h"
+#include "kit_state.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>
@@ -275,11 +275,11 @@ void KitWidget::addPercussion(const Percussion &per)
 		return;
 
         if (per.file.empty()) {
-                geonkickApi->setState(geonkickApi->getDefaultState(), per.id, per.key);
+                geonkickApi->setPercussionState(geonkickApi->getDefaultPerucssionState(), per.id, per.key);
                 kitList.push_back(per);
                 update();
-        } else if (auto state = std::make_shared<GeonkickState>(); state->loadFile(per.file)) {
-                geonkickApi->setState(state, per.id, per.key);
+        } else if (auto state = std::make_shared<PercussionState>(); state->loadFile(per.file)) {
+                geonkickApi->setPercussionState(state, per.id, per.key);
                 kitList.push_back(per);
                 update();
         }
@@ -336,7 +336,7 @@ void KitWidget::openKit(const std::string &file)
 
         auto filePath = std::filesustem::path(file);
         auto path = filePath.has_parent_path() ? filePath.parent_path() : filePath;
-        geonkickApi->setKitState(state);
+        geonkickApi->setKitState(kit);
         geonkickApi->setCurrentWorkingPath("OpenKit", path);
         editPercussion->setText("");
         updateGui();
@@ -384,4 +384,3 @@ void KitWidget::saveKit(const std::string &file)
         auto state = geonkickApi->getKitState();
         state->save(file);
 }
-

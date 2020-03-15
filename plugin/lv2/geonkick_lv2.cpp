@@ -57,13 +57,13 @@ class GeonkickLv2Plugin
         };
 
         GeonkickLv2Plugin() :
-                  geonkickApi(new GeonkickApi),
-                  midiIn(nullptr),
-                  notifyHostChannel(nullptr),
-                  leftChannel(nullptr),
-                  rightChannel(nullptr),
-                  atomInfo{0},
-                  kickIsUpdated(false)
+                , geonkickApi{new GeonkickApi}
+                , midiIn{nullptr}
+                , notifyHostChannel{nullptr}
+                , leftChannel{nullptr}
+                , rightChannel{nullptr}
+                , atomInfo{0}
+                , kickIsUpdated{false}
         {
                 RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, kickUpdated());
         }

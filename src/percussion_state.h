@@ -1,5 +1,5 @@
 /**
- * File name: geonkick_state.h
+ * File name: percussion_state.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
@@ -32,10 +32,10 @@
 
 #include <unordered_map>
 
-class GeonkickState
+class PercussionState
 {
  public:
-        GeonkickState();
+        PercussionState();
         bool loadFile(const std::string &file);
         void loadData(const std::string &data);
         size_t getId() const;
@@ -205,36 +205,6 @@ private:
         std::vector<double> layersAmplitude;
         GeonkickApi::Layer currentLayer;
         bool tunedOutput;
-};
-
-class KitState {
- public:
-        bool open(const std::string &file);
-        bool save(const std::string &file);
-        bool fromJson(const std::string &jsonData);
-        std::string toJson() const;
-        void addPercussion(std::unique_ptr<GeonkickState> &percussion);
-        void setName(std::string &name);
-        std::string name() const;
-        void setAuthor(std::string &name);
-        std::string author() const;
-        void setUrl(std::string &name);
-        std::string url() const;
-        std::vector<std::shared_ptr<GeonkickState>>& percussions();
-
- protected:
-        parseKit(std::string &fileData, const std::filesystem::path &path);
-        std::vector<KitWidget::Percussion>
-        parsePercussions(const rapidjson::Value &envelopeArray,
-                         const std::filesystem::path &path);
-        std::ostringstream getKitObject() const;
-
-
- private:
-        std::vector<std::shared_ptr<GeonkickState>> percussionsList;
-        std::string kitName;
-        std::string kitAuthor;
-        std::string kitUrl;
 };
 
 #endif // GEONKICK_STATE_H

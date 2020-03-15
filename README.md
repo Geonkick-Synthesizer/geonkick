@@ -7,7 +7,7 @@ of percussion. The most basic examples are: kicks,
 snares, hit-hats, shakers, claps, sticks.
 Also, it can play samples.
 
-Author: Iurie Nistor
+Author: Yuri Nistor
 
 License: GPLv3
 

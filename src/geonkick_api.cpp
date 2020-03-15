@@ -70,6 +70,8 @@ bool GeonkickApi::init()
 		setState(getDefaultState());
 	}
 
+        setKitState(getDefaultKitState());
+
         // Set the first the percussion by default controllable.
 	geonkick_set_current_percussion(geonkickApi, 0);
         geonkick_enable_percussion(geonkickApi, 0, true);
@@ -77,9 +79,20 @@ bool GeonkickApi::init()
         return true;
 }
 
-std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
+std::shared_ptr<KitState> GeonkickApi::getDefaultKitState()
 {
-        std::shared_ptr<GeonkickState> state = std::make_shared<GeonkickState>();
+        auto state = std::make_shared<KitState>();
+        auto per = getDefaultState();
+        per->setName("Default");
+        per->setId(0);
+        per->setPlayingKey(-1);
+        state->addPercussion(per);
+        return state;
+}
+
+std::shared_ptr<PercussionState> GeonkickApi::getDefaultState() const
+{
+        std::shared_ptr<PercussionState> state = std::make_shared<PercussionState>();
         state->setLimiterValue(1.0);
         state->tuneOutput(false);
         state->setKickLength(300);
@@ -117,7 +130,6 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
                 GeonkickApi::Layer::Layer3
         };
 
-
         for (auto layer: layers) {
                 state->setLayerEnabled(layer, layer == Layer::Layer1);
                 state->setLayerAmplitude(layer, 1.0);
@@ -147,21 +159,21 @@ std::shared_ptr<GeonkickState> GeonkickApi::getDefaultState()
         return state;
 }
 
-void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state,
-                           size_t percussionId,
-                           unsigned char key)
+void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &state,
+                                     size_t percussionId,
+                                     unsigned char key)
 {
         geonkick_enable_synthesis(geonkickApi, false);
         auto currentId = currentPercussion();
         geonkick_enable_percussion(geonkickApi, percussionId, true);
         geonkick_set_current_percussion(geonkickApi, percussionId);
-        setState(state);
+        setPercussionState(state);
         geonkick_set_playing_key(geonkickApi, percussionId, key);
         geonkick_set_current_percussion(geonkickApi, currentId);
         geonkick_enable_synthesis(geonkickApi, true);
 }
 
-void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
+void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &state)
 {
         if (!state)
                 return;
@@ -200,14 +212,14 @@ void GeonkickApi::setState(const std::shared_ptr<GeonkickState> &state)
         setDistortionDrive(state->getDistortionDrive());
 }
 
-void GeonkickApi::setState(const std::string &data)
+void GeonkickApi::setPercussionState(const std::string &data)
 {
         auto state = getDefaultState();
         state->loadData(data);
-        setState(state);
+        setPercussionState(state);
 }
 
-std::shared_ptr<GeonkickState> GeonkickApi::getState(size_t id)
+std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id)
 {
         if (id == currentPercussion()) {
                 return getState();
@@ -220,9 +232,9 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState(size_t id)
         }
 }
 
-std::shared_ptr<GeonkickState> GeonkickApi::getState()
+std::shared_ptr<PercussionState> GeonkickApi::getPercussionState()
 {
-        auto state = std::make_shared<GeonkickState>();
+        auto state = std::make_shared<PercussionState>();
         state->setLimiterValue(limiterValue());
         state->tuneOutput(isAudioOutputTuned());
         for (int i = 0; i < 3; i++) {
@@ -262,7 +274,7 @@ std::shared_ptr<GeonkickState> GeonkickApi::getState()
 
 void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
                                      OscillatorType osc,
-                                     const std::shared_ptr<GeonkickState> &state)
+                                     const std::shared_ptr<PercussionState> &state)
 {
         auto temp = currentLayer;
         currentLayer = layer;
@@ -293,7 +305,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
 
 void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
                                      OscillatorType oscillator,
-                                     const std::shared_ptr<GeonkickState> &state)
+                                     const std::shared_ptr<PercussionState> &state)
 {
         auto temp = currentLayer;
         currentLayer = layer;
@@ -343,6 +355,11 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
 
 void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
 {
+        setKitName(state->getKitName());
+        setKitAuthor(state->getKitAuthor());
+        setKitUrl(state->getKitUrl());
+        for (const auto &per: state->percussions())
+                setPercussionState(per, per->getId(), per->getPlayingKey());
 }
 
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
