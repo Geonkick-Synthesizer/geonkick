@@ -78,8 +78,15 @@ void PercussionState::loadData(const std::string &data)
 {
         rapidjson::Document document;
         document.Parse(data.c_str());
-        if (document.IsObject()) {
-                for (const auto &m: document.GetObject()) {
+        loadObject(document);
+}
+
+void PercussionState::loadObject(const rapidjson::Value &obj)
+{
+        if (!obj.IsObject())
+                return;
+
+        for (const auto &m: obj.GetObject()) {
                         if (m.name == "kick" && m.value.IsObject())
                                 parseKickObject(m.value);
                         for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
@@ -93,7 +100,6 @@ void PercussionState::loadData(const std::string &data)
                         }
                 }
         }
-
 }
 
 size_t PercussionState::getId() const

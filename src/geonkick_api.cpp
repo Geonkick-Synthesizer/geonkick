@@ -348,7 +348,7 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
                 bool enabled = false;
                 geonkick_is_percussion_enabled(geonkickApi, &enabled);
                 if (enabled)
-                        kit->addPercussion(getState(i));
+                        kit->addPercussion(getPercussionState(i));
         }
         return kit;
 }

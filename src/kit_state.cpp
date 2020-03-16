@@ -1,6 +1,8 @@
 #include "kit_state.h"
 
 KitState::KitState()
+        : kitName{"Default"}
+        , kitAuthor{"Unknown"}
 {
 }
 
@@ -28,10 +30,10 @@ bool KitState::open(const std::string &file)
         std::string fileData((std::istreambuf_iterator<char>(sfile)),
                              (std::istreambuf_iterator<char>()));
         sfile.close();
-        parseKit(fileData, filePath.parent_path());
+        loadKit(fileData, filePath.parent_path());
 }
 
-void KitWidget::parseKit(std::string &fileData, const std::filesystem::path &path)
+void KitWidget::loadKit(std::string &fileData, const std::filesystem::path &path)
 {
         rapidjson::Document document;
         Kit kit;
@@ -45,13 +47,13 @@ void KitWidget::parseKit(std::string &fileData, const std::filesystem::path &pat
                         if (m.name == "url" && m.value.IsString())
                                 kitUrl = m.value.GetString();
                         if (m.name == "percussions" && m.value.IsArray())
-                                parsePercussions(m.value, path);
+                                loadPercussions(m.value, path);
                 }
         }
 }
 
 std::vector<KitWidget::Percussion>
-KitWidget::parsePercussions(const rapidjson::Value &envelopeArray,
+KitWidget::loadPercussions(const rapidjson::Value &envelopeArray,
                             const std::filesystem::path &path)
 {
         for (const auto &el: envelopeArray.GetArray()) {
@@ -164,32 +166,41 @@ std::vector<std::shared_ptr<GeonkickState>>& percussions() const
         return percussionsList;
 }
 
-bool KitState::fromJson(const std::string &jsonData)
+void KitState::fromJson(const std::string &jsonData)
 {
         rapidjson::Document document;
         document.Parse(jsonData.c_str());
         if (document.IsObject()) {
                 for (const auto &m: document.GetObject()) {
-                        if (m.name == "kit" && m.value.IsObject())
-                                kitName = m.value.GetString();
+                        if (m.name == "name" && m.value.IsString())
+                                setName(m.value.GetString());
                         if (m.name == "author" && m.value.IsString())
-                                kitAuthor = m.value.GetString();
+                                setAuthor(m.value.GetString());
                         if (m.name == "url" && m.value.IsString())
-                                kitUrl = m.value.GetString();
+                                setUrl(m.value.GetString());
                         if (m.name == "percussions" && m.value.IsArray())
                                 parsePercussions(m.value, path);
                 }
         }
+}
 
+void KitState::parsePercussions(const rapidjson::Value &percussionsArray)
+{
+        for (const auto &per: percussionsArray.GetArray()) {
+                auto state = std::make_shared<PercussionState>();
+                state.loadObject(per);
+                addPercussion(per);
+        }
 }
 
 std::string KitState::toJson() const
 {
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
-        jsonStream << "\"kit\":" << std::endl;
-        jsonStream <<  getKitObject() << "," << std::endl;
-        jsonStream <<  "\"percussions\": [" << std::endl;
+        jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
+        jsonStream << "\"author\": \"" << getAuthor << "\"," << std::endl;
+        jsonStream << "\"url\": \"" << getAuthor << "\"," << std::endl;
+        jsonStream <<  "\"rcussions\": [" << std::endl;
         for (auto i = 0; i < percussionsList.size(); i++) {
                 if (i < percussionsList.size() - 1)
                         std::ostringstream << percussionsList[i]->toJson() << "," << std::endl;
