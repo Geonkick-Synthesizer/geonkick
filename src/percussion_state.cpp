@@ -2,7 +2,7 @@
  * File name: percussion_state.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Yuri Nistor <http://geontime.com>
+ * Copyright (C) 2018 Iuri Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,15 +21,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "geonkick_state.h"
+#include "percussion_state.h"
 #include "base64.h"
 
 #include <iomanip>
 
-PercussionState::PercussionState() :
-        , kickId{-1}
+PercussionState::PercussionState()
+        : kickId{0}
+        , kickName{"Default"}
         , playingKey{-1}
-        , kickEnabled{false}
+        , kickEnabled{true}
         , limiterValue{0}
         , kickLength{50}
         , kickAmplitude{0.8}
@@ -87,17 +88,16 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
                 return;
 
         for (const auto &m: obj.GetObject()) {
-                        if (m.name == "kick" && m.value.IsObject())
-                                parseKickObject(m.value);
-                        for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
-                                setCurrentLayer(static_cast<GeonkickApi::Layer>(i));
-                                if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str())
-                                        parseOscillatorObject(0, m.value);
-                                if (m.name == ("osc" + std::to_string(1 + i * GKICK_OSC_GROUP_SIZE)).c_str())
-                                        parseOscillatorObject(1, m.value);
-                                if (m.name == ("osc" + std::to_string(2 + i * GKICK_OSC_GROUP_SIZE)).c_str())
-                                        parseOscillatorObject(2, m.value);
-                        }
+                if (m.name == "kick" && m.value.IsObject())
+                        parseKickObject(m.value);
+                for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
+                        setCurrentLayer(static_cast<GeonkickApi::Layer>(i));
+                        if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                parseOscillatorObject(0, m.value);
+                        if (m.name == ("osc" + std::to_string(1 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                parseOscillatorObject(1, m.value);
+                        if (m.name == ("osc" + std::to_string(2 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                parseOscillatorObject(2, m.value);
                 }
         }
 }
@@ -119,7 +119,7 @@ std::string PercussionState::getName() const
 
 void PercussionState::setName(const std::string &name)
 {
-        kickname = name
+        kickName = name;
 }
 
 char PercussionState::getPlayingKey() const
@@ -132,7 +132,7 @@ void PercussionState::setPlayingKey(char key)
         playingKey = key;
 }
 
-bool PercussionState::isKickEnabled() const
+bool PercussionState::isEnabled() const
 {
         return kickEnabled;
 }

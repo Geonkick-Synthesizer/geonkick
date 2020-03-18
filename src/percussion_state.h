@@ -45,7 +45,7 @@ class PercussionState
         void setName(const std::string &name);
         char getPlayingKey() const;
         void setPlayingKey(char key);
-        bool isKickEnabled() const;
+        bool isEnabled() const;
         void enableKick(bool b);
         void setLimiterValue(double val);
         void setKickLength(double val);
@@ -125,7 +125,7 @@ class PercussionState
         bool isOutputTuned() const;
         static std::vector<float> fromBase64F(const std::string &str);
         static std::string toBase64F(const std::vector<float> &data);
-        void save();
+        bool save(const std::string &fileName);
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);

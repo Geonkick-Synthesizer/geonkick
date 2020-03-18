@@ -21,14 +21,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "percussion_state.h"
+#include "globals.h"
+
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+
+class PercussionState;
 
 class KitState {
  public:
         KitState();
-        bool open(const std::string &file);
-        bool save(const std::string &file);
-        void fromJson(const std::string &jsonData);`
+        bool open(const std::string &fileName);
+        bool save(const std::string &fileName);
+        void fromJson(const std::string &jsonData);
         void setName(const std::string &name);
         std::string getName() const;
         void setAuthor(const std::string &author);
@@ -36,16 +42,12 @@ class KitState {
         void setUrl(const std::string &url);
         std::string getUrl() const;
         std::string toJson() const;
-        void addPercussion(std::unique_ptr<PercussionState> &percussion);
+        void addPercussion(const std::shared_ptr<PercussionState> &percussion);
         PercussionState* getPercussion(size_t id) const;
-        std::vector<std::shared_ptr<PercussionState>>& percussions() const;
+        std::vector<std::shared_ptr<PercussionState>>& percussions();
 
  protected:
-        void loadKit(std::string &fileData, const std::filesystem::path &path);
-        void loadPercussions(const rapidjson::Value &envelopeArray,
-                             const std::filesystem::path &path);
         void parsePercussions(const rapidjson::Value &percussionsArray);
-        std::ostringstream getKitObject() const;
 
  private:
         std::vector<std::shared_ptr<PercussionState>> percussionsList;

@@ -36,6 +36,7 @@
 class GeonkickApi;
 class RkLineEdit;
 class RkButton;
+class PercussionState;
 
 class KitWidget: public GeonkickWidget
 {
@@ -49,8 +50,6 @@ class KitWidget: public GeonkickWidget
                 std::string name;
                 std::string file;
                 char key;
-                bool enabled;
-                double limiter;
         };
 
         struct Kit {
@@ -77,7 +76,7 @@ class KitWidget: public GeonkickWidget
         const KeyInfo* getKey(int x) const;
         void createKeys();
 	void updatePercussionName();
-        void addPercussion(const Percussion &per);
+        void addPercussion(const std::shared_ptr<PercussionState> &per);
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);

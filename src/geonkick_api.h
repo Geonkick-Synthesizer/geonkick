@@ -30,6 +30,7 @@
 
 class Oscillator;
 class PercussionState;
+class KitState;
 class RkEventQueue;
 
 class GeonkickApi {
@@ -80,7 +81,7 @@ class GeonkickApi {
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
-  bool isOscillatorEnabled(int index);
+  bool isOscillatorEnabled(int index) const;
   std::vector<RkRealPoint> oscillatorEvelopePoints(int oscillatorIndex, EnvelopeType envelope) const;
   void addOscillatorEnvelopePoint(int oscillatorIndex, EnvelopeType envelope, const RkRealPoint &point);
   void removeOscillatorEvelopePoint(int oscillatorIndex, EnvelopeType envelope, int pointIndex);
@@ -114,24 +115,24 @@ class GeonkickApi {
   void setOscillatorPhase(int oscillatorIndex, gkick_real phase);
   void enableOscillator(int oscillatorIndex, bool enable);
   void enableOscillatorFilter(int oscillatorIndex, bool enable);
-  bool isOscillatorFilterEnabled(int oscillatorIndex);
+  bool isOscillatorFilterEnabled(int oscillatorIndex) const;
   void setOscillatorFilterType(int oscillatorIndex, FilterType filter);
-  FilterType getOscillatorFilterType(int oscillatorIndex);
+  FilterType getOscillatorFilterType(int oscillatorIndex) const;
   void setOscillatorFilterCutOffFreq(int oscillatorIndex, double frequency);
-  double getOscillatorFilterCutOffFreq(int oscillatorIndex);
+  double getOscillatorFilterCutOffFreq(int oscillatorIndex) const;
   void setOscillatorFilterFactor(int oscillatorIndex, double factor);
-  double getOscillatorFilterFactor(int oscillatorIndex);
+  double getOscillatorFilterFactor(int oscillatorIndex) const;
   bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
-  double limiterValue();
+  double limiterValue() const;
   int getSampleRate() const;
-  static std::shared_ptr<KitState> GeonkickApi::getDefaultKitState();
-  static std::shared_ptr<PercussionState> getDefaultState();
+  static std::unique_ptr<KitState> getDefaultKitState();
+  static std::shared_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
   gkick_real getAudioFrame() const;
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
-  std::shared_ptr<PercussionState> getState(size_t id);
-  std::shared_ptr<PercussionState> getState();
+  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
+  std::shared_ptr<PercussionState> getPercussionState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -153,12 +154,17 @@ class GeonkickApi {
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
-  void setState(const std::shared_ptr<PercussionState> &state);
-  void setState(const std::shared_ptr<PercussionState> &state,
-                size_t percussionId,
-                unsigned char key);
+  void setPercussionState(const std::string &data);
+  void setPercussionState(const std::shared_ptr<PercussionState> &state);
   std::unique_ptr<KitState> getKitState() const;
+  void setKitState(const std::string &data);
   void setKitState(const std::unique_ptr<KitState> &state);
+  void setKitName(const std::string &name);
+  std::string getKitName() const;
+  void setKitAuthor(const std::string &author);
+  std::string getKitAuthor() const;
+  void setKitUrl(const std::string &url);
+  std::string getKitUrl() const;
   void setState(const std::string &data);
   void setKickEnvelopePoints(EnvelopeType envelope, const std::vector<RkRealPoint> &points);
   void playKick();
@@ -218,7 +224,7 @@ protected:
                           const std::shared_ptr<PercussionState> &state);
   void getOscillatorState(Layer layer,
                           OscillatorType osc,
-                          const std::shared_ptr<PercussionState> &state);
+                          const std::shared_ptr<PercussionState> &state) const;
   void setLimiterVal(double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,
@@ -234,7 +240,10 @@ private:
   mutable std::mutex apiMutex;
   RkEventQueue *eventQueue;
   std::vector<std::vector<gkick_real>> kickBuffers;
-  Layer currentLayer;
+  mutable Layer currentLayer;
+  std::string kitName;
+  std::string kitAuthor;
+  std::string kitUrl;
 
   /**
    * Current working paths for entire application.

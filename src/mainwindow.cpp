@@ -31,7 +31,7 @@
 #include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
-#include "geonkick_state.h"
+#include "percussion_state.h"
 #include "about.h"
 #include "right_bar.h"
 
@@ -161,7 +161,7 @@ void MainWindow::openExportDialog()
 
 void MainWindow::savePreset(const std::string &fileName)
 {
-        auto state = geonkickApi->getState();
+        auto state = geonkickApi->getPercussionState();
         if (state->save(fileName)) {
                 std::filesystem::path filePath(fileName);
                 topBar->setPresetName(filePath.stem());
@@ -192,9 +192,9 @@ void MainWindow::openPreset(const std::string &fileName)
         }
 
         std::string fileData((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
-        auto state = std::make_shared<GeonkickState>();
+        auto state = std::make_shared<PercussionState>();
         state->loadData(fileData);
-        geonkickApi->setState(state);
+        geonkickApi->setPercussionState(state);
         topBar->setPresetName(filePath.stem());
         file.close();
         geonkickApi->setCurrentWorkingPath("OpenPreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
@@ -225,7 +225,7 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
-                geonkickApi->setState(geonkickApi->getDefaultState());
+                geonkickApi->setPercussionState(geonkickApi->getDefaultPercussionState());
                 topBar->setPresetName("");
                 updateGui();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)

@@ -32,7 +32,7 @@
 
 #include "mainwindow.h"
 #include "geonkick_api.h"
-#include "geonkick_state.h"
+#include "kit_state.h"
 
 #include <RkMain.h>
 #include <RkPlatform.h>
@@ -56,8 +56,8 @@ class GeonkickLv2Plugin
                 NotifyHostChannel = 3,
         };
 
-        GeonkickLv2Plugin() :
-                , geonkickApi{new GeonkickApi}
+        GeonkickLv2Plugin()
+                : geonkickApi{new GeonkickApi}
                 , midiIn{nullptr}
                 , notifyHostChannel{nullptr}
                 , leftChannel{nullptr}
@@ -156,7 +156,7 @@ class GeonkickLv2Plugin
 
         std::string getStateData()
         {
-                return geonkickApi->getKitState();
+                return geonkickApi->getKitState()->toJson();
         }
 
         GeonkickApi* getApi() const

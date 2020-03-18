@@ -24,6 +24,7 @@
 #include "kit_widget.h"
 #include "geonkick_button.h"
 #include "geonkick_api.h"
+#include "percussion_state.h"
 #include "kit_state.h"
 
 #include <RkEvent.h>
@@ -269,20 +270,18 @@ void KitWidget::updatePercussionName()
 	}
 }
 
-void KitWidget::addPercussion(const Percussion &per)
+void KitWidget::addPercussion(const std::shared_ptr<PercussionState> &per)
 {
 	if (kitList.size() + 1 > midiKeys.size() - 1)
 		return;
 
-        if (per.file.empty()) {
-                geonkickApi->setPercussionState(geonkickApi->getDefaultPerucssionState(), per.id, per.key);
-                kitList.push_back(per);
-                update();
-        } else if (auto state = std::make_shared<PercussionState>(); state->loadFile(per.file)) {
-                geonkickApi->setPercussionState(state, per.id, per.key);
-                kitList.push_back(per);
-                update();
-        }
+        geonkickApi->setPercussionState(per);
+        Percussion percussion;
+        percussion.id   = per->getId();
+        percussion.name = per->getName();
+        percussion.key  = per->getPlayingKey();
+        kitList.push_back(percussion);
+        update();
 }
 
 KitWidget::Percussion* KitWidget::getPercussion(int x, int y)
@@ -325,18 +324,18 @@ void KitWidget::openFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        auto kit = std::shared_ptr<KitState>();
-        if (kit->open(file))
-                RK_LOG_ERROR("can't open kit");
+        auto kit = std::make_unique<KitState>();
+        if (kit->open(file)) {
+                GEONKICK_LOG_ERROR("can't open kit");
                 return;
         }
 
         for (const auto &per: kit->percussions())
                 addPercussion(per);
 
-        auto filePath = std::filesustem::path(file);
+        auto filePath = std::filesystem::path(file);
         auto path = filePath.has_parent_path() ? filePath.parent_path() : filePath;
-        geonkickApi->setKitState(kit);
+        geonkickApi->setKitState(std::move(kit));
         geonkickApi->setCurrentWorkingPath("OpenKit", path);
         editPercussion->setText("");
         updateGui();
@@ -349,20 +348,16 @@ void KitWidget::addNewPercussion()
         if (id < 0)
                 return;
 
-        Percussion per;
-        per.id = id;
-        per.name = "Default";
-        per.key = -1;
-        per.enabled = true;
-        per.limiter = 0.01;
-        addPercussion(per);
+        auto state = geonkickApi->getDefaultPercussionState();
+        state->setId(id);
+        addPercussion(state);
 }
 
 void KitWidget::removePercussion(int id)
 {
-        geonkickApi->enablePercussion(id, false);
         for (auto it = kitList.cbegin(); it != kitList.cend(); ++it) {
                 if (it->id == static_cast<decltype(it->id)>(id)) {
+                        geonkickApi->enablePercussion(id, false);
                         kitList.erase(it);
                         break;
                 }
@@ -373,8 +368,11 @@ void KitWidget::copyPercussion(const Percussion &per)
 {
         auto newId = geonkickApi->getUnusedPercussion();
         if (newId > - 1) {
-                geonkickApi->setState(geonkickApi->getState(per.id), newId);
-                geonkickApi->setPlayingKey(per.id, newId);
+                auto state = geonkickApi->getPercussionState(per.id);
+                state->setId(newId);
+                state->setPlayingKey(per.key);
+                state->setName(per.name);
+                geonkickApi->setPercussionState(state);
                 kitList.push_back(per);
         }
 }
