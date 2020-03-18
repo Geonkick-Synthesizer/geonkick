@@ -77,7 +77,6 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
         saveKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
         RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b), this, openFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
-
 }
 
 void KitWidget::createKeys()
@@ -330,6 +329,7 @@ void KitWidget::openKit(const std::string &file)
                 return;
         }
 
+        kitList.clear();
         for (const auto &per: kit->percussions())
                 addPercussion(per);
 
@@ -380,5 +380,10 @@ void KitWidget::copyPercussion(const Percussion &per)
 void KitWidget::saveKit(const std::string &file)
 {
         auto state = geonkickApi->getKitState();
+        for (const auto &per: kitList) {
+                auto percussion = state->getPercussion(per.id);
+                if (percussion)
+                        percussion->setName(per.name);
+        }
         state->save(file);
 }

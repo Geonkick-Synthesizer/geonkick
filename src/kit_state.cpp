@@ -154,11 +154,14 @@ std::string KitState::toJson() const
         jsonStream << "\"author\": \"" << getAuthor() << "\"," << std::endl;
         jsonStream << "\"url\": \"" << getUrl() << "\"," << std::endl;
         jsonStream <<  "\"percussions\": [" << std::endl;
-        for (decltype(percussionsList.size()) i = 0; i < percussionsList.size(); i++) {
+        GEONKICK_LOG_INFO("size: " << percussionsList.size());
+        size_t i = 0;
+        for (const auto &per: percussionsList) {
                 if (i < percussionsList.size() - 1)
-                        jsonStream << percussionsList[i]->toJson() << "," << std::endl;
+                        jsonStream << per->toJson() << "," << std::endl;
                 else
-                        jsonStream << percussionsList[i]->toJson();
+                        jsonStream << per->toJson();
+                i++;
         }
         jsonStream <<  "]" << std::endl;
         jsonStream << "}" << std::endl;
@@ -168,4 +171,11 @@ std::string KitState::toJson() const
 void KitState::addPercussion(const std::shared_ptr<PercussionState> &percussion)
 {
         percussionsList.push_back(percussion);
+}
+
+std::shared_ptr<PercussionState> KitState::getPercussion(size_t id)
+{
+        if (id < percussionsList.size())
+                return percussionsList[id];
+        return nullptr;
 }

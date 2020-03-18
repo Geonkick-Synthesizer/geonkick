@@ -163,6 +163,8 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                 return;
 
         for (const auto &m: kick.GetObject()) {
+                if (m.name == "name" && m.value.IsString())
+                        setName(m.value.GetString());
                 if (m.name == "limiter" && m.value.IsDouble())
                         setLimiterValue(m.value.GetDouble());
 
@@ -784,6 +786,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
 void PercussionState::kickJson(std::ostringstream &jsonStream) const
 {
         jsonStream << "\"kick\": {" << std::endl;
+        jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
         jsonStream << "\"layers\": [";
         bool first = true;
         for (decltype(layers.size()) i = 0; i < layers.size(); i++) {

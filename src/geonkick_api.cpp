@@ -68,8 +68,11 @@ bool GeonkickApi::init()
 
 	auto n = getPercussionsNumber();
         kickBuffers = std::vector<std::vector<gkick_real>>(n);
-	for (decltype(n) i = 0; i < n; i++)
-		setPercussionState(getDefaultPercussionState());
+	for (decltype(n) i = 0; i < n; i++) {
+                auto state = getDefaultPercussionState();
+                state->setId(i);
+		setPercussionState(state);
+        }
 
         setKitState(std::move(getDefaultKitState()));
 
@@ -231,6 +234,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) cons
 std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
 {
         auto state = std::make_shared<PercussionState>();
+        state->setId(currentPercussion());
         state->setLimiterValue(limiterValue());
         state->tuneOutput(isAudioOutputTuned());
         for (int i = 0; i < 3; i++) {
@@ -358,6 +362,9 @@ void GeonkickApi::setKitState(const std::string &data)
 
 void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
 {
+        auto n = getPercussionsNumber();
+        for (decltype(n) i = 0; i < n; i++)
+                enablePercussion(i, false);
         setKitName(state->getName());
         setKitAuthor(state->getAuthor());
         setKitUrl(state->getUrl());

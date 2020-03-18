@@ -43,7 +43,7 @@ class KitState {
         std::string getUrl() const;
         std::string toJson() const;
         void addPercussion(const std::shared_ptr<PercussionState> &percussion);
-        PercussionState* getPercussion(size_t id) const;
+        std::shared_ptr<PercussionState> getPercussion(size_t id);
         std::vector<std::shared_ptr<PercussionState>>& percussions();
 
  protected:
