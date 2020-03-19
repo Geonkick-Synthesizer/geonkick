@@ -139,8 +139,10 @@ void KitState::fromJson(const std::string &jsonData)
 
 void KitState::parsePercussions(const rapidjson::Value &percussionsArray)
 {
+        size_t i = 0;
         for (const auto &per: percussionsArray.GetArray()) {
                 auto state = std::make_shared<PercussionState>();
+                state->setId(i++);
                 state->loadObject(per);
                 addPercussion(state);
         }

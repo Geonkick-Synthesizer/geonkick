@@ -78,20 +78,13 @@ bool GeonkickApi::init()
 
         // Set the first the percussion by default controllable.
 	geonkick_set_current_percussion(geonkickApi, 0);
-        geonkick_enable_percussion(geonkickApi, 0, true);
 	geonkick_enable_synthesis(geonkickApi, true);
         return true;
 }
 
 std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
 {
-        auto state = std::make_unique<KitState>();
-        auto per = getDefaultPercussionState();
-        per->setName("Default");
-        per->setId(0);
-        per->setPlayingKey(-1);
-        state->addPercussion(per);
-        return state;
+        return std::make_unique<KitState>();
 }
 
 std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
@@ -167,6 +160,8 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
 {
         if (!state)
                 return;
+
+        GEONKICK_LOG_INFO("per id: " << state->getId());
 
         geonkick_enable_synthesis(geonkickApi, false);
         geonkick_enable_percussion(geonkickApi, state->getId(), state->isEnabled());

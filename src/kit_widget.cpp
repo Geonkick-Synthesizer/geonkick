@@ -330,8 +330,13 @@ void KitWidget::openKit(const std::string &file)
         }
 
         kitList.clear();
-        for (const auto &per: kit->percussions())
-                addPercussion(per);
+        for (const auto &per: kit->percussions()) {
+                Percussion percussion;
+                percussion.id   = per->getId();
+                percussion.name = per->getName();
+                percussion.key  = per->getPlayingKey();
+                kitList.push_back(percussion);
+        }
 
         auto filePath = std::filesystem::path(file);
         auto path = filePath.has_parent_path() ? filePath.parent_path() : filePath;
@@ -339,12 +344,14 @@ void KitWidget::openKit(const std::string &file)
         geonkickApi->setCurrentWorkingPath("OpenKit", path);
         editPercussion->setText("");
         updateGui();
+        update();
 }
 
 
 void KitWidget::addNewPercussion()
 {
         int id = geonkickApi->getUnusedPercussion();
+        GEONKICK_LOG_INFO("ID: " << id);
         if (id < 0)
                 return;
 
@@ -355,13 +362,16 @@ void KitWidget::addNewPercussion()
 
 void KitWidget::removePercussion(int id)
 {
+        GEONKICK_LOG_INFO("size: " << kitList.size());
         for (auto it = kitList.cbegin(); it != kitList.cend(); ++it) {
                 if (it->id == static_cast<decltype(it->id)>(id)) {
+                        GEONKICK_LOG_INFO("id: " << id);
                         geonkickApi->enablePercussion(id, false);
                         kitList.erase(it);
                         break;
                 }
         }
+        GEONKICK_LOG_INFO("size: " << kitList.size());
 }
 
 void KitWidget::copyPercussion(const Percussion &per)
