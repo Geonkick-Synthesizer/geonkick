@@ -216,6 +216,7 @@
 }
 ,
 "kick": {
+"name": "Kick",
 "layers": [0],
 "layers_amplitude": [1.00000, 1.00000, 1.00000],
 "limiter": 0.96354, 

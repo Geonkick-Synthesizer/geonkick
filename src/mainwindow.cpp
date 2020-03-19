@@ -34,6 +34,7 @@
 #include "percussion_state.h"
 #include "about.h"
 #include "right_bar.h"
+#include "kit_widget.h"
 
 #include <RkPlatform.h>
 
@@ -162,6 +163,8 @@ void MainWindow::openExportDialog()
 void MainWindow::savePreset(const std::string &fileName)
 {
         auto state = geonkickApi->getPercussionState();
+        auto kitWidget = controlAreaWidget->getKitWidget();
+        state->setName(kitWidget->percussionName(geonkickApi->currentPercussion()));
         if (state->save(fileName)) {
                 std::filesystem::path filePath(fileName);
                 topBar->setPresetName(filePath.stem());
@@ -194,7 +197,10 @@ void MainWindow::openPreset(const std::string &fileName)
         std::string fileData((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
         auto state = std::make_shared<PercussionState>();
         state->loadData(fileData);
+        state->setId(geonkickApi->currentPercussion());
         geonkickApi->setPercussionState(state);
+        auto kitWidget = controlAreaWidget->getKitWidget();
+        kitWidget->updatePercussionName(geonkickApi->currentPercussion(), state->getName());
         topBar->setPresetName(filePath.stem());
         file.close();
         geonkickApi->setCurrentWorkingPath("OpenPreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);

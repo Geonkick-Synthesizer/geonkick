@@ -120,6 +120,9 @@ void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output);
 enum geonkick_error
 gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, char key);
 
+enum geonkick_error
+gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, char *key);
+
 void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune);
 
 bool gkick_audio_output_is_tune_output(struct gkick_audio_output *audio_output);

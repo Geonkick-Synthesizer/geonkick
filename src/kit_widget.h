@@ -63,6 +63,9 @@ class KitWidget: public GeonkickWidget
         KitWidget(GeonkickWidget *parent, GeonkickApi* api);
         ~KitWidget() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+        void addPercussion(const std::shared_ptr<PercussionState> &per);
+        void updatePercussionName(size_t id, const std::string &name);
+        std::string percussionName(size_t id) const;
 
  protected:
 	void paintWidget(const std::shared_ptr<RkPaintEvent> &event) override;
@@ -76,7 +79,6 @@ class KitWidget: public GeonkickWidget
         const KeyInfo* getKey(int x) const;
         void createKeys();
 	void updatePercussionName();
-        void addPercussion(const std::shared_ptr<PercussionState> &per);
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);

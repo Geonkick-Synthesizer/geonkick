@@ -205,7 +205,7 @@ void KitWidget::drawConnection(RkPainter &painter, const RkPoint &point)
 
 void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-	updatePercussionName();
+        updatePercussionName();
         if (event->button() != RkMouseEvent::ButtonType::Left)
                 return;
 
@@ -269,11 +269,32 @@ void KitWidget::updatePercussionName()
 	}
 }
 
+void KitWidget::updatePercussionName(size_t id, const std::string &name)
+{
+        for (auto &per: kitList) {
+                if (per.id == id) {
+                        per.name = name;
+                        update();
+                }
+        }
+}
+
+std::string KitWidget::percussionName(size_t id) const
+{
+        for (auto &per: kitList) {
+                if (per.id == id)
+                        return per.name;
+        }
+
+        return std::string();
+}
+
 void KitWidget::addPercussion(const std::shared_ptr<PercussionState> &per)
 {
 	if (kitList.size() + 1 > midiKeys.size() - 1)
 		return;
 
+        editedPercussion = nullptr;
         geonkickApi->setPercussionState(per);
         Percussion percussion;
         percussion.id   = per->getId();
@@ -350,8 +371,8 @@ void KitWidget::openKit(const std::string &file)
 
 void KitWidget::addNewPercussion()
 {
+        editedPercussion = nullptr;
         int id = geonkickApi->getUnusedPercussion();
-        GEONKICK_LOG_INFO("ID: " << id);
         if (id < 0)
                 return;
 
@@ -362,7 +383,7 @@ void KitWidget::addNewPercussion()
 
 void KitWidget::removePercussion(int id)
 {
-        GEONKICK_LOG_INFO("size: " << kitList.size());
+        editedPercussion = nullptr;
         for (auto it = kitList.cbegin(); it != kitList.cend(); ++it) {
                 if (it->id == static_cast<decltype(it->id)>(id)) {
                         GEONKICK_LOG_INFO("id: " << id);
@@ -371,11 +392,11 @@ void KitWidget::removePercussion(int id)
                         break;
                 }
         }
-        GEONKICK_LOG_INFO("size: " << kitList.size());
 }
 
 void KitWidget::copyPercussion(const Percussion &per)
 {
+        editedPercussion = nullptr;
         auto newId = geonkickApi->getUnusedPercussion();
         if (newId > - 1) {
                 auto state = geonkickApi->getPercussionState(per.id);

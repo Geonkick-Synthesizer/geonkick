@@ -165,6 +165,8 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
         for (const auto &m: kick.GetObject()) {
                 if (m.name == "name" && m.value.IsString())
                         setName(m.value.GetString());
+                if (m.name == "playing_key" && m.value.IsInt())
+                        setPlayingKey(m.value.GetInt());
                 if (m.name == "limiter" && m.value.IsDouble())
                         setLimiterValue(m.value.GetDouble());
 
@@ -787,6 +789,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
 {
         jsonStream << "\"kick\": {" << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
+        jsonStream << "\"playing_key\": " << static_cast<int>(getPlayingKey()) << "," << std::endl;
         jsonStream << "\"layers\": [";
         bool first = true;
         for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
@@ -944,7 +947,7 @@ std::string PercussionState::toBase64F(const std::vector<float> &data)
 bool PercussionState::save(const std::string &fileName)
 {
         if (fileName.size() < 7) {
-                RK_LOG_ERROR("file name is wrong");
+                GEONKICK_LOG_ERROR("file name is wrong");
                 return false;
         }
 
@@ -957,7 +960,7 @@ bool PercussionState::save(const std::string &fileName)
         std::ofstream file;
         file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
-                RK_LOG_ERROR("can't open file for saving: " << file);
+                GEONKICK_LOG_ERROR("can't open file for saving: " << filePath);
                 return false;
         }
         file << toJson();

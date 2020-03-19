@@ -52,3 +52,7 @@ void ControlArea::showKit()
         kitWidget->show();
 }
 
+KitWidget* ControlArea::getKitWidget()
+{
+        return kitWidget;
+}

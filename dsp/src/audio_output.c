@@ -203,9 +203,16 @@ enum geonkick_error
 gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, char key)
 {
         audio_output->playing_key = key;
-        gkick_log_info("key: %d", key);
         return GEONKICK_OK;
 }
+
+enum geonkick_error
+gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, char *key)
+{
+        *key = audio_output->playing_key;
+        return GEONKICK_OK;
+}
+
 
 void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune)
 {

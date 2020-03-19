@@ -161,13 +161,11 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
         if (!state)
                 return;
 
-        GEONKICK_LOG_INFO("per id: " << state->getId());
-
         geonkick_enable_synthesis(geonkickApi, false);
         geonkick_enable_percussion(geonkickApi, state->getId(), state->isEnabled());
         auto currentId = currentPercussion();
         geonkick_set_current_percussion(geonkickApi, state->getId());
-
+        setPercussionPlayingKey(state->getId(), state->getPlayingKey());
         for (auto i = 0; i < 3; i++) {
                 enbaleLayer(static_cast<Layer>(i), state->isLayerEnabled(static_cast<Layer>(i)));
                 setLayerAmplitude(static_cast<Layer>(i), state->getLayerAmplitude(static_cast<Layer>(i)));
@@ -201,7 +199,6 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
         setDistortionVolume(state->getDistortionVolume());
         setDistortionDrive(state->getDistortionDrive());
 
-        geonkick_set_playing_key(geonkickApi, state->getId(), state->getPlayingKey());
         geonkick_set_current_percussion(geonkickApi, currentId);
         geonkick_enable_synthesis(geonkickApi, true);
 }
@@ -232,6 +229,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
         state->setId(currentPercussion());
         state->setLimiterValue(limiterValue());
         state->tuneOutput(isAudioOutputTuned());
+        state->setPlayingKey(getPercussionPlayingKey(state->getId()));
         for (int i = 0; i < 3; i++) {
                 state->setLayerEnabled(static_cast<Layer>(i), isLayerEnabled(static_cast<Layer>(i)));
                 state->setLayerAmplitude(static_cast<Layer>(i), getLayerAmplitude(static_cast<Layer>(i)));
@@ -1009,6 +1007,13 @@ void GeonkickApi::enablePercussion(int index, bool enable)
 void GeonkickApi::setPercussionPlayingKey(int index, int key)
 {
         geonkick_set_playing_key(geonkickApi, index, key);
+}
+
+int GeonkickApi::getPercussionPlayingKey(int index) const
+{
+        char key = -1;
+        geonkick_get_playing_key(geonkickApi, index, &key);
+        return key;
 }
 
 void GeonkickApi::setSettings(const std::string &key, const std::string &value)

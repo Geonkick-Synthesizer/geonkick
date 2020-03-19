@@ -1460,3 +1460,14 @@ geonkick_set_playing_key(struct geonkick *kick, size_t id, char key)
         }
         return gkick_audio_output_set_playing_key(kick->synths[id]->output, key);
 }
+
+enum geonkick_error
+geonkick_get_playing_key(struct geonkick *kick, size_t id, char *key)
+{
+        if (kick == NULL || key == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_get_playing_key(kick->synths[id]->output, key);
+}
+

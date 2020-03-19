@@ -75,7 +75,7 @@ bool KitState::save(const std::string &fileName)
         std::ofstream file;
         file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
-                RK_LOG_ERROR("can't open file for saving: " << file);
+                RK_LOG_ERROR("can't open file for saving: " << filePath);
                 return false;
         }
         file << toJson();
