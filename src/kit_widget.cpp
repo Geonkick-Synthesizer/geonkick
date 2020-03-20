@@ -150,6 +150,7 @@ void KitWidget::drawPercussions(RkPainter &painter)
         int y = keyWidth;
         auto n = geonkickApi->getPercussionsNumber();
         auto active = geonkickApi->enabledPercussions();
+        auto currentId = geonkickApi->currentPercussion();
         for (decltype(n) i = 0; i < n; i++) {
                 if (!geonkickApi->isPercussionEnabled(i))
                         continue;
@@ -159,9 +160,11 @@ void KitWidget::drawPercussions(RkPainter &painter)
                         painter.fillRect(rect, {200, 200, 200, 80});
                 else
                         painter.fillRect(rect, {160, 160, 160, 80});
+                if (currentId == i)
+                        painter.fillRect(RkRect(rect.left(), rect.top(), 4, rect.height()), {255, 255, 255, 90});
 		RkRect txtRect = rect;
 		txtRect.setWidth(300);
-		txtRect.setTopLeft(RkPoint(txtRect.left() + 5, txtRect.top()));
+		txtRect.setTopLeft(RkPoint(txtRect.left() + 7, txtRect.top()));
 		painter.setPen(txtPen);
 		painter.drawText(txtRect,
                                  std::string(geonkickApi->getPercussionName(i)),
@@ -223,6 +226,8 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                 auto enabledPercussions = geonkickApi->enabledPercussions();
 		if (event->x() < percussionNameWidth) {
 			geonkickApi->setCurrentPercussion(id);
+                        currnetPercussionChanged(id);
+                        update();
 			return;
 		} else if ((event->x() > percussionWidth + 5)
                            && (event->x() < percussionWidth + 5 + 16)) {
@@ -291,7 +296,7 @@ std::string KitWidget::percussionName(size_t id) const
 
 void KitWidget::addPercussion(const std::shared_ptr<PercussionState> &per)
 {
-	if (kitList.size() + 1 > midiKeys.size() - 1)
+	if (geonkickApi->enabledPercussions() + 1 > midiKeys.size() - 1)
 		return;
 
         editedPercussionId = -1;
@@ -351,6 +356,7 @@ void KitWidget::openKit(const std::string &file)
         geonkickApi->setKitState(std::move(kit));
         geonkickApi->setCurrentWorkingPath("OpenKit", path);
         editPercussion->setText("");
+        currnetPercussionChanged(0);
         updateGui();
         update();
 }

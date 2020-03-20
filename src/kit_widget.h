@@ -45,23 +45,13 @@ class KitWidget: public GeonkickWidget
                 char key;
         };
 
-        struct Percussion {
-                size_t id;
-                std::string name;
-                char key;
-        };
-
-        struct Kit {
-                std::string name;
-                std::string author;
-                std::string url;
-                std::vector<Percussion> list;
-        };
-
  public:
         KitWidget(GeonkickWidget *parent, GeonkickApi* api);
         ~KitWidget() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(currnetPercussionChanged,
+                    currnetPercussionChanged(int id),
+                    RK_ARG_TYPE(int), RK_ARG_VAL(id));
         void addPercussion(const std::shared_ptr<PercussionState> &per);
         void updatePercussionName(size_t id, const std::string &name);
         std::string percussionName(size_t id) const;
@@ -81,9 +71,6 @@ class KitWidget: public GeonkickWidget
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
-        Kit parseKit(std::string &fileData, const std::filesystem::path &path);
-        std::vector<Percussion> parsePercussions(const rapidjson::Value &envelopeArray,
-                                                 const std::filesystem::path &path);
         void addNewPercussion();
         void removePercussion(int id);
         void copyPercussion(int id);
@@ -91,7 +78,6 @@ class KitWidget: public GeonkickWidget
  private:
 	GeonkickApi* geonkickApi;
         std::vector<KeyInfo> midiKeys;
-        std::vector<Percussion> kitList;
 	int keyWidth;
 	int percussionHeight;
         int percussionWidth;

@@ -129,6 +129,11 @@ bool MainWindow::init(void)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
         RK_ACT_BIND(rightBar, showChannels, RK_ACT_ARGS(), controlAreaWidget, showKit());
+        RK_ACT_BIND(controlAreaWidget->getKitWidget(),
+                    currnetPercussionChanged,
+                    RK_ACT_ARGS(int id),
+                    topBar,
+                    setPresetName(geonkickApi->getPercussionName(id)));
         controlAreaWidget->show();
 
         // TODO: Key shortcut feature will be implemented in the next version of Redkite.
@@ -152,6 +157,7 @@ bool MainWindow::init(void)
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
         updateGui();
+        topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
         return true;
 }
 
