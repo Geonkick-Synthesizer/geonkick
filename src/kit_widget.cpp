@@ -52,10 +52,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
         , saveKitButton{nullptr}
 {
 	RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(), this, updatePercussionName());
-
         createKeys();
-        addNewPercussion();
-
         addButton = new RkButton(this);
 	addButton->setCheckable(true);
         addButton->setSize(16, 16);

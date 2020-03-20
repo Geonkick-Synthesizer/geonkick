@@ -75,6 +75,7 @@ bool GeonkickApi::init()
         }
 
         setKitState(std::move(getDefaultKitState()));
+        enablePercussion(0, true);
 
         // Set the first the percussion by default controllable.
 	geonkick_set_current_percussion(geonkickApi, 0);
