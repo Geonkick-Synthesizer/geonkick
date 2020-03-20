@@ -4423,9 +4423,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="18.455487"
-     inkscape:cx="2874.56"
-     inkscape:cy="-147.05372"
+     inkscape:zoom="10.077159"
+     inkscape:cx="2896.8079"
+     inkscape:cy="-129.95916"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -17017,8 +17017,8 @@
        x="754.67725"
        y="326.25137"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/remove_per_button.png"
-       inkscape:export-xdpi="55.912964"
-       inkscape:export-ydpi="55.912964" />
+       inkscape:export-xdpi="55.912979"
+       inkscape:export-ydpi="55.912979" />
     <g
        id="g3416"
        transform="rotate(-45,579.55281,169.39535)"
@@ -17094,5 +17094,132 @@
        d="m 758.06037,334.84748 c 0,5.50586 0,5.50586 0,5.50586"
        id="path3397-3-5"
        inkscape:connector-curvature="0" />
+    <rect
+       style="display:inline;opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:none;stroke-width:0.18314178;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-3"
+       width="7.2684388"
+       height="7.2684388"
+       x="762.81287"
+       y="334.05219"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/open_kit_button.png"
+       inkscape:export-xdpi="55.912964"
+       inkscape:export-ydpi="55.912964" />
+    <g
+       id="g10362"
+       transform="translate(0.14379062,0.97580444)">
+      <g
+         id="g10353">
+        <path
+           style="display:inline;fill:none;stroke:#c7cac9;stroke-width:0.87691188;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 763.44392,338.64769 c 5.71959,0 5.71959,0 5.71959,0"
+           id="path3397-7-7"
+           inkscape:connector-curvature="0" />
+        <path
+           style="display:inline;fill:none;stroke:#c7cac9;stroke-width:0.49855983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 763.68944,337.23079 c 0,1.84879 0,1.84879 0,1.84879"
+           id="path3397-7-7-5"
+           inkscape:connector-curvature="0" />
+        <path
+           style="display:inline;fill:none;stroke:#c7cac9;stroke-width:0.49855983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 768.91715,337.24008 c 0,1.84879 0,1.84879 0,1.84879"
+           id="path3397-7-7-5-5"
+           inkscape:connector-curvature="0" />
+      </g>
+      <g
+         transform="translate(0.01392735)"
+         id="g10348">
+        <path
+           sodipodi:type="star"
+           style="opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:#c7cac9;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="path10342"
+           sodipodi:sides="3"
+           sodipodi:cx="766.28937"
+           sodipodi:cy="335.89438"
+           sodipodi:r1="0.56204861"
+           sodipodi:r2="0.28102431"
+           sodipodi:arg1="-1.5707963"
+           sodipodi:arg2="-0.52359878"
+           inkscape:flatsided="false"
+           inkscape:rounded="0"
+           inkscape:randomized="0"
+           d="m 766.28937,335.33233 0.24337,0.42154 0.24338,0.42153 -0.48675,0 -0.48675,0 0.24337,-0.42153 z"
+           inkscape:transform-center-x="4.9325743e-06"
+           inkscape:transform-center-y="-0.14051377" />
+        <rect
+           style="opacity:1;fill:#c7cac9;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="rect10344"
+           width="1.2329215"
+           height="1.5196474"
+           x="765.67291"
+           y="336.51083" />
+      </g>
+    </g>
+    <rect
+       style="display:inline;opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:none;stroke-width:0.18314178;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-3-2"
+       width="7.2684388"
+       height="7.2684388"
+       x="762.74475"
+       y="341.7551"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/save_kit_button.png"
+       inkscape:export-xdpi="55.912964"
+       inkscape:export-ydpi="55.912964" />
+    <g
+       style="display:inline"
+       id="g10362-9"
+       transform="translate(0.0756947,8.6787322)">
+      <g
+         id="g10353-1"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/save_kit_button.png"
+         inkscape:export-xdpi="55.912964"
+         inkscape:export-ydpi="55.912964">
+        <path
+           style="display:inline;fill:none;stroke:#c7cac9;stroke-width:0.87691188;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 763.44392,338.64769 c 5.71959,0 5.71959,0 5.71959,0"
+           id="path3397-7-7-2"
+           inkscape:connector-curvature="0" />
+        <path
+           style="display:inline;fill:none;stroke:#c7cac9;stroke-width:0.49855983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 763.68944,337.23079 c 0,1.84879 0,1.84879 0,1.84879"
+           id="path3397-7-7-5-7"
+           inkscape:connector-curvature="0" />
+        <path
+           style="display:inline;fill:none;stroke:#c7cac9;stroke-width:0.49855983;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 768.91715,337.24008 c 0,1.84879 0,1.84879 0,1.84879"
+           id="path3397-7-7-5-5-0"
+           inkscape:connector-curvature="0" />
+      </g>
+      <g
+         transform="matrix(1,0,0,-1,0.01392735,672.36281)"
+         id="g10348-9"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/save_kit_button.png"
+         inkscape:export-xdpi="55.912964"
+         inkscape:export-ydpi="55.912964">
+        <path
+           sodipodi:type="star"
+           style="opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:#c7cac9;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="path10342-3"
+           sodipodi:sides="3"
+           sodipodi:cx="766.28937"
+           sodipodi:cy="335.89438"
+           sodipodi:r1="0.56204861"
+           sodipodi:r2="0.28102431"
+           sodipodi:arg1="-1.5707963"
+           sodipodi:arg2="-0.52359878"
+           inkscape:flatsided="false"
+           inkscape:rounded="0"
+           inkscape:randomized="0"
+           d="m 766.28937,335.33233 0.24337,0.42154 0.24338,0.42153 -0.48675,0 -0.48675,0 0.24337,-0.42153 z"
+           inkscape:transform-center-x="4.9325743e-06"
+           inkscape:transform-center-y="-0.14051377" />
+        <rect
+           style="opacity:1;fill:#c7cac9;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="rect10344-6"
+           width="1.2329215"
+           height="1.5196474"
+           x="765.67291"
+           y="336.51083" />
+      </g>
+    </g>
   </g>
 </svg>

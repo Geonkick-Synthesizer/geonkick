@@ -35,6 +35,8 @@
 RK_DECLARE_IMAGE_RC(add_per_button);
 RK_DECLARE_IMAGE_RC(remove_per_button);
 RK_DECLARE_IMAGE_RC(copy_per_button);
+RK_DECLARE_IMAGE_RC(save_kit_button);
+RK_DECLARE_IMAGE_RC(open_kit_button);
 
 KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
@@ -57,7 +59,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
         addButton = new RkButton(this);
 	addButton->setCheckable(true);
         addButton->setSize(16, 16);
-        addButton->setPosition({10, 10});
+        addButton->setPosition({5, 5});
         addButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
         RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addNewPercussion());
         addButton->show();
@@ -66,7 +68,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
 	openKitButton->setCheckable(true);
         openKitButton->setSize(16, 16);
         openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
-        openKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
+        openKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
         RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b), this, openFileDialog(FileDialog::Type::Open));
         openKitButton->show();
 
@@ -74,7 +76,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
 	saveKitButton->setCheckable(true);
         saveKitButton->setSize(16, 16);
         saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
-        saveKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
+        saveKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
         RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b), this, openFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
 }
