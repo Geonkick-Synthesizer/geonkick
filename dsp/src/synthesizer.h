@@ -33,6 +33,7 @@
 
 struct gkick_synth {
         _Atomic size_t id;
+        char name[30];
 
 	/* Speciafies if synthesizer is active. */
 	atomic_bool is_active;

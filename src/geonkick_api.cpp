@@ -90,6 +90,7 @@ std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
 std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 {
         std::shared_ptr<PercussionState> state = std::make_shared<PercussionState>();
+        state->setName("Default");
         state->setLimiterValue(1.0);
         state->tuneOutput(false);
         state->setKickLength(300);
@@ -165,6 +166,7 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
         geonkick_enable_percussion(geonkickApi, state->getId(), state->isEnabled());
         auto currentId = currentPercussion();
         geonkick_set_current_percussion(geonkickApi, state->getId());
+        setPercussionName(state->getId(), state->getName());
         setPercussionPlayingKey(state->getId(), state->getPlayingKey());
         for (auto i = 0; i < 3; i++) {
                 enbaleLayer(static_cast<Layer>(i), state->isLayerEnabled(static_cast<Layer>(i)));
@@ -227,6 +229,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
 {
         auto state = std::make_shared<PercussionState>();
         state->setId(currentPercussion());
+        state->setName(getPercussionName(state->getId()));
         state->setLimiterValue(limiterValue());
         state->tuneOutput(isAudioOutputTuned());
         state->setPlayingKey(getPercussionPlayingKey(state->getId()));
@@ -1004,6 +1007,24 @@ void GeonkickApi::enablePercussion(int index, bool enable)
         geonkick_enable_percussion(geonkickApi, index, enable);
 }
 
+bool GeonkickApi::isPercussionEnabled(int index) const
+{
+        bool enabled = false;
+        geonkick_is_percussion_enabled(geonkickApi, index, &enabled);
+        return enabled;
+}
+
+size_t GeonkickApi::enabledPercussions() const
+{
+        auto n = getPercussionsNumber();
+        size_t enabled  = 0;
+        for (decltype(n) i = 0; i < n; i++) {
+                if (isPercussionEnabled(i))
+                        enabled++;
+        }
+        return enabled;
+}
+
 void GeonkickApi::setPercussionPlayingKey(int index, int key)
 {
         geonkick_set_playing_key(geonkickApi, index, key);
@@ -1014,6 +1035,18 @@ int GeonkickApi::getPercussionPlayingKey(int index) const
         char key = -1;
         geonkick_get_playing_key(geonkickApi, index, &key);
         return key;
+}
+
+void GeonkickApi::setPercussionName(int index, const std::string &name)
+{
+        geonkick_set_percussion_name(geonkickApi, index, name.c_str(), name.size());
+}
+
+std::string GeonkickApi::getPercussionName(int index) const
+{
+        char name[30];
+        geonkick_get_percussion_name(geonkickApi, index, name, 30);
+        return name;
 }
 
 void GeonkickApi::setSettings(const std::string &key, const std::string &value)

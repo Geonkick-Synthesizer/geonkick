@@ -483,6 +483,19 @@ geonkick_set_playing_key(struct geonkick *kick, size_t id, char key);
 enum geonkick_error
 geonkick_get_playing_key(struct geonkick *kick, size_t id, char *key);
 
+enum geonkick_error
+geonkick_set_percussion_name(struct geonkick *kick,
+                             size_t id,
+                             const char *name,
+                             size_t size);
+
+enum geonkick_error
+geonkick_get_percussion_name(struct geonkick *kick,
+                             size_t id,
+                             char *name,
+                             size_t size);
+
+
 #ifdef __cplusplus
 }
 #endif

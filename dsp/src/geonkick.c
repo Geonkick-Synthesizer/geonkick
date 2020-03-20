@@ -1471,3 +1471,46 @@ geonkick_get_playing_key(struct geonkick *kick, size_t id, char *key)
         return gkick_audio_output_get_playing_key(kick->synths[id]->output, key);
 }
 
+enum geonkick_error
+geonkick_set_percussion_name(struct geonkick *kick,
+                             size_t id,
+                             const char *name,
+                             size_t size)
+{
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1
+            || name == NULL || size < 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        struct gkick_synth *synth = kick->synths[id];
+        gkick_synth_lock(synth);
+        memset(synth->name, '\0', sizeof(synth->name));
+        if (size < strlen(synth->name))
+                strcpy(synth->name, name);
+        else
+                strncpy(synth->name, name, sizeof(synth->name) - 1);
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_get_percussion_name(struct geonkick *kick,
+                             size_t id,
+                             char *name,
+                             size_t size)
+{
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1
+            || name == NULL || size < 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        struct gkick_synth *synth = kick->synths[id];
+        gkick_synth_lock(synth);
+        memset(name, '\0', size);
+        if (size > strlen(synth->name))
+                strcpy(name, synth->name);
+        else
+                strncpy(name, synth->name, size - 1);
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
+}

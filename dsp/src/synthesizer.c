@@ -45,6 +45,7 @@ gkick_synth_new(struct gkick_synth **synth)
         (*synth)->buffer_size = (size_t)((*synth)->length * GEONKICK_SAMPLE_RATE);
         (*synth)->buffer_update = false;
         (*synth)->is_active = false;
+        memset((*synth)->name, '\0', sizeof((*synth)->name));
         for (size_t i = 0; i < GKICK_OSC_GROUPS_NUMBER; i++)
                 (*synth)->osc_groups_amplitude[i] = 1.0;
 

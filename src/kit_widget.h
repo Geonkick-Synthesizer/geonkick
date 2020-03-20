@@ -48,7 +48,6 @@ class KitWidget: public GeonkickWidget
         struct Percussion {
                 size_t id;
                 std::string name;
-                std::string file;
                 char key;
         };
 
@@ -75,7 +74,7 @@ class KitWidget: public GeonkickWidget
         void drawPercussions(RkPainter &painter);
         void drawConnections(RkPainter &painter);
         void drawConnection(RkPainter &painter, const RkPoint &point);
-        Percussion* getPercussion(int x, int y);
+        int getPercussionId(int x, int y) const;
         const KeyInfo* getKey(int x) const;
         void createKeys();
 	void updatePercussionName();
@@ -87,7 +86,7 @@ class KitWidget: public GeonkickWidget
                                                  const std::filesystem::path &path);
         void addNewPercussion();
         void removePercussion(int id);
-        void copyPercussion(const Percussion &per);
+        void copyPercussion(int id);
 
  private:
 	GeonkickApi* geonkickApi;
@@ -98,7 +97,7 @@ class KitWidget: public GeonkickWidget
         int percussionWidth;
 	int percussionNameWidth;
 	RkLineEdit *editPercussion;
-	Percussion *editedPercussion;
+	int editedPercussionId;
         RkButton *addButton;
         RkButton *openKitButton;
         RkButton *saveKitButton;

@@ -198,8 +198,12 @@ class GeonkickApi {
   size_t currentPercussion() const;
   int getUnusedPercussion() const;
   void enablePercussion(int index, bool enable = true);
+  bool isPercussionEnabled(int index) const;
+  size_t enabledPercussions() const;
   void setPercussionPlayingKey(int index, int key);
   int getPercussionPlayingKey(int index) const;
+  void setPercussionName(int index, const std::string &name);
+  std::string getPercussionName(int index) const;
 
   RK_DECL_ACT(kickLengthUpdated, kickLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
   RK_DECL_ACT(kickAmplitudeUpdated, kickAmplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
