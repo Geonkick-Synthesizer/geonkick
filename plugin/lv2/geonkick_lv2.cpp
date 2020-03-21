@@ -49,11 +49,6 @@
 class GeonkickLv2Plugin
 {
   public:
-        enum class PortType: int {
-                MidiIn            = 0,
-                NotifyHostChannel = 17,
-        };
-
         GeonkickLv2Plugin()
                 : geonkickApi{new GeonkickApi}
                 , midiIn{nullptr}
@@ -186,9 +181,12 @@ class GeonkickLv2Plugin
                                 it = lv2_atom_sequence_next(it);
                         }
 
-                        for (int i = 0; i < geonkickApi->getPercussionsNumber(); i++) {
+			auto nChannels = geonkickApi->getPercussionsNumber();
+                        for (decltype(nChannels) i = 0; i < nChannels; i++) {
                                 if (geonkickApi->isPercussionEnabled(i))
                                         *outputChannels[i] = geonkickApi->getAudioFrame(i);
+				else
+					*outputChannels[i] = 0.0f;
                         }
                 }
 
@@ -398,23 +396,14 @@ static void gkick_connect_port(LV2_Handle instance,
                                void*      data)
 {
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
-        if (port >= 1 && port <= geonkickLv2PLugin->numberOfChannels()) {
-                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), port - 1);
-                return;
-        }
-
-        auto portType = static_cast<GeonkickLv2Plugin::PortType>(port);
-        switch (portType)
-        {
-        case GeonkickLv2Plugin::PortType::MidiIn:
+	auto nChannels = geonkickLv2PLugin->numberOfChannels();
+	auto portNumber = static_cast<decltype(nChannels)>(port);
+        if (port >= 0 && portNumber < nChannels)
+                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), port);
+        else if (portNumber == nChannels) 
                 geonkickLv2PLugin->setMidiIn(static_cast<LV2_Atom_Sequence*>(data));
-                break;
-        case GeonkickLv2Plugin::PortType::NotifyHostChannel:
+	else if (portNumber == nChannels + 1)
                 geonkickLv2PLugin->setNotifyHostChannel(static_cast<LV2_Atom_Sequence*>(data));
-                break;
-        default:
-                break;
-        }
 }
 
 static void gkick_activate(LV2_Handle instance)
