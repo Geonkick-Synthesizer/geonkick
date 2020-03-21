@@ -64,9 +64,10 @@ class KitWidget: public GeonkickWidget
         void drawPercussions(RkPainter &painter);
         void drawConnections(RkPainter &painter);
         void drawConnection(RkPainter &painter, const RkPoint &point);
-        int getPercussionId(int x, int y) const;
+        int getLineId(int x, int y) const;
         const KeyInfo* getKey(int x) const;
         void createKeys();
+	void updatePercussionsLines();
 	void updatePercussionName();
         void openFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
@@ -74,16 +75,18 @@ class KitWidget: public GeonkickWidget
         void addNewPercussion();
         void removePercussion(int id);
         void copyPercussion(int id);
+	int idFromLine(int lineId) const;
 
  private:
 	GeonkickApi* geonkickApi;
         std::vector<KeyInfo> midiKeys;
+	std::vector<int> percussionsLines;
 	int keyWidth;
 	int percussionHeight;
         int percussionWidth;
 	int percussionNameWidth;
 	RkLineEdit *editPercussion;
-	int editedPercussionId;
+	int editedLineId;
         RkButton *addButton;
         RkButton *openKitButton;
         RkButton *saveKitButton;
