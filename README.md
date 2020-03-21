@@ -36,7 +36,8 @@ or feature (feat/feature_name) branches.
 
 #### Features
 
-* Monophonic
+* Percussion kit (supports up to 16 percussions that maps to midi keys)
+* Multitibral
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
@@ -59,6 +60,8 @@ or feature (feat/feature_name) branches.
 * Jack support:
      - 1 MIDI in, key velocity sensitive
      - 2 audio out
+* Multichannel
+     - for LV2
 * Export
      - stereo & mono
      - WAV: 16, 24, 32 bit
@@ -178,10 +181,6 @@ The block diagram of the synthesizer.
 
 * FM Synthesis is enabled by pressing OSC1->OSC2 for evrey layer separtely. When pressing OSC1->OSC2 the output of Oscillator 1 will be redirected to modulate the frequency of Oscillator 2.
 Oscillator 2 must be enabled in order to see the result in the graph.
-
-* Geonkick is monophonic.
-
-* Geonkick does not support multichannel.
 
 * If the option "Tune" is enabled than Geonkick will tune the pitch relative to key A4.
   If the percussion sound is more like a tone, tuning above A4 may contain unwanted high
