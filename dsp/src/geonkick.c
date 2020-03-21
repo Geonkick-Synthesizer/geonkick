@@ -872,9 +872,9 @@ geonkick_enable_synthesis(struct geonkick *kick, bool enable)
 }
 
 enum geonkick_error
-geonkick_get_audio_frame(struct geonkick *kick, gkick_real *val)
+geonkick_get_audio_frame(struct geonkick *kick, int channel, gkick_real *val)
 {
-        return gkick_audio_get_frame(kick->audio, val);
+        return gkick_audio_get_frame(kick->audio, channel, val);
 }
 
 enum geonkick_error
@@ -1513,5 +1513,17 @@ geonkick_get_percussion_name(struct geonkick *kick,
         else
                 strncpy(name, synth->name, size - 1);
         gkick_synth_unlock(synth);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_channels_number(struct geonkick *kick, size_t *n)
+{
+        if (kick == NULL || n == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        *n = 2;
         return GEONKICK_OK;
 }

@@ -53,25 +53,28 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 
 enum geonkick_error
 gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      gkick_real *out_channels,
-		      size_t n_channels)
+		      int channel,
+		      gkick_real *val)
 {
-	gkick_real out_val = 0.0f;
-	for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-		struct gkick_audio_output *out = mixer->audio_outputs[i];
-		if (out->enabled) {
-			gkick_real val = 0.0f;
-			gkick_audio_output_get_frame(out, &val);
-			out_val += val;
-		}
-	}
+        *val = 0.0f;
+        if (channel > -1 && channel < GEONKICK_MAX_PERCUSSIONS) {
+                struct gkick_audio_output *out = mixer->audio_outputs[channel];
+                if (out->enabled)
+                        gkick_audio_output_get_frame(out, val);
+        } else {
+                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                        struct gkick_audio_output *out = mixer->audio_outputs[i];
+                        if (out->enabled) {
+                                gkick_real v = 0.0f;
+                                gkick_audio_output_get_frame(out, &v);
+                                *val += v;
+                        }
+                }
+        }
 
-	out_val *= (gkick_real)mixer->limiter / 1000000;
-        if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL)
-                mixer->limiter_callback(mixer->limiter_callback_arg, out_val);
-
-	for (size_t ch = 0; ch < n_channels; ch++)
-		out_channels[ch] = out_val;
+	/* *val *= (gkick_real)mixer->limiter / 1000000; */
+        /* if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL) */
+        /*         mixer->limiter_callback(mixer->limiter_callback_arg, *val); */
 
         return GEONKICK_OK;
 }

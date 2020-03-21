@@ -54,7 +54,8 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 }
 
 		gkick_real val[2];
-                gkick_mixer_get_frame(jack->mixer, val, 2);
+                gkick_mixer_get_frame(jack->mixer, 0, &val[0]);
+                gkick_mixer_get_frame(jack->mixer, 1, &val[1]);
                 val[0] *= 0.1f;
 		val[1] *= 0.1f;
                 if (val[0] > 0.1f)

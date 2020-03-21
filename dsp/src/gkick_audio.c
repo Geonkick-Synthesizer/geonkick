@@ -144,21 +144,14 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
 }
 
 enum geonkick_error
-gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val)
+gkick_audio_get_frame(struct gkick_audio *audio, int channel, gkick_real *val)
 {
         if (audio == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        *val = 0;
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                gkick_real v = 0.0f;
-                gkick_audio_output_get_frame(audio->audio_outputs[i], &v);
-                *val += v;
-        }
-
-        return GEONKICK_OK;
+        return gkick_mixer_get_frame(audio->mixer, channel, val);
 }
 
 enum geonkick_error

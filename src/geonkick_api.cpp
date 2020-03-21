@@ -83,6 +83,13 @@ bool GeonkickApi::init()
         return true;
 }
 
+size_t GeonkickApi::numberOfChannels() const
+{
+        size_t n = 0;
+        geonkick_channels_number(geonkickApi, &n);
+        return n;
+}
+
 std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
 {
         return std::make_unique<KitState>();
@@ -769,10 +776,10 @@ void GeonkickApi::playKick()
 }
 
 // This function is called only from the audio thread.
-gkick_real GeonkickApi::getAudioFrame() const
+gkick_real GeonkickApi::getAudioFrame(int channel) const
 {
         gkick_real val;
-        geonkick_get_audio_frame(geonkickApi, &val);
+        geonkick_get_audio_frame(geonkickApi, channel, &val);
         return val;
 }
 

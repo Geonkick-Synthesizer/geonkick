@@ -77,6 +77,7 @@ class GeonkickApi {
 
   GeonkickApi();
   ~GeonkickApi();
+  size_t numberOfChannels() const;
   void setEventQueue(RkEventQueue *queue);
   bool init();
   void registerCallbacks(bool b);
@@ -128,7 +129,7 @@ class GeonkickApi {
   static std::unique_ptr<KitState> getDefaultKitState();
   static std::shared_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
-  gkick_real getAudioFrame() const;
+  gkick_real getAudioFrame(int channel) const;
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
   std::shared_ptr<PercussionState> getPercussionState(size_t id) const;

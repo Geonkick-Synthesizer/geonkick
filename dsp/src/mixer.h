@@ -43,8 +43,8 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 
 enum geonkick_error
 gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      gkick_real *out_channels,
-		      size_t n_channels);
+		      int channel,
+		      gkick_real *val);
 
 void
 gkick_mixer_free(struct gkick_mixer **mixer);

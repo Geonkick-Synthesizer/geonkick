@@ -60,7 +60,7 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
                         int velocity);
 
 enum geonkick_error
-gkick_audio_get_frame(struct gkick_audio *audio, gkick_real *val);
+gkick_audio_get_frame(struct gkick_audio *audio, int channel, gkick_real *val);
 
 enum geonkick_error
 gkick_audio_set_limiter_callback(struct gkick_audio *audio,

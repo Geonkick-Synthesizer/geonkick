@@ -356,7 +356,7 @@ enum geonkick_error
 geonkick_enable_synthesis(struct geonkick *kick, bool enable);
 
 enum geonkick_error
-geonkick_get_audio_frame(struct geonkick *kick, gkick_real *val);
+geonkick_get_audio_frame(struct geonkick *kick, int channel, gkick_real *val);
 
 enum geonkick_error
 geonkick_compressor_enable(struct geonkick *kick, int enable);
@@ -494,6 +494,9 @@ geonkick_get_percussion_name(struct geonkick *kick,
                              size_t id,
                              char *name,
                              size_t size);
+
+enum geonkick_error
+geonkick_channels_number(struct geonkick *kick, size_t *n);
 
 
 #ifdef __cplusplus

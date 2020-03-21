@@ -51,17 +51,14 @@ class GeonkickLv2Plugin
   public:
         enum class PortType: int {
                 MidiIn            = 0,
-                LeftChannel       = 1,
-                RightChannel      = 2,
-                NotifyHostChannel = 3,
+                NotifyHostChannel = 17,
         };
 
         GeonkickLv2Plugin()
                 : geonkickApi{new GeonkickApi}
                 , midiIn{nullptr}
                 , notifyHostChannel{nullptr}
-                , leftChannel{nullptr}
-                , rightChannel{nullptr}
+                , outputChannels{std::vector<float*>(geonkickApi->getPercussionsNumber(), nullptr)}
                 , atomInfo{0}
                 , kickIsUpdated{false}
         {
@@ -79,12 +76,15 @@ class GeonkickLv2Plugin
                 return geonkickApi->init();
         }
 
-        void setAudioChannel(float *data, PortType port)
+        size_t numberOfChannels() const
         {
-                if (port == PortType::LeftChannel)
-                        leftChannel = data;
-                else
-                        rightChannel = data;
+                return geonkickApi->numberOfChannels();
+        }
+
+        void setAudioChannel(float *data, uint32_t channel)
+        {
+                if (channel >= 0 && static_cast<decltype(outputChannels.size())>(channel) < outputChannels.size())
+                        outputChannels[channel] = data;
         }
 
         void setMidiIn(LV2_Atom_Sequence *data)
@@ -185,9 +185,11 @@ class GeonkickLv2Plugin
                                 }
                                 it = lv2_atom_sequence_next(it);
                         }
-                        auto val = geonkickApi->getAudioFrame();
-                        leftChannel[i]  = val;
-                        rightChannel[i] = val;
+
+                        for (int i = 0; i < geonkickApi->getPercussionsNumber(); i++) {
+                                if (geonkickApi->isPercussionEnabled(i))
+                                        *outputChannels[i] = geonkickApi->getAudioFrame(i);
+                        }
                 }
 
                 if (isKickUpdated()) {
@@ -239,8 +241,7 @@ private:
         GeonkickApi *geonkickApi;
         LV2_Atom_Sequence *midiIn;
         LV2_Atom_Sequence *notifyHostChannel;
-        float *leftChannel;
-        float *rightChannel;
+        std::vector<float*> outputChannels;
 
         struct AtomInfo {
                 LV2_URID stateId;
@@ -397,13 +398,14 @@ static void gkick_connect_port(LV2_Handle instance,
                                void*      data)
 {
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
+        if (port >= 1 && port <= geonkickLv2PLugin->numberOfChannels()) {
+                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), port - 1);
+                return;
+        }
+
         auto portType = static_cast<GeonkickLv2Plugin::PortType>(port);
         switch (portType)
         {
-        case GeonkickLv2Plugin::PortType::LeftChannel:
-        case GeonkickLv2Plugin::PortType::RightChannel:
-                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), portType);
-                break;
         case GeonkickLv2Plugin::PortType::MidiIn:
                 geonkickLv2PLugin->setMidiIn(static_cast<LV2_Atom_Sequence*>(data));
                 break;
@@ -411,7 +413,6 @@ static void gkick_connect_port(LV2_Handle instance,
                 geonkickLv2PLugin->setNotifyHostChannel(static_cast<LV2_Atom_Sequence*>(data));
                 break;
         default:
-                // Unknown channel.
                 break;
         }
 }
