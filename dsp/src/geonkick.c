@@ -1427,7 +1427,8 @@ geonkick_enable_percussion(struct geonkick *kick, size_t index, bool enable)
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        kick->synths[index]->is_active = enable;
+        kick->synths[index]->is_active  = enable;
+        kick->audio->audio_outputs[index]->enabled = enable;
 	return GEONKICK_OK;
 }
 

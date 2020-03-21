@@ -88,7 +88,7 @@ void KitWidget::updatePercussionsLines()
 			percussionsLines.push_back(i);
 	}
 }
-	
+
 void KitWidget::createKeys()
 {
         constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C4",
