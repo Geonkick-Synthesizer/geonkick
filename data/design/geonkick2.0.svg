@@ -4423,11 +4423,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.077159"
-     inkscape:cx="2896.8079"
-     inkscape:cy="-129.95916"
+     inkscape:zoom="6.1657887"
+     inkscape:cx="2780.4827"
+     inkscape:cy="-298.75339"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g3312"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
@@ -15416,154 +15416,6 @@
          x="113.74126"
          y="417.70291"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d1d1cf;fill-opacity:1;stroke-width:0.41765422">Filter Envelope</tspan></text>
-    <g
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_filter_env.png"
-       id="g19910"
-       transform="matrix(0.26458333,0,0,0.26458333,-254.49113,110.64167)">
-      <rect
-         inkscape:export-ydpi="89.552147"
-         inkscape:export-xdpi="89.552147"
-         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/topbar_layer1.png"
-         y="490.50897"
-         x="1032.6528"
-         height="22.032398"
-         width="78.290833"
-         id="rect8875-36-3"
-         style="display:inline;opacity:1;fill:#609e8f;fill-opacity:1;stroke:none;stroke-width:3.46102762;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.96256684;paint-order:normal" />
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.01778221px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.68303061"
-         x="1043.9153"
-         y="505.22675"
-         id="text15838-6"><tspan
-           sodipodi:role="line"
-           id="tspan15836-1"
-           x="1043.9153"
-           y="505.22675"
-           style="font-size:10.01778221px;stroke-width:0.68303061">Filter Cutoff</tspan></text>
-    </g>
-    <rect
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_ampl_env_active.png"
-       y="232.55249"
-       x="-4.8211617"
-       height="5.8294053"
-       width="20.714449"
-       id="rect8875-36-5-9"
-       style="display:inline;opacity:1;fill:#609e8f;fill-opacity:1;stroke:#77777a;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0;paint-order:normal" />
-    <text
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_ampl_env_active.png"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.65053821px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.18071851"
-       x="-1.1253926"
-       y="236.19212"
-       id="text15838-6-2"><tspan
-         sodipodi:role="line"
-         id="tspan15836-2-2"
-         x="-1.1253926"
-         y="236.19212"
-         style="font-size:2.65053821px;fill:#ffffff;fill-opacity:1;stroke-width:0.18071851">Amplitude</tspan></text>
-    <rect
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_ampl_env.png"
-       y="224.26909"
-       x="8.9197636"
-       height="5.8294053"
-       width="20.714449"
-       id="rect8875-36-5-9-2"
-       style="display:inline;opacity:1;fill:#609e8f;fill-opacity:1;stroke:#77777a;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0;paint-order:normal" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.65053821px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#00000d;fill-opacity:1;stroke:none;stroke-width:0.18071851"
-       x="12.615532"
-       y="227.90872"
-       id="text15838-6-2-93"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_ampl_env.png"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-ydpi="89.552147"><tspan
-         sodipodi:role="line"
-         id="tspan15836-2-2-1"
-         x="12.615532"
-         y="227.90872"
-         style="font-size:2.65053821px;fill:#00000d;fill-opacity:1;stroke-width:0.18071851">Amplitude</tspan></text>
-    <rect
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_freq_env_active.png"
-       y="240.66531"
-       x="-4.0400157"
-       height="5.8294053"
-       width="20.714449"
-       id="rect8875-36-5-9-8"
-       style="display:inline;opacity:1;fill:#609e8f;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" />
-    <text
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_freq_env_active.png"
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.65053821px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.18071851"
-       x="-0.43083662"
-       y="244.35741"
-       id="text15838-6-2-9"><tspan
-         sodipodi:role="line"
-         id="tspan15836-2-2-7"
-         x="-0.43083662"
-         y="244.35741"
-         style="font-size:2.65053821px;fill:#ffffff;fill-opacity:1;stroke-width:0.18071851">Frequency</tspan></text>
-    <rect
-       style="display:inline;opacity:1;fill:#609e8f;fill-opacity:1;stroke:none;stroke-width:0.91573024;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.96256684;paint-order:normal"
-       id="rect8875-36-3-4"
-       width="20.714449"
-       height="5.8294053"
-       x="19.228352"
-       y="248.5807"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_filter_env_active.png"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-ydpi="89.552147" />
-    <text
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_filter_env_active.png"
-       id="text15838-6-7"
-       y="252.47478"
-       x="22.208208"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.65053821px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.18071851"
-       xml:space="preserve"><tspan
-         style="font-size:2.65053821px;fill:#ffffff;fill-opacity:1;stroke-width:0.18071851"
-         y="252.47478"
-         x="22.208208"
-         id="tspan15836-1-8"
-         sodipodi:role="line">Filter Cutoff</tspan></text>
-    <rect
-       style="display:inline;opacity:1;fill:#609e8f;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-       id="rect8875-36-5-9-8-4"
-       width="20.714449"
-       height="5.8294053"
-       x="-6.0962338"
-       y="247.86566"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_freq_env.png"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-ydpi="89.552147" />
-    <text
-       inkscape:export-ydpi="89.552147"
-       inkscape:export-xdpi="89.552147"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_freq_env.png"
-       id="text15838-6-2-9-5"
-       y="251.55774"
-       x="-2.4870551"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.65053821px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18071851"
-       xml:space="preserve"><tspan
-         style="font-size:2.65053821px;fill:#000000;fill-opacity:1;stroke-width:0.18071851"
-         y="251.55774"
-         x="-2.4870551"
-         id="tspan15836-2-2-7-0"
-         sodipodi:role="line">Frequency</tspan></text>
     <rect
        inkscape:export-ydpi="89.552147"
        inkscape:export-xdpi="89.552147"
@@ -16338,7 +16190,7 @@
          sodipodi:role="line" /></text>
     <rect
        y="320.2673"
-       x="485.88107"
+       x="493.33267"
        height="105.02888"
        width="217.09816"
        id="rect7758"
@@ -16347,191 +16199,191 @@
        transform="scale(1.0337871,0.96731716)"
        id="text7772"
        y="357.95944"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="357.95944"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770"
          sodipodi:role="line">Hit-Hat</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-6"
        y="404.51758"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="404.51758"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-7"
          sodipodi:role="line">Snare II</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-56"
        y="373.47882"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="373.47882"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-2"
          sodipodi:role="line">Macara</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-9"
        y="383.82507"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="383.82507"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-1"
          sodipodi:role="line">Crash II</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-93"
        y="399.34445"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="399.34445"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-6"
          sodipodi:role="line">Snare  I</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-0"
        y="352.78632"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="352.78632"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-62"
          sodipodi:role="line">Snare</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-61"
        y="363.13257"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="363.13257"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-8"
          sodipodi:role="line">Cymbal</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-75"
        y="388.9982"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="388.9982"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-92"
          sodipodi:role="line">Tom I</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-3"
        y="394.17133"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="394.17133"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-61"
          sodipodi:role="line">Tom II</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-29"
        y="378.65195"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="378.65195"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-31"
          sodipodi:role="line">Crash I</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-94"
        y="368.30569"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="368.30569"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-78"
          sodipodi:role="line">Hit-Hat Long</tspan></text>
     <text
        transform="scale(1.0337871,0.96731716)"
        id="text7772-4"
        y="347.61319"
-       x="479.47855"
+       x="486.68661"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.04767656px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.15178788"
        xml:space="preserve"><tspan
          style="fill:#888786;fill-opacity:1;stroke-width:0.15178788"
          y="347.61319"
-         x="479.47855"
+         x="486.68661"
          id="tspan7770-5"
          sodipodi:role="line">Kick</tspan></text>
     <rect
        y="331.41119"
-       x="492.11526"
+       x="499.56686"
        height="5.5466132"
        width="182.99658"
        id="rect7964"
        style="opacity:1;fill:#888786;fill-opacity:0.24757284;stroke:#292828;stroke-width:0.22406074;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <rect
        y="342.35925"
-       x="492.11514"
+       x="499.56674"
        height="5.546782"
        width="182.71573"
        id="rect7964-5"
        style="display:inline;opacity:1;fill:#888786;fill-opacity:0.24757284;stroke:#292828;stroke-width:0.22389214;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <rect
        y="372.55777"
-       x="492.11514"
+       x="499.56674"
        height="5.546782"
        width="182.71573"
        id="rect7964-54"
        style="display:inline;opacity:1;fill:#888786;fill-opacity:0.24757284;stroke:#292828;stroke-width:0.22389214;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <rect
        y="352.24921"
-       x="492.11533"
+       x="499.56693"
        height="5.5464449"
        width="183.27747"
        id="rect7964-6"
        style="display:inline;opacity:1;fill:#888786;fill-opacity:0.24757284;stroke:#292828;stroke-width:0.22422922;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <rect
        y="362.13901"
-       x="492.11533"
+       x="499.56693"
        height="5.5464449"
        width="183.27745"
        id="rect7964-56"
        style="display:inline;opacity:1;fill:#888786;fill-opacity:0.24757284;stroke:#292828;stroke-width:0.22422922;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <rect
        y="381.9184"
-       x="492.11514"
+       x="499.56674"
        height="5.546782"
        width="182.71573"
        id="rect7964-9"
        style="display:inline;opacity:1;fill:#888786;fill-opacity:0.24757284;stroke:#292828;stroke-width:0.22389214;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
     <g
        id="g8325"
-       transform="translate(-138.65392,60.716791)">
+       transform="translate(-131.20233,60.716791)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16556,7 +16408,7 @@
     <g
        id="g8325-5"
        style="display:inline"
-       transform="translate(-130.68832,60.688317)">
+       transform="translate(-123.23673,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16581,7 +16433,7 @@
     <g
        id="g8325-1"
        style="display:inline"
-       transform="translate(-105.33145,60.688317)">
+       transform="translate(-97.879857,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16606,7 +16458,7 @@
     <g
        id="g8325-3"
        style="display:inline"
-       transform="translate(-71.522234,60.688317)">
+       transform="translate(-64.070641,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16631,7 +16483,7 @@
     <g
        id="g8325-7"
        style="display:inline"
-       transform="translate(-54.617721,60.688317)">
+       transform="translate(-47.166128,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16656,7 +16508,7 @@
     <g
        id="g8325-54"
        style="display:inline"
-       transform="translate(-37.713152,60.969354)">
+       transform="translate(-30.261559,60.969354)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16681,7 +16533,7 @@
     <g
        id="g8325-2"
        style="display:inline"
-       transform="translate(-113.78373,60.688317)">
+       transform="translate(-106.33214,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16706,7 +16558,7 @@
     <g
        id="g8325-36"
        style="display:inline"
-       transform="translate(-88.426882,60.688317)">
+       transform="translate(-80.975289,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16731,7 +16583,7 @@
     <g
        id="g8325-8"
        style="display:inline"
-       transform="translate(-79.974614,60.688317)">
+       transform="translate(-72.523021,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16756,7 +16608,7 @@
     <g
        id="g8325-28"
        style="display:inline"
-       transform="translate(-63.070008,60.688317)">
+       transform="translate(-55.618415,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16781,7 +16633,7 @@
     <g
        id="g8325-81"
        style="display:inline"
-       transform="translate(-46.165432,60.688317)">
+       transform="translate(-38.713839,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16806,7 +16658,7 @@
     <g
        id="g8325-19"
        style="display:inline"
-       transform="translate(-122.23605,60.688317)">
+       transform="translate(-114.78446,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16838,7 +16690,7 @@
     <g
        id="g8325-4"
        style="display:inline"
-       transform="translate(-96.87917,60.688317)">
+       transform="translate(-89.427577,60.688317)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16863,7 +16715,7 @@
     <g
        id="g8325-7-8"
        style="display:inline"
-       transform="translate(-163.93763,60.435751)">
+       transform="translate(-156.48604,60.435751)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16895,7 +16747,7 @@
     <g
        id="g8325-54-0"
        style="display:inline"
-       transform="translate(-147.03305,60.716791)">
+       transform="translate(-139.58146,60.716791)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16920,7 +16772,7 @@
     <g
        id="g8325-81-3"
        style="display:inline"
-       transform="translate(-155.48532,60.435751)">
+       transform="translate(-148.03373,60.435751)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16945,7 +16797,7 @@
     <g
        id="g8325-7-8-4"
        style="display:inline"
-       transform="translate(-30.392351,60.969354)">
+       transform="translate(-22.940758,60.969354)">
       <text
          xml:space="preserve"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.9184525px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#888786;fill-opacity:1;stroke:none;stroke-width:0.14694197"
@@ -16987,28 +16839,28 @@
        cx="217.09576"
        cy="146.42635"
        r="0.58431405"
-       transform="matrix(2.3202309,0,0,2.3202309,109.86507,24.783731)" />
+       transform="matrix(2.3202309,0,0,2.3202309,117.31666,24.783731)" />
     <circle
        style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-2-2-7-88-5-2)"
        id="path8795-86-4-4-0-6-6"
        cx="217.09576"
        cy="146.42635"
        r="0.58431405"
-       transform="matrix(2.3202309,0,0,2.3202309,174.2225,15.22848)" />
+       transform="matrix(2.3202309,0,0,2.3202309,181.67409,15.22848)" />
     <circle
        style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-2-2-7-88-5-1)"
        id="path8795-86-4-4-0-6-42"
        cx="217.09576"
        cy="146.42635"
        r="0.58431405"
-       transform="matrix(2.3202309,0,0,2.3202309,174.78457,30.966541)" />
+       transform="matrix(2.3202309,0,0,2.3202309,182.23616,30.966541)" />
     <circle
        style="display:inline;opacity:1;fill:#77bb80;fill-opacity:1;stroke:#f9ff00;stroke-width:0;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.43192492;filter:url(#filter8829-2-2-7-88-5-22)"
        id="path8795-86-4-4-0-6-5"
        cx="217.09576"
        cy="146.42635"
        r="0.58431405"
-       transform="matrix(2.3202309,0,0,2.3202309,174.2225,45.018381)" />
+       transform="matrix(2.3202309,0,0,2.3202309,181.67409,45.018381)" />
     <rect
        style="opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:none;stroke-width:0.18314177;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect3385"
@@ -17220,6 +17072,62 @@
            x="765.67291"
            y="336.51083" />
       </g>
+    </g>
+    <g
+       id="g3312"
+       transform="rotate(-90,735.408,374.40736)">
+      <g
+         id="g3306"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/kit_button.png"
+         inkscape:export-xdpi="89.959091"
+         inkscape:export-ydpi="89.959091">
+        <rect
+           style="opacity:1;fill:#464444;fill-opacity:1;stroke:#2b2b2b;stroke-width:0.27196106;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="rect3299"
+           width="3.9613721"
+           height="33.327755"
+           x="-376.64941"
+           y="719.00549"
+           transform="rotate(-90)" />
+      </g>
+      <text
+         id="text3303"
+         y="375.85294"
+         x="735.21942"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.30537033px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.12395138"
+         xml:space="preserve"><tspan
+           style="fill:#ffffff;fill-opacity:1;stroke-width:0.12395138"
+           y="375.85294"
+           x="735.21942"
+           id="tspan3301"
+           sodipodi:role="line">Kit</tspan></text>
+      <g
+         transform="translate(0.72058495,7.9871824)"
+         style="display:inline"
+         id="g3306-5"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/controls_button.png"
+         inkscape:export-xdpi="89.959091"
+         inkscape:export-ydpi="89.959091">
+        <rect
+           style="opacity:1;fill:#464444;fill-opacity:1;stroke:#2b2b2b;stroke-width:0.27196106;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="rect3299-6"
+           width="3.9613721"
+           height="33.327755"
+           x="-376.64941"
+           y="719.00549"
+           transform="rotate(-90)" />
+      </g>
+      <text
+         id="text3303-2"
+         y="383.87723"
+         x="729.82001"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.30537033px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.12395138"
+         xml:space="preserve"><tspan
+           style="fill:#ffffff;fill-opacity:1;stroke-width:0.12395138"
+           y="383.87723"
+           x="729.82001"
+           id="tspan3301-9"
+           sodipodi:role="line">Controls</tspan></text>
     </g>
   </g>
 </svg>

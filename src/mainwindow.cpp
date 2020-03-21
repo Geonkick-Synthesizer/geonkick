@@ -128,7 +128,7 @@ bool MainWindow::init(void)
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
-        RK_ACT_BIND(rightBar, showChannels, RK_ACT_ARGS(), controlAreaWidget, showKit());
+        RK_ACT_BIND(rightBar, showKit, RK_ACT_ARGS(), controlAreaWidget, showKit());
         RK_ACT_BIND(controlAreaWidget->getKitWidget(),
                     currnetPercussionChanged,
                     RK_ACT_ARGS(int id),

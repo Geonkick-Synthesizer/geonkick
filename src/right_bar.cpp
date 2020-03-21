@@ -25,7 +25,7 @@
 #include "geonkick_button.h"
 
 RK_DECLARE_IMAGE_RC(controls_button);
-RK_DECLARE_IMAGE_RC(channels_button);
+RK_DECLARE_IMAGE_RC(kit_button);
 
 RightBar::RightBar(GeonkickWidget *parent)
         : GeonkickWidget(parent)
@@ -41,11 +41,11 @@ RightBar::RightBar(GeonkickWidget *parent)
         controlsButton->setCheckable(true);
         RK_ACT_BIND(controlsButton, toggled, RK_ACT_ARGS(bool b), this, showControls());
 
-        auto channelSettingsButton = new GeonkickButton(this);
-        channelSettingsButton->setSize(15, 119);
-        channelSettingsButton->setPosition({0, controlsButton->height() + controlsButton->y() + 12});
-        channelSettingsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(channels_button)));
-        channelSettingsButton->setCheckable(true);
-        RK_ACT_BIND(channelSettingsButton, toggled, RK_ACT_ARGS(bool b), this, showChannels());
+        auto kitSettingsButton = new GeonkickButton(this);
+        kitSettingsButton->setSize(15, 119);
+        kitSettingsButton->setPosition({0, controlsButton->height() + controlsButton->y() + 12});
+        kitSettingsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(kit_button)));
+        kitSettingsButton->setCheckable(true);
+        RK_ACT_BIND(kitSettingsButton, toggled, RK_ACT_ARGS(bool b), this, showKit());
 }
 
