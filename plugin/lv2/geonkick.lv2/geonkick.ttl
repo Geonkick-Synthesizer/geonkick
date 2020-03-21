@@ -11,8 +11,8 @@
 <http://geontime.com/geonkick#author>
 	a foaf:Person ;
 	foaf:name "Iurie Nistor" ;
-	foaf:mbox <mailto:nistor@iurie.org> ;
-	foaf:homepage <http://iurie.org/> .
+	foaf:mbox <mailto:iurie@geontime.com> ;
+	foaf:homepage <http://geontime.com/> .
 
 <http://geontime.com/geonkick>
 	a doap:Project ;
@@ -27,136 +27,135 @@
     lv2:extensionData state:StateChanged ;
     doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
     ui:ui <http://geontime.com/geonkick#ui> ;
-        lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 0 ;
-		lv2:symbol "out1" ;
-		lv2:name "Audio[1]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 1 ;
-		lv2:symbol "out2" ;
-		lv2:name "Audio[2]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 2 ;
-		lv2:symbol "out3" ;
-		lv2:name "Audio[3]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 3 ;
-		lv2:symbol "out4" ;
-		lv2:name "Audio[4]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 4 ;
-		lv2:symbol "out5" ;
-		lv2:name "Audio[5]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 5 ;
-		lv2:symbol "out6" ;
-		lv2:name "Audio[6]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 6 ;
-		lv2:symbol "out7" ;
-		lv2:name "Audio[7]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 7 ;
-		lv2:symbol "out8" ;
-		lv2:name "Audio[8]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 8 ;
-		lv2:symbol "out9" ;
-		lv2:name "Audio[9]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 9 ;
-		lv2:symbol "out10" ;
-		lv2:name "Audio[10]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 10 ;
-		lv2:symbol "out11" ;
-		lv2:name "Audio[11]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 11 ;
-		lv2:symbol "out12" ;
-		lv2:name "Audio[12]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 12 ;
-		lv2:symbol "out13" ;
-		lv2:name "Audio[13]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 13 ;
-		lv2:symbol "out14" ;
-		lv2:name "Audio[14]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 14 ;
-		lv2:symbol "out15" ;
-		lv2:name "Audio[15]"
-	];
-
-	lv2:port [
-		a lv2:AudioPort , lv2:OutputPort ;
-		lv2:index 15 ;
-		lv2:symbol "out16" ;
-		lv2:name "Audio[16]"
-	];
-
-        lv2:port [
+       lv2:port [
              a lv2:InputPort , atom:AtomPort ;
              atom:bufferType atom:Sequence ;
              atom:supports midi:MidiEvent ;
 	     lv2:designation lv2:control ;
-	     lv2:index 16 ;
+	     lv2:index 0 ;
 	     lv2:symbol "midi_in" ;
              lv2:name "MIDI In" ;
 	];
 
-
         lv2:port [
-	    a lv2:OutputPort,  atom:AtomPort ;
-	    atom:bufferType atom:Sequence ;
-	    lv2:index 17 ;
-	    lv2:symbol "notify" ;
-	    lv2:name "Notify";
-       ].
+	     a lv2:OutputPort,  atom:AtomPort ;
+	     atom:bufferType atom:Sequence ;
+	     lv2:index 1 ;
+	     lv2:symbol "notify" ;
+	     lv2:name "Notify";
+       ];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 2 ;
+	     lv2:symbol "out1" ;
+             lv2:name "Audio1"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 3 ;
+	     lv2:symbol "out2" ;
+             lv2:name "Audio2"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 4 ;
+	     lv2:symbol "out3" ;
+             lv2:name "Audio3"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 5 ;
+	     lv2:symbol "out4" ;
+             lv2:name "Audio4"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 6 ;
+	     lv2:symbol "out5" ;
+             lv2:name "Audio5"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 7 ;
+	     lv2:symbol "out6" ;
+             lv2:name "Audio6"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 8;
+	     lv2:symbol "out7" ;
+             lv2:name "Audio7"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 9 ;
+	     lv2:symbol "out8" ;
+             lv2:name "Audio8"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 10 ;
+	     lv2:symbol "out9" ;
+             lv2:name "Audio9"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 11 ;
+	     lv2:symbol "out10" ;
+             lv2:name "Audio10"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 12 ;
+	     lv2:symbol "out11" ;
+             lv2:name "Audio11"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 13 ;
+	     lv2:symbol "out12" ;
+             lv2:name "Audio12"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 14 ;
+	     lv2:symbol "out13" ;
+             lv2:name "Audio13"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 15 ;
+	     lv2:symbol "out14" ;
+             lv2:name "Audio14"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 16 ;
+	     lv2:symbol "out15" ;
+             lv2:name "Audio15"
+ 	];
+
+       lv2:port [
+	     a lv2:AudioPort , lv2:OutputPort ;
+	     lv2:index 17 ;
+	     lv2:symbol "out16" ;
+             lv2:name "Audio16"
+ 	].
 
 <http://geontime.com/geonkick#ui>
     a ui:X11UI ;

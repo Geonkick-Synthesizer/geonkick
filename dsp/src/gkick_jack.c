@@ -53,18 +53,13 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                                 jack_midi_event_get(&event, port_buf, event_index);
                 }
 
-		gkick_real val[2];
-                gkick_mixer_get_frame(jack->mixer, 0, &val[0]);
-                gkick_mixer_get_frame(jack->mixer, 1, &val[1]);
-                val[0] *= 0.1f;
-		val[1] *= 0.1f;
-                if (val[0] > 0.1f)
-                        val[0] = 0.1f;
-		if (val[1] > 0.1f)
-			val[1] = 0.1f;
-
-                buffers[0][i] = (jack_default_audio_sample_t)(val[0]);
-                buffers[1][i] = (jack_default_audio_sample_t)(val[1]);
+		gkick_real val;
+                gkick_mixer_get_frame(jack->mixer, -1, &val);
+                val *= 0.1f;
+                if (val > 0.1f)
+                        val = 0.1f;
+                buffers[0][i] = (jack_default_audio_sample_t)val;
+                buffers[1][i] = (jack_default_audio_sample_t)val;
         }
 
         return 0;

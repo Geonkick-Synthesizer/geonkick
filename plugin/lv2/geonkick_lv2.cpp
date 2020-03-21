@@ -76,9 +76,9 @@ class GeonkickLv2Plugin
                 return geonkickApi->numberOfChannels();
         }
 
-        void setAudioChannel(float *data, uint32_t channel)
+        void setAudioChannel(float *data, size_t channel)
         {
-                if (channel >= 0 && static_cast<decltype(outputChannels.size())>(channel) < outputChannels.size())
+                if (channel >= 0 && channel < outputChannels.size())
                         outputChannels[channel] = data;
         }
 
@@ -181,12 +181,10 @@ class GeonkickLv2Plugin
                                 it = lv2_atom_sequence_next(it);
                         }
 
-			auto nChannels = geonkickApi->getPercussionsNumber();
-                        for (decltype(nChannels) i = 0; i < nChannels; i++) {
-                                if (geonkickApi->isPercussionEnabled(i))
-                                        *outputChannels[i] = geonkickApi->getAudioFrame(i);
-				else
-					*outputChannels[i] = 0.0f;
+                        auto nChannels = geonkickApi->getPercussionsNumber();
+                        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
+                                if (geonkickApi->isPercussionEnabled(ch) && outputChannels[ch])
+                                        outputChannels[ch][i] = geonkickApi->getAudioFrame(ch);
                         }
                 }
 
@@ -398,12 +396,12 @@ static void gkick_connect_port(LV2_Handle instance,
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
 	auto nChannels = geonkickLv2PLugin->numberOfChannels();
 	auto portNumber = static_cast<decltype(nChannels)>(port);
-        if (port >= 0 && portNumber < nChannels)
-                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), port);
-        else if (portNumber == nChannels) 
+        if (portNumber == 0)
                 geonkickLv2PLugin->setMidiIn(static_cast<LV2_Atom_Sequence*>(data));
-	else if (portNumber == nChannels + 1)
+        else if (portNumber == 1)
                 geonkickLv2PLugin->setNotifyHostChannel(static_cast<LV2_Atom_Sequence*>(data));
+        else if (portNumber > 1)
+                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), portNumber - 2);
 }
 
 static void gkick_activate(LV2_Handle instance)

@@ -221,6 +221,7 @@
 }
 ,
 "kick": {
+"id": "0",
 "name": "Clap",
 "playing_key": 69,
 "layers": [0],
@@ -474,6 +475,7 @@
 }
 ,
 "kick": {
+"id": "1",
 "name": "Hit-Hat-Closed",
 "playing_key": 70,
 "layers": [0],
@@ -727,6 +729,7 @@
 }
 ,
 "kick": {
+"id": "2",
 "name": "Hit-Hat-Open",
 "playing_key": 71,
 "layers": [0],
@@ -980,6 +983,7 @@
 }
 ,
 "kick": {
+"id": "3",
 "name": "Hit-Hat",
 "playing_key": 72,
 "layers": [0],
@@ -1233,6 +1237,7 @@
 }
 ,
 "kick": {
+"id": "4",
 "name": "Kick",
 "playing_key": 73,
 "layers": [0],
@@ -1486,6 +1491,7 @@
 }
 ,
 "kick": {
+"id": "5",
 "name": "Shaker",
 "playing_key": 74,
 "layers": [0, 1],
@@ -1739,6 +1745,7 @@
 }
 ,
 "kick": {
+"id": "6",
 "name": "Snare",
 "playing_key": 75,
 "layers": [0, 1],
@@ -1992,6 +1999,7 @@
 }
 ,
 "kick": {
+"id": "7",
 "name": "SnareT",
 "playing_key": 76,
 "layers": [0, 1],
