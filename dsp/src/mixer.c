@@ -45,8 +45,9 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
                 if (output->enabled && (output->playing_key == -1
-                    || output->playing_key == note->note_number))
+                    || output->playing_key == note->note_number)) {
                         gkick_audio_output_key_pressed(output, note);
+                }
         }
 	return GEONKICK_OK;
 }
@@ -57,18 +58,12 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
 		      gkick_real *val)
 {
         *val = 0.0f;
-        if (channel > -1 && channel < GEONKICK_MAX_PERCUSSIONS) {
-                struct gkick_audio_output *out = mixer->audio_outputs[channel];
-                if (out->enabled)
-                        gkick_audio_output_get_frame(out, val);
-        } else {
-                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                        struct gkick_audio_output *out = mixer->audio_outputs[i];
-                        if (out->enabled) {
-                                gkick_real v = 0.0f;
-                                gkick_audio_output_get_frame(out, &v);
-                                *val += v;
-                        }
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                struct gkick_audio_output *out = mixer->audio_outputs[i];
+                if (out->enabled && out->channel == channel) {
+                        gkick_real v = 0.0f;
+                        gkick_audio_output_get_frame(out, &v);
+                        *val += v;
                 }
         }
 

@@ -40,6 +40,7 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
         (*audio_output)->decay   = -1;
         (*audio_output)->play    = false;
 	(*audio_output)->enabled = true;
+        (*audio_output)->channel = 0;
 
         gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer, GEONKICK_MAX_KICK_BUFFER_SIZE);
         if ((*audio_output)->updated_buffer == NULL) {
@@ -224,3 +225,16 @@ bool gkick_audio_output_is_tune_output(struct gkick_audio_output *audio_output)
         return audio_output->tune;
 }
 
+enum geonkick_error
+gkick_audio_output_set_channel(struct gkick_audio_output *audio_output, size_t channel)
+{
+        audio_output->channel = channel;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_audio_output_get_channel(struct gkick_audio_output *audio_output, size_t *channel)
+{
+        *channel = audio_output->channel;
+        return GEONKICK_OK;
+}

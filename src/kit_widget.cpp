@@ -176,8 +176,9 @@ void KitWidget::drawPercussions(RkPainter &painter)
 		painter.drawText(txtRect,
                                  std::string(geonkickApi->getPercussionName(idFromLine(i))),
                                  Rk::Alignment::AlignLeft);
+                auto channel = geonkickApi->getPercussionChannel(idFromLine(i));
 		painter.drawText(RkRect(percussionWidth - channelWidth, y, channelWidth, percussionHeight),
-				 "#" + std::to_string(idFromLine(i)));
+				 "#" + std::to_string(channel));
 
                 int x = rect.right() + 5;
                 if (percussionsLines.size() > 1) {
@@ -189,7 +190,6 @@ void KitWidget::drawPercussions(RkPainter &painter)
                         painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(copy_per_button)),
                                           x, rect.top() + 2);
                 }
-		
                 y += percussionHeight;
         }
 }

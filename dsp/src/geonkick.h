@@ -39,6 +39,10 @@ extern "C" {
 #include <float.h>
 #include <stdbool.h>
 
+#ifdef __STDC_NO_ATOMICS__
+#error atomic operations are not supported
+#endif
+
 #include "gkick_log.h"
 
 #ifdef GEONKICK_DOUBLE_PRECISION
@@ -498,6 +502,11 @@ geonkick_get_percussion_name(struct geonkick *kick,
 enum geonkick_error
 geonkick_channels_number(struct geonkick *kick, size_t *n);
 
+enum geonkick_error
+geonkick_set_percussion_channel(struct geonkick *kick, size_t id, size_t channel);
+
+enum geonkick_error
+geonkick_get_percussion_channel(struct geonkick *kick, size_t id, size_t *channel);
 
 #ifdef __cplusplus
 }

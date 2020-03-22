@@ -156,7 +156,7 @@ std::string KitState::toJson() const
         jsonStream << "\"author\": \"" << getAuthor() << "\"," << std::endl;
         jsonStream << "\"url\": \"" << getUrl() << "\"," << std::endl;
         jsonStream <<  "\"percussions\": [" << std::endl;
-        GEONKICK_LOG_INFO("size: " << percussionsList.size());
+
         size_t i = 0;
         for (const auto &per: percussionsList) {
                 if (i < percussionsList.size() - 1)

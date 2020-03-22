@@ -60,8 +60,10 @@ geonkick_create(struct geonkick **kick)
                 (*kick)->synths[i]->id = i;
         }
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 gkick_synth_set_output((*kick)->synths[i], (*kick)->audio->audio_outputs[i]);
+                geonkick_set_percussion_channel(*kick, i, i);
+        }
 
 	if (geonkick_worker_init(*kick) != GEONKICK_OK) {
 		gkick_log_error("can't init worker");
@@ -1526,4 +1528,24 @@ geonkick_channels_number(struct geonkick *kick, size_t *n)
 
         *n = 2;
         return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_set_percussion_channel(struct geonkick *kick, size_t id, size_t channel)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_set_channel(kick->synths[id]->output, channel);
+}
+
+enum geonkick_error
+geonkick_get_percussion_channel(struct geonkick *kick, size_t id, size_t *channel)
+{
+        if (kick == NULL || channel == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_get_channel(kick->synths[id]->output, channel);
 }

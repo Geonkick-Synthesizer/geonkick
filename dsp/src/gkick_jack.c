@@ -29,8 +29,8 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg)
 {
         struct gkick_jack *jack = (struct gkick_jack*)arg;
-	jack_default_audio_sample_t *buffers[2];
-        if (gkick_jack_get_output_buffers(jack, buffers, nframes) != GEONKICK_OK) {
+	jack_default_audio_sample_t *buffer;
+        if (gkick_jack_get_output_buffers(jack, &buffer, nframes) != GEONKICK_OK) {
                 gkick_log_error("can't get output jack buffers");
                 return 0;
         }
@@ -54,12 +54,11 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                 }
 
 		gkick_real val;
-                gkick_mixer_get_frame(jack->mixer, -1, &val);
+                gkick_mixer_get_frame(jack->mixer, 0, &val);
                 val *= 0.1f;
                 if (val > 0.1f)
                         val = 0.1f;
-                buffers[0][i] = (jack_default_audio_sample_t)val;
-                buffers[1][i] = (jack_default_audio_sample_t)val;
+                buffer[i] = (jack_default_audio_sample_t)val;
         }
 
         return 0;
@@ -69,7 +68,6 @@ jack_nframes_t
 gkick_jack_sample_rate(struct gkick_jack *jack)
 {
         jack_nframes_t sample_rate;
-
         if (jack == NULL) {
                 gkick_log_error("wrong arguments");
                 return 0;
@@ -84,25 +82,20 @@ gkick_jack_sample_rate(struct gkick_jack *jack)
 
 enum geonkick_error
 gkick_jack_get_output_buffers(struct gkick_jack *jack,
-                              jack_default_audio_sample_t **channels_bufs,
+                              jack_default_audio_sample_t **channel_buf,
                               jack_nframes_t nframes)
 {
-        enum geonkick_error error;
-        error = GEONKICK_OK;
-        if (jack->output_port_r == NULL || jack->output_port_l == NULL) {
+        if (jack->output_port == NULL) {
                 gkick_log_error("output ports are undefined");
-                error = GEONKICK_ERROR;
+                *channel_buf = NULL;
+                return GEONKICK_ERROR;
         } else {
-                channels_bufs[0]
-                        = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port_l, nframes);
-                channels_bufs[1]
-                        = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port_r, nframes);
+                *channel_buf = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port, nframes);
+                if (*channel_buf == NULL)
+                        return GEONKICK_ERROR;
         }
 
-        if (channels_bufs[0] == NULL || channels_bufs[1] == NULL)
-                error = GEONKICK_ERROR;
-
-        return error;
+        return GEONKICK_OK;
 }
 
 void
@@ -193,15 +186,11 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
 
         error = GEONKICK_OK;
         gkick_jack_lock(jack);
-        if (jack->output_port_l == NULL && jack->output_port_r == NULL) {
-                jack->output_port_l = jack_port_register(jack->client, "audio_out_L",
-                                                         JACK_DEFAULT_AUDIO_TYPE,
-                                                         JackPortIsOutput, 0);
-                jack->output_port_r = jack_port_register(jack->client, "audio_out_R",
-                                                         JACK_DEFAULT_AUDIO_TYPE,
-                                                         JackPortIsOutput, 0);
-                if (jack->output_port_l == NULL
-                    || jack->output_port_r == NULL) {
+        if (jack->output_port == NULL) {
+                jack->output_port = jack_port_register(jack->client, "audio_out",
+                                                       JACK_DEFAULT_AUDIO_TYPE,
+                                                       JackPortIsOutput, 0);
+                if (jack->output_port == NULL) {
                         gkick_log_error("can't register output ports");
                         error = GEONKICK_ERROR;
                 }
@@ -282,16 +271,12 @@ void gkick_jack_free(struct gkick_jack **jack)
         if (jack != NULL && *jack != NULL) {
                 if ((*jack)->client != NULL) {
                         jack_deactivate((*jack)->client);
-                        if ((*jack)->output_port_l != NULL) {
+                        if ((*jack)->output_port != NULL) {
                                 jack_port_unregister((*jack)->client,
-                                                     (*jack)->output_port_l);
-                        }
-                        if ((*jack)->output_port_r != NULL) {
-                                jack_port_unregister((*jack)->client,
-                                                     (*jack)->output_port_r);
+                                                     (*jack)->output_port);
                         }
                         jack_port_unregister((*jack)->client,
-                                             (*jack)->output_port_r);
+                                             (*jack)->output_port);
                         jack_client_close((*jack)->client);
                 }
 

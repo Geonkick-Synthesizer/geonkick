@@ -30,6 +30,7 @@ PercussionState::PercussionState()
         : kickId{0}
         , kickName{"Default"}
         , playingKey{-1}
+        , outputChannel{0}
         , kickEnabled{true}
         , limiterValue{0}
         , kickLength{50}
@@ -132,6 +133,16 @@ void PercussionState::setPlayingKey(char key)
         playingKey = key;
 }
 
+void PercussionState::setChannel(size_t channel)
+{
+        outputChannel = channel;
+}
+
+size_t PercussionState::getChannel() const
+{
+        return outputChannel;
+}
+
 bool PercussionState::isEnabled() const
 {
         return kickEnabled;
@@ -167,6 +178,8 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                         setName(m.value.GetString());
 		if (m.name == "id" && m.value.IsInt())
                         setId(m.value.GetInt());
+                if (m.name == "channel" && m.value.IsInt())
+                        setChannel(m.value.GetInt());
                 if (m.name == "playing_key" && m.value.IsInt())
                         setPlayingKey(m.value.GetInt());
                 if (m.name == "limiter" && m.value.IsDouble())
@@ -790,7 +803,8 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
 void PercussionState::kickJson(std::ostringstream &jsonStream) const
 {
         jsonStream << "\"kick\": {" << std::endl;
-	jsonStream << "\"id\": \"" << getId() << "\"," << std::endl;
+	jsonStream << "\"id\": " << getId() << "," << std::endl;
+        jsonStream << "\"channel\": " << getChannel() << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
         jsonStream << "\"playing_key\": " << static_cast<int>(getPlayingKey()) << "," << std::endl;
         jsonStream << "\"layers\": [";

@@ -31,8 +31,7 @@
 #include <jack/midiport.h>
 
 struct gkick_jack {
-        jack_port_t *output_port_l;
-        jack_port_t *output_port_r;
+        jack_port_t *output_port;
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;
@@ -49,7 +48,7 @@ gkick_jack_sample_rate(struct gkick_jack *jack);
 
 enum geonkick_error
 gkick_jack_get_output_buffers(struct gkick_jack *jack,
-                              jack_default_audio_sample_t **channels_bufs,
+                              jack_default_audio_sample_t **channel_buf,
                               jack_nframes_t nframes);
 
 void gkick_jack_get_note_info(jack_midi_event_t *event,

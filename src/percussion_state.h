@@ -41,6 +41,8 @@ class PercussionState
         void loadObject(const rapidjson::Value &obj);
         size_t getId() const;
         void setId(size_t id);
+        void setChannel(size_t channel);
+        size_t getChannel() const;
         std::string getName() const;
         void setName(const std::string &name);
         char getPlayingKey() const;
@@ -188,6 +190,7 @@ private:
         size_t kickId;
         std::string kickName;
         char playingKey;
+        size_t outputChannel;
         bool kickEnabled;
 
         double limiterValue;

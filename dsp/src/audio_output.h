@@ -26,6 +26,8 @@
 
 #include "geonkick_internal.h"
 
+#include <stdatomic.h>
+
 /**
  * Audio output (which is maybe not the best name)
  * is an interface to an array that holds the all length synthesised kick.
@@ -85,6 +87,10 @@ struct gkick_audio_output
          *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
          */
         _Atomic int decay;
+
+        /* Output channel. */
+      	atomic_size_t channel;
+
         pthread_mutex_t lock;
 };
 
@@ -126,5 +132,11 @@ gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, char
 void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune);
 
 bool gkick_audio_output_is_tune_output(struct gkick_audio_output *audio_output);
+
+enum geonkick_error
+gkick_audio_output_set_channel(struct gkick_audio_output *audio_output, size_t channel);
+
+enum geonkick_error
+gkick_audio_output_get_channel(struct gkick_audio_output *audio_output, size_t *channel);
 
 #endif // GKICK_AUDO_OUTPUT_H

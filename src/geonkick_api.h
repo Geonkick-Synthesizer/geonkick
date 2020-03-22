@@ -203,6 +203,8 @@ class GeonkickApi {
   size_t enabledPercussions() const;
   void setPercussionPlayingKey(int index, int key);
   int getPercussionPlayingKey(int index) const;
+  void setPercussionChannel(int index, size_t channel);
+  size_t getPercussionChannel(int index) const;
   void setPercussionName(int index, const std::string &name);
   std::string getPercussionName(int index) const;
 
