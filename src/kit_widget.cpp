@@ -226,10 +226,12 @@ void KitWidget::drawConnection(RkPainter &painter, const RkPoint &point)
 
 void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
-        updatePercussionName();
-        if (event->button() != RkMouseEvent::ButtonType::Left)
+        if (event->button() != RkMouseEvent::ButtonType::Left
+            && event->button() != RkMouseEvent::ButtonType::WheelUp
+            && event->button() != RkMouseEvent::ButtonType::WheelDown)
                 return;
 
+        updatePercussionName();
 	auto id = idFromLine(getLineId(event->x(), event->y()));
         auto n = geonkickApi->getPercussionsNumber();
         if (id > -1 && static_cast<decltype(n)>(id) < n) {
@@ -245,6 +247,24 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                                 copyPercussion(id);
                         else
                                 removePercussion(id);
+                        update();
+                        return;
+                } else if (event->x() > (percussionWidth - channelWidth)
+                           && event->x() < percussionWidth) {
+                        int channel = static_cast<int>(geonkickApi->getPercussionChannel(id));
+                        if(event->button() == RkMouseEvent::ButtonType::Left
+                           || event->button() == RkMouseEvent::ButtonType::WheelUp) {
+                                channel++;
+                        } else if (event->button() == RkMouseEvent::ButtonType::WheelDown) {
+                                channel--;
+                        }
+
+                        if (channel < 0)
+                                geonkickApi->setPercussionChannel(id, geonkickApi->numberOfChannels() - 1);
+                        else if (static_cast<size_t>(channel) > geonkickApi->numberOfChannels() - 1)
+                                geonkickApi->setPercussionChannel(id, 0);
+                        else
+                                geonkickApi->setPercussionChannel(id, static_cast<size_t>(channel));
                         update();
                         return;
                 } else if (enabledPercussions > 1
@@ -266,6 +286,12 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
 
 void KitWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        if (event->button() == RkMouseEvent::ButtonType::WheelUp
+            || event->button() == RkMouseEvent::ButtonType::WheelDown) {
+                mouseButtonPressEvent(event);
+                return;
+        }
+
 	if (event->button() != RkMouseEvent::ButtonType::Left)
 		return;
 

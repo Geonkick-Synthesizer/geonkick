@@ -67,7 +67,7 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
                 }
         }
 
-	/* *val *= (gkick_real)mixer->limiter / 1000000; */
+        *val *= (gkick_real)mixer->limiter / 1000000;
         /* if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL) */
         /*         mixer->limiter_callback(mixer->limiter_callback_arg, *val); */
 

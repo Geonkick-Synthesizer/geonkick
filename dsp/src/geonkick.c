@@ -1526,7 +1526,7 @@ geonkick_channels_number(struct geonkick *kick, size_t *n)
                 return GEONKICK_ERROR;
         }
 
-        *n = 2;
+        *n = GEONKICK_MAX_PERCUSSIONS;
         return GEONKICK_OK;
 }
 

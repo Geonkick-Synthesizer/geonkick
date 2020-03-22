@@ -181,11 +181,10 @@ class GeonkickLv2Plugin
                                 it = lv2_atom_sequence_next(it);
                         }
 
-                        auto nPercussions = geonkickApi->getPercussionsNumber();
-                        for (decltype(nPercussions) id = 0; id < nPercussions; id++) {
-                                auto ch = geonkickApi->getPercussionChannel(id);
-                                if (geonkickApi->isPercussionEnabled(id) && outputChannels[ch])
-                                        outputChannels[ch][i] = geonkickApi->getAudioFrame(id);
+                        auto nChannels = geonkickApi->numberOfChannels();
+                        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
+                                if (outputChannels[ch])
+                                        outputChannels[ch][i] = geonkickApi->getAudioFrame(ch);
                         }
                 }
 
