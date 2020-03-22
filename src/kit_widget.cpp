@@ -88,6 +88,7 @@ void KitWidget::updatePercussionsLines()
 		if (geonkickApi->isPercussionEnabled(i))
 			percussionsLines.push_back(i);
 	}
+	std::sort(percussionsLines.begin(), percussionsLines.end());
 }
 
 void KitWidget::createKeys()
@@ -311,6 +312,7 @@ void KitWidget::addPercussion(const std::shared_ptr<PercussionState> &per)
         editedLineId = -1;
         geonkickApi->setPercussionState(per);
 	percussionsLines.push_back(per->getId());
+	std::sort(percussionsLines.begin(), percussionsLines.end());
         update();
 }
 
@@ -387,6 +389,7 @@ void KitWidget::removePercussion(int id)
 	for (auto it = percussionsLines.begin(); it != percussionsLines.end(); ++it) {
 		if (*it == id) {
 			percussionsLines.erase(it);
+			std::sort(percussionsLines.begin(), percussionsLines.end());
 			break;
 		}
 	}
@@ -401,6 +404,7 @@ void KitWidget::copyPercussion(int id)
                 state->setId(newId);
                 geonkickApi->setPercussionState(state);
 		percussionsLines.push_back(newId);
+		std::sort(percussionsLines.begin(), percussionsLines.end());
         }
 }
 
