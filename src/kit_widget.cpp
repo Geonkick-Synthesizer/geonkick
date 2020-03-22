@@ -42,6 +42,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
 	: GeonkickWidget(parent)
 	, geonkickApi{api}
 	, keyWidth{30}
+	, channelWidth{keyWidth}
 	, percussionHeight{20}
         , percussionWidth{0}
 	, percussionNameWidth{100}
@@ -104,7 +105,8 @@ void KitWidget::createKeys()
                 midiKeys.push_back(midiKey);
                 n++;
         }
-        percussionWidth = percussionNameWidth + midiKeys.size() * keyWidth;
+
+        percussionWidth = percussionNameWidth + midiKeys.size() * keyWidth + channelWidth;
 }
 
 void KitWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -173,6 +175,9 @@ void KitWidget::drawPercussions(RkPainter &painter)
 		painter.drawText(txtRect,
                                  std::string(geonkickApi->getPercussionName(idFromLine(i))),
                                  Rk::Alignment::AlignLeft);
+		painter.drawText(RkRect(percussionWidth - channelWidth, y, channelWidth, percussionHeight),
+				 "#" + std::to_string(idFromLine(i)));
+
                 int x = rect.right() + 5;
                 if (percussionsLines.size() > 1) {
                         painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(remove_per_button)),
@@ -183,6 +188,7 @@ void KitWidget::drawPercussions(RkPainter &painter)
                         painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(copy_per_button)),
                                           x, rect.top() + 2);
                 }
+		
                 y += percussionHeight;
         }
 }

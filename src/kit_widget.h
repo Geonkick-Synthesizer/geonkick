@@ -82,6 +82,7 @@ class KitWidget: public GeonkickWidget
         std::vector<KeyInfo> midiKeys;
 	std::vector<int> percussionsLines;
 	int keyWidth;
+	int channelWidth;
 	int percussionHeight;
         int percussionWidth;
 	int percussionNameWidth;
