@@ -1042,6 +1042,7 @@ size_t GeonkickApi::enabledPercussions() const
 void GeonkickApi::setPercussionPlayingKey(int index, int key)
 {
         geonkick_set_playing_key(geonkickApi, index, key);
+        action stateChanged();
 }
 
 int GeonkickApi::getPercussionPlayingKey(int index) const
@@ -1054,6 +1055,7 @@ int GeonkickApi::getPercussionPlayingKey(int index) const
 void GeonkickApi::setPercussionChannel(int index, size_t channel)
 {
         geonkick_set_percussion_channel(geonkickApi, index, channel);
+        action stateChanged();
 }
 
 size_t GeonkickApi::getPercussionChannel(int index) const
@@ -1066,6 +1068,7 @@ size_t GeonkickApi::getPercussionChannel(int index) const
 void GeonkickApi::setPercussionName(int index, const std::string &name)
 {
         geonkick_set_percussion_name(geonkickApi, index, name.c_str(), name.size());
+        action stateChanged();
 }
 
 std::string GeonkickApi::getPercussionName(int index) const

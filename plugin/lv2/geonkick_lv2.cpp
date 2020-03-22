@@ -58,6 +58,7 @@ class GeonkickLv2Plugin
                 , kickIsUpdated{false}
         {
                 RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, kickUpdated());
+                RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, kickUpdated());
         }
 
         ~GeonkickLv2Plugin()
