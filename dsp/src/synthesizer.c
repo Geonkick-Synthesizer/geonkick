@@ -1463,10 +1463,10 @@ enum geonkick_error
 gkick_synth_compressor_set_attack(struct gkick_synth *synth, gkick_real attack)
 {
         enum geonkick_error res;
-        int enabled;
         res = gkick_compressor_set_attack(synth->compressor, attack);
+	int enabled  = 0;
         gkick_compressor_is_enabled(synth->compressor, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
@@ -1481,10 +1481,10 @@ enum geonkick_error
 gkick_synth_compressor_set_release(struct gkick_synth *synth, gkick_real release)
 {
         enum geonkick_error res;
-        int enabled;
         res = gkick_compressor_set_release(synth->compressor, release);
+	int enabled = 0;
         gkick_compressor_is_enabled(synth->compressor, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
@@ -1498,11 +1498,11 @@ gkick_synth_compressor_get_release(struct gkick_synth *synth, gkick_real *releas
 enum geonkick_error
 gkick_synth_compressor_set_threshold(struct gkick_synth *synth, gkick_real threshold)
 {
-                enum geonkick_error res;
+	enum geonkick_error res;
         int enabled;
         res = gkick_compressor_set_threshold(synth->compressor, threshold);
         gkick_compressor_is_enabled(synth->compressor, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
@@ -1520,7 +1520,7 @@ gkick_synth_compressor_set_ratio(struct gkick_synth *synth, gkick_real ratio)
         int enabled;
         res = gkick_compressor_set_ratio(synth->compressor, ratio);
         gkick_compressor_is_enabled(synth->compressor, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
@@ -1538,7 +1538,7 @@ gkick_synth_compressor_set_knee(struct gkick_synth *synth, gkick_real knee)
         int enabled;
         res = gkick_compressor_set_knee(synth->compressor, knee);
         gkick_compressor_is_enabled(synth->compressor, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
@@ -1556,7 +1556,7 @@ gkick_synth_compressor_set_makeup(struct gkick_synth *synth, gkick_real makeup)
         int enabled;
         res = gkick_compressor_set_makeup(synth->compressor, makeup);
         gkick_compressor_is_enabled(synth->compressor, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
@@ -1570,6 +1570,7 @@ gkick_synth_compressor_get_makeup(struct gkick_synth *synth, gkick_real *makeup)
 enum geonkick_error
 gkick_synth_distortion_enable(struct gkick_synth *synth, int enable)
 {
+	synth->buffer_update = true;
         return gkick_distortion_enable(synth->distortion, enable);
 }
 
@@ -1603,7 +1604,7 @@ gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume)
         int enabled;
         res = gkick_distortion_set_volume(synth->distortion, volume);
         gkick_distortion_is_enabled(synth->distortion, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
@@ -1621,7 +1622,7 @@ gkick_synth_distortion_set_drive(struct gkick_synth *synth, gkick_real drive)
         int enabled;
         res = gkick_distortion_set_drive(synth->distortion, drive);
         gkick_distortion_is_enabled(synth->distortion, &enabled);
-        if (enabled)
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
 }
