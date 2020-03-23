@@ -4415,6 +4415,19 @@
          stdDeviation="0.035058843"
          id="feGaussianBlur8831-7-5-4-9-6-05" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter11780"
+       x="-0.048"
+       width="1.096"
+       y="-0.048"
+       height="1.096">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.085907946"
+         id="feGaussianBlur11782" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -4423,16 +4436,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.1657887"
-     inkscape:cx="2780.4827"
-     inkscape:cy="-298.75339"
+     inkscape:zoom="20.049804"
+     inkscape:cx="239.98006"
+     inkscape:cy="300.1287"
      inkscape:document-units="px"
-     inkscape:current-layer="g3312"
+     inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1000"
-     inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-width="1853"
+     inkscape:window-height="902"
+     inkscape:window-x="67"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      showguides="true"
      units="px"
@@ -15186,8 +15199,8 @@
        id="rect8875-3-3-9"
        width="6.3499999"
        height="6.3499999"
-       x="73.422256"
-       y="229.83397"
+       x="60.225338"
+       y="230.51657"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/topbar_laye1_disabled.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
@@ -17129,5 +17142,45 @@
            id="tspan3301-9"
            sodipodi:role="line">Controls</tspan></text>
     </g>
+    <rect
+       style="display:inline;opacity:1;fill:#858585;fill-opacity:1;stroke:none;stroke-width:0.23651406;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect8875-3-36"
+       width="4.757268"
+       height="4.757268"
+       x="61.558167"
+       y="215.21231"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
+       inkscape:export-xdpi="128.14078"
+       inkscape:export-ydpi="128.14078" />
+    <rect
+       style="display:inline;opacity:1;fill:#a0a0a0;fill-opacity:1;stroke:none;stroke-width:0.21355154;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal;filter:url(#filter11780)"
+       id="rect8875-3-36-7"
+       width="4.2953973"
+       height="4.2953973"
+       x="61.789101"
+       y="215.44325"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
+       inkscape:export-xdpi="128.14078"
+       inkscape:export-ydpi="128.14078" />
+    <path
+       sodipodi:type="star"
+       id="path7227"
+       sodipodi:sides="3"
+       sodipodi:cx="63.509944"
+       sodipodi:cy="217.59094"
+       sodipodi:r1="1.707426"
+       sodipodi:r2="0.85371298"
+       sodipodi:arg1="0"
+       sodipodi:arg2="1.0471976"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 65.21737,217.59094 -1.28057,0.73934 -1.280569,0.73934 v -1.47868 -1.47867 l 1.28057,0.73934 z"
+       inkscape:transform-center-x="-0.42685405"
+       style="stroke-width:0.04564261"
+       inkscape:transform-center-y="5.0622963e-06"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
+       inkscape:export-xdpi="128.14078"
+       inkscape:export-ydpi="128.14078" />
   </g>
 </svg>
