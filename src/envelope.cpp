@@ -2,7 +2,7 @@
  * File name: envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -32,7 +32,10 @@ Envelope::Envelope(const RkRect &area)
         , pointRadius{10}
         , dotRadius{3}
         , selectedPointIndex{0}
-        , supportedTypes({Type::Amplitude, Type::Frequency, Type::FilterCutOff})
+        , supportedTypes({Type::Amplitude,
+			 Type::Frequency,
+			 Type::FilterCutOff,
+			 Type::DistortionDrive})
         , overPointIndex{0}
         , isOverPoint{false}
         , pointSelected{false}
@@ -122,6 +125,8 @@ void Envelope::drawValueScale(RkPainter &painter)
         std::string text;
         if (type() == Type::Amplitude)
                 text = "Amplitude";
+	else if (type() == Type::DistortionDrive)
+		text = "Drive";
         else if (type() == Type::Frequency || type() == Type::FilterCutOff)
                 text = "Frequency, Hz";
 
@@ -138,15 +143,14 @@ void Envelope::drawValueScale(RkPainter &painter)
         int rectH = font.size() + 2;
         painter.setPen(RkPen(RkColor(110, 110, 110)));
 
-        if (type() == Type::Amplitude) {
+        if (type() == Type::Amplitude || type() == Type::DistortionDrive) {
                 double step = envelopeAmplitude() / 10;
                 double amplitude = envelopeAmplitude();
                 for (int i = 1; i <= 10; i++) {
                         int x = getOrigin().x();
                         int y = 0;
-                        if (amplitude > std::numeric_limits<double>::min()) {
+                        if (amplitude > std::numeric_limits<double>::min())
                                 y = getOrigin().y() - H() * (i * step / amplitude);
-                        }
                         RkPen pen(RkColor(80, 80, 80));
                         pen.setStyle(RkPen::PenStyle::DotLine);
                         painter.setPen(pen);
@@ -158,7 +162,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
         } else if (type() == Type::Frequency || type() == Type::FilterCutOff) {
-                std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 16000};
+                constexpr std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 16000};
                 for (auto value : values) {
                         int x = getOrigin().x();
                         int y = getOrigin().y() - H() * (log10(value) - log10(20)) / (log10(envelopeAmplitude()) - log10(20));
@@ -224,7 +228,8 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
 {
-        if (type() == Envelope::Type::Amplitude) {
+        if (type() == Envelope::Type::Amplitude
+	    || type() == Envelope::Type::DistortionDrive) {
                 std::ostringstream ss;
                 ss << std::setprecision(2) << value;
                 painter.drawText(point.x(), point.y(), ss.str());
@@ -463,7 +468,7 @@ void Envelope::setDrawingArea(const RkRect &rect)
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
         RkRealPoint scaledPoint;
-        if (type() == Type::Amplitude) {
+        if (type() == Type::Amplitude || type() == Type::DistortionDrive) {
                 scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
                                       static_cast<double>(point.y()) / H());
         } else {
@@ -478,9 +483,8 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
-        int x = 0;
-        int y = 0;
-        if (type() == Type::Amplitude) {
+        int x, y;
+        if (type() == Type::Amplitude ||| type() == Type::Amplitude) {
                 x = point.x() * W();
                 y = point.y() * H();
         } else {
@@ -540,11 +544,11 @@ std::string Envelope::frequencyToNote(rk_real f)
         }
 
         int octave = n;
-        std::vector<double> pitches {
-                        16.35160,
+        constexpr std::vector<double> pitches {
+		        16.35160,
                         17.32391,
                         18.35405,
-                        19.44544,
+			19.44544,
                         20.60172,
                         21.82676,
                         23.12465,
@@ -553,9 +557,18 @@ std::string Envelope::frequencyToNote(rk_real f)
                         27.50000,
                         29.13524,
                         30.86771};
-
-        std::vector<std::string> notes{"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
-
+        constexpr std::vector<std::string> notes{"C",
+			                         "C#",
+			                         "D",
+			                         "D#",
+			                         "E",
+			                         "F",
+			                         "F#",
+			                         "G",
+			                         "G#",
+			                         "A",
+			                         "A#",
+			                         "B"};
         n = 12;
         while (--n && pitches[n] > f);
         if (n < 11 && f > (pitches[n + 1] - pitches[n]) / 2)

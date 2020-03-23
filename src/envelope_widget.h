@@ -60,6 +60,7 @@ public:
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;
      GeonkickButton *showFilterEnvButton;
+     GeonkickButton *showDistortionEnvButton;
      GeonkickButton *osccillator1EvelopesButton;
      GeonkickButton *osccillator2EvelopesButton;
      GeonkickButton *noiseEvelopesButton;

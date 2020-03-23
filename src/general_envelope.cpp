@@ -70,6 +70,8 @@ double GeneralEnvelope::envelopeAmplitude(void) const
                 return geonkickApi->kickAmplitude();
         else if (type() == Envelope::Type::FilterCutOff)
                 return geonkickApi->kickFilterFrequency();
+	else if (type() == Envelope::Type::DistortionDrive)
+		return geonkickApi->getDistortionDrive();
         return 0;
 }
 

@@ -28,6 +28,7 @@ OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
         : Envelope(area)
         , oscillator{osc}
 {
+	removeSupportedType(Envelope::Type::DistortionDrive);
         if (oscillator->type() == Oscillator::Type::Noise)
                 removeSupportedType(Envelope::Type::Frequency);
         setType(Envelope::Type::Amplitude);

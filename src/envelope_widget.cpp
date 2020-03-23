@@ -2,7 +2,7 @@
  * File name: envelope_widget.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -31,6 +31,16 @@ extern const unsigned char rk_show_ampl_env_active_png[];
 extern const unsigned char rk_show_ampl_env_png[];
 extern const unsigned char rk_show_freq_env_active_png[];
 extern const unsigned char rk_show_freq_env_png[];
+extern const unsigned char rk_show_filter_env_png[];
+extern const unsigned char rk_show_filter_env_active_png[];
+RK_DECLARE_IMAGE_RC(show_dist_drive_env);
+RK_DECLARE_IMAGE_RC(show_dist_drive_env_active);
+extern const unsigned char rk_layer1_png[];
+extern const unsigned char rk_layer1_disabled_png[];
+extern const unsigned char rk_layer2_png[];
+extern const unsigned char rk_layer2_disabled_png[];
+extern const unsigned char rk_layer3_png[];
+extern const unsigned char rk_layer3_disabled_png[];
 extern const unsigned char rk_show_osc1_envelopes_button_active_png[];
 extern const unsigned char rk_show_osc1_envelopes_button_png[];
 extern const unsigned char rk_show_osc2_envelopes_button_active_png[];
@@ -39,14 +49,6 @@ extern const unsigned char rk_show_noise_envelopes_button_active_png[];
 extern const unsigned char rk_show_noise_envelopes_button_png[];
 extern const unsigned char rk_show_general_envelopes_button_active_png[];
 extern const unsigned char rk_show_general_envelopes_button_png[];
-extern const unsigned char rk_layer1_png[];
-extern const unsigned char rk_layer1_disabled_png[];
-extern const unsigned char rk_layer2_png[];
-extern const unsigned char rk_layer2_disabled_png[];
-extern const unsigned char rk_layer3_png[];
-extern const unsigned char rk_layer3_disabled_png[];
-extern const unsigned char rk_show_filter_env_png[];
-extern const unsigned char rk_show_filter_env_active_png[];
 
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
@@ -55,6 +57,8 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
           , drawArea{nullptr}
           , showAmplitudeEnvButton{nullptr}
           , showFrequencyEnvButton{nullptr}
+	  , showFilterEnvButton{nullptr}
+	  , showDistortionEnvButton{nullptr}
           , osccillator1EvelopesButton{nullptr}
           , osccillator2EvelopesButton{nullptr}
           , noiseEvelopesButton{nullptr}
@@ -134,6 +138,20 @@ void EnvelopeWidget::createButtomMenu()
         showFilterEnvButton->setPosition(showAmplitudeEnvButton->x() + showAmplitudeEnvButton->width(),
                                          (buttomAreaWidget->height() - showFilterEnvButton->height()) / 2);
         showFilterEnvButton->show();
+
+	 // Distortion Drive Envelope.
+        showDistortionDriveButton = new GeonkickButton(buttomAreaWidget);
+	showDistortionDriveButton->size(77, 30);
+        RK_ACT_BIND(showDistortionDriveButton, toggled, RK_ACT_ARGS(bool pressed),
+                    this, showEnvelopeType(Envelope::Type::DistortionDrive));
+        showFilterEnvButton->setPressedImage(RkImage(showDistortionDriveButton->size(),
+						     RK_IMAGE_RC(show_dist_drive_active)));
+        showFilterEnvButton->setUnpressedImage(RkImage(showDistortionDriveButton->size(),
+						       RK_IMAGE_RC(rk_show_filter_env)));
+        showFilterEnvButton->setPosition(showAmplitudeEnvButton->x() + showAmplitudeEnvButton->width(),
+                                         (buttomAreaWidget->height() - showFilterEnvButton->height()) / 2);
+        showFilterEnvButton->show();
+
 
         // General envelope button
         generalEvelopesButton = new GeonkickButton(buttomAreaWidget);
