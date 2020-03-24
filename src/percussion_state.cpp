@@ -40,7 +40,7 @@ PercussionState::PercussionState()
         , kickFilterQFactor{1.0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
         , compressor{false, 0, 0, 0, 0, 0, 0}
-        , distortion{false, 1.0, 0, 0}
+        , distortion{false, 1.0, 1.0, 1.0}
         , layers{false, false, false}
         , layersAmplitude{1.0, 1.0, 1.0}
         , currentLayer{GeonkickApi::Layer::Layer1}

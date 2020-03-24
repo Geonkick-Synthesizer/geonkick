@@ -126,7 +126,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
         state->enableDistortion(false);
         state->setDistortionVolume(0.1);
         state->setDistortionInLimiter(1.0);
-        state->setDistortionDrive(0);
+        state->setDistortionDrive(1.0);
 
         std::vector<GeonkickApi::OscillatorType> oscillators = {
                 GeonkickApi::OscillatorType::Oscillator1,

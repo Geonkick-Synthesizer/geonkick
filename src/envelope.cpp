@@ -228,8 +228,7 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
 {
-        if (type() == Envelope::Type::Amplitude
-	    || type() == Envelope::Type::DistortionDrive) {
+        if (type() == Envelope::Type::Amplitude || type() == Type::DistortionDrive) {
                 std::ostringstream ss;
                 ss << std::setprecision(2) << value;
                 painter.drawText(point.x(), point.y(), ss.str());
@@ -470,7 +469,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
         RkRealPoint scaledPoint;
         if (type() == Type::Amplitude || type() == Type::DistortionDrive) {
                 scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
-                                      static_cast<double>(point.y()) / H());
+                                          static_cast<double>(point.y()) / H());
         } else {
                 scaledPoint.setX(static_cast<double>(point.x()) / W());
                 double logVal = (static_cast<double>(point.y()) / H()) * (log10(envelopeAmplitude()) - log10(20));
@@ -484,7 +483,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
         int x, y;
-        if (type() == Type::Amplitude || type() == Type::Amplitude) {
+        if (type() == Type::Amplitude || type() == Type::DistortionDrive) {
                 x = point.x() * W();
                 y = point.y() * H();
         } else {

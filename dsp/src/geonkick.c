@@ -1081,7 +1081,12 @@ geonkick_distortion_set_in_limiter(struct geonkick *kick, gkick_real limit)
 		gkick_log_error("wrong arguments");
 		return GEONKICK_ERROR;
 	}
-	return gkick_synth_distortion_set_in_limiter(kick->synths[kick->per_index], limit);
+
+	enum geonkick_error res;
+	res = gkick_synth_distortion_set_in_limiter(kick->synths[kick->per_index], limit);
+	if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
+                geonkick_worker_wakeup(kick);
+	return res;
 }
 
 enum geonkick_error

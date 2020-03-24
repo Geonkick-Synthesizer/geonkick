@@ -71,7 +71,7 @@ double GeneralEnvelope::envelopeAmplitude(void) const
         else if (type() == Envelope::Type::FilterCutOff)
                 return geonkickApi->kickFilterFrequency();
 	else if (type() == Envelope::Type::DistortionDrive)
-		return geonkickApi->getDistortionDrive();
+		return geonkickApi->getDistortionDrive() / (pow(10, 36.0 / 20));
         return 0;
 }
 

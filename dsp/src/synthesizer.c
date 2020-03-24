@@ -845,12 +845,12 @@ gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
                 gkick_envelope_set_points(synth->envelope, buf, npoints);
         else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 gkick_envelope_set_points(synth->filter->cutoff_env, buf, npoints);
-	else if(env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
+	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
 		gkick_envelope_set_points(synth->distortion->drive_env, buf, npoints);
 
 	if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled)
-	    || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->distortion->enabled))
+	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE && synth->distortion->enabled))
                 synth->buffer_update = true;
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
@@ -877,7 +877,7 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth,
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled)
-	    || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->distortion->enabled))
+	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE && synth->distortion->enabled))
                 synth->buffer_update = true;
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
@@ -932,7 +932,7 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled)
-	    || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->distortion->enabled)) {
+	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE && synth->distortion->enabled)) {
                 synth->buffer_update = true;
 	}
         gkick_synth_unlock(synth);
@@ -1597,7 +1597,7 @@ enum geonkick_error
 gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth, gkick_real limit)
 {
         enum geonkick_error res = gkick_distortion_set_in_limiter(synth->distortion, limit);
-	int enabled = false;
+	int enabled = 0;
         res = gkick_distortion_is_enabled(synth->distortion, &enabled);
         if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;

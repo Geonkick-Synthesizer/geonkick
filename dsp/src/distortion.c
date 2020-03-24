@@ -38,6 +38,7 @@ gkick_distortion_new(struct gkick_distortion **distortion)
                 return GEONKICK_ERROR;
         }
 	(*distortion)->drive_env = NULL;
+	(*distortion)->drive = 1.0f;
 
 	struct gkick_envelope *env = gkick_envelope_create();
 	if (env == NULL) {
@@ -108,8 +109,7 @@ gkick_distortion_val(struct gkick_distortion *distortion,
 {
         gkick_distortion_lock(distortion);
 	gkick_real x = distortion->in_limiter * in_val;
-        if (distortion->drive > 0)
-                x *= distortion->drive * gkick_envelope_get_value(distortion->drive_env, env_x);
+	x *= 1 + (distortion->drive - 1.0f) * gkick_envelope_get_value(distortion->drive_env, env_x);
 
         if (x > 1.0)
                 x = 1.0;
