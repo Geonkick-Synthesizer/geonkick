@@ -22,6 +22,7 @@
  */
 
 #include "distortion.h"
+#include "envelope.h"
 
 enum geonkick_error
 gkick_distortion_new(struct gkick_distortion **distortion)
@@ -36,6 +37,19 @@ gkick_distortion_new(struct gkick_distortion **distortion)
                 gkick_log_error("can't allocate memory");
                 return GEONKICK_ERROR;
         }
+	(*distortion)->drive_env = NULL;
+
+	struct gkick_envelope *env = gkick_envelope_create();
+	if (env == NULL) {
+		gkick_log_error("can't create distortion envelope");
+		gkick_distortion_free(distortion);
+		return GEONKICK_ERROR;
+	} else {
+		/* Add two default points. */
+		gkick_envelope_add_point(env, 0.0f, 1.0f);
+		gkick_envelope_add_point(env, 1.0f, 1.0f);
+		(*distortion)->drive_env = env;
+	}
 
         if (pthread_mutex_init(&(*distortion)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
@@ -50,6 +64,8 @@ void
 gkick_distortion_free(struct gkick_distortion **distortion)
 {
         if (distortion != NULL && *distortion != NULL) {
+		if ((*distortion)->drive_env != NULL)
+			gkick_envelope_destroy((*distortion)->drive_env);
                 pthread_mutex_destroy(&(*distortion)->lock);
                 free(*distortion);
                 *distortion = NULL;
@@ -87,12 +103,13 @@ gkick_distortion_is_enabled(struct gkick_distortion *distortion, int *enabled)
 enum geonkick_error
 gkick_distortion_val(struct gkick_distortion *distortion,
                      gkick_real in_val,
-                     gkick_real *out_val)
+                     gkick_real *out_val,
+		     gkick_real env_x)
 {
         gkick_distortion_lock(distortion);
 	gkick_real x = distortion->in_limiter * in_val;
         if (distortion->drive > 0)
-                x *= distortion->drive;
+                x *= distortion->drive * gkick_envelope_get_value(distortion->drive_env, env_x);
 
         if (x > 1.0)
                 x = 1.0;

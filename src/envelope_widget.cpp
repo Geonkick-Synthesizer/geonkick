@@ -234,7 +234,7 @@ void EnvelopeWidget::showEnvelopeType(Envelope::Type type)
         showFilterEnvButton->setPressed(type == Envelope::Type::FilterCutOff);
         showFrequencyEnvButton->setPressed(type == Envelope::Type::Frequency);
 	showFrequencyEnvButton->show(envelope->isSupportedType(Envelope::Type::Frequency));
-	showFrequencyEnvButton->setPressed(type == Envelope::Type::DistortionDrive);
+	showDistortionEnvButton->setPressed(type == Envelope::Type::DistortionDrive);
 	showDistortionEnvButton->show(envelope->isSupportedType(Envelope::Type::DistortionDrive));
 	menuContiner->update();
         if (envelope)

@@ -25,6 +25,7 @@
 #include "synthesizer.h"
 #include "gkick_audio.h"
 #include "audio_output.h"
+#include "envelope.h"
 
 enum geonkick_error
 geonkick_create(struct geonkick **kick)

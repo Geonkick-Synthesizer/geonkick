@@ -32,6 +32,7 @@ struct gkick_distortion {
 	gkick_real in_limiter;
         gkick_real volume;
         gkick_real drive;
+	struct gkick_envelope *drive_env;
         pthread_mutex_t lock;
 };
 
@@ -54,7 +55,8 @@ gkick_distortion_is_enabled(struct gkick_distortion *distortion, int *enabled);
 enum geonkick_error
 gkick_distortion_val(struct gkick_distortion *distortion,
                      gkick_real in_val,
-                     gkick_real *out_val);
+                     gkick_real *out_val,
+		     gkick_real env_x);
 
 enum geonkick_error
 gkick_distortion_set_volume(struct gkick_distortion *distortion, gkick_real volume);

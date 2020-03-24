@@ -822,6 +822,8 @@ gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
                 gkick_envelope_get_points(synth->envelope, buf, npoints);
         else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 gkick_envelope_get_points(synth->filter->cutoff_env, buf, npoints);
+	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
+		gkick_envelope_get_points(synth->distortion->drive_env, buf, npoints);
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
@@ -843,7 +845,13 @@ gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
                 gkick_envelope_set_points(synth->envelope, buf, npoints);
         else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 gkick_envelope_set_points(synth->filter->cutoff_env, buf, npoints);
-        synth->buffer_update = true;
+	else if(env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
+		gkick_envelope_set_points(synth->distortion->drive_env, buf, npoints);
+
+	if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
+            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled)
+	    || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->distortion->enabled))
+                synth->buffer_update = true;
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -864,11 +872,13 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth,
                 gkick_envelope_add_point(synth->envelope, x, y);
         else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 gkick_envelope_add_point(synth->filter->cutoff_env, x, y);
+	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
+		gkick_envelope_add_point(synth->distortion->drive_env, x, y);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
-            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled))
+            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled)
+	    || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->distortion->enabled))
                 synth->buffer_update = true;
-
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -888,10 +898,12 @@ gkick_synth_kick_remove_env_point(struct gkick_synth *synth,
                 gkick_envelope_remove_point(synth->envelope, index);
         else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 gkick_envelope_remove_point(synth->filter->cutoff_env, index);
+	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
+		gkick_envelope_remove_point(synth->distortion->drive_env, index);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
-            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
-                && synth->filter_enabled)) {
+            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled)
+	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE && synth->distortion->enabled)) {
                 synth->buffer_update = true;
         }
         gkick_synth_unlock(synth);
@@ -913,15 +925,16 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
         gkick_synth_lock(synth);
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE)
                 gkick_envelope_update_point(synth->envelope, index, x, y);
-        else
+        else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 gkick_envelope_update_point(synth->filter->cutoff_env, index, x, y);
+	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
+		gkick_envelope_update_point(synth->distortion->drive_env, index, x, y);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
-            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
-                && synth->filter_enabled)) {
+            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->filter_enabled)
+	    || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE && synth->distortion->enabled)) {
                 synth->buffer_update = true;
 	}
-
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -1185,7 +1198,7 @@ gkick_real gkick_synth_get_value(struct gkick_synth *synth, gkick_real t)
         int enabled = 0;
         gkick_distortion_is_enabled(synth->distortion, &enabled);
         if (enabled)
-                gkick_distortion_val(synth->distortion, val, &val);
+                gkick_distortion_val(synth->distortion, val, &val, env_x);
 
         gkick_compressor_is_enabled(synth->compressor, &enabled);
         if (enabled)
