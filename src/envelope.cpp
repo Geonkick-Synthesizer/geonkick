@@ -162,7 +162,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
         } else if (type() == Type::Frequency || type() == Type::FilterCutOff) {
-                constexpr std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 16000};
+                std::vector<int> values {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 16000};
                 for (auto value : values) {
                         int x = getOrigin().x();
                         int y = getOrigin().y() - H() * (log10(value) - log10(20)) / (log10(envelopeAmplitude()) - log10(20));
@@ -484,7 +484,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
         int x, y;
-        if (type() == Type::Amplitude ||| type() == Type::Amplitude) {
+        if (type() == Type::Amplitude || type() == Type::Amplitude) {
                 x = point.x() * W();
                 y = point.y() * H();
         } else {
@@ -544,7 +544,7 @@ std::string Envelope::frequencyToNote(rk_real f)
         }
 
         int octave = n;
-        constexpr std::vector<double> pitches {
+        std::vector<double> pitches {
 		        16.35160,
                         17.32391,
                         18.35405,
@@ -557,18 +557,19 @@ std::string Envelope::frequencyToNote(rk_real f)
                         27.50000,
                         29.13524,
                         30.86771};
-        constexpr std::vector<std::string> notes{"C",
-			                         "C#",
-			                         "D",
-			                         "D#",
-			                         "E",
-			                         "F",
-			                         "F#",
-			                         "G",
-			                         "G#",
-			                         "A",
-			                         "A#",
-			                         "B"};
+	std::vector<std::string> notes{
+		        "C",
+			"C#",
+			"D",
+			"D#",
+			"E",
+			"F",
+			"F#",
+			"G",
+			"G#",
+			"A",
+			"A#",
+			"B"};
         n = 12;
         while (--n && pitches[n] > f);
         if (n < 11 && f > (pitches[n + 1] - pitches[n]) / 2)

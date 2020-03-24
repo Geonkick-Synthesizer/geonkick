@@ -4428,6 +4428,84 @@
          stdDeviation="0.085907946"
          id="feGaussianBlur11782" />
     </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-0-8-2-7-8-8-3-6-3-1-5-3"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-1-1-6-3-0-3-6-1-7-2-4-6" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-8-7-0-7-3-0-6-6-5-9-7-7"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-3-0-6-6-6-2-7-2-9-3-6-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-7-3-5-9-8-2-9-6-2-1-5-3"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-9-5-6-7-9-9-77-0-2-9-6-5" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter10330-0-8-2-7-8-8-3-6-4-9-6"
+       x="-0.013693905"
+       width="1.0273879"
+       y="-0.021728534"
+       height="1.0434572">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.23845105"
+         id="feGaussianBlur10332-1-1-6-3-0-3-6-1-78-3-2" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5130-8-7-0-7-3-0-6-6-4-7-9"
+       x="-0.072413795"
+       width="1.1448276"
+       y="-0.35000002"
+       height="1.7">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="4.6112168"
+         id="feGaussianBlur5132-3-0-6-6-6-2-7-2-5-4-1" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter5197-7-3-5-9-8-2-9-6-0-5-2"
+       x="-0.0457762"
+       width="1.0915524"
+       y="-0.16856684"
+       height="1.3371336">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="3.2250887"
+         id="feGaussianBlur5199-9-5-6-7-9-9-77-0-3-2-7" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -4436,9 +4514,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="20.049804"
+     inkscape:zoom="3.5443381"
      inkscape:cx="239.98006"
-     inkscape:cy="300.1287"
+     inkscape:cy="331.02774"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -17147,7 +17225,7 @@
        id="rect8875-3-36"
        width="4.757268"
        height="4.757268"
-       x="61.558167"
+       x="63.145668"
        y="215.21231"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
        inkscape:export-xdpi="128.14078"
@@ -17157,7 +17235,7 @@
        id="rect8875-3-36-7"
        width="4.2953973"
        height="4.2953973"
-       x="61.789101"
+       x="63.376602"
        y="215.44325"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
        inkscape:export-xdpi="128.14078"
@@ -17166,7 +17244,7 @@
        sodipodi:type="star"
        id="path7227"
        sodipodi:sides="3"
-       sodipodi:cx="63.509944"
+       sodipodi:cx="65.097442"
        sodipodi:cy="217.59094"
        sodipodi:r1="1.707426"
        sodipodi:r2="0.85371298"
@@ -17175,12 +17253,118 @@
        inkscape:flatsided="false"
        inkscape:rounded="0"
        inkscape:randomized="0"
-       d="m 65.21737,217.59094 -1.28057,0.73934 -1.280569,0.73934 v -1.47868 -1.47867 l 1.28057,0.73934 z"
+       d="m 66.804869,217.59094 -1.28057,0.73934 -1.280569,0.73934 v -1.47868 -1.47867 l 1.280569,0.73934 z"
        inkscape:transform-center-x="-0.42685405"
        style="stroke-width:0.04564261"
        inkscape:transform-center-y="5.0622963e-06"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
        inkscape:export-xdpi="128.14078"
        inkscape:export-ydpi="128.14078" />
+    <rect
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env_active.png"
+       transform="matrix(0.11021844,0,0,0.12927906,-4.6030555,109.00469)"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       ry="9.3728256"
+       rx="10.743702"
+       y="679.59802"
+       x="393.39212"
+       height="45.917767"
+       width="169.08815"
+       id="rect4890-6-4-9-2-8-3-6-4-7-6-5-0"
+       style="display:inline;opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.01506305;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-7-3-5-9-8-2-9-6-0-5-2)" />
+    <rect
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env_active.png"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       ry="1.1910824"
+       rx="1.2167283"
+       y="196.91302"
+       x="38.49968"
+       height="5.8351502"
+       width="19.149292"
+       id="rect4890-0-7-9-8-2-5-8-9-1-4-9"
+       style="display:inline;opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.24053584;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env_active.png"
+       transform="matrix(0.11536832,0,0,0.12985002,-6.7369619,108.91344)"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       ry="10.000007"
+       rx="10.000007"
+       y="684.3606"
+       x="398.68381"
+       height="31.61977"
+       width="152.8289"
+       id="rect5044-3-8-6-8-1-8-8-2-0-7-3"
+       style="display:inline;opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6-6-4-7-9)" />
+    <text
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env_active.png"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       transform="matrix(0.07672101,0,0,0.07672101,33.273254,168.79434)"
+       id="text10105-4-4-2-5-9-5-7-8-0-6-4-6"
+       y="417.70291"
+       x="113.74126"
+       style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter10330-0-8-2-7-8-8-3-6-4-9-6)"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none"
+         y="417.70291"
+         x="113.74126"
+         id="tspan10103-9-9-5-5-7-9-9-9-2-3-4-0"
+         sodipodi:role="line">Distortion</tspan></text>
+    <rect
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env.png"
+       transform="matrix(0.11021844,0,0,0.12927906,-4.6030555,119.50148)"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       ry="9.3728256"
+       rx="10.743702"
+       y="679.59802"
+       x="393.39212"
+       height="45.917767"
+       width="169.08815"
+       id="rect4890-6-4-9-2-8-3-6-4-7-8-2-3-6"
+       style="display:inline;opacity:0.68000034;fill:#2e3131;fill-opacity:1;stroke:none;stroke-width:2.01506305;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5197-7-3-5-9-8-2-9-6-2-1-5-3)" />
+    <rect
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env.png"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       ry="1.1910824"
+       rx="1.2167283"
+       y="207.40977"
+       x="38.49968"
+       height="5.8351502"
+       width="19.149292"
+       id="rect4890-0-7-9-8-2-5-8-9-9-0-0-2"
+       style="display:inline;opacity:1;fill:#545656;fill-opacity:1;stroke:#363436;stroke-width:0.24053584;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <rect
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env.png"
+       transform="matrix(0.11536832,0,0,0.12985002,-6.7369619,119.41022)"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       ry="10.000007"
+       rx="10.000007"
+       y="684.3606"
+       x="398.68381"
+       height="31.61977"
+       width="152.8289"
+       id="rect5044-3-8-6-8-1-8-8-2-7-6-7-6"
+       style="display:inline;opacity:0.22000002;fill:#a0a0a2;fill-opacity:1;stroke:none;stroke-width:1.96523952;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter5130-8-7-0-7-3-0-6-6-5-9-7-7)" />
+    <text
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/show_dist_drive_env.png"
+       inkscape:export-ydpi="96"
+       inkscape:export-xdpi="96"
+       transform="matrix(0.07672101,0,0,0.07672101,33.273254,179.29111)"
+       id="text10105-4-4-2-5-9-5-7-8-0-3-1-8-1"
+       y="417.70291"
+       x="113.74126"
+       style="font-style:normal;font-weight:normal;font-size:35.63982773px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;opacity:0.397;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none;filter:url(#filter10330-0-8-2-7-8-8-3-6-3-1-5-3)"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.63982773px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:3.13520145;stroke-miterlimit:4;stroke-dasharray:none"
+         y="417.70291"
+         x="113.74126"
+         id="tspan10103-9-9-5-5-7-9-9-9-2-6-5-6-8"
+         sodipodi:role="line">Distortion</tspan></text>
   </g>
 </svg>

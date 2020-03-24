@@ -72,7 +72,8 @@ enum gkick_key_state {
 enum geonkick_envelope_type {
         GEONKICK_AMPLITUDE_ENVELOPE = 0,
         GEONKICK_FREQUENCY_ENVELOPE = 1,
-        GEONKICK_FILTER_CUTOFF_ENVELOPE = 2
+        GEONKICK_FILTER_CUTOFF_ENVELOPE = 2,
+	GEONKICK_DISTORTION_DRIVE_ENVELOPE = 3
 };
 
 enum gkick_filter_type {
@@ -107,8 +108,10 @@ enum geonkick_channel_type {
         GEONKICK_CHANNEL_MIDI_OUTPUT  = 3
 };
 
-// Maximum number of percussions the Geonkick instance
-// instance can generate and play.
+/**
+ * Maximum number of percussions the Geonkick instance
+ *  can generate and play.
+ */
 #define GEONKICK_MAX_PERCUSSIONS 16
 
 struct geonkick;
