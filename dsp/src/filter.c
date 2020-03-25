@@ -175,8 +175,6 @@ gkick_filter_set_factor(struct gkick_filter *filter, gkick_real factor)
 
         gkick_filter_lock(filter);
         filter->factor = 10.0 / factor;
-	gkick_log_info("--factor: %f", factor);
-	gkick_log_info("factor: %f", filter->factor);
         gkick_filter_update_coefficents(filter);
         gkick_filter_unlock(filter);
         return GEONKICK_OK;
