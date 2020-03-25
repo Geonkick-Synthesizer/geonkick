@@ -36,7 +36,6 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), compressor, updateGui());
 
         auto distortion = new DistortionGroupBox(geonkickApi, this);
-        //        distortion->setBackgroundColor({100, 100, 100});
         distortion->setPosition(compressor->width() + 10, 10);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortion, updateGui());
 

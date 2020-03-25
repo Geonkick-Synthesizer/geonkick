@@ -6,6 +6,8 @@ checkbox_checked_10x10.png
 checkbox_checked.png
 checkbox_unchecked_10x10.png
 checkbox_unchecked.png
+compressor_enable.png
+compressor_enable_active.png
 compressor_attack_label.png
 compressor_goupbox_bk.png
 compressor_groupbox_label.png
@@ -14,6 +16,8 @@ compressor_makeup_label.png
 compressor_ratio_label.png
 compressor_release_label.png
 compressor_threshold_label.png
+distortion_enable.png
+distortion_enable_active.png
 distortion_drive_label.png
 distortion_goupbox_label.png
 distortion_groupbox_bk.png
