@@ -4,20 +4,19 @@ Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) per
 
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
-snares, hit-hats, shakers, claps, sticks.
+snares, hit-hats, shakers, claps.
 Also, it can play samples.
 
-Author: Yuri Nistor
+Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 1.10
+Version: 1.10.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
 * on [GitLab](https://gitlab.com/geontime/geonkick/issues)
 * on [GitHub](https://github.com/geontime/geonkick/issues)
-* or just send a message to iurie@geontime.com
 
 ![Screenshot](data/screenshot.png)
 
@@ -31,13 +30,18 @@ Latest releases can be found on [tags](https://gitlab.com/geontime/geonkick/-/ta
 
 Latest stable features added are on ["master" branch](https://gitlab.com/geontime/geonkick/commits/master)
 
-The development is going on ["develop" branch](https://gitlab.com/geontime/geonkick/commits/develop)
-or feature (feat/feature_name) branches.
-
 #### Features
 
-* Percussion kit (supports up to 16 percussions that maps to midi keys)
+* Percussion kit
+   - Supports up to 16 percussions.
+   - Save / Load kit in JSON format
 * Multitibral
+   - 16 midi keys range
+   - user configurable key mapping
+* Multichannel
+   - for LV2
+   - up to 16 output audio channels
+   - user configurable mapping of kit percussions to channel
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
@@ -57,17 +61,16 @@ or feature (feat/feature_name) branches.
      - limiter
      - compression
      - distortion
+     - distortion drive envelope
 * Jack support:
      - 1 MIDI in, key velocity sensitive
-     - 2 audio out
-* Multichannel
-     - for LV2
+     - 1 audio output
 * Export
      - stereo & mono
      - WAV: 16, 24, 32 bit
      - FLAC: 16, 24 bit
      - Ogg Vorbis
-* Open & Save preset in JSON format
+* Open & Save percussion preset in JSON format
 * Standalone
 * Pitch to note
 * Plugin
