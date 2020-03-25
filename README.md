@@ -80,9 +80,11 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
 
 #### Demo & Examples
 
-Here is a [list of videos](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about how it works.
+Here is a [list of videos and tutorial](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about Geonkick.
 
-Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
+#### Presets
+
+In the directory geonkick/presets can be found some example presets.
 
 #### Requirements
 
@@ -94,8 +96,8 @@ Standalone:
 * Jack server installed and running at 48000 sample rate
 
 Plugin:
- * GNU/Linux operating system
- * LV2 host. For example, a DAW that supports LV2 plugin format.
+ * GNU/Linux operating system.
+ * LV2 host. For example, a DAW that supports LV2 plugin format, running at 48000 sample rate.
 
 #### Install
 
@@ -119,8 +121,6 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 ###### Build & install Geonkick
 
-First build and install [Redkite](https://github.com/geontime/redkite).
-
 Clone the Geonkick code repository, compile and install
 
         git clone https://gitlab.com/geontime/geonkick.git
@@ -132,11 +132,7 @@ Clone the Geonkick code repository, compile and install
 
 #### Packaging
 
-Geonkick can be found in the following repositories:
-
-* [ArchLinux](https://www.archlinux.org/packages/community/x86_64/geonkick/) by David Runge
-* [FreeBSD](https://www.freshports.org/audio/geonkick-lv2/) by yuri@FreeBSD.org
-* [OpenSUSE](https://build.opensuse.org/package/show/home:geekositalia:daw/geonkick) by Fabio Pesari
+Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
 
 #### Short user guide
 
