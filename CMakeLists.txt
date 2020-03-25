@@ -1,8 +1,9 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 1.9.2)
+project(geonkick VERSION 1.10.0)
 
-# NOTE:  vst/Windows is not implemented yet.
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+include(FindRedkite)
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -183,12 +184,8 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
     link_directories(${GKICK_VST_SDK_PATH}/build/lib/Debug)
     link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
 else ()
-  if (GKICK_REDKITE_SDK_PATH)
-    include_directories(${GKICK_REDKITE_SDK_PATH}/include/redkite)
-    link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
-  else()
-    include_directories(/usr/local/include/redkite)
-  endif(GKICK_REDKITE_SDK_PATH)
+    include_directories(${REDKITE_INCLUDE_DIR})
+    link_directories(${REDKITE_LIBRARY})
 endif()
 
 include(${GKICK_RC_DIR}/resources.rc)
