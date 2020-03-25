@@ -168,14 +168,30 @@ gkick_filter_set_cutoff_freq(struct gkick_filter *filter, gkick_real cutoff)
 enum geonkick_error
 gkick_filter_set_factor(struct gkick_filter *filter, gkick_real factor)
 {
-        if (filter == NULL) {
+        if (filter == NULL || factor < 0.5) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
         gkick_filter_lock(filter);
-        filter->factor = factor;
+        filter->factor = 10.0 / factor;
+	gkick_log_info("--factor: %f", factor);
+	gkick_log_info("factor: %f", filter->factor);
         gkick_filter_update_coefficents(filter);
+        gkick_filter_unlock(filter);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor)
+{
+        if (filter == NULL || factor == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_filter_lock(filter);
+        *factor = 10.0 / filter->factor;
         gkick_filter_unlock(filter);
         return GEONKICK_OK;
 }
@@ -190,20 +206,6 @@ gkick_filter_get_cutoff_freq(struct gkick_filter *filter, gkick_real *cutoff)
 
         gkick_filter_lock(filter);
         *cutoff = filter->cutoff_freq;
-        gkick_filter_unlock(filter);
-        return GEONKICK_OK;
-}
-
-enum geonkick_error
-gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor)
-{
-        if (filter == NULL || factor == NULL) {
-                gkick_log_error("wrong arguments");
-                return GEONKICK_ERROR;
-        }
-
-        gkick_filter_lock(filter);
-        *factor = filter->factor;
         gkick_filter_unlock(filter);
         return GEONKICK_OK;
 }

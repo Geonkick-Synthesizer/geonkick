@@ -256,7 +256,7 @@ void OscillatorGroupBox::createFilterGroupBox()
         else
                 filterBox->setPosition(0, 243);
         filterBox->setCutOffRange(20, 20000);
-        filterBox->setResonanceRange(0.01, 10);
+        filterBox->setResonanceRange(1, 1000);
         RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b), oscillator, enableFilter(b));
         RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val), oscillator, setFilterFrequency(val));
         RK_ACT_BIND(filterBox, resonanceChanged, RK_ACT_ARGS(double val), oscillator, setFilterQFactor(val));

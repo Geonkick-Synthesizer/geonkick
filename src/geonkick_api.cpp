@@ -109,7 +109,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
         state->setKickAmplitude(0.8);
         state->enableKickFilter(false);
         state->setKickFilterFrequency(200);
-        state->setKickFilterQFactor(1.0);
+        state->setKickFilterQFactor(10);
         state->setKickFilterType(GeonkickApi::FilterType::LowPass);
         std::vector<RkRealPoint> envelope;
         envelope.push_back({0, 1});
@@ -159,7 +159,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                         state->setOscillatorFilterEnabled(index, false);
                         state->setOscillatorFilterType(index, GeonkickApi::FilterType::LowPass);
                         state->setOscillatorFilterCutOffFreq(index, 800);
-                        state->setOscillatorFilterFactor(index, 1);
+                        state->setOscillatorFilterFactor(index, 10);
                         state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Amplitude);
                         if (osc != GeonkickApi::OscillatorType::Noise)
                                 state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Frequency);

@@ -72,6 +72,7 @@ Filter::Filter(GeonkickWidget *parent)
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), this, cutOffChanged(val));
 
         resonanceKnob = new Knob(this);
+	resonanceKnob->setRangeType(Knob::RangeType::Logarithmic);
         int w = 60;
         int h = 60;
         resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);

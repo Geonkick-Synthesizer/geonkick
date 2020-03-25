@@ -2,7 +2,7 @@
  * File name: general_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -90,7 +90,7 @@ void GeneralGroupBox::createFilterHBox()
 {
         filterBox = new Filter(this);
         filterBox->setCutOffRange(20, 20000);
-        filterBox->setResonanceRange(0.01, 10);
+        filterBox->setResonanceRange(1, 1000);
         filterBox->setPosition(0, 151);
         RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b), geonkickApi, enableKickFilter(b));
         RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val), geonkickApi, setKickFilterFrequency(val));

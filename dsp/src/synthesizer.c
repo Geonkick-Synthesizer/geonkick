@@ -1431,7 +1431,7 @@ gkick_synth_osc_enable_filter(struct gkick_synth *synth,
 
         gkick_synth_unlock(synth);
 
-        return GEONKICK_ERROR;
+        return GEONKICK_OK;
 }
 
 enum geonkick_error

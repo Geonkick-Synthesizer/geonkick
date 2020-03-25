@@ -827,8 +827,10 @@ geonkick_enbale_osc_filter(struct geonkick *kick, size_t osc_index, int enable)
         }
         enum geonkick_error res;
         res = gkick_synth_osc_enable_filter(kick->synths[kick->per_index], osc_index, enable);
-        if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
+        if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update) {
+		gkick_log_info("wakeup");
                 geonkick_worker_wakeup(kick);
+	}
         return res;
 }
 
