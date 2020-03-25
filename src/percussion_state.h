@@ -202,6 +202,7 @@ private:
         GeonkickApi::FilterType kickFilterType;
         std::vector<RkRealPoint> kickFilterCutOffEnvelope;
         std::vector<RkRealPoint> kickEnvelopePoints;
+	std::vector<RkRealPoint> kickDistortionDriveEnvelope;
         std::unordered_map<int, std::shared_ptr<OscillatorInfo>> oscillators;
         Compressor compressor;
         Distortion distortion;

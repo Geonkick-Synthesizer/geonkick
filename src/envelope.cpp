@@ -158,7 +158,10 @@ void Envelope::drawValueScale(RkPainter &painter)
                         RkRect rect(x - 28,  y -  rectH / 2, 22, rectH);
                         painter.setPen(RkPen(RkColor(110, 110, 110)));
                         std::ostringstream ss;
-                        ss << std::setprecision(2) << i * step;
+			if ( type() == Type::DistortionDrive)
+				ss << std::setprecision(2) << i * step * pow(10, 36.0/20);
+			else
+				ss << std::setprecision(2) << i * step;
                         painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
         } else if (type() == Type::Frequency || type() == Type::FilterCutOff) {
@@ -230,7 +233,10 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 {
         if (type() == Envelope::Type::Amplitude || type() == Type::DistortionDrive) {
                 std::ostringstream ss;
-                ss << std::setprecision(2) << value;
+		if (type() == Type::DistortionDrive)
+			ss << std::setprecision(2) << value * pow(10, 36.0 / 20);
+		else
+			ss << std::setprecision(2) << value;
                 painter.drawText(point.x(), point.y(), ss.str());
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
                 if (value < 20)
