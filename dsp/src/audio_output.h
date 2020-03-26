@@ -2,7 +2,7 @@
  * File name: audio_output.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -29,14 +29,14 @@
 #include <stdatomic.h>
 
 /**
- * Audio output (which is maybe not the best name)
- * is an interface to an array that holds the all length synthesised kick.
+ * Audio output (which maybe is not the best name)
+ * is an interface to an array that holds the synthesised percussion.
  * Is has nothing to do with any real audio interfaces.
  * It provides access to the samples from the array in a "playable mode",
  * i.e. in a state machine fasion.
  */
 
-/* Decay time measured in number of audio frames / samples. */
+/* Decay time measured in number of audio frames. */
 #define GEKICK_KEY_RELESE_DECAY_TIME 1000
 
 struct gkick_note_info {
@@ -70,18 +70,18 @@ struct gkick_audio_output
 
         /**
          * Triggers the audio thread to start to play
-         * the precussion with maximum key velocity.
+         * the precussion with the maximum key velocity.
          */
         _Atomic bool play;
 
-        /*
-         * Specifies if to tune output in accordance with
+        /**
+         * Specifies if to tune the output in accordance with
          * the note (central note is A4).
          */
         _Atomic bool tune;
 
         /**
-         * decay - note release time measured in number of sample frames.
+         * decay - note release time measured in number of audio frames.
          * Relaxation curve for audio is liniear:
          *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,
          *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
@@ -97,9 +97,6 @@ struct gkick_audio_output
         pthread_mutex_t lock;
 };
 
-/**
- * Audio output functions module
- */
 enum geonkick_error
 gkick_audio_output_create(struct gkick_audio_output **audio_output);
 
@@ -109,7 +106,8 @@ struct gkick_buffer*
 gkick_audio_output_get_buffer(struct gkick_audio_output  *audio_output);
 
 enum geonkick_error
-gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output, struct gkick_note_info *key);
+gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
+                               struct gkick_note_info *key);
 
 enum geonkick_error
 gkick_audio_output_play(struct gkick_audio_output *audio_output);
@@ -118,7 +116,8 @@ gkick_real
 gkick_audio_output_tune_factor(int note_number);
 
 enum geonkick_error
-gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real *val);
+gkick_audio_output_get_frame(struct gkick_audio_output *audio_output,
+                             gkick_real *val);
 
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output);
 
@@ -137,9 +136,11 @@ void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, boo
 bool gkick_audio_output_is_tune_output(struct gkick_audio_output *audio_output);
 
 enum geonkick_error
-gkick_audio_output_set_channel(struct gkick_audio_output *audio_output, size_t channel);
+gkick_audio_output_set_channel(struct gkick_audio_output *audio_output,
+                               size_t channel);
 
 enum geonkick_error
-gkick_audio_output_get_channel(struct gkick_audio_output *audio_output, size_t *channel);
+gkick_audio_output_get_channel(struct gkick_audio_output *audio_output,
+                               size_t *channel);
 
 #endif // GKICK_AUDO_OUTPUT_H

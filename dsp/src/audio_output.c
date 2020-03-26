@@ -31,18 +31,18 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
                 return GEONKICK_ERROR;
         }
 
-        *audio_output = (struct gkick_audio_output*)malloc(sizeof(struct gkick_audio_output));
+        *audio_output = (struct gkick_audio_output*)calloc(1, sizeof(struct gkick_audio_output));
         if (*audio_output == NULL) {
                 gkick_log_error("can't allocate memory");
                 return GEONKICK_ERROR;
         }
-        memset(*audio_output, 0, sizeof(struct gkick_audio_output));
         (*audio_output)->decay   = -1;
         (*audio_output)->play    = false;
 	(*audio_output)->enabled = true;
         (*audio_output)->channel = 0;
 
-        gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer, GEONKICK_MAX_KICK_BUFFER_SIZE);
+        gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer,
+                         GEONKICK_MAX_KICK_BUFFER_SIZE);
         if ((*audio_output)->updated_buffer == NULL) {
                 gkick_log_error("can't create updated buffer");
                 gkick_audio_output_free(audio_output);
@@ -50,7 +50,8 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
         }
         gkick_buffer_set_size((struct gkick_buffer*)(*audio_output)->updated_buffer, 0);
 
-        gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->playing_buffer, GEONKICK_MAX_KICK_BUFFER_SIZE);
+        gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->playing_buffer,
+                         GEONKICK_MAX_KICK_BUFFER_SIZE);
         if ((*audio_output)->playing_buffer == NULL) {
                 gkick_log_error("can't create playing buffer");
                 gkick_audio_output_free(audio_output);
@@ -106,16 +107,12 @@ gkick_audio_output_play(struct gkick_audio_output *audio_output)
 gkick_real
 gkick_audio_output_tune_factor(int note_number)
 {
-        return pow(2.0, (gkick_real)(note_number - 69) / 12.0);
+        return pow(2.0f, (gkick_real)(note_number - 69) / 12.0f);
 }
 
-/**
- * Gets autio frame gets only the current value
- * of the kick from the kick buffer.
- * No synthesis is done by this function. There is no lock called in this function.
- */
 enum geonkick_error
-gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real *val)
+gkick_audio_output_get_frame(struct gkick_audio_output *audio_output,
+                             gkick_real *val)
 {
         int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
         gkick_real decay_val;
@@ -143,14 +140,14 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                                 *val = gkick_buffer_get_next(buff);
 
                         if (gkick_buffer_size(buff) - gkick_buffer_index(buff) == GEKICK_KEY_RELESE_DECAY_TIME) {
-                                audio_output->decay = GEKICK_KEY_RELESE_DECAY_TIME;
+                                audio_output->decay     = GEKICK_KEY_RELESE_DECAY_TIME;
                                 audio_output->key.state = GKICK_KEY_STATE_RELEASED;
                         }
 
                         if (audio_output->key.state == GKICK_KEY_STATE_RELEASED)
-                                decay_val = - 1.0 * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
+                                decay_val = - 1.0f * ((gkick_real)(release_time - audio_output->decay) / release_time) + 1.0;
                         else
-                                decay_val = 1.0;
+                                decay_val = 1.0f;
                         *val *= decay_val * ((gkick_real)audio_output->key.velocity / 127);
 
                         if (audio_output->key.state == GKICK_KEY_STATE_RELEASED) {
@@ -187,10 +184,13 @@ gkick_audio_output_get_buffer(struct gkick_audio_output  *audio_output)
 void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output)
 {
         gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
-        // Try lock. If succesfull, swap buffers. If not, continue with the current one to play
-        // until the next key press (i.e. next bit).
+
+        /**
+         * Try lock. If succesfull, swap buffers. If not, continue with
+         * the current one to play until the next press of the key.
+         */
         if (pthread_mutex_trylock(&audio_output->lock) == 0) {
-                // Test if the updated buffer is full. Otherwise it means that it was not updated.
+                /* Test if the updated buffer is full. Otherwise it means that it was not updated. */
                 if (gkick_buffer_size((struct gkick_buffer*)audio_output->updated_buffer) > 0
                     && gkick_buffer_is_end((struct gkick_buffer*)audio_output->updated_buffer)) {
                                         char *buff = audio_output->updated_buffer;
@@ -228,14 +228,16 @@ bool gkick_audio_output_is_tune_output(struct gkick_audio_output *audio_output)
 }
 
 enum geonkick_error
-gkick_audio_output_set_channel(struct gkick_audio_output *audio_output, size_t channel)
+gkick_audio_output_set_channel(struct gkick_audio_output *audio_output,
+                               size_t channel)
 {
         audio_output->channel = channel;
         return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_audio_output_get_channel(struct gkick_audio_output *audio_output, size_t *channel)
+gkick_audio_output_get_channel(struct gkick_audio_output *audio_output,
+                               size_t *channel)
 {
         *channel = audio_output->channel;
         return GEONKICK_OK;

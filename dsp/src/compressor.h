@@ -2,7 +2,7 @@
  * File name: compressor.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -29,7 +29,7 @@
 struct gkick_compressor {
         int enabled;
 
-        /* Attack and release time in number of frames/samples. */
+        /* Attack and release time in number of audio frames. */
         uint64_t attack;
         uint64_t release;
 
@@ -42,9 +42,9 @@ struct gkick_compressor {
         /* Makeup in dB. */
         gkick_real makeup;
 
-        /* Number of frames/smaples elapsed since the start of compression. */
+        /* Number of framess elapsed since the start of compression. */
         uint64_t frames;
-        /* The frame/sample at which the compressor is deactivated. */
+        /* The frame at which the compressor is deactivated. */
         uint64_t deactivation;
         pthread_mutex_t lock;
 };
@@ -55,15 +55,19 @@ gkick_compressor_new(struct gkick_compressor **compressor);
 void
 gkick_compressor_free(struct gkick_compressor **compressor);
 
-void gkick_compressor_lock(struct gkick_compressor *compressor);
+void
+gkick_compressor_lock(struct gkick_compressor *compressor);
 
-void gkick_compressor_unlock(struct gkick_compressor *compressor);
+void
+gkick_compressor_unlock(struct gkick_compressor *compressor);
 
 enum geonkick_error
-gkick_compressor_enable(struct gkick_compressor *compressor, int enable);
+gkick_compressor_enable(struct gkick_compressor *compressor,
+                        int enable);
 
 enum geonkick_error
-gkick_compressor_is_enabled(struct gkick_compressor *compressor, int *enabled);
+gkick_compressor_is_enabled(struct gkick_compressor *compressor,
+                            int *enabled);
 
 enum geonkick_error
 gkick_compressor_val(struct gkick_compressor *compressor,
@@ -71,39 +75,51 @@ gkick_compressor_val(struct gkick_compressor *compressor,
                      gkick_real *out_val);
 
 enum geonkick_error
-gkick_compressor_set_attack(struct gkick_compressor *compressor, gkick_real attack);
+gkick_compressor_set_attack(struct gkick_compressor *compressor,
+                            gkick_real attack);
 
 enum geonkick_error
-gkick_compressor_get_attack(struct gkick_compressor *compressor, gkick_real *attack);
+gkick_compressor_get_attack(struct gkick_compressor *compressor,
+                            gkick_real *attack);
 
 enum geonkick_error
-gkick_compressor_set_release(struct gkick_compressor *compressor, gkick_real release);
+gkick_compressor_set_release(struct gkick_compressor *compressor,
+                             gkick_real release);
 
 enum geonkick_error
-gkick_compressor_get_release(struct gkick_compressor *compressor, gkick_real *release);
+gkick_compressor_get_release(struct gkick_compressor *compressor,
+                             gkick_real *release);
 
 enum geonkick_error
-gkick_compressor_set_threshold(struct gkick_compressor *compressor, gkick_real threshold);
+gkick_compressor_set_threshold(struct gkick_compressor *compressor,
+                               gkick_real threshold);
 
 enum geonkick_error
-gkick_compressor_get_threshold(struct gkick_compressor *compressor, gkick_real *threshold);
+gkick_compressor_get_threshold(struct gkick_compressor *compressor,
+                               gkick_real *threshold);
 
 enum geonkick_error
-gkick_compressor_set_ratio(struct gkick_compressor *compressor, gkick_real ratio);
+gkick_compressor_set_ratio(struct gkick_compressor *compressor,
+                           gkick_real ratio);
 
 enum geonkick_error
-gkick_compressor_get_ratio(struct gkick_compressor *compressor, gkick_real *ratio);
+gkick_compressor_get_ratio(struct gkick_compressor *compressor,
+                           gkick_real *ratio);
 
 enum geonkick_error
-gkick_compressor_set_knee(struct gkick_compressor *compressor, gkick_real knee);
+gkick_compressor_set_knee(struct gkick_compressor *compressor,
+                          gkick_real knee);
 
 enum geonkick_error
-gkick_compressor_get_knee(struct gkick_compressor *compressor, gkick_real *knee);
+gkick_compressor_get_knee(struct gkick_compressor *compressor,
+                          gkick_real *knee);
 
 enum geonkick_error
-gkick_compressor_set_makeup(struct gkick_compressor *compressor, gkick_real makeup);
+gkick_compressor_set_makeup(struct gkick_compressor *compressor,
+                            gkick_real makeup);
 
 enum geonkick_error
-gkick_compressor_get_makeup(struct gkick_compressor *compressor, gkick_real *makeup);
+gkick_compressor_get_makeup(struct gkick_compressor *compressor,
+                            gkick_real *makeup);
 
 #endif // GEONKICK_COMPRESSOR_H
