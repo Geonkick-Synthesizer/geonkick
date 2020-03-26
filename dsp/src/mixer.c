@@ -45,10 +45,27 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
                 if (output->enabled && (output->playing_key == -1
-                    || output->playing_key == note->note_number)) {
+                    || output->playing_key == note->note_number
+		    || output->tune)) {
                         gkick_audio_output_key_pressed(output, note);
                 }
         }
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_tune_output(struct gkick_mixer *mixer, size_t index, bool tune)
+{
+	if (index < GEONKICK_MAX_PERCUSSIONS)
+		gkick_audio_output_tune_output(mixer->audio_outputs[index], tune);
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_is_output_tuned(struct gkick_mixer *mixer, size_t index, bool *tune)
+{
+	if (index < GEONKICK_MAX_PERCUSSIONS)
+		*tune = gkick_audio_output_is_tune_output(mixer->audio_outputs[index]);
 	return GEONKICK_OK;
 }
 

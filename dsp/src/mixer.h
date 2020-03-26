@@ -42,6 +42,12 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 			struct gkick_note_info *note);
 
 enum geonkick_error
+gkick_mixer_tune_output(struct gkick_mixer *mixer, size_t index, bool tune);
+
+enum geonkick_error
+gkick_mixer_is_output_tuned(struct gkick_mixer *mixer, size_t index, bool *tune);
+
+enum geonkick_error
 gkick_mixer_get_frame(struct gkick_mixer *mixer,
 		      int channel,
 		      gkick_real *val);

@@ -193,8 +193,8 @@ class GeonkickApi {
   double getLimiterLevelerValue() const;
   std::filesystem::path currentWorkingPath(const std::string &key) const;
   void setCurrentWorkingPath(const std::string &key, const std::filesystem::path &path);
-  void tuneAudioOutput(bool tune);
-  bool isAudioOutputTuned() const;
+  void tuneAudioOutput(int id, bool tune);
+  bool isAudioOutputTuned(int id) const;
   size_t getPercussionsNumber() const;
   void setCurrentPercussion(int index);
   size_t currentPercussion() const;

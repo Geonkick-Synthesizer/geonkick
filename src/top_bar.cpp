@@ -126,7 +126,8 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         tuneCheckbox->setPressedImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_on)));
         tuneCheckbox->setUnpressedImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_off)));
         tuneCheckbox->show();
-        RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi, tuneAudioOutput(b));
+        RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi,
+		    tuneAudioOutput(geonkickApi->currentPercussion(), b));
 
         updateGui();
 }
@@ -188,5 +189,5 @@ void TopBar::updateGui()
         layer1Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer1));
         layer2Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer2));
         layer3Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer3));
-        tuneCheckbox->setPressed(geonkickApi->isAudioOutputTuned());
+        tuneCheckbox->setPressed(geonkickApi->isAudioOutputTuned(geonkickApi->currentPercussion()));
 }

@@ -446,10 +446,10 @@ enum geonkick_error
 geonkick_group_get_amplitude(struct geonkick *kick, size_t index, gkick_real *amplitude);
 
 enum geonkick_error
-geonkick_tune_audio_output(struct geonkick *kick, bool tune);
+geonkick_tune_audio_output(struct geonkick *kick, size_t index, bool tune);
 
 enum geonkick_error
-geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune);
+geonkick_is_audio_output_tuned(struct geonkick *kick, size_t index, bool *tune);
 
 enum geonkick_error
 geonkick_set_osc_sample(struct geonkick *kick,

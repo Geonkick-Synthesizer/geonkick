@@ -187,7 +187,7 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
                 setLayerAmplitude(static_cast<Layer>(i), state->getLayerAmplitude(static_cast<Layer>(i)));
         }
         setLimiterValue(state->getLimiterValue());
-        tuneAudioOutput(state->isOutputTuned());
+        tuneAudioOutput(state->getId(), state->isOutputTuned());
         setKickLength(state->getKickLength());
         setKickAmplitude(state->getKickAmplitude());
         enableKickFilter(state->isKickFilterEnabled());
@@ -247,7 +247,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
         state->setId(currentPercussion());
         state->setName(getPercussionName(state->getId()));
         state->setLimiterValue(limiterValue());
-        state->tuneOutput(isAudioOutputTuned());
+        state->tuneOutput(isAudioOutputTuned(state->getId()));
         state->setPlayingKey(getPercussionPlayingKey(state->getId()));
         state->setChannel(getPercussionChannel(state->getId()));
         for (int i = 0; i < 3; i++) {
@@ -1096,15 +1096,15 @@ std::string GeonkickApi::getSettings(const std::string &key) const
         return "";
 }
 
-void GeonkickApi::tuneAudioOutput(bool tune)
+void GeonkickApi::tuneAudioOutput(int id, bool tune)
 {
-        geonkick_tune_audio_output(geonkickApi, tune);
+        geonkick_tune_audio_output(geonkickApi, id, tune);
 }
 
-bool GeonkickApi::isAudioOutputTuned() const
+bool GeonkickApi::isAudioOutputTuned(int id) const
 {
         bool tune = false;
-        geonkick_is_audio_output_tuned(geonkickApi, &tune);
+        geonkick_is_audio_output_tuned(geonkickApi, id, &tune);
         return tune;
 }
 

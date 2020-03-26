@@ -26,6 +26,7 @@
 #include "gkick_audio.h"
 #include "audio_output.h"
 #include "envelope.h"
+#include "mixer.h"
 
 enum geonkick_error
 geonkick_create(struct geonkick **kick)
@@ -1224,38 +1225,25 @@ geonkick_group_get_amplitude(struct geonkick *kick, size_t index, gkick_real *am
 }
 
 enum geonkick_error
-geonkick_tune_audio_output(struct geonkick *kick, bool tune)
+geonkick_tune_audio_output(struct geonkick *kick, size_t index, bool tune)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        /* if (kick->audio == NULL || kick->audio->audio_output == NULL) { */
-        /*         gkick_log_error("audio output was not created"); */
-        /*         return GEONKICK_ERROR; */
-        /* } */
-
-        /* gkick_audio_tune_output(kick->audio->audio_output, tune); */
-        return GEONKICK_OK;
+        return gkick_mixer_tune_output(kick->audio->mixer, index, tune);
 }
 
 enum geonkick_error
-geonkick_is_audio_output_tuned(struct geonkick *kick, bool *tune)
+geonkick_is_audio_output_tuned(struct geonkick *kick, size_t index, bool *tune)
 {
-        if (kick == NULL || tune == NULL) {
+        if (kick == NULL || tune == NULL || index > GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        /* if (kick->audio == NULL || kick->audio->audio_output == NULL) { */
-        /*         gkick_log_error("audio output was not created"); */
-        /*         return GEONKICK_ERROR; */
-        /* } else { */
-        /*         *tune = gkick_audio_is_tune_output(kick->audio->audio_output); */
-        /* } */
-
-        return GEONKICK_OK;
+	return gkick_mixer_is_output_tuned(kick->audio->mixer, index, tune);
 }
 
 enum geonkick_error
