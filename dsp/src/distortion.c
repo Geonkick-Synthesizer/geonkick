@@ -2,7 +2,7 @@
  * File name: distortion.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -32,7 +32,7 @@ gkick_distortion_new(struct gkick_distortion **distortion)
                 return GEONKICK_ERROR;
         }
 
-        *distortion = (struct gkick_distortion*)malloc(sizeof(struct gkick_distortion));
+        *distortion = (struct gkick_distortion*)calloc(1, sizeof(struct gkick_distortion));
         if (*distortion == NULL) {
                 gkick_log_error("can't allocate memory");
                 return GEONKICK_ERROR;
@@ -109,21 +109,22 @@ gkick_distortion_val(struct gkick_distortion *distortion,
 {
         gkick_distortion_lock(distortion);
 	gkick_real x = distortion->in_limiter * in_val;
-	x *= 1 + (distortion->drive - 1.0f) * gkick_envelope_get_value(distortion->drive_env, env_x);
+	x *= 1.0f + (distortion->drive - 1.0f) * gkick_envelope_get_value(distortion->drive_env, env_x);
 
-        if (x > 1.0)
-                x = 1.0;
-        else if (x < -1.0)
-                x = -1.0;
+        if (x > 1.0f)
+                x = 1.0f;
+        else if (x < -1.0f)
+                x = -1.0f;
 
-        *out_val= (x < 0 ? -1 : 1) * (1.0 - exp(-4.0 * log(10) * fabs(x)));
+        *out_val= (x < 0.0f ? -1.0f : 1.0f) * (1.0f - exp(-4.0f * log(10.0f) * fabs(x)));
         *out_val *= distortion->volume;
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_distortion_set_volume(struct gkick_distortion *distortion, gkick_real volume)
+gkick_distortion_set_volume(struct gkick_distortion *distortion,
+                            gkick_real volume)
 {
         gkick_distortion_lock(distortion);
         distortion->volume = volume;
@@ -132,7 +133,8 @@ gkick_distortion_set_volume(struct gkick_distortion *distortion, gkick_real volu
 }
 
 enum geonkick_error
-gkick_distortion_get_volume(struct gkick_distortion *distortion, gkick_real *volume)
+gkick_distortion_get_volume(struct gkick_distortion *distortion,
+                            gkick_real *volume)
 {
         gkick_distortion_lock(distortion);
         *volume = distortion->volume;
@@ -141,7 +143,8 @@ gkick_distortion_get_volume(struct gkick_distortion *distortion, gkick_real *vol
 }
 
 enum geonkick_error
-gkick_distortion_set_in_limiter(struct gkick_distortion *distortion, gkick_real limit)
+gkick_distortion_set_in_limiter(struct gkick_distortion *distortion,
+                                gkick_real limit)
 {
 	gkick_distortion_lock(distortion);
         distortion->in_limiter = limit;
@@ -150,7 +153,8 @@ gkick_distortion_set_in_limiter(struct gkick_distortion *distortion, gkick_real 
 }
 
 enum geonkick_error
-gkick_distortion_get_in_limiter(struct gkick_distortion *distortion, gkick_real *limit)
+gkick_distortion_get_in_limiter(struct gkick_distortion *distortion,
+                                gkick_real *limit)
 {
 	gkick_distortion_lock(distortion);
         *limit = distortion->in_limiter;
@@ -159,7 +163,8 @@ gkick_distortion_get_in_limiter(struct gkick_distortion *distortion, gkick_real 
 }
 
 enum geonkick_error
-gkick_distortion_set_drive(struct gkick_distortion *distortion, gkick_real drive)
+gkick_distortion_set_drive(struct gkick_distortion *distortion,
+                           gkick_real drive)
 {
         gkick_distortion_lock(distortion);
         distortion->drive = drive;
@@ -168,7 +173,8 @@ gkick_distortion_set_drive(struct gkick_distortion *distortion, gkick_real drive
 }
 
 enum geonkick_error
-gkick_distortion_get_drive(struct gkick_distortion *distortion, gkick_real *drive)
+gkick_distortion_get_drive(struct gkick_distortion *distortion,
+                           gkick_real *drive)
 {
         gkick_distortion_lock(distortion);
         *drive = distortion->drive;

@@ -2,7 +2,7 @@
  * File name: gkick_log.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -27,7 +27,6 @@ void
 gkick_log_msg(const char *message, ...)
 {
         va_list args;
-
         va_start (args, message);
         vprintf (message, args);
         va_end (args);
@@ -38,7 +37,6 @@ void
 gkick_msg_info(const char *msg, ...)
 {
         va_list args;
-
         printf("Info: ");
         va_start (args, msg);
         vprintf (msg, args);
@@ -51,7 +49,6 @@ void
 gkick_msg_error(const char *msg, ...)
 {
         va_list args;
-
         printf("Error: ");
         va_start (args, msg);
         vprintf (msg, args);

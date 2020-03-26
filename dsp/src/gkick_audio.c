@@ -2,7 +2,7 @@
  * File name: gkick_audio.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -36,12 +36,11 @@ gkick_audio_create(struct gkick_audio** audio)
                 return GEONKICK_ERROR;
         }
 
-        *audio = (struct gkick_audio*)malloc(sizeof(struct gkick_audio));
+        *audio = (struct gkick_audio*)calloc(1, sizeof(struct gkick_audio));
         if (*audio == NULL) {
                 gkick_log_error("can't allocate memory");
 		return GEONKICK_ERROR_MEM_ALLOC;
 	}
-        memset(*audio, 0, sizeof(struct gkick_audio));
 
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 if (gkick_audio_output_create(&(*audio)->audio_outputs[i]) != GEONKICK_OK) {
@@ -82,30 +81,27 @@ void gkick_audio_free(struct gkick_audio** audio)
 }
 
 enum geonkick_error
-gkick_audio_set_limiter_val(struct gkick_audio *audio, size_t index, gkick_real limit)
+gkick_audio_set_limiter_val(struct gkick_audio *audio,
+                            size_t index,
+                            gkick_real limit)
 {
-        if (limit < 0)
-                limit = 0;
-        else if (limit > 10)
-                limit = 10;
-	return gkick_mixer_limiter_set(audio->mixer, index, limit);
+        if (limit < 0.0f)
+                limit = 0.0f;
+        else if (limit > 10.0f)
+                limit = 10.0f;
+	return gkick_mixer_limiter_set(audio->mixer,
+                                       index,
+                                       limit);
 }
 
 enum geonkick_error
-gkick_audio_get_limiter_val(struct gkick_audio *audio, size_t index, gkick_real *limit)
+gkick_audio_get_limiter_val(struct gkick_audio *audio,
+                            size_t index,
+                            gkick_real *limit)
 {
-	return gkick_mixer_limiter_get(audio->mixer, index, limit);
-}
-
-struct gkick_buffer*
-gkick_audio_get_buffer(struct gkick_audio *audio)
-{
-        if (audio == NULL) {
-                gkick_log_error("wrong arguments");
-                return NULL;
-        }
-
-        return gkick_audio_output_get_buffer(audio->audio_outputs[0]);
+	return gkick_mixer_limiter_get(audio->mixer,
+                                       index,
+                                       limit);
 }
 
 enum geonkick_error
@@ -143,7 +139,9 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
 }
 
 enum geonkick_error
-gkick_audio_get_frame(struct gkick_audio *audio, int channel, gkick_real *val)
+gkick_audio_get_frame(struct gkick_audio *audio,
+                      int channel
+                      , gkick_real *val)
 {
         if (audio == NULL) {
                 gkick_log_error("wrong arguments");
@@ -158,5 +156,7 @@ gkick_audio_set_limiter_callback(struct gkick_audio *audio,
                                  void (*callback)(void*, gkick_real val),
                                  void *arg)
 {
-        return gkick_mixer_set_limiter_callback(audio->mixer, callback, arg);
+        return gkick_mixer_set_limiter_callback(audio->mixer,
+                                                callback,
+                                                arg);
 }

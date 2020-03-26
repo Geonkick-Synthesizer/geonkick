@@ -2,7 +2,7 @@
  * File name: gkick_audio.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -51,9 +51,6 @@ gkick_audio_get_limiter_val(struct gkick_audio *audio,
                             size_t index,
                             gkick_real *limit);
 
-struct gkick_buffer*
-gkick_audio_get_buffer(struct gkick_audio *audio);
-
 enum geonkick_error
 gkick_audio_play(struct gkick_audio *audio);
 
@@ -64,7 +61,9 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
                         int velocity);
 
 enum geonkick_error
-gkick_audio_get_frame(struct gkick_audio *audio, int channel, gkick_real *val);
+gkick_audio_get_frame(struct gkick_audio *audio,
+                      int channel,
+                      gkick_real *val);
 
 enum geonkick_error
 gkick_audio_set_limiter_callback(struct gkick_audio *audio,

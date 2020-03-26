@@ -2,7 +2,7 @@
  * File name: distortion.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -59,21 +59,27 @@ gkick_distortion_val(struct gkick_distortion *distortion,
 		     gkick_real env_x);
 
 enum geonkick_error
-gkick_distortion_set_volume(struct gkick_distortion *distortion, gkick_real volume);
+gkick_distortion_set_volume(struct gkick_distortion *distortion,
+                            gkick_real volume);
 
 enum geonkick_error
-gkick_distortion_get_volume(struct gkick_distortion *distortion, gkick_real *volume);
+gkick_distortion_get_volume(struct gkick_distortion *distortion,
+                            gkick_real *volume);
 
 enum geonkick_error
-gkick_distortion_set_in_limiter(struct gkick_distortion *distortion, gkick_real limit);
+gkick_distortion_set_in_limiter(struct gkick_distortion *distortion,
+                                gkick_real limit);
 
 enum geonkick_error
-gkick_distortion_get_in_limiter(struct gkick_distortion *distortion, gkick_real *limit);
+gkick_distortion_get_in_limiter(struct gkick_distortion *distortion,
+                                gkick_real *limit);
 
 enum geonkick_error
-gkick_distortion_set_drive(struct gkick_distortion *distortion, gkick_real drive);
+gkick_distortion_set_drive(struct gkick_distortion *distortion,
+                           gkick_real drive);
 
 enum geonkick_error
-gkick_distortion_get_drive(struct gkick_distortion *distortion, gkick_real *drive);
+gkick_distortion_get_drive(struct gkick_distortion *distortion,
+                           gkick_real *drive);
 
 #endif // GEONKICK_DISTORTION_H

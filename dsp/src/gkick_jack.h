@@ -2,7 +2,7 @@
  * File name: gkick_jack.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -57,23 +57,30 @@ void gkick_jack_get_note_info(jack_midi_event_t *event,
 jack_port_t*
 gkick_jack_get_midi_in_port(struct gkick_jack *jack);
 
-int gkick_jack_srate_callback(jack_nframes_t nframes, void *arg);
+int gkick_jack_srate_callback(jack_nframes_t nframes,
+                              void *arg);
 
 enum geonkick_error
-gkick_jack_enable_midi_in(struct gkick_jack *jack, const char *name);
+gkick_jack_enable_midi_in(struct gkick_jack *jack,
+                          const char *name);
 
 enum geonkick_error
 gkick_jack_create_output_ports(struct gkick_jack *jack);
 
 enum geonkick_error
-gkick_create_jack(struct gkick_jack **jack, struct gkick_mixer *mixer);
+gkick_create_jack(struct gkick_jack **jack,
+                  struct gkick_mixer *mixer);
 
-int gkick_jack_is_midi_in_enabled(struct gkick_jack *jack);
+int
+gkick_jack_is_midi_in_enabled(struct gkick_jack *jack);
 
-void gkick_jack_free(struct gkick_jack **jack);
+void
+gkick_jack_free(struct gkick_jack **jack);
 
-void gkick_jack_lock(struct gkick_jack *jack);
+void
+gkick_jack_lock(struct gkick_jack *jack);
 
-void gkick_jack_unlock(struct gkick_jack *jack);
+void
+gkick_jack_unlock(struct gkick_jack *jack);
 
-#endif
+#endif // GKICK_JACK_H

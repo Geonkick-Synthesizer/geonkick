@@ -2,7 +2,7 @@
  * File name: filter.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -31,12 +31,11 @@ gkick_filter_new(struct gkick_filter **filter)
                 return GEONKICK_ERROR;
         }
 
-        *filter = (struct gkick_filter *) malloc(sizeof(struct gkick_filter));
+        *filter = (struct gkick_filter *)calloc(1, sizeof(struct gkick_filter));
         if (*filter == NULL) {
                 gkick_log_error("can't allocate memory");
                 return GEONKICK_ERROR_MEM_ALLOC;
         }
-        memset(*filter, 0, sizeof(struct gkick_filter));
         (*filter)->type = GEONKICK_FILTER_LOW_PASS;
         (*filter)->queue_empty = 1;
 
@@ -46,8 +45,8 @@ gkick_filter_new(struct gkick_filter **filter)
                 gkick_filter_free(filter);
                 return GEONKICK_ERROR;
         } else {
-                gkick_envelope_add_point((*filter)->cutoff_env, 0.0, 1.0);
-                gkick_envelope_add_point((*filter)->cutoff_env, 1.0, 1.0);
+                gkick_envelope_add_point((*filter)->cutoff_env, 0.0f, 1.0f);
+                gkick_envelope_add_point((*filter)->cutoff_env, 1.0f, 1.0f);
         }
 
         if (pthread_mutex_init(&(*filter)->lock, NULL) != 0) {
@@ -105,23 +104,21 @@ void gkick_filter_unlock(struct gkick_filter *filter)
 enum geonkick_error
 gkick_filter_update_coefficents(struct gkick_filter *filter)
 {
-        gkick_real F, Q;
-
         if (filter == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        F = 2.0 * sin(M_PI * filter->cutoff_freq / GEONKICK_SAMPLE_RATE);
-        Q = filter->factor;
+        gkick_real F = 2.0f * sin(M_PI * filter->cutoff_freq / GEONKICK_SAMPLE_RATE);
+        gkick_real Q = filter->factor;
         filter->coefficients[0] = F;
         filter->coefficients[1] = Q;
-
         return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_filter_set_type(struct gkick_filter *filter, enum gkick_filter_type type)
+gkick_filter_set_type(struct gkick_filter *filter,
+                      enum gkick_filter_type type)
 {
         if (filter == NULL) {
                 gkick_log_error("wrong arguments");
@@ -137,7 +134,8 @@ gkick_filter_set_type(struct gkick_filter *filter, enum gkick_filter_type type)
 }
 
 enum geonkick_error
-gkick_filter_get_type(struct gkick_filter *filter, enum gkick_filter_type *type)
+gkick_filter_get_type(struct gkick_filter *filter,
+                      enum gkick_filter_type *type)
 {
         if (filter == NULL) {
                 gkick_log_error("wrong arguments");
@@ -151,7 +149,8 @@ gkick_filter_get_type(struct gkick_filter *filter, enum gkick_filter_type *type)
 }
 
 enum geonkick_error
-gkick_filter_set_cutoff_freq(struct gkick_filter *filter, gkick_real cutoff)
+gkick_filter_set_cutoff_freq(struct gkick_filter *filter,
+                             gkick_real cutoff)
 {
         if (filter == NULL) {
                 gkick_log_error("wrong arguments");
@@ -166,15 +165,16 @@ gkick_filter_set_cutoff_freq(struct gkick_filter *filter, gkick_real cutoff)
 }
 
 enum geonkick_error
-gkick_filter_set_factor(struct gkick_filter *filter, gkick_real factor)
+gkick_filter_set_factor(struct gkick_filter *filter,
+                        gkick_real factor)
 {
-        if (filter == NULL || factor < 0.5) {
+        if (filter == NULL || factor < 0.5f) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
         gkick_filter_lock(filter);
-        filter->factor = 10.0 / factor;
+        filter->factor = 10.0f / factor;
         gkick_filter_update_coefficents(filter);
         gkick_filter_unlock(filter);
         return GEONKICK_OK;
@@ -189,7 +189,7 @@ gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor)
         }
 
         gkick_filter_lock(filter);
-        *factor = 10.0 / filter->factor;
+        *factor = 10.0f / filter->factor;
         gkick_filter_unlock(filter);
         return GEONKICK_OK;
 }
@@ -219,13 +219,8 @@ gkick_filter_val(struct gkick_filter *filter,
                  gkick_real *out_val,
                  gkick_real env_x)
 {
-        gkick_real *l, *b, *h;
-        gkick_real F, Q;
-        size_t n;
-        gkick_real val;
-
-        if (isnan(in_val) || in_val > 1.0 || in_val < -1.0) {
-                *out_val = 0;
+        if (isnan(in_val) || in_val > 1.0f || in_val < -1.0f) {
+                *out_val = 0.0f;
                 return GEONKICK_ERROR;
         }
 
@@ -236,12 +231,12 @@ gkick_filter_val(struct gkick_filter *filter,
 
         gkick_filter_lock(filter);
 
-        l = filter->queue_l;
-        b = filter->queue_b;
-        h = filter->queue_h;
-        F = gkick_envelope_get_value(filter->cutoff_env, env_x) * filter->coefficients[0];
-        Q = filter->coefficients[1];
-        n = 1;
+        gkick_real *l = filter->queue_l;
+        gkick_real *b = filter->queue_b;
+        gkick_real *h = filter->queue_h;
+        gkick_real F = gkick_envelope_get_value(filter->cutoff_env, env_x) * filter->coefficients[0];
+        gkick_real Q = filter->coefficients[1];
+        size_t n = 1;
         if (filter->queue_empty) {
                 l[n - 1] = l[n] = 0;
                 b[n - 1] = b[n] = 0;
@@ -256,6 +251,7 @@ gkick_filter_val(struct gkick_filter *filter,
         b[n] = F * h[n] + b[n - 1];
         l[n] = F * b[n] + l[n - 1];
 
+        gkick_real val = 0.0f;
         if (filter->type == GEONKICK_FILTER_HIGH_PASS)
                 val = h[n];
         else if (filter->type == GEONKICK_FILTER_BAND_PASS)

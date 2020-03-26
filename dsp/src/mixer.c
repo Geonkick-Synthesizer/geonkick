@@ -54,15 +54,20 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 }
 
 enum geonkick_error
-gkick_mixer_tune_output(struct gkick_mixer *mixer, size_t index, bool tune)
+gkick_mixer_tune_output(struct gkick_mixer *mixer,
+                        size_t index,
+                        bool tune)
 {
 	if (index < GEONKICK_MAX_PERCUSSIONS)
-		gkick_audio_output_tune_output(mixer->audio_outputs[index], tune);
+		gkick_audio_output_tune_output(mixer->audio_outputs[index],
+                                               tune);
 	return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_mixer_is_output_tuned(struct gkick_mixer *mixer, size_t index, bool *tune)
+gkick_mixer_is_output_tuned(struct gkick_mixer *mixer,
+                            size_t index,
+                            bool *tune)
 {
 	if (index < GEONKICK_MAX_PERCUSSIONS)
 		*tune = gkick_audio_output_is_tune_output(mixer->audio_outputs[index]);
@@ -87,7 +92,8 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
                 }
         }
 
-        if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL)
+        if (mixer->limiter_callback != NULL
+            && mixer->limiter_callback_arg != NULL)
                 mixer->limiter_callback(mixer->limiter_callback_arg, leveler_val);
 
         return GEONKICK_OK;

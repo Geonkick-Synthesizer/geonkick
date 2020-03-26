@@ -2,7 +2,7 @@
  * File name: gkick_buffer.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -48,30 +48,51 @@ struct gkick_buffer {
         size_t size;
 };
 
-void gkick_buffer_new(struct gkick_buffer **buffer, int size);
+void
+gkick_buffer_new(struct gkick_buffer **buffer, int size);
 
-void gkick_buffer_free(struct gkick_buffer **buffer);
+void
+gkick_buffer_free(struct gkick_buffer **buffer);
 
-void gkick_buffer_reset(struct gkick_buffer *buffer);
+void
+gkick_buffer_reset(struct gkick_buffer *buffer);
 
-void gkick_buffer_set_data(struct gkick_buffer *buffer, const gkick_real *data, size_t size);
+void
+gkick_buffer_set_data(struct gkick_buffer *buffer,
+                      const gkick_real *data,
+                      size_t size);
 
-void gkick_buffer_set_at(struct gkick_buffer *buffer,  size_t index, gkick_real val);
+void
+gkick_buffer_set_at(struct gkick_buffer *buffer,
+                    size_t index,
+                    gkick_real val);
 
-gkick_real gkick_buffer_get_at(struct gkick_buffer *buffer,  size_t index);
+gkick_real
+gkick_buffer_get_at(struct gkick_buffer *buffer,
+                    size_t index);
 
-gkick_real gkick_buffer_get_next(struct gkick_buffer *buffer);
+gkick_real
+gkick_buffer_get_next(struct gkick_buffer *buffer);
 
-gkick_real gkick_buffer_stretch_get_next(struct gkick_buffer *buffer, gkick_real factor);
+gkick_real
+gkick_buffer_stretch_get_next(struct gkick_buffer *buffer,
+                                         gkick_real factor);
 
-void gkick_buffer_set_size(struct gkick_buffer *buffer, size_t size);
+void
+gkick_buffer_set_size(struct gkick_buffer *buffer,
+                           size_t size);
 
-size_t gkick_buffer_size(struct gkick_buffer *buffer);
+size_t
+gkick_buffer_size(struct gkick_buffer *buffer);
 
-size_t gkick_buffer_index(struct gkick_buffer *buffer);
+size_t
+gkick_buffer_index(struct gkick_buffer *buffer);
 
-void gkick_buffer_push_back(struct gkick_buffer *buffer, gkick_real val);
+void
+gkick_buffer_push_back(struct gkick_buffer *buffer,
+                       gkick_real val);
 
-bool gkick_buffer_is_end(struct gkick_buffer *buffer);
+bool
+gkick_buffer_is_end(struct gkick_buffer *buffer);
 
 #endif // GKICK_BUFFER_H

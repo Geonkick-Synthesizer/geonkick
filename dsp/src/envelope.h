@@ -2,7 +2,7 @@
  * File name: envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -43,10 +43,13 @@ struct gkick_envelope*
 gkick_envelope_create(void);
 
 gkick_real
-gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm);
+gkick_envelope_get_value(const struct gkick_envelope* envelope,
+                         gkick_real xm);
 
 struct gkick_envelope_point*
-gkick_envelope_add_point(struct gkick_envelope *envelope, float x, float y);
+gkick_envelope_add_point(struct gkick_envelope *envelope,
+                         float x,
+                         float y);
 
 void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 			       struct gkick_envelope_point *point);
@@ -64,7 +67,8 @@ void gkick_envelope_set_points(struct gkick_envelope *env,
 
 void gkick_envelope_clear(struct gkick_envelope* env);
 
-void gkick_envelope_remove_point(struct gkick_envelope *env, size_t index);
+void gkick_envelope_remove_point(struct gkick_envelope *env,
+                                 size_t index);
 
 void gkick_envelope_update_point(struct gkick_envelope *env,
                                  size_t index,

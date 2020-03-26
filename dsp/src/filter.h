@@ -2,7 +2,7 @@
  * File name: filter.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -27,8 +27,8 @@
 #include "geonkick_internal.h"
 #include "envelope.h"
 
-#define GEONKICK_DEFAULT_FILTER_CUTOFF_FREQ (350.0)
-#define GEONKICK_DEFAULT_FILTER_FACTOR      (1.0)
+#define GEONKICK_DEFAULT_FILTER_CUTOFF_FREQ (350.0f)
+#define GEONKICK_DEFAULT_FILTER_FACTOR      (1.0f)
 
 struct gkick_filter {
         enum gkick_filter_type type;
@@ -38,13 +38,14 @@ struct gkick_filter {
 
         /* Filter damping factor. */
         gkick_real factor;
+
         /* A queue of a three elements */
         gkick_real queue_l[2];
         gkick_real queue_b[2];
         gkick_real queue_h[2];
         char queue_empty;
 
-        /* Filter coefficients. See the code how they are calculated. */
+        /* Filter coefficients. */
         gkick_real coefficients[2];
 
         /* Filter cutoff envelope. */
@@ -68,22 +69,28 @@ enum geonkick_error
 gkick_filter_update_coefficents(struct gkick_filter *filter);
 
 enum geonkick_error
-gkick_filter_set_type(struct gkick_filter *filter, enum gkick_filter_type type);
+gkick_filter_set_type(struct gkick_filter *filter,
+                      enum gkick_filter_type type);
 
 enum geonkick_error
-gkick_filter_get_type(struct gkick_filter *filter, enum gkick_filter_type *type);
+gkick_filter_get_type(struct gkick_filter *filter,
+                      enum gkick_filter_type *type);
 
 enum geonkick_error
-gkick_filter_set_cutoff_freq(struct gkick_filter *filter, gkick_real cutoff);
+gkick_filter_set_cutoff_freq(struct gkick_filter *filter,
+                             gkick_real cutoff);
 
 enum geonkick_error
-gkick_filter_set_factor(struct gkick_filter *filter, gkick_real factor);
+gkick_filter_set_factor(struct gkick_filter *filter,
+                        gkick_real factor);
 
 enum geonkick_error
-gkick_filter_get_cutoff_freq(struct gkick_filter *filter, gkick_real *cutoff);
+gkick_filter_get_cutoff_freq(struct gkick_filter *filter,
+                             gkick_real *cutoff);
 
 enum geonkick_error
-gkick_filter_get_factor(struct gkick_filter *filter, gkick_real *factor);
+gkick_filter_get_factor(struct gkick_filter *filter,
+                        gkick_real *factor);
 
 enum geonkick_error
 gkick_filter_val(struct gkick_filter *filter,

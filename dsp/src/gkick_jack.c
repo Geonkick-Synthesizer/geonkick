@@ -2,7 +2,7 @@
  * File name: gkick_kack.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -90,7 +90,8 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
                 *channel_buf = NULL;
                 return GEONKICK_ERROR;
         } else {
-                *channel_buf = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port, nframes);
+                *channel_buf = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port,
+                                                                                  nframes);
                 if (*channel_buf == NULL)
                         return GEONKICK_ERROR;
         }
@@ -136,13 +137,15 @@ gkick_jack_get_midi_in_port(struct gkick_jack *jack)
         return port;
 }
 
-int gkick_jack_srate_callback(jack_nframes_t nframes, void *arg)
+int gkick_jack_srate_callback(jack_nframes_t nframes,
+                              void *arg)
 {
 	return 0;
 }
 
 enum geonkick_error
-gkick_jack_enable_midi_in(struct gkick_jack *jack, const char *name)
+gkick_jack_enable_midi_in(struct gkick_jack *jack,
+                          const char *name)
 {
         const char *midi_name;
         enum geonkick_error error;
@@ -202,17 +205,17 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
 }
 
 enum geonkick_error
-gkick_create_jack(struct gkick_jack **jack, struct gkick_mixer *mixer)
+gkick_create_jack(struct gkick_jack **jack,
+                  struct gkick_mixer *mixer)
 {
         if (jack == NULL || mixer == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        *jack = (struct gkick_jack*)malloc(sizeof(struct gkick_jack));
+        *jack = (struct gkick_jack*)calloc(1, sizeof(struct gkick_jack));
         if (*jack == NULL)
                 return GEONKICK_ERROR;
-        memset(*jack, 0, sizeof(struct gkick_jack));
         (*jack)->sample_rate = GEONKICK_SAMPLE_RATE;
 
         if (pthread_mutex_init(&(*jack)->lock, NULL) != 0) {
@@ -221,7 +224,9 @@ gkick_create_jack(struct gkick_jack **jack, struct gkick_mixer *mixer)
                 return GEONKICK_ERROR;
         }
 
-        (*jack)->client = jack_client_open(GEONKICK_API_NAME, JackNoStartServer, NULL);
+        (*jack)->client = jack_client_open(GEONKICK_API_NAME,
+                                           JackNoStartServer,
+                                           NULL);
         if ((*jack)->client == NULL) {
                 gkick_log_error("can't create jack client");
                 gkick_jack_free(jack);
@@ -266,7 +271,8 @@ gkick_jack_is_midi_in_enabled(struct gkick_jack *jack)
         return enabled;
 }
 
-void gkick_jack_free(struct gkick_jack **jack)
+void
+gkick_jack_free(struct gkick_jack **jack)
 {
         if (jack != NULL && *jack != NULL) {
                 if ((*jack)->client != NULL) {
@@ -285,13 +291,15 @@ void gkick_jack_free(struct gkick_jack **jack)
         }
 }
 
-void gkick_jack_lock(struct gkick_jack *jack)
+void
+gkick_jack_lock(struct gkick_jack *jack)
 {
         if (jack != NULL)
                 pthread_mutex_lock(&jack->lock);
 }
 
-void gkick_jack_unlock(struct gkick_jack *jack)
+void
+gkick_jack_unlock(struct gkick_jack *jack)
 {
         if (jack != NULL)
                 pthread_mutex_unlock(&jack->lock);

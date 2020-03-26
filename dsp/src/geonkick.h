@@ -2,7 +2,7 @@
  * File name: geonkick.h
  * Project: GeonKick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of GeonKick.
  *
@@ -53,7 +53,7 @@ typedef float gkick_real;
 
 #define GEONKICK_UNUSED(expr) (void)expr
 
-#define GEONKICK_API_VERSION 0x010902
+#define GEONKICK_API_VERSION 0x011000
 #define GEONKICK_API_NAME "Geonkick"
 
 enum geonkick_error {
@@ -110,7 +110,7 @@ enum geonkick_channel_type {
 
 /**
  * Maximum number of percussions the Geonkick instance
- *  can generate and play.
+ * can generate and play.
  */
 #define GEONKICK_MAX_PERCUSSIONS 16
 
@@ -123,22 +123,29 @@ void
 geonkick_free(struct geonkick **kick);
 
 enum geonkick_error
-geonkick_add_oscillator(struct geonkick* kick, size_t *index);
+geonkick_add_oscillator(struct geonkick* kick,
+                        size_t *index);
 
 enum geonkick_error
-geonkick_remove_oscillator(struct geonkick* kick, size_t index);
+geonkick_remove_oscillator(struct geonkick* kick,
+                           size_t index);
 
 enum geonkick_error
-geonkick_enable_oscillator(struct geonkick* kick, size_t index);
+geonkick_enable_oscillator(struct geonkick* kick,
+                           size_t index);
 
 enum geonkick_error
-geonkick_disable_oscillator(struct geonkick* kick, size_t index);
+geonkick_disable_oscillator(struct geonkick* kick,
+                            size_t index);
 
 enum geonkick_error
-geonkick_is_oscillator_enabled(struct geonkick* kick, size_t index, int *enabled);
+geonkick_is_oscillator_enabled(struct geonkick* kick,
+                               size_t index,
+                               int *enabled);
 
 enum geonkick_error
-geonkick_get_oscillators_number(struct geonkick* kick, size_t *number);
+geonkick_get_oscillators_number(struct geonkick* kick,
+                                size_t *number);
 
 enum geonkick_error
 geonkick_osc_envelope_get_points(struct geonkick *kick,
@@ -175,10 +182,14 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 				   gkick_real y);
 
 enum geonkick_error
-geonkick_osc_set_fm(struct geonkick *kick, size_t index, bool is_fm);
+geonkick_osc_set_fm(struct geonkick *kick,
+                    size_t index,
+                    bool is_fm);
 
 enum geonkick_error
-geonkick_osc_is_fm(struct geonkick *kick, size_t index, bool *is_fm);
+geonkick_osc_is_fm(struct geonkick *kick,
+                   size_t index,
+                   bool *is_fm);
 
 enum geonkick_error
 geonkick_set_osc_function(struct geonkick *kick,
@@ -201,43 +212,56 @@ geonkick_get_osc_phase(struct geonkick *kick,
                        gkick_real *phase);
 
 enum geonkick_error
-geonkick_set_length(struct geonkick *kick, gkick_real len);
+geonkick_set_length(struct geonkick *kick,
+                    gkick_real len);
 
 enum geonkick_error
-geonkick_get_length(struct geonkick *kick, gkick_real *len);
+geonkick_get_length(struct geonkick *kick,
+                    gkick_real *len);
 
 enum geonkick_error
-geonkick_get_max_length(struct geonkick *kick, gkick_real *len);
+geonkick_get_max_length(struct geonkick *kick,
+                        gkick_real *len);
 
 enum geonkick_error
-geonkick_kick_set_amplitude(struct geonkick *kick, gkick_real amplitude);
+geonkick_kick_set_amplitude(struct geonkick *kick,
+                            gkick_real amplitude);
 
 enum geonkick_error
-geonkick_kick_get_amplitude(struct geonkick *kick, gkick_real *amplitude);
+geonkick_kick_get_amplitude(struct geonkick *kick,
+                            gkick_real *amplitude);
 
 enum geonkick_error
-geonkick_kick_filter_enable(struct geonkick *kick, int enable);
+geonkick_kick_filter_enable(struct geonkick *kick,
+                            int enable);
 
 enum geonkick_error
-geonkick_kick_filter_is_enabled(struct geonkick *kick, int *enabled);
+geonkick_kick_filter_is_enabled(struct geonkick *kick,
+                                int *enabled);
 
 enum geonkick_error
-geonkick_kick_set_filter_frequency(struct geonkick *kick, gkick_real frequency);
+geonkick_kick_set_filter_frequency(struct geonkick *kick,
+                                   gkick_real frequency);
 
 enum geonkick_error
-geonkick_kick_get_filter_frequency(struct geonkick *kick, gkick_real *frequency);
+geonkick_kick_get_filter_frequency(struct geonkick *kick,
+                                   gkick_real *frequency);
 
 enum geonkick_error
-geonkick_kick_set_filter_factor(struct geonkick *kick, gkick_real factor);
+geonkick_kick_set_filter_factor(struct geonkick *kick,
+                                gkick_real factor);
 
 enum geonkick_error
-geonkick_kick_get_filter_factor(struct geonkick *kick, gkick_real *factor);
+geonkick_kick_get_filter_factor(struct geonkick *kick,
+                                gkick_real *factor);
 
 enum geonkick_error
-geonkick_set_kick_filter_type(struct geonkick *kick, enum gkick_filter_type type);
+geonkick_set_kick_filter_type(struct geonkick *kick,
+                              enum gkick_filter_type type);
 
 enum geonkick_error
-geonkick_get_kick_filter_type(struct geonkick *kick, enum gkick_filter_type *type);
+geonkick_get_kick_filter_type(struct geonkick *kick,
+                              enum gkick_filter_type *type);
 
 enum geonkick_error
 geonkick_kick_envelope_get_points(struct geonkick *kick,
@@ -289,7 +313,10 @@ geonkick_get_osc_frequency(struct geonkick *kick,
 enum geonkick_error
 geonkick_play(struct geonkick *kick);
 
-/* This function must be called only from the audio thread. */
+/**
+ * This function must be called
+ * only from the audio thread.
+ */
 enum geonkick_error
 geonkick_key_pressed(struct geonkick *kick,
                      bool pressed,
@@ -297,26 +324,35 @@ geonkick_key_pressed(struct geonkick *kick,
                      int velocity);
 
 enum geonkick_error
-geonkick_get_kick_buffer_size(struct geonkick *kick, size_t *size);
+geonkick_get_kick_buffer_size(struct geonkick *kick,
+                              size_t *size);
 
 enum geonkick_error
-geonkick_get_kick_buffer(struct geonkick *kick, gkick_real *buffer, size_t size);
+geonkick_get_kick_buffer(struct geonkick *kick,
+                         gkick_real *buffer,
+                         size_t size);
 
 enum geonkick_error
 geonkick_set_kick_buffer_callback(struct geonkick *kick,
-                                  void (*callback)(void*, gkick_real *buff, size_t size, size_t id),
+                                  void (*callback)(void*,
+                                                   gkick_real *buff,
+                                                   size_t size,
+                                                   size_t id),
                                   void *arg);
 
 enum geonkick_error
 geonkick_set_kick_limiter_callback(struct geonkick *kick,
-                                   void (*callback)(void*, gkick_real val),
+                                   void (*callback)(void*,
+                                                    gkick_real val),
                                    void *arg);
 
 enum geonkick_error
-geonkick_set_limiter_value(struct geonkick *kick, gkick_real limit);
+geonkick_set_limiter_value(struct geonkick *kick,
+                           gkick_real limit);
 
 enum geonkick_error
-geonkick_get_limiter_value(struct geonkick *kick, gkick_real *limit);
+geonkick_get_limiter_value(struct geonkick *kick,
+                           gkick_real *limit);
 
 enum geonkick_error
 geonkick_set_osc_filter_type(struct geonkick *kick,
@@ -357,99 +393,138 @@ geonkick_osc_filter_is_enabled(struct geonkick *kick,
                                int *enable);
 
 enum geonkick_error
-geonkick_get_sample_rate(struct geonkick *kick, int *sample_rate);
+geonkick_get_sample_rate(struct geonkick *kick,
+                         int *sample_rate);
 
 enum geonkick_error
-geonkick_enable_synthesis(struct geonkick *kick, bool enable);
+geonkick_enable_synthesis(struct geonkick *kick,
+                          bool enable);
 
 enum geonkick_error
-geonkick_get_audio_frame(struct geonkick *kick, int channel, gkick_real *val);
+geonkick_get_audio_frame(struct geonkick *kick,
+                         int channel,
+                         gkick_real *val);
 
 enum geonkick_error
-geonkick_compressor_enable(struct geonkick *kick, int enable);
+geonkick_compressor_enable(struct geonkick *kick,
+                           int enable);
 
 enum geonkick_error
-geonkick_compressor_is_enabled(struct geonkick *kick, int *enabled);
+geonkick_compressor_is_enabled(struct geonkick *kick,
+                               int *enabled);
 
 enum geonkick_error
-geonkick_compressor_set_attack(struct geonkick *kick, gkick_real attack);
+geonkick_compressor_set_attack(struct geonkick *kick,
+                               gkick_real attack);
 
 enum geonkick_error
-geonkick_compressor_get_attack(struct geonkick *kick, gkick_real *attack);
+geonkick_compressor_get_attack(struct geonkick *kick,
+                               gkick_real *attack);
 
 enum geonkick_error
-geonkick_compressor_set_release(struct geonkick *kick, gkick_real release);
+geonkick_compressor_set_release(struct geonkick *kick,
+                                gkick_real release);
 
 enum geonkick_error
-geonkick_compressor_get_release(struct geonkick *kick, gkick_real *release);
+geonkick_compressor_get_release(struct geonkick *kick,
+                                gkick_real *release);
 
 enum geonkick_error
-geonkick_compressor_set_threshold(struct geonkick *kick, gkick_real threshold);
+geonkick_compressor_set_threshold(struct geonkick *kick,
+                                  gkick_real threshold);
 
 enum geonkick_error
-geonkick_compressor_get_threshold(struct geonkick *kick, gkick_real *threshold);
+geonkick_compressor_get_threshold(struct geonkick *kick,
+                                  gkick_real *threshold);
 
 enum geonkick_error
-geonkick_compressor_set_ratio(struct geonkick *kick, gkick_real ratio);
+geonkick_compressor_set_ratio(struct geonkick *kick,
+                              gkick_real ratio);
 
 enum geonkick_error
-geonkick_compressor_get_ratio(struct geonkick *kick, gkick_real *ratio);
+geonkick_compressor_get_ratio(struct geonkick *kick,
+                              gkick_real *ratio);
 
 enum geonkick_error
-geonkick_compressor_set_knee(struct geonkick *kick, gkick_real knee);
+geonkick_compressor_set_knee(struct geonkick *kick,
+                             gkick_real knee);
 
 enum geonkick_error
-geonkick_compressor_get_knee(struct geonkick *kick, gkick_real *knee);
+geonkick_compressor_get_knee(struct geonkick *kick,
+                             gkick_real *knee);
 
 enum geonkick_error
-geonkick_compressor_set_makeup(struct geonkick *kick, gkick_real makeup);
+geonkick_compressor_set_makeup(struct geonkick *kick,
+                               gkick_real makeup);
 
 enum geonkick_error
-geonkick_compressor_get_makeup(struct geonkick *kick, gkick_real *makeup);
+geonkick_compressor_get_makeup(struct geonkick *kick,
+                               gkick_real *makeup);
 
 enum geonkick_error
-geonkick_distortion_enable(struct geonkick *kick, int enable);
+geonkick_distortion_enable(struct geonkick *kick,
+                           int enable);
 
 enum geonkick_error
-geonkick_distortion_is_enabled(struct geonkick *kick, int *enabled);
+geonkick_distortion_is_enabled(struct geonkick *kick,
+                               int *enabled);
 
 enum geonkick_error
-geonkick_distortion_set_in_limiter(struct geonkick *kick, gkick_real limit);
+geonkick_distortion_set_in_limiter(struct geonkick *kick,
+                                   gkick_real limit);
 
 enum geonkick_error
-geonkick_distortion_get_in_limiter(struct geonkick *kick, gkick_real *limit);
+geonkick_distortion_get_in_limiter(struct geonkick *kick,
+                                   gkick_real *limit);
 
 enum geonkick_error
-geonkick_distortion_set_volume(struct geonkick *kick, gkick_real volume);
+geonkick_distortion_set_volume(struct geonkick *kick,
+                               gkick_real volume);
 
 enum geonkick_error
-geonkick_distortion_get_volume(struct geonkick *kick, gkick_real *volume);
+geonkick_distortion_get_volume(struct geonkick *kick,
+                               gkick_real *volume);
 
 enum geonkick_error
-geonkick_distortion_set_drive(struct geonkick *kick, gkick_real drive);
+geonkick_distortion_set_drive(struct geonkick *kick,
+                              gkick_real drive);
 
 enum geonkick_error
-geonkick_distortion_get_drive(struct geonkick *kick, gkick_real *drive);
+geonkick_distortion_get_drive(struct geonkick *kick,
+                              gkick_real *drive);
 
-int geonkick_is_module_enabed(struct geonkick *kick, enum GEONKICK_MODULE module);
-
-enum geonkick_error
-geonkick_enable_group(struct geonkick *kick, size_t index, bool enable);
-
-enum geonkick_error
-geonkick_group_enabled(struct geonkick *kick, size_t index, bool *enabled);
+int geonkick_is_module_enabed(struct geonkick *kick,
+                              enum GEONKICK_MODULE module);
 
 enum geonkick_error
-geonkick_group_set_amplitude(struct geonkick *kick, size_t index, gkick_real amplitude);
+geonkick_enable_group(struct geonkick *kick,
+                      size_t index,
+                      bool enable);
 
 enum geonkick_error
-geonkick_group_get_amplitude(struct geonkick *kick, size_t index, gkick_real *amplitude);
+geonkick_group_enabled(struct geonkick *kick,
+                       size_t index,
+                       bool *enabled);
 
 enum geonkick_error
-geonkick_tune_audio_output(struct geonkick *kick, size_t index, bool tune);
+geonkick_group_set_amplitude(struct geonkick *kick,
+                             size_t index,
+                             gkick_real amplitude);
 
 enum geonkick_error
-geonkick_is_audio_output_tuned(struct geonkick *kick, size_t index, bool *tune);
+geonkick_group_get_amplitude(struct geonkick *kick,
+                             size_t index,
+                             gkick_real *amplitude);
+
+enum geonkick_error
+geonkick_tune_audio_output(struct geonkick *kick,
+                           size_t index,
+                           bool tune);
+
+enum geonkick_error
+geonkick_is_audio_output_tuned(struct geonkick *kick,
+                               size_t index,
+                               bool *tune);
 
 enum geonkick_error
 geonkick_set_osc_sample(struct geonkick *kick,
@@ -464,13 +539,16 @@ geonkick_get_osc_sample(struct geonkick *kick,
                         size_t *size);
 
 enum geonkick_error
-geonkick_set_current_percussion(struct geonkick *kick, size_t index);
+geonkick_set_current_percussion(struct geonkick *kick,
+                                size_t index);
 
 enum geonkick_error
-geonkick_get_current_percussion(struct geonkick *kick, size_t *index);
+geonkick_get_current_percussion(struct geonkick *kick,
+                                size_t *index);
 
 enum geonkick_error
-geonkick_unused_percussion(struct geonkick *kick, int *index);
+geonkick_unused_percussion(struct geonkick *kick,
+                           int *index);
 
 enum geonkick_error
 geonkick_enable_percussion(struct geonkick *kick,
@@ -482,13 +560,18 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
                                size_t index,
                                bool *enable);
 
-size_t geonkick_percussion_number(struct geonkick *kick);
+size_t
+geonkick_percussion_number(struct geonkick *kick);
 
 enum geonkick_error
-geonkick_set_playing_key(struct geonkick *kick, size_t id, char key);
+geonkick_set_playing_key(struct geonkick *kick,
+                         size_t id,
+                         char key);
 
 enum geonkick_error
-geonkick_get_playing_key(struct geonkick *kick, size_t id, char *key);
+geonkick_get_playing_key(struct geonkick *kick,
+                         size_t id,
+                         char *key);
 
 enum geonkick_error
 geonkick_set_percussion_name(struct geonkick *kick,
@@ -503,13 +586,18 @@ geonkick_get_percussion_name(struct geonkick *kick,
                              size_t size);
 
 enum geonkick_error
-geonkick_channels_number(struct geonkick *kick, size_t *n);
+geonkick_channels_number(struct geonkick *kick,
+                         size_t *n);
 
 enum geonkick_error
-geonkick_set_percussion_channel(struct geonkick *kick, size_t id, size_t channel);
+geonkick_set_percussion_channel(struct geonkick *kick,
+                                size_t id,
+                                size_t channel);
 
 enum geonkick_error
-geonkick_get_percussion_channel(struct geonkick *kick, size_t id, size_t *channel);
+geonkick_get_percussion_channel(struct geonkick *kick,
+                                size_t id,
+                                size_t *channel);
 
 #ifdef __cplusplus
 }
