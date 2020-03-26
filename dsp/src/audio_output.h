@@ -91,6 +91,9 @@ struct gkick_audio_output
         /* Output channel. */
       	atomic_size_t channel;
 
+        /* Output audio limiter value. */
+        atomic_int limiter;
+
         pthread_mutex_t lock;
 };
 

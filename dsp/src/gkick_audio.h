@@ -42,10 +42,14 @@ gkick_audio_create(struct gkick_audio** audio);
 void gkick_audio_free(struct gkick_audio** audio);
 
 enum geonkick_error
-gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit);
+gkick_audio_set_limiter_val(struct gkick_audio *audio,
+                            size_t index,
+                            gkick_real limit);
 
 enum geonkick_error
-gkick_audio_get_limiter_val(struct gkick_audio *adio, gkick_real *limit);
+gkick_audio_get_limiter_val(struct gkick_audio *audio,
+                            size_t index,
+                            gkick_real *limit);
 
 struct gkick_buffer*
 gkick_audio_get_buffer(struct gkick_audio *audio);

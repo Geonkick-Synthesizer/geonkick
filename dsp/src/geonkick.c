@@ -711,25 +711,21 @@ geonkick_set_kick_limiter_callback(struct geonkick *kick,
 enum geonkick_error
 geonkick_set_limiter_value(struct geonkick *kick, gkick_real limit)
 {
-        enum geonkick_error res;
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        res = gkick_audio_set_limiter_val(kick->audio, limit);
-        return res;
+        return gkick_audio_set_limiter_val(kick->audio, kick->per_index, limit);
 }
 
 enum geonkick_error
 geonkick_get_limiter_value(struct geonkick *kick, gkick_real *limit)
 {
-        enum geonkick_error res;
         if (kick == NULL) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        res = gkick_audio_get_limiter_val(kick->audio, limit);
-        return res;
+        return gkick_audio_get_limiter_val(kick->audio, kick->per_index, limit);
 }
 
 enum geonkick_error
@@ -1287,6 +1283,7 @@ geonkick_set_current_percussion(struct geonkick *kick, size_t index)
         }
 
 	kick->per_index = index;
+        kick->audio->mixer->limiter_callback_index = index;
 	return GEONKICK_OK;
 }
 

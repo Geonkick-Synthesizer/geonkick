@@ -75,18 +75,20 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
 		      gkick_real *val)
 {
         *val = 0.0f;
+        gkick_real leveler_val = 0.0f;
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 struct gkick_audio_output *out = mixer->audio_outputs[i];
                 if (out->enabled && out->channel == channel) {
                         gkick_real v = 0.0f;
                         gkick_audio_output_get_frame(out, &v);
+                        if (i == mixer->limiter_callback_index)
+                                leveler_val = v;
                         *val += v;
                 }
         }
 
-        *val *= (gkick_real)mixer->limiter / 1000000;
-        /* if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL) */
-        /*         mixer->limiter_callback(mixer->limiter_callback_arg, *val); */
+        if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL)
+                mixer->limiter_callback(mixer->limiter_callback_arg, leveler_val);
 
         return GEONKICK_OK;
 }
@@ -101,16 +103,23 @@ gkick_mixer_free(struct gkick_mixer **mixer)
 }
 
 enum geonkick_error
-gkick_mixer_limiter_set(struct gkick_mixer *mixer, gkick_real val)
+gkick_mixer_limiter_set(struct gkick_mixer *mixer,
+                        size_t index,
+                        gkick_real val)
 {
-	mixer->limiter = 1000000 * val;
+        if (index < GEONKICK_MAX_PERCUSSIONS)
+                mixer->audio_outputs[index]->limiter = 1000000 * val;
 	return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_mixer_limiter_get(struct gkick_mixer *mixer, gkick_real *val)
+gkick_mixer_limiter_get(struct gkick_mixer *mixer,
+                        size_t index,
+                        gkick_real *val)
 {
-	*val = (gkick_real)mixer->limiter / 1000000;
+        *val = 0.0f;
+        if (index < GEONKICK_MAX_PERCUSSIONS)
+                *val = (gkick_real)mixer->audio_outputs[index]->limiter / 1000000;
 	return GEONKICK_OK;
 }
 

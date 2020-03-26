@@ -161,6 +161,8 @@ gkick_audio_output_get_frame(struct gkick_audio_output *audio_output, gkick_real
                 }
         }
 
+        *val *= (gkick_real)audio_output->limiter / 1000000;
+
         return GEONKICK_OK;
 }
 
@@ -217,7 +219,6 @@ gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, char
 
 void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune)
 {
-	gkick_log_info("tune: %d", tune);
         audio_output->tune = tune;
 }
 

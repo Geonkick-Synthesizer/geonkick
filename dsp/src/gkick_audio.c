@@ -82,20 +82,19 @@ void gkick_audio_free(struct gkick_audio** audio)
 }
 
 enum geonkick_error
-gkick_audio_set_limiter_val(struct gkick_audio *audio, gkick_real limit)
+gkick_audio_set_limiter_val(struct gkick_audio *audio, size_t index, gkick_real limit)
 {
         if (limit < 0)
                 limit = 0;
         else if (limit > 10)
                 limit = 10;
-	gkick_mixer_limiter_set(audio->mixer, limit);
-        return GEONKICK_OK;
+	return gkick_mixer_limiter_set(audio->mixer, index, limit);
 }
 
 enum geonkick_error
-gkick_audio_get_limiter_val(struct gkick_audio *audio, gkick_real *limit)
+gkick_audio_get_limiter_val(struct gkick_audio *audio, size_t index, gkick_real *limit)
 {
-	return gkick_mixer_limiter_get(audio->mixer, limit);
+	return gkick_mixer_limiter_get(audio->mixer, index, limit);
 }
 
 struct gkick_buffer*

@@ -32,6 +32,7 @@ struct gkick_mixer {
 	_Atomic int limiter;
         void (*limiter_callback) (void*, gkick_real val);
         void *limiter_callback_arg;
+        _Atomic size_t limiter_callback_index;
 };
 
 enum geonkick_error
@@ -56,10 +57,14 @@ void
 gkick_mixer_free(struct gkick_mixer **mixer);
 
 enum geonkick_error
-gkick_mixer_limiter_set(struct gkick_mixer *mixer, gkick_real val);
+gkick_mixer_limiter_set(struct gkick_mixer *mixer,
+                        size_t index,
+                        gkick_real val);
 
 enum geonkick_error
-gkick_mixer_limiter_get(struct gkick_mixer *mixer, gkick_real *val);
+gkick_mixer_limiter_get(struct gkick_mixer *mixer,
+                        size_t index,
+                        gkick_real *val);
 
 enum geonkick_error
 gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
