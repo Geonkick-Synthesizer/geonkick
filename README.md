@@ -4,20 +4,19 @@ Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) per
 
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
-snares, hit-hats, shakers, claps, sticks.
+snares, hit-hats, shakers, claps.
 Also, it can play samples.
 
-Author: Yuri Nistor
+Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 1.10
+Version: 1.10.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
 * on [GitLab](https://gitlab.com/geontime/geonkick/issues)
 * on [GitHub](https://github.com/geontime/geonkick/issues)
-* or just send a message to iurie@geontime.com
 
 ![Screenshot](data/screenshot.png)
 
@@ -31,13 +30,18 @@ Latest releases can be found on [tags](https://gitlab.com/geontime/geonkick/-/ta
 
 Latest stable features added are on ["master" branch](https://gitlab.com/geontime/geonkick/commits/master)
 
-The development is going on ["develop" branch](https://gitlab.com/geontime/geonkick/commits/develop)
-or feature (feat/feature_name) branches.
-
 #### Features
 
-* Percussion kit (supports up to 16 percussions that maps to midi keys)
+* Percussion kit
+   - Supports up to 16 percussions.
+   - Save / Load kit in JSON format
 * Multitibral
+   - 16 midi keys range
+   - user configurable key mapping
+* Multichannel
+   - for LV2
+   - up to 16 output audio channels
+   - user configurable mapping of kit percussions to channel
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
@@ -57,17 +61,16 @@ or feature (feat/feature_name) branches.
      - limiter
      - compression
      - distortion
+     - distortion drive envelope
 * Jack support:
      - 1 MIDI in, key velocity sensitive
-     - 2 audio out
-* Multichannel
-     - for LV2
+     - 1 audio output
 * Export
      - stereo & mono
      - WAV: 16, 24, 32 bit
      - FLAC: 16, 24 bit
      - Ogg Vorbis
-* Open & Save preset in JSON format
+* Open & Save percussion preset in JSON format
 * Standalone
 * Pitch to note
 * Plugin
@@ -77,9 +80,11 @@ or feature (feat/feature_name) branches.
 
 #### Demo & Examples
 
-Here is a [list of videos](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about how it works.
+Here is a [list of videos and tutorial](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about Geonkick.
 
-Under the directory geonkick/examples, it is gathered some example presets that can be opened and play with.
+#### Presets
+
+In the directory geonkick/presets can be found some example presets.
 
 #### Requirements
 
@@ -91,8 +96,8 @@ Standalone:
 * Jack server installed and running at 48000 sample rate
 
 Plugin:
- * GNU/Linux operating system
- * LV2 host. For example, a DAW that supports LV2 plugin format.
+ * GNU/Linux operating system.
+ * LV2 host. For example, a DAW that supports LV2 plugin format, running at 48000 sample rate.
 
 #### Install
 
@@ -116,8 +121,6 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 ###### Build & install Geonkick
 
-First build and install [Redkite](https://github.com/geontime/redkite).
-
 Clone the Geonkick code repository, compile and install
 
         git clone https://gitlab.com/geontime/geonkick.git
@@ -129,11 +132,7 @@ Clone the Geonkick code repository, compile and install
 
 #### Packaging
 
-Geonkick can be found in the following repositories:
-
-* [ArchLinux](https://www.archlinux.org/packages/community/x86_64/geonkick/) by David Runge
-* [FreeBSD](https://www.freshports.org/audio/geonkick-lv2/) by yuri@FreeBSD.org
-* [OpenSUSE](https://build.opensuse.org/package/show/home:geekositalia:daw/geonkick) by Fabio Pesari
+Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
 
 #### Short user guide
 
