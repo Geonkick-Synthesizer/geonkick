@@ -117,7 +117,7 @@ First build and install [Redkite](https://github.com/geontime/redkite).
 
 Clone the Geonkick code repository, compile and install
 
-Note: works uilds only with Redkite version 0.6.3.
+Note: works only with Redkite version 0.6.3.
 
         git clone https://gitlab.com/geontime/geonkick.git
         mkdir geonkick/build
