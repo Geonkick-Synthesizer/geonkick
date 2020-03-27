@@ -226,7 +226,7 @@ void MainWindow::openPreset(const std::string &fileName)
 
         std::string fileData((std::istreambuf_iterator<char>(file)),
                              (std::istreambuf_iterator<char>()));
-        auto state = std::make_shared<PercussionState>();
+        auto state = geonkickApi->getDefaultPercussionState();
         state->loadData(fileData);
         state->setId(geonkickApi->currentPercussion());
         geonkickApi->setPercussionState(state);
