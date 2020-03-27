@@ -2,7 +2,7 @@
  * File name: limiter.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -47,10 +47,6 @@ Limiter::Limiter(GeonkickApi *api, GeonkickWidget *parent)
         onUpdateLimiter();
         meterTimer->start();
         levelerValueTimer->start();
-}
-
-Limiter::~Limiter()
-{
 }
 
 void Limiter::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -123,9 +119,9 @@ int Limiter::toMeterValue(double val) const
         if (val < 1e-3)
                 return 0;
         double logVal = 20 * log10(val);
-        const double k = 70.0 / (1 - 0.07);
-        const double b = 20.0 - k;
-        const double c = (b / k);
+        double k = 70.0 / (1 - 0.07);
+        double b = 20.0 - k;
+        double c = (b / k);
         double x = logVal / k - c ;
         int value = 100 * x;
         return value;

@@ -2,7 +2,7 @@
  * File name: about.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -25,7 +25,7 @@
 
 #include <RkLabel.h>
 
-extern const unsigned char rk_logo_about_png[];
+RK_DECLARE_IMAGE_RC(logo_about);
 
 AboutDialog::AboutDialog(GeonkickWidget *parent)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
@@ -33,10 +33,11 @@ AboutDialog::AboutDialog(GeonkickWidget *parent)
         setFixedSize(340, 400);
         setTitle(std::string("About - ") + std::string(GEOKICK_APP_NAME));
         auto logo = new RkLabel(this);
-        logo->setImage(RkImage(300, 356, rk_logo_about_png));
+        logo->setImage(RkImage(300, 356, RK_IMAGE_RC(logo_about)));
         logo->setFixedSize(300, 356);
         logo->setBackgroundColor(background());
-        logo->setPosition((width() - logo->width()) / 2, (height() - logo->height()) / 2);
+        logo->setPosition((width() - logo->width()) / 2,
+                          (height() - logo->height()) / 2);
         logo->show();
         show();
 }

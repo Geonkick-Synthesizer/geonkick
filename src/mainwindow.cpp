@@ -2,7 +2,7 @@
  * File name: mainwindow.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -31,15 +31,15 @@
 #include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
-#include "geonkick_state.h"
+#include "percussion_state.h"
 #include "about.h"
+#include "right_bar.h"
+#include "kit_widget.h"
 
 #include <RkPlatform.h>
-
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 #include <X11/XKBlib.h>
-
 #include <RkEvent.h>
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
@@ -49,9 +49,10 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
         , envelopeWidget{nullptr}
         , presetName{preset}
 {
-        setFixedSize(940, 760);
+        setFixedSize(950, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
+	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         show();
 }
 
@@ -62,7 +63,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , envelopeWidget{nullptr}
         , presetName{std::string()}
 {
-        setFixedSize(940, 760);
+        setFixedSize(950, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -90,20 +91,26 @@ MainWindow::~MainWindow()
 bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
-        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled())
+        if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled()) {
                 GEONKICK_LOG_INFO("Jack is not installed or not running. "
                                   << "There is a need for jack server running "
                                   << "in order to have audio output.");
-
+        }
         topBar = new TopBar(this, geonkickApi);
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
-        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Open));
-        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Save));
-        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
-        RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(), this, openExportDialog());
-        RK_ACT_BIND(topBar, layerSelected, RK_ACT_ARGS(GeonkickApi::Layer layer, bool b), geonkickApi, enbaleLayer(layer, b));
+        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
+                    this, openFileDialog(FileDialog::Type::Open));
+        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
+                    this, openFileDialog(FileDialog::Type::Save));
+        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(),
+                    this, openAboutDialog());
+        RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
+                    this, openExportDialog());
+        RK_ACT_BIND(topBar, layerSelected,
+                    RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
+                    geonkickApi, enbaleLayer(layer, b));
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
@@ -114,35 +121,65 @@ bool MainWindow::init(void)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
         auto limiterWidget = new Limiter(geonkickApi, this);
-        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8, envelopeWidget->y());
+        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8,
+                                   envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
+
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         controlAreaWidget->show();
+        auto rightBar = new RightBar(this);
+        rightBar->setPosition(width() - rightBar->width(), 0);
+        rightBar->show();
 
-        // TODO: Key shortcut feature will be implemented in the next version of Redkite.
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
+        RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
+        RK_ACT_BIND(rightBar, showKit, RK_ACT_ARGS(), controlAreaWidget, showKit());
+        RK_ACT_BIND(controlAreaWidget->getKitWidget(),
+                    currnetPercussionChanged,
+                    RK_ACT_ARGS(int id),
+                    topBar,
+                    setPresetName(geonkickApi->getPercussionName(id)));
+
+
+
+        // TODO: Key shortcut feature will be implemented in the next versions of Redkite.
         auto info = nativeWindowInfo();
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_o), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_O), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_h), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_H), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_k), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_K), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_a), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_A), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_e), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_E), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_r), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_R), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_s), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_o),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_O),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_h),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_H),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_k),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_K),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_a),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_A),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_e),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_E),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_r),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_R),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_s),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
         XFlush(info->display);
 
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
         updateGui();
+        topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
         return true;
 }
 
@@ -153,34 +190,21 @@ void MainWindow::openExportDialog()
 
 void MainWindow::savePreset(const std::string &fileName)
 {
-        if (fileName.size() < 6) {
-                RK_LOG_ERROR("Save Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
-                return;
+        auto state = geonkickApi->getPercussionState();
+        if (state->save(fileName)) {
+                std::filesystem::path filePath(fileName);
+                topBar->setPresetName(filePath.stem());
+                geonkickApi->setCurrentWorkingPath("SavePreset",
+                                                   filePath.has_parent_path() ? filePath.parent_path() : filePath);
         }
-
-        std::filesystem::path filePath(fileName);
-        std::locale loc;
-        if (filePath.extension().empty()
-            || (filePath.extension() != ".gkick"
-            && filePath.extension() != ".GKICK"))
-                filePath.replace_extension(".gkick");
-
-        std::ofstream file;
-        file.open(std::filesystem::absolute(filePath));
-        if (!file.is_open()) {
-                RK_LOG_ERROR("Error | Save Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't save preset");
-                return;
-        }
-        file << geonkickApi->getState()->toJson();
-        file.close();
-        topBar->setPresetName(filePath.stem());
-        geonkickApi->setCurrentWorkingPath("SavePreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
 }
 
 void MainWindow::openPreset(const std::string &fileName)
 {
-        if (fileName.size() < 6) {
-                RK_LOG_ERROR("Open Preset: " << "Can't save preset. File name empty or wrong format. Format example: 'mykick.gkick'");
+        if (fileName.size() < 7) {
+                RK_LOG_ERROR("Open Preset: "
+                             << "Can't open preset. File name "
+                             << "empty or wrong format. Format example: 'mykick.gkick'");
                 return;
         }
 
@@ -195,17 +219,22 @@ void MainWindow::openPreset(const std::string &fileName)
         std::ifstream file;
         file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
-                RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't open preset.");
+                RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME)
+                             << ". Can't open preset.");
                 return;
         }
 
-        std::string fileData((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
-        auto state = std::make_shared<GeonkickState>();
+        std::string fileData((std::istreambuf_iterator<char>(file)),
+                             (std::istreambuf_iterator<char>()));
+        auto state = geonkickApi->getDefaultPercussionState();
         state->loadData(fileData);
-        geonkickApi->setState(state);
+        state->setId(geonkickApi->currentPercussion());
+        geonkickApi->setPercussionState(state);
+        controlAreaWidget->getKitWidget()->update();
         topBar->setPresetName(filePath.stem());
         file.close();
-        geonkickApi->setCurrentWorkingPath("OpenPreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
+        geonkickApi->setCurrentWorkingPath("OpenPreset",
+                                           filePath.has_parent_path() ? filePath.parent_path() : filePath);
         updateGui();
 }
 
@@ -215,10 +244,18 @@ void MainWindow::openFileDialog(FileDialog::Type type)
         fileDialog->setFilters({".gkick", ".GKICK"});
         if (type == FileDialog::Type::Open) {
                 fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset"));
-                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, openPreset(file));
+                RK_ACT_BIND(fileDialog,
+                            selectedFile,
+                            RK_ACT_ARGS(const std::string &file),
+                            this,
+                            openPreset(file));
         } else {
                 fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset"));
-                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, savePreset(file));
+                RK_ACT_BIND(fileDialog,
+                            selectedFile,
+                            RK_ACT_ARGS(const std::string &file),
+                            this,
+                            savePreset(file));
         }
 }
 
@@ -233,7 +270,7 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
-                geonkickApi->setState(geonkickApi->getDefaultState());
+                geonkickApi->setPercussionState(geonkickApi->getDefaultPercussionState());
                 topBar->setPresetName("");
                 updateGui();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)

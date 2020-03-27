@@ -2,7 +2,7 @@
  * File name: factory_vst.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
+ * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -35,9 +35,9 @@
 #else
 #define gkickFileDescription	gkickPluginName" Geonkick"
 #endif
-#define gkickCompanyName		"Quamplex"
-#define gkickCompanyWeb		"http://quamplex.com"
-#define gkickCompanyEmail		"mailto:iurie.nistor@quamplex.com"
+#define gkickCompanyName	"Geontime"
+#define gkickCompanyWeb		"http://goentime.com"
+#define gkickCompanyEmail	"mailto:iurie@geontime.com"
 #define gkickLegalCopyright	"Copyright (C) 2019 Iurie Nistor"
 #define gkickLegalTrademarks	"Licence GPLv3"
 

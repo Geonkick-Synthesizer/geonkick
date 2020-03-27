@@ -2,7 +2,7 @@
  * File name: compressor_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -28,13 +28,12 @@
 
 #include <RkLabel.h>
 
-extern const unsigned char rk_compressor_groupbox_label_png[];
-extern const unsigned char rk_checkbox_checked_10x10_png[];
-extern const unsigned char rk_checkbox_unchecked_10x10_png[];
-extern const unsigned char rk_compressor_attack_label_png[];
-extern const unsigned char rk_compressor_threshold_label_png[];
-extern const unsigned char rk_compressor_ratio_label_png[];
-extern const unsigned char rk_compressor_makeup_label_png[];
+RK_DECLARE_IMAGE_RC(compressor_enable);
+RK_DECLARE_IMAGE_RC(compressor_enable_active);
+RK_DECLARE_IMAGE_RC(compressor_attack_label);
+RK_DECLARE_IMAGE_RC(compressor_threshold_label);
+RK_DECLARE_IMAGE_RC(compressor_ratio_label);
+RK_DECLARE_IMAGE_RC(compressor_makeup_label);
 
 CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent)
@@ -49,16 +48,10 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         compressorCheckbox = new GeonkickButton(this);
         RK_ACT_BIND(compressorCheckbox,  toggled, RK_ACT_ARGS(bool b), geonkickApi, enableCompressor(b));
         compressorCheckbox->setCheckable(true);
-        compressorCheckbox->setPressedImage(RkImage(10, 10, rk_checkbox_checked_10x10_png));
-        compressorCheckbox->setUnpressedImage(RkImage(10, 10, rk_checkbox_unchecked_10x10_png));
-        compressorCheckbox->setFixedSize(10, 10);
-        auto label = new RkLabel(this);
-        label->show();
-        label->setBackgroundColor(background());
-        label->setFixedSize(65, 11);
-        label->setImage(RkImage(65, 11, rk_compressor_groupbox_label_png));
-        label->setPosition((width() - label->width()) / 2, 0);
-        compressorCheckbox->setPosition(label->x() - 14, 0);
+	compressorCheckbox->setFixedSize(77, 12);
+        compressorCheckbox->setPressedImage(RkImage(compressorCheckbox->size(), RK_IMAGE_RC(compressor_enable_active)));
+        compressorCheckbox->setUnpressedImage(RkImage(compressorCheckbox->size(), RK_IMAGE_RC(compressor_enable)));
+	compressorCheckbox->setPosition((width() - compressorCheckbox->width()) / 2, 0);
 
         int sliderW = 60;
         int sliderH = 12;
@@ -72,7 +65,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(attackSlider, valueUpdated, RK_ACT_ARGS(int val), this, setAttack(val));
         auto attackLabel = new RkLabel(this);
         attackLabel->show();
-        attackLabel->setImage(RkImage(33, 8, rk_compressor_attack_label_png));
+        attackLabel->setImage(RkImage(33, 8, RK_IMAGE_RC(compressor_attack_label)));
         attackLabel->setFixedSize(33, 8);
         attackLabel->setPosition(attackSlider->x() - attackLabel->width() - labelD, attackSlider->y());
 
@@ -82,7 +75,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(thresholdSlider, valueUpdated, RK_ACT_ARGS(int value), this, setThreshold(value));
         auto thresholdLabel = new RkLabel(this);
         thresholdLabel->show();
-        thresholdLabel->setImage(RkImage(45, 8, rk_compressor_threshold_label_png));
+        thresholdLabel->setImage(RkImage(45, 8, RK_IMAGE_RC(compressor_threshold_label)));
         thresholdLabel->setFixedSize(45, 8);
         thresholdLabel->setPosition(thresholdSlider->x() - thresholdLabel->width() - labelD, thresholdSlider->y());
 
@@ -92,7 +85,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(ratioSlider, valueUpdated, RK_ACT_ARGS(int value), this, setRatio(value));
         auto ratioLabel = new RkLabel(this);
         ratioLabel->show();
-        ratioLabel->setImage(RkImage(24, 8, rk_compressor_ratio_label_png));
+        ratioLabel->setImage(RkImage(24, 8, RK_IMAGE_RC(compressor_ratio_label)));
         ratioLabel->setFixedSize(24, 8);
         ratioLabel->setPosition(ratioSlider->x() - ratioLabel->width() - labelD, ratioSlider->y());
 
@@ -102,7 +95,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(makeupSlider, valueUpdated, RK_ACT_ARGS(int value), this, setMakeup(value));
         auto makeupLabel = new RkLabel(this);
         makeupLabel->show();
-        makeupLabel->setImage(RkImage(40, 10, rk_compressor_makeup_label_png));
+        makeupLabel->setImage(RkImage(40, 10, RK_IMAGE_RC(compressor_makeup_label)));
         makeupLabel->setFixedSize(40, 10);
         makeupLabel->setPosition(makeupSlider->x() - makeupLabel->width() - labelD, makeupSlider->y());
         show();

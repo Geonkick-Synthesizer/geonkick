@@ -2,7 +2,7 @@
  * File name: layers_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -28,7 +28,7 @@
 
 #include <RkLabel.h>
 
-extern const unsigned char rk_layers_mixer_png[];
+RK_DECLARE_IMAGE_RC(layers_mixer);
 
 LayersGroupBox::LayersGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent)
@@ -45,7 +45,11 @@ LayersGroupBox::LayersGroupBox(GeonkickApi *api, GeonkickWidget *parent)
                 layerSliders[i]->setPosition(18, y);
                 y += layerSliders[i]->height() + 6;
                 layerSliders[i]->show();
-                RK_ACT_BIND(layerSliders[i], valueUpdated, RK_ACT_ARGS(int val), this, setLayerAmplitude(i, val));
+                RK_ACT_BIND(layerSliders[i],
+                            valueUpdated,
+                            RK_ACT_ARGS(int val),
+                            this,
+                            setLayerAmplitude(i, val));
         }
         show();
 }

@@ -2,7 +2,7 @@
  * File name: geonkick_slider.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -35,10 +35,6 @@ GeonkickSlider::GeonkickSlider(GeonkickWidget *parent, Orientation orientation)
 {
         setBackgroundColor(100, 100, 100);
         show();
-}
-
-GeonkickSlider::~GeonkickSlider()
-{
 }
 
 void GeonkickSlider::paintWidget(const std::shared_ptr<RkPaintEvent> &event)

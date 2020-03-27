@@ -6,6 +6,8 @@ checkbox_checked_10x10.png
 checkbox_checked.png
 checkbox_unchecked_10x10.png
 checkbox_unchecked.png
+compressor_enable.png
+compressor_enable_active.png
 compressor_attack_label.png
 compressor_goupbox_bk.png
 compressor_groupbox_label.png
@@ -14,6 +16,8 @@ compressor_makeup_label.png
 compressor_ratio_label.png
 compressor_release_label.png
 compressor_threshold_label.png
+distortion_enable.png
+distortion_enable_active.png
 distortion_drive_label.png
 distortion_goupbox_label.png
 distortion_groupbox_bk.png
@@ -87,6 +91,8 @@ show_freq_env_active.png
 show_freq_env.png
 show_filter_env.png
 show_filter_env_active.png
+show_dist_drive_env.png
+show_dist_drive_env_active.png
 show_general_envelopes_button_active.png
 show_general_envelopes_button.png
 show_noise_envelopes_button_active.png
@@ -108,6 +114,7 @@ wave_button_triangle.png
 wave_button_sample.png
 wave_button_sample_active.png
 button_browse_sample.png
+play.png
 phase_label.png
 topbar_layer1.png
 topbar_layer2.png
@@ -124,4 +131,11 @@ layer3_disabled.png
 wf_bk_hbox.png
 layers_mixer.png
 tune_checkbox_on.png
-tune_checkbox_off.png)
+tune_checkbox_off.png
+controls_button.png
+kit_button.png
+add_per_button.png
+remove_per_button.png
+copy_per_button.png
+open_kit_button.png
+save_kit_button.png)

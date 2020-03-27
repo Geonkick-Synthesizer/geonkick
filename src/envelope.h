@@ -2,7 +2,7 @@
  * File name: envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -50,7 +50,7 @@ class Envelope
         };
 
         Envelope(const RkRect &area = RkRect());
-        virtual ~Envelope();
+        virtual ~Envelope() = default;
         int W(void) const;
         int H(void) const;
         virtual double envelopeLengh(void) const { return 0;}
@@ -69,7 +69,6 @@ class Envelope
         Type type() const;
         bool isSupportedType(Type type) const;
         const RkRect& getDrawingArea();
-
         virtual void setEnvelopeLengh(double len) { RK_UNUSED(len); }
         void setCategory(Category cat);
         void setType(Type type);
@@ -79,10 +78,18 @@ class Envelope
         void removePoints();
         void setDrawingArea(const RkRect &rect);
         virtual void updatePoints() {};
-
-         RK_DECL_ACT(envelopeLengthUpdated, envelopeLengthUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
-         RK_DECL_ACT(amplitudeUpdated, amplitudeUpdated(double val), RK_ARG_TYPE(double), RK_ARG_VAL(val));
-         RK_DECL_ACT(envelopeUpdated, envelopeUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
+         RK_DECL_ACT(envelopeLengthUpdated,
+                     envelopeLengthUpdated(double val),
+                     RK_ARG_TYPE(double),
+                     RK_ARG_VAL(val));
+         RK_DECL_ACT(amplitudeUpdated,
+                     amplitudeUpdated(double val),
+                     RK_ARG_TYPE(double),
+                     RK_ARG_VAL(val));
+         RK_DECL_ACT(envelopeUpdated,
+                     envelopeUpdated(),
+                     RK_ARG_TYPE(),
+                     RK_ARG_VAL());
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;

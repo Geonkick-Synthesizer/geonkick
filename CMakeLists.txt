@@ -1,8 +1,9 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 1.9.2)
+project(geonkick VERSION 1.10.0)
 
-# NOTE:  vst/Windows is not implemented yet.
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+include(FindRedkite)
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -12,7 +13,7 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type Release" FORCE)
 endif()
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS} -fvisibility=hidden")
 
@@ -20,7 +21,7 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
 endif()
 
-set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/api)
+set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dsp)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
@@ -51,7 +52,10 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/filter.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
+  ${GKICK_COMMON_DIR}/right_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
+  ${GKICK_COMMON_DIR}/controls_widget.h
+  ${GKICK_COMMON_DIR}/kit_widget.h
   ${GKICK_COMMON_DIR}/envelope_draw_area.h
   ${GKICK_COMMON_DIR}/limiter.h
   ${GKICK_COMMON_DIR}/general_envelope.h
@@ -66,7 +70,8 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/knob.h
   ${GKICK_COMMON_DIR}/oscillator.h
   ${GKICK_COMMON_DIR}/geonkick_api.h
-  ${GKICK_COMMON_DIR}/geonkick_state.h
+  ${GKICK_COMMON_DIR}/percussion_state.h
+  ${GKICK_COMMON_DIR}/kit_state.h
   ${GKICK_COMMON_DIR}/oscillator_envelope.h
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
   ${GKICK_COMMON_DIR}/about.h
@@ -82,7 +87,10 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/filter.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
+  ${GKICK_COMMON_DIR}/right_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
+  ${GKICK_COMMON_DIR}/controls_widget.cpp
+  ${GKICK_COMMON_DIR}/kit_widget.cpp
   ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
   ${GKICK_COMMON_DIR}/limiter.cpp
   ${GKICK_COMMON_DIR}/general_envelope.cpp
@@ -97,7 +105,8 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/knob.cpp
   ${GKICK_COMMON_DIR}/oscillator.cpp
   ${GKICK_COMMON_DIR}/geonkick_api.cpp
-  ${GKICK_COMMON_DIR}/geonkick_state.cpp
+  ${GKICK_COMMON_DIR}/percussion_state.cpp
+  ${GKICK_COMMON_DIR}/kit_state.cpp
   ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
   ${GKICK_COMMON_DIR}/export_widget.cpp
@@ -107,15 +116,6 @@ set(GKICK_COMMON_SOURCES
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
     option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
-endif()
-
-# Enables the double precision calculation for API.
-# By default is single point precision.
-option(ENABLE_DOUBLE_PRECISION "Enable double precision for API" OFF)
-
-if (ENABLE_DOUBLE_PRECISION)
-  list(APPEND GKICK_API_FLAGS "-DGEONKICK_DOUBLE_PRECISION")
-  list(APPEND GKICK_API_FLAGS_LV2 "-DGEONKICK_DOUBLE_PRECISION")
 endif()
 
 if (ENABLE_LOGGING)
@@ -144,9 +144,9 @@ endif()
 
 if (GKICK_PLUGIN)
   if(CMAKE_SYSTEM_NAME MATCHES Windows)
-	message(STATUS "Checking for VST SDK...")
+	message(STATUS "checking for VST SDK...")
   else()
-	message(STATUS "Checking for LV2 library...")
+	message(STATUS "checking for LV2 library...")
 	pkg_check_modules(LV2 lv2)
 	if (NOT LV2_FOUND)
 		message(FATAL_ERROR "can't find LV2 library")
@@ -167,7 +167,7 @@ include_directories(${GKICK_API_DIR}/src)
 include_directories(${GKICK_UTILS_DIR})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-fPIC)
-add_subdirectory(api)
+add_subdirectory(dsp)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     include_directories(${GKICK_VST_SDK_PATH})
@@ -175,12 +175,8 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
     link_directories(${GKICK_VST_SDK_PATH}/build/lib/Debug)
     link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
 else ()
-  if (GKICK_REDKITE_SDK_PATH)
-    include_directories(${GKICK_REDKITE_SDK_PATH}/include/redkite)
-    link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
-  else()
-    include_directories(/usr/local/include/redkite)
-  endif(GKICK_REDKITE_SDK_PATH)
+    include_directories(${REDKITE_INCLUDE_DIR})
+    link_directories(${REDKITE_LIBRARY})
 endif()
 
 include(${GKICK_RC_DIR}/resources.rc)

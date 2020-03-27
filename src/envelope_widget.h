@@ -29,7 +29,7 @@
 #include "geonkick_api.h"
 #include "envelope.h"
 
-
+class RkWidgetContiner;
 class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
 
@@ -40,7 +40,6 @@ public:
      explicit EnvelopeWidget(GeonkickWidget *parent,
                              GeonkickApi *api,
                              const std::vector<std::unique_ptr<Oscillator>> &oscillators);
-     ~EnvelopeWidget();
      void hideEnvelope(bool b);
      void updateGui();
      RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
@@ -60,6 +59,7 @@ public:
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;
      GeonkickButton *showFilterEnvButton;
+     GeonkickButton *showDistortionEnvButton;
      GeonkickButton *osccillator1EvelopesButton;
      GeonkickButton *osccillator2EvelopesButton;
      GeonkickButton *noiseEvelopesButton;
@@ -68,6 +68,7 @@ public:
      GeonkickButton *layer2Button;
      GeonkickButton *layer3Button;
      GeonkickApi *geonkickApi;
+     RkWidgetContiner *menuContiner;
 };
 
 #endif

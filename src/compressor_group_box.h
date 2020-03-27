@@ -2,7 +2,7 @@
  * File name: compressor_group_box.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -35,7 +35,6 @@ class CompressorGroupBox: public GeonkickGroupBox
 {
  public:
         CompressorGroupBox(GeonkickApi *api, GeonkickWidget* parent);
-
         void updateGui();
         void setAttack(int val);
         void setThreshold(int val);

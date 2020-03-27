@@ -2,7 +2,7 @@
  * File name: kick_graph.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -36,11 +36,13 @@ class KickGraph {
 
 public:
 
-        KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q);
+     KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q);
      ~KickGraph();
      void start();
-     RK_DECL_ACT(graphUpdated, graphUpdated(std::shared_ptr<RkImage> graphImage),
-                 RK_ARG_TYPE(std::shared_ptr<RkImage>), RK_ARG_VAL(graphImage));
+     RK_DECL_ACT(graphUpdated,
+                 graphUpdated(std::shared_ptr<RkImage> graphImage),
+                 RK_ARG_TYPE(std::shared_ptr<RkImage>),
+                 RK_ARG_VAL(graphImage));
      void updateGraphBuffer();
 
 protected:

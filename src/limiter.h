@@ -37,11 +37,13 @@ class Limiter: public GeonkickWidget
 {
  public:
         Limiter(GeonkickApi *api, GeonkickWidget *parent);
-        ~Limiter();
         int getFaderValue(void) const;
         int getMeterValue() const;
 
-        RK_DECL_ACT(limiterUpdated, limiterUpdated(int val), RK_ARG_TYPE(int), RK_ARG_VAL(val));
+        RK_DECL_ACT(limiterUpdated,
+                    limiterUpdated(int val),
+                    RK_ARG_TYPE(int),
+                    RK_ARG_VAL(val));
         void onUpdateLimiter();
         void onSetLimiterValue(int val);
 

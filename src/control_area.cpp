@@ -2,7 +2,7 @@
  * File name: control_area.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,52 +21,39 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "oscillator.h"
 #include "control_area.h"
-#include "oscillator_group_box.h"
-#include "general_group_box.h"
-#include "effects_group_box.h"
-#include "geonkick_api.h"
+#include "controls_widget.h"
+#include "kit_widget.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
                          GeonkickApi* api,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
-                         : GeonkickWidget(parent)
+        : GeonkickWidget(parent)
+        , controlsWidget{new ControlsWidget(this, api, oscillators)}
+        , kitWidget{new KitWidget(this, api)}
 {
-        setFixedSize(920, 380);
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
-        auto widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(0, 0);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
-        widget->show();
-
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
-        widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(8 + 224, 0);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
-        widget->show();
-
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
-        widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(2 * (8 + 224), 0);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
-        widget->show();
-
-        auto generalWidget = new GeneralGroupBox(this, api);
-        generalWidget->setPosition(3 * (8 + 224), 0);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), generalWidget, updateGui());
-        generalWidget->show();
-
-        auto effectsWidget = new EffectsGroupBox(api, this);
-        effectsWidget->setFixedSize(500, 82);
-        effectsWidget->setPosition(2 * (8 + 224), 285);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
-        effectsWidget->show();
+        setFixedSize(920, 368);
+        setBackgroundColor({255, 0, 0});
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), kitWidget, updateGui());
+        controlsWidget->setSize({width(), height()});
+        kitWidget->setSize({width(), height()});
+        showControls();
 }
 
-ControlArea::~ControlArea()
+void ControlArea::showControls()
 {
-
+        controlsWidget->show();
+        kitWidget->hide();
 }
 
+void ControlArea::showKit()
+{
+        controlsWidget->hide();
+        kitWidget->show();
+}
 
+KitWidget* ControlArea::getKitWidget()
+{
+        return kitWidget;
+}

@@ -32,35 +32,35 @@
 
 #include <RkLabel.h>
 
-extern const unsigned char rk_osc1_radio_button_png[];
-extern const unsigned char rk_osc1_radio_button_active_png[];
-extern const unsigned char rk_osc2_radio_button_png[];
-extern const unsigned char rk_osc2_radio_button_active_png[];
-extern const unsigned char rk_noise_radio_button_png[];
-extern const unsigned char rk_noise_radio_button_active_png[];
-extern const unsigned char rk_fm_radio_png[];
-extern const unsigned char rk_fm_radio_active_png[];
-extern const unsigned char rk_wf_bk_hbox_png[];
-extern const unsigned char rk_wave_button_sine_png[];
-extern const unsigned char rk_wave_button_sine_active_png[];
-extern const unsigned char rk_wave_button_square_png[];
-extern const unsigned char rk_wave_button_square_active_png[];
-extern const unsigned char rk_wave_button_triangle_png[];
-extern const unsigned char rk_wave_button_triangle_active_png[];
-extern const unsigned char rk_wave_button_sawtooth_png[];
-extern const unsigned char rk_phase_label_png[];
-extern const unsigned char rk_wave_button_sample_png[];
-extern const unsigned char rk_wave_button_sample_active_png[];
-extern const unsigned char rk_wave_button_sawtooth_active_png[];
-extern const unsigned char rk_button_browse_sample_png[];
-extern const unsigned char rk_hboxbk_noise_env_png[];
-extern const unsigned char rk_hboxbk_osc_env_png[];
-extern const unsigned char rk_knob_png[];
-extern const unsigned char rk_noise_type_white_png[];
-extern const unsigned char rk_noise_type_white_active_png[];
-extern const unsigned char rk_noise_type_brownian_png[];
-extern const unsigned char rk_noise_type_brownian_active_png[];
-extern const unsigned char rk_knob_bk_image_png[];
+RK_DECLARE_IMAGE_RC(osc1_radio_button);
+RK_DECLARE_IMAGE_RC(osc1_radio_button_active);
+RK_DECLARE_IMAGE_RC(osc2_radio_button);
+RK_DECLARE_IMAGE_RC(osc2_radio_button_active);
+RK_DECLARE_IMAGE_RC(noise_radio_button);
+RK_DECLARE_IMAGE_RC(noise_radio_button_active);
+RK_DECLARE_IMAGE_RC(fm_radio);
+RK_DECLARE_IMAGE_RC(fm_radio_active);
+RK_DECLARE_IMAGE_RC(wf_bk_hbox);
+RK_DECLARE_IMAGE_RC(wave_button_sine);
+RK_DECLARE_IMAGE_RC(wave_button_sine_active);
+RK_DECLARE_IMAGE_RC(wave_button_square);
+RK_DECLARE_IMAGE_RC(wave_button_square_active);
+RK_DECLARE_IMAGE_RC(wave_button_triangle);
+RK_DECLARE_IMAGE_RC(wave_button_triangle_active);
+RK_DECLARE_IMAGE_RC(wave_button_sawtooth);
+RK_DECLARE_IMAGE_RC(phase_label);
+RK_DECLARE_IMAGE_RC(wave_button_sample);
+RK_DECLARE_IMAGE_RC(wave_button_sample_active);
+RK_DECLARE_IMAGE_RC(wave_button_sawtooth_active);
+RK_DECLARE_IMAGE_RC(button_browse_sample);
+RK_DECLARE_IMAGE_RC(hboxbk_noise_env);
+RK_DECLARE_IMAGE_RC(hboxbk_osc_env);
+RK_DECLARE_IMAGE_RC(knob);
+RK_DECLARE_IMAGE_RC(noise_type_white);
+RK_DECLARE_IMAGE_RC(noise_type_white_active);
+RK_DECLARE_IMAGE_RC(noise_type_brownian);
+RK_DECLARE_IMAGE_RC(noise_type_brownian_active);
+RK_DECLARE_IMAGE_RC(knob_bk_image);
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           : GeonkickGroupBox{parent}
@@ -85,12 +85,15 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         oscillatorCheckbox = new GeonkickButton(this);
         oscillatorCheckbox->setCheckable(true);
         oscillatorCheckbox->setPosition(5, 0);
-        RK_ACT_BIND(oscillatorCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, enable(b));
+        RK_ACT_BIND(oscillatorCheckbox, toggled,
+                    RK_ACT_ARGS(bool b), oscillator, enable(b));
 
         if (oscillator->type() == Oscillator::Type::Oscillator1) {
                 oscillatorCheckbox->setFixedSize(85, 11);
-                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(), rk_osc1_radio_button_active_png));
-                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(), rk_osc1_radio_button_png));
+                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(),
+                                                            rk_osc1_radio_button_active_png));
+                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(),
+                                                              rk_osc1_radio_button_png));
 
                 fmCheckbox = new GeonkickButton(this);
                 fmCheckbox->setCheckable(true);
@@ -101,12 +104,16 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
                 RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 oscillatorCheckbox->setFixedSize(87, 11);
-                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(), rk_osc2_radio_button_active_png));
-                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(), rk_osc2_radio_button_png));
+                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(),
+                                                            rk_osc2_radio_button_active_png));
+                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(),
+                                                              rk_osc2_radio_button_png));
         } else {
                 oscillatorCheckbox->setFixedSize(48, 11);
-                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(), rk_noise_radio_button_active_png));
-                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(), rk_noise_radio_button_png));
+                oscillatorCheckbox->setPressedImage(RkImage(oscillatorCheckbox->size(),
+                                                            rk_noise_radio_button_active_png));
+                oscillatorCheckbox->setUnpressedImage(RkImage(oscillatorCheckbox->size(),
+                                                              rk_noise_radio_button_png));
         }
 
         if (oscillator->type() != Oscillator::Type::Noise)
@@ -114,10 +121,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         createEvelopeGroupBox();
         createFilterGroupBox();
         updateGui();
-}
-
-OscillatorGroupBox::~OscillatorGroupBox()
-{
 }
 
 void OscillatorGroupBox::createWaveFunctionGroupBox()
@@ -216,7 +219,11 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         envelopeAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
         envelopeAmplitudeKnob->setRange(0, 1.0);
         envelopeAmplitudeKnob->show();
-        RK_ACT_BIND(envelopeAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val), oscillator, setAmplitude(val));
+        RK_ACT_BIND(envelopeAmplitudeKnob,
+                    valueUpdated,
+                    RK_ACT_ARGS(double val),
+                    oscillator,
+                    setAmplitude(val));
 
         if (oscillator->type() == Oscillator::Type::Noise) {
                 noiseWhiteButton = new GeonkickButton(amplitudeEnvelopeBox);
@@ -242,8 +249,11 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 frequencyAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
                 frequencyAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
                 frequencyAmplitudeKnob->setRange(200, 16000);
-                RK_ACT_BIND(frequencyAmplitudeKnob, valueUpdated, RK_ACT_ARGS(double val),
-                            oscillator, setFrequency(val));
+                RK_ACT_BIND(frequencyAmplitudeKnob,
+                            valueUpdated,
+                            RK_ACT_ARGS(double val),
+                            oscillator,
+                            setFrequency(val));
                 frequencyAmplitudeKnob->show();
         }
 }
@@ -256,10 +266,13 @@ void OscillatorGroupBox::createFilterGroupBox()
         else
                 filterBox->setPosition(0, 243);
         filterBox->setCutOffRange(20, 20000);
-        filterBox->setResonanceRange(0.01, 10);
-        RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b), oscillator, enableFilter(b));
-        RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val), oscillator, setFilterFrequency(val));
-        RK_ACT_BIND(filterBox, resonanceChanged, RK_ACT_ARGS(double val), oscillator, setFilterQFactor(val));
+        filterBox->setResonanceRange(1, 1000);
+        RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b),
+                    oscillator, enableFilter(b));
+        RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val),
+                    oscillator, setFilterFrequency(val));
+        RK_ACT_BIND(filterBox, resonanceChanged, RK_ACT_ARGS(double val),
+                    oscillator, setFilterQFactor(val));
         RK_ACT_BIND(filterBox, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type),
                     oscillator, setFilterType(type));
 }
@@ -384,5 +397,7 @@ void OscillatorGroupBox::browseSample()
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select sample");
         fileDialog->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
         fileDialog->setCurrentDirectoy(oscillator->samplesPath());
-        RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), oscillator, setSample(file));
+        RK_ACT_BIND(fileDialog, selectedFile,
+                    RK_ACT_ARGS(const std::string &file),
+                    oscillator, setSample(file));
 }

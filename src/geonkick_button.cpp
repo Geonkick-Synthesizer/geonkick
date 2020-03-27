@@ -32,10 +32,6 @@ GeonkickButton::GeonkickButton(GeonkickWidget *parent)
         setFocus(false);
 }
 
-GeonkickButton::~GeonkickButton()
-{
-}
-
 void GeonkickButton::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
         RK_UNUSED(event);

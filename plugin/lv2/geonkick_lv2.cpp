@@ -2,7 +2,7 @@
  * File name: geonkick_lv2.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -32,7 +32,7 @@
 
 #include "mainwindow.h"
 #include "geonkick_api.h"
-#include "geonkick_state.h"
+#include "kit_state.h"
 
 #include <RkMain.h>
 #include <RkPlatform.h>
@@ -49,23 +49,16 @@
 class GeonkickLv2Plugin
 {
   public:
-        enum class PortType: int {
-                MidiIn            = 0,
-                LeftChannel       = 1,
-                RightChannel      = 2,
-                NotifyHostChannel = 3,
-        };
-
-        GeonkickLv2Plugin() :
-                  geonkickApi(new GeonkickApi),
-                  midiIn(nullptr),
-                  notifyHostChannel(nullptr),
-                  leftChannel(nullptr),
-                  rightChannel(nullptr),
-                  atomInfo{0},
-                  kickIsUpdated(false)
+        GeonkickLv2Plugin()
+                : geonkickApi{new GeonkickApi}
+                , midiIn{nullptr}
+                , notifyHostChannel{nullptr}
+                , outputChannels{std::vector<float*>(geonkickApi->getPercussionsNumber(), nullptr)}
+                , atomInfo{0}
+                , kickIsUpdated{false}
         {
                 RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, kickUpdated());
+                RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, kickUpdated());
         }
 
         ~GeonkickLv2Plugin()
@@ -79,12 +72,15 @@ class GeonkickLv2Plugin
                 return geonkickApi->init();
         }
 
-        void setAudioChannel(float *data, PortType port)
+        size_t numberOfChannels() const
         {
-                if (port == PortType::LeftChannel)
-                        leftChannel = data;
-                else
-                        rightChannel = data;
+                return geonkickApi->numberOfChannels();
+        }
+
+        void setAudioChannel(float *data, size_t channel)
+        {
+                if (channel >= 0 && channel < outputChannels.size())
+                        outputChannels[channel] = data;
         }
 
         void setMidiIn(LV2_Atom_Sequence *data)
@@ -150,13 +146,13 @@ class GeonkickLv2Plugin
         void setStateData(const std::string &data, int flags = 0)
         {
                 RK_UNUSED(flags);
-                geonkickApi->setState(data);
+                geonkickApi->setKitState(data);
                 action geonkickApi->stateChanged();
         }
 
         std::string getStateData()
         {
-                return geonkickApi->getState()->toJson();
+                return geonkickApi->getKitState()->toJson();
         }
 
         GeonkickApi* getApi() const
@@ -170,7 +166,8 @@ class GeonkickLv2Plugin
                         return;
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
                 for (auto i = 0; i < nsamples; i++) {
-                        while (it->time.frames == i && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
+                        while (it->time.frames == i
+                               && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
                                 const uint8_t* const msg = (const uint8_t*)(it + 1);
                                 switch (lv2_midi_message_type(msg))
                                 {
@@ -185,9 +182,12 @@ class GeonkickLv2Plugin
                                 }
                                 it = lv2_atom_sequence_next(it);
                         }
-                        auto val = geonkickApi->getAudioFrame();
-                        leftChannel[i]  = val;
-                        rightChannel[i] = val;
+
+                        auto nChannels = geonkickApi->numberOfChannels();
+                        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
+                                if (outputChannels[ch])
+                                        outputChannels[ch][i] = geonkickApi->getAudioFrame(ch);
+                        }
                 }
 
                 if (isKickUpdated()) {
@@ -239,8 +239,7 @@ private:
         GeonkickApi *geonkickApi;
         LV2_Atom_Sequence *midiIn;
         LV2_Atom_Sequence *notifyHostChannel;
-        float *leftChannel;
-        float *rightChannel;
+        std::vector<float*> outputChannels;
 
         struct AtomInfo {
                 LV2_URID stateId;
@@ -334,7 +333,6 @@ static int gkick_idle(LV2UI_Handle ui)
 static const void* gkick_extension_data(const char* uri)
 {
     static const LV2UI_Idle_Interface idleInterface = {gkick_idle};
-
     if (std::string(uri) == std::string(LV2_UI__idleInterface))
             return &idleInterface;
     return nullptr;
@@ -357,11 +355,6 @@ const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index)
         }
 }
 
-/**
- * Functions for LV2 plugin.
- *
- * The Geonkick API instance is loaded alone.
- */
 static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
                                     double                    rate,
                                     const char*               bundle_path,
@@ -397,23 +390,14 @@ static void gkick_connect_port(LV2_Handle instance,
                                void*      data)
 {
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
-        auto portType = static_cast<GeonkickLv2Plugin::PortType>(port);
-        switch (portType)
-        {
-        case GeonkickLv2Plugin::PortType::LeftChannel:
-        case GeonkickLv2Plugin::PortType::RightChannel:
-                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), portType);
-                break;
-        case GeonkickLv2Plugin::PortType::MidiIn:
+	auto nChannels = geonkickLv2PLugin->numberOfChannels();
+	auto portNumber = static_cast<decltype(nChannels)>(port);
+        if (portNumber == 0)
                 geonkickLv2PLugin->setMidiIn(static_cast<LV2_Atom_Sequence*>(data));
-                break;
-        case GeonkickLv2Plugin::PortType::NotifyHostChannel:
+        else if (portNumber == 1)
                 geonkickLv2PLugin->setNotifyHostChannel(static_cast<LV2_Atom_Sequence*>(data));
-                break;
-        default:
-                // Unknown channel.
-                break;
-        }
+        else if (portNumber > 1)
+                geonkickLv2PLugin->setAudioChannel(static_cast<float*>(data), portNumber - 2);
 }
 
 static void gkick_activate(LV2_Handle instance)

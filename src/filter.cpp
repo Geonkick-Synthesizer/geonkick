@@ -27,19 +27,19 @@
 
 #include <RkEvent.h>
 
-extern const unsigned char rk_knob_png[];
-extern const unsigned char rk_knob_bk_image_png[];
-extern const unsigned char rk_hboxbk_filter_png[];
-extern const unsigned char rk_checkbox_checked_png[];
-extern const unsigned char rk_checkbox_unchecked_png[];
-extern const unsigned char rk_knob_bk_50x50_png[];
-extern const unsigned char rk_knob_50x50_png[];
-extern const unsigned char rk_filter_type_lp_png[];
-extern const unsigned char rk_filter_type_hp_png[];
-extern const unsigned char rk_filter_type_bp_png[];
-extern const unsigned char rk_filter_type_lp_checked_png[];
-extern const unsigned char rk_filter_type_hp_checked_png[];
-extern const unsigned char rk_filter_type_bp_checked_png[];
+RK_DECLARE_IMAGE_RC(knob);
+RK_DECLARE_IMAGE_RC(knob_bk_image);
+RK_DECLARE_IMAGE_RC(hboxbk_filter);
+RK_DECLARE_IMAGE_RC(checkbox_checked);
+RK_DECLARE_IMAGE_RC(checkbox_unchecked);
+RK_DECLARE_IMAGE_RC(knob_bk_50x50);
+RK_DECLARE_IMAGE_RC(knob_50x50);
+RK_DECLARE_IMAGE_RC(filter_type_lp);
+RK_DECLARE_IMAGE_RC(filter_type_hp);
+RK_DECLARE_IMAGE_RC(filter_type_bp);
+RK_DECLARE_IMAGE_RC(filter_type_lp_checked);
+RK_DECLARE_IMAGE_RC(filter_type_hp_checked);
+RK_DECLARE_IMAGE_RC(filter_type_bp_checked);
 
 Filter::Filter(GeonkickWidget *parent)
         : GeonkickWidget(parent)
@@ -72,6 +72,7 @@ Filter::Filter(GeonkickWidget *parent)
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), this, cutOffChanged(val));
 
         resonanceKnob = new Knob(this);
+	resonanceKnob->setRangeType(Knob::RangeType::Logarithmic);
         int w = 60;
         int h = 60;
         resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);

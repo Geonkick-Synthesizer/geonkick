@@ -28,12 +28,11 @@
 
 #include <RkLabel.h>
 
-extern const unsigned char rk_distortion_goupbox_label_png[];
-extern const unsigned char rk_checkbox_checked_10x10_png[];
-extern const unsigned char rk_checkbox_unchecked_10x10_png[];
-extern const unsigned char rk_distortion_in_limiter_png[];
-extern const unsigned char rk_distortion_volume_label_png[];
-extern const unsigned char rk_distortion_drive_label_png[];
+RK_DECLARE_IMAGE_RC(distortion_enable);
+RK_DECLARE_IMAGE_RC(distortion_enable_active);
+RK_DECLARE_IMAGE_RC(distortion_in_limiter);
+RK_DECLARE_IMAGE_RC(distortion_volume_label);
+RK_DECLARE_IMAGE_RC(distortion_drive_label);
 
 DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent)
@@ -44,18 +43,12 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 {
         setFixedSize(110, 63);
         distortionCheckbox = new GeonkickButton(this);
+	distortionCheckbox->setSize(77, 12);
+	distortionCheckbox->setCheckable(true);
         RK_ACT_BIND(distortionCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi, enableDistortion(b));
-        distortionCheckbox->setCheckable(true);
-        distortionCheckbox->setPressedImage(RkImage(10, 10, rk_checkbox_checked_10x10_png));
-        distortionCheckbox->setUnpressedImage(RkImage(10, 10, rk_checkbox_unchecked_10x10_png));
-        distortionCheckbox->setFixedSize(10, 10);
-        auto label = new RkLabel(this);
-        label->show();
-        label->setBackgroundColor(background());
-        label->setImage(RkImage(50, 9, rk_distortion_goupbox_label_png));
-        label->setFixedSize(50, 9);
-        label->setPosition((width() - label->width()) / 2, 0);
-        distortionCheckbox->setPosition(label->x() - 14, 0);
+        distortionCheckbox->setPressedImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable_active)));
+        distortionCheckbox->setUnpressedImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable)));
+        distortionCheckbox->setPosition((width() - distortionCheckbox->width()) / 2, 0);
 
         int sliderW = 60;
         int sliderH = 12;
@@ -70,10 +63,9 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(inLimiterSlider, valueUpdated, RK_ACT_ARGS(int val), this, setInLimiter(val));
         auto inLimiterLabel = new RkLabel(this);
         inLimiterLabel->show();
-        inLimiterLabel->setImage(RkImage(24, 10, rk_distortion_in_limiter_png));
+        inLimiterLabel->setImage(RkImage(24, 10, RK_IMAGE_RC(distortion_in_limiter)));
         inLimiterLabel->setFixedSize(24, 10);
         inLimiterLabel->setPosition(inLimiterSlider->x() - inLimiterLabel->width() - labelD, inLimiterSlider->y());
-
 
         // Volume
         volumeSlider = new GeonkickSlider(this);
@@ -83,7 +75,7 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(volumeSlider, valueUpdated, RK_ACT_ARGS(int val), this, setVolume(val));
         auto volumeLabel = new RkLabel(this);
         volumeLabel->show();
-        volumeLabel->setImage(RkImage(38, 8, rk_distortion_volume_label_png));
+        volumeLabel->setImage(RkImage(38, 8, RK_IMAGE_RC(distortion_volume_label)));
         volumeLabel->setFixedSize(38, 8);
         volumeLabel->setPosition(volumeSlider->x() - volumeLabel->width() - labelD, volumeSlider->y());
 
@@ -94,14 +86,10 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(driveSlider, valueUpdated, RK_ACT_ARGS(int val), this, setDrive(val));
         auto driveLabel = new RkLabel(this);
         driveLabel->show();
-        driveLabel->setImage(RkImage(24, 8, rk_distortion_drive_label_png));
+        driveLabel->setImage(RkImage(24, 8, RK_IMAGE_RC(distortion_drive_label)));
         driveLabel->setFixedSize(24, 8);
         driveLabel->setPosition(driveSlider->x() - driveLabel->width() - labelD, driveSlider->y());
         show();
-}
-
-DistortionGroupBox::~DistortionGroupBox()
-{
 }
 
 void DistortionGroupBox::setInLimiter(int val)

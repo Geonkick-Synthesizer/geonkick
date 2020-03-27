@@ -2,7 +2,7 @@
  * File name: mainwindow.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -37,15 +37,18 @@ class RkKeyEvent;
 class MainWindow : public GeonkickWidget
 {
  public:
-        explicit MainWindow(RkMain* app, GeonkickApi *api, std::string preset = std::string());
-      explicit MainWindow(RkMain* app, GeonkickApi *api, const RkNativeWindowInfo &info);
+      explicit MainWindow(RkMain* app,
+                          GeonkickApi *api,
+                          std::string preset = std::string());
+      explicit MainWindow(RkMain* app,
+                          GeonkickApi *api,
+                          const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
 
  protected:
       void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) final;
       void keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event) final;
-
       void openFileDialog(FileDialog::Type type);
       void openPreset(const std::string &fileName);
       void savePreset(const std::string &fileName);

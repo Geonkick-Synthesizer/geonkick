@@ -39,8 +39,6 @@ class OscillatorGroupBox: public GeonkickGroupBox
 {
  public:
         OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc);
-        ~OscillatorGroupBox();
-
         void updateGui();
         RK_DECL_ACT(oscillatorFunctionChanged,
                     oscillatorFunctionChanged(int index),

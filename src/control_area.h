@@ -29,6 +29,8 @@
 
 class Oscillator;
 class GeonkickApi;
+class ControlsWidget;
+class KitWidget;
 
 class ControlArea: public GeonkickWidget
 {
@@ -36,8 +38,15 @@ class ControlArea: public GeonkickWidget
         ControlArea(GeonkickWidget *parent,
                     GeonkickApi* api,
                     const std::vector<std::unique_ptr<Oscillator>> &oscillators);
-        ~ControlArea();
+        ~ControlArea() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+        void showControls();
+        void showKit();
+        KitWidget* getKitWidget();
+
+ private:
+        ControlsWidget *controlsWidget;
+        KitWidget *kitWidget;
 };
 
-#endif
+#endif // GKICK_CONTROL_AREA_H

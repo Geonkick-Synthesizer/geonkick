@@ -2,7 +2,7 @@
  * File name: oscillator_envelope.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <(http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -28,14 +28,11 @@ OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
         : Envelope(area)
         , oscillator{osc}
 {
+	removeSupportedType(Envelope::Type::DistortionDrive);
         if (oscillator->type() == Oscillator::Type::Noise)
                 removeSupportedType(Envelope::Type::Frequency);
         setType(Envelope::Type::Amplitude);
         setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
-}
-
-OscillatorEnvelope::~OscillatorEnvelope()
-{
 }
 
 void OscillatorEnvelope::updatePoints()
