@@ -32,7 +32,8 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , controlsWidget{new ControlsWidget(this, api, oscillators)}
         , kitWidget{new KitWidget(this, api)}
 {
-        setFixedSize(920, 360);
+        setFixedSize(920, 368);
+        setBackgroundColor({255, 0, 0});
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), kitWidget, updateGui());
         controlsWidget->setSize({width(), height()});

@@ -63,7 +63,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , envelopeWidget{nullptr}
         , presetName{std::string()}
 {
-        setFixedSize(940, 760);
+        setFixedSize(950, 760);
         setTitle(GEOKICK_APP_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -112,9 +112,6 @@ bool MainWindow::init(void)
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
                     geonkickApi, enbaleLayer(layer, b));
 
-        auto rightBar = new RightBar(this);
-        rightBar->show();
-
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(10);
@@ -131,6 +128,11 @@ bool MainWindow::init(void)
 
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
+        controlAreaWidget->show();
+        auto rightBar = new RightBar(this);
+        rightBar->setPosition(width() - rightBar->width(), 0);
+        rightBar->show();
+
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
         RK_ACT_BIND(rightBar, showKit, RK_ACT_ARGS(), controlAreaWidget, showKit());
@@ -139,7 +141,8 @@ bool MainWindow::init(void)
                     RK_ACT_ARGS(int id),
                     topBar,
                     setPresetName(geonkickApi->getPercussionName(id)));
-        controlAreaWidget->show();
+
+
 
         // TODO: Key shortcut feature will be implemented in the next versions of Redkite.
         auto info = nativeWindowInfo();

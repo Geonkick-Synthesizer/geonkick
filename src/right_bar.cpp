@@ -32,19 +32,18 @@ RightBar::RightBar(GeonkickWidget *parent)
 {
         constexpr int barWidth = 15;
         setFixedSize(barWidth, parent->height());
-        setPosition(parent->width() - width(), 0);
 
         auto controlsButton = new GeonkickButton(this);
-        controlsButton->setSize(15, 119);
-        controlsButton->setPosition({0, 405});
-        controlsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(controls_button)));
         controlsButton->setCheckable(true);
+        controlsButton->setSize(15, 119);
+        controlsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(controls_button)));
+        controlsButton->setPosition({0, 405});
         RK_ACT_BIND(controlsButton, toggled, RK_ACT_ARGS(bool b), this, showControls());
 
         auto kitSettingsButton = new GeonkickButton(this);
-        kitSettingsButton->setSize(15, 119);
-        kitSettingsButton->setPosition({0, controlsButton->height() + controlsButton->y() + 12});
-        kitSettingsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(kit_button)));
         kitSettingsButton->setCheckable(true);
+        kitSettingsButton->setSize(15, 119);
+        kitSettingsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(kit_button)));
+        kitSettingsButton->setPosition({0, controlsButton->height() + controlsButton->y() + 12});
         RK_ACT_BIND(kitSettingsButton, toggled, RK_ACT_ARGS(bool b), this, showKit());
 }
