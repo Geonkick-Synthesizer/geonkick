@@ -5,7 +5,6 @@ Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) per
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
 snares, hit-hats, shakers, claps.
-Also, it can play samples.
 
 Author: Iurie Nistor
 
@@ -39,9 +38,9 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
    - 16 midi keys range
    - user configurable key mapping
 * Multichannel
-   - for LV2
-   - up to 16 output audio channels
-   - user configurable mapping of kit percussions to channel
+   - for LV2 plugin up to 16 output audio channels
+   - for standalone 1 output channel
+   - user configurable mapping of kit percussions to channels
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
@@ -62,9 +61,8 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
      - compression
      - distortion
      - distortion drive envelope
-* Jack support:
-     - 1 MIDI in, key velocity sensitive
-     - 1 audio output
+* Key velocity sensitive
+* Jack support
 * Export
      - stereo & mono
      - WAV: 16, 24, 32 bit
@@ -105,7 +103,7 @@ Plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-* [Redkite](https://github.com/geontime/redkite) GUI toolkit. See the documentation of Redkite toolkit how to install it.
+* [Redkite](https://github.com/geontime/redkite) GUI toolkit.
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for LV2)
@@ -113,6 +111,7 @@ In order to build Geonkick there is a need to install the following development 
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
+    build and install first Redkite, than:
     apt-get install build-essential
     apt-get install cmake
     apt-get install qjackctl libjack-dev libsndfile-dev
@@ -134,53 +133,6 @@ Clone the Geonkick code repository, compile and install
 
 Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
 
-#### Short user guide
+#### Documentation
 
-###### Shortcut Keys
-
-* k - play the percussion sound
-* Ctrl + r - reload default state, clean everything
-* Ctrl + h - hide envelope, only the graph is shown
-* Ctrl + o - open file browser dialog
-* Ctrl + s - open save dialog
-* Ctrl + e - open export dialog
-* Ctrl + a - open about dialog
-
-Note: when running as plugin be sure the focus to be on the main Geonkick window.
-
-###### Working with envelopes
-
-* Left double click to add a new point
-* Left click on the point and move the point
-* Right click on the point to remove it
-
-###### Play the sound
-
-Geonkick standalone uses Jack and will create two audio outputs and one MIDI input.
-If audio outputs are connected there are three ways to play the sound:
-   * MIDI input, for example, MIDI keyboard. This also will be key velocity sensitive, i.e. lower velocity corresponds to lower sound volume.
-   * by means of a host that supports LV2 plugin format
-
-#### Other technical notes
-
-The block diagram of the synthesizer.
-
-![Screenshot](data/doc/diagram.png)
-
-
-* Filters become unstable for some extremal combination of cutoff frequency and Q parameter. If the filters become unstable the percussion graph may show a maximum continuous line or various kinds of distortion. There is a need to work with Q factor in order to use the cutoff in the desired range.
-
-* If the sound exceeds the range -1.0 - 1.0, the sound is hard limited to value 1.0 or -1.0. This can also be seen in the percussion graph.
-
-* When a key is pressed, there no synthesis is going on, Geonkick plays the generated percussion that is kept in memory. Synthesis takes place only if some controls are changed.
-
-* If the key is released before all the percussion length is played, Geonkick will apply a 30ms linear decay to avoid sharp cut of the sound.
-
-* If the controls are changed during the play of the beat, there will not be any change in the sound during the play of the current beat, the next beat/beats will contain the change, i.e. the next press of the keys.
-
-* FM Synthesis is enabled by pressing OSC1->OSC2 for evrey layer separtely. When pressing OSC1->OSC2 the output of Oscillator 1 will be redirected to modulate the frequency of Oscillator 2.
-Oscillator 2 must be enabled in order to see the result in the graph.
-
-* If the option "Tune" is enabled than Geonkick will tune the pitch relative to key A4.
-  If the percussion sound is more like a tone, tuning above A4 may contain unwanted high
-  frequencies.
+Please, see documentation at https://gitlab.com/geontime/geonkick/-/wikis/home
