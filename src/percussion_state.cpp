@@ -997,7 +997,7 @@ std::string PercussionState::toBase64F(const std::vector<float> &data)
         auto base64 = base64_encode(reinterpret_cast<const unsigned char*>(data.data()),
                                     data.size() * sizeof(float), &len);
         if (base64  && len > 0) {
-                auto str = std::move(std::string(reinterpret_cast<const char*>(base64), len));
+                std::string str(reinterpret_cast<const char*>(base64), len);
                 free(base64);
                 str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
                 return str;
