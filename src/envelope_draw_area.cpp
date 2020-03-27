@@ -40,7 +40,6 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
         int padding = 50;
         drawingArea = RkRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
         setBackgroundColor(40, 40, 40);
-
         kickGraphics = std::make_unique<KickGraph>(geonkickApi, drawingArea.size(), eventQueue());
         RK_ACT_BIND(kickGraphics.get(),
                     graphUpdated,
@@ -111,6 +110,8 @@ std::string EnvelopeWidgetDrawingArea::getEnvStateText() const
                 str += "AENV";
         else if (currentEnvelope->type() == Envelope::Type::Frequency)
                 str += "FENV";
+        else if (currentEnvelope->type() == Envelope::Type::DistortionDrive)
+                str += "DIST";
         else
                 str += "CFENV";
 

@@ -41,7 +41,7 @@ public:
    };
 
    Knob(GeonkickWidget *parent);
-   virtual ~Knob();
+   virtual ~Knob() = default;
    double getValue(void) const;
    void setRange(double from, double to);
    void setRangeType(RangeType type);
@@ -50,9 +50,10 @@ public:
    void setKnobImage(const RkImage &img);
    void setKnobBackgroundImage(const RkImage &img);
    void rotateKnob(int degree);
-
-   RK_DECL_ACT(valueUpdated, valueUpdated(double v), RK_ARG_TYPE(double), RK_ARG_VAL(v));
-
+   RK_DECL_ACT(valueUpdated,
+               valueUpdated(double v),
+               RK_ARG_TYPE(double),
+               RK_ARG_VAL(v));
  protected:
    void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
    void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;

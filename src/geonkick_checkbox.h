@@ -2,7 +2,7 @@
  * File name: geonkick_checkbox.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -31,7 +31,7 @@ class GeonkickButton;
 class GeonkickCheckbox: public GeonkickWidget {
  public:
         GeonkickCheckbox(GeonkickWidget *parent = nullptr);
-        virtual ~GeonkickCheckbox();
+        virtual ~GeonkickCheckbox() = default;
         void setCheckboxLabelImage(const QPixmap &pixmap);
         void setCheckboxLabelImage(const std::string &file);
         void setCheckedImage(const QPixmap &pixmap);

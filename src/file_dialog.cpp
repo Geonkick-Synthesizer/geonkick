@@ -2,7 +2,7 @@
  * File name: file_dialog.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -30,13 +30,11 @@
 #include <RkEvent.h>
 #include <RkPainter.h>
 
-extern const unsigned char rk_open_active_png[];
-extern const unsigned char rk_save_active_png[];
-extern const unsigned char rk_cancel_png[];
-extern const unsigned char rk_scrollbar_button_up_png[];
-extern const unsigned char rk_scrollbar_button_down_png[];
-
-#define act
+RK_DECLARE_IMAGE_RC(open_active);
+RK_DECLARE_IMAGE_RC(save_active);
+RK_DECLARE_IMAGE_RC(cancel);
+RK_DECLARE_IMAGE_RC(scrollbar_button_up);
+RK_DECLARE_IMAGE_RC(scrollbar_button_down);
 
 FilesView::FilesView(GeonkickWidget *parent)
         : GeonkickWidget(parent)

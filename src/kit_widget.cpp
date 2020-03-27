@@ -168,7 +168,10 @@ void KitWidget::drawPercussions(RkPainter &painter)
                 else
                         painter.fillRect(rect, {160, 160, 160, 80});
                 if (static_cast<int>(currentId) == idFromLine(i))
-                        painter.fillRect(RkRect(rect.left(), rect.top(), 4, rect.height()), {255, 255, 255, 90});
+                        painter.fillRect(RkRect(rect.left(),
+                                                rect.top(), 4,
+                                                rect.height()),
+                                         {255, 255, 255, 90});
 		RkRect txtRect = rect;
 		txtRect.setWidth(300);
 		txtRect.setTopLeft(RkPoint(txtRect.left() + 7, txtRect.top()));
@@ -177,7 +180,9 @@ void KitWidget::drawPercussions(RkPainter &painter)
                                  std::string(geonkickApi->getPercussionName(idFromLine(i))),
                                  Rk::Alignment::AlignLeft);
                 auto channel = geonkickApi->getPercussionChannel(idFromLine(i));
-		painter.drawText(RkRect(percussionWidth - channelWidth, y, channelWidth, percussionHeight),
+		painter.drawText(RkRect(percussionWidth - channelWidth,
+                                        y, channelWidth,
+                                        percussionHeight),
 				 "#" + std::to_string(channel));
 
                 int x = rect.right() + 5;

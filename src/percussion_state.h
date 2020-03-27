@@ -2,7 +2,7 @@
  * File name: percussion_state.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -56,8 +56,8 @@ class PercussionState
         void setKickFilterFrequency(double val);
         void setKickFilterQFactor(double val);
         void setKickFilterType(GeonkickApi::FilterType type);
-        void setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope, const std::vector<RkRealPoint> &points);
-
+        void setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope,
+                                   const std::vector<RkRealPoint> &points);
         double getLimiterValue() const;
         double getKickLength() const;
         double getKickAmplitude() const;
@@ -66,7 +66,6 @@ class PercussionState
         double getKickFilterQFactor() const;
         GeonkickApi::FilterType getKickFilterType() const;
         std::vector<RkRealPoint> getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const;
-
         void setOscillatorEnabled(int index, bool b);
         void setOscillatorFunction(int index, GeonkickApi::FunctionType type);
         void setOscillatorPhase(int index, double phase);
@@ -79,7 +78,6 @@ class PercussionState
         void setOscillatorEnvelopePoints(int index,
                                          const std::vector<RkRealPoint> &points,
                                          GeonkickApi::EnvelopeType envelope);
-
         bool isOscillatorAsFm(int index) const;
         void setOscillatorAsFm(int index, bool b);
         bool isOscillatorEnabled(int index) const;
@@ -92,7 +90,8 @@ class PercussionState
         double oscillatorFilterCutOffFreq(int index) const;
         double oscillatorFilterFactor(int index) const;
         std::vector<RkRealPoint> oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
-        void setOscillatorSample(int oscillatorIndex, const std::vector<float> &sample);
+        void setOscillatorSample(int oscillatorIndex,
+                                 const std::vector<float> &sample);
         std::vector<float> getOscillatorSample(int oscillatorIndex) const;
         void enableCompressor(bool enable);
         bool isCompressorEnabled() const;
@@ -108,7 +107,6 @@ class PercussionState
         double getCompressorRatio() const;
         double getCompressorKnee() const;
         double getCompressorMakeup() const;
-
         void enableDistortion(bool enable);
         bool isDistortionEnabled() const;
         void setDistortionVolume(double volume);

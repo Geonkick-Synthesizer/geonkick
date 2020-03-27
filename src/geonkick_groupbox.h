@@ -2,7 +2,7 @@
  * File name: geonkick_groupbox.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -37,7 +37,7 @@ class GeonkickGroupBox: public GeonkickWidget
 
      GeonkickGroupBox(GeonkickWidget *parent = nullptr,
                   Orientation orientation = Orientation::Vertical);
-     virtual ~GeonkickGroupBox();
+     virtual ~GeonkickGroupBox() = default;
      GeonkickWidget* getGroupBoxLabel();
      void setGroupBoxLabel(GeonkickWidget *label);
      GeonkickWidget* addWidget(GeonkickWidget *widget);

@@ -48,4 +48,3 @@ RightBar::RightBar(GeonkickWidget *parent)
         kitSettingsButton->setCheckable(true);
         RK_ACT_BIND(kitSettingsButton, toggled, RK_ACT_ARGS(bool b), this, showKit());
 }
-

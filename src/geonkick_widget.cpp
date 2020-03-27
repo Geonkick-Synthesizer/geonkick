@@ -2,7 +2,7 @@
  * File name: geonkick_widget.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -25,7 +25,9 @@
 
 #include <RkPainter.h>
 
-GeonkickWidget::GeonkickWidget(RkMain *app, const RkNativeWindowInfo &info, Rk::WindowFlags flags)
+GeonkickWidget::GeonkickWidget(RkMain *app,
+                               const RkNativeWindowInfo &info,
+                               Rk::WindowFlags flags)
         : RkWidget(app, info, flags)
 {
         setBackgroundColor(68, 68, 70);
@@ -55,10 +57,6 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
         setFont(f);
 }
 
-GeonkickWidget::~GeonkickWidget()
-{
-}
-
 void GeonkickWidget::paintEvent(const std::shared_ptr<RkPaintEvent> &event)
 {
         if (!backgroundImage.isNull()) {
@@ -82,4 +80,3 @@ void GeonkickWidget::setBackgroundImage(const RkImage &img)
                 update();
         }
 }
-

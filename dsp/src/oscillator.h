@@ -28,8 +28,8 @@
 #include "envelope.h"
 #include "filter.h"
 
-#define GKICK_OSC_DEFAULT_AMPLITUDE   1.0
-#define GKICK_OSC_DEFAULT_FREQUENCY   150
+#define GKICK_OSC_DEFAULT_AMPLITUDE   1.0f
+#define GKICK_OSC_DEFAULT_FREQUENCY   150.0f
 
 enum geonkick_osc_state {
         GEONKICK_OSC_STATE_DISABLED = 0,
@@ -75,7 +75,8 @@ enum geonkick_error
 gkick_osc_create_envelopes(struct gkick_oscillator *osc);
 
 struct gkick_envelope*
-gkick_osc_get_envelope(struct gkick_oscillator *osc,  size_t env_index);
+gkick_osc_get_envelope(struct gkick_oscillator *osc,
+                       size_t env_index);
 
 void
 gkick_osc_increment_phase(struct gkick_oscillator *osc,

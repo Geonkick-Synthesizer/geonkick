@@ -2,7 +2,7 @@
  * File name: geonkick_button.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -32,13 +32,16 @@ class GeonkickButton: public GeonkickWidget
 {
  public:
         GeonkickButton(GeonkickWidget *parent = nullptr);
-        virtual ~GeonkickButton();
+        virtual ~GeonkickButton() = default;
         void setPressedImage(const RkImage &img);
         void setUnpressedImage(const RkImage &img);
         bool isPressed() const;
         bool isCheckable();
 
-        RK_DECL_ACT(toggled, toggled(bool pressed), RK_ARG_TYPE(bool), RK_ARG_VAL(pressed));
+        RK_DECL_ACT(toggled,
+                    toggled(bool pressed),
+                    RK_ARG_TYPE(bool),
+                    RK_ARG_VAL(pressed));
         void setPressed(bool pressed);
         void setCheckable(bool checkable);
 

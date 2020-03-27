@@ -32,7 +32,7 @@ class EffectsGroupBox: public GeonkickGroupBox
 {
  public:
         EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent);
-        ~EffectsGroupBox();
+        ~EffectsGroupBox() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:

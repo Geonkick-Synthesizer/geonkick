@@ -87,9 +87,10 @@ void KickGraph::drawKickGraph()
                 gkick_real k = static_cast<gkick_real>(graphSize.width()) / kickBuffer.size();
 
                 /**
-                 * In this loop there is an implementation of an antialiasing algorithm
-                 * that reduces in most of the cases antialiasing,
-                 * and at the same reduces and normalizes the size of the buffer.
+                 * In this loop there is an implementation of an
+                 * antialiasing algorithm that reduces in most of
+                 * the cases antialiasing, and at the same time
+                 * reduces and normalizes the size of the buffer.
                  */
                 int j = 0;
                 RkPoint prev;

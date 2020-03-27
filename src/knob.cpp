@@ -2,7 +2,7 @@
  * File name: knob.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -39,10 +39,6 @@ Knob::Knob(GeonkickWidget *parent)
           , isSelected{false}
 {
         show();
-}
-
-Knob::~Knob()
-{
 }
 
 void Knob::setKnobImage(const RkImage &img)
@@ -134,7 +130,6 @@ void Knob::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
 double Knob::getValue(void) const
 {
         double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
-
         double val;
         if (getRangeType() == RangeType::Logarithmic) {
                 double logVal = log10(rangeFrom) + k * (log10(rangeTo) - log10(rangeFrom));

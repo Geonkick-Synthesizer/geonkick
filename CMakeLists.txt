@@ -118,15 +118,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 endif()
 
-# Enables the double precision calculation for API.
-# By default is single point precision.
-option(ENABLE_DOUBLE_PRECISION "Enable double precision for API" OFF)
-
-if (ENABLE_DOUBLE_PRECISION)
-  list(APPEND GKICK_API_FLAGS "-DGEONKICK_DOUBLE_PRECISION")
-  list(APPEND GKICK_API_FLAGS_LV2 "-DGEONKICK_DOUBLE_PRECISION")
-endif()
-
 if (ENABLE_LOGGING)
   message(STATUS "set debug level")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
@@ -153,9 +144,9 @@ endif()
 
 if (GKICK_PLUGIN)
   if(CMAKE_SYSTEM_NAME MATCHES Windows)
-	message(STATUS "Checking for VST SDK...")
+	message(STATUS "checking for VST SDK...")
   else()
-	message(STATUS "Checking for LV2 library...")
+	message(STATUS "checking for LV2 library...")
 	pkg_check_modules(LV2 lv2)
 	if (NOT LV2_FOUND)
 		message(FATAL_ERROR "can't find LV2 library")

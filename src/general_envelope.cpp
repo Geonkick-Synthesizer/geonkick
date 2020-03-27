@@ -2,7 +2,7 @@
  * File name: general_envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -33,10 +33,6 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         RK_ACT_BIND(geonkickApi, kickAmplitudeUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
         setType(Envelope::Type::Amplitude);
         setPoints(geonkickApi->getKickEnvelopePoints(type()));
-}
-
-GeneralEnvelope::~GeneralEnvelope()
-{
 }
 
 void GeneralEnvelope::pointAddedEvent(double x, double y)

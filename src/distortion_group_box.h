@@ -35,7 +35,7 @@ class DistortionGroupBox: public GeonkickGroupBox
 {
  public:
         DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent);
-        ~DistortionGroupBox();
+        ~DistortionGroupBox() = default;
 
         void updateGui();
         void setVolume(int val);

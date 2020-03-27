@@ -46,7 +46,3 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
 }
 
-EffectsGroupBox::~EffectsGroupBox()
-{
-}
-

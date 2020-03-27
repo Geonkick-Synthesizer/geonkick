@@ -2,7 +2,7 @@
  * File name: top_bar.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -40,8 +40,10 @@ class TopBar : public GeonkickWidget
         RK_DECL_ACT(openFile, openFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openAbout, openAbout(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openExport, openExport(), RK_ARG_TYPE(), RK_ARG_VAL());
-        RK_DECL_ACT(layerSelected, layerSelected(GeonkickApi::Layer layer, bool b),
-                    RK_ARG_TYPE(GeonkickApi::Layer, bool), RK_ARG_VAL(layer, b));
+        RK_DECL_ACT(layerSelected,
+                    layerSelected(GeonkickApi::Layer layer, bool b),
+                    RK_ARG_TYPE(GeonkickApi::Layer, bool),
+                    RK_ARG_VAL(layer, b));
         void updateGui();
 
  protected:

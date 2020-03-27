@@ -166,7 +166,8 @@ class GeonkickLv2Plugin
                         return;
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
                 for (auto i = 0; i < nsamples; i++) {
-                        while (it->time.frames == i && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
+                        while (it->time.frames == i
+                               && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
                                 const uint8_t* const msg = (const uint8_t*)(it + 1);
                                 switch (lv2_midi_message_type(msg))
                                 {
@@ -332,7 +333,6 @@ static int gkick_idle(LV2UI_Handle ui)
 static const void* gkick_extension_data(const char* uri)
 {
     static const LV2UI_Idle_Interface idleInterface = {gkick_idle};
-
     if (std::string(uri) == std::string(LV2_UI__idleInterface))
             return &idleInterface;
     return nullptr;
@@ -355,11 +355,6 @@ const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index)
         }
 }
 
-/**
- * Functions for LV2 plugin.
- *
- * The Geonkick API instance is loaded alone.
- */
 static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
                                     double                    rate,
                                     const char*               bundle_path,

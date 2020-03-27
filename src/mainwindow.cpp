@@ -2,7 +2,7 @@
  * File name: mainwindow.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -37,11 +37,9 @@
 #include "kit_widget.h"
 
 #include <RkPlatform.h>
-
 #include <X11/keysym.h>
 #include <X11/keysymdef.h>
 #include <X11/XKBlib.h>
-
 #include <RkEvent.h>
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
@@ -102,11 +100,17 @@ bool MainWindow::init(void)
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
-        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Open));
-        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(), this, openFileDialog(FileDialog::Type::Save));
-        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(), this, openAboutDialog());
-        RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(), this, openExportDialog());
-        RK_ACT_BIND(topBar, layerSelected, RK_ACT_ARGS(GeonkickApi::Layer layer, bool b), geonkickApi, enbaleLayer(layer, b));
+        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
+                    this, openFileDialog(FileDialog::Type::Open));
+        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
+                    this, openFileDialog(FileDialog::Type::Save));
+        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(),
+                    this, openAboutDialog());
+        RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
+                    this, openExportDialog());
+        RK_ACT_BIND(topBar, layerSelected,
+                    RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
+                    geonkickApi, enbaleLayer(layer, b));
 
         auto rightBar = new RightBar(this);
         rightBar->show();
@@ -120,7 +124,8 @@ bool MainWindow::init(void)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
         auto limiterWidget = new Limiter(geonkickApi, this);
-        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8, envelopeWidget->y());
+        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8,
+                                   envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
 
@@ -136,22 +141,36 @@ bool MainWindow::init(void)
                     setPresetName(geonkickApi->getPercussionName(id)));
         controlAreaWidget->show();
 
-        // TODO: Key shortcut feature will be implemented in the next version of Redkite.
+        // TODO: Key shortcut feature will be implemented in the next versions of Redkite.
         auto info = nativeWindowInfo();
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_o), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_O), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_h), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_H), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_k), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_K), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_a), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_A), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_e), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_E), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_r), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_R), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_s), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S), ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_o),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_O),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_h),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_H),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_k),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_K),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_a),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_A),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_e),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_E),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_r),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_R),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_s),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
+        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S),
+                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
         XFlush(info->display);
 
         if (geonkickApi->isStandalone() && !presetName.empty())
@@ -172,14 +191,17 @@ void MainWindow::savePreset(const std::string &fileName)
         if (state->save(fileName)) {
                 std::filesystem::path filePath(fileName);
                 topBar->setPresetName(filePath.stem());
-                geonkickApi->setCurrentWorkingPath("SavePreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
+                geonkickApi->setCurrentWorkingPath("SavePreset",
+                                                   filePath.has_parent_path() ? filePath.parent_path() : filePath);
         }
 }
 
 void MainWindow::openPreset(const std::string &fileName)
 {
         if (fileName.size() < 7) {
-                RK_LOG_ERROR("Open Preset: " << "Can't open preset. File name empty or wrong format. Format example: 'mykick.gkick'");
+                RK_LOG_ERROR("Open Preset: "
+                             << "Can't open preset. File name "
+                             << "empty or wrong format. Format example: 'mykick.gkick'");
                 return;
         }
 
@@ -194,11 +216,13 @@ void MainWindow::openPreset(const std::string &fileName)
         std::ifstream file;
         file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
-                RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME) << ". Can't open preset.");
+                RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME)
+                             << ". Can't open preset.");
                 return;
         }
 
-        std::string fileData((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+        std::string fileData((std::istreambuf_iterator<char>(file)),
+                             (std::istreambuf_iterator<char>()));
         auto state = std::make_shared<PercussionState>();
         state->loadData(fileData);
         state->setId(geonkickApi->currentPercussion());
@@ -206,7 +230,8 @@ void MainWindow::openPreset(const std::string &fileName)
         controlAreaWidget->getKitWidget()->update();
         topBar->setPresetName(filePath.stem());
         file.close();
-        geonkickApi->setCurrentWorkingPath("OpenPreset", filePath.has_parent_path() ? filePath.parent_path() : filePath);
+        geonkickApi->setCurrentWorkingPath("OpenPreset",
+                                           filePath.has_parent_path() ? filePath.parent_path() : filePath);
         updateGui();
 }
 
@@ -216,10 +241,18 @@ void MainWindow::openFileDialog(FileDialog::Type type)
         fileDialog->setFilters({".gkick", ".GKICK"});
         if (type == FileDialog::Type::Open) {
                 fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset"));
-                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, openPreset(file));
+                RK_ACT_BIND(fileDialog,
+                            selectedFile,
+                            RK_ACT_ARGS(const std::string &file),
+                            this,
+                            openPreset(file));
         } else {
                 fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset"));
-                RK_ACT_BIND(fileDialog, selectedFile, RK_ACT_ARGS(const std::string &file), this, savePreset(file));
+                RK_ACT_BIND(fileDialog,
+                            selectedFile,
+                            RK_ACT_ARGS(const std::string &file),
+                            this,
+                            savePreset(file));
         }
 }
 

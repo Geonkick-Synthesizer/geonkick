@@ -2,7 +2,7 @@
  * File name: geonkick_button.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -39,10 +39,6 @@ GeonkickCheckbox::GeonkickCheckbox(GeonkickWidget *parent)
         RK_ACT_BIND(checkboxButton, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
         RK_ACT_BIND(checkboxLabel, SIGNAL(toggled(bool)), this, SLOT(setChecked(bool)));
         RK_ACT_BIND(checkboxLabel, SIGNAL(toggled(bool)), this, SIGNAL(stateUpdated(bool)));
-}
-
-GeonkickCheckbox::~GeonkickCheckbox()
-{
 }
 
 void GeonkickCheckbox::setCheckboxLabelImage(const QPixmap &pixmap)

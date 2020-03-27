@@ -32,28 +32,28 @@
 
 #include <sndfile.h>
 
-extern const unsigned char rk_export_bk_png[];
-extern const unsigned char rk_export_format_unpressed_png[];
-extern const unsigned char rk_export_format_pressed_png[];
-extern const unsigned char rk_export_browse_png[];
-extern const unsigned char rk_export_active_png[];
-extern const unsigned char rk_export_cancel_png[];
-extern const unsigned char rk_flac16_radio_button_png[];
-extern const unsigned char rk_flac16_radio_button_active_png[];
-extern const unsigned char rk_flac24_radio_button_png[];
-extern const unsigned char rk_flac24_radio_button_active_png[];
-extern const unsigned char rk_wav16_radio_button_png[];
-extern const unsigned char rk_wav16_radio_button_active_png[];
-extern const unsigned char rk_wav24_radio_button_png[];
-extern const unsigned char rk_wav24_radio_button_active_png[];
-extern const unsigned char rk_wav32_radio_button_png[];
-extern const unsigned char rk_wav32_radio_button_active_png[];
-extern const unsigned char rk_ogg_radio_button_png[];
-extern const unsigned char rk_ogg_radio_button_active_png[];
-extern const unsigned char rk_mono_radio_button_png[];
-extern const unsigned char rk_mono_radio_button_active_png[];
-extern const unsigned char rk_stereo_radio_button_png[];
-extern const unsigned char rk_stereo_radio_button_active_png[];
+RK_DECLARE_IMAGE_RC(export_bk);
+RK_DECLARE_IMAGE_RC(export_format_unpressed);
+RK_DECLARE_IMAGE_RC(export_format_pressed);
+RK_DECLARE_IMAGE_RC(export_browse);
+RK_DECLARE_IMAGE_RC(export_active);
+RK_DECLARE_IMAGE_RC(export_cancel);
+RK_DECLARE_IMAGE_RC(flac16_radio_button);
+RK_DECLARE_IMAGE_RC(flac16_radio_button_active);
+RK_DECLARE_IMAGE_RC(flac24_radio_button);
+RK_DECLARE_IMAGE_RC(flac24_radio_button_active);
+RK_DECLARE_IMAGE_RC(wav16_radio_button);
+RK_DECLARE_IMAGE_RC(wav16_radio_button_active);
+RK_DECLARE_IMAGE_RC(wav24_radio_button);
+RK_DECLARE_IMAGE_RC(wav24_radio_button_active);
+RK_DECLARE_IMAGE_RC(wav32_radio_button);
+RK_DECLARE_IMAGE_RC(wav32_radio_button_active);
+RK_DECLARE_IMAGE_RC(ogg_radio_button);
+RK_DECLARE_IMAGE_RC(ogg_radio_button_active);
+RK_DECLARE_IMAGE_RC(mono_radio_button);
+RK_DECLARE_IMAGE_RC(mono_radio_button_active);
+RK_DECLARE_IMAGE_RC(stereo_radio_button);
+RK_DECLARE_IMAGE_RC(stereo_radio_button_active);
 
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
@@ -74,7 +74,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         , cancelButton{nullptr}
         , errorLabel{nullptr}
         , selectedFormat{ExportFormat::Wav16}
-        , channelsType{ChannelsType::Stereo}
+        , channelsType{ChannelsType::Mono}
 {
         std::string format = geonkickApi->getSettings("ExportDialog/Format");
         if (!format.empty())
@@ -112,7 +112,6 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
 
         fileNameEdit = new RkLineEdit(this);
         fileNameEdit->setFont(font());
-        fileNameEdit->setTitle("fileNameEdit");
         fileNameEdit->show();
         fileNameEdit->setFixedSize(100, 25);
         fileNameEdit->setPosition(380, 54);

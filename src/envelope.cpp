@@ -44,10 +44,6 @@ Envelope::Envelope(const RkRect &area)
 {
 }
 
-Envelope::~Envelope()
-{
-}
-
 int Envelope::W(void) const
 {
         return drawingArea.width();
@@ -503,7 +499,6 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                 }
                 y = k * H();
         }
-
         return RkPoint(x, y);
 }
 

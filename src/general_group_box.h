@@ -2,7 +2,7 @@
  * File name: general_group_box.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -38,7 +38,6 @@ class GeneralGroupBox: public GeonkickGroupBox
 {
  public:
         GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
-        ~GeneralGroupBox();
         void updateGui();
 
  protected:

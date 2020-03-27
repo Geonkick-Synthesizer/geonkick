@@ -67,7 +67,6 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         inLimiterLabel->setFixedSize(24, 10);
         inLimiterLabel->setPosition(inLimiterSlider->x() - inLimiterLabel->width() - labelD, inLimiterSlider->y());
 
-
         // Volume
         volumeSlider = new GeonkickSlider(this);
         volumeSlider->setFixedSize(sliderW, sliderH);
@@ -91,10 +90,6 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         driveLabel->setFixedSize(24, 8);
         driveLabel->setPosition(driveSlider->x() - driveLabel->width() - labelD, driveSlider->y());
         show();
-}
-
-DistortionGroupBox::~DistortionGroupBox()
-{
 }
 
 void DistortionGroupBox::setInLimiter(int val)

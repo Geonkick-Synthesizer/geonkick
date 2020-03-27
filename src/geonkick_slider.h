@@ -38,7 +38,7 @@ class GeonkickSlider: public GeonkickWidget
 
         GeonkickSlider(GeonkickWidget *parent,
                        Orientation orientation = Orientation::Horizontal);
-        ~GeonkickSlider();
+        ~GeonkickSlider() = default;
         void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
         int getValue() const;
         void onSetValue(int value);

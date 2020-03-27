@@ -2,7 +2,7 @@
  * File name: synthesizer.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://geontime.com)
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -35,8 +35,9 @@ struct gkick_synth {
       	atomic_size_t id;
         char name[30];
 
-	/* Speciafies if synthesizer is active. */
+	/* Speciafies if the synthesizer is active. */
 	atomic_bool is_active;
+
         gkick_real current_time;
         struct gkick_oscillator **oscillators;
         size_t oscillators_number;
@@ -79,7 +80,6 @@ struct gkick_synth {
 
         /**
          * Audio output that is shared with audio thread
-         * in a lock-free manner (atomically swaping buffers).
          */
         struct gkick_audio_output *output;
 
@@ -87,20 +87,23 @@ struct gkick_synth {
          * Pointer to a funtion to be
          * called when the synth has finished the synthesis.
          */
-        void (*buffer_callback) (void*, gkick_real *buff, size_t size, size_t id);
+        void (*buffer_callback) (void*, gkick_real *buff,
+                                 size_t size, size_t id);
         void *callback_args;
-
         pthread_mutex_t lock;
 };
 
 enum geonkick_error
 gkick_synth_new(struct gkick_synth **synth);
 
-void gkick_synth_free(struct gkick_synth **synth);
+void
+gkick_synth_free(struct gkick_synth **synth);
 
-void gkick_synth_lock(struct gkick_synth *synth);
+void
+gkick_synth_lock(struct gkick_synth *synth);
 
-void gkick_synth_unlock(struct gkick_synth *synth);
+void
+gkick_synth_unlock(struct gkick_synth *synth);
 
 enum geonkick_error
 gkick_synth_create_oscillators(struct gkick_synth *synth);
@@ -129,11 +132,13 @@ gkick_synth_osc_get_env(struct gkick_synth *synth,
                         size_t env_index);
 
 enum geonkick_error
-gkick_synth_osc_set_fm(struct gkick_synth *synth, size_t index,
+gkick_synth_osc_set_fm(struct gkick_synth *synth,
+                       size_t index,
 		       bool is_fm);
 
 enum geonkick_error
-gkick_synth_osc_is_fm(struct gkick_synth *synth, size_t index,
+gkick_synth_osc_is_fm(struct gkick_synth *synth,
+                      size_t index,
 		      bool *is_fm);
 
 enum geonkick_error
@@ -305,7 +310,8 @@ enum geonkick_error
 gkick_synth_process(struct gkick_synth *synth);
 
 gkick_real
-gkick_synth_get_value(struct gkick_synth *synth, gkick_real t);
+gkick_synth_get_value(struct gkick_synth *synth,
+                      gkick_real t);
 
 void
 gkick_synth_reset_oscillators(struct gkick_synth *synth);
@@ -418,10 +424,12 @@ gkick_synth_distortion_is_enabled(struct gkick_synth *synth,
 				  int *enabled);
 
 enum geonkick_error
-gkick_synth_distortion_get_in_limiter(struct gkick_synth *synth, gkick_real *limit);
+gkick_synth_distortion_get_in_limiter(struct gkick_synth *synth,
+                                      gkick_real *limit);
 
 enum geonkick_error
-gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth, gkick_real limit);
+gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth,
+                                      gkick_real limit);
 
 enum geonkick_error
 gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume);

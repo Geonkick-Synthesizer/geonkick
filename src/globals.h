@@ -42,7 +42,6 @@
 #include <string_view>
 
 #include "geonkick.h"
-
 #include "RkLog.h"
 
 #define GEOKICK_APP_NAME "Geonkick"
