@@ -91,7 +91,7 @@
 "type": 1, 
 "cutoff": 531.26624, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
-"factor": 0.55600
+"factor": 19.44863
 }
 }
 ,
@@ -139,7 +139,7 @@
 "type": 2, 
 "cutoff": 7039.38037, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
-"factor": 1.00000
+"factor": 19.44863
 }
 }
 ,
@@ -216,9 +216,14 @@
 }
 ,
 "kick": {
+"id": 0,
+"channel": 0,
+"name": "Default",
+"playing_key": -1,
 "layers": [0],
 "layers_amplitude": [1.00000, 1.00000, 1.00000],
 "limiter": 0.96354, 
+"tuned_output": false, 
 "ampl_env": {
 "amplitude": 0.90370, 
 "length": 651.11108, 
@@ -227,11 +232,11 @@
 "enabled": true, 
 "type": 2, 
 "cutoff": 5709.33, 
-"factor": 0.85, 
+"factor": 18.96, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 0.84000 , 0.77625], [ 1.00000 , 1.00000]]
 }, 
 "compressor": {
-"enabled": 0, 
+"enabled": false, 
 "attack": 0.01000, 
 "release": 0.01000, 
 "threshold": 0.00000, 
@@ -241,8 +246,11 @@
 }, 
 "distortion": {
 "enabled": false, 
+"in_limiter": 1.00000, 
 "volume": 0.01047, 
-"drive": 13.00000
+"drive": 13.00000, 
+"drive_env": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
 }
 }
 }
