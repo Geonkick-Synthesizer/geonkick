@@ -11,7 +11,7 @@ Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 1.9.2
+Version: 1.9.2 (works only with Redkite version 0.6.3)
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -116,6 +116,8 @@ On Debian, Ubuntu, Ubuntu Studio install:
 First build and install [Redkite](https://github.com/geontime/redkite).
 
 Clone the Geonkick code repository, compile and install
+
+Note: works uilds only with Redkite version 0.6.3.
 
         git clone https://gitlab.com/geontime/geonkick.git
         mkdir geonkick/build
