@@ -93,9 +93,9 @@ void KitWidget::updatePercussionsLines()
 
 void KitWidget::createKeys()
 {
-        constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C4",
-                        "C#4", "D4", "D#4", "E4",
-                        "F4", "F#4", "G4", "G#4",
+        constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C5",
+                        "C#5", "D5", "D#5", "E5",
+                        "F5", "F#5", "G5", "G#5",
                         "A5", "A#5", "B5", "C5", "Any"};
 
         char n = 0;
