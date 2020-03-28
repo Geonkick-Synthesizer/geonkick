@@ -11,6 +11,7 @@ Author: Iurie Nistor
 License: GPLv3
 
 Version: 1.10.0
+Note: v1.10.0 is not released yet and it not yet stable. Use v1.9.2 for production.
 
 If you have an idea about a feature or found an issue, please, submit it:
 
