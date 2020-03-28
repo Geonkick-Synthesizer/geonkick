@@ -136,4 +136,4 @@ Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro,
 
 #### Documentation
 
-Please, see documentation at https://gitlab.com/geontime/geonkick/-/wikis/Geonkick-Documentation
+Please, see the documentation at https://gitlab.com/geontime/geonkick/-/wikis/Geonkick-Documentation
