@@ -661,7 +661,7 @@ geonkick_play(struct geonkick *kick)
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_audio_play(kick->audio);
+        return gkick_audio_play(kick->audio, kick->per_index);
 }
 
 enum geonkick_error

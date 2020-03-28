@@ -52,7 +52,8 @@ gkick_audio_get_limiter_val(struct gkick_audio *audio,
                             gkick_real *limit);
 
 enum geonkick_error
-gkick_audio_play(struct gkick_audio *audio);
+gkick_audio_play(struct gkick_audio *audio,
+                 size_t id);
 
 enum geonkick_error
 gkick_audio_key_pressed(struct gkick_audio *audio,

@@ -56,6 +56,12 @@ typedef float gkick_real;
 #define GEONKICK_API_VERSION 0x011000
 #define GEONKICK_API_NAME "Geonkick"
 
+#ifdef GEONKICK_AUDIO_JACK
+#define GKICK_IS_STANDALONE (1)
+#else
+#define GKICK_IS_STANDALONE (0)
+#endif
+
 enum geonkick_error {
   	GEONKICK_OK                    = 0,
 	GEONKICK_ERROR                 = 1,

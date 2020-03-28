@@ -105,17 +105,16 @@ gkick_audio_get_limiter_val(struct gkick_audio *audio,
 }
 
 enum geonkick_error
-gkick_audio_play(struct gkick_audio *audio)
+gkick_audio_play(struct gkick_audio *audio,
+                 size_t id)
 {
         if (audio == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                if (audio->audio_outputs[i]->enabled)
-                        gkick_audio_output_play(audio->audio_outputs[i]);
-        }
+        if (id < GEONKICK_MAX_PERCUSSIONS && audio->audio_outputs[id]->enabled)
+                gkick_audio_output_play(audio->audio_outputs[id]);
         return GEONKICK_OK;
 }
 

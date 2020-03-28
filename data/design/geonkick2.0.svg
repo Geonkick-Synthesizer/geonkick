@@ -4405,19 +4405,6 @@
     <filter
        inkscape:collect="always"
        style="color-interpolation-filters:sRGB"
-       id="filter11780"
-       x="-0.048"
-       width="1.096"
-       y="-0.048"
-       height="1.096">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.085907946"
-         id="feGaussianBlur11782" />
-    </filter>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
        id="filter10330-0-8-2-7-8-8-3-6-3-1-5-3"
        x="-0.013693905"
        width="1.0273879"
@@ -17277,7 +17264,7 @@
            sodipodi:role="line">Controls</tspan></text>
     </g>
     <rect
-       style="display:inline;opacity:1;fill:#858585;fill-opacity:1;stroke:none;stroke-width:0.23651406;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#3b9604;fill-opacity:1;stroke:none;stroke-width:0.23651406;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        id="rect8875-3-36"
        width="4.757268"
        height="4.757268"
@@ -17285,17 +17272,9 @@
        y="215.21231"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
        inkscape:export-xdpi="128.14078"
-       inkscape:export-ydpi="128.14078" />
-    <rect
-       style="display:inline;opacity:1;fill:#c1c1c1;fill-opacity:1;stroke:none;stroke-width:0.21355154;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal;filter:url(#filter11780)"
-       id="rect8875-3-36-7"
-       width="4.2953973"
-       height="4.2953973"
-       x="63.376602"
-       y="215.44325"
-       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
-       inkscape:export-xdpi="128.14078"
-       inkscape:export-ydpi="128.14078" />
+       inkscape:export-ydpi="128.14078"
+       rx="0.79374999"
+       ry="0.79374999" />
     <path
        sodipodi:type="star"
        id="path7227"
@@ -17311,7 +17290,7 @@
        inkscape:randomized="0"
        d="m 66.804869,217.59094 -1.28057,0.73934 -1.280569,0.73934 v -1.47868 -1.47867 l 1.280569,0.73934 z"
        inkscape:transform-center-x="-0.42685405"
-       style="stroke-width:0.04564261"
+       style="stroke-width:0.04564261;fill:#282828;fill-opacity:0.72815531"
        inkscape:transform-center-y="5.0622963e-06"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play.png"
        inkscape:export-xdpi="128.14078"
