@@ -47,7 +47,10 @@ gkick_jack_process_callback(jack_nframes_t nframes,
 			struct gkick_note_info note;
                         memset(&note, 0, sizeof(struct gkick_note_info));
                         gkick_jack_get_note_info(&event, &note);
-                        gkick_mixer_key_pressed(jack->mixer, &note);
+                        if (note.state == GKICK_KEY_STATE_PRESSED
+                            || note.state == GKICK_KEY_STATE_RELEASED) {
+                                gkick_mixer_key_pressed(jack->mixer, &note);
+                        }
                         event_index++;
                         if (event_index < events_count)
                                 jack_midi_event_get(&event, port_buf, event_index);
@@ -109,12 +112,12 @@ gkick_jack_get_note_info(jack_midi_event_t *event,
         note->state = GKICK_KEY_STATE_DEFAULT;
         if (((*(event->buffer) & 0xf0)) == 0x90) {
                 note->state = GKICK_KEY_STATE_PRESSED;
-                note->channel     = 1;
+                note->channel     = *(event->buffer) & 0x0f;
                 note->note_number = event->buffer[1];
                 note->velocity    = event->buffer[2];
         } else if(((*(event->buffer) & 0xf0)) == 0x80) {
                 note->state       = GKICK_KEY_STATE_RELEASED;
-                note->channel     = 1;
+                note->channel     = *(event->buffer) & 0x0f;
                 note->note_number = event->buffer[1];
                 note->velocity    = event->buffer[2];
         }
