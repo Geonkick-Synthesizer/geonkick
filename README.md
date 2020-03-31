@@ -134,6 +134,10 @@ Clone the Geonkick code repository, compile and install
 
 Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
 
+Notes:
+
+GKICK_REDKITE_SDK_PATH for cmake will point where Redkite GUI tookit is installed.
+
 #### Documentation
 
 Please, see the documentation at:
