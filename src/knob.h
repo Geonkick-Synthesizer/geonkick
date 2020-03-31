@@ -40,7 +40,7 @@ public:
            Logarithmic
    };
 
-   Knob(GeonkickWidget *parent);
+   explicit Knob(GeonkickWidget *parent);
    virtual ~Knob() = default;
    double getValue(void) const;
    void setRange(double from, double to);

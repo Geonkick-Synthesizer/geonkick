@@ -28,7 +28,7 @@
 
 class AboutDialog: public GeonkickWidget {
  public:
-        AboutDialog(GeonkickWidget *parent);
+        explicit AboutDialog(GeonkickWidget *parent);
 };
 
 #endif // GEONKICK_ABOUT_H

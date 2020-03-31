@@ -39,7 +39,7 @@ class MainWindow : public GeonkickWidget
  public:
       explicit MainWindow(RkMain* app,
                           GeonkickApi *api,
-                          std::string preset = std::string());
+                          const std::string &preset = std::string());
       explicit MainWindow(RkMain* app,
                           GeonkickApi *api,
                           const RkNativeWindowInfo &info);

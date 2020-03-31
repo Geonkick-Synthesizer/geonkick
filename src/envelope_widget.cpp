@@ -227,9 +227,9 @@ void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
                 drawArea->updateKickGraph(graphImage);
 }
 
-Envelope* EnvelopeWidget::getEnvelope(Envelope::Category type)
+Envelope* EnvelopeWidget::getEnvelope(Envelope::Category category)
 {
-        auto res = envelopes.find(static_cast<int>(type));
+        auto res = envelopes.find(static_cast<int>(category));
         if (res != envelopes.end())
                 return res->second.get();
         return nullptr;

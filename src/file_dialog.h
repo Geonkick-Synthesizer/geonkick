@@ -36,7 +36,7 @@ class GeonkickSlider;
 
 class FilesView: public GeonkickWidget {
  public:
-        FilesView(GeonkickWidget *parent);
+        explicit FilesView(GeonkickWidget *parent);
         std::string selectedFile() const;
         std::string getCurrentPath() const;
         void setCurrentPath(const std::string &path);

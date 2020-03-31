@@ -1672,15 +1672,14 @@ enum geonkick_error
 gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth,
                                       gkick_real limit)
 {
-        enum geonkick_error res;
-        res = gkick_distortion_set_in_limiter(synth->distortion,
+        gkick_distortion_set_in_limiter(synth->distortion,
                                               limit);
 	int enabled = 0;
-        res = gkick_distortion_is_enabled(synth->distortion,
+        gkick_distortion_is_enabled(synth->distortion,
                                           &enabled);
-        if (res == GEONKICK_OK && enabled)
+        if (enabled)
                 synth->buffer_update = true;
-        return res;
+        return GEONKICK_OK;
 }
 
 enum geonkick_error

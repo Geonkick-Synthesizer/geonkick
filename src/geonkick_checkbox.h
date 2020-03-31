@@ -30,7 +30,7 @@ class GeonkickButton;
 
 class GeonkickCheckbox: public GeonkickWidget {
  public:
-        GeonkickCheckbox(GeonkickWidget *parent = nullptr);
+        explicit GeonkickCheckbox(GeonkickWidget *parent);
         virtual ~GeonkickCheckbox() = default;
         void setCheckboxLabelImage(const QPixmap &pixmap);
         void setCheckboxLabelImage(const std::string &file);

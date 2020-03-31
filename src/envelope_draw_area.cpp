@@ -207,7 +207,7 @@ const RkRect EnvelopeWidgetDrawingArea::getDrawingArea()
         return drawingArea;
 }
 
-void EnvelopeWidgetDrawingArea::updateKickGraph(std::shared_ptr<RkImage> graphImage)
+void EnvelopeWidgetDrawingArea::updateKickGraph(const std::shared_ptr<RkImage> &graphImage)
 {
         kickGraphImage = graphImage;
         update();

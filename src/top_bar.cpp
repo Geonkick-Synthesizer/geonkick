@@ -132,10 +132,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         updateGui();
 }
 
-TopBar::~TopBar()
-{
-}
-
 void TopBar::createLyersButtons()
 {
         int layersX = width() - 180;

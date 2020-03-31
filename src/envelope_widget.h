@@ -46,8 +46,8 @@ public:
 
  protected:
      void showEnvelopeType(Envelope::Type type);
-     void showEnvelope(Envelope::Category type);
-     Envelope* getEnvelope(Envelope::Category type);
+     void showEnvelope(Envelope::Category category);
+     Envelope* getEnvelope(Envelope::Category category);
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
      void setLayer(GeonkickApi::Layer layer);

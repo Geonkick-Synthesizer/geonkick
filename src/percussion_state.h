@@ -130,7 +130,7 @@ class PercussionState
  protected:
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(int index,  const rapidjson::Value &osc);
-        std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
+        static std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
         void oscJson(std::ostringstream &jsonStream) const;
         void kickJson(std::ostringstream &jsonStream) const;
 

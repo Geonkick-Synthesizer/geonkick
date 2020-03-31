@@ -80,7 +80,7 @@ class GeonkickApi {
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
-  bool isOscillatorEnabled(int index) const;
+  bool isOscillatorEnabled(int oscillatorIndex) const;
   std::vector<RkRealPoint> oscillatorEvelopePoints(int oscillatorIndex,
                                                    EnvelopeType envelope) const;
   void addOscillatorEnvelopePoint(int oscillatorIndex,

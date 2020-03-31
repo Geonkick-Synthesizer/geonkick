@@ -31,7 +31,7 @@
 class GeonkickButton: public GeonkickWidget
 {
  public:
-        GeonkickButton(GeonkickWidget *parent = nullptr);
+        explicit GeonkickButton(GeonkickWidget *parent);
         virtual ~GeonkickButton() = default;
         void setPressedImage(const RkImage &img);
         void setUnpressedImage(const RkImage &img);

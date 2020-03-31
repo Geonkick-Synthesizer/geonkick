@@ -635,11 +635,11 @@ void GeonkickApi::updateKickEnvelopePoint(EnvelopeType envelope,
                                        pointIndex);
 }
 
-bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double value)
+bool GeonkickApi::setOscillatorAmplitude(int oscillatorIndex, double amplitude)
 {
         auto res = geonkick_set_osc_amplitude(geonkickApi,
                                               getOscIndex(oscillatorIndex),
-                                              value);
+                                              amplitude);
 	if (res != GEONKICK_OK)
 		return false;
 
@@ -680,11 +680,11 @@ double GeonkickApi::oscillatorAmplitude(int oscillatorIndex) const
 	return value;
 }
 
-bool GeonkickApi::setOscillatorFrequency(int oscillatorIndex, double value)
+bool GeonkickApi::setOscillatorFrequency(int oscillatorIndex, double frequency)
 {
 	if (geonkick_set_osc_frequency(geonkickApi,
                                        getOscIndex(oscillatorIndex),
-                                       value) != GEONKICK_OK)
+                                       frequency) != GEONKICK_OK)
 		return false;
 	return true;
 }

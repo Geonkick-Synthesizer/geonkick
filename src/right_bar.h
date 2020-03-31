@@ -29,8 +29,7 @@
 class RightBar : public GeonkickWidget
 {
  public:
-        RightBar(GeonkickWidget *parent);
-        ~RightBar() = default;
+        explicit RightBar(GeonkickWidget *parent);
         RK_DECL_ACT(showControls,
                     showControls(),
                     RK_ARG_TYPE(),

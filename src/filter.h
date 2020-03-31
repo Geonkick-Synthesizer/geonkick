@@ -33,7 +33,7 @@ class Knob;
 class Filter: public GeonkickWidget
 {
  public:
-        Filter(GeonkickWidget *parent);
+        explicit Filter(GeonkickWidget *parent);
 
         void enable(bool b);
         bool isEnabled() const;

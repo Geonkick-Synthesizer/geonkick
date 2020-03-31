@@ -42,7 +42,7 @@
 #include <X11/XKBlib.h>
 #include <RkEvent.h>
 
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api, std::string preset)
+MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
         , geonkickApi{api}
         , topBar{nullptr}
