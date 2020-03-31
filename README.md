@@ -12,6 +12,8 @@ License: GPLv3
 
 Version: 1.10.0
 
+Note: version 1.10 is not compatible with older versions
+
 If you have an idea about a feature or found an issue, please, submit it:
 
 * on [GitLab](https://gitlab.com/geontime/geonkick/issues)
