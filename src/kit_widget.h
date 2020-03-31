@@ -51,8 +51,8 @@ class KitWidget: public GeonkickWidget
                     updateGui(),
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
-        RK_DECL_ACT(currnetPercussionChanged,
-                    currnetPercussionChanged(int id),
+        RK_DECL_ACT(currentPercussionChanged,
+                    currentPercussionChanged(int id),
                     RK_ARG_TYPE(int),
                     RK_ARG_VAL(id));
         void addPercussion(const std::shared_ptr<PercussionState> &per);

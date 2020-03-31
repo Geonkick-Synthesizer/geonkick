@@ -137,7 +137,7 @@ bool MainWindow::init(void)
         RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
         RK_ACT_BIND(rightBar, showKit, RK_ACT_ARGS(), controlAreaWidget, showKit());
         RK_ACT_BIND(controlAreaWidget->getKitWidget(),
-                    currnetPercussionChanged,
+                    currentPercussionChanged,
                     RK_ACT_ARGS(int id),
                     topBar,
                     setPresetName(geonkickApi->getPercussionName(id)));

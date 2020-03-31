@@ -243,7 +243,7 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                 auto enabledPercussions = geonkickApi->enabledPercussions();
 		if (event->x() < percussionNameWidth) {
 			geonkickApi->setCurrentPercussion(id);
-                        currnetPercussionChanged(id);
+                        currentPercussionChanged(id);
                         update();
 			return;
 		} else if ((event->x() > percussionWidth + 5)
@@ -395,7 +395,8 @@ void KitWidget::openKit(const std::string &file)
         geonkickApi->setKitState(std::move(kit));
         geonkickApi->setCurrentWorkingPath("OpenKit", path);
         editPercussion->setText("");
-        currnetPercussionChanged(0);
+        geonkickApi->setCurrentPercussion(idFromLine(0));
+        currentPercussionChanged(idFromLine(0));
 	updatePercussionsLines();
         updateGui();
         update();
@@ -421,6 +422,8 @@ void KitWidget::removePercussion(int id)
 		if (*it == id) {
 			percussionsLines.erase(it);
 			std::sort(percussionsLines.begin(), percussionsLines.end());
+                        if (static_cast<decltype(id)>(geonkickApi->currentPercussion()) == id)
+                                geonkickApi->setCurrentPercussion(idFromLine(0));
 			break;
 		}
 	}
