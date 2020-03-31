@@ -3,7 +3,7 @@
 Version	1.10 is	incompatible with older	versions. It can load presets
 but there is a need to set again the values for	filters resonance.
 
-#### Freatures:
+#### Freatures
 
    - percussion kit - supports up the 16 percussions in the kit.
    - multichannel support - supports up to 16 audio output channels
@@ -14,12 +14,12 @@ but there is a need to set again the values for	filters resonance.
    - for build system check if Redkite is installed
    - documentation
 
-#### Improvements:
+#### Improvements
 
     - improved the checkbox for effects
     - resonance knob was reversed
 
-#### Fixes:
+#### Fixes
 
    - fixed skipping notes for some hosts when notes are in a raw
    - fixed the label of FM checkbox
