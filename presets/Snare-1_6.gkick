@@ -1,7 +1,6 @@
 {
 "osc8": {
-"enabled": false, 
-"is_fm": false, 
+"enabled": false,
 "function": 4,
 "phase": 0.00000, 
 "ampl_env": {
@@ -24,8 +23,7 @@
 }
 ,
 "osc7": {
-"enabled": false, 
-"is_fm": false, 
+"enabled": false,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -48,8 +46,7 @@
 }
 ,
 "osc6": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -72,8 +69,7 @@
 }
 ,
 "osc1": {
-"enabled": false, 
-"is_fm": false, 
+"enabled": false,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -96,8 +92,7 @@
 }
 ,
 "osc0": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -120,8 +115,7 @@
 }
 ,
 "osc2": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 4,
 "phase": 0.00000, 
 "ampl_env": {
@@ -139,13 +133,12 @@
 "type": 1, 
 "cutoff": 635.46259, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 0.70323 , 0.30395], [ 1.00000 , 0.41331]], 
-"factor": 14.30723
+"factor": 0.35250
 }
 }
 ,
 "osc3": {
-"enabled": false, 
-"is_fm": false, 
+"enabled": false,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -168,8 +161,7 @@
 }
 ,
 "osc4": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 1,
 "phase": 0.00000, 
 "ampl_env": {
@@ -192,8 +184,7 @@
 }
 ,
 "osc5": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 4,
 "phase": 0.00000, 
 "ampl_env": {
@@ -211,19 +202,13 @@
 "type": 2, 
 "cutoff": 1829.57092, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 0.82847]], 
-"factor": 5.96398
+"factor": 0.23200
 }
 }
 ,
 "kick": {
-"id": 0,
-"channel": 0,
-"name": "Default",
-"playing_key": -1,
 "layers": [0, 1],
-"layers_amplitude": [1.00000, 1.00000, 1.00000],
-"limiter": 5.94557, 
-"tuned_output": false, 
+"limiter": 1.00000, 
 "ampl_env": {
 "amplitude": 1.00000, 
 "length": 336.57407, 
@@ -232,11 +217,11 @@
 "enabled": true, 
 "type": 0, 
 "cutoff": 2583.10, 
-"factor": 18.01, 
+"factor": 0.83, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
 }, 
 "compressor": {
-"enabled": false, 
+"enabled": 0, 
 "attack": 0.01000, 
 "release": 0.01000, 
 "threshold": 0.00000, 
@@ -246,11 +231,8 @@
 }, 
 "distortion": {
 "enabled": false, 
-"in_limiter": 1.00000, 
 "volume": 0.17783, 
-"drive": 10.00000, 
-"drive_env": [
-[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+"drive": 10.00000
 }
 }
 }

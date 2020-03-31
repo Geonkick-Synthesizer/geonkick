@@ -91,7 +91,7 @@
 "type": 0, 
 "cutoff": 800.00000, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
-"factor": 1.29155
+"factor": 1.00000
 }
 }
 ,
@@ -139,7 +139,7 @@
 "type": 2, 
 "cutoff": 1404.54102, 
 "cutoff_env": [[ 0.00000 , 0.39095], [ 0.05935 , 1.00000], [ 0.82452 , 0.71069], [ 1.00000 , 0.48812]], 
-"factor": 18.47850
+"factor": 0.63000
 }
 }
 ,
@@ -216,14 +216,9 @@
 }
 ,
 "kick": {
-"id": 0,
-"channel": 0,
-"name": "Clap",
-"playing_key": -1,
 "layers": [0],
 "layers_amplitude": [1.00000, 1.00000, 1.00000],
 "limiter": 0.34061, 
-"tuned_output": false, 
 "ampl_env": {
 "amplitude": 0.80000, 
 "length": 358.51852, 
@@ -232,11 +227,11 @@
 "enabled": true, 
 "type": 2, 
 "cutoff": 2935.60, 
-"factor": 21.54, 
+"factor": 0.63, 
 "cutoff_env": [[ 0.00000 , 1.00000], [ 0.83484 , 0.54325], [ 1.00000 , 1.00000]]
 }, 
 "compressor": {
-"enabled": false, 
+"enabled": 0, 
 "attack": 0.01000, 
 "release": 0.01000, 
 "threshold": 0.00000, 
@@ -246,11 +241,8 @@
 }, 
 "distortion": {
 "enabled": false, 
-"in_limiter": 1.00000, 
 "volume": 0.10000, 
-"drive": 0.00000, 
-"drive_env": [
-[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+"drive": 0.00000
 }
 }
 }

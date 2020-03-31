@@ -26,7 +26,8 @@
 
 
 KitState::KitState()
-        : kitName{"Default"}
+        : kitAppVersion{0}
+        , kitName{"Default"}
         , kitAuthor{"Unknown"}
 {
 }
@@ -123,7 +124,26 @@ void KitState::fromJson(const std::string &jsonData)
 {
         rapidjson::Document document;
         document.Parse(jsonData.c_str());
-        if (document.IsObject()) {
+        if (!document.IsObject())
+                return;
+
+        for (const auto &m: document.GetObject()) {
+                if (m.name == "KitAppVersion" && m.value.IsInt()) {
+                        kitAppVersion = m.value.GetInt();
+                        break;
+                }
+        }
+
+        if (kitAppVersion < 0x011000) {
+                // Compatibility with older versions.
+                for (int i = 0; i < 2; i++) {
+                        auto state = std::make_shared<PercussionState>();
+                        state->loadObject(document);
+                        state->setId(i);
+                        state->setChannel(i);
+                        addPercussion(state);
+                }
+        } else {
                 for (const auto &m: document.GetObject()) {
                         if (m.name == "name" && m.value.IsString())
                                 setName(m.value.GetString());
@@ -152,6 +172,7 @@ std::string KitState::toJson() const
 {
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
+        jsonStream << "\"KitAppVersion\": " << GEOKICK_APP_VERSION << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
         jsonStream << "\"author\": \"" << getAuthor() << "\"," << std::endl;
         jsonStream << "\"url\": \"" << getUrl() << "\"," << std::endl;

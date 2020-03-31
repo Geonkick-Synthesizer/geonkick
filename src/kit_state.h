@@ -51,6 +51,7 @@ class KitState {
 
  private:
         std::vector<std::shared_ptr<PercussionState>> percussionsList;
+        int kitAppVersion;
         std::string kitName;
         std::string kitAuthor;
         std::string kitUrl;

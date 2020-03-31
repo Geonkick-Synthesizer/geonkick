@@ -27,7 +27,8 @@
 #include <iomanip>
 
 PercussionState::PercussionState()
-        : kickId{0}
+        : appVersion{0}
+        , kickId{0}
         , kickName{"Default"}
         , playingKey{-1}
         , outputChannel{0}
@@ -90,17 +91,38 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
                 return;
 
         for (const auto &m: obj.GetObject()) {
+                if (m.name == "PercussionHeader" && m.value.IsObject()) {
+                        parseHeader(m.value);
+                        break;
+                }
+        }
+
+        for (const auto &m: obj.GetObject()) {
                 if (m.name == "kick" && m.value.IsObject())
                         parseKickObject(m.value);
                 for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
                         setCurrentLayer(static_cast<GeonkickApi::Layer>(i));
-                        if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                        if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str()) {
                                 parseOscillatorObject(0, m.value);
-                        if (m.name == ("osc" + std::to_string(1 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                break;
+                        } else if (m.name == ("osc" + std::to_string(1 + i * GKICK_OSC_GROUP_SIZE)).c_str()) {
                                 parseOscillatorObject(1, m.value);
-                        if (m.name == ("osc" + std::to_string(2 + i * GKICK_OSC_GROUP_SIZE)).c_str())
+                                break;
+                        } else if (m.name == ("osc" + std::to_string(2 + i * GKICK_OSC_GROUP_SIZE)).c_str()) {
                                 parseOscillatorObject(2, m.value);
+                                break;
+                        }
                 }
+        }
+}
+
+void PercussionState::parseHeader(const rapidjson::Value &headerObject)
+{
+        for (const auto &m: headerObject.GetObject()) {
+                if (m.name == "PercussionAppVersion" && m.value.IsInt())
+                        appVersion = m.value.GetInt();
+                else if (m.name == "PercussionName" && m.value.IsString())
+                        setName(m.value.GetString());
         }
 }
 
@@ -226,8 +248,12 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                         enableKickFilter(el.value.GetBool());
                                 if (el.name == "cutoff" && el.value.IsDouble())
                                         setKickFilterFrequency(el.value.GetDouble());
-                                if (el.name == "factor" && el.value.IsDouble())
-                                        setKickFilterQFactor(el.value.GetDouble());
+                                if (el.name == "factor" && el.value.IsDouble()) {
+                                        double val = el.value.GetDouble();
+                                        if (appVersion < 0x011000)
+                                                val *= 10;
+                                        setKickFilterQFactor(val);
+                                }
                                 if (el.name == "type" && el.value.IsInt())
                                         setKickFilterType(static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
                                 if (el.name == "cutoff_env" && el.value.IsArray()) {
@@ -319,8 +345,12 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                                         setOscillatorFilterEnabled(index, el.value.GetBool());
                                 if (el.name == "cutoff" && el.value.IsDouble())
                                         setOscillatorFilterCutOffFreq(index, el.value.GetDouble());
-                                if (el.name == "factor" && el.value.IsDouble())
-                                        setOscillatorFilterFactor(index, el.value.GetDouble());
+                                if (el.name == "factor" && el.value.IsDouble()) {
+                                        double val = el.value.GetDouble();
+                                        if (appVersion < 0x011000)
+                                                val *= 10;
+                                        setOscillatorFilterFactor(index, val);
+                                }
                                 if (el.name == "type" && el.value.IsInt())
                                         setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
                                 if (el.name == "cutoff_env" && el.value.IsArray()) {
@@ -747,6 +777,8 @@ std::string PercussionState::toJson() const
 {
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
+        headerJson(jsonStream);
+        jsonStream << "," << std::endl;
         oscJson(jsonStream);
         kickJson(jsonStream);
         jsonStream << "}" << std::endl;
@@ -817,6 +849,14 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream << "}" << std::endl;  // osc;
                 jsonStream << "," << std::endl;
         }
+}
+
+void PercussionState::headerJson(std::ostringstream &jsonStream) const
+{
+        jsonStream << "\"PercussionHeader\": {" << std::endl;
+        jsonStream << "    \"PercussionAppVersion\": " << GEOKICK_APP_VERSION << ", " << std::endl;
+        jsonStream << "    \"PercussionName\": \"" << getName() << "\"" << std::endl;
+        jsonStream << "}" << std::endl;
 }
 
 void PercussionState::kickJson(std::ostringstream &jsonStream) const

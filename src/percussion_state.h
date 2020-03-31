@@ -128,9 +128,11 @@ class PercussionState
         bool save(const std::string &fileName);
 
  protected:
+        void parseHeader(const rapidjson::Value &headerObject);
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(int index,  const rapidjson::Value &osc);
         static std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
+        void headerJson(std::ostringstream &jsonStream) const;
         void oscJson(std::ostringstream &jsonStream) const;
         void kickJson(std::ostringstream &jsonStream) const;
 
@@ -185,6 +187,7 @@ private:
                 double drive;
         };
 
+        int appVersion;
         size_t kickId;
         std::string kickName;
         char playingKey;

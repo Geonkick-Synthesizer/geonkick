@@ -1,7 +1,6 @@
 {
 "osc8": {
-"enabled": false, 
-"is_fm": false, 
+"enabled": false,
 "function": 4,
 "phase": 0.00000, 
 "ampl_env": {
@@ -18,14 +17,12 @@
 "enabled": false, 
 "type": 0, 
 "cutoff": 800.00000, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
 "factor": 1.00000
 }
 }
 ,
 "osc7": {
-"enabled": false, 
-"is_fm": false, 
+"enabled": false,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -42,14 +39,12 @@
 "enabled": false, 
 "type": 0, 
 "cutoff": 800.00000, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
 "factor": 1.00000
 }
 }
 ,
 "osc6": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -66,38 +61,56 @@
 "enabled": false, 
 "type": 0, 
 "cutoff": 800.00000, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
 "factor": 1.00000
 }
 }
 ,
-"osc1": {
-"enabled": false, 
-"is_fm": false, 
-"function": 2,
-"phase": 0.31416, 
+"osc5": {
+"enabled": false,
+"function": 4,
+"phase": 0.00000, 
 "ampl_env": {
-"amplitude": 0.01000, 
+"amplitude": 0.26000, 
 "points": [
-[ 0.00000 , 1.00000], [ 0.01419 , 0.00000]]
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
 },
 "freq_env": {
-"amplitude": 10563.27344, 
+"amplitude": 150.00000, 
 "points": [
-[ 0.00000 , 1.00000], [ 0.00903 , 0.00000]]
+]
 },
 "filter": {
 "enabled": false, 
-"type": 1, 
-"cutoff": 318.48575, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"type": 0, 
+"cutoff": 800.00000, 
+"factor": 1.00000
+}
+}
+,
+"osc4": {
+"enabled": false,
+"function": 0,
+"phase": 0.00000, 
+"ampl_env": {
+"amplitude": 0.26000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"freq_env": {
+"amplitude": 800.00000, 
+"points": [
+[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+},
+"filter": {
+"enabled": false, 
+"type": 0, 
+"cutoff": 800.00000, 
 "factor": 1.00000
 }
 }
 ,
 "osc0": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 0,
 "phase": 0.31416, 
 "ampl_env": {
@@ -114,14 +127,34 @@
 "enabled": false, 
 "type": 0, 
 "cutoff": 800.00000, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
+"factor": 1.00000
+}
+}
+,
+"osc1": {
+"enabled": false,
+"function": 2,
+"phase": 0.31416, 
+"ampl_env": {
+"amplitude": 0.01000, 
+"points": [
+[ 0.00000 , 1.00000], [ 0.01419 , 0.00000]]
+},
+"freq_env": {
+"amplitude": 10563.27344, 
+"points": [
+[ 0.00000 , 1.00000], [ 0.00903 , 0.00000]]
+},
+"filter": {
+"enabled": false, 
+"type": 1, 
+"cutoff": 318.48575, 
 "factor": 1.00000
 }
 }
 ,
 "osc2": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 6,
 "phase": 0.00000, 
 "ampl_env": {
@@ -138,14 +171,12 @@
 "enabled": true, 
 "type": 1, 
 "cutoff": 432.93561, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
-"factor": 17.55676
+"factor": 1.00000
 }
 }
 ,
 "osc3": {
-"enabled": true, 
-"is_fm": false, 
+"enabled": true,
 "function": 0,
 "phase": 0.00000, 
 "ampl_env": {
@@ -162,81 +193,27 @@
 "enabled": false, 
 "type": 0, 
 "cutoff": 800.00000, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
-"factor": 1.00000
-}
-}
-,
-"osc4": {
-"enabled": false, 
-"is_fm": false, 
-"function": 0,
-"phase": 0.00000, 
-"ampl_env": {
-"amplitude": 0.26000, 
-"points": [
-[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
-},
-"freq_env": {
-"amplitude": 800.00000, 
-"points": [
-[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
-},
-"filter": {
-"enabled": false, 
-"type": 0, 
-"cutoff": 800.00000, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
-"factor": 1.00000
-}
-}
-,
-"osc5": {
-"enabled": false, 
-"is_fm": false, 
-"function": 4,
-"phase": 0.00000, 
-"ampl_env": {
-"amplitude": 0.26000, 
-"points": [
-[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
-},
-"freq_env": {
-"amplitude": 150.00000, 
-"points": [
-]
-},
-"filter": {
-"enabled": false, 
-"type": 0, 
-"cutoff": 800.00000, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]], 
 "factor": 1.00000
 }
 }
 ,
 "kick": {
-"id": 0,
-"channel": 0,
-"name": "Default",
-"playing_key": -1,
 "layers": [0],
-"layers_amplitude": [1.00000, 1.00000, 1.00000],
 "limiter": 0.37144, 
-"tuned_output": false, 
 "ampl_env": {
-"amplitude": 0.60259, 
+"amplitude": 0.01000, 
 "length": 680.37036, 
-"points": [[ 0.00000 , 1.00000], [ 0.47484 , 0.32917], [ 0.63484 , 0.06250], [ 1.00000 , 0.00000]]}, 
+"points": [
+[ 0.00000 , 1.00000], [ 0.47484 , 0.32917], [ 0.63484 , 0.06250], [ 1.00000 , 0.00000]]
+},
 "filter": {
 "enabled": true, 
 "type": 0, 
 "cutoff": 6378.72, 
-"factor": 17.11, 
-"cutoff_env": [[ 0.00000 , 1.00000], [ 1.00000 , 1.00000]]
+"factor": 1.00
 }, 
 "compressor": {
-"enabled": false, 
+"enabled": 0, 
 "attack": 0.00146, 
 "release": 0.01000, 
 "threshold": -17.40000, 
@@ -246,11 +223,8 @@
 }, 
 "distortion": {
 "enabled": true, 
-"in_limiter": 0.06310, 
-"volume": 0.75858, 
-"drive": 22.00000, 
-"drive_env": [
-[ 0.00000 , 1.00000], [ 0.11484 , 0.15000], [ 1.00000 , 0.00000]]
+"volume": 0.40738, 
+"drive": 22.00000
 }
 }
 }
