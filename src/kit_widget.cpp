@@ -96,7 +96,7 @@ void KitWidget::createKeys()
         constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C5",
                         "C#5", "D5", "D#5", "E5",
                         "F5", "F#5", "G5", "G#5",
-                        "A5", "A#5", "B5", "C5", "Any"};
+                        "A5", "A#5", "B5", "C6", "Any"};
 
         char n = 0;
         for (const auto &key: keys) {
