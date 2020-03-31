@@ -1,7 +1,7 @@
 ### Changes from 1.9.2 to 1.10.0
 
 Version	1.10 is	incompatible with older	versions. It can load presets
-but there is a need to set again the values for	filters resonase.
+but there is a need to set again the values for	filters resonance.
 
 #### Freatures:
 
@@ -17,7 +17,7 @@ but there is a need to set again the values for	filters resonase.
 #### Improvements:
 
     - improved the checkbox for effects
-    - resonances knob was reversed, now	ranges from 0.01 to 100
+    - resonance knob was reversed
 
 #### Fixes:
 
