@@ -158,10 +158,8 @@ void KitState::fromJson(const std::string &jsonData)
                                 setAuthor(m.value.GetString());
                         if (m.name == "url" && m.value.IsString())
                                 setUrl(m.value.GetString());
-                        if (m.name == "percussions" && m.value.IsArray()) {
-                                GEONKICK_LOG_INFO("add percusion");
+                        if (m.name == "percussions" && m.value.IsArray())
                                 parsePercussions(m.value);
-                        }
                 }
         }
 }
