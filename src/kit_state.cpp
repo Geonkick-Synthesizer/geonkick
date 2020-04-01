@@ -26,7 +26,7 @@
 
 
 KitState::KitState()
-        : kitAppVersion{0}
+        : kitAppVersion{GEONKICK_VERSION}
         , kitName{"Default"}
         , kitAuthor{"Unknown"}
 {
@@ -127,11 +127,18 @@ void KitState::fromJson(const std::string &jsonData)
         if (!document.IsObject())
                 return;
 
+        bool backward = true;
         for (const auto &m: document.GetObject()) {
                 if (m.name == "KitAppVersion" && m.value.IsInt()) {
                         kitAppVersion = m.value.GetInt();
+                        backward = false;
                         break;
                 }
+        }
+
+        if (backward) {
+                GEONKICK_LOG_INFO("KitAppVersion missing, old preset");
+                kitAppVersion = 0;
         }
 
         if (kitAppVersion < 0x011000) {
@@ -151,8 +158,10 @@ void KitState::fromJson(const std::string &jsonData)
                                 setAuthor(m.value.GetString());
                         if (m.name == "url" && m.value.IsString())
                                 setUrl(m.value.GetString());
-                        if (m.name == "percussions" && m.value.IsArray())
+                        if (m.name == "percussions" && m.value.IsArray()) {
+                                GEONKICK_LOG_INFO("add percusion");
                                 parsePercussions(m.value);
+                        }
                 }
         }
 }
@@ -172,7 +181,7 @@ std::string KitState::toJson() const
 {
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
-        jsonStream << "\"KitAppVersion\": " << GEOKICK_APP_VERSION << std::endl;
+        jsonStream << "\"KitAppVersion\": " << GEONKICK_VERSION << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
         jsonStream << "\"author\": \"" << getAuthor() << "\"," << std::endl;
         jsonStream << "\"url\": \"" << getUrl() << "\"," << std::endl;

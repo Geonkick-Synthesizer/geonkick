@@ -27,7 +27,7 @@
 #include <iomanip>
 
 PercussionState::PercussionState()
-        : appVersion{0}
+        : appVersion{GEONKICK_VERSION}
         , kickId{0}
         , kickName{"Default"}
         , playingKey{-1}
@@ -90,16 +90,19 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
         if (!obj.IsObject())
                 return;
 
+        bool kickParsed = false;
         for (const auto &m: obj.GetObject()) {
-                if (m.name == "PercussionHeader" && m.value.IsObject()) {
-                        parseHeader(m.value);
+                if (m.name == "kick" && m.value.IsObject()) {
+                        parseKickObject(m.value);
+                        kickParsed = true;
                         break;
                 }
         }
 
+        if (!kickParsed)
+                return;
+
         for (const auto &m: obj.GetObject()) {
-                if (m.name == "kick" && m.value.IsObject())
-                        parseKickObject(m.value);
                 for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
                         setCurrentLayer(static_cast<GeonkickApi::Layer>(i));
                         if (m.name == ("osc" + std::to_string(0 + i * GKICK_OSC_GROUP_SIZE)).c_str()) {
@@ -113,16 +116,6 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
                                 break;
                         }
                 }
-        }
-}
-
-void PercussionState::parseHeader(const rapidjson::Value &headerObject)
-{
-        for (const auto &m: headerObject.GetObject()) {
-                if (m.name == "PercussionAppVersion" && m.value.IsInt())
-                        appVersion = m.value.GetInt();
-                else if (m.name == "PercussionName" && m.value.IsString())
-                        setName(m.value.GetString());
         }
 }
 
@@ -196,6 +189,20 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
         if (kick.IsNull() || !kick.IsObject())
                 return;
 
+        bool backward = true;
+        for (const auto &e: kick.GetObject()) {
+                if (e.name == "PercussionAppVersion" && e.value.IsInt()) {
+                        appVersion = e.value.GetInt();
+                        backward = false;
+                        break;
+                }
+        }
+
+        if (backward) {
+                GEONKICK_LOG_INFO("PercussionAppVersion missing, old preset");
+                appVersion = 0;
+        }
+
         for (const auto &m: kick.GetObject()) {
                 if (m.name == "name" && m.value.IsString())
                         setName(m.value.GetString());
@@ -227,7 +234,6 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                 i++;
                         }
                 }
-
 
                 if (m.name == "ampl_env" && m.value.IsObject()) {
                         for (const auto &el: m.value.GetObject()) {
@@ -777,8 +783,6 @@ std::string PercussionState::toJson() const
 {
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
-        headerJson(jsonStream);
-        jsonStream << "," << std::endl;
         oscJson(jsonStream);
         kickJson(jsonStream);
         jsonStream << "}" << std::endl;
@@ -851,17 +855,10 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
         }
 }
 
-void PercussionState::headerJson(std::ostringstream &jsonStream) const
-{
-        jsonStream << "\"PercussionHeader\": {" << std::endl;
-        jsonStream << "    \"PercussionAppVersion\": " << GEOKICK_APP_VERSION << ", " << std::endl;
-        jsonStream << "    \"PercussionName\": \"" << getName() << "\"" << std::endl;
-        jsonStream << "}" << std::endl;
-}
-
 void PercussionState::kickJson(std::ostringstream &jsonStream) const
 {
         jsonStream << "\"kick\": {" << std::endl;
+        jsonStream << "\"PercussionAppVersion\": " << GEONKICK_VERSION << "," << std::endl;
 	jsonStream << "\"id\": " << getId() << "," << std::endl;
         jsonStream << "\"channel\": " << getChannel() << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;

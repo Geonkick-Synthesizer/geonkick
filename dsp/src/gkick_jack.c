@@ -227,7 +227,7 @@ gkick_create_jack(struct gkick_jack **jack,
                 return GEONKICK_ERROR;
         }
 
-        (*jack)->client = jack_client_open(GEONKICK_API_NAME,
+        (*jack)->client = jack_client_open(GEONKICK_NAME,
                                            JackNoStartServer,
                                            NULL);
         if ((*jack)->client == NULL) {

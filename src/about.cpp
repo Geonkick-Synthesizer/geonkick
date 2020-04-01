@@ -31,7 +31,7 @@ AboutDialog::AboutDialog(GeonkickWidget *parent)
         : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
 {
         setFixedSize(340, 400);
-        setTitle(std::string("About - ") + std::string(GEOKICK_APP_NAME));
+        setTitle(std::string("About - ") + std::string(GEONKICK_NAME));
         auto logo = new RkLabel(this);
         logo->setImage(RkImage(300, 356, RK_IMAGE_RC(logo_about)));
         logo->setFixedSize(300, 356);

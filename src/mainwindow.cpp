@@ -50,7 +50,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , presetName{preset}
 {
         setFixedSize(950, 760);
-        setTitle(GEOKICK_APP_NAME);
+        setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
 	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         show();
@@ -64,7 +64,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , presetName{std::string()}
 {
         setFixedSize(950, 760);
-        setTitle(GEOKICK_APP_NAME);
+        setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         show();
@@ -219,7 +219,7 @@ void MainWindow::openPreset(const std::string &fileName)
         std::ifstream file;
         file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
-                RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEOKICK_APP_NAME)
+                RK_LOG_ERROR("Open Preset" + std::string(" - ") + std::string(GEONKICK_NAME)
                              << ". Can't open preset.");
                 return;
         }

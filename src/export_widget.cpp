@@ -85,7 +85,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
                 channelsType = static_cast<ChannelsType>(std::stoi(channel));
 
         setFixedSize(521, 184);
-        setTitle("Export - " + std::string(GEOKICK_APP_NAME));
+        setTitle("Export - " + std::string(GEONKICK_NAME));
         setBackgroundImage(RkImage(521, 184, rk_export_bk_png));
 
         errorLabel = new RkLabel(this);
@@ -260,7 +260,7 @@ void ExportWidget::browse()
         locationEdit->setFocus(false);
         fileNameEdit->setFocus(false);
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open,
-                                         "Select Path - " + std::string(GEOKICK_APP_NAME));
+                                         "Select Path - " + std::string(GEONKICK_NAME));
         fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location"));
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file), this,
