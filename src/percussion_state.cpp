@@ -250,8 +250,8 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                         setKickFilterFrequency(el.value.GetDouble());
                                 if (el.name == "factor" && el.value.IsDouble()) {
                                         double val = el.value.GetDouble();
-                                        if (appVersion < 0x011000)
-                                                val *= 10;
+                                        if (appVersion < 0x011000 && val > 0.00001f)
+                                                val = 10.0 / val;
                                         setKickFilterQFactor(val);
                                 }
                                 if (el.name == "type" && el.value.IsInt())
