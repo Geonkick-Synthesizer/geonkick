@@ -1,8 +1,5 @@
 ### Changes from 1.9.2 to 1.10.0
 
-Version 1.10 is incompatible with older versions. It can load presets
-but there is a need to set again the values for	all filters resonance.
-
 #### Freatures
 
    - percussion kit - supports up the 16 percussions in the kit
@@ -13,6 +10,7 @@ but there is a need to set again the values for	all filters resonance.
    - for build system check if Redkite is installed
    - enabled back the shortcut "k" key for triggering sound
    - documentation
+   - backward compatibility, i.e. will load older presets
 
 #### Improvements
 
