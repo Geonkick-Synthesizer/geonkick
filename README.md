@@ -10,7 +10,7 @@ Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 1.10.0
+Version: 1.10.0 (version 1.10.0 not released yet)
 
 Note: version 1.10 is not compatible with older versions
 
