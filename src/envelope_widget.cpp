@@ -27,7 +27,7 @@
 #include "envelope_draw_area.h"
 #include "geonkick_button.h"
 
-#include <RkWidgetContiner.h>
+#include <RkWidgetContainer.h>
 
 RK_DECLARE_IMAGE_RC(show_ampl_env_active);
 RK_DECLARE_IMAGE_RC(show_ampl_env);
@@ -204,21 +204,21 @@ void EnvelopeWidget::createButtomMenu()
         osccillator1EvelopesButton->show();
         createLayersButtons(buttomAreaWidget);
 
-	menuContiner = new RkWidgetContiner(buttomAreaWidget);
-	menuContiner->addWidget(showAmplitudeEnvButton);
-	menuContiner->addWidget(showFrequencyEnvButton);
-	menuContiner->addWidget(showFilterEnvButton);
-	menuContiner->addWidget(showDistortionEnvButton);
-	menuContiner->addWidget(generalEvelopesButton, Rk::Alignment::AlignRight);
-	menuContiner->addWidget(noiseEvelopesButton, Rk::Alignment::AlignRight);
-	menuContiner->addWidget(osccillator2EvelopesButton, Rk::Alignment::AlignRight);
-	menuContiner->addWidget(osccillator1EvelopesButton, Rk::Alignment::AlignRight);
-	menuContiner->addSpace(20, Rk::Alignment::AlignRight);
-	menuContiner->addWidget(layer3Button, Rk::Alignment::AlignRight);
-	menuContiner->addSpace(5, Rk::Alignment::AlignRight);
-        menuContiner->addWidget(layer2Button, Rk::Alignment::AlignRight);
-	menuContiner->addSpace(5, Rk::Alignment::AlignRight);
-        menuContiner->addWidget(layer1Button, Rk::Alignment::AlignRight);
+	menuContainer = new RkWidgetContainer(buttomAreaWidget);
+	menuContainer->addWidget(showAmplitudeEnvButton);
+	menuContainer->addWidget(showFrequencyEnvButton);
+	menuContainer->addWidget(showFilterEnvButton);
+	menuContainer->addWidget(showDistortionEnvButton);
+	menuContainer->addWidget(generalEvelopesButton, Rk::Alignment::AlignRight);
+	menuContainer->addWidget(noiseEvelopesButton, Rk::Alignment::AlignRight);
+	menuContainer->addWidget(osccillator2EvelopesButton, Rk::Alignment::AlignRight);
+	menuContainer->addWidget(osccillator1EvelopesButton, Rk::Alignment::AlignRight);
+	menuContainer->addSpace(20, Rk::Alignment::AlignRight);
+	menuContainer->addWidget(layer3Button, Rk::Alignment::AlignRight);
+	menuContainer->addSpace(5, Rk::Alignment::AlignRight);
+        menuContainer->addWidget(layer2Button, Rk::Alignment::AlignRight);
+	menuContainer->addSpace(5, Rk::Alignment::AlignRight);
+        menuContainer->addWidget(layer1Button, Rk::Alignment::AlignRight);
 }
 
 void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
@@ -258,7 +258,7 @@ void EnvelopeWidget::showEnvelopeType(Envelope::Type type)
 	showFrequencyEnvButton->show(envelope->isSupportedType(Envelope::Type::Frequency));
 	showDistortionEnvButton->setPressed(type == Envelope::Type::DistortionDrive);
 	showDistortionEnvButton->show(envelope->isSupportedType(Envelope::Type::DistortionDrive));
-	menuContiner->update();
+	menuContainer->update();
         if (envelope)
                 envelope->setType(type);
         drawArea->update();

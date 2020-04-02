@@ -29,7 +29,7 @@
 #include "geonkick_api.h"
 #include "envelope.h"
 
-class RkWidgetContiner;
+class RkWidgetContainer;
 class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
 
@@ -68,7 +68,7 @@ public:
      GeonkickButton *layer2Button;
      GeonkickButton *layer3Button;
      GeonkickApi *geonkickApi;
-     RkWidgetContiner *menuContiner;
+     RkWidgetContainer *menuContainer;
 };
 
 #endif
