@@ -1,8 +1,8 @@
 /**
  * File name: GKickVstEditor.cpp
- * Project: Geonkick (A kick synthesizer)
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2019 Iurie Nistor <http://goentime.com>
  *
  * This file is part of Geonkick.
  *
@@ -29,8 +29,8 @@
 
 GKickVstEditor::GKickVstEditor(Vst::EditController *controller)
         : Vst::EditorView(controller)
-        , guiApp(nullptr)
-	    , mainWindow(nullptr)
+        , guiApp{nullptr}
+        , mainWindow{nullptr}
 {
 }
 
@@ -46,16 +46,17 @@ tresult PLUGIN_API GKickVstEditor::isPlatformTypeSupported(Steinberg::FIDString 
 
 tresult PLUGIN_API GKickVstEditor::attached(void* parent, FIDString type)
 {
+        GEONKICK_LOG_INFO("called");
         guiApp = std::make_unique<RkMain>();
+#ifdef RK_OS_WIN
         auto info = rk_from_native_win(nullptr, nullptr, reinterpret_cast<HWND>(parent));
-        mainWindow = new MainWindow(info);
-        if (!guiApp->setTopLevelWindow(mainWindow)) {
-                RK_LOG_ERROR("can't create gui");
-                guiApp.reset(nullptr);			
-        } else {
-			mainWindow->show();
-			RK_LOG_INFO("show mainWindow");
-		}
+#elif RK_OS_GNU
+        //        auto info = rk_from_native_x11(nullptr, nullptr, reinterpret_cast<Window>(*parent));
+#else
+#error operating system not defined
+#endif // RK_OS_GNU
+        //        mainWindow = new MainWindow(guiApp->get(), info);
+        //        mainWindow->show();
         return Vst::EditorView::attached(parent, type);
 }
 
@@ -63,7 +64,7 @@ tresult PLUGIN_API GKickVstEditor::removed()
 {
         if (guiApp)
                 guiApp.reset(nullptr);
-		return kResultOk;
+        return kResultOk;
 }
 
 tresult PLUGIN_API GKickVstEditor::getSize(ViewRect* newSize)
@@ -76,10 +77,10 @@ tresult PLUGIN_API GKickVstEditor::getSize(ViewRect* newSize)
 	newSize->top    = mainWindow->y();
 	newSize->bottom = mainWindow->y() + mainWindow->height();
 
-	RK_LOG_INFO("left   : " << newSize->left);
-	RK_LOG_INFO("right  : " << newSize->right);
-	RK_LOG_INFO("top    : " << newSize->top);
-	RK_LOG_INFO("bottom : " << newSize->bottom);
+	GEONKICK_LOG_INFO("left   : " << newSize->left);
+	GEONKICK_LOG_INFO("right  : " << newSize->right);
+	GEONKICK_LOG_INFO("top    : " << newSize->top);
+	GEONKICK_LOG_INFO("bottom : " << newSize->bottom);
 	return kResultOk;
 }
 

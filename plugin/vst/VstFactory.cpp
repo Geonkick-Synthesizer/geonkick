@@ -2,7 +2,7 @@
  * File name: factory_vst.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
  *
  * This file is part of Geonkick.
  *
@@ -25,7 +25,7 @@
 #include "GKickVstProcessor.h"
 #include "VstIds.h"
 
-#include "public.sdk/source/main/pluginfactoryvst3.h"
+#include "public.sdk/source/main/pluginfactory.h"
 #include "pluginterfaces/base/fplatform.h"
 
 #define gkickPluginName		"Geonkick"
@@ -36,7 +36,7 @@
 #define gkickFileDescription	gkickPluginName" Geonkick"
 #endif
 #define gkickCompanyName	"Geontime"
-#define gkickCompanyWeb		"http://goentime.com"
+#define gkickCompanyWeb		"http://geontime.com"
 #define gkickCompanyEmail	"mailto:iurie@geontime.com"
 #define gkickLegalCopyright	"Copyright (C) 2019 Iurie Nistor"
 #define gkickLegalTrademarks	"Licence GPLv3"
@@ -47,32 +47,32 @@ DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstProcessorUID),
            PClassInfo::kManyInstances,
            kVstAudioEffectClass,
            gkickPluginName,
-           Vst::kDistributable,
-           "Fx",
-           "2.0.0",
+           0/*Vst::kDistributable*/,
+           Vst::PlugType::kInstrumentSynth,
+           "1.10.0",
            kVstVersionString,
            GKickVstProcessor::createInstance)
 
-DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstControllerUID),
-           PClassInfo::kManyInstances,
-           kVstComponentControllerClass,
-           gkickPluginName "Controller",
-           0,
-           "",
-           "2.0.0",
-           kVstVersionString,
-           GKickVstController::createInstance)
+// DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstControllerUID),
+//            PClassInfo::kManyInstances,
+//            kVstComponentControllerClass,
+//            gkickPluginName "Controller",
+//            0,
+//            "",
+//            "1.10.0",
+//            kVstVersionString,
+//            GKickVstController::createInstance)
 
 END_FACTORY
 
 bool InitModule()
 {
-        RK_LOG_INFO("called");
+        GEONKICK_LOG_INFO("called");
         return true;
 }
 
 bool DeinitModule()
 {
-        RK_LOG_INFO("called");
+        GEONKICK_LOG_INFO("called");
         return true;
 }

@@ -6,8 +6,8 @@
 // Version
 /////////////////////////////////////////////////////////////////////////////
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2, 0, 0, 0
- PRODUCTVERSION 2, 0, 0, 0
+ FILEVERSION 1, 10, 0, 0
+ PRODUCTVERSION 1, 10, 0, 0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -22,12 +22,12 @@ BEGIN
     BEGIN
         BLOCK "040004e4"
         BEGIN
-            VALUE "FileVersion",      "2.0.0\0"
-            VALUE "ProductVersion",   "2.0.0\0"
-            VALUE "OriginalFilename", "geonkick.vst3\0"
-            VALUE "FileDescription",  "geonkick VST3\0"
-            VALUE "InternalName",     "geonkick VST3\0"
-            VALUE "ProductName",      "geonkick VST3\0"
+            VALUE "FileVersion",      "1.10.0\0"
+            VALUE "ProductVersion",   "1.10.0\0"
+            VALUE "OriginalFilename", "Geonkick.vst3\0"
+            VALUE "FileDescription",  "Geonkick VST3\0"
+            VALUE "InternalName",     "Geonkick VST3\0"
+            VALUE "ProductName",      "Geonkick VST3\0"
             VALUE "CompanyName",      "Geontime\0"
             VALUE "LegalCopyright",   "GPL\0"
             VALUE "LegalTrademarks",  "Geontime\0"

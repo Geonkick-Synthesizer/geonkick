@@ -2,7 +2,7 @@
  * File name: controller_vst.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
  *
  * This file is part of Geonkick.
  *
@@ -24,32 +24,31 @@
 #ifndef GEONKICK_PLUGIN_VST_PROCESSOR_H
 #define GEONKICK_PLUGIN_VST_PROCESSOR_H
 
-#include "public.sdk/source/vst/vstaudioeffect.h"
+#include "globals.h"
+#include "public.sdk/source/vst/vstsinglecomponenteffect.h"
+
+class GeonkickApi;
 
 namespace Steinberg
 {
+class GKickVstProcessor : public Vst::SingleComponentEffect {
+  public:
+        GKickVstProcessor();
+        tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
+        tresult PLUGIN_API setBusArrangements(Vst::SpeakerArrangement* inputs,
+                                              int32 numIns,
+                                              Vst::SpeakerArrangement* outputs,
+                                              int32 numOuts) SMTG_OVERRIDE;
+        tresult PLUGIN_API setupProcessing(Vst::ProcessSetup& setup) SMTG_OVERRIDE;
+        tresult PLUGIN_API setActive(TBool state) SMTG_OVERRIDE;
+        tresult PLUGIN_API process(Vst::ProcessData& data) SMTG_OVERRIDE;
+        tresult PLUGIN_API setState(IBStream* state) SMTG_OVERRIDE;
+        tresult PLUGIN_API getState(IBStream* state) SMTG_OVERRIDE;
+        static FUnknown* createInstance(void*);
 
-class GKickVstProcessor : public Vst::AudioEffect {
-	public:
-		GKickVstProcessor();
-		tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
-		tresult PLUGIN_API setBusArrangements(Vst::SpeakerArrangement* inputs,
-			int32 numIns,
-			Vst::SpeakerArrangement* outputs,
-			int32 numOuts) SMTG_OVERRIDE;
-		tresult PLUGIN_API setupProcessing(Vst::ProcessSetup& setup) SMTG_OVERRIDE;
-		tresult PLUGIN_API setActive(TBool state) SMTG_OVERRIDE;
-		tresult PLUGIN_API process(Vst::ProcessData& data) SMTG_OVERRIDE;
-		tresult PLUGIN_API setState(IBStream* state) SMTG_OVERRIDE;
-		tresult PLUGIN_API getState(IBStream* state) SMTG_OVERRIDE;
-		static FUnknown* createInstance(void*);
-
-	protected:
-		Vst::ParamValue mParam1 = 0;
-		int16 mParam2 = 0;
-		bool mBypass = false;
-	};
-
+  protected:
+        std::unique_ptr<GeonkickApi> geonkickApi;
+};
 } // namespace Steinberg
 
 #endif // GEONKICK_PLUGIN_VST_PROCESSOR_H

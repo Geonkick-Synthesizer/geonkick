@@ -2,7 +2,7 @@
  * File name: controller_vst.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geentime.com>
+ * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
  *
  * This file is part of Geonkick.
  *
@@ -30,7 +30,7 @@
 
 using namespace Steinberg;
 
-class GKickVstController : public Vst::EditController {
+class GKickVstController : public Vst::EditControllerEx1 {
  public:
         static FUnknown* createInstance(void*);
         tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;

@@ -39,9 +39,9 @@ if (GKICK_STANDALONE)
 endif (GKICK_STANDALONE)
 
 if (GKICK_PLUGIN)
-	add_library(api_lv2 STATIC
+	add_library(api_plugin STATIC
 		${GKICK_API_HEADERS}
 		${GKICK_API_SOURCES})
-	target_compile_options(api_lv2 PUBLIC ${GKICK_API_FLAGS_LV2})
+	target_compile_options(api_plugin PUBLIC ${GKICK_API_PLUGIN_FLAGS})
 endif (GKICK_PLUGIN)
 

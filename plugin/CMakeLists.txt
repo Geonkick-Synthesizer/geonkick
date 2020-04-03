@@ -1,5 +1,6 @@
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
   add_subdirectory(vst)
 else()
+  add_subdirectory(vst)
   add_subdirectory(lv2)
 endif()

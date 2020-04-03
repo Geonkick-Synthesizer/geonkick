@@ -2,7 +2,7 @@
  * File name: GkickVstController.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
  *
  * This file is part of Geonkick.
  *
@@ -29,13 +29,13 @@
 
 FUnknown* GKickVstController::createInstance(void*)
 {
-        RK_LOG_INFO("called");
+        GEONKICK_LOG_INFO("called");
         return static_cast<Vst::IEditController*>(new GKickVstController());
 }
 
 tresult PLUGIN_API GKickVstController::initialize(FUnknown* context)
 {
-        RK_LOG_INFO("called");
+        GEONKICK_LOG_INFO("called");
         EditController::initialize(context);
         return kResultTrue;
 }
@@ -49,6 +49,6 @@ IPlugView* PLUGIN_API GKickVstController::createView(const char* name)
 
 tresult PLUGIN_API GKickVstController::setComponentState(IBStream* state)
 {
-        RK_LOG_INFO("called");
+        GEONKICK_LOG_INFO("called");
         return kResultOk;
 }
