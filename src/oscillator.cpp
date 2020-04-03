@@ -59,6 +59,16 @@ gkick_real Oscillator::getPhase() const
         return geonkickApi->oscillatorPhase(index());
 }
 
+void Oscillator::setSeed(int seed)
+{
+        geonkickApi->setOscillatorSeed(index(), seed);
+}
+
+int Oscillator::getSeed() const
+{
+        return geonkickApi->oscillatorSeed(index());
+}
+
 Oscillator::FunctionType Oscillator::function() const
 {
         return static_cast<FunctionType>(geonkickApi->oscillatorFunction(index()));

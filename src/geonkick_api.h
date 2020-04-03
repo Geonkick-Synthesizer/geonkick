@@ -95,6 +95,7 @@ class GeonkickApi {
                                     const RkRealPoint &point);
   FunctionType oscillatorFunction(int oscillatorIndex) const;
   gkick_real oscillatorPhase(int oscillatorIndex) const;
+  int oscillatorSeed(int oscillatorIndex) const;
   void setOscillatorSample(const std::string &file,
                            int oscillatorIndex);
   void setOscillatorSample(const std::vector<float> &sample,
@@ -130,6 +131,8 @@ class GeonkickApi {
                              FunctionType function);
   void setOscillatorPhase(int oscillatorIndex,
                           gkick_real phase);
+  void setOscillatorSeed(int oscillatorIndex,
+                         int seed);
   void enableOscillator(int oscillatorIndex,
                         bool enable);
   void enableOscillatorFilter(int oscillatorIndex,

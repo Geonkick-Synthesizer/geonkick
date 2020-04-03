@@ -39,7 +39,11 @@ enum geonkick_osc_state {
 struct gkick_oscillator {
         enum geonkick_osc_state state;
 	enum geonkick_osc_func_type func;
-        gkick_real brownian; /* Used for Brownian noise */
+        /* Used for Brownian noise */
+        gkick_real brownian;
+        /* User as a seed for pseudo random generator. */
+        unsigned int seedp;
+        unsigned int seed;
         gkick_real initial_phase;
 	gkick_real phase;
 	gkick_real sample_rate;
@@ -100,13 +104,14 @@ gkick_real
 gkick_osc_func_sawtooth(gkick_real phase);
 
 gkick_real
-gkick_osc_func_noise_white(void);
+gkick_osc_func_noise_white(unsigned int *seed);
 
 gkick_real
 gkick_osc_func_noise_pink(void);
 
 gkick_real
-gkick_osc_func_noise_brownian(gkick_real *previous);
+gkick_osc_func_noise_brownian(gkick_real *previous,
+                              unsigned int *seed);
 
 gkick_real
 gkick_osc_func_sample(struct gkick_buffer *sample);

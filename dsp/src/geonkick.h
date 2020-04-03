@@ -219,6 +219,16 @@ geonkick_get_osc_phase(struct geonkick *kick,
                        gkick_real *phase);
 
 enum geonkick_error
+geonkick_set_osc_seed(struct geonkick *kick,
+                      size_t osc_index,
+                      unsigned int seed);
+
+enum geonkick_error
+geonkick_get_osc_seed(struct geonkick *kick,
+                      size_t osc_index,
+                      unsigned int *seed);
+
+enum geonkick_error
 geonkick_set_length(struct geonkick *kick,
                     gkick_real len);
 
@@ -605,6 +615,7 @@ enum geonkick_error
 geonkick_get_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t *channel);
+
 
 #ifdef __cplusplus
 }

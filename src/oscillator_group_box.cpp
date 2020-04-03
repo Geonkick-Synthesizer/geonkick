@@ -227,7 +227,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 
         if (oscillator->type() == Oscillator::Type::Noise) {
                 noiseWhiteButton = new GeonkickButton(amplitudeEnvelopeBox);
-                noiseWhiteButton->setPosition(224 / 2 + (224 / 2 - 90) / 2 - 10, 27);
+                noiseWhiteButton->setPosition(224 / 2 + (224 / 2 - 90) / 2 - 10, 10);
                 noiseWhiteButton->setFixedSize(90, 30);
                 noiseWhiteButton->setUnpressedImage(RkImage(90, 30, rk_noise_type_white_png));
                 noiseWhiteButton->setPressedImage(RkImage(90, 30, rk_noise_type_white_active_png));
@@ -235,12 +235,29 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 noiseWhiteButton->show();
                 noiseBrownianButton = new GeonkickButton(amplitudeEnvelopeBox);
                 noiseBrownianButton->setPosition(224 / 2 + (224 / 2 - 90) / 2 - 10,
-                                                 noiseWhiteButton->y() + noiseWhiteButton->height() + 10);
+                                                 noiseWhiteButton->y() + noiseWhiteButton->height());
                 noiseBrownianButton->setFixedSize(90, 30);
                 RK_ACT_BIND(noiseBrownianButton, toggled, RK_ACT_ARGS(bool b), this, setNoiseBrownian(b));
                 noiseBrownianButton->setUnpressedImage(RkImage(90, 30, rk_noise_type_brownian_png));
                 noiseBrownianButton->setPressedImage(RkImage(90, 30, rk_noise_type_brownian_active_png));
                 noiseBrownianButton->show();
+
+                auto seedLabel = new RkLabel(amplitudeEnvelopeBox, "Seed");
+                seedLabel->setFixedSize(30, 10);
+                seedLabel->setTextColor({210, 226, 226, 160});
+                seedLabel->setPosition(noiseBrownianButton->x()
+                                       + (noiseBrownianButton->width() - seedLabel->width()) / 2,
+                                       noiseBrownianButton->y() + noiseBrownianButton->height() + 7);
+                seedLabel->setBackgroundColor(amplitudeEnvelopeBox->background());
+                seedLabel->show();
+
+                seedSlider = new GeonkickSlider(amplitudeEnvelopeBox);
+                seedSlider->setFixedSize(115, 8);
+                seedSlider->onSetValue(40);
+                seedSlider->setPosition(noiseBrownianButton->x() - 13, noiseBrownianButton->y() + 55);
+                seedSlider->show();
+                RK_ACT_BIND(seedSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorSeed(value));
+
         } else {
                 frequencyAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
                 frequencyAmplitudeKnob->setRangeType(Knob::RangeType::Logarithmic);
@@ -337,6 +354,11 @@ void OscillatorGroupBox::setOscillatorPhase(int value)
         oscillator->setPhase((static_cast<gkick_real>(value) / 100) * (2 * M_PI));
 }
 
+void OscillatorGroupBox::setOscillatorSeed(int value)
+{
+        oscillator->setSeed(10 * value);
+}
+
 void OscillatorGroupBox::setNoiseWhite(bool pressed)
 {
         if (pressed) {
@@ -370,13 +392,14 @@ void OscillatorGroupBox::updateGui()
                         noiseWhiteButton->setPressed(true);
                 else
                         noiseBrownianButton->setPressed(true);
+                seedSlider->onSetValue(oscillator->getSeed() / 10);
         } else {
                 sineButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sine);
                 squareButton->setPressed(oscillator->function() == Oscillator::FunctionType::Square);
                 triangleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Triangle);
                 sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
                 sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
-                phaseSlider->onSetValue(100 * oscillator->getPhase() / (2 * M_PI));
+                phaseSlider->onSetValue(oscillator->getPhase());
         }
 
         envelopeAmplitudeKnob->setCurrentValue(oscillator->amplitude());

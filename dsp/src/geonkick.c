@@ -329,6 +329,42 @@ geonkick_get_osc_phase(struct geonkick *kick,
 }
 
 enum geonkick_error
+geonkick_set_osc_seed(struct geonkick *kick,
+                      size_t osc_index,
+                      unsigned int seed)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+
+        enum geonkick_error res;
+        res = gkick_synth_set_osc_seed(kick->synths[kick->per_index],
+                                       osc_index,
+                                       seed);
+        if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
+                geonkick_worker_wakeup(kick);
+        return res;
+}
+
+enum geonkick_error
+geonkick_get_osc_seed(struct geonkick *kick,
+                      size_t osc_index,
+                      unsigned int *seed)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_synth_get_osc_seed(kick->synths[kick->per_index],
+                                        osc_index,
+                                        seed);
+
+}
+
+enum geonkick_error
 geonkick_set_length(struct geonkick *kick, gkick_real len)
 {
         if (kick == NULL) {

@@ -55,6 +55,8 @@ class Oscillator
   void setFunction(FunctionType func);
   void setPhase(gkick_real phase);
   gkick_real getPhase() const;
+  void setSeed(int seed);
+  int getSeed() const;
   void setAmplitude(double amp);
   void setFrequency(double freq);
   void enableFilter(bool b);

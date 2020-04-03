@@ -197,6 +197,16 @@ gkick_synth_get_osc_phase(struct gkick_synth *synth,
                           gkick_real *phase);
 
 enum geonkick_error
+gkick_synth_set_osc_seed(struct gkick_synth *synth,
+                         size_t osc_index,
+                         unsigned int seed);
+
+enum geonkick_error
+gkick_synth_get_osc_seed(struct gkick_synth *synth,
+                         size_t osc_index,
+                         unsigned *seed);
+
+enum geonkick_error
 gkick_synth_get_length(struct gkick_synth *synth,
 		       gkick_real *len);
 

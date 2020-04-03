@@ -323,6 +323,8 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                         setOscillatorFunction(index, static_cast<GeonkickApi::FunctionType>(m.value.GetInt()));
                 if (m.name == "phase" && m.value.IsDouble())
                         setOscillatorPhase(index, m.value.GetDouble());
+                if (m.name == "seed" && m.value.IsInt())
+                        setOscillatorSeed(index, m.value.GetInt());
                 if (m.name == "ampl_env" && m.value.IsObject()) {
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "amplitude" && el.value.IsDouble())
@@ -506,6 +508,13 @@ void PercussionState::setOscillatorPhase(int index, double phase)
                 oscillator->phase = phase;
 }
 
+void PercussionState::setOscillatorSeed(int index, int seed)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->seed = seed;
+}
+
 void PercussionState::setOscillatorAmplitue(int index, double val)
 {
         auto oscillator = getOscillator(index);
@@ -601,6 +610,15 @@ double PercussionState::oscillatorPhase(int index) const
         auto oscillator = getOscillator(index);
         if (oscillator)
                 return oscillator->phase;
+
+        return 0;
+}
+
+int PercussionState::oscillatorSeed(int index) const
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                return oscillator->seed;
 
         return 0;
 }
@@ -800,6 +818,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
                 jsonStream <<  "\"phase\": " << std::fixed << std::setprecision(5)
                            << val.second->phase << ", " << std::endl;
+                jsonStream <<  "\"seed\": " << val.second->seed << ", " << std::endl;
                 jsonStream << "\"ampl_env\": {" << std::endl;
                 jsonStream << "\"amplitude\": "  << std::fixed << std::setprecision(5)
                            << val.second->amplitude << ", " << std::endl;

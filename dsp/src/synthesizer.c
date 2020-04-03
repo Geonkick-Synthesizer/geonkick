@@ -634,6 +634,61 @@ gkick_synth_get_osc_phase(struct gkick_synth *synth,
 }
 
 enum geonkick_error
+gkick_synth_set_osc_seed(struct gkick_synth *synth,
+                         size_t osc_index,
+                         unsigned int seed)
+{
+        struct gkick_oscillator *osc;
+        if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (osc == NULL) {
+                gkick_log_error("can't get oscilaltor");
+                gkick_synth_unlock(synth);
+                return GEONKICK_ERROR;
+        } else {
+                osc->seed = seed;
+        }
+
+        if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
+            && osc->state == GEONKICK_OSC_STATE_ENABLED)
+                synth->buffer_update = true;
+
+	gkick_synth_unlock(synth);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_get_osc_seed(struct gkick_synth *synth,
+                         size_t osc_index,
+                         unsigned *seed)
+{
+        struct gkick_oscillator *osc;
+        if (synth == NULL || seed == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+        osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (osc == NULL) {
+                gkick_log_error("can't get oscilaltor");
+                gkick_synth_unlock(synth);
+                return GEONKICK_ERROR;
+        } else {
+                *seed = osc->seed;
+        }
+
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;
+}
+
+
+enum geonkick_error
 gkick_synth_get_length(struct gkick_synth *synth,
                        gkick_real *len)
 {
@@ -1268,6 +1323,7 @@ gkick_synth_reset_oscillators(struct gkick_synth *synth)
                 struct gkick_oscillator *osc = synth->oscillators[i];
                 osc->phase = osc->initial_phase;
                 osc->fm_input = 0.0f;
+                osc->seedp = osc->seed;
                 gkick_filter_init(osc->filter);
                 if (osc->sample != NULL)
                         gkick_buffer_reset(osc->sample);

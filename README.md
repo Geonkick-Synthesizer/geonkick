@@ -52,6 +52,7 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
      - OSC1->OSC2
 * One noise generator per layer
      - white & brownian
+     - random seed
      - amplitude envelope
      - low, band and high pass filter, cutoff envelope
 * General

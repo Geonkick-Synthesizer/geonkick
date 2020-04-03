@@ -149,6 +149,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                         state->setOscillatorEnabled(index, osc == GeonkickApi::OscillatorType::Oscillator1);
                         if (osc == GeonkickApi::OscillatorType::Noise) {
                                 state->setOscillatorFunction(index, GeonkickApi::FunctionType::NoiseWhite);
+                                state->setOscillatorSeed(index, 100);
                         } else {
                                 state->setOscillatorFunction(index, GeonkickApi::FunctionType::Sine);
                                 state->setOscillatorPhase(index, 0);
@@ -300,6 +301,8 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         state->setOscillatorSample(index, getOscillatorSample(index));
         if (osc != OscillatorType::Noise)
                 state->setOscillatorPhase(index, oscillatorPhase(index));
+        if (osc == OscillatorType::Noise)
+                state->setOscillatorSeed(index, oscillatorSeed(index));
         state->setOscillatorAmplitue(index, oscillatorAmplitude(index));
         state->setOscillatorFrequency(index, oscillatorFrequency(index));
         state->setOscillatorFilterEnabled(index, isOscillatorFilterEnabled(index));
@@ -331,6 +334,8 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         setOscillatorSample(state->getOscillatorSample(osc), osc);
         if (oscillator != OscillatorType::Noise)
                 setOscillatorPhase(osc, state->oscillatorPhase(osc));
+        if (oscillator == OscillatorType::Noise)
+                setOscillatorSeed(osc, state->oscillatorSeed(osc));
         setOscillatorAmplitude(osc, state->oscillatorAmplitue(osc));
         if (oscillator != OscillatorType::Noise)
                 setOscillatorFrequency(osc, state->oscillatorFrequency(osc));
@@ -490,6 +495,22 @@ gkick_real GeonkickApi::oscillatorPhase(int oscillatorIndex) const
                                getOscIndex(oscillatorIndex),
                                &phase);
         return phase;
+}
+
+void GeonkickApi::setOscillatorSeed(int oscillatorIndex, int seed)
+{
+        geonkick_set_osc_seed(geonkickApi,
+                              getOscIndex(oscillatorIndex),
+                              seed);
+}
+
+int GeonkickApi::oscillatorSeed(int oscillatorIndex) const
+{
+        unsigned int seed = 0;
+        geonkick_get_osc_seed(geonkickApi,
+                              getOscIndex(oscillatorIndex),
+                              &seed);
+        return seed;
 }
 
 GeonkickApi::FunctionType GeonkickApi::oscillatorFunction(int oscillatorIndex) const

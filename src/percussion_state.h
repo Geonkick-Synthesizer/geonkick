@@ -69,6 +69,7 @@ class PercussionState
         void setOscillatorEnabled(int index, bool b);
         void setOscillatorFunction(int index, GeonkickApi::FunctionType type);
         void setOscillatorPhase(int index, double phase);
+        void setOscillatorSeed(int index, int seed);
         void setOscillatorAmplitue(int index, double val);
         void setOscillatorFrequency(int index, double val);
         void setOscillatorFilterEnabled(int index, bool b);
@@ -84,6 +85,7 @@ class PercussionState
         GeonkickApi::FunctionType oscillatorFunction(int index) const;
         double oscillatorAmplitue(int index) const;
         double oscillatorPhase(int index) const;
+        int oscillatorSeed(int index) const;
         double oscillatorFrequency(int index) const;
         bool isOscillatorFilterEnabled(int index) const;
         GeonkickApi::FilterType oscillatorFilterType(int index) const;
@@ -143,6 +145,7 @@ private:
                 , isFm{false}
                 , function{GeonkickApi::FunctionType::Sine}
                 , phase{0}
+                , seed{0}
                 , amplitude{0.8}
                 , frequency{200}
                 , isFilterEnabled{false}
@@ -155,6 +158,7 @@ private:
                 bool isFm;
                 GeonkickApi::FunctionType function;
                 double phase;
+                int seed;
                 double amplitude;
                 double frequency;
                 bool isFilterEnabled;

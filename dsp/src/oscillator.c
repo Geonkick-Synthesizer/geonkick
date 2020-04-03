@@ -43,6 +43,8 @@ struct gkick_oscillator
         osc->brownian = 0;
         osc->is_fm = false;
         osc->fm_input = 0.0f;
+        osc->seed = 100;
+        osc->seedp = osc->seed;
 
         if (gkick_osc_create_envelopes(osc) != GEONKICK_OK) {
                 gkick_osc_free(&osc);
@@ -160,13 +162,13 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
                 v = amp * gkick_osc_func_sawtooth(osc->phase);
                 break;
         case GEONKICK_OSC_FUNC_NOISE_WHITE:
-                v = amp * gkick_osc_func_noise_white();
+                v = amp * gkick_osc_func_noise_white(&osc->seedp);
                 break;
         case GEONKICK_OSC_FUNC_NOISE_PINK:
                 v = amp * gkick_osc_func_noise_pink();
                 break;
         case GEONKICK_OSC_FUNC_NOISE_BROWNIAN:
-                v = amp * gkick_osc_func_noise_brownian(&(osc)->brownian);
+                v = amp * gkick_osc_func_noise_brownian(&(osc)->brownian, &osc->seedp);
                 break;
         case GEONKICK_OSC_FUNC_SAMPLE:
                 if (osc->sample != NULL) {
@@ -216,13 +218,9 @@ gkick_osc_func_sawtooth(gkick_real phase)
         return 1.0f - (1.0f / M_PI) * phase;
 }
 
-gkick_real gkick_osc_func_noise_white(void)
+gkick_real gkick_osc_func_noise_white(unsigned int *seed)
 {
-        int sign = 1.0f;
-        if (rand() % 2)
-                sign = -1.0f;
-
-        return sign * ((gkick_real)(rand() % RAND_MAX)) / RAND_MAX;
+        return 2.0f * ((gkick_real)(rand_r(seed) % RAND_MAX)) / RAND_MAX - 1.0f;
 }
 
 gkick_real gkick_osc_func_noise_pink(void)
@@ -231,14 +229,15 @@ gkick_real gkick_osc_func_noise_pink(void)
 }
 
 gkick_real
-gkick_osc_func_noise_brownian(gkick_real *previous)
+gkick_osc_func_noise_brownian(gkick_real *previous,
+                              unsigned int *seed)
 {
         gkick_real sign = 1.0f;
         gkick_real walk;
-        if (rand() % 2)
+        if (rand_r(seed) % 2)
                 sign = -1.0f;
 
-        walk = sign * 0.1f * (((gkick_real)(rand() % RAND_MAX)) / RAND_MAX);
+        walk = sign * 0.1f * (((gkick_real)(rand_r(seed) % RAND_MAX)) / RAND_MAX);
         if (*previous + walk > 1.0f || *previous + walk < -1.0f)
                 *previous -= walk;
         else
