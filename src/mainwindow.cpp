@@ -53,6 +53,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
 	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
+        enableGrabKey(true);
         show();
 }
 
@@ -67,6 +68,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
+        enableGrabKey(true);
         show();
 }
 
@@ -141,40 +143,6 @@ bool MainWindow::init(void)
                     RK_ACT_ARGS(int id),
                     topBar,
                     setPresetName(geonkickApi->getPercussionName(id)));
-
-
-
-        // TODO: Key shortcut feature will be implemented in the next versions of Redkite.
-        auto info = nativeWindowInfo();
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_o),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_O),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_h),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_H),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_k),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_K),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_a),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_A),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_e),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_E),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_r),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_R),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_s),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XGrabKey(info->display, XKeysymToKeycode(info->display, XK_S),
-                 ControlMask, info->window, False, GrabModeAsync, GrabModeAsync);
-        XFlush(info->display);
 
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
