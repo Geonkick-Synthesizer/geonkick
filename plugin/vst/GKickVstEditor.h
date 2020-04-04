@@ -2,7 +2,7 @@
  * File name: GKickVstEditor.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
+ * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -25,27 +25,46 @@
 #define GKICK_VST_EDITOR_H
 
 #include "public.sdk/source/vst/vsteditcontroller.h"
+#include "pluginterfaces/gui/iplugview.h"
 
 #include <memory>
 
 using namespace Steinberg;
+using namespace Linux;
 
 class MainWindow;
+class GeonkickApi;
 class RkMain;
+
+class GKickVstTimer: public ITimerHandler {
+ public:
+        GKickVstTimer(RkMain *app);
+        tresult PLUGIN_API queryInterface (const TUID _iid, void** obj) override { return 0; }
+        uint32 PLUGIN_API addRef() override { return countT++; }
+        uint32 PLUGIN_API release() override { return --countT; }
+
+ protected:
+        void PLUGIN_API onTimer() override;
+
+ private:
+        RkMain *guiApp;
+        uint32 countT;
+};
+
 
 class GKickVstEditor : public Vst::EditorView {
  public:
-        GKickVstEditor(Vst::EditController *controller);
-        ~GKickVstEditor();
-
-        tresult PLUGIN_API isPlatformTypeSupported(Steinberg::FIDString type) final;
-        tresult PLUGIN_API attached(void* parent, FIDString type) final;
-        tresult PLUGIN_API removed() final;
-		tresult PLUGIN_API getSize(ViewRect* newSize) final;
+        GKickVstEditor(Vst::EditController *controller, GeonkickApi *api);
+        tresult PLUGIN_API isPlatformTypeSupported(Steinberg::FIDString type) override;
+        tresult PLUGIN_API attached(void* parent, FIDString type) override;
+        tresult PLUGIN_API removed() override;
+        tresult PLUGIN_API getSize(ViewRect* newSize) override;
 
  private:
-        std::unique_ptr<RkMain> guiApp;
+        RkMain *guiApp;
         MainWindow *mainWindow;
+        GeonkickApi *geonkickApi;
+        std::unique_ptr<GKickVstTimer> loopTimer;
 };
 
 #endif // GKICK_VST_EDITOR_H

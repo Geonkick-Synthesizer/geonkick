@@ -34,7 +34,9 @@ namespace Steinberg
 class GKickVstProcessor : public Vst::SingleComponentEffect {
   public:
         GKickVstProcessor();
+        virtual ~GKickVstProcessor() = default;
         tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
+        static FUnknown* createInstance(void*);
         tresult PLUGIN_API setBusArrangements(Vst::SpeakerArrangement* inputs,
                                               int32 numIns,
                                               Vst::SpeakerArrangement* outputs,
@@ -44,7 +46,8 @@ class GKickVstProcessor : public Vst::SingleComponentEffect {
         tresult PLUGIN_API process(Vst::ProcessData& data) SMTG_OVERRIDE;
         tresult PLUGIN_API setState(IBStream* state) SMTG_OVERRIDE;
         tresult PLUGIN_API getState(IBStream* state) SMTG_OVERRIDE;
-        static FUnknown* createInstance(void*);
+        IPlugView* PLUGIN_API createView(FIDString name) SMTG_OVERRIDE;
+        tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE;
 
   protected:
         std::unique_ptr<GeonkickApi> geonkickApi;

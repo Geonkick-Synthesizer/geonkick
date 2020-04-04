@@ -5,7 +5,10 @@ project(geonkick VERSION 1.10.0)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 include(FindRedkite)
 
-option(GKICK_STANDALONE "Enable build for standalone" ON)
+## temp
+set(GKICK_VST_SDK_PATH /home/iurie/projects/vst3sdk)
+
+option(GKICK_STANDALONE "Enable build for standalone" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 if (GKICK_PLUGIN)
   option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" ON)

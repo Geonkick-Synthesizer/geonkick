@@ -1,8 +1,8 @@
 /**
  * File name: factory_vst.h
- * Project: Geonkick (A kick synthesizer)
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
+ * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "GKickVstController.h"
 #include "GKickVstProcessor.h"
 #include "VstIds.h"
 
@@ -52,16 +51,6 @@ DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstProcessorUID),
            "1.10.0",
            kVstVersionString,
            GKickVstProcessor::createInstance)
-
-// DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstControllerUID),
-//            PClassInfo::kManyInstances,
-//            kVstComponentControllerClass,
-//            gkickPluginName "Controller",
-//            0,
-//            "",
-//            "1.10.0",
-//            kVstVersionString,
-//            GKickVstController::createInstance)
 
 END_FACTORY
 

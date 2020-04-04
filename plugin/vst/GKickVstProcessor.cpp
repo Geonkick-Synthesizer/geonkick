@@ -22,6 +22,7 @@
  */
 
 #include "GKickVstProcessor.h"
+#include "GKickVstEditor.h"
 #include "VstIds.h"
 #include "base/source/fstreamer.h"
 #include "pluginterfaces/base/ibstream.h"
@@ -36,11 +37,19 @@ GKickVstProcessor::GKickVstProcessor()
         : geonkickApi{nullptr}
 {
         std::freopen("/home/iurie/redir.txt", "w", stdout);
-        //        setControllerClass(GKickVstControllerUID);
 }
 
-tresult PLUGIN_API GKickVstProcessor::initialize(FUnknown* context)
+FUnknown* GKickVstProcessor::createInstance(void*)
 {
+        GEONKICK_LOG_INFO("called");
+        return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
+}
+
+
+tresult PLUGIN_API
+GKickVstProcessor::initialize(FUnknown* context)
+{
+        GEONKICK_LOG_INFO("called");
         auto res = Vst::SingleComponentEffect::initialize(context);
         if (res != kResultTrue)
                 return kResultFalse;
@@ -56,7 +65,8 @@ tresult PLUGIN_API GKickVstProcessor::initialize(FUnknown* context)
         return kResultTrue;
 }
 
-tresult PLUGIN_API GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
+tresult PLUGIN_API
+GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
                                                          int32 numIns,
                                                          Vst::SpeakerArrangement* outputs,
                                                          int32 numOuts)
@@ -67,19 +77,22 @@ tresult PLUGIN_API GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement
         return kResultFalse;
 }
 
-tresult PLUGIN_API GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
+tresult PLUGIN_API
+GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
         GEONKICK_LOG_INFO("called");
         return Vst::SingleComponentEffect::setupProcessing(setup);
 }
 
-tresult PLUGIN_API GKickVstProcessor::setActive(TBool state)
+tresult PLUGIN_API
+GKickVstProcessor::setActive(TBool state)
 {
         GEONKICK_LOG_INFO("called");
         return Vst::SingleComponentEffect::setActive(state);
 }
 
-tresult PLUGIN_API GKickVstProcessor::process(Vst::ProcessData& data)
+tresult PLUGIN_API
+GKickVstProcessor::process(Vst::ProcessData& data)
 {
         if (data.numSamples > 0) {
                 //		SpeakerArrangement arr;
@@ -124,7 +137,8 @@ tresult PLUGIN_API GKickVstProcessor::process(Vst::ProcessData& data)
         return kResultOk;
 }
 
-tresult PLUGIN_API GKickVstProcessor::setState(IBStream* state)
+tresult PLUGIN_API
+GKickVstProcessor::setState(IBStream* state)
 {
         GEONKICK_LOG_INFO("called");
         if (!state)
@@ -132,16 +146,28 @@ tresult PLUGIN_API GKickVstProcessor::setState(IBStream* state)
         return kResultOk;
 }
 
-tresult PLUGIN_API GKickVstProcessor::getState(IBStream* state)
+tresult PLUGIN_API
+GKickVstProcessor::getState(IBStream* state)
 {
         GEONKICK_LOG_INFO("called");
         return kResultOk;
 }
 
-FUnknown* GKickVstProcessor::createInstance(void*)
+IPlugView* PLUGIN_API
+GKickVstProcessor::createView(FIDString name)
+{
+        GEONKICK_LOG_INFO("called: " << name);
+        if (name && std::string(name) == std::string("editor"))
+                return static_cast<IPlugView*>(new GKickVstEditor(this, geonkickApi.get()));
+        return nullptr;
+}
+
+tresult PLUGIN_API
+GKickVstProcessor::setComponentState(IBStream* state)
 {
         GEONKICK_LOG_INFO("called");
-        return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
+        return kResultOk;
 }
+
 
 } // namespace Steinberg
