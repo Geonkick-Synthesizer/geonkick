@@ -36,8 +36,6 @@
 GKickVstProcessor::GKickVstProcessor()
         : geonkickApi{nullptr}
 {
-        // Temporary, for debugging.
-        std::freopen("/home/iurie/redir.txt", "w", stdout);
 }
 
 FUnknown* GKickVstProcessor::createInstance(void*)
@@ -111,13 +109,13 @@ GKickVstProcessor::process(Vst::ProcessData& data)
                                 case Vst::Event::kNoteOnEvent:
                                         geonkickApi->setKeyPressed(true,
                                                                    event.noteOn.pitch,
-                                                                   event.noteOn.velocity);
+                                                                   127 * event.noteOn.velocity);
                                         break;
 
                                 case Vst::Event::kNoteOffEvent:
                                         geonkickApi->setKeyPressed(false,
                                                                    event.noteOff.pitch,
-                                                                   event.noteOff.velocity);
+                                                                   127 * event.noteOff.velocity);
                                         break;
                                 default:
                                         break;
