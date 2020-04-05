@@ -29,6 +29,7 @@
 #include "pluginterfaces/vst/ivstparameterchanges.h"
 #include "pluginterfaces/vst/ivstevents.h"
 #include "geonkick_api.h"
+#include "kit_state.h"
 
 namespace Steinberg
 {
@@ -36,6 +37,7 @@ namespace Steinberg
 GKickVstProcessor::GKickVstProcessor()
         : geonkickApi{nullptr}
 {
+        // Temporary, for debugging.
         std::freopen("/home/iurie/redir.txt", "w", stdout);
 }
 
@@ -140,17 +142,57 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 tresult PLUGIN_API
 GKickVstProcessor::setState(IBStream* state)
 {
-        GEONKICK_LOG_INFO("called");
-        if (!state)
+        if (state == nullptr || geonkickApi == nullptr) {
+                GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
                 return kResultFalse;
+        }
+
+        // Get the size of data.
+        state->seek(0, IBStream::kIBSeekEnd, 0);
+        int64 endStream = 0;
+        state->tell(&endStream);
+        if (endStream < 1) {
+                GEONKICK_LOG_ERROR("stream is empty");
+                return kResultFalse;
+        }
+        state->seek(0, IBStream::kIBSeekSet, 0);
+
+        std::string data(endStream, '\0');
+        int32 nBytes = 0;
+        if (state->read(data.data(), data.size(), &nBytes) == kResultFalse) {
+                GEONKICK_LOG_ERROR("error on reading the state");
+                return kResultFalse;
+        }
+
+        if (static_cast<decltype(nBytes)>(data.size()) != nBytes) {
+                GEONKICK_LOG_ERROR("error on reading the state");
+                return kResultFalse;
+        }
+        geonkickApi->setKitState(data);
         return kResultOk;
 }
 
 tresult PLUGIN_API
 GKickVstProcessor::getState(IBStream* state)
 {
-        GEONKICK_LOG_INFO("called");
+        if (state == nullptr || geonkickApi == nullptr) {
+                GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
+                return kResultFalse;
+        }
+
+        int32 nBytes = 0;
+        auto data = geonkickApi->getKitState()->toJson();
+        if (state->write(data.data(), data.size(), &nBytes) == kResultFalse) {
+                GEONKICK_LOG_ERROR("error on saving the state");
+                return kResultFalse;
+        }
+
+        if (static_cast<decltype(nBytes)>(data.size()) != nBytes) {
+                GEONKICK_LOG_ERROR("error on saving the state");
+                return kResultFalse;
+        }
         return kResultOk;
+
 }
 
 IPlugView* PLUGIN_API
