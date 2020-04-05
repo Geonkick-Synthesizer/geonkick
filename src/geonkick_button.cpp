@@ -29,7 +29,6 @@ GeonkickButton::GeonkickButton(GeonkickWidget *parent)
         , is_checkable{false}
 {
         show();
-        setFocus(false);
 }
 
 void GeonkickButton::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
