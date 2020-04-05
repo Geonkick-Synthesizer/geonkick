@@ -56,14 +56,20 @@ GKickVstProcessor::initialize(FUnknown* context)
         if (res != kResultTrue)
                 return kResultFalse;
 
-        addAudioOutput(STR16("AudioOutput"), Vst::SpeakerArr::kStereo);
-        addEventInput(STR16("MIDI in"), 1);
-
         geonkickApi = std::make_unique<GeonkickApi>();
         if (!geonkickApi->init()) {
+                geonkickApi = nullptr;
                 GEONKICK_LOG_ERROR("can't init Geonkick API");
                 return kResultFalse;
         }
+
+        auto nChannels = geonkickApi->numberOfChannels();
+       for (decltype(nChannels) i = 0; i < nChannels; i++) {
+               std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
+               std::u16string str16 = convert.from_bytes(std::string("Out " + std::to_string(i)));
+               addAudioOutput(str16.c_str(), Vst::SpeakerArr::kMono);
+        }
+        addEventInput(STR16("MIDI in"), 1);
         return kResultTrue;
 }
 
@@ -97,8 +103,6 @@ tresult PLUGIN_API
 GKickVstProcessor::process(Vst::ProcessData& data)
 {
         if (data.numSamples > 0) {
-                //		SpeakerArrangement arr;
-                //		getBusArrangement(kOutput, 0, arr);
                 auto events = data.inputEvents;
                 auto nEvents = events->getEventCount();
                 auto eventIndex = 0;
@@ -107,20 +111,20 @@ GKickVstProcessor::process(Vst::ProcessData& data)
                 for (decltype(data.numSamples) i = 0; i < data.numSamples; i++) {
                         if (res != kResultOk)
                                 res = events->getEvent(eventIndex, event);
-                        if (res == kResultOk && event.sampleOffset == i && eventIndex < nEvents) {
+                        while (res == kResultOk && event.sampleOffset == i && eventIndex < nEvents) {
                                 switch (event.type) {
                                 case Vst::Event::kNoteOnEvent:
                                         GEONKICK_LOG_INFO("Vst::Event::kNoteOnEvent");
                                         geonkickApi->setKeyPressed(true,
                                                                    event.noteOn.pitch,
-                                                                   127/*event.noteOn.velocity*/);
+                                                                   event.noteOn.velocity);
                                         break;
 
                                 case Vst::Event::kNoteOffEvent:
                                         GEONKICK_LOG_INFO("Vst::Event::kNoteOffEvent");
                                         geonkickApi->setKeyPressed(false,
                                                                    event.noteOff.pitch,
-                                                                   127/*event.noteOff.velocity*/);
+                                                                   event.noteOff.velocity);
                                         break;
                                 default:
                                         break;
@@ -130,9 +134,13 @@ GKickVstProcessor::process(Vst::ProcessData& data)
                                 if (eventIndex < nEvents)
                                         res = events->getEvent(eventIndex, event);
                         }
-                        auto val = geonkickApi->getAudioFrame(0);
-                        data.outputs[0].channelBuffers32[0][i] = val;
-                        data.outputs[0].channelBuffers32[1][i] = val;
+
+                        auto nChannels = geonkickApi->numberOfChannels();
+                        nChannels = std::min(nChannels, static_cast<decltype(nChannels)>(data.numOutputs));
+                        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
+                                if (data.outputs[ch].channelBuffers32[0])
+                                        data.outputs[ch].channelBuffers32[0][i] = geonkickApi->getAudioFrame(ch);
+                        }
                 }
 	}
 
