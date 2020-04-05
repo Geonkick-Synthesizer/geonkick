@@ -1,8 +1,8 @@
 /**
- * File name: controller_vst.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: GKickVstProcessor.h
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
+ * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -29,12 +29,12 @@
 
 class GeonkickApi;
 
-namespace Steinberg
-{
+using namespace Steinberg;
+
 class GKickVstProcessor : public Vst::SingleComponentEffect {
   public:
         GKickVstProcessor();
-        virtual ~GKickVstProcessor() = default;
+        ~GKickVstProcessor() = default;
         tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
         static FUnknown* createInstance(void*);
         tresult PLUGIN_API setBusArrangements(Vst::SpeakerArrangement* inputs,
@@ -52,6 +52,5 @@ class GKickVstProcessor : public Vst::SingleComponentEffect {
   protected:
         std::unique_ptr<GeonkickApi> geonkickApi;
 };
-} // namespace Steinberg
 
 #endif // GEONKICK_PLUGIN_VST_PROCESSOR_H

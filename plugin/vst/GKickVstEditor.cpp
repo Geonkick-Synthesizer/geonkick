@@ -48,28 +48,21 @@ GKickVstEditor::GKickVstEditor(Vst::EditController *controller, GeonkickApi *api
         , geonkickApi{api}
         , loopTimer{nullptr}
 {
-        GEONKICK_LOG_INFO("called");
 }
 
-tresult PLUGIN_API GKickVstEditor::isPlatformTypeSupported(Steinberg::FIDString type)
+tresult PLUGIN_API
+GKickVstEditor::isPlatformTypeSupported(Steinberg::FIDString type)
 {
-        GEONKICK_LOG_INFO("called");
         RK_UNUSED(type);
         return kResultTrue;
 }
 
-tresult PLUGIN_API GKickVstEditor::attached(void* parent, FIDString type)
+tresult PLUGIN_API
+GKickVstEditor::attached(void* parent, FIDString type)
 {
         guiApp = new RkMain();
         loopTimer = std::move(std::make_unique<GKickVstTimer>(guiApp));
         geonkickApi->setEventQueue(guiApp->eventQueue().get());
-#ifdef RK_OS_WIN
-        //        auto info = rk_from_native_win(nullptr, nullptr, reinterpret_cast<HWND>(parent));
-#elif RK_OS_GNU
-        //        auto info = rk_from_native_x11(nullptr, nullptr, reinterpret_cast<Window>(*parent));
-#else
-#error operating system not defined
-#endif // RK_OS_GNU
         Display* xDisplay = XOpenDisplay(nullptr);
         int screenNumber = DefaultScreen(xDisplay);
         auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
@@ -77,6 +70,7 @@ tresult PLUGIN_API GKickVstEditor::attached(void* parent, FIDString type)
         mainWindow->show();
         if (!mainWindow->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
+                return kResultFalse;
         }
 
         IRunLoop* loop = nullptr;
@@ -84,27 +78,29 @@ tresult PLUGIN_API GKickVstEditor::attached(void* parent, FIDString type)
                 loop->registerTimer(loopTimer.get(), 30);
         } else {
                 GEONKICK_LOG_INFO("can't get loop");
+                return kResultFalse;
         }
         return Vst::EditorView::attached(parent, type);
 }
 
-tresult PLUGIN_API GKickVstEditor::removed()
+tresult PLUGIN_API
+GKickVstEditor::removed()
 {
-        GEONKICK_LOG_INFO("called");
         IRunLoop* loop = nullptr;
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
                 loop->unregisterTimer(loopTimer.get());
         } else {
                 GEONKICK_LOG_INFO("can't get loop");
+                return kResultFalse;
         }
         if (guiApp)
                 delete guiApp;
         return kResultOk;
 }
 
-tresult PLUGIN_API GKickVstEditor::getSize(ViewRect* newSize)
+tresult PLUGIN_API
+GKickVstEditor::getSize(ViewRect* newSize)
 {
-        GEONKICK_LOG_INFO("called");
 	if (newSize == nullptr || mainWindow == nullptr)
 		return kResultFalse;
 
@@ -112,11 +108,5 @@ tresult PLUGIN_API GKickVstEditor::getSize(ViewRect* newSize)
 	newSize->right  = mainWindow->x() + mainWindow->width();
 	newSize->top    = mainWindow->y();
 	newSize->bottom = mainWindow->y() + mainWindow->height();
-
-	GEONKICK_LOG_INFO("left   : " << newSize->left);
-	GEONKICK_LOG_INFO("right  : " << newSize->right);
-	GEONKICK_LOG_INFO("top    : " << newSize->top);
-	GEONKICK_LOG_INFO("bottom : " << newSize->bottom);
 	return kResultOk;
 }
-

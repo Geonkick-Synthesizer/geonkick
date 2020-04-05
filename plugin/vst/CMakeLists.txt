@@ -30,9 +30,6 @@ smtg_add_vst3plugin(${target} ${GKICK_VST_HEADERS} ${GKICK_VST_SOURCES})
 target_link_libraries(${target} PRIVATE geonkick_common api_plugin)
 target_link_libraries(${target} PRIVATE "-lstdc++fs")
 target_link_libraries(${target} PRIVATE base sdk pluginterfaces)
-#target_link_libraries(${target} PRIVATE redkite X11 sndfile config++ cairo)
 target_link_libraries(${target} PRIVATE "-lredkite -lX11 -lsndfile -lrt -lm -ldl -lpthread -lcairo")
 target_link_libraries(${target} PRIVATE "-Wl,--no-undefined")
 add_dependencies(${target} geonkick_common)
-
-

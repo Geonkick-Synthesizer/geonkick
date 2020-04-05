@@ -1,8 +1,8 @@
 /**
- * File name: processor_vst.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: GKickVstProcessor.h
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/geonkick)
+ * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -24,15 +24,14 @@
 #include "GKickVstProcessor.h"
 #include "GKickVstEditor.h"
 #include "VstIds.h"
+
 #include "base/source/fstreamer.h"
 #include "pluginterfaces/base/ibstream.h"
 #include "pluginterfaces/vst/ivstparameterchanges.h"
 #include "pluginterfaces/vst/ivstevents.h"
+
 #include "geonkick_api.h"
 #include "kit_state.h"
-
-namespace Steinberg
-{
 
 GKickVstProcessor::GKickVstProcessor()
         : geonkickApi{nullptr}
@@ -43,7 +42,6 @@ GKickVstProcessor::GKickVstProcessor()
 
 FUnknown* GKickVstProcessor::createInstance(void*)
 {
-        GEONKICK_LOG_INFO("called");
         return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
 }
 
@@ -51,7 +49,6 @@ FUnknown* GKickVstProcessor::createInstance(void*)
 tresult PLUGIN_API
 GKickVstProcessor::initialize(FUnknown* context)
 {
-        GEONKICK_LOG_INFO("called");
         auto res = Vst::SingleComponentEffect::initialize(context);
         if (res != kResultTrue)
                 return kResultFalse;
@@ -64,10 +61,10 @@ GKickVstProcessor::initialize(FUnknown* context)
         }
 
         auto nChannels = geonkickApi->numberOfChannels();
-       for (decltype(nChannels) i = 0; i < nChannels; i++) {
-               std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
-               std::u16string str16 = convert.from_bytes(std::string("Out " + std::to_string(i)));
-               addAudioOutput(str16.c_str(), Vst::SpeakerArr::kMono);
+        for (decltype(nChannels) i = 0; i < nChannels; i++) {
+                std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
+                std::u16string str16 = convert.from_bytes(std::string("Out " + std::to_string(i)));
+                addAudioOutput(str16.c_str(), Vst::SpeakerArr::kMono);
         }
         addEventInput(STR16("MIDI in"), 1);
         return kResultTrue;
@@ -79,8 +76,8 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
                                                          Vst::SpeakerArrangement* outputs,
                                                          int32 numOuts)
 {
-        GEONKICK_LOG_INFO("called");
-        if (numIns == 0 && numOuts == 1)
+        auto n = geonkickApi->numberOfChannels();
+        if (numIns == 0 && numOuts == static_cast<decltype(numOuts)>(n))
                 return Vst::SingleComponentEffect::setBusArrangements(inputs, numIns, outputs, numOuts);
         return kResultFalse;
 }
@@ -88,14 +85,12 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
 tresult PLUGIN_API
 GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
-        GEONKICK_LOG_INFO("called");
         return Vst::SingleComponentEffect::setupProcessing(setup);
 }
 
 tresult PLUGIN_API
 GKickVstProcessor::setActive(TBool state)
 {
-        GEONKICK_LOG_INFO("called");
         return Vst::SingleComponentEffect::setActive(state);
 }
 
@@ -114,14 +109,12 @@ GKickVstProcessor::process(Vst::ProcessData& data)
                         while (res == kResultOk && event.sampleOffset == i && eventIndex < nEvents) {
                                 switch (event.type) {
                                 case Vst::Event::kNoteOnEvent:
-                                        GEONKICK_LOG_INFO("Vst::Event::kNoteOnEvent");
                                         geonkickApi->setKeyPressed(true,
                                                                    event.noteOn.pitch,
                                                                    event.noteOn.velocity);
                                         break;
 
                                 case Vst::Event::kNoteOffEvent:
-                                        GEONKICK_LOG_INFO("Vst::Event::kNoteOffEvent");
                                         geonkickApi->setKeyPressed(false,
                                                                    event.noteOff.pitch,
                                                                    event.noteOff.velocity);
@@ -155,15 +148,24 @@ GKickVstProcessor::setState(IBStream* state)
                 return kResultFalse;
         }
 
-        // Get the size of data.
-        state->seek(0, IBStream::kIBSeekEnd, 0);
+        if (state->seek(0, IBStream::kIBSeekEnd, 0) == kResultFalse) {
+                GEONKICK_LOG_ERROR("can't seek in stream");
+                return kResultFalse;
+        }
+
         int64 endStream = 0;
-        state->tell(&endStream);
-        if (endStream < 1) {
+        if (state->tell(&endStream) == kResultFalse) {
+                GEONKICK_LOG_ERROR("can't get current position in stream");
+                return kResultFalse;
+        } else if (endStream < 1) {
                 GEONKICK_LOG_ERROR("stream is empty");
                 return kResultFalse;
         }
-        state->seek(0, IBStream::kIBSeekSet, 0);
+
+        if (state->seek(0, IBStream::kIBSeekSet, 0) == kResultFalse) {
+                GEONKICK_LOG_ERROR("can't seek in stream");
+                return kResultFalse;
+        }
 
         std::string data(endStream, '\0');
         int32 nBytes = 0;
@@ -200,13 +202,11 @@ GKickVstProcessor::getState(IBStream* state)
                 return kResultFalse;
         }
         return kResultOk;
-
 }
 
 IPlugView* PLUGIN_API
 GKickVstProcessor::createView(FIDString name)
 {
-        GEONKICK_LOG_INFO("called: " << name);
         if (name && std::string(name) == std::string("editor"))
                 return static_cast<IPlugView*>(new GKickVstEditor(this, geonkickApi.get()));
         return nullptr;
@@ -215,9 +215,6 @@ GKickVstProcessor::createView(FIDString name)
 tresult PLUGIN_API
 GKickVstProcessor::setComponentState(IBStream* state)
 {
-        GEONKICK_LOG_INFO("called");
         return kResultOk;
 }
 
-
-} // namespace Steinberg

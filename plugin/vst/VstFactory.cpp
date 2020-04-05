@@ -1,5 +1,5 @@
 /**
- * File name: factory_vst.h
+ * File name: VstFactory.h
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
@@ -37,7 +37,7 @@
 #define gkickCompanyName	"Geontime"
 #define gkickCompanyWeb		"http://geontime.com"
 #define gkickCompanyEmail	"mailto:iurie@geontime.com"
-#define gkickLegalCopyright	"Copyright (C) 2019 Iurie Nistor"
+#define gkickLegalCopyright	"Copyright (C) 2020 Iurie Nistor"
 #define gkickLegalTrademarks	"Licence GPLv3"
 
 BEGIN_FACTORY_DEF(gkickCompanyName, gkickCompanyWeb, gkickCompanyEmail)
@@ -46,9 +46,9 @@ DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstProcessorUID),
            PClassInfo::kManyInstances,
            kVstAudioEffectClass,
            gkickPluginName,
-           0/*Vst::kDistributable*/,
+           0,
            Vst::PlugType::kInstrumentSynth,
-           "1.10.0",
+           GEOKICK_VERSION_STRING,
            kVstVersionString,
            GKickVstProcessor::createInstance)
 
@@ -56,12 +56,10 @@ END_FACTORY
 
 bool InitModule()
 {
-        GEONKICK_LOG_INFO("called");
         return true;
 }
 
 bool DeinitModule()
 {
-        GEONKICK_LOG_INFO("called");
         return true;
 }
