@@ -5,6 +5,8 @@ project(geonkick VERSION 2.0.0)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 include(FindRedkite)
 
+message(STATUS  smtg_get_linux_architecture_name())
+
 option(GKICK_STANDALONE "Enable build for standalone" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 if (GKICK_PLUGIN)

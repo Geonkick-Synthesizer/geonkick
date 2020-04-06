@@ -25,11 +25,19 @@ set(GKICK_VST_SOURCES
   ${GKICK_VST_DIR}/GKickVstEditor.cpp)
 
 set(target geonkick_vst)
-
+smtg_get_linux_architecture_name()
 smtg_add_vst3plugin(${target} ${GKICK_VST_HEADERS} ${GKICK_VST_SOURCES})
+
+set_target_properties(${target} PROPERTIES PREFIX "")
+set_target_properties(${target} PROPERTIES OUTPUT_NAME "geonkick")
+set_target_properties(${target} PROPERTIES SUFFIX ".so")
+
 target_link_libraries(${target} PRIVATE geonkick_common api_plugin)
 target_link_libraries(${target} PRIVATE "-lstdc++fs")
 target_link_libraries(${target} PRIVATE base sdk pluginterfaces)
 target_link_libraries(${target} PRIVATE "-lredkite -lX11 -lsndfile -lrt -lm -ldl -lpthread -lcairo")
 target_link_libraries(${target} PRIVATE "-Wl,--no-undefined")
+
 add_dependencies(${target} geonkick_common)
+
+install(TARGETS geonkick_vst DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vst3/geonkick.vst3/Contents/${LINUX_ARCHITECTURE_NAME})
