@@ -1,6 +1,7 @@
-if (CMAKE_SYSTEM_NAME MATCHES Windows)
-  add_subdirectory(vst)
-else()
-  add_subdirectory(vst)
+if (GKICK_PLUGIN_LV2)
   add_subdirectory(lv2)
-endif()
+endif(GKICK_PLUGIN_LV2)
+
+if (GKICK_PLUGIN_VST)
+  add_subdirectory(vst)
+endif(GKICK_PLUGIN_VST)

@@ -10,7 +10,7 @@ Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 1.10.0
+Version: 2.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -74,6 +74,7 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
 * Pitch to note
 * Plugin
   - LV2
+  - VST3
 * Platforms:
   - GNU/Linux
 
@@ -87,17 +88,17 @@ In the directory geonkick/presets can be found some example presets.
 
 #### Requirements
 
-In order Geonkick to run and operate correctly there is a need for:
+In order Geonkick to run and operate correctly there is a need:
 
-Standalone:
+For standalone:
 
 * GNU/Linux operating system
-* Jack server installed and running at 48000 sample rate
+* Jack server running at 48000 sample rate
 
-Plugin:
+For plugin:
 
  * GNU/Linux operating system.
- * LV2 host. For example, a DAW that supports LV2 plugin format, running at 48000 sample rate.
+ * A host that supports LV2 or VST3 plugin format running at 48000 sample rate.
 
 #### Install
 
@@ -110,6 +111,7 @@ In order to build Geonkick there is a need to install the following development 
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for LV2)
 * LV2 development library
+* For VST3 there is a need to install VST3 SDK (optional if you don't want VST3 plugin)
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
@@ -131,13 +133,21 @@ Clone the Geonkick code repository, compile and install
         make
         make install
 
+###### VST
+
+VST build is turned off by default. In order to enable it there is a need to pass
+GKICK_VST_SDK_PATH to cmake.
+
+cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
+
 #### Packaging
 
 Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
 
 Notes:
 
-GKICK_REDKITE_SDK_PATH for cmake will point where Redkite GUI tookit is installed.
+If Redkite GUI toolkit is installed in a different location than defaults ones
+there is a need to set GKICK_REDKITE_SDK_PATH to point to needed location.
 
 #### Documentation
 

@@ -5,13 +5,15 @@ project(geonkick VERSION 2.0.0)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 include(FindRedkite)
 
-message(STATUS  smtg_get_linux_architecture_name())
-
 option(GKICK_STANDALONE "Enable build for standalone" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 if (GKICK_PLUGIN)
   option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" ON)
-  option(GKICK_PLUGIN_VST "Enable build VST plugin" ON)
+  if (GKICK_VST_SDK_PATH)
+    option(GKICK_PLUGIN_VST "Enable build VST plugin" ON)
+  else(GKICK_VST_SDK_PATH)
+    option(GKICK_PLUGIN_VST "Enable build VST plugin" OFF)
+  endif (GKICK_VST_SDK_PATH)
 endif (GKICK_PLUGIN)
 
 if (NOT CMAKE_BUILD_TYPE)
@@ -212,6 +214,32 @@ add_library(geonkick_common STATIC
   ${GKICK_RC_OUTPUT})
 add_dependencies(geonkick_common gkick_resources)
 
+message(STATUS "------------ Summary ---------")
+if (GKICK_STANDALONE)
+  message(STATUS "Standalone: yes" )
+else(GKICK_STANDALONE)
+  message(STATUS "Standalone: no")
+endif(GKICK_STANDALONE)
+
+if (GKICK_PLUGIN_LV2)
+  message(STATUS "LV2 plugin: yes" )
+else(GKICK_PLUGIN_LV2)
+  message(STATUS "LV2 plugin: no")
+endif(GKICK_PLUGIN_LV2)
+
+if (GKICK_PLUGIN_VST)
+  message(STATUS "VST plugin: yes" )
+else(GKICK_PLUGIN_VST)
+  message(STATUS "VST plugin: no")
+endif(GKICK_PLUGIN_VST)
+
+if (ENABLE_LOGGING)
+  message(STATUS "Debug enabled: yes" )
+else(ENABLE_LOGGING)
+  message(STATUS "Debug enabled: no" )
+endif(ENABLE_LOGGING)
+message(STATUS "------------------------------")
+
 if (GKICK_STANDALONE)
   add_subdirectory(standalone)
 endif (GKICK_STANDALONE)
@@ -221,3 +249,4 @@ if (GKICK_PLUGIN)
 endif (GKICK_PLUGIN)
 
 add_subdirectory(data)
+
