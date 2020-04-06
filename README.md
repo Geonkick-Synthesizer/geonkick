@@ -38,7 +38,7 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
    - 16 midi keys range
    - user configurable key mapping
 * Multichannel
-   - for LV2 plugin up to 16 output audio channels
+   - for plugin up to 16 output audio channels
    - for standalone 1 output channel
    - user configurable mapping of kit percussions to channels
 * 3 layers
@@ -65,11 +65,11 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
 * Key velocity sensitive
 * Jack support
 * Export
-     - stereo & mono
+     - mono, stereo
      - WAV: 16, 24, 32 bit
      - FLAC: 16, 24 bit
-     - Ogg Vorbis
-* Open & Save percussion preset in JSON format
+     - Ogg
+* Open & Save presets in JSON format
 * Standalone
 * Pitch to note
 * Plugin
@@ -80,9 +80,11 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
 
 #### Demo & Examples
 
+##### Tutorials
+
 Here is a [list of videos and tutorial](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about Geonkick.
 
-#### Presets
+##### Presets
 
 In the directory geonkick/presets can be found some example presets.
 
@@ -90,26 +92,26 @@ In the directory geonkick/presets can be found some example presets.
 
 In order Geonkick to run and operate correctly there is a need:
 
-For standalone:
+for standalone:
 
 * GNU/Linux operating system
 * Jack server running at 48000 sample rate
 
-For plugin:
+for plugin:
 
  * GNU/Linux operating system.
  * A host that supports LV2 or VST3 plugin format running at 48000 sample rate.
 
 #### Install
 
-###### Install dependencies
+##### Install dependencies
 
 In order to build Geonkick there is a need to install the following development packages:
 
 * [Redkite](https://github.com/geontime/redkite) GUI toolkit.
 * libsndfile
 * RapidJSON (version >= 1.1)
-* JACK Audio Connection Kit (optional if building only for LV2)
+* JACK Audio Connection Kit (optional if building only for plugin)
 * LV2 development library
 * For VST3 there is a need to install VST3 SDK (optional if you don't want VST3 plugin)
 
@@ -122,7 +124,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
     apt-get install rapidjson-dev
     apt-get install lv2-dev
 
-###### Build & install Geonkick
+##### Build & install Geonkick
 
 Clone the Geonkick code repository, compile and install
 
@@ -133,21 +135,25 @@ Clone the Geonkick code repository, compile and install
         make
         make install
 
-###### VST
+Note: It is recommended to use the release version (see repository tags).
+
+##### VST
 
 VST build is turned off by default. In order to enable it there is a need to pass
-GKICK_VST_SDK_PATH to cmake.
+GKICK_VST_SDK_PATH to cmake:
 
-cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
+    cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
 
-#### Packaging
+#### Packages
 
 Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
 
-Notes:
+##### Packaging
 
-If Redkite GUI toolkit is installed in a different location than defaults ones
-there is a need to set GKICK_REDKITE_SDK_PATH to point to needed location.
+Please, use only release versions for packaging, and build against only release version of Redkite.
+If Redkite GUI toolkit is installed in a different location
+than the defaults ones there is a need to set GKICK_REDKITE_SDK_PATH
+to point to the needed location.
 
 #### Documentation
 
@@ -155,3 +161,4 @@ Please, see the documentation at:
 
  * GitLab: https://gitlab.com/geontime/geonkick/-/wikis/Geonkick-Documentation
  * GitHub: https://github.com/geontime/geonkick/wiki/Geonkick-Documentation
+
