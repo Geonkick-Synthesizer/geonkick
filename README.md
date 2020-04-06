@@ -143,6 +143,8 @@ VST build is turned off by default. In order to enable it there is a need to pas
 GKICK_VST_SDK_PATH to cmake:
 
     cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
+    
+Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/0908f475f52af56682321192d800ef25d1823dd2)
 
 #### Packages
 
