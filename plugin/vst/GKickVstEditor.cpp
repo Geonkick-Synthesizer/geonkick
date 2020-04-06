@@ -60,13 +60,13 @@ GKickVstEditor::isPlatformTypeSupported(Steinberg::FIDString type)
 tresult PLUGIN_API
 GKickVstEditor::attached(void* parent, FIDString type)
 {
-        guiApp = new RkMain();
-        loopTimer = std::move(std::make_unique<GKickVstTimer>(guiApp));
+        guiApp = std::make_unique<RkMain>();
+        loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
         geonkickApi->setEventQueue(guiApp->eventQueue().get());
         Display* xDisplay = XOpenDisplay(nullptr);
         int screenNumber = DefaultScreen(xDisplay);
         auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
-        mainWindow = new MainWindow(guiApp, geonkickApi, info);
+        mainWindow = new MainWindow(guiApp.get(), geonkickApi, info);
         mainWindow->show();
         if (!mainWindow->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
@@ -94,7 +94,7 @@ GKickVstEditor::removed()
                 return kResultFalse;
         }
         if (guiApp)
-                delete guiApp;
+                guiApp = nullptr;
         return kResultOk;
 }
 

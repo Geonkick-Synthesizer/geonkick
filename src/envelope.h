@@ -49,7 +49,7 @@ class Envelope
                 General
         };
 
-        Envelope(const RkRect &area = RkRect());
+        explicit Envelope(const RkRect &area = RkRect());
         virtual ~Envelope() = default;
         int W(void) const;
         int H(void) const;
