@@ -152,7 +152,7 @@ Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro,
 
 Please, use only release versions for packaging, and build against only release version of Redkite.
 If Redkite GUI toolkit is installed in a different location
-than the defaults ones there is a need to set GKICK_REDKITE_SDK_PATH
+than the standard ones there is a need to set GKICK_REDKITE_SDK_PATH
 to point to the needed location.
 
 #### Documentation
