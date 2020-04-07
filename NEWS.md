@@ -5,11 +5,16 @@
     - VST3 plugin support for GNU/Linux
     - seed for noise generator. Now the noise pattern will change only if the seed is changed
       load/save preset will preserve the noise pattern
+    - add copy/paster between percussions
 
 #### Fixes:
 
      - the shortcuts and key 'k'
      - bug regarding "grabbing" window manager keys
+     - fix set "any" key
+     - fix updating the name in the toolbar
+     - fix not updating the current percussion envelopes when adding a new default
+     - fix reset to default percussion
 
 ### Changes from 1.9.2 to 1.10.0
 
