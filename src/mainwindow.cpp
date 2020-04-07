@@ -238,8 +238,10 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
-                geonkickApi->setPercussionState(geonkickApi->getDefaultPercussionState());
-                topBar->setPresetName("");
+                auto state = geonkickApi->getDefaultPercussionState();
+                state->setId(geonkickApi->currentPercussion());
+                geonkickApi->setPercussionState(state);
+                topBar->setPresetName(state->getName());
                 updateGui();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
