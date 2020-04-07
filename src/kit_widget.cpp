@@ -103,8 +103,9 @@ void KitWidget::createKeys()
                 KeyInfo midiKey;
                 midiKey.name = key;
                 midiKey.key = 69 + n;
+                if (static_cast<decltype(keys.size())>(++n) > keys.size() - 1)
+                        midiKey.key = -1;
                 midiKeys.push_back(midiKey);
-                n++;
         }
 
         percussionWidth = percussionNameWidth + midiKeys.size() * keyWidth + channelWidth;
