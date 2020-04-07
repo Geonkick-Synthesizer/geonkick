@@ -10,7 +10,7 @@ Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 2.0
+Version: 2.0 (not released yet)
 
 If you have an idea about a feature or found an issue, please, submit it:
 
