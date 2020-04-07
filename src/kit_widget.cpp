@@ -327,6 +327,8 @@ void KitWidget::updatePercussionName()
 void KitWidget::updatePercussionName(size_t id, const std::string &name)
 {
         geonkickApi->setPercussionName(id, name);
+        if (id == geonkickApi->currentPercussion())
+                action geonkickApi->stateChanged();
         update();
 }
 
@@ -342,6 +344,7 @@ void KitWidget::addPercussion(const std::shared_ptr<PercussionState> &per)
 
         editedLineId = -1;
         geonkickApi->setPercussionState(per);
+        action geonkickApi->stateChanged();
 	percussionsLines.push_back(per->getId());
 	std::sort(percussionsLines.begin(), percussionsLines.end());
         update();
@@ -437,6 +440,7 @@ void KitWidget::copyPercussion(int id)
                 auto state = geonkickApi->getPercussionState(id);
                 state->setId(newId);
                 geonkickApi->setPercussionState(state);
+                action geonkickApi->stateChanged();
 		percussionsLines.push_back(newId);
 		std::sort(percussionsLines.begin(), percussionsLines.end());
         }

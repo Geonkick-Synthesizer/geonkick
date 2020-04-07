@@ -391,6 +391,7 @@ void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         setKitUrl(state->getUrl());
         for (const auto &per: state->percussions())
                 setPercussionState(per);
+        action stateChanged();
 }
 
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
@@ -1352,6 +1353,5 @@ void GeonkickApi::pasteFromClipboard()
         if (clipboardPercussion) {
                 clipboardPercussion->setId(currentPercussion());
                 setPercussionState(clipboardPercussion);
-                action stateChanged();
         }
 }
