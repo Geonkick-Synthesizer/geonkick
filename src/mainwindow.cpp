@@ -255,7 +255,13 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
                 openExportDialog();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_a || event->key() == Rk::Key::Key_A)) {
-                           openAboutDialog();
+                openAboutDialog();
+        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                   && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
+                geonkickApi->copyToClipboard();
+        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                    && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
+                geonkickApi->pasteFromClipboard();
         }
 }
 

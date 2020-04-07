@@ -42,6 +42,7 @@ GeonkickApi::GeonkickApi()
         , currentLayer{Layer::Layer1}
         , kitName{"Unknown"}
         , kitAuthor{"Author"}
+        , clipboardPercussion{nullptr}
 {
 }
 
@@ -1339,4 +1340,18 @@ void GeonkickApi::setKitUrl(const std::string &url)
 std::string GeonkickApi::getKitUrl() const
 {
         return kitUrl;
+}
+
+void GeonkickApi::copyToClipboard()
+{
+        clipboardPercussion = getPercussionState();
+}
+
+void GeonkickApi::pasteFromClipboard()
+{
+        if (clipboardPercussion) {
+                clipboardPercussion->setId(currentPercussion());
+                setPercussionState(clipboardPercussion);
+                action stateChanged();
+        }
 }
