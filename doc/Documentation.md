@@ -1,41 +1,39 @@
-  * [Introduction](#introduction)
-  * [How it works](#how-it-works)
-  * [Percussion](#percussion)
-    + [Percussion layers](#percussion-layers)
-    + [Playing percussion](#playing-percussion)
-    + [Percussion UI](#percussion-ui)
-    + [Top bar](#top-bar)
-    + [Shortcut Keys](#shortcut-keys)
-    + [Percussion envelope area](#percussion-envelope-area)
-    + [Envelope points](#envelope-points)
-    + [Envelope point label](#envelope-point-label)
-    + [Percussion graph](#percussion-graph)
-    + [Envelopes menu](#envelopes-menu)
-    + [Percussion preset](#percussion-preset)
-    + [Oscillator](#oscillator)
-    + [Noise generator](#noise-generator)
-    + [General controls](#general-controls)
-    + [Limiter](#limiter)
-    + [Filter](#filter)
-    + [Distortion](#distortion)
-    + [Compressor](#compressor)
-    + [Tune](#tune)
-    + [Export](#export)
-  * [Kit](#kit)
-    + [Default kit state](#default-kit-state)
-    + [Kit UI](#kit-ui)
-    + [Current percussion](#current-percussion)
-    + [Kit output channels](#kit-output-channels)
-    + [Kit preset](#kit-preset)
-    + [Kit preset vs percussion preset](#kit-preset-vs-percussion-preset)
-    + [Percussion vs channel](#percussion-vs-channel)
-  * [LV2 Plugin](#lv2-plugin)
-  * [Standalone](#standalone)
-  * [Install](#install)
-  * [Examples & tutorials](#examples---tutorials)
-  * [Documentation license](#documentation-license)
-
-
+- [Introduction](#introduction)
+- [How it works](#how-it-works)
+- [Percussion](#percussion)
+  * [Percussion layers](#percussion-layers)
+  * [Playing percussion](#playing-percussion)
+  * [Percussion UI](#percussion-ui)
+  * [Top bar](#top-bar)
+  * [Shortcut Keys](#shortcut-keys)
+  * [Percussion envelope area](#percussion-envelope-area)
+  * [Envelope points](#envelope-points)
+  * [Envelope point label](#envelope-point-label)
+  * [Percussion graph](#percussion-graph)
+  * [Envelopes menu](#envelopes-menu)
+  * [Percussion preset](#percussion-preset)
+  * [Oscillator](#oscillator)
+  * [Noise generator](#noise-generator)
+  * [General controls](#general-controls)
+  * [Limiter](#limiter)
+  * [Filter](#filter)
+  * [Distortion](#distortion)
+  * [Compressor](#compressor)
+  * [Tune](#tune)
+  * [Export](#export)
+- [Kit](#kit)
+  * [Default kit state](#default-kit-state)
+  * [Kit UI](#kit-ui)
+  * [Current percussion](#current-percussion)
+  * [Kit output channels](#kit-output-channels)
+  * [Kit preset](#kit-preset)
+  * [Kit preset vs percussion preset](#kit-preset-vs-percussion-preset)
+  * [Percussion vs channel](#percussion-vs-channel)
+- [LV2 Plugin](#lv2-plugin)
+- [Standalone](#standalone)
+- [Install](#install)
+- [Examples and tutorials](#examples-and-tutorials)
+- [Documentation license](#documentation-license)
 
 ### Introduction
 
@@ -411,7 +409,7 @@ but has only one audio output channel and one MIDI input channel.
 
 Please, see README file how to build and install Geonkick.
 
-### Examples & tutorials
+### Examples and tutorials
 
 Here is a list of videos that show how to synthesize various percussion with Geonkick:
 
@@ -421,6 +419,6 @@ Also, in the folder "geonkick/presets" of the Geonkick code repository can be
 found a list of example presets that can be loaded into Geonkick and
 play with or modify.
 
-### - Documentation license
+### Documentation license
 
 Geonkick documentaiton is released under CC-BY 4.0 license.
