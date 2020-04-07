@@ -234,6 +234,8 @@ class GeonkickApi {
   size_t getPercussionChannel(int index) const;
   void setPercussionName(int index, const std::string &name);
   std::string getPercussionName(int index) const;
+  void copyToClipboard();
+  void pasteFromClipboard();
 
   RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double val),
@@ -295,6 +297,7 @@ private:
   std::string kitName;
   std::string kitAuthor;
   std::string kitUrl;
+  std::shared_ptr<PercussionState> clipboardPercussion;
 
   /**
    * Current working paths for entire application.

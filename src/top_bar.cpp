@@ -186,4 +186,5 @@ void TopBar::updateGui()
         layer2Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer2));
         layer3Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer3));
         tuneCheckbox->setPressed(geonkickApi->isAudioOutputTuned(geonkickApi->currentPercussion()));
+        setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
 }

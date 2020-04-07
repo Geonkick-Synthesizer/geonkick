@@ -131,6 +131,7 @@ bool MainWindow::init(void)
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         controlAreaWidget->show();
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         auto rightBar = new RightBar(this);
         rightBar->setPosition(width() - rightBar->width(), 0);
         rightBar->show();
@@ -138,16 +139,10 @@ bool MainWindow::init(void)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
         RK_ACT_BIND(rightBar, showKit, RK_ACT_ARGS(), controlAreaWidget, showKit());
-        RK_ACT_BIND(controlAreaWidget->getKitWidget(),
-                    currentPercussionChanged,
-                    RK_ACT_ARGS(int id),
-                    topBar,
-                    setPresetName(geonkickApi->getPercussionName(id)));
-
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
-        updateGui();
         topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
+        updateGui();
         return true;
 }
 
@@ -198,8 +193,6 @@ void MainWindow::openPreset(const std::string &fileName)
         state->loadData(fileData);
         state->setId(geonkickApi->currentPercussion());
         geonkickApi->setPercussionState(state);
-        controlAreaWidget->getKitWidget()->update();
-        topBar->setPresetName(filePath.stem());
         file.close();
         geonkickApi->setCurrentWorkingPath("OpenPreset",
                                            filePath.has_parent_path() ? filePath.parent_path() : filePath);
@@ -238,8 +231,9 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
-                geonkickApi->setPercussionState(geonkickApi->getDefaultPercussionState());
-                topBar->setPresetName("");
+                auto state = geonkickApi->getDefaultPercussionState();
+                state->setId(geonkickApi->currentPercussion());
+                geonkickApi->setPercussionState(state);
                 updateGui();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
@@ -255,7 +249,14 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
                 openExportDialog();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_a || event->key() == Rk::Key::Key_A)) {
-                           openAboutDialog();
+                openAboutDialog();
+        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                   && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
+                geonkickApi->copyToClipboard();
+        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                    && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
+                geonkickApi->pasteFromClipboard();
+                updateGui();
         }
 }
 

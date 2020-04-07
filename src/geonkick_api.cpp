@@ -42,6 +42,7 @@ GeonkickApi::GeonkickApi()
         , currentLayer{Layer::Layer1}
         , kitName{"Unknown"}
         , kitAuthor{"Author"}
+        , clipboardPercussion{nullptr}
 {
 }
 
@@ -390,6 +391,7 @@ void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         setKitUrl(state->getUrl());
         for (const auto &per: state->percussions())
                 setPercussionState(per);
+        action stateChanged();
 }
 
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
@@ -1339,4 +1341,22 @@ void GeonkickApi::setKitUrl(const std::string &url)
 std::string GeonkickApi::getKitUrl() const
 {
         return kitUrl;
+}
+
+void GeonkickApi::copyToClipboard()
+{
+        clipboardPercussion = getPercussionState();
+}
+
+void GeonkickApi::pasteFromClipboard()
+{
+        if (clipboardPercussion) {
+                auto state = std::make_shared<PercussionState>(*clipboardPercussion);
+                auto currId = currentPercussion();
+                state->setId(currId);
+                state->setName(getPercussionName(currId));
+                state->setPlayingKey(getPercussionPlayingKey(currId));
+                state->setChannel(getPercussionChannel(currId));
+                setPercussionState(state);
+        }
 }
