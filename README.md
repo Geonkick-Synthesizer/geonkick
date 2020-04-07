@@ -159,8 +159,5 @@ to point to the needed location.
 
 #### Documentation
 
-Please, see the documentation at:
-
- * GitLab: https://gitlab.com/geontime/geonkick/-/wikis/Geonkick-Documentation
- * GitHub: https://github.com/geontime/geonkick/wiki/Geonkick-Documentation
+ [doc/Documentation.md](doc/Documentation.md)
 
