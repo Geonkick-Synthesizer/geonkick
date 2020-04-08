@@ -10,12 +10,13 @@
 #### Fixes:
 
    - the shortcuts and key 'k'
-   - bug regarding "grabbing" window manager keys
+   - fix bug regarding "grabbing" window manager keys
    - fix set "any" key
    - fix updating the name in the toolbar
    - fix not updating the current percussion envelopes when adding a new default
    - fix reset to default percussion
    - fix limiter leveler for plugin
+   - fix related to loading the preset from the host list of states (for LV2)
 
 ### Changes from 1.9.2 to 1.10.0
 

@@ -1,6 +1,6 @@
 /**
- * File name: percussions_widget.cpp
- * Project: Geonkick (a percussion synthesizer)
+ * File name: kit_widget.cpp
+ * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
  *
@@ -88,7 +88,6 @@ void KitWidget::updatePercussionsLines()
 		if (geonkickApi->isPercussionEnabled(i))
 			percussionsLines.push_back(i);
 	}
-	std::sort(percussionsLines.begin(), percussionsLines.end());
 }
 
 void KitWidget::createKeys()
@@ -243,8 +242,8 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
         if (id > -1 && static_cast<decltype(n)>(id) < n) {
                 auto enabledPercussions = geonkickApi->enabledPercussions();
 		if (event->x() < percussionNameWidth) {
-			geonkickApi->setCurrentPercussion(id);
-                        update();
+                        geonkickApi->setCurrentPercussion(id);
+                        geonkickApi->notifyUpdateGui();
 			return;
 		} else if ((event->x() > percussionWidth + 5)
                            && (event->x() < percussionWidth + 5 + 16)) {
@@ -252,7 +251,6 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                                 copyPercussion(id);
                         else
                                 removePercussion(id);
-                        update();
                         return;
                 } else if (event->x() > (percussionWidth - channelWidth)
                            && event->x() < percussionWidth) {
@@ -277,7 +275,6 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                            && (event->x() > percussionWidth + 5 + 16 + 3)
                            && (event->x() < percussionWidth + 5 + 16 + 3 + 16)) {
                         copyPercussion(id);
-                        update();
                         return;
                 }
 
@@ -316,11 +313,15 @@ void KitWidget::updatePercussionName()
 	if (editedLineId > -1) {
 		auto name = editPercussion->text();
 		if (!name.empty()) {
-			geonkickApi->setPercussionName(idFromLine(editedLineId), name);
+                        auto id = idFromLine(editedLineId);
+			geonkickApi->setPercussionName(id, name);
 			editPercussion->hide();
 			editPercussion->setFocus(false);
+                        if (static_cast<decltype(id)>(geonkickApi->currentPercussion()) == id)
+                                geonkickApi->notifyUpdateGui();
+                        else
+                                update();
 		}
-		update();
 	}
 }
 
@@ -346,8 +347,7 @@ void KitWidget::addPercussion(const std::shared_ptr<PercussionState> &per)
         geonkickApi->setPercussionState(per);
         action geonkickApi->stateChanged();
 	percussionsLines.push_back(per->getId());
-	std::sort(percussionsLines.begin(), percussionsLines.end());
-        update();
+        geonkickApi->notifyUpdateGui();
 }
 
 int KitWidget::getLineId(int x, int y) const
@@ -398,10 +398,8 @@ void KitWidget::openKit(const std::string &file)
         geonkickApi->setKitState(std::move(kit));
         geonkickApi->setCurrentWorkingPath("OpenKit", path);
         editPercussion->setText("");
-        geonkickApi->setCurrentPercussion(idFromLine(0));
 	updatePercussionsLines();
-        updateGui();
-        update();
+        geonkickApi->notifyUpdateGui();
 }
 
 void KitWidget::addNewPercussion()
@@ -419,13 +417,13 @@ void KitWidget::addNewPercussion()
 void KitWidget::removePercussion(int id)
 {
         editedLineId = -1;
-        geonkickApi->enablePercussion(id, false);
 	for (auto it = percussionsLines.begin(); it != percussionsLines.end(); ++it) {
 		if (*it == id) {
 			percussionsLines.erase(it);
-			std::sort(percussionsLines.begin(), percussionsLines.end());
+                        geonkickApi->enablePercussion(id, false);
                         if (static_cast<decltype(id)>(geonkickApi->currentPercussion()) == id)
                                 geonkickApi->setCurrentPercussion(idFromLine(0));
+                        geonkickApi->notifyUpdateGui();
 			break;
 		}
 	}
@@ -439,9 +437,9 @@ void KitWidget::copyPercussion(int id)
                 auto state = geonkickApi->getPercussionState(id);
                 state->setId(newId);
                 geonkickApi->setPercussionState(state);
-                action geonkickApi->stateChanged();
+                if (state->getId() == geonkickApi->currentPercussion())
+                        geonkickApi->notifyUpdateGui();
 		percussionsLines.push_back(newId);
-		std::sort(percussionsLines.begin(), percussionsLines.end());
         }
 }
 
@@ -460,5 +458,6 @@ int KitWidget::idFromLine(int lineId) const
 
 void KitWidget::updateGui()
 {
+        updatePercussionsLines();
         update();
 }

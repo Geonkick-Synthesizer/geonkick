@@ -53,8 +53,10 @@ bool KitState::open(const std::string &fileName)
                 RK_LOG_ERROR("can't open kit.");
                 return false;
         }
+
         std::string fileData((std::istreambuf_iterator<char>(sfile)),
                              (std::istreambuf_iterator<char>()));
+
         sfile.close();
         fromJson(fileData);
         return false;

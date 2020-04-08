@@ -264,6 +264,7 @@ class GeonkickApi {
 
   void setSettings(const std::string &key, const std::string &value);
   std::string getSettings(const std::string &key) const;
+  void notifyUpdateGui();
 
 protected:
   static void kickUpdatedCallback(void *arg,

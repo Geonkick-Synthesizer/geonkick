@@ -1582,7 +1582,6 @@ enum geonkick_error
 geonkick_unused_percussion(struct geonkick *kick,
                            int *index)
 {
-        gkick_log_info("called");
         if (kick == NULL || index == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;

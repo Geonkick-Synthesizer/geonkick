@@ -389,9 +389,13 @@ void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         setKitName(state->getName());
         setKitAuthor(state->getAuthor());
         setKitUrl(state->getUrl());
-        for (const auto &per: state->percussions())
+        auto currentId = state->percussions().empty() ? 0 : state->percussions().front()->getId();
+        for (const auto &per: state->percussions()) {
                 setPercussionState(per);
-        action stateChanged();
+                if (currentId > per->getId())
+                        currentId = per->getId();
+        }
+        setCurrentPercussion(currentId);
 }
 
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
@@ -1156,7 +1160,6 @@ void GeonkickApi::setPercussionPlayingKey(int index, int key)
         geonkick_set_playing_key(geonkickApi,
                                  index,
                                  key);
-        action stateChanged();
 }
 
 int GeonkickApi::getPercussionPlayingKey(int index) const
@@ -1173,7 +1176,6 @@ void GeonkickApi::setPercussionChannel(int index, size_t channel)
         geonkick_set_percussion_channel(geonkickApi,
                                         index,
                                         channel);
-        action stateChanged();
 }
 
 size_t GeonkickApi::getPercussionChannel(int index) const
@@ -1191,7 +1193,6 @@ void GeonkickApi::setPercussionName(int index, const std::string &name)
                                      index,
                                      name.c_str(),
                                      name.size());
-        action stateChanged();
 }
 
 std::string GeonkickApi::getPercussionName(int index) const
@@ -1238,7 +1239,6 @@ void GeonkickApi::setCurrentPercussion(int index)
         geonkick_set_current_percussion(geonkickApi, index);
         if (eventQueue)
                 eventQueue->postAction([&](void){ kickUpdated(); });
-        action stateChanged();
 }
 
 size_t GeonkickApi::currentPercussion() const
@@ -1359,4 +1359,10 @@ void GeonkickApi::pasteFromClipboard()
                 state->setChannel(getPercussionChannel(currId));
                 setPercussionState(state);
         }
+}
+
+void GeonkickApi::notifyUpdateGui()
+{
+        if (eventQueue)
+                eventQueue->postAction([&](void){ action stateChanged(); });
 }
