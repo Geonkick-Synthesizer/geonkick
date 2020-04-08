@@ -15,6 +15,7 @@
    - fix updating the name in the toolbar
    - fix not updating the current percussion envelopes when adding a new default
    - fix reset to default percussion
+   - fix limiter leveler for plugin
 
 ### Changes from 1.9.2 to 1.10.0
 
