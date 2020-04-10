@@ -1,6 +1,6 @@
 /**
  * File name: kit_widget.h
- * Project: Geonkick (A kick synthesizer)
+ * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
  *
@@ -65,7 +65,7 @@ class KitWidget: public GeonkickWidget
         void createKeys();
 	void updatePercussionsLines();
 	void updatePercussionName();
-        void openFileDialog(FileDialog::Type type);
+        void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
         void addNewPercussion();

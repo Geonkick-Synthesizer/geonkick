@@ -52,7 +52,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
 {
-	RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(), this, updatePercussionName());
+	RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
+                    this, updatePercussionName());
         createKeys();
 	updatePercussionsLines();
         addButton = new RkButton(this);
@@ -68,7 +69,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
         openKitButton->setSize(16, 16);
         openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
         openKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
-        RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b), this, openFileDialog(FileDialog::Type::Open));
+        RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
+                    this, showFileDialog(FileDialog::Type::Open));
         openKitButton->show();
 
         saveKitButton = new RkButton(this);
@@ -76,39 +78,30 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
         saveKitButton->setSize(16, 16);
         saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
         saveKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
-        RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b), this, openFileDialog(FileDialog::Type::Save));
+        RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
+                    this, openFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
 }
 
-void KitWidget::updatePercussionsLines()
-{
-	percussionsLines.clear();
-	auto n = geonkickApi->getPercussionsNumber();
-	for (decltype(n) i = 0; i < n; i++) {
-		if (geonkickApi->isPercussionEnabled(i))
-			percussionsLines.push_back(i);
-	}
-}
+// void KitWidget::createKeys()
+// {
+//         constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C5",
+//                         "C#5", "D5", "D#5", "E5",
+//                         "F5", "F#5", "G5", "G#5",
+//                         "A5", "A#5", "B5", "C6", "Any"};
 
-void KitWidget::createKeys()
-{
-        constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C5",
-                        "C#5", "D5", "D#5", "E5",
-                        "F5", "F#5", "G5", "G#5",
-                        "A5", "A#5", "B5", "C6", "Any"};
+//         char n = 0;
+//         for (const auto &key: keys) {
+//                 KeyInfo midiKey;
+//                 midiKey.name = key;
+//                 midiKey.key = 69 + n;
+//                 if (static_cast<decltype(keys.size())>(++n) > keys.size() - 1)
+//                         midiKey.key = -1;
+//                 midiKeys.push_back(midiKey);
+//         }
 
-        char n = 0;
-        for (const auto &key: keys) {
-                KeyInfo midiKey;
-                midiKey.name = key;
-                midiKey.key = 69 + n;
-                if (static_cast<decltype(keys.size())>(++n) > keys.size() - 1)
-                        midiKey.key = -1;
-                midiKeys.push_back(midiKey);
-        }
-
-        percussionWidth = percussionNameWidth + midiKeys.size() * keyWidth + channelWidth;
-}
+//         percussionWidth = percussionNameWidth + midiKeys.size() * keyWidth + channelWidth;
+// }
 
 void KitWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
@@ -132,10 +125,10 @@ void KitWidget::drawKeys(RkPainter &painter)
         font.setSize(12);
         painter.setFont(font);
 
-        int i = 0;
         int x = percussionNameWidth;
-        auto n = geonkickApi->enabledPercussions();
-        for (const auto &key: midiKeys) {
+        auto n = kitBackend->percussionNumber();
+        auto nKeys = kitBackend->keysNumber();
+        for (decltype(nKeys) i = 0; i < nKeys; i++) {
                 RkRect rect(x, 0, keyWidth, keyWidth + n * percussionHeight);
                 if (i % 2)
                         painter.fillRect(rect, {60, 60, 60});
@@ -143,7 +136,7 @@ void KitWidget::drawKeys(RkPainter &painter)
                         painter.fillRect(rect, {50, 50, 50});
                 RkRect txtRect(rect.left(), 10, rect.width(), painter.font().size());
                 painter.setPen(pen);
-                painter.drawText(txtRect, std::string(key.name));
+                painter.drawText(txtRect, kitBackend->keyName(i));
                 i++;
                 x += keyWidth;
         }
@@ -158,40 +151,40 @@ void KitWidget::drawPercussions(RkPainter &painter)
         painter.setPen(pen);
 
         int y = keyWidth;
-        auto n = geonkickApi->getPercussionsNumber();
-        auto currentId = geonkickApi->currentPercussion();
-        for (decltype(percussionsLines.size()) i = 0; i < percussionsLines.size(); i++) {
+        auto n = kitBackend->percussionNumber();
+        for (decltype(n) i = 0; i < n; i++) {
                 RkRect rect(0, y, percussionWidth, percussionHeight);
 		painter.setPen(pen);
                 if (i % 2)
                         painter.fillRect(rect, {200, 200, 200, 80});
                 else
                         painter.fillRect(rect, {160, 160, 160, 80});
-                if (static_cast<int>(currentId) == idFromLine(i))
+                if (kitBackend->isSelected(i)) {
                         painter.fillRect(RkRect(rect.left(),
                                                 rect.top(), 4,
                                                 rect.height()),
                                          {255, 255, 255, 90});
+                }
 		RkRect txtRect = rect;
 		txtRect.setWidth(300);
 		txtRect.setTopLeft(RkPoint(txtRect.left() + 7, txtRect.top()));
 		painter.setPen(txtPen);
 		painter.drawText(txtRect,
-                                 std::string(geonkickApi->getPercussionName(idFromLine(i))),
+                                 std::string(kitBackend->percussionName(i)),
                                  Rk::Alignment::AlignLeft);
-                auto channel = geonkickApi->getPercussionChannel(idFromLine(i));
+                auto channel = kitBackend->percussionChannel(i);
 		painter.drawText(RkRect(percussionWidth - channelWidth,
                                         y, channelWidth,
                                         percussionHeight),
 				 "#" + std::to_string(channel));
 
                 int x = rect.right() + 5;
-                if (percussionsLines.size() > 1) {
+                if (kitBackend->canRemove()) {
                         painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(remove_per_button)),
                                           x, rect.top() + 2);
                         x += 16 + 3;
                 }
-                if (percussionsLines.size() < n) {
+                if (kitBackend->canCopy()) {
                         painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(copy_per_button)),
                                           x, rect.top() + 2);
                 }
@@ -201,21 +194,11 @@ void KitWidget::drawPercussions(RkPainter &painter)
 
 void KitWidget::drawConnections(RkPainter &painter)
 {
-        for (decltype(percussionsLines.size()) i = 0; i < percussionsLines.size(); i++) {
-                if (!geonkickApi->isPercussionEnabled(idFromLine(i)))
-                        continue;
-                auto keyId = midiKeys.size() - 1;
-                auto key = geonkickApi->getPercussionPlayingKey(idFromLine(i));
-                if (key < 69 && key != -1)
-                        continue;
-                else if (key - 69 >= 0 && static_cast<decltype(midiKeys.size())>(key - 69) < midiKeys.size() - 1)
-                        keyId = key - 69;
-                else if ( key == -1 || static_cast<decltype(midiKeys.size())>(key - 69) > midiKeys.size() - 1)
-                        keyId = midiKeys.size() - 1;
-
+        auto n = kitBackend->percussionNumber();
+        for (decltype(n) i = 0; i < n; i++) {
                 // Define intersection point;
-                RkPoint p {percussionNameWidth + static_cast<int>(keyId) * keyWidth + keyWidth / 2,
-                          keyWidth + static_cast<int>(i) * percussionHeight + percussionHeight / 2};
+                RkPoint p {percussionNameWidth + kitBackend->percussionKey(i) * keyWidth + keyWidth / 2,
+                                keyWidth + i * percussionHeight + percussionHeight / 2};
                 drawConnection(painter, p);
         }
 }
@@ -237,51 +220,34 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                 return;
 
         updatePercussionName();
-	auto id = idFromLine(getLineId(event->x(), event->y()));
-        auto n = geonkickApi->getPercussionsNumber();
-        if (id > -1 && static_cast<decltype(n)>(id) < n) {
-                auto enabledPercussions = geonkickApi->enabledPercussions();
+	auto index = getLine(event->x(), event->y());
+        if (kitBackend->percussionValid(index)) {
 		if (event->x() < percussionNameWidth) {
-                        geonkickApi->setCurrentPercussion(id);
-                        geonkickApi->notifyUpdateGui();
+                        kitBackend->selectPecussion(index);
 			return;
 		} else if ((event->x() > percussionWidth + 5)
                            && (event->x() < percussionWidth + 5 + 16)) {
-                        if (enabledPercussions == 1)
-                                copyPercussion(id);
+                        if (kitBackend->canCopy())
+                                copyPercussion(index);
                         else
-                                removePercussion(id);
+                                removePercussion(index);
                         return;
                 } else if (event->x() > (percussionWidth - channelWidth)
                            && event->x() < percussionWidth) {
-                        int channel = static_cast<int>(geonkickApi->getPercussionChannel(id));
                         if(event->button() == RkMouseEvent::ButtonType::Left
                            || event->button() == RkMouseEvent::ButtonType::WheelUp) {
-                                channel++;
+                                kitBackend->increasePercussionChannel(index);
                         } else if (event->button() == RkMouseEvent::ButtonType::WheelDown) {
-                                channel--;
+                                kitBackend->decreasePercussionChannel(index);
                         }
-
-                        if (channel < 0)
-                                geonkickApi->setPercussionChannel(id, geonkickApi->numberOfChannels() - 1);
-                        else if (static_cast<size_t>(channel) > geonkickApi->numberOfChannels() - 1)
-                                geonkickApi->setPercussionChannel(id, 0);
-                        else
-                                geonkickApi->setPercussionChannel(id, static_cast<size_t>(channel));
-                        update();
                         return;
-                } else if (enabledPercussions > 1
-                           && enabledPercussions < geonkickApi->getPercussionsNumber()
+                } else if (kitBackend->canCopy()
                            && (event->x() > percussionWidth + 5 + 16 + 3)
                            && (event->x() < percussionWidth + 5 + 16 + 3 + 16)) {
-                        copyPercussion(id);
+                        copyPercussion(index);
                         return;
-                }
-
-                const auto *key = getKey(event->x());
-                if (key) {
-                        geonkickApi->setPercussionPlayingKey(id, key->key);
-                        update();
+                } else if (key = getKey(event->x()); key) {
+                        kitBackend->setPercussionKey(id, key);
                 }
         }
 }
@@ -297,9 +263,9 @@ void KitWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
 	if (event->button() != RkMouseEvent::ButtonType::Left)
 		return;
 
-	editedLineId = getLineId(event->x(), event->y());
-	if (editedLineId > -1 && event->x() < percussionNameWidth) {
-                editPercussion->setText(geonkickApi->getPercussionName(idFromLine(editedLineId)));
+	editedLineIndex = getLine(event->x(), event->y());
+	if (editedLineIndex > -1 && event->x() < percussionNameWidth) {
+                editPercussion->setText(kitBackend->percussionName(editedLineIndex));
 		editPercussion->setSize({percussionNameWidth, percussionHeight});
                 int y = keyWidth + percussionHeight * ((event->y() - keyWidth) / percussionHeight);
                 editPercussion->setPosition(0, y);
@@ -310,47 +276,17 @@ void KitWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
 
 void KitWidget::updatePercussionName()
 {
-	if (editedLineId > -1) {
+	if (editedLineIndex > -1) {
 		auto name = editPercussion->text();
 		if (!name.empty()) {
-                        auto id = idFromLine(editedLineId);
-			geonkickApi->setPercussionName(id, name);
+			kitBackend->setPercussionName(editedLineIndex, name);
 			editPercussion->hide();
 			editPercussion->setFocus(false);
-                        if (static_cast<decltype(id)>(geonkickApi->currentPercussion()) == id)
-                                geonkickApi->notifyUpdateGui();
-                        else
-                                update();
 		}
 	}
 }
 
-void KitWidget::updatePercussionName(size_t id, const std::string &name)
-{
-        geonkickApi->setPercussionName(id, name);
-        if (id == geonkickApi->currentPercussion())
-                action geonkickApi->stateChanged();
-        update();
-}
-
-std::string KitWidget::percussionName(size_t id) const
-{
-        return geonkickApi->getPercussionName(id);
-}
-
-void KitWidget::addPercussion(const std::shared_ptr<PercussionState> &per)
-{
-	if (geonkickApi->enabledPercussions() + 1 > midiKeys.size() - 1)
-		return;
-
-        editedLineId = -1;
-        geonkickApi->setPercussionState(per);
-        action geonkickApi->stateChanged();
-	percussionsLines.push_back(per->getId());
-        geonkickApi->notifyUpdateGui();
-}
-
-int KitWidget::getLineId(int x, int y) const
+int KitWidget::getLine(int x, int y) const
 {
         if (y > keyWidth && x > 0 && x < percussionWidth + 5 + 16 + 3 + 16)
                 return (y - keyWidth) / percussionHeight;
@@ -368,7 +304,7 @@ const KitWidget::KeyInfo* KitWidget::getKey(int x) const
         return nullptr;
 }
 
-void KitWidget::openFileDialog(FileDialog::Type type)
+void KitWidget::showFileDialog(FileDialog::Type type)
 {
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
         fileDialog->setFilters({".gkit", ".GKIT"});
@@ -387,77 +323,30 @@ void KitWidget::openFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        auto kit = std::make_unique<KitState>();
-        if (kit->open(file)) {
-                GEONKICK_LOG_ERROR("can't open kit");
-                return;
-        }
-
-        auto filePath = std::filesystem::path(file);
-        auto path = filePath.has_parent_path() ? filePath.parent_path() : filePath;
-        geonkickApi->setKitState(std::move(kit));
-        geonkickApi->setCurrentWorkingPath("OpenKit", path);
-        editPercussion->setText("");
-	updatePercussionsLines();
-        geonkickApi->notifyUpdateGui();
-}
-
-void KitWidget::addNewPercussion()
-{
-        editedLineId = -1;
-        int id = geonkickApi->getUnusedPercussion();
-        if (id < 0)
-                return;
-
-        auto state = geonkickApi->getDefaultPercussionState();
-        state->setId(id);
-        addPercussion(state);
-}
-
-void KitWidget::removePercussion(int id)
-{
-        editedLineId = -1;
-	for (auto it = percussionsLines.begin(); it != percussionsLines.end(); ++it) {
-		if (*it == id) {
-			percussionsLines.erase(it);
-                        geonkickApi->enablePercussion(id, false);
-                        if (static_cast<decltype(id)>(geonkickApi->currentPercussion()) == id)
-                                geonkickApi->setCurrentPercussion(idFromLine(0));
-                        geonkickApi->notifyUpdateGui();
-			break;
-		}
-	}
-}
-
-void KitWidget::copyPercussion(int id)
-{
-        editedLineId = -1;
-        auto newId = geonkickApi->getUnusedPercussion();
-        if (newId > - 1) {
-                auto state = geonkickApi->getPercussionState(id);
-                state->setId(newId);
-                geonkickApi->setPercussionState(state);
-                if (state->getId() == geonkickApi->currentPercussion())
-                        geonkickApi->notifyUpdateGui();
-		percussionsLines.push_back(newId);
-        }
+        kitBackend->open(file);
 }
 
 void KitWidget::saveKit(const std::string &file)
 {
-        auto state = geonkickApi->getKitState();
-        state->save(file);
+        kitBackend->save();
 }
 
-int KitWidget::idFromLine(int lineId) const
+void KitWidget::addNewPercussion()
 {
-	if (lineId > - 1 && static_cast<decltype(percussionsLines.size())>(lineId) < percussionsLines.size())
-		return percussionsLines[lineId];
-	return -1;
+        kitBackend->addNewPercussion();
+}
+
+void KitWidget::removePercussion(int index)
+{
+        kitBackend->removePercussion(index);
+}
+
+void KitWidget::copyPercussion(int index)
+{
+        kitBackend->copyPercussion(index);
 }
 
 void KitWidget::updateGui()
 {
-        updatePercussionsLines();
         update();
 }
