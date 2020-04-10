@@ -26,7 +26,11 @@
 #include "percussion_state.h"
 #include "kit_state.h"
 
-explicit KitModel::KitModel(GeonkickApi *api);
+KitModel::KitModel(GeonkickApi *api)
+        : geonkickApi{api}
+{
+}
+
 bool KitModel::open(const std::string &file)
 {
         = std::make_unique<KitState>();
@@ -43,6 +47,27 @@ bool KitModel::open(const std::string &file)
 	updatePercussionsLines();
         geonkickApi->notifyUpdateGui();
 }
+
+// void KitWidget::createKeys()
+// {
+//         constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C5",
+//                         "C#5", "D5", "D#5", "E5",
+//                         "F5", "F#5", "G5", "G#5",
+//                         "A5", "A#5", "B5", "C6", "Any"};
+
+//         char n = 0;
+//         for (const auto &key: keys) {
+//                 KeyInfo midiKey;
+//                 midiKey.name = key;
+//                 midiKey.key = 69 + n;
+//                 if (static_cast<decltype(keys.size())>(++n) > keys.size() - 1)
+//                         midiKey.key = -1;
+//                 midiKeys.push_back(midiKey);
+//         }
+
+//         percussionWidth = percussionNameWidth + midiKeys.size() * keyWidth + channelWidth;
+// }
+
 
 bool KitModel::save(const std::string &file)
 {
@@ -179,18 +204,29 @@ bool KitModel::isIdValid(int id) const
                 && geonkickApi->isPercussionEnabled(id);
 }
 
-
-int KitModel::perucssionKey(int index) const
+std::string KitModel::keyName(int index) const
 {
-        auto keyId = midiKeys.size() - 1;
-        auto key = geonkickApi->percussionKey(i);
-        if (key < 69 && key != -1)
-                continue;
-        else if (key - 69 >= 0 && static_cast<decltype(midiKeys.size())>(key - 69) < midiKeys.size() - 1)
-                keyId = key - 69;
-        else if ( key == -1 || static_cast<decltype(midiKeys.size())>(key - 69) > midiKeys.size() - 1)
-                keyId = midiKeys.size() - 1;
+        if (midiKeys.empty())
+                return "";
+        if (index > -1 && index < midiKeys.size())
+                return midiKeys[index];
+        return midiKeys.back();
 }
+
+size_t KitModel::keysNumber() const
+{
+        return midiKeys.size();
+}
+
+auto keyId = midiKeys.size() - 1;
+auto key = geonkickApi->percussionKey(i);
+if (key < 69 && key != -1)
+        continue;
+ else if (key - 69 >= 0 && static_cast<decltype(midiKeys.size())>(key - 69) < midiKeys.size() - 1)
+         keyId = key - 69;
+ else if ( key == -1 || static_cast<decltype(midiKeys.size())>(key - 69) > midiKeys.size() - 1)
+         keyId = midiKeys.size() - 1;
+
 
 /// encrease/ decrease
 if (channel < 0)
@@ -200,3 +236,15 @@ if (channel < 0)
  else
          geonkickApi->setPercussionChannel(id, static_cast<size_t>(channel));
 
+bool KitModel::canCopy() const
+{
+        auto n = geonkickApi->enabledPercussions();
+        if (n > 0 && n < geonkickApi->percussionNumber())
+                return true;
+}
+
+bool KitModel::canRemove() const
+{
+        if (geonkickApi->enabledPercussions() > 1)
+                return true;
+}

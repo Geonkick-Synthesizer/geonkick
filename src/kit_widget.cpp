@@ -22,10 +22,8 @@
  */
 
 #include "kit_widget.h"
+#include "kit_model.h"
 #include "geonkick_button.h"
-#include "geonkick_api.h"
-#include "percussion_state.h"
-#include "kit_state.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>
@@ -38,24 +36,22 @@ RK_DECLARE_IMAGE_RC(copy_per_button);
 RK_DECLARE_IMAGE_RC(save_kit_button);
 RK_DECLARE_IMAGE_RC(open_kit_button);
 
-KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
+KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 	: GeonkickWidget(parent)
-	, geonkickApi{api}
+        , kitModel{model}
 	, keyWidth{30}
 	, channelWidth{keyWidth}
 	, percussionHeight{20}
         , percussionWidth{0}
 	, percussionNameWidth{100}
 	, editPercussion{new RkLineEdit(this)}
-	, editedLineId{-1}
+	, editedLineIndex{-1}
         , addButton{nullptr}
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
 {
 	RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
                     this, updatePercussionName());
-        createKeys();
-	updatePercussionsLines();
         addButton = new RkButton(this);
 	addButton->setCheckable(true);
         addButton->setSize(16, 16);
@@ -83,26 +79,6 @@ KitWidget::KitWidget(GeonkickWidget *parent, GeonkickApi* api)
         saveKitButton->show();
 }
 
-// void KitWidget::createKeys()
-// {
-//         constexpr std::array<std::string_view, 17> keys {"A4", "A#4", "B4", "C5",
-//                         "C#5", "D5", "D#5", "E5",
-//                         "F5", "F#5", "G5", "G#5",
-//                         "A5", "A#5", "B5", "C6", "Any"};
-
-//         char n = 0;
-//         for (const auto &key: keys) {
-//                 KeyInfo midiKey;
-//                 midiKey.name = key;
-//                 midiKey.key = 69 + n;
-//                 if (static_cast<decltype(keys.size())>(++n) > keys.size() - 1)
-//                         midiKey.key = -1;
-//                 midiKeys.push_back(midiKey);
-//         }
-
-//         percussionWidth = percussionNameWidth + midiKeys.size() * keyWidth + channelWidth;
-// }
-
 void KitWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
 {
 	RK_UNUSED(event);
@@ -126,8 +102,8 @@ void KitWidget::drawKeys(RkPainter &painter)
         painter.setFont(font);
 
         int x = percussionNameWidth;
-        auto n = kitBackend->percussionNumber();
-        auto nKeys = kitBackend->keysNumber();
+        auto n = kitModel->percussionNumber();
+        auto nKeys = kitModel->keysNumber();
         for (decltype(nKeys) i = 0; i < nKeys; i++) {
                 RkRect rect(x, 0, keyWidth, keyWidth + n * percussionHeight);
                 if (i % 2)
@@ -136,7 +112,7 @@ void KitWidget::drawKeys(RkPainter &painter)
                         painter.fillRect(rect, {50, 50, 50});
                 RkRect txtRect(rect.left(), 10, rect.width(), painter.font().size());
                 painter.setPen(pen);
-                painter.drawText(txtRect, kitBackend->keyName(i));
+                painter.drawText(txtRect, kitModel->keyName(i));
                 i++;
                 x += keyWidth;
         }
@@ -151,7 +127,7 @@ void KitWidget::drawPercussions(RkPainter &painter)
         painter.setPen(pen);
 
         int y = keyWidth;
-        auto n = kitBackend->percussionNumber();
+        auto n = kitModel->percussionNumber();
         for (decltype(n) i = 0; i < n; i++) {
                 RkRect rect(0, y, percussionWidth, percussionHeight);
 		painter.setPen(pen);
@@ -159,7 +135,7 @@ void KitWidget::drawPercussions(RkPainter &painter)
                         painter.fillRect(rect, {200, 200, 200, 80});
                 else
                         painter.fillRect(rect, {160, 160, 160, 80});
-                if (kitBackend->isSelected(i)) {
+                if (kitModel->isSelected(i)) {
                         painter.fillRect(RkRect(rect.left(),
                                                 rect.top(), 4,
                                                 rect.height()),
@@ -170,21 +146,21 @@ void KitWidget::drawPercussions(RkPainter &painter)
 		txtRect.setTopLeft(RkPoint(txtRect.left() + 7, txtRect.top()));
 		painter.setPen(txtPen);
 		painter.drawText(txtRect,
-                                 std::string(kitBackend->percussionName(i)),
+                                 std::string(kitModel->percussionName(i)),
                                  Rk::Alignment::AlignLeft);
-                auto channel = kitBackend->percussionChannel(i);
+                auto channel = kitModel->percussionChannel(i);
 		painter.drawText(RkRect(percussionWidth - channelWidth,
                                         y, channelWidth,
                                         percussionHeight),
 				 "#" + std::to_string(channel));
 
                 int x = rect.right() + 5;
-                if (kitBackend->canRemove()) {
+                if (kitModel->canRemove()) {
                         painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(remove_per_button)),
                                           x, rect.top() + 2);
                         x += 16 + 3;
                 }
-                if (kitBackend->canCopy()) {
+                if (kitModel->canCopy()) {
                         painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(copy_per_button)),
                                           x, rect.top() + 2);
                 }
@@ -194,10 +170,10 @@ void KitWidget::drawPercussions(RkPainter &painter)
 
 void KitWidget::drawConnections(RkPainter &painter)
 {
-        auto n = kitBackend->percussionNumber();
+        auto n = kitModel->percussionNumber();
         for (decltype(n) i = 0; i < n; i++) {
                 // Define intersection point;
-                RkPoint p {percussionNameWidth + kitBackend->percussionKey(i) * keyWidth + keyWidth / 2,
+                RkPoint p {percussionNameWidth + kitModel->percussionKey(i) * keyWidth + keyWidth / 2,
                                 keyWidth + i * percussionHeight + percussionHeight / 2};
                 drawConnection(painter, p);
         }
@@ -221,13 +197,13 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
 
         updatePercussionName();
 	auto index = getLine(event->x(), event->y());
-        if (kitBackend->percussionValid(index)) {
+        if (kitModel->percussionValid(index)) {
 		if (event->x() < percussionNameWidth) {
-                        kitBackend->selectPecussion(index);
+                        kitModel->selectPecussion(index);
 			return;
 		} else if ((event->x() > percussionWidth + 5)
                            && (event->x() < percussionWidth + 5 + 16)) {
-                        if (kitBackend->canCopy())
+                        if (kitModel->canCopy())
                                 copyPercussion(index);
                         else
                                 removePercussion(index);
@@ -236,18 +212,18 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                            && event->x() < percussionWidth) {
                         if(event->button() == RkMouseEvent::ButtonType::Left
                            || event->button() == RkMouseEvent::ButtonType::WheelUp) {
-                                kitBackend->increasePercussionChannel(index);
+                                kitModel->increasePercussionChannel(index);
                         } else if (event->button() == RkMouseEvent::ButtonType::WheelDown) {
-                                kitBackend->decreasePercussionChannel(index);
+                                kitModel->decreasePercussionChannel(index);
                         }
                         return;
-                } else if (kitBackend->canCopy()
+                } else if (kitModel->canCopy()
                            && (event->x() > percussionWidth + 5 + 16 + 3)
                            && (event->x() < percussionWidth + 5 + 16 + 3 + 16)) {
                         copyPercussion(index);
                         return;
                 } else if (key = getKey(event->x()); key) {
-                        kitBackend->setPercussionKey(id, key);
+                        kitModel->setPercussionKey(id, key);
                 }
         }
 }
@@ -265,7 +241,7 @@ void KitWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
 
 	editedLineIndex = getLine(event->x(), event->y());
 	if (editedLineIndex > -1 && event->x() < percussionNameWidth) {
-                editPercussion->setText(kitBackend->percussionName(editedLineIndex));
+                editPercussion->setText(kitModel->percussionName(editedLineIndex));
 		editPercussion->setSize({percussionNameWidth, percussionHeight});
                 int y = keyWidth + percussionHeight * ((event->y() - keyWidth) / percussionHeight);
                 editPercussion->setPosition(0, y);
@@ -279,7 +255,7 @@ void KitWidget::updatePercussionName()
 	if (editedLineIndex > -1) {
 		auto name = editPercussion->text();
 		if (!name.empty()) {
-			kitBackend->setPercussionName(editedLineIndex, name);
+			kitModel->setPercussionName(editedLineIndex, name);
 			editPercussion->hide();
 			editPercussion->setFocus(false);
 		}
@@ -323,30 +299,35 @@ void KitWidget::showFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        kitBackend->open(file);
+        kitModel->open(file);
 }
 
 void KitWidget::saveKit(const std::string &file)
 {
-        kitBackend->save();
+        kitModel->save();
 }
 
 void KitWidget::addNewPercussion()
 {
-        kitBackend->addNewPercussion();
+        kitModel->addNewPercussion();
 }
 
 void KitWidget::removePercussion(int index)
 {
-        kitBackend->removePercussion(index);
+        kitModel->removePercussion(index);
 }
 
 void KitWidget::copyPercussion(int index)
 {
-        kitBackend->copyPercussion(index);
+        kitModel->copyPercussion(index);
 }
 
 void KitWidget::updateGui()
 {
         update();
+}
+
+KitModel* KitWidget::kitModel()
+{
+        return kitModel;
 }

@@ -27,29 +27,16 @@
 #include "geonkick_widget.h"
 #include "file_dialog.h"
 
-#include <rapidjson/document.h>
-#include <rapidjson/writer.h>
-#include <rapidjson/stringbuffer.h>
-
 #include "RkPainter.h"
 
-class GeonkickApi;
 class RkLineEdit;
 class RkButton;
-class PercussionState;
+class KitModel;
 
 class KitWidget: public GeonkickWidget
 {
-        struct KeyInfo {
-                std::string name;
-                char key;
-        };
-
  public:
-        KitWidget(GeonkickWidget *parent, GeonkickApi* api);
-        void addPercussion(const std::shared_ptr<PercussionState> &per);
-        void updatePercussionName(size_t id, const std::string &name);
-        std::string percussionName(size_t id) const;
+        KitWidget(GeonkickWidget *parent, KitModel *model);
         void updateGui();
 
  protected:
@@ -60,10 +47,8 @@ class KitWidget: public GeonkickWidget
         void drawPercussions(RkPainter &painter);
         void drawConnections(RkPainter &painter);
         void drawConnection(RkPainter &painter, const RkPoint &point);
-        int getLineId(int x, int y) const;
-        const KeyInfo* getKey(int x) const;
-        void createKeys();
-	void updatePercussionsLines();
+        int getLine(int x, int y) const;
+        int getKey(int x) const;
 	void updatePercussionName();
         void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
@@ -71,19 +56,17 @@ class KitWidget: public GeonkickWidget
         void addNewPercussion();
         void removePercussion(int id);
         void copyPercussion(int id);
-	int idFromLine(int lineId) const;
+        KitModel* kitModel();
 
  private:
-	GeonkickApi* geonkickApi;
-        std::vector<KeyInfo> midiKeys;
-	std::vector<int> percussionsLines;
+        KitModel *kitModel;
 	int keyWidth;
 	int channelWidth;
 	int percussionHeight;
         int percussionWidth;
 	int percussionNameWidth;
 	RkLineEdit *editPercussion;
-	int editedLineId;
+	int editedLineIndex;
         RkButton *addButton;
         RkButton *openKitButton;
         RkButton *saveKitButton;

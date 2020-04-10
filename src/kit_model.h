@@ -1,5 +1,5 @@
 /**
- * File name: kit.h
+ * File name: kit_model.h
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
@@ -21,13 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_KIT_H
-#define GEONKCIK_KIT_H
+#ifndef KIT_MODEL_H
+#define KIT_MODEL_H
 
 class GeonkickApi;
 class GeonkickState;
 
-class Kit {
+class KitModel {
         explicit Kit(GeonkickApi *api);
         bool loadKit(const std::string &file);
         bool saveKit(const std::string &file);
@@ -43,6 +43,8 @@ class Kit {
         int percussionKey(int index) const;
         void setPercussionKey(int index, int key);
         size_t percussionsNumber() const;
+        bool canCopy() const;
+        bool canRemove() const;
 
  protected:
         int getId(int index);
@@ -53,4 +55,4 @@ class Kit {
         std::vector<int> percussionIds;
 };
 
-#endif // GEONKICK_KIT_H
+#endif KIT_MODEL_H
