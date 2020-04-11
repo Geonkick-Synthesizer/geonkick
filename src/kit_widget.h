@@ -36,7 +36,7 @@ class KitModel;
 class KitWidget: public GeonkickWidget
 {
  public:
-        KitWidget(GeonkickWidget *parent, const KitModel &model);
+        KitWidget(GeonkickWidget *parent, KitModel *model);
         void updateGui();
 
  protected:
@@ -56,10 +56,9 @@ class KitWidget: public GeonkickWidget
         void addNewPercussion();
         void removePercussion(int id);
         void copyPercussion(int id);
-        const KitModel* kitModel();
 
  private:
-        const KitModel &kitModel;
+        KitModel *kitModel;
 	int keyWidth;
 	int channelWidth;
 	int percussionHeight;

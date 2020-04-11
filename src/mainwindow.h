@@ -66,7 +66,6 @@ class MainWindow : public GeonkickWidget
       ControlArea* controlAreaWidget;
       std::string presetName;
       std::string currentWorkingPath;
-      std::unique_ptr<KitModel> kitModel;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

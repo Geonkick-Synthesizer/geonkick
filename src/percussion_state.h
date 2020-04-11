@@ -48,7 +48,7 @@ class PercussionState
         char getPlayingKey() const;
         void setPlayingKey(char key);
         bool isEnabled() const;
-        void enableKick(bool b);
+        void enable(bool b);
         void setLimiterValue(double val);
         void setKickLength(double val);
         void setKickAmplitude(double val);

@@ -24,19 +24,22 @@
 #ifndef KIT_MODEL_H
 #define KIT_MODEL_H
 
+#include "globals.h"
+
 class GeonkickApi;
 class GeonkickState;
 
 class KitModel {
-        explicit Kit(GeonkickApi *api);
-        RK_DECL_ACTION(modelUpdated, modelUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
+ public:
+        explicit KitModel(GeonkickApi *api);
         bool open(const std::string &file);
         bool save(const std::string &file);
         void selectPercussion(int index);
-        int percussionSelected(int index) const;
+        bool percussionSelected(int index) const;
         void addNewPercussion();
         void copyPercussion(int index);
         void removePercussion(int index);
+        void increasePercussionChannel(int index);
         void decreasePercussionChannel(int index);
         int percussionKeyIndex(int index) const;
         void setPercussionKey(int index, int keyIndex);
@@ -49,12 +52,15 @@ class KitModel {
         int percussionChannel(int index) const;
         bool canCopy() const;
         bool canRemove() const;
+        std::filesystem::path workingPath(const std::string &key) const;
+
+        RK_DECL_ACT(modelUpdated, modelUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
-        int getPercussionId(int index);
+        int getPercussionId(int index) const;
 
  private:
-        GeopnkickApi *geonkickApi;
+        GeonkickApi *geonkickApi;
         std::vector<std::string> midiKeys;
 };
 

@@ -30,6 +30,7 @@
 class Oscillator;
 class GeonkickApi;
 class ControlsWidget;
+class KitModel;
 class KitWidget;
 
 class ControlArea: public GeonkickWidget
@@ -46,6 +47,7 @@ class ControlArea: public GeonkickWidget
 
  private:
         ControlsWidget *controlsWidget;
+        std::unique_ptr<KitModel> kitModel;
         KitWidget *kitWidget;
 };
 

@@ -164,7 +164,7 @@ bool PercussionState::isEnabled() const
         return kickEnabled;
 }
 
-void PercussionState::enableKick(bool b)
+void PercussionState::enable(bool b)
 {
         kickEnabled = b;
 }

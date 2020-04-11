@@ -42,13 +42,12 @@
 #include <X11/XKBlib.h>
 #include <RkEvent.h>
 
-MainWindow::MainWindow(RkMain *app, const GeonkickApi *api, const std::string &preset)
+MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
         , geonkickApi{api}
         , topBar{nullptr}
         , envelopeWidget{nullptr}
         , presetName{preset}
-        , kitModel{std::make_shared<KitModel>(geonkickApi)}
 {
         setFixedSize(950, 760);
         setTitle(GEONKICK_NAME);
@@ -64,7 +63,6 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , topBar{nullptr}
         , envelopeWidget{nullptr}
         , presetName{std::string()}
-        , kitModel{std::make_shared<KitModel>(geonkickApi)}
 {
         setFixedSize(950, 760);
         setTitle(GEONKICK_NAME);

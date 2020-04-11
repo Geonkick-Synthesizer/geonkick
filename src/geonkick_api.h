@@ -183,8 +183,8 @@ class GeonkickApi {
   void setPercussionState(const std::string &data);
   void setPercussionState(const std::shared_ptr<PercussionState> &state);
   std::unique_ptr<KitState> getKitState() const;
-  void setKitState(const std::string &data);
-  void setKitState(const std::unique_ptr<KitState> &state);
+  bool setKitState(const std::string &data);
+  bool setKitState(const std::unique_ptr<KitState> &state);
   void setKitName(const std::string &name);
   std::string getKitName() const;
   void setKitAuthor(const std::string &author);
@@ -222,7 +222,7 @@ class GeonkickApi {
   void tuneAudioOutput(int id, bool tune);
   bool isAudioOutputTuned(int id) const;
   size_t getPercussionsNumber() const;
-  void setCurrentPercussion(int index);
+  bool setCurrentPercussion(int index);
   size_t currentPercussion() const;
   int getUnusedPercussion() const;
   bool enablePercussion(int index, bool enable = true);
@@ -232,8 +232,8 @@ class GeonkickApi {
   int getPercussionPlayingKey(int index) const;
   int percussionsReferenceKey() const;
   bool setPercussionChannel(int index, size_t channel);
-  size_t getPercussionChannel(int index) const;
-  void setPercussionName(int index, const std::string &name);
+  int getPercussionChannel(int index) const;
+  bool setPercussionName(int index, const std::string &name);
   std::string getPercussionName(int index) const;
   void copyToClipboard();
   void pasteFromClipboard();
@@ -267,7 +267,7 @@ class GeonkickApi {
   std::string getSettings(const std::string &key) const;
   void notifyUpdateGui();
   const std::vector<int> ordredPercussionIds() const;
-  void removeOrderedPercussionId(in id);
+  void removeOrderedPercussionId(int id);
   void addOrderedPercussionId(int id);
   void clearOrderedPercussionIds();
 
@@ -291,7 +291,7 @@ protected:
                                             int channels = 1);
 
 private:
-  struct geonkick *geonkickApi;
+  mutable struct geonkick *geonkickApi;
   std::atomic<bool> updateLimiterLeveler;
   std::atomic<double> limiterLevelerVal;
   bool jackEnabled;

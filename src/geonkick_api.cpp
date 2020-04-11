@@ -236,10 +236,13 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) cons
                 return getPercussionState();
         } else {
                 auto tmpId = currentPercussion();
-                if (!setCurrentPercussion(geonkickApi, id))
+                auto res = geonkick_set_current_percussion(geonkickApi, tmpId);
+                if (res != GEONKICK_OK) {
+                        geonkick_set_current_percussion(geonkickApi, tmpId);
                         return nullptr;
+                }
                 auto state = getPercussionState();
-                setCurrentPercussion(geonkickApi, tmpId);
+                geonkick_set_current_percussion(geonkickApi, tmpId);
                 return state;
         }
 }
@@ -375,14 +378,14 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
         return kit;
 }
 
-void GeonkickApi::setKitState(const std::string &data)
+bool GeonkickApi::setKitState(const std::string &data)
 {
         auto state = std::make_unique<KitState>();
         state->fromJson(data);
-        setKitState(state);
+        return setKitState(state);
 }
 
-void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
+bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
 {
         auto n = getPercussionsNumber();
         for (decltype(n) i = 0; i < n; i++)
@@ -391,16 +394,16 @@ void GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         setKitAuthor(state->getAuthor());
         setKitUrl(state->getUrl());
         clearOrderedPercussionIds();
-        auto currentId = state->percussions().empty() ? 0 : state->percussions().front()->getId();
         for (const auto &per: state->percussions()) {
                 setPercussionState(per);
-                addOrderePercussionId(per->getId());
+                addOrderedPercussionId(per->getId());
         }
 
-        if (!orderedIdsList.empty())
-                setCurrentPercussion(orderedIdsList.front());
+        if (!percussionIdList.empty())
+                setCurrentPercussion(percussionIdList.front());
         else
                  setCurrentPercussion(0);
+        return true;
 }
 
 std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
@@ -1137,7 +1140,7 @@ int GeonkickApi::getUnusedPercussion() const
         return index;
 }
 
-void GeonkickApi::enablePercussion(int index, bool enable)
+bool GeonkickApi::enablePercussion(int index, bool enable)
 {
         auto res = geonkick_enable_percussion(geonkickApi, index, enable);
         return res == GEONKICK_OK;
@@ -1163,9 +1166,9 @@ size_t GeonkickApi::enabledPercussions() const
 
 bool GeonkickApi::setPercussionPlayingKey(int index, int key)
 {
-        res = geonkick_set_playing_key(geonkickApi,
-                                       index,
-                                       key);
+        auto res = geonkick_set_playing_key(geonkickApi,
+                                            index,
+                                            key);
         return res == GEONKICK_OK;
 }
 
@@ -1214,7 +1217,8 @@ bool GeonkickApi::setPercussionName(int index, const std::string &name)
 
 std::string GeonkickApi::getPercussionName(int index) const
 {
-        if (index > -1 && index < geonkickApi->percussionNumber()) {
+        auto n = getPercussionsNumber();
+        if (index > -1 && index < static_cast<decltype(index)>(n)) {
                 char name[30];
                 geonkick_get_percussion_name(geonkickApi,
                                              index,
@@ -1257,8 +1261,6 @@ bool GeonkickApi::isAudioOutputTuned(int id) const
 bool GeonkickApi::setCurrentPercussion(int index)
 {
         auto res = geonkick_set_current_percussion(geonkickApi, index);
-        if (res == GEONKICK_OK && eventQueue)
-                eventQueue->postAction([&](void){ kickUpdated(); });
         return res == GEONKICK_OK;
 }
 
@@ -1393,7 +1395,7 @@ const std::vector<int> GeonkickApi::ordredPercussionIds() const
         return percussionIdList;
 }
 
-void GeonkickApi::removeOrderedPercussionId(in id)
+void GeonkickApi::removeOrderedPercussionId(int id)
 {
         for (auto it = percussionIdList.begin(); it != percussionIdList.end(); ++it) {
                 if (*it == id) {

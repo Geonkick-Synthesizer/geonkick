@@ -73,7 +73,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
         saveKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
         RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
-                    this, openFileDialog(FileDialog::Type::Save));
+                    this, showFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
 
         RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
@@ -178,7 +178,8 @@ void KitWidget::drawConnections(RkPainter &painter)
                 if (keyIndex > -1) {
                         // Define intersection point;
                         RkPoint p {percussionNameWidth + kitModel->percussionKeyIndex(i) * keyWidth + keyWidth / 2,
-                                keyWidth + i * percussionHeight + percussionHeight / 2};
+                                        keyWidth + static_cast<decltype(percussionHeight)>(i) * percussionHeight
+                                        + percussionHeight / 2};
                         drawConnection(painter, p);
                 }
         }
@@ -202,9 +203,9 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
 
         updatePercussionName();
 	auto index = getLine(event->x(), event->y());
-        if (kitModel->percussionIndexValid(index)) {
+        if (index > -1) {
 		if (event->x() < percussionNameWidth) {
-                        kitModel->selectPecussion(index);
+                        kitModel->selectPercussion(index);
 			return;
 		} else if ((event->x() > percussionWidth + 5)
                            && (event->x() < percussionWidth + 5 + 16)) {
@@ -227,8 +228,8 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
                            && (event->x() < percussionWidth + 5 + 16 + 3 + 16)) {
                         copyPercussion(index);
                         return;
-                } else if (key = getKey(event->x()); key) {
-                        kitModel->setPercussionKey(id, key);
+                } else if (auto key = getKey(event->x()); key) {
+                        kitModel->setPercussionKey(index, key);
                 }
         }
 }
@@ -269,20 +270,20 @@ void KitWidget::updatePercussionName()
 
 int KitWidget::getLine(int x, int y) const
 {
-        if (y > keyWidth && x > 0 && x < percussionWidth + 5 + 16 + 3 + 16)
-                return (y - keyWidth) / percussionHeight;
-        return -1;
+        int index = (y - keyWidth) / percussionHeight;
+        if (index > -1 && index < static_cast<decltype(index)>(kitModel->percussionNumber()))
+                return index;
+        else
+                return -1;
 }
 
-const KitWidget::KeyInfo* KitWidget::getKey(int x) const
+int KitWidget::getKey(int x) const
 {
-        int xpos = percussionNameWidth;
-        for (const auto &key: midiKeys) {
-                if (x > xpos && x < xpos + keyWidth)
-                        return &key;
-                xpos += keyWidth;
-        }
-        return nullptr;
+        int keyIndex = (x - percussionNameWidth) / keyWidth;
+        if (keyIndex > -1 && keyIndex < static_cast<decltype(keyIndex)>(kitModel->keysNumber()))
+                return keyIndex;
+        else
+                return -1;
 }
 
 void KitWidget::showFileDialog(FileDialog::Type type)
@@ -290,12 +291,12 @@ void KitWidget::showFileDialog(FileDialog::Type type)
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
         fileDialog->setFilters({".gkit", ".GKIT"});
         if (type == FileDialog::Type::Open) {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenKit"));
+                fileDialog->setCurrentDirectoy(kitModel->workingPath("OpenKit"));
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this, openKit(file));
         } else {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SaveKit"));
+                fileDialog->setCurrentDirectoy(kitModel->workingPath("SaveKit"));
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this, saveKit(file));
@@ -304,12 +305,13 @@ void KitWidget::showFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        kitModel->open(file);
+        if (kitModel->open(file))
+                editPercussion->setText("");
 }
 
 void KitWidget::saveKit(const std::string &file)
 {
-        kitModel->save();
+        kitModel->save(file);
 }
 
 void KitWidget::addNewPercussion()
@@ -330,9 +332,4 @@ void KitWidget::copyPercussion(int index)
 void KitWidget::updateGui()
 {
         update();
-}
-
-KitModel* KitWidget::kitModel()
-{
-        return kitModel;
 }

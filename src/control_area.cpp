@@ -23,6 +23,7 @@
 
 #include "control_area.h"
 #include "controls_widget.h"
+#include "kit_model.h"
 #include "kit_widget.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
@@ -30,7 +31,8 @@ ControlArea::ControlArea(GeonkickWidget *parent,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
         , controlsWidget{new ControlsWidget(this, api, oscillators)}
-        , kitWidget{new KitWidget(this, api)}
+        , kitModel{std::make_unique<KitModel>(api)}
+        , kitWidget{new KitWidget(this, kitModel.get())}
 {
         setFixedSize(920, 368);
         setBackgroundColor({255, 0, 0});
