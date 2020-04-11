@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
         api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");
+                delete api;
                 exit(1);
         }
 

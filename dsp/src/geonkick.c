@@ -1456,14 +1456,14 @@ enum geonkick_error
 geonkick_set_current_percussion(struct geonkick *kick,
                                 size_t index)
 {
-        if (kick == NULL) {
+        if (kick == NULL || index > GEONKICK_MAX_PERCUSSIONS - 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
-	kick->per_index = index;
+        kick->per_index = index;
         kick->audio->mixer->limiter_callback_index = index;
-	return GEONKICK_OK;
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -1717,7 +1717,8 @@ geonkick_set_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t channel)
 {
-        if (kick == NULL) {
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1
+            || channel > GEONKICK_MAX_CHANNELS - 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1729,7 +1730,7 @@ geonkick_get_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t *channel)
 {
-        if (kick == NULL || channel == NULL) {
+        if (kick == NULL || channel == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }

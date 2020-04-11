@@ -225,12 +225,13 @@ class GeonkickApi {
   void setCurrentPercussion(int index);
   size_t currentPercussion() const;
   int getUnusedPercussion() const;
-  void enablePercussion(int index, bool enable = true);
+  bool enablePercussion(int index, bool enable = true);
   bool isPercussionEnabled(int index) const;
   size_t enabledPercussions() const;
-  void setPercussionPlayingKey(int index, int key);
+  bool setPercussionPlayingKey(int index, int key);
   int getPercussionPlayingKey(int index) const;
-  void setPercussionChannel(int index, size_t channel);
+  int percussionsReferenceKey() const;
+  bool setPercussionChannel(int index, size_t channel);
   size_t getPercussionChannel(int index) const;
   void setPercussionName(int index, const std::string &name);
   std::string getPercussionName(int index) const;
@@ -265,6 +266,10 @@ class GeonkickApi {
   void setSettings(const std::string &key, const std::string &value);
   std::string getSettings(const std::string &key) const;
   void notifyUpdateGui();
+  const std::vector<int> ordredPercussionIds() const;
+  void removeOrderedPercussionId(in id);
+  void addOrderedPercussionId(int id);
+  void clearOrderedPercussionIds();
 
 protected:
   static void kickUpdatedCallback(void *arg,
@@ -307,6 +312,7 @@ private:
    */
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
   std::unordered_map<std::string, std::string> apiSettings;
+  std::vector<int> percussionIdList;
 };
 
 #endif // GEONKICK_API_H

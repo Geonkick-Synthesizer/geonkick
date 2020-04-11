@@ -50,8 +50,6 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
 {
-	RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
-                    this, updatePercussionName());
         addButton = new RkButton(this);
 	addButton->setCheckable(true);
         addButton->setSize(16, 16);
@@ -77,6 +75,10 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
                     this, openFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
+
+        RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
+	RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
+                    this, updatePercussionName());
 }
 
 void KitWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -135,7 +137,7 @@ void KitWidget::drawPercussions(RkPainter &painter)
                         painter.fillRect(rect, {200, 200, 200, 80});
                 else
                         painter.fillRect(rect, {160, 160, 160, 80});
-                if (kitModel->isSelected(i)) {
+                if (kitModel->percussionSelected(i)) {
                         painter.fillRect(RkRect(rect.left(),
                                                 rect.top(), 4,
                                                 rect.height()),
@@ -172,10 +174,13 @@ void KitWidget::drawConnections(RkPainter &painter)
 {
         auto n = kitModel->percussionNumber();
         for (decltype(n) i = 0; i < n; i++) {
-                // Define intersection point;
-                RkPoint p {percussionNameWidth + kitModel->percussionKey(i) * keyWidth + keyWidth / 2,
+                auto keyIndex = kitModel->percussionKeyIndex(i);
+                if (keyIndex > -1) {
+                        // Define intersection point;
+                        RkPoint p {percussionNameWidth + kitModel->percussionKeyIndex(i) * keyWidth + keyWidth / 2,
                                 keyWidth + i * percussionHeight + percussionHeight / 2};
-                drawConnection(painter, p);
+                        drawConnection(painter, p);
+                }
         }
 }
 
@@ -197,7 +202,7 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
 
         updatePercussionName();
 	auto index = getLine(event->x(), event->y());
-        if (kitModel->percussionValid(index)) {
+        if (kitModel->percussionIndexValid(index)) {
 		if (event->x() < percussionNameWidth) {
                         kitModel->selectPecussion(index);
 			return;

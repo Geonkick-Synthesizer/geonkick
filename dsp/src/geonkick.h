@@ -117,9 +117,14 @@ enum geonkick_channel_type {
 
 /**
  * Maximum number of percussions the Geonkick instance
- * can generate and play.
+ * can generate.
  */
 #define GEONKICK_MAX_PERCUSSIONS 16
+
+/**
+* Maximum audio number of output channels.
+*/
+#define GEONKICK_MAX_CHANNELS GEONKICK_MAX_PERCUSSIONS
 
 struct geonkick;
 

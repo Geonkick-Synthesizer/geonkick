@@ -29,30 +29,33 @@ class GeonkickState;
 
 class KitModel {
         explicit Kit(GeonkickApi *api);
-        bool loadKit(const std::string &file);
-        bool saveKit(const std::string &file);
-        bool loadPercussion(const std::string &file);
-        bool savePercussion(int index, const std::string &file);
+        RK_DECL_ACTION(modelUpdated, modelUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
+        bool open(const std::string &file);
+        bool save(const std::string &file);
         void selectPercussion(int index);
-        void addPercussion(const std::shared_ptr<PercussionState> &percussion);
-        //        void updatePercussion(int index, const std::shared_ptr<PercussionState> &percussion);
-        void removePercussion(int index);
+        int percussionSelected(int index) const;
+        void addNewPercussion();
         void copyPercussion(int index);
-        void movePercussionUp(int index);
-        void movePercussionDown(int index);
-        int percussionKey(int index) const;
-        void setPercussionKey(int index, int key);
-        size_t percussionsNumber() const;
+        void removePercussion(int index);
+        void decreasePercussionChannel(int index);
+        int percussionKeyIndex(int index) const;
+        void setPercussionKey(int index, int keyIndex);
+        size_t keysNumber() const;
+        std::string keyName(int index) const;
+        int percussionKeyIndex(int index);
+        size_t percussionNumber() const;
+        void setPercussionName(int index, const std::string &name);
+        std::string percussionName(int index) const;
+        int percussionChannel(int index) const;
         bool canCopy() const;
         bool canRemove() const;
 
  protected:
-        int getId(int index);
-        bool isIdValid(int id);
+        int getPercussionId(int index);
 
  private:
         GeopnkickApi *geonkickApi;
-        std::vector<int> percussionIds;
+        std::vector<std::string> midiKeys;
 };
 
-#endif KIT_MODEL_H
+#endif // KIT_MODEL_H
