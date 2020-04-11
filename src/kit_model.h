@@ -42,10 +42,10 @@ class KitModel {
         void increasePercussionChannel(int index);
         void decreasePercussionChannel(int index);
         int percussionKeyIndex(int index) const;
+        void moveSelectedPercussion(bool down = true);
         void setPercussionKey(int index, int keyIndex);
         size_t keysNumber() const;
         std::string keyName(int index) const;
-        int percussionKeyIndex(int index);
         size_t percussionNumber() const;
         void setPercussionName(int index, const std::string &name);
         std::string percussionName(int index) const;

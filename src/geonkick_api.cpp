@@ -78,6 +78,7 @@ bool GeonkickApi::init()
 
         setKitState(std::move(getDefaultKitState()));
         enablePercussion(0, true);
+        addOrderedPercussionId(0);
 
         // Set the first the percussion by default to be controllable.
 	geonkick_set_current_percussion(geonkickApi, 0);
@@ -1384,10 +1385,25 @@ void GeonkickApi::pasteFromClipboard()
         }
 }
 
-void GeonkickApi::notifyUpdateGui()
+void GeonkickApi::notifyUpdateGraph()
+{
+        if (eventQueue)
+                eventQueue->postAction([&](void){ action kickUpdated(); });
+}
+
+void GeonkickApi::notifyUpdateParameters()
 {
         if (eventQueue)
                 eventQueue->postAction([&](void){ action stateChanged(); });
+}
+
+void GeonkickApi::notifyUpdateGui()
+{
+        if (eventQueue)
+                eventQueue->postAction([&](void){
+                                action kickUpdated();
+                                action stateChanged();
+                        });
 }
 
 const std::vector<int> GeonkickApi::ordredPercussionIds() const
@@ -1414,4 +1430,22 @@ void GeonkickApi::addOrderedPercussionId(int id)
 void GeonkickApi::clearOrderedPercussionIds()
 {
         percussionIdList.clear();
+}
+
+bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
+{
+        if (index < 0)
+                return false;
+
+        auto size = percussionIdList.size();
+        for (decltype(percussionIdList.size()) i = 0; i < size; i++) {
+                if (percussionIdList[i] == index) {
+                        auto newId = static_cast<decltype(n)>(i) + n;
+                        if (newId > -1 && static_cast<decltype(size)>(newId) < size) {
+                                std::swap(percussionIdList[i], percussionIdList[newId]);
+                                return true;
+                        }
+                }
+        }
+        return false;
 }

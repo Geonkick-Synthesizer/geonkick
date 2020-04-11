@@ -70,8 +70,11 @@ bool KitModel::save(const std::string &file)
 
 void KitModel::selectPercussion(int index)
 {
-        if (geonkickApi->setCurrentPercussion(getPercussionId(index)))
-                action modelUpdated();
+        auto id = getPercussionId(index);
+        if (id > -1 && id != static_cast<decltype(id)>(geonkickApi->currentPercussion())) {
+                if (geonkickApi->setCurrentPercussion(id))
+                        geonkickApi->notifyUpdateGui();
+        }
 }
 
 bool KitModel::percussionSelected(int index) const
@@ -119,7 +122,7 @@ void KitModel::removePercussion(int index)
         if (geonkickApi->enablePercussion(id, false)) {
                 geonkickApi->removeOrderedPercussionId(id);
                 if (id == static_cast<decltype(id)>(geonkickApi->currentPercussion())) {
-                        geonkickApi->setCurrentPercussion(0);
+                        geonkickApi->setCurrentPercussion(getPercussionId(0));
                         geonkickApi->notifyUpdateGui();
                 } else {
                         action modelUpdated();
@@ -155,12 +158,10 @@ void KitModel::decreasePercussionChannel(int index)
                 action modelUpdated();
 }
 
-int KitModel::percussionKeyIndex(int index) const
+void KitModel::moveSelectedPercussion(bool down)
 {
-        auto id = getPercussionId(index);
-        if (id > -1)
-                return geonkickApi->getPercussionPlayingKey(id);
-        return -1;
+        if (geonkickApi->moveOrdrepedPercussionId(geonkickApi->currentPercussion(), down ? 1 : -1))
+                action modelUpdated();
 }
 
 void KitModel::setPercussionKey(int index, int keyIndex)
@@ -187,18 +188,18 @@ std::string KitModel::keyName(int index) const
         return midiKeys[index];
 }
 
-int KitModel::percussionKeyIndex(int index)
+int KitModel::percussionKeyIndex(int index) const
 {
         auto id = getPercussionId(index);
         if (id < 0)
-                return -1;
+                return keysNumber() - 1;
 
         int keyIndex = geonkickApi->getPercussionPlayingKey(id);
         if (keyIndex < 0)
-                return -1;
+                return keysNumber() - 1;
         keyIndex -= geonkickApi->percussionsReferenceKey();
-        if (keyIndex < 0)
-                return 1;
+        if (keyIndex < 0 || keyIndex > static_cast<decltype(keyIndex)>(keysNumber() - 1))
+                return keysNumber() - 1;
         else
                 return keyIndex;
 }

@@ -265,11 +265,14 @@ class GeonkickApi {
 
   void setSettings(const std::string &key, const std::string &value);
   std::string getSettings(const std::string &key) const;
+  void notifyUpdateGraph();
+  void notifyUpdateParameters();
   void notifyUpdateGui();
   const std::vector<int> ordredPercussionIds() const;
   void removeOrderedPercussionId(int id);
   void addOrderedPercussionId(int id);
   void clearOrderedPercussionIds();
+  bool moveOrdrepedPercussionId(int index, int n);
 
 protected:
   static void kickUpdatedCallback(void *arg,

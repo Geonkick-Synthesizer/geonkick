@@ -56,14 +56,19 @@ class KitWidget: public GeonkickWidget
         void addNewPercussion();
         void removePercussion(int id);
         void copyPercussion(int id);
+        int selectedPercussion() const;
+        void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) override;
+        bool validPercussionIndex(int index) const;
+        bool validKeyIndex(int keyIndex) const;
+        void editPercussionName(int index);
 
  private:
         KitModel *kitModel;
 	int keyWidth;
 	int channelWidth;
 	int percussionHeight;
+        int percussionNameWidth;
         int percussionWidth;
-	int percussionNameWidth;
 	RkLineEdit *editPercussion;
 	int editedLineIndex;
         RkButton *addButton;
