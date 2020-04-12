@@ -4,7 +4,6 @@
 @prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
 @prefix doap:  <http://usefulinc.com/ns/doap#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix work:  <http://lv2plug.in/ns/ext/worker#> .
 @prefix state: <http://lv2plug.in/ns/ext/state#> .
 @prefix ui:    <http://lv2plug.in/ns/extensions/ui#> .
 
