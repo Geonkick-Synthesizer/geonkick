@@ -33,18 +33,19 @@
 #include <vector>
 #include <atomic>
 #include <unordered_map>
-#if defined(GCC_VERSION) && GCC_VERSION >= 800000
+#if defined(__GNUC__) && __GNUC__ >= 8
 #include <filesystem>
 #else
 #include <experimental/filesystem>
+#define GEONKICK_FILE_SYSTEM_EXPERIMENTAL
 #define filesystem experimental::filesystem
-#endif // GCC_VERSION >= 800000
+#endif // __GNUC__ >= 8
 #include <fstream>
 #include <algorithm>
 #include <mutex>
 #include <string_view>
 
-#ifdef GKICK_LIB_LOG_LEVEL_DEBUG
+#ifdef RK_LOG_DEBUG_LEVEL
 #define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
 #define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;
 #define GEONKICK_LOG_DEBUG(msg) std::cout << __PRETTY_FUNCTION__ << "[DEBUG] " << msg << std::endl;

@@ -3,9 +3,17 @@
 #### Feature:
 
   - VST3 plugin support for GNU/Linux
-  - seed for noise generator. Now the noise pattern will change only if the seed is changed
-  load/save preset will preserve the noise pattern
+  - seed for noise generator to have different noise patterns
   - add copy/paster between percussions
+
+#### Improvements
+
+  - noise pattern does not change when synthesizer parameters are changed.
+    Load/save preset will preserve the noise pattern too
+  - keep the order of saved percussions when saving/opening state or preset
+  - add new percussion only at the the end
+  - when starting to edit a percussion name move cursor by default to the end
+  - reduce unnecessary updateds of the UI when chaning parameters
 
 #### Fixes:
 
@@ -17,6 +25,7 @@
    - fix reset to default percussion
    - fix limiter leveler for plugin
    - fix related to loading the preset from the host list of states (for LV2)
+   - fix debug level when debugging
 
 ### Changes from 1.9.2 to 1.10.0
 

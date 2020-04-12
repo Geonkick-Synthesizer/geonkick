@@ -52,6 +52,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
 {
+        setTitle("KitWidget");
         addButton = new RkButton(this);
 	addButton->setCheckable(true);
         addButton->setSize(16, 16);
@@ -273,7 +274,6 @@ void KitWidget::updatePercussionName()
 			editPercussion->setFocus(false);
 		}
 	}
-        setFocus(true);
 }
 
 int KitWidget::getLine(int x, int y) const
@@ -313,8 +313,10 @@ void KitWidget::showFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        if (kitModel->open(file))
+        if (kitModel->open(file)) {
                 editPercussion->setText("");
+                setFocus();
+        }
 }
 
 void KitWidget::saveKit(const std::string &file)
@@ -354,23 +356,29 @@ int KitWidget::selectedPercussion() const
 
 void KitWidget::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
+        GEONKICK_LOG_INFO("event->key(): ");
         if (event->key() != Rk::Key::Key_Up
             && event->key() != Rk::Key::Key_Down
             && event->key() != Rk::Key::Key_Return)
                 return;
 
         auto index = selectedPercussion();
+        GEONKICK_LOG_INFO("event->key(): " << index);
         if (!validPercussionIndex(index))
                 return;
 
         if (event->key() == Rk::Key::Key_Return) {
+                GEONKICK_LOG_INFO("enter");
                 editPercussionName(selectedPercussion());
         } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
+                GEONKICK_LOG_INFO("move");
                 kitModel->moveSelectedPercussion(event->key() == Rk::Key::Key_Down);
         } else if (event->key() == Rk::Key::Key_Up && --index > -1) {
+                GEONKICK_LOG_INFO("key up: index" << index);
                 kitModel->selectPercussion(index);
         } else if (event->key() == Rk::Key::Key_Down
                    && ++index < static_cast<decltype(index)>(kitModel->percussionNumber())) {
+                GEONKICK_LOG_INFO("key down: index: " << index);
                 kitModel->selectPercussion(index);
         }
 }

@@ -237,7 +237,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) cons
                 return getPercussionState();
         } else {
                 auto tmpId = currentPercussion();
-                auto res = geonkick_set_current_percussion(geonkickApi, tmpId);
+                auto res = geonkick_set_current_percussion(geonkickApi, id);
                 if (res != GEONKICK_OK) {
                         geonkick_set_current_percussion(geonkickApi, tmpId);
                         return nullptr;
@@ -369,12 +369,13 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
         kit->setName(getKitName());
         kit->setAuthor(getKitAuthor());
         kit->setUrl(getKitUrl());
-        auto n = getPercussionsNumber();
-        for (decltype(n) i = 0; i < n; i++) {
-                bool enabled = false;
-                geonkick_is_percussion_enabled(geonkickApi, i, &enabled);
-                if (enabled)
-                        kit->addPercussion(getPercussionState(i));
+        size_t i = 0;
+        for (const auto &id : ordredPercussionIds()) {
+                auto state = getPercussionState(id);
+                state->setId(i);
+                kit->addPercussion(state);
+                GEONKICK_LOG_DEBUG("PER: " << state->getName() << ": id = " << state->getId());
+                i++;
         }
         return kit;
 }
@@ -396,6 +397,7 @@ bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         setKitUrl(state->getUrl());
         clearOrderedPercussionIds();
         for (const auto &per: state->percussions()) {
+                GEONKICK_LOG_DEBUG("PER: " << per->getName() << ": id = " << per->getId());
                 setPercussionState(per);
                 addOrderedPercussionId(per->getId());
         }
