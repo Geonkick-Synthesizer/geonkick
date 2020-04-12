@@ -19,14 +19,16 @@
 #### Fixes:
 
    - the shortcuts and key 'k'
-   - fix bug regarding "grabbing" window manager keys
-   - fix set "any" key
-   - fix updating the name in the toolbar
-   - fix not updating the current percussion envelopes when adding a new default
-   - fix reset to default percussion
-   - fix limiter leveler for plugin
-   - fix related to loading the preset from the host list of states (for LV2)
-   - fix debug level when debugging
+   - a bug regarding "grabbing" window manager keys
+   - set "any" key
+   - updating the name in the toolbar
+   - not updating the current percussion envelopes when adding a new default
+   - reset to default percussion
+   - limiter leveler for plugin
+   - related to loading the preset from the host list of states (for LV2)
+   - debug level when debugging
+   - ttl LV2 validation errors
+   - fixed wrong linking to experimental version of filesystem for GCC version >= 8
 
 ### Changes from 1.9.2 to 1.10.0
 
