@@ -4,17 +4,17 @@
 
   - VST3 plugin support for GNU/Linux
   - seed for noise generator to have different noise patterns
-  - add copy/paster between percussions
-  - add shotcut keys to navigate and change the kit list order
+  - add copy/paste between percussions
+  - add shortcut keys to navigate and change the kit list order
 
 #### Improvements:
 
   - noise pattern does not change when synthesizer parameters are changed.
     Load/save preset will preserve the noise pattern too
-  - keep the order of saved percussions when saving/opening state or preset
+  - keep the order of percussion when saving/opening state or preset
   - add new percussion only at the the end
   - when starting to edit a percussion name move cursor by default to the end
-  - reduce unnecessary updateds of the UI when chaning parameters
+  - reduce unnecessary updates of the UI when chaning parameters
 
 #### Fixes:
 
