@@ -1,12 +1,12 @@
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
-@prefix midi: <http://lv2plug.in/ns/ext/midi#> .
-@prefix atom: <http://lv2plug.in/ns/ext/atom#> .
-@prefix doap: <http://usefulinc.com/ns/doap#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix work: <http://lv2plug.in/ns/ext/worker#> .
-@prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
+@prefix midi:  <http://lv2plug.in/ns/ext/midi#> .
+@prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix work:  <http://lv2plug.in/ns/ext/worker#> .
 @prefix state: <http://lv2plug.in/ns/ext/state#> .
+@prefix ui:    <http://lv2plug.in/ns/extensions/ui#> .
 
 <http://geontime.com/geonkick#author>
 	a foaf:Person ;
@@ -24,7 +24,9 @@
     doap:name "Geonkick";
     lv2:project <http://geontime.com/geonkick> ;
     lv2:extensionData state:interface ;
-    lv2:extensionData state:StateChanged ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:minorVersion 20 ;
+    lv2:microVersion 0 ;
     doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
     ui:ui <http://geontime.com/geonkick#ui> ;
        lv2:port [
@@ -160,5 +162,6 @@
 <http://geontime.com/geonkick#ui>
     a ui:X11UI ;
     lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
-    lv2:requiredFeature <http://lv2plug.in/ns/extensions/ui#idleInterface>;
+    lv2:requiredFeature ui:idleInterface;
+    lv2:extensionData ui:idleInterface;
     ui:binary <libgeonkick_lv2.so> .
