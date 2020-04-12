@@ -14,7 +14,7 @@
   - keep the order of percussion when saving/opening state or preset
   - add new percussion only at the the end
   - when starting to edit a percussion name move cursor by default to the end
-  - reduce unnecessary updates of the UI when chaning parameters
+  - reduce unnecessary updates of the UI when changing parameters
 
 #### Fixes:
 
