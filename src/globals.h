@@ -52,5 +52,6 @@
 #else
 #define GEONKICK_LOG_INFO(msg) std::cout << "[INFO] " << msg << std::endl;
 #define GEONKICK_LOG_ERROR(msg) std::cout << "[ERROR] " << msg << std::endl;
+#define GEONKICK_LOG_DEBUG(msg)
 #endif //  // GKICK_LIB_LOG_LEVEL_DEBUG
 #endif // GEONKICK_GLOBALS_H

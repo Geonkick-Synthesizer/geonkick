@@ -53,6 +53,7 @@ void ControlArea::showKit()
 {
         controlsWidget->hide();
         kitWidget->show();
+        kitWidget->setFocus();
 }
 
 KitWidget* ControlArea::getKitWidget()

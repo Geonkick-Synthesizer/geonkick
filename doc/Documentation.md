@@ -124,6 +124,8 @@ also can go to percussions kit UI.
 * Ctrl + a - open about dialog
 * Ctrl + c - copy current selected percussion
 * Ctrl + v - paste the copied percussion into the current selected pecussion
+* Up/Down - to navigate into the kit list
+* Ctrl + Up/Down - to move up/down the position of the current selected percussion from the kit list
 
 Note:
    - when running as plugin be sure the focus to be on the main Geonkick window.

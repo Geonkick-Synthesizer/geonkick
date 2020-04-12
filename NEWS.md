@@ -5,6 +5,7 @@
   - VST3 plugin support for GNU/Linux
   - seed for noise generator to have different noise patterns
   - add copy/paster between percussions
+  - add shotcut keys to navigate and change the kit list order
 
 #### Improvements
 

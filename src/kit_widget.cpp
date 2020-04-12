@@ -46,7 +46,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , percussionWidth{percussionNameWidth
                           + static_cast<decltype(keyWidth)>(kitModel->keysNumber()) * keyWidth
                           + channelWidth}
-	, editPercussion{new RkLineEdit(this)}
+	, editPercussion{nullptr}
 	, editedLineIndex{-1}
         , addButton{nullptr}
         , openKitButton{nullptr}
@@ -80,8 +80,6 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         saveKitButton->show();
 
         RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
-	RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
-                    this, updatePercussionName());
 }
 
 void KitWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
@@ -198,6 +196,7 @@ void KitWidget::drawConnection(RkPainter &painter, const RkPoint &point)
 
 void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
 {
+        setFocus(true);
         if (event->button() != RkMouseEvent::ButtonType::Left
             && event->button() != RkMouseEvent::ButtonType::WheelUp
             && event->button() != RkMouseEvent::ButtonType::WheelDown)
@@ -240,12 +239,13 @@ void KitWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
                 mouseButtonPressEvent(event);
                 return;
         }
+        setFocus(true);
 
 	if (event->button() != RkMouseEvent::ButtonType::Left)
 		return;
 
 	auto index = getLine(event->x(), event->y());
-	if (event->x() < percussionNameWidth)
+	if (validPercussionIndex(index) && event->x() < percussionNameWidth)
                 editPercussionName(index);
 
 }
@@ -254,6 +254,11 @@ void KitWidget::editPercussionName(int index)
 {
         editedLineIndex = -1;
         if (validPercussionIndex(index)) {
+                if (editPercussion == nullptr) {
+                        editPercussion = new RkLineEdit(this);
+                        RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
+                                    this, updatePercussionName());
+                }
                 editedLineIndex = index;
                 editPercussion->setText(kitModel->percussionName(index));
                 editPercussion->moveCursorToEnd();
@@ -266,18 +271,21 @@ void KitWidget::editPercussionName(int index)
 
 void KitWidget::updatePercussionName()
 {
-	if (editedLineIndex > -1) {
+	if (editPercussion && editedLineIndex > -1) {
 		auto name = editPercussion->text();
 		if (!name.empty()) {
 			kitModel->setPercussionName(editedLineIndex, name);
-			editPercussion->hide();
-			editPercussion->setFocus(false);
+			editPercussion->close();
+                        editPercussion = nullptr;
 		}
 	}
 }
 
 int KitWidget::getLine(int x, int y) const
 {
+        if (y <= keyWidth)
+                return -1;
+
         int index = (y - keyWidth) / percussionHeight;
         if (validPercussionIndex(index))
                 return index;
@@ -313,10 +321,8 @@ void KitWidget::showFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        if (kitModel->open(file)) {
-                editPercussion->setText("");
+        if (kitModel->open(file))
                 setFocus();
-        }
 }
 
 void KitWidget::saveKit(const std::string &file)
@@ -356,29 +362,23 @@ int KitWidget::selectedPercussion() const
 
 void KitWidget::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
 {
-        GEONKICK_LOG_INFO("event->key(): ");
         if (event->key() != Rk::Key::Key_Up
             && event->key() != Rk::Key::Key_Down
             && event->key() != Rk::Key::Key_Return)
                 return;
 
         auto index = selectedPercussion();
-        GEONKICK_LOG_INFO("event->key(): " << index);
         if (!validPercussionIndex(index))
                 return;
 
         if (event->key() == Rk::Key::Key_Return) {
-                GEONKICK_LOG_INFO("enter");
                 editPercussionName(selectedPercussion());
         } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
-                GEONKICK_LOG_INFO("move");
                 kitModel->moveSelectedPercussion(event->key() == Rk::Key::Key_Down);
         } else if (event->key() == Rk::Key::Key_Up && --index > -1) {
-                GEONKICK_LOG_INFO("key up: index" << index);
                 kitModel->selectPercussion(index);
         } else if (event->key() == Rk::Key::Key_Down
                    && ++index < static_cast<decltype(index)>(kitModel->percussionNumber())) {
-                GEONKICK_LOG_INFO("key down: index: " << index);
                 kitModel->selectPercussion(index);
         }
 }

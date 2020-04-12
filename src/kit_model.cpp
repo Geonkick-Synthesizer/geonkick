@@ -213,7 +213,7 @@ void KitModel::setPercussionName(int index, const std::string &name)
 {
         auto res = geonkickApi->setPercussionName(getPercussionId(index), name);
         if (res)
-                action modelUpdated();
+                geonkickApi->notifyUpdateGui();
 }
 
 std::string KitModel::percussionName(int index) const
