@@ -33,13 +33,13 @@
 #include <vector>
 #include <atomic>
 #include <unordered_map>
-#if defined(__GNUC__) && __GNUC__ >= 8
-#include <filesystem>
-#else
+#if defined(__GNUC__) && __GNUC__ < 8
 #include <experimental/filesystem>
 #define GEONKICK_FILE_SYSTEM_EXPERIMENTAL
 #define filesystem experimental::filesystem
-#endif // __GNUC__ >= 8
+#else
+#include <filesystem>
+#endif // __GNUC__ < 8
 #include <fstream>
 #include <algorithm>
 #include <mutex>

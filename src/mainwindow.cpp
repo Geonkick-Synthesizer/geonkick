@@ -160,7 +160,7 @@ void MainWindow::savePreset(const std::string &fileName)
         auto state = geonkickApi->getPercussionState();
         if (state->save(fileName)) {
                 std::filesystem::path filePath(fileName);
-                topBar->setPresetName(filePath.stem());
+                topBar->setPresetName(state->getName());
                 geonkickApi->setCurrentWorkingPath("SavePreset",
                                                    filePath.has_parent_path() ? filePath.parent_path() : filePath);
         }
