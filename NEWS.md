@@ -1,3 +1,9 @@
+### New Changes
+
+#### Improvements:
+
+  - display channels from 1-16 instead of 0-15
+
 ### Changes from 1.10.0 to 2.0.0
 
 #### Features:

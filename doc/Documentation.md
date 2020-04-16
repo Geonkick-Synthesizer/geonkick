@@ -367,9 +367,9 @@ selected percussion. The same is for export.
 #### Kit output channels
 
 There are maximum 16 output channels to which the user can map the percussion.
-When adding new percussion by default it will be mapped to channel 0. For
+When adding new percussion by default it will be mapped to channel 1. For
 standalone version even if the label "#x" may show different values for
-channels, all the percussion are redirected only to #0 channel, changing
+channels, all the percussion are redirected only to #1 channel, changing
 these values will take no effect.
 
 Issues:
@@ -393,7 +393,7 @@ and can be loaded by kit UI.
 
 Percussion and channels from the Kit UI are different things. A percussion
 from the kit UI can be redirected to any audio output channel
-(from 0 - 15 channel number). Thus, multiple percussions can be redirected
+(from 1 - 16 channel number). Thus, multiple percussions can be redirected
 to a single channel. Multiple channels for a single percussion is not
 possible from Kit UI (the host may provide this feature).
 

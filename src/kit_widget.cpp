@@ -154,7 +154,7 @@ void KitWidget::drawPercussions(RkPainter &painter)
 		painter.drawText(RkRect(percussionWidth - channelWidth,
                                         y, channelWidth,
                                         percussionHeight),
-				 "#" + std::to_string(channel));
+				 "#" + std::to_string(channel + 1));
 
                 int x = rect.right() + 5;
                 if (kitModel->canRemove()) {
