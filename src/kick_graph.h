@@ -32,7 +32,7 @@
 
 class RkEventQueue;
 
-class KickGraph {
+class KickGraph : public RkObject {
 
 public:
 

@@ -81,14 +81,6 @@ MainWindow::~MainWindow()
         if (geonkickApi) {
                 geonkickApi->registerCallbacks(false);
                 geonkickApi->setEventQueue(nullptr);
-                // Since for plugins the DSP/api is not destroyed there
-                // is a need to unbind from the GUI that is being destroyed.
-                RK_ACT_UNBIND_ALL(geonkickApi, kickLengthUpdated);
-                RK_ACT_UNBIND_ALL(geonkickApi, kickAmplitudeUpdated);
-                RK_ACT_UNBIND_ALL(geonkickApi, kickUpdated);
-                RK_ACT_UNBIND_ALL(geonkickApi, newKickBuffer);
-                RK_ACT_UNBIND_ALL(geonkickApi, currentPlayingFrameVal);
-                RK_ACT_UNBIND_ALL(geonkickApi, stateChanged);
                 if (geonkickApi->isStandalone())
                         delete geonkickApi;
         }

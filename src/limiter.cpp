@@ -42,8 +42,8 @@ Limiter::Limiter(GeonkickApi *api, GeonkickWidget *parent)
         faderSlider->setPosition(0, 0);
         faderSlider->setFixedSize(20, height());
         RK_ACT_BIND(faderSlider, valueUpdated, RK_ACT_ARGS(int val), this, onSetLimiterValue(val));
-        RK_ACT_BIND(levelerValueTimer, timeout, RK_ACT_ARGS(), this, onUpdateMeter());
-        RK_ACT_BIND(meterTimer, timeout, RK_ACT_ARGS(), this, onUpdateMeterTimeout());
+        RK_ACT_BIND(levelerValueTimer.get(), timeout, RK_ACT_ARGS(), this, onUpdateMeter());
+        RK_ACT_BIND(meterTimer.get(), timeout, RK_ACT_ARGS(), this, onUpdateMeterTimeout());
         onUpdateLimiter();
         meterTimer->start();
         levelerValueTimer->start();

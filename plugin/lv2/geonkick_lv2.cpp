@@ -46,7 +46,7 @@
 #define GEONKICK_URI_STATE "http://geontime.com/geonkick#state"
 #define GEONKICK_URI_STATE_CHANGED "http://lv2plug.in/ns/ext/state#StateChanged"
 
-class GeonkickLv2Plugin
+class GeonkickLv2Plugin : public RkObject
 {
   public:
         GeonkickLv2Plugin()

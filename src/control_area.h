@@ -46,6 +46,8 @@ class ControlArea: public GeonkickWidget
         KitWidget* getKitWidget();
 
  private:
+        GeonkickApi* geonkickApi;
+        const std::vector<std::unique_ptr<Oscillator>> &oscillators;
         ControlsWidget *controlsWidget;
         std::unique_ptr<KitModel> kitModel;
         KitWidget *kitWidget;

@@ -29,7 +29,7 @@
 class GeonkickApi;
 class GeonkickState;
 
-class KitModel {
+class KitModel : public RkObject {
  public:
         explicit KitModel(GeonkickApi *api);
         bool open(const std::string &file);

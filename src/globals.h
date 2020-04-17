@@ -45,6 +45,8 @@
 #include <mutex>
 #include <string_view>
 
+#include <RkObject.h>
+
 #ifdef RK_LOG_DEBUG_LEVEL
 #define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
 #define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;

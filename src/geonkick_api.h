@@ -33,7 +33,7 @@ class PercussionState;
 class KitState;
 class RkEventQueue;
 
-class GeonkickApi {
+class GeonkickApi : public RkObject {
 
  public:
 

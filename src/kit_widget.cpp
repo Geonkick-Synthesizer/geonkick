@@ -54,6 +54,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 {
         setTitle("KitWidget");
         addButton = new RkButton(this);
+        addButton->setBackgroundColor(background());
 	addButton->setCheckable(true);
         addButton->setSize(16, 16);
         addButton->setPosition({5, 5});
@@ -62,6 +63,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         addButton->show();
 
         openKitButton = new RkButton(this);
+        openKitButton->setBackgroundColor(background());
 	openKitButton->setCheckable(true);
         openKitButton->setSize(16, 16);
         openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
@@ -71,6 +73,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         openKitButton->show();
 
         saveKitButton = new RkButton(this);
+        saveKitButton->setBackgroundColor(background());
 	saveKitButton->setCheckable(true);
         saveKitButton->setSize(16, 16);
         saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
@@ -275,7 +278,7 @@ void KitWidget::updatePercussionName()
 		auto name = editPercussion->text();
 		if (!name.empty()) {
 			kitModel->setPercussionName(editedLineIndex, name);
-			editPercussion->close();
+			delete editPercussion;
                         editPercussion = nullptr;
 		}
 	}

@@ -26,7 +26,7 @@
 
 #include "geonkick_api.h"
 
-class Oscillator
+class Oscillator: public RkObject
 {
  public:
 

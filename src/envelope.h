@@ -32,7 +32,7 @@
 #include <memory>
 #include <unordered_set>
 
-class Envelope
+class Envelope : public RkObject
 {
  public:
 

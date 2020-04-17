@@ -30,30 +30,45 @@ ControlArea::ControlArea(GeonkickWidget *parent,
                          GeonkickApi* api,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
-        , controlsWidget{new ControlsWidget(this, api, oscillators)}
-        , kitModel{std::make_unique<KitModel>(api)}
-        , kitWidget{new KitWidget(this, kitModel.get())}
+        , geonkickApi{api}
+        , oscillators{oscillators}
+        , controlsWidget{nullptr}
+        , kitModel{std::make_unique<KitModel>(geonkickApi)}
+        , kitWidget{nullptr}
 {
         setFixedSize(920, 368);
-        setBackgroundColor({255, 0, 0});
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), kitWidget, updateGui());
-        controlsWidget->setSize({width(), height()});
-        kitWidget->setSize({width(), height()});
         showControls();
 }
 
 void ControlArea::showControls()
 {
-        controlsWidget->show();
-        kitWidget->hide();
+        if (kitWidget) {
+                delete kitWidget;
+                kitWidget = nullptr;
+        }
+
+        if (!controlsWidget) {
+                controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
+                RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
+                controlsWidget->setSize({width(), height()});
+                controlsWidget->show();
+        }
 }
 
 void ControlArea::showKit()
 {
-        controlsWidget->hide();
-        kitWidget->show();
-        kitWidget->setFocus();
+        if (controlsWidget) {
+                delete controlsWidget;
+                controlsWidget = nullptr;
+        }
+
+        if (!kitWidget) {
+                kitWidget = new KitWidget(this, kitModel.get());
+                RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), kitWidget, updateGui());
+                kitWidget->setSize({width(), height()});
+                kitWidget->show();
+                kitWidget->setFocus();
+        }
 }
 
 KitWidget* ControlArea::getKitWidget()
