@@ -6,8 +6,6 @@ Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
 snares, hit-hats, shakers, claps.
 
-Author: Iurie Nistor
-
 License: GPLv3
 
 Version: 2.0
@@ -27,7 +25,9 @@ https://gitlab.com/geontime/geonkick
 
 Latest releases can be found on [tags](https://gitlab.com/geontime/geonkick/-/tags).
 
-Latest stable features added are on ["master" branch](https://gitlab.com/geontime/geonkick/commits/master)
+Latest features are added are on ["master" branch](https://gitlab.com/geontime/geonkick/commits/master)
+
+Note: It is recommended to use the release version (see repository tags).
 
 #### Features
 
@@ -108,7 +108,7 @@ for plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-* [Redkite](https://github.com/geontime/redkite) GUI toolkit.
+* [Redkite](https://github.com/geontime/redkite) GUI toolkit (it is recommented to use release versions).
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for plugin)
@@ -126,7 +126,9 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 ##### Build & install Geonkick
 
-Clone the Geonkick code repository, compile and install
+Clone the Geonkick code repository, compile and install.
+
+Note: It is recommended to use the release version (see repository tags).
 
         git clone https://gitlab.com/geontime/geonkick.git
         mkdir geonkick/build
@@ -135,15 +137,13 @@ Clone the Geonkick code repository, compile and install
         make
         make install
 
-Note: It is recommended to use the release version (see repository tags).
-
 ##### VST
 
 VST build is turned off by default. In order to enable it there is a need to pass
 GKICK_VST_SDK_PATH to cmake:
 
     cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
-    
+
 Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/0908f475f52af56682321192d800ef25d1823dd2)
 
 #### Packages
@@ -160,4 +160,3 @@ to point to the needed location.
 #### Documentation
 
  [doc/Documentation.md](doc/Documentation.md)
-
