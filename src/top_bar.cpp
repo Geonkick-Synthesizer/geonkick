@@ -24,7 +24,8 @@
 #include "top_bar.h"
 #include "geonkick_button.h"
 
-#include "RkLabel.h"
+#include <RkLabel.h>
+#include <RkButton.h>
 
 RK_DECLARE_IMAGE_RC(logo);
 RK_DECLARE_IMAGE_RC(open_active);
@@ -32,6 +33,7 @@ RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(export_active);
 RK_DECLARE_IMAGE_RC(about);
 RK_DECLARE_IMAGE_RC(play);
+RK_DECLARE_IMAGE_RC(play_pressed);
 RK_DECLARE_IMAGE_RC(topbar_layer1);
 RK_DECLARE_IMAGE_RC(topbar_layer2);
 RK_DECLARE_IMAGE_RC(topbar_layer3);
@@ -108,12 +110,13 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
                                      (height() - presetNameLabel->height()) / 2);
         presetNameLabel->show();
 
-	auto playButton = new GeonkickButton(this);
+	auto playButton = new RkButton(this);
+        playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(24, 24);
         playButton->setX(presetNameLabel->x() + presetNameLabel->width() + 10);
         playButton->setY((height() - playButton->height()) / 2);
         playButton->setUnpressedImage(RkImage(playButton->size(), RK_IMAGE_RC(play)));
-	playButton->setCheckable(true);
+        playButton->setPressedImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)));
         RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(bool b), geonkickApi, playKick());
 	playButton->show();
 

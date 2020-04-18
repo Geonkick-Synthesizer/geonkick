@@ -4592,9 +4592,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="30.792974"
-     inkscape:cx="247.65091"
-     inkscape:cy="300.1287"
+     inkscape:zoom="5.9581479"
+     inkscape:cx="264.93715"
+     inkscape:cy="544.93593"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -17665,5 +17665,37 @@
          inkscape:export-xdpi="110.68004"
          inkscape:export-ydpi="110.68004" />
     </g>
+    <rect
+       style="display:inline;opacity:1;fill:#54af1d;fill-opacity:1;stroke:none;stroke-width:0.23651406;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       id="rect8875-3-36-3"
+       width="4.757268"
+       height="4.757268"
+       x="70.213745"
+       y="215.46724"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play_pressed.png"
+       inkscape:export-xdpi="128.14078"
+       inkscape:export-ydpi="128.14078"
+       rx="0.79374999"
+       ry="0.79374999" />
+    <path
+       sodipodi:type="star"
+       id="path7227-6"
+       sodipodi:sides="3"
+       sodipodi:cx="72.165523"
+       sodipodi:cy="217.84587"
+       sodipodi:r1="1.707426"
+       sodipodi:r2="0.85371304"
+       sodipodi:arg1="0"
+       sodipodi:arg2="1.0471976"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 73.872946,217.84587 -1.28057,0.73934 -1.280569,0.73934 0,-1.47868 0,-1.47867 1.280569,0.73933 z"
+       inkscape:transform-center-x="-0.42685405"
+       style="display:inline;fill:#4b4b4b;fill-opacity:0.72815531;stroke-width:0.04564261"
+       inkscape:transform-center-y="5.0622963e-06"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/play_pressed.png"
+       inkscape:export-xdpi="128.14078"
+       inkscape:export-ydpi="128.14078" />
   </g>
 </svg>
