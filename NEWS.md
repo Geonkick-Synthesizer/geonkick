@@ -1,3 +1,13 @@
+### Changes from 2.0.0 to 2.0.1
+
+#### Fixes
+
+  - fixed the crash when opening a directory as kit preset
+
+#### Other
+
+  - moved presets into doc/examples
+
 ### Changes from 1.10.0 to 2.0.0
 
 #### Features:
