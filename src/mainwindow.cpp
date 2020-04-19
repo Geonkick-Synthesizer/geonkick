@@ -177,6 +177,7 @@ void MainWindow::openPreset(const std::string &fileName)
 
         std::filesystem::path filePath(fileName);
         if (filePath.extension().empty()
+            || !std::filesystem::is_regular_file(filePath)
             || (filePath.extension() != ".gkick"
             && filePath.extension() != ".GKICK")) {
                 RK_LOG_ERROR("Open Preset: " << "Can't open preset. Wrong file format.");

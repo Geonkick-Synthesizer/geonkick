@@ -321,7 +321,7 @@ void KitWidget::showFileDialog(FileDialog::Type type)
 
 void KitWidget::openKit(const std::string &file)
 {
-        if (kitModel->open(file))
+        if (std::filesystem::is_regular_file(file) && kitModel->open(file))
                 setFocus();
 }
 
