@@ -10,7 +10,7 @@ Author: Iurie Nistor
 
 License: GPLv3
 
-Version: 2.0
+Version: 2.0.1
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -84,9 +84,9 @@ Latest stable features added are on ["master" branch](https://gitlab.com/geontim
 
 Here is a [list of videos and tutorial](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about Geonkick.
 
-##### Presets
+##### Examples
 
-In the directory geonkick/presets can be found some example presets.
+In the directory doc/examples can be found some example presets.
 
 #### Requirements
 
@@ -143,7 +143,7 @@ VST build is turned off by default. In order to enable it there is a need to pas
 GKICK_VST_SDK_PATH to cmake:
 
     cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
-    
+
 Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/0908f475f52af56682321192d800ef25d1823dd2)
 
 #### Packages
@@ -152,7 +152,7 @@ Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro,
 
 ##### Packaging
 
-Please, use only release versions for packaging, and build against only release version of Redkite.
+Please, use only the release versions for packaging, and build against only the release version of Redkite.
 If Redkite GUI toolkit is installed in a different location
 than the standard ones there is a need to set GKICK_REDKITE_SDK_PATH
 to point to the needed location.
