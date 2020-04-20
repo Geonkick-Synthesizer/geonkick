@@ -1,8 +1,12 @@
-### New Changes
+### Changes from 2.0.0 to 2.0.1
 
-#### Improvements:
+#### Fixes
 
-  - display channels from 1-16 instead of 0-15
+  - fixed the crash when opening a directory as kit preset
+
+#### Other
+
+  - moved presets into doc/examples
 
 ### Changes from 1.10.0 to 2.0.0
 

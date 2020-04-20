@@ -417,7 +417,7 @@ Here is a list of videos that show how to synthesize various percussion with Geo
 
 * YouTube: https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY
 
-Also, in the folder "geonkick/presets" of the Geonkick code repository can be
+Also, in the folder "geonkick/doc/examples" of the Geonkick code repository can be
 found a list of example presets that can be loaded into Geonkick and
 play with or modify.
 

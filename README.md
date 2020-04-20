@@ -8,7 +8,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.5 (version 2.5 not released yet)
+Version: 2.0.1
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -84,9 +84,9 @@ Note: It is recommended to use the release version (see repository tags).
 
 Here is a [list of videos and tutorial](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about Geonkick.
 
-##### Presets
+##### Examples
 
-In the directory geonkick/presets can be found some example presets.
+In the directory doc/examples can be found some example presets.
 
 #### Requirements
 
@@ -152,7 +152,7 @@ Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro,
 
 ##### Packaging
 
-Please, use only release versions for packaging, and build against only release version of Redkite.
+Please, use only the release versions for packaging, and build against only the release version of Redkite.
 If Redkite GUI toolkit is installed in a different location
 than the standard ones there is a need to set GKICK_REDKITE_SDK_PATH
 to point to the needed location.
