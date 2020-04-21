@@ -72,8 +72,9 @@ bool KitState::save(const std::string &fileName)
         std::filesystem::path filePath(fileName);
         if (filePath.extension().empty()
             || (filePath.extension() != ".gkit"
-            && filePath.extension() != ".GKIT"))
+             && filePath.extension() != ".GKIT")) {
                 filePath.replace_extension(".gkit");
+        }
 
         std::ofstream file;
         file.open(std::filesystem::absolute(filePath));

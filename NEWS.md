@@ -1,3 +1,10 @@
+### Changes from 2.0.1 to 2.0.2
+
+#### Fixes
+
+  - fix saving kit state for standalone
+
+
 ### Changes from 2.0.0 to 2.0.1
 
 #### Fixes

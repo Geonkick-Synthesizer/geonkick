@@ -58,7 +58,7 @@ bool KitModel::open(const std::string &file)
 bool KitModel::save(const std::string &file)
 {
         auto state = geonkickApi->getKitState();
-        if (state || !state->save(file)) {
+        if (!state || !state->save(file)) {
                 GEONKICK_LOG_ERROR("can't save kit state");
                 return false;
         }
