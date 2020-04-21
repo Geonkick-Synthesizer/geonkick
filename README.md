@@ -19,7 +19,7 @@ If you have an idea about a feature or found an issue, please, submit it:
 
 If you are using Geonkick, have created some presets and want to be included
 in the factory presets in order Geonkick users to use them, please, attach
-the archive of presets with at:
+the archive of presets at:
 
 * https://gitlab.com/iurie-sw/geonkick/-/issues/149
 * https://github.com/iurie-sw/geonkick/issues/65
