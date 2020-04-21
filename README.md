@@ -14,8 +14,15 @@ Version: 2.0.2
 
 If you have an idea about a feature or found an issue, please, submit it:
 
-* on [GitLab](https://gitlab.com/geontime/geonkick/issues)
-* on [GitHub](https://github.com/geontime/geonkick/issues)
+* on [GitLab](https://gitlab.com/iurie-sw/geonkick/issues)
+* on [GitHub](https://github.com/iurie-sw/geonkick/issues)
+
+If you are using Geonkick, have created some presets and want to be included
+in the factory presets in order Geonkick users to use them, please, attach
+the archive of presets with at:
+
+* https://gitlab.com/iurie-sw/geonkick/-/issues/149
+* https://github.com/iurie-sw/geonkick/issues/65
 
 ![Screenshot](data/screenshot.png)
 
@@ -23,11 +30,11 @@ If you have an idea about a feature or found an issue, please, submit it:
 
 Source code repository:
 
-https://gitlab.com/geontime/geonkick
+https://gitlab.com/iurie-sw/geonkick
 
-Latest releases can be found on [tags](https://gitlab.com/geontime/geonkick/-/tags).
+Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/tags).
 
-Latest stable features added are on ["master" branch](https://gitlab.com/geontime/geonkick/commits/master)
+Latest stable features added are on ["master" branch](https://gitlab.com/iurie-sw/geonkick/commits/master)
 
 #### Features
 
@@ -108,7 +115,7 @@ for plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-* [Redkite](https://github.com/geontime/redkite) GUI toolkit.
+* [Redkite](https://github.com/iurie-sw/redkite) GUI toolkit.
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for plugin)
@@ -128,7 +135,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the Geonkick code repository, compile and install
 
-        git clone https://gitlab.com/geontime/geonkick.git
+        git clone https://gitlab.com/iurie-sw/geonkick.git
         mkdir geonkick/build
         cd geonkick/build
         cmake ../
