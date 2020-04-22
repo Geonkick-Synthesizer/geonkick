@@ -1318,7 +1318,7 @@ GeonkickApi::getOscillatorSample(int oscillatorIndex) const
 
 std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                                                 double length,
-                                                int smapleRate,
+                                                int sampleRate,
                                                 int channels)
 {
         GEONKICK_UNUSED(channels);
@@ -1331,11 +1331,31 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                 return std::vector<gkick_real>();
         }
 
-        std::vector<float> data(smapleRate * length, 0.0f);
+        if (sndinfo.samplerate != sampleRate) {
+                GEONKICK_LOG_ERROR("sample rate must be "
+                                   << sampleRate << ", file provides "
+                                   << sndinfo.samplerate);
+                return std::vector<gkick_real>();
+        }
+
+        std::vector<float> data(sndinfo.samplerate * length * sndinfo.channels, 0.0f);
         auto n = sf_read_float(sndFile, data.data(), data.size());
         sf_close(sndFile);
-        if (n > 0)
+
+        if (static_cast<decltype(data.size())>(n) != data.size()) {
+                GEONKICK_LOG_ERROR("error on reading sample");
+                return std::vector<gkick_real>();
+        }
+
+        std::vector<float> out_data;
+        if (sndinfo.channels > 1) {
+                GEONKICK_LOG_INFO("stereo file. Only the fist channel will be loaded");
+                for (decltype(data.size()) i = 0; i < data.size(); i += sndinfo.channels)
+                        out_data.push_back(data[i]);
+                return out_data;
+        } else {
                 return data;
+        }
         return std::vector<gkick_real>();
 }
 

@@ -107,7 +107,7 @@ gkick_audio_output_play(struct gkick_audio_output *audio_output)
 gkick_real
 gkick_audio_output_tune_factor(int note_number)
 {
-        return pow(2.0f, (gkick_real)(note_number - 69) / 12.0f);
+        return exp2f((gkick_real)(note_number - 69) / 12.0f);
 }
 
 enum geonkick_error
