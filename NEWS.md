@@ -1,3 +1,13 @@
+### Changes from 2.0.2 to 2.1.0
+
+#### Fixes
+
+  - fix loading stereo samples
+
+#### Improvements
+
+  - better quality of tuning
+
 ### Changes from 2.0.1 to 2.0.2
 
 #### Fixes
