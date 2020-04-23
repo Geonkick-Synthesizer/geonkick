@@ -8,12 +8,19 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.0.2
+Version: 2.1
 
 If you have an idea about a feature or found an issue, please, submit it:
 
-* on [GitLab](https://gitlab.com/geontime/geonkick/issues)
-* on [GitHub](https://github.com/geontime/geonkick/issues)
+* on [GitLab](https://gitlab.com/iurie-sw/geonkick/issues)
+* on [GitHub](https://github.com/iurie-sw/geonkick/issues)
+
+If you are using Geonkick, have created some presets and want to be included
+in the factory presets in order Geonkick users to use them, please, attach
+the archive of presets at:
+
+* https://gitlab.com/iurie-sw/geonkick/-/issues/149
+* https://github.com/iurie-sw/geonkick/issues/65
 
 ![Screenshot](data/screenshot.png)
 
@@ -21,13 +28,9 @@ If you have an idea about a feature or found an issue, please, submit it:
 
 Source code repository:
 
-https://gitlab.com/geontime/geonkick
+https://gitlab.com/iurie-sw/geonkick
 
-Latest releases can be found on [tags](https://gitlab.com/geontime/geonkick/-/tags).
-
-Latest features are added are on ["master" branch](https://gitlab.com/geontime/geonkick/commits/master)
-
-Note: It is recommended to use the release version (see repository tags).
+Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/tags).
 
 #### Features
 
@@ -62,6 +65,7 @@ Note: It is recommended to use the release version (see repository tags).
      - compression
      - distortion
      - distortion drive envelope
+     - tune percussion option (relative to key A4)
 * Key velocity sensitive
 * Jack support
 * Export
@@ -108,7 +112,11 @@ for plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
+<<<<<<< HEAD
 * [Redkite](https://github.com/geontime/redkite) GUI toolkit (it is recommented to use release versions).
+=======
+* [Redkite](https://github.com/iurie-sw/redkite) GUI toolkit.
+>>>>>>> master
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for plugin)
@@ -130,7 +138,7 @@ Clone the Geonkick code repository, compile and install.
 
 Note: It is recommended to use the release version (see repository tags).
 
-        git clone https://gitlab.com/geontime/geonkick.git
+        git clone https://gitlab.com/iurie-sw/geonkick.git
         mkdir geonkick/build
         cd geonkick/build
         cmake ../

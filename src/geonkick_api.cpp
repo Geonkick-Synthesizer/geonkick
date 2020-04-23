@@ -1318,7 +1318,7 @@ GeonkickApi::getOscillatorSample(int oscillatorIndex) const
 
 std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                                                 double length,
-                                                int smapleRate,
+                                                int sampleRate,
                                                 int channels)
 {
         GEONKICK_UNUSED(channels);
@@ -1331,12 +1331,49 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                 return std::vector<gkick_real>();
         }
 
-        std::vector<float> data(smapleRate * length, 0.0f);
+        if (sndinfo.format != (SF_FORMAT_FLAC | SF_FORMAT_PCM_16)
+            && sndinfo.format != (SF_FORMAT_FLAC | SF_FORMAT_PCM_24)
+            && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_16)
+            && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_24)
+            && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_32)
+            && sndinfo.format != (SF_FORMAT_OGG | SF_FORMAT_VORBIS)) {
+                    GEONKICK_LOG_ERROR("unsupported audio format");
+                    sf_close(sndFile);
+                    return std::vector<gkick_real>();
+            }
+
+        std::vector<float> data(sndinfo.samplerate * length * sndinfo.channels, 0.0f);
         auto n = sf_read_float(sndFile, data.data(), data.size());
         sf_close(sndFile);
-        if (n > 0)
-                return data;
-        return std::vector<gkick_real>();
+        if (static_cast<decltype(data.size())>(n) != data.size()) {
+                GEONKICK_LOG_ERROR("error on reading samples");
+                return std::vector<gkick_real>();
+        }
+
+        if (sndinfo.channels > 1) {
+                GEONKICK_LOG_DEBUG("multichannel file, get only the first channel");
+                for (decltype(data.size()) i = 0; i < data.size(); i += sndinfo.channels)
+                        data[i / sndinfo.channels] = data[i];
+                data.resize(data.size() / sndinfo.channels);
+        }
+
+        if (sampleRate != sndinfo.samplerate) {
+                GEONKICK_LOG_DEBUG("different sample rate " << sndinfo.samplerate
+                                   << ", resample to " << sampleRate);
+                float f = static_cast<float>(sndinfo.samplerate) / sampleRate;
+                float x = 0.0f;
+                std::vector<float> out_data;
+                for (decltype(data.size()) i = 0; i < data.size() - 1;) {
+                        float d = x - i;
+                        float val = data[i] * (1.0f - d) + data[i + 1] * d;
+                        x += f;
+                        i = x;
+                        out_data.push_back(val);
+                }
+                return out_data;
+        }
+
+        return data;
 }
 
 void GeonkickApi::setKitName(const std::string &name)

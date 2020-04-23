@@ -302,10 +302,6 @@ the un-tuned key A4.
 Notes:
    - "Tune" will not make Geonkick to be polyphonic.
 
-Issues:
-   - If the percussion sound is more like a tone, tuning above A4 may contain unwanted high
-  frequencies due to aliasing.
-
 #### Export
 
 Export is a dialog that can be opened by pushing on "Export" button from the top bar.

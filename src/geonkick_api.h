@@ -290,7 +290,7 @@ protected:
   void setLimiterVal(double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,
-                                            int smapleRate = 48000,
+                                            int sampleRate = 48000,
                                             int channels = 1);
 
 private:
