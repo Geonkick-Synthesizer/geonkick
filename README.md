@@ -69,6 +69,7 @@ Latest stable features added are on ["master" branch](https://gitlab.com/iurie-s
      - compression
      - distortion
      - distortion drive envelope
+     - tune percussion option (relative to key A4)
 * Key velocity sensitive
 * Jack support
 * Export
