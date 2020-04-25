@@ -51,7 +51,7 @@ void Knob::setKnobBackgroundImage(const RkImage &img)
         knobBackground = img;
 }
 
-void Knob::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+void Knob::paintWidget(RkPaintEvent *event)
 {
         RK_UNUSED(event);
         RkImage img(80, 80);
@@ -87,7 +87,7 @@ void Knob::rotateKnob(int degree)
         }
 }
 
-void Knob::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void Knob::mouseButtonPressEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::WheelUp
             || event->button() == RkMouseEvent::ButtonType::WheelDown) {
@@ -110,13 +110,13 @@ void Knob::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
         }
 }
 
-void Knob::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
+void Knob::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         RK_UNUSED(event);
         isSelected = false;
 }
 
-void Knob::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+void Knob::mouseMoveEvent(RkMouseEvent *event)
 {
         if (isSelected) {
                 int dy = event->y() - lastPositionPoint.y();

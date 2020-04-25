@@ -60,7 +60,7 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
         }
 }
 
-void EnvelopeWidgetDrawingArea::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+void EnvelopeWidgetDrawingArea::paintWidget(RkPaintEvent *event)
 {
         RK_UNUSED(event);
         if (width() != envelopeImage.width() || height() != envelopeImage.height()) {
@@ -118,7 +118,7 @@ std::string EnvelopeWidgetDrawingArea::getEnvStateText() const
         return str;
 }
 
-void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(RkMouseEvent *event)
 {
         if (event->button() != RkMouseEvent::ButtonType::Right
             && event->button() != RkMouseEvent::ButtonType::Left)
@@ -142,7 +142,7 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(const std::shared_ptr<RkMo
         }
 }
 
-void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
+void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         if (!currentEnvelope)
                 return;
@@ -160,7 +160,7 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(const std::shared_ptr<Rk
                 update();
 }
 
-void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
+void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::Left) {
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
@@ -172,7 +172,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(const std::shared_ptr<RkMo
         }
 }
 
-void EnvelopeWidgetDrawingArea::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
 {
         if (!currentEnvelope)
                 return;

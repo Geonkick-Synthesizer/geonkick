@@ -76,14 +76,14 @@ void FilesView::setCurrentPath(const std::string &path)
 void FilesView::createScrollBar()
 {
         topScrollBarButton = new GeonkickButton(this);
-        topScrollBarButton->setUnpressedImage(RkImage(12, 17, rk_scrollbar_button_up_png));
+        topScrollBarButton->setUnpressedImage(RkImage(12, 17, RK_IMAGE_RC(scrollbar_button_up)));
         topScrollBarButton->setSize(scrollBarWidth, ((float)3 / 2) * scrollBarWidth);
         topScrollBarButton->setPosition(width() - scrollBarWidth, 0);
         topScrollBarButton->setCheckable(true);
         RK_ACT_BIND(topScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineUp());
 
         bottomScrollBarButton = new GeonkickButton(this);
-        bottomScrollBarButton->setUnpressedImage(RkImage(12, 17, rk_scrollbar_button_down_png));
+        bottomScrollBarButton->setUnpressedImage(RkImage(12, 17, RK_IMAGE_RC(scrollbar_button_down)));
         bottomScrollBarButton->setSize(scrollBarWidth, ((float)3 / 2) * scrollBarWidth);
         bottomScrollBarButton->setPosition(width() - scrollBarWidth, height() -  bottomScrollBarButton->height());
         bottomScrollBarButton->setCheckable(true);
@@ -187,7 +187,7 @@ void FilesView::loadCurrentDirectory()
         currentPathChanged(currentPath.string());
 }
 
-void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+void FilesView::paintWidget(RkPaintEvent *event)
 {
         RkImage img(width(), height());
         RkPainter painter(&img);
@@ -234,7 +234,7 @@ void FilesView::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         paint.drawImage(img, 0, 0);
 }
 
-void FilesView::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::WheelUp) {
                 onLineUp();
@@ -251,7 +251,7 @@ void FilesView::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
         }
 }
 
-void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
+void FilesView::mouseDoubleClickEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::WheelUp) {
                 onLineUp();
@@ -268,7 +268,7 @@ void FilesView::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event
         }
 }
 
-void FilesView::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+void FilesView::mouseMoveEvent(RkMouseEvent *event)
 {
         if (event->x() > width() - scrollBarWidth) {
                 hightlightLine = -1;
@@ -282,7 +282,7 @@ void FilesView::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
                 update();
 }
 
-void FilesView::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
+void FilesView::keyPressEvent(RkKeyEvent *event)
 {
         if (!filesList.empty() && (event->key() == Rk::Key::Key_Down || event->key() == Rk::Key::Key_Up)) {
                 event->key() == Rk::Key::Key_Down ? selectedFileIndex++ : selectedFileIndex--;
@@ -384,16 +384,16 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         acceptButton->setPosition(width() - acceptButton->width() - 10,
                                   height() - acceptButton->height() - 5);
         if (dialogType == Type::Save)
-                acceptButton->setUnpressedImage(RkImage(90, 30, rk_save_active_png));
+                acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(save_active)));
         else
-                acceptButton->setUnpressedImage(RkImage(90, 30, rk_open_active_png));
+                acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(open_active)));
         RK_ACT_BIND(acceptButton, toggled, RK_ACT_ARGS(bool pressed), this, onAccept());
         acceptButton->show();
 
         auto cancelButton = new GeonkickButton(this);
         cancelButton->setFixedSize(90, 30);
         cancelButton->setPosition(acceptButton->x() - cancelButton->width() - 5, acceptButton->y());
-        cancelButton->setUnpressedImage(RkImage(90, 30, rk_cancel_png));
+        cancelButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(cancel)));
         RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool pressed), this, onCancel());
         cancelButton->show();
 
@@ -442,7 +442,7 @@ void FileDialog::onCancel()
         close();
 }
 
-void FileDialog::closeEvent(const std::shared_ptr<RkCloseEvent> &event)
+void FileDialog::closeEvent(RkCloseEvent *event)
 {
         status = AcceptStatus::Cancel;
         close();

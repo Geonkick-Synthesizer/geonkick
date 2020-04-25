@@ -40,9 +40,9 @@ class KitWidget: public GeonkickWidget
         void updateGui();
 
  protected:
-	void paintWidget(const std::shared_ptr<RkPaintEvent> &event) override;
-	void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
-	void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+	void paintWidget(RkPaintEvent *event) override;
+	void mouseButtonPressEvent(RkMouseEvent *event) override;
+	void mouseDoubleClickEvent(RkMouseEvent *event) override;
         void drawKeys(RkPainter &painter);
         void drawPercussions(RkPainter &painter);
         void drawConnections(RkPainter &painter);
@@ -57,7 +57,7 @@ class KitWidget: public GeonkickWidget
         void removePercussion(int id);
         void copyPercussion(int id);
         int selectedPercussion() const;
-        void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) override;
+        void keyPressEvent(RkKeyEvent *event) override;
         bool validPercussionIndex(int index) const;
         bool validKeyIndex(int keyIndex) const;
         void editPercussionName(int index);

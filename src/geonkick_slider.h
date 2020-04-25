@@ -39,7 +39,6 @@ class GeonkickSlider: public GeonkickWidget
         GeonkickSlider(GeonkickWidget *parent,
                        Orientation orientation = Orientation::Horizontal);
         ~GeonkickSlider() = default;
-        void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
         int getValue() const;
         void onSetValue(int value);
         RK_DECL_ACT(valueUpdated, valueUpdated(int value),
@@ -47,9 +46,10 @@ class GeonkickSlider: public GeonkickWidget
 
  protected:
         int  calculateValue(int x, int y);
-        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-        void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-        void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+        void paintWidget(RkPaintEvent *event) final;
+        void mouseButtonPressEvent(RkMouseEvent *event) final;
+        void mouseMoveEvent(RkMouseEvent *event) final;
+        void mouseButtonReleaseEvent(RkMouseEvent *event) final;
         int pixelsFromValue() const;
 
  private:

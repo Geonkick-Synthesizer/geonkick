@@ -36,7 +36,7 @@ LayersGroupBox::LayersGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         , layerSliders{nullptr, nullptr, nullptr}
 {
         setFixedSize(110, 65);
-        setBackgroundImage(RkImage(size(), rk_layers_mixer_png));
+        setBackgroundImage(RkImage(size(), RK_IMAGE_RC(layers_mixer)));
 
         int y = 23;
         for (auto i = 0; i < 3; i++) {

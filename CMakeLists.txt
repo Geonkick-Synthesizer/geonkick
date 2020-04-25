@@ -203,7 +203,7 @@ foreach(pngFile ${gkick_rc_png_files})
   string(REPLACE " " "_" filename ${filename})
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
-    && rkpng2c "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk_${filename}")
+    && rkpng2c "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk__${filename}")
     set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
 endforeach()
 

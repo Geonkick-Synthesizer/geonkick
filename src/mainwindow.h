@@ -47,8 +47,8 @@ class MainWindow : public GeonkickWidget
       bool init(void);
 
  protected:
-      void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) final;
-      void keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event) final;
+      void keyPressEvent(RkKeyEvent *event) final;
+      void keyReleaseEvent(RkKeyEvent *event) final;
       void openFileDialog(FileDialog::Type type);
       void openPreset(const std::string &fileName);
       void savePreset(const std::string &fileName);

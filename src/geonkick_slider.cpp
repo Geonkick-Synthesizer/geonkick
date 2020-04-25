@@ -37,7 +37,7 @@ GeonkickSlider::GeonkickSlider(GeonkickWidget *parent, Orientation orientation)
         show();
 }
 
-void GeonkickSlider::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+void GeonkickSlider::paintWidget(RkPaintEvent *event)
 {
         RK_UNUSED(event);
         RkImage img(width(), height());
@@ -55,7 +55,7 @@ void GeonkickSlider::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
         paint.drawImage(img, 0, 0);
 }
 
-void GeonkickSlider::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void GeonkickSlider::mouseButtonPressEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::WheelUp
             || event->button() == RkMouseEvent::ButtonType::WheelDown) {
@@ -83,7 +83,7 @@ void GeonkickSlider::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &
          }
 }
 
-void GeonkickSlider::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+void GeonkickSlider::mouseMoveEvent(RkMouseEvent *event)
 {
         if (isSelected) {
                 int value = calculateValue(event->x(), event->y());
@@ -93,7 +93,7 @@ void GeonkickSlider::mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
         }
 }
 
-void GeonkickSlider::mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event)
+void GeonkickSlider::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         RK_UNUSED(event);
         isSelected = false;

@@ -46,7 +46,7 @@ class GeonkickButton: public GeonkickWidget
         void setCheckable(bool checkable);
 
  protected:
-        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) override;
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
 
  private:
         bool is_pressed;

@@ -50,7 +50,7 @@ Filter::Filter(GeonkickWidget *parent)
         , hpFilterButton{nullptr}
         , bpFilterButton{nullptr}
 {
-        setBackgroundImage(RkImage(224, 125, rk_hboxbk_filter_png));
+        setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_filter)));
         setFixedSize(224, 125);
 
         filterCheckbox = new GeonkickButton(this);
@@ -58,16 +58,16 @@ Filter::Filter(GeonkickWidget *parent)
         filterCheckbox->setBackgroundColor(68, 68, 70);
         filterCheckbox->setSize(10, 10);
         filterCheckbox->setPosition(10, 10);
-        filterCheckbox->setPressedImage(RkImage(12, 12, rk_checkbox_checked_png));
-        filterCheckbox->setUnpressedImage(RkImage(12, 12, rk_checkbox_unchecked_png));
+        filterCheckbox->setPressedImage(RkImage(12, 12, RK_IMAGE_RC(checkbox_checked)));
+        filterCheckbox->setUnpressedImage(RkImage(12, 12, RK_IMAGE_RC(checkbox_unchecked)));
         RK_ACT_BIND(filterCheckbox, toggled, RK_ACT_ARGS(bool b), this, enabled(b));
 
         cutOffKnob = new Knob(this);
         cutOffKnob->setRangeType(Knob::RangeType::Logarithmic);
         cutOffKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         cutOffKnob->setFixedSize(80, 80);
-        cutOffKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
-        cutOffKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
+        cutOffKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+        cutOffKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         cutOffKnob->setRange(20, 20000);
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), this, cutOffChanged(val));
 
@@ -77,8 +77,8 @@ Filter::Filter(GeonkickWidget *parent)
         int h = 60;
         resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
         resonanceKnob->setFixedSize(w, h);
-        resonanceKnob->setKnobBackgroundImage(RkImage(w, h, rk_knob_bk_50x50_png));
-        resonanceKnob->setKnobImage(RkImage(50, 50, rk_knob_50x50_png));
+        resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_50x50)));
+        resonanceKnob->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
         resonanceKnob->setRange(0.01, 10);
         RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), this, resonanceChanged(val));
 
@@ -88,8 +88,8 @@ Filter::Filter(GeonkickWidget *parent)
         lpFilterButton->setBackgroundColor(background());
         lpFilterButton->setFixedSize(30, 16);
         lpFilterButton->setPosition(x,  y);
-        lpFilterButton->setUnpressedImage(RkImage(lpFilterButton->size(), rk_filter_type_lp_png));
-        lpFilterButton->setPressedImage(RkImage(lpFilterButton->size(), rk_filter_type_lp_checked_png));
+        lpFilterButton->setUnpressedImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_lp)));
+        lpFilterButton->setPressedImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_lp_checked)));
         RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
                     setFilterType(GeonkickApi::FilterType::LowPass, b));
 
@@ -98,8 +98,8 @@ Filter::Filter(GeonkickWidget *parent)
         bpFilterButton->setFixedSize(30, 16);
         bpFilterButton->setPosition(lpFilterButton->x() + lpFilterButton->width() + 4,
                                     lpFilterButton->y());
-        bpFilterButton->setUnpressedImage(RkImage(bpFilterButton->size(), rk_filter_type_bp_png));
-        bpFilterButton->setPressedImage(RkImage(lpFilterButton->size(), rk_filter_type_bp_checked_png));
+        bpFilterButton->setUnpressedImage(RkImage(bpFilterButton->size(), RK_IMAGE_RC(filter_type_bp)));
+        bpFilterButton->setPressedImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_bp_checked)));
         RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
                     setFilterType(GeonkickApi::FilterType::BandPass, b));
 
@@ -108,8 +108,8 @@ Filter::Filter(GeonkickWidget *parent)
         hpFilterButton->setFixedSize(30, 16);
         hpFilterButton->setPosition(bpFilterButton->x() + bpFilterButton->width() + 4,
                                     bpFilterButton->y());
-        hpFilterButton->setUnpressedImage(RkImage(hpFilterButton->size(), rk_filter_type_hp_png));
-        hpFilterButton->setPressedImage(RkImage(hpFilterButton->size(), rk_filter_type_hp_checked_png));
+        hpFilterButton->setUnpressedImage(RkImage(hpFilterButton->size(), RK_IMAGE_RC(filter_type_hp)));
+        hpFilterButton->setPressedImage(RkImage(hpFilterButton->size(), RK_IMAGE_RC(filter_type_hp_checked)));
         RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
                     setFilterType(GeonkickApi::FilterType::HighPass, b));
 
@@ -182,7 +182,7 @@ void Filter::setResonanceRange(double from, double to)
         resonanceKnob->setRange(from, to);
 }
 
-void Filter::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void Filter::mouseButtonPressEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::Right
             || event->button() == RkMouseEvent::ButtonType::Left) {

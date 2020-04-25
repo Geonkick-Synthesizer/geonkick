@@ -42,7 +42,6 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
  public:
    EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api);
    ~EnvelopeWidgetDrawingArea();
-   void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
    Envelope* getEnvelope() const;
    const RkRect getDrawingArea();
    void updateKickGraph(const std::shared_ptr<RkImage> &graphImage);
@@ -52,10 +51,11 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void setHideEnvelope(bool b);
 
  protected:
-   void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-   void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-   void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-   void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void paintWidget(RkPaintEvent *event) final;
+   void mouseMoveEvent(RkMouseEvent *event) final;
+   void mouseButtonPressEvent(RkMouseEvent *event) final;
+   void mouseButtonReleaseEvent(RkMouseEvent *event) final;
+   void mouseDoubleClickEvent(RkMouseEvent *event) final;
    std::string getEnvStateText() const;
 
  private:

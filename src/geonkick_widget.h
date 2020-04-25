@@ -45,8 +45,10 @@ class GeonkickWidget: public RkWidget
         virtual ~GeonkickWidget() = default;
         void setBackgroundImage(const RkImage &img);
         void setBackgroundImage(const std::string &file);
-        void paintEvent(const std::shared_ptr<RkPaintEvent> &event) final;
-        virtual void paintWidget(const std::shared_ptr<RkPaintEvent> &event);
+
+ protected:
+        void paintEvent(RkPaintEvent *event) final;
+        virtual void paintWidget(RkPaintEvent *event);
 
 private:
         RkImage backgroundImage;

@@ -125,8 +125,11 @@ void KickGraph::drawKickGraph()
                 }
                 graphPoints.resize(j);
                 painter.drawPolyline(graphPoints);
-                if (eventQueue)
-                        eventQueue->postAction([this, graphImage](void){ graphUpdated(graphImage); });
+                if (eventQueue) {
+                        auto act = std::move(std::make_unique<RkAction>(this));
+                        act->setCallback([this, graphImage](void){ graphUpdated(graphImage); });
+                        eventQueue->postAction(std::move(act));
+                }
                 updateGraph = false;
         }
 }

@@ -31,7 +31,7 @@ GeonkickButton::GeonkickButton(GeonkickWidget *parent)
         show();
 }
 
-void GeonkickButton::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void GeonkickButton::mouseButtonPressEvent(RkMouseEvent *event)
 {
         RK_UNUSED(event);
         if (isCheckable()) {

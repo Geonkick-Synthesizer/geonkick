@@ -27,29 +27,29 @@
 
 #include <RkTimer.h>
 
-extern unsigned char rk_meter_scale_png[];
+RK_DECLARE_IMAGE_RC(meter_scale);
 
 Limiter::Limiter(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickWidget(parent)
         , geonkickApi{api}
         , faderSlider{new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical)}
         , meterValue{0}
-        , meterTimer{std::make_unique<RkTimer>(30, eventQueue())}
-        , levelerValueTimer{std::make_unique<RkTimer>(40, eventQueue())}
-        , scaleImage{40, 329, rk_meter_scale_png}
+        , meterTimer{new RkTimer(this, 30)}
+        , levelerValueTimer{new RkTimer(this, 40)}
+        , scaleImage{40, 329, RK_IMAGE_RC(meter_scale)}
 {
         setFixedSize(65, scaleImage.height());
         faderSlider->setPosition(0, 0);
         faderSlider->setFixedSize(20, height());
         RK_ACT_BIND(faderSlider, valueUpdated, RK_ACT_ARGS(int val), this, onSetLimiterValue(val));
-        RK_ACT_BIND(levelerValueTimer.get(), timeout, RK_ACT_ARGS(), this, onUpdateMeter());
-        RK_ACT_BIND(meterTimer.get(), timeout, RK_ACT_ARGS(), this, onUpdateMeterTimeout());
+        RK_ACT_BIND(levelerValueTimer, timeout, RK_ACT_ARGS(), this, onUpdateMeter());
+        RK_ACT_BIND(meterTimer, timeout, RK_ACT_ARGS(), this, onUpdateMeterTimeout());
         onUpdateLimiter();
         meterTimer->start();
         levelerValueTimer->start();
 }
 
-void Limiter::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+void Limiter::paintWidget(RkPaintEvent *event)
 {
         RK_UNUSED(event);
         RkImage img(width(), height());

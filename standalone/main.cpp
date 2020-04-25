@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
                 preset = argv[1];
 
         auto api = new GeonkickApi;
-        api->setEventQueue(app.eventQueue().get());
+        api->setEventQueue(app.eventQueue());
         api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");

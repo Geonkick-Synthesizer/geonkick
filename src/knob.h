@@ -55,10 +55,10 @@ public:
                RK_ARG_TYPE(double),
                RK_ARG_VAL(v));
  protected:
-   void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
-   void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-   void mouseButtonReleaseEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-   void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
+   void paintWidget(RkPaintEvent *event) final;
+   void mouseButtonPressEvent(RkMouseEvent *event) final;
+   void mouseButtonReleaseEvent(RkMouseEvent *event) final;
+   void mouseMoveEvent(RkMouseEvent *event) final;
 
  private:
    RkImage knobImage;

@@ -49,11 +49,11 @@ class FilesView: public GeonkickWidget {
  protected:
         void createScrollBar();
         void showScrollBar(bool b);
-        void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
-        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-        void mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-        void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final;
-        void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event) final;
+        void paintWidget(RkPaintEvent *event) final;
+        void mouseButtonPressEvent(RkMouseEvent *event) final;
+        void mouseDoubleClickEvent(RkMouseEvent *event) final;
+        void mouseMoveEvent(RkMouseEvent *event) final;
+        void keyPressEvent(RkKeyEvent *event) final;
         void loadCurrentDirectory();
         int getLine(int x, int y) const;
         void onLineUp();
@@ -107,7 +107,7 @@ class FileDialog: public GeonkickWidget {
         void onAccept();
         void onCancel();
         void onPathChanged(const std::string &pathName);
-        void closeEvent(const std::shared_ptr<RkCloseEvent> &event) final;
+        void closeEvent(RkCloseEvent *event) final;
 
  private:
         RkLineEdit *fileNameEdit;

@@ -57,7 +57,7 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
         setFont(f);
 }
 
-void GeonkickWidget::paintEvent(const std::shared_ptr<RkPaintEvent> &event)
+void GeonkickWidget::paintEvent(RkPaintEvent *event)
 {
         if (!backgroundImage.isNull()) {
                 RkPainter painter(this);
@@ -68,7 +68,7 @@ void GeonkickWidget::paintEvent(const std::shared_ptr<RkPaintEvent> &event)
         paintWidget(event);
 }
 
-void GeonkickWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+void GeonkickWidget::paintWidget(RkPaintEvent *event)
 {
         RK_UNUSED(event);
 }

@@ -85,7 +85,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
 }
 
-void KitWidget::paintWidget(const std::shared_ptr<RkPaintEvent> &event)
+void KitWidget::paintWidget(RkPaintEvent *event)
 {
 	RK_UNUSED(event);
         RkImage img(size());
@@ -197,7 +197,7 @@ void KitWidget::drawConnection(RkPainter &painter, const RkPoint &point)
         painter.drawCircle(point,  4);
 }
 
-void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event)
+void KitWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {
         setFocus(true);
         if (event->button() != RkMouseEvent::ButtonType::Left
@@ -235,7 +235,7 @@ void KitWidget::mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event
         }
 }
 
-void KitWidget::mouseDoubleClickEvent(const std::shared_ptr<RkMouseEvent> &event)
+void KitWidget::mouseDoubleClickEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::WheelUp
             || event->button() == RkMouseEvent::ButtonType::WheelDown) {
@@ -363,7 +363,7 @@ int KitWidget::selectedPercussion() const
         return -1;
 }
 
-void KitWidget::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
+void KitWidget::keyPressEvent(RkKeyEvent *event)
 {
         if (event->key() != Rk::Key::Key_Up
             && event->key() != Rk::Key::Key_Down

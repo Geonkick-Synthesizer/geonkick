@@ -295,7 +295,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         auto info = rk_from_native_x11(xDisplay, screenNumber, parentWinId);
 
         auto guiApp = new RkMain();
-        geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue().get());
+        geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue());
         auto mainWidget = new MainWindow(guiApp, geonkickLv2PLugin->getApi(), info);
         if (!mainWidget->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");

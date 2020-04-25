@@ -864,8 +864,11 @@ void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
         std::lock_guard<std::mutex> lock(apiMutex);
         if (id < getPercussionsNumber())
                 kickBuffers[id] = buffer;
-        if (eventQueue && id == currentPercussion())
-                eventQueue->postAction([&](void){ kickUpdated(); });
+        if (eventQueue && id == currentPercussion()) {
+                auto act = std::move(std::make_unique<RkAction>(this));
+                act->setCallback([&](void){ kickUpdated(); });
+                eventQueue->postAction(std::move(act));
+        }
 }
 
 std::vector<gkick_real> GeonkickApi::getKickBuffer() const
@@ -1426,23 +1429,32 @@ void GeonkickApi::pasteFromClipboard()
 
 void GeonkickApi::notifyUpdateGraph()
 {
-        if (eventQueue)
-                eventQueue->postAction([&](void){ action kickUpdated(); });
+        if (eventQueue) {
+                auto act = std::move(std::make_unique<RkAction>(this));
+                act->setCallback([&](void){ action kickUpdated(); });
+                eventQueue->postAction(std::move(act));
+        }
 }
 
 void GeonkickApi::notifyUpdateParameters()
 {
-        if (eventQueue)
-                eventQueue->postAction([&](void){ action stateChanged(); });
+        if (eventQueue) {
+                auto act = std::move(std::make_unique<RkAction>(this));
+                act->setCallback([&](void){ action stateChanged(); });
+                eventQueue->postAction(std::move(act));
+        }
 }
 
 void GeonkickApi::notifyUpdateGui()
 {
-        if (eventQueue)
-                eventQueue->postAction([&](void){
+        if (eventQueue) {
+                auto act = std::move(std::make_unique<RkAction>(this));
+                act->setCallback([&](void){
                                 action kickUpdated();
                                 action stateChanged();
                         });
+                eventQueue->postAction(std::move(act));
+        }
 }
 
 const std::vector<int> GeonkickApi::ordredPercussionIds() const

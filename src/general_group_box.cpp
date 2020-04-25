@@ -49,7 +49,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         label->setBackgroundColor(background());
         label->setPosition(5, 0);
         label->setSize(64, 11);
-        label->setImage(RkImage(64, 11, rk_general_groupbox_label_png));
+        label->setImage(RkImage(64, 11, RK_IMAGE_RC(general_groupbox_label)));
         label->show();
         createAplitudeEnvelopeHBox();
         createFilterHBox();
@@ -61,14 +61,14 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
         amplitudeEnvelopeBox->setPosition(0, 18);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
-        amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, rk_hboxbk_ampl_env_png));
+        amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_ampl_env)));
         amplitudeEnvelopeBox->show();
 
         kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         kickAmplitudeKnob->setFixedSize(80, 80);
         kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
-        kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
-        kickAmplitudeKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
+        kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+        kickAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         kickAmplitudeKnob->setRange(0, 1.0);
         kickAmplitudeKnob->show();
         RK_ACT_BIND(kickAmplitudeKnob,
@@ -80,8 +80,8 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
         kickLengthKnob->setFixedSize(80, 80);
         kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2);
-        kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, rk_knob_bk_image_png));
-        kickLengthKnob->setKnobImage(RkImage(70, 70, rk_knob_png));
+        kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+        kickLengthKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         kickLengthKnob->setRange(50, geonkickApi->kickMaxLength());
         kickLengthKnob->show();
         RK_ACT_BIND(kickLengthKnob,

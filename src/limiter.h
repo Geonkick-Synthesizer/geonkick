@@ -55,12 +55,12 @@ class Limiter: public GeonkickWidget
         void onSetMeterValue(int val);
 
  private:
-        void paintWidget(const std::shared_ptr<RkPaintEvent> &event) final;
+        void paintWidget(RkPaintEvent *event) final;
         GeonkickApi *geonkickApi;
         GeonkickSlider *faderSlider;
         int meterValue;
-        std::unique_ptr<RkTimer> meterTimer;
-        std::unique_ptr<RkTimer> levelerValueTimer;
+        RkTimer *meterTimer;
+        RkTimer *levelerValueTimer;
         RkImage scaleImage;
 };
 

@@ -222,7 +222,7 @@ void MainWindow::openAboutDialog()
         new AboutDialog(this);
 }
 
-void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
+void MainWindow::keyPressEvent(RkKeyEvent *event)
 {
         if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
                 geonkickApi->playKick();
@@ -261,7 +261,7 @@ void MainWindow::keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
         }
 }
 
-void MainWindow::keyReleaseEvent(const std::shared_ptr<RkKeyEvent> &event)
+void MainWindow::keyReleaseEvent(RkKeyEvent *event)
 {
         if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
             && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
