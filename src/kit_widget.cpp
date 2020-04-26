@@ -55,7 +55,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         setTitle("KitWidget");
         addButton = new RkButton(this);
         addButton->setBackgroundColor(background());
-	addButton->setCheckable(true);
+        addButton->setCheckable(true);
         addButton->setSize(16, 16);
         addButton->setPosition({5, 5});
         addButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
@@ -64,7 +64,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 
         openKitButton = new RkButton(this);
         openKitButton->setBackgroundColor(background());
-	openKitButton->setCheckable(true);
+        openKitButton->setCheckable(true);
         openKitButton->setSize(16, 16);
         openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
         openKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
@@ -81,7 +81,6 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
                     this, showFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
-
         RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
 }
 

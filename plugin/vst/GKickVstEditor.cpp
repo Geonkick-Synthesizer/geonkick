@@ -62,8 +62,12 @@ GKickVstEditor::attached(void* parent, FIDString type)
 {
         guiApp = std::make_unique<RkMain>();
         loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
-        geonkickApi->setEventQueue(guiApp->eventQueue().get());
+        geonkickApi->setEventQueue(guiApp->eventQueue());
         Display* xDisplay = XOpenDisplay(nullptr);
+        if (!xDisplay) {
+                GEONKICK_LOG_ERROR("can't open display");
+                return kResultFalse;
+        }
         int screenNumber = DefaultScreen(xDisplay);
         auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
         mainWindow = new MainWindow(guiApp.get(), geonkickApi, info);
