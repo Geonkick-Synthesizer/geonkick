@@ -1337,17 +1337,20 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
             && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_24)
             && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_32)
             && sndinfo.format != (SF_FORMAT_OGG | SF_FORMAT_VORBIS)) {
-                    GEONKICK_LOG_ERROR("unsupported audio format");
-                    sf_close(sndFile);
-                    return std::vector<gkick_real>();
-            }
+                GEONKICK_LOG_ERROR("unsupported audio format");
+                sf_close(sndFile);
+                return std::vector<gkick_real>();
+        }
 
         std::vector<float> data(sndinfo.samplerate * length * sndinfo.channels, 0.0f);
         auto n = sf_read_float(sndFile, data.data(), data.size());
         sf_close(sndFile);
-        if (static_cast<decltype(data.size())>(n) != data.size()) {
+        if (static_cast<decltype(data.size())>(n) < 1) {
                 GEONKICK_LOG_ERROR("error on reading samples");
                 return std::vector<gkick_real>();
+        } else if (static_cast<decltype(data.size())>(n) < data.size()) {
+                GEONKICK_LOG_DEBUG("read less then data, resize to " << n);
+                data.resize(n);
         }
 
         if (sndinfo.channels > 1) {
