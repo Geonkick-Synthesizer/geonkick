@@ -27,12 +27,12 @@
 
 #include <RkEventQueue.h>
 
-KickGraph::KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q)
-        : geonkickApi{api}
+KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
+        : RkObject(parent)
+        , geonkickApi{api}
         , graphThread{nullptr}
         , graphSize{size}
         , isRunning{true}
-        , eventQueue{q}
         , updateGraph{true}
 {
         RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
@@ -125,10 +125,10 @@ void KickGraph::drawKickGraph()
                 }
                 graphPoints.resize(j);
                 painter.drawPolyline(graphPoints);
-                if (eventQueue) {
+                if (eventQueue()) {
                         auto act = std::move(std::make_unique<RkAction>(this));
                         act->setCallback([this, graphImage](void){ graphUpdated(graphImage); });
-                        eventQueue->postAction(std::move(act));
+                        eventQueue()->postAction(std::move(act));
                 }
                 updateGraph = false;
         }

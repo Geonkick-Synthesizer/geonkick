@@ -40,8 +40,8 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
         int padding = 50;
         drawingArea = RkRect(1.1 * padding, padding / 2, width() - 1.5 * padding, height() - 1.2 * padding);
         setBackgroundColor(40, 40, 40);
-        kickGraphics = std::make_unique<KickGraph>(geonkickApi, drawingArea.size(), eventQueue());
-        RK_ACT_BIND(kickGraphics.get(),
+        kickGraphics = new KickGraph(this, geonkickApi, drawingArea.size());
+        RK_ACT_BIND(kickGraphics,
                     graphUpdated,
                     RK_ACT_ARGS(std::shared_ptr<RkImage> graphImage),
                     this, updateKickGraph(graphImage));

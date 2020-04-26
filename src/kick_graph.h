@@ -36,7 +36,7 @@ class KickGraph : public RkObject {
 
 public:
 
-     KickGraph(GeonkickApi *api, const RkSize &size, RkEventQueue *q);
+     KickGraph(RkObject* parent, GeonkickApi *api, const RkSize &size);
      ~KickGraph();
      void start();
      RK_DECL_ACT(graphUpdated,
@@ -56,7 +56,6 @@ private:
      std::vector<gkick_real> kickBuffer;
      RkSize graphSize;
      std::atomic<bool> isRunning;
-     RkEventQueue* eventQueue;
      std::atomic<bool> updateGraph;
 };
 

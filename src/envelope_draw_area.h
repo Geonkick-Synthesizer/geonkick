@@ -66,7 +66,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    bool hideEnvelope;
    std::shared_ptr<RkImage> kickGraphImage;
    RkImage envelopeImage;
-   std::unique_ptr<KickGraph> kickGraphics;
+   KickGraph *kickGraphics;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H
