@@ -333,7 +333,7 @@ geonkick_get_osc_frequency(struct geonkick *kick,
                            gkick_real *v);
 
 enum geonkick_error
-geonkick_play(struct geonkick *kick);
+geonkick_play(struct geonkick *kick, size_t id);
 
 /**
  * This function must be called

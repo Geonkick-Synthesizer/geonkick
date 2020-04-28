@@ -31,30 +31,48 @@ class GeonkickState;
 
 class KitModel : public RkObject {
  public:
+        using PercussionIndex = int;
+        using KeyIndex = int;
         explicit KitModel(GeonkickApi *api);
         bool open(const std::string &file);
         bool save(const std::string &file);
-        void selectPercussion(int index);
-        bool percussionSelected(int index) const;
+        void selectPercussion(PercussionIndex index);
+        bool percussionSelected(PercussionIndex index) const;
         void addNewPercussion();
-        void copyPercussion(int index);
-        void removePercussion(int index);
-        void increasePercussionChannel(int index);
-        void decreasePercussionChannel(int index);
-        int percussionKeyIndex(int index) const;
+        void copyPercussion(PercussionIndex index);
+        void removePercussion(PercussionIndex index);
+        void increasePercussionChannel(PercussionIndex index);
+        void decreasePercussionChannel(PercussionIndex index);
+        int percussionKeyIndex(PercussionIndex index) const;
         void moveSelectedPercussion(bool down = true);
-        void setPercussionKey(int index, int keyIndex);
+        void setPercussionKey(PercussionIndex index, KeyIndex keyIndex);
         size_t keysNumber() const;
-        std::string keyName(int index) const;
+        std::string keyName(KeyIndex index) const;
         size_t percussionNumber() const;
-        void setPercussionName(int index, const std::string &name);
-        std::string percussionName(int index) const;
-        int percussionChannel(int index) const;
+        void setPercussionName(PercussionIndex index,
+                               const std::string &name);
+        std::string percussionName(PercussionIndex index) const;
+        int percussionChannel(PercussionIndex index) const;
         bool canCopy() const;
         bool canRemove() const;
+        void playPercussion(PercussionIndex index);
+        void setLimiter(PercussionIndex index, int value);
+        void setMute(PercussionIndex index, bool mute);
+        void setSolo(PercussionIndex index, bool solo);
         std::filesystem::path workingPath(const std::string &key) const;
 
-        RK_DECL_ACT(modelUpdated, modelUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(modelUpdated,
+                    modelUpdated(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
+        RK_DECL_ACT(levelerUpdated,
+                    levelerUpdated(PercussionIndex index),
+                    RK_ARG_TYPE(PercussionIndex),
+                    RK_ARG_VAL(index));
+        RK_DECL_ACT(limiterUpdated,
+                    limiterUpdated(PercussionIndex index),
+                    RK_ARG_TYPE(PercussionIndex),
+                    RK_ARG_VAL(index));
 
  protected:
         int getPercussionId(int index) const;

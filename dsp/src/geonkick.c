@@ -691,13 +691,13 @@ geonkick_get_osc_frequency(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_play(struct geonkick *kick)
+geonkick_play(struct geonkick *kick, size_t id)
 {
-        if (kick == NULL) {
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        return gkick_audio_play(kick->audio, kick->per_index);
+        return gkick_audio_play(kick->audio, id);
 }
 
 enum geonkick_error

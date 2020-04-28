@@ -892,9 +892,11 @@ void GeonkickApi::setKeyPressed(bool b, int note, int velocity)
         geonkick_key_pressed(geonkickApi, b, note, velocity);
 }
 
-void GeonkickApi::playKick()
+void GeonkickApi::playKick(int id)
 {
-        geonkick_play(geonkickApi);
+        if (id < 0)
+                id = currentPercussion();
+        geonkick_play(geonkickApi, id);
 }
 
 // This function is called only from the audio thread.

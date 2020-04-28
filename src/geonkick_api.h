@@ -194,7 +194,7 @@ class GeonkickApi : public RkObject {
   void setState(const std::string &data);
   void setKickEnvelopePoints(EnvelopeType envelope,
                              const std::vector<RkRealPoint> &points);
-  void playKick();
+  void playKick(int id = -1);
   void enableCompressor(bool enable);
   void setCompressorAttack(double attack);
   void setCompressorRelease(double release);
