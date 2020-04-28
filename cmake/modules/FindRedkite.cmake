@@ -7,9 +7,13 @@ find_path(REDKITE_INCLUDE_DIR Rk.h
 
 find_path(REDKITE_LIBRARY_DIR libredkite.a
           /usr/lib
+          /usr/lib64
           /usr/local/lib
+          /usr/local/lib64
 	  ${CMAKE_INSTALL_PREFIX}/lib
+	  ${CMAKE_INSTALL_PREFIX}/lib64
 	  ${CMAKE_FIND_ROOT_PATH}/lib
+	  ${CMAKE_FIND_ROOT_PATH}/lib64
 	  ${GKICK_REDKITE_SDK_PATH}/lib)
 
 find_path(REDKITE_BINARY_DIR rkpng2c
