@@ -6,8 +6,6 @@ Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
 snares, hit-hats, shakers, claps.
 
-Author: Iurie Nistor
-
 License: GPLv3
 
 Version: 2.1
