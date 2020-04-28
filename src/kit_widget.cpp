@@ -58,7 +58,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         addButton->setCheckable(true);
         addButton->setSize(16, 16);
         addButton->setPosition({5, 5});
-        addButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
+        addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
         RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addNewPercussion());
         addButton->show();
 
@@ -67,7 +67,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         openKitButton->setCheckable(true);
         openKitButton->setSize(16, 16);
         openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
-        openKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
+        openKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
         RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
                     this, showFileDialog(FileDialog::Type::Open));
         openKitButton->show();
@@ -77,7 +77,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 	saveKitButton->setCheckable(true);
         saveKitButton->setSize(16, 16);
         saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
-        saveKitButton->setUnpressedImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
+        saveKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
         RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
                     this, showFileDialog(FileDialog::Type::Save));
         saveKitButton->show();

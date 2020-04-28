@@ -24,35 +24,18 @@
 #ifndef GEONKICK_BUTTON_H
 #define GEONKICK_BUTTON_H
 
-#include "geonkick_widget.h"
+#include <geonkick_widget.h>
 
+#include <RkButton.h>
 #include <RkImage.h>
 
-class GeonkickButton: public GeonkickWidget
+class GeonkickButton: public RkButton
 {
  public:
         explicit GeonkickButton(GeonkickWidget *parent);
         virtual ~GeonkickButton() = default;
         void setPressedImage(const RkImage &img);
         void setUnpressedImage(const RkImage &img);
-        bool isPressed() const;
-        bool isCheckable();
-
-        RK_DECL_ACT(toggled,
-                    toggled(bool pressed),
-                    RK_ARG_TYPE(bool),
-                    RK_ARG_VAL(pressed));
-        void setPressed(bool pressed);
-        void setCheckable(bool checkable);
-
- protected:
-        void mouseButtonPressEvent(RkMouseEvent *event) override;
-
- private:
-        bool is_pressed;
-        bool is_checkable;
-        RkImage pressedImage;
-        RkImage unpressedImage;
 };
 
 #endif // GEONKICK_BUTTON_H

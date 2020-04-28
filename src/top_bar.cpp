@@ -115,8 +115,10 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         playButton->setSize(24, 24);
         playButton->setX(presetNameLabel->x() + presetNameLabel->width() + 10);
         playButton->setY((height() - playButton->height()) / 2);
-        playButton->setUnpressedImage(RkImage(playButton->size(), RK_IMAGE_RC(play)));
-        playButton->setPressedImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)));
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play)),
+                             RkButton::ButtonImage::ImageUnpressed);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)),
+                             RkButton::ButtonImage::ImagePressed);
         RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(bool b), geonkickApi, playKick());
 	playButton->show();
 
