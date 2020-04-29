@@ -1,5 +1,5 @@
 /**
- * File name: kit_widget.h
+ * File name: percussion_view.h
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
@@ -21,51 +21,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef KIT_WIDGET_H
-#define KIT_WIDGET_H
+#ifndef PERCUSSION_VIEW_H
+#define PERCUSSION_VIEW_H
 
 #include "geonkick_widget.h"
-#include "file_dialog.h"
 
-#include "RkPainter.h"
+#include <RkPainter.h>
 
 class RkLineEdit;
 class RkButton;
-class KitModel;
+class PercussionModel;
 
-class KitWidget: public GeonkickWidget
+class KitPercussionView: public GeonkickWidget
 {
  public:
-        using PercussionIndex = KitMode::PercussionIndex;
-        KitWidget(GeonkickWidget *parent, KitModel *model);
-        void updateGui();
+        explicit KitPercussionView(GeonkickWidget *parent,
+                                   PercussionModel *model = nullptr);
+        void setModel(PercussionModel model);
+        PercussionModel* getModel();
+        void setNameWidth(int width);
+        void setKeyWidth(int width);
 
  protected:
 	void paintWidget(RkPaintEvent *event) override;
 	void mouseButtonPressEvent(RkMouseEvent *event) override;
 	void mouseDoubleClickEvent(RkMouseEvent *event) override;
-        void drawKeys(RkPainter &painter);
         void drawPercussions(RkPainter &painter);
         void drawConnections(RkPainter &painter);
         void drawConnection(RkPainter &painter, const RkPoint &point);
-        int getLine(int x, int y) const;
         int getKey(int x) const;
 	void updatePercussionName();
-        void showFileDialog(FileDialog::Type type);
-        void openKit(const std::string &file);
-        void saveKit(const std::string &file);
-        void addNewPercussion();
-        void removePercussion(PercussionIndex index);
-        void copyPercussion(PercussionIndex index);
-        PercussionIndex selectedPercussion() const;
         void keyPressEvent(RkKeyEvent *event) override;
-        bool validPercussionIndex(int index) const;
-        bool validKeyIndex(int keyIndex) const;
         void editPercussionName(PercussionIndex index);
-        void createPercussionView(PercussionIndex index);
 
  private:
-        KitModel *kitModel;
+        PercussionModel *percussionModel;
 	int keyWidth;
 	int channelWidth;
 	int percussionHeight;

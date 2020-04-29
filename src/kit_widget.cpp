@@ -29,6 +29,7 @@
 #include <RkImage.h>
 #include <RkLineEdit.h>
 #include <RkButton.h>
+#include <RkProgressBar.h>
 
 RK_DECLARE_IMAGE_RC(add_per_button);
 RK_DECLARE_IMAGE_RC(remove_per_button);
@@ -86,58 +87,76 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         createMixer();
 }
 
-void KitWidget::createMixer()
+void KitWidget::createPercussionsView()
 {
-        auto n = kitModel->percussionNumber();
-        for (decltype(n) i = 0; i < n; i++) {
-                auto limiterContiner = new RkWidgetContiner(mixerContiner);
-
-                // Limiter
-                auto slider = new GeonkickSlider(this);
-                mixerLimiters.push_back(slider);
-                slider->setSize(200, 5);
-                RK_ACT_BIND(slider, valueUpdated, RK_ACT_ARGS(int val), kitModel, setLimiter(i, val));
-                limiterContiner->addWidget(slider);
-
-                // Mute button
-                auto button = RkButton(this)
-                mixerMuteButtons.push_back(button);;
-                button->setSize(16, 16);
-                RK_ACT_BIND(button,
-                            toggled,
-                            RK_ACT_ARGS(int toggled),
-                            kitModel,
-                            setMute(i, toggled));
-                limiterContiner->addWidget(button, Rk::Alignment::AlignRight);
-
-                // Solo button
-                button = new RkButton(this);
-                mixerSoloButtons.pus_back(slider);
-                button->setSize(16, 16);
-                RK_ACT_BIND(button,
-                            toggled,
-                            RK_ACT_ARGS(int toggled),
-                            kitModel,
-                            setSolo(i, toggled));
-                limiterContiner->addWidget(button, Rk::Alignment::AlignRight);
-                mixerContiner->addContiner(limiterContiner);
+        mixerContiner = new RkWidgetContiner(this);
+        mixerContiner->setSize(size());
+        auto models = kitModel->percussionModels();
+        for (auto &model : models) {
+                auto percussionView = new KitPercussionView(this, model);
+                mixerContiner->addWidget(percussionView);
         }
 
-        RK_ACT_BIND(kitModel,
-                    limiterUpdated,
-                    RK_ACT_ARGS(KitMode::PercussionIndex index, int val),
-                    this,
-                    setLimiter(index, val));
-        RK_ACT_BIND(kitModel,
-                    muteUpdated,
-                    RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
-                    this,
-                    setMute(index, b));
-        RK_ACT_BIND(kitModel,
-                    soloUpdated,
-                    RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
-                    this,
-                    setSolo(index, b));
+        // RK_ACT_BIND(kitModel,
+        //             limiterUpdated,
+        //             RK_ACT_ARGS(KitMode::PercussionIndex index, int val),
+        //             this,
+        //             setLimiter(index, val));
+        // RK_ACT_BIND(kitModel,
+        //             muteUpdated,
+        //             RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
+        //             this,
+        //             setMute(index, b));
+        // RK_ACT_BIND(kitModel,
+        //             soloUpdated,
+        //             RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
+        //             this,
+        //             setSolo(index, b));
+}
+
+void KitWidget::createPercussionView(PercussionIndex index)
+{
+        auto percussionContiner = new RkWidgetContiner(mixerContiner);
+        percussionContiner->setSize(mixerContiner->width(), percussionHeight);
+
+        // Mute button
+        auto button = new RkButton(this);
+        mixerMuteButtons.push_back(button);
+        button->setSize(16, 16);
+        RK_ACT_BIND(button,
+                    toggled,
+                    RK_ACT_ARGS(int toggled),
+                    kitModel,
+                    setMute(index, toggled));
+        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+
+        // Solo button
+        button = new RkButton(this);
+        mixerSoloButtons.pus_back(slider);
+        button->setSize(16, 16);
+        RK_ACT_BIND(button,
+                    toggled,
+                    RK_ACT_ARGS(int toggled),
+                    kitModel,
+                    setSolo(index, toggled));
+        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+
+        // Limiter
+        auto limiter = new GeonkickSlider(this);
+        mixerLimiters.push_back(limiter);
+        limiter->setSize(200, 10);
+        RK_ACT_BIND(limiter, valueUpdated, RK_ACT_ARGS(int val), kitModel, setLimiter(index, val));
+        auto leveler = new RkProgressBar(this);
+        leveler->setSize({limiter->width(), limiter->height() / 2});
+        leveler->setProgressColor({125, 200, 125});
+        leveler->setRange(0, 100);
+        RK_ACT_BIND(kitModel, levelerUpdated, RK_ACT_ARGS(int val), leveler, setValue(val));
+        mixerLevelers.push_back(slider);
+        auto limiterBox = new RkWidgetContiner(limiterContiner, Rk::Orientation::Vertical);
+        limiterBox->setSize(limiter->width(), percussionHeight);
+        limiterBox->addWidget(leveler);
+        limiterBox->addWidget(limiter);
+        percussionContiner->addContiner(limiterBox);
 }
 
 void KitWidget::paintWidget(RkPaintEvent *event)
