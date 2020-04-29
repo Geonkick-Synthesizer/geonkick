@@ -23,7 +23,7 @@
 
 #include "kit_widget.h"
 #include "kit_model.h"
-#include "geonkick_button.h"
+#include "geonkick_slider.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>
@@ -82,6 +82,62 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
                     this, showFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
         RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
+
+        createMixer();
+}
+
+void KitWidget::createMixer()
+{
+        auto n = kitModel->percussionNumber();
+        for (decltype(n) i = 0; i < n; i++) {
+                auto limiterContiner = new RkWidgetContiner(mixerContiner);
+
+                // Limiter
+                auto slider = new GeonkickSlider(this);
+                mixerLimiters.push_back(slider);
+                slider->setSize(200, 5);
+                RK_ACT_BIND(slider, valueUpdated, RK_ACT_ARGS(int val), kitModel, setLimiter(i, val));
+                limiterContiner->addWidget(slider);
+
+                // Mute button
+                auto button = RkButton(this)
+                mixerMuteButtons.push_back(button);;
+                button->setSize(16, 16);
+                RK_ACT_BIND(button,
+                            toggled,
+                            RK_ACT_ARGS(int toggled),
+                            kitModel,
+                            setMute(i, toggled));
+                limiterContiner->addWidget(button, Rk::Alignment::AlignRight);
+
+                // Solo button
+                button = new RkButton(this);
+                mixerSoloButtons.pus_back(slider);
+                button->setSize(16, 16);
+                RK_ACT_BIND(button,
+                            toggled,
+                            RK_ACT_ARGS(int toggled),
+                            kitModel,
+                            setSolo(i, toggled));
+                limiterContiner->addWidget(button, Rk::Alignment::AlignRight);
+                mixerContiner->addContiner(limiterContiner);
+        }
+
+        RK_ACT_BIND(kitModel,
+                    limiterUpdated,
+                    RK_ACT_ARGS(KitMode::PercussionIndex index, int val),
+                    this,
+                    setLimiter(index, val));
+        RK_ACT_BIND(kitModel,
+                    muteUpdated,
+                    RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
+                    this,
+                    setMute(index, b));
+        RK_ACT_BIND(kitModel,
+                    soloUpdated,
+                    RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
+                    this,
+                    setSolo(index, b));
 }
 
 void KitWidget::paintWidget(RkPaintEvent *event)

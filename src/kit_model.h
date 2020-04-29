@@ -66,13 +66,21 @@ class KitModel : public RkObject {
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
         RK_DECL_ACT(levelerUpdated,
-                    levelerUpdated(PercussionIndex index),
-                    RK_ARG_TYPE(PercussionIndex),
-                    RK_ARG_VAL(index));
+                    levelerUpdated(PercussionIndex index, int val),
+                    RK_ARG_TYPE(PercussionIndex, int),
+                    RK_ARG_VAL(index, val));
         RK_DECL_ACT(limiterUpdated,
                     limiterUpdated(PercussionIndex index),
                     RK_ARG_TYPE(PercussionIndex),
                     RK_ARG_VAL(index));
+        RK_DECL_ACT(muteUpdated,
+                    muteUpdated(PercussionIndex index, bool b),
+                    RK_ARG_TYPE(PercussionIndex, bool),
+                    RK_ARG_VAL(index, b));
+        RK_DECL_ACT(soloUpdated,
+                    soloUpdated(PercussionIndex index, bool b),
+                    RK_ARG_TYPE(PercussionIndex, bool),
+                    RK_ARG_VAL(index, b));
 
  protected:
         int getPercussionId(int index) const;
