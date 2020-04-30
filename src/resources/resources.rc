@@ -139,4 +139,16 @@ add_per_button.png
 remove_per_button.png
 copy_per_button.png
 open_kit_button.png
-save_kit_button.png)
+save_kit_button.png
+mute.png
+mute_hover.png
+mute_on.png
+mute_on_hover.png
+solo.png
+solo_hover.png
+solo_on.png
+solo_on_hover.png
+per_play.png
+per_play_hover.png
+per_play_on.png
+per_play_on_hover.png)

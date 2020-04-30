@@ -2,7 +2,7 @@
  * File name: percussion_view.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -37,35 +37,23 @@ class KitPercussionView: public GeonkickWidget
  public:
         explicit KitPercussionView(GeonkickWidget *parent,
                                    PercussionModel *model = nullptr);
-        void setModel(PercussionModel model);
+        void setModel(PercussionModel *model);
         PercussionModel* getModel();
-        void setNameWidth(int width);
-        void setKeyWidth(int width);
 
  protected:
-	void paintWidget(RkPaintEvent *event) override;
-	void mouseButtonPressEvent(RkMouseEvent *event) override;
-	void mouseDoubleClickEvent(RkMouseEvent *event) override;
-        void drawPercussions(RkPainter &painter);
-        void drawConnections(RkPainter &painter);
-        void drawConnection(RkPainter &painter, const RkPoint &point);
-        int getKey(int x) const;
-	void updatePercussionName();
-        void keyPressEvent(RkKeyEvent *event) override;
-        void editPercussionName(PercussionIndex index);
+
+        void setNameWidth(int width);
+        void setKeyWidth(int width);
+        void paintWidget(RkPaintEvent *event);
+        void mouseButtonPressEvent(RkMouseEvent *event);
+        void mouseDoubleClickEvent(RkMouseEvent *event);
+        void updatePercussionName();
 
  private:
         PercussionModel *percussionModel;
-	int keyWidth;
-	int channelWidth;
-	int percussionHeight;
-        int percussionNameWidth;
-        int percussionWidth;
-	RkLineEdit *editPercussion;
-	int editedLineIndex;
-        RkButton *addButton;
-        RkButton *openKitButton;
-        RkButton *saveKitButton;
+        int nameWidth;
+        int keyWidthl;
+        RkLineEdit *editPercussion;
 };
 
 #endif // KIT_WIDGET_H

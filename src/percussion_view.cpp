@@ -2,7 +2,7 @@
  * File name: percussion_view.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -24,8 +24,22 @@
 #include "percussion_view.h"
 #include "percussion_model.h"
 
-#include <RkLineEdit>
-#include <RkButton>
+#include <RkLineEdit.h>
+#include <RkButton.h>
+#include <RkWidgetContiner.h>
+
+RK_DECLARE_IMGE_RC(mute);
+RK_DECLARE_IMGE_RC(mute_hover);
+RK_DECLARE_IMGE_RC(mute_on);
+RK_DECLARE_IMGE_RC(mute_on_hover);
+RK_DECLARE_IMGE_RC(solo);
+RK_DECLARE_IMGE_RC(solo_hover);
+RK_DECLARE_IMGE_RC(solo_on);
+RK_DECLARE_IMGE_RC(solo_on_hover);
+RK_DECLARE_IMGE_RC(per_play);
+RK_DECLARE_IMGE_RC(per_play_hover);
+RK_DECLARE_IMGE_RC(per_play_on);
+RK_DECLARE_IMGE_RC(per_play_on_hover);
 
 KitPercussionView::KitPercussionView(GeonkickWidget *parent,
                                      PercussionModel *model)
@@ -33,7 +47,88 @@ KitPercussionView::KitPercussionView(GeonkickWidget *parent,
         , percussionModel{model}
         , nameWidth{100}
         , keyWidth{30}
+        , editPercussion{nullptr}
 {
+        setSize(parent->width(), 20);
+        auto percussionContiner = new RkWidgetContiner(this);
+        percussionContiner->setSize(size());
+
+        // Play button
+        auto button = new RkButton(this);
+        button->setType(RkButton::PushButton);
+        button->setSize(16, 16);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play)),
+                         RKButton::ButtonImage::ImageUnpressed);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_hover)),
+                         RKButton::ButtonImage::ImageUnpressedHover);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on)),
+                         RKButton::ButtonImage::ImagePpressed);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on_hover)),
+                         RKButton::ButtonImage::ImagePpressedHover);
+        RK_ACT_BIND(button, toggled, RK_ACT_ARGS(int toggled), percussionModel, play());
+        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+
+        // Mute button
+        button = new RkButton(this);
+        button->setSize(16, 16);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute)),
+                         RKButton::ButtonImage::ImageUnpressed);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute_hover)),
+                         RKButton::ButtonImage::ImageUnpressedHover);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on)),
+                         RKButton::ButtonImage::ImagePpressed);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on_hover)),
+                         RKButton::ButtonImage::ImagePpressedHover);
+        RK_ACT_BIND(button,
+                    toggled,
+                    RK_ACT_ARGS(int toggled),
+                    percussionModel,
+                    setMute(toggled));
+        RK_ACT_BIND(percussionModel,
+                    muteUpdated,
+                    RK_ACT_ARGS(bool b),
+                    button,
+                    setPressed(b));
+        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+
+        // Solo button
+        button = new RkButton(this);
+        button->setSize(16, 16);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo)),
+                         RKButton::ButtonImage::ImageUnpressed);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo_hover)),
+                         RKButton::ButtonImage::ImageUnpressedHover);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on)),
+                         RKButton::ButtonImage::ImagePpressed);
+        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on_hover)),
+                         RKButton::ButtonImage::ImagePpressedHover);
+        RK_ACT_BIND(button,
+                    toggled,
+                    RK_ACT_ARGS(int toggled),
+                    percussionModel,
+                    setSolo(toggled));
+        RK_ACT_BIND(percussionModel,
+                    soloUpdated,
+                    RK_ACT_ARGS(bool b),
+                    button,
+                    setPressed(b));
+        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+
+        // Limiter
+        auto limiter = new GeonkickSlider(this);
+        limiter->setSize(200, 10);
+        RK_ACT_BIND(limiter, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
+        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiter, setValue(val));
+        auto leveler = new RkProgressBar(this);
+        leveler->setSize({limiter->width(), limiter->height() / 2});
+        leveler->setProgressColor({125, 200, 125});
+        leveler->setRange(0, 100);
+        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), leveler, setValue(val));
+        auto limiterBox = new RkWidgetContiner(percussionContiner, Rk::Orientation::Vertical);
+        limiterBox->setSize(limiter->width(), percussionContiner->height());
+        limiterBox->addWidget(leveler);
+        limiterBox->addWidget(limiter);
+        percussionContiner->addContiner(limiterBox);
 }
 
 void KitPercussionView::setModel(PercussionModel model)
@@ -47,14 +142,6 @@ void KitPercussionView::setModel(PercussionModel model)
 PercussionModel* KitPercussionView::getModel()
 {
         return percussionModel;
-}
-
-void KitPercussionView::setNameWidth(int width)
-{
-}
-
-void KitPercussionView::setKeyWidth(int width)
-{
 }
 
 void KitPercussionView::paintWidget(RkPaintEvent *event)
@@ -84,27 +171,35 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         painter.drawCircle({percussionModel->key() * keyWidth + keyWidth / 2 , height() / 2},  4);
 }
 
-void mouseButtonPressEvent(RkMouseEvent *event) override;
-void mouseDoubleClickEvent(RkMouseEvent *event) override;
+void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
+{
+        if (event->button() == RkMouseEvent::ButtonType::Left && event->x() < nameWidth)
+                percussionModel->select();
+}
 
-void drawPercussions(RkPainter &painter);
-        void drawConnections(RkPainter &painter);
-        void drawConnection(RkPainter &painter, const RkPoint &point);
-        int getKey(int x) const;
-	void updatePercussionName();
-        void keyPressEvent(RkKeyEvent *event) override;
-        void editPercussionName(PercussionIndex index);
+void KitPercussionView::mouseDoubleClickEvent(RkMouseEvent *event)
+{
+        if (event->button() == RkMouseEvent::ButtonType::Left && event->x() < nameWidth) {
+                if (editPercussion == nullptr) {
+                        editPercussion = new RkLineEdit(this);
+                        editPercussion->setSize({nameWidth, percussionHeight});
+                        RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
+                                    this, updatePercussionName());
+                }
+                editPercussion->setText(percussionModel->percussionName());
+                editPercussion->moveCursorToEnd();
+                editPercussion->show();
+        }
+}
 
- private:
-        PercussionModel *percussionModel;
-	int keyWidth;
-	int channelWidth;
-	int percussionHeight;
-        int percussionNameWidth;
-        int percussionWidth;
-	RkLineEdit *editPercussion;
-	int editedLineIndex;
-        RkButton *addButton;
-        RkButton *openKitButton;
-        RkButton *saveKitButton;
-};
+void KitPercussionView::updatePercussionName()
+{
+        if (editPercussion) {
+		auto name = editPercussion->text();
+		if (!name.empty()) {
+			percussionModel->setName(name);
+			delete editPercussion;
+                        editPercussion = nullptr;
+		}
+	}
+}
