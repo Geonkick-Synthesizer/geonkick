@@ -43,35 +43,35 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , saveKitButton{nullptr}
 {
         setTitle("KitWidget");
-        addButton = new RkButton(this);
-        addButton->setBackgroundColor(background());
-        addButton->setCheckable(true);
-        addButton->setSize(16, 16);
-        addButton->setPosition({5, 5});
-        addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
-        RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addNewPercussion());
-        addButton->show();
+        // addButton = new RkButton(this);
+        // addButton->setBackgroundColor(background());
+        // addButton->setCheckable(true);
+        // addButton->setSize(16, 16);
+        // addButton->setPosition({5, 5});
+        // addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
+        // RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addNewPercussion());
+        // addButton->show();
 
-        openKitButton = new RkButton(this);
-        openKitButton->setBackgroundColor(background());
-        openKitButton->setCheckable(true);
-        openKitButton->setSize(16, 16);
-        openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
-        openKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
-        RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
-                    this, showFileDialog(FileDialog::Type::Open));
-        openKitButton->show();
+        // openKitButton = new RkButton(this);
+        // openKitButton->setBackgroundColor(background());
+        // openKitButton->setCheckable(true);
+        // openKitButton->setSize(16, 16);
+        // openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
+        // openKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
+        // RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
+        //             this, showFileDialog(FileDialog::Type::Open));
+        // openKitButton->show();
 
-        saveKitButton = new RkButton(this);
-        saveKitButton->setBackgroundColor(background());
-	saveKitButton->setCheckable(true);
-        saveKitButton->setSize(16, 16);
-        saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
-        saveKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
-        RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
-                    this, showFileDialog(FileDialog::Type::Save));
-        saveKitButton->show();
-        RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
+        // saveKitButton = new RkButton(this);
+        // saveKitButton->setBackgroundColor(background());
+	// saveKitButton->setCheckable(true);
+        // saveKitButton->setSize(16, 16);
+        // saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
+        // saveKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
+        // RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
+        //             this, showFileDialog(FileDialog::Type::Save));
+        // saveKitButton->show();
+        // RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
         kitContiner = new RkWidgetContiner(this);
         updateView();
 }
@@ -112,30 +112,30 @@ void KitWidget::removePercussion(PercussionIndex index)
         }
 }
 
-void KitWidget::drawKeys(RkPainter &painter)
-{
-        auto pen = painter.pen();
-        pen.setColor({200, 200, 200});
+// void KitWidget::drawKeys(RkPainter &painter)
+// {
+//         auto pen = painter.pen();
+//         pen.setColor({200, 200, 200});
 
-        auto font = painter.font();
-        font.setSize(12);
-        painter.setFont(font);
+//         auto font = painter.font();
+//         font.setSize(12);
+//         painter.setFont(font);
 
-        int x = percussionNameWidth;
-        auto n = kitModel->percussionNumber();
-        auto nKeys = kitModel->keysNumber();
-        for (decltype(nKeys) i = 0; i < nKeys; i++) {
-                RkRect rect(x, 0, keyWidth, keyWidth + n * percussionHeight);
-                if (i % 2)
-                        painter.fillRect(rect, {60, 60, 60});
-                else
-                        painter.fillRect(rect, {50, 50, 50});
-                RkRect txtRect(rect.left(), 10, rect.width(), painter.font().size());
-                painter.setPen(pen);
-                painter.drawText(txtRect, kitModel->keyName(i));
-                x += keyWidth;
-        }
-}
+//         int x = percussionNameWidth;
+//         auto n = kitModel->percussionNumber();
+//         auto nKeys = kitModel->keysNumber();
+//         for (decltype(nKeys) i = 0; i < nKeys; i++) {
+//                 RkRect rect(x, 0, keyWidth, keyWidth + n * percussionHeight);
+//                 if (i % 2)
+//                         painter.fillRect(rect, {60, 60, 60});
+//                 else
+//                         painter.fillRect(rect, {50, 50, 50});
+//                 RkRect txtRect(rect.left(), 10, rect.width(), painter.font().size());
+//                 painter.setPen(pen);
+//                 painter.drawText(txtRect, kitModel->keyName(i));
+//                 x += keyWidth;
+//         }
+// }
 
 void KitWidget::showFileDialog(FileDialog::Type type)
 {
