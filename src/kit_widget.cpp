@@ -32,23 +32,12 @@
 #include <RkProgressBar.h>
 
 RK_DECLARE_IMAGE_RC(add_per_button);
-RK_DECLARE_IMAGE_RC(remove_per_button);
-RK_DECLARE_IMAGE_RC(copy_per_button);
 RK_DECLARE_IMAGE_RC(save_kit_button);
 RK_DECLARE_IMAGE_RC(open_kit_button);
 
 KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 	: GeonkickWidget(parent)
         , kitModel{model}
-	, keyWidth{30}
-	, channelWidth{keyWidth}
-	, percussionHeight{20}
-        , percussionNameWidth{100}
-        , percussionWidth{percussionNameWidth
-                          + static_cast<decltype(keyWidth)>(kitModel->keysNumber()) * keyWidth
-                          + channelWidth}
-	, editPercussion{nullptr}
-	, editedLineIndex{-1}
         , addButton{nullptr}
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
@@ -83,93 +72,44 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
                     this, showFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
         RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
-
-        createMixer();
+        kitContiner = new RkWidgetContiner(this);
+        updateView();
 }
 
-void KitWidget::createPercussionsView()
+void KitWidget::updateView()
 {
-        mixerContiner = new RkWidgetContiner(this);
-        mixerContiner->setSize(size());
         auto models = kitModel->percussionModels();
-        for (auto &model : models) {
-                auto percussionView = new KitPercussionView(this, model);
-                mixerContiner->addWidget(percussionView);
+        size_t n = kitModel->maxPercussionNumber();
+        for (PercussionIndex i = 0; i < n; i++) {
+                if (percussionsContiner->at(i) && i < models.size()) {
+                        if (i < models.size())
+                                updatePercussion(i, models[i])
+                        else
+                                removePercussion(i);
+                } else if (!percussionsContiner->at(i)) {
+                        addPercussion(models[i]);
+                }
         }
-
-        // RK_ACT_BIND(kitModel,
-        //             limiterUpdated,
-        //             RK_ACT_ARGS(KitMode::PercussionIndex index, int val),
-        //             this,
-        //             setLimiter(index, val));
-        // RK_ACT_BIND(kitModel,
-        //             muteUpdated,
-        //             RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
-        //             this,
-        //             setMute(index, b));
-        // RK_ACT_BIND(kitModel,
-        //             soloUpdated,
-        //             RK_ACT_ARGS(KitMode::PercussionIndex index, bool b),
-        //             this,
-        //             setSolo(index, b));
 }
 
-void KitWidget::createPercussionView(PercussionIndex index)
+void KitWidget::addPercussion(PercussionModel *models)
 {
-        auto percussionContiner = new RkWidgetContiner(mixerContiner);
-        percussionContiner->setSize(mixerContiner->width(), percussionHeight);
-
-        // Mute button
-        auto button = new RkButton(this);
-        mixerMuteButtons.push_back(button);
-        button->setSize(16, 16);
-        RK_ACT_BIND(button,
-                    toggled,
-                    RK_ACT_ARGS(int toggled),
-                    kitModel,
-                    setMute(index, toggled));
-        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
-
-        // Solo button
-        button = new RkButton(this);
-        mixerSoloButtons.pus_back(slider);
-        button->setSize(16, 16);
-        RK_ACT_BIND(button,
-                    toggled,
-                    RK_ACT_ARGS(int toggled),
-                    kitModel,
-                    setSolo(index, toggled));
-        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
-
-        // Limiter
-        auto limiter = new GeonkickSlider(this);
-        mixerLimiters.push_back(limiter);
-        limiter->setSize(200, 10);
-        RK_ACT_BIND(limiter, valueUpdated, RK_ACT_ARGS(int val), kitModel, setLimiter(index, val));
-        auto leveler = new RkProgressBar(this);
-        leveler->setSize({limiter->width(), limiter->height() / 2});
-        leveler->setProgressColor({125, 200, 125});
-        leveler->setRange(0, 100);
-        RK_ACT_BIND(kitModel, levelerUpdated, RK_ACT_ARGS(int val), leveler, setValue(val));
-        mixerLevelers.push_back(slider);
-        auto limiterBox = new RkWidgetContiner(limiterContiner, Rk::Orientation::Vertical);
-        limiterBox->setSize(limiter->width(), percussionHeight);
-        limiterBox->addWidget(leveler);
-        limiterBox->addWidget(limiter);
-        percussionContiner->addContiner(limiterBox);
+        auto percussionView = new KitPercussionView(this, models[i]);
+        percussionsContiner->addWidget(percussionView);
 }
 
-void KitWidget::paintWidget(RkPaintEvent *event)
+void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
 {
-	RK_UNUSED(event);
-        RkImage img(size());
-        RkPainter paint(&img);
-        paint.fillRect(rect(), background());
-        drawKeys(paint);
-        drawPercussions(paint);
-        drawConnections(paint);
-        RkPainter painter(this);
-        painter.drawImage(img, 0, 0);
+        if (percussionsContiner->at(i))
+                percussionsContiner->at(i)->setModel(models[i]);
+}
+
+void KitWidget::removePercussion(PercussionIndex index)
+{
+        if (percussionsContiner->at(index)) {
+                delete percussionsContiner->at(i);
+                percussionsContiner.removeAt(i);
+        }
 }
 
 void KitWidget::drawKeys(RkPainter &painter)
@@ -195,188 +135,6 @@ void KitWidget::drawKeys(RkPainter &painter)
                 painter.drawText(txtRect, kitModel->keyName(i));
                 x += keyWidth;
         }
-}
-
-void KitWidget::drawPercussions(RkPainter &painter)
-{
-        auto pen = painter.pen();
-        pen.setColor({60, 60, 60});
-        auto txtPen = painter.pen();
-        txtPen.setColor({200, 200, 200});
-        painter.setPen(pen);
-
-        int y = keyWidth;
-        auto n = kitModel->percussionNumber();
-        for (decltype(n) i = 0; i < n; i++) {
-                RkRect rect(0, y, percussionWidth, percussionHeight);
-		painter.setPen(pen);
-                if (i % 2)
-                        painter.fillRect(rect, {200, 200, 200, 80});
-                else
-                        painter.fillRect(rect, {160, 160, 160, 80});
-                if (kitModel->percussionSelected(i)) {
-                        painter.fillRect(RkRect(rect.left(),
-                                                rect.top(), 4,
-                                                rect.height()),
-                                         {255, 255, 255, 90});
-                }
-		RkRect txtRect = rect;
-		txtRect.setWidth(300);
-		txtRect.setTopLeft(RkPoint(txtRect.left() + 7, txtRect.top()));
-		painter.setPen(txtPen);
-		painter.drawText(txtRect,
-                                 std::string(kitModel->percussionName(i)),
-                                 Rk::Alignment::AlignLeft);
-                auto channel = kitModel->percussionChannel(i);
-		painter.drawText(RkRect(percussionWidth - channelWidth,
-                                        y, channelWidth,
-                                        percussionHeight),
-				 "#" + std::to_string(channel + 1));
-
-                int x = rect.right() + 5;
-                if (kitModel->canRemove()) {
-                        painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(remove_per_button)),
-                                          x, rect.top() + 2);
-                        x += 16 + 3;
-                }
-                if (kitModel->canCopy()) {
-                        painter.drawImage(RkImage(16, 16, RK_IMAGE_RC(copy_per_button)),
-                                          x, rect.top() + 2);
-                }
-                y += percussionHeight;
-        }
-}
-
-void KitWidget::drawConnections(RkPainter &painter)
-{
-        auto n = kitModel->percussionNumber();
-        for (decltype(n) i = 0; i < n; i++) {
-                auto keyIndex = kitModel->percussionKeyIndex(i);
-                if (validKeyIndex(keyIndex)) {
-                        // Define intersection point;
-                        RkPoint p {percussionNameWidth + keyIndex * keyWidth + keyWidth / 2,
-                                        keyWidth + static_cast<decltype(percussionHeight)>(i) * percussionHeight
-                                        + percussionHeight / 2};
-                        drawConnection(painter, p);
-                }
-        }
-}
-
-void KitWidget::drawConnection(RkPainter &painter, const RkPoint &point)
-{
-        auto pen = painter.pen();
-        pen.setColor({50, 160, 50});
-        pen.setWidth(8);
-        painter.setPen(pen);
-        painter.drawCircle(point,  4);
-}
-
-void KitWidget::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        setFocus(true);
-        if (event->button() != RkMouseEvent::ButtonType::Left
-            && event->button() != RkMouseEvent::ButtonType::WheelUp
-            && event->button() != RkMouseEvent::ButtonType::WheelDown)
-                return;
-
-        updatePercussionName();
-	auto index = getLine(event->x(), event->y());
-        if (validPercussionIndex(index)) {
-		if (event->x() < percussionNameWidth) {
-                        kitModel->selectPercussion(index);
-                } else if (event->x() > (percussionWidth - channelWidth)
-                           && event->x() < percussionWidth) {
-                        if(event->button() == RkMouseEvent::ButtonType::Left
-                           || event->button() == RkMouseEvent::ButtonType::WheelUp) {
-                                kitModel->increasePercussionChannel(index);
-                        } else if (event->button() == RkMouseEvent::ButtonType::WheelDown) {
-                                kitModel->decreasePercussionChannel(index);
-                        }
-		} else if ((event->x() > percussionWidth + 5)
-                           && (event->x() < percussionWidth + 5 + 16)) {
-                        if (kitModel->canRemove())
-                                removePercussion(index);
-                        else
-                                copyPercussion(index);
-                } else if (kitModel->canCopy()
-                           && kitModel->canRemove()
-                           && (event->x() > percussionWidth + 5 + 16 + 3)
-                           && (event->x() < percussionWidth + 5 + 16 + 3 + 16)) {
-                        copyPercussion(index);
-                } else if (auto key = getKey(event->x()); key > -1) {
-                        kitModel->setPercussionKey(index, key);
-                }
-        }
-}
-
-void KitWidget::mouseDoubleClickEvent(RkMouseEvent *event)
-{
-        if (event->button() == RkMouseEvent::ButtonType::WheelUp
-            || event->button() == RkMouseEvent::ButtonType::WheelDown) {
-                mouseButtonPressEvent(event);
-                return;
-        }
-        setFocus(true);
-
-	if (event->button() != RkMouseEvent::ButtonType::Left)
-		return;
-
-	auto index = getLine(event->x(), event->y());
-	if (validPercussionIndex(index) && event->x() < percussionNameWidth)
-                editPercussionName(index);
-
-}
-
-void KitWidget::editPercussionName(int index)
-{
-        editedLineIndex = -1;
-        if (validPercussionIndex(index)) {
-                if (editPercussion == nullptr) {
-                        editPercussion = new RkLineEdit(this);
-                        RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
-                                    this, updatePercussionName());
-                }
-                editedLineIndex = index;
-                editPercussion->setText(kitModel->percussionName(index));
-                editPercussion->moveCursorToEnd();
-                editPercussion->setSize({percussionNameWidth, percussionHeight});
-                editPercussion->setPosition(0, keyWidth + percussionHeight * index);
-                editPercussion->show();
-                editPercussion->setFocus();
-        }
-}
-
-void KitWidget::updatePercussionName()
-{
-	if (editPercussion && editedLineIndex > -1) {
-		auto name = editPercussion->text();
-		if (!name.empty()) {
-			kitModel->setPercussionName(editedLineIndex, name);
-			delete editPercussion;
-                        editPercussion = nullptr;
-		}
-	}
-}
-
-int KitWidget::getLine(int x, int y) const
-{
-        if (y <= keyWidth)
-                return -1;
-
-        int index = (y - keyWidth) / percussionHeight;
-        if (validPercussionIndex(index))
-                return index;
-        else
-                return -1;
-}
-
-int KitWidget::getKey(int x) const
-{
-        int keyIndex = (x - percussionNameWidth) / keyWidth;
-        if (validKeyIndex(keyIndex))
-                return keyIndex;
-        else
-                return -1;
 }
 
 void KitWidget::showFileDialog(FileDialog::Type type)
@@ -407,65 +165,23 @@ void KitWidget::saveKit(const std::string &file)
         kitModel->save(file);
 }
 
-void KitWidget::addNewPercussion()
-{
-        kitModel->addNewPercussion();
-}
-
-void KitWidget::removePercussion(int index)
-{
-        kitModel->removePercussion(index);
-}
-
 void KitWidget::copyPercussion(int index)
 {
-        kitModel->copyPercussion(index);
-}
-
-void KitWidget::updateGui()
-{
-        update();
-}
-
-int KitWidget::selectedPercussion() const
-{
-        auto n = kitModel->percussionNumber();
-        for (decltype(n) i = 0; i < n; i++) {
-                if (kitModel->percussionSelected(i))
-                        return i;
-        }
-        return -1;
+        //kitModel->copyPercussion(index);
 }
 
 void KitWidget::keyPressEvent(RkKeyEvent *event)
 {
-        if (event->key() != Rk::Key::Key_Up
-            && event->key() != Rk::Key::Key_Down
-            && event->key() != Rk::Key::Key_Return)
+        if (event->key() != Rk::Key::Key_Up && event->key() != Rk::Key::Key_Down)
                 return;
 
-        auto index = selectedPercussion();
-        if (!validPercussionIndex(index))
-                return;
-
-        if (event->key() == Rk::Key::Key_Return) {
-                editPercussionName(selectedPercussion());
-        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
+        auto index = kitModel->selectedPercussion();
+        if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
                 kitModel->moveSelectedPercussion(event->key() == Rk::Key::Key_Down);
         } else if (event->key() == Rk::Key::Key_Up && --index > -1) {
                 kitModel->selectPercussion(index);
         } else if (event->key() == Rk::Key::Key_Down
                    && ++index < static_cast<decltype(index)>(kitModel->percussionNumber())) {
-                kitModel->selectPercussion(index);
+                //                kitModel->selectPercussion(index);
         }
-}
-
-bool KitWidget::validPercussionIndex(int index) const
-{
-        return index > -1 && index < static_cast<decltype(index)>(kitModel->percussionNumber());
-}
-
-bool KitWidget::validKeyIndex(int keyIndex) const
-{
-        return keyIndex > -1 && keyIndex < static_cast<decltype(keyIndex)>(kitModel->keysNumber());
 }

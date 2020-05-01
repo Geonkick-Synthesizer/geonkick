@@ -36,43 +36,22 @@ class KitModel;
 class KitWidget: public GeonkickWidget
 {
  public:
-        using PercussionIndex = KitMode::PercussionIndex;
+        using PercussionIndex = KitModel::PercussionIndex;
         KitWidget(GeonkickWidget *parent, KitModel *model);
-        void updateGui();
 
  protected:
-	void paintWidget(RkPaintEvent *event) override;
-	void mouseButtonPressEvent(RkMouseEvent *event) override;
-	void mouseDoubleClickEvent(RkMouseEvent *event) override;
+        void updateView();
+        void addPercussion(PercussionModel *models);
+        void updatePercussion(PercussionIndex index, PercussionModel *model);
         void drawKeys(RkPainter &painter);
-        void drawPercussions(RkPainter &painter);
-        void drawConnections(RkPainter &painter);
-        void drawConnection(RkPainter &painter, const RkPoint &point);
-        int getLine(int x, int y) const;
-        int getKey(int x) const;
-	void updatePercussionName();
         void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
-        void addNewPercussion();
-        void removePercussion(PercussionIndex index);
-        void copyPercussion(PercussionIndex index);
-        PercussionIndex selectedPercussion() const;
-        void keyPressEvent(RkKeyEvent *event) override;
-        bool validPercussionIndex(int index) const;
-        bool validKeyIndex(int keyIndex) const;
-        void editPercussionName(PercussionIndex index);
-        void createPercussionView(PercussionIndex index);
+        void copyPercussion(int index);
+        void keyPressEvent(RkKeyEvent *event);
 
  private:
         KitModel *kitModel;
-	int keyWidth;
-	int channelWidth;
-	int percussionHeight;
-        int percussionNameWidth;
-        int percussionWidth;
-	RkLineEdit *editPercussion;
-	int editedLineIndex;
         RkButton *addButton;
         RkButton *openKitButton;
         RkButton *saveKitButton;
