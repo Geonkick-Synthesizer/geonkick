@@ -48,95 +48,89 @@ KitPercussionView::KitPercussionView(GeonkickWidget *parent,
         , nameWidth{100}
         , keyWidth{30}
         , editPercussion{nullptr}
+        , playButton{nullptr}
+        , muteButton{nullptr}
+        , soloButton{nullptr}
+        , limiterSlider{nullptr}
+        , levelerProgress{nullptr}
 {
         setSize(parent->width(), 20);
+        createView();
+        setModel(model);
+}
+
+void KitPercussionView::createView()
+{
         auto percussionContiner = new RkWidgetContiner(this);
         percussionContiner->setSize(size());
 
         // Play button
-        auto button = new RkButton(this);
-        button->setType(RkButton::PushButton);
-        button->setSize(16, 16);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play)),
+        playButton = new RkButton(this);
+        playButton->setType(RkButton::PushButton);
+        playButton->setSize(16, 16);
+        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play)),
                          RKButton::ButtonImage::ImageUnpressed);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_hover)),
+        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_hover)),
                          RKButton::ButtonImage::ImageUnpressedHover);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on)),
+        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on)),
                          RKButton::ButtonImage::ImagePpressed);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on_hover)),
+        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on_hover)),
                          RKButton::ButtonImage::ImagePpressedHover);
-        RK_ACT_BIND(button, toggled, RK_ACT_ARGS(int toggled), percussionModel, play());
-        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+        percussionContiner->addWidget(playButton, Rk::Alignment::AlignRight);
 
         // Mute button
-        button = new RkButton(this);
-        button->setSize(16, 16);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute)),
-                         RKButton::ButtonImage::ImageUnpressed);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute_hover)),
-                         RKButton::ButtonImage::ImageUnpressedHover);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on)),
-                         RKButton::ButtonImage::ImagePpressed);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on_hover)),
-                         RKButton::ButtonImage::ImagePpressedHover);
-        RK_ACT_BIND(button,
-                    toggled,
-                    RK_ACT_ARGS(int toggled),
-                    percussionModel,
-                    setMute(toggled));
-        RK_ACT_BIND(percussionModel,
-                    muteUpdated,
-                    RK_ACT_ARGS(bool b),
-                    button,
-                    setPressed(b));
+        muteButton = new RkButton(this);
+        muteButton->setSize(16, 16);
+        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute)),
+                             RkButton::ButtonImage::ImageUnpressed);
+        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute_hover)),
+                             RkButton::ButtonImage::ImageUnpressedHover);
+        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on)),
+                             RkButton::ButtonImage::ImagePpressed);
+        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on_hover)),
+                             RkButton::ButtonImage::ImagePpressedHover);
         percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
 
         // Solo button
-        button = new RkButton(this);
-        button->setSize(16, 16);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo)),
-                         RKButton::ButtonImage::ImageUnpressed);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo_hover)),
-                         RKButton::ButtonImage::ImageUnpressedHover);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on)),
-                         RKButton::ButtonImage::ImagePpressed);
-        button->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on_hover)),
-                         RKButton::ButtonImage::ImagePpressedHover);
-        RK_ACT_BIND(button,
-                    toggled,
-                    RK_ACT_ARGS(int toggled),
-                    percussionModel,
-                    setSolo(toggled));
-        RK_ACT_BIND(percussionModel,
-                    soloUpdated,
-                    RK_ACT_ARGS(bool b),
-                    button,
-                    setPressed(b));
-        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+        soloButton = new RkButton(this);
+        soloButton->setSize(16, 16);
+        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo)),
+                             RkButton::ButtonImage::ImageUnpressed);
+        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo_hover)),
+                             RkButton::ButtonImage::ImageUnpressedHover);
+        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on)),
+                             RkButton::ButtonImage::ImagePpressed);
+        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on_hover)),
+                             RkButton::ButtonImage::ImagePpressedHover);
+        percussionContiner->addWidget(soloButton, Rk::Alignment::AlignRight);
 
         // Limiter
-        auto limiter = new GeonkickSlider(this);
-        limiter->setSize(200, 10);
-        RK_ACT_BIND(limiter, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
-        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiter, setValue(val));
-        auto leveler = new RkProgressBar(this);
-        leveler->setSize({limiter->width(), limiter->height() / 2});
-        leveler->setProgressColor({125, 200, 125});
-        leveler->setRange(0, 100);
-        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), leveler, setValue(val));
+        limiterSlider = new GeonkickSlider(this);
+        limiterSlider->setSize(200, 10);
+        levelerProgress = new RkProgressBar(this);
+        levelerProgress->setSize({limiter->width(), limiter->height() / 2});
+        levelerProgress->setProgressColor({125, 200, 125});
+        levelerProgress->setRange(0, 100);
         auto limiterBox = new RkWidgetContiner(percussionContiner, Rk::Orientation::Vertical);
-        limiterBox->setSize(limiter->width(), percussionContiner->height());
-        limiterBox->addWidget(leveler);
-        limiterBox->addWidget(limiter);
+        limiterBox->setSize(limiterSlider->width(), percussionContiner->height());
+        limiterBox->addWidget(levelerProgress);
+        limiterBox->addWidget(limiterSlider);
         percussionContiner->addContiner(limiterBox);
 }
 
 void KitPercussionView::setModel(PercussionModel model)
 {
         percussionModel = model;
-        RK_ACT_BIND(model, nameUpdated, RK_ACT_ARGS(std::string name), this, updateName(name));
-        RK_ACT_BIND(model, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, updateName(index));
-        RK_ACT_BIND(model, limiterUpdated, RK_ACT_ARGS(int val), this, updateName(val));
+        RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(int toggled), percussionModel, play());
+        RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(int toggled), percussionModel, setMute(toggled));
+        RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, setSolo(toggled));
+        RK_ACT_BIND(limiterSlider, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
+        RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
+        RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
+        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiterSlider, setValue(val));
+        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
+        RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
+        RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
 }
 
 PercussionModel* KitPercussionView::getModel()

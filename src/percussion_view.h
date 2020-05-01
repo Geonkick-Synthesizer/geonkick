@@ -31,6 +31,8 @@
 class RkLineEdit;
 class RkButton;
 class PercussionModel;
+class RkSlider;
+class RkProgressBar;
 
 class KitPercussionView: public GeonkickWidget
 {
@@ -41,10 +43,10 @@ class KitPercussionView: public GeonkickWidget
         PercussionModel* getModel();
 
  protected:
-
+        void createView();
         void setNameWidth(int width);
         void setKeyWidth(int width);
-        void paintWidget(RkPaintEvent *event);
+        void paintWidget(RkPaintEvent *event) override;
         void mouseButtonPressEvent(RkMouseEvent *event);
         void mouseDoubleClickEvent(RkMouseEvent *event);
         void updatePercussionName();
@@ -52,8 +54,13 @@ class KitPercussionView: public GeonkickWidget
  private:
         PercussionModel *percussionModel;
         int nameWidth;
-        int keyWidthl;
+        int keyWidth;
         RkLineEdit *editPercussion;
+        RkButton *playButton;
+        RkButton *muteButton;
+        RkButton *soloButton;
+        RkSlider *limiterSlider;
+        RkProgressBar *levelerProgress;
 };
 
 #endif // KIT_WIDGET_H

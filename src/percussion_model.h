@@ -2,7 +2,7 @@
  * File name: percussion_model.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -54,26 +54,30 @@ class PercussionModel : public RkObject {
         void solo(bool b);
         bool isSolo() const;
 
-        /* RK_DECL_ACT(modelUpdated, */
-        /*             modelUpdated(), */
-        /*             RK_ARG_TYPE(), */
-        /*             RK_ARG_VAL()); */
-        /* RK_DECL_ACT(levelerUpdated, */
-        /*             levelerUpdated(PercussionIndex index, int val), */
-        /*             RK_ARG_TYPE(PercussionIndex, int), */
-        /*             RK_ARG_VAL(index, val)); */
-        /* RK_DECL_ACT(limiterUpdated, */
-        /*             limiterUpdated(PercussionIndex index), */
-        /*             RK_ARG_TYPE(PercussionIndex), */
-        /*             RK_ARG_VAL(index)); */
-        /* RK_DECL_ACT(muteUpdated, */
-        /*             muteUpdated(PercussionIndex index, bool b, */
-        /*             RK_ARG_TYPE(PercussionIndex, bool), */
-        /*             RK_ARG_VAL(index, b)); */
-        /* RK_DECL_ACT(soloUpdated, */
-        /*             soloUpdated(PercussionIndex index, bool b), */
-        /*             RK_ARG_TYPE(PercussionIndex, bool), */
-        /*             RK_ARG_VAL(index, b)); */
+        RK_DECL_ACT(nameUpdated,
+                    nameUpdated(std::string name),
+                    RK_ARG_TYPE(std::string),
+                    RK_ARG_VAL(name));
+        RK_DECL_ACT(keyUpdated,
+                    keyUpdated(KeyIndex key),
+                    RK_ARG_TYPE(KeyIndex),
+                    RK_ARG_VAL(key));
+        RK_DECL_ACT(limiterUpdated,
+                    limiterUpdated(int val),
+                    RK_ARG_TYPE(int),
+                    RK_ARG_VAL(val));
+        RK_DECL_ACT(levelerUpdated,
+                    levelerUpdated(int val),
+                    RK_ARG_TYPE(int),
+                    RK_ARG_VAL(val));
+        RK_DECL_ACT(muteUpdated,
+                    muteUpdated(bool b),
+                    RK_ARG_TYPE(bool),
+                    RK_ARG_VAL(b));
+        RK_DECL_ACT(soloUpdated,
+                    soloUpdated(bool b),
+                    RK_ARG_TYPE(bool),
+                    RK_ARG_VAL(b));
 
  /* protected: */
  /*        int getPercussionId(int index) const; */
