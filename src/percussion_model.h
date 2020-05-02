@@ -32,8 +32,8 @@ class GeonkickState;
 class PercussionModel : public RkObject {
  public:
         using KeyIndex = int;
-        explicit PercussionModel(GeonkickApi* api, int id);
-        virtual ~PercussionModel();
+        explicit PercussionModel(RkObject* parent, GeonkickApi* api, int id);
+        virtual ~PercussionModel() = default;
         void setId(int id);
         int id(int id) const;
         void select();
@@ -49,11 +49,16 @@ class PercussionModel : public RkObject {
         bool canRemove() const;
         void play();
         void setLimiter(int value);
+        int limiter() const;
         void mute(bool b);
         bool isMuted() const;
         void solo(bool b);
         bool isSolo() const;
 
+        RK_DECL_ACT(selected,
+                    selected(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
         RK_DECL_ACT(nameUpdated,
                     nameUpdated(std::string name),
                     RK_ARG_TYPE(std::string),
@@ -62,6 +67,10 @@ class PercussionModel : public RkObject {
                     keyUpdated(KeyIndex key),
                     RK_ARG_TYPE(KeyIndex),
                     RK_ARG_VAL(key));
+        RK_DECL_ACT(channelUpdated,
+                    channelUpdated(int val),
+                    RK_ARG_TYPE(int),
+                    RK_ARG_VAL(val));
         RK_DECL_ACT(limiterUpdated,
                     limiterUpdated(int val),
                     RK_ARG_TYPE(int),
@@ -79,11 +88,9 @@ class PercussionModel : public RkObject {
                     RK_ARG_TYPE(bool),
                     RK_ARG_VAL(b));
 
- /* protected: */
- /*        int getPercussionId(int index) const; */
-
  private:
         GeonkickApi *geonkickApi;
+        int percussionId;
 };
 
 #endif // PERCUSSION_MODEL_H

@@ -142,6 +142,12 @@ int KitModel::getPercussionId(int index) const
         return ids[index];
 }
 
+// void KitModel::moveSelectedPercussion(bool down)
+// {
+//         if (geonkickApi->moveOrdrepedPercussionId(geonkickApi->currentPercussion(), down ? 1 : -1))
+//                 action modelUpdated();
+// }
+
 std::filesystem::path
 KitModel::workingPath(const std::string &key) const
 {
