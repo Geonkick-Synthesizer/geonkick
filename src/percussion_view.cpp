@@ -127,7 +127,7 @@ void KitPercussionView::setModel(PercussionModel model)
         RK_ACT_BIND(limiterSlider, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
-        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiterSlider, setValue(val));
+        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiterSlider, onSetValue(val));
         RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));

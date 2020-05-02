@@ -66,7 +66,7 @@ void GeonkickSlider::mouseButtonPressEvent(RkMouseEvent *event)
                 else if (sliderValue > 100)
                         sliderValue = 100;
                 sliderPixels = pixelsFromValue();
-                valueUpdated(sliderValue);
+                action valueUpdated(sliderValue);
                 update();
                 return;
         }
