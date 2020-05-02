@@ -22,10 +22,15 @@
  */
 
 #include "percussion_model.h"
+#include "geonkick_api.h"
 
 PercussionModel::PercussionModel(RkObject* parent, GeonkickApi* api, int id)
         : RkObject(parent)
         , geonkickApi{api}
+        , midiKeys {"A4", "A#4", "B4", "C5",
+                    "C#5", "D5", "D#5", "E5",
+                    "F5", "F#5", "G5", "G#5",
+                    "A5", "A#5", "B5", "C6", "Any"}
         , percussionId{id}
 {
 }
@@ -49,7 +54,7 @@ void PercussionModel::select()
 
 bool PercussionModel::isSelected() const
 {
-        return geonkickApi->currentPercussion() == id();
+        return static_cast<decltype(id())>(geonkickApi->currentPercussion()) == id();
 }
 
 void PercussionModel::increasePercussionChannel()
@@ -78,7 +83,12 @@ void PercussionModel::decreasePercussionChannel()
                 action channelUpdated(channel);
 }
 
-void PercussionModel::setPercussionKey(KeyIndex keyIndex)
+size_t PercussionModel::keysNumber() const
+{
+        return midiKeys.size();
+}
+
+void PercussionModel::setKey(PercussionModel::KeyIndex keyIndex)
 {
         auto refKey = geonkickApi->percussionsReferenceKey();
         auto key = refKey + keyIndex;
@@ -86,7 +96,7 @@ void PercussionModel::setPercussionKey(KeyIndex keyIndex)
                 action keyUpdated(keyIndex);
 }
 
-KeyIndex PercussionModel::key() const
+PercussionModel::KeyIndex PercussionModel::key() const
 {
         KeyIndex keyIndex = geonkickApi->getPercussionPlayingKey(id());
         if (keyIndex < 0)
@@ -98,19 +108,18 @@ KeyIndex PercussionModel::key() const
                 return keyIndex;
 }
 
-void PercussionModel::setPercussionName(const std::string &name)
+void PercussionModel::setName(const std::string &name)
 {
         if (geonkickApi->setPercussionName(id(), name))
                 action nameUpdated(name);
 }
 
-
-std::string PercussionModel::percussionName() const
+std::string PercussionModel::name() const
 {
-        return geonkickApi->getPercussionName(id);
+        return geonkickApi->getPercussionName(id());
 }
 
-int PercussionModel::percussionChannel() const
+int PercussionModel::channel() const
 {
         return geonkickApi->getPercussionChannel(id());
 }
@@ -135,13 +144,15 @@ void PercussionModel::play()
 
 void PercussionModel::setLimiter(int value)
 {
-        if (geonkickApi->setPercussionLimiter(id(), value))
+        auto realVal = pow(10, static_cast<double>(value - 80) / 20);
+        if (geonkickApi->setPercussionLimiter(id(), realVal))
                 action limiterUpdated(value);
 }
 
 int PercussionModel::limiter() const
 {
-        return geonkickApi->percussionLimiterValue(id());
+        auto realVal = geonkickApi->percussionLimiter(id());
+        return 20 * log10(realVal) + 80;
 }
 
 void PercussionModel::mute(bool b)

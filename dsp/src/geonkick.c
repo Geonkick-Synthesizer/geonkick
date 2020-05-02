@@ -1737,3 +1737,75 @@ geonkick_get_percussion_channel(struct geonkick *kick,
         return gkick_audio_output_get_channel(kick->synths[id]->output,
                                               channel);
 }
+
+enum geonkick_error
+geonkick_percussion_set_limiter(struct geonkick *kick,
+                                size_t id,
+                                gkick_real val)
+{
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_mixer_limiter_set(kick->mixer, id, val);
+}
+
+enum geonkick_error
+geonkick_percussion_get_limiter(struct geonkick *kick,
+                                size_t id,
+                                gkick_real *val)
+{
+        if (kick == NULL || val == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_mixer_limiter_get(kick->mixer, id, val);
+}
+
+enum geonkick_error
+geonkick_percussion_mute(struct geonkick *kick,
+                         size_t id,
+                         bool b)
+{
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_mixer_mute(kick->mixer, id, b);
+}
+
+enum geonkick_error
+geonkick_percussion_is_muted(struct geonkick *kick,
+                             size_t id,
+                             bool *b)
+{
+        if (kick == NULL || b == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_mixer_is_muted(kick->mixer, id, b);
+}
+
+enum geonkick_error
+geonkick_percussion_solo(struct geonkick *kick,
+                         size_t id,
+                         bool b)
+{
+        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_mixer_solo(kick->mixer, id, b);
+}
+
+enum geonkick_error
+geonkick_percussion_is_solo(struct geonkick *kick,
+                            size_t id,
+                            bool *b)
+{
+        if (kick == NULL || b == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_mixer_solo(kick->mixer, id, b);
+}

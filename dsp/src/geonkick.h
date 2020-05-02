@@ -621,6 +621,38 @@ geonkick_get_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t *channel);
 
+enum geonkick_error
+geonkick_percussion_set_limiter(struct geonkick *kick,
+                                size_t id,
+                                gkick_real val);
+
+enum geonkick_error
+geonkick_percussion_get_limiter(struct geonkick *kick,
+                                size_t id,
+                                gkick_real *val);
+
+enum geonkick_error
+geonkick_percussion_mute(struct geonkick *kick,
+                         size_t id,
+                         bool b);
+
+enum geonkick_error
+geonkick_percussion_is_muted(struct geonkick *kick,
+                             size_t id,
+                             bool *b);
+
+enum geonkick_error
+geonkick_percussion_solo(struct geonkick *kick,
+                         size_t id,
+                         bool b);
+
+enum geonkick_error
+geonkick_percussion_is_solo(struct geonkick *kick,
+                            size_t id,
+                            bool *b);
+
+
+
 
 #ifdef __cplusplus
 }

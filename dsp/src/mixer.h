@@ -76,6 +76,18 @@ gkick_mixer_limiter_get(struct gkick_mixer *mixer,
                         gkick_real *val);
 
 enum geonkick_error
+gkick_mixer_mute(struct gkick_mixer *mixer, size_t id, bool b);
+
+enum geonkick_error
+gkick_mixer_is_muted(struct gkick_mixer *mixer, size_t id, bool *b);
+
+enum geonkick_error
+gkick_mixer_solo(struct gkick_mixer *mixer, size_t id, bool b);
+
+enum geonkick_error
+gkick_mixer_is_solo(struct gkick_mixer *mixer, size_t id, bool *b);
+
+enum geonkick_error
 gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
 				 void (*callback)(void*, gkick_real val),
 				 void *arg);

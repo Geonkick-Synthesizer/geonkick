@@ -1136,6 +1136,42 @@ void GeonkickApi::setCurrentWorkingPath(const std::string &key,
         workingPaths[key] = path;
 }
 
+bool GeonkickApi::setPercussionLimiter(size_t id, double val)
+{
+	return geonkick_percussion_set_limiter(geonkickApi, id, val) == GEONKICK_OK;
+}
+
+double GeonkickApi::percussionLimiter(size_t id) const
+{
+        gkick_real val = 0.0f;
+        geonkick_percussion_get_limiter(geonkickApi, id, &val);
+        return val;
+}
+
+bool GeonkickApi::mutePercussion(size_t id, bool b)
+{
+        return geonkick_percussion_mute(geonkickApi, id, b) == GEONKICK_OK;
+}
+
+bool GeonkickApi::isPercussionMuted(size_t id) const
+{
+        bool muted = false;
+        geonkick_percussion_is_muted(geonkickApi, id, &muted);
+        return muted;
+}
+
+bool GeonkickApi::soloPercussion(size_t id, bool b)
+{
+        return geonkick_percussion_solo(geonkickApi, id, b) == GEONKICK_OK;
+}
+
+bool GeonkickApi::isPercussionSolo(size_t id) const
+{
+        bool solo = false;
+        geonkick_percussion_is_solo(geonkickApi, id, &solo);
+        return solo;
+}
+
 size_t GeonkickApi::getPercussionsNumber() const
 {
 	return geonkick_percussion_number(geonkickApi);

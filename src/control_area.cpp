@@ -64,7 +64,6 @@ void ControlArea::showKit()
 
         if (!kitWidget) {
                 kitWidget = new KitWidget(this, kitModel.get());
-                RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), kitWidget, updateGui());
                 kitWidget->setSize({width(), height()});
                 kitWidget->show();
                 kitWidget->setFocus();

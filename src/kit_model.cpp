@@ -24,19 +24,16 @@
 #include "kit_model.h"
 #include "geonkick_api.h"
 #include "percussion_state.h"
+#include "percussion_model.h"
 #include "kit_state.h"
 
 KitModel::KitModel(GeonkickApi *api)
         : geonkickApi{api}
-        , midiKeys {"A4", "A#4", "B4", "C5",
-                    "C#5", "D5", "D#5", "E5",
-                    "F5", "F#5", "G5", "G#5",
-                    "A5", "A#5", "B5", "C6", "Any"}
 {
         size_t n = percussionNumber();
-        if (PercussionIndex i = 0; i < n; i++) {
-                auto mode = new PercussionModel(this, geonkickApi, getPercussionId(i));
-                percussionModelsList.push_back(model);
+        for (decltype(n) i = 0; i < n; i++) {
+                auto model = new PercussionModel(this, geonkickApi, getPercussionId(i));
+                percussionsList.push_back(model);
         }
 }
 
@@ -84,8 +81,8 @@ void KitModel::addNewPercussion()
         state->enable(true);
         geonkickApi->setPercussionState(state);
         geonkickApi->addOrderedPercussionId(newId);
-        auto mode = new PercussionModel(this, geonkickApi, newId);
-        percussionModelsList.push_back(model);
+        auto model = new PercussionModel(this, geonkickApi, newId);
+        percussionsList.push_back(model);
         action percussionAdded(model);
 }
 
@@ -101,33 +98,20 @@ void KitModel::copyPercussion(PercussionIndex index)
                 state->enable(true);
                 geonkickApi->setPercussionState(state);
                 geonkickApi->addOrderedPercussionId(newId);
-                auto mode = new PercussionModel(this, geonkickApi, newId);
-                percussionModelsList.push_back(model);
+                auto model = new PercussionModel(this, geonkickApi, newId);
+                percussionsList.push_back(model);
                 action percussionAdded(model);
         }
 }
 
 void KitModel::removePercussion(PercussionIndex index)
 {
-        if (index < percussionModelsList.size()) {
-                delete percussionModelsList[index];
-                percussionModelsList.erase(percussionModelsList.begin() + index);
+        if (static_cast<decltype(percussionsList.size())>(index) < percussionsList.size()) {
+                delete percussionsList[index];
+                percussionsList.erase(percussionsList.begin() + index);
                 action percussionRemoved(index);
         }
 }
-
-size_t KitModel::keysNumber() const
-{
-        return midiKeys.size();
-}
-
-std::string KitModel::keyName(KeyIndex index) const
-{
-        if (midiKeys.empty() || index < 0 || index > static_cast<decltype(index)>(midiKeys.size() - 1))
-                return "";
-        return midiKeys[index];
-}
-
 
 size_t KitModel::percussionNumber() const
 {

@@ -82,7 +82,7 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
         *val = 0.0f;
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 struct gkick_audio_output *out = mixer->audio_outputs[i];
-                if (out->enabled  && (out->channel == channel || GKICK_IS_STANDALONE)) {
+                if (out->enabled  && !out->muted && (out->channel == channel || GKICK_IS_STANDALONE)) {
                         gkick_real v = 0.0f;
                         gkick_audio_output_get_frame(out, &v);
                         if (i == mixer->limiter_callback_index)
@@ -130,6 +130,33 @@ gkick_mixer_limiter_get(struct gkick_mixer *mixer,
         if (index < GEONKICK_MAX_PERCUSSIONS)
                 *val = (gkick_real)mixer->audio_outputs[index]->limiter / 1000000;
 	return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_mute(struct gkick_mixer *mixer, size_t id, bool b)
+{
+        mixer->audio_outputs[i]->muted = b;
+}
+
+enum geonkick_error
+gkick_mixer_is_muted(struct gkick_mixer *mixer, size_t id, bool *b)
+{
+        *b = mixer->audio_outputs[i]->muted;
+}
+
+enum geonkick_error
+gkick_mixer_solo(struct gkick_mixer *mixer, size_t id, bool b)
+{
+        /* for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) { */
+        /*         if (i != id) */
+        /*                 mixer->audio_outputs[i]->muted = mixer->audio_outputs[i]->muted || b; */
+        /* } */
+}
+
+enum geonkick_error
+gkick_mixer_is_solo(struct gkick_mixer *mixer, size_t id, bool *b)
+{
+        *b = false;//mixer->audio_outputs[i]->solo;
 }
 
 enum geonkick_error

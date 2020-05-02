@@ -28,6 +28,7 @@
 
 class GeonkickApi;
 class GeonkickState;
+class PercussionModel;
 
 class KitModel : public RkObject {
  public:
@@ -47,16 +48,24 @@ class KitModel : public RkObject {
         std::filesystem::path workingPath(const std::string &key) const;
         const std::vector<PercussionModel*>& percussionModels() const;
 
-        RK_DECL_ACT(modelUp,
+        RK_DECL_ACT(modelUpdated,
                     modelUpdated(),
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
+        RK_DECL_ACT(percussionAdded,
+                    percussionAdded(PercussionModel* model),
+                    RK_ARG_TYPE(PercussionModel*),
+                    RK_ARG_VAL(model));
+        RK_DECL_ACT(percussionRemoved,
+                    percussionRemoved(PercussionIndex index),
+                    RK_ARG_TYPE(PercussionIndex),
+                    RK_ARG_VAL(index));
+
  protected:
         int getPercussionId(int index) const;
 
  private:
         GeonkickApi *geonkickApi;
-        std::vector<std::string> midiKeys;
         std::vector<PercussionModel*> percussionsList;
 };
 

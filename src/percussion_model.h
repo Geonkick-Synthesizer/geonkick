@@ -31,20 +31,22 @@ class GeonkickState;
 
 class PercussionModel : public RkObject {
  public:
+        using PercussionIndex = int;
         using KeyIndex = int;
-        explicit PercussionModel(RkObject* parent, GeonkickApi* api, int id);
+        explicit PercussionModel(RkObject* parent, GeonkickApi* api, int id = -1);
         virtual ~PercussionModel() = default;
         void setId(int id);
-        int id(int id) const;
+        int id() const;
         void select();
         bool isSelected() const;
         void increasePercussionChannel();
         void decreasePercussionChannel();
+        size_t keysNumber() const;
         void setKey(KeyIndex keyIndex);
-        KeyIndex key(KeyIndex keyIndex) const;
+        KeyIndex key() const;
         void setName(const std::string &name);
-        std::string name(PercussionIndex index) const;
-        int channel(PercussionIndex index) const;
+        std::string name() const;
+        int channel() const;
         bool canCopy() const;
         bool canRemove() const;
         void play();
@@ -55,6 +57,10 @@ class PercussionModel : public RkObject {
         void solo(bool b);
         bool isSolo() const;
 
+        RK_DECL_ACT(modelUpdated,
+                    modelUpdated(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
         RK_DECL_ACT(selected,
                     selected(),
                     RK_ARG_TYPE(),
@@ -90,6 +96,7 @@ class PercussionModel : public RkObject {
 
  private:
         GeonkickApi *geonkickApi;
+        std::vector<std::string> midiKeys;
         int percussionId;
 };
 

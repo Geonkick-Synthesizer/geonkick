@@ -68,39 +68,39 @@ void KitPercussionView::createView()
         playButton = new RkButton(this);
         playButton->setType(RkButton::PushButton);
         playButton->setSize(16, 16);
-        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play)),
+        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play)),
                          RKButton::ButtonImage::ImageUnpressed);
-        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_hover)),
+        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_hover)),
                          RKButton::ButtonImage::ImageUnpressedHover);
-        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on)),
+        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_on)),
                          RKButton::ButtonImage::ImagePpressed);
-        playButton->setImage(RkImage(button->size(), RK_IMGE_RC(per_play_on_hover)),
+        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_on_hover)),
                          RKButton::ButtonImage::ImagePpressedHover);
         percussionContiner->addWidget(playButton, Rk::Alignment::AlignRight);
 
         // Mute button
         muteButton = new RkButton(this);
         muteButton->setSize(16, 16);
-        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute)),
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute)),
                              RkButton::ButtonImage::ImageUnpressed);
-        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute_hover)),
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute_hover)),
                              RkButton::ButtonImage::ImageUnpressedHover);
-        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on)),
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute_on)),
                              RkButton::ButtonImage::ImagePpressed);
-        muteButton->setImage(RkImage(button->size(), RK_IMGE_RC(mute_on_hover)),
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute_on_hover)),
                              RkButton::ButtonImage::ImagePpressedHover);
-        percussionContiner->addWidget(button, Rk::Alignment::AlignRight);
+        percussionContiner->addWidget(muteButton, Rk::Alignment::AlignRight);
 
         // Solo button
         soloButton = new RkButton(this);
         soloButton->setSize(16, 16);
-        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo)),
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo)),
                              RkButton::ButtonImage::ImageUnpressed);
-        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo_hover)),
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo_hover)),
                              RkButton::ButtonImage::ImageUnpressedHover);
-        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on)),
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo_on)),
                              RkButton::ButtonImage::ImagePpressed);
-        soloButton->setImage(RkImage(button->size(), RK_IMGE_RC(solo_on_hover)),
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo_on_hover)),
                              RkButton::ButtonImage::ImagePpressedHover);
         percussionContiner->addWidget(soloButton, Rk::Alignment::AlignRight);
 
@@ -176,11 +176,11 @@ void KitPercussionView::mouseDoubleClickEvent(RkMouseEvent *event)
         if (event->button() == RkMouseEvent::ButtonType::Left && event->x() < nameWidth) {
                 if (editPercussion == nullptr) {
                         editPercussion = new RkLineEdit(this);
-                        editPercussion->setSize({nameWidth, percussionHeight});
+                        editPercussion->setSize({nameWidth, height()});
                         RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
                                     this, updatePercussionName());
                 }
-                editPercussion->setText(percussionModel->percussionName());
+                editPercussion->setText(percussionModel->name());
                 editPercussion->moveCursorToEnd();
                 editPercussion->show();
         }
