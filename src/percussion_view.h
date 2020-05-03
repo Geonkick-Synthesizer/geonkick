@@ -26,8 +26,6 @@
 
 #include "geonkick_widget.h"
 
-#include <RkPainter.h>
-
 class RkLineEdit;
 class RkButton;
 class PercussionModel;

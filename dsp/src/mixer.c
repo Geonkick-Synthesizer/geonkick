@@ -135,13 +135,15 @@ gkick_mixer_limiter_get(struct gkick_mixer *mixer,
 enum geonkick_error
 gkick_mixer_mute(struct gkick_mixer *mixer, size_t id, bool b)
 {
-        mixer->audio_outputs[i]->muted = b;
+        mixer->audio_outputs[id]->muted = b;
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
 gkick_mixer_is_muted(struct gkick_mixer *mixer, size_t id, bool *b)
 {
-        *b = mixer->audio_outputs[i]->muted;
+        *b = mixer->audio_outputs[id]->muted;
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -151,12 +153,14 @@ gkick_mixer_solo(struct gkick_mixer *mixer, size_t id, bool b)
         /*         if (i != id) */
         /*                 mixer->audio_outputs[i]->muted = mixer->audio_outputs[i]->muted || b; */
         /* } */
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
 gkick_mixer_is_solo(struct gkick_mixer *mixer, size_t id, bool *b)
 {
         *b = false;//mixer->audio_outputs[i]->solo;
+        return GEONKICK_OK;
 }
 
 enum geonkick_error

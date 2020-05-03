@@ -1747,7 +1747,7 @@ geonkick_percussion_set_limiter(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_mixer_limiter_set(kick->mixer, id, val);
+        return gkick_mixer_limiter_set(kick->audio->mixer, id, val);
 }
 
 enum geonkick_error
@@ -1759,7 +1759,7 @@ geonkick_percussion_get_limiter(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_mixer_limiter_get(kick->mixer, id, val);
+        return gkick_mixer_limiter_get(kick->audio->mixer, id, val);
 }
 
 enum geonkick_error
@@ -1771,7 +1771,7 @@ geonkick_percussion_mute(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_mixer_mute(kick->mixer, id, b);
+        return gkick_mixer_mute(kick->audio->mixer, id, b);
 }
 
 enum geonkick_error
@@ -1783,7 +1783,7 @@ geonkick_percussion_is_muted(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_mixer_is_muted(kick->mixer, id, b);
+        return gkick_mixer_is_muted(kick->audio->mixer, id, b);
 }
 
 enum geonkick_error
@@ -1795,7 +1795,7 @@ geonkick_percussion_solo(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_mixer_solo(kick->mixer, id, b);
+        return gkick_mixer_solo(kick->audio->mixer, id, b);
 }
 
 enum geonkick_error
@@ -1807,5 +1807,5 @@ geonkick_percussion_is_solo(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_mixer_solo(kick->mixer, id, b);
+        return gkick_mixer_solo(kick->audio->mixer, id, b);
 }

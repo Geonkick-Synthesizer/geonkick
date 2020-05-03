@@ -41,6 +41,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , addButton{nullptr}
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
+        , percussionsContiner{new RkWidgetContiner(this)}
 {
         setTitle("KitWidget");
         // addButton = new RkButton(this);
@@ -72,7 +73,6 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         //             this, showFileDialog(FileDialog::Type::Save));
         // saveKitButton->show();
         // RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
-        kitContiner = new RkWidgetContiner(this);
         updateView();
 }
 
@@ -92,7 +92,7 @@ void KitWidget::updateView()
         }
 }
 
-void KitWidget::addPercussion(PercussionModel *models)
+void KitWidget::addPercussion(PercussionModel *model)
 {
         auto percussionView = new KitPercussionView(this, models[i]);
         percussionsContiner->addWidget(percussionView);

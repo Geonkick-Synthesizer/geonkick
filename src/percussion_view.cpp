@@ -24,6 +24,8 @@
 #include "percussion_view.h"
 #include "percussion_model.h"
 
+#include <RkEvent.h>
+#include <RkPainter.h>
 #include <RkLineEdit.h>
 #include <RkButton.h>
 #include <RkWidgetContiner.h>
@@ -66,20 +68,21 @@ void KitPercussionView::createView()
 
         // Play button
         playButton = new RkButton(this);
-        playButton->setType(RkButton::PushButton);
+        playButton->setType(RkButton::ButtonType::PushButton);
         playButton->setSize(16, 16);
         playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play)),
-                         RKButton::ButtonImage::ImageUnpressed);
+                         RkButton::ButtonImage::ImageUnpressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_hover)),
-                         RKButton::ButtonImage::ImageUnpressedHover);
+                         RkButton::ButtonImage::ImageUnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_on)),
-                         RKButton::ButtonImage::ImagePpressed);
+                         RkButton::ButtonImage::ImagePpressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_on_hover)),
-                         RKButton::ButtonImage::ImagePpressedHover);
+                         RkButton::ButtonImage::ImagePpressedHover);
         percussionContiner->addWidget(playButton, Rk::Alignment::AlignRight);
 
         // Mute button
         muteButton = new RkButton(this);
+        muteButton->setType(RkButton::ButtonType::CheckButton);
         muteButton->setSize(16, 16);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute)),
                              RkButton::ButtonImage::ImageUnpressed);
@@ -93,6 +96,7 @@ void KitPercussionView::createView()
 
         // Solo button
         soloButton = new RkButton(this);
+        soloButton->setType(RkButton::ButtonType::CheckButton);
         soloButton->setSize(16, 16);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo)),
                              RkButton::ButtonImage::ImageUnpressed);
@@ -140,6 +144,7 @@ PercussionModel* KitPercussionView::getModel()
 
 void KitPercussionView::paintWidget(RkPaintEvent *event)
 {
+        RkPainter painter(this);
         auto pen = painter.pen();
         pen.setColor({200, 200, 200});
         auto font = painter.font();
