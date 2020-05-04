@@ -29,12 +29,13 @@
 class RkLineEdit;
 class RkButton;
 class PercussionModel;
-class RkSlider;
+class GeonkickSlider;
 class RkProgressBar;
 
 class KitPercussionView: public GeonkickWidget
 {
  public:
+        using KeyIndex = int;
         explicit KitPercussionView(GeonkickWidget *parent,
                                    PercussionModel *model = nullptr);
         void setModel(PercussionModel *model);
@@ -57,7 +58,7 @@ class KitPercussionView: public GeonkickWidget
         RkButton *playButton;
         RkButton *muteButton;
         RkButton *soloButton;
-        RkSlider *limiterSlider;
+        GeonkickSlider *limiterSlider;
         RkProgressBar *levelerProgress;
 };
 

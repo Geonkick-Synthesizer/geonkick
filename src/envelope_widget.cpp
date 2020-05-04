@@ -27,7 +27,7 @@
 #include "envelope_draw_area.h"
 #include "geonkick_button.h"
 
-#include <RkWidgetContainer.h>
+#include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(show_ampl_env_active);
 RK_DECLARE_IMAGE_RC(show_ampl_env);
@@ -204,7 +204,7 @@ void EnvelopeWidget::createButtomMenu()
         osccillator1EvelopesButton->show();
         createLayersButtons(buttomAreaWidget);
 
-	menuContainer = new RkWidgetContainer(buttomAreaWidget);
+	menuContainer = new RkContainer(buttomAreaWidget);
 	menuContainer->addWidget(showAmplitudeEnvButton);
 	menuContainer->addWidget(showFrequencyEnvButton);
 	menuContainer->addWidget(showFilterEnvButton);

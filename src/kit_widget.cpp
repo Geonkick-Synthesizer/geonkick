@@ -24,12 +24,14 @@
 #include "kit_widget.h"
 #include "kit_model.h"
 #include "geonkick_slider.h"
+#include "percussion_view.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>
 #include <RkLineEdit.h>
 #include <RkButton.h>
 #include <RkProgressBar.h>
+#include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(add_per_button);
 RK_DECLARE_IMAGE_RC(save_kit_button);
@@ -41,7 +43,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , addButton{nullptr}
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
-        , percussionsContiner{new RkWidgetContiner(this)}
+        , percussionsContainer{new RkContainer(this)}
 {
         setTitle("KitWidget");
         // addButton = new RkButton(this);
@@ -78,37 +80,46 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 
 void KitWidget::updateView()
 {
-        auto models = kitModel->percussionModels();
+        auto &models = kitModel->percussionModels();
+        GEONKICK_LOG_DEBUG("models: " << models.size());
         size_t n = kitModel->maxPercussionNumber();
-        for (PercussionIndex i = 0; i < n; i++) {
-                if (percussionsContiner->at(i) && i < models.size()) {
-                        if (i < models.size())
-                                updatePercussion(i, models[i])
-                        else
-                                removePercussion(i);
-                } else if (!percussionsContiner->at(i)) {
-                        addPercussion(models[i]);
+        for (decltype(n) i = 0; i < n; i++) {
+                if (i < models.size()) {
+                        GEONKICK_LOG_DEBUG("H: " << models.size());
+                        if (percussionsContainer->at(i)) {
+                                GEONKICK_LOG_DEBUG("H1: " << models.size());
+                                updatePercussion(i, models[i]);
+                        }
+                        else {
+                                GEONKICK_LOG_DEBUG("H2: " << models.size());
+                                addPercussion(models[i]);
+                        }
+                } else if (percussionsContainer->at(i)) {
+                        removePercussion(i);
                 }
         }
 }
 
 void KitWidget::addPercussion(PercussionModel *model)
 {
-        auto percussionView = new KitPercussionView(this, models[i]);
-        percussionsContiner->addWidget(percussionView);
+        auto percussionView = new KitPercussionView(this, model);
+        percussionView->show();
+        GEONKICK_LOG_DEBUG("add: ");
+        percussionsContainer->addWidget(percussionView);
 }
 
 void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
 {
-        if (percussionsContiner->at(i))
-                percussionsContiner->at(i)->setModel(models[i]);
+        auto percussionView = dynamic_cast<KitPercussionView*>(percussionsContainer->at(index));
+        if (percussionView)
+                percussionView->setModel(model);
 }
 
 void KitWidget::removePercussion(PercussionIndex index)
 {
-        if (percussionsContiner->at(index)) {
-                delete percussionsContiner->at(i);
-                percussionsContiner.removeAt(i);
+        if (percussionsContainer->at(index)) {
+                delete percussionsContainer->at(index);
+                percussionsContainer->removeAt(index);
         }
 }
 
@@ -172,16 +183,16 @@ void KitWidget::copyPercussion(int index)
 
 void KitWidget::keyPressEvent(RkKeyEvent *event)
 {
-        if (event->key() != Rk::Key::Key_Up && event->key() != Rk::Key::Key_Down)
-                return;
+        // if (event->key() != Rk::Key::Key_Up && event->key() != Rk::Key::Key_Down)
+        //         return;
 
-        auto index = kitModel->selectedPercussion();
-        if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
-                kitModel->moveSelectedPercussion(event->key() == Rk::Key::Key_Down);
-        } else if (event->key() == Rk::Key::Key_Up && --index > -1) {
-                kitModel->selectPercussion(index);
-        } else if (event->key() == Rk::Key::Key_Down
-                   && ++index < static_cast<decltype(index)>(kitModel->percussionNumber())) {
-                //                kitModel->selectPercussion(index);
-        }
+        // auto index = kitModel->selectedPercussion();
+        // if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
+        //         kitModel->moveSelectedPercussion(event->key() == Rk::Key::Key_Down);
+        // } else if (event->key() == Rk::Key::Key_Up && --index > -1) {
+        //         kitModel->selectPercussion(index);
+        // } else if (event->key() == Rk::Key::Key_Down
+        //            && ++index < static_cast<decltype(index)>(kitModel->percussionNumber())) {
+        //         //                kitModel->selectPercussion(index);
+        // }
 }

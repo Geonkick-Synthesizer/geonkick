@@ -32,7 +32,7 @@
 class RkLineEdit;
 class RkButton;
 class KitModel;
-class RkWidgetContiner;
+class RkContainer;
 class PercussionModel;
 
 class KitWidget: public GeonkickWidget
@@ -45,6 +45,7 @@ class KitWidget: public GeonkickWidget
         void updateView();
         void addPercussion(PercussionModel *model);
         void updatePercussion(PercussionIndex index, PercussionModel *model);
+        void removePercussion(PercussionIndex index);
         void drawKeys(RkPainter &painter);
         void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
@@ -57,7 +58,7 @@ class KitWidget: public GeonkickWidget
         RkButton *addButton;
         RkButton *openKitButton;
         RkButton *saveKitButton;
-        RkWidgetContiner *percussionsContiner;
+        RkContainer *percussionsContainer;
 };
 
 #endif // KIT_WIDGET_H

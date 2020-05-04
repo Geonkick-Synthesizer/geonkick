@@ -23,25 +23,27 @@
 
 #include "percussion_view.h"
 #include "percussion_model.h"
+#include "geonkick_slider.h"
 
 #include <RkEvent.h>
 #include <RkPainter.h>
 #include <RkLineEdit.h>
 #include <RkButton.h>
-#include <RkWidgetContiner.h>
+#include <RkContainer.h>
+#include <RkProgressBar.h>
 
-RK_DECLARE_IMGE_RC(mute);
-RK_DECLARE_IMGE_RC(mute_hover);
-RK_DECLARE_IMGE_RC(mute_on);
-RK_DECLARE_IMGE_RC(mute_on_hover);
-RK_DECLARE_IMGE_RC(solo);
-RK_DECLARE_IMGE_RC(solo_hover);
-RK_DECLARE_IMGE_RC(solo_on);
-RK_DECLARE_IMGE_RC(solo_on_hover);
-RK_DECLARE_IMGE_RC(per_play);
-RK_DECLARE_IMGE_RC(per_play_hover);
-RK_DECLARE_IMGE_RC(per_play_on);
-RK_DECLARE_IMGE_RC(per_play_on_hover);
+RK_DECLARE_IMAGE_RC(mute);
+RK_DECLARE_IMAGE_RC(mute_hover);
+RK_DECLARE_IMAGE_RC(mute_on);
+RK_DECLARE_IMAGE_RC(mute_on_hover);
+RK_DECLARE_IMAGE_RC(solo);
+RK_DECLARE_IMAGE_RC(solo_hover);
+RK_DECLARE_IMAGE_RC(solo_on);
+RK_DECLARE_IMAGE_RC(solo_on_hover);
+RK_DECLARE_IMAGE_RC(per_play);
+RK_DECLARE_IMAGE_RC(per_play_hover);
+RK_DECLARE_IMAGE_RC(per_play_on);
+RK_DECLARE_IMAGE_RC(per_play_on_hover);
 
 KitPercussionView::KitPercussionView(GeonkickWidget *parent,
                                      PercussionModel *model)
@@ -63,71 +65,74 @@ KitPercussionView::KitPercussionView(GeonkickWidget *parent,
 
 void KitPercussionView::createView()
 {
-        auto percussionContiner = new RkWidgetContiner(this);
-        percussionContiner->setSize(size());
+        auto percussionContainer = new RkContainer(this);
+        percussionContainer->setSize(size());
 
         // Play button
         playButton = new RkButton(this);
-        playButton->setType(RkButton::ButtonType::PushButton);
+        playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(16, 16);
-        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play)),
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play)),
                          RkButton::ButtonImage::ImageUnpressed);
-        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_hover)),
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_hover)),
                          RkButton::ButtonImage::ImageUnpressedHover);
-        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_on)),
-                         RkButton::ButtonImage::ImagePpressed);
-        playButton->setImage(RkImage(playButton->size(), RK_IMGE_RC(per_play_on_hover)),
-                         RkButton::ButtonImage::ImagePpressedHover);
-        percussionContiner->addWidget(playButton, Rk::Alignment::AlignRight);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on)),
+                         RkButton::ButtonImage::ImagePressed);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on_hover)),
+                         RkButton::ButtonImage::ImagePressedHover);
+        percussionContainer->addWidget(playButton, Rk::Alignment::AlignRight);
 
         // Mute button
         muteButton = new RkButton(this);
-        muteButton->setType(RkButton::ButtonType::CheckButton);
+        muteButton->setType(RkButton::ButtonType::ButtonCheckable);
         muteButton->setSize(16, 16);
-        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute)),
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute)),
                              RkButton::ButtonImage::ImageUnpressed);
-        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute_hover)),
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_hover)),
                              RkButton::ButtonImage::ImageUnpressedHover);
-        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute_on)),
-                             RkButton::ButtonImage::ImagePpressed);
-        muteButton->setImage(RkImage(muteButton->size(), RK_IMGE_RC(mute_on_hover)),
-                             RkButton::ButtonImage::ImagePpressedHover);
-        percussionContiner->addWidget(muteButton, Rk::Alignment::AlignRight);
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_on)),
+                             RkButton::ButtonImage::ImagePressed);
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_on_hover)),
+                             RkButton::ButtonImage::ImagePressedHover);
+        percussionContainer->addWidget(muteButton, Rk::Alignment::AlignRight);
 
         // Solo button
         soloButton = new RkButton(this);
-        soloButton->setType(RkButton::ButtonType::CheckButton);
+        soloButton->setType(RkButton::ButtonType::ButtonCheckable);
         soloButton->setSize(16, 16);
-        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo)),
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo)),
                              RkButton::ButtonImage::ImageUnpressed);
-        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo_hover)),
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_hover)),
                              RkButton::ButtonImage::ImageUnpressedHover);
-        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo_on)),
-                             RkButton::ButtonImage::ImagePpressed);
-        soloButton->setImage(RkImage(soloButton->size(), RK_IMGE_RC(solo_on_hover)),
-                             RkButton::ButtonImage::ImagePpressedHover);
-        percussionContiner->addWidget(soloButton, Rk::Alignment::AlignRight);
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_on)),
+                             RkButton::ButtonImage::ImagePressed);
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_on_hover)),
+                             RkButton::ButtonImage::ImagePressedHover);
+        percussionContainer->addWidget(soloButton, Rk::Alignment::AlignRight);
 
         // Limiter
         limiterSlider = new GeonkickSlider(this);
         limiterSlider->setSize(200, 10);
         levelerProgress = new RkProgressBar(this);
-        levelerProgress->setSize({limiter->width(), limiter->height() / 2});
+        levelerProgress->setSize({limiterSlider->width(), limiterSlider->height() / 2});
         levelerProgress->setProgressColor({125, 200, 125});
         levelerProgress->setRange(0, 100);
-        auto limiterBox = new RkWidgetContiner(percussionContiner, Rk::Orientation::Vertical);
-        limiterBox->setSize(limiterSlider->width(), percussionContiner->height());
+        auto limiterBox = new RkContainer(this, Rk::Orientation::Vertical);
+        limiterBox->setSize({limiterSlider->width(), percussionContainer->height()});
         limiterBox->addWidget(levelerProgress);
         limiterBox->addWidget(limiterSlider);
-        percussionContiner->addContiner(limiterBox);
+        percussionContainer->addContainer(limiterBox);
 }
 
-void KitPercussionView::setModel(PercussionModel model)
+void KitPercussionView::setModel(PercussionModel *model)
 {
+        if (!model)
+                return;
+
         percussionModel = model;
-        RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(int toggled), percussionModel, play());
-        RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(int toggled), percussionModel, setMute(toggled));
-        RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, setSolo(toggled));
+        RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, play());
+        RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, mute(toggled));
+        RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, solo(toggled));
         RK_ACT_BIND(limiterSlider, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
@@ -150,20 +155,20 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         auto font = painter.font();
         font.setSize(12);
         painter.setFont(font);
-        painter.drawText(RkRect(0, (height() - font->size()) / 2, nameWidth, height()),
+        painter.drawText(RkRect(0, (height() - font.size()) / 2, nameWidth, height()),
                          percussionModel->name());
 
         auto n = percussionModel->keysNumber();
         int x = nameWidth;
-        for (n--) {
+        while (n--) {
                 if (n % 2)
                         painter.fillRect(RkRect(x, 0, keyWidth, height()), {60, 60, 60});
                 else
-                        painter.fillRect(RkRect(x, 0, keyWidth, height()), {{50, 50, 50}});
+                        painter.fillRect(RkRect(x, 0, keyWidth, height()), {50, 50, 50});
                 x += keyWidth;
         }
 
-        auto pen = painter.pen();
+        pen = painter.pen();
         pen.setColor({50, 160, 50});
         pen.setWidth(8);
         painter.setPen(pen);

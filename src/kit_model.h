@@ -45,6 +45,7 @@ class KitModel : public RkObject {
         size_t keysNumber() const;
         std::string keyName(KeyIndex index) const;
         size_t percussionNumber() const;
+        size_t maxPercussionNumber() const;
         std::filesystem::path workingPath(const std::string &key) const;
         const std::vector<PercussionModel*>& percussionModels() const;
 

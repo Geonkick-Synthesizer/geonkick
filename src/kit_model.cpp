@@ -118,6 +118,11 @@ size_t KitModel::percussionNumber() const
         return geonkickApi->ordredPercussionIds().size();
 }
 
+size_t KitModel::maxPercussionNumber() const
+{
+        return geonkickApi->getPercussionsNumber();
+}
+
 int KitModel::getPercussionId(int index) const
 {
         const auto &ids = geonkickApi->ordredPercussionIds();
@@ -136,4 +141,9 @@ std::filesystem::path
 KitModel::workingPath(const std::string &key) const
 {
         return geonkickApi->currentWorkingPath(key);
+}
+
+const std::vector<PercussionModel*>& KitModel::percussionModels() const
+{
+        return percussionsList;
 }
