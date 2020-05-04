@@ -80,7 +80,7 @@ void KitPercussionView::createView()
                          RkButton::ButtonImage::ImagePressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on_hover)),
                          RkButton::ButtonImage::ImagePressedHover);
-        percussionContainer->addWidget(playButton, Rk::Alignment::AlignRight);
+        //        percussionContainer->addWidget(playButton, Rk::Alignment::AlignRight);
 
         // Mute button
         muteButton = new RkButton(this);
@@ -94,7 +94,7 @@ void KitPercussionView::createView()
                              RkButton::ButtonImage::ImagePressed);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_on_hover)),
                              RkButton::ButtonImage::ImagePressedHover);
-        percussionContainer->addWidget(muteButton, Rk::Alignment::AlignRight);
+        //        percussionContainer->addWidget(muteButton, Rk::Alignment::AlignRight);
 
         // Solo button
         soloButton = new RkButton(this);
@@ -108,20 +108,21 @@ void KitPercussionView::createView()
                              RkButton::ButtonImage::ImagePressed);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_on_hover)),
                              RkButton::ButtonImage::ImagePressedHover);
-        percussionContainer->addWidget(soloButton, Rk::Alignment::AlignRight);
+        //        percussionContainer->addWidget(soloButton, Rk::Alignment::AlignRight);
 
         // Limiter
         limiterSlider = new GeonkickSlider(this);
         limiterSlider->setSize(200, 10);
         levelerProgress = new RkProgressBar(this);
-        levelerProgress->setSize({limiterSlider->width(), limiterSlider->height() / 2});
+        levelerProgress->setSize({limiterSlider->width() - 2, limiterSlider->height() / 2});
         levelerProgress->setProgressColor({125, 200, 125});
         levelerProgress->setRange(0, 100);
         auto limiterBox = new RkContainer(this, Rk::Orientation::Vertical);
         limiterBox->setSize({limiterSlider->width(), percussionContainer->height()});
         limiterBox->addWidget(levelerProgress);
+        limiterBox->addSpace(3);
         limiterBox->addWidget(limiterSlider);
-        percussionContainer->addContainer(limiterBox);
+        percussionContainer->addContainer(limiterBox, Rk::Alignment::AlignRight);
 }
 
 void KitPercussionView::setModel(PercussionModel *model)
@@ -172,7 +173,7 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         pen.setColor({50, 160, 50});
         pen.setWidth(8);
         painter.setPen(pen);
-        painter.drawCircle({percussionModel->key() * keyWidth + keyWidth / 2 , height() / 2},  4);
+        painter.drawCircle({nameWidth + percussionModel->key() * keyWidth + keyWidth / 2 , height() / 2},  4);
 }
 
 void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)

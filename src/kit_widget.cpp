@@ -46,6 +46,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , percussionsContainer{new RkContainer(this)}
 {
         setTitle("KitWidget");
+        setSize(parent->size());
         // addButton = new RkButton(this);
         // addButton->setBackgroundColor(background());
         // addButton->setCheckable(true);
@@ -81,19 +82,13 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 void KitWidget::updateView()
 {
         auto &models = kitModel->percussionModels();
-        GEONKICK_LOG_DEBUG("models: " << models.size());
         size_t n = kitModel->maxPercussionNumber();
         for (decltype(n) i = 0; i < n; i++) {
                 if (i < models.size()) {
-                        GEONKICK_LOG_DEBUG("H: " << models.size());
-                        if (percussionsContainer->at(i)) {
-                                GEONKICK_LOG_DEBUG("H1: " << models.size());
+                        if (percussionsContainer->at(i))
                                 updatePercussion(i, models[i]);
-                        }
-                        else {
-                                GEONKICK_LOG_DEBUG("H2: " << models.size());
+                        else
                                 addPercussion(models[i]);
-                        }
                 } else if (percussionsContainer->at(i)) {
                         removePercussion(i);
                 }
@@ -104,7 +99,6 @@ void KitWidget::addPercussion(PercussionModel *model)
 {
         auto percussionView = new KitPercussionView(this, model);
         percussionView->show();
-        GEONKICK_LOG_DEBUG("add: ");
         percussionsContainer->addWidget(percussionView);
 }
 
