@@ -160,18 +160,24 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         auto font = paint.font();
         font.setSize(12);
         paint.setFont(font);
-        paint.fillRect(RkRect(0, 0, nameWidth, height()), {60, 60, 60});
+        paint.fillRect(RkRect(0, 0, nameWidth, height()), backgroundColor);
         paint.setPen(pen);
-        paint.drawText(RkRect(0, (height() - font.size()) / 2, nameWidth, font.size()),
-                       percussionModel->name());
+        paint.drawText(RkRect(7, (height() - font.size()) / 2, nameWidth, font.size()),
+                       percussionModel->name(), Rk::Alignment::AlignLeft);
 
         auto n = percussionModel->keysNumber();
         int x = nameWidth;
         while (n--) {
                 if (n % 2)
-                        paint.fillRect(RkRect(x, 0, keyWidth, height()), {60, 60, 60});
+                        paint.fillRect(RkRect(x, 0, keyWidth, height()),
+                                                {backgroundColor.red() + 20,
+                                                backgroundColor.green() + 20,
+                                                backgroundColor.blue() + 20, 80});
                 else
-                        paint.fillRect(RkRect(x, 0, keyWidth, height()), {50, 50, 50});
+                        paint.fillRect(RkRect(x, 0, keyWidth, height()),
+                                                {backgroundColor.red() - 20,
+                                                backgroundColor.green() - 20,
+                                                backgroundColor.blue() - 20, 80});
                 x += keyWidth;
         }
 

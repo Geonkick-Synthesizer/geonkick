@@ -45,19 +45,21 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , saveKitButton{nullptr}
         , percussionsContainer{new RkContainer(this, Rk::Orientation::Vertical)}
 {
-        setTitle("KitWidget");
+        percussionsContainer->setHiddenTakesPlace();
         setSize(parent->size());
 
         RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
         RK_ACT_BIND(kitModel, percussionAdded, RK_ACT_ARGS(PercussionModel *model),
                     this, addPercussion(model));
 
-        percussionsContainer->setSize(size());
+        auto kitContainer = new RkContainer(this, Rk::Orientation::Vertical);
+        kitContainer->setHiddenTakesPlace();
+        kitContainer->setSize(size());
+
+        auto topContainer = new RkContainer(this);
+        topContainer->setSpacing(5);
         percussionsContainer->setHiddenTakesPlace();
-        auto topContiner = new RkContainer(this);
-        topContiner->setSpacing(5);
-        percussionsContainer->setHiddenTakesPlace();
-        topContiner->setSize({width(), 40});
+        topContainer->setSize({width(), 40});
         addButton = new RkButton(this);
         addButton->setBackgroundColor(background());
         addButton->setCheckable(true);
@@ -65,7 +67,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
         RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), kitModel, addNewPercussion());
         addButton->show();
-        topContiner->addWidget(addButton);
+        topContainer->addWidget(addButton);
 
         openKitButton = new RkButton(this);
         openKitButton->setBackgroundColor(background());
@@ -75,7 +77,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
                     this, showFileDialog(FileDialog::Type::Open));
         openKitButton->show();
-        topContiner->addWidget(openKitButton);
+        topContainer->addWidget(openKitButton);
 
         saveKitButton = new RkButton(this);
         saveKitButton->setBackgroundColor(background());
@@ -85,37 +87,41 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
                     this, showFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
-        topContiner->addWidget(saveKitButton);
-        percussionsContainer->addContainer(topContiner);
+        topContainer->addWidget(saveKitButton);
+        percussionsContainer->setHeight(kitContainer->height() - topContainer->height());
+        kitContainer->addContainer(topContainer);
+        kitContainer->addContainer(percussionsContainer);
         updateView();
 }
 
 void KitWidget::updateView()
 {
+        for (auto &percussionView: percussionViewList)
+                delete percussionView;
+        percussionViewList.clear();
+
         auto &models = kitModel->percussionModels();
-        size_t n = kitModel->maxPercussionNumber();
         GEONKICK_LOG_INFO("size: " << models.size());
-        for (decltype(n) i = 0; i < n; i++) {
-                if (i < models.size()) {
-                        if (percussionsContainer->at(i + 1))
-                                updatePercussion(i, models[i]);
-                        else
-                                addPercussion(models[i]);
-                } else if (percussionsContainer->at(i + 1)) {
-                        removePercussion(i);
-                }
-        }
+        percussionsContainer->clear();
+        for (const auto &m: models)
+                addPercussion(m);
 }
 
 void KitWidget::addPercussion(PercussionModel *model)
 {
         auto percussionView = new KitPercussionView(this, model);
         percussionsContainer->addWidget(percussionView, Rk::Alignment::AlignTop);
+        if (percussionViewList.size() % 2)
+                percussionView->setBackground({200, 200, 200, 80});
+        else
+                percussionView->setBackground({160, 160, 160, 80});
+        percussionViewList.push_back(percussionView);
         percussionView->show();
 }
 
 void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
 {
+        GEONKICK_LOG_DEBUG("UPDATE: " << index);
         auto percussionView = dynamic_cast<KitPercussionView*>(percussionsContainer->at(index));
         if (percussionView)
                 percussionView->setModel(model);
@@ -123,9 +129,10 @@ void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
 
 void KitWidget::removePercussion(PercussionIndex index)
 {
-        if (percussionsContainer->at(index)) {
-                delete percussionsContainer->at(index);
+        if (static_cast<size_t>(index) < percussionViewList.size()) {
                 percussionsContainer->removeAt(index);
+                delete percussionViewList[index];
+                percussionViewList.erase(percussionViewList.begin() + index);
         }
 }
 

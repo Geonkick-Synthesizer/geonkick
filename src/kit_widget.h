@@ -34,6 +34,7 @@ class RkButton;
 class KitModel;
 class RkContainer;
 class PercussionModel;
+class KitPercussionView;
 
 class KitWidget: public GeonkickWidget
 {
@@ -59,6 +60,7 @@ class KitWidget: public GeonkickWidget
         RkButton *openKitButton;
         RkButton *saveKitButton;
         RkContainer *percussionsContainer;
+        std::vector<KitPercussionView*> percussionViewList;
 };
 
 #endif // KIT_WIDGET_H

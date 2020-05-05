@@ -39,7 +39,7 @@ class KitPercussionView: public GeonkickWidget
         explicit KitPercussionView(GeonkickWidget *parent,
                                    PercussionModel *model = nullptr);
         void setModel(PercussionModel *model);
-        PercussionModel* getModel();
+        void setBackground(const RkColor &color) { backgroundColor = color; }
 
  protected:
         void createView();
@@ -49,6 +49,7 @@ class KitPercussionView: public GeonkickWidget
         void mouseButtonPressEvent(RkMouseEvent *event);
         void mouseDoubleClickEvent(RkMouseEvent *event);
         void updatePercussionName();
+        PercussionModel* getModel();
 
  private:
         PercussionModel *percussionModel;
@@ -60,6 +61,7 @@ class KitPercussionView: public GeonkickWidget
         RkButton *soloButton;
         GeonkickSlider *limiterSlider;
         RkProgressBar *levelerProgress;
+        RkColor backgroundColor;
 };
 
 #endif // KIT_WIDGET_H
