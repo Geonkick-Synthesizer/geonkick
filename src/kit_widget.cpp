@@ -43,39 +43,50 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , addButton{nullptr}
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
-        , percussionsContainer{new RkContainer(this)}
+        , percussionsContainer{new RkContainer(this, Rk::Orientation::Vertical)}
 {
         setTitle("KitWidget");
         setSize(parent->size());
-        // addButton = new RkButton(this);
-        // addButton->setBackgroundColor(background());
-        // addButton->setCheckable(true);
-        // addButton->setSize(16, 16);
-        // addButton->setPosition({5, 5});
-        // addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
-        // RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), this, addNewPercussion());
-        // addButton->show();
 
-        // openKitButton = new RkButton(this);
-        // openKitButton->setBackgroundColor(background());
-        // openKitButton->setCheckable(true);
-        // openKitButton->setSize(16, 16);
-        // openKitButton->setPosition({5 + addButton->x() + addButton->width(), addButton->y()});
-        // openKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
-        // RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
-        //             this, showFileDialog(FileDialog::Type::Open));
-        // openKitButton->show();
+        RK_ACT_BIND(kitModel, percussionAdded, RK_ACT_ARGS(PercussionModel *model),
+                    this, addPercussion(model));
 
-        // saveKitButton = new RkButton(this);
-        // saveKitButton->setBackgroundColor(background());
-	// saveKitButton->setCheckable(true);
-        // saveKitButton->setSize(16, 16);
-        // saveKitButton->setPosition({5 + openKitButton->x() + openKitButton->width(), addButton->y()});
-        // saveKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
-        // RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
-        //             this, showFileDialog(FileDialog::Type::Save));
-        // saveKitButton->show();
-        // RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateGui());
+        percussionsContainer->setSize(size());
+        percussionsContainer->setHiddenTakesPlace();
+        //        percussionsContainer->setSpacing(10);
+        auto topContiner = new RkContainer(this);
+        topContiner->setSpacing(5);
+        percussionsContainer->setHiddenTakesPlace();
+        topContiner->setSize({width(), 40});
+        addButton = new RkButton(this);
+        addButton->setBackgroundColor(background());
+        addButton->setCheckable(true);
+        addButton->setSize(16, 16);
+        addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
+        RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), kitModel, addNewPercussion());
+        addButton->show();
+        topContiner->addWidget(addButton);
+
+        openKitButton = new RkButton(this);
+        openKitButton->setBackgroundColor(background());
+        openKitButton->setCheckable(true);
+        openKitButton->setSize(16, 16);
+        openKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
+        RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
+                    this, showFileDialog(FileDialog::Type::Open));
+        openKitButton->show();
+        topContiner->addWidget(openKitButton);
+
+        saveKitButton = new RkButton(this);
+        saveKitButton->setBackgroundColor(background());
+        saveKitButton->setCheckable(true);
+        saveKitButton->setSize(16, 16);
+        saveKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
+        RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
+                    this, showFileDialog(FileDialog::Type::Save));
+        saveKitButton->show();
+        topContiner->addWidget(saveKitButton);
+        percussionsContainer->addContainer(topContiner);
         updateView();
 }
 
@@ -98,8 +109,8 @@ void KitWidget::updateView()
 void KitWidget::addPercussion(PercussionModel *model)
 {
         auto percussionView = new KitPercussionView(this, model);
+        percussionsContainer->addWidget(percussionView, Rk::Alignment::AlignTop);
         percussionView->show();
-        percussionsContainer->addWidget(percussionView, Rk::Alignment::AlignLeft);
 }
 
 void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)

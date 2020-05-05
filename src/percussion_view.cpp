@@ -67,6 +67,7 @@ void KitPercussionView::createView()
 {
         auto percussionContainer = new RkContainer(this);
         percussionContainer->setSize(size());
+        percussionContainer->setHiddenTakesPlace();
 
         // Play button
         playButton = new RkButton(this);
@@ -113,14 +114,15 @@ void KitPercussionView::createView()
         // Limiter
         limiterSlider = new GeonkickSlider(this);
         limiterSlider->setSize(200, 10);
-        levelerProgress = new RkProgressBar(this);
-        levelerProgress->setSize({limiterSlider->width() - 2, limiterSlider->height() / 2});
-        levelerProgress->setProgressColor({125, 200, 125});
-        levelerProgress->setRange(0, 100);
+        //        levelerProgress = new RkProgressBar(this);
+        //        levelerProgress->setSize({limiterSlider->width() - 2, limiterSlider->height() / 2});
+        //        levelerProgress->setProgressColor({125, 200, 125});
+        //        levelerProgress->setRange(0, 100);
         auto limiterBox = new RkContainer(this, Rk::Orientation::Vertical);
+        limiterBox->setHiddenTakesPlace();
         limiterBox->setSize({limiterSlider->width(), percussionContainer->height()});
-        limiterBox->addWidget(levelerProgress);
-        limiterBox->addSpace(3);
+        //        limiterBox->addWidget(levelerProgress);
+        //        limiterBox->addSpace(3);
         limiterBox->addWidget(limiterSlider);
         percussionContainer->addContainer(limiterBox, Rk::Alignment::AlignRight);
 }
@@ -138,7 +140,7 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
         RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiterSlider, onSetValue(val));
-        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
+        //        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
 }
