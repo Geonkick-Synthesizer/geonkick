@@ -64,6 +64,7 @@ class KitModel : public RkObject {
 
  protected:
         int getPercussionId(int index) const;
+        void loadModelData();
 
  private:
         GeonkickApi *geonkickApi;

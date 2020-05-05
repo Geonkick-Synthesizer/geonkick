@@ -48,6 +48,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         setTitle("KitWidget");
         setSize(parent->size());
 
+        RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
         RK_ACT_BIND(kitModel, percussionAdded, RK_ACT_ARGS(PercussionModel *model),
                     this, addPercussion(model));
 

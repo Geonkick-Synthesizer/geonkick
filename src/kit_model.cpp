@@ -30,6 +30,15 @@
 KitModel::KitModel(GeonkickApi *api)
         : geonkickApi{api}
 {
+        loadModelData();
+}
+
+void KitModel::loadModelData()
+{
+        for (auto &per: percussionsList)
+                delete per;
+        percussionsList.clear();
+
         size_t n = percussionNumber();
         for (decltype(n) i = 0; i < n; i++) {
                 auto model = new PercussionModel(this, geonkickApi, getPercussionId(i));
@@ -52,7 +61,9 @@ bool KitModel::open(const std::string &file)
                 return false;
         } else {
                 geonkickApi->setCurrentWorkingPath("OpenKit", path);
-                geonkickApi->notifyUpdateGui();
+                action geonkickApi->notifyUpdateGui();
+                loadModelData();
+                action modelUpdated();
         }
         return true;
 }
