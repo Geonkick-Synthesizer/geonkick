@@ -192,8 +192,14 @@ void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
                 return;
 
         updatePercussionName();
-        if (event->button() == RkMouseEvent::ButtonType::Left && event->x() < nameWidth)
-                percussionModel->select();
+        if (event->button() == RkMouseEvent::ButtonType::Left) {
+                int leftLimit  = nameWidth;
+                int rightLimit = nameWidth + keyWidth * percussionModel->keysNumber();
+                if (event->x() <= leftLimit)
+                        percussionModel->select();
+                else if (event->x() > leftLimit && event->x() < rightLimit)
+                        percussionModel->setKey((event->x() - nameWidth) / keyWidth);
+        }
 }
 
 void KitPercussionView::mouseDoubleClickEvent(RkMouseEvent *event)

@@ -90,9 +90,13 @@ size_t PercussionModel::keysNumber() const
 
 void PercussionModel::setKey(PercussionModel::KeyIndex keyIndex)
 {
-        auto refKey = geonkickApi->percussionsReferenceKey();
-        auto key = refKey + keyIndex;
-        if ( geonkickApi->setPercussionPlayingKey(id(), key))
+        int key = -1;
+        if (keyIndex < static_cast<decltype(keyIndex)>(keysNumber()) - 1) {
+                auto refKey = geonkickApi->percussionsReferenceKey();
+                key = refKey + keyIndex;
+        }
+
+        if (geonkickApi->setPercussionPlayingKey(id(), key))
                 action keyUpdated(keyIndex);
 }
 

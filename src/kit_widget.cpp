@@ -53,7 +53,6 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 
         percussionsContainer->setSize(size());
         percussionsContainer->setHiddenTakesPlace();
-        //        percussionsContainer->setSpacing(10);
         auto topContiner = new RkContainer(this);
         topContiner->setSpacing(5);
         percussionsContainer->setHiddenTakesPlace();
@@ -94,13 +93,14 @@ void KitWidget::updateView()
 {
         auto &models = kitModel->percussionModels();
         size_t n = kitModel->maxPercussionNumber();
+        GEONKICK_LOG_INFO("size: " << models.size());
         for (decltype(n) i = 0; i < n; i++) {
                 if (i < models.size()) {
-                        if (percussionsContainer->at(i))
+                        if (percussionsContainer->at(i + 1))
                                 updatePercussion(i, models[i]);
                         else
                                 addPercussion(models[i]);
-                } else if (percussionsContainer->at(i)) {
+                } else if (percussionsContainer->at(i + 1)) {
                         removePercussion(i);
                 }
         }
