@@ -65,7 +65,6 @@ void ControlArea::showKit()
         if (!kitWidget) {
                 kitWidget = new KitWidget(this, kitModel.get());
                 kitWidget->show();
-                kitWidget->setFocus();
         }
 }
 

@@ -80,7 +80,7 @@ void KitPercussionView::createView()
                          RkButton::ButtonImage::ImagePressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on_hover)),
                          RkButton::ButtonImage::ImagePressedHover);
-        //        percussionContainer->addWidget(playButton, Rk::Alignment::AlignRight);
+        percussionContainer->addWidget(playButton, Rk::Alignment::AlignRight);
 
         // Mute button
         muteButton = new RkButton(this);
@@ -94,7 +94,7 @@ void KitPercussionView::createView()
                              RkButton::ButtonImage::ImagePressed);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_on_hover)),
                              RkButton::ButtonImage::ImagePressedHover);
-        //        percussionContainer->addWidget(muteButton, Rk::Alignment::AlignRight);
+        percussionContainer->addWidget(muteButton, Rk::Alignment::AlignRight);
 
         // Solo button
         soloButton = new RkButton(this);
@@ -108,7 +108,7 @@ void KitPercussionView::createView()
                              RkButton::ButtonImage::ImagePressed);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_on_hover)),
                              RkButton::ButtonImage::ImagePressedHover);
-        //        percussionContainer->addWidget(soloButton, Rk::Alignment::AlignRight);
+        percussionContainer->addWidget(soloButton, Rk::Alignment::AlignRight);
 
         // Limiter
         limiterSlider = new GeonkickSlider(this);
@@ -150,40 +150,58 @@ PercussionModel* KitPercussionView::getModel()
 
 void KitPercussionView::paintWidget(RkPaintEvent *event)
 {
-        RkPainter painter(this);
-        auto pen = painter.pen();
+        RkImage img(size());
+        RkPainter paint(&img);
+        paint.fillRect(rect(), background());
+        auto pen = paint.pen();
         pen.setColor({200, 200, 200});
-        auto font = painter.font();
+        auto font = paint.font();
         font.setSize(12);
-        painter.setFont(font);
-        painter.drawText(RkRect(0, (height() - font.size()) / 2, nameWidth, height()),
-                         percussionModel->name());
+        paint.setFont(font);
+        paint.fillRect(RkRect(0, 0, nameWidth, height()), {60, 60, 60});
+        paint.setPen(pen);
+        paint.drawText(RkRect(0, (height() - font.size()) / 2, nameWidth, font.size()),
+                       percussionModel->name());
 
         auto n = percussionModel->keysNumber();
         int x = nameWidth;
         while (n--) {
                 if (n % 2)
-                        painter.fillRect(RkRect(x, 0, keyWidth, height()), {60, 60, 60});
+                        paint.fillRect(RkRect(x, 0, keyWidth, height()), {60, 60, 60});
                 else
-                        painter.fillRect(RkRect(x, 0, keyWidth, height()), {50, 50, 50});
+                        paint.fillRect(RkRect(x, 0, keyWidth, height()), {50, 50, 50});
                 x += keyWidth;
         }
 
-        pen = painter.pen();
+        pen = paint.pen();
         pen.setColor({50, 160, 50});
         pen.setWidth(8);
-        painter.setPen(pen);
-        painter.drawCircle({nameWidth + percussionModel->key() * keyWidth + keyWidth / 2 , height() / 2},  4);
+        paint.setPen(pen);
+        paint.drawCircle({nameWidth + percussionModel->key() * keyWidth + keyWidth / 2 , height() / 2},  4);
+        RkPainter painter(this);
+        painter.drawImage(img, 0, 0);
 }
 
 void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
 {
+        if (event->button() != RkMouseEvent::ButtonType::Left
+            && event->button() != RkMouseEvent::ButtonType::WheelUp
+            && event->button() != RkMouseEvent::ButtonType::WheelDown)
+                return;
+
+        updatePercussionName();
         if (event->button() == RkMouseEvent::ButtonType::Left && event->x() < nameWidth)
                 percussionModel->select();
 }
 
 void KitPercussionView::mouseDoubleClickEvent(RkMouseEvent *event)
 {
+        if (event->button() == RkMouseEvent::ButtonType::WheelUp
+            || event->button() == RkMouseEvent::ButtonType::WheelDown) {
+                mouseButtonPressEvent(event);
+                return;
+        }
+
         if (event->button() == RkMouseEvent::ButtonType::Left && event->x() < nameWidth) {
                 if (editPercussion == nullptr) {
                         editPercussion = new RkLineEdit(this);
@@ -192,8 +210,9 @@ void KitPercussionView::mouseDoubleClickEvent(RkMouseEvent *event)
                                     this, updatePercussionName());
                 }
                 editPercussion->setText(percussionModel->name());
-                editPercussion->moveCursorToEnd();
+                editPercussion->moveCursorToFront();
                 editPercussion->show();
+                editPercussion->setFocus();
         }
 }
 
@@ -203,7 +222,7 @@ void KitPercussionView::updatePercussionName()
 		auto name = editPercussion->text();
 		if (!name.empty()) {
 			percussionModel->setName(name);
-			delete editPercussion;
+			editPercussion->close();
                         editPercussion = nullptr;
 		}
 	}

@@ -99,7 +99,7 @@ void KitWidget::addPercussion(PercussionModel *model)
 {
         auto percussionView = new KitPercussionView(this, model);
         percussionView->show();
-        percussionsContainer->addWidget(percussionView);
+        percussionsContainer->addWidget(percussionView, Rk::Alignment::AlignLeft);
 }
 
 void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
