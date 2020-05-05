@@ -198,6 +198,7 @@ void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
                 return;
 
         updatePercussionName();
+        setFocus(true);
         if (event->button() == RkMouseEvent::ButtonType::Left) {
                 int leftLimit  = nameWidth;
                 int rightLimit = nameWidth + keyWidth * percussionModel->keysNumber();
