@@ -29,6 +29,11 @@ PercussionModel::PercussionModel(KitModel* parent, int id)
         , kitModel{parent}
         , percussionId{id}
 {
+        RK_ACT_BIND(kitModel,
+                    percussionSelected,
+                    RK_ACT_ARGS(),
+                    this,
+                    onPercussionSelected());
 }
 
 void PercussionModel::setId(int id)
@@ -157,4 +162,9 @@ void PercussionModel::solo(bool b)
 bool PercussionModel::isSolo() const
 {
         return kitModel->isPercussionSolo(index());
+}
+
+void PercussionModel::onPercussionSelected()
+{
+        action selected();
 }

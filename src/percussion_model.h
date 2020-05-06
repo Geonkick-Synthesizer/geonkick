@@ -95,6 +95,9 @@ class PercussionModel : public RkObject {
                     RK_ARG_TYPE(bool),
                     RK_ARG_VAL(b));
 
+ protected:
+        void onPercussionSelected();
+
  private:
         KitModel* kitModel;
         int percussionId;

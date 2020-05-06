@@ -34,7 +34,6 @@ KitModel::KitModel(GeonkickApi *api)
                    "F5", "F#5", "G5", "G#5",
                    "A5", "A#5", "B5", "C6", "Any"}
 {
-        //        RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, modelUpdated());
         loadModelData();
 }
 
@@ -45,8 +44,10 @@ bool KitModel::isValidIndex(KitModel::PercussionIndex index)
 
 void KitModel::selectPercussion(PercussionIndex index)
 {
-        if (isValidIndex(index) && geonkickApi->setCurrentPercussion(percussionId(index)))
+        if (isValidIndex(index) && geonkickApi->setCurrentPercussion(percussionId(index))) {
                 geonkickApi->notifyUpdateGui();
+                action percussionSelected();
+        }
 }
 
 bool KitModel::isPercussionSelected(PercussionIndex index) const
@@ -174,6 +175,7 @@ bool KitModel::open(const std::string &file)
                 geonkickApi->setCurrentWorkingPath("OpenKit", path);
                 loadModelData();
                 geonkickApi->notifyUpdateGui();
+                action modelUpdated();
         }
         return true;
 }

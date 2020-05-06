@@ -79,6 +79,10 @@ class KitModel : public RkObject {
                     percussionRemoved(PercussionIndex index),
                     RK_ARG_TYPE(PercussionIndex),
                     RK_ARG_VAL(index));
+        RK_DECL_ACT(percussionSelected,
+                    percussionSelected(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
 
  protected:
         int percussionId(int index) const;
