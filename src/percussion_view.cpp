@@ -127,6 +127,11 @@ void KitPercussionView::createView()
         percussionContainer->addContainer(limiterBox, Rk::Alignment::AlignRight);
 }
 
+void KitPercussionView::updateView()
+{
+        limiterSlider->onSetValue(percussionModel->limiter());
+}
+
 void KitPercussionView::setModel(PercussionModel *model)
 {
         if (!model)
@@ -143,6 +148,8 @@ void KitPercussionView::setModel(PercussionModel *model)
         //        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
+        RK_ACT_BIND(percussionModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
+        updateView();
 }
 
 PercussionModel* KitPercussionView::getModel()

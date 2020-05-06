@@ -43,6 +43,7 @@ class KitPercussionView: public GeonkickWidget
 
  protected:
         void createView();
+        void updateView();
         void setNameWidth(int width);
         void setKeyWidth(int width);
         void paintWidget(RkPaintEvent *event) override;
