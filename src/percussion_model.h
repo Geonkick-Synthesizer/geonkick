@@ -28,15 +28,16 @@
 
 class GeonkickApi;
 class GeonkickState;
+class KitModel;
 
 class PercussionModel : public RkObject {
  public:
         using PercussionIndex = int;
         using KeyIndex = int;
-        explicit PercussionModel(RkObject* parent, GeonkickApi* api, int id = -1);
+        explicit PercussionModel(KitModel* parent, int id = -1);
         virtual ~PercussionModel() = default;
         void setId(int id);
-        int id() const;
+        PercussionIndex index() const;
         void select();
         bool isSelected() const;
         void increasePercussionChannel();
@@ -95,8 +96,7 @@ class PercussionModel : public RkObject {
                     RK_ARG_VAL(b));
 
  private:
-        GeonkickApi *geonkickApi;
-        std::vector<std::string> midiKeys;
+        KitModel* kitModel;
         int percussionId;
 };
 

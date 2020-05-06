@@ -22,15 +22,11 @@
  */
 
 #include "percussion_model.h"
-#include "geonkick_api.h"
+#include "kit_model.h"
 
-PercussionModel::PercussionModel(RkObject* parent, GeonkickApi* api, int id)
+PercussionModel::PercussionModel(KitModel* parent, int id)
         : RkObject(parent)
-        , geonkickApi{api}
-        , midiKeys {"A4", "A#4", "B4", "C5",
-                    "C#5", "D5", "D#5", "E5",
-                    "F5", "F#5", "G5", "G#5",
-                    "A5", "A#5", "B5", "C6", "Any"}
+        , kitModel{parent}
         , percussionId{id}
 {
 }
@@ -41,142 +37,124 @@ void PercussionModel::setId(int id)
         action modelUpdated();
 }
 
-int PercussionModel::id() const
+PercussionModel::PercussionIndex PercussionModel::index() const
 {
-        return percussionId;
+        return kitModel->getIndex(percussionId);
 }
 
 void PercussionModel::select()
 {
-        if (geonkickApi->setCurrentPercussion(id()))
-                action selected();
+        kitModel->selectPercussion(index());
 }
 
 bool PercussionModel::isSelected() const
 {
-        return static_cast<decltype(id())>(geonkickApi->currentPercussion()) == id();
+        return kitModel->isPercussionSelected(index());
 }
 
 void PercussionModel::increasePercussionChannel()
 {
-        auto channel = geonkickApi->getPercussionChannel(id());
+        auto channel = kitModel->percussionChannel(index());
         if (channel < 0)
                 return;
 
-        if (++channel > static_cast<decltype(channel)>(geonkickApi->numberOfChannels() - 1))
+        if (++channel > static_cast<decltype(channel)>(kitModel->numberOfChannels() - 1))
                 channel = 0;
-        if (geonkickApi->setPercussionChannel(id(), channel))
+        if (kitModel->setPercussionChannel(index(), channel))
                 action channelUpdated(channel);
 }
 
 void PercussionModel::decreasePercussionChannel()
 {
-        auto channel = geonkickApi->getPercussionChannel(id());
+        auto channel = kitModel->percussionChannel(index());
         if (channel < 0)
                 return;
 
         if (channel - 1 < 0)
-                channel = geonkickApi->numberOfChannels() - 1;
+                channel = kitModel->numberOfChannels() - 1;
         else
                 channel--;
-        if (geonkickApi->setPercussionChannel(id(), channel))
+        if (kitModel->setPercussionChannel(percussionId, channel))
                 action channelUpdated(channel);
 }
 
 size_t PercussionModel::keysNumber() const
 {
-        return midiKeys.size();
+        return kitModel->keysNumber();
 }
 
 void PercussionModel::setKey(PercussionModel::KeyIndex keyIndex)
 {
-        int key = -1;
-        if (keyIndex < static_cast<decltype(keyIndex)>(keysNumber()) - 1) {
-                auto refKey = geonkickApi->percussionsReferenceKey();
-                key = refKey + keyIndex;
-        }
-
-        if (geonkickApi->setPercussionPlayingKey(id(), key))
+        if (kitModel->setPercussionKey(index(), keyIndex))
                 action keyUpdated(keyIndex);
 }
 
 PercussionModel::KeyIndex PercussionModel::key() const
 {
-        KeyIndex keyIndex = geonkickApi->getPercussionPlayingKey(id());
-        if (keyIndex < 0)
-                return keysNumber() - 1;
-        keyIndex -= geonkickApi->percussionsReferenceKey();
-        if (keyIndex < 0 || keyIndex > static_cast<decltype(keyIndex)>(keysNumber() - 1))
-                return keysNumber() - 1;
-        else
-                return keyIndex;
+        return kitModel->percussionKey(index());
 }
 
 void PercussionModel::setName(const std::string &name)
 {
-        if (geonkickApi->setPercussionName(id(), name))
+        if (kitModel->setPercussionName(index(), name))
                 action nameUpdated(name);
 }
 
 std::string PercussionModel::name() const
 {
-        return geonkickApi->getPercussionName(id());
+        return kitModel->percussionName(index());
 }
 
 int PercussionModel::channel() const
 {
-        return geonkickApi->getPercussionChannel(id());
+        return kitModel->percussionChannel(index());
 }
 
 bool PercussionModel::canCopy() const
 {
-        auto n = geonkickApi->ordredPercussionIds().size();
-        if (n > 0 && n < geonkickApi->getPercussionsNumber())
-                return true;
-        return false;
+        auto n = kitModel->percussionNumber();
+        return n > 0 && n < kitModel->maxPercussionNumber();
 }
 
 bool PercussionModel::canRemove() const
 {
-        return geonkickApi->ordredPercussionIds().size() > 1;
+        return kitModel->percussionNumber() > 1;
 }
 
 void PercussionModel::play()
 {
-        geonkickApi->playKick(id());
+        kitModel->playPercussion(index());
 }
 
 void PercussionModel::setLimiter(int value)
 {
-        auto realVal = pow(10, static_cast<double>(value - 80) / 20);
-        if (geonkickApi->setPercussionLimiter(id(), realVal))
+        if (kitModel->setPercussionLimiter(index(), value))
                 action limiterUpdated(value);
 }
 
 int PercussionModel::limiter() const
 {
-        auto realVal = geonkickApi->percussionLimiter(id());
-        return 20 * log10(realVal) + 80;
+        return kitModel->percussionLimiter(index());
 }
 
 void PercussionModel::mute(bool b)
 {
-        if (geonkickApi->mutePercussion(id(), b))
+        if (kitModel->mutePercussion(index(), b))
                 action muteUpdated(b);
 }
 
 bool PercussionModel::isMuted() const
 {
-        return geonkickApi->isPercussionMuted(id());
+        return kitModel->isPercussionMuted(index());
 }
 
 void PercussionModel::solo(bool b)
 {
-        if (geonkickApi->soloPercussion(id(), b))
+        if (kitModel->soloPercussion(index(), b))
                 action soloUpdated(b);
 }
 
 bool PercussionModel::isSolo() const
 {
-        return geonkickApi->isPercussionSolo(id());
+        return kitModel->isPercussionSolo(index());
 }

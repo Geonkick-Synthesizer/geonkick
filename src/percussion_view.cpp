@@ -130,6 +130,7 @@ void KitPercussionView::createView()
 void KitPercussionView::updateView()
 {
         limiterSlider->onSetValue(percussionModel->limiter());
+        update();
 }
 
 void KitPercussionView::setModel(PercussionModel *model)
@@ -148,6 +149,7 @@ void KitPercussionView::setModel(PercussionModel *model)
         //        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
+        RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
         RK_ACT_BIND(percussionModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
         updateView();
 }
@@ -187,6 +189,9 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
                                                 backgroundColor.blue() - 20, 80});
                 x += keyWidth;
         }
+
+        if (percussionModel->isSelected())
+                paint.fillRect(RkRect(0, 0, 4, height()), {255, 255, 255, 90});
 
         pen = paint.pen();
         pen.setColor({50, 160, 50});
