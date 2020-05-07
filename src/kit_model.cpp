@@ -27,6 +27,9 @@
 #include "percussion_model.h"
 #include "kit_state.h"
 
+#include <RkAction.h>
+#include <RkEventQueue.h>
+
 KitModel::KitModel(GeonkickApi *api)
         : geonkickApi{api}
         , midiKeys {"A4", "A#4", "B4", "C5",
@@ -129,7 +132,7 @@ int KitModel::percussionLimiter(PercussionIndex index) const
 
 bool KitModel::mutePercussion(PercussionIndex index, bool b)
 {
-        return false;
+        return geonkickApi->mutePercussion(percussionId(index), b);
 }
 
 bool KitModel::isPercussionMuted(PercussionIndex index) const
@@ -211,28 +214,38 @@ void KitModel::addNewPercussion()
 
 void KitModel::copyPercussion(PercussionIndex index)
 {
-        auto newId = geonkickApi->getUnusedPercussion();
-        if (newId < 0)
-                return;
+        // auto newId = geonkickApi->getUnusedPercussion();
+        // if (newId < 0)
+        //         return;
 
-        auto state = geonkickApi->getPercussionState(percussionId(index));
-        if (state) {
-                state->setId(newId);
-                state->enable(true);
-                geonkickApi->setPercussionState(state);
-                geonkickApi->addOrderedPercussionId(newId);
-                auto model = new PercussionModel(this, newId);
-                percussionsList.push_back(model);
-                action percussionAdded(model);
-        }
+        // auto state = geonkickApi->getPercussionState(percussionId(index));
+        // if (state) {
+        //         state->setId(newId);
+        //         state->enable(true);
+        //         geonkickApi->setPercussionState(state);
+        //         geonkickApi->addOrderedPercussionId(newId);
+        //         auto model = new PercussionModel(this, newId);
+        //         percussionsList.push_back(model);
+        //         action percussionAdded(model);
+        // }
 }
 
 void KitModel::removePercussion(PercussionIndex index)
 {
-        if (static_cast<decltype(percussionsList.size())>(index) < percussionsList.size()) {
-                delete percussionsList[index];
-                percussionsList.erase(percussionsList.begin() + index);
-                action percussionRemoved(index);
+        GEONKICK_LOG_INFO("KitModel::removePercussion");
+        for (auto it = percussionsList.begin(); it != percussionsList.end(); ++it) {
+                if ((*it)->index() == index && geonkickApi->enablePercussion(percussionId(index), false)) {
+                        bool notify = (*it)->isSelected();
+                        delete *it;
+                        percussionsList.erase(it);
+                        geonkickApi->removeOrderedPercussionId(percussionId(index));
+                        if (notify) {
+                                geonkickApi->setCurrentPercussion(percussionId(0));
+                                geonkickApi->notifyUpdateGui();
+                        }
+                        GEONKICK_LOG_INFO("KitModel::removePercussion: action modelUpdated()");
+                        break;
+                }
         }
 }
 

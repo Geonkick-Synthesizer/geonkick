@@ -51,12 +51,15 @@ class KitPercussionView: public GeonkickWidget
         void mouseDoubleClickEvent(RkMouseEvent *event);
         void updatePercussionName();
         PercussionModel* getModel();
+        void remove(bool b);
 
  private:
         PercussionModel *percussionModel;
         int nameWidth;
         int keyWidth;
         RkLineEdit *editPercussion;
+        RkButton *copyButton;
+        RkButton *removeButton;
         RkButton *playButton;
         RkButton *muteButton;
         RkButton *soloButton;

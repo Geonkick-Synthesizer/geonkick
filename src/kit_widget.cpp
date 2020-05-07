@@ -51,6 +51,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
         RK_ACT_BIND(kitModel, percussionAdded, RK_ACT_ARGS(PercussionModel *model),
                     this, addPercussion(model));
+        RK_ACT_BIND(kitModel, percussionRemoved, RK_ACT_ARGS(PercussionIndex index),
+                    this, removePercussion(index));
 
         auto kitContainer = new RkContainer(this, Rk::Orientation::Vertical);
         kitContainer->setHiddenTakesPlace();
@@ -129,11 +131,18 @@ void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
 
 void KitWidget::removePercussion(PercussionIndex index)
 {
-        if (static_cast<size_t>(index) < percussionViewList.size()) {
-                percussionsContainer->removeAt(index);
-                delete percussionViewList[index];
-                percussionViewList.erase(percussionViewList.begin() + index);
+        for (auto it = percussionViewList.begin(); it != percussionViewList.end(); ++it) {
+                if ((*it)->getModel()->index() == index) {
+                        percussionsContainer->removeAt(index);
+                        delete percussionViewList[index];
+                        percussionViewList.erase(percussionViewList.begin() + index);
+                }
         }
+}
+
+void KitWidget::copyPercussion(int index)
+{
+        kitModel->copyPercussion(index);
 }
 
 // void KitWidget::drawKeys(RkPainter &painter)
@@ -187,11 +196,6 @@ void KitWidget::openKit(const std::string &file)
 void KitWidget::saveKit(const std::string &file)
 {
         kitModel->save(file);
-}
-
-void KitWidget::copyPercussion(int index)
-{
-        //kitModel->copyPercussion(index);
 }
 
 void KitWidget::keyPressEvent(RkKeyEvent *event)

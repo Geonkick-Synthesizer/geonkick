@@ -57,6 +57,9 @@ class PercussionModel : public RkObject {
         bool isMuted() const;
         void solo(bool b);
         bool isSolo() const;
+        void remove();
+        void copy();
+
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),

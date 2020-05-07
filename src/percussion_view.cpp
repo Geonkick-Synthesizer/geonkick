@@ -35,15 +35,18 @@
 RK_DECLARE_IMAGE_RC(mute);
 RK_DECLARE_IMAGE_RC(mute_hover);
 RK_DECLARE_IMAGE_RC(mute_on);
-RK_DECLARE_IMAGE_RC(mute_on_hover);
 RK_DECLARE_IMAGE_RC(solo);
 RK_DECLARE_IMAGE_RC(solo_hover);
 RK_DECLARE_IMAGE_RC(solo_on);
-RK_DECLARE_IMAGE_RC(solo_on_hover);
 RK_DECLARE_IMAGE_RC(per_play);
 RK_DECLARE_IMAGE_RC(per_play_hover);
 RK_DECLARE_IMAGE_RC(per_play_on);
-RK_DECLARE_IMAGE_RC(per_play_on_hover);
+RK_DECLARE_IMAGE_RC(remove_per_button);
+RK_DECLARE_IMAGE_RC(remove_per_button_hover);
+RK_DECLARE_IMAGE_RC(remove_per_button_on);
+RK_DECLARE_IMAGE_RC(copy_per_button);
+RK_DECLARE_IMAGE_RC(copy_per_button_hover);
+RK_DECLARE_IMAGE_RC(copy_per_button_on);
 
 KitPercussionView::KitPercussionView(GeonkickWidget *parent,
                                      PercussionModel *model)
@@ -52,6 +55,8 @@ KitPercussionView::KitPercussionView(GeonkickWidget *parent,
         , nameWidth{100}
         , keyWidth{30}
         , editPercussion{nullptr}
+        , copyButton{nullptr}
+        , removeButton{nullptr}
         , playButton{nullptr}
         , muteButton{nullptr}
         , soloButton{nullptr}
@@ -68,20 +73,56 @@ void KitPercussionView::createView()
         auto percussionContainer = new RkContainer(this);
         percussionContainer->setSize(size());
         percussionContainer->setHiddenTakesPlace();
+        percussionContainer->addSpace(nameWidth + percussionModel->keysNumber() * keyWidth + 10);
 
-        // Play button
-        playButton = new RkButton(this);
-        playButton->setType(RkButton::ButtonType::ButtonPush);
-        playButton->setSize(16, 16);
-        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play)),
-                         RkButton::ButtonImage::ImageUnpressed);
-        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_hover)),
-                         RkButton::ButtonImage::ImageUnpressedHover);
-        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on)),
-                         RkButton::ButtonImage::ImagePressed);
-        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on_hover)),
-                         RkButton::ButtonImage::ImagePressedHover);
-        percussionContainer->addWidget(playButton, Rk::Alignment::AlignRight);
+        // Remove button
+        removeButton = new RkButton(this);
+        removeButton->setType(RkButton::ButtonType::ButtonPush);
+        removeButton->setSize(16, 16);
+        removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button)),
+                             RkButton::ButtonImage::ImageUnpressed);
+        removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_hover)),
+                             RkButton::ButtonImage::ImageUnpressedHover);
+        removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_on)),
+                             RkButton::ButtonImage::ImagePressed);
+        removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_hover)),
+                             RkButton::ButtonImage::ImagePressedHover);
+        removeButton->show();
+        percussionContainer->addWidget(removeButton);
+        percussionContainer->addSpace(3);
+
+        // Copy button
+        copyButton = new RkButton(this);
+        copyButton->setType(RkButton::ButtonType::ButtonPush);
+        copyButton->setSize(16, 16);
+        copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button)),
+                             RkButton::ButtonImage::ImageUnpressed);
+        copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button_hover)),
+                             RkButton::ButtonImage::ImageUnpressedHover);
+        copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button_on)),
+                             RkButton::ButtonImage::ImagePressed);
+        copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button_hover)),
+                             RkButton::ButtonImage::ImagePressedHover);
+        copyButton->show();
+        percussionContainer->addWidget(copyButton);
+        percussionContainer->addSpace(10);
+
+        // Limiter
+        limiterSlider = new GeonkickSlider(this);
+        limiterSlider->setSize(100, 10);
+        //        levelerProgress = new RkProgressBar(this);
+        //        levelerProgress->setSize({limiterSlider->width() - 2, limiterSlider->height() / 2});
+        //        levelerProgress->setProgressColor({125, 200, 125});
+        //        levelerProgress->setRange(0, 100);
+        auto limiterBox = new RkContainer(this, Rk::Orientation::Vertical);
+        limiterBox->setHiddenTakesPlace();
+        limiterBox->setSize({limiterSlider->width(), percussionContainer->height()});
+        //        limiterBox->addWidget(levelerProgress);
+        limiterBox->addSpace((height() - limiterSlider->height()) / 2);
+        limiterBox->addWidget(limiterSlider);
+        percussionContainer->addSpace(5);
+        percussionContainer->addContainer(limiterBox);
+        percussionContainer->addSpace(10);
 
         // Mute button
         muteButton = new RkButton(this);
@@ -93,9 +134,11 @@ void KitPercussionView::createView()
                              RkButton::ButtonImage::ImageUnpressedHover);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_on)),
                              RkButton::ButtonImage::ImagePressed);
-        muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_on_hover)),
+        muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_hover)),
                              RkButton::ButtonImage::ImagePressedHover);
-        percussionContainer->addWidget(muteButton, Rk::Alignment::AlignRight);
+        muteButton->show();
+        percussionContainer->addWidget(muteButton);
+        percussionContainer->addSpace(3);
 
         // Solo button
         soloButton = new RkButton(this);
@@ -107,24 +150,24 @@ void KitPercussionView::createView()
                              RkButton::ButtonImage::ImageUnpressedHover);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_on)),
                              RkButton::ButtonImage::ImagePressed);
-        soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_on_hover)),
+        soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_hover)),
                              RkButton::ButtonImage::ImagePressedHover);
-        percussionContainer->addWidget(soloButton, Rk::Alignment::AlignRight);
+        soloButton->show();
+        percussionContainer->addWidget(soloButton);
+        percussionContainer->addSpace(3);
 
-        // Limiter
-        limiterSlider = new GeonkickSlider(this);
-        limiterSlider->setSize(200, 10);
-        //        levelerProgress = new RkProgressBar(this);
-        //        levelerProgress->setSize({limiterSlider->width() - 2, limiterSlider->height() / 2});
-        //        levelerProgress->setProgressColor({125, 200, 125});
-        //        levelerProgress->setRange(0, 100);
-        auto limiterBox = new RkContainer(this, Rk::Orientation::Vertical);
-        limiterBox->setHiddenTakesPlace();
-        limiterBox->setSize({limiterSlider->width(), percussionContainer->height()});
-        //        limiterBox->addWidget(levelerProgress);
-        //        limiterBox->addSpace(3);
-        limiterBox->addWidget(limiterSlider);
-        percussionContainer->addContainer(limiterBox, Rk::Alignment::AlignRight);
+        // Play button
+        playButton = new RkButton(this);
+        playButton->setType(RkButton::ButtonType::ButtonPush);
+        playButton->setSize(16, 16);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play)),
+                         RkButton::ButtonImage::ImageUnpressed);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_hover)),
+                         RkButton::ButtonImage::ImageUnpressedHover);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on)),
+                         RkButton::ButtonImage::ImagePressed);
+        playButton->show();
+        percussionContainer->addWidget(playButton);
 }
 
 void KitPercussionView::updateView()
@@ -139,6 +182,8 @@ void KitPercussionView::setModel(PercussionModel *model)
                 return;
 
         percussionModel = model;
+        RK_ACT_BIND(removeButton, toggled, RK_ACT_ARGS(bool toggled), this, remove(toggled));
+        RK_ACT_BIND(copyButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, copy());
         RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, play());
         RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, mute(toggled));
         RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, solo(toggled));
@@ -157,6 +202,15 @@ void KitPercussionView::setModel(PercussionModel *model)
 PercussionModel* KitPercussionView::getModel()
 {
         return percussionModel;
+}
+
+void KitPercussionView::remove(bool b)
+{
+        GEONKICK_LOG_INFO("called: " << b);
+        if (!b && percussionModel) {
+                GEONKICK_LOG_INFO("called1: " << b);
+                percussionModel->remove();
+        }
 }
 
 void KitPercussionView::paintWidget(RkPaintEvent *event)

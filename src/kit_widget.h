@@ -47,11 +47,11 @@ class KitWidget: public GeonkickWidget
         void addPercussion(PercussionModel *model);
         void updatePercussion(PercussionIndex index, PercussionModel *model);
         void removePercussion(PercussionIndex index);
+        void copyPercussion(int index);
         void drawKeys(RkPainter &painter);
         void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
-        void copyPercussion(int index);
         void keyPressEvent(RkKeyEvent *event);
 
  private:

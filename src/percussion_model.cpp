@@ -168,3 +168,13 @@ void PercussionModel::onPercussionSelected()
 {
         action selected();
 }
+
+void PercussionModel::remove()
+{
+        kitModel->removePercussion(index());
+}
+
+void PercussionModel::copy()
+{
+        kitModel->copyPercussion(index());
+}
