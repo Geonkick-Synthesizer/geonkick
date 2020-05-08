@@ -182,6 +182,8 @@ void KitPercussionView::createView()
 void KitPercussionView::updateView()
 {
         limiterSlider->onSetValue(percussionModel->limiter());
+        muteButton->setPressed(percussionModel->isMuted());
+        soloButton->setPressed(percussionModel->isSolo());
         update();
 }
 

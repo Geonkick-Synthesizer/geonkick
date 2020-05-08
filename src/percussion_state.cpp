@@ -33,6 +33,8 @@ PercussionState::PercussionState()
         , playingKey{-1}
         , outputChannel{0}
         , kickEnabled{true}
+        , percussionMuted{false}
+        , percussionSolo{false}
         , limiterValue{0}
         , kickLength{50}
         , kickAmplitude{0.8}
@@ -154,6 +156,26 @@ void PercussionState::setChannel(size_t channel)
         outputChannel = channel;
 }
 
+void PercussionState::setMute(bool b)
+{
+        percussionMuted = b;
+}
+
+bool PercussionState::isMuted() const
+{
+        return percussionMuted;
+}
+
+void PercussionState::setSolo(bool b)
+{
+        percussionSolo = b;
+}
+
+bool PercussionState::isSolo() const
+{
+        return percussionSolo;
+}
+
 size_t PercussionState::getChannel() const
 {
         return outputChannel;
@@ -210,6 +232,10 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                         setId(m.value.GetInt());
                 if (m.name == "channel" && m.value.IsInt())
                         setChannel(m.value.GetInt());
+                if (m.name == "mute" && m.value.IsBool())
+                        setMute(m.value.GetBool());
+                if (m.name == "solo" && m.value.IsBool())
+                        setSolo(m.value.GetBool());
                 if (m.name == "playing_key" && m.value.IsInt())
                         setPlayingKey(m.value.GetInt());
                 if (m.name == "limiter" && m.value.IsDouble())
@@ -880,6 +906,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "\"PercussionAppVersion\": " << GEONKICK_VERSION << "," << std::endl;
 	jsonStream << "\"id\": " << getId() << "," << std::endl;
         jsonStream << "\"channel\": " << getChannel() << "," << std::endl;
+        jsonStream << "\"mute\": " << (isMuted() ? "true" : "false") << "," << std::endl;
+        jsonStream << "\"solo\": " << (isSolo() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
         jsonStream << "\"playing_key\": " << static_cast<int>(getPlayingKey()) << "," << std::endl;
         jsonStream << "\"layers\": [";

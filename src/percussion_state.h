@@ -43,6 +43,10 @@ class PercussionState
         void setId(size_t id);
         void setChannel(size_t channel);
         size_t getChannel() const;
+        void setMute(bool b);
+        bool isMuted() const;
+        void setSolo(bool b);
+        bool isSolo() const;
         std::string getName() const;
         void setName(const std::string &name);
         char getPlayingKey() const;
@@ -195,6 +199,8 @@ private:
         char playingKey;
         size_t outputChannel;
         bool kickEnabled;
+        bool percussionMuted;
+        bool percussionSolo;
 
         double limiterValue;
         double kickLength;

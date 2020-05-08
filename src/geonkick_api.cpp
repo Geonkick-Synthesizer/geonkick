@@ -185,6 +185,8 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
         setPercussionName(state->getId(), state->getName());
         setPercussionPlayingKey(state->getId(), state->getPlayingKey());
         setPercussionChannel(state->getId(), state->getChannel());
+        mutePercussion(state->getId(), state->isMuted());
+        soloPercussion(state->getId(), state->isSolo());
         for (auto i = 0; i < 3; i++) {
                 enbaleLayer(static_cast<Layer>(i), state->isLayerEnabled(static_cast<Layer>(i)));
                 setLayerAmplitude(static_cast<Layer>(i), state->getLayerAmplitude(static_cast<Layer>(i)));
@@ -257,6 +259,8 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
         state->tuneOutput(isAudioOutputTuned(state->getId()));
         state->setPlayingKey(getPercussionPlayingKey(state->getId()));
         state->setChannel(getPercussionChannel(state->getId()));
+        state->setMute(isPercussionMuted(state->getId()));
+        state->setSolo(isPercussionSolo(state->getId()));
         for (int i = 0; i < 3; i++) {
                 state->setLayerEnabled(static_cast<Layer>(i), isLayerEnabled(static_cast<Layer>(i)));
                 state->setLayerAmplitude(static_cast<Layer>(i), getLayerAmplitude(static_cast<Layer>(i)));
