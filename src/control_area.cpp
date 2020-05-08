@@ -33,9 +33,10 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , geonkickApi{api}
         , oscillators{oscillators}
         , controlsWidget{nullptr}
-        , kitModel{std::make_unique<KitModel>(geonkickApi)}
+        , kitModel{nullptr}
         , kitWidget{nullptr}
 {
+        kitModel = new KitModel(this, geonkickApi);
         setFixedSize(920, 368);
         showControls();
 }
@@ -63,7 +64,7 @@ void ControlArea::showKit()
         }
 
         if (!kitWidget) {
-                kitWidget = new KitWidget(this, kitModel.get());
+                kitWidget = new KitWidget(this, kitModel);
                 kitWidget->show();
         }
 }

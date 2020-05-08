@@ -34,7 +34,7 @@ class KitModel : public RkObject {
  public:
         using PercussionIndex = int;
         using KeyIndex = int;
-        explicit KitModel(GeonkickApi *api);
+        explicit KitModel(RkObject* parent, GeonkickApi *api);
         bool isValidIndex(PercussionIndex index);
         bool open(const std::string &file);
         bool save(const std::string &file);

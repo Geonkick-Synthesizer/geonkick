@@ -30,8 +30,9 @@
 #include <RkAction.h>
 #include <RkEventQueue.h>
 
-KitModel::KitModel(GeonkickApi *api)
-        : geonkickApi{api}
+KitModel::KitModel(RkObject *parent, GeonkickApi *api)
+        : RkObject(parent)
+        , geonkickApi{api}
         , midiKeys {"A4", "A#4", "B4", "C5",
                    "C#5", "D5", "D#5", "E5",
                    "F5", "F#5", "G5", "G#5",
@@ -235,6 +236,7 @@ void KitModel::removePercussion(PercussionIndex index)
         GEONKICK_LOG_INFO("KitModel::removePercussion");
         for (auto it = percussionsList.begin(); it != percussionsList.end(); ++it) {
                 if ((*it)->index() == index && geonkickApi->enablePercussion(percussionId(index), false)) {
+                        action percussionRemoved(index);
                         bool notify = (*it)->isSelected();
                         delete *it;
                         percussionsList.erase(it);
@@ -243,7 +245,6 @@ void KitModel::removePercussion(PercussionIndex index)
                                 geonkickApi->setCurrentPercussion(percussionId(0));
                                 geonkickApi->notifyUpdateGui();
                         }
-                        GEONKICK_LOG_INFO("KitModel::removePercussion: action modelUpdated()");
                         break;
                 }
         }

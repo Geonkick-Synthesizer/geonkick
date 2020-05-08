@@ -21,6 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#include "kit_widget.h"
 #include "percussion_view.h"
 #include "percussion_model.h"
 #include "geonkick_slider.h"
@@ -48,9 +49,10 @@ RK_DECLARE_IMAGE_RC(copy_per_button);
 RK_DECLARE_IMAGE_RC(copy_per_button_hover);
 RK_DECLARE_IMAGE_RC(copy_per_button_on);
 
-KitPercussionView::KitPercussionView(GeonkickWidget *parent,
+KitPercussionView::KitPercussionView(KitWidget *parent,
                                      PercussionModel *model)
         : GeonkickWidget(parent)
+        , parentView{parent}
         , percussionModel{model}
         , nameWidth{100}
         , keyWidth{30}
@@ -206,11 +208,8 @@ PercussionModel* KitPercussionView::getModel()
 
 void KitPercussionView::remove(bool b)
 {
-        GEONKICK_LOG_INFO("called: " << b);
-        if (!b && percussionModel) {
-                GEONKICK_LOG_INFO("called1: " << b);
+        if (!b && percussionModel)
                 percussionModel->remove();
-        }
 }
 
 void KitPercussionView::paintWidget(RkPaintEvent *event)

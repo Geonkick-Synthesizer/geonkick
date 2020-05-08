@@ -24,6 +24,9 @@
 #include "percussion_model.h"
 #include "kit_model.h"
 
+#include <RkAction.h>
+#include <RkEventQueue.h>
+
 PercussionModel::PercussionModel(KitModel* parent, int id)
         : RkObject(parent)
         , kitModel{parent}
@@ -171,7 +174,11 @@ void PercussionModel::onPercussionSelected()
 
 void PercussionModel::remove()
 {
-        kitModel->removePercussion(index());
+        auto act = std::move(std::make_unique<RkAction>());
+        auto model = kitModel;
+        PercussionIndex i = index();
+        act->setCallback([i, model](void){ model->removePercussion(i); });
+        eventQueue()->postAction(std::move(act));
 }
 
 void PercussionModel::copy()

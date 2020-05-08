@@ -25,6 +25,7 @@
 #include "kit_model.h"
 #include "geonkick_slider.h"
 #include "percussion_view.h"
+#include "percussion_model.h"
 
 #include <RkEvent.h>
 #include <RkImage.h>
@@ -98,13 +99,12 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 
 void KitWidget::updateView()
 {
+        percussionsContainer->clear();
         for (auto &percussionView: percussionViewList)
                 delete percussionView;
         percussionViewList.clear();
 
         auto &models = kitModel->percussionModels();
-        GEONKICK_LOG_INFO("size: " << models.size());
-        percussionsContainer->clear();
         for (const auto &m: models)
                 addPercussion(m);
 }
@@ -134,8 +134,10 @@ void KitWidget::removePercussion(PercussionIndex index)
         for (auto it = percussionViewList.begin(); it != percussionViewList.end(); ++it) {
                 if ((*it)->getModel()->index() == index) {
                         percussionsContainer->removeAt(index);
-                        delete percussionViewList[index];
-                        percussionViewList.erase(percussionViewList.begin() + index);
+                        delete *it;
+                        percussionViewList.erase(it);
+                        percussionsContainer->update();
+                        break;
                 }
         }
 }
