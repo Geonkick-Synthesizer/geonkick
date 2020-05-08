@@ -113,10 +113,6 @@ void KitWidget::addPercussion(PercussionModel *model)
 {
         auto percussionView = new KitPercussionView(this, model);
         percussionsContainer->addWidget(percussionView, Rk::Alignment::AlignTop);
-        if (percussionViewList.size() % 2)
-                percussionView->setBackground({200, 200, 200, 80});
-        else
-                percussionView->setBackground({160, 160, 160, 80});
         percussionViewList.push_back(percussionView);
         percussionView->show();
 }

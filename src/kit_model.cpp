@@ -215,25 +215,30 @@ void KitModel::addNewPercussion()
 
 void KitModel::copyPercussion(PercussionIndex index)
 {
-        // auto newId = geonkickApi->getUnusedPercussion();
-        // if (newId < 0)
-        //         return;
+        if (!isValidIndex(index))
+                return;
 
-        // auto state = geonkickApi->getPercussionState(percussionId(index));
-        // if (state) {
-        //         state->setId(newId);
-        //         state->enable(true);
-        //         geonkickApi->setPercussionState(state);
-        //         geonkickApi->addOrderedPercussionId(newId);
-        //         auto model = new PercussionModel(this, newId);
-        //         percussionsList.push_back(model);
-        //         action percussionAdded(model);
-        // }
+        auto newId = geonkickApi->getUnusedPercussion();
+        if (newId < 0)
+                return;
+
+        auto state = geonkickApi->getPercussionState(percussionId(index));
+        if (state) {
+                state->setId(newId);
+                state->enable(true);
+                geonkickApi->setPercussionState(state);
+                geonkickApi->addOrderedPercussionId(newId);
+                auto model = new PercussionModel(this, newId);
+                percussionsList.push_back(model);
+                action percussionAdded(model);
+        }
 }
 
 void KitModel::removePercussion(PercussionIndex index)
 {
-        GEONKICK_LOG_INFO("KitModel::removePercussion");
+        if (!isValidIndex(index) || percussionsList.size() < 2)
+                return;
+
         for (auto it = percussionsList.begin(); it != percussionsList.end(); ++it) {
                 if ((*it)->index() == index && geonkickApi->enablePercussion(percussionId(index), false)) {
                         action percussionRemoved(index);
@@ -243,11 +248,14 @@ void KitModel::removePercussion(PercussionIndex index)
                         geonkickApi->removeOrderedPercussionId(percussionId(index));
                         if (notify) {
                                 geonkickApi->setCurrentPercussion(percussionId(0));
-                                geonkickApi->notifyUpdateGui();
+                                action selectPercussion(0);
                         }
                         break;
                 }
         }
+
+        for (const auto & per: percussionsList)
+                action per->modelUpdated();
 }
 
 size_t KitModel::percussionNumber() const

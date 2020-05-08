@@ -70,6 +70,13 @@ KitPercussionView::KitPercussionView(KitWidget *parent,
         setModel(model);
 }
 
+KitPercussionView::PercussionIndex KitPercussionView::index() const
+{
+        if (percussionModel)
+                return percussionModel->index();
+        return -1;
+}
+
 void KitPercussionView::createView()
 {
         auto percussionContainer = new RkContainer(this);
@@ -184,9 +191,9 @@ void KitPercussionView::setModel(PercussionModel *model)
                 return;
 
         percussionModel = model;
-        RK_ACT_BIND(removeButton, toggled, RK_ACT_ARGS(bool toggled), this, remove(toggled));
-        RK_ACT_BIND(copyButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, copy());
-        RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, play());
+        RK_ACT_BIND(removeButton, released, RK_ACT_ARGS(), this, remove());
+        RK_ACT_BIND(copyButton, released, RK_ACT_ARGS(), percussionModel, copy());
+        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), percussionModel, play());
         RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, mute(toggled));
         RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, solo(toggled));
         RK_ACT_BIND(limiterSlider, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
@@ -206,10 +213,10 @@ PercussionModel* KitPercussionView::getModel()
         return percussionModel;
 }
 
-void KitPercussionView::remove(bool b)
+void KitPercussionView::remove()
 {
-        if (!b && percussionModel)
-                percussionModel->remove();
+        if (getModel())
+                getModel()->remove();
 }
 
 void KitPercussionView::paintWidget(RkPaintEvent *event)
@@ -222,6 +229,9 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         auto font = paint.font();
         font.setSize(12);
         paint.setFont(font);
+        RkColor backgroundColor = {160, 160, 160, 80};
+        if (index() %2)
+                backgroundColor = {200, 200, 200, 80};
         paint.fillRect(RkRect(0, 0, nameWidth, height()), backgroundColor);
         paint.setPen(pen);
         paint.drawText(RkRect(7, (height() - font.size()) / 2, nameWidth, font.size()),
