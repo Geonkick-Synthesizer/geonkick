@@ -55,6 +55,11 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(kitModel, percussionRemoved, RK_ACT_ARGS(PercussionIndex index),
                     this, removePercussion(index));
 
+        new RkShortcut(this, Rk::Key::Key_Up);
+        new RkShortcut(this, Rk::Key::Key_Down);
+        new RkShortcut(this, Rk::KeyModifiers::Control, Rk::Key::Key_Up);
+        new RkShortcut(this, Rk::KeyModifiers::Control, Rk::Key::Key_Down);
+
         auto kitContainer = new RkContainer(this, Rk::Orientation::Vertical);
         kitContainer->setHiddenTakesPlace();
         kitContainer->setSize(size());
