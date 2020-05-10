@@ -869,7 +869,7 @@ void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
         if (id < getPercussionsNumber())
                 kickBuffers[id] = buffer;
         if (eventQueue && id == currentPercussion()) {
-                auto act = std::move(std::make_unique<RkAction>());
+                auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ kickUpdated(); });
                 eventQueue->postAction(std::move(act));
         }
@@ -1475,7 +1475,7 @@ void GeonkickApi::pasteFromClipboard()
 void GeonkickApi::notifyUpdateGraph()
 {
         if (eventQueue) {
-                auto act = std::move(std::make_unique<RkAction>());
+                auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ action kickUpdated(); });
                 eventQueue->postAction(std::move(act));
         }
@@ -1484,7 +1484,7 @@ void GeonkickApi::notifyUpdateGraph()
 void GeonkickApi::notifyUpdateParameters()
 {
         if (eventQueue) {
-                auto act = std::move(std::make_unique<RkAction>());
+                auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ action stateChanged(); });
                 eventQueue->postAction(std::move(act));
         }
@@ -1493,7 +1493,7 @@ void GeonkickApi::notifyUpdateParameters()
 void GeonkickApi::notifyUpdateGui()
 {
         if (eventQueue) {
-                auto act = std::move(std::make_unique<RkAction>());
+                auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){
                                 action kickUpdated();
                                 action stateChanged();

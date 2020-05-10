@@ -174,7 +174,7 @@ void PercussionModel::onPercussionSelected()
 
 void PercussionModel::remove()
 {
-        auto act = std::move(std::make_unique<RkAction>());
+        auto act = std::make_unique<RkAction>();
         auto model = kitModel;
         PercussionIndex i = index();
         act->setCallback([i, model](void){ model->removePercussion(i); });
