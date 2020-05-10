@@ -55,10 +55,12 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(kitModel, percussionRemoved, RK_ACT_ARGS(PercussionIndex index),
                     this, removePercussion(index));
 
-        new RkShortcut(this, Rk::Key::Key_Up);
-        new RkShortcut(this, Rk::Key::Key_Down);
-        new RkShortcut(this, Rk::KeyModifiers::Control, Rk::Key::Key_Up);
-        new RkShortcut(this, Rk::KeyModifiers::Control, Rk::Key::Key_Down);
+        addShortcut(Rk::Key::Key_Up);
+        addShortcut(Rk::Key::Key_Down);
+        addShortcut(Rk::Key::Key_Up, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_Up, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_Down, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_Down, Rk::KeyModifiers::Control_Right);
 
         auto kitContainer = new RkContainer(this, Rk::Orientation::Vertical);
         kitContainer->setHiddenTakesPlace();
@@ -203,16 +205,15 @@ void KitWidget::saveKit(const std::string &file)
 
 void KitWidget::keyPressEvent(RkKeyEvent *event)
 {
-        // if (event->key() != Rk::Key::Key_Up && event->key() != Rk::Key::Key_Down)
-        //         return;
+        if (event->key() != Rk::Key::Key_Up && event->key() != Rk::Key::Key_Down)
+                return;
 
-        // auto index = kitModel->selectedPercussion();
-        // if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
-        //         kitModel->moveSelectedPercussion(event->key() == Rk::Key::Key_Down);
-        // } else if (event->key() == Rk::Key::Key_Up && --index > -1) {
-        //         kitModel->selectPercussion(index);
-        // } else if (event->key() == Rk::Key::Key_Down
-        //            && ++index < static_cast<decltype(index)>(kitModel->percussionNumber())) {
-        //         //                kitModel->selectPercussion(index);
-        // }
+        auto index = kitModel->selectedPercussion();
+        if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))) {
+                kitModel->moveSelectedPercussion(event->key() == Rk::Key::Key_Down);
+        } else if (event->key() == Rk::Key::Key_Up) {
+                kitModel->selectPercussion(--index);
+        } else if (event->key() == Rk::Key::Key_Down) {
+                kitModel->selectPercussion(++index);
+        }
 }

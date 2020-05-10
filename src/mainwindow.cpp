@@ -57,7 +57,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
 	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
-        enableGrabKey(true);
+        createShortcuts();
         show();
 }
 
@@ -72,8 +72,51 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
-        enableGrabKey(true);
+        createShortcuts();
         show();
+}
+
+void MainWindow::createShortcuts()
+{
+        addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_K, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_O, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_O, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_o, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_o, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_S, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_S, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_s, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_s, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_H, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_H, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_h, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_h, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_E, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_E, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_A, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_A, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_C, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_C, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_c, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_c, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_V, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_V, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_v, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_v, Rk::KeyModifiers::Control_Right);
 }
 
 MainWindow::~MainWindow()
@@ -224,7 +267,8 @@ void MainWindow::openAboutDialog()
 
 void MainWindow::keyPressEvent(RkKeyEvent *event)
 {
-        if (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
+        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+            &&event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {

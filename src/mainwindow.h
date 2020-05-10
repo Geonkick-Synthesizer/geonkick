@@ -59,6 +59,7 @@ class MainWindow : public GeonkickWidget
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
+      void createShortcuts();
       GeonkickApi *geonkickApi;
       std::vector<std::unique_ptr<Oscillator>> oscillators;
       TopBar *topBar;

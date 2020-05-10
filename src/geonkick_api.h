@@ -275,7 +275,7 @@ class GeonkickApi : public RkObject {
   void notifyUpdateGraph();
   void notifyUpdateParameters();
   void notifyUpdateGui();
-  const std::vector<int> ordredPercussionIds() const;
+  std::vector<int> ordredPercussionIds() const;
   void removeOrderedPercussionId(int id);
   void addOrderedPercussionId(int id);
   void clearOrderedPercussionIds();

@@ -40,6 +40,7 @@ class KitModel : public RkObject {
         bool save(const std::string &file);
         void selectPercussion(PercussionIndex index);
         bool isPercussionSelected(PercussionIndex index) const;
+        PercussionIndex selectedPercussion() const;
         size_t numberOfChannels() const;
         int percussionChannel(PercussionIndex index) const;
         bool setPercussionChannel(PercussionIndex index, int channel);
@@ -50,8 +51,8 @@ class KitModel : public RkObject {
         void addNewPercussion();
         void copyPercussion(PercussionIndex index);
         void removePercussion(PercussionIndex index);
-        int percussionKeyIndex(PercussionIndex index) const;
         void moveSelectedPercussion(bool down = true);
+        int percussionKeyIndex(PercussionIndex index) const;
         size_t keysNumber() const;
         std::string keyName(KeyIndex index) const;
         size_t percussionNumber() const;

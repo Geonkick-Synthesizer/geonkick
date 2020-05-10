@@ -59,6 +59,11 @@ bool KitModel::isPercussionSelected(PercussionIndex index) const
         return static_cast<size_t>(percussionId(index)) == geonkickApi->currentPercussion();
 }
 
+KitModel::PercussionIndex KitModel::selectedPercussion() const
+{
+        return getIndex(geonkickApi->currentPercussion());
+}
+
 size_t KitModel::numberOfChannels() const
 {
         return geonkickApi->numberOfChannels();
@@ -256,6 +261,20 @@ void KitModel::removePercussion(PercussionIndex index)
 
         for (const auto & per: percussionsList)
                 action per->modelUpdated();
+}
+
+void KitModel::moveSelectedPercussion(bool down)
+{
+        auto index1 = getIndex(geonkickApi->currentPercussion());
+        auto index2 = index1 + (down ? 1 : -1);
+        if (isValidIndex(index1) && isValidIndex(index2)) {
+                bool res = geonkickApi->moveOrdrepedPercussionId(geonkickApi->currentPercussion(), down ? 1 : -1);
+                if (res) {
+                        percussionsList[index1]->setId(percussionId(index1));
+                        percussionsList[index2]->setId(percussionId(index2));
+                        selectPercussion(index2);
+                }
+        }
 }
 
 size_t KitModel::percussionNumber() const

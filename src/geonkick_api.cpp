@@ -1502,7 +1502,7 @@ void GeonkickApi::notifyUpdateGui()
         }
 }
 
-const std::vector<int> GeonkickApi::ordredPercussionIds() const
+std::vector<int> GeonkickApi::ordredPercussionIds() const
 {
         return percussionIdList;
 }
