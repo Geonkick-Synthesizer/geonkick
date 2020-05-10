@@ -94,6 +94,13 @@ size_t KitModel::keysNumber() const
         return midiKeys.size();
 }
 
+std::string KitModel::keyName(KeyIndex index) const
+{
+        if (index >= 0 && static_cast<size_t>(index) < midiKeys.size())
+                return midiKeys[index];
+        return std::string();
+}
+
 bool KitModel::setPercussionKey(PercussionIndex index, KeyIndex keyIndex)
 {
         int key = -1;

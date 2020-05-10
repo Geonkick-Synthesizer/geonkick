@@ -48,7 +48,6 @@ class KitWidget: public GeonkickWidget
         void updatePercussion(PercussionIndex index, PercussionModel *model);
         void removePercussion(PercussionIndex index);
         void copyPercussion(int index);
-        void drawKeys(RkPainter &painter);
         void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
@@ -61,6 +60,19 @@ class KitWidget: public GeonkickWidget
         RkButton *saveKitButton;
         RkContainer *percussionsContainer;
         std::vector<KitPercussionView*> percussionViewList;
+};
+
+class KitKeysView: public GeonkickWidget
+{
+ public:
+        explicit KitKeysView(KitWidget *parent, KitModel *model);
+
+ protected:
+        void paintWidget(RkPaintEvent *event) override;
+
+ private:
+        KitModel *kitModel;
+        int keyWidth;
 };
 
 #endif // KIT_WIDGET_H

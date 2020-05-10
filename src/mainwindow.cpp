@@ -268,7 +268,7 @@ void MainWindow::openAboutDialog()
 void MainWindow::keyPressEvent(RkKeyEvent *event)
 {
         if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-            &&event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K) {
+            && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {

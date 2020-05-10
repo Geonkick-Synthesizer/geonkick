@@ -69,7 +69,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         auto topContainer = new RkContainer(this);
         topContainer->setSpacing(5);
         percussionsContainer->setHiddenTakesPlace();
-        topContainer->setSize({width(), 40});
+        topContainer->setSize({width(), 30});
+
         addButton = new RkButton(this);
         addButton->setBackgroundColor(background());
         addButton->setCheckable(true);
@@ -99,8 +100,15 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         saveKitButton->show();
         topContainer->addWidget(saveKitButton);
         percussionsContainer->setHeight(kitContainer->height() - topContainer->height());
+
+        auto kitKeysView = new KitKeysView(this, kitModel);
+        kitKeysView->show();
+        topContainer->addSpace(100 - 3 * 16 - 4 * 5);
+        topContainer->addWidget(kitKeysView);
+
         kitContainer->addContainer(topContainer);
         kitContainer->addContainer(percussionsContainer);
+
         updateView();
 }
 
@@ -150,31 +158,6 @@ void KitWidget::copyPercussion(int index)
         kitModel->copyPercussion(index);
 }
 
-// void KitWidget::drawKeys(RkPainter &painter)
-// {
-//         auto pen = painter.pen();
-//         pen.setColor({200, 200, 200});
-
-//         auto font = painter.font();
-//         font.setSize(12);
-//         painter.setFont(font);
-
-//         int x = percussionNameWidth;
-//         auto n = kitModel->percussionNumber();
-//         auto nKeys = kitModel->keysNumber();
-//         for (decltype(nKeys) i = 0; i < nKeys; i++) {
-//                 RkRect rect(x, 0, keyWidth, keyWidth + n * percussionHeight);
-//                 if (i % 2)
-//                         painter.fillRect(rect, {60, 60, 60});
-//                 else
-//                         painter.fillRect(rect, {50, 50, 50});
-//                 RkRect txtRect(rect.left(), 10, rect.width(), painter.font().size());
-//                 painter.setPen(pen);
-//                 painter.drawText(txtRect, kitModel->keyName(i));
-//                 x += keyWidth;
-//         }
-// }
-
 void KitWidget::showFileDialog(FileDialog::Type type)
 {
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
@@ -216,4 +199,41 @@ void KitWidget::keyPressEvent(RkKeyEvent *event)
         } else if (event->key() == Rk::Key::Key_Down) {
                 kitModel->selectPercussion(++index);
         }
+}
+
+KitKeysView::KitKeysView(KitWidget *parent, KitModel *model)
+                : GeonkickWidget(parent)
+                , kitModel{model}
+                , keyWidth{30}
+        {
+                setSize(kitModel->keysNumber() * keyWidth, keyWidth);
+        }
+
+void KitKeysView::paintWidget(RkPaintEvent *event)
+{
+        RkImage img(size());
+        RkPainter paint(&img);
+        paint.fillRect(rect(), background());
+
+        auto pen = paint.pen();
+        pen.setColor({200, 200, 200});
+
+        auto font = paint.font();
+        font.setSize(12);
+        paint.setFont(font);
+
+        auto nKeys = kitModel->keysNumber();
+        for (decltype(nKeys) i = 0; i < nKeys; i++) {
+                auto rect = RkRect(i * keyWidth, 0, keyWidth, keyWidth);
+                if (i % 2)
+                        paint.fillRect(rect, {60, 60, 60});
+                else
+                        paint.fillRect(rect, {50, 50, 50});
+                RkRect txtRect(rect.left(), (rect.height() - paint.font().size()) / 2,
+                               rect.width(), paint.font().size());
+                paint.setPen(pen);
+                paint.drawText(txtRect, kitModel->keyName(i));
+        }
+        RkPainter painter(this);
+        painter.drawImage(img, 0, 0);
 }

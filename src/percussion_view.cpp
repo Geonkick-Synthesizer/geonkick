@@ -300,7 +300,6 @@ void KitPercussionView::mouseDoubleClickEvent(RkMouseEvent *event)
                         editPercussion->setSize({nameWidth, height()});
                         RK_ACT_BIND(editPercussion, editingFinished, RK_ACT_ARGS(),
                                     this, updatePercussionName());
-                        parent->disableInput();
                 }
                 editPercussion->setText(percussionModel->name());
                 editPercussion->moveCursorToFront();
