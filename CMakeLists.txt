@@ -56,6 +56,7 @@ if (GKICK_PLUGIN)
 endif(GKICK_PLUGIN)
 
 set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
+set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
   ${GKICK_UTILS_DIR}/base64.h
@@ -255,4 +256,5 @@ if (GKICK_PLUGIN)
 endif (GKICK_PLUGIN)
 
 add_subdirectory(data)
+add_subdirectory(presets)
 
