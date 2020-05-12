@@ -1807,5 +1807,5 @@ geonkick_percussion_is_solo(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
-        return gkick_mixer_solo(kick->audio->mixer, id, b);
+        return gkick_mixer_is_solo(kick->audio->mixer, id, b);
 }

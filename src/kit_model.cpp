@@ -272,14 +272,14 @@ void KitModel::removePercussion(PercussionIndex index)
 
 void KitModel::moveSelectedPercussion(bool down)
 {
-        auto index1 = getIndex(geonkickApi->currentPercussion());
-        auto index2 = index1 + (down ? 1 : -1);
-        if (isValidIndex(index1) && isValidIndex(index2)) {
+        auto currentIndex = getIndex(geonkickApi->currentPercussion());
+        auto nextIndex = currentIndex + (down ? 1 : -1);
+        if (isValidIndex(currentIndex) && isValidIndex(nextIndex)) {
                 bool res = geonkickApi->moveOrdrepedPercussionId(geonkickApi->currentPercussion(), down ? 1 : -1);
                 if (res) {
-                        percussionsList[index1]->setId(percussionId(index1));
-                        percussionsList[index2]->setId(percussionId(index2));
-                        selectPercussion(index2);
+                        percussionsList[currentIndex]->setId(percussionId(currentIndex));
+                        percussionsList[nextIndex]->setId(percussionId(nextIndex));
+                        selectPercussion(nextIndex);
                 }
         }
 }

@@ -26,12 +26,26 @@
 
 #include "geonkick_widget.h"
 
+#include <RkLabel.h>
+
 class RkLineEdit;
 class RkButton;
 class PercussionModel;
 class GeonkickSlider;
 class RkProgressBar;
 class KitWidget;
+
+class KitChannelSpinBox: public RkLabel {
+ public:
+        explicit KitChannelSpinBox(GeonkickWidget* parent);
+        ~KitChannelSpinBox() = default;
+        RK_DECL_ACT(encreaseChannel, encreaseChannel(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(decreaseChannel, decreaseChannel(), RK_ARG_TYPE(), RK_ARG_VAL());
+        void setValue(int  val);
+
+ protected:
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
+};
 
 class KitPercussionView: public GeonkickWidget
 {
@@ -61,6 +75,7 @@ class KitPercussionView: public GeonkickWidget
         int nameWidth;
         int keyWidth;
         RkLineEdit *editPercussion;
+        KitChannelSpinBox *channelSpinBox;
         RkButton *copyButton;
         RkButton *removeButton;
         RkButton *playButton;

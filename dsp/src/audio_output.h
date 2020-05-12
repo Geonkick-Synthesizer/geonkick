@@ -94,6 +94,9 @@ struct gkick_audio_output
         /* The output is muted or not. */
         _Atomic bool muted;
 
+        /* The output is muted or not. */
+        _Atomic bool solo;
+
         /* Output audio limiter value. */
         atomic_int limiter;
 

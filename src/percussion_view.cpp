@@ -49,6 +49,26 @@ RK_DECLARE_IMAGE_RC(copy_per_button);
 RK_DECLARE_IMAGE_RC(copy_per_button_hover);
 RK_DECLARE_IMAGE_RC(copy_per_button_on);
 
+KitChannelSpinBox::KitChannelSpinBox(GeonkickWidget* parent)
+                : RkLabel(parent)
+{
+}
+
+void KitChannelSpinBox::setValue(int  val)
+{
+        setText("#" + std::to_string(val + 1));
+}
+
+void KitChannelSpinBox::mouseButtonPressEvent(RkMouseEvent *event)
+{
+        if (event->button() == RkMouseEvent::ButtonType::Left
+            || event->button() == RkMouseEvent::ButtonType::WheelUp)
+                action encreaseChannel();
+        else if (event->button() == RkMouseEvent::ButtonType::Right
+                 || event->button() == RkMouseEvent::ButtonType::WheelDown)
+                action decreaseChannel();
+}
+
 KitPercussionView::KitPercussionView(KitWidget *parent,
                                      PercussionModel *model)
         : GeonkickWidget(parent)
@@ -57,6 +77,7 @@ KitPercussionView::KitPercussionView(KitWidget *parent,
         , nameWidth{100}
         , keyWidth{30}
         , editPercussion{nullptr}
+        , channelSpinBox{nullptr}
         , copyButton{nullptr}
         , removeButton{nullptr}
         , playButton{nullptr}
@@ -82,7 +103,15 @@ void KitPercussionView::createView()
         auto percussionContainer = new RkContainer(this);
         percussionContainer->setSize(size());
         percussionContainer->setHiddenTakesPlace();
-        percussionContainer->addSpace(nameWidth + percussionModel->keysNumber() * keyWidth + 10);
+        percussionContainer->addSpace(nameWidth + percussionModel->keysNumber() * keyWidth);
+
+        // Channel spinbox
+        channelSpinBox = new KitChannelSpinBox(this);
+        channelSpinBox->setSize(keyWidth, height());
+        channelSpinBox->setTextColor({220, 220, 220});
+        channelSpinBox->show();
+        percussionContainer->addWidget(channelSpinBox);
+        percussionContainer->addSpace(10);
 
         // Remove button
         removeButton = new RkButton(this);
@@ -184,6 +213,8 @@ void KitPercussionView::updateView()
         limiterSlider->onSetValue(percussionModel->limiter());
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
+        channelSpinBox->setValue(percussionModel->channel());
+        channelSpinBox->setBackgroundColor(index() % 2 ? RkColor(140, 140, 140) : RkColor(120, 120, 120));
         update();
 }
 
@@ -193,6 +224,10 @@ void KitPercussionView::setModel(PercussionModel *model)
                 return;
 
         percussionModel = model;
+        RK_ACT_BIND(channelSpinBox, encreaseChannel, RK_ACT_ARGS(),
+                    percussionModel, increasePercussionChannel());
+        RK_ACT_BIND(channelSpinBox, decreaseChannel, RK_ACT_ARGS(),
+                    percussionModel, decreasePercussionChannel());
         RK_ACT_BIND(removeButton, released, RK_ACT_ARGS(), this, remove());
         RK_ACT_BIND(copyButton, released, RK_ACT_ARGS(), percussionModel, copy());
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), percussionModel, play());
@@ -202,11 +237,12 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
         RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiterSlider, onSetValue(val));
-        //        RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
+        // RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
         RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
         RK_ACT_BIND(percussionModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
+        RK_ACT_BIND(percussionModel, channelUpdated, RK_ACT_ARGS(int val), channelSpinBox, setValue(val));
         updateView();
 }
 
@@ -232,7 +268,7 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         font.setSize(12);
         paint.setFont(font);
         RkColor backgroundColor = {160, 160, 160, 80};
-        if (index() %2)
+        if (index() % 2)
                 backgroundColor = {200, 200, 200, 80};
         paint.fillRect(RkRect(0, 0, nameWidth, height()), backgroundColor);
         paint.setPen(pen);

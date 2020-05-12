@@ -40,6 +40,7 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
         (*audio_output)->play    = false;
 	(*audio_output)->enabled = true;
         (*audio_output)->muted   = false;
+        (*audio_output)->solo    = false;
         (*audio_output)->channel = 0;
 
         gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer,

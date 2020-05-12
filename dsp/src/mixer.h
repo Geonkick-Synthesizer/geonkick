@@ -29,6 +29,7 @@
 struct gkick_mixer {
 	struct gkick_audio_output **audio_outputs;
 	size_t connection_matrix[127];
+        _Atomic int solo;
 	_Atomic int limiter;
         void (*limiter_callback) (void*, gkick_real val);
         void *limiter_callback_arg;
