@@ -1,3 +1,11 @@
+### Changes from 2.1.0 to 2.1.1
+
+#### Fixes
+
+  - fix install of *.desktop file
+  - fix finding Redkite `lib64` in `FindRedkite.cmake`
+  - add loading WAVEX samples
+
 ### Changes from 2.0.2 to 2.1.0
 
 #### Fixes
