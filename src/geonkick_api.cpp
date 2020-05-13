@@ -1327,7 +1327,7 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
         memset(&sndinfo, 0, sizeof(sndinfo));
         SNDFILE *sndFile = sf_open(file.c_str(), SFM_READ, &sndinfo);
         if (!sndFile) {
-                GEONKICK_LOG_ERROR("can't open samle file");
+                GEONKICK_LOG_ERROR("can't open sample file");
                 return std::vector<gkick_real>();
         }
 
@@ -1336,6 +1336,9 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
             && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_16)
             && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_24)
             && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_32)
+            && sndinfo.format != (SF_FORMAT_WAVEX | SF_FORMAT_PCM_16)
+            && sndinfo.format != (SF_FORMAT_WAVEX | SF_FORMAT_PCM_24)
+            && sndinfo.format != (SF_FORMAT_WAVEX | SF_FORMAT_PCM_32)
             && sndinfo.format != (SF_FORMAT_OGG | SF_FORMAT_VORBIS)) {
                 GEONKICK_LOG_ERROR("unsupported audio format");
                 sf_close(sndFile);
