@@ -26,6 +26,7 @@
 
 #include <RkLabel.h>
 #include <RkButton.h>
+#include <RkTransition.h>
 
 RK_DECLARE_IMAGE_RC(logo);
 RK_DECLARE_IMAGE_RC(open_active);
@@ -97,7 +98,14 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         aboutButton->setY(exportFileButton->y());
         aboutButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(about)));
         aboutButton->setCheckable(true);
-        RK_ACT_BIND(aboutButton, toggled, RK_ACT_ARGS(bool b), this, openAbout());
+        RK_ACT_BIND(aboutButton, pressed, RK_ACT_ARGS(), this, openAbout());
+
+        auto presetsButton = new RkButton(this);
+        presetsButton->setSize(30, height());
+        presetsButton->setPosition(aboutButton->x() + aboutButton->width(), 0);
+        presetsButton->setBackgroundColor({255, 255, 255});
+        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(), this, showPresetsBrowser());
+        presetsButton->show();
 
         presetNameLabel = new RkLabel(this);
         presetNameLabel->setBackgroundColor(background());
@@ -192,4 +200,22 @@ void TopBar::updateGui()
         layer3Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer3));
         tuneCheckbox->setPressed(geonkickApi->isAudioOutputTuned(geonkickApi->currentPercussion()));
         setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
+}
+
+void TopBar::showPresetsBrowser()
+{
+        auto presetsBrowser = new RkWidget(this, Rk::WindowFlags::Popup);
+        presetsBrowser->setSize(420, 2);
+        presetsBrowser->setBackgroundColor({68, 68, 70, 230});
+        presetsBrowser->setBorderWidth(1);
+        presetsBrowser->setBorderColor(30, 30, 30);
+        presetsBrowser->setPosition(presetNameLabel->x() - 110, height() + 10);
+        presetsBrowser->show();
+        auto transition = new RkTransition(presetsBrowser);
+        transition->setSpeed(8);
+        transition->setRange(2, 280);
+        transition->setCallback([presetsBrowser](int value) {
+                        presetsBrowser->setSize(420 , value);
+             });
+        transition->start();
 }

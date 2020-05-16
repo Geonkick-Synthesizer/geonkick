@@ -46,6 +46,7 @@ class TopBar : public GeonkickWidget
         void updateGui();
 
  protected:
+        void showPresetsBrowser();
         void createLyersButtons();
 
  private:

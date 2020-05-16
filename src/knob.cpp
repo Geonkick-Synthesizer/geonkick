@@ -89,6 +89,7 @@ void Knob::rotateKnob(int degree)
 
 void Knob::mouseButtonPressEvent(RkMouseEvent *event)
 {
+        setFocus(true);
         if (event->button() == RkMouseEvent::ButtonType::WheelUp
             || event->button() == RkMouseEvent::ButtonType::WheelDown) {
                 rotateKnob(event->button() == RkMouseEvent::ButtonType::WheelUp ? 2 : -2);
