@@ -1548,3 +1548,10 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
         }
         return false;
 }
+
+std::string GeonkickApi::getPreset(size_t folderId, size_t presetId)
+{
+        if (folderId < presetsFolder.size())
+                return presetsFolder[folderId].preset(presetId);
+        return "";
+}

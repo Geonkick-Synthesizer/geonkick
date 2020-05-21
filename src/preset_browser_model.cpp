@@ -1,5 +1,5 @@
 /**
- * File name: browser_model.h
+ * File name: presets_browser_model.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
@@ -21,21 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef BROWSER_MODEL_H
-#define BROWSER_MODEL_H
+#include "presets_browser_model.h"
 
-#include "globals.h"
+PresetsBrowserModel::PresetsBrowserModel(RkObject *parent, GeonkickApi *api)
+        : RkObject(parent)
+          numberOfColumns{4}
+          presetsPerColumn{10}
+          presetsPerPage{presetsPerColumn * 3}
+{
+}
 
-class GeonkickApi;
-class GeonkickState;
-class KitModel;
-
-class BrowserModel : public RkObject {
- public:
-        using PercussionIndex = int;
-        using KeyIndex = int;
-        explicit BrowserModel(GeonkickWidget *parent, GeonkickApi *api);
-        virtual ~BrowserModel() = default;
+std::string PresetsBrowserModel::presetName(int row, int column) const
+{
+        if (0 <= column < numberOfColumns && row < presetsPerColumn) {
+                auto presetFolder = geonkickApi->getPresetFolder(row);
+                if (presetFolder) {
+                        if (column == 0)
+                                return presetFolder->name();
+                        else if (column > 0)
+                                return presetFolder->preset(page() * presetsPerPage * (column - 1) * presetsPerColumn + row);
+                }
+        }
+}
 
 
         // RK_DECL_ACT(modelUpdated,

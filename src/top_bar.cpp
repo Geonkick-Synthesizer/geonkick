@@ -204,7 +204,7 @@ void TopBar::updateGui()
 
 void TopBar::showPresetsBrowser()
 {
-        auto presetsBrowser = new RkWidget(this, Rk::WindowFlags::Popup);
+        auto presetsBrowser = new PresetsBrowserView(this);
         presetsBrowser->setSize(420, 2);
         presetsBrowser->setBackgroundColor({68, 68, 70, 230});
         presetsBrowser->setBorderWidth(1);

@@ -323,6 +323,7 @@ private:
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
+  std::vector<PresetFolder> presetsList;
 };
 
 #endif // GEONKICK_API_H
