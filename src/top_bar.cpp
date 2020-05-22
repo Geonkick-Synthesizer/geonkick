@@ -204,18 +204,18 @@ void TopBar::updateGui()
 
 void TopBar::showPresetsBrowser()
 {
-        auto presetsBrowser = new PresetsBrowserView(this);
-        presetsBrowser->setSize(420, 2);
-        presetsBrowser->setBackgroundColor({68, 68, 70, 230});
-        presetsBrowser->setBorderWidth(1);
-        presetsBrowser->setBorderColor(30, 30, 30);
-        presetsBrowser->setPosition(presetNameLabel->x() - 110, height() + 10);
-        presetsBrowser->show();
-        auto transition = new RkTransition(presetsBrowser);
-        transition->setSpeed(8);
-        transition->setRange(2, 280);
-        transition->setCallback([presetsBrowser](int value) {
-                        presetsBrowser->setSize(420 , value);
-             });
-        transition->start();
+        // auto presetsBrowser = new PresetsBrowserView(this);
+        // presetsBrowser->setSize(420, 2);
+        // presetsBrowser->setBackgroundColor({68, 68, 70, 230});
+        // presetsBrowser->setBorderWidth(1);
+        // presetsBrowser->setBorderColor(30, 30, 30);
+        // presetsBrowser->setPosition(presetNameLabel->x() - 110, height() + 10);
+        // presetsBrowser->show();
+        // auto transition = new RkTransition(presetsBrowser);
+        // transition->setSpeed(8);
+        // transition->setRange(2, 280);
+        // transition->setCallback([presetsBrowser](int value) {
+        //                 presetsBrowser->setSize(420 , value);
+        //      });
+        // transition->start();
 }

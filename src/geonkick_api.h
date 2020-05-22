@@ -282,6 +282,9 @@ class GeonkickApi : public RkObject {
   bool moveOrdrepedPercussionId(int index, int n);
 
 protected:
+  void loadConfig();
+  void loadPresets();
+  void loadPresetsFolders(const std::filesystem::path &path);
   static void kickUpdatedCallback(void *arg,
                                   gkick_real *buff,
                                   size_t size,
@@ -323,7 +326,7 @@ private:
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
-  std::vector<PresetFolder> presetsList;
+  //  std::vector<PresetsFolder> presetsFoldersList;
 };
 
 #endif // GEONKICK_API_H
