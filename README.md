@@ -152,6 +152,8 @@ GKICK_VST_SDK_PATH to cmake:
 
 Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/0908f475f52af56682321192d800ef25d1823dd2)
 
+Note: don't forget to build VST3 SDK first
+
 #### Packages
 
 Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
