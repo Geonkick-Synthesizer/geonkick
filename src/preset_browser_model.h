@@ -33,45 +33,10 @@ class PresetBrowserModel : public RkObject {
         explicit BrowserModel(RkObject *parent, GeonkickApi *api);
         virtual ~BrowserModel() = default;
         std::string presetName(int row, int column) const;
-
-        // RK_DECL_ACT(modelUpdated,
-        //             modelUpdated(),
-        //             RK_ARG_TYPE(),
-        //             RK_ARG_VAL());
-        // RK_DECL_ACT(selected,
-        //             selected(),
-        //             RK_ARG_TYPE(),
-        //             RK_ARG_VAL());
-        // RK_DECL_ACT(nameUpdated,
-        //             nameUpdated(std::string name),
-        //             RK_ARG_TYPE(std::string),
-        //             RK_ARG_VAL(name));
-        // RK_DECL_ACT(keyUpdated,
-        //             keyUpdated(KeyIndex key),
-        //             RK_ARG_TYPE(KeyIndex),
-        //             RK_ARG_VAL(key));
-        // RK_DECL_ACT(channelUpdated,
-        //             channelUpdated(int val),
-        //             RK_ARG_TYPE(int),
-        //             RK_ARG_VAL(val));
-        // RK_DECL_ACT(limiterUpdated,
-        //             limiterUpdated(int val),
-        //             RK_ARG_TYPE(int),
-        //             RK_ARG_VAL(val));
-        // RK_DECL_ACT(levelerUpdated,
-        //             levelerUpdated(int val),
-        //             RK_ARG_TYPE(int),
-        //             RK_ARG_VAL(val));
-        // RK_DECL_ACT(muteUpdated,
-        //             muteUpdated(bool b),
-        //             RK_ARG_TYPE(bool),
-        //             RK_ARG_VAL(b));
-        // RK_DECL_ACT(soloUpdated,
-        //             soloUpdated(bool b),
-        //             RK_ARG_TYPE(bool),
-        //             RK_ARG_VAL(b));
-
- protected:
+        size_t page() const;
+        void setPage(size_t index);
+        size_t nextPage();
+        size_t previousPage();
 
  private:
         GeonkickApi* geonkickApi;

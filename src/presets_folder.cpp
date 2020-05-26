@@ -1,8 +1,8 @@
 /**
- * File name: preset_browser_view.h
+ * File name: preset_folder.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,16 +21,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef PRESET_BROWSER_H
-#define PRESET_BROWSER_H
+#include "preset_folder.h"
+#include "preset.h"
 
-class PresetBrowserView: public GeonkickWidget {
- public:
-        PresetBrowserView(GeonkickWidget *parent, PresetBrowserModel* model);
-        ~PresetBrowserView() = default;
+PresetFolder::PresetFolder()
+{
+}
 
- private:
-        void paintWidget(RkPaintEvent *event) override;
-};
+std::string PresetFolder::name() const
+{
+        return folderName;
+}
 
-#endif // PRESET_BROWSER_H
+Preset* PresetFolder::preset(size_t index) const
+{
+        if (index < presetsList.size())
+                return presetsList[index].get();
+}
+

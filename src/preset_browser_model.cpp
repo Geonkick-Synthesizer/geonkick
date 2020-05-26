@@ -22,24 +22,50 @@
  */
 
 #include "presets_browser_model.h"
+#include "preset_folder.h"
+#include "preset.h"
 
 PresetsBrowserModel::PresetsBrowserModel(RkObject *parent, GeonkickApi *api)
         : RkObject(parent)
-          numberOfColumns{4}
-          presetsPerColumn{10}
-          presetsPerPage{presetsPerColumn * 3}
+        , numberOfColumns{4}
+        , presetsPerColumn{10}
 {
 }
 
 std::string PresetsBrowserModel::presetName(int row, int column) const
 {
-        if (0 <= column < numberOfColumns && row < presetsPerColumn) {
+        if (column == 0) {
                 auto presetFolder = geonkickApi->getPresetFolder(row);
-                if (presetFolder) {
-                        if (column == 0)
-                                return presetFolder->name();
-                        else if (column > 0)
-                                return presetFolder->preset(page() * presetsPerPage * (column - 1) * presetsPerColumn + row);
-                }
+                if (presetFolder)
+                        return presetFolder->name();
+        } else if (column > 0 && selectedFolder) {
+                auto preset = selectedFolder->preset(page() * (column - 1) * presetsPerColumn + row);
+                if (preset)
+                        return preset->name();
         }
 }
+
+size_t PresetsBrowserModel::page() const
+{
+        return pageIndex;
+}
+
+size_t PresetsBrowserModel::nextPage()
+{
+        return pageIndex++;
+}
+
+size_t PresetsBrowserModel::previousPage()
+{
+        if (pageIndex > 0)
+                pageIndex--;
+}
+
+void PresetsBrowserModel::setPage(size_t index)
+{
+        if (index >=0)
+                pageIndex = index;
+}
+
+
+
