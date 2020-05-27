@@ -24,14 +24,24 @@
 #include "preset_folder.h"
 #include "preset.h"
 
-PresetFolder::PresetFolder(std::filesystem::path &path)
+PresetFolder::PresetFolder(const std::filesystem::path &path)
         : folderPath{path}
 {
 }
 
 std::string PresetFolder::name() const
 {
-        return folderPath.filename();
+        return folderPath.stem();
+}
+
+std::filesystem::path PresetFolder::path() const
+{
+        return folderPath;
+}
+
+void PresetFolder::setPath(const std::filesystem::path &path)
+{
+        folderPath = path;
 }
 
 bool PresetFolder::loadPresets()
@@ -39,19 +49,22 @@ bool PresetFolder::loadPresets()
         std::vector<std::filesystem::path> presetsDirs;
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(folderPath)) {
-                        if (!entry.path().empty() && std::filesystem::is_file(entry.path())
-                            && (entry.path().stem() == "*.gkick" || entry.path().stem() == "*.gkit")) {
-                                GEONKICK_LOG_DEBUG("load preset: " << entry.path());
+                        if (!entry.path().empty() && std::filesystem::is_regular_file(entry.path())
+                            && (entry.path().extension() == ".gkick" || entry.path().extension() == ".gkit")) {
+                                GEONKICK_LOG_DEBUG("preset: " << entry.path());
                                 presetList.push_back(std::move(std::make_unique<Preset>(entry.path())));
                         }
                 }
         } catch(...) {
-                GEONKICK_LOG_ERROR("error on reading path: " << path);
+                GEONKICK_LOG_ERROR("error on reading path: " << folderPath);
+                return false;
         }
+        return true;
 }
 
 Preset* PresetFolder::preset(size_t index) const
 {
-        if (index < presetsList.size())
-                return presetsList[index].get();
+        if (index < presetList.size())
+                return presetList[index].get();
+        return nullptr;
 }

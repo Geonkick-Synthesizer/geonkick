@@ -32,6 +32,7 @@ class Oscillator;
 class PercussionState;
 class KitState;
 class RkEventQueue;
+class PresetFolder;
 
 class GeonkickApi : public RkObject {
 
@@ -326,7 +327,7 @@ private:
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
-  //  std::vector<PresetsFolder> presetsFoldersList;
+  std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
 };
 
 #endif // GEONKICK_API_H

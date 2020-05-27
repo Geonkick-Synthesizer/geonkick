@@ -1,5 +1,5 @@
 /**
- * File name: presets_folder.h
+ * File name: preset_folder.h
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
@@ -21,22 +21,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef PRESETS_FOLDER_H
-#define PRESETS_FOLDER_H
+#ifndef PRESET_FOLDER_H
+#define PRESET_FOLDER_H
+
+#include "globals.h"
 
 class Preset;
 
-class PresetsFolder {
-        PresetsFolder();
-        ~PresetsFolder() = default;
+class PresetFolder {
+ public:
+        PresetFolder(const std::filesystem::path &path);
         std::string name() const;
         std::filesystem::path path() const;
+        void setPath(const std::filesystem::path &path);
         bool loadPresets();
-        const std::vector<Preset>& preset(int index) const;
+        Preset* preset(size_t index) const;
 
  private:
         std::filesystem::path folderPath;
         std::vector<std::unique_ptr<Preset>> presetList;
 };
 
-#endif // PRESETS_FOLDER_H
+#endif // PRESET_FOLDER_H

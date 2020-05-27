@@ -23,12 +23,17 @@
 
 #include "preset.h"
 
+Preset::Preset(const std::filesystem::path& path)
+        : presetPath{path}
+{
+}
+
 std::string Preset::name() const
 {
         return presetName;
 }
 
-std::string Preset::setName(const std::string &name)
+void Preset::setName(const std::string &name)
 {
         presetName = name;
 }
@@ -38,7 +43,7 @@ std::filesystem::path Preset::path() const
         return presetPath;
 }
 
-std::filesystem::path Preset::setPath(const std::filesystem::path& path) const
+void Preset::setPath(const std::filesystem::path &path)
 {
         presetPath = path;
 }

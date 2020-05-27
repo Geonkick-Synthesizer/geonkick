@@ -174,7 +174,7 @@ private:
                 std::vector<RkRealPoint> filterCutOffEnvelope;
         };
 
-        OscillatorInfo* getOscillator(int index) const;
+        std::shared_ptr<OscillatorInfo> getOscillator(int index) const;
 
         struct Compressor {
                 bool enabled;
@@ -212,7 +212,7 @@ private:
         std::vector<RkRealPoint> kickFilterCutOffEnvelope;
         std::vector<RkRealPoint> kickEnvelopePoints;
 	std::vector<RkRealPoint> kickDistortionDriveEnvelope;
-        std::unordered_map<int, std::unique_ptr<OscillatorInfo>> oscillators;
+        std::unordered_map<int, std::shared_ptr<OscillatorInfo>> oscillators;
         Compressor compressor;
         Distortion distortion;
         std::vector<bool> layers;

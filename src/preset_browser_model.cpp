@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "presets_browser_model.h"
+#include "preset_browser_model.h"
 #include "preset_folder.h"
 #include "preset.h"
 

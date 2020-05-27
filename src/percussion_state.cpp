@@ -502,7 +502,7 @@ PercussionState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
 		return {};
 }
 
-PercussionState::OscillatorInfo*
+std::shared_ptr<PercussionState::OscillatorInfo>
 PercussionState::getOscillator(int index) const
 {
         index += GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);

@@ -24,10 +24,13 @@
 #ifndef PRESET_H
 #define PRESET_H
 
+#include "globals.h"
+
 class Preset {
  public:
+        Preset(const std::filesystem::path& path);
         std::string name() const;
-        std::string setName(const std::string &name);
+        void setName(const std::string &name);
         std::filesystem::path path() const;
         void setPath(const std::filesystem::path& path);
 
