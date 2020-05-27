@@ -30,10 +30,12 @@ class PresetsFolder {
         PresetsFolder();
         ~PresetsFolder() = default;
         std::string name() const;
+        std::filesystem::path path() const;
+        bool loadPresets();
         const std::vector<Preset>& preset(int index) const;
 
  private:
-        std::string folderName;
+        std::filesystem::path folderPath;
         std::vector<std::unique_ptr<Preset>> presetList;
 };
 

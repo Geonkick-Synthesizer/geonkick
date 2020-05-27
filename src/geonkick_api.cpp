@@ -1577,12 +1577,11 @@ void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(path)) {
                         if (!entry.path().empty() && std::filesystem::is_directory(entry.path())) {
-                                try {
-                                        //PresetFolder presetFolder(entry.path());
-                                        //presetsFoldersList.push_back(presetFolder);
-                                        GEONKICK_LOG_DEBUG("load preset from folder " << entry.path());
-                                } catch(...) {
-                                        GEONKICK_LOG_ERROR("can't load presets from folder " << entry.path());
+                                auto presetFolder = std::make_unique<PresetFolder>(entry.path());
+                                if (!presetFolder->loadPresets()) {
+                                        GEONKICK_LOG_ERROR("can't load preset from folder " << presetFolder->path());
+                                } else {
+                                        presetsFoldersList.push_back(std::move(presetFolder));
                                 }
                         }
                 }

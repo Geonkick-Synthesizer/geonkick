@@ -24,13 +24,30 @@
 #include "preset_folder.h"
 #include "preset.h"
 
-PresetFolder::PresetFolder()
+PresetFolder::PresetFolder(std::filesystem::path &path)
+        : folderPath{path}
 {
 }
 
 std::string PresetFolder::name() const
 {
-        return folderName;
+        return folderPath.filename();
+}
+
+bool PresetFolder::loadPresets()
+{
+        std::vector<std::filesystem::path> presetsDirs;
+        try {
+                for (const auto &entry : std::filesystem::directory_iterator(folderPath)) {
+                        if (!entry.path().empty() && std::filesystem::is_file(entry.path())
+                            && (entry.path().stem() == "*.gkick" || entry.path().stem() == "*.gkit")) {
+                                GEONKICK_LOG_DEBUG("load preset: " << entry.path());
+                                presetList.push_back(std::move(std::make_unique<Preset>(entry.path())));
+                        }
+                }
+        } catch(...) {
+                GEONKICK_LOG_ERROR("error on reading path: " << path);
+        }
 }
 
 Preset* PresetFolder::preset(size_t index) const
@@ -38,4 +55,3 @@ Preset* PresetFolder::preset(size_t index) const
         if (index < presetsList.size())
                 return presetsList[index].get();
 }
-
