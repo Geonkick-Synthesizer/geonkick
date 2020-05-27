@@ -23,6 +23,8 @@
 
 #include "top_bar.h"
 #include "geonkick_button.h"
+#include "preset_browser_model.h"
+#include "preset_browser_view.h"
 
 #include <RkLabel.h>
 #include <RkButton.h>
@@ -55,6 +57,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         , layer3Button{nullptr}
         , geonkickApi{api}
         , tuneCheckbox{nullptr}
+        , presetsModel{new PresetBrowserModel(this, api)}
 {
         setFixedWidth(parent->width());
         setFixedHeight(40);
@@ -204,18 +207,18 @@ void TopBar::updateGui()
 
 void TopBar::showPresetsBrowser()
 {
-        // auto presetsBrowser = new PresetsBrowserView(this);
-        // presetsBrowser->setSize(420, 2);
-        // presetsBrowser->setBackgroundColor({68, 68, 70, 230});
-        // presetsBrowser->setBorderWidth(1);
-        // presetsBrowser->setBorderColor(30, 30, 30);
-        // presetsBrowser->setPosition(presetNameLabel->x() - 110, height() + 10);
-        // presetsBrowser->show();
-        // auto transition = new RkTransition(presetsBrowser);
-        // transition->setSpeed(8);
-        // transition->setRange(2, 280);
-        // transition->setCallback([presetsBrowser](int value) {
-        //                 presetsBrowser->setSize(420 , value);
-        //      });
-        // transition->start();
+        auto presetBrowser = new PresetBrowserView(this, presetsModel);
+        presetBrowser->setSize(420, 2);
+        presetBrowser->setBackgroundColor({68, 68, 70, 230});
+        presetBrowser->setBorderWidth(1);
+        presetBrowser->setBorderColor(30, 30, 30);
+        presetBrowser->setPosition(presetNameLabel->x() - 110, height() + 10);
+        presetBrowser->show();
+        auto transition = new RkTransition(presetBrowser);
+        transition->setSpeed(8);
+        transition->setRange(2, 280);
+        transition->setCallback([presetBrowser](int value) {
+                        presetBrowser->setSize(420 , value);
+                });
+        transition->start();
 }

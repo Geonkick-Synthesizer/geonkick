@@ -1,5 +1,5 @@
 /**
- * File name: presets_browser_model.cpp
+ * File name: preset_browser_model.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
@@ -24,48 +24,59 @@
 #include "preset_browser_model.h"
 #include "preset_folder.h"
 #include "preset.h"
+#include "geonkick_api.h"
 
-PresetsBrowserModel::PresetsBrowserModel(RkObject *parent, GeonkickApi *api)
+PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
         : RkObject(parent)
+        , geonkickApi{api}
         , numberOfColumns{4}
-        , presetsPerColumn{10}
+        , presetPerColumn{10}
+        , selectedFolder{nullptr}
 {
 }
 
-std::string PresetsBrowserModel::presetName(int row, int column) const
+std::string PresetBrowserModel::presetName(int row, int column) const
 {
         if (column == 0) {
                 auto presetFolder = geonkickApi->getPresetFolder(row);
                 if (presetFolder)
                         return presetFolder->name();
         } else if (column > 0 && selectedFolder) {
-                auto preset = selectedFolder->preset(page() * (column - 1) * presetsPerColumn + row);
+                auto preset = selectedFolder->preset(page() * (column - 1) * presetPerColumn + row);
                 if (preset)
                         return preset->name();
         }
+        return "";
 }
 
-size_t PresetsBrowserModel::page() const
+size_t PresetBrowserModel::page() const
 {
         return pageIndex;
 }
 
-size_t PresetsBrowserModel::nextPage()
+void PresetBrowserModel::nextPage()
 {
-        return pageIndex++;
+        pageIndex++;
 }
 
-size_t PresetsBrowserModel::previousPage()
+void PresetBrowserModel::previousPage()
 {
         if (pageIndex > 0)
                 pageIndex--;
 }
 
-void PresetsBrowserModel::setPage(size_t index)
+void PresetBrowserModel::setPage(size_t index)
 {
         if (index >=0)
                 pageIndex = index;
 }
 
+size_t PresetBrowserModel::columns() const
+{
+        return numberOfColumns;
+}
 
-
+size_t PresetBrowserModel::rows() const
+{
+        return presetPerColumn;
+}

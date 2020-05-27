@@ -24,13 +24,18 @@
 #ifndef PRESET_BROWSER_H
 #define PRESET_BROWSER_H
 
+#include "globals.h"
+#include "geonkick_widget.h"
+
+class PresetBrowserModel;
+
 class PresetBrowserView: public GeonkickWidget {
  public:
         PresetBrowserView(GeonkickWidget *parent, PresetBrowserModel* model);
-        ~PresetBrowserView() = default;
 
  private:
         void paintWidget(RkPaintEvent *event) override;
+        PresetBrowserModel *browserModel;
 };
 
 #endif // PRESET_BROWSER_H

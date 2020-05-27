@@ -22,6 +22,9 @@
  */
 
 #include "preset_browser_view.h"
+#include "preset_browser_model.h"
+
+#include <RkPainter.h>
 
 PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
                                      PresetBrowserModel* model)
@@ -32,23 +35,23 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
 
 void PresetBrowserView::paintWidget(RkPaintEvent *event)
 {
+        RkPainter painter(this);
+        painter.setPen(RkColor(180, 180, 180));
         if (browserModel->columns()) {
                 int columnWidth = width() / browserModel->columns();
                 int xColumn = 10;
-                int yRow = 10;
+                int yRow = 20;
                 for (size_t col = 0; col < browserModel->columns(); col++) {
-                        for (size_t row = 0; row < browserModel->rows(k); row++) {
+                        for (size_t row = 0; row < browserModel->rows(); row++) {
                                 auto presetName = browserModel->presetName(row, col);
                                 painter.drawText({xColumn, yRow, }, presetName);
                                 // auto selected = browserModel->isPresetSelected(i, k);
                                 //                        if (seleacted) {
                                 //                                drawPresetInfo(browserModel->presetInfo(i, k));
                                 //                        }
-                                yRow += font.size() + 3;
+                                yRow += painter.font().size() + 5;
                         }
                         xColumn += columnWidth;
                 }
         }
 }
-
-#endif // PRESET_BROWSER_H

@@ -1,5 +1,5 @@
 /**
- * File name: presets_browser_model.h
+ * File name: preset_browser_model.h
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
@@ -26,20 +26,28 @@
 
 #include "globals.h"
 
+#include <RkObject.h>
+
 class GeonkickApi;
+class PresetFolder;
 
 class PresetBrowserModel : public RkObject {
  public:
-        explicit BrowserModel(RkObject *parent, GeonkickApi *api);
-        virtual ~BrowserModel() = default;
+        explicit PresetBrowserModel(RkObject *parent, GeonkickApi *api);
         std::string presetName(int row, int column) const;
         size_t page() const;
+        void nextPage();
+        void previousPage();
         void setPage(size_t index);
-        size_t nextPage();
-        size_t previousPage();
+        size_t columns() const;
+        size_t rows() const;
 
  private:
         GeonkickApi* geonkickApi;
+        size_t pageIndex;
+        size_t numberOfColumns;
+        size_t presetPerColumn;
+        PresetFolder* selectedFolder;
 };
 
 #endif // PRESET_BROWSER_MODEL_H

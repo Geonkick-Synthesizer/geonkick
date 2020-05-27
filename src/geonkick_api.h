@@ -281,6 +281,7 @@ class GeonkickApi : public RkObject {
   void addOrderedPercussionId(int id);
   void clearOrderedPercussionIds();
   bool moveOrdrepedPercussionId(int index, int n);
+  PresetFolder* getPresetFolder(size_t index) const;
 
 protected:
   void loadConfig();

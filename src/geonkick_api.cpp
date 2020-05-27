@@ -1618,3 +1618,10 @@ void GeonkickApi::loadConfig()
         GEONKICK_LOG_DEBUG("set local path: " << localPath);
         setSettings("GEONKICK_CONFIG/USER_LOCAL_PATH", localPath);
 }
+
+PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
+{
+        if (index < presetsFoldersList.size())
+                return presetsFoldersList[index].get();
+        return nullptr;
+}
