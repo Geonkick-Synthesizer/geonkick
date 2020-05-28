@@ -24,8 +24,16 @@
 #include "preset.h"
 
 Preset::Preset(const std::filesystem::path& path)
-        : presetPath{path}
+        : presetName{path.stem()}
+        , presetPath{path}
 {
+}
+
+Preset::PresetType Preset::type() const
+{
+        if (path().extension() == ".gkit")
+                return PresetType::PercussionKit;
+        return PresetType::Percussion;
 }
 
 std::string Preset::name() const

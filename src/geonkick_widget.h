@@ -49,7 +49,7 @@ class GeonkickWidget: public RkWidget
  protected:
         void paintEvent(RkPaintEvent *event) final;
         virtual void paintWidget(RkPaintEvent *event);
-        virtual void mouseButtonPressEvent(RkMouseEvent *event);
+        virtual void mouseButtonPressEvent(RkMouseEvent *event) override;
 
 private:
         RkImage backgroundImage;

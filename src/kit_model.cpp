@@ -39,6 +39,14 @@ KitModel::KitModel(RkObject *parent, GeonkickApi *api)
                    "A5", "A#5", "B5", "C6", "Any"}
 {
         loadModelData();
+        RK_ACT_BIND(geonkickApi, kitUpdated, RK_ACT_ARGS(), this, loadModelData());
+        RK_ACT_BIND(geonkickApi, percussionUpdated, RK_ACT_ARGS(size_t id), this, updatePercussion(getIndex(id)));
+}
+
+void KitModel::updatePercussion(PercussionIndex index)
+{
+        if (isValidIndex(index))
+                action percussionsList[index]->modelUpdated();
 }
 
 bool KitModel::isValidIndex(KitModel::PercussionIndex index)
@@ -172,6 +180,7 @@ void KitModel::loadModelData()
                 auto model = new PercussionModel(this, id);
                 percussionsList.push_back(model);
         }
+        action modelUpdated();
 }
 
 bool KitModel::open(const std::string &file)

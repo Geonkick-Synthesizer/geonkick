@@ -33,9 +33,19 @@ class PresetBrowserView: public GeonkickWidget {
  public:
         PresetBrowserView(GeonkickWidget *parent, PresetBrowserModel* model);
 
- private:
+ protected:
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
+        void mouseMoveEvent(RkMouseEvent *event) override;
         void paintWidget(RkPaintEvent *event) override;
+
+ private:
         PresetBrowserModel *browserModel;
+        int topPadding;
+        int leftPadding;
+        int columnWidth;
+        int rowHeight;
+        int overRow;
+        int overColumn;
 };
 
 #endif // PRESET_BROWSER_H

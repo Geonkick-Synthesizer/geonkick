@@ -28,6 +28,12 @@
 
 class Preset {
  public:
+        enum class PresetType: int {
+                Percussion,
+                PercussionKit,
+        };
+
+        PresetType type() const;
         Preset(const std::filesystem::path& path);
         std::string name() const;
         void setName(const std::string &name);

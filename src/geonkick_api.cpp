@@ -1509,6 +1509,29 @@ void GeonkickApi::notifyUpdateGui()
         }
 }
 
+void GeonkickApi::notifyPercussionUpdated(int id)
+{
+        if (eventQueue) {
+                auto act = std::make_unique<RkAction>();
+                act->setCallback([this, id](void){
+                                GEONKICK_LOG_DEBUG("update percussion :" << id);
+                                action percussionUpdated(id);
+                        });
+                eventQueue->postAction(std::move(act));
+        }
+}
+
+void GeonkickApi::notifyKitUpdated()
+{
+        if (eventQueue) {
+                auto act = std::make_unique<RkAction>();
+                act->setCallback([&](void){
+                                action kitUpdated();
+                        });
+                eventQueue->postAction(std::move(act));
+        }
+}
+
 std::vector<int> GeonkickApi::ordredPercussionIds() const
 {
         return percussionIdList;

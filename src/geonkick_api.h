@@ -270,12 +270,22 @@ class GeonkickApi : public RkObject {
               stateChanged(),
               RK_ARG_TYPE(),
               RK_ARG_VAL());
+  RK_DECL_ACT(kitUpdated,
+              kitUpdated(),
+              RK_ARG_TYPE(),
+              RK_ARG_VAL());
+    RK_DECL_ACT(percussionUpdated,
+              percussionUpdated(int id),
+              RK_ARG_TYPE(int),
+              RK_ARG_VAL(id));
 
   void setSettings(const std::string &key, const std::string &value);
   std::string getSettings(const std::string &key) const;
   void notifyUpdateGraph();
   void notifyUpdateParameters();
   void notifyUpdateGui();
+  void notifyPercussionUpdated(int id);
+  void notifyKitUpdated();
   std::vector<int> ordredPercussionIds() const;
   void removeOrderedPercussionId(int id);
   void addOrderedPercussionId(int id);
