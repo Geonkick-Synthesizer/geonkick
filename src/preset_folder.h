@@ -1,8 +1,8 @@
 /**
- * File name: geonkick_button.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: preset_folder.h
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,27 +21,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_BUTTON_H
-#define GEONKICK_BUTTON_H
+#ifndef PRESET_FOLDER_H
+#define PRESET_FOLDER_H
 
-#include <geonkick_widget.h>
+#include "globals.h"
 
-#include <RkButton.h>
-#include <RkImage.h>
+class Preset;
 
-class GeonkickButton: public RkButton
-{
+class PresetFolder {
  public:
-        explicit GeonkickButton(GeonkickWidget *parent);
-        virtual ~GeonkickButton() = default;
-        void setPressedImage(const RkImage &img);
-        void setUnpressedImage(const RkImage &img);
-        virtual void mouseButtonPressEvent(RkMouseEvent *event) override
-        {
-                RK_UNUSED(event);
-                setFocus(true);
-                RkButton::mouseButtonPressEvent(event);
-        }
+        PresetFolder(const std::filesystem::path &path);
+        std::string name() const;
+        std::filesystem::path path() const;
+        void setPath(const std::filesystem::path &path);
+        bool loadPresets();
+        Preset* preset(size_t index) const;
+        size_t numberOfPresets() const;
+
+ private:
+        std::filesystem::path folderPath;
+        std::vector<std::unique_ptr<Preset>> presetList;
 };
 
-#endif // GEONKICK_BUTTON_H
+#endif // PRESET_FOLDER_H

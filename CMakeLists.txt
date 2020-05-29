@@ -93,6 +93,10 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
   ${GKICK_COMMON_DIR}/about.h
   ${GKICK_COMMON_DIR}/export_widget.h
+  ${GKICK_COMMON_DIR}/preset.h
+  ${GKICK_COMMON_DIR}/preset_folder.h
+  ${GKICK_COMMON_DIR}/preset_browser_model.h
+  ${GKICK_COMMON_DIR}/preset_browser_view.h
   ${GKICK_COMMON_DIR}/mainwindow.h)
 
 set(GKICK_COMMON_SOURCES
@@ -131,6 +135,10 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
   ${GKICK_COMMON_DIR}/export_widget.cpp
   ${GKICK_COMMON_DIR}/about.cpp
+  ${GKICK_COMMON_DIR}/preset.cpp
+  ${GKICK_COMMON_DIR}/preset_folder.cpp
+  ${GKICK_COMMON_DIR}/preset_browser_model.cpp
+  ${GKICK_COMMON_DIR}/preset_browser_view.cpp
   ${GKICK_COMMON_DIR}/mainwindow.cpp)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")

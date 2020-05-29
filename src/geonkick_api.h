@@ -32,6 +32,7 @@ class Oscillator;
 class PercussionState;
 class KitState;
 class RkEventQueue;
+class PresetFolder;
 
 class GeonkickApi : public RkObject {
 
@@ -269,19 +270,34 @@ class GeonkickApi : public RkObject {
               stateChanged(),
               RK_ARG_TYPE(),
               RK_ARG_VAL());
+  RK_DECL_ACT(kitUpdated,
+              kitUpdated(),
+              RK_ARG_TYPE(),
+              RK_ARG_VAL());
+    RK_DECL_ACT(percussionUpdated,
+              percussionUpdated(int id),
+              RK_ARG_TYPE(int),
+              RK_ARG_VAL(id));
 
   void setSettings(const std::string &key, const std::string &value);
   std::string getSettings(const std::string &key) const;
   void notifyUpdateGraph();
   void notifyUpdateParameters();
   void notifyUpdateGui();
+  void notifyPercussionUpdated(int id);
+  void notifyKitUpdated();
   std::vector<int> ordredPercussionIds() const;
   void removeOrderedPercussionId(int id);
   void addOrderedPercussionId(int id);
   void clearOrderedPercussionIds();
   bool moveOrdrepedPercussionId(int index, int n);
+  PresetFolder* getPresetFolder(size_t index) const;
+  size_t numberOfPresetFolders() const;
 
 protected:
+  void loadConfig();
+  void loadPresets();
+  void loadPresetsFolders(const std::filesystem::path &path);
   static void kickUpdatedCallback(void *arg,
                                   gkick_real *buff,
                                   size_t size,
@@ -323,6 +339,7 @@ private:
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
+  std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
 };
 
 #endif // GEONKICK_API_H

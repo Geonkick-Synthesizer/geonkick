@@ -237,3 +237,8 @@ void KitKeysView::paintWidget(RkPaintEvent *event)
         RkPainter painter(this);
         painter.drawImage(img, 0, 0);
 }
+
+KitModel* KitWidget::getModel() const
+{
+        return kitModel;
+}

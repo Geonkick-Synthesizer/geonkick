@@ -1,5 +1,4 @@
 set(gkick_rc_png_files
-about.png
 app_icon.png
 logo_about.png
 checkbox_checked_10x10.png
@@ -152,4 +151,11 @@ remove_per_button_hover.png
 remove_per_button_on.png
 copy_per_button.png
 copy_per_button_hover.png
-copy_per_button_on.png)
+copy_per_button_on.png
+presets_button.png
+next_page.png
+next_page_hover.png
+next_page_on.png
+prev_page.png
+prev_page_hover.png
+prev_page_on.png)

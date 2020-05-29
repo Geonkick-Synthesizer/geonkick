@@ -140,6 +140,7 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(RkMouseEvent *event)
                                 update();
                 }
         }
+        setFocus(true);
 }
 
 void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(RkMouseEvent *event)

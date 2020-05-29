@@ -26,6 +26,8 @@
 #include "globals.h"
 #include "percussion_state.h"
 #include "kit_state.h"
+#include "preset.h"
+#include "preset_folder.h"
 
 #include <RkEventQueue.h>
 
@@ -44,6 +46,7 @@ GeonkickApi::GeonkickApi()
         , kitAuthor{"Author"}
         , clipboardPercussion{nullptr}
 {
+        loadConfig();
 }
 
 GeonkickApi::~GeonkickApi()
@@ -60,6 +63,7 @@ void GeonkickApi::setEventQueue(RkEventQueue *queue)
 
 bool GeonkickApi::init()
 {
+        loadPresets();
   	if (geonkick_create(&geonkickApi) != GEONKICK_OK) {
 	        GEONKICK_LOG_ERROR("can't create geonkick API");
                 return false;
@@ -1505,6 +1509,29 @@ void GeonkickApi::notifyUpdateGui()
         }
 }
 
+void GeonkickApi::notifyPercussionUpdated(int id)
+{
+        if (eventQueue) {
+                auto act = std::make_unique<RkAction>();
+                act->setCallback([this, id](void){
+                                GEONKICK_LOG_DEBUG("update percussion :" << id);
+                                action percussionUpdated(id);
+                        });
+                eventQueue->postAction(std::move(act));
+        }
+}
+
+void GeonkickApi::notifyKitUpdated()
+{
+        if (eventQueue) {
+                auto act = std::make_unique<RkAction>();
+                act->setCallback([&](void){
+                                action kitUpdated();
+                        });
+                eventQueue->postAction(std::move(act));
+        }
+}
+
 std::vector<int> GeonkickApi::ordredPercussionIds() const
 {
         return percussionIdList;
@@ -1547,4 +1574,82 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
                 }
         }
         return false;
+}
+
+// std::string GeonkickApi::getPreset(size_t folderId, size_t presetId)
+// {
+//         if (folderId < presetsFolder.size())
+//                 return presetsFolder[folderId].preset(presetId);
+//         return "";
+// }
+
+void GeonkickApi::loadPresets()
+{
+        std::filesystem::path prestsPath = getSettings("GEONKICK_CONFIG/USER_LOCAL_PATH");
+        if (std::filesystem::exists(prestsPath))
+                loadPresetsFolders(prestsPath);
+        prestsPath = "/usr/share" / std::filesystem::path(GEONKICK_APP_NAME) / "presets";
+        if (std::filesystem::exists(prestsPath))
+                loadPresetsFolders(prestsPath);
+        prestsPath = "/usr/local/share" / std::filesystem::path(GEONKICK_APP_NAME) / "presets";
+        if (std::filesystem::exists(prestsPath))
+                loadPresetsFolders(prestsPath);
+}
+
+void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
+{
+        std::vector<std::filesystem::path> presetsDirs;
+        try {
+                for (const auto &entry : std::filesystem::directory_iterator(path)) {
+                        if (!entry.path().empty() && std::filesystem::is_directory(entry.path())) {
+                                auto presetFolder = std::make_unique<PresetFolder>(entry.path());
+                                GEONKICK_LOG_DEBUG("preset folder " << presetFolder->path());
+                                if (!presetFolder->loadPresets()) {
+                                        GEONKICK_LOG_ERROR("can't load preset from folder " << presetFolder->path());
+                                } else {
+                                        presetsFoldersList.push_back(std::move(presetFolder));
+                                }
+                        }
+                }
+        } catch(...) {
+                GEONKICK_LOG_ERROR("error on reading path: " << path);
+        }
+}
+
+void GeonkickApi::loadConfig()
+{
+        const char *homeDir = std::getenv("HOME");
+        if (homeDir == nullptr || *homeDir == '\0') {
+                GEONKICK_LOG_ERROR("can't get home directory: " << homeDir);
+                return;
+        }
+
+        std::filesystem::path localPath(homeDir);
+        if (!std::filesystem::exists(localPath)) {
+                GEONKICK_LOG_ERROR("path " << localPath << " does not exist");
+                return;
+        }
+
+        localPath /= std::filesystem::path(".local") / std::filesystem::path(GEONKICK_APP_NAME);
+        if (!std::filesystem::exists(localPath)) {
+                if (!std::filesystem::create_directory(localPath)) {
+                        GEONKICK_LOG_ERROR("can't create path " << localPath);
+                        return;
+                }
+        }
+
+        GEONKICK_LOG_DEBUG("set local path: " << localPath);
+        setSettings("GEONKICK_CONFIG/USER_LOCAL_PATH", localPath);
+}
+
+PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
+{
+        if (index < presetsFoldersList.size())
+                return presetsFoldersList[index].get();
+        return nullptr;
+}
+
+size_t GeonkickApi::numberOfPresetFolders() const
+{
+        return presetsFoldersList.size();
 }

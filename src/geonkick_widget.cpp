@@ -40,7 +40,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
 GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
         : RkWidget(app, flags)
 {
-        setBackgroundColor(68, 68, 70);
+        setBackgroundColor({68, 68, 70});
         setTextColor({210, 226, 226, 140});
         auto f = font();
         f.setSize(12);
@@ -79,4 +79,9 @@ void GeonkickWidget::setBackgroundImage(const RkImage &img)
                 backgroundImage = img;
                 update();
         }
+}
+
+void GeonkickWidget::mouseButtonPressEvent(RkMouseEvent *event)
+{
+        setFocus(true);
 }

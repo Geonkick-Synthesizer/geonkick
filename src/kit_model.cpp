@@ -39,6 +39,14 @@ KitModel::KitModel(RkObject *parent, GeonkickApi *api)
                    "A5", "A#5", "B5", "C6", "Any"}
 {
         loadModelData();
+        RK_ACT_BIND(geonkickApi, kitUpdated, RK_ACT_ARGS(), this, loadModelData());
+        RK_ACT_BIND(geonkickApi, percussionUpdated, RK_ACT_ARGS(size_t id), this, updatePercussion(getIndex(id)));
+}
+
+void KitModel::updatePercussion(PercussionIndex index)
+{
+        if (isValidIndex(index))
+                action percussionsList[index]->modelUpdated();
 }
 
 bool KitModel::isValidIndex(KitModel::PercussionIndex index)
@@ -81,7 +89,11 @@ bool KitModel::setPercussionChannel(PercussionIndex index, int channel)
 
 bool KitModel::setPercussionName(PercussionIndex index, const std::string &name)
 {
-        return geonkickApi->setPercussionName(percussionId(index), name);
+        if (geonkickApi->setPercussionName(percussionId(index), name)) {
+                geonkickApi->notifyUpdateGui();
+                return true;
+        }
+        return false;
 }
 
 std::string KitModel::percussionName(PercussionIndex index) const
@@ -172,6 +184,7 @@ void KitModel::loadModelData()
                 auto model = new PercussionModel(this, id);
                 percussionsList.push_back(model);
         }
+        action modelUpdated();
 }
 
 bool KitModel::open(const std::string &file)

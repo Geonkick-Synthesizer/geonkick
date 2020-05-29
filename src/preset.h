@@ -1,8 +1,8 @@
 /**
- * File name: geonkick_button.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: preset.h
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,27 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_BUTTON_H
-#define GEONKICK_BUTTON_H
+#ifndef PRESET_H
+#define PRESET_H
 
-#include <geonkick_widget.h>
+#include "globals.h"
 
-#include <RkButton.h>
-#include <RkImage.h>
-
-class GeonkickButton: public RkButton
-{
+class Preset {
  public:
-        explicit GeonkickButton(GeonkickWidget *parent);
-        virtual ~GeonkickButton() = default;
-        void setPressedImage(const RkImage &img);
-        void setUnpressedImage(const RkImage &img);
-        virtual void mouseButtonPressEvent(RkMouseEvent *event) override
-        {
-                RK_UNUSED(event);
-                setFocus(true);
-                RkButton::mouseButtonPressEvent(event);
-        }
+        enum class PresetType: int {
+                Percussion,
+                PercussionKit,
+        };
+
+        PresetType type() const;
+        Preset(const std::filesystem::path& path);
+        std::string name() const;
+        void setName(const std::string &name);
+        std::filesystem::path path() const;
+        void setPath(const std::filesystem::path& path);
+
+ private:
+        std::string presetName;
+        std::filesystem::path presetPath;
 };
 
-#endif // GEONKICK_BUTTON_H
+#endif // PRESET_H

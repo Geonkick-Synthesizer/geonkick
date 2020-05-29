@@ -55,6 +55,7 @@ typedef float gkick_real;
 
 #define GEONKICK_VERSION 0x020101
 #define GEONKICK_NAME "Geonkick"
+#define GEONKICK_APP_NAME "geonkick"
 #define GEOKICK_VERSION_STRING "2.1.1"
 
 #ifdef GEONKICK_AUDIO_JACK
