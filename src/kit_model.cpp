@@ -89,7 +89,11 @@ bool KitModel::setPercussionChannel(PercussionIndex index, int channel)
 
 bool KitModel::setPercussionName(PercussionIndex index, const std::string &name)
 {
-        return geonkickApi->setPercussionName(percussionId(index), name);
+        if (geonkickApi->setPercussionName(percussionId(index), name)) {
+                geonkickApi->notifyUpdateGui();
+                return true;
+        }
+        return false;
 }
 
 std::string KitModel::percussionName(PercussionIndex index) const

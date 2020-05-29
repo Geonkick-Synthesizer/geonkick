@@ -36,14 +36,21 @@ class PresetBrowserModel : public RkObject {
  public:
         explicit PresetBrowserModel(RkObject *parent, GeonkickApi *api);
         std::string presetName(int row, int column) const;
-        size_t page() const;
-        void nextPage();
-        void previousPage();
-        void setPage(size_t index);
+        size_t folderPages() const;
+        size_t folderPage() const;
+        void folderNextPage();
+        void folderPreviousPage();
+        void setFolderPage(size_t index);
+        size_t presetPages() const;
+        size_t presetPage() const;
+        void nextPresetPage();
+        void previousPresetPage();
+        void setPresetPage(size_t index);
         size_t columns() const;
         size_t rows() const;
         void select(size_t row, size_t column);
         bool isSelected(size_t row, size_t column) const;
+        bool isKit(int row, int column) const;
         RK_DECL_ACT(folderSelected,
                     folderSelected(PresetFolder* folder),
                     RK_ARG_TYPE(PresetFolder*),
@@ -52,17 +59,26 @@ class PresetBrowserModel : public RkObject {
                     presetSelected(Preset* preset),
                     RK_ARG_TYPE(Preset*),
                     RK_ARG_VAL(preset));
-
+        RK_DECL_ACT(folderPageChanged,
+                    folderPageChanged(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
+        RK_DECL_ACT(presetPageChanged,
+                    presetPageChanged(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
  protected:
+        PresetFolder* getPresetFolder(int row) const;
         Preset* getPreset(int row, int column) const;
         bool setPreset(Preset* preset);
 
 
  private:
         GeonkickApi* geonkickApi;
-        size_t pageIndex;
-        size_t numberOfColumns;
-        size_t presetPerColumn;
+        size_t folderPageIndex;
+        size_t presetPageIndex;
+        size_t numberOfPresetColumns;
+        size_t rowsPerColumn;
         PresetFolder* selectedFolder;
         Preset* selectedPreset;
 };

@@ -68,3 +68,8 @@ Preset* PresetFolder::preset(size_t index) const
                 return presetList[index].get();
         return nullptr;
 }
+
+size_t PresetFolder::numberOfPresets() const
+{
+        return presetList.size();
+}

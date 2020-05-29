@@ -28,6 +28,8 @@
 #include "geonkick_widget.h"
 
 class PresetBrowserModel;
+class RkButton;
+class RkContainer;
 
 class PresetBrowserView: public GeonkickWidget {
  public:
@@ -37,6 +39,7 @@ class PresetBrowserView: public GeonkickWidget {
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
         void paintWidget(RkPaintEvent *event) override;
+        void updatePageButtons();
 
  private:
         PresetBrowserModel *browserModel;
@@ -46,6 +49,11 @@ class PresetBrowserView: public GeonkickWidget {
         int rowHeight;
         int overRow;
         int overColumn;
+        RkButton* nextPresetPageButton;
+        RkButton* prevPresetPageButton;
+        RkButton* nextFolderPageButton;
+        RkButton* prevFolderPageButton;
+        RkContainer *bottomContainer;
 };
 
 #endif // PRESET_BROWSER_H

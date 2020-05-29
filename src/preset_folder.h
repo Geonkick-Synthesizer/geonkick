@@ -36,6 +36,7 @@ class PresetFolder {
         void setPath(const std::filesystem::path &path);
         bool loadPresets();
         Preset* preset(size_t index) const;
+        size_t numberOfPresets() const;
 
  private:
         std::filesystem::path folderPath;

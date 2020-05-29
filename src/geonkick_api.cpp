@@ -1648,3 +1648,8 @@ PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
                 return presetsFoldersList[index].get();
         return nullptr;
 }
+
+size_t GeonkickApi::numberOfPresetFolders() const
+{
+        return presetsFoldersList.size();
+}

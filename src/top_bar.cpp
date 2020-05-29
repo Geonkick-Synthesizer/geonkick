@@ -34,7 +34,7 @@ RK_DECLARE_IMAGE_RC(logo);
 RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(export_active);
-RK_DECLARE_IMAGE_RC(about);
+RK_DECLARE_IMAGE_RC(presets_button);
 RK_DECLARE_IMAGE_RC(play);
 RK_DECLARE_IMAGE_RC(play_pressed);
 RK_DECLARE_IMAGE_RC(topbar_layer1);
@@ -77,7 +77,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         openFileButton->setY((height() - openFileButton->height()) / 2);
         openFileButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(open_active)));
         openFileButton->setCheckable(true);
-        RK_ACT_BIND(openFileButton, toggled, RK_ACT_ARGS(bool b), this, openFile());
+        RK_ACT_BIND(openFileButton, pressed, RK_ACT_ARGS(), this, openFile());
 
         saveFileButton = new GeonkickButton(this);
         saveFileButton->setSize(90, 30);
@@ -85,7 +85,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         saveFileButton->setY(openFileButton->y());
         saveFileButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(save_active)));
         saveFileButton->setCheckable(true);
-        RK_ACT_BIND(saveFileButton, toggled, RK_ACT_ARGS(bool b), this, saveFile());
+        RK_ACT_BIND(saveFileButton, pressed, RK_ACT_ARGS(), this, saveFile());
 
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setSize(90, 30);
@@ -93,22 +93,16 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         exportFileButton->setY(saveFileButton->y());
         exportFileButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(export_active)));
         exportFileButton->setCheckable(true);
-        RK_ACT_BIND(exportFileButton, toggled, RK_ACT_ARGS(bool b), this, openExport());
-
-        auto aboutButton = new GeonkickButton(this);
-        aboutButton->setSize(90, 30);
-        aboutButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
-        aboutButton->setY(exportFileButton->y());
-        aboutButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(about)));
-        aboutButton->setCheckable(true);
-        RK_ACT_BIND(aboutButton, pressed, RK_ACT_ARGS(), this, openAbout());
+        RK_ACT_BIND(exportFileButton, pressed, RK_ACT_ARGS(), this, openExport());
 
         auto presetsButton = new RkButton(this);
-        presetsButton->setSize(30, height());
-        presetsButton->setPosition(aboutButton->x() + aboutButton->width(), 0);
-        presetsButton->setBackgroundColor({255, 255, 255});
-        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(), this, showPresetsBrowser());
+        presetsButton->setType(RkButton::ButtonType::ButtonPush);
+        presetsButton->setSize(90, 30);
+        presetsButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
+        presetsButton->setY(exportFileButton->y());
+        presetsButton->setImage(RkImage(90, 30, RK_IMAGE_RC(presets_button)));
         presetsButton->show();
+        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(), this, showPresetsBrowser());
 
         presetNameLabel = new RkLabel(this);
         presetNameLabel->setBackgroundColor(background());
@@ -117,7 +111,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         font.setSize(12);
         presetNameLabel->setFont(font);
         presetNameLabel->setSize(220, 30);
-        presetNameLabel->setPosition(aboutButton->x() + aboutButton->width() + 5,
+        presetNameLabel->setPosition(presetsButton->x() + presetsButton->width() + 5,
                                      (height() - presetNameLabel->height()) / 2);
         presetNameLabel->show();
 
@@ -130,7 +124,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
                              RkButton::ButtonImage::ImageUnpressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)),
                              RkButton::ButtonImage::ImagePressed);
-        RK_ACT_BIND(playButton, toggled, RK_ACT_ARGS(bool b), geonkickApi, playKick());
+        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playKick());
 	playButton->show();
 
         createLyersButtons();
@@ -208,17 +202,9 @@ void TopBar::updateGui()
 void TopBar::showPresetsBrowser()
 {
         auto presetBrowser = new PresetBrowserView(this, presetsModel);
-        presetBrowser->setSize(420, 280);
+        presetBrowser->setPosition(200, height() + 350);
         presetBrowser->setBackgroundColor({68, 68, 70});
         presetBrowser->setBorderWidth(1);
         presetBrowser->setBorderColor(30, 30, 30);
-        presetBrowser->setPosition(presetNameLabel->x() - 110, height() + 10);
         presetBrowser->show();
-        // auto transition = new RkTransition(presetBrowser);
-        // transition->setSpeed(8);
-        // transition->setRange(2, 280);
-        // transition->setCallback([presetBrowser](int value) {
-        //                 presetBrowser->setSize(420 , value);
-        //         });
-        // transition->start();
 }

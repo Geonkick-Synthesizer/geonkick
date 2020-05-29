@@ -31,9 +31,10 @@
 PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
         : RkObject(parent)
         , geonkickApi{api}
-        , pageIndex{0}
-        , numberOfColumns{4}
-        , presetPerColumn{12}
+        , folderPageIndex{0}
+        , presetPageIndex{0}
+        , numberOfPresetColumns{3}
+        , rowsPerColumn{12}
         , selectedFolder{geonkickApi->getPresetFolder(0)}
         , selectedPreset{nullptr}
 {
@@ -42,7 +43,7 @@ PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
 std::string PresetBrowserModel::presetName(int row, int column) const
 {
         if (column == 0) {
-                auto presetFolder = geonkickApi->getPresetFolder(row);
+                auto presetFolder = getPresetFolder(row);
                 if (presetFolder)
                         return presetFolder->name();
         } else if (column) {
@@ -50,70 +51,131 @@ std::string PresetBrowserModel::presetName(int row, int column) const
                 if (preset)
                         return preset->name();
         }
-        return "";
+        return std::string();
+}
+
+bool PresetBrowserModel::isKit(int row, int column) const
+{
+        auto preset = getPreset(row, column);
+        return preset && preset->type() == Preset::PresetType::PercussionKit;
+}
+
+PresetFolder* PresetBrowserModel::getPresetFolder(int row) const
+{
+        return geonkickApi->getPresetFolder(folderPage() * rowsPerColumn + row);
 }
 
 Preset* PresetBrowserModel::getPreset(int row, int column) const
 {
         if (column > 0 && selectedFolder) {
-                return selectedFolder->preset(page() * (numberOfColumns - 1) + (column - 1) * presetPerColumn + row);
+                return selectedFolder->preset(presetPage() * numberOfPresetColumns * rowsPerColumn
+                                              + (column - 1) * rowsPerColumn + row);
         } else {
                 return nullptr;
         }
 }
 
-
-size_t PresetBrowserModel::page() const
+size_t PresetBrowserModel::folderPages() const
 {
-        return pageIndex;
+        return geonkickApi->numberOfPresetFolders() / rowsPerColumn
+                + ((geonkickApi->numberOfPresetFolders() % rowsPerColumn) ? 1 : 0);
 }
 
-void PresetBrowserModel::nextPage()
+size_t PresetBrowserModel::folderPage() const
 {
-        pageIndex++;
+        return folderPageIndex;
 }
 
-void PresetBrowserModel::previousPage()
+void PresetBrowserModel::folderNextPage()
 {
-        if (pageIndex > 0)
-                pageIndex--;
+        if (folderPageIndex < folderPages() - 1) {
+                folderPageIndex++;
+                action folderPageChanged();
+        }
 }
 
-void PresetBrowserModel::setPage(size_t index)
+void PresetBrowserModel::folderPreviousPage()
 {
-        if (index >=0)
-                pageIndex = index;
+        if (folderPageIndex > 0) {
+                folderPageIndex--;
+                action folderPageChanged();
+        }
+}
+
+void PresetBrowserModel::setFolderPage(size_t index)
+{
+        if (index >= 0)
+                folderPageIndex = index;
+}
+
+size_t PresetBrowserModel::presetPages() const
+{
+        if (selectedFolder) {
+                auto presetsPerPage = numberOfPresetColumns * rowsPerColumn;
+                return selectedFolder->numberOfPresets() / presetsPerPage
+                        + ((selectedFolder->numberOfPresets() % presetsPerPage) ? 1 : 0);
+        }
+        return 0;
+}
+
+size_t PresetBrowserModel::presetPage() const
+{
+        return presetPageIndex;
+}
+
+void PresetBrowserModel::nextPresetPage()
+{
+        if (presetPageIndex < presetPages() - 1) {
+                presetPageIndex++;
+                action presetPageChanged();
+        }
+}
+
+void PresetBrowserModel::previousPresetPage()
+{
+        if (presetPageIndex > 0) {
+                presetPageIndex--;
+                action presetPageChanged();
+        }
+}
+
+void PresetBrowserModel::setPresetPage(size_t index)
+{
+        if (index >= 0)
+                presetPageIndex = index;
 }
 
 size_t PresetBrowserModel::columns() const
 {
-        return numberOfColumns;
+        return numberOfPresetColumns + 1;
 }
 
 size_t PresetBrowserModel::rows() const
 {
-        return presetPerColumn;
+        return rowsPerColumn;
 }
 
 void PresetBrowserModel::select(size_t row, size_t column)
 {
-        GEONKICK_LOG_DEBUG("row = " << row << ", column = " << column);
-        if (column == 0 && geonkickApi->getPresetFolder(row)) {
-                selectedFolder = geonkickApi->getPresetFolder(row);
-                selectedPreset = nullptr;
-                if (selectedFolder)
-                        action folderSelected(selectedFolder);
-        } if (column > 0 && selectedFolder) {
-                selectedPreset = getPreset(row, column);
-                if (selectedPreset && setPreset(selectedPreset))
-                        action presetSelected(selectedPreset);
+        if (row < rows() && column < columns()) {
+                if (column == 0 && getPresetFolder(row)) {
+                        selectedFolder = getPresetFolder(row);
+                        selectedPreset = nullptr;
+                        presetPageIndex = 0;
+                        if (selectedFolder)
+                                action folderSelected(selectedFolder);
+                } if (column > 0 && selectedFolder) {
+                        selectedPreset = getPreset(row, column);
+                        if (selectedPreset && setPreset(selectedPreset))
+                                action presetSelected(selectedPreset);
+                }
         }
 }
 
 bool PresetBrowserModel::isSelected(size_t row, size_t column) const
 {
         if (column == 0)
-                return geonkickApi->getPresetFolder(row) == selectedFolder;
+                return getPresetFolder(row) == selectedFolder;
         else if (column > 0)
                 return getPreset(row, column) == selectedPreset;
         else
@@ -132,7 +194,6 @@ bool PresetBrowserModel::setPreset(Preset* preset)
                         state->setId(geonkickApi->currentPercussion());
                         geonkickApi->setPercussionState(state);
                         geonkickApi->notifyUpdateGui();
-                        GEONKICK_LOG_DEBUG("update percussion :" << state->getId());
                         geonkickApi->notifyPercussionUpdated(state->getId());
                         return true;
                 }
