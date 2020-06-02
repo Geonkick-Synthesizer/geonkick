@@ -42,6 +42,9 @@ class DistortionGroupBox: public GeonkickGroupBox
         void setDrive(int val);
         void setInLimiter(int val);
 
+ protected:
+        void showEnvelope();
+
  private:
         GeonkickApi *geonkickApi;
         GeonkickSlider *volumeSlider;

@@ -41,11 +41,11 @@ public:
                              GeonkickApi *api,
                              const std::vector<std::unique_ptr<Oscillator>> &oscillators);
      void hideEnvelope(bool b);
+     void showEnvelopeType(Envelope::Type type);
      void updateGui();
      RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
-     void showEnvelopeType(Envelope::Type type);
      void showEnvelope(Envelope::Category category);
      Envelope* getEnvelope(Envelope::Category category);
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);

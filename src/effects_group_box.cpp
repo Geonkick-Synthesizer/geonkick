@@ -41,8 +41,13 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         auto layers = new LayersGroupBox(geonkickApi, this);
         layers->setBackgroundColor({100, 100, 100});
-        layers->setPosition(distortion->x() + distortion->width() + 5, 10);
+        layers->setPosition(distortion->x() + distortion->width() + 20, 10);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
-
 }
+
+void ControlsWidget::setEnvelopeWidget(EnvelopeWidget *widget)
+{
+        distortionGroupBox->setEnvelopeWidget(widget);
+}
+
 

@@ -73,3 +73,8 @@ KitWidget* ControlArea::getKitWidget()
 {
         return kitWidget;
 }
+
+void ControlArea::setEnvelopeWidget(EnvelopeWidget *widget)
+{
+        controlsWidget->setEnvelopeWidget(widget);
+}

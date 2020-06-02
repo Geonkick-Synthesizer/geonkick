@@ -63,3 +63,8 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
         effectsWidget->show();
 }
+
+void ControlsWidget::setEnvelopeWidget(EnvelopeWidget *widget)
+{
+        effectsWidget->setEnvelopeWidget(widget);
+}
