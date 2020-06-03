@@ -32,6 +32,7 @@ class GeonkickApi;
 class ControlsWidget;
 class KitModel;
 class KitWidget;
+class EnvelopeWidget;
 
 class ControlArea: public GeonkickWidget
 {
@@ -44,6 +45,7 @@ class ControlArea: public GeonkickWidget
         void showControls();
         void showKit();
         KitWidget* getKitWidget();
+        void setEnvelopeWidget(EnvelopeWidget *widget);
 
  private:
         GeonkickApi* geonkickApi;
@@ -51,6 +53,7 @@ class ControlArea: public GeonkickWidget
         ControlsWidget *controlsWidget;
         KitModel *kitModel;
         KitWidget *kitWidget;
+        EnvelopeWidget *envelopeWidget;
 };
 
 #endif // GKICK_CONTROL_AREA_H

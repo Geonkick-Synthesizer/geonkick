@@ -35,6 +35,7 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , controlsWidget{nullptr}
         , kitModel{nullptr}
         , kitWidget{nullptr}
+        , envelopeWidget{nullptr}
 {
         kitModel = new KitModel(this, geonkickApi);
         setFixedSize(920, 368);
@@ -50,6 +51,7 @@ void ControlArea::showControls()
 
         if (!controlsWidget) {
                 controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
+                controlsWidget->setEnvelopeWidget(envelopeWidget);
                 RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 controlsWidget->setSize({width(), height()});
                 controlsWidget->show();
@@ -76,5 +78,7 @@ KitWidget* ControlArea::getKitWidget()
 
 void ControlArea::setEnvelopeWidget(EnvelopeWidget *widget)
 {
-        controlsWidget->setEnvelopeWidget(widget);
+        envelopeWidget = widget;
+        if (controlsWidget)
+                controlsWidget->setEnvelopeWidget(envelopeWidget);
 }

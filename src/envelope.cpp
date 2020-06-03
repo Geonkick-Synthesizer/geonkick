@@ -35,7 +35,8 @@ Envelope::Envelope(const RkRect &area)
         , supportedTypes({Type::Amplitude,
 			 Type::Frequency,
 			 Type::FilterCutOff,
-			 Type::DistortionDrive})
+                         Type::DistortionDrive,
+                         Type::DistortionVolume})
         , overPointIndex{0}
         , isOverPoint{false}
         , pointSelected{false}
@@ -122,7 +123,9 @@ void Envelope::drawValueScale(RkPainter &painter)
         if (type() == Type::Amplitude)
                 text = "Amplitude";
 	else if (type() == Type::DistortionDrive)
-		text = "Drive";
+		text = "Distortion Drive";
+        else if (type() == Type::DistortionVolume)
+                text = "Distortion Volume";
         else if (type() == Type::Frequency || type() == Type::FilterCutOff)
                 text = "Frequency, Hz";
 
@@ -139,7 +142,9 @@ void Envelope::drawValueScale(RkPainter &painter)
         int rectH = font.size() + 2;
         painter.setPen(RkPen(RkColor(110, 110, 110)));
 
-        if (type() == Type::Amplitude || type() == Type::DistortionDrive) {
+        if (type() == Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume) {
                 double step = envelopeAmplitude() / 10;
                 double amplitude = envelopeAmplitude();
                 for (int i = 1; i <= 10; i++) {
@@ -154,7 +159,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                         RkRect rect(x - 28,  y -  rectH / 2, 22, rectH);
                         painter.setPen(RkPen(RkColor(110, 110, 110)));
                         std::ostringstream ss;
-			if ( type() == Type::DistortionDrive)
+			if ( type() == Type::DistortionDrive || type() == Type::DistortionVolume)
 				ss << std::setprecision(2) << i * step * pow(10, 36.0/20);
 			else
 				ss << std::setprecision(2) << i * step;
@@ -227,9 +232,11 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
 {
-        if (type() == Envelope::Type::Amplitude || type() == Type::DistortionDrive) {
+        if (type() == Envelope::Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume) {
                 std::ostringstream ss;
-		if (type() == Type::DistortionDrive)
+		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
 			ss << std::setprecision(2) << value * pow(10, 36.0 / 20);
 		else
 			ss << std::setprecision(2) << value;
@@ -469,7 +476,9 @@ void Envelope::setDrawingArea(const RkRect &rect)
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
         RkRealPoint scaledPoint;
-        if (type() == Type::Amplitude || type() == Type::DistortionDrive) {
+        if (type() == Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume) {
                 scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
                                           static_cast<double>(point.y()) / H());
         } else {
@@ -485,7 +494,9 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
         int x, y;
-        if (type() == Type::Amplitude || type() == Type::DistortionDrive) {
+        if (type() == Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume) {
                 x = point.x() * W();
                 y = point.y() * H();
         } else {

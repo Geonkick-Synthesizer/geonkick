@@ -30,22 +30,23 @@
 EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent, Orientation::Horizontal)
         , geonkickApi(api)
+        , distortionGroupBox{nullptr}
 {
         auto compressor = new CompressorGroupBox(geonkickApi, this);
         compressor->setPosition(0, 10);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), compressor, updateGui());
 
-        auto distortion = new DistortionGroupBox(geonkickApi, this);
-        distortion->setPosition(compressor->width() + 10, 10);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortion, updateGui());
+        distortionGroupBox = new DistortionGroupBox(geonkickApi, this);
+        distortionGroupBox->setPosition(compressor->width(), 10);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortionGroupBox, updateGui());
 
         auto layers = new LayersGroupBox(geonkickApi, this);
         layers->setBackgroundColor({100, 100, 100});
-        layers->setPosition(distortion->x() + distortion->width() + 20, 10);
+        layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 8, 10);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
 }
 
-void ControlsWidget::setEnvelopeWidget(EnvelopeWidget *widget)
+void EffectsGroupBox::setEnvelopeWidget(EnvelopeWidget *widget)
 {
         distortionGroupBox->setEnvelopeWidget(widget);
 }

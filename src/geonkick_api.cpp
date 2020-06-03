@@ -123,6 +123,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::Amplitude, envelope);
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff, envelope);
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive, envelope);
+        state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume, envelope);
         state->enableCompressor(false);
         state->setCompressorAttack(0.01);
         state->setCompressorRelease(0.01);
@@ -209,6 +210,9 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
                               state->getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff));
 	setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive,
                               state->getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive));
+        setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume,
+                              state->getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume));
+
         for (auto i = 0; i < 3; i++) {
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator1, state);
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator2, state);
@@ -281,6 +285,9 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
                                      getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff));
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive,
                                      getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive));
+        state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume,
+                                     getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume));
+
 
         for (int i = 0; i < 3; i++) {
                 getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator1, state);

@@ -25,11 +25,13 @@
 #define GEONKICK_DISTORTION_GROUPBOX_H
 
 #include "geonkick_groupbox.h"
+#include "envelope.h"
 
 class GeonkickSlider;
 class GeonkickCheckbox;
 class GeonkickApi;
 class GeonkickButton;
+class EnvelopeWidget;
 
 class DistortionGroupBox: public GeonkickGroupBox
 {
@@ -41,9 +43,10 @@ class DistortionGroupBox: public GeonkickGroupBox
         void setVolume(int val);
         void setDrive(int val);
         void setInLimiter(int val);
+        void setEnvelopeWidget(EnvelopeWidget* widget);
 
  protected:
-        void showEnvelope();
+        void showEnvelope(Envelope::Type type);
 
  private:
         GeonkickApi *geonkickApi;
@@ -51,6 +54,9 @@ class DistortionGroupBox: public GeonkickGroupBox
         GeonkickSlider *inLimiterSlider;
         GeonkickSlider *driveSlider;
         GeonkickButton *distortionCheckbox;
+        EnvelopeWidget* envelopeWidget;
+        GeonkickButton *volumeEnvelopeButton;
+        GeonkickButton *driveEnvelopeButton;
 };
 
 #endif // GEONKICK_DISTORTION_WIDGET_H

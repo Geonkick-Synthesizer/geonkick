@@ -111,7 +111,9 @@ std::string EnvelopeWidgetDrawingArea::getEnvStateText() const
         else if (currentEnvelope->type() == Envelope::Type::Frequency)
                 str += "FENV";
         else if (currentEnvelope->type() == Envelope::Type::DistortionDrive)
-                str += "DIST";
+                str += "DIST / DRIVE";
+        else if (currentEnvelope->type() == Envelope::Type::DistortionVolume)
+                str += "DIST / VOL";
         else
                 str += "CFENV";
 

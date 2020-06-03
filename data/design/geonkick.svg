@@ -7290,9 +7290,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="23.471907"
-     inkscape:cx="848.63646"
-     inkscape:cy="294.82454"
+     inkscape:zoom="48.600437"
+     inkscape:cx="872.80071"
+     inkscape:cy="272.61653"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -26986,5 +26986,149 @@
        inkscape:export-xdpi="295.41629"
        inkscape:export-ydpi="295.41629"
        transform="scale(-1,1)" />
+    <rect
+       style="display:inline;opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:#5a5a5a;stroke-width:0.13028848;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-1-7-8-6-3"
+       width="1.7895949"
+       height="1.7895949"
+       x="217.71893"
+       y="222.66437"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button.png"
+       inkscape:export-xdpi="317.5191"
+       inkscape:export-ydpi="317.5191" />
+    <rect
+       style="display:inline;opacity:1;fill:#323232;fill-opacity:0.99757278;stroke:#5a5a5a;stroke-width:0.13028848;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-1-7-5-4-6-6"
+       width="1.7895949"
+       height="1.7895949"
+       x="220.30159"
+       y="222.69832"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_hover.png"
+       inkscape:export-xdpi="317.5191"
+       inkscape:export-ydpi="317.5191" />
+    <rect
+       style="display:inline;opacity:1;fill:#464646;fill-opacity:0.99757278;stroke:#5a5a5a;stroke-width:0.13028848;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-1-7-5-8-1-4-7"
+       width="1.7895949"
+       height="1.7895949"
+       x="217.70284"
+       y="225.11606"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_on.png"
+       inkscape:export-xdpi="317.5191"
+       inkscape:export-ydpi="317.5191" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:1.48432946px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:0.82038838;stroke:#5a5a5a;stroke-width:0.05566235;stroke-opacity:1"
+       x="218.21815"
+       y="224.10762"
+       id="text5093-95-5"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button.png"
+       inkscape:export-xdpi="317.5191"
+       inkscape:export-ydpi="317.5191"><tspan
+         sodipodi:role="line"
+         id="tspan5091-0-3"
+         x="218.21815"
+         y="224.10762"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#c8c8c8;fill-opacity:0.82038838;stroke:#5a5a5a;stroke-width:0.05566235;stroke-opacity:1">E</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.48432946px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#e6e6e6;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.05566235;stroke-opacity:1"
+       x="220.80081"
+       y="224.14157"
+       id="text5093-9-4-5"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_hover.png"
+       inkscape:export-xdpi="317.5191"
+       inkscape:export-ydpi="317.5191"><tspan
+         sodipodi:role="line"
+         id="tspan5091-2-8-6"
+         x="220.80081"
+         y="224.14157"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#e6e6e6;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.05566235;stroke-opacity:1">E</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.48432946px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.05566235;stroke-opacity:1"
+       x="218.20206"
+       y="226.55931"
+       id="text5093-9-0-7-2"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_on.png"
+       inkscape:export-xdpi="317.5191"
+       inkscape:export-ydpi="317.5191"><tspan
+         sodipodi:role="line"
+         id="tspan5091-2-6-1-9"
+         x="218.20206"
+         y="226.55931"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#ffffff;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.05566235;stroke-opacity:1">E</tspan></text>
+    <rect
+       style="display:inline;opacity:1;fill:#1e1e1e;fill-opacity:0.99757278;stroke:#6e6e6e;stroke-width:0.13028848;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-1-7-8-6-3-1"
+       width="1.789595"
+       height="1.789595"
+       x="228.75044"
+       y="222.91943"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button.png"
+       inkscape:export-xdpi="185.21948"
+       inkscape:export-ydpi="185.21948" />
+    <rect
+       style="display:inline;opacity:1;fill:#323232;fill-opacity:0.99757278;stroke:#6e6e6e;stroke-width:0.13028848;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-1-7-5-4-6-6-2"
+       width="1.789595"
+       height="1.789595"
+       x="231.3331"
+       y="222.95338"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_hover.png"
+       inkscape:export-xdpi="185.21948"
+       inkscape:export-ydpi="185.21948" />
+    <rect
+       style="display:inline;opacity:1;fill:#464646;fill-opacity:0.99757278;stroke:#6e6e6e;stroke-width:0.13028848;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect3385-3-1-7-5-8-1-4-7-7"
+       width="1.789595"
+       height="1.789595"
+       x="228.78334"
+       y="225.16425"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_on.png"
+       inkscape:export-xdpi="185.21948"
+       inkscape:export-ydpi="185.21948" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:2.02897382px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c8c8c8;fill-opacity:0.82038838;stroke:#5a5a5a;stroke-width:0.0760865;stroke-opacity:1"
+       x="228.998"
+       y="224.37625"
+       id="text5093-95-5-0"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button.png"
+       inkscape:export-xdpi="185.21948"
+       inkscape:export-ydpi="185.21948"><tspan
+         sodipodi:role="line"
+         id="tspan5091-0-3-9"
+         x="228.998"
+         y="224.37625"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#c8c8c8;fill-opacity:0.82038838;stroke:#5a5a5a;stroke-width:0.0760865;stroke-opacity:1">e</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.02897382px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#e6e6e6;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.07608651;stroke-opacity:1"
+       x="231.58066"
+       y="224.4102"
+       id="text5093-9-4-5-3"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_hover.png"
+       inkscape:export-xdpi="185.21948"
+       inkscape:export-ydpi="185.21948"><tspan
+         sodipodi:role="line"
+         id="tspan5091-2-8-6-6"
+         x="231.58066"
+         y="224.4102"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#e6e6e6;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.07608651;stroke-opacity:1">e</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.02897382px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.07608652;stroke-opacity:1"
+       x="229.0309"
+       y="226.62106"
+       id="text5093-9-0-7-2-0"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/env_button_on.png"
+       inkscape:export-xdpi="185.21948"
+       inkscape:export-ydpi="185.21948"><tspan
+         sodipodi:role="line"
+         id="tspan5091-2-6-1-9-6"
+         x="229.0309"
+         y="226.62106"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#ffffff;fill-opacity:1;stroke:#5a5a5a;stroke-width:0.07608652;stroke-opacity:1">e</tspan></text>
   </g>
 </svg>

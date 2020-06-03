@@ -27,6 +27,8 @@
 #include "geonkick_groupbox.h"
 
 class GeonkickApi;
+class EnvelopeWidget;
+class DistortionGroupBox;
 
 class EffectsGroupBox: public GeonkickGroupBox
 {
@@ -34,9 +36,11 @@ class EffectsGroupBox: public GeonkickGroupBox
         EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent);
         ~EffectsGroupBox() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+        void setEnvelopeWidget(EnvelopeWidget* widget);
 
  private:
         GeonkickApi *geonkickApi;
+        DistortionGroupBox *distortionGroupBox;
 };
 
 #endif // GKICK_GENERAL_GROUP_BOX_H

@@ -41,7 +41,7 @@ LayersGroupBox::LayersGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         int y = 23;
         for (auto i = 0; i < 3; i++) {
                 layerSliders[i] = new GeonkickSlider(this);
-                layerSliders[i]->setFixedSize(width() - 28, 10);
+                layerSliders[i]->setFixedSize(width() - 38, 10);
                 layerSliders[i]->setPosition(18, y);
                 y += layerSliders[i]->height() + 6;
                 layerSliders[i]->show();

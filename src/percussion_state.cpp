@@ -328,6 +328,10 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
 				if (el.name == "drive_env" && el.value.IsArray())
 					setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive,
 							      parseEnvelopeArray(el.value));
+                                if (el.name == "volume_env" && el.value.IsArray())
+					setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume,
+							      parseEnvelopeArray(el.value));
+
                         }
                 }
         }
@@ -452,6 +456,8 @@ void PercussionState::setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope,
                 kickFilterCutOffEnvelope = points;
 	else if (envelope == GeonkickApi::EnvelopeType::DistortionDrive)
 		kickDistortionDriveEnvelope = points;
+        else if (envelope == GeonkickApi::EnvelopeType::DistortionVolume)
+		kickDistortionVolumeEnvelope = points;
 }
 
 double PercussionState::getLimiterValue() const
@@ -498,6 +504,8 @@ PercussionState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
                 return kickFilterCutOffEnvelope;
 	else if (envelope == GeonkickApi::EnvelopeType::DistortionDrive)
 		return kickDistortionDriveEnvelope;
+        else if (envelope == GeonkickApi::EnvelopeType::DistortionVolume)
+		return kickDistortionVolumeEnvelope;
 	else
 		return {};
 }
@@ -1000,6 +1008,18 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                    << getDistortionDrive() << ", " << std::endl;
 	jsonStream << "\"drive_env\": [" << std::endl;
 	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive);
+        first = true;
+        for (const auto &point: points) {
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
+                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+        }
+        jsonStream << "], " << std::endl;
+        jsonStream << "\"volume_env\": [" << std::endl;
+	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume);
         first = true;
         for (const auto &point: points) {
                 if (first)

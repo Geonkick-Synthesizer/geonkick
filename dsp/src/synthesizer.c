@@ -901,6 +901,11 @@ gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
 		gkick_envelope_get_points(synth->distortion->drive_env,
                                           buf,
                                           npoints);
+        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
+                gkick_envelope_get_points(synth->distortion->volume_env,
+                                          buf,
+                                          npoints);
+
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;
@@ -930,11 +935,17 @@ gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
 		gkick_envelope_set_points(synth->distortion->drive_env,
                                           buf,
                                           npoints);
+        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
+		gkick_envelope_set_points(synth->distortion->volume_env,
+                                          buf,
+                                          npoints);
+
 
 	if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
                 && synth->filter_enabled)
-	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+                 || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
                 && synth->distortion->enabled)) {
                 synth->buffer_update = true;
         }
@@ -960,11 +971,15 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth,
                 gkick_envelope_add_point(synth->filter->cutoff_env, x, y);
 	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
 		gkick_envelope_add_point(synth->distortion->drive_env, x, y);
+        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
+		gkick_envelope_add_point(synth->distortion->volume_env, x, y);
+
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
                 && synth->filter_enabled)
-	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+                 || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
                 && synth->distortion->enabled))
                 synth->buffer_update = true;
         gkick_synth_unlock(synth);
@@ -988,11 +1003,15 @@ gkick_synth_kick_remove_env_point(struct gkick_synth *synth,
                 gkick_envelope_remove_point(synth->filter->cutoff_env, index);
 	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
 		gkick_envelope_remove_point(synth->distortion->drive_env, index);
+        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
+		gkick_envelope_remove_point(synth->distortion->volume_env, index);
+
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
                 && synth->filter_enabled)
-	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+                 || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
                 && synth->distortion->enabled)) {
                 synth->buffer_update = true;
         }
@@ -1025,11 +1044,16 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
 		gkick_envelope_update_point(synth->distortion->drive_env,
                                             index,
                                             x, y);
+        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
+		gkick_envelope_update_point(synth->distortion->volume_env,
+                                            index,
+                                            x, y);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
                 && synth->filter_enabled)
-	    || (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+                 || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
                 && synth->distortion->enabled)) {
                 synth->buffer_update = true;
 	}

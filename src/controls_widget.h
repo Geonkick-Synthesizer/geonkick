@@ -28,6 +28,8 @@
 
 class GeonkickApi;
 class Oscillator;
+class EnvelopeWidget;
+class EffectsGroupBox;
 
 class ControlsWidget: public GeonkickWidget
 {
@@ -37,8 +39,11 @@ class ControlsWidget: public GeonkickWidget
                        const std::vector<std::unique_ptr<Oscillator>> &oscillators);
         ~ControlsWidget() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+        void setEnvelopeWidget(EnvelopeWidget* widget);
+
  private:
 	GeonkickApi* geonkickApi;
+        EffectsGroupBox *effectsWidget;
 };
 
 #endif // CONTROLS_WIDGET_H

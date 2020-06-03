@@ -38,11 +38,12 @@ gkick_distortion_new(struct gkick_distortion **distortion)
                 return GEONKICK_ERROR;
         }
 	(*distortion)->drive_env = NULL;
+        (*distortion)->volume_env = NULL;
 	(*distortion)->drive = 1.0f;
 
 	struct gkick_envelope *env = gkick_envelope_create();
 	if (env == NULL) {
-		gkick_log_error("can't create distortion envelope");
+		gkick_log_error("can't create distortion drive envelope");
 		gkick_distortion_free(distortion);
 		return GEONKICK_ERROR;
 	} else {
@@ -51,6 +52,19 @@ gkick_distortion_new(struct gkick_distortion **distortion)
 		gkick_envelope_add_point(env, 1.0f, 1.0f);
 		(*distortion)->drive_env = env;
 	}
+
+        env = gkick_envelope_create();
+	if (env == NULL) {
+		gkick_log_error("can't create distortion volume envelope");
+		gkick_distortion_free(distortion);
+		return GEONKICK_ERROR;
+	} else {
+		/* Add two default points. */
+		gkick_envelope_add_point(env, 0.0f, 1.0f);
+		gkick_envelope_add_point(env, 1.0f, 1.0f);
+		(*distortion)->volume_env = env;
+	}
+
 
         if (pthread_mutex_init(&(*distortion)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
@@ -67,6 +81,8 @@ gkick_distortion_free(struct gkick_distortion **distortion)
         if (distortion != NULL && *distortion != NULL) {
 		if ((*distortion)->drive_env != NULL)
 			gkick_envelope_destroy((*distortion)->drive_env);
+                if ((*distortion)->volume_env != NULL)
+                        gkick_envelope_destroy((*distortion)->volume_env);
                 pthread_mutex_destroy(&(*distortion)->lock);
                 free(*distortion);
                 *distortion = NULL;
@@ -117,7 +133,7 @@ gkick_distortion_val(struct gkick_distortion *distortion,
                 x = -1.0f;
 
         *out_val= (x < 0.0f ? -1.0f : 1.0f) * (1.0f - exp(-4.0f * log(10.0f) * fabs(x)));
-        *out_val *= distortion->volume;
+        *out_val *= distortion->volume * gkick_envelope_get_value(distortion->volume_env, env_x);
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }

@@ -33,6 +33,7 @@ struct gkick_distortion {
         gkick_real volume;
         gkick_real drive;
 	struct gkick_envelope *drive_env;
+        struct gkick_envelope *volume_env;
         pthread_mutex_t lock;
 };
 
