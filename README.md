@@ -8,7 +8,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.1.1
+Version: 2.2.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -65,6 +65,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
      - compression
      - distortion
      - distortion drive envelope
+     - distortion volume envelope
      - tune percussion option (relative to key A4)
 * Key velocity sensitive
 * Jack support
@@ -112,11 +113,7 @@ for plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-<<<<<<< HEAD
-* [Redkite](https://github.com/geontime/redkite) GUI toolkit (it is recommented to use release versions).
-=======
-* [Redkite](https://github.com/iurie-sw/redkite) GUI toolkit.
->>>>>>> master
+* [Redkite](https://github.com/geontime/redkite) GUI toolkit (it is recommented to use release version).
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for plugin)

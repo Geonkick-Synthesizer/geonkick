@@ -1,3 +1,14 @@
+### Changes from 2.1.1 to 2.2.0
+
+#### Features
+
+  - Kit mixer
+  - Preset browser
+  - Factory presets
+  - Distortion volume envelope
+
+
+
 ### Changes from 2.1.0 to 2.1.1
 
 #### Fixes
