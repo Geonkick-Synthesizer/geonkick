@@ -47,6 +47,7 @@ class DistortionGroupBox: public GeonkickGroupBox
 
  protected:
         void showEnvelope(Envelope::Type type);
+        void updateButtons(Envelope::Type type);
 
  private:
         GeonkickApi *geonkickApi;

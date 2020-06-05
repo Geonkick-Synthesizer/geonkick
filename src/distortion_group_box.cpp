@@ -186,15 +186,26 @@ void DistortionGroupBox::updateGui()
         driveSlider->onSetValue(100 * distortion / 36);
 }
 
-void DistortionGroupBox::showEnvelope(Envelope::Type type)
+void DistortionGroupBox::updateButtons(Envelope::Type type)
 {
         volumeEnvelopeButton->setPressed(type == Envelope::Type::DistortionVolume);
         driveEnvelopeButton->setPressed(type == Envelope::Type::DistortionDrive);
+}
+
+void DistortionGroupBox::showEnvelope(Envelope::Type type)
+{
+        updateButtons(type);
         if (envelopeWidget)
                 envelopeWidget->showEnvelopeType(type);
 }
 
 void DistortionGroupBox::setEnvelopeWidget(EnvelopeWidget *widget)
 {
-        envelopeWidget = widget;
+        if (!envelopeWidget && widget) {
+                envelopeWidget = widget;
+                RK_ACT_BIND(envelopeWidget,
+                            envelopeTypeSelected,
+                            RK_ACT_ARGS(Envelope::Type type),
+                            this, updateButtons(type));
+        }
 }

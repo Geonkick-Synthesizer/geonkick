@@ -35,8 +35,6 @@ RK_DECLARE_IMAGE_RC(show_freq_env_active);
 RK_DECLARE_IMAGE_RC(show_freq_env);
 RK_DECLARE_IMAGE_RC(show_filter_env);
 RK_DECLARE_IMAGE_RC(show_filter_env_active);
-RK_DECLARE_IMAGE_RC(show_dist_drive_env);
-RK_DECLARE_IMAGE_RC(show_dist_drive_env_active);
 RK_DECLARE_IMAGE_RC(layer1);
 RK_DECLARE_IMAGE_RC(layer1_disabled);
 RK_DECLARE_IMAGE_RC(layer2);
@@ -60,7 +58,6 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
           , showAmplitudeEnvButton{nullptr}
           , showFrequencyEnvButton{nullptr}
 	  , showFilterEnvButton{nullptr}
-	  , showDistortionEnvButton{nullptr}
           , osccillator1EvelopesButton{nullptr}
           , osccillator2EvelopesButton{nullptr}
           , noiseEvelopesButton{nullptr}
@@ -143,21 +140,6 @@ void EnvelopeWidget::createButtomMenu()
         showFilterEnvButton->setUnpressedImage(RkImage(77, 30, RK_IMAGE_RC(show_filter_env)));
         showFilterEnvButton->show();
 
-	// Distortion Drive.
-        showDistortionEnvButton = new GeonkickButton(buttomAreaWidget);
-	showDistortionEnvButton->setSize(77, 30);
-        RK_ACT_BIND(showDistortionEnvButton,
-                    toggled,
-                    RK_ACT_ARGS(bool pressed),
-                    this,
-                    showEnvelopeType(Envelope::Type::DistortionDrive));
-        showDistortionEnvButton->setPressedImage(RkImage(showDistortionEnvButton->size(),
-							 RK_IMAGE_RC(show_dist_drive_env_active)));
-        showDistortionEnvButton->setUnpressedImage(RkImage(showDistortionEnvButton->size(),
-						       RK_IMAGE_RC(show_dist_drive_env)));
-        showDistortionEnvButton->show();
-
-
         // General envelope button
         generalEvelopesButton = new GeonkickButton(buttomAreaWidget);
         generalEvelopesButton->setPressed(true);
@@ -208,7 +190,6 @@ void EnvelopeWidget::createButtomMenu()
 	menuContainer->addWidget(showAmplitudeEnvButton);
 	menuContainer->addWidget(showFrequencyEnvButton);
 	menuContainer->addWidget(showFilterEnvButton);
-	menuContainer->addWidget(showDistortionEnvButton);
 	menuContainer->addWidget(generalEvelopesButton, Rk::Alignment::AlignRight);
 	menuContainer->addWidget(noiseEvelopesButton, Rk::Alignment::AlignRight);
 	menuContainer->addWidget(osccillator2EvelopesButton, Rk::Alignment::AlignRight);
@@ -251,17 +232,24 @@ void EnvelopeWidget::showEnvelope(Envelope::Category category)
 
 void EnvelopeWidget::showEnvelopeType(Envelope::Type type)
 {
-        auto envelope = drawArea->getEnvelope();
+        if (type == Envelope::Type::DistortionVolume
+            || type == Envelope::Type::DistortionDrive) {
+                auto envelope = getEnvelope(Envelope::Category::General);
+                generalEvelopesButton->setPressed(true);
+                if (envelope)
+                        drawArea->setEnvelope(envelope);
+        }
+
         showAmplitudeEnvButton->setPressed(type == Envelope::Type::Amplitude);
         showFilterEnvButton->setPressed(type == Envelope::Type::FilterCutOff);
         showFrequencyEnvButton->setPressed(type == Envelope::Type::Frequency);
+        auto envelope = drawArea->getEnvelope();
 	showFrequencyEnvButton->show(envelope->isSupportedType(Envelope::Type::Frequency));
-	showDistortionEnvButton->setPressed(type == Envelope::Type::DistortionDrive);
-	showDistortionEnvButton->show(envelope->isSupportedType(Envelope::Type::DistortionDrive));
 	menuContainer->update();
         if (envelope)
                 envelope->setType(type);
         drawArea->update();
+        action envelopeTypeSelected(type);
 }
 
 void EnvelopeWidget::hideEnvelope(bool b)

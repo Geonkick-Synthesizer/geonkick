@@ -44,6 +44,10 @@ public:
      void showEnvelopeType(Envelope::Type type);
      void updateGui();
      RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+     RK_DECL_ACT(envelopeTypeSelected,
+                 envelopeTypeSelected(Envelope::Type type),
+                 RK_ARG_TYPE(Envelope::Type),
+                 RK_ARG_VAL(type));
 
  protected:
      void showEnvelope(Envelope::Category category);
@@ -59,7 +63,6 @@ public:
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;
      GeonkickButton *showFilterEnvButton;
-     GeonkickButton *showDistortionEnvButton;
      GeonkickButton *osccillator1EvelopesButton;
      GeonkickButton *osccillator2EvelopesButton;
      GeonkickButton *noiseEvelopesButton;
