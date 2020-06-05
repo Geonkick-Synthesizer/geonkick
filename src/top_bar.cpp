@@ -202,9 +202,7 @@ void TopBar::updateGui()
 void TopBar::showPresetsBrowser()
 {
         auto presetBrowser = new PresetBrowserView(this, presetsModel);
-        presetBrowser->setPosition(200, height() + 350);
+        presetBrowser->setPosition(50, height() + 360);
         presetBrowser->setBackgroundColor({68, 68, 70});
-        presetBrowser->setBorderWidth(1);
-        presetBrowser->setBorderColor(30, 30, 30);
         presetBrowser->show();
 }

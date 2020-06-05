@@ -161,6 +161,11 @@ void PresetBrowserView::paintWidget(RkPaintEvent *event)
                         yRow = topPadding;
                 }
         }
+        RkRect borderRect = rect();
+        borderRect.setWidth(borderRect.width() - 1);
+        borderRect.setHeight(borderRect.height() - 1);
+        painter.setPen(RkColor(30, 30, 30));
+        painter.drawRect(borderRect);
         RkPainter paint(this);
         paint.drawImage(img, 0, 0);
 }
