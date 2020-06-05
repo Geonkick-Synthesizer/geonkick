@@ -134,7 +134,6 @@ void KitWidget::addPercussion(PercussionModel *model)
 
 void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
 {
-        GEONKICK_LOG_DEBUG("UPDATE: " << index);
         auto percussionView = dynamic_cast<KitPercussionView*>(percussionsContainer->at(index));
         if (percussionView)
                 percussionView->setModel(model);
