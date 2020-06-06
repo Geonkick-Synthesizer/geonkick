@@ -15,13 +15,6 @@ If you have an idea about a feature or found an issue, please, submit it:
 * on [GitLab](https://gitlab.com/iurie-sw/geonkick/issues)
 * on [GitHub](https://github.com/iurie-sw/geonkick/issues)
 
-If you are using Geonkick, have created some presets and want to be included
-in the factory presets in order Geonkick users to use them, please, attach
-the archive of presets at:
-
-* https://gitlab.com/iurie-sw/geonkick/-/issues/149
-* https://github.com/iurie-sw/geonkick/issues/65
-
 ![Screenshot](data/screenshot.png)
 
 #### Download
