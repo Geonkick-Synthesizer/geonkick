@@ -34,7 +34,7 @@ RK_DECLARE_IMAGE_RC(logo);
 RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(export_active);
-RK_DECLARE_IMAGE_RC(presets_button);
+RK_DECLARE_IMAGE_RC(about);
 RK_DECLARE_IMAGE_RC(play);
 RK_DECLARE_IMAGE_RC(play_pressed);
 RK_DECLARE_IMAGE_RC(topbar_layer1);
@@ -57,7 +57,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         , layer3Button{nullptr}
         , geonkickApi{api}
         , tuneCheckbox{nullptr}
-        , presetsModel{new PresetBrowserModel(this, api)}
 {
         setFixedWidth(parent->width());
         setFixedHeight(40);
@@ -95,14 +94,14 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         exportFileButton->setCheckable(true);
         RK_ACT_BIND(exportFileButton, pressed, RK_ACT_ARGS(), this, openExport());
 
-        auto presetsButton = new RkButton(this);
-        presetsButton->setType(RkButton::ButtonType::ButtonPush);
-        presetsButton->setSize(90, 30);
-        presetsButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
-        presetsButton->setY(exportFileButton->y());
-        presetsButton->setImage(RkImage(90, 30, RK_IMAGE_RC(presets_button)));
-        presetsButton->show();
-        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(), this, showPresetsBrowser());
+        auto aboutButton = new RkButton(this);
+        aboutButton->setType(RkButton::ButtonType::ButtonPush);
+        aboutButton->setSize(90, 30);
+        aboutButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
+        aboutButton->setY(exportFileButton->y());
+        aboutButton->setImage(RkImage(90, 30, RK_IMAGE_RC(about)));
+        aboutButton->show();
+        RK_ACT_BIND(aboutButton, pressed, RK_ACT_ARGS(), this, openAbout());
 
         presetNameLabel = new RkLabel(this);
         presetNameLabel->setBackgroundColor(background());
@@ -111,7 +110,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         font.setSize(12);
         presetNameLabel->setFont(font);
         presetNameLabel->setSize(220, 30);
-        presetNameLabel->setPosition(presetsButton->x() + presetsButton->width() + 5,
+        presetNameLabel->setPosition(aboutButton->x() + aboutButton->width() + 5,
                                      (height() - presetNameLabel->height()) / 2);
         presetNameLabel->show();
 
@@ -197,12 +196,4 @@ void TopBar::updateGui()
         layer3Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer3));
         tuneCheckbox->setPressed(geonkickApi->isAudioOutputTuned(geonkickApi->currentPercussion()));
         setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
-}
-
-void TopBar::showPresetsBrowser()
-{
-        auto presetBrowser = new PresetBrowserView(this, presetsModel);
-        presetBrowser->setPosition(50, height() + 360);
-        presetBrowser->setBackgroundColor({68, 68, 70});
-        presetBrowser->show();
 }

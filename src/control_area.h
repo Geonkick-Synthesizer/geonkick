@@ -33,6 +33,8 @@ class ControlsWidget;
 class KitModel;
 class KitWidget;
 class EnvelopeWidget;
+class PresetBrowserView;
+class PresetBrowserModel;
 
 class ControlArea: public GeonkickWidget
 {
@@ -44,6 +46,7 @@ class ControlArea: public GeonkickWidget
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
         void showControls();
         void showKit();
+        void showPresets();
         KitWidget* getKitWidget();
         void setEnvelopeWidget(EnvelopeWidget *widget);
 
@@ -53,7 +56,10 @@ class ControlArea: public GeonkickWidget
         ControlsWidget *controlsWidget;
         KitModel *kitModel;
         KitWidget *kitWidget;
+        PresetBrowserView* prestBrowser;
+        PresetBrowserModel *presetsModel;
         EnvelopeWidget *envelopeWidget;
+        RkWidget* currentWidget;
 };
 
 #endif // GKICK_CONTROL_AREA_H

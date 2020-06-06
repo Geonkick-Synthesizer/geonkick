@@ -7290,11 +7290,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.5558061"
-     inkscape:cx="185.9513"
-     inkscape:cy="553.75974"
+     inkscape:zoom="10.818933"
+     inkscape:cx="971.25306"
+     inkscape:cy="436.64573"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g3312"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
@@ -18822,6 +18822,36 @@
            x="729.82001"
            id="tspan3301-9"
            sodipodi:role="line">Controls</tspan></text>
+      <g
+         transform="matrix(0.6141304,0,0,1,289.8207,20.16965)"
+         style="display:inline"
+         id="g3306-5-3"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/presets_button.png"
+         inkscape:export-xdpi="364.96149"
+         inkscape:export-ydpi="364.96149">
+        <rect
+           style="opacity:1;fill:#464444;fill-opacity:1;stroke:#2b2b2b;stroke-width:0.27196106;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+           id="rect3299-6-6"
+           width="3.9613721"
+           height="33.327755"
+           x="-376.64941"
+           y="719.00549"
+           transform="rotate(-90)" />
+      </g>
+      <text
+         id="text3303-2-7"
+         y="396.03824"
+         x="736.06647"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.30537033px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.12395138"
+         xml:space="preserve"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/presets_button.png"
+         inkscape:export-xdpi="364.96149"
+         inkscape:export-ydpi="364.96149"><tspan
+           style="fill:#ffffff;fill-opacity:1;stroke-width:0.12395138"
+           y="396.03824"
+           x="736.06647"
+           id="tspan3301-9-5"
+           sodipodi:role="line">Presets</tspan></text>
     </g>
     <rect
        style="display:inline;opacity:1;fill:#3b9604;fill-opacity:1;stroke:none;stroke-width:0.05823318;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"

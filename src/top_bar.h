@@ -29,7 +29,6 @@
 
 class RkLabel;
 class GeonkickButton;
-class PresetBrowserModel;
 
 class TopBar : public GeonkickWidget
 {
@@ -47,7 +46,6 @@ class TopBar : public GeonkickWidget
         void updateGui();
 
  protected:
-        void showPresetsBrowser();
         void createLyersButtons();
 
  private:
@@ -60,7 +58,6 @@ class TopBar : public GeonkickWidget
         GeonkickButton *layer3Button;
         GeonkickApi *geonkickApi;
         GeonkickButton *tuneCheckbox;
-        PresetBrowserModel *presetsModel;
 };
 
 #endif // GEONKICK_TOP_BAR_H

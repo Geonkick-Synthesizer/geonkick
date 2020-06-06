@@ -38,6 +38,10 @@ class RightBar : public GeonkickWidget
                     showKit(),
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
+        RK_DECL_ACT(showPresets,
+                    showPresets(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
 };
 
 #endif // GEONKICK_RIGHT_BAR_H

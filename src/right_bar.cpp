@@ -24,8 +24,11 @@
 #include "right_bar.h"
 #include "geonkick_button.h"
 
+#include <RkContainer.h>
+
 RK_DECLARE_IMAGE_RC(controls_button);
 RK_DECLARE_IMAGE_RC(kit_button);
+RK_DECLARE_IMAGE_RC(presets_button);
 
 RightBar::RightBar(GeonkickWidget *parent)
         : GeonkickWidget(parent)
@@ -33,17 +36,31 @@ RightBar::RightBar(GeonkickWidget *parent)
         constexpr int barWidth = 15;
         setFixedSize(barWidth, parent->height());
 
+        auto container = new RkContainer(this, Rk::Orientation::Vertical);
+        container->setSize(size());
+
         auto controlsButton = new GeonkickButton(this);
         controlsButton->setCheckable(true);
         controlsButton->setSize(15, 119);
         controlsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(controls_button)));
-        controlsButton->setPosition({0, 405});
         RK_ACT_BIND(controlsButton, toggled, RK_ACT_ARGS(bool b), this, showControls());
+        container->addSpace(405);
+        container->addWidget(controlsButton);
 
         auto kitSettingsButton = new GeonkickButton(this);
         kitSettingsButton->setCheckable(true);
         kitSettingsButton->setSize(15, 119);
         kitSettingsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(kit_button)));
-        kitSettingsButton->setPosition({0, controlsButton->height() + controlsButton->y() + 12});
         RK_ACT_BIND(kitSettingsButton, toggled, RK_ACT_ARGS(bool b), this, showKit());
+        container->addSpace(12);
+        container->addWidget(kitSettingsButton);
+
+        auto presetsButton = new GeonkickButton(this);
+        presetsButton->setType(RkButton::ButtonType::ButtonPush);
+        presetsButton->setSize(15, 73);
+        presetsButton->setUnpressedImage(RkImage(presetsButton->size(), RK_IMAGE_RC(presets_button)));
+        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(), this, showPresets());
+        container->addSpace(12);
+        container->addWidget(presetsButton);
+
 }

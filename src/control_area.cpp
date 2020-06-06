@@ -25,6 +25,8 @@
 #include "controls_widget.h"
 #include "kit_model.h"
 #include "kit_widget.h"
+#include "preset_browser_model.h"
+#include "preset_browser_view.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
                          GeonkickApi* api,
@@ -33,41 +35,48 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , geonkickApi{api}
         , oscillators{oscillators}
         , controlsWidget{nullptr}
-        , kitModel{nullptr}
+        , kitModel{new KitModel(this, geonkickApi)}
         , kitWidget{nullptr}
+        , prestBrowser{nullptr}
+        , presetsModel{new PresetBrowserModel(this, api)}
         , envelopeWidget{nullptr}
+        , currentWidget{nullptr}
 {
-        kitModel = new KitModel(this, geonkickApi);
         setFixedSize(920, 368);
         showControls();
 }
 
 void ControlArea::showControls()
 {
-        if (kitWidget) {
-                delete kitWidget;
-                kitWidget = nullptr;
-        }
-
-        if (!controlsWidget) {
-                controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
+        if (!dynamic_cast<ControlsWidget*>(currentWidget)) {
+                if (currentWidget)
+                        delete currentWidget;
+                auto controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
                 controlsWidget->setEnvelopeWidget(envelopeWidget);
                 RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 controlsWidget->setSize({width(), height()});
-                controlsWidget->show();
+                currentWidget = controlsWidget;
+                currentWidget->show();
         }
 }
 
 void ControlArea::showKit()
 {
-        if (controlsWidget) {
-                delete controlsWidget;
-                controlsWidget = nullptr;
+        if (!dynamic_cast<KitWidget*>(currentWidget)) {
+                if (currentWidget)
+                        delete currentWidget;
+                currentWidget = new KitWidget(this, kitModel);
+                currentWidget->show();
         }
+}
 
-        if (!kitWidget) {
-                kitWidget = new KitWidget(this, kitModel);
-                kitWidget->show();
+void ControlArea::showPresets()
+{
+        if (!dynamic_cast<PresetBrowserView*>(currentWidget)) {
+                if (currentWidget)
+                        delete currentWidget;
+                currentWidget = new PresetBrowserView(this, presetsModel);
+                currentWidget->show();
         }
 }
 

@@ -1,6 +1,7 @@
 set(gkick_rc_png_files
 app_icon.png
 logo_about.png
+about.png
 checkbox_checked_10x10.png
 checkbox_checked.png
 checkbox_unchecked_10x10.png

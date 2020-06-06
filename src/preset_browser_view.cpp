@@ -39,7 +39,7 @@ RK_DECLARE_IMAGE_RC(prev_page_on);
 
 PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
                                      PresetBrowserModel* model)
-        : GeonkickWidget(parent, Rk::WindowFlags::Popup)
+        : GeonkickWidget(parent)
         , browserModel{model}
         , topPadding{15}
         , leftPadding{5}
@@ -118,6 +118,7 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         RK_ACT_BIND(prevPresetPageButton, pressed, RK_ACT_ARGS(), browserModel, previousPresetPage());
         bottomContainer->addWidget(prevPresetPageButton, Rk::Alignment::AlignRight);
         updatePageButtons();
+        setBackgroundColor({60, 60, 60});
 }
 
 void PresetBrowserView::paintWidget(RkPaintEvent *event)
@@ -161,11 +162,6 @@ void PresetBrowserView::paintWidget(RkPaintEvent *event)
                         yRow = topPadding;
                 }
         }
-        RkRect borderRect = rect();
-        borderRect.setWidth(borderRect.width() - 1);
-        borderRect.setHeight(borderRect.height() - 1);
-        painter.setPen(RkColor(30, 30, 30));
-        painter.drawRect(borderRect);
         RkPainter paint(this);
         paint.drawImage(img, 0, 0);
 }

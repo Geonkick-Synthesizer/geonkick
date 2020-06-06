@@ -179,6 +179,7 @@ bool MainWindow::init(void)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
         RK_ACT_BIND(rightBar, showKit, RK_ACT_ARGS(), controlAreaWidget, showKit());
+        RK_ACT_BIND(rightBar, showPresets, RK_ACT_ARGS(), controlAreaWidget, showPresets());
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
         topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
