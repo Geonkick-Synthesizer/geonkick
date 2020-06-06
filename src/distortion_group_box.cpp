@@ -133,6 +133,7 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(driveEnvelopeButton, toggled,
                     RK_ACT_ARGS(bool b), this, showEnvelope(Envelope::Type::DistortionDrive));
         show();
+        updateGui();
 }
 
 void DistortionGroupBox::setInLimiter(int val)

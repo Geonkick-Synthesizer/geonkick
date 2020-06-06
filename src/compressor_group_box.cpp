@@ -99,6 +99,7 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         makeupLabel->setFixedSize(40, 10);
         makeupLabel->setPosition(makeupSlider->x() - makeupLabel->width() - labelD, makeupSlider->y());
         show();
+        updateGui();
 }
 
 void CompressorGroupBox::setAttack(int val)

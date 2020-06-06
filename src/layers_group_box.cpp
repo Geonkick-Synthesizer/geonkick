@@ -52,6 +52,7 @@ LayersGroupBox::LayersGroupBox(GeonkickApi *api, GeonkickWidget *parent)
                             setLayerAmplitude(i, val));
         }
         show();
+        updateGui();
 }
 
 void LayersGroupBox::setLayerAmplitude(int layer, int val)
