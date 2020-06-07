@@ -67,6 +67,8 @@ class KitModel : public RkObject {
         bool isPercussionMuted(PercussionIndex index) const;
         bool soloPercussion(PercussionIndex index, bool b);
         bool isPercussionSolo(PercussionIndex index) const;
+        void updatePercussion(PercussionIndex index);
+        GeonkickApi* getApi() const;
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),
@@ -84,11 +86,14 @@ class KitModel : public RkObject {
                     percussionSelected(),
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
+        RK_DECL_ACT(limiterUpdated,
+                    limiterUpdated(PercussionIndex index),
+                    RK_ARG_TYPE(PercussionIndex),
+                    RK_ARG_VAL(index));
 
  protected:
         int percussionId(int index) const;
         void loadModelData();
-        void updatePercussion(PercussionIndex index);
 
  private:
         GeonkickApi *geonkickApi;

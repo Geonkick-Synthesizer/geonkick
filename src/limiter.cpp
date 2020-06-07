@@ -139,4 +139,5 @@ void Limiter::onSetLimiterValue(int val)
         else
                 value = pow(10, logVal / 20);
         geonkickApi->setLimiterValue(value);
+        action limiterUpdated(val);
 }

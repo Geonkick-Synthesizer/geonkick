@@ -47,7 +47,7 @@ class ControlArea: public GeonkickWidget
         void showControls();
         void showKit();
         void showPresets();
-        KitWidget* getKitWidget();
+        KitModel* getKitModel() const;
         void setEnvelopeWidget(EnvelopeWidget *widget);
 
  private:

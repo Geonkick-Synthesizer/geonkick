@@ -145,14 +145,21 @@ void KitModel::playPercussion(PercussionIndex index)
 
 bool KitModel::setPercussionLimiter(PercussionIndex index, int value)
 {
-        auto realVal = pow(10, static_cast<double>(value - 80) / 20);
-        return geonkickApi->setPercussionLimiter(percussionId(index), realVal);
+        double logVal = (75.0 / 100) * value - 55;
+        auto realVal = pow(10, logVal / 20);
+        if (geonkickApi->setPercussionLimiter(percussionId(index), realVal)) {
+                action limiterUpdated(index);
+                return true;
+        }
+        return false;
 }
 
 int KitModel::percussionLimiter(PercussionIndex index) const
 {
         auto realVal = geonkickApi->percussionLimiter(percussionId(index));
-        return 20 * log10(realVal) + 80;
+        double logVal = 20 * log10(realVal);
+        int val = (logVal + 55.0) * 100.0 / 75;
+        return  val;
 }
 
 bool KitModel::mutePercussion(PercussionIndex index, bool b)
@@ -333,4 +340,9 @@ KitModel::workingPath(const std::string &key) const
 const std::vector<PercussionModel*>& KitModel::percussionModels() const
 {
         return percussionsList;
+}
+
+GeonkickApi* KitModel::getApi() const
+{
+        return geonkickApi;
 }

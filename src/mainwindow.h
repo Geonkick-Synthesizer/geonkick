@@ -26,6 +26,7 @@
 
 #include "geonkick_widget.h"
 #include "file_dialog.h"
+#include "kit_model.h"
 
 class Oscillator;
 class GeonkickApi;
@@ -33,6 +34,7 @@ class TopBar;
 class EnvelopeWidget;
 class ControlArea;
 class RkKeyEvent;
+class Limiter;
 
 class MainWindow : public GeonkickWidget
 {
@@ -56,6 +58,7 @@ class MainWindow : public GeonkickWidget
       void openExportDialog();
       void openPreset();
       void openAboutDialog();
+      void updateLimiter(KitModel::PercussionIndex index);
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
@@ -67,6 +70,8 @@ class MainWindow : public GeonkickWidget
       ControlArea* controlAreaWidget;
       std::string presetName;
       std::string currentWorkingPath;
+      Limiter *limiterWidget;
+      KitModel *kitModel;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

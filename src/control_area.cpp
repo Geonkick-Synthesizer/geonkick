@@ -80,9 +80,9 @@ void ControlArea::showPresets()
         }
 }
 
-KitWidget* ControlArea::getKitWidget()
+KitModel* ControlArea::getKitModel() const
 {
-        return kitWidget;
+        return kitModel;
 }
 
 void ControlArea::setEnvelopeWidget(EnvelopeWidget *widget)

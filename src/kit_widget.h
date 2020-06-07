@@ -41,6 +41,7 @@ class KitWidget: public GeonkickWidget
  public:
         using PercussionIndex = int;
         KitWidget(GeonkickWidget *parent, KitModel *model);
+        KitModel* getModel() const;
 
  protected:
         void updateView();
@@ -52,7 +53,6 @@ class KitWidget: public GeonkickWidget
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
         void keyPressEvent(RkKeyEvent *event);
-        KitModel* getModel() const;
 
  private:
         KitModel *kitModel;

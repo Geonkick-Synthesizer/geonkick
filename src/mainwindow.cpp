@@ -34,7 +34,6 @@
 #include "percussion_state.h"
 #include "about.h"
 #include "right_bar.h"
-#include "kit_widget.h"
 
 #include <RkPlatform.h>
 #include <X11/keysym.h>
@@ -52,6 +51,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , topBar{nullptr}
         , envelopeWidget{nullptr}
         , presetName{preset}
+        , limiterWidget{nullptr}
+        , kitModel{nullptr}
 {
         setFixedSize(950, 760);
         setTitle(GEONKICK_NAME);
@@ -67,6 +68,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , topBar{nullptr}
         , envelopeWidget{nullptr}
         , presetName{std::string()}
+        , limiterWidget{nullptr}
+        , kitModel{nullptr}
 {
         setFixedSize(950, 760);
         setTitle(GEONKICK_NAME);
@@ -161,7 +164,7 @@ bool MainWindow::init(void)
         envelopeWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
-        auto limiterWidget = new Limiter(geonkickApi, this);
+        limiterWidget = new Limiter(geonkickApi, this);
         limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8,
                                    envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
@@ -172,6 +175,16 @@ bool MainWindow::init(void)
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
+
+        kitModel = controlAreaWidget->getKitModel();
+        RK_ACT_BIND(kitModel,
+                    limiterUpdated,
+                    RK_ACT_ARGS(KitModel::PercussionIndex index),
+                    this,
+                    updateLimiter(index));
+        RK_ACT_BIND(limiterWidget, limiterUpdated, RK_ACT_ARGS(int val),
+                    kitModel, updatePercussion(kitModel->selectedPercussion()));
+
         auto rightBar = new RightBar(this);
         rightBar->setPosition(width() - rightBar->width(), 0);
         rightBar->show();
@@ -235,6 +248,7 @@ void MainWindow::openPreset(const std::string &fileName)
         state->loadData(fileData);
         state->setId(geonkickApi->currentPercussion());
         geonkickApi->setPercussionState(state);
+        action geonkickApi->percussionUpdated(state->getId());
         file.close();
         geonkickApi->setCurrentWorkingPath("OpenPreset",
                                            filePath.has_parent_path() ? filePath.parent_path() : filePath);
@@ -315,3 +329,8 @@ void MainWindow::keyReleaseEvent(RkKeyEvent *event)
         }
 }
 
+void MainWindow::updateLimiter(KitModel::PercussionIndex index)
+{
+        if (kitModel->isPercussionSelected(index))
+                limiterWidget->onUpdateLimiter();
+}
