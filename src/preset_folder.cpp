@@ -51,7 +51,7 @@ bool PresetFolder::loadPresets()
                         if (!entry.path().empty() && std::filesystem::is_regular_file(entry.path())
                             && (entry.path().extension() == ".gkick" || entry.path().extension() == ".gkit")) {
                                 GEONKICK_LOG_DEBUG("preset: " << entry.path());
-                                presetList.push_back(std::move(std::make_unique<Preset>(entry.path())));
+                                presetList.push_back(std::make_unique<Preset>(entry.path()));
                         }
                 }
         } catch(...) {

@@ -36,8 +36,6 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , oscillators{oscillators}
         , controlsWidget{nullptr}
         , kitModel{new KitModel(this, geonkickApi)}
-        , kitWidget{nullptr}
-        , prestBrowser{nullptr}
         , presetsModel{new PresetBrowserModel(this, api)}
         , envelopeWidget{nullptr}
         , currentWidget{nullptr}

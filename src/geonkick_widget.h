@@ -30,7 +30,7 @@
 #include <RkImage.h>
 
 class RkPaintEvent;
-struct RkNativeWindowInfo;
+class RkNativeWindowInfo;
 
 class GeonkickWidget: public RkWidget
 {

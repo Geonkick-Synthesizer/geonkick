@@ -64,8 +64,8 @@ class KitPercussionView: public GeonkickWidget
         void setNameWidth(int width);
         void setKeyWidth(int width);
         void paintWidget(RkPaintEvent *event) override;
-        void mouseButtonPressEvent(RkMouseEvent *event);
-        void mouseDoubleClickEvent(RkMouseEvent *event);
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
+        void mouseDoubleClickEvent(RkMouseEvent *event) override;
         void updatePercussionName();
         void remove();
 

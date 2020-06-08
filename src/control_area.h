@@ -55,8 +55,6 @@ class ControlArea: public GeonkickWidget
         const std::vector<std::unique_ptr<Oscillator>> &oscillators;
         ControlsWidget *controlsWidget;
         KitModel *kitModel;
-        KitWidget *kitWidget;
-        PresetBrowserView* prestBrowser;
         PresetBrowserModel *presetsModel;
         EnvelopeWidget *envelopeWidget;
         RkWidget* currentWidget;
