@@ -33,8 +33,8 @@ class Preset {
                 PercussionKit,
         };
 
+        explicit Preset(const std::filesystem::path& path);
         PresetType type() const;
-        Preset(const std::filesystem::path& path);
         std::string name() const;
         void setName(const std::string &name);
         std::filesystem::path path() const;

@@ -49,7 +49,7 @@ void KitModel::updatePercussion(PercussionIndex index)
                 action percussionsList[index]->modelUpdated();
 }
 
-bool KitModel::isValidIndex(KitModel::PercussionIndex index)
+bool KitModel::isValidIndex(PercussionIndex index)
 {
         return index > -1 && static_cast<size_t>(index) < percussionsList.size();
 }

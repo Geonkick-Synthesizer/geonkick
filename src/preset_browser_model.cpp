@@ -104,8 +104,7 @@ void PresetBrowserModel::folderPreviousPage()
 
 void PresetBrowserModel::setFolderPage(size_t index)
 {
-        if (index >= 0)
-                folderPageIndex = index;
+        folderPageIndex = index;
 }
 
 size_t PresetBrowserModel::presetPages() const
@@ -141,8 +140,7 @@ void PresetBrowserModel::previousPresetPage()
 
 void PresetBrowserModel::setPresetPage(size_t index)
 {
-        if (index >= 0)
-                presetPageIndex = index;
+	presetPageIndex = index;
 }
 
 size_t PresetBrowserModel::columns() const

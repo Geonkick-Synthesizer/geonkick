@@ -1605,7 +1605,6 @@ void GeonkickApi::loadPresets()
 
 void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
 {
-        std::vector<std::filesystem::path> presetsDirs;
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(path)) {
                         if (!entry.path().empty() && std::filesystem::is_directory(entry.path())) {
@@ -1627,7 +1626,7 @@ void GeonkickApi::loadConfig()
 {
         const char *homeDir = std::getenv("HOME");
         if (homeDir == nullptr || *homeDir == '\0') {
-                GEONKICK_LOG_ERROR("can't get home directory: " << homeDir);
+                GEONKICK_LOG_ERROR("can't get home directory");
                 return;
         }
 

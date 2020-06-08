@@ -90,7 +90,7 @@ gkick_buffer_set_at(struct gkick_buffer *buffer,
                          gkick_real val)
 {
         if (buffer != NULL && buffer->size > 0
-            && index >=0 && index < buffer->size)
+            && index < buffer->size)
                 buffer->buff[index] = val;
 }
 
@@ -99,7 +99,7 @@ gkick_buffer_get_at(struct gkick_buffer *buffer,
                                size_t index)
 {
         if (buffer != NULL && buffer->size > 0
-            && index >=0 && index < buffer->size)
+            && index < buffer->size)
                 return buffer->buff[index];
         return 0.0;
 }

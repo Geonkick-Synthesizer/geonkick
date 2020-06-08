@@ -118,7 +118,7 @@ gkick_osc_get_envelope(struct gkick_oscillator *osc,
         if (osc == NULL)
                 return NULL;
 
-        if (env_index >= 0 && env_index < osc->env_number)
+        if (env_index < osc->env_number)
                 return osc->envelopes[env_index];
 
         return NULL;

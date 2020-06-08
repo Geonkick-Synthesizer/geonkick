@@ -693,7 +693,7 @@ geonkick_get_osc_frequency(struct geonkick *kick,
 enum geonkick_error
 geonkick_play(struct geonkick *kick, size_t id)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
@@ -1317,8 +1317,7 @@ geonkick_enable_group(struct geonkick *kick,
                       size_t index,
                       bool enable)
 {
-        if (kick == NULL || index < 0
-            || index > GKICK_OSC_GROUPS_NUMBER - 1) {
+        if (kick == NULL || index >= GKICK_OSC_GROUPS_NUMBER) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1337,8 +1336,8 @@ geonkick_group_enabled(struct geonkick *kick,
                        size_t index,
                        bool *enabled)
 {
-        if (kick == NULL || enabled == NULL || index < 0
-            || index > GKICK_OSC_GROUPS_NUMBER - 1) {
+        if (kick == NULL || enabled == NULL
+            || index >= GKICK_OSC_GROUPS_NUMBER) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1353,7 +1352,7 @@ geonkick_group_set_amplitude(struct geonkick *kick,
                              size_t index,
                              gkick_real amplitude)
 {
-        if (kick == NULL || index < 0 || index > GKICK_OSC_GROUPS_NUMBER - 1) {
+        if (kick == NULL || index >= GKICK_OSC_GROUPS_NUMBER) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1372,8 +1371,8 @@ geonkick_group_get_amplitude(struct geonkick *kick,
                              size_t index,
                              gkick_real *amplitude)
 {
-        if (kick == NULL || index < 0
-            || index > GKICK_OSC_GROUPS_NUMBER - 1
+        if (kick == NULL
+            || index >= GKICK_OSC_GROUPS_NUMBER
             || amplitude == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -1405,7 +1404,7 @@ geonkick_is_audio_output_tuned(struct geonkick *kick,
                                bool *tune)
 {
         if (kick == NULL || tune == NULL
-            || index > GEONKICK_MAX_PERCUSSIONS) {
+            || index >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1456,7 +1455,7 @@ enum geonkick_error
 geonkick_set_current_percussion(struct geonkick *kick,
                                 size_t index)
 {
-        if (kick == NULL || index > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || index >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1602,7 +1601,7 @@ geonkick_enable_percussion(struct geonkick *kick,
                            size_t index,
                            bool enable)
 {
-        if (kick == NULL || index > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || index >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1617,7 +1616,7 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
                                bool *enable)
 {
         if (kick == NULL || enable == NULL
-            || index > GEONKICK_MAX_PERCUSSIONS - 1) {
+            || index >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1637,7 +1636,7 @@ geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
                          char key)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1648,7 +1647,7 @@ enum geonkick_error
 geonkick_get_playing_key(struct geonkick *kick, size_t id, char *key)
 {
         if (kick == NULL || key == NULL
-            || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+            || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1662,7 +1661,7 @@ geonkick_set_percussion_name(struct geonkick *kick,
                              const char *name,
                              size_t size)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS
             || name == NULL || size < 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -1684,7 +1683,7 @@ geonkick_get_percussion_name(struct geonkick *kick,
                              char *name,
                              size_t size)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS
             || name == NULL || size < 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -1717,8 +1716,8 @@ geonkick_set_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t channel)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1
-            || channel > GEONKICK_MAX_CHANNELS - 1) {
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS
+            || channel >= GEONKICK_MAX_CHANNELS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1730,7 +1729,7 @@ geonkick_get_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t *channel)
 {
-        if (kick == NULL || channel == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || channel == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1743,7 +1742,7 @@ geonkick_percussion_set_limiter(struct geonkick *kick,
                                 size_t id,
                                 gkick_real val)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1755,7 +1754,7 @@ geonkick_percussion_get_limiter(struct geonkick *kick,
                                 size_t id,
                                 gkick_real *val)
 {
-        if (kick == NULL || val == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || val == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1767,7 +1766,7 @@ geonkick_percussion_mute(struct geonkick *kick,
                          size_t id,
                          bool b)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1779,7 +1778,7 @@ geonkick_percussion_is_muted(struct geonkick *kick,
                              size_t id,
                              bool *b)
 {
-        if (kick == NULL || b == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || b == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1791,7 +1790,7 @@ geonkick_percussion_solo(struct geonkick *kick,
                          size_t id,
                          bool b)
 {
-        if (kick == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1803,7 +1802,7 @@ geonkick_percussion_is_solo(struct geonkick *kick,
                             size_t id,
                             bool *b)
 {
-        if (kick == NULL || b == NULL || id > GEONKICK_MAX_PERCUSSIONS - 1) {
+        if (kick == NULL || b == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }

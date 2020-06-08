@@ -79,7 +79,7 @@ class GeonkickLv2Plugin : public RkObject
 
         void setAudioChannel(float *data, size_t channel)
         {
-                if (channel >= 0 && channel < outputChannels.size())
+                if (channel < outputChannels.size())
                         outputChannels[channel] = data;
         }
 

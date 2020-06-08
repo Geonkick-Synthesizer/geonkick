@@ -30,7 +30,7 @@ class Preset;
 
 class PresetFolder {
  public:
-        PresetFolder(const std::filesystem::path &path);
+        explicit PresetFolder(const std::filesystem::path &path);
         std::string name() const;
         std::filesystem::path path() const;
         void setPath(const std::filesystem::path &path);

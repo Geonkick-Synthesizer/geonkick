@@ -214,7 +214,7 @@ void KitPercussionView::updateView()
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
         channelSpinBox->setValue(percussionModel->channel());
-        channelSpinBox->setBackgroundColor(index() % 2 ? RkColor(140, 140, 140) : RkColor(120, 120, 120));
+        channelSpinBox->setBackgroundColor((index() % 2) ? RkColor(140, 140, 140) : RkColor(120, 120, 120));
         update();
 }
 

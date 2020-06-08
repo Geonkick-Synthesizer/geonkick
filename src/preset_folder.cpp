@@ -46,7 +46,6 @@ void PresetFolder::setPath(const std::filesystem::path &path)
 
 bool PresetFolder::loadPresets()
 {
-        std::vector<std::filesystem::path> presetsDirs;
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(folderPath)) {
                         if (!entry.path().empty() && std::filesystem::is_regular_file(entry.path())

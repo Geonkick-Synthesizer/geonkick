@@ -106,11 +106,9 @@ gkick_synth_new(struct gkick_synth **synth)
 
 void gkick_synth_free(struct gkick_synth **synth)
 {
-        size_t i;
-
         if (synth != NULL && *synth != NULL) {
                 if ((*synth)->oscillators != NULL) {
-                        for (i = 0; i < (*synth)->oscillators_number; i++)
+                        for (size_t i = 0; i < (*synth)->oscillators_number; i++)
                                 gkick_osc_free(&((*synth)->oscillators[i]));
                         free((*synth)->oscillators);
                         (*synth)->oscillators = NULL;
@@ -189,7 +187,7 @@ gkick_synth_get_oscillator(struct gkick_synth *synth,
                 return NULL;
         }
 
-        if (index >= 0 && index < synth->oscillators_number)
+        if (index < synth->oscillators_number)
                 return synth->oscillators[index];
 
         return NULL;

@@ -215,10 +215,7 @@ void gkick_envelope_clear(struct gkick_envelope* env)
 void
 gkick_envelope_remove_point(struct gkick_envelope *env, size_t index)
 {
-        if (env == NULL)
-                return;
-
-        if (!(index >= 0 && index < env->npoints))
+        if (env == NULL || index >= env->npoints)
                 return;
 
         struct gkick_envelope_point *p = env->first;
@@ -248,10 +245,7 @@ gkick_envelope_update_point(struct gkick_envelope *env,
 			    gkick_real x,
 			    gkick_real y)
 {
-        if (env == NULL)
-                return;
-
-        if (!(index >= 0 && index < env->npoints))
+        if (env == NULL || index >= env->npoints)
                 return;
 
         struct gkick_envelope_point *p = env->first;
