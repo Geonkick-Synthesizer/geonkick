@@ -34,7 +34,6 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         : GeonkickWidget(parent)
         , geonkickApi{api}
         , oscillators{oscillators}
-        , controlsWidget{nullptr}
         , kitModel{new KitModel(this, geonkickApi)}
         , presetsModel{new PresetBrowserModel(this, api)}
         , envelopeWidget{nullptr}
@@ -86,6 +85,7 @@ KitModel* ControlArea::getKitModel() const
 void ControlArea::setEnvelopeWidget(EnvelopeWidget *widget)
 {
         envelopeWidget = widget;
+        auto controlsWidget = dynamic_cast<ControlsWidget*>(currentWidget);
         if (controlsWidget)
                 controlsWidget->setEnvelopeWidget(envelopeWidget);
 }
