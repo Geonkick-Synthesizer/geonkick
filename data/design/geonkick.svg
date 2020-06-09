@@ -7290,11 +7290,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.818933"
-     inkscape:cx="971.25306"
-     inkscape:cy="436.64573"
+     inkscape:zoom="4.8354619"
+     inkscape:cx="219.0155"
+     inkscape:cy="556.15308"
      inkscape:document-units="px"
-     inkscape:current-layer="g3312"
+     inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
@@ -19297,8 +19297,8 @@
        cx="-56.471252"
        cy="143.7486"
        r="7.329741"
-       inkscape:export-xdpi="50.913998"
-       inkscape:export-ydpi="50.913998"
+       inkscape:export-xdpi="387.7941"
+       inkscape:export-ydpi="387.7941"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
        transform="rotate(-40.023209)" />
     <path
@@ -19307,13 +19307,13 @@
        id="path17689-54"
        inkscape:connector-curvature="0"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
-       inkscape:export-xdpi="50.913998"
-       inkscape:export-ydpi="50.913998" />
+       inkscape:export-xdpi="387.7941"
+       inkscape:export-ydpi="387.7941" />
     <g
        style="display:inline"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
-       inkscape:export-xdpi="50.913998"
-       inkscape:export-ydpi="50.913998"
+       inkscape:export-xdpi="387.7941"
+       inkscape:export-ydpi="387.7941"
        id="g6747"
        transform="matrix(0.08095349,0,0,0.08095349,39.423454,133.41106)">
       <path
@@ -19339,8 +19339,8 @@
        cx="-154.02844"
        cy="-11.309135"
        r="6.8330846"
-       inkscape:export-xdpi="50.913998"
-       inkscape:export-ydpi="50.913998"
+       inkscape:export-xdpi="387.7941"
+       inkscape:export-ydpi="387.7941"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
        transform="rotate(-112.77522)" />
     <text
@@ -19350,8 +19350,8 @@
        y="157.28456"
        id="text10785"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
-       inkscape:export-xdpi="50.913998"
-       inkscape:export-ydpi="50.913998"><tspan
+       inkscape:export-xdpi="387.7941"
+       inkscape:export-ydpi="387.7941"><tspan
          sodipodi:role="line"
          id="tspan10783"
          x="39.343445"
@@ -19364,8 +19364,8 @@
        y="159.35333"
        id="text10789"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/logo_about.png"
-       inkscape:export-xdpi="50.913998"
-       inkscape:export-ydpi="50.913998"><tspan
+       inkscape:export-xdpi="387.7941"
+       inkscape:export-ydpi="387.7941"><tspan
          sodipodi:role="line"
          id="tspan10787"
          x="39.340103"
@@ -19375,10 +19375,10 @@
          x="39.340103"
          y="160.74283"
          style="font-size:0.83370042px;fill:#c8c8c8;fill-opacity:1;stroke-width:0.03473752"
-         id="tspan10811">Copyright (C) 2019 Iurie Nistor</tspan><tspan
+         id="tspan10811">Copyright (C) 2020 Iurie Nistor</tspan><tspan
          sodipodi:role="line"
          x="39.340103"
-         y="162.13232"
+         y="162.13234"
          style="font-size:0.83370042px;fill:#c8c8c8;fill-opacity:1;stroke-width:0.03473752"
          id="tspan10815">License: GNU General Public License Version 3</tspan></text>
     <rect
