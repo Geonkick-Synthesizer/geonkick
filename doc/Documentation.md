@@ -1,5 +1,6 @@
 - [Introduction](#introduction)
 - [How it works](#how-it-works)
+- [Block diagram](#block-diagram)
 - [Percussion](#percussion)
   * [Percussion layers](#percussion-layers)
   * [Playing percussion](#playing-percussion)
@@ -61,6 +62,10 @@ to audio output to one of 16 supported audio output channels. Thus, every
 channel is mono too. The user can redirect than a mono channel to two channels
 or more by means of hosts, audio basses or other ways, depending of the
 context of usage.
+
+### Block diagram
+
+![Screenshot](diagram.png)
 
 ### Percussion
 
