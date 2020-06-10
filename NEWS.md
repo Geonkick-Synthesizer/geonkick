@@ -1,13 +1,21 @@
 ### Changes from 2.1.1 to 2.2.0
 
-#### Features
+#### New features
 
   - Kit mixer
   - Preset browser
   - Factory presets
   - Distortion volume envelope
 
+#### Improvements
 
+  - Range channels from 1 - 16 instead of 0 - 15
+  - Added visual effect for play button and some other buttons
+
+#### Fixes
+
+  - Fix loading WAVEFORMATEX samples
+  - Other small fixes
 
 ### Changes from 2.1.0 to 2.1.1
 
