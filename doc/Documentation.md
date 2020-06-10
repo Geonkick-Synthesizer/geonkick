@@ -404,9 +404,9 @@ Note2: In order to add new presets in the browser there is a need to save in one
 following paths the presets (of both types, kit or percussion), than reopen the
 program or reload the plugin:
 
-/usr/share/geonkick/presets/<PresetFolder>/<Preset>
-/usr/local/share/geonkick/presets/<PresetFolder>/<Preset>
-/home/<user>/.local/geonkick/presets/<PresetFolder>/<Preset>
+    /usr/share/geonkick/presets/<PresetFolder>/<Preset>
+    /usr/local/share/geonkick/presets/<PresetFolder>/<Preset>
+    /home/<user>/.local/geonkick/presets/<PresetFolder>/<Preset>
 
 #### Percussion vs channel
 
