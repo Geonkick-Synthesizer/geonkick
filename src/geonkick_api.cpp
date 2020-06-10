@@ -1583,16 +1583,10 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
         return false;
 }
 
-// std::string GeonkickApi::getPreset(size_t folderId, size_t presetId)
-// {
-//         if (folderId < presetsFolder.size())
-//                 return presetsFolder[folderId].preset(presetId);
-//         return "";
-// }
-
 void GeonkickApi::loadPresets()
 {
         std::filesystem::path prestsPath = getSettings("GEONKICK_CONFIG/USER_LOCAL_PATH");
+        prestsPath /= "presets";
         if (std::filesystem::exists(prestsPath))
                 loadPresetsFolders(prestsPath);
         prestsPath = "/usr/share" / std::filesystem::path(GEONKICK_APP_NAME) / "presets";
