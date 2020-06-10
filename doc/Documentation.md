@@ -28,6 +28,7 @@
   * [Kit output channels](#kit-output-channels)
   * [Kit preset](#kit-preset)
   * [Kit preset vs percussion preset](#kit-preset-vs-percussion-preset)
+  * [Preset browser](#preset-browser)
   * [Percussion vs channel](#percussion-vs-channel)
 - [LV2 Plugin](#lv2-plugin)
 - [Standalone](#standalone)
@@ -115,7 +116,7 @@ also can go to percussions kit UI.
 
 #### Shortcut Keys
 
-* k - play the percussion sound
+* Ctrl + k - play the percussion sound
 * Ctrl + r - reload default state, clean everything
 * Ctrl + h - hide envelope, only the graph is shown
 * Ctrl + o - open file browser dialog
@@ -347,6 +348,9 @@ kit list the current percussion will be emphasized too.
    tells that the percussion will be played by pressing on any key.
  - "green circle" - which percussion to which key is mapped and can be changed
    by "left click" on the grid cell.
+ - slider for limiter of the current percussion
+ - "M" button - mute the current pecussion
+ - "S" - solo the current percussion
 
 #### Current percussion
 
@@ -384,6 +388,25 @@ preset from the kit UI.
 Percussion preset is a preset for one percussion and can be loaded by
 percussion UI. Kit preset contains a list of percussion presets
 and can be loaded by kit UI.
+
+#### Preset browser
+
+Preset browser can be opened by pushing button "Presets" on the left bar.
+
+Preset browser will list in the first column the name of the presets folders.
+A preset folder may contain percussion and kit presets. If the folder
+is selected the browser will list all the presets in selected folder in the next columns.
+Kit presets will be emphasized with prefix "KIT:".
+
+Note: for now the browser doesn't support search and can't add or remove presets from the UI.
+
+Note2: In order to add new presets in the browser there is a need to save in one of the
+following paths the presets (of both types, kit or percussion), than reopen the
+program or reload the plugin:
+
+/usr/share/geonkick/presets/<PresetFolder>/<Preset>
+/usr/local/share/geonkick/presets/<PresetFolder>/<Preset>
+/home/<user>/.local/geonkick/presets/<PresetFolder>/<Preset>
 
 #### Percussion vs channel
 
