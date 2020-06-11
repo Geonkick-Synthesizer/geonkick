@@ -100,7 +100,7 @@ for plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-* [Redkite](https://github.com/geontime/redkite) GUI toolkit (it is recommented to use release version).
+* [Redkite](https://github.com/iurie-sw/redkite) GUI toolkit (it is recommented to use release version).
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for plugin)
