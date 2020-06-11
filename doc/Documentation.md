@@ -413,6 +413,11 @@ program or reload the plugin:
     /usr/local/share/geonkick/presets/<PresetFolder>/<Preset>
     /home/<user>/.local/geonkick/presets/<PresetFolder>/<Preset>
 
+Note3: default Geonkick presets are installed under
+
+    /usr/share/geonkick/presets/
+    or /usr/local/share/geonkick/presets
+
 #### Percussion vs channel
 
 Percussion and channels from the Kit UI are different things. A percussion

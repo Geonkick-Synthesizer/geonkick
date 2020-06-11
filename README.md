@@ -15,6 +15,10 @@ If you have an idea about a feature or found an issue, please, submit it:
 * on [GitLab](https://gitlab.com/iurie-sw/geonkick/issues)
 * on [GitHub](https://github.com/iurie-sw/geonkick/issues)
 
+If you want your created presets to be added in the list of Geonkick presets
+, please, create a merge request with the preset archive on GitLab or GitHub.
+See the folder "presets" how to create a preset archive.
+
 ![Screenshot](data/screenshot.png)
 
 #### Download
@@ -76,16 +80,6 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 * Platforms:
   - GNU/Linux
 
-#### Demo & Examples
-
-##### Tutorials
-
-Here is a [list of videos and tutorial](https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY) about Geonkick.
-
-##### Examples
-
-In the directory doc/examples can be found some example presets.
-
 #### Requirements
 
 In order Geonkick to run and operate correctly there is a need:
@@ -142,9 +136,8 @@ GKICK_VST_SDK_PATH to cmake:
 
     cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
 
-Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/0908f475f52af56682321192d800ef25d1823dd2)
-
-Note: don't forget to build VST3 SDK first
+Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/0908f475f52af56682321192d800ef25d1823dd2).
+      Don't forget to build VST3 SDK first.
 
 #### Packages
 

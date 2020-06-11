@@ -4,7 +4,7 @@
 
   - Kit mixer
   - Preset browser
-  - Factory presets
+  - Factory presets (installed under /usr/share/geonkick/presets or /usr/local/share/geonkick/presets)
   - Distortion volume envelope
 
 #### Improvements
