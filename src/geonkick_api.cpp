@@ -1586,15 +1586,21 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
 void GeonkickApi::loadPresets()
 {
         std::filesystem::path prestsPath = getSettings("GEONKICK_CONFIG/USER_LOCAL_PATH");
-        prestsPath /= "presets";
-        if (std::filesystem::exists(prestsPath))
-                loadPresetsFolders(prestsPath);
-        prestsPath = "/usr/share" / std::filesystem::path(GEONKICK_APP_NAME) / "presets";
-        if (std::filesystem::exists(prestsPath))
-                loadPresetsFolders(prestsPath);
-        prestsPath = "/usr/local/share" / std::filesystem::path(GEONKICK_APP_NAME) / "presets";
-        if (std::filesystem::exists(prestsPath))
-                loadPresetsFolders(prestsPath);
+        if (!prestsPath.empty())
+                prestsPath /= "presets";
+
+        try {
+                if (std::filesystem::exists(prestsPath))
+                        loadPresetsFolders(prestsPath);
+                prestsPath = "/usr/share" / std::filesystem::path(GEONKICK_APP_NAME) / "presets";
+                if (std::filesystem::exists(prestsPath))
+                        loadPresetsFolders(prestsPath);
+                prestsPath = "/usr/local/share" / std::filesystem::path(GEONKICK_APP_NAME) / "presets";
+                if (std::filesystem::exists(prestsPath))
+                        loadPresetsFolders(prestsPath);
+        } catch(...) {
+                GEONKICK_LOG_ERROR("error on loading presets");
+        }
 }
 
 void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
@@ -1603,7 +1609,7 @@ void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
                 for (const auto &entry : std::filesystem::directory_iterator(path)) {
                         if (!entry.path().empty() && std::filesystem::is_directory(entry.path())) {
                                 auto presetFolder = std::make_unique<PresetFolder>(entry.path());
-                                GEONKICK_LOG_DEBUG("preset folder " << presetFolder->path());
+                                GEONKICK_LOG_INFO("preset folder " << presetFolder->path());
                                 if (!presetFolder->loadPresets()) {
                                         GEONKICK_LOG_ERROR("can't load preset from folder " << presetFolder->path());
                                 } else {
@@ -1625,17 +1631,30 @@ void GeonkickApi::loadConfig()
         }
 
         std::filesystem::path localPath(homeDir);
-        if (!std::filesystem::exists(localPath)) {
-                GEONKICK_LOG_ERROR("path " << localPath << " does not exist");
-                return;
-        }
-
-        localPath /= std::filesystem::path(".local") / std::filesystem::path(GEONKICK_APP_NAME);
-        if (!std::filesystem::exists(localPath)) {
-                if (!std::filesystem::create_directory(localPath)) {
-                        GEONKICK_LOG_ERROR("can't create path " << localPath);
+        try {
+                if (!std::filesystem::exists(localPath)) {
+                        GEONKICK_LOG_ERROR("path " << localPath << " does not exist.");
                         return;
                 }
+
+                localPath /= std::filesystem::path(".local") / std::filesystem::path(GEONKICK_APP_NAME);
+                if (!std::filesystem::exists(localPath)) {
+                        if (!std::filesystem::create_directories(localPath)) {
+                                GEONKICK_LOG_ERROR("can't create path " << localPath);
+                                return;
+                        }
+                }
+
+                auto presetsPath = localPath / std::filesystem::path("presets");
+                if (!std::filesystem::exists(presetsPath)) {
+                        if (!std::filesystem::create_directories(presetsPath)) {
+                                GEONKICK_LOG_ERROR("can't create path " << presetsPath);
+                                return;
+                        }
+                }
+        } catch(const std::exception& e) {
+                GEONKICK_LOG_ERROR("error on getting local path, " << e.what());
+                return;
         }
 
         GEONKICK_LOG_DEBUG("set local path: " << localPath);
