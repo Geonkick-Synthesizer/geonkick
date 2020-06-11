@@ -8,7 +8,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.2.0
+Version: 2.2.1
 
 If you have an idea about a feature or found an issue, please, submit it:
 
