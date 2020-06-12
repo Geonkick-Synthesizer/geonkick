@@ -15,4 +15,4 @@ foreach(compressedFolder ${GKICK_PRESETS})
 endforeach()
 
 add_custom_target(gkick_presets ALL DEPENDS ${GKICK_PRESETS_OUTPUT})
-install(DIRECTORY ${GKICK_PRESETS_OUTPUT} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/geonkick/presets)
+install(DIRECTORY ${GKICK_PRESETS_OUTPUT} DESTINATION ${CMAKE_INSTALL_FULL_DATADIR}/geonkick/presets)

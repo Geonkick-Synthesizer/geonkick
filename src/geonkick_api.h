@@ -296,7 +296,7 @@ class GeonkickApi : public RkObject {
   size_t numberOfPresetFolders() const;
 
 protected:
-  void loadConfig();
+  void setupDataPaths();
   void loadPresets();
   void loadPresetsFolders(const std::filesystem::path &path);
   static void kickUpdatedCallback(void *arg,
