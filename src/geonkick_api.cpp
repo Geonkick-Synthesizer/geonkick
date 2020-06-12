@@ -1586,41 +1586,32 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
 
 void GeonkickApi::loadPresets()
 {
+        std::unordered_set<std::string> prestsPaths;
         auto presetsPathSufix = std::filesystem::path(GEONKICK_APP_NAME) / "presets";
         std::filesystem::path presetsPath = getSettings("GEONKICK_CONFIG/USER_PRESETS_PATH");
+        prestsPaths.insert(presetsPath);
 
-        // Load first user defined presets.
-        try {
-                if (std::filesystem::exists(presetsPath))
-                        loadPresetsFolders(presetsPath);
-        } catch(const std::exception& e) {
-                GEONKICK_LOG_ERROR("error on loading presets: " << e.what());
-        }
+#ifdef GEONKICK_DATA_DIR
+        prestsPaths.insert(std::filesystem::path(GEONKICK_DATA_DIR) / presetsPathSufix);
+#endif // GEONKICK_DATA_DIR
 
-        // Load default presets
         const char *dataDirs = std::getenv("XDG_DATA_DIRS");
         if (dataDirs == nullptr || *dataDirs == '\0') {
-                try {
-                        presetsPath = "/usr/share" / presetsPathSufix;
-                        if (std::filesystem::exists(presetsPath))
-                                loadPresetsFolders(presetsPath);
-                        presetsPath = "/usr/local/share" / presetsPathSufix;
-                        if (std::filesystem::exists(presetsPath))
-                                loadPresetsFolders(presetsPath);
-                } catch(const std::exception& e) {
-                        GEONKICK_LOG_ERROR("error on loading presets: " << e.what());
-                }
+                prestsPaths.insert("/usr/share" / presetsPathSufix);
+                prestsPaths.insert("/usr/local/share" / presetsPathSufix);
         } else {
                 std::stringstream ss(dataDirs);
                 std::string path;
-                while (std::getline(ss, path, ':')) {
-                        presetsPath = std::filesystem::path(path) / presetsPathSufix;
-                        try {
-                                if (std::filesystem::exists(presetsPath))
-                                        loadPresetsFolders(presetsPath);
-                        } catch(const std::exception& e) {
-                                GEONKICK_LOG_ERROR("error on loading presets: " << e.what());
-                        }
+                while (std::getline(ss, path, ':'))
+                        prestsPaths.insert(std::filesystem::path(path) / presetsPathSufix);
+        }
+
+        for (const auto &path: prestsPaths) {
+                try {
+                        if (std::filesystem::exists(path))
+                                loadPresetsFolders(path);
+                } catch(const std::exception& e) {
+                        GEONKICK_LOG_ERROR("error on reading path: " << path << ": " << e.what());
                 }
         }
 }
