@@ -1,3 +1,9 @@
+### Changes from 2.2.2 to 2.2.3
+
+#### Fixes
+
+   - fix compliers flags
+
 ### Changes from 2.2.1 to 2.2.2
 
 #### Improvements
