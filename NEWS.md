@@ -1,3 +1,11 @@
+### Changes from 2.2.1 to 2.2.2
+
+#### Improvements
+
+   - follow the standard https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html#variables
+   - use GEONKICK_DATA_DIR when geonkick is installed in non standard paths
+   - search for presets in the dirs, and for local user data dir
+
 ### Changes from 2.2.0 to 2.2.1
 
 #### Fixes
