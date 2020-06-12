@@ -3,8 +3,8 @@
 #### Improvements
 
    - follow the standard https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html#variables
-   - use GEONKICK_DATA_DIR when geonkick is installed in non standard paths
-   - search for presets in the dirs, and for local user data dir
+   - use GEONKICK_DATA_DIR when geonkick is installed in non a nonstandard standard paths
+   - search for presets in the $XDG_DATA_DIRS dirs, and for local user data $XDG_CONFIG_HOME
 
 ### Changes from 2.2.0 to 2.2.1
 
