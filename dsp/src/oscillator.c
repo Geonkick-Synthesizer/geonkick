@@ -215,7 +215,10 @@ gkick_osc_func_triangle(gkick_real phase)
 gkick_real
 gkick_osc_func_sawtooth(gkick_real phase)
 {
-        return 1.0f - (1.0f / M_PI) * phase;
+        if (phase < M_PI)
+                return (1.0f / M_PI) * phase;
+        else
+                return (1.0f / M_PI) * phase - 2.0f;
 }
 
 gkick_real gkick_osc_func_noise_white(unsigned int *seed)
