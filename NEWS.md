@@ -1,3 +1,14 @@
+### Changes from 2.2.3 to 2.3.0
+
+#### Features:
+
+    - reset to default button
+
+#### Fixes:
+
+    - reset to default shortcut
+
+
 ### Changes from 2.2.2 to 2.2.3
 
 #### Fixes

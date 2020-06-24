@@ -35,6 +35,9 @@ RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(export_active);
 RK_DECLARE_IMAGE_RC(about);
+RK_DECLARE_IMAGE_RC(reset_button);
+RK_DECLARE_IMAGE_RC(reset_button_hover);
+RK_DECLARE_IMAGE_RC(reset_button_on);
 RK_DECLARE_IMAGE_RC(play);
 RK_DECLARE_IMAGE_RC(play_pressed);
 RK_DECLARE_IMAGE_RC(topbar_layer1);
@@ -94,14 +97,19 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         exportFileButton->setCheckable(true);
         RK_ACT_BIND(exportFileButton, pressed, RK_ACT_ARGS(), this, openExport());
 
-        auto aboutButton = new RkButton(this);
-        aboutButton->setType(RkButton::ButtonType::ButtonPush);
-        aboutButton->setSize(90, 30);
-        aboutButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
-        aboutButton->setY(exportFileButton->y());
-        aboutButton->setImage(RkImage(90, 30, RK_IMAGE_RC(about)));
-        aboutButton->show();
-        RK_ACT_BIND(aboutButton, pressed, RK_ACT_ARGS(), this, openAbout());
+        auto resetButton = new RkButton(this);
+        resetButton->setSize(90, 30);
+        resetButton->setType(RkButton::ButtonType::ButtonPush);
+        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button)),
+                              RkButton::ButtonImage::ImageUnpressed);
+        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_hover)),
+                              RkButton::ButtonImage::ImageUnpressedHover);
+        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_on)),
+                              RkButton::ButtonImage::ImagePressed);
+        resetButton->setX(exportFileButton->x() + exportFileButton->width() + 5);
+        resetButton->setY(exportFileButton->y());
+        resetButton->show();
+        RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
 
         presetNameLabel = new RkLabel(this);
         presetNameLabel->setBackgroundColor(background());
@@ -110,7 +118,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         font.setSize(12);
         presetNameLabel->setFont(font);
         presetNameLabel->setSize(220, 30);
-        presetNameLabel->setPosition(aboutButton->x() + aboutButton->width() + 5,
+        presetNameLabel->setPosition(resetButton->x() + resetButton->width() + 5,
                                      (height() - presetNameLabel->height()) / 2);
         presetNameLabel->show();
 

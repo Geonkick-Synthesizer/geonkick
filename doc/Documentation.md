@@ -112,7 +112,7 @@ also can go to percussions kit UI.
      the percussion preset
    - "Export" button - shows a dialog for exporting the current percussion
      to an audio file format
-   - "About", shows a dialog with info about Geonkick
+   - "Reset" - reset the current percussion to default
    - Preset label - it shows the name of the current selected percussion,
      by default shows "Default".
    - Play button - triggres Geonkick to play the current percussion
@@ -122,7 +122,7 @@ also can go to percussions kit UI.
 #### Shortcut Keys
 
 * Ctrl + k - play the percussion sound
-* Ctrl + r - reload default state, clean everything
+* Ctrl + r - reset the current percussion to default
 * Ctrl + h - hide envelope, only the graph is shown
 * Ctrl + o - open file browser dialog
 * Ctrl + s - open save dialog

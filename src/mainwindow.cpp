@@ -120,6 +120,11 @@ void MainWindow::createShortcuts()
         addShortcut(Rk::Key::Key_V, Rk::KeyModifiers::Control_Right);
         addShortcut(Rk::Key::Key_v, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_v, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_R, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_R, Rk::KeyModifiers::Control_Right);
+        addShortcut(Rk::Key::Key_r, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_r, Rk::KeyModifiers::Control_Right);
 }
 
 MainWindow::~MainWindow()
@@ -150,6 +155,8 @@ bool MainWindow::init(void)
                     this, openFileDialog(FileDialog::Type::Save));
         RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(),
                     this, openAboutDialog());
+        RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
+                    this, resetToDefault());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
                     this, openExportDialog());
         RK_ACT_BIND(topBar, layerSelected,
@@ -288,14 +295,7 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
                 geonkickApi->playKick();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
-                auto currId = geonkickApi->currentPercussion();
-                auto state = geonkickApi->getDefaultPercussionState();
-                state->setId(currId);
-                state->setName(geonkickApi->getPercussionName(currId));
-                state->setPlayingKey(geonkickApi->getPercussionPlayingKey(currId));
-                state->setChannel(geonkickApi->getPercussionChannel(currId));
-                geonkickApi->setPercussionState(state);
-                updateGui();
+                resetToDefault();
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(true);
@@ -319,6 +319,18 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
                 geonkickApi->pasteFromClipboard();
                 updateGui();
         }
+}
+
+void MainWindow::resetToDefault()
+{
+        auto currId = geonkickApi->currentPercussion();
+        auto state = geonkickApi->getDefaultPercussionState();
+        state->setId(currId);
+        state->setName(geonkickApi->getPercussionName(currId));
+        state->setPlayingKey(geonkickApi->getPercussionPlayingKey(currId));
+        state->setChannel(geonkickApi->getPercussionChannel(currId));
+        geonkickApi->setPercussionState(state);
+        updateGui();
 }
 
 void MainWindow::keyReleaseEvent(RkKeyEvent *event)
