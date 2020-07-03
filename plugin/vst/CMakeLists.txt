@@ -40,4 +40,4 @@ target_link_libraries(${target} PRIVATE "-Wl,--no-undefined")
 
 add_dependencies(${target} geonkick_common)
 
-install(TARGETS geonkick_vst DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/vst3/geonkick.vst3/Contents/${LINUX_ARCHITECTURE_NAME})
+install(TARGETS geonkick_vst DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/vst3/geonkick.vst3/Contents/${LINUX_ARCHITECTURE_NAME})
