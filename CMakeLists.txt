@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 3.7)
 project(geonkick VERSION 2.2.3)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+include(GNUInstallDirs)
 include(FindRedkite)
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
