@@ -1483,6 +1483,8 @@ void GeonkickApi::pasteFromClipboard()
                 state->setName(getPercussionName(currId));
                 state->setPlayingKey(getPercussionPlayingKey(currId));
                 state->setChannel(getPercussionChannel(currId));
+                state->setMute(isPercussionMuted(currId));
+                state->setSolo(isPercussionSolo(currId));
                 setPercussionState(state);
         }
 }

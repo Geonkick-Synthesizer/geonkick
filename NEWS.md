@@ -7,7 +7,8 @@
 #### Fixes:
 
     - reset to default shortcut
-
+    - FHS-friendly LV2 and VST3 plugin installation paths
+    - don't copy mute and solo settings when copy/paste pecussion
 
 ### Changes from 2.2.2 to 2.2.3
 

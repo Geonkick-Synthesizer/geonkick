@@ -317,6 +317,7 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
         } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                     && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
                 geonkickApi->pasteFromClipboard();
+                geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
                 updateGui();
         }
 }
@@ -330,6 +331,7 @@ void MainWindow::resetToDefault()
         state->setPlayingKey(geonkickApi->getPercussionPlayingKey(currId));
         state->setChannel(geonkickApi->getPercussionChannel(currId));
         geonkickApi->setPercussionState(state);
+        geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
         updateGui();
 }
 
