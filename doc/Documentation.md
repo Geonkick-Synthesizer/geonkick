@@ -49,7 +49,7 @@ build system. Can be used as standalone and LV2 plugin.
 
 Geonkick synthesizes the full percussion length in a buffer in the memory
 every time the user changes the controls or the envelopes. The generated
-percussion than is "moved" to a module that plays the percussion. There
+percussion then is "moved" to a module that plays the percussion. There
 is no synthesis happening when the user presses a key, i.e if no controls
 are changed Geonkick acts just like a sampler.
 
