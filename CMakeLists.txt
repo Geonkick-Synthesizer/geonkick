@@ -232,6 +232,7 @@ endforeach()
 add_custom_target(gkick_resources ALL DEPENDS ${GKICK_RC_OUTPUT})
 
 include_directories(${GKICK_COMMON_DIR})
+link_directories(${REDKITE_LIBRARY_DIR})
 add_library(geonkick_common STATIC
   ${GKICK_COMMON_HEADERS}
   ${GKICK_COMMON_SOURCES}

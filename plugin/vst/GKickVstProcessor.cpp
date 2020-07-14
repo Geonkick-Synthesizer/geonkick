@@ -61,8 +61,8 @@ GKickVstProcessor::initialize(FUnknown* context)
         auto nChannels = geonkickApi->numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
                 std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
-                std::u16string str16 = convert.from_bytes(std::string("Out " + std::to_string(i)));
-                addAudioOutput(str16.c_str(), Vst::SpeakerArr::kMono);
+                std::u16string str16 = convert.from_bytes(std::string("Out" + std::to_string(i)));
+                addAudioOutput(str16.c_str(), Vst::SpeakerArr::kStereo);
         }
         addEventInput(STR16("MIDI in"), 1);
         return kResultTrue;
@@ -129,8 +129,11 @@ GKickVstProcessor::process(Vst::ProcessData& data)
                         auto nChannels = geonkickApi->numberOfChannels();
                         nChannels = std::min(nChannels, static_cast<decltype(nChannels)>(data.numOutputs));
                         for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
-                                if (data.outputs[ch].channelBuffers32[0])
-                                        data.outputs[ch].channelBuffers32[0][i] = geonkickApi->getAudioFrame(ch);
+                                if (data.outputs[ch].channelBuffers32[0] && data.outputs[ch].channelBuffers32[1]) {
+                                        auto val = geonkickApi->getAudioFrame(ch);
+                                        data.outputs[ch].channelBuffers32[0][i] = val;
+                                        data.outputs[ch].channelBuffers32[1][i] = val;
+                                }
                         }
                 }
 	}

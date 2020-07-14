@@ -53,7 +53,7 @@ class GeonkickLv2Plugin : public RkObject
                 : geonkickApi{new GeonkickApi}
                 , midiIn{nullptr}
                 , notifyHostChannel{nullptr}
-                , outputChannels{std::vector<float*>(geonkickApi->getPercussionsNumber(), nullptr)}
+                , outputChannels{std::vector<float*>(2 * geonkickApi->getPercussionsNumber(), nullptr)}
                 , atomInfo{0}
                 , kickIsUpdated{false}
         {
@@ -165,6 +165,7 @@ class GeonkickLv2Plugin : public RkObject
                 if (!midiIn)
                         return;
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
+                // TODO: don't use here frames as main loop, it is not efficient
                 for (auto i = 0; i < nsamples; i++) {
                         while (it->time.frames == i
                                && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
@@ -185,8 +186,12 @@ class GeonkickLv2Plugin : public RkObject
 
                         auto nChannels = geonkickApi->numberOfChannels();
                         for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
-                                if (outputChannels[ch])
-                                        outputChannels[ch][i] = geonkickApi->getAudioFrame(ch);
+                                // Split to real output stereo channels.
+                                if (outputChannels[2 * ch] && outputChannels[2 * ch + 1]) {
+                                        auto val = geonkickApi->getAudioFrame(ch);
+                                        outputChannels[2 * ch][i]     = val;
+                                        outputChannels[2 * ch + 1][i] = val;
+                                }
                         }
                 }
 
@@ -390,8 +395,7 @@ static void gkick_connect_port(LV2_Handle instance,
                                void*      data)
 {
         auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
-	auto nChannels = geonkickLv2PLugin->numberOfChannels();
-	auto portNumber = static_cast<decltype(nChannels)>(port);
+	auto portNumber = static_cast<size_t>(port);
         if (portNumber == 0)
                 geonkickLv2PLugin->setMidiIn(static_cast<LV2_Atom_Sequence*>(data));
         else if (portNumber == 1)
