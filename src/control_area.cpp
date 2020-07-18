@@ -46,8 +46,7 @@ ControlArea::ControlArea(GeonkickWidget *parent,
 void ControlArea::showControls()
 {
         if (!dynamic_cast<ControlsWidget*>(currentWidget)) {
-                if (currentWidget)
-                        delete currentWidget;
+                delete currentWidget;
                 auto controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
                 controlsWidget->setEnvelopeWidget(envelopeWidget);
                 RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
@@ -60,8 +59,7 @@ void ControlArea::showControls()
 void ControlArea::showKit()
 {
         if (!dynamic_cast<KitWidget*>(currentWidget)) {
-                if (currentWidget)
-                        delete currentWidget;
+                delete currentWidget;
                 currentWidget = new KitWidget(this, kitModel);
                 currentWidget->show();
         }
@@ -70,8 +68,7 @@ void ControlArea::showKit()
 void ControlArea::showPresets()
 {
         if (!dynamic_cast<PresetBrowserView*>(currentWidget)) {
-                if (currentWidget)
-                        delete currentWidget;
+                delete currentWidget;
                 currentWidget = new PresetBrowserView(this, presetsModel);
                 currentWidget->show();
         }

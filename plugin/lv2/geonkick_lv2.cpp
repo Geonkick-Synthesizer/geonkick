@@ -317,8 +317,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 
 static void gkick_cleanup_ui(LV2UI_Handle handle)
 {
-        if (handle)
-                delete static_cast<RkMain*>(handle);
+        delete static_cast<RkMain*>(handle);
 }
 
 static void gkick_port_event_ui(LV2UI_Handle ui,
