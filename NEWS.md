@@ -3,6 +3,7 @@
 #### Features:
 
     - reset to default button
+    - add stereo output channels
 
 #### Fixes:
 
