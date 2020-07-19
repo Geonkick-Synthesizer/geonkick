@@ -1388,16 +1388,13 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                 return std::vector<gkick_real>();
         }
 
-        if (sndinfo.format != (SF_FORMAT_FLAC | SF_FORMAT_PCM_16)
-            && sndinfo.format != (SF_FORMAT_FLAC | SF_FORMAT_PCM_24)
-            && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_16)
-            && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_24)
-            && sndinfo.format != (SF_FORMAT_WAV | SF_FORMAT_PCM_32)
-            && sndinfo.format != (SF_FORMAT_WAVEX | SF_FORMAT_PCM_16)
-            && sndinfo.format != (SF_FORMAT_WAVEX | SF_FORMAT_PCM_24)
-            && sndinfo.format != (SF_FORMAT_WAVEX | SF_FORMAT_PCM_32)
-            && sndinfo.format != (SF_FORMAT_OGG | SF_FORMAT_VORBIS)) {
-                GEONKICK_LOG_ERROR("unsupported audio format");
+        auto formatType = sndinfo.format & SF_FORMAT_TYPEMASK;
+        if (formatType != SF_FORMAT_FLAC
+            && formatType != SF_FORMAT_WAV
+            && formatType != SF_FORMAT_FLAC
+            && formatType != SF_FORMAT_WAVEX
+            && formatType != SF_FORMAT_OGG) {
+                GEONKICK_LOG_ERROR(std::hex << "unsupported audio format");
                 sf_close(sndFile);
                 return std::vector<gkick_real>();
         }

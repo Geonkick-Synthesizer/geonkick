@@ -6,6 +6,7 @@
 
 #### Fixes:
 
+    - fix loading other audio format subtypes for samples
     - reset to default shortcut
     - FHS-friendly LV2 and VST3 plugin installation paths
     - don't copy mute and solo settings when copy/paste pecussion
