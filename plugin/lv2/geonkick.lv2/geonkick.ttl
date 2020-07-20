@@ -1,5 +1,5 @@
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
-@prefix ls: <http://geontime.com/geonkick#> .
+@prefix ls: <http://iuriepage.wordpress.com/geonkick#> .
 @prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
 @prefix midi:  <http://lv2plug.in/ns/ext/midi#> .
 @prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
@@ -9,27 +9,27 @@
 @prefix ui:    <http://lv2plug.in/ns/extensions/ui#> .
 @prefix pg: <http://lv2plug.in/ns/ext/port-groups#> .
 
-<http://geontime.com/geonkick#author>
+<http://iuriepage.wordpress.com/geonkick#author>
 	a foaf:Person ;
 	foaf:name "Iurie Nistor" ;
-	foaf:mbox <mailto:iurie@geontime.com> ;
-	foaf:homepage <http://geontime.com/> .
+	foaf:mbox <mailto:iurie@iuriepage.wordpress.com> ;
+	foaf:homepage <http://iuriepage.wordpress.com/> .
 
-<http://geontime.com/geonkick>
+<http://iuriepage.wordpress.com/geonkick>
 	a doap:Project ;
-	doap:maintainer <http://geontime.com/geonkick#author> ;
+	doap:maintainer <http://iuriepage.wordpress.com/geonkick#author> ;
 	doap:name "Geonkick" .
 
-<http://geontime.com/geonkick>
+<http://iuriepage.wordpress.com/geonkick>
     a lv2:Plugin, lv2:InstrumentPlugin;
     doap:name "Geonkick";
-    lv2:project <http://geontime.com/geonkick> ;
+    lv2:project <http://iuriepage.wordpress.com/geonkick> ;
     lv2:extensionData state:interface ;
     lv2:optionalFeature lv2:hardRTCapable ;
     lv2:minorVersion 20 ;
     lv2:microVersion 0 ;
     doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
-    ui:ui <http://geontime.com/geonkick#ui> ;
+    ui:ui <http://iuriepage.wordpress.com/geonkick#ui> ;
        lv2:port [
              a lv2:InputPort , atom:AtomPort ;
              atom:bufferType atom:Sequence ;
@@ -350,7 +350,7 @@ ls:Out16
     lv2:name "Out 16" ;
     lv2:symbol "out16" .
 
-<http://geontime.com/geonkick#ui>
+<http://iuriepage.wordpress.com/geonkick#ui>
     a ui:X11UI ;
     lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
     lv2:requiredFeature ui:idleInterface;

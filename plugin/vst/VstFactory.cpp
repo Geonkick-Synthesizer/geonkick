@@ -2,7 +2,7 @@
  * File name: VstFactory.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2019 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -35,8 +35,8 @@
 #define gkickFileDescription	gkickPluginName" Geonkick"
 #endif
 #define gkickCompanyName	"Geontime"
-#define gkickCompanyWeb		"http://geontime.com"
-#define gkickCompanyEmail	"mailto:iurie@geontime.com"
+#define gkickCompanyWeb		"http://iuriepage.wordpress.com"
+#define gkickCompanyEmail	"mailto:iur.nistor@gmail.com"
 #define gkickLegalCopyright	"Copyright (C) 2020 Iurie Nistor"
 #define gkickLegalTrademarks	"Licence GPLv3"
 

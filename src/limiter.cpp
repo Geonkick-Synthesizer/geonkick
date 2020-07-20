@@ -2,7 +2,7 @@
  * File name: limiter.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2018 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *

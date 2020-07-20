@@ -2,7 +2,7 @@
  * File name: GKickVstProcessor.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2019 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *

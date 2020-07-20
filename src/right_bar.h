@@ -2,7 +2,7 @@
  * File name: right_bar.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
