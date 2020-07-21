@@ -159,6 +159,10 @@ class GeonkickApi : public RkObject {
   gkick_real getAudioFrame(int channel) const;
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
+
+  // This function is called only from the audio thread.
+  void process(std::vector<float*> &out, size_t offset, size_t size);
+
   std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
   std::shared_ptr<PercussionState> getPercussionState() const;
   bool isCompressorEnabled() const;

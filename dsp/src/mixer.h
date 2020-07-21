@@ -58,6 +58,12 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
 		      int channel,
 		      gkick_real *val);
 
+enum geonkick_error
+gkick_mixer_process(struct gkick_mixer *mixer,
+                    float** out,
+                    size_t channel,
+                    size_t size);
+
 void
 gkick_mixer_set_leveler(struct gkick_mixer *mixer,
                              gkick_real val);

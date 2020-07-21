@@ -67,6 +67,12 @@ gkick_audio_get_frame(struct gkick_audio *audio,
                       gkick_real *val);
 
 enum geonkick_error
+gkick_audio_process(struct gkick_audio *audio,
+                    float** out,
+                    size_t channel,
+                    size_t size);
+
+enum geonkick_error
 gkick_audio_set_limiter_callback(struct gkick_audio *audio,
                                  void (*callback)(void*, gkick_real val),
                                  void *arg);

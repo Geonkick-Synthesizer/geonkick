@@ -984,6 +984,18 @@ geonkick_get_audio_frame(struct geonkick *kick,
 }
 
 enum geonkick_error
+geonkick_audio_process(struct geonkick *kick,
+                       float **out,
+                       size_t channel,
+                       size_t size)
+{
+        return gkick_audio_process(kick->audio,
+                                   out,
+                                   channel,
+                                   size);
+}
+
+enum geonkick_error
 geonkick_compressor_enable(struct geonkick *kick,
                            int enable)
 {

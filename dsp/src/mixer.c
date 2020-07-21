@@ -95,6 +95,31 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
         return GEONKICK_OK;
 }
 
+enum geonkick_error
+gkick_mixer_process(struct gkick_mixer *mixer,
+                    float** out,
+                    size_t channel,
+                    size_t size)
+{
+        if (size < 1)
+                return GEONKICK_OK;
+
+        for (size_t per = 0; per < GEONKICK_MAX_PERCUSSIONS; per++) {
+                struct gkick_audio_output *output = mixer->audio_outputs[per];
+                if (output->enabled && !output->muted
+                    && mixer->solo == output->solo
+                    && output->channel == channel) {
+                        for (size_t i = 0; i < size; i++) {
+                                gkick_real v = 0.0f;
+                                gkick_audio_output_get_frame(output, &v);
+                                out[0][i] += v;
+                                out[1][i] += v;
+                        }
+                }
+        }
+        return GEONKICK_OK;
+}
+
 void
 gkick_mixer_set_leveler(struct gkick_mixer *mixer,
                         gkick_real val)

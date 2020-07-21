@@ -53,7 +53,6 @@ class GeonkickLv2Plugin : public RkObject
                 : geonkickApi{new GeonkickApi}
                 , midiIn{nullptr}
                 , notifyHostChannel{nullptr}
-                , outputChannels{std::vector<float*>(2 * geonkickApi->getPercussionsNumber(), nullptr)}
                 , atomInfo{0}
                 , kickIsUpdated{false}
         {
@@ -69,12 +68,12 @@ class GeonkickLv2Plugin : public RkObject
 
         bool init()
         {
-                return geonkickApi->init();
-        }
+                if (geonkickApi->init()) {
+                        outputChannels = std::vector<float*>(2 * geonkickApi->numberOfChannels(), nullptr);
+                        return true;
+                }
 
-        size_t numberOfChannels() const
-        {
-                return geonkickApi->numberOfChannels();
+                return false;
         }
 
         void setAudioChannel(float *data, size_t channel)
@@ -160,18 +159,21 @@ class GeonkickLv2Plugin : public RkObject
                 return geonkickApi;
         }
 
+        bool isNote(const uint8_t* buffer) const
+        {
+                return (((*(buffer) & 0xf0)) == 0x90) || (((*(buffer) & 0xf0)) == 0x80);
+        }
+
         void processSamples(int nsamples)
         {
                 if (!midiIn)
                         return;
+
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
-                // TODO: don't use here frames as main loop, it is not efficient
-                for (auto i = 0; i < nsamples; i++) {
-                        while (it->time.frames == i
-                               && !lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
-                                const uint8_t* const msg = (const uint8_t*)(it + 1);
-                                switch (lv2_midi_message_type(msg))
-                                {
+                while (!lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
+                        const uint8_t* const msg = (const uint8_t*)(it + 1);
+                        switch (lv2_midi_message_type(msg))
+                        {
                                 case LV2_MIDI_MSG_NOTE_ON:
                                         geonkickApi->setKeyPressed(true, msg[1], msg[2]);
                                         break;
@@ -180,21 +182,11 @@ class GeonkickLv2Plugin : public RkObject
                                         break;
                                 default:
                                         break;
-                                }
-                                it = lv2_atom_sequence_next(it);
                         }
-
-                        auto nChannels = geonkickApi->numberOfChannels();
-                        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
-                                // Split to real output stereo channels.
-                                if (outputChannels[2 * ch] && outputChannels[2 * ch + 1]) {
-                                        auto val = geonkickApi->getAudioFrame(ch);
-                                        outputChannels[2 * ch][i]     = val;
-                                        outputChannels[2 * ch + 1][i] = val;
-                                }
-                        }
+                        it = lv2_atom_sequence_next(it);
                 }
 
+                geonkickApi->process(outputChannels, 0, nsamples);
                 if (isKickUpdated()) {
                         notifyHost();
                         setKickUpdated(false);
