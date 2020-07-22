@@ -5,9 +5,10 @@
     - reset to default button
     - add stereo output channels for LV2, VST and standalone
 
-#Improvements:
+#### Improvements:
 
-    -  process audio routines for LV2, VST and standalone were made more efficient
+    -  added compiler optimisation flags and fast math
+    -  process audio routines for LV2, VST and standalone was made more efficient,
        now DSP should take less CPU
 
 #### Fixes:
