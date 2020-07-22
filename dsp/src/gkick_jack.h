@@ -31,7 +31,7 @@
 #include <jack/midiport.h>
 
 struct gkick_jack {
-        jack_port_t *output_port;
+        jack_port_t *output_port[2 * GEONKICK_MAX_CHANNELS];
         jack_port_t *midi_in_port;
         jack_client_t *client;
         jack_nframes_t sample_rate;

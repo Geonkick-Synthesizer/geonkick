@@ -28,12 +28,12 @@ int
 gkick_jack_process_callback(jack_nframes_t nframes,
 			    void *arg)
 {
-        struct gkick_jack *jack = (struct gkick_jack*)arg;
-	jack_default_audio_sample_t *buffer;
-        if (gkick_jack_get_output_buffers(jack, &buffer, nframes) != GEONKICK_OK) {
-                gkick_log_error("can't get output jack buffers");
+        if (nframes < 1)
                 return 0;
-        }
+
+        struct gkick_jack *jack = (struct gkick_jack*)arg;
+	jack_default_audio_sample_t *buffer[2 * GEONKICK_MAX_CHANNELS];
+        gkick_jack_get_output_buffers(jack, buffer, nframes);
         void* port_buf = jack_port_get_buffer(jack->midi_in_port, nframes);
 
 	jack_midi_event_t event;
@@ -42,26 +42,36 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         if (events_count > 0)
                 jack_midi_event_get(&event, port_buf, event_index);
 
-        for (size_t i = 0; i < nframes; i++) {
-                while (event.time == i && event_index < events_count) {
-			struct gkick_note_info note;
-                        memset(&note, 0, sizeof(struct gkick_note_info));
-                        gkick_jack_get_note_info(&event, &note);
-                        if (note.state == GKICK_KEY_STATE_PRESSED
-                            || note.state == GKICK_KEY_STATE_RELEASED) {
-                                gkick_mixer_key_pressed(jack->mixer, &note);
-                        }
-                        event_index++;
-                        if (event_index < events_count)
-                                jack_midi_event_get(&event, port_buf, event_index);
+        /**
+         * For percussive purpose this will work. More events that occur for the same key
+         * in the buffer timespan will be ignored. The las one will ne taken.
+         * Multiple key press will work too. The limitation is that
+         * the frequency of pressing key sould not exeed the smaplerate / nsmaples Hz.
+         * For example, for a buffer of lengh 2048 and sample rate of 48000 the maximum frequency
+         * will be ~32 Hz which high beyound practical use of percussion.
+         */
+        while (event_index < events_count) {
+                struct gkick_note_info note;
+                memset(&note, 0, sizeof(struct gkick_note_info));
+                gkick_jack_get_note_info(&event, &note);
+                if (note.state == GKICK_KEY_STATE_PRESSED
+                    || note.state == GKICK_KEY_STATE_RELEASED) {
+                        gkick_mixer_key_pressed(jack->mixer, &note);
                 }
+                event_index++;
+                if (event_index < events_count)
+                        jack_midi_event_get(&event, port_buf, event_index);
+        }
 
-		gkick_real val;
-                gkick_mixer_get_frame(jack->mixer, 0, &val);
-                val *= 0.1f;
-                if (val > 0.1f)
-                        val = 0.1f;
-                buffer[i] = (jack_default_audio_sample_t)val;
+        const size_t size = nframes * sizeof(float);
+        for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
+                jack_default_audio_sample_t *buff[2];
+                buff[0] = buffer[2 * i];
+                buff[1] = buffer[2 * i + 1];
+                memset(buff[0], 0, size);
+                memset(buff[1], 0, size);
+                if (buff[0] != NULL && buff[1] != NULL)
+                        gkick_mixer_process(jack->mixer, buffer, i, nframes);
         }
 
         return 0;
@@ -88,17 +98,15 @@ gkick_jack_get_output_buffers(struct gkick_jack *jack,
                               jack_default_audio_sample_t **channel_buf,
                               jack_nframes_t nframes)
 {
-        if (jack->output_port == NULL) {
-                gkick_log_error("output ports are undefined");
-                *channel_buf = NULL;
-                return GEONKICK_ERROR;
-        } else {
-                *channel_buf = (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port,
-                                                                                  nframes);
-                if (*channel_buf == NULL)
-                        return GEONKICK_ERROR;
-        }
+        for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
+                channel_buf[2 * i] =
+                        (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port[2 * i],
+                                                                           nframes);
+                channel_buf[2 * i + 1] =
+                        (jack_default_audio_sample_t*)jack_port_get_buffer(jack->output_port[2 * i + 1],
+                                                                           nframes);
 
+        }
         return GEONKICK_OK;
 }
 
@@ -192,16 +200,27 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
 
         error = GEONKICK_OK;
         gkick_jack_lock(jack);
-        if (jack->output_port == NULL) {
-                jack->output_port = jack_port_register(jack->client, "audio_out",
-                                                       JACK_DEFAULT_AUDIO_TYPE,
-                                                       JackPortIsOutput, 0);
-                if (jack->output_port == NULL) {
+        for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
+                char name[30];
+                sprintf(name, "%s:outL_%u", GEONKICK_NAME, (unsigned int)(i + 1));
+                jack->output_port[2 * i] = jack_port_register(jack->client, name,
+                                                              JACK_DEFAULT_AUDIO_TYPE,
+                                                              JackPortIsOutput, 0);
+                if (jack->output_port[2 * i] == NULL) {
                         gkick_log_error("can't register output ports");
                         error = GEONKICK_ERROR;
+                        break;
                 }
-        } else {
-                gkick_log_warning("output ports already created");
+
+                sprintf(name, "%s:outR_%u", GEONKICK_NAME, (unsigned int)(i + 1));
+                jack->output_port[2 * i + 1] = jack_port_register(jack->client, name,
+                                                                  JACK_DEFAULT_AUDIO_TYPE,
+                                                                  JackPortIsOutput, 0);
+                if (jack->output_port[2 * i + 1] == NULL) {
+                        gkick_log_error("can't register output ports");
+                        error = GEONKICK_ERROR;
+                        break;
+                }
         }
         gkick_jack_unlock(jack);
         return error;
@@ -245,10 +264,11 @@ gkick_create_jack(struct gkick_jack **jack,
                 gkick_jack_free(jack);
                 return GEONKICK_ERROR;
         }
+
         (*jack)->mixer = mixer;
 
         gkick_jack_enable_midi_in(*jack, "midi_in");
-                if (jack_activate((*jack)->client) != 0) {
+        if (jack_activate((*jack)->client) != 0) {
                 gkick_log_error("cannot activate client");
                 gkick_jack_free(jack);
                 return GEONKICK_ERROR;
@@ -280,12 +300,12 @@ gkick_jack_free(struct gkick_jack **jack)
         if (jack != NULL && *jack != NULL) {
                 if ((*jack)->client != NULL) {
                         jack_deactivate((*jack)->client);
-                        if ((*jack)->output_port != NULL) {
-                                jack_port_unregister((*jack)->client,
-                                                     (*jack)->output_port);
+                        for (size_t i = 0; i < 2 * GEONKICK_MAX_CHANNELS; i++) {
+                                if ((*jack)->output_port[i] != NULL) {
+                                        jack_port_unregister((*jack)->client,
+                                                             (*jack)->output_port[i]);
+                                }
                         }
-                        jack_port_unregister((*jack)->client,
-                                             (*jack)->output_port);
                         jack_client_close((*jack)->client);
                 }
 

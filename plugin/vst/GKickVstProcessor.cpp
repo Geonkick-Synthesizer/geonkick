@@ -96,15 +96,20 @@ tresult PLUGIN_API
 GKickVstProcessor::process(Vst::ProcessData& data)
 {
         if (data.numSamples > 0) {
+                /**
+                 * For percussive purpose this will work. More events that occur for the same key
+                 * in the buffer timespan will be ignored. The las one will ne taken.
+                 * Multiple key press will work too. The limitation is that
+                 * the frequency of pressing key sould not exeed the smaplerate / nsmaples Hz.
+                 * For example, for a buffer of lengh 2048 and sample rate of 48000 the maximum frequency
+                 * will be ~32 Hz which high beyound practical use of percussion.
+                 */
                 auto events = data.inputEvents;
                 auto nEvents = events->getEventCount();
                 auto eventIndex = 0;
                 Vst::Event event;
                 auto res = events->getEvent(eventIndex, event);
-                for (decltype(data.numSamples) i = 0; i < data.numSamples; i++) {
-                        if (res != kResultOk)
-                                res = events->getEvent(eventIndex, event);
-                        while (res == kResultOk && event.sampleOffset == i && eventIndex < nEvents) {
+                while (res == kResultOk && eventIndex < nEvents) {
                                 switch (event.type) {
                                 case Vst::Event::kNoteOnEvent:
                                         geonkickApi->setKeyPressed(true,
@@ -124,16 +129,15 @@ GKickVstProcessor::process(Vst::ProcessData& data)
                                 eventIndex++;
                                 if (eventIndex < nEvents)
                                         res = events->getEvent(eventIndex, event);
-                        }
+                }
 
-                        auto nChannels = geonkickApi->numberOfChannels();
-                        nChannels = std::min(nChannels, static_cast<decltype(nChannels)>(data.numOutputs));
-                        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
-                                if (data.outputs[ch].channelBuffers32[0] && data.outputs[ch].channelBuffers32[1]) {
-                                        auto val = geonkickApi->getAudioFrame(ch);
-                                        data.outputs[ch].channelBuffers32[0][i] = val;
-                                        data.outputs[ch].channelBuffers32[1][i] = val;
-                                }
+                size_t nChannels = std::min(geonkickApi->numberOfChannels(),
+                                            static_cast<decltype(nChannels)>(data.numOutputs));
+                for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
+                        if (data.outputs[ch].channelBuffers32[0] && data.outputs[ch].channelBuffers32[1]) {
+                                float *buff[2] = {data.outputs[ch].channelBuffers32[0],
+                                                 data.outputs[ch].channelBuffers32[1]};
+                                geonkickApi->process(buff, ch, data.numSamples);
                         }
                 }
 	}

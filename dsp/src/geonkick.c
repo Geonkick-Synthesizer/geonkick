@@ -64,7 +64,7 @@ geonkick_create(struct geonkick **kick)
 
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 gkick_synth_set_output((*kick)->synths[i], (*kick)->audio->audio_outputs[i]);
-                geonkick_set_percussion_channel(*kick, i, i);
+                geonkick_set_percussion_channel(*kick, i, i % GEONKICK_MAX_CHANNELS);
         }
 
 	if (geonkick_worker_init(*kick) != GEONKICK_OK) {
@@ -1719,7 +1719,7 @@ geonkick_channels_number(struct geonkick *kick, size_t *n)
                 return GEONKICK_ERROR;
         }
 
-        *n = GEONKICK_MAX_PERCUSSIONS;
+        *n = GEONKICK_MAX_CHANNELS;
         return GEONKICK_OK;
 }
 

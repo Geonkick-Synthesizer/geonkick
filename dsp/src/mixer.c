@@ -83,7 +83,7 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
         *val = 0.0f;
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
                 struct gkick_audio_output *out = mixer->audio_outputs[i];
-                if (out->enabled  && !out->muted && (mixer->solo == out->solo) && (out->channel == channel || GKICK_IS_STANDALONE)) {
+                if (out->enabled  && !out->muted && mixer->solo == out->solo && out->channel == channel) {
                         gkick_real v = 0.0f;
                         gkick_audio_output_get_frame(out, &v);
                         if (i == mixer->limiter_callback_index)

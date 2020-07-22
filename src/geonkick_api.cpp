@@ -72,11 +72,12 @@ bool GeonkickApi::init()
 	geonkick_enable_synthesis(geonkickApi, false);
 
 	auto n = getPercussionsNumber();
+        auto nChannels = numberOfChannels();
         kickBuffers = std::vector<std::vector<gkick_real>>(n);
 	for (decltype(n) i = 0; i < n; i++) {
                 auto state = getDefaultPercussionState();
                 state->setId(i);
-                isStandalone() ? state->setChannel(0) : state->setChannel(i);
+                state->setChannel(i % nChannels);
 		setPercussionState(state);
         }
 
@@ -922,13 +923,19 @@ gkick_real GeonkickApi::getAudioFrame(int channel) const
         return val;
 }
 
-void GeonkickApi::process(std::vector<float*> &out, size_t offset, size_t size)
+void GeonkickApi::process(std::vector<float*> &out, size_t size)
 {
         auto nChannels = numberOfChannels();
         for (size_t ch = 0; ch < nChannels; ch++) {
                 float *buff[2] = {out[2 * ch], out[2 * ch + 1]};
                 geonkick_audio_process(geonkickApi, buff, ch, size);
         }
+}
+
+void GeonkickApi::process(float** out, size_t channel, size_t size)
+{
+        if (channel < numberOfChannels())
+                geonkick_audio_process(geonkickApi, out, channel, size);
 }
 
 void GeonkickApi::enableCompressor(bool enable)

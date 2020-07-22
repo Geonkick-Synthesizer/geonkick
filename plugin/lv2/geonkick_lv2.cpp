@@ -166,9 +166,17 @@ class GeonkickLv2Plugin : public RkObject
 
         void processSamples(int nsamples)
         {
-                if (!midiIn)
+                if (!midiIn || nsamples < 1)
                         return;
 
+                /**
+                 * For percussive purpose this will work. More events that occur for the same key
+                 * in the buffer timespan will be ignored. The las one will ne taken.
+                 * Multiple key press will work too. The limitation is that
+                 * the frequency of pressing key sould not exeed the smaplerate / nsmaples Hz.
+                 * For example, for a buffer of lengh 2048 and sample rate of 48000 the maximum frequency
+                 * will be ~32 Hz which high beyound practical use of percussion.
+                 */
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
                 while (!lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
                         const uint8_t* const msg = (const uint8_t*)(it + 1);
@@ -186,7 +194,7 @@ class GeonkickLv2Plugin : public RkObject
                         it = lv2_atom_sequence_next(it);
                 }
 
-                geonkickApi->process(outputChannels, 0, nsamples);
+                geonkickApi->process(outputChannels, nsamples);
                 if (isKickUpdated()) {
                         notifyHost();
                         setKickUpdated(false);
