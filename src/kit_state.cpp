@@ -130,40 +130,17 @@ void KitState::fromJson(const std::string &jsonData)
         if (!document.IsObject())
                 return;
 
-        bool backward = true;
         for (const auto &m: document.GetObject()) {
-                if (m.name == "KitAppVersion" && m.value.IsInt()) {
+                if (m.name == "KitAppVersion" && m.value.IsInt())
                         kitAppVersion = m.value.GetInt();
-                        backward = false;
-                        break;
-                }
-        }
-
-        if (backward) {
-                GEONKICK_LOG_INFO("KitAppVersion missing, old preset");
-                kitAppVersion = 0;
-        }
-
-        if (kitAppVersion < 0x011000) {
-                // Compatibility with older versions.
-                for (int i = 0; i < 2; i++) {
-                        auto state = std::make_shared<PercussionState>();
-                        state->loadObject(document);
-                        state->setId(i);
-                        state->setChannel(i);
-                        addPercussion(state);
-                }
-        } else {
-                for (const auto &m: document.GetObject()) {
-                        if (m.name == "name" && m.value.IsString())
-                                setName(m.value.GetString());
-                        if (m.name == "author" && m.value.IsString())
-                                setAuthor(m.value.GetString());
-                        if (m.name == "url" && m.value.IsString())
-                                setUrl(m.value.GetString());
-                        if (m.name == "percussions" && m.value.IsArray())
-                                parsePercussions(m.value);
-                }
+                if (m.name == "name" && m.value.IsString())
+                        setName(m.value.GetString());
+                if (m.name == "author" && m.value.IsString())
+                        setAuthor(m.value.GetString());
+                if (m.name == "url" && m.value.IsString())
+                        setUrl(m.value.GetString());
+                if (m.name == "percussions" && m.value.IsArray())
+                        parsePercussions(m.value);
         }
 }
 

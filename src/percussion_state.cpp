@@ -211,21 +211,9 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
         if (kick.IsNull() || !kick.IsObject())
                 return;
 
-        bool backward = true;
-        for (const auto &e: kick.GetObject()) {
-                if (e.name == "PercussionAppVersion" && e.value.IsInt()) {
-                        appVersion = e.value.GetInt();
-                        backward = false;
-                        break;
-                }
-        }
-
-        if (backward) {
-                GEONKICK_LOG_INFO("PercussionAppVersion missing, old preset");
-                appVersion = 0;
-        }
-
         for (const auto &m: kick.GetObject()) {
+                if (m.name == "PercussionAppVersion" && m.value.IsInt())
+                        appVersion = m.value.GetInt();
                 if (m.name == "name" && m.value.IsString())
                         setName(m.value.GetString());
 		if (m.name == "id" && m.value.IsInt())
@@ -280,12 +268,8 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                         enableKickFilter(el.value.GetBool());
                                 if (el.name == "cutoff" && el.value.IsDouble())
                                         setKickFilterFrequency(el.value.GetDouble());
-                                if (el.name == "factor" && el.value.IsDouble()) {
-                                        double val = el.value.GetDouble();
-                                        if (appVersion < 0x011000 && val > 0.00001f)
-                                                val = 10.0 / val;
-                                        setKickFilterQFactor(val);
-                                }
+                                if (el.name == "factor" && el.value.IsDouble())
+                                        setKickFilterQFactor(el.value.GetDouble());
                                 if (el.name == "type" && el.value.IsInt())
                                         setKickFilterType(static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
                                 if (el.name == "cutoff_env" && el.value.IsArray()) {
@@ -383,12 +367,8 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                                         setOscillatorFilterEnabled(index, el.value.GetBool());
                                 if (el.name == "cutoff" && el.value.IsDouble())
                                         setOscillatorFilterCutOffFreq(index, el.value.GetDouble());
-                                if (el.name == "factor" && el.value.IsDouble()) {
-                                        double val = el.value.GetDouble();
-                                        if (appVersion < 0x011000)
-                                                val *= 10;
-                                        setOscillatorFilterFactor(index, val);
-                                }
+                                if (el.name == "factor" && el.value.IsDouble())
+                                        setOscillatorFilterFactor(index, el.value.GetDouble());
                                 if (el.name == "type" && el.value.IsInt())
                                         setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
                                 if (el.name == "cutoff_env" && el.value.IsArray()) {
