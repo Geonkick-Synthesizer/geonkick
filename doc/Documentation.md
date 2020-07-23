@@ -34,7 +34,7 @@
 - [LV2 Plugin](#lv2-plugin)
 - [Standalone](#standalone)
 - [Install](#install)
-- [Examples and tutorials](#examples-and-tutorials)
+- [Tutorials](#tutorials)
 - [Documentation license](#documentation-license)
 
 ### Introduction
@@ -371,14 +371,11 @@ selected percussion. The same is for export.
 
 #### Kit output channels
 
-There are maximum 16 output channels to which the user can map the percussion.
-When adding new percussion by default it will be mapped to channel 1. For
-standalone version even if the label "#x" may show different values for
-channels, all the percussion are redirected only to #1 channel, changing
-these values will take no effect.
+There are maximum 16 output stereo channels to which the user can map the percussion.
+When adding new percussion by default it will be mapped to channel 1.
 
 Issues:
-   - changing the percussion channel cause abrupt interruption of sound
+   - changing the percussion channel may cause abrupt interruption of sound
      during playing, and sharp start of playing thought the next selected
      channel. This may cause unpleasant sound.
 
@@ -440,15 +437,11 @@ but has only one audio output channel and one MIDI input channel.
 
 Please, see README file how to build and install Geonkick.
 
-### Examples and tutorials
+### Tutorials
 
 Here is a list of videos that show how to synthesize various percussion with Geonkick:
 
 * YouTube: https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY
-
-Also, in the folder "geonkick/doc/examples" of the Geonkick code repository can be
-found a list of example presets that can be loaded into Geonkick and
-play with or modify.
 
 ### Documentation license
 

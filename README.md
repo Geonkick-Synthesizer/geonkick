@@ -8,7 +8,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.2.3
+Version: 2.3.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -38,9 +38,8 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
    - 16 midi keys range
    - user configurable key mapping
 * Multichannel
-   - for plugin up to 16 output audio channels
-   - for standalone 1 output channel
-   - user configurable mapping of kit percussions to channels
+   - 16 stereo output audio channels
+   - user configurable mapping of kit percussions to output channels
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
@@ -72,6 +71,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
      - FLAC: 16, 24 bit
      - Ogg
 * Open & Save presets in JSON format
+* Preset browser
 * Standalone
 * Pitch to note
 * Plugin
