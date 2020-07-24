@@ -43,7 +43,7 @@ Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) pe
 synthesizer, currently available only for GNU/Linux. It can synthesize elements of percussion.
 The most basic examples are: kicks, snares, hit-hats, shakers, claps. Geonkick is released
 under The GNU General Public License version 3. Developed in C and C++ and uses CMake
-build system. Can be used as standalone and LV2 plugin.
+build system. Can be used as standalone, LV2 and VST3 plugin.
 
 ### How it works
 
