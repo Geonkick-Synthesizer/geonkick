@@ -7,7 +7,7 @@
 
 #### Improvements:
 
-   -  added compiler optimisation flags and fast math
+   -  added compiler optimization flags and fast math
    -  process audio routines for LV2, VST and standalone was made more efficient,
        now DSP should take less CPU
 
@@ -15,8 +15,8 @@
 
    - fix loading other audio format subtypes for samples
    - reset to default shortcut
-   - FHS-friendly LV2 and VST3 plugin installation paths
-   - don't copy mute and solo settings when copy/paste pecussion
+   - FHS friendly LV2 and VST3 plugin installation paths
+   - don't copy mute and solo settings when copy/paste percussion
    - reverse sawtooth
 
 ### Changes from 2.2.2 to 2.2.3
