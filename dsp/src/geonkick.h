@@ -126,7 +126,11 @@ enum geonkick_channel_type {
 /**
 * Maximum audio number of output stereo channels.
 */
+#ifdef GEONKICK_AUDIO_JACK
+#define GEONKICK_MAX_CHANNELS 1
+#else
 #define GEONKICK_MAX_CHANNELS 16
+#endif // GEONKICK_AUDIO_JACK
 
 struct geonkick;
 

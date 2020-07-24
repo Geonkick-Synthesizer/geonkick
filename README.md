@@ -38,7 +38,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
    - 16 midi keys range
    - user configurable key mapping
 * Multichannel
-   - 16 stereo output audio channels
+   - 16 stereo output audio channels for plugin (1 stereo for standalone)
    - user configurable mapping of kit percussions to output channels
 * 3 layers
 * Layers Mixer

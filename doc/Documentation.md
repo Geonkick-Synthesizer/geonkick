@@ -371,11 +371,14 @@ selected percussion. The same is for export.
 
 #### Kit output channels
 
-There are maximum 16 output stereo channels to which the user can map the percussion.
+There are maximum 16 stereo audio output channels to which the user can map the percussion.
 When adding new percussion by default it will be mapped to channel 1.
 
+Note:
+    Standalone supports only 1 stereo channel.
+
 Issues:
-   - changing the percussion channel may cause abrupt interruption of sound
+     Chhanging the percussion channel may cause abrupt interruption of sound
      during playing, and sharp start of playing thought the next selected
      channel. This may cause unpleasant sound.
 
