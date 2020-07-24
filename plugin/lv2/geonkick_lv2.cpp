@@ -2,7 +2,7 @@
  * File name: geonkick_lv2.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
  *
  * This file is part of Geonkick.
  *
@@ -41,9 +41,9 @@
 #include <memory>
 #include <atomic>
 
-#define GEONKICK_URI "http://iuriepage.wordpress.com/geonkick"
-#define GEONKICK_URI_UI "http://iuriepage.wordpress.com/geonkick#ui"
-#define GEONKICK_URI_STATE "http://iuriepage.wordpress.com/geonkick#state"
+#define GEONKICK_URI "http://geontime.com/geonkick"
+#define GEONKICK_URI_UI "http://geontime.com/geonkick#ui"
+#define GEONKICK_URI_STATE "http://geontime.com/geonkick#state"
 #define GEONKICK_URI_STATE_CHANGED "http://lv2plug.in/ns/ext/state#StateChanged"
 
 class GeonkickLv2Plugin : public RkObject
