@@ -1,3 +1,9 @@
+### Version 2.3.1
+
+#### Fixes:
+
+   - add lv2:requiredFeature urid:map
+
 ### Changes from 2.2.3 to 2.3.0
 
 #### Features:

@@ -8,6 +8,7 @@
 @prefix state: <http://lv2plug.in/ns/ext/state#> .
 @prefix ui:    <http://lv2plug.in/ns/extensions/ui#> .
 @prefix pg: <http://lv2plug.in/ns/ext/port-groups#> .
+@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
 
 <http://geontime.com/geonkick#author>
 	a foaf:Person ;
@@ -26,6 +27,7 @@
     lv2:project <http://geontime.com/geonkick> ;
     lv2:extensionData state:interface ;
     lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:requiredFeature urid:map ;
     lv2:minorVersion 20 ;
     lv2:microVersion 0 ;
     doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
