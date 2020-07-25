@@ -1,3 +1,9 @@
+### Version 2.3.2
+
+#### Fixes:
+
+   - add cmake architecture variable for compiler optimisation flags
+
 ### Version 2.3.1
 
 #### Fixes:
