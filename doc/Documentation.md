@@ -74,7 +74,7 @@ Its maximum length can be 4 seconds. This sound is played by Geonkick
 when an associated MIDI key is pressed.
 
 Geonkick can handle up to 16 percussion in parallel, thus, making it a
-multitimbral synthesizer. There is always a current selected percussion
+multi-timbral synthesizer. There is always a current selected percussion
 that can be modified by the percussion UI. The user can select every
 percussion from the kit list UI and modify it.
 
@@ -97,7 +97,7 @@ linear decay of the sound.
 
 If there are changes in controls during the percussion play, changes will
 be played only at the next press of the key. The percussion graph instead
-will show the changes instanly.
+will show the changes instantly.
 
 #### Percussion UI
 
@@ -115,7 +115,7 @@ also can go to percussions kit UI.
    - "Reset" - reset the current percussion to default
    - Preset label - it shows the name of the current selected percussion,
      by default shows "Default".
-   - Play button - triggres Geonkick to play the current percussion
+   - Play button - triggers Geonkick to play the current percussion
    - "L1", "L2" and "L3" -  buttons to turn on/off the layer 1, 2, and 3.
    - "Tune" - checkbox will turn on/off tuning of the current percussion.
 
@@ -129,7 +129,7 @@ also can go to percussions kit UI.
 * Ctrl + e - open export dialog
 * Ctrl + a - open about dialog
 * Ctrl + c - copy current selected percussion
-* Ctrl + v - paste the copied percussion into the current selected pecussion
+* Ctrl + v - paste the copied percussion into the current selected percussion
 * Up/Down - to navigate into the kit list
 * Ctrl + Up/Down - to move up/down the position of the current selected percussion from the kit list
 
@@ -300,7 +300,7 @@ Note:
 
 #### Tune
 
-In the top bar the "Tune" checkbox tun on/off tunning for the current selected
+In the top bar the "Tune" checkbox tun on/off tuning for the current selected
 percussion. When enabled Geonkick will stop mapping percussion to a particular
 key and start to tune the sound relative (in number of semitones) to
 the un-tuned key A4.
@@ -322,7 +322,7 @@ Geonkick will export only the current selected percussion.
 
 ### Kit
 
-Geonkick is multitmbral by default. Every synthesized percussion Geonkick will put in
+Geonkick is multitimbral by default. Every synthesized percussion Geonkick will put in
 a list that makes a kit of up to 16 percussion. To access the kit UI the user needs to
 push the button "Kit" on the right side of main UI.
 
@@ -330,7 +330,7 @@ push the button "Kit" on the right side of main UI.
 
 When the user opens a new Geonkick instance it will just have single a default percussion
 in the kit UI list, and the key mapping for this percussion will be set to any key.
-The channel of the defalut percussion will be directed to 0 channel number.
+The channel of the default percussion will be directed to 0 channel number.
 
 #### Kit UI
 
@@ -354,7 +354,7 @@ kit list the current percussion will be emphasized too.
  - "green circle" - which percussion to which key is mapped and can be changed
    by "left click" on the grid cell.
  - slider for limiter of the current percussion
- - "M" button - mute the current pecussion
+ - "M" button - mute the current percussion
  - "S" - solo the current percussion
 
 #### Current percussion
@@ -378,7 +378,7 @@ Note:
     Standalone supports only 1 stereo channel.
 
 Issues:
-     Chhanging the percussion channel may cause abrupt interruption of sound
+     Changing the percussion channel may cause abrupt interruption of sound
      during playing, and sharp start of playing thought the next selected
      channel. This may cause unpleasant sound.
 
@@ -448,4 +448,4 @@ Here is a list of videos that show how to synthesize various percussion with Geo
 
 ### Documentation license
 
-Geonkick documentaiton is released under CC-BY 4.0 license.
+Geonkick documentation is released under CC-BY 4.0 license.
