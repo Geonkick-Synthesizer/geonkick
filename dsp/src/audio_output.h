@@ -41,9 +41,9 @@
 
 struct gkick_note_info {
         enum gkick_key_state state;
-        char channel;
-        char note_number;
-        char velocity;
+        signed char channel;
+        signed char note_number;
+        signed char velocity;
 };
 
 struct gkick_audio_output
@@ -132,10 +132,10 @@ void gkick_audio_output_unlock(struct gkick_audio_output *audio_output);
 void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output);
 
 enum geonkick_error
-gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, char key);
+gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, signed char key);
 
 enum geonkick_error
-gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, char *key);
+gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, signed char *key);
 
 void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune);
 

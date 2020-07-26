@@ -600,12 +600,12 @@ geonkick_percussion_number(struct geonkick *kick);
 enum geonkick_error
 geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
-                         char key);
+                         signed char key);
 
 enum geonkick_error
 geonkick_get_playing_key(struct geonkick *kick,
                          size_t id,
-                         char *key);
+                         signed char *key);
 
 enum geonkick_error
 geonkick_set_percussion_name(struct geonkick *kick,

@@ -1646,7 +1646,7 @@ size_t geonkick_percussion_number(struct geonkick *kick)
 enum geonkick_error
 geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
-                         char key)
+                         signed char key)
 {
         if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
                 gkick_log_error("wrong arguments");
@@ -1656,7 +1656,7 @@ geonkick_set_playing_key(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_get_playing_key(struct geonkick *kick, size_t id, char *key)
+geonkick_get_playing_key(struct geonkick *kick, size_t id, signed char *key)
 {
         if (kick == NULL || key == NULL
             || id >= GEONKICK_MAX_PERCUSSIONS) {

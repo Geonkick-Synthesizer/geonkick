@@ -1249,7 +1249,7 @@ bool GeonkickApi::setPercussionPlayingKey(int index, int key)
 
 int GeonkickApi::getPercussionPlayingKey(int index) const
 {
-        char key = -1;
+        signed char key = -1;
         geonkick_get_playing_key(geonkickApi,
                                  index,
                                  &key);

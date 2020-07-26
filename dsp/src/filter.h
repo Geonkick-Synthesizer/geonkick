@@ -43,7 +43,7 @@ struct gkick_filter {
         gkick_real queue_l[2];
         gkick_real queue_b[2];
         gkick_real queue_h[2];
-        char queue_empty;
+        bool queue_empty;
 
         /* Filter coefficients. */
         gkick_real coefficients[2];
