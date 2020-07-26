@@ -49,8 +49,8 @@ class PercussionState
         bool isSolo() const;
         std::string getName() const;
         void setName(const std::string &name);
-        char getPlayingKey() const;
-        void setPlayingKey(char key);
+        signed char getPlayingKey() const;
+        void setPlayingKey(signed char key);
         bool isEnabled() const;
         void enable(bool b);
         void setLimiterValue(double val);
@@ -196,7 +196,7 @@ private:
         int appVersion;
         size_t kickId;
         std::string kickName;
-        char playingKey;
+        signed char playingKey;
         size_t outputChannel;
         bool kickEnabled;
         bool percussionMuted;

@@ -141,12 +141,12 @@ void PercussionState::setName(const std::string &name)
         kickName = name;
 }
 
-char PercussionState::getPlayingKey() const
+signed char PercussionState::getPlayingKey() const
 {
         return playingKey;
 }
 
-void PercussionState::setPlayingKey(char key)
+void PercussionState::setPlayingKey(signed char key)
 {
         playingKey = key;
 }

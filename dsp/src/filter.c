@@ -37,7 +37,7 @@ gkick_filter_new(struct gkick_filter **filter)
                 return GEONKICK_ERROR_MEM_ALLOC;
         }
         (*filter)->type = GEONKICK_FILTER_LOW_PASS;
-        (*filter)->queue_empty = 1;
+        (*filter)->queue_empty = true;
 
         (*filter)->cutoff_env = gkick_envelope_create();
         if ((*filter)->cutoff_env == NULL) {
@@ -71,7 +71,7 @@ gkick_filter_init(struct gkick_filter *filter)
         }
 
         gkick_filter_lock(filter);
-        filter->queue_empty = 1;
+        filter->queue_empty = true;
         memset(filter->queue_l, 0, sizeof(filter->queue_l));
         memset(filter->queue_b, 0, sizeof(filter->queue_b));
         memset(filter->queue_h, 0, sizeof(filter->queue_h));
@@ -241,7 +241,7 @@ gkick_filter_val(struct gkick_filter *filter,
                 l[n - 1] = l[n] = 0;
                 b[n - 1] = b[n] = 0;
                 h[n - 1] = h[n] = 0;
-                filter->queue_empty = 0;
+                filter->queue_empty = false;
         } else {
                 h[n - 1] = h[n];
                 b[n - 1] = b[n];
