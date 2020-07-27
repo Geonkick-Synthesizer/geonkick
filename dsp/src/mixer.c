@@ -114,9 +114,12 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                                 gkick_audio_output_get_frame(output, &v);
                                 out[0][i] += v;
                                 out[1][i] += v;
+                                if (mixer->limiter_callback_index == per && i == size - 1)
+                                        gkick_mixer_set_leveler(mixer, v);
                         }
                 }
         }
+
         return GEONKICK_OK;
 }
 
