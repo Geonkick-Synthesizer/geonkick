@@ -31,6 +31,7 @@
 #include <RkTransition.h>
 #include <RkContainer.h>
 
+RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(logo);
 RK_DECLARE_IMAGE_RC(open);
 RK_DECLARE_IMAGE_RC(save);
@@ -41,6 +42,7 @@ RK_DECLARE_IMAGE_RC(reset_button_hover);
 RK_DECLARE_IMAGE_RC(reset_button_on);
 RK_DECLARE_IMAGE_RC(play);
 RK_DECLARE_IMAGE_RC(play_pressed);
+RK_DECLARE_IMAGE_RC(play_hover);
 RK_DECLARE_IMAGE_RC(topbar_layer1);
 RK_DECLARE_IMAGE_RC(topbar_layer2);
 RK_DECLARE_IMAGE_RC(topbar_layer3);
@@ -66,56 +68,71 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         auto mainLayout = new RkContainer(this);
         mainLayout->setSize(size());
 
-        // auto logo = new RkLabel(this);
-        // RkImage image(120, 20, RK_IMAGE_RC(logo));
-        // logo->setSize(image.width(), image.height());
-        // logo->setBackgroundColor(68, 68, 70);
-        // logo->setImage(image);
-        // logo->show();
-        // mainLayout->addWidget(logo);
-         mainLayout->addSpace(5);
+        auto logo = new RkLabel(this);
+        RkImage image(52, 10, RK_IMAGE_RC(logo));
+        logo->setSize(image.width(), image.height());
+        logo->setBackgroundColor(68, 68, 70);
+        logo->setImage(image);
+        logo->show();
+        mainLayout->addWidget(logo);
+        mainLayout->addSpace(20);
 
         openFileButton = new GeonkickButton(this);
         openFileButton->show();
-        openFileButton->setSize(43, 15);
+        openFileButton->setSize(38, 20);
         openFileButton->setUnpressedImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open)));
         openFileButton->setCheckable(true);
         RK_ACT_BIND(openFileButton, pressed, RK_ACT_ARGS(), this, openFile());
         mainLayout->addWidget(openFileButton);
 
+        auto separator = new RkLabel(this);
+        separator->setSize(2, 21);
+        separator->setBackgroundColor(68, 68, 70);
+        separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
+        separator->show();
+        mainLayout->addWidget(separator);
+
         saveFileButton = new GeonkickButton(this);
-        saveFileButton->setSize(43, 15);
+        saveFileButton->setSize(38, 20);
         saveFileButton->setUnpressedImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save)));
         saveFileButton->setCheckable(true);
         RK_ACT_BIND(saveFileButton, pressed, RK_ACT_ARGS(), this, saveFile());
         mainLayout->addWidget(saveFileButton);
 
+        separator = new RkLabel(this);
+        separator->setSize(2, 21);
+        separator->setBackgroundColor(68, 68, 70);
+        separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
+        separator->show();
+        mainLayout->addWidget(separator);
+        mainLayout->addSpace(3);
+
         exportFileButton = new GeonkickButton(this);
-        exportFileButton->setSize(43, 15);
+        exportFileButton->setSize(38, 20);
         exportFileButton->setUnpressedImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_active)));
         exportFileButton->setCheckable(true);
         RK_ACT_BIND(exportFileButton, pressed, RK_ACT_ARGS(), this, openExport());
         mainLayout->addWidget(exportFileButton);
 
-        auto resetButton = new RkButton(this);
-        resetButton->setSize(43, 15);
-        resetButton->setType(RkButton::ButtonType::ButtonPush);
-        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button)),
-                              RkButton::ButtonImage::ImageUnpressed);
-        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_hover)),
-                              RkButton::ButtonImage::ImageUnpressedHover);
-        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_on)),
-                              RkButton::ButtonImage::ImagePressed);
-        resetButton->show();
-        RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
-        mainLayout->addSpace(20);
-        mainLayout->addWidget(resetButton);
+        // auto resetButton = new RkButton(this);
+        // resetButton->setSize(43, 15);
+        // resetButton->setType(RkButton::ButtonType::ButtonPush);
+        // resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button)),
+        //                       RkButton::ButtonImage::ImageUnpressed);
+        // resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_hover)),
+        //                       RkButton::ButtonImage::ImageUnpressedHover);
+        // resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_on)),
+        //                       RkButton::ButtonImage::ImagePressed);
+        // resetButton->show();
+        // RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
+        // mainLayout->addSpace(20);
+        // mainLayout->addWidget(resetButton);
 
         presetNameLabel = new RkLabel(this);
         presetNameLabel->setBackgroundColor(background());
         presetNameLabel->setTextColor({210, 226, 226, 140});
         auto font = presetNameLabel->font();
-        font.setSize(12);
+        font.setSize(10);
         presetNameLabel->setFont(font);
         presetNameLabel->setSize(220, 30);
         presetNameLabel->show();
@@ -123,9 +140,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
 
 	auto playButton = new RkButton(this);
         playButton->setType(RkButton::ButtonType::ButtonPush);
-        playButton->setSize(37, 15);
+        playButton->setSize(43, 18);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play)),
                              RkButton::ButtonImage::ImageUnpressed);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_hover)),
+                             RkButton::ButtonImage::ImageUnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)),
                              RkButton::ButtonImage::ImagePressed);
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playKick());

@@ -69,14 +69,19 @@ knob_bk_50x50.png
 knob_bk_image_freq.png
 knob_bk_image.png
 knob.png
+
+# === Top menu ===
+
 logo.png
+separator.png
+open_active.png
+open.png
+
 noise_groupbox_label.png
 noise_type_brownian_active.png
 noise_type_brownian.png
 noise_type_white_active.png
 noise_type_white.png
-open_active.png
-open.png
 cancel.png
 osc1_radio_button.png
 osc1_radio_button_active.png
@@ -116,6 +121,7 @@ wave_button_sample.png
 wave_button_sample_active.png
 button_browse_sample.png
 play.png
+play_hover.png
 play_pressed.png
 phase_label.png
 topbar_layer1.png
