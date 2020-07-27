@@ -2,7 +2,7 @@
 
 #### Fixes:
 
-   - fix build on ARM architecture
+   - fix build on ARM architecture (by Andreas Müller)
    - fix showing limiter sound level
    - fix typos in documentation
    
