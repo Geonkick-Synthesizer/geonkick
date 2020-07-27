@@ -2,10 +2,10 @@
 
 #### Fixes:
 
-   - fix build on ARM architectue
+   - fix build on ARM architecture
    - fix showing limiter sound level
    - fix typos in documentation
-
+   
 ### Version 2.3.2
 
 #### Fixes:
