@@ -29,6 +29,7 @@
 
 class RkLabel;
 class GeonkickButton;
+class RkContainer;
 
 class TopBar : public GeonkickWidget
 {
@@ -46,10 +47,9 @@ class TopBar : public GeonkickWidget
                     RK_ARG_VAL(layer, b));
         void updateGui();
 
- protected:
-        void createLyersButtons();
-
  private:
+        void createLyersButtons(RkContainer *mainLayout);
+
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
         GeonkickButton *exportFileButton;
