@@ -49,6 +49,7 @@ class TopBar : public GeonkickWidget
 
  private:
         void createLyersButtons(RkContainer *mainLayout);
+        void addSepearator(RkContainer *mainLayout);
 
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;

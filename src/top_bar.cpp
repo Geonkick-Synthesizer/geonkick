@@ -43,14 +43,18 @@ RK_DECLARE_IMAGE_RC(reset_button_on);
 RK_DECLARE_IMAGE_RC(play);
 RK_DECLARE_IMAGE_RC(play_pressed);
 RK_DECLARE_IMAGE_RC(play_hover);
-RK_DECLARE_IMAGE_RC(topbar_layer1);
-RK_DECLARE_IMAGE_RC(topbar_layer2);
-RK_DECLARE_IMAGE_RC(topbar_layer3);
-RK_DECLARE_IMAGE_RC(topbar_layer1_disabled);
-RK_DECLARE_IMAGE_RC(topbar_layer2_disabled);
-RK_DECLARE_IMAGE_RC(topbar_layer3_disabled);
+RK_DECLARE_IMAGE_RC(layer1);
+RK_DECLARE_IMAGE_RC(layer2);
+RK_DECLARE_IMAGE_RC(layer3);
+RK_DECLARE_IMAGE_RC(layer1_disabled);
+RK_DECLARE_IMAGE_RC(layer2_disabled);
+RK_DECLARE_IMAGE_RC(layer3_disabled);
+RK_DECLARE_IMAGE_RC(layer1_hover);
+RK_DECLARE_IMAGE_RC(layer2_hover);
+RK_DECLARE_IMAGE_RC(layer3_hover);
 RK_DECLARE_IMAGE_RC(tune_checkbox_on);
 RK_DECLARE_IMAGE_RC(tune_checkbox_off);
+RK_DECLARE_IMAGE_RC(tune_checkbox_hover);
 
 TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent)
@@ -98,14 +102,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         saveFileButton->setCheckable(true);
         RK_ACT_BIND(saveFileButton, pressed, RK_ACT_ARGS(), this, saveFile());
         mainLayout->addWidget(saveFileButton);
-
-        separator = new RkLabel(this);
-        separator->setSize(2, 21);
-        separator->setBackgroundColor(68, 68, 70);
-        separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
-        separator->show();
-        mainLayout->addWidget(separator);
-        mainLayout->addSpace(3);
+        addSepearator(mainLayout);
 
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setSize(38, 20);
@@ -113,6 +110,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         exportFileButton->setCheckable(true);
         RK_ACT_BIND(exportFileButton, pressed, RK_ACT_ARGS(), this, openExport());
         mainLayout->addWidget(exportFileButton);
+        addSepearator(mainLayout);
 
         // auto resetButton = new RkButton(this);
         // resetButton->setSize(43, 15);
@@ -128,16 +126,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         // mainLayout->addSpace(20);
         // mainLayout->addWidget(resetButton);
 
-        presetNameLabel = new RkLabel(this);
-        presetNameLabel->setBackgroundColor(background());
-        presetNameLabel->setTextColor({210, 226, 226, 140});
-        auto font = presetNameLabel->font();
-        font.setSize(10);
-        presetNameLabel->setFont(font);
-        presetNameLabel->setSize(220, 30);
-        presetNameLabel->show();
-        mainLayout->addWidget(presetNameLabel);
-
 	auto playButton = new RkButton(this);
         playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(43, 18);
@@ -150,49 +138,99 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playKick());
 	playButton->show();
         mainLayout->addWidget(playButton);
-        mainLayout->addSpace(10);
+        addSepearator(mainLayout);
 
         createLyersButtons(mainLayout);
-        mainLayout->addSpace(25);
+        addSepearator(mainLayout);
 
         tuneCheckbox = new GeonkickButton(this);
         tuneCheckbox->setCheckable(true);
-        tuneCheckbox->setFixedSize(46, 11);
-        tuneCheckbox->setPressedImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_on)));
-        tuneCheckbox->setUnpressedImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_off)));
+        tuneCheckbox->setFixedSize(33, 18);
+        tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_off)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_on)),
+                               RkButton::ButtonImage::ImagePressed);
+        tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_hover)),
+                               RkButton::ButtonImage::ImagePressedHover);
+        tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
         tuneCheckbox->show();
         RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi,
 		    tuneAudioOutput(geonkickApi->currentPercussion(), b));
         mainLayout->addWidget(tuneCheckbox);
+        addSepearator(mainLayout);
+
+        presetNameLabel = new RkLabel(this);
+        presetNameLabel->setBackgroundColor(background());
+        presetNameLabel->setTextColor({210, 226, 226, 140});
+        auto font = presetNameLabel->font();
+        font.setSize(10);
+        presetNameLabel->setFont(font);
+        presetNameLabel->setSize(150, 30);
+        presetNameLabel->show();
+        mainLayout->addWidget(presetNameLabel);
 
         updateGui();
+}
+
+void TopBar::addSepearator(RkContainer *mainLayout)
+{
+        mainLayout->addSpace(5);
+        auto separator = new RkLabel(this);
+        separator->setSize(2, 21);
+        separator->setBackgroundColor(68, 68, 70);
+        separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
+        separator->show();
+        mainLayout->addWidget(separator);
+        mainLayout->addSpace(5);
 }
 
 void TopBar::createLyersButtons(RkContainer *mainLayout)
 {
         layer1Button = new GeonkickButton(this);
         layer1Button->setBackgroundColor(background());
-        layer1Button->setSize(24, 24);
-        layer1Button->setUnpressedImage(RkImage(layer1Button->size(), RK_IMAGE_RC(topbar_layer1_disabled)));
-        layer1Button->setPressedImage(RkImage(layer1Button->size(), RK_IMAGE_RC(topbar_layer1)));
+        layer1Button->setSize(24, 18);
+        layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_disabled)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1)),
+                               RkButton::ButtonImage::ImagePressed);
+        layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_hover)),
+                               RkButton::ButtonImage::ImagePressedHover);
+        layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+
         layer1Button->setCheckable(true);
         mainLayout->addWidget(layer1Button);
-        mainLayout->addSpace(5);
+        mainLayout->addSpace(2);
 
         layer2Button = new GeonkickButton(this);
         layer2Button->setBackgroundColor(background());
-        layer2Button->setSize(24, 24);
-	layer2Button->setUnpressedImage(RkImage(layer2Button->size(), RK_IMAGE_RC(topbar_layer2_disabled)));
-	layer2Button->setPressedImage(RkImage(layer2Button->size(), RK_IMAGE_RC(topbar_layer2)));
+        layer2Button->setSize(24, 18);
+        layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_disabled)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2)),
+                               RkButton::ButtonImage::ImagePressed);
+        layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_hover)),
+                               RkButton::ButtonImage::ImagePressedHover);
+        layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+
         layer2Button->setCheckable(true);
         mainLayout->addWidget(layer2Button);
-        mainLayout->addSpace(5);
+        mainLayout->addSpace(2);
 
         layer3Button = new GeonkickButton(this);
         layer3Button->setBackgroundColor(background());
-        layer3Button->setSize(24, 24);
-        layer3Button->setUnpressedImage(RkImage(layer3Button->size(), RK_IMAGE_RC(topbar_layer3_disabled)));
-        layer3Button->setPressedImage(RkImage(layer3Button->size(), RK_IMAGE_RC(topbar_layer3)));
+        layer3Button->setSize(24, 18);
+        layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_disabled)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3)),
+                               RkButton::ButtonImage::ImagePressed);
+        layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_hover)),
+                               RkButton::ButtonImage::ImagePressedHover);
+        layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+
         layer3Button->setCheckable(true);
         mainLayout->addWidget(layer3Button);
 
