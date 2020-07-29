@@ -55,6 +55,10 @@ public:
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
      void setLayer(GeonkickApi::Layer layer);
+     RkWidget* addSeparator(RkWidget *parent,
+                            RkContainer *layout,
+                            Rk::Alignment alignment = Rk::Alignment::AlignLeft,
+                            int maring = 10);
 
  private:
      void createButtomMenu();
@@ -62,9 +66,10 @@ public:
      EnvelopeWidgetDrawingArea *drawArea;
      GeonkickButton *showAmplitudeEnvButton;
      GeonkickButton *showFrequencyEnvButton;
+     RkWidget* frequencySeparator;
      GeonkickButton *showFilterEnvButton;
-     GeonkickButton *osccillator1EvelopesButton;
-     GeonkickButton *osccillator2EvelopesButton;
+     GeonkickButton *oscillator1EvelopesButton;
+     GeonkickButton *oscillator2EvelopesButton;
      GeonkickButton *noiseEvelopesButton;
      GeonkickButton *generalEvelopesButton;
      GeonkickButton *layer1Button;

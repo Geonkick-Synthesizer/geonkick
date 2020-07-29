@@ -113,12 +113,24 @@ fm_radio.png
 fm_radio_active.png
 save_active.png
 save.png
+
+# === Envelopes Menu ===
+
 show_ampl_env_active.png
 show_ampl_env.png
+show_ampl_env_hover.png
 show_freq_env_active.png
 show_freq_env.png
-show_filter_env.png
+show_freq_env_hover.png
 show_filter_env_active.png
+show_filter_env.png
+show_filter_env_hover.png
+layer1_env_active.png
+layer1_env.png
+layer2_env_active.png
+layer2_env.png
+layer3_env_active.png
+layer3_env.png
 show_general_envelopes_button_active.png
 show_general_envelopes_button.png
 show_noise_envelopes_button_active.png
@@ -127,6 +139,7 @@ show_osc1_envelopes_button_active.png
 show_osc1_envelopes_button.png
 show_osc2_envelopes_button_active.png
 show_osc2_envelopes_button.png
+
 scrollbar_button_up.png
 scrollbar_button_down.png
 wave_button_sawtooth_active.png
