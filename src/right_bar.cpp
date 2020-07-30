@@ -44,7 +44,7 @@ RightBar::RightBar(GeonkickWidget *parent)
         controlsButton->setSize(15, 119);
         controlsButton->setUnpressedImage(RkImage(15, 119, RK_IMAGE_RC(controls_button)));
         RK_ACT_BIND(controlsButton, toggled, RK_ACT_ARGS(bool b), this, showControls());
-        container->addSpace(405);
+        container->addSpace(393);
         container->addWidget(controlsButton);
 
         auto kitSettingsButton = new GeonkickButton(this);

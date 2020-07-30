@@ -30,6 +30,42 @@ tune_checkbox_on.png
 tune_checkbox_off.png
 tune_checkbox_hover.png
 
+# === Envelopes Menu ===
+
+show_ampl_env_active.png
+show_ampl_env.png
+show_ampl_env_hover.png
+show_freq_env_active.png
+show_freq_env.png
+show_freq_env_hover.png
+show_filter_env_active.png
+show_filter_env.png
+show_filter_env_hover.png
+layer1_env_active.png
+layer1_env.png
+layer2_env_active.png
+layer2_env.png
+layer3_env_active.png
+layer3_env.png
+show_general_envelopes_button_active.png
+show_general_envelopes_button.png
+show_noise_envelopes_button_active.png
+show_noise_envelopes_button.png
+show_osc1_envelopes_button_active.png
+show_osc1_envelopes_button.png
+show_osc2_envelopes_button_active.png
+show_osc2_envelopes_button.png
+
+# === Controls Area ===
+
+# === Oscillator ===
+
+controls_osc1_on.png
+controls_osc1_off.png
+controls_osc2_on.png
+controls_osc2_off.png
+controls_noise_on.png
+controls_noise_off.png
 
 checkbox_checked_10x10.png
 checkbox_checked.png
@@ -103,45 +139,11 @@ noise_type_brownian.png
 noise_type_white_active.png
 noise_type_white.png
 cancel.png
-osc1_radio_button.png
-osc1_radio_button_active.png
-osc2_radio_button.png
-osc2_radio_button_active.png
-noise_radio_button.png
-noise_radio_button_active.png
 fm_radio.png
 fm_radio_active.png
 save_active.png
 save.png
 
-# === Envelopes Menu ===
-
-show_ampl_env_active.png
-show_ampl_env.png
-show_ampl_env_hover.png
-show_freq_env_active.png
-show_freq_env.png
-show_freq_env_hover.png
-show_filter_env_active.png
-show_filter_env.png
-show_filter_env_hover.png
-layer1_env_active.png
-layer1_env.png
-layer2_env_active.png
-layer2_env.png
-layer3_env_active.png
-layer3_env.png
-show_general_envelopes_button_active.png
-show_general_envelopes_button.png
-show_noise_envelopes_button_active.png
-show_noise_envelopes_button.png
-show_osc1_envelopes_button_active.png
-show_osc1_envelopes_button.png
-show_osc2_envelopes_button_active.png
-show_osc2_envelopes_button.png
-
-scrollbar_button_up.png
-scrollbar_button_down.png
 wave_button_sawtooth_active.png
 wave_button_sawtooth.png
 wave_button_sine_active.png
@@ -184,4 +186,9 @@ prev_page_hover.png
 prev_page_on.png
 env_button.png
 env_button_hover.png
-env_button_on.png)
+env_button_on.png
+
+# === File Dialog ===
+
+scrollbar_button_up.png
+scrollbar_button_down.png)

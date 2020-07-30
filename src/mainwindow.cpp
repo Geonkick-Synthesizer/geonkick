@@ -54,7 +54,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
-        setFixedSize(950, 760);
+        setFixedSize(950, 745);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
 	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -71,7 +71,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
-        setFixedSize(950, 760);
+        setFixedSize(950, 745);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -167,7 +167,7 @@ bool MainWindow::init(void)
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
-        envelopeWidget->setFixedSize(850, 340);
+        envelopeWidget->setFixedSize(850, 335);
         envelopeWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
@@ -179,7 +179,7 @@ bool MainWindow::init(void)
 
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setEnvelopeWidget(envelopeWidget);
-        controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height() + 3);
+        controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
 

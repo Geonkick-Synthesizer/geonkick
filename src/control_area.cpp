@@ -39,7 +39,7 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , envelopeWidget{nullptr}
         , currentWidget{nullptr}
 {
-        setFixedSize(920, 368);
+        setFixedSize(920, 370);
         showControls();
 }
 
