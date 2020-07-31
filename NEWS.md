@@ -1,3 +1,9 @@
+### Version 2.4.0
+
+#### Fixes:
+
+   - updates int the UI design
+
 ### Version 2.3.3
 
 #### Fixes:
@@ -5,7 +11,7 @@
    - fix build on ARM architecture (by Andreas Müller)
    - fix showing limiter sound level
    - fix typos in documentation
-   
+
 ### Version 2.3.2
 
 #### Fixes:
