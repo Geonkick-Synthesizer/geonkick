@@ -36,7 +36,7 @@ RK_DECLARE_IMAGE_RC(export_bk);
 RK_DECLARE_IMAGE_RC(export_format_unpressed);
 RK_DECLARE_IMAGE_RC(export_format_pressed);
 RK_DECLARE_IMAGE_RC(export_browse);
-RK_DECLARE_IMAGE_RC(export_active);
+RK_DECLARE_IMAGE_RC(export_button);
 RK_DECLARE_IMAGE_RC(export_cancel);
 RK_DECLARE_IMAGE_RC(flac16_radio_button);
 RK_DECLARE_IMAGE_RC(flac16_radio_button_active);
@@ -133,7 +133,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         exportButton = new GeonkickButton(this);
         exportButton->setCheckable(true);
         exportButton->setPosition((width() - 2 * 90 - 45) / 2, height() - 50);
-        exportButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(export_active)));
+        exportButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(export_button)));
         RK_ACT_BIND(exportButton, toggled, RK_ACT_ARGS(bool b), this, exportKick());
 
         cancelButton = new GeonkickButton(this);

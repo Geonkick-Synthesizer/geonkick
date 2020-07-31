@@ -35,11 +35,10 @@ RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(logo);
 RK_DECLARE_IMAGE_RC(open);
 RK_DECLARE_IMAGE_RC(save);
-RK_DECLARE_IMAGE_RC(export_active);
-RK_DECLARE_IMAGE_RC(about);
-RK_DECLARE_IMAGE_RC(reset_button);
-RK_DECLARE_IMAGE_RC(reset_button_hover);
-RK_DECLARE_IMAGE_RC(reset_button_on);
+RK_DECLARE_IMAGE_RC(export);
+RK_DECLARE_IMAGE_RC(reset);
+RK_DECLARE_IMAGE_RC(reset_hover);
+RK_DECLARE_IMAGE_RC(reset_active);
 RK_DECLARE_IMAGE_RC(play);
 RK_DECLARE_IMAGE_RC(play_pressed);
 RK_DECLARE_IMAGE_RC(play_hover);
@@ -79,46 +78,32 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         logo->setImage(image);
         logo->show();
         mainLayout->addWidget(logo);
-        addSeparator(mainLayout);
+        addSeparator(mainLayout, 10);
 
         openFileButton = new GeonkickButton(this);
         openFileButton->show();
-        openFileButton->setSize(38, 20);
+        openFileButton->setSize(26, 10);
         openFileButton->setUnpressedImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open)));
         openFileButton->setCheckable(true);
         RK_ACT_BIND(openFileButton, pressed, RK_ACT_ARGS(), this, openFile());
         mainLayout->addWidget(openFileButton);
-        addSeparator(mainLayout);
+        addSeparator(mainLayout, 10);
 
         saveFileButton = new GeonkickButton(this);
-        saveFileButton->setSize(38, 20);
+        saveFileButton->setSize(23, 10);
         saveFileButton->setUnpressedImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save)));
         saveFileButton->setCheckable(true);
         RK_ACT_BIND(saveFileButton, pressed, RK_ACT_ARGS(), this, saveFile());
         mainLayout->addWidget(saveFileButton);
-        addSeparator(mainLayout);
+        addSeparator(mainLayout, 10);
 
         exportFileButton = new GeonkickButton(this);
-        exportFileButton->setSize(38, 20);
-        exportFileButton->setUnpressedImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_active)));
+        exportFileButton->setSize(29, 10);
+        exportFileButton->setUnpressedImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export)));
         exportFileButton->setCheckable(true);
         RK_ACT_BIND(exportFileButton, pressed, RK_ACT_ARGS(), this, openExport());
         mainLayout->addWidget(exportFileButton);
-        addSeparator(mainLayout);
-
-        // auto resetButton = new RkButton(this);
-        // resetButton->setSize(43, 15);
-        // resetButton->setType(RkButton::ButtonType::ButtonPush);
-        // resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button)),
-        //                       RkButton::ButtonImage::ImageUnpressed);
-        // resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_hover)),
-        //                       RkButton::ButtonImage::ImageUnpressedHover);
-        // resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_button_on)),
-        //                       RkButton::ButtonImage::ImagePressed);
-        // resetButton->show();
-        // RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
-        // mainLayout->addSpace(20);
-        // mainLayout->addWidget(resetButton);
+        addSeparator(mainLayout, 10);
 
 	auto playButton = new RkButton(this);
         playButton->setType(RkButton::ButtonType::ButtonPush);
@@ -132,10 +117,25 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playKick());
 	playButton->show();
         mainLayout->addWidget(playButton);
-        addSeparator(mainLayout);
+        addSeparator(mainLayout, 10);
 
         createLyersButtons(mainLayout);
-        addSeparator(mainLayout);
+        addSeparator(mainLayout, 10);
+
+        auto resetButton = new RkButton(this);
+        resetButton->setSize(33, 18);
+        resetButton->setType(RkButton::ButtonType::ButtonPush);
+        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset)),
+                              RkButton::ButtonImage::ImageUnpressed);
+        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_hover)),
+                              RkButton::ButtonImage::ImageUnpressedHover);
+        resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_active)),
+                              RkButton::ButtonImage::ImagePressed);
+        resetButton->show();
+        RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
+        mainLayout->addWidget(resetButton);
+
+        addSeparator(mainLayout, 10);
 
         tuneCheckbox = new GeonkickButton(this);
         tuneCheckbox->setCheckable(true);
@@ -152,7 +152,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi,
 		    tuneAudioOutput(geonkickApi->currentPercussion(), b));
         mainLayout->addWidget(tuneCheckbox);
-        addSeparator(mainLayout);
+        addSeparator(mainLayout, 10);
 
         presetNameLabel = new RkLabel(this);
         presetNameLabel->setBackgroundColor(background());
@@ -167,16 +167,16 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         updateGui();
 }
 
-void TopBar::addSeparator(RkContainer *mainLayout)
+void TopBar::addSeparator(RkContainer *mainLayout, int width)
 {
-        mainLayout->addSpace(5);
+        mainLayout->addSpace(width);
         auto separator = new RkLabel(this);
         separator->setSize(2, 21);
         separator->setBackgroundColor(68, 68, 70);
         separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
         separator->show();
         mainLayout->addWidget(separator);
-        mainLayout->addSpace(5);
+        mainLayout->addSpace(width);
 }
 
 void TopBar::createLyersButtons(RkContainer *mainLayout)

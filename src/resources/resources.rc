@@ -23,9 +23,9 @@ layer3_disabled.png
 layer1_hover.png
 layer2_hover.png
 layer3_hover.png
-reset_button.png
-reset_button_hover.png
-reset_button_on.png
+reset.png
+reset_hover.png
+reset_active.png
 tune_checkbox_on.png
 tune_checkbox_off.png
 tune_checkbox_hover.png
@@ -90,7 +90,7 @@ distortion_groupbox_label.png
 distortion_in_limiter.png
 distortion_volume_label.png
 effects_groupbox_label.png
-export_active.png
+export_button.png
 export_browse.png
 export_cancel.png
 export.png
