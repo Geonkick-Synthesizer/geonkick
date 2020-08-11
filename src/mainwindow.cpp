@@ -1,3 +1,4 @@
+
 /**
  * File name: mainwindow.cpp
  * Project: Geonkick (A kick synthesizer)
@@ -341,6 +342,15 @@ void MainWindow::keyReleaseEvent(RkKeyEvent *event)
             && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(false);
         }
+}
+
+void MainWindow::dropEvent(RkDropEvent *event)
+{
+        std::string file = event->getFilePath();
+        if (file.find(".gkit") != std::string::npos || file.find(".gkit") != std::string::npos)
+                kitModel->open(file);
+        else
+                openPreset(file);
 }
 
 void MainWindow::updateLimiter(KitModel::PercussionIndex index)
