@@ -274,81 +274,97 @@
 
 ls:Out1
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 1" ;
     lv2:name "Out 1" ;
     lv2:symbol "out1" .
 
 ls:Out2
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 2" ;
     lv2:name "Out 2" ;
     lv2:symbol "out2" .
 
 ls:Out3
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 3" ;
     lv2:name "Out 3" ;
     lv2:symbol "out3" .
 
 ls:Out4
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 4" ;
     lv2:name "Out 4" ;
     lv2:symbol "out4" .
 
 ls:Out5
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 5" ;
     lv2:name "Out 5" ;
     lv2:symbol "out5" .
 
 ls:Out6
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 6" ;
     lv2:name "Out 6" ;
     lv2:symbol "out6" .
 
 ls:Out7
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 7" ;
     lv2:name "Out 7" ;
     lv2:symbol "out7" .
 
 ls:Out8
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 8" ;
     lv2:name "Out 8" ;
     lv2:symbol "out8" .
 
 ls:Out9
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 9" ;
     lv2:name "Out 9" ;
     lv2:symbol "out9" .
 
 ls:Out10
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 10" ;
     lv2:name "Out 10" ;
     lv2:symbol "out10" .
 
 ls:Out11
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 11" ;
     lv2:name "Out 11" ;
     lv2:symbol "out11" .
 
 ls:Out12
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 12" ;
     lv2:name "Out 12" ;
     lv2:symbol "out12" .
 
 ls:Out13
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 13" ;
     lv2:name "Out 13" ;
     lv2:symbol "out13" .
 
 ls:Out14
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 14" ;
     lv2:name "Out 14" ;
     lv2:symbol "out14" .
 
 ls:Out15
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 15" ;
     lv2:name "Out 15" ;
     lv2:symbol "out15" .
 
 ls:Out16
     a pg:StereoGroup, pg:OutputGroup ;
+    rdfs:label "Out 16" ;
     lv2:name "Out 16" ;
     lv2:symbol "out16" .
 
