@@ -4,6 +4,12 @@
 
    - updates int the UI design
 
+### Version 2.3.4
+
+#### Fixes:
+
+   - fixes name label for output channels in LV2, fixes "Fanout" for channels (by Robin Gareus)
+
 ### Version 2.3.3
 
 #### Fixes:
