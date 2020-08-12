@@ -1,6 +1,6 @@
 ### Version 2.3.4
 
-### Fixes:
+#### Fixes:
 
    - fixes name label for output channels in LV2, fixes "Fanout" for channels (by Robin Gareus)
 
