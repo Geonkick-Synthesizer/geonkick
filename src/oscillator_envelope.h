@@ -34,6 +34,7 @@ class OscillatorEnvelope: public Envelope
 
   OscillatorEnvelope(Oscillator* osc, const RkRect &area);
   double envelopeLengh(void) const;
+  Oscillator* getOscillator() const;
 
  protected:
   void updatePoints() final;

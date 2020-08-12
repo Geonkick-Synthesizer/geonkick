@@ -62,6 +62,7 @@ class MainWindow : public GeonkickWidget
       void resetToDefault();
       void updateLimiter(KitModel::PercussionIndex index);
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+      void setSample(const std::string &file);
 
  private:
       void createShortcuts();

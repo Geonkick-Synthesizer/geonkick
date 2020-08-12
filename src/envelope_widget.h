@@ -48,6 +48,7 @@ public:
                  envelopeTypeSelected(Envelope::Type type),
                  RK_ARG_TYPE(Envelope::Type),
                  RK_ARG_VAL(type));
+     Oscillator* getCurrentOscillator() const;
 
  protected:
      void showEnvelope(Envelope::Category category);

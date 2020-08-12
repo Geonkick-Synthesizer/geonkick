@@ -346,11 +346,42 @@ void MainWindow::keyReleaseEvent(RkKeyEvent *event)
 
 void MainWindow::dropEvent(RkDropEvent *event)
 {
+        std::string fileExtention;
+        try {
+                std::filesystem::path path(event->getFilePath());
+                GEONKICK_LOG_INFO("path: " << path);
+                fileExtention = path.extension();
+        } catch (const std::exception& e) {
+                GEONKICK_LOG_ERROR("can't create path " << e.what());
+                return;
+        }
+
+        GEONKICK_LOG_INFO("fileExtention: " << fileExtention);
+
         std::string file = event->getFilePath();
-        if (file.find(".gkit") != std::string::npos || file.find(".gkit") != std::string::npos)
+        if (fileExtention == ".gkit" || fileExtention == ".GKIT") {
                 kitModel->open(file);
-        else
+        } else if  (fileExtention == ".gkick" || fileExtention == ".GKICK") {
                 openPreset(file);
+        } else if (fileExtention == ".wav"
+                 || fileExtention == ".WAV"
+                 || fileExtention == ".flac"
+                 || fileExtention == ".FLAC"
+                 || fileExtention == ".ogg"
+                 || fileExtention == ".OGG") {
+                setSample(file);
+        }
+}
+
+void MainWindow::setSample(const std::string &file)
+{
+        GEONKICK_LOG_INFO("set: " << file);
+        auto osc = envelopeWidget->getCurrentOscillator();
+        if (osc) {
+                geonkickApi->setOscillatorSample(file, osc->index());
+                osc->setFunction(Oscillator::FunctionType::Sample);
+                updateGui();
+        }
 }
 
 void MainWindow::updateLimiter(KitModel::PercussionIndex index)

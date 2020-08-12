@@ -72,3 +72,8 @@ double OscillatorEnvelope::envelopeAmplitude() const
                 return oscillator->filterFrequency();
         return 0;
 }
+
+Oscillator* OscillatorEnvelope::getOscillator() const
+{
+        return oscillator;
+}

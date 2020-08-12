@@ -385,3 +385,11 @@ void EnvelopeWidget::updateGui()
         }
         drawArea->update();
 }
+
+Oscillator* EnvelopeWidget::getCurrentOscillator() const
+{
+        auto envelope = drawArea->getEnvelope();
+        if (envelope)
+                return static_cast<OscillatorEnvelope*>(envelope)->getOscillator();
+        return nullptr;
+}

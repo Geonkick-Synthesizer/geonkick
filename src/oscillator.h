@@ -72,6 +72,7 @@ class Oscillator: public RkObject
                            double x,
                            double y);
   void setSample(const std::string &file);
+  int index() const;
   std::string samplesPath() const;
 
   RK_DECL_ACT(amplitudeUpdated,
@@ -88,7 +89,6 @@ class Oscillator: public RkObject
               RK_ARG_VAL(len));
 
  protected:
-          int index() const;
           int envelopeIndex(EnvelopeType type) const;
  private:
 	  GeonkickApi *geonkickApi;
