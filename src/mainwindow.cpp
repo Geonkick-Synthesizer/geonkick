@@ -349,14 +349,11 @@ void MainWindow::dropEvent(RkDropEvent *event)
         std::string fileExtention;
         try {
                 std::filesystem::path path(event->getFilePath());
-                GEONKICK_LOG_INFO("path: " << path);
                 fileExtention = path.extension();
         } catch (const std::exception& e) {
                 GEONKICK_LOG_ERROR("can't create path " << e.what());
                 return;
         }
-
-        GEONKICK_LOG_INFO("fileExtention: " << fileExtention);
 
         std::string file = event->getFilePath();
         if (fileExtention == ".gkit" || fileExtention == ".GKIT") {
@@ -375,11 +372,11 @@ void MainWindow::dropEvent(RkDropEvent *event)
 
 void MainWindow::setSample(const std::string &file)
 {
-        GEONKICK_LOG_INFO("set: " << file);
         auto osc = envelopeWidget->getCurrentOscillator();
         if (osc) {
-                geonkickApi->setOscillatorSample(file, osc->index());
                 osc->setFunction(Oscillator::FunctionType::Sample);
+                geonkickApi->setOscillatorSample(file, osc->index());
+                geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
                 updateGui();
         }
 }
