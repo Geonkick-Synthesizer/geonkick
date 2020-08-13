@@ -4,6 +4,10 @@
 
    - fixes delays in the process loop and improve the process loop
 
+#### Other
+
+   - remove experimental file system support
+
 ### Version 2.3.4
 
 #### Fixes:
