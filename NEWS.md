@@ -1,3 +1,9 @@
+### Version 2.3.5
+
+#### Fixes:
+
+   - fixes delays in the process loop and improve the process loop
+
 ### Version 2.3.4
 
 #### Fixes:

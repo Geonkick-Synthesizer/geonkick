@@ -65,6 +65,7 @@ GKickVstProcessor::initialize(FUnknown* context)
                 addAudioOutput(str16.c_str(), Vst::SpeakerArr::kStereo);
         }
         addEventInput(STR16("MIDI in"), 1);
+        channelsBuffers = std::vector<float*>(2 * nChannels, nullptr);
         return kResultTrue;
 }
 
@@ -95,52 +96,56 @@ GKickVstProcessor::setActive(TBool state)
 tresult PLUGIN_API
 GKickVstProcessor::process(Vst::ProcessData& data)
 {
-        if (data.numSamples > 0) {
-                /**
-                 * For percussive purpose this will work. More events that occur for the same key
-                 * in the buffer timespan will be ignored. The las one will ne taken.
-                 * Multiple key press will work too. The limitation is that
-                 * the frequency of pressing key sould not exeed the smaplerate / nsmaples Hz.
-                 * For example, for a buffer of lengh 2048 and sample rate of 48000 the maximum frequency
-                 * will be ~32 Hz which high beyound practical use of percussion.
-                 */
-                auto events = data.inputEvents;
-                auto nEvents = events->getEventCount();
-                auto eventIndex = 0;
-                Vst::Event event;
-                auto res = events->getEvent(eventIndex, event);
-                while (res == kResultOk && eventIndex < nEvents) {
-                                switch (event.type) {
-                                case Vst::Event::kNoteOnEvent:
-                                        geonkickApi->setKeyPressed(true,
-                                                                   event.noteOn.pitch,
-                                                                   127 * event.noteOn.velocity);
-                                        break;
+        if (data.numSamples < 1)
+                return kResultOk;
 
-                                case Vst::Event::kNoteOffEvent:
-                                        geonkickApi->setKeyPressed(false,
-                                                                   event.noteOff.pitch,
-                                                                   127 * event.noteOff.velocity);
-                                        break;
-                                default:
-                                        break;
-                                }
+        size_t nChannels = std::min(geonkickApi->numberOfChannels(),
+                                    static_cast<decltype(nChannels)>(data.numOutputs));
+        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
+                channelsBuffers.data()[2 * ch]     = data.outputs[ch].channelBuffers32[0];
+                channelsBuffers.data()[2 * ch + 1] = data.outputs[ch].channelBuffers32[1];
+        }
 
-                                eventIndex++;
-                                if (eventIndex < nEvents)
-                                        res = events->getEvent(eventIndex, event);
+        auto events = data.inputEvents;
+        auto nEvents = events->getEventCount();
+        auto eventIndex = 0;
+        Vst::Event event;
+        auto res = events->getEvent(eventIndex, event);
+        size_t offset = 0;
+        size_t currentFrame = 0;
+        while (res == kResultOk && eventIndex < nEvents) {
+                size_t eventFrame = event.sampleOffset;
+                size_t size = eventFrame - currentFrame;
+
+                if (size > 0) {
+                        geonkickApi->process(channelsBuffers.data(), offset, size);
+                        offset += size;
                 }
 
-                size_t nChannels = std::min(geonkickApi->numberOfChannels(),
-                                            static_cast<decltype(nChannels)>(data.numOutputs));
-                for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
-                        if (data.outputs[ch].channelBuffers32[0] && data.outputs[ch].channelBuffers32[1]) {
-                                float *buff[2] = {data.outputs[ch].channelBuffers32[0],
-                                                 data.outputs[ch].channelBuffers32[1]};
-                                geonkickApi->process(buff, ch, data.numSamples);
-                        }
+                switch (event.type) {
+                case Vst::Event::kNoteOnEvent:
+                        geonkickApi->setKeyPressed(true,
+                                                   event.noteOn.pitch,
+                                                   127 * event.noteOn.velocity);
+                        break;
+
+                case Vst::Event::kNoteOffEvent:
+                        geonkickApi->setKeyPressed(false,
+                                                   event.noteOff.pitch,
+                                                   127 * event.noteOff.velocity);
+                        break;
+                default:
+                        break;
                 }
-	}
+
+                currentFrame = eventFrame;
+                eventIndex++;
+                if (eventIndex < nEvents)
+                        res = events->getEvent(eventIndex, event);
+        }
+
+        if (currentFrame < data.numSamples)
+                geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
 
         return kResultOk;
 }

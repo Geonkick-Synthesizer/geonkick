@@ -51,6 +51,7 @@ class GKickVstProcessor : public Vst::SingleComponentEffect {
 
   protected:
         std::unique_ptr<GeonkickApi> geonkickApi;
+        std::vector<float*> channelsBuffers;
 };
 
 #endif // GEONKICK_PLUGIN_VST_PROCESSOR_H
