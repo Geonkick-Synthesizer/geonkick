@@ -164,7 +164,7 @@ class GeonkickLv2Plugin : public RkObject
                 return (((*(buffer) & 0xf0)) == 0x90) || (((*(buffer) & 0xf0)) == 0x80);
         }
 
-        void processSamples(int nsamples)
+        void processSamples(size_t nsamples)
         {
                 if (!midiIn || nsamples < 1)
                         return;

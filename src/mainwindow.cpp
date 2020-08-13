@@ -36,15 +36,7 @@
 #include "about.h"
 #include "right_bar.h"
 
-#include <RkPlatform.h>
-#include <X11/keysym.h>
-#include <X11/keysymdef.h>
-#include <X11/XKBlib.h>
 #include <RkEvent.h>
-
-#ifdef GEONKICK_FILE_SYSTEM_EXPERIMENTAL
-#warning GCC version is < 8.0, experimental::filesystem will be used
-#endif
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
