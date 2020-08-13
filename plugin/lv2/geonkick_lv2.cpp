@@ -2,7 +2,7 @@
  * File name: geonkick_lv2.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2018 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -169,16 +169,18 @@ class GeonkickLv2Plugin : public RkObject
                 if (!midiIn || nsamples < 1)
                         return;
 
-                /**
-                 * For percussive purpose this will work. More events that occur for the same key
-                 * in the buffer timespan will be ignored. The las one will ne taken.
-                 * Multiple key press will work too. The limitation is that
-                 * the frequency of pressing key sould not exeed the smaplerate / nsmaples Hz.
-                 * For example, for a buffer of lengh 2048 and sample rate of 48000 the maximum frequency
-                 * will be ~32 Hz which high beyound practical use of percussion.
-                 */
+                size_t currentFrame = 0;
+                size_t offset = 0;
                 auto it = lv2_atom_sequence_begin(&midiIn->body);
                 while (!lv2_atom_sequence_is_end(&midiIn->body, midiIn->atom.size, it)) {
+                        size_t eventFrame = it->time.frames;
+                        size_t size = eventFrame - currentFrame;
+
+                        if (size > 0) {
+                                geonkickApi->process(outputChannels.data(), offset, size);
+                                offset += size;
+                        }
+
                         const uint8_t* const msg = (const uint8_t*)(it + 1);
                         switch (lv2_midi_message_type(msg))
                         {
@@ -191,10 +193,13 @@ class GeonkickLv2Plugin : public RkObject
                                 default:
                                         break;
                         }
+                        currentFrame = eventFrame;
                         it = lv2_atom_sequence_next(it);
                 }
 
-                geonkickApi->process(outputChannels, nsamples);
+                if (currentFrame < nsamples)
+                        geonkickApi->process(outputChannels.data(), offset, nsamples - currentFrame);
+
                 if (isKickUpdated()) {
                         notifyHost();
                         setKickUpdated(false);

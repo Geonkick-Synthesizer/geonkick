@@ -161,7 +161,6 @@ class GeonkickApi : public RkObject {
   void setKeyPressed(bool b, int note, int velocity);
 
   // This function is called only from the audio thread.
-  void process(std::vector<float*> &out, size_t size);
   void process(float** out, size_t channel, size_t size);
 
   std::shared_ptr<PercussionState> getPercussionState(size_t id) const;

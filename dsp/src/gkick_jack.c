@@ -42,15 +42,19 @@ gkick_jack_process_callback(jack_nframes_t nframes,
         if (events_count > 0)
                 jack_midi_event_get(&event, port_buf, event_index);
 
-        /**
-         * For percussive purpose this will work. More events that occur for the same key
-         * in the buffer timespan will be ignored. The las one will ne taken.
-         * Multiple key press will work too. The limitation is that
-         * the frequency of pressing key sould not exeed the smaplerate / nsmaples Hz.
-         * For example, for a buffer of lengh 2048 and sample rate of 48000 the maximum frequency
-         * will be ~32 Hz which high beyound practical use of percussion.
-         */
+        for (size_t i = 0; i < 2 * GEONKICK_MAX_CHANNELS; i++)
+                memset(buffer[i], 0, nframes * sizeof(float));
+
+        size_t currentFrame = 0;
+        size_t offset = 0;
         while (event_index < events_count) {
+                size_t eventFrame = event.time;
+                size_t size = eventFrame - currentFrame;
+                if (size > 0) {
+                        gkick_mixer_process(jack->mixer, buffer, offset, size);
+                        offset += size;
+                }
+
                 struct gkick_note_info note;
                 memset(&note, 0, sizeof(struct gkick_note_info));
                 gkick_jack_get_note_info(&event, &note);
@@ -58,21 +62,13 @@ gkick_jack_process_callback(jack_nframes_t nframes,
                     || note.state == GKICK_KEY_STATE_RELEASED) {
                         gkick_mixer_key_pressed(jack->mixer, &note);
                 }
-                event_index++;
-                if (event_index < events_count)
+                currentFrame = eventFrame;
+                if (++event_index < events_count)
                         jack_midi_event_get(&event, port_buf, event_index);
         }
 
-        const size_t size = nframes * sizeof(float);
-        for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
-                jack_default_audio_sample_t *buff[2];
-                buff[0] = buffer[2 * i];
-                buff[1] = buffer[2 * i + 1];
-                memset(buff[0], 0, size);
-                memset(buff[1], 0, size);
-                if (buff[0] != NULL && buff[1] != NULL)
-                        gkick_mixer_process(jack->mixer, buffer, i, nframes);
-        }
+        if (currentFrame < nframes)
+                gkick_mixer_process(jack->mixer, buffer, offset, nframes - currentFrame);
 
         return 0;
 }

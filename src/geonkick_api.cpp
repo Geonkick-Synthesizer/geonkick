@@ -923,19 +923,9 @@ gkick_real GeonkickApi::getAudioFrame(int channel) const
         return val;
 }
 
-void GeonkickApi::process(std::vector<float*> &out, size_t size)
+void GeonkickApi::process(float** out, size_t offset, size_t size)
 {
-        auto nChannels = numberOfChannels();
-        for (size_t ch = 0; ch < nChannels; ch++) {
-                float *buff[2] = {out[2 * ch], out[2 * ch + 1]};
-                geonkick_audio_process(geonkickApi, buff, ch, size);
-        }
-}
-
-void GeonkickApi::process(float** out, size_t channel, size_t size)
-{
-        if (channel < numberOfChannels())
-                geonkick_audio_process(geonkickApi, out, channel, size);
+        geonkick_audio_process(geonkickApi, out, offset, size);
 }
 
 void GeonkickApi::enableCompressor(bool enable)
