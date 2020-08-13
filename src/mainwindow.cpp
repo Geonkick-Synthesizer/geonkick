@@ -35,10 +35,6 @@
 #include "about.h"
 #include "right_bar.h"
 
-#include <RkPlatform.h>
-#include <X11/keysym.h>
-#include <X11/keysymdef.h>
-#include <X11/XKBlib.h>
 #include <RkEvent.h>
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
