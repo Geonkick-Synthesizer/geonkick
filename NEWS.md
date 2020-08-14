@@ -1,3 +1,14 @@
+### Version 2.3.6
+
+#### Fixes:
+
+   - fix updating kit UI when selecting a preset from host
+   - fix some compile warnings in the vst plugin
+
+#### Other
+
+   - remove old presets
+
 ### Version 2.3.5
 
 #### Fixes:
