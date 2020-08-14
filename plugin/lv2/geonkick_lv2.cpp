@@ -147,6 +147,7 @@ class GeonkickLv2Plugin : public RkObject
                 RK_UNUSED(flags);
                 geonkickApi->setKitState(data);
                 geonkickApi->notifyUpdateGui();
+                geonkickApi->notifyKitUpdated();
         }
 
         std::string getStateData()

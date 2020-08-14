@@ -144,7 +144,7 @@ GKickVstProcessor::process(Vst::ProcessData& data)
                         res = events->getEvent(eventIndex, event);
         }
 
-        if (currentFrame < data.numSamples)
+        if (static_cast<decltype(data.numSamples)>(currentFrame) < data.numSamples)
                 geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
 
         return kResultOk;
@@ -190,6 +190,7 @@ GKickVstProcessor::setState(IBStream* state)
         }
         geonkickApi->setKitState(data);
         geonkickApi->notifyUpdateGui();
+        geonkickApi->notifyKitUpdated();
         return kResultOk;
 }
 
