@@ -190,6 +190,7 @@ GKickVstProcessor::setState(IBStream* state)
         }
         geonkickApi->setKitState(data);
         geonkickApi->notifyUpdateGui();
+        geonkickApi->notifyKitUpdated();
         return kResultOk;
 }
 
