@@ -29,6 +29,18 @@ reset_active.png
 tune_checkbox_on.png
 tune_checkbox_off.png
 tune_checkbox_hover.png
+topmenu_controls_active.png
+topmenu_controls_hover.png
+topmenu_controls_off.png
+topmenu_kit_active.png
+topmenu_kit_hover.png
+topmenu_kit_off.png
+topmenu_presets_active.png
+topmenu_presets_hover.png
+topmenu_presets_off.png
+topmenu_samples_active.png
+topmenu_samples_hover.png
+topmenu_samples_off.png
 
 # === Envelopes Menu ===
 

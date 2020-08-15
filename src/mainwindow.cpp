@@ -35,6 +35,7 @@
 #include "percussion_state.h"
 #include "about.h"
 #include "right_bar.h"
+#include "ViewState.h"
 
 #include <RkEvent.h>
 
@@ -47,6 +48,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
+        auto viewState = new ViewState(this, geonkickApi->getViewState());
+        viewState->setName("ViewState");
         setFixedSize(950, 745);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
@@ -64,6 +67,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
+        auto viewState = new ViewState(this, geonkickApi->getViewState());
+        viewState->setName("ViewState");
         setFixedSize(950, 745);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);

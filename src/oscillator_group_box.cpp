@@ -436,7 +436,7 @@ void OscillatorGroupBox::updateGui()
 
 void OscillatorGroupBox::browseSample()
 {
-        auto fileDialog = new FileDialog(this, FileDialog::Type::Open, "Select sample");
+        auto fileDialog = new FileDialog(static_cast<GeonkickWidget*>(getTopWidget()), FileDialog::Type::Open, "Select sample");
         fileDialog->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
         fileDialog->setCurrentDirectoy(oscillator->samplesPath());
         RK_ACT_BIND(fileDialog, selectedFile,

@@ -54,6 +54,18 @@ RK_DECLARE_IMAGE_RC(layer3_hover);
 RK_DECLARE_IMAGE_RC(tune_checkbox_on);
 RK_DECLARE_IMAGE_RC(tune_checkbox_off);
 RK_DECLARE_IMAGE_RC(tune_checkbox_hover);
+RK_DECLARE_IMAGE_RC(topmenu_controls_active);
+RK_DECLARE_IMAGE_RC(topmenu_controls_hover);
+RK_DECLARE_IMAGE_RC(topmenu_controls_off);
+RK_DECLARE_IMAGE_RC(topmenu_kit_active);
+RK_DECLARE_IMAGE_RC(topmenu_kit_hover);
+RK_DECLARE_IMAGE_RC(topmenu_kit_off);
+RK_DECLARE_IMAGE_RC(topmenu_presets_active);
+RK_DECLARE_IMAGE_RC(topmenu_presets_hover);
+RK_DECLARE_IMAGE_RC(topmenu_presets_off);
+RK_DECLARE_IMAGE_RC(topmenu_samples_active);
+RK_DECLARE_IMAGE_RC(topmenu_samples_hover);
+RK_DECLARE_IMAGE_RC(topmenu_samples_off);
 
 TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickWidget(parent)
@@ -65,7 +77,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         , layer2Button{nullptr}
         , layer3Button{nullptr}
         , geonkickApi{api}
-        , tuneCheckbox{nullptr}
+        , viewState{static_cast<ViewState*>(findObject("ViewState"))}
+        , controlsButton{nullptr}
+        , kitButton{nullptr}
+        , presetsButton{nullptr}
+        , samplesButton{nullptr}
 {
         setFixedSize({parent->width(), 30});
         auto mainLayout = new RkContainer(this);
@@ -164,6 +180,77 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         presetNameLabel->show();
         mainLayout->addWidget(presetNameLabel);
 
+        // Controls button
+        addSeparator(mainLayout);
+        controlsButton = new GeonkickButton(this);
+        controlsButton->setPressed(viewState->state() == ViewState::Type::Controls);
+        controlsButton->setFixedSize(54, 20);
+        controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_off)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_active)),
+                               RkButton::ButtonImage::ImagePressed);
+        controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+        controlsButton->show();
+        mainLayout->addWidget(controlsButton);
+        RK_ACT_BIND(controlsButton, pressed, RK_ACT_ARGS(),
+                    viewState, setState(ViewState::Type::Controls));
+        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
+                    controlsButton, setPressed(state == ViewState::Type::Controls));
+
+        // Kit button
+        addSeparator(mainLayout);
+        kitButton = new GeonkickButton(this);
+        kitButton->setPressed(viewState->state() == ViewState::Type::Kit);
+        kitButton->setFixedSize(54, 20);
+        kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_off)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_active)),
+                               RkButton::ButtonImage::ImagePressed);
+        kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+        kitButton->show();
+        RK_ACT_BIND(kitButton, pressed, RK_ACT_ARGS(),
+                    viewState, setState(ViewState::Type::Kit));
+        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
+                    kitButton, setPressed(state == ViewState::Type::Kit));
+        mainLayout->addWidget(kitButton);
+
+        // Presets button
+        addSeparator(mainLayout);
+        presetsButton = new GeonkickButton(this);
+        presetsButton->setPressed(viewState->state() == ViewState::Type::Presets);
+        presetsButton->setFixedSize(54, 20);
+        presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_active)),
+                               RkButton::ButtonImage::ImagePressed);
+        presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+        presetsButton->show();
+        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(),
+                    viewState, setState(ViewState::Type::Presets));
+        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
+                    presetsButton, setPressed(state == ViewState::Type::Presets));
+        mainLayout->addWidget(presetsButton);
+
+        // Samples button
+        addSeparator(mainLayout);
+        samplesButton = new GeonkickButton(this);
+        samplesButton->setPressed(viewState->state() == ViewState::Type::Samples);
+        samplesButton->setFixedSize(54, 20);
+        samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_off)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_active)),
+                               RkButton::ButtonImage::ImagePressed);
+        samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+        samplesButton->show();
+        RK_ACT_BIND(samplesButton, pressed, RK_ACT_ARGS(),
+                    viewState, setState(ViewState::Type::Samples));
+        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
+                    samplesButton, setPressed(state == ViewState::Type::Samples));
+        mainLayout->addWidget(samplesButton);
         updateGui();
 }
 

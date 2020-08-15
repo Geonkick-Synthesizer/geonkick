@@ -25,6 +25,7 @@
 #define GEONKICK_API_H
 
 #include "globals.h"
+#include "ViewState.h"
 
 #include <RkRealPoint.h>
 
@@ -298,6 +299,8 @@ class GeonkickApi : public RkObject {
   bool moveOrdrepedPercussionId(int index, int n);
   PresetFolder* getPresetFolder(size_t index) const;
   size_t numberOfPresetFolders() const;
+  void setViewState(ViewState::Type state);
+  ViewState::Type getViewState() const;
 
 protected:
   void setupDataPaths();
@@ -345,6 +348,7 @@ private:
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
   std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
+  ViewState::Type viewState;
 };
 
 #endif // GEONKICK_API_H

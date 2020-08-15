@@ -45,6 +45,7 @@ GeonkickApi::GeonkickApi()
         , kitName{"Unknown"}
         , kitAuthor{"Author"}
         , clipboardPercussion{nullptr}
+        , viewState{ViewState::Type::Controls}
 {
         setupDataPaths();
 }
@@ -1688,4 +1689,14 @@ PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
 size_t GeonkickApi::numberOfPresetFolders() const
 {
         return presetsFoldersList.size();
+}
+
+void GeonkickApi::setViewState(ViewState::Type state)
+{
+        viewState = state;
+}
+
+ViewState::Type GeonkickApi::getViewState() const
+{
+        return viewState;
 }

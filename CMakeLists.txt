@@ -82,6 +82,7 @@ set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
   ${GKICK_UTILS_DIR}/base64.h
+  ${GKICK_COMMON_DIR}/ViewState.h
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
   ${GKICK_COMMON_DIR}/file_dialog.h
@@ -123,6 +124,7 @@ set(GKICK_COMMON_HEADERS
 
 set(GKICK_COMMON_SOURCES
   ${GKICK_UTILS_DIR}/base64.cpp
+  ${GKICK_COMMON_DIR}/ViewState.cpp
   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
