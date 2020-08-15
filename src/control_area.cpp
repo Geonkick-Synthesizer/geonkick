@@ -40,7 +40,29 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , currentWidget{nullptr}
 {
         setFixedSize(920, 370);
-        showControls();
+        auto viewState = static_cast<ViewState*>(findObject("ViewState"));
+        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state), this, showWidget(state));
+        showWidget(viewState->state());
+}
+
+void ControlArea::showWidget(ViewState::Type state)
+{
+        switch (state) {
+        case ViewState::Type::Controls:
+                showControls();
+                break;
+        case ViewState::Type::Kit:
+                showKit();
+                break;
+        case ViewState::Type::Presets:
+                showPresets();
+                break;
+        case ViewState::Type::Samples:
+                //                showSamplesWidget();
+                break;
+        default:
+                showControls();
+        }
 }
 
 void ControlArea::showControls()

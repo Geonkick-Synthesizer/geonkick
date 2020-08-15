@@ -50,6 +50,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
 {
         auto viewState = new ViewState(this, geonkickApi->getViewState());
         viewState->setName("ViewState");
+        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
+                    geonkickApi, setViewState(state));
         setFixedSize(950, 745);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
@@ -69,6 +71,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
 {
         auto viewState = new ViewState(this, geonkickApi->getViewState());
         viewState->setName("ViewState");
+        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
+                    geonkickApi, setViewState(state));
         setFixedSize(950, 745);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);

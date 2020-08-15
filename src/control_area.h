@@ -26,6 +26,7 @@
 
 #include "envelope.h"
 #include "geonkick_widget.h"
+#include "ViewState.h"
 
 class Oscillator;
 class GeonkickApi;
@@ -49,6 +50,9 @@ class ControlArea: public GeonkickWidget
         void showPresets();
         KitModel* getKitModel() const;
         void setEnvelopeWidget(EnvelopeWidget *widget);
+
+ private:
+        void showWidget(ViewState::Type state);
 
  private:
         GeonkickApi* geonkickApi;

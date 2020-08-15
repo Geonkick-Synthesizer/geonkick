@@ -35,7 +35,7 @@
 #include <sndfile.h>
 
 GeonkickApi::GeonkickApi()
-        :geonkickApi{nullptr}
+        : geonkickApi{nullptr}
         , updateLimiterLeveler{false}
         , limiterLevelerVal{0}
         , jackEnabled{false}
