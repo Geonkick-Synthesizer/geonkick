@@ -1,6 +1,6 @@
 /**
- * File name: ViewState.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: file_dialog.h
+ * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
@@ -21,32 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONGKICK_VIEW_STATE_H
-#define GEONGKICK_VIEW_STATE_H
+#ifndef GEONKICK_SAMPLE_BROWSER_H
+#define GEONKICK_SAMPLE_BROWSER_H
 
-#include "globals.h"
+#include "geonkick_widget.h"
 
-#include <RkObject.h>
+class FileDialog;
 
-class ViewState: public RkObject {
+class SampleBrowser: public GeonkickWidget {
  public:
-        enum class Type : int {
-                Controls = 0,
-                Kit      = 1,
-                Presets  = 2,
-                Samples  = 3
-        };
-
-        ViewState(RkObject *parent, ViewState::Type state = ViewState::Type::Controls);
-        RK_DECL_ACT(stateChanged,
-                    stateChanged(ViewState::Type state),
-                    RK_ARG_TYPE(ViewState::Type),
-                    RK_ARG_VAL(state));
-        ViewState::Type state() const;
-        void setState(ViewState::Type state);
-
+        SampleBrowser(GeonkickWidget *parent);
  private:
-        Type viewState;
+        FileDialog *fileBrowser;
 };
 
-#endif // GEONGKICK_VIEW_STATE_H
+#endif // GEONKICK_SAMPLE_BROWSER_H

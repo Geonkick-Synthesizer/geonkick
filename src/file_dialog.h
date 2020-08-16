@@ -91,8 +91,9 @@ class FileDialog: public GeonkickWidget {
                 Accept
         };
 
-        explicit FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title);
-        ~FileDialog() = default;
+        explicit FileDialog(GeonkickWidget *parent,
+                            FileDialog::Type type = FileDialog::Type::Open,
+                            const std::string& title = std::string());
         RK_DECL_ACT(selectedFile,
                     selectedFile(const std::string &file),
                     RK_ARG_TYPE(const std::string&),

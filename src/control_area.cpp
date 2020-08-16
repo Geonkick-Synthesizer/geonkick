@@ -27,6 +27,7 @@
 #include "kit_widget.h"
 #include "preset_browser_model.h"
 #include "preset_browser_view.h"
+#include "SampleBrowser.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
                          GeonkickApi* api,
@@ -58,7 +59,8 @@ void ControlArea::showWidget(ViewState::Type state)
                 showPresets();
                 break;
         case ViewState::Type::Samples:
-                //                showSamplesWidget();
+                delete currentWidget;
+                currentWidget = new SampleBrowser(this);
                 break;
         default:
                 showControls();
