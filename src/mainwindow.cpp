@@ -34,10 +34,12 @@
 #include "geonkick_api.h"
 #include "percussion_state.h"
 #include "about.h"
-#include "right_bar.h"
 #include "ViewState.h"
 
 #include <RkEvent.h>
+
+constexpr int MAIN_WINDOW_WIDTH  = 940;
+constexpr int MAIN_WINDOW_HEIGHT = 745;
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
@@ -52,7 +54,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         viewState->setName("ViewState");
         RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
                     geonkickApi, setViewState(state));
-        setFixedSize(950, 745);
+        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
 	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -73,7 +75,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         viewState->setName("ViewState");
         RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
                     geonkickApi, setViewState(state));
-        setFixedSize(950, 745);
+        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -194,14 +196,7 @@ bool MainWindow::init(void)
         RK_ACT_BIND(limiterWidget, limiterUpdated, RK_ACT_ARGS(int val),
                     kitModel, updatePercussion(kitModel->selectedPercussion()));
 
-        auto rightBar = new RightBar(this);
-        rightBar->setPosition(width() - rightBar->width(), 0);
-        rightBar->show();
-
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
-        RK_ACT_BIND(rightBar, showControls, RK_ACT_ARGS(), controlAreaWidget, showControls());
-        RK_ACT_BIND(rightBar, showKit, RK_ACT_ARGS(), controlAreaWidget, showKit());
-        RK_ACT_BIND(rightBar, showPresets, RK_ACT_ARGS(), controlAreaWidget, showPresets());
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
         topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
