@@ -11,4 +11,5 @@ target_link_libraries(geonkick "-lstdc++fs")
 target_link_libraries(geonkick "-lredkite -lX11 -ljack -lsndfile -lrt -lm -ldl -lpthread -lcairo")
 
 install(TARGETS geonkick DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(FILES ${GKICK_DOC_DIR}/man/geonkick.1  DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man1)
 
