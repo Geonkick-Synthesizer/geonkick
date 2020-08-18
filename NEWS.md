@@ -1,3 +1,7 @@
+### Version 2.3.7
+
+    - added manpage for geonkick executable
+
 ### Version 2.3.6
 
 #### Fixes:
