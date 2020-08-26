@@ -30,23 +30,42 @@
 
 class ViewState: public RkObject {
  public:
-        enum class Type : int {
+        enum class View : int {
                 Controls = 0,
                 Kit      = 1,
                 Presets  = 2,
                 Samples  = 3
         };
 
-        ViewState(RkObject *parent, ViewState::Type state = ViewState::Type::Controls);
-        RK_DECL_ACT(stateChanged,
-                    stateChanged(ViewState::Type state),
-                    RK_ARG_TYPE(ViewState::Type),
-                    RK_ARG_VAL(state));
-        ViewState::Type state() const;
-        void setState(ViewState::Type state);
+        ViewState(RkObject *parent);
+        RK_DECL_ACT(mainViewChanged,
+                    mainViewChanged(ViewState::View view),
+                    RK_ARG_TYPE(ViewState::View),
+                    RK_ARG_VAL(view));
+        RK_DECL_ACT(samplesBrowserPathChanged,
+                    samplesBrowserPathChanged(const std::string &path),
+                    RK_ARG_TYPE(const std::string&),
+                    RK_ARG_VAL(path));
+        RK_DECL_ACT(samplesBrowserOscChanged,
+                    samplesBrowserOscChanged(ViewState::Oscillator osc),
+                    RK_ARG_TYPE(ViewState::Oscillator),
+                    RK_ARG_VAL(osc));
+
+        View mainView() const;
+        void setMainView(View view);
+        void setSamplesBroswerPath(const std::string &path);
+        std::string samplesBroswerPath() const;
+        void setSamplesBroswerOsc(ViewState::Oscillator osc);
+        ViewState::Oscillator samplesBroswerOsc() const;
 
  private:
-        Type viewState;
+        struct SamplesBrowser {
+                std::string currentDirectory;
+                OscillatorType oscillator;
+        };
+
+        View mainView;
+        SamplesBrowser samplesBrowser;
 };
 
 #endif // GEONGKICK_VIEW_STATE_H

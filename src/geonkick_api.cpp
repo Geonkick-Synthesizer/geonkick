@@ -45,7 +45,7 @@ GeonkickApi::GeonkickApi()
         , kitName{"Unknown"}
         , kitAuthor{"Author"}
         , clipboardPercussion{nullptr}
-        , viewState{ViewState::Type::Controls}
+        , uiSettings{std::make_unique<UiSettings>()}
 {
         setupDataPaths();
 }
@@ -54,6 +54,11 @@ GeonkickApi::~GeonkickApi()
 {
   	if (geonkickApi)
                 geonkick_free(&geonkickApi);
+}
+
+unsigned int GeonkickApi::getVersion()
+{
+        return GEONKICK_VERSION;
 }
 
 void GeonkickApi::setEventQueue(RkEventQueue *queue)
@@ -1691,12 +1696,28 @@ size_t GeonkickApi::numberOfPresetFolders() const
         return presetsFoldersList.size();
 }
 
-void GeonkickApi::setViewState(ViewState::Type state)
+void GeonkickApi::setUiSettings(const std::unique_ptr<UiSettings> settings)
 {
-        viewState = state;
+        uiSettings = std::move(settings);
 }
 
-ViewState::Type GeonkickApi::getViewState() const
+UiSettings* GeonkickApi::getUiSettings() const
 {
-        return viewState;
+        return uiSettings.get();
+}
+
+void GeonkickApi::setState(const std::string &data)
+{
+        uiSettings->fromJsonObject(uiSettingsObject);
+        auto kitState = std::make_uique<KitState>();
+        kitState->fromJsonObject(kitObject);
+        setKitState(std::move(kitState));
+}
+
+std::string GeonkickApi::getState() const
+{
+        std::ostringstream jsonStream;
+        jsonStream << "{\"UISettings\":" << std::endl;
+        jsonStream << uiState->toJson() << ", " << std::endl;
+        jsonStream << getKitState()->toJson() << std::endl;
 }

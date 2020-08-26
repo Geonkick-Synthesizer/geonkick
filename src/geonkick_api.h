@@ -34,6 +34,7 @@ class PercussionState;
 class KitState;
 class RkEventQueue;
 class PresetFolder;
+class UiSettings;
 
 class GeonkickApi : public RkObject {
 
@@ -78,6 +79,7 @@ class GeonkickApi : public RkObject {
 
   GeonkickApi();
   ~GeonkickApi();
+  static unsigned int getVersion() const;
   size_t numberOfChannels() const;
   void setEventQueue(RkEventQueue *queue);
   bool init();
@@ -198,7 +200,6 @@ class GeonkickApi : public RkObject {
   std::string getKitAuthor() const;
   void setKitUrl(const std::string &url);
   std::string getKitUrl() const;
-  void setState(const std::string &data);
   void setKickEnvelopePoints(EnvelopeType envelope,
                              const std::vector<RkRealPoint> &points);
   void playKick(int id = -1);
@@ -301,6 +302,8 @@ class GeonkickApi : public RkObject {
   size_t numberOfPresetFolders() const;
   void setViewState(ViewState::Type state);
   ViewState::Type getViewState() const;
+  void setState(const std::string &data);
+  std::string getState() const;
 
 protected:
   void setupDataPaths();
@@ -348,7 +351,7 @@ private:
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
   std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
-  ViewState::Type viewState;
+  std::unique_ptr<UiSettings> uiSettings;
 };
 
 #endif // GEONKICK_API_H

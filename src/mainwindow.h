@@ -65,6 +65,7 @@ class MainWindow : public GeonkickWidget
       void setSample(const std::string &file);
 
  private:
+      void createViewState();
       void createShortcuts();
       GeonkickApi *geonkickApi;
       std::vector<std::unique_ptr<Oscillator>> oscillators;

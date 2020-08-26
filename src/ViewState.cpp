@@ -23,22 +23,48 @@
 
 #include "ViewState.h"
 
-ViewState::ViewState(RkObject *parent, ViewState::Type state)
+ViewState::ViewState(RkObject *parent)
         : RkObject(parent)
-        , viewState{state}
 {
 }
 
-ViewState::Type ViewState::state() const
+ViewState::View ViewState::mainView() const
 {
         return viewState;
 }
 
-void ViewState::setState(ViewState::Type state)
+void ViewState::setMainView(ViewState::View view)
 {
-        if (viewState != state) {
-                viewState = state;
-                action stateChanged(viewState);
+        if (mainView != view) {
+                mainView = view;
+                action mainViewChanged(mainView);
         }
 }
+
+std::string ViewState::sampleBrowserPath() const
+{
+        return sampleBrowser.currentDirectory;
+}
+
+void ViewState::setSamplesBrowserPath(const std::string &path)
+{
+        if (path != samplesBrowser.currentDirectory) {
+                samplesBrowser.currentDirectory = path;
+                action sampleBrowserPathChanged(samplesBrowser.currentDirectory);
+        }
+}
+
+ViewState::Oscillator ViewState::samplesBrowserOscillator() const
+{
+        return sampleBrowser.oscillator;
+}
+
+void ViewState::setSamplesBrowserOscillator(ViewState::Oscillator osc)
+{
+        if (osc != samplesBrowser.oscillator) {
+                samplesBrowser.oscillator = osc;
+                action samplesBrowserOscChanged(samplesBrowser.oscillator);
+        }
+}
+
 

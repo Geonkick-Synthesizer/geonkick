@@ -30,7 +30,7 @@
 class RkLabel;
 class GeonkickButton;
 class RkContainer;
-class ViewState;
+class UiState;
 
 class TopBar : public GeonkickWidget
 {
@@ -59,7 +59,7 @@ class TopBar : public GeonkickWidget
         GeonkickButton *layer2Button;
         GeonkickButton *layer3Button;
         GeonkickApi *geonkickApi;
-        ViewState*  viewState;
+        UiState*  uiState;
         GeonkickButton *tuneCheckbox;
         GeonkickButton *controlsButton;
         GeonkickButton *kitButton;

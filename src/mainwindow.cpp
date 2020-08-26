@@ -50,10 +50,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
-        auto viewState = new ViewState(this, geonkickApi->getViewState());
-        viewState->setName("ViewState");
-        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
-                    geonkickApi, setViewState(state));
+        createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
@@ -71,16 +68,28 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
-        auto viewState = new ViewState(this, geonkickApi->getViewState());
-        viewState->setName("ViewState");
-        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state),
-                    geonkickApi, setViewState(state));
+        createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
         show();
+}
+
+void MainWindow::createViewState()
+{
+        auto viewState = new ViewState(this);
+        viewState->setName("ViewState");
+        UiSettings *uiSettings = geonkickApi->getUiSettings();
+        viewState->setViewType(uiSettings->mainView());
+        viewState->setSampleBrowserPath(uiSettings->sampleBrowserPath());
+        RK_ACT_BIND(viewState, mainViewChanged,
+                    RK_ACT_ARGS(ViewState::View view),
+                    uiSettings, setMainView(view));
+        RK_ACT_BIND(viewState, sampleBrowserPathChanged,
+                    RK_ACT_ARGS(const std::string &path),
+                    uiSettings, setSampleBrowserPath(path));
 }
 
 void MainWindow::createShortcuts()

@@ -94,6 +94,7 @@ class GeonkickLv2Plugin : public RkObject
 
         void setStateId(LV2_URID id)
         {
+                GEONKICK_LOG_DEBUG("STATE id: " << id);
                 atomInfo.stateId = id;
         }
 
@@ -145,14 +146,21 @@ class GeonkickLv2Plugin : public RkObject
         void setStateData(const std::string &data, int flags = 0)
         {
                 RK_UNUSED(flags);
-                geonkickApi->setKitState(data);
-                geonkickApi->notifyUpdateGui();
-                geonkickApi->notifyKitUpdated();
+                if (data.find("UIState") == std::string::npos) {
+                        GEONKICK_LOG_INFO("old plugin state version");
+                        geonkickApi->setKitState(data);
+                        geonkickApi->notifyUpdateGui();
+                        geonkickApi->notifyKitUpdated();
+                } else {
+                        geonkickApi->setState(data);
+                        geonkickApi->notifyUpdateGui();
+                        geonkickApi->notifyKitUpdated();
+                }
         }
 
         std::string getStateData()
         {
-                return geonkickApi->getKitState()->toJson();
+                return geonkickApi->getState();
         }
 
         GeonkickApi* getApi() const
