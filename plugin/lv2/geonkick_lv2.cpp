@@ -146,7 +146,7 @@ class GeonkickLv2Plugin : public RkObject
         void setStateData(const std::string &data, int flags = 0)
         {
                 RK_UNUSED(flags);
-                if (data.find("UIState") == std::string::npos) {
+                if (data.find("UiSettings") == std::string::npos) {
                         GEONKICK_LOG_INFO("old plugin state version");
                         geonkickApi->setKitState(data);
                         geonkickApi->notifyUpdateGui();

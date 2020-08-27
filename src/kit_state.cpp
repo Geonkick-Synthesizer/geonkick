@@ -129,8 +129,12 @@ void KitState::fromJson(const std::string &jsonData)
         document.Parse(jsonData.c_str());
         if (!document.IsObject())
                 return;
+        fromJsonObject(document);
+}
 
-        for (const auto &m: document.GetObject()) {
+void KitState::fromJsonObject(const rapidjson::Value &obj)
+{
+        for (const auto &m: obj.GetObject()) {
                 if (m.name == "KitAppVersion" && m.value.IsInt())
                         kitAppVersion = m.value.GetInt();
                 if (m.name == "name" && m.value.IsString())

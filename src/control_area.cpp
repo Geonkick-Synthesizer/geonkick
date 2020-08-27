@@ -42,23 +42,23 @@ ControlArea::ControlArea(GeonkickWidget *parent,
 {
         setFixedSize(920, 370);
         auto viewState = static_cast<ViewState*>(findObject("ViewState"));
-        RK_ACT_BIND(viewState, stateChanged, RK_ACT_ARGS(ViewState::Type state), this, showWidget(state));
-        showWidget(viewState->state());
+        RK_ACT_BIND(viewState, mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
+        showWidget(viewState->getMainView());
 }
 
-void ControlArea::showWidget(ViewState::Type state)
+void ControlArea::showWidget(ViewState::View view)
 {
-        switch (state) {
-        case ViewState::Type::Controls:
+        switch (view) {
+        case ViewState::View::Controls:
                 showControls();
                 break;
-        case ViewState::Type::Kit:
+        case ViewState::View::Kit:
                 showKit();
                 break;
-        case ViewState::Type::Presets:
+        case ViewState::View::Presets:
                 showPresets();
                 break;
-        case ViewState::Type::Samples:
+        case ViewState::View::Samples:
                 delete currentWidget;
                 currentWidget = new SampleBrowser(this);
                 break;

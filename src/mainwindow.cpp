@@ -35,6 +35,7 @@
 #include "percussion_state.h"
 #include "about.h"
 #include "ViewState.h"
+#include "UiSettings.h"
 
 #include <RkEvent.h>
 
@@ -77,19 +78,29 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         show();
 }
 
+MainWindow::~MainWindow()
+{
+        if (geonkickApi) {
+                geonkickApi->registerCallbacks(false);
+                geonkickApi->setEventQueue(nullptr);
+                if (geonkickApi->isStandalone())
+                        delete geonkickApi;
+        }
+}
+
 void MainWindow::createViewState()
 {
         auto viewState = new ViewState(this);
         viewState->setName("ViewState");
         UiSettings *uiSettings = geonkickApi->getUiSettings();
-        viewState->setViewType(uiSettings->mainView());
-        viewState->setSampleBrowserPath(uiSettings->sampleBrowserPath());
+        viewState->setMainView(uiSettings->getMainView());
+        viewState->setSamplesBrowserPath(uiSettings->samplesBrowserPath());
         RK_ACT_BIND(viewState, mainViewChanged,
                     RK_ACT_ARGS(ViewState::View view),
-                    uiSettings, setMainView(view));
-        RK_ACT_BIND(viewState, sampleBrowserPathChanged,
+                    geonkickApi, getUiSettings()->setMainView(view));
+        RK_ACT_BIND(viewState, samplesBrowserPathChanged,
                     RK_ACT_ARGS(const std::string &path),
-                    uiSettings, setSampleBrowserPath(path));
+                    geonkickApi, getUiSettings()->setSamplesBrowserPath(path));
 }
 
 void MainWindow::createShortcuts()
@@ -140,16 +151,6 @@ void MainWindow::createShortcuts()
         addShortcut(Rk::Key::Key_r, Rk::KeyModifiers::Control_Right);
 }
 
-MainWindow::~MainWindow()
-{
-        if (geonkickApi) {
-                geonkickApi->registerCallbacks(false);
-                geonkickApi->setEventQueue(nullptr);
-                if (geonkickApi->isStandalone())
-                        delete geonkickApi;
-        }
-}
-
 bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
@@ -189,7 +190,6 @@ bool MainWindow::init(void)
                                    envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
-
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
         controlAreaWidget->setEnvelopeWidget(envelopeWidget);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());

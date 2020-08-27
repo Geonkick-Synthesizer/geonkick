@@ -25,6 +25,7 @@
 #define GEONGKICK_VIEW_STATE_H
 
 #include "globals.h"
+#include "geonkick_api.h"
 
 #include <RkObject.h>
 
@@ -36,6 +37,8 @@ class ViewState: public RkObject {
                 Presets  = 2,
                 Samples  = 3
         };
+
+        using Oscillator = GeonkickApi::OscillatorType;
 
         ViewState(RkObject *parent);
         RK_DECL_ACT(mainViewChanged,
@@ -51,20 +54,20 @@ class ViewState: public RkObject {
                     RK_ARG_TYPE(ViewState::Oscillator),
                     RK_ARG_VAL(osc));
 
-        View mainView() const;
-        void setMainView(View view);
-        void setSamplesBroswerPath(const std::string &path);
-        std::string samplesBroswerPath() const;
-        void setSamplesBroswerOsc(ViewState::Oscillator osc);
-        ViewState::Oscillator samplesBroswerOsc() const;
+        ViewState::View getMainView() const;
+        void setMainView(ViewState::View view);
+        void setSamplesBrowserPath(const std::string &path);
+        std::string samplesBrowserPath() const;
+        void setSamplesBrowserOscillator(Oscillator osc);
+        Oscillator samplesBrowserOscillator() const;
 
  private:
         struct SamplesBrowser {
                 std::string currentDirectory;
-                OscillatorType oscillator;
+                Oscillator oscillator;
         };
 
-        View mainView;
+        ViewState::View mainView;
         SamplesBrowser samplesBrowser;
 };
 

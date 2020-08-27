@@ -52,7 +52,7 @@ class ControlArea: public GeonkickWidget
         void setEnvelopeWidget(EnvelopeWidget *widget);
 
  private:
-        void showWidget(ViewState::Type state);
+        void showWidget(ViewState::View view);
 
  private:
         GeonkickApi* geonkickApi;

@@ -25,7 +25,6 @@
 #define GEONKICK_API_H
 
 #include "globals.h"
-#include "ViewState.h"
 
 #include <RkRealPoint.h>
 
@@ -79,7 +78,7 @@ class GeonkickApi : public RkObject {
 
   GeonkickApi();
   ~GeonkickApi();
-  static unsigned int getVersion() const;
+  static unsigned int getVersion();
   size_t numberOfChannels() const;
   void setEventQueue(RkEventQueue *queue);
   bool init();
@@ -300,8 +299,7 @@ class GeonkickApi : public RkObject {
   bool moveOrdrepedPercussionId(int index, int n);
   PresetFolder* getPresetFolder(size_t index) const;
   size_t numberOfPresetFolders() const;
-  void setViewState(ViewState::Type state);
-  ViewState::Type getViewState() const;
+  UiSettings* getUiSettings() const;
   void setState(const std::string &data);
   std::string getState() const;
 

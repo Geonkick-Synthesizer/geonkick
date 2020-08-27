@@ -1,6 +1,6 @@
 /**
- * File name: kit_state.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: UiSettings.h
+ * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
@@ -21,39 +21,42 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+#ifndef GEONGKICK_SETTINGS_H
+#define GEONGKICK_SETTINGS_H
+
 #include "globals.h"
+#include "ViewState.h"
 
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
 
-class PercussionState;
-
-class KitState {
+class UiSettings {
  public:
-        KitState();
-        bool open(const std::string &fileName);
-        bool save(const std::string &fileName);
-        void fromJson(const std::string &jsonData);
+        using View = ViewState::View;
+        using Oscillator = GeonkickApi::OscillatorType;
+
+        UiSettings();
         void fromJsonObject(const rapidjson::Value &obj);
-        void setName(const std::string &name);
-        std::string getName() const;
-        void setAuthor(const std::string &author);
-        std::string getAuthor() const;
-        void setUrl(const std::string &url);
-        std::string getUrl() const;
         std::string toJson() const;
-        void addPercussion(const std::shared_ptr<PercussionState> &percussion);
-        std::shared_ptr<PercussionState> getPercussion(size_t id);
-        std::vector<std::shared_ptr<PercussionState>>& percussions();
+        View getMainView() const;
+        void setMainView(View view);
+        void setSamplesBrowserPath(const std::string &path);
+        std::string samplesBrowserPath() const;
+        void setSamplesBrowserOscillator(UiSettings::Oscillator osc);
+        UiSettings::Oscillator samplesBrowserOscillator() const;
 
  protected:
-        void parsePercussions(const rapidjson::Value &percussionsArray);
+        void parserSamplesBrowser(const rapidjson::Value &obj);
 
  private:
-        std::vector<std::shared_ptr<PercussionState>> percussionsList;
-        int kitAppVersion;
-        std::string kitName;
-        std::string kitAuthor;
-        std::string kitUrl;
+        struct SamplesBrowser {
+                std::string currentDirectory;
+                Oscillator oscillator;
+        };
+
+        View mainView;
+        SamplesBrowser samplesBrowser;
 };
+
+#endif // GEONGKICK_UI_SETTINGS_H

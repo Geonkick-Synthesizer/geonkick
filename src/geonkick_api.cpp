@@ -28,10 +28,10 @@
 #include "kit_state.h"
 #include "preset.h"
 #include "preset_folder.h"
+#include "UiSettings.h"
 
 #include <RkEventQueue.h>
 
-#include <geonkick.h>
 #include <sndfile.h>
 
 GeonkickApi::GeonkickApi()
@@ -1696,11 +1696,6 @@ size_t GeonkickApi::numberOfPresetFolders() const
         return presetsFoldersList.size();
 }
 
-void GeonkickApi::setUiSettings(const std::unique_ptr<UiSettings> settings)
-{
-        uiSettings = std::move(settings);
-}
-
 UiSettings* GeonkickApi::getUiSettings() const
 {
         return uiSettings.get();
@@ -1708,16 +1703,29 @@ UiSettings* GeonkickApi::getUiSettings() const
 
 void GeonkickApi::setState(const std::string &data)
 {
-        uiSettings->fromJsonObject(uiSettingsObject);
-        auto kitState = std::make_uique<KitState>();
-        kitState->fromJsonObject(kitObject);
-        setKitState(std::move(kitState));
+        rapidjson::Document document;
+        document.Parse(data.c_str());
+        if (!document.IsObject())
+                return;
+
+        for (const auto &m: document.GetObject()) {
+                if (m.name == "UiSettings" && m.value.IsObject())
+                        uiSettings->fromJsonObject(m.value);
+                if (m.name == "KitState" && m.value.IsObject()) {
+                        auto kitState = std::make_unique<KitState>();
+                        kitState->fromJsonObject(m.value);
+                        setKitState(std::move(kitState));
+                }
+        }
 }
 
 std::string GeonkickApi::getState() const
 {
         std::ostringstream jsonStream;
-        jsonStream << "{\"UISettings\":" << std::endl;
-        jsonStream << uiState->toJson() << ", " << std::endl;
+        jsonStream << "{\"UiSettings\": " << std::endl;
+        jsonStream << uiSettings->toJson() << ", " << std::endl;
+        jsonStream << "\"KitState\": " << std::endl;
         jsonStream << getKitState()->toJson() << std::endl;
+        jsonStream << "}" << std::endl;
+        return jsonStream.str();
 }
