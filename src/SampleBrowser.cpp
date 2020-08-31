@@ -23,13 +23,20 @@
 
 #include "SampleBrowser.h"
 #include "file_dialog.h"
+#include "ViewState.h"
 
 SampleBrowser::SampleBrowser(GeonkickWidget *parent)
         : GeonkickWidget(parent)
         , fileBrowser{new FileDialog(this)}
 {
         fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
-        fileBrowser->setCurrentDirectoy("/home/iurie");
+        auto viewState = static_cast<ViewState*>(findObject("ViewState"));
+        fileBrowser->setCurrentDirectoy(viewState->samplesBrowserPath());
+        RK_ACT_BIND(fileBrowser,
+                    directoryChanged,
+                    RK_ACT_ARGS(const std::string &path),
+                    viewState,
+                    setSamplesBrowserPath(path));
         setFixedSize(parent->size());
         show();
 }

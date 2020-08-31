@@ -98,6 +98,11 @@ class FileDialog: public GeonkickWidget {
                     selectedFile(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
                     RK_ARG_VAL(file));
+        RK_DECL_ACT(directoryChanged,
+                    directoryChanged(const std::string &path),
+                    RK_ARG_TYPE(const std::string&),
+                    RK_ARG_VAL(path));
+
         std::string currentDirectory() const;
         void setCurrentDirectoy(const std::string &path);
         std::string filePath() const;

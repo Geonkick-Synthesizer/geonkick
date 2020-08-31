@@ -184,7 +184,7 @@ void FilesView::loadCurrentDirectory()
         offsetIndex = 0;
         selectedFileIndex = 0;
         showScrollBar(filesList.size() > visibleLines);
-        currentPathChanged(currentPath.string());
+        action currentPathChanged(currentPath.string());
 }
 
 void FilesView::paintWidget(RkPaintEvent *event)
@@ -370,6 +370,9 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
                     this, onPathChanged(pathName));
+        RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
+                    this, directoryChanged(pathName));
+
 
         pathLabel = new RkLabel(this, "Path: " + filesView->getCurrentPath());
         pathLabel->setBackgroundColor(background());

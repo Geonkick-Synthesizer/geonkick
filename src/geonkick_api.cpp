@@ -47,7 +47,8 @@ GeonkickApi::GeonkickApi()
         , clipboardPercussion{nullptr}
         , uiSettings{std::make_unique<UiSettings>()}
 {
-        setupDataPaths();
+        setupPaths();
+        uiSettings->setSamplesBrowserPath(getSettings("GEONKICK_CONFIG/HOME_PATH"));
 }
 
 GeonkickApi::~GeonkickApi()
@@ -1646,7 +1647,7 @@ void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
         }
 }
 
-void GeonkickApi::setupDataPaths()
+void GeonkickApi::setupPaths()
 {
         std::filesystem::path dataPath;
         const char *dataHome = std::getenv("XDG_DATA_HOME");
@@ -1658,8 +1659,10 @@ void GeonkickApi::setupDataPaths()
                 }
                 dataPath = homeDir / std::filesystem::path(".local/share")
                         / std::filesystem::path(GEONKICK_APP_NAME);
+                setSettings("GEONKICK_CONFIG/HOME_PATH", homeDir);
         } else {
                 dataPath = dataHome / std::filesystem::path(GEONKICK_APP_NAME);
+                setSettings("GEONKICK_CONFIG/HOME_PATH", dataHome);
         }
 
         try {

@@ -25,7 +25,7 @@
 
 UiSettings::UiSettings()
         : mainView{UiSettings::View::Controls}
-        , samplesBrowser{".", UiSettings::Oscillator::Oscillator1}
+        , samplesBrowser{"", UiSettings::Oscillator::Oscillator1}
 {
 }
 

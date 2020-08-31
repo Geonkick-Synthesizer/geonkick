@@ -304,7 +304,7 @@ class GeonkickApi : public RkObject {
   std::string getState() const;
 
 protected:
-  void setupDataPaths();
+  void setupPaths();
   void loadPresets();
   void loadPresetsFolders(const std::filesystem::path &path);
   static void kickUpdatedCallback(void *arg,

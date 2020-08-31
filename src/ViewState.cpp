@@ -26,7 +26,7 @@
 ViewState::ViewState(RkObject *parent)
         : RkObject(parent)
         , mainView{ViewState::View::Controls}
-        , samplesBrowser{".", ViewState::Oscillator::Oscillator1}
+        , samplesBrowser{"", ViewState::Oscillator::Oscillator1}
 {
 }
 
