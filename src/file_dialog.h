@@ -33,6 +33,8 @@ class RkCloseEvent;
 class GeonkickButton;
 class RkLabel;
 class GeonkickSlider;
+class PathListModel;
+class RkList;
 
 class FilesView: public GeonkickWidget {
  public:
@@ -122,6 +124,8 @@ class FileDialog: public GeonkickWidget {
         RkLabel *pathLabel;
         std::string pathSelected;
         AcceptStatus status;
+        PathListModel* shortcutDirectoriesModel;
+        RkList *shortcutDirectoriesView;
 };
 
 #endif // GEONKICK_FILE_DIALOG_H

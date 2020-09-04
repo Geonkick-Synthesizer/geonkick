@@ -24,11 +24,13 @@
 #include "file_dialog.h"
 #include "geonkick_button.h"
 #include "geonkick_slider.h"
+#include "PathListModel.h"
 
 #include <RkLabel.h>
 #include <RkLineEdit.h>
 #include <RkEvent.h>
 #include <RkPainter.h>
+#include <RkList.h>
 
 RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
@@ -51,9 +53,9 @@ FilesView::FilesView(GeonkickWidget *parent)
         , scrollBar{nullptr}
         , isScrollBarVisible{false}
 {
-        setFixedSize(parent->width() - 20, parent->height() - 100);
+        setFixedSize(parent->width() - 50, parent->height() - 100);
         visibleLines = height() / (lineHeight + lineSacing);
-        setPosition(10, 50);
+        setPosition(100, 50);
         setBackgroundColor(50, 50, 50);
         setBorderColor(40, 40, 40);
         setBorderWidth(1);
@@ -362,6 +364,8 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         , filesView{nullptr}
         , pathLabel{nullptr}
         , status{AcceptStatus::Cancel}
+        , shortcutDirectoriesModel{new PathListModel(this)}
+        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
 {
         setTitle(title);
 
@@ -373,6 +377,9 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
                     this, directoryChanged(pathName));
 
+        shortcutDirectoriesView->setPosition(0, filesView->y());
+        shortcutDirectoriesView->setSize(100 ,filesView->height());
+        shortcutDirectoriesView->show();
 
         pathLabel = new RkLabel(this, "Path: " + filesView->getCurrentPath());
         pathLabel->setBackgroundColor(background());
