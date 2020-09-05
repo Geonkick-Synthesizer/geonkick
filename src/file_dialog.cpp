@@ -55,7 +55,7 @@ FilesView::FilesView(GeonkickWidget *parent)
 {
         setFixedSize(parent->width() - 50, parent->height() - 100);
         visibleLines = height() / (lineHeight + lineSacing);
-        setPosition(100, 50);
+        setPosition(104, 50);
         setBackgroundColor(50, 50, 50);
         setBorderColor(40, 40, 40);
         setBorderWidth(1);
@@ -377,6 +377,9 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
                     this, directoryChanged(pathName));
 
+        shortcutDirectoriesView->setBorderColor(40, 40, 40);
+        shortcutDirectoriesView->setBorderWidth(1);
+        shortcutDirectoriesView->setBackgroundColor({50, 50, 50});
         shortcutDirectoriesView->setPosition(0, filesView->y());
         shortcutDirectoriesView->setSize(100 ,filesView->height());
         shortcutDirectoriesView->show();

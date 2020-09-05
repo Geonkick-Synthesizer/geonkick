@@ -27,6 +27,8 @@ PathListModel::PathListModel(RkObject *parent)
         : RkModel(parent)
         , pathList{"/home", "/home/Desktop", "/home/Download"}
 {
+        stringFont.setWeight(RkFont::Weight::Bold);
+        stringFont.setSize(12);
 }
 
 RkVariant PathListModel::itemData(size_t index, int dataType) const
@@ -40,9 +42,11 @@ RkVariant PathListModel::itemData(size_t index, int dataType) const
                 else if (pathList[index].has_filename())
                         return pathList[index].filename();
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Size) {
-                return RkSize(0, 20);
+                return RkSize(0, 18);
+        } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Font) {
+                return stringFont;
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Color) {
-                return RkColor(40, 100, 40);
+                return RkColor(150, 150, 150);
         } else if (static_cast<PathListDataType>(dataType) == PathListDataType::Path) {
                 return pathList[index];
         }
@@ -52,6 +56,11 @@ RkVariant PathListModel::itemData(size_t index, int dataType) const
 size_t PathListModel::itemsNumber() const
 {
         return pathList.size();
+}
+
+int PathListModel::itemSpan() const
+{
+        return 20;
 }
 
 void PathListModel::addPath(const std::filesystem::path &path)

@@ -36,10 +36,13 @@ class PathListModel: public RkModel {
         explicit PathListModel(RkObject *parent);
         RkVariant itemData(size_t index, int dataType = static_cast<int>(RkModelItem::DataType::String)) const override;
         size_t itemsNumber() const override;
+        int itemSpan() const override;
+        void selectIndex(size_t index);
         void addPath(const std::filesystem::path &path);
 
  private:
         std::vector<std::filesystem::path> pathList;
+        RkFont stringFont;
 };
 
 #endif // GEONKICK_PATH_LIST_MODEL_H
