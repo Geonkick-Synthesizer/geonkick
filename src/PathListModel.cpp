@@ -25,10 +25,18 @@
 
 PathListModel::PathListModel(RkObject *parent)
         : RkModel(parent)
-        , pathList{"/home", "/home/Desktop", "/home/Download"}
+        , pathList{"", "", ""}
 {
         stringFont.setWeight(RkFont::Weight::Bold);
         stringFont.setSize(12);
+}
+
+void PathListModel::setHomeDirectory(const std::string &path)
+{
+        pathList[0] = path;
+        pathList[1] = std::filesystem::path(path) / "Desktop";
+        pathList[2] = std::filesystem::path(path) / "Downloads";
+        action modelChanged();
 }
 
 RkVariant PathListModel::itemData(size_t index, int dataType) const

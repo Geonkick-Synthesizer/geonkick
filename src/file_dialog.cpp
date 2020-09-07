@@ -72,7 +72,9 @@ std::string FilesView::getCurrentPath() const
 void FilesView::setCurrentPath(const std::string &path)
 {
         currentPath = path;
+        selectedFileIndex = -1;
         loadCurrentDirectory();
+        update();
 }
 
 void FilesView::createScrollBar()
@@ -377,6 +379,11 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
                     this, directoryChanged(pathName));
 
+        RK_ACT_BIND(shortcutDirectoriesModel,
+                    itemSelected,
+                    RK_ACT_ARGS(RkModelItem item),
+                    filesView,
+                    setCurrentPath(std::get<std::string>(item.data(static_cast<int>(PathListModel::PathListDataType::Path)))));
         shortcutDirectoriesView->setBorderColor(40, 40, 40);
         shortcutDirectoriesView->setBorderWidth(1);
         shortcutDirectoriesView->setBackgroundColor({50, 50, 50});
@@ -484,4 +491,9 @@ FileDialog::AcceptStatus FileDialog::acceptStatus() const
 void FileDialog::setFilters(const std::vector<std::string> &filters)
 {
         filesView->setFilters(filters);
+}
+
+void FileDialog::setHomeDirectory(const std::string &path)
+{
+        shortcutDirectoriesModel->setHomeDirectory(path);
 }

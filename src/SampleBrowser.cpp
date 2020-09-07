@@ -24,12 +24,15 @@
 #include "SampleBrowser.h"
 #include "file_dialog.h"
 #include "ViewState.h"
+#include "geonkick_api.h"
 
-SampleBrowser::SampleBrowser(GeonkickWidget *parent)
+SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
+        , geonkickApi{api}
         , fileBrowser{new FileDialog(this)}
 {
         fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
+        fileBrowser->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         auto viewState = static_cast<ViewState*>(findObject("ViewState"));
         fileBrowser->setCurrentDirectoy(viewState->samplesBrowserPath());
         RK_ACT_BIND(fileBrowser,

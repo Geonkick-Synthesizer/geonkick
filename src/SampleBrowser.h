@@ -26,12 +26,14 @@
 
 #include "geonkick_widget.h"
 
+class GeonkickApi;
 class FileDialog;
 
 class SampleBrowser: public GeonkickWidget {
  public:
-        SampleBrowser(GeonkickWidget *parent);
+        SampleBrowser(GeonkickWidget *parent, GeonkickApi* api);
  private:
+        GeonkickApi *geonkickApi;
         FileDialog *fileBrowser;
 };
 

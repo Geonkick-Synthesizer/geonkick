@@ -110,6 +110,7 @@ class FileDialog: public GeonkickWidget {
         std::string filePath() const;
         AcceptStatus acceptStatus() const;
         void setFilters(const std::vector<std::string> &filters);
+        void setHomeDirectory(const std::string &path);
 
  protected:
         void onAccept();

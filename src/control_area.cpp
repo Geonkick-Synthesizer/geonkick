@@ -60,7 +60,7 @@ void ControlArea::showWidget(ViewState::View view)
                 break;
         case ViewState::View::Samples:
                 delete currentWidget;
-                currentWidget = new SampleBrowser(this);
+                currentWidget = new SampleBrowser(this, geonkickApi);
                 break;
         default:
                 showControls();
