@@ -42,7 +42,7 @@ gkick_audio_create(struct gkick_audio** audio)
 		return GEONKICK_ERROR_MEM_ALLOC;
 	}
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS + 1; i++) {
                 if (gkick_audio_output_create(&(*audio)->audio_outputs[i]) != GEONKICK_OK) {
                         gkick_log_error("can't create audio output");
                         gkick_audio_free(audio);
@@ -50,6 +50,7 @@ gkick_audio_create(struct gkick_audio** audio)
                 }
 		(*audio)->audio_outputs[i]->enabled = true;
         }
+        (*audio)->audio_outputs[GEONKICK_MAX_PERCUSSIONS]->limiter = 1000000;
 
 	if (gkick_mixer_create(&(*audio)->mixer) != GEONKICK_OK) {
 		gkick_log_error("can't create mixer");
@@ -113,8 +114,13 @@ gkick_audio_play(struct gkick_audio *audio,
                 return GEONKICK_ERROR;
         }
 
-        if (id < GEONKICK_MAX_PERCUSSIONS && audio->audio_outputs[id]->enabled)
+        if (id < GEONKICK_MAX_PERCUSSIONS && audio->audio_outputs[id]->enabled) {
                 gkick_audio_output_play(audio->audio_outputs[id]);
+        } else if (id == GEONKICK_MAX_PERCUSSIONS) {
+                // Play sample preview.
+                printf("Play sample preview\n");
+                gkick_audio_output_play(audio->audio_outputs[id]);
+        }
         return GEONKICK_OK;
 }
 

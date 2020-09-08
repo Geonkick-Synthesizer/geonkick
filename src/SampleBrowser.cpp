@@ -40,6 +40,12 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
                     RK_ACT_ARGS(const std::string &path),
                     viewState,
                     setSamplesBrowserPath(path));
+        RK_ACT_BIND(fileBrowser,
+                    currentFileChanged,
+                    RK_ACT_ARGS(const std::string &file),
+                    geonkickApi,
+                    setPreviewSample(file));
+
         setFixedSize(parent->size());
         show();
 }

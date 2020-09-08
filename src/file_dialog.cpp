@@ -243,7 +243,7 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
         if (event->button() == RkMouseEvent::ButtonType::WheelUp) {
                 onLineUp();
                 return;
-        } else if(event->button() == RkMouseEvent::ButtonType::WheelDown) {
+        } else if (event->button() == RkMouseEvent::ButtonType::WheelDown) {
                 onLineDown();
                 return;
         }
@@ -251,6 +251,9 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
         auto line = getLine(event->x(), event->y());
         if (line > -1) {
                 selectedFileIndex = offsetIndex + line;
+                std::string file = getSelectedFile();
+                if (!std::filesystem::is_directory(file))
+                        action currentFileChanged(file);
                 update();
         }
 }
@@ -307,12 +310,21 @@ void FilesView::keyPressEvent(RkKeyEvent *event)
                 openSelectedFile();
 }
 
-void FilesView::openSelectedFile()
+std::string FilesView::getSelectedFile() const
 {
         if (!filesList.empty() && selectedFileIndex > -1
             && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()
 	    && !filesList[selectedFileIndex].empty()) {
-                if (!std::filesystem::is_directory(filesList[selectedFileIndex]))
+                return filesList[selectedFileIndex];
+        }
+        return "";
+}
+
+void FilesView::openSelectedFile()
+{
+        std::string file = getSelectedFile();
+        if (!file.empty()) {
+                if (!std::filesystem::is_directory(file))
                         action openFile(filesList[selectedFileIndex].string());
                 else
                         loadCurrentDirectory();
@@ -374,6 +386,8 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         setFixedSize(600, 400);
         filesView = new FilesView(this);
         RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
+        RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
+                    this, currentFileChanged(file));
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
                     this, onPathChanged(pathName));
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),

@@ -1820,3 +1820,26 @@ geonkick_percussion_is_solo(struct geonkick *kick,
         }
         return gkick_mixer_is_solo(kick->audio->mixer, id, b);
 }
+
+enum geonkick_error
+geonkick_set_preview_sample(struct geonkick *kick,
+                            const gkick_real *data,
+                            size_t size)
+{
+        if (kick == NULL || data == NULL || size < 1) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        struct gkick_audio_output *output = kick->audio->mixer->audio_outputs[GEONKICK_MAX_PERCUSSIONS];
+        gkick_audio_output_lock(output);
+        gkick_buffer_set_data((struct gkick_buffer*)output->updated_buffer, data, size);
+        gkick_audio_output_unlock(output);
+        return GEONKICK_OK;
+}
+
+void
+geonkick_play_sample_preview(struct geonkick *kick)
+{
+        gkick_audio_play(kick->audio, GEONKICK_MAX_PERCUSSIONS);
+}

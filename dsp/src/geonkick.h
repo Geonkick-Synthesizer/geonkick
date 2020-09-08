@@ -664,7 +664,13 @@ geonkick_percussion_is_solo(struct geonkick *kick,
                             bool *b);
 
 
+enum geonkick_error
+geonkick_set_preview_sample(struct geonkick *kick,
+                            const gkick_real *data,
+                            size_t size);
 
+void
+geonkick_play_sample_preview(struct geonkick *kick);
 
 #ifdef __cplusplus
 }

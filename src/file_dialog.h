@@ -46,6 +46,15 @@ class FilesView: public GeonkickWidget {
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
         RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &pathName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(pathName));
+        RK_DECL_ACT(fileSelected,
+                    fileSelected(const std::string &file),
+                    RK_ARG_TYPE(const std::string&),
+                    RK_ARG_VAL(file));
+        RK_DECL_ACT(currentFileChanged,
+                    currentFileChanged(const std::string &file),
+                    RK_ARG_TYPE(const std::string&),
+                    RK_ARG_VAL(file));
+
         void setFilters(const std::vector<std::string> &filters);
 
  protected:
@@ -63,6 +72,7 @@ class FilesView: public GeonkickWidget {
         void openSelectedFile();
         void scrollBarChanged(int val);
         void updateScrollBar();
+        std::string getSelectedFile() const;
 
  private:
         std::vector<std::filesystem::path> filesList;
@@ -98,6 +108,10 @@ class FileDialog: public GeonkickWidget {
                             const std::string& title = std::string());
         RK_DECL_ACT(selectedFile,
                     selectedFile(const std::string &file),
+                    RK_ARG_TYPE(const std::string&),
+                    RK_ARG_VAL(file));
+        RK_DECL_ACT(currentFileChanged,
+                    currentFileChanged(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
                     RK_ARG_VAL(file));
         RK_DECL_ACT(directoryChanged,

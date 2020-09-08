@@ -80,8 +80,8 @@ gkick_buffer_set_data(struct gkick_buffer *buffer,
         memcpy(buffer->buff, data, sizeof(gkick_real) * size);
         buffer->size = size;
 
-        buffer->currentIndex = 0;
-        buffer->floatIndex = 0.0f;
+        buffer->currentIndex = buffer->size;
+        buffer->floatIndex   = buffer->size;
 }
 
 void

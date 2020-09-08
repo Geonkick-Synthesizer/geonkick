@@ -302,6 +302,8 @@ class GeonkickApi : public RkObject {
   UiSettings* getUiSettings() const;
   void setState(const std::string &data);
   std::string getState() const;
+  void setPreviewSample(const std::string &file);
+  void playSamplePreview();
 
 protected:
   void setupPaths();

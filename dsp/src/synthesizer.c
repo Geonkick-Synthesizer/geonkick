@@ -1872,6 +1872,7 @@ geonkick_synth_set_osc_sample(struct gkick_synth *synth,
         if (osc->sample == NULL)
                 gkick_buffer_new(&osc->sample, GEONKICK_MAX_KICK_BUFFER_SIZE);
         gkick_buffer_set_data(osc->sample, data, size);
+        gkick_buffer_reset(osc->sample);
         if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
             && osc->state == GEONKICK_OSC_STATE_ENABLED)
                 synth->buffer_update = true;

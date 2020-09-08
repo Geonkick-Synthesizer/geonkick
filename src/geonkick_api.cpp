@@ -922,6 +922,11 @@ void GeonkickApi::playKick(int id)
         geonkick_play(geonkickApi, id);
 }
 
+void GeonkickApi::playSamplePreview()
+{
+        geonkick_play_sample_preview(geonkickApi);
+}
+
 // This function is called only from the audio thread.
 gkick_real GeonkickApi::getAudioFrame(int channel) const
 {
@@ -1731,4 +1736,18 @@ std::string GeonkickApi::getState() const
         jsonStream << getKitState()->toJson() << std::endl;
         jsonStream << "}" << std::endl;
         return jsonStream.str();
+}
+
+void GeonkickApi::setPreviewSample(const std::string &file)
+{
+        int rateRate = 48000;
+        geonkick_get_sample_rate(geonkickApi, &rateRate);
+        std::vector<gkick_real> sampleData = loadSample(file,
+                                                        kickMaxLength() / 1000,
+                                                        rateRate,
+                                                        1);
+        if (!sampleData.empty()) {
+                GEONKICK_LOG_INFO("smaple size: " << sampleData.size());
+                geonkick_set_preview_sample(geonkickApi, sampleData.data(), sampleData.size());
+        }
 }

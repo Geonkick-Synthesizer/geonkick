@@ -131,7 +131,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
                              RkButton::ButtonImage::ImageUnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)),
                              RkButton::ButtonImage::ImagePressed);
-        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playKick());
+        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview()/*playKick()*/);
 	playButton->show();
         mainLayout->addWidget(playButton);
         addSeparator(mainLayout, 10);

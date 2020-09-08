@@ -124,6 +124,14 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                 }
         }
 
+        struct gkick_audio_output *output = mixer->audio_outputs[GEONKICK_MAX_PERCUSSIONS];
+        for (size_t i = 0; i < size; i++) {
+                gkick_real v = 0.0f;
+                gkick_audio_output_get_frame(output, &v);
+                out[0][i + offset]  += v;
+                out[1][i + offset]  += v;
+        }
+
         return GEONKICK_OK;
 }
 
