@@ -67,17 +67,12 @@ void BufferView::drawGraph()
         pen.setColor({59, 130, 4, 255});
         painter.setPen(pen);
 
-        float max = 0.0f;
-        for (const auto &val: bufferData) {
-                if (max < fabs(val))
-                        max = fabs(val);
-        }
-
         std::vector<RkPoint> graphPoints;
         int x = 0;
         int kY = height() / 2;
-
         float yScale = 1.0f;
+        float max = fabs(*std::max_element(bufferData.begin(), bufferData.end(),
+                                           [](float a, float b){ return fabs(a) < fabs(b); }));
         if (max > 1e-5)
                 yScale = 1.0f / max;
         int graphWidth = width();
