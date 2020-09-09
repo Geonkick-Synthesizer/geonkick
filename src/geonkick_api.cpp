@@ -1738,7 +1738,7 @@ std::string GeonkickApi::getState() const
         return jsonStream.str();
 }
 
-void GeonkickApi::setPreviewSample(const std::string &file)
+std::vector<gkick_real> GeonkickApi::setPreviewSample(const std::string &file)
 {
         int rateRate = 48000;
         geonkick_get_sample_rate(geonkickApi, &rateRate);
@@ -1747,7 +1747,7 @@ void GeonkickApi::setPreviewSample(const std::string &file)
                                                         rateRate,
                                                         1);
         if (!sampleData.empty()) {
-                GEONKICK_LOG_INFO("smaple size: " << sampleData.size());
                 geonkick_set_preview_sample(geonkickApi, sampleData.data(), sampleData.size());
+                return sampleData;
         }
 }

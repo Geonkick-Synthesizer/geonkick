@@ -107,6 +107,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/layers_group_box.h
   ${GKICK_COMMON_DIR}/general_group_box.h
   ${GKICK_COMMON_DIR}/envelope.h
+  ${GKICK_COMMON_DIR}/BufferView.h
   ${GKICK_COMMON_DIR}/kick_graph.h
   ${GKICK_COMMON_DIR}/envelope_widget.h
   ${GKICK_COMMON_DIR}/knob.h
@@ -152,6 +153,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/layers_group_box.cpp
   ${GKICK_COMMON_DIR}/general_group_box.cpp
   ${GKICK_COMMON_DIR}/envelope.cpp
+  ${GKICK_COMMON_DIR}/BufferView.cpp
   ${GKICK_COMMON_DIR}/kick_graph.cpp
   ${GKICK_COMMON_DIR}/envelope_widget.cpp
   ${GKICK_COMMON_DIR}/knob.cpp

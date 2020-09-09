@@ -1,7 +1,7 @@
 /**
- * File name: file_dialog.h
+ * File name: BufferView.h
  * Project: Geonkick (A percussion synthesizer)
- *
+F *
  * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
@@ -21,26 +21,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_SAMPLE_BROWSER_H
-#define GEONKICK_SAMPLE_BROWSER_H
+#ifndef GEONKICK_BUFFER_VIEW
+#define GEONKICK_BUFFER_VIEW
 
 #include "geonkick_widget.h"
 
-class GeonkickApi;
-class FileDialog;
-class BufferView;
+#include <RkImage.h>
 
-class SampleBrowser: public GeonkickWidget {
- public:
-        SampleBrowser(GeonkickWidget *parent, GeonkickApi* api);
+class BufferView : public GeonkickWidget {
+  public:
+        BufferView(GeonkickWidget* parent, const std::vector<float> &data = std::vector<float>());
+        virtual ~BufferView() = default;
+        void setData(const std::vector<float> &data);
+        RK_DECL_ACT(graphPressed, graphPressed(), RK_ARG_TYPE(), RK_ARG_VAL());
 
   protected:
-        void setPreviewSample(const std::string &file);
+     void mouseButtonPressEvent(RkMouseEvent *event) override;
+     void paintWidget(RkPaintEvent *event) override;
+     void drawGraph();
 
- private:
-        GeonkickApi *geonkickApi;
-        FileDialog *fileBrowser;
-        BufferView *samplePreviewWidget;
+  private:
+     std::vector<float> bufferData;
+     bool updateGraph;
+     std::unique_ptr<RkImage> graphImage;
 };
 
-#endif // GEONKICK_SAMPLE_BROWSER_H
+#endif // GEONKICK_BUFFER_VIEW

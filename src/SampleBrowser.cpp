@@ -25,11 +25,13 @@
 #include "file_dialog.h"
 #include "ViewState.h"
 #include "geonkick_api.h"
+#include "BufferView.h"
 
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
         , fileBrowser{new FileDialog(this)}
+        , samplePreviewWidget{new BufferView(this)}
 {
         fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
         fileBrowser->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
@@ -43,10 +45,21 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         RK_ACT_BIND(fileBrowser,
                     currentFileChanged,
                     RK_ACT_ARGS(const std::string &file),
-                    geonkickApi,
+                    this,
                     setPreviewSample(file));
 
         setFixedSize(parent->size());
+        samplePreviewWidget->setPosition(fileBrowser->x() + fileBrowser->width() + 10, 50);
+        samplePreviewWidget->setSize(width() - fileBrowser->width()  -  10, fileBrowser->height() - 100);
+        samplePreviewWidget->show();
+        RK_ACT_BIND(samplePreviewWidget, graphPressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
+
         show();
+}
+
+void SampleBrowser::setPreviewSample(const std::string &file)
+{
+        std::vector<float> data = geonkickApi->setPreviewSample(file);
+        samplePreviewWidget->setData(data);
 }
 
