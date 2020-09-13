@@ -29,6 +29,7 @@
 class GeonkickApi;
 class FileDialog;
 class BufferView;
+class GeokickButton;
 
 class SampleBrowser: public GeonkickWidget {
  public:
@@ -36,11 +37,18 @@ class SampleBrowser: public GeonkickWidget {
 
   protected:
         void setPreviewSample(const std::string &file);
+        void setOscillator(GeonkickApi::OscillatorType osc);
+        void loadSample();
 
  private:
+        void createPreviewMenu(RkContinaer* contaier);
         GeonkickApi *geonkickApi;
         FileDialog *fileBrowser;
         BufferView *samplePreviewWidget;
+        GeokickButton *playButton;
+        GeokickButton *loadButton;
+        GeokickButton *osc1Button;
+        GeokickButton *osc2Button;
 };
 
 #endif // GEONKICK_SAMPLE_BROWSER_H

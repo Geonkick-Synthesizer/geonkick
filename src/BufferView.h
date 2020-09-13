@@ -33,6 +33,7 @@ class BufferView : public GeonkickWidget {
         BufferView(GeonkickWidget* parent, const std::vector<float> &data = std::vector<float>());
         virtual ~BufferView() = default;
         void setData(const std::vector<float> &data);
+        std::vector<float> getData() const
         RK_DECL_ACT(graphPressed, graphPressed(), RK_ARG_TYPE(), RK_ARG_VAL());
 
   protected:

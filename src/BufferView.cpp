@@ -44,6 +44,11 @@ void BufferView::setData(const std::vector<float> &data)
         update();
 }
 
+std::vector<float> BufferView::getData() const
+{
+        return bufferData;
+}
+
 void BufferView::paintWidget(RkPaintEvent *event)
 {
         RK_UNUSED(event);

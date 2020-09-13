@@ -203,4 +203,20 @@ env_button_on.png
 # === File Dialog ===
 
 scrollbar_button_up.png
-scrollbar_button_down.png)
+scrollbar_button_down.png
+
+# === Smaples Browser ===
+
+play_preview_sample.png
+play_preview_sample_hover.png
+play_preview_sample_pressed.png
+load_preview_sample.png
+load_preview_sample_hover.png
+load_preview_sample_pressed.png
+osc1_preview_sample_.png
+osc1_preview_sample_hover.png
+osc1_preview_sample_pressed.png
+osc2_preview_sample_.png
+osc2_preview_sample_hover.png
+osc2_preview_sample_pressed.png
+)
