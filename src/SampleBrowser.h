@@ -25,11 +25,12 @@
 #define GEONKICK_SAMPLE_BROWSER_H
 
 #include "geonkick_widget.h"
+#include "geonkick_api.h"
 
-class GeonkickApi;
 class FileDialog;
 class BufferView;
-class GeokickButton;
+class GeonkickButton;
+class RkContainer;
 
 class SampleBrowser: public GeonkickWidget {
  public:
@@ -41,14 +42,14 @@ class SampleBrowser: public GeonkickWidget {
         void loadSample();
 
  private:
-        void createPreviewMenu(RkContinaer* contaier);
+        void createPreviewMenu(RkContainer* container);
         GeonkickApi *geonkickApi;
         FileDialog *fileBrowser;
         BufferView *samplePreviewWidget;
-        GeokickButton *playButton;
-        GeokickButton *loadButton;
-        GeokickButton *osc1Button;
-        GeokickButton *osc2Button;
+        GeonkickButton *playButton;
+        GeonkickButton *loadButton;
+        GeonkickButton *osc1Button;
+        GeonkickButton *osc2Button;
 };
 
 #endif // GEONKICK_SAMPLE_BROWSER_H

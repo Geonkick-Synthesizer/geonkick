@@ -1358,7 +1358,7 @@ void GeonkickApi::setOscillatorSample(const std::string &file,
                                                         kickMaxLength() / 1000,
                                                         rateRate,
                                                         1);
-        setOscillatorSample(sampleData);
+        setOscillatorSample(sampleData, oscillatorIndex);
 }
 
 void GeonkickApi::setOscillatorSample(const std::vector<float> &sample,
@@ -1745,4 +1745,5 @@ std::vector<gkick_real> GeonkickApi::setPreviewSample(const std::string &file)
                 geonkick_set_preview_sample(geonkickApi, sampleData.data(), sampleData.size());
                 return sampleData;
         }
+        return std::vector<float>();
 }
