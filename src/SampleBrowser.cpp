@@ -45,7 +45,7 @@ RK_DECLARE_IMAGE_RC(osc2_preview_sample_pressed);
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
-        , fileBrowser{new FileDialog(this)}
+        , fileBrowser{new FileDialog(this, FileDialog::Type::Open, std::string(), false)}
         , samplePreviewWidget{new BufferView(this)}
         , playButton{nullptr}
         , loadButton{nullptr}
@@ -80,7 +80,6 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         previewContainer->setSize({samplePreviewWidget->width(), mainLayout->height()});
         previewContainer->addSpace(35);
         previewContainer->addWidget(samplePreviewWidget);
-        previewContainer->addSpace(5);
 
         auto previewMenuContainer = new RkContainer(this);
         previewMenuContainer->setSize({previewContainer->width(), 25});
@@ -106,8 +105,9 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_pressed)),
                              RkButton::ButtonImage::ImagePressed);
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
-        container->addWidget(playButton);
         container->addSpace(5);
+        container->addWidget(playButton);
+        container->addSpace(3);
 
         loadButton = new GeonkickButton(this);
         loadButton->setType(RkButton::ButtonType::ButtonPush);
@@ -134,7 +134,7 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
                     RK_ACT_ARGS(), this,
                     setOscillator(GeonkickApi::OscillatorType::Oscillator1));
         container->addWidget(osc1Button);
-        container->addSpace(5);
+        container->addSpace(3);
 
         osc2Button = new GeonkickButton(this);
         osc2Button->setSize(33, 18);

@@ -29,6 +29,7 @@
 #include "geonkick_slider.h"
 #include "filter.h"
 #include "file_dialog.h"
+#include "ViewState.h"
 
 #include <RkLabel.h>
 
@@ -201,7 +202,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sampleBrowseButton->setFixedSize(67, 14);
         sampleBrowseButton->setPosition(triangleButton->x() + 73, sampleButton->y() + sampleButton->height() + 5);
         sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(), RK_IMAGE_RC(button_browse_sample)));
-        RK_ACT_BIND(sampleBrowseButton, toggled, RK_ACT_ARGS(bool b), this, browseSample());
+        RK_ACT_BIND(sampleBrowseButton, pressed, RK_ACT_ARGS(), this, browseSample());
 
         auto phaseLabel = new RkLabel(waveFunctionHBox);
         phaseLabel->setFixedSize(30, 8);
@@ -436,10 +437,9 @@ void OscillatorGroupBox::updateGui()
 
 void OscillatorGroupBox::browseSample()
 {
-        auto fileDialog = new FileDialog(static_cast<GeonkickWidget*>(getTopWidget()), FileDialog::Type::Open, "Select sample");
-        fileDialog->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
-        fileDialog->setCurrentDirectoy(oscillator->samplesPath());
-        RK_ACT_BIND(fileDialog, selectedFile,
-                    RK_ACT_ARGS(const std::string &file),
-                    oscillator, setSample(file));
+        auto visualState = dynamic_cast<ViewState*>(findObject("ViewState"));
+        if (visualState) {
+                visualState->setSamplesBrowserOscillator(static_cast<ViewState::Oscillator>(oscillator->type()));
+                visualState->setMainView(ViewState::View::Samples);
+        }
 }

@@ -31,6 +31,7 @@
 #include <RkEvent.h>
 #include <RkPainter.h>
 #include <RkList.h>
+#include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
@@ -372,7 +373,7 @@ void FilesView::setFilters(const std::vector<std::string> &filters)
         fileFilters = filters;
 }
 
-FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title)
+FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title, bool buttons)
         : GeonkickWidget(parent, Rk::WindowFlags::Widget)
         , dialogType{type}
         , filesView{nullptr}
@@ -380,6 +381,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
         , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
+        , showButtons{buttons}
 {
         setTitle(title);
 
@@ -413,32 +415,36 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         pathLabel->setTextColor(textColor());
         pathLabel->show();
 
-        auto acceptButton = new GeonkickButton(this);
-        acceptButton->setFixedSize(90, 30);
-        acceptButton->setPosition(width() - acceptButton->width() - 10,
-                                  height() - acceptButton->height() - 5);
-        if (dialogType == Type::Save)
-                acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(save_active)));
-        else
-                acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(open_active)));
-        RK_ACT_BIND(acceptButton, toggled, RK_ACT_ARGS(bool pressed), this, onAccept());
-        acceptButton->show();
+        auto buttomContainer = new RkContainer(this);
+        buttomContainer->setSize({width(), 30});
+        buttomContainer->setPosition({5, height() - buttomContainer->height() - 5});
 
-        auto cancelButton = new GeonkickButton(this);
-        cancelButton->setFixedSize(90, 30);
-        cancelButton->setPosition(acceptButton->x() - cancelButton->width() - 5, acceptButton->y());
-        cancelButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(cancel)));
-        RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool pressed), this, onCancel());
-        cancelButton->show();
+        if (showButtons) {
+                auto acceptButton = new GeonkickButton(this);
+                acceptButton->setFixedSize(90, 30);
+                if (dialogType == Type::Save)
+                        acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(save_active)));
+                else
+                        acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(open_active)));
+                RK_ACT_BIND(acceptButton, toggled, RK_ACT_ARGS(bool pressed), this, onAccept());
+                acceptButton->show();
+                buttomContainer->addWidget(acceptButton, Rk::Alignment::AlignRight);
+                auto cancelButton = new GeonkickButton(this);
+                cancelButton->setFixedSize(90, 30);
+                cancelButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(cancel)));
+                RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool pressed), this, onCancel());
+                cancelButton->show();
+                buttomContainer->addSpace(5);
+                buttomContainer->addWidget(cancelButton, Rk::Alignment::AlignRight);
+        }
 
         if (dialogType == Type::Save) {
                 fileNameEdit = new RkLineEdit(this);
                 fileNameEdit->setFont(font());
-                fileNameEdit->setSize(cancelButton->x() - 20, 20);
-                fileNameEdit->setX(filesView->x());
-                fileNameEdit->setY(cancelButton->y() + (cancelButton->height() - fileNameEdit->height()) / 2);
+                fileNameEdit->setSize(width() - 200, 20);
                 fileNameEdit->show();
                 RK_ACT_BIND(fileNameEdit, enterPressed, RK_ACT_ARGS(), this, onAccept());
+                buttomContainer->addWidget(fileNameEdit);
         }
 
         show();

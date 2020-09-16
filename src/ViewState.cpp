@@ -23,6 +23,8 @@
 
 #include "ViewState.h"
 
+#include <RkEventQueue.h>
+
 ViewState::ViewState(RkObject *parent)
         : RkObject(parent)
         , mainView{ViewState::View::Controls}
@@ -39,7 +41,9 @@ void ViewState::setMainView(ViewState::View view)
 {
         if (mainView != view) {
                 mainView = view;
-                action mainViewChanged(mainView);
+                auto act = std::make_unique<RkAction>(this);
+                act->setCallback([this](void){ mainViewChanged(mainView); });
+                eventQueue()->postAction(std::move(act));
         }
 }
 

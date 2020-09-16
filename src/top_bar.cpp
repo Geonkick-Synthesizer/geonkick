@@ -78,7 +78,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         , layer2Button{nullptr}
         , layer3Button{nullptr}
         , geonkickApi{api}
-        , viewState{static_cast<ViewState*>(findObject("ViewState"))}
+        , viewState{dynamic_cast<ViewState*>(findObject("ViewState"))}
         , controlsButton{nullptr}
         , kitButton{nullptr}
         , presetsButton{nullptr}

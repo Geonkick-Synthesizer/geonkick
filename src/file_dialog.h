@@ -105,7 +105,7 @@ class FileDialog: public GeonkickWidget {
 
         explicit FileDialog(GeonkickWidget *parent,
                             FileDialog::Type type = FileDialog::Type::Open,
-                            const std::string& title = std::string());
+                            const std::string& title = std::string(), bool buttons = true);
         RK_DECL_ACT(selectedFile,
                     selectedFile(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
@@ -141,6 +141,7 @@ class FileDialog: public GeonkickWidget {
         AcceptStatus status;
         PathListModel* shortcutDirectoriesModel;
         RkList *shortcutDirectoriesView;
+        bool showButtons;
 };
 
 #endif // GEONKICK_FILE_DIALOG_H
