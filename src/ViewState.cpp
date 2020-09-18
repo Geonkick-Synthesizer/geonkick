@@ -28,7 +28,7 @@
 ViewState::ViewState(RkObject *parent)
         : RkObject(parent)
         , mainView{ViewState::View::Controls}
-        , samplesBrowser{"", ViewState::Oscillator::Oscillator1}
+        , samplesBrowser{"", "", ViewState::Oscillator::Oscillator1}
 {
 }
 
@@ -47,17 +47,27 @@ void ViewState::setMainView(ViewState::View view)
         }
 }
 
-std::string ViewState::samplesBrowserPath() const
-{
-        return samplesBrowser.currentDirectory;
-}
-
 void ViewState::setSamplesBrowserPath(const std::string &path)
 {
         if (path != samplesBrowser.currentDirectory) {
                 samplesBrowser.currentDirectory = path;
                 action samplesBrowserPathChanged(samplesBrowser.currentDirectory);
         }
+}
+
+void ViewState::setSamplesBrowserPreviewFile(const std::string &file)
+{
+        samplesBrowser.previewFile = file;
+}
+
+std::string ViewState::samplesBrowserPath() const
+{
+        return samplesBrowser.currentDirectory;
+}
+
+std::string ViewState::samplesBrowserPreviewFile() const
+{
+        return samplesBrowser.previewFile;
 }
 
 void ViewState::setSamplesBrowserOscillator(ViewState::Oscillator osc)

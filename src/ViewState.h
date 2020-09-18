@@ -57,13 +57,16 @@ class ViewState: public RkObject {
         ViewState::View getMainView() const;
         void setMainView(ViewState::View view);
         void setSamplesBrowserPath(const std::string &path);
+        void setSamplesBrowserPreviewFile(const std::string &file);
         std::string samplesBrowserPath() const;
+        std::string samplesBrowserPreviewFile() const;
         void setSamplesBrowserOscillator(Oscillator osc);
         Oscillator samplesBrowserOscillator() const;
 
  private:
         struct SamplesBrowser {
                 std::string currentDirectory;
+                std::string previewFile;
                 Oscillator oscillator;
         };
 

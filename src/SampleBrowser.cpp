@@ -58,6 +58,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         fileBrowser->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         auto viewState = static_cast<ViewState*>(findObject("ViewState"));
         fileBrowser->setCurrentDirectoy(viewState->samplesBrowserPath());
+        setPreviewSample(viewState->samplesBrowserPreviewFile());
         RK_ACT_BIND(fileBrowser,
                     directoryChanged,
                     RK_ACT_ARGS(const std::string &path),
@@ -68,6 +69,11 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
                     RK_ACT_ARGS(const std::string &file),
                     this,
                     setPreviewSample(file));
+        RK_ACT_BIND(fileBrowser,
+                    currentFileChanged,
+                    RK_ACT_ARGS(const std::string &file),
+                    viewState,
+                    setSamplesBrowserPreviewFile(file));
         samplePreviewWidget->setSize(300, 260);
         samplePreviewWidget->show();
         RK_ACT_BIND(samplePreviewWidget, graphPressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
@@ -173,6 +179,12 @@ void SampleBrowser::loadSample()
 
 void SampleBrowser::setPreviewSample(const std::string &file)
 {
-        std::vector<float> data = geonkickApi->setPreviewSample(file);
-        samplePreviewWidget->setData(data);
+        try {
+                if (std::filesystem::exists(file) && !std::filesystem::is_directory(file)) {
+                        std::vector<float> data = geonkickApi->setPreviewSample(file);
+                        if (!data.empty())
+                                samplePreviewWidget->setData(data);
+                }
+        }  catch (...) {
+        }
 }

@@ -25,7 +25,7 @@
 
 UiSettings::UiSettings()
         : mainView{UiSettings::View::Controls}
-        , samplesBrowser{"", UiSettings::Oscillator::Oscillator1}
+        , samplesBrowser{"", "", UiSettings::Oscillator::Oscillator1}
 {
 }
 
@@ -44,6 +44,8 @@ void UiSettings::parserSamplesBrowser(const rapidjson::Value &obj)
         for (const auto &m: obj.GetObject()) {
                 if (m.name == "currentDirectory" && m.value.IsString())
                         samplesBrowser.currentDirectory = m.value.GetString();
+                if (m.name == "previewFile" && m.value.IsString())
+                        samplesBrowser.previewFile = m.value.GetString();
                 if (m.name == "oscillator" && m.value.IsInt())
                         samplesBrowser.oscillator = static_cast<Oscillator>(m.value.GetInt());
         }
@@ -56,6 +58,7 @@ std::string UiSettings::toJson() const
         jsonStream << "\"MainView\": " << static_cast<int>(mainView) << ", " << std::endl;
         jsonStream << "\"SamplesBrowser\": { " << std::endl;
         jsonStream << "    \"currentDirectory\": \"" << samplesBrowser.currentDirectory << "\", " << std::endl;
+        jsonStream << "    \"previewFile\": \"" << samplesBrowser.previewFile << "\", " << std::endl;
         jsonStream << "    \"oscillator\": " << static_cast<int>(samplesBrowser.oscillator) << std::endl;
         jsonStream << "}" << std::endl;
         jsonStream << "}" << std::endl;
@@ -80,6 +83,16 @@ void UiSettings::setSamplesBrowserPath(const std::string &path)
 std::string UiSettings::samplesBrowserPath() const
 {
         return samplesBrowser.currentDirectory;
+}
+
+void UiSettings::setSamplesBrowserPreviewFile(const std::string &file)
+{
+        samplesBrowser.previewFile = file;
+}
+
+std::string UiSettings::samplesBrowserPreviewFile() const
+{
+        return samplesBrowser.previewFile;
 }
 
 void UiSettings::setSamplesBrowserOscillator(UiSettings::Oscillator osc)
