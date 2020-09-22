@@ -1,3 +1,10 @@
+### Version 2.3.8
+
+#### Fixes:
+
+    - fixed the looped continuous sound that is generated on some hosts (LV2 and VST3)
+
+
 ### Version 2.3.7
 
     - added manpage for geonkick executable
