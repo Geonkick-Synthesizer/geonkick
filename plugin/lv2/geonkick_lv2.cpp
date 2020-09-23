@@ -178,6 +178,9 @@ class GeonkickLv2Plugin : public RkObject
                 if (!midiIn || nsamples < 1)
                         return;
 
+                for (size_t i = 0; i < outputChannels.size(); i++)
+                        memset(outputChannels[i], 0, nsamples * sizeof(float));
+
                 size_t currentFrame = 0;
                 size_t offset = 0;
                 auto it = lv2_atom_sequence_begin(&midiIn->body);

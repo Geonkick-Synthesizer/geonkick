@@ -104,6 +104,8 @@ GKickVstProcessor::process(Vst::ProcessData& data)
         for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
                 channelsBuffers.data()[2 * ch]     = data.outputs[ch].channelBuffers32[0];
                 channelsBuffers.data()[2 * ch + 1] = data.outputs[ch].channelBuffers32[1];
+                memset(channelsBuffers.data()[2 * ch], 0, data.numSamples * sizeof(float));
+                memset(channelsBuffers.data()[2 * ch + 1], 0, data.numSamples * sizeof(float));
         }
 
         auto events = data.inputEvents;
