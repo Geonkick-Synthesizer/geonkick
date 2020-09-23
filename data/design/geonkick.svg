@@ -15,7 +15,7 @@
    viewBox="0 0 270.93333 211.1375"
    version="1.1"
    id="svg14595"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="geonkick.svg">
   <defs
      id="defs14589">
@@ -7886,16 +7886,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="560.67094"
-     inkscape:cy="646.28806"
+     inkscape:zoom="11.674597"
+     inkscape:cx="924.32038"
+     inkscape:cy="567.73736"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g21631"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1000"
      inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      showguides="false"
      units="px"
@@ -7921,7 +7921,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -14821,7 +14821,7 @@
       </g>
       <g
          id="g15807-9-2-2-1"
-         transform="translate(107.47277,-36.839672)"
+         transform="matrix(0.96382709,0,0,0.96382709,126.28527,-29.607013)"
          style="display:inline">
         <rect
            ry="1.787774"
@@ -15245,6 +15245,188 @@
            d="m 527.46114,203.45502 c -1.37839,0.79582 -1.37839,0.79582 -1.37839,0.79582"
            id="path11913-2-8-3-3-6-7-3-7-6-6-7-3-6-7-6-9-2"
            inkscape:connector-curvature="0" />
+      </g>
+      <g
+         id="g15736-7-4-0-8-3"
+         transform="translate(106.93286,-84.200566)"
+         style="display:inline"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_sample_env.png"
+         inkscape:export-xdpi="388.16367"
+         inkscape:export-ydpi="388.16367">
+        <rect
+           ry="1.787774"
+           rx="1.7907319"
+           style="display:inline;opacity:1;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.26458332;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4510-9-0-8-0-5-1-4-1-1-1-3-9-2-6-0-9-5"
+           width="59.15033"
+           height="32.956581"
+           x="490.49646"
+           y="149.45364"
+           inkscape:export-xdpi="388.16367"
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_sample_env.png" />
+        <text
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-xdpi="388.16367"
+           id="text9163-7-2-43-3-9-9-8-0-9-2-7-9-9-3-1-9-2-2-6"
+           y="154.60228"
+           x="512.57825"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d5e58f;fill-opacity:1;stroke:none;stroke-width:0.03512268"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_sample_env.png"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268"
+             y="154.60228"
+             x="512.57825"
+             id="tspan9161-6-6-5-2-22-7-1-8-6-93-3-0-1-1-3-2-2-4-2"
+             sodipodi:role="line">Envelope</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.03365276"
+           x="497.28607"
+           y="178.97726"
+           id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9"
+           inkscape:export-xdpi="388.16367"
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_sample_env.png"><tspan
+             sodipodi:role="line"
+             id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1"
+             x="497.28607"
+             y="178.97726"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:0.03365276">Amplitude</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.03365276"
+           x="527.57245"
+           y="178.96104"
+           id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-8-1-3-0-0-2"
+           inkscape:export-xdpi="388.16367"
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_sample_env.png"><tspan
+             sodipodi:role="line"
+             id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-9-9-0-3-0-7"
+             x="527.57245"
+             y="178.96104"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:0.03365276">Pitch Shift</tspan></text>
+      </g>
+      <g
+         id="g15736-7-4-0-8-7"
+         transform="translate(175.43489,-82.053487)"
+         style="display:inline"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_osc_env.png"
+         inkscape:export-xdpi="388.16367"
+         inkscape:export-ydpi="388.16367">
+        <rect
+           ry="1.787774"
+           rx="1.7907319"
+           style="display:inline;opacity:1;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.26458332;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4510-9-0-8-0-5-1-4-1-1-1-3-9-2-6-0-9-8"
+           width="59.15033"
+           height="32.956581"
+           x="490.49646"
+           y="149.45364"
+           inkscape:export-xdpi="29.256962"
+           inkscape:export-ydpi="29.256962" />
+        <text
+           inkscape:export-ydpi="29.256962"
+           inkscape:export-xdpi="29.256962"
+           id="text9163-7-2-43-3-9-9-8-0-9-2-7-9-9-3-1-9-2-2-68"
+           y="154.60228"
+           x="512.57825"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d5e58f;fill-opacity:1;stroke:none;stroke-width:0.03512268"
+           xml:space="preserve"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268"
+             y="154.60228"
+             x="512.57825"
+             id="tspan9161-6-6-5-2-22-7-1-8-6-93-3-0-1-1-3-2-2-4-8"
+             sodipodi:role="line">Envelope</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.03365276"
+           x="497.28607"
+           y="178.97726"
+           id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-4"
+           inkscape:export-xdpi="29.256962"
+           inkscape:export-ydpi="29.256962"><tspan
+             sodipodi:role="line"
+             id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-3"
+             x="497.28607"
+             y="178.97726"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:0.03365276">Amplitude</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.03365276"
+           x="526.76544"
+           y="178.8588"
+           id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-8-1-3-0-0-1"
+           inkscape:export-xdpi="29.256962"
+           inkscape:export-ydpi="29.256962"><tspan
+             sodipodi:role="line"
+             id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-9-9-0-3-0-4"
+             x="526.76544"
+             y="178.8588"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:0.03365276">Frequency</tspan></text>
+      </g>
+      <g
+         id="g15736-7-4-0-8-7-3"
+         transform="translate(153.35065,-122.74573)"
+         style="display:inline"
+         inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_ampl_env.png"
+         inkscape:export-xdpi="388.16367"
+         inkscape:export-ydpi="388.16367">
+        <rect
+           ry="1.787774"
+           rx="1.7907319"
+           style="display:inline;opacity:1;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.26435286;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           id="rect4510-9-0-8-0-5-1-4-1-1-1-3-9-2-6-0-9-8-5"
+           width="59.15033"
+           height="32.956581"
+           x="490.49646"
+           y="149.45364"
+           inkscape:export-xdpi="388.16367"
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_ampl_env.png" />
+        <text
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-xdpi="388.16367"
+           id="text9163-7-2-43-3-9-9-8-0-9-2-7-9-9-3-1-9-2-2-68-6"
+           y="154.60228"
+           x="512.57825"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#d5e58f;fill-opacity:1;stroke:none;stroke-width:0.03512268"
+           xml:space="preserve"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_ampl_env.png"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.27811694px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#d5e58f;fill-opacity:1;stroke-width:0.03512268"
+             y="154.60228"
+             x="512.57825"
+             id="tspan9161-6-6-5-2-22-7-1-8-6-93-3-0-1-1-3-2-2-4-8-2"
+             sodipodi:role="line">Envelope</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.03365276"
+           x="497.28607"
+           y="178.97726"
+           id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-4-9"
+           inkscape:export-xdpi="388.16367"
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_ampl_env.png"><tspan
+             sodipodi:role="line"
+             id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-3-1"
+             x="497.28607"
+             y="178.97726"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:0.03365276">Amplitude</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.03365276"
+           x="529.70673"
+           y="178.8588"
+           id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-8-1-3-0-0-1-2"
+           inkscape:export-xdpi="388.16367"
+           inkscape:export-ydpi="388.16367"
+           inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/hboxbk_ampl_env.png"><tspan
+             sodipodi:role="line"
+             id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-9-9-0-3-0-4-7"
+             x="529.70673"
+             y="178.8588"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.14092493px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L';fill:#ffffff;fill-opacity:1;stroke-width:0.03365276">Length</tspan></text>
       </g>
     </g>
     <circle

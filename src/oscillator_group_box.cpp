@@ -56,6 +56,7 @@ RK_DECLARE_IMAGE_RC(wave_button_sawtooth_active);
 RK_DECLARE_IMAGE_RC(button_browse_sample);
 RK_DECLARE_IMAGE_RC(hboxbk_noise_env);
 RK_DECLARE_IMAGE_RC(hboxbk_osc_env);
+RK_DECLARE_IMAGE_RC(hboxbk_sample_env);
 RK_DECLARE_IMAGE_RC(knob);
 RK_DECLARE_IMAGE_RC(noise_type_white);
 RK_DECLARE_IMAGE_RC(noise_type_white_active);
@@ -81,6 +82,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , envelopeAmplitudeKnob{nullptr}
            , frequencyAmplitudeKnob{nullptr}
            , filterTypeIsChecked{false}
+           , amplitudeEnvelopeBox{nullptr}
 {
         setFixedSize(224, 380);
         oscillatorCheckbox = new GeonkickButton(this);
@@ -221,13 +223,16 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 
 void OscillatorGroupBox::createEvelopeGroupBox()
 {
-        auto amplitudeEnvelopeBox = new GeonkickWidget(this);
+        amplitudeEnvelopeBox = new GeonkickWidget(this);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         if (oscillator->type() == Oscillator::Type::Noise) {
                 amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_noise_env)));
                 amplitudeEnvelopeBox->setPosition(0, 25);
         } else {
-                amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_osc_env)));
+                if (oscillator->function() == Oscillator::FunctionType::Sample)
+                        amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_sample_env)));
+                else
+                        amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_osc_env)));
                 amplitudeEnvelopeBox->setPosition(0, 115);
         }
         amplitudeEnvelopeBox->show();
@@ -322,6 +327,7 @@ void OscillatorGroupBox::setSineWave(bool pressed)
                 sawtoothButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Sine);
+                updateAmpltudeEnvelopeBox();
         }
 }
 
@@ -333,6 +339,7 @@ void OscillatorGroupBox::setSquareWave(bool pressed)
                 sawtoothButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Square);
+                updateAmpltudeEnvelopeBox();
         }
 }
 
@@ -344,6 +351,7 @@ void OscillatorGroupBox::setTriangleWave(bool pressed)
                 sawtoothButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Triangle);
+                updateAmpltudeEnvelopeBox();
         }
 }
 
@@ -355,6 +363,7 @@ void OscillatorGroupBox::setSawtoothWave(bool pressed)
                 triangleButton->setPressed(false);
                 sampleButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Sawtooth);
+                updateAmpltudeEnvelopeBox();
         }
 }
 
@@ -366,6 +375,7 @@ void OscillatorGroupBox::setSampleFunction(bool pressed)
                 triangleButton->setPressed(false);
                 sawtoothButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::Sample);
+                updateAmpltudeEnvelopeBox();
         }
 }
 
@@ -420,6 +430,7 @@ void OscillatorGroupBox::updateGui()
                 sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
                 sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
                 phaseSlider->onSetValue(oscillator->getPhase());
+                updateAmpltudeEnvelopeBox();
         }
 
         envelopeAmplitudeKnob->setCurrentValue(oscillator->amplitude());
@@ -442,4 +453,13 @@ void OscillatorGroupBox::browseSample()
                 visualState->setSamplesBrowserOscillator(static_cast<ViewState::Oscillator>(oscillator->type()));
                 visualState->setMainView(ViewState::View::Samples);
         }
+}
+
+void OscillatorGroupBox::updateAmpltudeEnvelopeBox()
+{
+        if (oscillator->function() == Oscillator::FunctionType::Sample)
+                amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_sample_env)));
+        else
+                amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_osc_env)));
+        amplitudeEnvelopeBox->update();
 }
