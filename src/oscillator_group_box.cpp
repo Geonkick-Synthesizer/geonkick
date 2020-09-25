@@ -79,8 +79,9 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , phaseSlider{nullptr}
            , noiseWhiteButton{nullptr}
            , noiseBrownianButton{nullptr}
-           , envelopeAmplitudeKnob{nullptr}
-           , frequencyAmplitudeKnob{nullptr}
+           , amplitudeKnob{nullptr}
+           , frequencyKnob{nullptr}
+           , pitchShiftKnob{nullptr}
            , filterTypeIsChecked{false}
            , amplitudeEnvelopeBox{nullptr}
 {
@@ -237,14 +238,14 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         }
         amplitudeEnvelopeBox->show();
 
-        envelopeAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-        envelopeAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
-        envelopeAmplitudeKnob->setFixedSize(80, 80);
-        envelopeAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
-        envelopeAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-        envelopeAmplitudeKnob->setRange(0, 1.0);
-        envelopeAmplitudeKnob->show();
-        RK_ACT_BIND(envelopeAmplitudeKnob,
+        amplitudeKnob = new Knob(amplitudeEnvelopeBox);
+        amplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
+        amplitudeKnob->setFixedSize(80, 80);
+        amplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+        amplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
+        amplitudeKnob->setRange(0, 1.0);
+        amplitudeKnob->show();
+        RK_ACT_BIND(amplitudeKnob,
                     valueUpdated,
                     RK_ACT_ARGS(double val),
                     oscillator,
@@ -284,19 +285,33 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 RK_ACT_BIND(seedSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorSeed(value));
 
         } else {
-                frequencyAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-                frequencyAmplitudeKnob->setRangeType(Knob::RangeType::Logarithmic);
-                frequencyAmplitudeKnob->setSize(80, 80);
-                frequencyAmplitudeKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
-                frequencyAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
-                frequencyAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-                frequencyAmplitudeKnob->setRange(200, 16000);
-                RK_ACT_BIND(frequencyAmplitudeKnob,
+                pitchShiftKnob = new Knob(amplitudeEnvelopeBox);
+                pitchShiftKnob->setSize(80, 80);
+                pitchShiftKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
+                pitchShiftKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+                pitchShiftKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
+                pitchShiftKnob->setRange(-48, 48);
+                RK_ACT_BIND(pitchShiftKnob,
+                            valueUpdated,
+                            RK_ACT_ARGS(double val),
+                            oscillator,
+                            setPitchShift(val));
+                frequencyKnob = new Knob(amplitudeEnvelopeBox);
+                frequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
+                frequencyKnob->setSize(80, 80);
+                frequencyKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
+                frequencyKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+                frequencyKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
+                frequencyKnob->setRange(200, 16000);
+                RK_ACT_BIND(frequencyKnob,
                             valueUpdated,
                             RK_ACT_ARGS(double val),
                             oscillator,
                             setFrequency(val));
-                frequencyAmplitudeKnob->show();
+                if (oscillator->function() == Oscillator::FunctionType::Sample)
+                        pitchShiftKnob->show();
+                else
+                        frequencyKnob->show();
         }
 }
 
@@ -433,9 +448,11 @@ void OscillatorGroupBox::updateGui()
                 updateAmpltudeEnvelopeBox();
         }
 
-        envelopeAmplitudeKnob->setCurrentValue(oscillator->amplitude());
-        if (oscillator->type() != Oscillator::Type::Noise)
-                frequencyAmplitudeKnob->setCurrentValue(oscillator->frequency());
+        amplitudeKnob->setCurrentValue(oscillator->amplitude());
+        if (oscillator->type() != Oscillator::Type::Noise) {
+                frequencyKnob->setCurrentValue(oscillator->frequency());
+                pitchShiftKnob->setCurrentValue(oscillator->pitchShift());
+        }
 
         if (oscillator->type() == Oscillator::Type::Oscillator1)
                 fmCheckbox->setPressed(oscillator->isFm());
@@ -461,5 +478,7 @@ void OscillatorGroupBox::updateAmpltudeEnvelopeBox()
                 amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_sample_env)));
         else
                 amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_osc_env)));
+        pitchShiftKnob->show(oscillator->function() == Oscillator::FunctionType::Sample);
+        frequencyKnob->show(oscillator->function() != Oscillator::FunctionType::Sample);
         amplitudeEnvelopeBox->update();
 }

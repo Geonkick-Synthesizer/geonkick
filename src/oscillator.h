@@ -40,6 +40,7 @@ class Oscillator: public RkObject
   std::vector<RkRealPoint> envelopePoints(EnvelopeType envelope) const;
   double amplitude(void) const;
   double frequency(void) const;
+  double pitchShift(void) const;
   void setType(Type type);
   Oscillator::Type type(void) const;
   bool isFilterEnabled() const;
@@ -59,6 +60,7 @@ class Oscillator: public RkObject
   int getSeed() const;
   void setAmplitude(double amp);
   void setFrequency(double freq);
+  void setPitchShift(double semitones);
   void enableFilter(bool b);
   void setFilterType(FilterType filter);
   void setFilterFrequency(double f);
@@ -83,6 +85,10 @@ class Oscillator: public RkObject
               frequencyUpdated(double v),
               RK_ARG_TYPE(double),
               RK_ARG_VAL(v));
+  RK_DECL_ACT(pitchShiftUpdated,
+              pitchShiftUpdated(double semitones),
+              RK_ARG_TYPE(double),
+              RK_ARG_VAL(semitones));
   RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double len),
               RK_ARG_TYPE(double),

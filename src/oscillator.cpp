@@ -131,9 +131,20 @@ void Oscillator::setFrequency(double freq)
                 frequencyUpdated(freq);
 }
 
+void Oscillator::setPitchShift(double semitones)
+{
+	if (geonkickApi->setOscillatorPitchShift(index(), semitones))
+                pitchShiftUpdated(semitones);
+}
+
 double Oscillator::frequency(void) const
 {
         return geonkickApi->oscillatorFrequency(index());
+}
+
+double Oscillator::pitchShift(void) const
+{
+        return geonkickApi->oscillatorPitchShift(index());
 }
 
 int Oscillator::index() const

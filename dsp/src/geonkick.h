@@ -82,7 +82,8 @@ enum geonkick_envelope_type {
         GEONKICK_FREQUENCY_ENVELOPE = 1,
         GEONKICK_FILTER_CUTOFF_ENVELOPE = 2,
 	GEONKICK_DISTORTION_DRIVE_ENVELOPE = 3,
-        GEONKICK_DISTORTION_VOLUME_ENVELOPE = 4
+        GEONKICK_DISTORTION_VOLUME_ENVELOPE = 4,
+        GEONKICK_PITCH_SHIFT_ENVELOPE = 5
 };
 
 enum gkick_filter_type {
@@ -330,6 +331,11 @@ geonkick_set_osc_frequency(struct geonkick *kick,
                            gkick_real v);
 
 enum geonkick_error
+geonkick_set_osc_pitch_shift(struct geonkick *kick,
+                           size_t osc_index,
+                           gkick_real semitones);
+
+enum geonkick_error
 geonkick_get_osc_amplitude(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real *v);
@@ -337,6 +343,11 @@ enum geonkick_error
 geonkick_get_osc_frequency(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real *v);
+
+enum geonkick_error
+geonkick_get_osc_pitch_shift(struct geonkick *kick,
+                             size_t osc_index,
+                             gkick_real *semitones);
 
 enum geonkick_error
 geonkick_play(struct geonkick *kick, size_t id);

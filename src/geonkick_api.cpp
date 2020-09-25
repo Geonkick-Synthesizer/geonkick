@@ -743,11 +743,9 @@ double GeonkickApi::oscillatorAmplitude(int oscillatorIndex) const
 
 bool GeonkickApi::setOscillatorFrequency(int oscillatorIndex, double frequency)
 {
-	if (geonkick_set_osc_frequency(geonkickApi,
-                                       getOscIndex(oscillatorIndex),
-                                       frequency) != GEONKICK_OK)
-		return false;
-	return true;
+	return geonkick_set_osc_frequency(geonkickApi,
+                                          getOscIndex(oscillatorIndex),
+                                          frequency) != GEONKICK_OK;
 }
 
 double GeonkickApi::oscillatorFrequency(int oscillatorIndex) const
@@ -755,9 +753,28 @@ double GeonkickApi::oscillatorFrequency(int oscillatorIndex) const
 	gkick_real value = 0;
 	if (geonkick_get_osc_frequency(geonkickApi,
                                        getOscIndex(oscillatorIndex),
-                                       &value) != GEONKICK_OK)
+                                       &value) != GEONKICK_OK) {
                 return 0;
+        }
 	return value;
+}
+
+bool GeonkickApi::setOscillatorPitchShift(int oscillatorIndex, double semitones)
+{
+	return geonkick_set_osc_pitch_shift(geonkickApi,
+                                            getOscIndex(oscillatorIndex),
+                                            semitones) == GEONKICK_OK;
+}
+
+double GeonkickApi::oscillatorPitchShift(int oscillatorIndex) const
+{
+	gkick_real semitones = 0;
+	if (geonkick_get_osc_pitch_shift(geonkickApi,
+                                         getOscIndex(oscillatorIndex),
+                                         &semitones) != GEONKICK_OK) {
+                return 0;
+        }
+	return semitones;
 }
 
 bool GeonkickApi::isOscillatorEnabled(int oscillatorIndex) const

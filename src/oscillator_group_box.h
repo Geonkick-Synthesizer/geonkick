@@ -77,8 +77,9 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickSlider *seedSlider;
         GeonkickButton *noiseWhiteButton;
         GeonkickButton *noiseBrownianButton;
-        Knob *envelopeAmplitudeKnob;
-        Knob *frequencyAmplitudeKnob;
+        Knob *amplitudeKnob;
+        Knob *frequencyKnob;
+        Knob *pitchShiftKnob;
         bool filterTypeIsChecked;
         GeonkickWidget *amplitudeEnvelopeBox;
 };

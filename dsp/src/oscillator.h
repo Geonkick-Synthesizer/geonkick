@@ -30,10 +30,17 @@
 
 #define GKICK_OSC_DEFAULT_AMPLITUDE   1.0f
 #define GKICK_OSC_DEFAULT_FREQUENCY   150.0f
+#define GKICK_OSC_DEFAULT_PITCH       69.0f
 
 enum geonkick_osc_state {
         GEONKICK_OSC_STATE_DISABLED = 0,
         GEONKICK_OSC_STATE_ENABLED  = 1
+};
+
+enum gkick_osc_nevelope_type {
+        GKICK_OSC_AMPLITUDE_ENVELOPE    = 0,
+        GKICK_OSC_FREQUENCY_ENVELOPE   = 1,
+        GKICK_OSC_PITCH_SHIFT_ENVELOPE = 2
 };
 
 struct gkick_oscillator {
@@ -49,6 +56,8 @@ struct gkick_oscillator {
 	gkick_real sample_rate;
 	gkick_real frequency;
 	gkick_real amplitude;
+        /* Pitch shift semitones. */
+        gkick_real pitch_shift;
 
         struct gkick_buffer *sample;
 
@@ -114,7 +123,8 @@ gkick_osc_func_noise_brownian(gkick_real *previous,
                               unsigned int *seed);
 
 gkick_real
-gkick_osc_func_sample(struct gkick_buffer *sample);
+gkick_osc_func_sample(struct gkick_buffer *sample,
+                      float pitch_shift);
 
 void gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
                                    size_t env_index,

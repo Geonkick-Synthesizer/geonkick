@@ -67,7 +67,8 @@ class GeonkickApi : public RkObject {
           Frequency = GEONKICK_FREQUENCY_ENVELOPE,
 	  FilterCutOff = GEONKICK_FILTER_CUTOFF_ENVELOPE,
 	  DistortionDrive = GEONKICK_DISTORTION_DRIVE_ENVELOPE,
-          DistortionVolume = GEONKICK_DISTORTION_VOLUME_ENVELOPE
+          DistortionVolume = GEONKICK_DISTORTION_VOLUME_ENVELOPE,
+          PitchSift = GEONKICK_PITCH_SHIFT_ENVELOPE
   };
 
   enum class FilterType:int {
@@ -115,10 +116,14 @@ class GeonkickApi : public RkObject {
   std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
   bool setOscillatorFrequency(int oscillatorIndex,
                               double frequency);
+  bool setOscillatorPitchShift(int oscillatorIndex,
+                               double semitones);
+
   void setOscillatorAsFm(int oscillatorIndex, bool b);
   bool isOscillatorAsFm(int oscillatorIndex) const;
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;
+  double oscillatorPitchShift(int oscillatorIndex) const;
   void addKickEnvelopePoint(EnvelopeType envelope,
                             double x,
                             double y);
