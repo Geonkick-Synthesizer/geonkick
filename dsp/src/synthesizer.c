@@ -311,13 +311,12 @@ gkick_synth_osc_get_env(struct gkick_synth *synth,
                         size_t osc_index,
                         size_t env_index)
 {
-        struct gkick_oscillator *osc;
-
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return NULL;
         }
 
+        struct gkick_oscillator *osc;
         osc = gkick_synth_get_oscillator(synth, osc_index);
         if (osc == NULL) {
                  gkick_log_error("can't get oscillator %d", osc_index);
@@ -391,33 +390,24 @@ gkick_synth_osc_env_add_point(struct gkick_synth *synth,
                               gkick_real x,
                               gkick_real y)
 {
-        struct gkick_oscillator *osc;
-        struct gkick_envelope   *env;
-
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
         gkick_synth_lock(synth);
-        osc = gkick_synth_get_oscillator(synth, osc_index);
+        struct gkick_oscillator *osc = gkick_synth_get_oscillator(synth, osc_index);
         if (osc == NULL) {
                  gkick_log_error("can't get oscillator %d", osc_index);
                  gkick_synth_unlock(synth);
                  return GEONKICK_ERROR;
         }
-
-        if (env_index == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                env = osc->filter->cutoff_env;
-        else
-                env = gkick_osc_get_envelope(osc, env_index);
-
+        struct gkick_envelope *env = gkick_osc_get_envelope(osc, env_index);
         if (env == NULL) {
                 gkick_synth_unlock(synth);
                 gkick_log_error("can't get envelope");
                 return GEONKICK_ERROR;
         }
-
         if (gkick_envelope_add_point(env, x, y) == NULL) {
                 gkick_log_error("can't add envelope point");
                 gkick_synth_unlock(synth);
@@ -439,32 +429,24 @@ gkick_synth_osc_env_remove_point(struct gkick_synth *synth,
                                  size_t env_index,
                                  size_t index)
 {
-        struct gkick_oscillator *osc;
-        struct gkick_envelope   *env;
-
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
         gkick_synth_lock(synth);
-        osc = gkick_synth_get_oscillator(synth, osc_index);
+        struct gkick_oscillator *osc = gkick_synth_get_oscillator(synth, osc_index);
         if (osc == NULL) {
                  gkick_log_error("can't get oscillator %d", osc_index);
                  gkick_synth_unlock(synth);
                  return GEONKICK_ERROR;
         }
-
-        if (env_index == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                env = osc->filter->cutoff_env;
-        else
-                env = gkick_osc_get_envelope(osc, env_index);
+        struct gkick_envelope *env = gkick_osc_get_envelope(osc, env_index);
         if (env == NULL) {
                 gkick_synth_unlock(synth);
                 gkick_log_error("can't get envelope");
                 return GEONKICK_ERROR;
         }
-
         gkick_envelope_remove_point(env, index);
         if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
             && osc->state == GEONKICK_OSC_STATE_ENABLED) {
@@ -483,27 +465,20 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
                                  gkick_real x,
                                  gkick_real y)
 {
-        struct gkick_oscillator *osc;
-        struct gkick_envelope   *env;
-
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
         gkick_synth_lock(synth);
-
-        osc = gkick_synth_get_oscillator(synth, osc_index);
+        struct gkick_oscillator *osc = gkick_synth_get_oscillator(synth, osc_index);
         if (osc == NULL) {
                  gkick_log_error("can't get oscillator %d", osc_index);
                  gkick_synth_unlock(synth);
                  return GEONKICK_ERROR;
         }
 
-        if (env_index == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                env = osc->filter->cutoff_env;
-        else
-                env = gkick_osc_get_envelope(osc, env_index);
+        struct gkick_envelope *env = gkick_osc_get_envelope(osc, env_index);
         if (env == NULL) {
                 gkick_synth_unlock(synth);
                 gkick_log_error("can't get envelope");
@@ -515,7 +490,6 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
             && osc->state == GEONKICK_OSC_STATE_ENABLED) {
                 synth->buffer_update = true;
         }
-
         gkick_synth_unlock(synth);
 
         return GEONKICK_OK;

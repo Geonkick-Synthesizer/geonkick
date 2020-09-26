@@ -238,7 +238,6 @@ void EnvelopeWidget::createButtomMenu()
         addSeparator(buttomAreaWidget, menuContainer, Rk::Alignment::AlignRight);
 	menuContainer->addWidget(oscillator1EvelopesButton, Rk::Alignment::AlignRight);
         addSeparator(buttomAreaWidget, menuContainer, Rk::Alignment::AlignRight, 5);
-        
 	menuContainer->addWidget(layer3Button, Rk::Alignment::AlignRight);
         addSeparator(buttomAreaWidget, menuContainer, Rk::Alignment::AlignRight, 5);
         menuContainer->addWidget(layer2Button, Rk::Alignment::AlignRight);
