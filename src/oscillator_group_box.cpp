@@ -251,6 +251,19 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     oscillator,
                     setAmplitude(val));
 
+        oscAmplEnvelopeButton = new GeonkickButton(this);
+        oscAmplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
+                                   && viewState()->getEnvelopeCategory() == Envelope::Category::Oscillator1);
+        oscAmplEnvelopeButton->setFixedSize(54, 20);
+        oscAmplEnvelopeButton->setPosition(amplitudeKnob->x(), amplitudeKnob->y() + amplitudeKnob->height());
+        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(topmenu_controls_off)),
+                               RkButton::ButtonImage::ImageUnpressed);
+        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(topmenu_controls_active)),
+                               RkButton::ButtonImage::ImagePressed);
+        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(topmenu_controls_hover)),
+                               RkButton::ButtonImage::ImageUnpressedHover);
+        oscAmplEnvelopeButton->show();
+
         if (oscillator->type() == Oscillator::Type::Noise) {
                 noiseWhiteButton = new GeonkickButton(amplitudeEnvelopeBox);
                 noiseWhiteButton->setPosition(224 / 2 + (224 / 2 - 90) / 2 - 10, 10);

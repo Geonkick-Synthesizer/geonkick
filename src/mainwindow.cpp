@@ -101,6 +101,7 @@ void MainWindow::createViewState()
         RK_ACT_BIND(viewState, samplesBrowserPathChanged,
                     RK_ACT_ARGS(const std::string &path),
                     geonkickApi, getUiSettings()->setSamplesBrowserPath(path));
+        setViewState(viewState);
 }
 
 void MainWindow::createShortcuts()

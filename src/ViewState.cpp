@@ -83,5 +83,33 @@ ViewState::Oscillator ViewState::samplesBrowserOscillator() const
         return samplesBrowser.oscillator;
 }
 
+void ViewState::setEnvelopeType(Envelope::Type envelope)
+{
+        if (envelopeType != envelope) {
+                envelopeType = envelope;
+                auto act = std::make_unique<RkAction>(this);
+                act->setCallback([this](void){ envelopeTypeChanged(envelopeType); });
+                eventQueue()->postAction(std::move(act));
+        }
+}
 
+Envelope::Type ViewState::gettEnvelopeType() const
+{
+        return envelopeType;
+}
+
+void ViewState::setEnvelopeCategory(Envelope::Category category)
+{
+        if (envelopeCategory != category) {
+                envelopeCategory = category;
+                auto act = std::make_unique<RkAction>(this);
+                act->setCallback([this](void){ envelopeCategoryChanged(envelopeCategory); });
+                eventQueue()->postAction(std::move(act));
+        }
+}
+
+Envelope::Category ViewState::gettEnvelopeCategory() const
+{
+        return envelopeCategory;
+}
 

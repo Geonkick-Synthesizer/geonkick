@@ -53,6 +53,14 @@ class ViewState: public RkObject {
                     samplesBrowserOscChanged(ViewState::Oscillator osc),
                     RK_ARG_TYPE(ViewState::Oscillator),
                     RK_ARG_VAL(osc));
+        RK_DECL_ACT(envelopeCategoryChanged,
+                    envelopeCategoryChanged(Envelope::Category category),
+                    RK_ARG_TYPE(Envelope::Category),
+                    RK_ARG_VAL(category));
+        RK_DECL_ACT(envelopeTypeChanged,
+                    envelopeTypeChanged(Envelope::Type envelope),
+                    RK_ARG_TYPE(Envelope::Type),
+                    RK_ARG_VAL(envelope));
 
         ViewState::View getMainView() const;
         void setMainView(ViewState::View view);
@@ -62,6 +70,10 @@ class ViewState: public RkObject {
         std::string samplesBrowserPreviewFile() const;
         void setSamplesBrowserOscillator(Oscillator osc);
         Oscillator samplesBrowserOscillator() const;
+        void setEnvelopeCategory(Envelope::Category category);
+        Envelope::Category gettEnvelopeCategory() const;
+        void setEnvelopeType(Envelope::Type envelope);
+        Envelope::Type gettEnvelopeType() const;
 
  private:
         struct SamplesBrowser {
@@ -72,6 +84,8 @@ class ViewState: public RkObject {
 
         ViewState::View mainView;
         SamplesBrowser samplesBrowser;
+        Envelope::Type envelopeType;
+        Envelope::Category envelopeCategory;
 };
 
 #endif // GEONGKICK_VIEW_STATE_H

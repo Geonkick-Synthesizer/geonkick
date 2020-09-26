@@ -56,13 +56,12 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         setFixedSize(parent->size());
         fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
         fileBrowser->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
-        auto viewState = static_cast<ViewState*>(findObject("ViewState"));
-        fileBrowser->setCurrentDirectoy(viewState->samplesBrowserPath());
-        setPreviewSample(viewState->samplesBrowserPreviewFile());
+        fileBrowser->setCurrentDirectoy(viewState()->samplesBrowserPath());
+        setPreviewSample(viewState()->samplesBrowserPreviewFile());
         RK_ACT_BIND(fileBrowser,
                     directoryChanged,
                     RK_ACT_ARGS(const std::string &path),
-                    viewState,
+                    viewState(),
                     setSamplesBrowserPath(path));
         RK_ACT_BIND(fileBrowser,
                     currentFileChanged,
@@ -72,7 +71,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         RK_ACT_BIND(fileBrowser,
                     currentFileChanged,
                     RK_ACT_ARGS(const std::string &file),
-                    viewState,
+                    viewState(),
                     setSamplesBrowserPreviewFile(file));
         samplePreviewWidget->setSize(300, 260);
         samplePreviewWidget->show();
@@ -94,7 +93,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         previewContainer->addContainer(previewMenuContainer);
         mainLayout->addSpace(5);
         mainLayout->addContainer(previewContainer);
-        setOscillator(viewState->samplesBrowserOscillator());
+        setOscillator(viewState()->samplesBrowserOscillator());
 
         show();
 }

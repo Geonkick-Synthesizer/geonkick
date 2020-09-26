@@ -29,6 +29,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
                                const RkNativeWindowInfo &info,
                                Rk::WindowFlags flags)
         : RkWidget(app, info, flags)
+        , viewState{nullptr}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});
@@ -39,6 +40,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
 
 GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
         : RkWidget(app, flags)
+        , viewState{nullptr}
 {
         setBackgroundColor({68, 68, 70});
         setTextColor({210, 226, 226, 140});
@@ -49,12 +51,23 @@ GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
 
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
         : RkWidget(parent, flags)
+        , viewState{parent->viewState()}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});
         auto f = font();
         f.setSize(12);
         setFont(f);
+}
+
+void GeonkickWidget::setViewState(ViewState *state)
+{
+        viewState = state;
+}
+
+ViewState* GeonkickWidget::viewState() const
+{
+        return viewState;
 }
 
 void GeonkickWidget::paintEvent(RkPaintEvent *event)

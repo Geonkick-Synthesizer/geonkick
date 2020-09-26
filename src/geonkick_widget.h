@@ -31,6 +31,7 @@
 
 class RkPaintEvent;
 class RkNativeWindowInfo;
+class Viewstate;
 
 class GeonkickWidget: public RkWidget
 {
@@ -45,6 +46,8 @@ class GeonkickWidget: public RkWidget
         virtual ~GeonkickWidget() = default;
         void setBackgroundImage(const RkImage &img);
         void setBackgroundImage(const std::string &file);
+        void setViewState(ViewState *state);
+        ViewState* viewState() const;
 
  protected:
         void paintEvent(RkPaintEvent *event) final;
@@ -53,6 +56,7 @@ class GeonkickWidget: public RkWidget
 
 private:
         RkImage backgroundImage;
+        ViewState *viewState;
 };
 
 #endif // GEONKICK_WIDGET_H
