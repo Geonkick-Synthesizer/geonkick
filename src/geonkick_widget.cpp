@@ -29,7 +29,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
                                const RkNativeWindowInfo &info,
                                Rk::WindowFlags flags)
         : RkWidget(app, info, flags)
-        , viewState{nullptr}
+       , viewingState{nullptr}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});
@@ -40,7 +40,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
 
 GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
         : RkWidget(app, flags)
-        , viewState{nullptr}
+        , viewingState{nullptr}
 {
         setBackgroundColor({68, 68, 70});
         setTextColor({210, 226, 226, 140});
@@ -51,7 +51,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
 
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
         : RkWidget(parent, flags)
-        , viewState{parent->viewState()}
+        , viewingState{parent->viewState()}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});
@@ -62,12 +62,12 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
 
 void GeonkickWidget::setViewState(ViewState *state)
 {
-        viewState = state;
+        viewingState = state;
 }
 
 ViewState* GeonkickWidget::viewState() const
 {
-        return viewState;
+        return viewingState;
 }
 
 void GeonkickWidget::paintEvent(RkPaintEvent *event)
@@ -81,9 +81,8 @@ void GeonkickWidget::paintEvent(RkPaintEvent *event)
         paintWidget(event);
 }
 
-void GeonkickWidget::paintWidget(RkPaintEvent *event)
+void GeonkickWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
 {
-        RK_UNUSED(event);
 }
 
 void GeonkickWidget::setBackgroundImage(const RkImage &img)

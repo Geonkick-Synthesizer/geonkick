@@ -82,6 +82,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         Knob *pitchShiftKnob;
         bool filterTypeIsChecked;
         GeonkickWidget *amplitudeEnvelopeBox;
+        GeonkickButton *oscAmplEnvelopeButton;
 };
 
 #endif // GKICK_OSCILLATOR_GROUP_BOX_H

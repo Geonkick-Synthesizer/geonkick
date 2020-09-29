@@ -126,6 +126,7 @@ mono_radio_button_active.png
 stereo_radio_button.png
 stereo_radio_button_active.png
 meter_scale.png
+
 filter_type_hp.png
 filter_type_lp.png
 filter_type_bp.png
@@ -133,6 +134,9 @@ filter_type_hp_checked.png
 filter_type_lp_checked.png
 filter_type_bp_checked.png
 general_groupbox_label.png
+
+# ==== OSC section ====
+
 hboxbk_ampl_env.png
 hboxbk_compressor.png
 hboxbk_filter.png
@@ -144,6 +148,10 @@ knob_bk_50x50.png
 knob_bk_image_freq.png
 knob_bk_image.png
 knob.png
+
+osc_ampl_button_off.png
+osc_ampl_button_on.png
+osc_ampl_button_hover.png
 
 phase_label.png
 noise_groupbox_label.png

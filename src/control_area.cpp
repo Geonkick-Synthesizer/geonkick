@@ -41,9 +41,8 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , currentWidget{nullptr}
 {
         setFixedSize(920, 370);
-        auto viewState = static_cast<ViewState*>(findObject("ViewState"));
-        RK_ACT_BIND(viewState, mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
-        showWidget(viewState->getMainView());
+        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
+        showWidget(viewState()->getMainView());
 }
 
 void ControlArea::showWidget(ViewState::View view)
@@ -59,7 +58,8 @@ void ControlArea::showWidget(ViewState::View view)
                 showPresets();
                 break;
         case ViewState::View::Samples:
-                delete currentWidget;
+                if (currentWidget)
+                        currentWidget->close();
                 currentWidget = new SampleBrowser(this, geonkickApi);
                 break;
         default:
@@ -70,7 +70,8 @@ void ControlArea::showWidget(ViewState::View view)
 void ControlArea::showControls()
 {
         if (!dynamic_cast<ControlsWidget*>(currentWidget)) {
-                delete currentWidget;
+                if (currentWidget)
+                        currentWidget->close();
                 auto controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
                 controlsWidget->setEnvelopeWidget(envelopeWidget);
                 RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
@@ -83,7 +84,8 @@ void ControlArea::showControls()
 void ControlArea::showKit()
 {
         if (!dynamic_cast<KitWidget*>(currentWidget)) {
-                delete currentWidget;
+                if (currentWidget)
+                        currentWidget->close();
                 currentWidget = new KitWidget(this, kitModel);
                 currentWidget->show();
         }
@@ -92,7 +94,8 @@ void ControlArea::showKit()
 void ControlArea::showPresets()
 {
         if (!dynamic_cast<PresetBrowserView*>(currentWidget)) {
-                delete currentWidget;
+                if (currentWidget)
+                        currentWidget->close();
                 currentWidget = new PresetBrowserView(this, presetsModel);
                 currentWidget->show();
         }

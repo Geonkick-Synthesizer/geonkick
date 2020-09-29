@@ -31,7 +31,7 @@
 
 class RkPaintEvent;
 class RkNativeWindowInfo;
-class Viewstate;
+class ViewState;
 
 class GeonkickWidget: public RkWidget
 {
@@ -56,7 +56,7 @@ class GeonkickWidget: public RkWidget
 
 private:
         RkImage backgroundImage;
-        ViewState *viewState;
+        ViewState* viewingState;
 };
 
 #endif // GEONKICK_WIDGET_H

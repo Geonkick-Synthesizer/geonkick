@@ -63,6 +63,9 @@ RK_DECLARE_IMAGE_RC(noise_type_white_active);
 RK_DECLARE_IMAGE_RC(noise_type_brownian);
 RK_DECLARE_IMAGE_RC(noise_type_brownian_active);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
+RK_DECLARE_IMAGE_RC(osc_ampl_button_off);
+RK_DECLARE_IMAGE_RC(osc_ampl_button_on);
+RK_DECLARE_IMAGE_RC(osc_ampl_button_hover);
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           : GeonkickGroupBox{parent}
@@ -84,6 +87,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , pitchShiftKnob{nullptr}
            , filterTypeIsChecked{false}
            , amplitudeEnvelopeBox{nullptr}
+           , oscAmplEnvelopeButton{nullptr}
 {
         setFixedSize(224, 380);
         oscillatorCheckbox = new GeonkickButton(this);
@@ -251,19 +255,32 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     oscillator,
                     setAmplitude(val));
 
-        oscAmplEnvelopeButton = new GeonkickButton(this);
+        oscAmplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
         oscAmplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
-                                   && viewState()->getEnvelopeCategory() == Envelope::Category::Oscillator1);
-        oscAmplEnvelopeButton->setFixedSize(54, 20);
-        oscAmplEnvelopeButton->setPosition(amplitudeKnob->x(), amplitudeKnob->y() + amplitudeKnob->height());
-        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(topmenu_controls_off)),
-                               RkButton::ButtonImage::ImageUnpressed);
-        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(topmenu_controls_active)),
-                               RkButton::ButtonImage::ImagePressed);
-        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(topmenu_controls_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                                          && static_cast<Oscillator::Type>(viewState()->getEnvelopeCategory())
+                                          == oscillator->type());
+        oscAmplEnvelopeButton->setFixedSize(62, 20);
+        oscAmplEnvelopeButton->setPosition(amplitudeKnob->x() + amplitudeKnob->width() / 2 - oscAmplEnvelopeButton->width() / 2,
+                                           amplitudeKnob->y() + amplitudeKnob->height() - 3);
+        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
+                                        RkButton::ButtonImage::ImageUnpressed);
+        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),
+                                        RkButton::ButtonImage::ImagePressed);
+        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
+                                        RkButton::ButtonImage::ImagePressedHover);
+        oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
+                                        RkButton::ButtonImage::ImageUnpressedHover);
         oscAmplEnvelopeButton->show();
-
+        RK_ACT_BIND(oscAmplEnvelopeButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    viewState(), setEnvelope(static_cast<Envelope::Category>(oscillator->type()),
+                                             Envelope::Type::Amplitude));
+        RK_ACT_BIND(amplitudeEnvelopeBox->viewState(), envelopeChanged,
+                    RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
+                    oscAmplEnvelopeButton, setPressed(envelope == Envelope::Type::Amplitude
+                                                      && static_cast<Oscillator::Type>(category)
+                                                      == oscillator->type()));
         if (oscillator->type() == Oscillator::Type::Noise) {
                 noiseWhiteButton = new GeonkickButton(amplitudeEnvelopeBox);
                 noiseWhiteButton->setPosition(224 / 2 + (224 / 2 - 90) / 2 - 10, 10);
@@ -478,11 +495,8 @@ void OscillatorGroupBox::updateGui()
 
 void OscillatorGroupBox::browseSample()
 {
-        auto visualState = dynamic_cast<ViewState*>(findObject("ViewState"));
-        if (visualState) {
-                visualState->setSamplesBrowserOscillator(static_cast<ViewState::Oscillator>(oscillator->type()));
-                visualState->setMainView(ViewState::View::Samples);
-        }
+        viewState()->setSamplesBrowserOscillator(static_cast<ViewState::Oscillator>(oscillator->type()));
+        viewState()->setMainView(ViewState::View::Samples);
 }
 
 void OscillatorGroupBox::updateAmpltudeEnvelopeBox()

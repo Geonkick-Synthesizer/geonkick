@@ -59,7 +59,6 @@ class TopBar : public GeonkickWidget
         GeonkickButton *layer2Button;
         GeonkickButton *layer3Button;
         GeonkickApi *geonkickApi;
-        ViewState*  viewState;
         GeonkickButton *tuneCheckbox;
         GeonkickButton *controlsButton;
         GeonkickButton *kitButton;

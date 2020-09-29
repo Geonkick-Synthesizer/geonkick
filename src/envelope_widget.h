@@ -41,7 +41,8 @@ public:
                              GeonkickApi *api,
                              const std::vector<std::unique_ptr<Oscillator>> &oscillators);
      void hideEnvelope(bool b);
-     void showEnvelopeType(Envelope::Type type);
+     void showEnvelope(Envelope::Category category = Envelope::Category::General,
+                       Envelope::Type type = Envelope::Type::Amplitude);
      void updateGui();
      RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
      RK_DECL_ACT(envelopeTypeSelected,
@@ -51,7 +52,6 @@ public:
      Oscillator* getCurrentOscillator() const;
 
  protected:
-     void showEnvelope(Envelope::Category category);
      Envelope* getEnvelope(Envelope::Category category);
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
@@ -65,14 +65,6 @@ public:
      void createButtomMenu();
      std::unordered_map<int, std::shared_ptr<Envelope>> envelopes;
      EnvelopeWidgetDrawingArea *drawArea;
-     GeonkickButton *showAmplitudeEnvButton;
-     GeonkickButton *showFrequencyEnvButton;
-     RkWidget* frequencySeparator;
-     GeonkickButton *showFilterEnvButton;
-     GeonkickButton *oscillator1EvelopesButton;
-     GeonkickButton *oscillator2EvelopesButton;
-     GeonkickButton *noiseEvelopesButton;
-     GeonkickButton *generalEvelopesButton;
      GeonkickButton *layer1Button;
      GeonkickButton *layer2Button;
      GeonkickButton *layer3Button;

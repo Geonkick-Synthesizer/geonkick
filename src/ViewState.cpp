@@ -29,6 +29,8 @@ ViewState::ViewState(RkObject *parent)
         : RkObject(parent)
         , mainView{ViewState::View::Controls}
         , samplesBrowser{"", "", ViewState::Oscillator::Oscillator1}
+        , envelopeType{Envelope::Type::Amplitude}
+        , envelopeCategory{Envelope::Category::General}
 {
 }
 
@@ -83,17 +85,28 @@ ViewState::Oscillator ViewState::samplesBrowserOscillator() const
         return samplesBrowser.oscillator;
 }
 
+void ViewState::setEnvelope(Envelope::Category category, Envelope::Type envelope)
+{
+        if (envelopeCategory != category || envelopeType != envelope) {
+                envelopeCategory = category;
+                envelopeType = envelope;
+                auto act = std::make_unique<RkAction>(this);
+                act->setCallback([this](void){envelopeChanged(envelopeCategory, envelopeType); });
+                eventQueue()->postAction(std::move(act));
+        }
+}
+
 void ViewState::setEnvelopeType(Envelope::Type envelope)
 {
         if (envelopeType != envelope) {
                 envelopeType = envelope;
                 auto act = std::make_unique<RkAction>(this);
-                act->setCallback([this](void){ envelopeTypeChanged(envelopeType); });
+                act->setCallback([this](void){envelopeChanged(envelopeCategory, envelopeType); });
                 eventQueue()->postAction(std::move(act));
         }
 }
 
-Envelope::Type ViewState::gettEnvelopeType() const
+Envelope::Type ViewState::getEnvelopeType() const
 {
         return envelopeType;
 }
@@ -103,12 +116,12 @@ void ViewState::setEnvelopeCategory(Envelope::Category category)
         if (envelopeCategory != category) {
                 envelopeCategory = category;
                 auto act = std::make_unique<RkAction>(this);
-                act->setCallback([this](void){ envelopeCategoryChanged(envelopeCategory); });
+                act->setCallback([this](void){ envelopeChanged(envelopeCategory, envelopeType); });
                 eventQueue()->postAction(std::move(act));
         }
 }
 
-Envelope::Category ViewState::gettEnvelopeCategory() const
+Envelope::Category ViewState::getEnvelopeCategory() const
 {
         return envelopeCategory;
 }

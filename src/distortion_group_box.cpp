@@ -197,7 +197,7 @@ void DistortionGroupBox::showEnvelope(Envelope::Type type)
 {
         updateButtons(type);
         if (envelopeWidget)
-                envelopeWidget->showEnvelopeType(type);
+                envelopeWidget->showEnvelope(Envelope::Category::General, type);
 }
 
 void DistortionGroupBox::setEnvelopeWidget(EnvelopeWidget *widget)

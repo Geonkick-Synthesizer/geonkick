@@ -26,6 +26,7 @@
 
 #include "globals.h"
 #include "geonkick_api.h"
+#include "envelope.h"
 
 #include <RkObject.h>
 
@@ -61,6 +62,11 @@ class ViewState: public RkObject {
                     envelopeTypeChanged(Envelope::Type envelope),
                     RK_ARG_TYPE(Envelope::Type),
                     RK_ARG_VAL(envelope));
+        RK_DECL_ACT(envelopeChanged,
+                    envelopeChanged(Envelope::Category category, Envelope::Type envelope),
+                    RK_ARG_TYPE(Envelope::Category, Envelope::Type),
+                    RK_ARG_VAL(category, envelope));
+
 
         ViewState::View getMainView() const;
         void setMainView(ViewState::View view);
@@ -70,10 +76,11 @@ class ViewState: public RkObject {
         std::string samplesBrowserPreviewFile() const;
         void setSamplesBrowserOscillator(Oscillator osc);
         Oscillator samplesBrowserOscillator() const;
+        void setEnvelope(Envelope::Category category, Envelope::Type envelope);
         void setEnvelopeCategory(Envelope::Category category);
-        Envelope::Category gettEnvelopeCategory() const;
+        Envelope::Category getEnvelopeCategory() const;
         void setEnvelopeType(Envelope::Type envelope);
-        Envelope::Type gettEnvelopeType() const;
+        Envelope::Type getEnvelopeType() const;
 
  private:
         struct SamplesBrowser {
