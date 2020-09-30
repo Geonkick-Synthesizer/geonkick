@@ -32,29 +32,12 @@
 #include <RkLabel.h>
 
 RK_DECLARE_IMAGE_RC(separator);
-RK_DECLARE_IMAGE_RC(show_ampl_env_active);
-RK_DECLARE_IMAGE_RC(show_ampl_env);
-RK_DECLARE_IMAGE_RC(show_ampl_env_hover);
-RK_DECLARE_IMAGE_RC(show_freq_env_active);
-RK_DECLARE_IMAGE_RC(show_freq_env);
-RK_DECLARE_IMAGE_RC(show_freq_env_hover);
-RK_DECLARE_IMAGE_RC(show_filter_env);
-RK_DECLARE_IMAGE_RC(show_filter_env_active);
-RK_DECLARE_IMAGE_RC(show_filter_env_hover);
 RK_DECLARE_IMAGE_RC(layer1_env);
 RK_DECLARE_IMAGE_RC(layer1_env_active);
 RK_DECLARE_IMAGE_RC(layer2_env);
 RK_DECLARE_IMAGE_RC(layer2_env_active);
 RK_DECLARE_IMAGE_RC(layer3_env);
 RK_DECLARE_IMAGE_RC(layer3_env_active);
-RK_DECLARE_IMAGE_RC(show_osc1_envelopes_button_active);
-RK_DECLARE_IMAGE_RC(show_osc1_envelopes_button);
-RK_DECLARE_IMAGE_RC(show_osc2_envelopes_button_active);
-RK_DECLARE_IMAGE_RC(show_osc2_envelopes_button);
-RK_DECLARE_IMAGE_RC(show_noise_envelopes_button_active);
-RK_DECLARE_IMAGE_RC(show_noise_envelopes_button);
-RK_DECLARE_IMAGE_RC(show_general_envelopes_button_active);
-RK_DECLARE_IMAGE_RC(show_general_envelopes_button);
 
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
@@ -105,35 +88,20 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
 void EnvelopeWidget::createButtomMenu()
 {
         auto buttomAreaWidget = new GeonkickWidget(this);
-        buttomAreaWidget->setPosition(drawArea->x(), drawArea->y() + drawArea->height() + 3);
-        buttomAreaWidget->setFixedSize(drawArea->width(), 20);
+        buttomAreaWidget->setBackgroundColor(40, 40, 40);
+        buttomAreaWidget->setFixedSize(90, 20);
+        buttomAreaWidget->setPosition(55 + drawArea->x(),
+                                      drawArea->y() + drawArea->height() - buttomAreaWidget->height() - 6);
         buttomAreaWidget->show();
 
         createLayersButtons(buttomAreaWidget);
 	menuContainer = new RkContainer(buttomAreaWidget);
-        menuContainer->addSpace(10, Rk::Alignment::AlignRight);
-	menuContainer->addWidget(layer3Button, Rk::Alignment::AlignRight);
-        addSeparator(buttomAreaWidget, menuContainer, Rk::Alignment::AlignRight, 5);
-        menuContainer->addWidget(layer2Button, Rk::Alignment::AlignRight);
-        addSeparator(buttomAreaWidget, menuContainer, Rk::Alignment::AlignRight, 5);
-        menuContainer->addWidget(layer1Button, Rk::Alignment::AlignRight);
+	menuContainer->addWidget(layer1Button);
+        menuContainer->addSpace(5);
+        menuContainer->addWidget(layer2Button);
+        menuContainer->addSpace(5);
+        menuContainer->addWidget(layer3Button);
 
-}
-
-RkWidget* EnvelopeWidget::addSeparator(RkWidget *parent,
-                                       RkContainer *layout,
-                                       Rk::Alignment alignment,
-                                       int margin)
-{
-        layout->addSpace(margin, alignment);
-        auto separator = new RkLabel(parent);
-        separator->setBackgroundColor(parent->background());
-        separator->setSize(2, 21);
-        separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
-        separator->show();
-        layout->addWidget(separator, alignment);
-        layout->addSpace(margin, alignment);
-        return separator;
 }
 
 void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
@@ -144,20 +112,17 @@ void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
 
 Envelope* EnvelopeWidget::getEnvelope(Envelope::Category category)
 {
-        auto res = envelopes.find(static_cast<int>(category));
-        if (res != envelopes.end())
+        if (auto res = envelopes.find(static_cast<int>(category)); res != envelopes.end())
                 return res->second.get();
         return nullptr;
 }
 
 void EnvelopeWidget::showEnvelope(Envelope::Category category, Envelope::Type type)
 {
-        auto envelope = getEnvelope(category);
-        if (envelope) {
-                drawArea->setEnvelope(envelope);
+        if (auto envelope = getEnvelope(category); envelope) {
                 envelope->setType(type);
+                drawArea->setEnvelope(envelope);
         }
-        drawArea->update();
 }
 
 void EnvelopeWidget::hideEnvelope(bool b)
@@ -219,21 +184,14 @@ void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
 
 void EnvelopeWidget::updateGui()
 {
-        for (const auto &envelope: envelopes) {
-                if (envelope.second->isSupportedType(Envelope::Type::Amplitude))
-                        envelope.second->updatePoints();
-                if (envelope.second->isSupportedType(Envelope::Type::Frequency))
-                        envelope.second->updatePoints();
-		if (envelope.second->isSupportedType(Envelope::Type::FilterCutOff))
-                        envelope.second->updatePoints();
-        }
+        for (const auto &envelope: envelopes)
+                envelope.second->updatePoints();
         drawArea->update();
 }
 
 Oscillator* EnvelopeWidget::getCurrentOscillator() const
 {
-        auto envelope = drawArea->getEnvelope();
-        if (envelope)
+        if (auto envelope = drawArea->getEnvelope(); envelope)
                 return static_cast<OscillatorEnvelope*>(envelope)->getOscillator();
         return nullptr;
 }

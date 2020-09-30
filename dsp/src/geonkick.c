@@ -185,7 +185,9 @@ geonkick_osc_envelope_get_points(struct geonkick *kick,
 
         return gkick_synth_osc_envelope_points(kick->synths[kick->per_index],
                                                osc_index,
-                                               env_index, buf, npoints);
+                                               env_index,
+                                               buf,
+                                               npoints);
 }
 
 enum geonkick_error

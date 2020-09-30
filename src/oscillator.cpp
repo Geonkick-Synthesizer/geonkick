@@ -77,9 +77,7 @@ Oscillator::FunctionType Oscillator::function() const
 std::vector<RkRealPoint>
 Oscillator::envelopePoints(EnvelopeType envelope) const
 {
-        std::vector<RkRealPoint> points;
-        points = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
-        return points;
+        return geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
 }
 
 void Oscillator::addEnvelopePoint(EnvelopeType envelope, double x, double y)

@@ -55,14 +55,12 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
                 currentEnvelope = envelope;
-                if (currentEnvelope)
-                        update();
+                update();
         }
 }
 
-void EnvelopeWidgetDrawingArea::paintWidget(RkPaintEvent *event)
+void EnvelopeWidgetDrawingArea::paintWidget([[maybe_unused]] RkPaintEvent *event)
 {
-        RK_UNUSED(event);
         if (width() != envelopeImage.width() || height() != envelopeImage.height()) {
                 RkImage im(size());
                 envelopeImage = im;
@@ -82,7 +80,7 @@ void EnvelopeWidgetDrawingArea::paintWidget(RkPaintEvent *event)
         if (currentEnvelope && !isHideEnvelope())
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
 
-        painter.drawText(55, height() - 12, getEnvStateText());
+        painter.drawText(150, height() - 12, getEnvStateText());
         auto pen = painter.pen();
         pen.setWidth(1);
         pen.setColor({20, 20, 20, 255});

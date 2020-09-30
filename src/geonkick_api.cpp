@@ -444,7 +444,7 @@ std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
 
 std::vector<RkRealPoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeType envelope) const
 {
-        gkick_real *buf;
+        gkick_real *buf = NULL;
         std::vector<RkRealPoint> points;
         size_t npoints = 0;
         geonkick_osc_envelope_get_points(geonkickApi,
@@ -454,10 +454,7 @@ std::vector<RkRealPoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorInde
                                          &npoints);
         for (decltype(npoints) i = 0; i < 2 * npoints; i += 2)
                 points.push_back(RkRealPoint(buf[i], buf[i+1]));
-
-        if (buf)
-                free(buf);
-
+        free(buf);
         return points;
 }
 

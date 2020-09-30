@@ -87,7 +87,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
            , pitchShiftKnob{nullptr}
            , filterTypeIsChecked{false}
            , amplitudeEnvelopeBox{nullptr}
-           , oscAmplEnvelopeButton{nullptr}
 {
         setFixedSize(224, 380);
         oscillatorCheckbox = new GeonkickButton(this);
@@ -255,7 +254,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     oscillator,
                     setAmplitude(val));
 
-        oscAmplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
+        auto oscAmplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
         oscAmplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
                                           && static_cast<Oscillator::Type>(viewState()->getEnvelopeCategory())
                                           == oscillator->type());

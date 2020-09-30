@@ -26,6 +26,7 @@
 #include "knob.h"
 #include "geonkick_button.h"
 #include "filter.h"
+#include "ViewState.h"
 
 #include <RkLabel.h>
 
@@ -36,6 +37,9 @@ RK_DECLARE_IMAGE_RC(checkbox_unchecked);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
 RK_DECLARE_IMAGE_RC(knob);
 RK_DECLARE_IMAGE_RC(general_groupbox_label);
+RK_DECLARE_IMAGE_RC(osc_ampl_button_off);
+RK_DECLARE_IMAGE_RC(osc_ampl_button_on);
+RK_DECLARE_IMAGE_RC(osc_ampl_button_hover);
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         : GeonkickGroupBox(parent)
@@ -76,6 +80,31 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
                     RK_ACT_ARGS(double val),
                     geonkickApi,
                     setKickAmplitude(val));
+
+        auto amplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
+        amplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
+                                       && Envelope::Category::General == viewState()->getEnvelopeCategory());
+        amplEnvelopeButton->setFixedSize(62, 20);
+        amplEnvelopeButton->setPosition(kickAmplitudeKnob->x() + kickAmplitudeKnob->width() / 2
+                                        - amplEnvelopeButton->width() / 2,
+                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height() - 3);
+        amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
+                                        RkButton::ButtonImage::ImageUnpressed);
+        amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),
+                                        RkButton::ButtonImage::ImagePressed);
+        amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
+                                        RkButton::ButtonImage::ImagePressedHover);
+        amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
+                                        RkButton::ButtonImage::ImageUnpressedHover);
+        amplEnvelopeButton->show();
+        RK_ACT_BIND(amplEnvelopeButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    viewState(), setEnvelope(Envelope::Category::General, Envelope::Type::Amplitude));
+        RK_ACT_BIND(amplitudeEnvelopeBox->viewState(), envelopeChanged,
+                    RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
+                    amplEnvelopeButton, setPressed(envelope == Envelope::Type::Amplitude
+                                                   && category == Envelope::Category::General));
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
         kickLengthKnob->setFixedSize(80, 80);

@@ -56,11 +56,6 @@ public:
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
      void setLayer(GeonkickApi::Layer layer);
-     RkWidget* addSeparator(RkWidget *parent,
-                            RkContainer *layout,
-                            Rk::Alignment alignment = Rk::Alignment::AlignLeft,
-                            int maring = 10);
-
  private:
      void createButtomMenu();
      std::unordered_map<int, std::shared_ptr<Envelope>> envelopes;

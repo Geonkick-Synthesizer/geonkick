@@ -40,7 +40,7 @@
 #include <RkEvent.h>
 
 constexpr int MAIN_WINDOW_WIDTH  = 940;
-constexpr int MAIN_WINDOW_HEIGHT = 745;
+constexpr int MAIN_WINDOW_HEIGHT = 715;
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
@@ -182,7 +182,7 @@ bool MainWindow::init(void)
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
-        envelopeWidget->setFixedSize(850, 335);
+        envelopeWidget->setFixedSize(850, 305);
         envelopeWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
