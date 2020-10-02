@@ -36,7 +36,8 @@ Envelope::Envelope(const RkRect &area)
 			 Type::Frequency,
 			 Type::FilterCutOff,
                          Type::DistortionDrive,
-                         Type::DistortionVolume})
+                         Type::DistortionVolume,
+                         Type::PitchShift})
         , overPointIndex{0}
         , isOverPoint{false}
         , pointSelected{false}
@@ -128,6 +129,8 @@ void Envelope::drawValueScale(RkPainter &painter)
                 text = "Distortion Volume";
         else if (type() == Type::Frequency || type() == Type::FilterCutOff)
                 text = "Frequency, Hz";
+        else if (type() == Type::PitchShift)
+                text = "Semitones";
 
         painter.translate(RkPoint(getOrigin().x() - 30, getOrigin().y() - H() / 2 + 35));
         painter.rotate(-M_PI / 2);
@@ -144,7 +147,8 @@ void Envelope::drawValueScale(RkPainter &painter)
 
         if (type() == Type::Amplitude
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::PitchShift) {
                 double step = envelopeAmplitude() / 10;
                 double amplitude = envelopeAmplitude();
                 for (int i = 1; i <= 10; i++) {
@@ -234,7 +238,8 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 {
         if (type() == Envelope::Type::Amplitude
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::PitchShift) {
                 std::ostringstream ss;
 		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
 			ss << std::setprecision(2) << value * pow(10, 36.0 / 20);
@@ -478,7 +483,8 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
         RkRealPoint scaledPoint;
         if (type() == Type::Amplitude
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::PitchShift) {
                 scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
                                           static_cast<double>(point.y()) / H());
         } else {
@@ -496,7 +502,8 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
         int x, y;
         if (type() == Type::Amplitude
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::PitchShift) {
                 x = point.x() * W();
                 y = point.y() * H();
         } else {

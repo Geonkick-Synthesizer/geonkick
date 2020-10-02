@@ -29,6 +29,7 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         ,  geonkickApi{api}
 {
         removeSupportedType(Envelope::Type::Frequency);
+        removeSupportedType(Envelope::Type::PitchShift);
         RK_ACT_BIND(geonkickApi, kickLengthUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
         RK_ACT_BIND(geonkickApi, kickAmplitudeUpdated, RK_ACT_ARGS(double val), this, envelopeUpdated());
         setType(Envelope::Type::Amplitude);

@@ -152,6 +152,12 @@ knob.png
 osc_ampl_button_off.png
 osc_ampl_button_on.png
 osc_ampl_button_hover.png
+osc_freq_button_off.png
+osc_freq_button_on.png
+osc_freq_button_hover.png
+osc_pitch_button_off.png
+osc_pitch_button_on.png
+osc_pitch_button_hover.png
 
 phase_label.png
 noise_groupbox_label.png

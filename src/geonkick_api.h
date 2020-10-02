@@ -68,7 +68,7 @@ class GeonkickApi : public RkObject {
 	  FilterCutOff = GEONKICK_FILTER_CUTOFF_ENVELOPE,
 	  DistortionDrive = GEONKICK_DISTORTION_DRIVE_ENVELOPE,
           DistortionVolume = GEONKICK_DISTORTION_VOLUME_ENVELOPE,
-          PitchSift = GEONKICK_PITCH_SHIFT_ENVELOPE
+          PitchShift = GEONKICK_PITCH_SHIFT_ENVELOPE
   };
 
   enum class FilterType:int {
