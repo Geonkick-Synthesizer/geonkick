@@ -36,8 +36,7 @@
 
 GeonkickApi::GeonkickApi()
         : geonkickApi{nullptr}
-        , updateLimiterLeveler{false}
-        , limiterLevelerVal{0}
+        , limiterLevelers{}
         , jackEnabled{false}
         , standaloneInstance{false}
         , eventQueue{nullptr}
@@ -878,21 +877,26 @@ void GeonkickApi::kickUpdatedCallback(void *arg,
                 obj->updateKickBuffer(std::move(buffer), id);
 }
 
-void GeonkickApi::limiterCallback(void *arg, gkick_real val)
+void GeonkickApi::limiterCallback(void *arg, size_t index, gkick_real val)
 {
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
-                obj->setLimiterVal(val);
+                obj->setLimiterLevelerValue(index, val);
 }
 
-void GeonkickApi::setLimiterVal(double val)
+void GeonkickApi::setLimiterLevelerValue(size_t index, double val)
 {
-        limiterLevelerVal = val;
+        if (index < limiterLevelers.size())
+                limiterLevelers[index] = val;
 }
 
-double GeonkickApi::getLimiterLevelerValue() const
+double GeonkickApi::getLimiterLevelerValue(size_t index) const
 {
-        return limiterLevelerVal;
+        if (index == static_cast<size_t>(-1))
+                index = currentPercussion();
+        if (index < limiterLevelers.size())
+                return limiterLevelers[index];
+        return 0;
 }
 
 void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,

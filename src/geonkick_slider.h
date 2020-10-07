@@ -43,13 +43,14 @@ class GeonkickSlider: public GeonkickWidget
         void onSetValue(int value);
         RK_DECL_ACT(valueUpdated, valueUpdated(int value),
                     RK_ARG_TYPE(int), RK_ARG_VAL(value));
+        Orientation getOrientation() const;
 
  protected:
         int  calculateValue(int x, int y);
-        void paintWidget(RkPaintEvent *event) final;
-        void mouseButtonPressEvent(RkMouseEvent *event) final;
-        void mouseMoveEvent(RkMouseEvent *event) final;
-        void mouseButtonReleaseEvent(RkMouseEvent *event) final;
+        virtual void paintWidget(RkPaintEvent *event) override;
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
+        void mouseMoveEvent(RkMouseEvent *event) override;
+        void mouseButtonReleaseEvent(RkMouseEvent *event) override;
         int pixelsFromValue() const;
 
  private:

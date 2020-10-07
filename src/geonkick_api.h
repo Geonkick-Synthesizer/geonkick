@@ -227,7 +227,7 @@ class GeonkickApi : public RkObject {
   void enbaleLayer(Layer layer, bool enable = true);
   bool isLayerEnabled(Layer layer) const;
   int getOscIndex(int index) const;
-  double getLimiterLevelerValue() const;
+  double getLimiterLevelerValue(size_t index = -1) const;
   std::filesystem::path currentWorkingPath(const std::string &key) const;
   void setCurrentWorkingPath(const std::string &key,
                              const std::filesystem::path &path);
@@ -318,7 +318,7 @@ protected:
                                   gkick_real *buff,
                                   size_t size,
                                   size_t id);
-  static void limiterCallback(void *arg, gkick_real val);
+  static void limiterCallback(void *arg, size_t index, gkick_real val);
   void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
   void setOscillatorState(Layer layer,
                           OscillatorType oscillator,
@@ -326,7 +326,7 @@ protected:
   void getOscillatorState(Layer layer,
                           OscillatorType osc,
                           const std::shared_ptr<PercussionState> &state) const;
-  void setLimiterVal(double val);
+  void setLimiterLevelerValue(size_t index, double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,
                                             int sampleRate = 48000,
@@ -334,8 +334,7 @@ protected:
 
 private:
   mutable struct geonkick *geonkickApi;
-  std::atomic<bool> updateLimiterLeveler;
-  std::atomic<double> limiterLevelerVal;
+  std::array<std::atomic<double>, GEONKICK_MAX_PERCUSSIONS> limiterLevelers;
   bool jackEnabled;
   bool standaloneInstance;
   mutable std::mutex apiMutex;

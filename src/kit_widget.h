@@ -35,6 +35,7 @@ class KitModel;
 class RkContainer;
 class PercussionModel;
 class KitPercussionView;
+class RkTimer;
 
 class KitWidget: public GeonkickWidget
 {
@@ -53,6 +54,7 @@ class KitWidget: public GeonkickWidget
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
         void keyPressEvent(RkKeyEvent *event);
+        void onUpdateLevelers();
 
  private:
         KitModel *kitModel;
@@ -61,6 +63,7 @@ class KitWidget: public GeonkickWidget
         RkButton *saveKitButton;
         RkContainer *percussionsContainer;
         std::vector<KitPercussionView*> percussionViewList;
+        RkTimer *levelersTimer;
 };
 
 class KitKeysView: public GeonkickWidget

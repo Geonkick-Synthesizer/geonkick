@@ -75,7 +75,7 @@ gkick_audio_process(struct gkick_audio *audio,
 
 enum geonkick_error
 gkick_audio_set_limiter_callback(struct gkick_audio *audio,
-                                 void (*callback)(void*, gkick_real val),
+                                 void (*callback)(void*, size_t index, gkick_real val),
                                  void *arg);
 
 #endif // GKICK_AUDIO_H

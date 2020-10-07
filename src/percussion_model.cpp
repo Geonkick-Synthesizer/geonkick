@@ -145,6 +145,11 @@ int PercussionModel::limiter() const
         return kitModel->percussionLimiter(index());
 }
 
+int PercussionModel::leveler() const
+{
+        return kitModel->percussionLeveler(index());
+}
+
 void PercussionModel::mute(bool b)
 {
         if (kitModel->mutePercussion(index(), b))

@@ -153,3 +153,8 @@ void GeonkickSlider::onSetValue(int value)
                 update();
         }
 }
+
+GeonkickSlider::Orientation GeonkickSlider::getOrientation() const
+{
+        return sliderOrientation;
+}

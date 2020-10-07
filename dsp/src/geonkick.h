@@ -382,6 +382,7 @@ geonkick_set_kick_buffer_callback(struct geonkick *kick,
 enum geonkick_error
 geonkick_set_kick_limiter_callback(struct geonkick *kick,
                                    void (*callback)(void*,
+                                                    size_t index,
                                                     gkick_real val),
                                    void *arg);
 

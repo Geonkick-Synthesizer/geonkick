@@ -69,6 +69,45 @@ void KitChannelSpinBox::mouseButtonPressEvent(RkMouseEvent *event)
                 action decreaseChannel();
 }
 
+PercussionLimiter::PercussionLimiter(GeonkickWidget *parent)
+        : GeonkickSlider(parent)
+        , levelerValue{0}
+{
+}
+
+void PercussionLimiter::setLeveler(int value)
+{
+        levelerValue = value;
+        if (value > 100)
+                levelerValue = 100;
+        else if (value < 0)
+                levelerValue = 0;
+        else
+                levelerValue = value;
+        update();
+}
+
+int PercussionLimiter::getLeveler() const
+{
+        return levelerValue;
+}
+
+void PercussionLimiter::paintWidget(RkPaintEvent *event)
+{
+        GeonkickSlider::paintWidget(event);
+        RkPainter painter(this);
+        double value = (static_cast<double>(levelerValue) / 100) * (width() - 2);
+        RkColor color(40, 200, 40);
+        if (levelerValue > 0) {
+                if (getOrientation() == GeonkickSlider::Orientation::Horizontal)
+                        painter.fillRect(RkRect(1, 2,
+                                                value, height() - 4), color);
+                else
+                        painter.fillRect(RkRect(height() - 2 - value, 2,
+                                                width() - 4, value), color);
+        }
+}
+
 KitPercussionView::KitPercussionView(KitWidget *parent,
                                      PercussionModel *model)
         : GeonkickWidget(parent)
@@ -83,8 +122,7 @@ KitPercussionView::KitPercussionView(KitWidget *parent,
         , playButton{nullptr}
         , muteButton{nullptr}
         , soloButton{nullptr}
-        , limiterSlider{nullptr}
-        , levelerProgress{nullptr}
+        , percussionLimiter{nullptr}
 {
         setSize(parent->width(), 20);
         createView();
@@ -146,18 +184,14 @@ void KitPercussionView::createView()
         percussionContainer->addSpace(10);
 
         // Limiter
-        limiterSlider = new GeonkickSlider(this);
-        limiterSlider->setSize(100, 10);
-        //        levelerProgress = new RkProgressBar(this);
-        //        levelerProgress->setSize({limiterSlider->width() - 2, limiterSlider->height() / 2});
-        //        levelerProgress->setProgressColor({125, 200, 125});
-        //        levelerProgress->setRange(0, 100);
+        percussionLimiter = new PercussionLimiter(this);
+        percussionLimiter->setSize(100, 10);
         auto limiterBox = new RkContainer(this, Rk::Orientation::Vertical);
         limiterBox->setHiddenTakesPlace();
-        limiterBox->setSize({limiterSlider->width(), percussionContainer->height()});
+        limiterBox->setSize({percussionLimiter->width(), percussionContainer->height()});
         //        limiterBox->addWidget(levelerProgress);
-        limiterBox->addSpace((height() - limiterSlider->height()) / 2);
-        limiterBox->addWidget(limiterSlider);
+        limiterBox->addSpace((height() - percussionLimiter->height()) / 2);
+        limiterBox->addWidget(percussionLimiter);
         percussionContainer->addSpace(5);
         percussionContainer->addContainer(limiterBox);
         percussionContainer->addSpace(10);
@@ -210,7 +244,7 @@ void KitPercussionView::createView()
 
 void KitPercussionView::updateView()
 {
-        limiterSlider->onSetValue(percussionModel->limiter());
+        percussionLimiter->onSetValue(percussionModel->limiter());
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
         channelSpinBox->setValue(percussionModel->channel());
@@ -233,11 +267,10 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), percussionModel, play());
         RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, mute(toggled));
         RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, solo(toggled));
-        RK_ACT_BIND(limiterSlider, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
+        RK_ACT_BIND(percussionLimiter, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
-        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), limiterSlider, onSetValue(val));
-        // RK_ACT_BIND(percussionModel, levelerUpdated, RK_ACT_ARGS(int val), levelerProgress, setValue(val));
+        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), percussionLimiter, onSetValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
         RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
@@ -354,4 +387,12 @@ void KitPercussionView::updatePercussionName()
                         editPercussion = nullptr;
 		}
 	}
+}
+
+void KitPercussionView::updateLeveler()
+{
+        if (percussionModel->leveler() > percussionLimiter->getLeveler())
+                percussionLimiter->setLeveler(percussionModel->leveler());
+        else if (percussionLimiter->getLeveler() > 0)
+                percussionLimiter->setLeveler(percussionLimiter->getLeveler() - 2);
 }

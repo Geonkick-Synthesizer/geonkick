@@ -31,7 +31,7 @@ struct gkick_mixer {
 	size_t connection_matrix[127];
         _Atomic int solo;
 	_Atomic int limiter;
-        void (*limiter_callback) (void*, gkick_real val);
+        void (*limiter_callback) (void*, size_t index, gkick_real val);
         void *limiter_callback_arg;
         _Atomic size_t limiter_callback_index;
 };
@@ -66,7 +66,8 @@ gkick_mixer_process(struct gkick_mixer *mixer,
 
 void
 gkick_mixer_set_leveler(struct gkick_mixer *mixer,
-                             gkick_real val);
+                        size_t index,
+                        gkick_real val);
 
 
 void
@@ -96,7 +97,7 @@ gkick_mixer_is_solo(struct gkick_mixer *mixer, size_t id, bool *b);
 
 enum geonkick_error
 gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
-				 void (*callback)(void*, gkick_real val),
+				 void (*callback)(void*, size_t index, gkick_real val),
 				 void *arg);
 
 #endif // GKICK_MIXER_H

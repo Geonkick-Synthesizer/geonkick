@@ -25,13 +25,13 @@
 #define PERCUSSION_VIEW_H
 
 #include "geonkick_widget.h"
+#include "geonkick_slider.h"
 
 #include <RkLabel.h>
 
 class RkLineEdit;
 class RkButton;
 class PercussionModel;
-class GeonkickSlider;
 class RkProgressBar;
 class KitWidget;
 
@@ -47,6 +47,19 @@ class KitChannelSpinBox: public RkLabel {
         void mouseButtonPressEvent(RkMouseEvent *event) override;
 };
 
+class PercussionLimiter : public GeonkickSlider {
+  public:
+        PercussionLimiter(GeonkickWidget *parent);
+        void setLeveler(int value);
+        int getLeveler() const;
+
+  protected:
+        virtual void paintWidget(RkPaintEvent *event) override;
+
+  private:
+        int levelerValue;
+};
+
 class KitPercussionView: public GeonkickWidget
 {
  public:
@@ -57,6 +70,7 @@ class KitPercussionView: public GeonkickWidget
         void setModel(PercussionModel *model);
         PercussionModel* getModel();
         PercussionIndex index() const;
+        void updateLeveler();
 
  protected:
         void createView();
@@ -81,8 +95,7 @@ class KitPercussionView: public GeonkickWidget
         RkButton *playButton;
         RkButton *muteButton;
         RkButton *soloButton;
-        GeonkickSlider *limiterSlider;
-        RkProgressBar *levelerProgress;
+        PercussionLimiter *percussionLimiter;
 };
 
 #endif // KIT_WIDGET_H

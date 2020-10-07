@@ -87,7 +87,7 @@ gkick_mixer_get_frame(struct gkick_mixer *mixer,
                         gkick_real v = 0.0f;
                         gkick_audio_output_get_frame(out, &v);
                         if (i == mixer->limiter_callback_index)
-                                gkick_mixer_set_leveler(mixer, v);
+                                gkick_mixer_set_leveler(mixer, i, v);
                         *val += v;
                 }
         }
@@ -117,8 +117,8 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                                         gkick_audio_output_get_frame(output, &v);
                                         out[left_index][i + offset]  += v;
                                         out[right_index][i + offset] += v;
-                                        if (mixer->limiter_callback_index == per && i == size - 1)
-                                                gkick_mixer_set_leveler(mixer, v);
+                                        if (i == 0)
+                                                gkick_mixer_set_leveler(mixer, per, v);
                                 }
                         }
                 }
@@ -137,10 +137,11 @@ gkick_mixer_process(struct gkick_mixer *mixer,
 
 void
 gkick_mixer_set_leveler(struct gkick_mixer *mixer,
+                        size_t index,
                         gkick_real val)
 {
         if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL)
-                mixer->limiter_callback(mixer->limiter_callback_arg, val);
+                mixer->limiter_callback(mixer->limiter_callback_arg, index, val);
 }
 
 void
@@ -210,7 +211,7 @@ gkick_mixer_is_solo(struct gkick_mixer *mixer, size_t id, bool *b)
 
 enum geonkick_error
 gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
-				 void (*callback)(void*, gkick_real val),
+				 void (*callback)(void*, size_t index, gkick_real val),
 				 void *arg)
 {
         mixer->limiter_callback = callback;

@@ -63,6 +63,7 @@ class KitModel : public RkObject {
         PercussionIndex getIndex(int id) const;
         bool setPercussionLimiter(PercussionIndex index, int value);
         int percussionLimiter(PercussionIndex index) const;
+        int percussionLeveler(PercussionIndex index) const;
         bool mutePercussion(PercussionIndex index, bool b);
         bool isPercussionMuted(PercussionIndex index) const;
         bool soloPercussion(PercussionIndex index, bool b);

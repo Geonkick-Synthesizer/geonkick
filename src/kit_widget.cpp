@@ -33,6 +33,7 @@
 #include <RkButton.h>
 #include <RkProgressBar.h>
 #include <RkContainer.h>
+#include <RkTimer.h>
 
 RK_DECLARE_IMAGE_RC(add_per_button);
 RK_DECLARE_IMAGE_RC(save_kit_button);
@@ -45,7 +46,9 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         , openKitButton{nullptr}
         , saveKitButton{nullptr}
         , percussionsContainer{new RkContainer(this, Rk::Orientation::Vertical)}
+        , levelersTimer{new RkTimer(this, 30)}
 {
+        RK_ACT_BIND(levelersTimer, timeout, RK_ACT_ARGS(), this, onUpdateLevelers());
         percussionsContainer->setHiddenTakesPlace();
         setSize(parent->size());
 
@@ -110,6 +113,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         kitContainer->addContainer(percussionsContainer);
 
         updateView();
+        levelersTimer->start();
 }
 
 void KitWidget::updateView()
@@ -240,4 +244,10 @@ void KitKeysView::paintWidget(RkPaintEvent *event)
 KitModel* KitWidget::getModel() const
 {
         return kitModel;
+}
+
+void KitWidget::onUpdateLevelers()
+{
+        for (const auto &per: percussionViewList)
+                per->updateLeveler();
 }

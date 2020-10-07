@@ -162,6 +162,16 @@ int KitModel::percussionLimiter(PercussionIndex index) const
         return  val;
 }
 
+int KitModel::percussionLeveler(PercussionIndex index) const
+{
+        auto realVal = geonkickApi->getLimiterLevelerValue(percussionId(index));
+        double logVal = 20 * log10(realVal);
+        int val = (logVal + 55.0) * 100.0 / 75;
+        if (val < 0)
+                val = 0;
+        return val;
+}
+
 bool KitModel::mutePercussion(PercussionIndex index, bool b)
 {
         return geonkickApi->mutePercussion(percussionId(index), b);

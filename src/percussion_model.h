@@ -53,6 +53,7 @@ class PercussionModel : public RkObject {
         void play();
         void setLimiter(int value);
         int limiter() const;
+        int leveler() const;
         void mute(bool b);
         bool isMuted() const;
         void solo(bool b);
