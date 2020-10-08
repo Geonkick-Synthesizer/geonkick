@@ -10,7 +10,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.3.8
+Version: 2.4.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -77,10 +77,9 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 * Standalone
 * Pitch to note
 * Plugin
-  - LV2
-  - VST3
+     - LV2
 * Platforms:
-  - GNU/Linux
+     - GNU/Linux
 
 #### Requirements
 
@@ -94,7 +93,7 @@ for standalone:
 for plugin:
 
  * GNU/Linux operating system.
- * A host that supports LV2 or VST3 plugin format running at 48000 sample rate.
+ * A host that supports LV2 plugin format running at 48000 sample rate.
 
 #### Install
 
@@ -107,7 +106,6 @@ In order to build Geonkick there is a need to install the following development 
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for plugin)
 * LV2 development library
-* For VST3 there is a need to install VST3 SDK (optional if you don't want VST3 plugin)
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
@@ -130,16 +128,6 @@ Note: It is recommended to use the release version (see repository tags).
         cmake ../
         make
         make install
-
-##### VST
-
-VST build is turned off by default. In order to enable it there is a need to pass
-GKICK_VST_SDK_PATH to cmake:
-
-    cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
-
-Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/0908f475f52af56682321192d800ef25d1823dd2).
-      Don't forget to build VST3 SDK first.
 
 #### Packages
 
