@@ -283,7 +283,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     RK_ACT_ARGS(),
                     viewState(), setEnvelope(static_cast<Envelope::Category>(oscillator->type()),
                                              Envelope::Type::Amplitude));
-        RK_ACT_BIND(amplitudeEnvelopeBox->viewState(), envelopeChanged,
+        RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     oscAmplEnvelopeButton, setPressed(envelope == Envelope::Type::Amplitude
                                                       && static_cast<Oscillator::Type>(category)
@@ -366,7 +366,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                             RK_ACT_ARGS(),
                             viewState(), setEnvelope(static_cast<Envelope::Category>(oscillator->type()),
                                                      Envelope::Type::Frequency));
-                RK_ACT_BIND(amplitudeEnvelopeBox->viewState(), envelopeChanged,
+                RK_ACT_BIND(viewState(), envelopeChanged,
                             RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                             oscFreqEnvelopeButton, setPressed(envelope == Envelope::Type::Frequency
                                                               && static_cast<Oscillator::Type>(category)
@@ -392,7 +392,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                             RK_ACT_ARGS(),
                             viewState(), setEnvelope(static_cast<Envelope::Category>(oscillator->type()),
                                                      Envelope::Type::PitchShift));
-                RK_ACT_BIND(amplitudeEnvelopeBox->viewState(), envelopeChanged,
+                RK_ACT_BIND(viewState(), envelopeChanged,
                             RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                             pitchEnvelopeButton, setPressed(envelope == Envelope::Type::PitchShift
                                                             && static_cast<Oscillator::Type>(category)
@@ -410,7 +410,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 
 void OscillatorGroupBox::createFilterGroupBox()
 {
-        filterBox = new Filter(this);
+        filterBox = new Filter(this, static_cast<Envelope::Category>(oscillator->type()));
         if (oscillator->type() == Oscillator::Type::Noise)
                 filterBox->setPosition(0, 154);
         else

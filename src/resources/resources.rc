@@ -135,6 +135,10 @@ filter_type_lp_checked.png
 filter_type_bp_checked.png
 general_groupbox_label.png
 
+fl_cutoff_button_on.png
+fl_cutoff_button_hover.png
+fl_cutoff_button_off.png
+
 # ==== OSC section ====
 
 hboxbk_ampl_env.png

@@ -24,6 +24,7 @@
 #include "filter.h"
 #include "geonkick_button.h"
 #include "knob.h"
+#include "ViewState.h"
 
 #include <RkEvent.h>
 
@@ -40,8 +41,12 @@ RK_DECLARE_IMAGE_RC(filter_type_bp);
 RK_DECLARE_IMAGE_RC(filter_type_lp_checked);
 RK_DECLARE_IMAGE_RC(filter_type_hp_checked);
 RK_DECLARE_IMAGE_RC(filter_type_bp_checked);
+RK_DECLARE_IMAGE_RC(filter_cutoff_button_on);
+RK_DECLARE_IMAGE_RC(fl_cutoff_button_on);
+RK_DECLARE_IMAGE_RC(fl_cutoff_button_hover);
+RK_DECLARE_IMAGE_RC(fl_cutoff_button_off);
 
-Filter::Filter(GeonkickWidget *parent)
+Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         : GeonkickWidget(parent)
         , filterCheckbox{nullptr}
         , cutOffKnob{nullptr}
@@ -49,6 +54,7 @@ Filter::Filter(GeonkickWidget *parent)
         , lpFilterButton{nullptr}
         , hpFilterButton{nullptr}
         , bpFilterButton{nullptr}
+        , envelopeCategory{category}
 {
         setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_filter)));
         setFixedSize(224, 125);
@@ -70,6 +76,29 @@ Filter::Filter(GeonkickWidget *parent)
         cutOffKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         cutOffKnob->setRange(20, 20000);
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), this, cutOffChanged(val));
+
+        auto cutoffEnvelopeButton = new GeonkickButton(this);
+        cutoffEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::FilterCutOff
+                                         && viewState()->getEnvelopeCategory() == envelopeCategory);
+        cutoffEnvelopeButton->setFixedSize(62, 20);
+        cutoffEnvelopeButton->setPosition(cutOffKnob->x() + cutOffKnob->width() / 2 - cutoffEnvelopeButton->width() / 2,
+                                          cutOffKnob->y() + cutOffKnob->height() - 3);
+        cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_off)),
+                                       RkButton::ButtonImage::ImageUnpressed);
+        cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_on)),
+                                       RkButton::ButtonImage::ImagePressed);
+        cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_hover)),
+                                       RkButton::ButtonImage::ImagePressedHover);
+        cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_hover)),
+                                       RkButton::ButtonImage::ImageUnpressedHover);
+        RK_ACT_BIND(cutoffEnvelopeButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    viewState(), setEnvelope(envelopeCategory, Envelope::Type::FilterCutOff));
+        RK_ACT_BIND(viewState(), envelopeChanged,
+                    RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
+                    cutoffEnvelopeButton, setPressed(envelope == Envelope::Type::FilterCutOff
+                                                     && category == envelopeCategory));
 
         resonanceKnob = new Knob(this);
 	resonanceKnob->setRangeType(Knob::RangeType::Logarithmic);

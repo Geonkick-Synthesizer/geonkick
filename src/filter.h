@@ -26,6 +26,7 @@
 
 #include "geonkick_widget.h"
 #include "geonkick_api.h"
+#include "envelope.h"
 
 class GeonkickButton;
 class Knob;
@@ -33,8 +34,7 @@ class Knob;
 class Filter: public GeonkickWidget
 {
  public:
-        explicit Filter(GeonkickWidget *parent);
-
+        explicit Filter(GeonkickWidget *parent, Envelope::Category category);
         void enable(bool b);
         bool isEnabled() const;
         void setCutOff(double val);
@@ -64,6 +64,7 @@ class Filter: public GeonkickWidget
         GeonkickButton *lpFilterButton;
         GeonkickButton *hpFilterButton;
         GeonkickButton *bpFilterButton;
+        Envelope::Category envelopeCategory;
 };
 
 #endif // GEONKICK_FILTER_H

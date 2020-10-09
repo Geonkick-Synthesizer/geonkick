@@ -122,7 +122,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 
 void GeneralGroupBox::createFilterHBox()
 {
-        filterBox = new Filter(this);
+        filterBox = new Filter(this, Envelope::Category::General);
         filterBox->setCutOffRange(20, 20000);
         filterBox->setResonanceRange(1, 1000);
         filterBox->setPosition(0, 155);
