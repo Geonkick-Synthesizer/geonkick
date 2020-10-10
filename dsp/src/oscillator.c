@@ -191,7 +191,7 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
                     && (t > (0.25f * osc->initial_phase / M_PI) * kick_len)) {
                         struct gkick_envelope *env = osc->envelopes[GKICK_OSC_PITCH_SHIFT_ENVELOPE];
                         float env_val = gkick_envelope_get_value(env, env_x);
-                        float pitch_shift = 2 * (env_val - 0.5f) * osc->pitch_shift;
+                        float pitch_shift = 2.0f * (env_val - 0.5f) * osc->pitch_shift;
                         v = amp * gkick_osc_func_sample(osc->sample, pitch_shift);
                 }
                 break;
