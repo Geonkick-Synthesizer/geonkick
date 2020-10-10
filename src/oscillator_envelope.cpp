@@ -64,13 +64,18 @@ double OscillatorEnvelope::envelopeLengh(void) const
 
 double OscillatorEnvelope::envelopeAmplitude() const
 {
-        if (type() == Type::Amplitude)
+        switch (type()) {
+        case Type::Amplitude:
                 return oscillator->amplitude();
-        else if (type() == Type::Frequency)
+        case Type::Frequency:
                 return oscillator->frequency();
-        else
+        case Type::PitchShift:
+                return oscillator->pitchShift();
+        case Type::FilterCutOff:
                 return oscillator->filterFrequency();
-        return 0;
+        default:
+                return 0;
+        }
 }
 
 Oscillator* OscillatorEnvelope::getOscillator() const

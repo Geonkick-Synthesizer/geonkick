@@ -121,16 +121,26 @@ void Envelope::drawTimeScale(RkPainter &painter)
 void Envelope::drawValueScale(RkPainter &painter)
 {
         std::string text;
-        if (type() == Type::Amplitude)
+        switch (type()) {
+        case Type::Amplitude:
                 text = "Amplitude";
-	else if (type() == Type::DistortionDrive)
+                break;
+        case Type::DistortionDrive:
 		text = "Distortion Drive";
-        else if (type() == Type::DistortionVolume)
+                break;
+        case Type::DistortionVolume:
                 text = "Distortion Volume";
-        else if (type() == Type::Frequency || type() == Type::FilterCutOff)
+                break;
+        case Type::Frequency:
+        case Type::FilterCutOff:
                 text = "Frequency, Hz";
-        else if (type() == Type::PitchShift)
+                break;
+        case Type::PitchShift:
                 text = "Semitones";
+                break;
+        default:
+                text = "Unknown";
+        }
 
         painter.translate(RkPoint(getOrigin().x() - 30, getOrigin().y() - H() / 2 + 35));
         painter.rotate(-M_PI / 2);
@@ -147,8 +157,7 @@ void Envelope::drawValueScale(RkPainter &painter)
 
         if (type() == Type::Amplitude
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume
-            || type() == Type::PitchShift) {
+            || type() == Type::DistortionVolume) {
                 double step = envelopeAmplitude() / 10;
                 double amplitude = envelopeAmplitude();
                 for (int i = 1; i <= 10; i++) {
@@ -164,9 +173,26 @@ void Envelope::drawValueScale(RkPainter &painter)
                         painter.setPen(RkPen(RkColor(110, 110, 110)));
                         std::ostringstream ss;
 			if ( type() == Type::DistortionDrive || type() == Type::DistortionVolume)
-				ss << std::setprecision(2) << i * step * pow(10, 36.0/20);
+				ss << std::fixed << std::setprecision(2) << i * step * pow(10, 36.0/20);
 			else
-				ss << std::setprecision(2) << i * step;
+				ss << std::fixed << std::setprecision(2) << i * step;
+                        painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
+                }
+        } else if (type() == Type::PitchShift && envelopeAmplitude() > std::numeric_limits<double>::min()) {
+                double step = 2 * std::abs(envelopeAmplitude() / 10);
+                double amplitude = 2 * std::abs(envelopeAmplitude());
+                for (int i = 1; i <= 10; i++) {
+                        int x = getOrigin().x();
+                        int y = 0;
+                        y = getOrigin().y() - H() * (i * step / amplitude);
+                        RkPen pen(RkColor(80, 80, 80));
+                        pen.setStyle(RkPen::PenStyle::DotLine);
+                        painter.setPen(pen);
+                        painter.drawLine(x + 1, y, x + W(), y);
+                        RkRect rect(x - 28,  y -  rectH / 2, 22, rectH);
+                        painter.setPen(RkPen(RkColor(110, 110, 110)));
+                        std::ostringstream ss;
+                        ss << std::fixed << std::setprecision(1) << i * step - amplitude / 2;
                         painter.drawText(rect, ss.str(), Rk::Alignment::AlignRight);
                 }
         } else if (type() == Type::Frequency || type() == Type::FilterCutOff) {
@@ -224,7 +250,7 @@ void Envelope::drawPoints(RkPainter &painter)
                 scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
 		drawPoint(painter, scaledPoint);
                 scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
-                drawPointValue(painter, scaledPoint, envelopePoints[i].y() * envelopeAmplitude());
+                drawPointValue(painter, scaledPoint, envelopePoints[i].y());
         }
 }
 
@@ -238,15 +264,21 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 {
         if (type() == Envelope::Type::Amplitude
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume
-            || type() == Type::PitchShift) {
+            || type() == Type::DistortionVolume) {
+                value *= envelopeAmplitude();
                 std::ostringstream ss;
 		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
 			ss << std::setprecision(2) << value * pow(10, 36.0 / 20);
 		else
 			ss << std::setprecision(2) << value;
                 painter.drawText(point.x(), point.y(), ss.str());
+        } else if (type() == Type::PitchShift) {
+                value *= envelopeAmplitude();
+                std::ostringstream ss;
+                ss << std::fixed << std::setprecision(1) << 2 * value - envelopeAmplitude();
+                painter.drawText(point.x(), point.y(), ss.str());
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
+                value *= envelopeAmplitude();
                 if (value < 20)
                         painter.drawText(point.x(), point.y(), "20Hz " + frequencyToNote(20));
                 if (value >= 20 && value < 1000) {

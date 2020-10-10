@@ -76,6 +76,7 @@ class PercussionState
         void setOscillatorSeed(int index, int seed);
         void setOscillatorAmplitue(int index, double val);
         void setOscillatorFrequency(int index, double val);
+        void setOscillatorPitchShift(int index, double val);
         void setOscillatorFilterEnabled(int index, bool b);
         void setOscillatorFilterType(int index, GeonkickApi::FilterType type);
         void setOscillatorFilterCutOffFreq(int index, double val);
@@ -91,6 +92,7 @@ class PercussionState
         double oscillatorPhase(int index) const;
         int oscillatorSeed(int index) const;
         double oscillatorFrequency(int index) const;
+        double oscillatorPitchShift(int index) const;
         bool isOscillatorFilterEnabled(int index) const;
         GeonkickApi::FilterType oscillatorFilterType(int index) const;
         double oscillatorFilterCutOffFreq(int index) const;
@@ -137,6 +139,10 @@ class PercussionState
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(int index,  const rapidjson::Value &osc);
         static std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
+        static void envelopeToJson(std::ostringstream &jsonStream,
+                                   const std::string &envName,
+                                   double amplitude,
+                                   const std::vector<RkRealPoint> &envelope);
         void oscJson(std::ostringstream &jsonStream) const;
         void kickJson(std::ostringstream &jsonStream) const;
 
@@ -152,6 +158,7 @@ private:
                 , seed{0}
                 , amplitude{0.8}
                 , frequency{200}
+                , pitchShift{0}
                 , isFilterEnabled{false}
                 , filterType{GeonkickApi::FilterType::LowPass}
                 , filterFrequency{200}
@@ -165,6 +172,7 @@ private:
                 int seed;
                 double amplitude;
                 double frequency;
+                double pitchShift;
                 bool isFilterEnabled;
                 GeonkickApi::FilterType filterType;
                 double filterFrequency;
@@ -172,6 +180,7 @@ private:
                 std::vector<RkRealPoint> amplitudeEnvelope;
                 std::vector<RkRealPoint> frequencyEnvelope;
                 std::vector<RkRealPoint> filterCutOffEnvelope;
+                std::vector<RkRealPoint> pitchShiftEnvelope;
         };
 
         std::shared_ptr<OscillatorInfo> getOscillator(int index) const;

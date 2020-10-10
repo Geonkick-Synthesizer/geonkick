@@ -327,7 +327,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 pitchShiftKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
                 pitchShiftKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
                 pitchShiftKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-                pitchShiftKnob->setRange(-48, 48);
+                pitchShiftKnob->setRange(0, 48);
                 RK_ACT_BIND(pitchShiftKnob,
                             valueUpdated,
                             RK_ACT_ARGS(double val),

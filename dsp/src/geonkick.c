@@ -1466,7 +1466,7 @@ geonkick_set_osc_sample(struct geonkick *kick,
                         const gkick_real *data,
                         size_t size)
 {
-        if (kick == NULL || data == NULL || size < 1) {
+        if (kick == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
