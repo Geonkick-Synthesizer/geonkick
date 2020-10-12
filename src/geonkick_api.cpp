@@ -180,12 +180,13 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                         if (osc != GeonkickApi::OscillatorType::Noise) {
                                 state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Frequency);
                                 state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::PitchShift);
+                                std::vector<RkRealPoint> env = envelope;
+                                env[0].setY(0.5);
+                                env[1].setY(0.5);
+                                state->setOscillatorEnvelopePoints(index, env, GeonkickApi::EnvelopeType::PitchShift);
                         }
                         state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::FilterCutOff);
                         state->setOscillatorPitchShift(index, 0);
-                        envelope[0].setY(0.5);
-                        envelope[1].setY(0.5);
-                        state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::PitchShift);
                 }
         }
 

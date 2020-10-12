@@ -133,6 +133,9 @@ filter_type_bp.png
 filter_type_hp_checked.png
 filter_type_lp_checked.png
 filter_type_bp_checked.png
+filter_type_hp_hover.png
+filter_type_lp_hover.png
+filter_type_bp_hover.png
 general_groupbox_label.png
 
 fl_cutoff_button_on.png
