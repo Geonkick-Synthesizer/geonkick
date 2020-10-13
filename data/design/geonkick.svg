@@ -7912,9 +7912,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.3686857"
-     inkscape:cx="877.63201"
-     inkscape:cy="572.82359"
+     inkscape:zoom="7.0124989"
+     inkscape:cx="1037.0796"
+     inkscape:cy="579.11388"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -16459,7 +16459,10 @@
          sodipodi:role="line" /></text>
     <g
        transform="matrix(0.24621447,0,0,0.24621447,74.951354,113.78711)"
-       id="g11250">
+       id="g11250"
+       inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/meter_scale.png"
+       inkscape:export-xdpi="355.19"
+       inkscape:export-ydpi="355.19">
       <rect
          inkscape:export-ydpi="95.926529"
          inkscape:export-xdpi="95.926529"

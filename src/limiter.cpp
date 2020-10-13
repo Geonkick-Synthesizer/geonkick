@@ -36,7 +36,7 @@ Limiter::Limiter(GeonkickApi *api, GeonkickWidget *parent)
         , meterValue{0}
         , meterTimer{new RkTimer(this, 30)}
         , levelerValueTimer{new RkTimer(this, 40)}
-        , scaleImage{40, 329, RK_IMAGE_RC(meter_scale)}
+        , scaleImage{36, 300, RK_IMAGE_RC(meter_scale)}
 {
         setFixedSize(65, scaleImage.height());
         faderSlider->setPosition(0, 0);
@@ -64,7 +64,7 @@ void Limiter::paintWidget(RkPaintEvent *event)
 
         int meterPixels = meterInnerH * (static_cast<double>(meterValue) / 100);
         painter.drawImage(scaleImage, 25, 0);
-        painter.fillRect(RkRect(x + 2, meterPadding + 325 - meterPixels,
+        painter.fillRect(RkRect(x + 2, meterPadding + height() - meterPixels,
                                 meterInnerW, meterPixels), RkColor(125, 200, 125));
         RkPainter paint(this);
         paint.drawImage(img, 0, 0);
