@@ -1194,7 +1194,7 @@ GeonkickApi::currentWorkingPath(const std::string &key) const
         auto it = workingPaths.find(key);
         if (it != workingPaths.end())
                 return it->second;
-        return std::filesystem::current_path();
+        return getSettings("GEONKICK_CONFIG/HOME_PATH");
 }
 
 void GeonkickApi::setCurrentWorkingPath(const std::string &key,
@@ -1342,16 +1342,12 @@ std::string GeonkickApi::getPercussionName(int index) const
 
 void GeonkickApi::setSettings(const std::string &key, const std::string &value)
 {
-        GEONKICK_LOG_DEBUG("set: [" << key << "] = " << value);
-        apiSettings[key] = value;
+        uiSettings->setSettings(key, value);
 }
 
 std::string GeonkickApi::getSettings(const std::string &key) const
 {
-        auto it = apiSettings.find(key);
-        if (it != apiSettings.end())
-                return it->second;
-        return "";
+        return uiSettings->getSettings(key);
 }
 
 void GeonkickApi::tuneAudioOutput(int id, bool tune)

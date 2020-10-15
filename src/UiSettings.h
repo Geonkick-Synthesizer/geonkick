@@ -47,6 +47,8 @@ class UiSettings {
         std::string samplesBrowserPreviewFile() const;
         void setSamplesBrowserOscillator(UiSettings::Oscillator osc);
         UiSettings::Oscillator samplesBrowserOscillator() const;
+        void setSettings(const std::string &key, const std::string &value);
+        std::string getSettings(const std::string &key) const;
 
  protected:
         void parserSamplesBrowser(const rapidjson::Value &obj);
@@ -60,6 +62,7 @@ class UiSettings {
 
         View mainView;
         SamplesBrowser samplesBrowser;
+        std::unordered_map<std::string, std::string> uiSettings;
 };
 
 #endif // GEONGKICK_UI_SETTINGS_H

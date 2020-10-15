@@ -95,7 +95,8 @@ class FileDialog: public GeonkickWidget {
  public:
         enum class Type: int {
                 Save,
-                Open
+                Open,
+                Browse
         };
 
         enum class AcceptStatus: int {
@@ -105,7 +106,7 @@ class FileDialog: public GeonkickWidget {
 
         explicit FileDialog(GeonkickWidget *parent,
                             FileDialog::Type type = FileDialog::Type::Open,
-                            const std::string& title = std::string(), bool buttons = true);
+                            const std::string& title = std::string());
         RK_DECL_ACT(selectedFile,
                     selectedFile(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
@@ -141,7 +142,6 @@ class FileDialog: public GeonkickWidget {
         AcceptStatus status;
         PathListModel* shortcutDirectoriesModel;
         RkList *shortcutDirectoriesView;
-        bool showButtons;
 };
 
 #endif // GEONKICK_FILE_DIALOG_H

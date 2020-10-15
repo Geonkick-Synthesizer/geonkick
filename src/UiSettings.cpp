@@ -48,6 +48,13 @@ void UiSettings::parserSamplesBrowser(const rapidjson::Value &obj)
                         samplesBrowser.previewFile = m.value.GetString();
                 if (m.name == "oscillator" && m.value.IsInt())
                         samplesBrowser.oscillator = static_cast<Oscillator>(m.value.GetInt());
+                if (m.name == "settings" && m.value.IsArray()) {
+                        for (const auto &el: m.value.GetArray()) {
+                                if (el.IsArray() && el.GetArray().Size() == 2)
+                                        uiSettings.insert({el.GetArray()[0].GetString(),
+                                                           el.GetArray()[1].GetString()});
+                        }
+                }
         }
 }
 
@@ -60,7 +67,16 @@ std::string UiSettings::toJson() const
         jsonStream << "    \"currentDirectory\": \"" << samplesBrowser.currentDirectory << "\", " << std::endl;
         jsonStream << "    \"previewFile\": \"" << samplesBrowser.previewFile << "\", " << std::endl;
         jsonStream << "    \"oscillator\": " << static_cast<int>(samplesBrowser.oscillator) << std::endl;
-        jsonStream << "}" << std::endl;
+        jsonStream << "}," << std::endl;
+        jsonStream << "settings: [" << std::endl;
+        bool first = true;
+        for (const auto &e: uiSettings) {
+                if (!first)
+                        jsonStream << ", ";
+                jsonStream << "[\"" << e.first << "\", \"" << e.second << "\"]";
+                first = false;
+        }
+        jsonStream << "]" << std::endl;
         jsonStream << "}" << std::endl;
         return jsonStream.str();
 }
@@ -103,4 +119,16 @@ void UiSettings::setSamplesBrowserOscillator(UiSettings::Oscillator osc)
 UiSettings::Oscillator UiSettings::samplesBrowserOscillator() const
 {
         return samplesBrowser.oscillator;
+}
+
+void UiSettings::setSettings(const std::string &key, const std::string &value)
+{
+        uiSettings[key] = value;
+}
+
+std::string UiSettings::getSettings(const std::string &key) const
+{
+        if (auto it = uiSettings.find(key); it != uiSettings.end())
+                return it->second;
+        return std::string();
 }

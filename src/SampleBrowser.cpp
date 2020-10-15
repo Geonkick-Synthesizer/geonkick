@@ -45,7 +45,7 @@ RK_DECLARE_IMAGE_RC(osc2_preview_sample_pressed);
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
-        , fileBrowser{new FileDialog(this, FileDialog::Type::Open, std::string(), false)}
+        , fileBrowser{new FileDialog(this, FileDialog::Type::Browse, std::string())}
         , samplePreviewWidget{new BufferView(this)}
         , playButton{nullptr}
         , loadButton{nullptr}

@@ -54,7 +54,7 @@ FilesView::FilesView(GeonkickWidget *parent)
         , scrollBar{nullptr}
         , isScrollBarVisible{false}
 {
-        setFixedSize(parent->width() - 50, parent->height() - 100);
+        setFixedSize(parent->width() - 110, parent->height() - 100);
         visibleLines = height() / (lineHeight + lineSacing);
         setPosition(104, 50);
         setBackgroundColor(50, 50, 50);
@@ -373,18 +373,18 @@ void FilesView::setFilters(const std::vector<std::string> &filters)
         fileFilters = filters;
 }
 
-FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std::string& title, bool buttons)
-        : GeonkickWidget(parent, Rk::WindowFlags::Widget)
+FileDialog::FileDialog(GeonkickWidget *parent,
+                       FileDialog::Type type,
+                       const std::string& title)
+        : GeonkickWidget(parent, type == FileDialog::Type::Browse ? Rk::WindowFlags::Widget : Rk::WindowFlags::Dialog)
         , dialogType{type}
         , filesView{nullptr}
         , pathLabel{nullptr}
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
         , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
-        , showButtons{buttons}
 {
         setTitle(title);
-
         setFixedSize(600, 400);
         filesView = new FilesView(this);
         RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
@@ -419,7 +419,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
         buttomContainer->setSize({width(), 30});
         buttomContainer->setPosition({5, height() - buttomContainer->height() - 5});
 
-        if (showButtons) {
+        if (dialogType != Type::Browse) {
                 auto acceptButton = new GeonkickButton(this);
                 acceptButton->setFixedSize(90, 30);
                 if (dialogType == Type::Save)
@@ -428,6 +428,7 @@ FileDialog::FileDialog(GeonkickWidget *parent, FileDialog::Type type, const std:
                         acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(open_active)));
                 RK_ACT_BIND(acceptButton, toggled, RK_ACT_ARGS(bool pressed), this, onAccept());
                 acceptButton->show();
+                buttomContainer->addSpace(10, Rk::Alignment::AlignRight);
                 buttomContainer->addWidget(acceptButton, Rk::Alignment::AlignRight);
                 auto cancelButton = new GeonkickButton(this);
                 cancelButton->setFixedSize(90, 30);
