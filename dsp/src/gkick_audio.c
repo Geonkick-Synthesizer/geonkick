@@ -118,7 +118,6 @@ gkick_audio_play(struct gkick_audio *audio,
                 gkick_audio_output_play(audio->audio_outputs[id]);
         } else if (id == GEONKICK_MAX_PERCUSSIONS) {
                 // Play sample preview.
-                printf("Play sample preview\n");
                 gkick_audio_output_play(audio->audio_outputs[id]);
         }
         return GEONKICK_OK;

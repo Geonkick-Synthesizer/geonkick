@@ -261,6 +261,7 @@ void ExportWidget::browse()
         fileNameEdit->setFocus(false);
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open,
                                          "Select Path - " + std::string(GEONKICK_NAME));
+        fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location"));
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file), this,

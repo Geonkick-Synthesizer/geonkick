@@ -35,8 +35,11 @@
 RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(logo);
 RK_DECLARE_IMAGE_RC(open);
+RK_DECLARE_IMAGE_RC(open_hover);
 RK_DECLARE_IMAGE_RC(save);
+RK_DECLARE_IMAGE_RC(save_hover);
 RK_DECLARE_IMAGE_RC(export);
+RK_DECLARE_IMAGE_RC(export_hover);
 RK_DECLARE_IMAGE_RC(reset);
 RK_DECLARE_IMAGE_RC(reset_hover);
 RK_DECLARE_IMAGE_RC(reset_active);
@@ -99,25 +102,43 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         openFileButton = new GeonkickButton(this);
         openFileButton->show();
         openFileButton->setSize(26, 10);
-        openFileButton->setUnpressedImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open)));
-        openFileButton->setCheckable(true);
-        RK_ACT_BIND(openFileButton, pressed, RK_ACT_ARGS(), this, openFile());
+        openFileButton->setType(RkButton::ButtonType::ButtonCheckable);
+        openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open)),
+                                 RkButton::ButtonImage::ImageUnpressed);
+        openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
+                                 RkButton::ButtonImage::ImageUnpressedHover);
+        openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
+                                 RkButton::ButtonImage::ImagePressed);
+        RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=](){openFileButton->setPressed(false);
+                                                              action openFile();});
         mainLayout->addWidget(openFileButton);
         addSeparator(mainLayout, 10);
 
         saveFileButton = new GeonkickButton(this);
         saveFileButton->setSize(23, 10);
-        saveFileButton->setUnpressedImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save)));
-        saveFileButton->setCheckable(true);
-        RK_ACT_BIND(saveFileButton, pressed, RK_ACT_ARGS(), this, saveFile());
+        saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
+        saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save)),
+                                 RkButton::ButtonImage::ImageUnpressed);
+        saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
+                                 RkButton::ButtonImage::ImageUnpressedHover);
+        saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
+                                 RkButton::ButtonImage::ImagePressed);
+        RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=](){saveFileButton->setPressed(false);
+                                                             action saveFile();});
         mainLayout->addWidget(saveFileButton);
         addSeparator(mainLayout, 10);
 
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setSize(29, 10);
-        exportFileButton->setUnpressedImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export)));
-        exportFileButton->setCheckable(true);
-        RK_ACT_BIND(exportFileButton, pressed, RK_ACT_ARGS(), this, openExport());
+        saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
+        exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export)),
+                                 RkButton::ButtonImage::ImageUnpressed);
+        exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
+                                 RkButton::ButtonImage::ImageUnpressedHover);
+        exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
+                                RkButton::ButtonImage::ImagePressed);
+        RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=](){exportFileButton->setPressed(false);
+                                                               action openExport();});
         mainLayout->addWidget(exportFileButton);
         addSeparator(mainLayout, 10);
 

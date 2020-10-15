@@ -11,6 +11,7 @@ logo.png
 separator.png
 open_active.png
 open.png
+open_hover.png
 play.png
 play_hover.png
 play_pressed.png
@@ -106,6 +107,7 @@ export_button.png
 export_browse.png
 export_cancel.png
 export.png
+export_hover.png
 export_bk.png
 export_format_pressed.png
 export_format_unpressed.png
@@ -177,6 +179,7 @@ fm_radio.png
 fm_radio_active.png
 save_active.png
 save.png
+save_hover.png
 
 wave_button_sawtooth_active.png
 wave_button_sawtooth.png
