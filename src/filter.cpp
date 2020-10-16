@@ -90,7 +90,7 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         auto cutoffEnvelopeButton = new GeonkickButton(this);
         cutoffEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::FilterCutOff
                                          && viewState()->getEnvelopeCategory() == envelopeCategory);
-        cutoffEnvelopeButton->setFixedSize(62, 20);
+        cutoffEnvelopeButton->setFixedSize(63, 21);
         cutoffEnvelopeButton->setPosition(cutOffKnob->x() + cutOffKnob->width() / 2 - cutoffEnvelopeButton->width() / 2,
                                           cutOffKnob->y() + cutOffKnob->height() - 3);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_off)),

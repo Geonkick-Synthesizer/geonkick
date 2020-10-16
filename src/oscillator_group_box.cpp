@@ -266,7 +266,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         oscAmplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
                                           && static_cast<Oscillator::Type>(viewState()->getEnvelopeCategory())
                                           == oscillator->type());
-        oscAmplEnvelopeButton->setFixedSize(62, 20);
+        oscAmplEnvelopeButton->setFixedSize(63, 21);
         oscAmplEnvelopeButton->setPosition(amplitudeKnob->x() + amplitudeKnob->width() / 2 - oscAmplEnvelopeButton->width() / 2,
                                            amplitudeKnob->y() + amplitudeKnob->height() - 3);
         oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
@@ -350,7 +350,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 oscFreqEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Frequency
                                                   && static_cast<Oscillator::Type>(viewState()->getEnvelopeCategory())
                                                   == oscillator->type());
-                oscFreqEnvelopeButton->setFixedSize(62, 20);
+                oscFreqEnvelopeButton->setFixedSize(63, 21);
                 oscFreqEnvelopeButton->setPosition(frequencyKnob->x() + frequencyKnob->width() / 2 - oscFreqEnvelopeButton->width() / 2,
                                                    frequencyKnob->y() + frequencyKnob->height() - 3);
                 oscFreqEnvelopeButton->setImage(RkImage(oscFreqEnvelopeButton->size(), RK_IMAGE_RC(osc_freq_button_off)),
@@ -376,7 +376,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 pitchEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::PitchShift
                                                 && static_cast<Oscillator::Type>(viewState()->getEnvelopeCategory())
                                                 == oscillator->type());
-                pitchEnvelopeButton->setFixedSize(62, 20);
+                pitchEnvelopeButton->setFixedSize(63, 21);
                 pitchEnvelopeButton->setPosition(frequencyKnob->x() + frequencyKnob->width() / 2 - pitchEnvelopeButton->width() / 2,
                                                  frequencyKnob->y() + frequencyKnob->height() - 3);
                 pitchEnvelopeButton->setImage(RkImage(pitchEnvelopeButton->size(), RK_IMAGE_RC(osc_pitch_button_off)),

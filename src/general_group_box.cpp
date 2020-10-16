@@ -84,7 +84,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         auto amplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
         amplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
                                        && Envelope::Category::General == viewState()->getEnvelopeCategory());
-        amplEnvelopeButton->setFixedSize(62, 20);
+        amplEnvelopeButton->setFixedSize(63, 21);
         amplEnvelopeButton->setPosition(kickAmplitudeKnob->x() + kickAmplitudeKnob->width() / 2
                                         - amplEnvelopeButton->width() / 2,
                                         kickAmplitudeKnob->y() + kickAmplitudeKnob->height() - 3);
