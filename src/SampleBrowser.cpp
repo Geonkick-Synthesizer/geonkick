@@ -73,6 +73,14 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
                     RK_ACT_ARGS(const std::string &file),
                     viewState(),
                     setSamplesBrowserPreviewFile(file));
+        RK_ACT_BINDL(fileBrowser,
+                    selectedFile,
+                    RK_ACT_ARGS(const std::string &file),
+                     [&](const std::string &file) {
+                             viewState()->setSamplesBrowserPreviewFile(file);
+                             loadSample();
+                    });
+
         samplePreviewWidget->setSize(300, 260);
         samplePreviewWidget->show();
         RK_ACT_BIND(samplePreviewWidget, graphPressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
@@ -94,7 +102,6 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         mainLayout->addSpace(5);
         mainLayout->addContainer(previewContainer);
         setOscillator(viewState()->samplesBrowserOscillator());
-
         show();
 }
 

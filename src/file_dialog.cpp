@@ -460,20 +460,35 @@ void FileDialog::onPathChanged(const std::string &pathName)
 void FileDialog::onAccept()
 {
         status = AcceptStatus::Accept;
-        if (dialogType == Type::Open && !filesView->selectedFile().empty()) {
-                pathSelected = filesView->selectedFile();
-                action selectedFile(pathSelected);
-                close();
-        } else {
-                if (!fileNameEdit->text().empty()) {
-                        pathSelected = filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text());
-                        action selectedFile(pathSelected);
-                        close();
-                } else if (!filesView->selectedFile().empty() && !std::filesystem::is_directory(filesView->selectedFile())) {
+        switch (dialogType) {
+        case Type::Open:
+                if (!filesView->selectedFile().empty()) {
                         pathSelected = filesView->selectedFile();
                         action selectedFile(pathSelected);
                         close();
                 }
+                break;
+        case Type::Save:
+                if (!fileNameEdit->text().empty()) {
+                        pathSelected = filesView->getCurrentPath()
+                                / std::filesystem::path(fileNameEdit->text());
+                        action selectedFile(pathSelected);
+                        close();
+                } else if (!filesView->selectedFile().empty()
+                           && !std::filesystem::is_directory(filesView->selectedFile())) {
+                        pathSelected = filesView->selectedFile();
+                        action selectedFile(pathSelected);
+                        close();
+                }
+                break;
+        case Type::Browse:
+                if (!filesView->selectedFile().empty()) {
+                        pathSelected = filesView->selectedFile();
+                        action selectedFile(pathSelected);
+                }
+                break;
+        default:
+                return;
         }
 }
 
