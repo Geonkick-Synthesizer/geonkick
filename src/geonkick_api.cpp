@@ -1458,6 +1458,14 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                 data.resize(data.size() / sndinfo.channels);
         }
 
+        float max = std::fabs(*std::max_element(data.begin(), data.end(),
+                                                [](float a, float b){ return fabs(a) < fabs(b); }));
+        if (max > std::numeric_limits<float>::min()) {
+                float k = 1.0f / max;
+                for (auto &v: data)
+                        v *= k;
+        }
+
         if (sampleRate != sndinfo.samplerate) {
                 GEONKICK_LOG_DEBUG("different sample rate " << sndinfo.samplerate
                                    << ", resample to " << sampleRate);
