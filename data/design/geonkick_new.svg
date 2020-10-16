@@ -310,9 +310,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.9738587"
-     inkscape:cx="685.322"
-     inkscape:cy="787.38041"
+     inkscape:zoom="27.28694"
+     inkscape:cx="750.21821"
+     inkscape:cy="68.869639"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -3612,15 +3612,15 @@
        rx="0.52916664"
        ry="0.52916664" />
     <rect
-       style="display:inline;opacity:1;fill:#444446;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#373737;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5816-2-5-3-6"
        width="7.2770996"
        height="2.3362038"
        x="194.85667"
        y="278.87335"
        inkscape:export-filename="/home/iurie/projects/geonkick/src/resources/osc_ampl_button_off.png"
-       inkscape:export-xdpi="216.40515"
-       inkscape:export-ydpi="216.40515"
+       inkscape:export-xdpi="217.44698"
+       inkscape:export-ydpi="217.44698"
        rx="0.23545393"
        ry="0.21775207" />
     <text
@@ -3690,7 +3690,7 @@
          y="287.00732"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19937992px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.0128505;">Amplitude</tspan></text>
     <rect
-       style="display:inline;opacity:1;fill:#444446;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#373737;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5816-2-5-3-6-36"
        width="7.2770996"
        height="2.3362038"
@@ -3768,7 +3768,7 @@
          y="286.97998"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19937992px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.0128505">Frequency</tspan></text>
     <rect
-       style="display:inline;opacity:1;fill:#444446;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#373737;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5816-2-5-3-6-7"
        width="7.2770996"
        height="2.3362038"
@@ -3846,7 +3846,7 @@
          y="287.02646"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19937992px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.0128505">Pitch Shift</tspan></text>
     <rect
-       style="display:inline;opacity:1;fill:#444446;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#373737;fill-opacity:1;stroke:none;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5816-2-5-3-6-7-3"
        width="7.2770996"
        height="2.3362038"
