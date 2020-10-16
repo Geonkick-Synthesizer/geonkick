@@ -31,8 +31,9 @@
 RK_DECLARE_IMAGE_RC(knob);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
 RK_DECLARE_IMAGE_RC(hboxbk_filter);
-RK_DECLARE_IMAGE_RC(checkbox_checked);
-RK_DECLARE_IMAGE_RC(checkbox_unchecked);
+RK_DECLARE_IMAGE_RC(filter_enabled);
+RK_DECLARE_IMAGE_RC(filter_enabled_hover);
+RK_DECLARE_IMAGE_RC(filter_disabled);
 RK_DECLARE_IMAGE_RC(knob_bk_50x50);
 RK_DECLARE_IMAGE_RC(knob_50x50);
 RK_DECLARE_IMAGE_RC(filter_type_lp);
@@ -65,10 +66,16 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         filterCheckbox = new GeonkickButton(this);
         filterCheckbox->setCheckable(true);
         filterCheckbox->setBackgroundColor(68, 68, 70);
-        filterCheckbox->setSize(10, 10);
-        filterCheckbox->setPosition(10, 10);
-        filterCheckbox->setPressedImage(RkImage(12, 12, RK_IMAGE_RC(checkbox_checked)));
-        filterCheckbox->setUnpressedImage(RkImage(12, 12, RK_IMAGE_RC(checkbox_unchecked)));
+        filterCheckbox->setSize(32, 21);
+        filterCheckbox->setPosition(width() / 2 - filterCheckbox->width() / 2, 10);
+        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled)),
+                                       RkButton::ButtonImage::ImagePressed);
+        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_disabled)),
+                                       RkButton::ButtonImage::ImageUnpressed);
+        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled_hover)),
+                                       RkButton::ButtonImage::ImagePressedHover);
+        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled_hover)),
+                                       RkButton::ButtonImage::ImageUnpressedHover);
         RK_ACT_BIND(filterCheckbox, toggled, RK_ACT_ARGS(bool b), this, enabled(b));
 
         cutOffKnob = new Knob(this);

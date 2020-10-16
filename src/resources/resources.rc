@@ -129,6 +129,10 @@ stereo_radio_button.png
 stereo_radio_button_active.png
 meter_scale.png
 
+# ==== Filter ====
+filter_enabled.png
+filter_disabled.png
+filter_enabled_hover.png
 filter_type_hp.png
 filter_type_lp.png
 filter_type_bp.png
@@ -138,11 +142,11 @@ filter_type_bp_checked.png
 filter_type_hp_hover.png
 filter_type_lp_hover.png
 filter_type_bp_hover.png
-general_groupbox_label.png
-
 fl_cutoff_button_on.png
 fl_cutoff_button_hover.png
 fl_cutoff_button_off.png
+
+general_groupbox_label.png
 
 # ==== OSC section ====
 
