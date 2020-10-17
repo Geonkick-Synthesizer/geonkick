@@ -10,7 +10,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.4.0
+Version: 2.4.0 (not released yet)
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -131,7 +131,8 @@ Note: It is recommended to use the release version (see repository tags).
 
 #### Packages
 
-Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora, Manjaro, FreeBSD, KXStudio and others.
+Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora
+, Manjaro, FreeBSD, KXStudio and Ubuntu Studio.
 
 ##### Packaging
 
