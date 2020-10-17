@@ -33,16 +33,15 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         , distortionGroupBox{nullptr}
 {
         auto compressor = new CompressorGroupBox(geonkickApi, this);
-        compressor->setPosition(0, 10);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), compressor, updateGui());
 
         distortionGroupBox = new DistortionGroupBox(geonkickApi, this);
-        distortionGroupBox->setPosition(compressor->width(), 10);
+        distortionGroupBox->setPosition(compressor->width(), 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortionGroupBox, updateGui());
 
         auto layers = new LayersGroupBox(geonkickApi, this);
         layers->setBackgroundColor({100, 100, 100});
-        layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 8, 10);
+        layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 8, 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
 }
 

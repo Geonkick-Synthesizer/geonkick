@@ -40,7 +40,7 @@
 #include <RkEvent.h>
 
 constexpr int MAIN_WINDOW_WIDTH  = 940;
-constexpr int MAIN_WINDOW_HEIGHT = 715;
+constexpr int MAIN_WINDOW_HEIGHT = 705;
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)

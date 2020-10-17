@@ -74,11 +74,17 @@ show_osc2_envelopes_button.png
 # === Oscillator ===
 
 controls_osc1_on.png
+controls_osc1_hover.png
 controls_osc1_off.png
 controls_osc2_on.png
+controls_osc2_hover.png
 controls_osc2_off.png
 controls_noise_on.png
+controls_noise_hover.png
 controls_noise_off.png
+fm_radio.png
+fm_radio_hover.png
+fm_radio_active.png
 
 checkbox_checked_10x10.png
 checkbox_checked.png
@@ -155,7 +161,6 @@ hboxbk_compressor.png
 hboxbk_filter.png
 hboxbk_noise_env.png
 hboxbk_osc_env.png
-hboxbk_sample_env.png
 knob_50x50.png
 knob_bk_50x50.png
 knob_bk_image_freq.png
@@ -179,8 +184,6 @@ noise_type_brownian.png
 noise_type_white_active.png
 noise_type_white.png
 cancel.png
-fm_radio.png
-fm_radio_active.png
 save_active.png
 save.png
 save_hover.png

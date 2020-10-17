@@ -186,7 +186,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                                 state->setOscillatorEnvelopePoints(index, env, GeonkickApi::EnvelopeType::PitchShift);
                         }
                         state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::FilterCutOff);
-                        state->setOscillatorPitchShift(index, 0);
+                        state->setOscillatorPitchShift(index, 12);
                 }
         }
 

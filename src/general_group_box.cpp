@@ -125,7 +125,7 @@ void GeneralGroupBox::createFilterHBox()
         filterBox = new Filter(this, Envelope::Category::General);
         filterBox->setCutOffRange(20, 20000);
         filterBox->setResonanceRange(1, 1000);
-        filterBox->setPosition(0, 155);
+        filterBox->setPosition(0, 150);
         RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b),
                     geonkickApi, enableKickFilter(b));
         RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val),
