@@ -865,7 +865,7 @@ void PercussionState::envelopeToJson(std::ostringstream &jsonStream,
         jsonStream << "\"points\": [" << std::endl;
         bool first = true;
         for (const auto &point: envelope) {
-                if (first)
+                if (!first)
                         jsonStream << ", ";
                 jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
                            << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
@@ -893,7 +893,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                                val.second->amplitudeEnvelope);
                 jsonStream << "," << std::endl;
                 envelopeToJson(jsonStream,
-                               "cutoff_env",
+                               "freq_env",
                                val.second->frequency,
                                val.second->frequencyEnvelope);
                 jsonStream << "," << std::endl;

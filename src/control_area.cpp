@@ -37,7 +37,6 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , oscillators{oscillators}
         , kitModel{new KitModel(this, geonkickApi)}
         , presetsModel{new PresetBrowserModel(this, api)}
-        , envelopeWidget{nullptr}
         , currentWidget{nullptr}
 {
         setFixedSize(920, 370);
@@ -73,7 +72,6 @@ void ControlArea::showControls()
                 if (currentWidget)
                         currentWidget->close();
                 auto controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
-                controlsWidget->setEnvelopeWidget(envelopeWidget);
                 RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 controlsWidget->setSize({width(), height()});
                 currentWidget = controlsWidget;
@@ -104,12 +102,4 @@ void ControlArea::showPresets()
 KitModel* ControlArea::getKitModel() const
 {
         return kitModel;
-}
-
-void ControlArea::setEnvelopeWidget(EnvelopeWidget *widget)
-{
-        envelopeWidget = widget;
-        auto controlsWidget = dynamic_cast<ControlsWidget*>(currentWidget);
-        if (controlsWidget)
-                controlsWidget->setEnvelopeWidget(envelopeWidget);
 }

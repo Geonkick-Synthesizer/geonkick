@@ -26,14 +26,20 @@
 #include "geonkick_button.h"
 #include "geonkick_api.h"
 #include "envelope_widget.h"
+#include "ViewState.h"
 
 #include <RkLabel.h>
 
 RK_DECLARE_IMAGE_RC(distortion_enable);
+RK_DECLARE_IMAGE_RC(distortion_enable_hover);
 RK_DECLARE_IMAGE_RC(distortion_enable_active);
 RK_DECLARE_IMAGE_RC(distortion_in_limiter);
-RK_DECLARE_IMAGE_RC(distortion_volume_label);
-RK_DECLARE_IMAGE_RC(distortion_drive_label);
+RK_DECLARE_IMAGE_RC(distortion_volume_env);
+RK_DECLARE_IMAGE_RC(distortion_volume_env_hover);
+RK_DECLARE_IMAGE_RC(distortion_volume_env_active);
+RK_DECLARE_IMAGE_RC(distortion_drive_env);
+RK_DECLARE_IMAGE_RC(distortion_drive_env_hover);
+RK_DECLARE_IMAGE_RC(distortion_drive_env_active);
 RK_DECLARE_IMAGE_RC(env_button);
 RK_DECLARE_IMAGE_RC(env_button_hover);
 RK_DECLARE_IMAGE_RC(env_button_on);
@@ -44,94 +50,99 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         , volumeSlider{nullptr}
         , driveSlider{nullptr}
         , distortionCheckbox{nullptr}
-        , envelopeWidget{nullptr}
-        , volumeEnvelopeButton{nullptr}
-        , driveEnvelopeButton{nullptr}
+        , volumeEnvButton{nullptr}
+        , driveEnvButton{nullptr}
 {
-        setFixedSize(134, 65);
+        setFixedSize(134, 75);
         distortionCheckbox = new GeonkickButton(this);
-	distortionCheckbox->setSize(77, 12);
+	distortionCheckbox->setSize(69, 21);
 	distortionCheckbox->setCheckable(true);
         RK_ACT_BIND(distortionCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi, enableDistortion(b));
-        distortionCheckbox->setPressedImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable_active)));
-        distortionCheckbox->setUnpressedImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable)));
+        distortionCheckbox->setImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable)),
+                                     RkButton::ButtonImage::ImageUnpressed);
+        distortionCheckbox->setImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable_active)),
+                                     RkButton::ButtonImage::ImagePressed);
+        distortionCheckbox->setImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable_hover)),
+                                     RkButton::ButtonImage::ImageUnpressedHover);
+        distortionCheckbox->setImage(RkImage(distortionCheckbox->size(), RK_IMAGE_RC(distortion_enable_hover)),
+                                     RkButton::ButtonImage::ImagePressedHover);
         distortionCheckbox->setPosition((width() - distortionCheckbox->width()) / 2, 0);
 
         int sliderW = 60;
-        int sliderH = 12;
-        int yoffset = 2;
+        int sliderH = 14;
+        int yoffset = 8;
         int labelD  = 5;
 
         // In limiter
         inLimiterSlider = new GeonkickSlider(this);
         inLimiterSlider->setFixedSize(sliderW, sliderH);
-        inLimiterSlider->setPosition(width() / 2 + labelD / 2 - 12, yoffset + (height() - sliderH) / 3);
+        inLimiterSlider->setPosition(width() / 2 + labelD / 2, yoffset + (height() - sliderH) / 3);
         inLimiterSlider->onSetValue(50);
         RK_ACT_BIND(inLimiterSlider, valueUpdated, RK_ACT_ARGS(int val), this, setInLimiter(val));
         auto inLimiterLabel = new RkLabel(this);
+        inLimiterLabel->setBackgroundColor(background());
         inLimiterLabel->show();
-        inLimiterLabel->setImage(RkImage(24, 10, RK_IMAGE_RC(distortion_in_limiter)));
-        inLimiterLabel->setFixedSize(24, 10);
+        inLimiterLabel->setFixedSize(53, 14);
+        inLimiterLabel->setImage(RkImage(inLimiterLabel->size(), RK_IMAGE_RC(distortion_in_limiter)));
         inLimiterLabel->setPosition(inLimiterSlider->x() - inLimiterLabel->width() - labelD, inLimiterSlider->y());
 
         // Volume
         volumeSlider = new GeonkickSlider(this);
         volumeSlider->setFixedSize(sliderW, sliderH);
-        volumeSlider->setPosition(width() / 2 + labelD / 2 - 12, yoffset + (height() - sliderH) / 3 + sliderH + 4);
+        volumeSlider->setPosition(width() / 2 + labelD / 2, yoffset + (height() - sliderH) / 3 + sliderH + 2);
         volumeSlider->onSetValue(50);
         RK_ACT_BIND(volumeSlider, valueUpdated, RK_ACT_ARGS(int val), this, setVolume(val));
-        auto volumeLabel = new RkLabel(this);
-        volumeLabel->show();
-        volumeLabel->setImage(RkImage(38, 8, RK_IMAGE_RC(distortion_volume_label)));
-        volumeLabel->setFixedSize(38, 8);
-        volumeLabel->setPosition(volumeSlider->x() - volumeLabel->width() - labelD, volumeSlider->y());
-
-        // Volume envelope button
-        volumeEnvelopeButton = new GeonkickButton(this);
-        volumeEnvelopeButton->setSize(14, 14);
-        volumeEnvelopeButton->setPosition({volumeSlider->x() + volumeSlider->width() + 3,
-                                volumeSlider->y() - 1});
-        volumeEnvelopeButton->setImage(RkImage(volumeEnvelopeButton->size(), RK_IMAGE_RC(env_button)),
-                                      RkButton::ButtonImage::ImageUnpressed);
-        volumeEnvelopeButton->setImage(RkImage(volumeEnvelopeButton->size(), RK_IMAGE_RC(env_button_hover)),
-                                      RkButton::ButtonImage::ImageUnpressedHover);
-        volumeEnvelopeButton->setImage(RkImage(volumeEnvelopeButton->size(), RK_IMAGE_RC(env_button_on)),
-                                      RkButton::ButtonImage::ImagePressed);
-        volumeEnvelopeButton->setImage(RkImage(volumeEnvelopeButton->size(), RK_IMAGE_RC(env_button_hover)),
-                                      RkButton::ButtonImage::ImagePressedHover);
-        volumeEnvelopeButton->show();
-        RK_ACT_BIND(volumeEnvelopeButton, toggled,
-                    RK_ACT_ARGS(bool b), this, showEnvelope(Envelope::Type::DistortionVolume));
+        volumeEnvButton = new GeonkickButton(this);
+        volumeEnvButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::DistortionDrive
+                                    && viewState()->getEnvelopeCategory() == Envelope::Category::General);
+        volumeEnvButton->show();
+        volumeEnvButton->setFixedSize(53, 14);
+        volumeEnvButton->setImage(RkImage(volumeEnvButton->size(), RK_IMAGE_RC(distortion_volume_env)),
+                                  RkButton::ButtonImage::ImageUnpressed);
+        volumeEnvButton->setImage(RkImage(volumeEnvButton->size(), RK_IMAGE_RC(distortion_volume_env_active)),
+                                  RkButton::ButtonImage::ImagePressed);
+        volumeEnvButton->setImage(RkImage(volumeEnvButton->size(), RK_IMAGE_RC(distortion_volume_env_hover)),
+                                  RkButton::ButtonImage::ImageUnpressedHover);
+        volumeEnvButton->setImage(RkImage(volumeEnvButton->size(), RK_IMAGE_RC(distortion_volume_env_hover)),
+                                  RkButton::ButtonImage::ImagePressedHover);
+        volumeEnvButton->setPosition(volumeSlider->x() - labelD - volumeEnvButton->width(), volumeSlider->y());
+        RK_ACT_BIND(viewState(), envelopeChanged,
+                    RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
+                    volumeEnvButton, setPressed(envelope == Envelope::Type::DistortionVolume
+                                               && Envelope::Category::General == category));
+        RK_ACT_BIND(volumeEnvButton, pressed,
+                    RK_ACT_ARGS(), viewState(),
+                    setEnvelope(Envelope::Category::General, Envelope::Type::DistortionVolume));
 
         // Drive
         driveSlider = new GeonkickSlider(this);
         driveSlider->setFixedSize(sliderW, sliderH);
-        driveSlider->setPosition(width() / 2 + labelD / 2 - 12,
-                                 yoffset + (height() - sliderH) / 3 + 2 * sliderH + 8);
+        driveSlider->setPosition(width() / 2 + labelD / 2,
+                                 yoffset + (height() - sliderH) / 3 + 2 * sliderH + 4);
         RK_ACT_BIND(driveSlider, valueUpdated, RK_ACT_ARGS(int val), this, setDrive(val));
-        auto driveLabel = new RkLabel(this);
-        driveLabel->show();
-        driveLabel->setImage(RkImage(24, 8, RK_IMAGE_RC(distortion_drive_label)));
-        driveLabel->setFixedSize(24, 8);
-        driveLabel->setPosition(driveSlider->x() - driveLabel->width() - labelD,
-                                driveSlider->y());
+        driveEnvButton = new GeonkickButton(this);
+        driveEnvButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::DistortionDrive
+                                   && viewState()->getEnvelopeCategory()== Envelope::Category::General);
+        driveEnvButton->setFixedSize(53, 14);
+        driveEnvButton->setImage(RkImage(driveEnvButton->size(), RK_IMAGE_RC(distortion_drive_env)),
+                                 RkButton::ButtonImage::ImageUnpressed);
+        driveEnvButton->setImage(RkImage(driveEnvButton->size(), RK_IMAGE_RC(distortion_drive_env_active)),
+                                 RkButton::ButtonImage::ImagePressed);
+        driveEnvButton->setImage(RkImage(driveEnvButton->size(), RK_IMAGE_RC(distortion_drive_env_hover)),
+                                 RkButton::ButtonImage::ImageUnpressedHover);
+        driveEnvButton->setImage(RkImage(driveEnvButton->size(), RK_IMAGE_RC(distortion_drive_env_hover)),
+                                 RkButton::ButtonImage::ImagePressedHover);
+        driveEnvButton->setPosition(driveSlider->x() - driveEnvButton->width() - labelD,
+                                    driveSlider->y());
+        driveEnvButton->show();
 
-        // Drive envelope button
-        driveEnvelopeButton = new GeonkickButton(this);
-        driveEnvelopeButton->setSize(14, 14);
-        driveEnvelopeButton->setPosition({driveSlider->x() + driveSlider->width() + 3,
-                                driveSlider->y() - 1});
-        driveEnvelopeButton->setImage(RkImage(driveEnvelopeButton->size(), RK_IMAGE_RC(env_button)),
-                                      RkButton::ButtonImage::ImageUnpressed);
-        driveEnvelopeButton->setImage(RkImage(driveEnvelopeButton->size(), RK_IMAGE_RC(env_button_hover)),
-                                      RkButton::ButtonImage::ImageUnpressedHover);
-        driveEnvelopeButton->setImage(RkImage(driveEnvelopeButton->size(), RK_IMAGE_RC(env_button_on)),
-                                      RkButton::ButtonImage::ImagePressed);
-        driveEnvelopeButton->setImage(RkImage(driveEnvelopeButton->size(), RK_IMAGE_RC(env_button_hover)),
-                                      RkButton::ButtonImage::ImagePressedHover);
-        driveEnvelopeButton->show();
-        RK_ACT_BIND(driveEnvelopeButton, toggled,
-                    RK_ACT_ARGS(bool b), this, showEnvelope(Envelope::Type::DistortionDrive));
+        RK_ACT_BIND(viewState(), envelopeChanged,
+                    RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
+                    driveEnvButton, setPressed(envelope == Envelope::Type::DistortionDrive
+                                               && Envelope::Category::General == category));
+        RK_ACT_BIND(driveEnvButton, pressed,
+                    RK_ACT_ARGS(), viewState(),
+                    setEnvelope(Envelope::Category::General, Envelope::Type::DistortionDrive));
         show();
         updateGui();
 }
@@ -185,28 +196,4 @@ void DistortionGroupBox::updateGui()
         else
                 distortion = 20 * log10(distortion);
         driveSlider->onSetValue(100 * distortion / 36);
-}
-
-void DistortionGroupBox::updateButtons(Envelope::Type type)
-{
-        volumeEnvelopeButton->setPressed(type == Envelope::Type::DistortionVolume);
-        driveEnvelopeButton->setPressed(type == Envelope::Type::DistortionDrive);
-}
-
-void DistortionGroupBox::showEnvelope(Envelope::Type type)
-{
-        updateButtons(type);
-        if (envelopeWidget)
-                envelopeWidget->showEnvelope(Envelope::Category::General, type);
-}
-
-void DistortionGroupBox::setEnvelopeWidget(EnvelopeWidget *widget)
-{
-        if (!envelopeWidget && widget) {
-                envelopeWidget = widget;
-                RK_ACT_BIND(envelopeWidget,
-                            envelopeTypeSelected,
-                            RK_ACT_ARGS(Envelope::Type type),
-                            this, updateButtons(type));
-        }
 }

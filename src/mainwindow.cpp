@@ -192,7 +192,6 @@ bool MainWindow::init(void)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
         controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
-        controlAreaWidget->setEnvelopeWidget(envelopeWidget);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());

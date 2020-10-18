@@ -43,21 +43,14 @@ class DistortionGroupBox: public GeonkickGroupBox
         void setVolume(int val);
         void setDrive(int val);
         void setInLimiter(int val);
-        void setEnvelopeWidget(EnvelopeWidget* widget);
-
- protected:
-        void showEnvelope(Envelope::Type type);
-        void updateButtons(Envelope::Type type);
-
  private:
         GeonkickApi *geonkickApi;
         GeonkickSlider *volumeSlider;
         GeonkickSlider *inLimiterSlider;
         GeonkickSlider *driveSlider;
         GeonkickButton *distortionCheckbox;
-        EnvelopeWidget* envelopeWidget;
-        GeonkickButton *volumeEnvelopeButton;
-        GeonkickButton *driveEnvelopeButton;
+        GeonkickButton *volumeEnvButton;
+        GeonkickButton *driveEnvButton;
 };
 
 #endif // GEONKICK_DISTORTION_WIDGET_H

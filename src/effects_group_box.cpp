@@ -45,9 +45,4 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
 }
 
-void EffectsGroupBox::setEnvelopeWidget(EnvelopeWidget *widget)
-{
-        distortionGroupBox->setEnvelopeWidget(widget);
-}
-
 

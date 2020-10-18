@@ -49,8 +49,6 @@ class ControlArea: public GeonkickWidget
         void showKit();
         void showPresets();
         KitModel* getKitModel() const;
-        void setEnvelopeWidget(EnvelopeWidget *widget);
-
  private:
         void showWidget(ViewState::View view);
 
@@ -59,7 +57,6 @@ class ControlArea: public GeonkickWidget
         const std::vector<std::unique_ptr<Oscillator>> &oscillators;
         KitModel *kitModel;
         PresetBrowserModel *presetsModel;
-        EnvelopeWidget *envelopeWidget;
         RkWidget* currentWidget;
 };
 
