@@ -34,10 +34,10 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 #### Features
 
 * Percussion kit
-   - Supports up to 16 percussions.
+   - Supports up to 16 instruments.
    - Save / Load kit in JSON format
 * Multitibral
-   - 16 midi keys range
+   - 16 midi key range
    - user configurable key mapping
 * Multichannel
    - 16 stereo output audio channels for plugin (1 stereo for standalone)

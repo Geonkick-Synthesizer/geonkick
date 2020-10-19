@@ -59,7 +59,7 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
 
         effectsWidget = new EffectsGroupBox(geonkickApi, this);
         effectsWidget->setFixedSize(500, 82);
-        effectsWidget->setPosition(2 * (8 + 224), 280);
+        effectsWidget->setPosition(2 * (8 + 224), 283);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
         effectsWidget->show();
 }
