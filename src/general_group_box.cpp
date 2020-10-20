@@ -53,7 +53,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         label->setBackgroundColor(background());
         label->setPosition(10, 0);
         label->setSize(45, 21);
-        label->setImage(RkImage(45, 21, RK_IMAGE_RC(general_groupbox_label)));
+        label->setImage(RkImage(label->size(), RK_IMAGE_RC(general_groupbox_label)));
         label->show();
         createAplitudeEnvelopeHBox();
         createFilterHBox();

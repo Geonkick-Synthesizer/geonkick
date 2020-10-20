@@ -41,7 +41,7 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 
         auto layers = new LayersGroupBox(geonkickApi, this);
         layers->setBackgroundColor({100, 100, 100});
-        layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 8, 0);
+        layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 4, 4);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
 }
 
