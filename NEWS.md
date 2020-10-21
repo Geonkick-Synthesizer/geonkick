@@ -1,3 +1,16 @@
+### Version 2.4.0
+
+#### Features:
+
+  - sample browser with sample preview
+  - save/restore the last visited path, also save UI visual state
+  - loaded sample is amplified
+  - pitch shift (+- 48 semitones) envelope for oscillator when it uses a sample
+  - added sound level indication for kit mixer
+  - UI updates, switch between envelopes is more easy, removed the envelope buttons menu
+
+Updating to this version it must be backward compatible.
+
 ### Version 2.3.8
 
 #### Fixes:
