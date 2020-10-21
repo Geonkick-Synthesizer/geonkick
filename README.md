@@ -47,7 +47,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 * 2 oscillators per layer
      - sine, square, triangle, saw-tooth, sample (wav, ogg, flac)
      - initial phase control
-     - amplitude & frequency envelope
+     - amplitude, frequency and sample pitch shift envelope
      - low, band and high pass filter, cutoff envelope
 * FM synthesis
      - OSC1->OSC2
