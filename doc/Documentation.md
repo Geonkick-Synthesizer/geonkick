@@ -11,7 +11,6 @@
   * [Envelope points](#envelope-points)
   * [Envelope point label](#envelope-point-label)
   * [Percussion graph](#percussion-graph)
-  * [Envelopes menu](#envelopes-menu)
   * [Percussion preset](#percussion-preset)
   * [Oscillator](#oscillator)
   * [Noise generator](#noise-generator)
@@ -43,7 +42,7 @@ Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) pe
 synthesizer, currently available only for GNU/Linux. It can synthesize elements of percussion.
 The most basic examples are: kicks, snares, hit-hats, shakers, claps. Geonkick is released
 under The GNU General Public License version 3. Developed in C and C++ and uses CMake
-build system. Can be used as standalone, LV2 and VST3 plugin.
+build system. Can be used as standalone and LV2.
 
 ### How it works
 
@@ -58,10 +57,7 @@ like a percussion kit with key mappings. Percussion UI (main window) actually
 is like an "editor" for the selected percussion from the kit list.
 
 Every percussion from the kit list is mono. The percussion can be redirected
-to audio output to one of 16 supported audio output channels. Thus, every
-channel is mono too. The user can redirect than a mono channel to two channels
-or more by means of hosts, audio basses or other ways, depending of the
-context of usage.
+to audio output to one of 16 stereo audio output channels. Since percussion is mono, left and right of a stereo channel are the same.
 
 ### Block diagram
 
@@ -76,7 +72,7 @@ when an associated MIDI key is pressed.
 Geonkick can handle up to 16 percussion in parallel, thus, making it a
 multi-timbral synthesizer. There is always a current selected percussion
 that can be modified by the percussion UI. The user can select every
-percussion from the kit list UI and modify it.
+percussion from the kit list and modify it.
 
 #### Percussion layers
 
@@ -86,7 +82,7 @@ the 2 oscillators and the noise generator. The sum of thee layers are passed
 to general controls. The contribution of every layer to the output can
 be controlled by the "Layers Mixer". There is only one controllable layer
 by the UI but the user can switch the layer by pressing the button
-"L1", "L2", or "L3" from the envelopes menu.
+"L1", "L2", or "L3" from the envelope area.
 
 #### Playing percussion
 
@@ -103,8 +99,7 @@ will show the changes instantly.
 
 The UI of the percussion is actually the main window of Geonkick. It shows
 the percussion graph, envelops and controls. Also, there is a menu for open
-and save percussion preset, export percussion. On the right side the user
-also can go to percussions kit UI.
+and save percussion preset, export percussion. 
 
 #### Top bar
 
@@ -112,12 +107,13 @@ also can go to percussions kit UI.
      the percussion preset
    - "Export" button - shows a dialog for exporting the current percussion
      to an audio file format
-   - "Reset" - reset the current percussion to default
-   - Preset label - it shows the name of the current selected percussion,
-     by default shows "Default".
    - Play button - triggers Geonkick to play the current percussion
    - "L1", "L2" and "L3" -  buttons to turn on/off the layer 1, 2, and 3.
+   - "Reset" - reset the current percussion to default
    - "Tune" - checkbox will turn on/off tuning of the current percussion.
+   - Preset label - it shows the name of the current selected percussion,
+     by default shows "Default".
+   - "Contorls", "Kit", "Presets" and "Samples" is submenu that will switch to controls, kit, preset and sample browser UI
 
 #### Shortcut Keys
 
@@ -147,6 +143,8 @@ Percussion envelopes area will show:
    - Envelope path label, shows the current selected envelope type and category.
      For example, "L1/OSC1/AMPL" means the amplitude envelope of the "Layer 1"
      of "Oscillator 1".
+   - Buttons "L1", "L2", "L3" will set envelope area to display only
+   the envelopes for the layer 1, 2, or 3
 
 #### Envelope points
 
@@ -180,19 +178,6 @@ Issues: For strictly periodic signals that have high frequency and makes the
 graph to be dense the graph may suffer from aliasing for some specific
 frequencies. This will not be reflected to sound or exported sound.
 
-#### Envelopes menu
-
- - "Amplitude" - shows the amplitude envelope type of "OSC1", "OSC2", "Noise", and "General"
- - "Frequency" - shows the frequency envelopes type of "OSC1" and "OSC2"
- - "Cutoff"    - shows the cutoff envelope type of filters
- - "Distortion" - shows the envelope type for the distortion drive parameter
- - "Oscillator 1" and "Oscillator2", will set the envelope area to show
-   only the types of envelopes for "Oscillator1" or "Oscillator 2"
- - "Noise", will set the envelope area to show only the types of envelopes for "Noise"
- - "General", will set the envelope area to show only the types of envelopes for "General"
- - Layer envelopes "L1", "L2", "L3" will set envelope area to display only
-   the envelopes for the a layer 1, 2, or 3
-
 #### Percussion preset
 
 The percussion preset is a JSON format, and its file extension is "*.gkick".
@@ -213,22 +198,22 @@ are grouped and arranged vertically.
    - "..." - button to browse and load a sample (WAV, FLAC or OGG)
    - "Phase" - changes the initial phase of the oscillator. For sample this will
      move the start of the sample up to 1/2 of the percussion length
-   - "Amplitude" - the knob that sets the maximum current amplitude of the oscillator
-   - "Frequency" - the knob that sets the maximum current frequency of the oscillator
-   - Filter
-   - Oscillator envelopes for amplitude, frequency, and filter cutoff.
-     Can be selected from the envelopes menu.
+   - Amplitude knob - sets the maximum current amplitude of the oscillator
+   - Frequency knob - sets the maximum current frequency of the oscillator
+   - Pitch kbob - will set the pitch shift range when the wave funciton of the oscillator is set as sample
+   -  pitch buttons will show the evelopes. 
+   - "Filter" button will enable/disable filter for the oscillator
+   - Oscillator envelopes for amplitude, frequency, pitch shift, filter cutoff can be accessed with buttons
+   "Amplitude", "Frequency", "Pitch", and "Cutoff"
 
 #### Noise generator
 
 Noise generator generates noise of two types: white and brownian.
 
-- "Amplitude" - maximum noise amplitude
+- "Amplitude" - maximum noise amplitude, and the amplitude envelope
 - "White" and "Brownian" - noise type
-- Seed - the slider that can set the different seeds for noise generator
-- Filter
-- Amplitude envelope
-- Cutoff envelope
+- "Seed" - the slider that can set the different seeds for noise generator
+- Filter - the same controls as for oscillators
 
 Loading/saving presets will preserve the noise pattern and seed.
 
@@ -237,12 +222,11 @@ Loading/saving presets will preserve the noise pattern and seed.
 General controls are applied after layers mixer. Arranged vertically,
 and applied from top to bottom. The compressor is applied the last one.
 
-- "Amplitude" - controls the maximum amplitude after the layers mixer
--  Amplitude envelope
-- Filter
-- Filter cutoff envelope
+- Amplitude knob controls the maximum amplitude after the layers mixer.
+- "Amplitude" buttons shows the general amplitude envelope
+- Filter (the sample controls as for oscillator)
 - Distortion
-- Distortion drive envelope
+- Distortion drive and volume envelopes can be accesed with buttons "Drive" and "Volume"
 - Compressor
 
 #### Limiter
@@ -265,24 +249,26 @@ noise generator and after layers mixer, i.e. general filter.
 
 Here are the parameters:
 
-  - Enable/disable filter. Green radio button in the filter top left box corner, or just right
-    clicking on the filter box.
-  - Filter cutoff frequency "Frequency". The knob range is logarithmic from 20Hz to 20kHz.
+  - "Filter" - buttons that enable/disale filter
+  - Cutoff knob - controls the cutoff frequency of the filter, the range is logarithmic (20Hz - 20kHz).
+  - "Cutoff" - the button the will show the cutoff envelope
   - Resonance "Q". The knob is logarithmic ranging from 0.01 to 10.
-  - Filter type "LP", "BP", and "HP". Radio buttons for low-pass, band-pass, and high-pass.
+  - Filter type "LP", "BP", and "HP". Buttons for low-pass, band-pass, and high-pass.
 
-The filter becomes unstable for some extremal combination of cutoff frequency and Q parameter.
-If the filter becomes unstable the percussion graph will be hard limited.
-There is a need to work with Q factor in order to use the cutoff in the desired range.
+Issues:
+   - The filter becomes unstable for some extremal combination of cutoff frequency and Q parameter.
+   If the filter becomes unstable the percussion graph will be hard limited.
+   There is a need to work with Q factor in order to use the cutoff in the desired range.
 
 #### Distortion
 
 The distortion effect is applied after general filter. Has the following controls:
 
- - "Input" - the limiter for the input
- - "Volume" - the output volume
- - "Drive" - controls the amount of distortion
- - Drive envelope, accessible from the envelopes menu
+ - Input - the limiter for the input
+ - Volume - the output volume
+ - Volume envelope (accessed with "Volume" button)
+ - Drive - controls the amount of distortion
+ - Drive envelope (accessed with "Drive" button)
 
 #### Compressor
 
@@ -396,7 +382,7 @@ and can be loaded by kit UI.
 
 #### Preset browser
 
-Preset browser can be opened by pushing button "Presets" on the left bar.
+Preset browser can be opened by pushing button "Presets" on the top bar.
 
 Preset browser will list in the first column the name of the presets folders.
 A preset folder may contain percussion and kit presets. If the folder
