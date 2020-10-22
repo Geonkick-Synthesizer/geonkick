@@ -49,14 +49,14 @@
        ] , [
         a lv2:AudioPort , lv2:OutputPort ;
         lv2:index 2 ;
-        lv2:symbol "out_left" ;
+        lv2:symbol "out__1_left" ;
         lv2:name "Output Left" ;
         lv2:designation pg:left ;
         pg:group ls:Out1
     ] , [
         a lv2:AudioPort , lv2:OutputPort ;
         lv2:index 3 ;
-        lv2:symbol "out_right" ;
+        lv2:symbol "out__1_right" ;
         lv2:name "Output Right" ;
         lv2:designation pg:right ;
         pg:group ls:Out1
@@ -273,100 +273,196 @@
     ] .
 
 ls:Out1
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 1" ;
-    lv2:name "Out 1" ;
-    lv2:symbol "out1" .
+    lv2:symbol "out1" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out2
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 2" ;
-    lv2:name "Out 2" ;
-    lv2:symbol "out2" .
+    lv2:symbol "out2" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out3
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 3" ;
-    lv2:name "Out 3" ;
-    lv2:symbol "out3" .
+    lv2:symbol "out3" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out4
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 4" ;
-    lv2:name "Out 4" ;
-    lv2:symbol "out4" .
+    lv2:symbol "out4" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out5
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 5" ;
-    lv2:name "Out 5" ;
-    lv2:symbol "out5" .
+    lv2:symbol "out5" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out6
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 6" ;
-    lv2:name "Out 6" ;
-    lv2:symbol "out6" .
+    lv2:symbol "out6" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out7
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 7" ;
-    lv2:name "Out 7" ;
-    lv2:symbol "out7" .
+    lv2:symbol "out7" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out8
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 8" ;
-    lv2:name "Out 8" ;
-    lv2:symbol "out8" .
+    lv2:symbol "out8" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out9
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 9" ;
-    lv2:name "Out 9" ;
-    lv2:symbol "out9" .
+    lv2:symbol "out9" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out10
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 10" ;
-    lv2:name "Out 10" ;
-    lv2:symbol "out10" .
+    lv2:symbol "out10" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out11
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 11" ;
-    lv2:name "Out 11" ;
-    lv2:symbol "out11" .
+    lv2:symbol "out11" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out12
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 12" ;
-    lv2:name "Out 12" ;
-    lv2:symbol "out12" .
+    lv2:symbol "out12" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out13
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 13" ;
-    lv2:name "Out 13" ;
-    lv2:symbol "out13" .
+    lv2:symbol "out13" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out14
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 14" ;
-    lv2:name "Out 14" ;
-    lv2:symbol "out14" .
+    lv2:symbol "out14" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out15
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 15" ;
-    lv2:name "Out 15" ;
-    lv2:symbol "out15" .
+    lv2:symbol "out15" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 ls:Out16
-    a pg:StereoGroup, pg:OutputGroup ;
+  a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 16" ;
-    lv2:name "Out 16" ;
-    lv2:symbol "out16" .
+    lv2:symbol "out16" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
 
 <http://geontime.com/geonkick#ui>
     a ui:X11UI ;
