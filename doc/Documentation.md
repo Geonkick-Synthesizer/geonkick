@@ -30,6 +30,7 @@
   * [Kit preset vs percussion preset](#kit-preset-vs-percussion-preset)
   * [Preset browser](#preset-browser)
   * [Percussion vs channel](#percussion-vs-channel)
+  * [Sample browser](#sample-browser)
 - [LV2 Plugin](#lv2-plugin)
 - [Standalone](#standalone)
 - [Install](#install)
@@ -411,6 +412,11 @@ from the kit UI can be redirected to any audio output channel
 (from 1 - 16 channel number). Thus, multiple percussions can be redirected
 to a single channel. Multiple channels for a single percussion is not
 possible from Kit UI (the host may provide this feature).
+
+#### Sample browser
+
+This is a file dialog browser for samples files (wav, flac, ogg). The user can select and load
+a sample into osc1 or osc2. There is a preview side where the selected file can be played and previewed. The preview sound goes thought the first stereo channel (it must be connected in the host for plugin case).
 
 ### LV2 Plugin
 
