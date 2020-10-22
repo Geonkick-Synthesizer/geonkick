@@ -50,20 +50,18 @@ class GeonkickLv2Plugin : public RkObject
 {
   public:
         GeonkickLv2Plugin()
-                : geonkickApi{new GeonkickApi}
+                : geonkickApi{std::make_unique<GeonkickApi>()}
                 , midiIn{nullptr}
                 , notifyHostChannel{nullptr}
                 , atomInfo{0}
                 , kickIsUpdated{false}
         {
-                RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, kickUpdated());
-                RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, kickUpdated());
+                RK_ACT_BIND(geonkickApi.get(), kickUpdated, RK_ACT_ARGS(), this, kickUpdated());
+                RK_ACT_BIND(geonkickApi.get(), stateChanged, RK_ACT_ARGS(), this, kickUpdated());
         }
 
         ~GeonkickLv2Plugin()
         {
-                if (geonkickApi)
-                        delete geonkickApi;
         }
 
         bool init()
@@ -165,7 +163,7 @@ class GeonkickLv2Plugin : public RkObject
 
         GeonkickApi* getApi() const
         {
-                return geonkickApi;
+                return geonkickApi.get();
         }
 
         bool isNote(const uint8_t* buffer) const
@@ -258,7 +256,7 @@ protected:
         }
 
 private:
-        GeonkickApi *geonkickApi;
+        std::unique_ptr<GeonkickApi> geonkickApi;
         LV2_Atom_Sequence *midiIn;
         LV2_Atom_Sequence *notifyHostChannel;
         std::vector<float*> outputChannels;
