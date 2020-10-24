@@ -150,6 +150,9 @@ void MainWindow::createShortcuts()
         addShortcut(Rk::Key::Key_R, Rk::KeyModifiers::Control_Right);
         addShortcut(Rk::Key::Key_r, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_r, Rk::KeyModifiers::Control_Right);
+
+        addShortcut(Rk::Key::Key_f, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_F, Rk::KeyModifiers::Control_Left);
 }
 
 bool MainWindow::init(void)
@@ -326,6 +329,14 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
                 geonkickApi->pasteFromClipboard();
                 geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
                 updateGui();
+        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                   && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
+                static int scaleFactor = 1;
+                scaleFactor = scaleFactor < 2 ? 2 : 1;
+                getTopWidget()->setScaleFactor(scaleFactor);
+                setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+                updateGui();
+                GEONKICK_LOG_INFO("scale factor: " << scaleFactor);
         }
 }
 
