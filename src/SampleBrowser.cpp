@@ -188,8 +188,10 @@ void SampleBrowser::setPreviewSample(const std::string &file)
         try {
                 if (std::filesystem::exists(file) && !std::filesystem::is_directory(file)) {
                         std::vector<float> data = geonkickApi->setPreviewSample(file);
-                        if (!data.empty())
+                        if (!data.empty()) {
                                 samplePreviewWidget->setData(data);
+                                geonkickApi->playSamplePreview();
+                        }
                 }
         }  catch (...) {
         }
