@@ -317,6 +317,13 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         auto guiApp = new RkMain();
         geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue());
         auto mainWidget = new MainWindow(guiApp, geonkickLv2PLugin->getApi(), info);
+        RK_ACT_BINDL(mainWidget,
+                     onScaleFactor,
+                     RK_ACT_ARGS(double factor),
+                     [=](double factor) {
+                             resize->ui_resize(resize->handle, mainWidget->width() * factor,
+                                               mainWidget->height() * factor);
+                     });
         if (!mainWidget->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 delete guiApp;
@@ -325,8 +332,8 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 
         auto winId = mainWidget->nativeWindowInfo()->window;
         *widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
-        auto size = mainWidget->size();
-        resize->ui_resize(resize->handle, size.width(), size.height());
+        resize->ui_resize(resize->handle, mainWidget->width(),
+                          mainWidget->height());
         return static_cast<LV2UI_Handle>(guiApp);
 }
 

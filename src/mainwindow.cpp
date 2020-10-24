@@ -336,6 +336,7 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
                 getTopWidget()->setScaleFactor(scaleFactor);
                 setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
                 updateGui();
+                action onScaleFactor(scaleFactor);
                 GEONKICK_LOG_INFO("scale factor: " << scaleFactor);
         }
 }

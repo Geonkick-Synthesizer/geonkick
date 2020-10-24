@@ -47,6 +47,7 @@ class MainWindow : public GeonkickWidget
                           const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
+      RK_DECL_ACT(onScaleFactor, onScaleFactor(double factor), RK_ARG_TYPE(double), RK_ARG_VAL(factor));
 
  protected:
       void keyPressEvent(RkKeyEvent *event) override;
