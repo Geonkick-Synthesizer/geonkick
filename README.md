@@ -23,6 +23,8 @@ See the folder "presets" how to create a preset archive.
 
 ![Screenshot](data/screenshot.png)
 
+![Screenshot](data/screenshot_kit.png)
+
 #### Download
 
 Source code repository:
