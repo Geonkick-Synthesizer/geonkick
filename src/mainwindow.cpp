@@ -36,6 +36,7 @@
 #include "about.h"
 #include "ViewState.h"
 #include "UiSettings.h"
+#include "GeonkickConfig.h"
 
 #include <RkEvent.h>
 
@@ -51,6 +52,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
+        GeonkickConfig config;
+        setScaleFactor(config.getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
@@ -69,6 +72,8 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , limiterWidget{nullptr}
         , kitModel{nullptr}
 {
+        GeonkickConfig config;
+        setScaleFactor(config.getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
@@ -331,13 +336,13 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
                 updateGui();
         } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                    && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
-                static int scaleFactor = 1;
-                scaleFactor = scaleFactor < 2 ? 2 : 1;
-                getTopWidget()->setScaleFactor(scaleFactor);
+                setScaleFactor(scaleFactor() > 1 ? 1 : 2);
                 setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
                 updateGui();
-                action onScaleFactor(scaleFactor);
-                GEONKICK_LOG_INFO("scale factor: " << scaleFactor);
+                GeonkickConfig config;
+                config.setScaleFactor(scaleFactor());
+                config.save();
+                action onScaleFactor(scaleFactor());
         }
 }
 

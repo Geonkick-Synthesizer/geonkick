@@ -33,6 +33,7 @@
 #include "mainwindow.h"
 #include "geonkick_api.h"
 #include "kit_state.h"
+#include "GeonkickConfig.h"
 
 #include <RkMain.h>
 #include <RkPlatform.h>
@@ -58,10 +59,6 @@ class GeonkickLv2Plugin : public RkObject
         {
                 RK_ACT_BIND(geonkickApi.get(), kickUpdated, RK_ACT_ARGS(), this, kickUpdated());
                 RK_ACT_BIND(geonkickApi.get(), stateChanged, RK_ACT_ARGS(), this, kickUpdated());
-        }
-
-        ~GeonkickLv2Plugin()
-        {
         }
 
         bool init()
@@ -313,7 +310,6 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         Display* xDisplay = XOpenDisplay(nullptr);
         int screenNumber = DefaultScreen(xDisplay);
         auto info = rk_from_native_x11(xDisplay, screenNumber, parentWinId);
-
         auto guiApp = new RkMain();
         geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue());
         auto mainWidget = new MainWindow(guiApp, geonkickLv2PLugin->getApi(), info);
@@ -332,8 +328,8 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 
         auto winId = mainWidget->nativeWindowInfo()->window;
         *widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
-        resize->ui_resize(resize->handle, mainWidget->width(),
-                          mainWidget->height());
+        resize->ui_resize(resize->handle, mainWidget->width() * mainWidget->scaleFactor(),
+                          mainWidget->height() * mainWidget->scaleFactor());
         return static_cast<LV2UI_Handle>(guiApp);
 }
 
