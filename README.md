@@ -82,6 +82,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
      - LV2
 * Platforms:
      - GNU/Linux
+* Manually scale the UI by factor of 2 (useful for HiDPI cases)
 
 #### Requirements
 
