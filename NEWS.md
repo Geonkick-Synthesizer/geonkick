@@ -7,10 +7,10 @@
   - loaded sample is amplified
   - pitch shift (+- 48 semitones) envelope for oscillator when it uses a sample
   - added sound level indication for kit mixer
-  - UI updates, switch between envelopes is more easy, removed the envelope buttons menu
+  - UI updates, switch between envelopes is more easy, removed the envelopes menu
   - option to scale the UI by factor of 2 for so-called HiDPI cases
 
-Updating to this version it must be backward compatible.
+Updating to this version must be backward compatible.
 
 ### Version 2.3.8
 
