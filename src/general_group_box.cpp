@@ -32,8 +32,6 @@
 
 RK_DECLARE_IMAGE_RC(hboxbk_ampl_env);
 RK_DECLARE_IMAGE_RC(hboxbk_filter);
-RK_DECLARE_IMAGE_RC(checkbox_checked);
-RK_DECLARE_IMAGE_RC(checkbox_unchecked);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
 RK_DECLARE_IMAGE_RC(knob);
 RK_DECLARE_IMAGE_RC(general_groupbox_label);
