@@ -68,7 +68,7 @@ std::string UiSettings::toJson() const
         jsonStream << "    \"previewFile\": \"" << samplesBrowser.previewFile << "\", " << std::endl;
         jsonStream << "    \"oscillator\": " << static_cast<int>(samplesBrowser.oscillator) << std::endl;
         jsonStream << "}," << std::endl;
-        jsonStream << "settings: [" << std::endl;
+        jsonStream << "\"settings\": [" << std::endl;
         bool first = true;
         for (const auto &e: uiSettings) {
                 if (!first)
