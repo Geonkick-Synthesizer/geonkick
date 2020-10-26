@@ -59,6 +59,7 @@ class KitModel : public RkObject {
         size_t maxPercussionNumber() const;
         void playPercussion(PercussionIndex index);
         std::filesystem::path workingPath(const std::string &key) const;
+        std::filesystem::path getHomePath() const;
         const std::vector<PercussionModel*>& percussionModels() const;
         PercussionIndex getIndex(int id) const;
         bool setPercussionLimiter(PercussionIndex index, int value);

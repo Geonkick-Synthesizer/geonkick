@@ -165,6 +165,7 @@ void KitWidget::showFileDialog(FileDialog::Type type)
 {
         auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
         fileDialog->setFilters({".gkit", ".GKIT"});
+        fileDialog->setHomeDirectory(kitModel->getHomePath());
         if (type == FileDialog::Type::Open) {
                 fileDialog->setCurrentDirectoy(kitModel->workingPath("OpenKit"));
                 RK_ACT_BIND(fileDialog, selectedFile,

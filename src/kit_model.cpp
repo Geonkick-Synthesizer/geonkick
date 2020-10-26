@@ -347,6 +347,12 @@ KitModel::workingPath(const std::string &key) const
         return geonkickApi->currentWorkingPath(key);
 }
 
+std::filesystem::path
+KitModel::getHomePath() const
+{
+        return geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH");
+}
+
 const std::vector<PercussionModel*>& KitModel::percussionModels() const
 {
         return percussionsList;
