@@ -1,3 +1,9 @@
+### Version 2.4.1
+
+#### Improvement
+
+  - shared worker between plugin instances
+
 ### Version 2.4.0
 
 #### Features:
