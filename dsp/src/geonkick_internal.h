@@ -32,25 +32,18 @@
 #include <pthread.h>
 #include <stdatomic.h>
 
+#define GEONKICK_MAX_INSTANCES 500
+
+#include "worker.h"
+
 #define GEONKICK_SAMPLE_RATE 48000
 
 /* Kick maximum length in seconds. */
-#define GEONKICK_MAX_LENGTH 4.0f
-#define GEONKICK_MAX_KICK_BUFFER_SIZE  (4 * GEONKICK_SAMPLE_RATE)
-
-struct gkick_worker {
-	/* The worker thread. */
-        pthread_t thread;
-
-	/* Condition variable used for the worker thread. */
-        pthread_cond_t condition_var;
-	bool cond_var_initilized;
-
-	/* Specifies if the worker is running. */
-	atomic_bool running;
-};
+#define GEONKICK_MAX_LENGTH 4
+#define GEONKICK_MAX_KICK_BUFFER_SIZE  (GEONKICK_MAX_LENGTH * GEONKICK_SAMPLE_RATE)
 
 struct geonkick {
+        size_t id;
         char name[30];
         /* The list of synths of available synths. */
         struct gkick_synth *synths[GEONKICK_MAX_PERCUSSIONS];
@@ -62,13 +55,11 @@ struct geonkick {
         /**
          * Specifies if the synthesis is tuned off.
          * If it is false any updates of the synthesizers parameters
-         * will not trigger the perucssions synthesis.
+         * will not trigger the synthesis.
          */
         atomic_bool synthesis_on;
-
-	/* Global worker for all synths. */
-	struct gkick_worker worker;
         pthread_mutex_t lock;
+        struct gkick_worker *worker;
 };
 
 void
@@ -77,19 +68,10 @@ geonkick_lock(struct geonkick *kick);
 void
 geonkick_unlock(struct geonkick *kick);
 
-enum geonkick_error
-geonkick_worker_init(struct geonkick *kick);
-
-enum geonkick_error
-geonkick_worker_start(struct geonkick *kick);
+void
+geonkick_process(struct geonkick *kick);
 
 void
-geonkick_worker_destroy(struct geonkick *kick);
-
-void*
-geonkick_worker_thread(void *arg);
-
-void
-geonkick_worker_wakeup(struct geonkick *kick);
+geonkick_wakeup(struct geonkick *kick);
 
 #endif // GEONKICK_INTERNAL_H

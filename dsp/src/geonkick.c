@@ -67,25 +67,30 @@ geonkick_create(struct geonkick **kick)
                 geonkick_set_percussion_channel(*kick, i, i % GEONKICK_MAX_CHANNELS);
         }
 
-	if (geonkick_worker_init(*kick) != GEONKICK_OK) {
-		gkick_log_error("can't init worker");
-		geonkick_free(kick);
-		return GEONKICK_ERROR;
-	}
+        if (!geonkick_worker_created()) {
+                if (geonkick_worker_create() != GEONKICK_OK) {
+                        gkick_log_error("can't init worker");
+                        geonkick_free(kick);
+                        return GEONKICK_ERROR;
+                }
 
-	if (geonkick_worker_start(*kick) != GEONKICK_OK) {
-		gkick_log_error("can't start worker");
-		geonkick_free(kick);
-		return GEONKICK_ERROR;
-	}
-
+                if (geonkick_worker_start() != GEONKICK_OK) {
+                        gkick_log_error("can't start worker");
+                        geonkick_free(kick);
+                        return GEONKICK_ERROR;
+                }
+        }
+        geonkick_worker_add_instance(*kick);
 	return GEONKICK_OK;
 }
 
 void geonkick_free(struct geonkick **kick)
 {
         if (kick != NULL && *kick != NULL) {
-		geonkick_worker_destroy(*kick);
+                geonkick_worker_remove_instance(*kick);
+                if (geonkick_worker_reference_count() == 0)
+                        geonkick_worker_destroy();
+                gkick_log_debug("ref count: %d", geonkick_worker_reference_count());
                 for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
                         gkick_synth_free(&((*kick)->synths[i]));
                 gkick_audio_free(&((*kick)->audio));
@@ -112,7 +117,7 @@ geonkick_enable_oscillator(struct geonkick* kick, size_t index)
         enum geonkick_error res;
         res = gkick_synth_enable_oscillator(kick->synths[kick->per_index], index, 1);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -124,7 +129,7 @@ geonkick_disable_oscillator(struct geonkick* kick, size_t index)
         enum geonkick_error res;
         res = gkick_synth_enable_oscillator(kick->synths[kick->per_index], index, 0);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -161,7 +166,7 @@ geonkick_osc_envelope_add_point(struct geonkick *kick,
                                             osc_index,
                                             env_index, x, y);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -226,7 +231,7 @@ geonkick_osc_envelope_remove_point(struct geonkick *kick,
                                                env_index,
                                                index);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -249,7 +254,7 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
                                                env_index,
                                                index, x, y);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
 
         return res;
 }
@@ -265,7 +270,7 @@ geonkick_osc_set_fm(struct geonkick *kick, size_t index, bool is_fm)
         enum geonkick_error res;
         res = gkick_synth_osc_set_fm(kick->synths[kick->per_index], index, is_fm);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -287,7 +292,7 @@ geonkick_set_osc_function(struct geonkick *kick,
         enum geonkick_error res;
         res = gkick_synth_set_osc_function(kick->synths[kick->per_index], osc_index, type);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -312,7 +317,7 @@ geonkick_set_osc_phase(struct geonkick *kick,
         enum geonkick_error res;
         res = gkick_synth_set_osc_phase(kick->synths[kick->per_index], osc_index, phase);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 
 }
@@ -346,7 +351,7 @@ geonkick_set_osc_seed(struct geonkick *kick,
                                        osc_index,
                                        seed);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -377,7 +382,7 @@ geonkick_set_length(struct geonkick *kick, gkick_real len)
         enum geonkick_error res;
         res = gkick_synth_set_length(kick->synths[kick->per_index], len);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -415,7 +420,7 @@ geonkick_kick_set_amplitude(struct geonkick *kick,
         enum geonkick_error res;
         res = gkick_synth_kick_set_amplitude(kick->synths[kick->per_index], amplitude);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -442,7 +447,7 @@ geonkick_kick_set_filter_frequency(struct geonkick *kick,
         enum geonkick_error res;
         res = gkick_synth_kick_set_filter_frequency(kick->synths[kick->per_index], frequency);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -458,7 +463,7 @@ geonkick_kick_filter_enable(struct geonkick *kick,
         enum geonkick_error res;
         res = geonkick_synth_kick_filter_enable(kick->synths[kick->per_index], enable);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -497,7 +502,7 @@ geonkick_kick_set_filter_factor(struct geonkick *kick,
         enum geonkick_error res;
         res = gkick_synth_kick_set_filter_factor(kick->synths[kick->per_index], factor);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -523,7 +528,7 @@ geonkick_set_kick_filter_type(struct geonkick *kick,
         enum geonkick_error res;
         res = gkick_synth_set_kick_filter_type(kick->synths[kick->per_index], type);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -568,7 +573,7 @@ geonkick_kick_envelope_set_points(struct geonkick *kick,
                                                    buff,
                                                    npoints);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 
 }
@@ -588,7 +593,7 @@ geonkick_kick_add_env_point(struct geonkick *kick,
                                              env_type,
                                              x, y);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -606,7 +611,7 @@ geonkick_kick_remove_env_point(struct geonkick *kick,
                                                 env_type,
                                                 index);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -626,7 +631,7 @@ geonkick_kick_update_env_point(struct geonkick *kick,
                                                 env_type,
                                                 index, x, y);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -645,7 +650,7 @@ geonkick_set_osc_frequency(struct geonkick *kick,
                                             osc_index,
                                             v);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -664,7 +669,7 @@ geonkick_set_osc_pitch_shift(struct geonkick *kick,
                                               osc_index,
                                               semitones);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -683,7 +688,7 @@ geonkick_set_osc_amplitude(struct geonkick *kick,
                                             osc_index,
                                             v);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -857,7 +862,7 @@ geonkick_set_osc_filter_type(struct geonkick *kick,
                                               osc_index,
                                               type);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -890,7 +895,7 @@ geonkick_set_osc_filter_cutoff_freq(struct geonkick *kick,
                                                 osc_index,
                                                 cutoff);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -922,7 +927,7 @@ geonkick_set_osc_filter_factor(struct geonkick *kick,
                                                 osc_index,
                                                 factor);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -955,7 +960,7 @@ geonkick_enbale_osc_filter(struct geonkick *kick,
                                             osc_index,
                                             enable);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1002,7 +1007,7 @@ geonkick_enable_synthesis(struct geonkick *kick,
                         if (kick->synths[i]->is_active)
                                 kick->synths[i]->buffer_update = true;
                 }
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         }
         return GEONKICK_OK;
 }
@@ -1041,7 +1046,7 @@ geonkick_compressor_enable(struct geonkick *kick,
         res = gkick_synth_compressor_enable(kick->synths[kick->per_index],
                                             enable);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 
 }
@@ -1070,7 +1075,7 @@ geonkick_compressor_set_attack(struct geonkick *kick,
         res = gkick_synth_compressor_set_attack(kick->synths[kick->per_index],
                                                 attack);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1098,7 +1103,7 @@ geonkick_compressor_set_release(struct geonkick *kick,
         res = gkick_synth_compressor_set_release(kick->synths[kick->per_index],
                                                  release);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1126,7 +1131,7 @@ geonkick_compressor_set_threshold(struct geonkick *kick,
         res = gkick_synth_compressor_set_threshold(kick->synths[kick->per_index],
                                                    threshold);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1154,7 +1159,7 @@ geonkick_compressor_set_ratio(struct geonkick *kick,
         res = gkick_synth_compressor_set_ratio(kick->synths[kick->per_index],
                                                ratio);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1182,7 +1187,7 @@ geonkick_compressor_set_knee(struct geonkick *kick,
         res = gkick_synth_compressor_set_knee(kick->synths[kick->per_index],
                                               knee);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1209,7 +1214,7 @@ geonkick_compressor_set_makeup(struct geonkick *kick,
         res = gkick_synth_compressor_set_makeup(kick->synths[kick->per_index],
                                                 makeup);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 
 }
@@ -1237,7 +1242,7 @@ geonkick_distortion_enable(struct geonkick *kick, int enable)
         res = gkick_synth_distortion_enable(kick->synths[kick->per_index],
                                             enable);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1266,7 +1271,7 @@ geonkick_distortion_set_in_limiter(struct geonkick *kick,
 	res = gkick_synth_distortion_set_in_limiter(kick->synths[kick->per_index],
                                                     limit);
 	if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
 	return res;
 }
 
@@ -1294,7 +1299,7 @@ geonkick_distortion_set_volume(struct geonkick *kick,
         res = gkick_synth_distortion_set_volume(kick->synths[kick->per_index],
                                                 volume);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1321,7 +1326,7 @@ geonkick_distortion_set_drive(struct geonkick *kick,
         res = gkick_synth_distortion_set_drive(kick->synths[kick->per_index],
                                                drive);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1352,7 +1357,6 @@ int geonkick_is_module_enabed(struct geonkick *kick,
                         return 1;
                 else
                         return 0;
-        break;
         default:
                 return 0;
         }
@@ -1373,7 +1377,7 @@ geonkick_enable_group(struct geonkick *kick,
                                         index,
                                         enable);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1408,7 +1412,7 @@ geonkick_group_set_amplitude(struct geonkick *kick,
                                                   index,
                                                   amplitude);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1476,7 +1480,7 @@ geonkick_set_osc_sample(struct geonkick *kick,
                                              osc_index,
                                              data, size);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
-                geonkick_worker_wakeup(kick);
+                geonkick_wakeup(kick);
         return res;
 }
 
@@ -1524,102 +1528,12 @@ geonkick_get_current_percussion(struct geonkick *kick,
 	return GEONKICK_OK;
 }
 
-enum geonkick_error
-geonkick_worker_init(struct geonkick *kick)
+void geonkick_process(struct geonkick *kick)
 {
-	if (kick == NULL)
-		return GEONKICK_ERROR;
-
-	geonkick_lock(kick);
-	struct gkick_worker *worker = &kick->worker;
-	worker->running = false;
-        if (pthread_cond_init(&worker->condition_var, NULL) != 0) {
-                gkick_log_error("can't init worker condition variable");
-		geonkick_unlock(kick);
-		return GEONKICK_ERROR;
-	}
-	worker->cond_var_initilized = true;
-	geonkick_unlock(kick);
-	return GEONKICK_OK;
-}
-
-enum geonkick_error
-geonkick_worker_start(struct geonkick *kick)
-{
-        kick->worker.running = true;
-        if (pthread_create(&kick->worker.thread, NULL,
-                           geonkick_worker_thread, kick) != 0) {
-                gkick_log_error("can't create worker thread");
-                kick->worker.running = false;
-                return GEONKICK_ERROR;
-        }
-        return GEONKICK_OK;
-}
-
-void geonkick_worker_destroy(struct geonkick *kick)
-{
-	struct gkick_worker *worker = &kick->worker;
-	if (worker->running)
-		worker->running = false;
-        geonkick_lock(kick);
-        pthread_cond_signal(&kick->worker.condition_var);
-        geonkick_unlock(kick);
-	pthread_join(worker->thread, NULL);
-
-	geonkick_lock(kick);
-	if (worker->cond_var_initilized)
-		pthread_cond_destroy(&worker->condition_var);
-	worker->cond_var_initilized = false;
-	geonkick_unlock(kick);
-}
-
-void *geonkick_worker_thread(void *arg)
-{
-	if (arg == NULL) {
-		gkick_log_error("wrong arugments");
-		return NULL;
-	}
-
-	struct geonkick *kick = (struct geonkick*)arg;
-	struct gkick_worker *worker = &kick->worker;
-	while (worker->running) {
-		/**
-                 * Ignore too many updates.
-                 * The last udpates will be processed.
-                 */
-                usleep(40000);
-                bool update_buffers = false;
-                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                        struct gkick_synth *synth = kick->synths[i];
-                        if (synth != NULL && synth->is_active && synth->buffer_update) {
-                                update_buffers = true;
-                                break;
-                        }
-                }
-
-		if (!update_buffers) {
-		        pthread_cond_wait(&worker->condition_var, &kick->lock);
-                        geonkick_unlock(kick);
-                        if (!worker->running)
-                                break;
-                }
-
-                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                        struct gkick_synth *synth = kick->synths[i];
-                        if (synth != NULL && synth->is_active && synth->buffer_update)
-                                gkick_synth_process(synth);
-                }
-	}
-
-        return NULL;
-}
-
-void geonkick_worker_wakeup(struct geonkick *kick)
-{
-        if (kick->synthesis_on) {
-                geonkick_lock(kick);
-                pthread_cond_signal(&kick->worker.condition_var);
-                geonkick_unlock(kick);
+        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                struct gkick_synth *synth = kick->synths[i];
+                if (synth != NULL && synth->is_active && synth->buffer_update)
+                        gkick_synth_process(synth);
         }
 }
 
@@ -1876,4 +1790,11 @@ void
 geonkick_play_sample_preview(struct geonkick *kick)
 {
         gkick_audio_play(kick->audio, GEONKICK_MAX_PERCUSSIONS);
+}
+
+void
+geonkick_wakeup(struct geonkick *kick)
+{
+        if (kick->synthesis_on)
+                geonkick_worker_wakeup();
 }

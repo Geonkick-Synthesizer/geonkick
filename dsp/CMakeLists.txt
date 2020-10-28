@@ -11,7 +11,8 @@ set(GKICK_API_HEADERS
 	${GKICK_API_DIR}/src/gkick_buffer.h
 	${GKICK_API_DIR}/src/gkick_log.h
 	${GKICK_API_DIR}/src/oscillator.h
-	${GKICK_API_DIR}/src/synthesizer.h)
+	${GKICK_API_DIR}/src/synthesizer.h
+        ${GKICK_API_DIR}/src/worker.h)
 
 if (GKICK_STANDALONE)
   list(APPEND GKICK_API_HEADERS ${GKICK_API_DIR}/src/gkick_jack.h)
@@ -29,7 +30,8 @@ set(GKICK_API_SOURCES
 	${GKICK_API_DIR}/src/gkick_buffer.c
 	${GKICK_API_DIR}/src/gkick_log.c
 	${GKICK_API_DIR}/src/oscillator.c
-	${GKICK_API_DIR}/src/synthesizer.c)
+	${GKICK_API_DIR}/src/synthesizer.c
+        ${GKICK_API_DIR}/src/worker.c)
 
 if (GKICK_STANDALONE)
   list(APPEND GKICK_API_SOURCES ${GKICK_API_DIR}/src/gkick_jack.c)
