@@ -53,10 +53,10 @@ typedef float gkick_real;
 
 #define GEONKICK_UNUSED(expr) (void)expr
 
-#define GEONKICK_VERSION 0x020401
+#define GEONKICK_VERSION 0x020500
 #define GEONKICK_NAME "Geonkick"
 #define GEONKICK_APP_NAME "geonkick"
-#define GEOKICK_VERSION_STRING "2.4.1"
+#define GEOKICK_VERSION_STRING "2.5.0"
 
 #ifdef GEONKICK_AUDIO_JACK
 #define GKICK_IS_STANDALONE (1)
@@ -118,20 +118,20 @@ enum geonkick_channel_type {
         GEONKICK_CHANNEL_MIDI_OUTPUT  = 3
 };
 
-/**
- * Maximum number of percussions the Geonkick instance
- * can generate.
- */
+#ifdef GEONKICK_SINGLE
+#define GEONKICK_MAX_PERCUSSIONS 1
+#else
 #define GEONKICK_MAX_PERCUSSIONS 16
+#endif
 
 /**
 * Maximum audio number of output stereo channels.
 */
-#ifdef GEONKICK_AUDIO_JACK
+#if defined(GEONKICK_AUDIO_JACK) || defined(GEONKICK_SINGLE)
 #define GEONKICK_MAX_CHANNELS 1
 #else
 #define GEONKICK_MAX_CHANNELS 16
-#endif // GEONKICK_AUDIO_JACK
+#endif // defined(GEONKICK_AUDIO_JACK) || defined(GEONKICK_SINGLE)
 
 struct geonkick;
 
@@ -607,7 +607,7 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
                                bool *enable);
 
 size_t
-geonkick_percussion_number(struct geonkick *kick);
+geonkick_percussion_number();
 
 enum geonkick_error
 geonkick_set_playing_key(struct geonkick *kick,
@@ -631,9 +631,8 @@ geonkick_get_percussion_name(struct geonkick *kick,
                              char *name,
                              size_t size);
 
-enum geonkick_error
-geonkick_channels_number(struct geonkick *kick,
-                         size_t *n);
+size_t
+geonkick_channels_number();
 
 enum geonkick_error
 geonkick_set_percussion_channel(struct geonkick *kick,

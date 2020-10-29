@@ -32,7 +32,9 @@ class Oscillator;
 class GeonkickApi;
 class ControlsWidget;
 class KitModel;
+#ifndef GEONKICK_SINGLE
 class KitWidget;
+#endif // GEONKICK_SINGLE
 class EnvelopeWidget;
 class PresetBrowserView;
 class PresetBrowserModel;
@@ -46,7 +48,9 @@ class ControlArea: public GeonkickWidget
         ~ControlArea() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
         void showControls();
+#ifndef GEONKICK_SINGLE
         void showKit();
+#endif // GEONKICK_SINGLE
         void showPresets();
         KitModel* getKitModel() const;
  private:

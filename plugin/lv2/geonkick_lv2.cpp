@@ -42,9 +42,15 @@
 #include <memory>
 #include <atomic>
 
+#ifdef GEONKICK_SINGLE
+#define GEONKICK_URI "http://geontime.com/geonkick/single"
+#define GEONKICK_URI_UI "http://geontime.com/geonkick/single#ui"
+#define GEONKICK_URI_STATE "http://geontime.com/geonkick/single#state"
+#else
 #define GEONKICK_URI "http://geontime.com/geonkick"
 #define GEONKICK_URI_UI "http://geontime.com/geonkick#ui"
 #define GEONKICK_URI_STATE "http://geontime.com/geonkick#state"
+#endif // GEONKICK_SINGLE
 #define GEONKICK_URI_STATE_CHANGED "http://lv2plug.in/ns/ext/state#StateChanged"
 
 class GeonkickLv2Plugin : public RkObject

@@ -99,9 +99,7 @@ bool GeonkickApi::init()
 
 size_t GeonkickApi::numberOfChannels() const
 {
-        size_t n = 0;
-        geonkick_channels_number(geonkickApi, &n);
-        return n;
+        return geonkick_channels_number();
 }
 
 std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
@@ -265,7 +263,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) cons
                 auto res = geonkick_set_current_percussion(geonkickApi, id);
                 if (res != GEONKICK_OK) {
                         geonkick_set_current_percussion(geonkickApi, tmpId);
-                        return nullptr;
+                        return getPercussionState();
                 }
                 auto state = getPercussionState();
                 geonkick_set_current_percussion(geonkickApi, tmpId);
@@ -1241,7 +1239,7 @@ bool GeonkickApi::isPercussionSolo(size_t id) const
 
 size_t GeonkickApi::getPercussionsNumber() const
 {
-	return geonkick_percussion_number(geonkickApi);
+	return geonkick_percussion_number();
 }
 
 int GeonkickApi::getUnusedPercussion() const
@@ -1673,7 +1671,7 @@ void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
                                 GEONKICK_LOG_DEBUG("preset folder " << presetFolder->path());
                                 if (!presetFolder->loadPresets()) {
                                         GEONKICK_LOG_ERROR("can't load preset from folder " << presetFolder->path());
-                                } else {
+                                } else if (presetFolder->numberOfPresets() > 0) {
                                         presetsFoldersList.push_back(std::move(presetFolder));
                                 }
                         }

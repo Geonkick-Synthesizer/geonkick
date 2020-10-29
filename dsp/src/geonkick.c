@@ -1537,6 +1537,9 @@ void geonkick_process(struct geonkick *kick)
         }
 }
 
+/**
+ * Finds the first unused/free percussion index.
+ */
 enum geonkick_error
 geonkick_unused_percussion(struct geonkick *kick,
                            int *index)
@@ -1586,7 +1589,7 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
 }
 
 
-size_t geonkick_percussion_number(struct geonkick *kick)
+size_t geonkick_percussion_number()
 {
 	return GEONKICK_MAX_PERCUSSIONS;
 }
@@ -1659,16 +1662,10 @@ geonkick_get_percussion_name(struct geonkick *kick,
         return GEONKICK_OK;
 }
 
-enum geonkick_error
-geonkick_channels_number(struct geonkick *kick, size_t *n)
+size_t
+geonkick_channels_number()
 {
-        if (kick == NULL || n == NULL) {
-                gkick_log_error("wrong arguments");
-                return GEONKICK_ERROR;
-        }
-
-        *n = GEONKICK_MAX_CHANNELS;
-        return GEONKICK_OK;
+        return GEONKICK_MAX_CHANNELS;
 }
 
 enum geonkick_error

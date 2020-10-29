@@ -61,7 +61,9 @@ class TopBar : public GeonkickWidget
         GeonkickApi *geonkickApi;
         GeonkickButton *tuneCheckbox;
         GeonkickButton *controlsButton;
+#ifndef GEONKICK_SINGLE
         GeonkickButton *kitButton;
+#endif // GEONKICK_SINGLE
         GeonkickButton *presetsButton;
         GeonkickButton *samplesButton;
 };

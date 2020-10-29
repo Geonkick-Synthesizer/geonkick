@@ -43,11 +43,15 @@ if (GKICK_STANDALONE)
 	add_library(api_standalone STATIC
 		${GKICK_API_HEADERS}
 		${GKICK_API_SOURCES})
-	target_compile_options(api_standalone PUBLIC ${GKICK_API_FLAGS})
+        target_compile_options(api_standalone PUBLIC ${GKICK_API_FLAGS})
 endif (GKICK_STANDALONE)
 
 if (GKICK_PLUGIN)
-	add_library(api_plugin STATIC
+	add_library(api_plugin_single STATIC
+		${GKICK_API_HEADERS}
+		${GKICK_API_SOURCES})
+	target_compile_options(api_plugin_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
+   	add_library(api_plugin STATIC
 		${GKICK_API_HEADERS}
 		${GKICK_API_SOURCES})
 	target_compile_options(api_plugin PUBLIC ${GKICK_API_PLUGIN_FLAGS})

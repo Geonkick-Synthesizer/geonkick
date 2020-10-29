@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 2.4.1)
+project(geonkick VERSION 2.5.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 include(GNUInstallDirs)
@@ -189,6 +189,8 @@ if (ENABLE_LOGGING)
   list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
   list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
   list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
+  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
 endif()
 
 find_package(PkgConfig REQUIRED)
@@ -206,6 +208,7 @@ if (GKICK_STANDALONE)
 endif()
 
 if (GKICK_PLUGIN)
+  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGEONKICK_SINGLE")
   if(CMAKE_SYSTEM_NAME MATCHES Windows)
 	message(STATUS "checking for VST SDK...")
   else()
@@ -213,7 +216,7 @@ if (GKICK_PLUGIN)
 	pkg_check_modules(LV2 lv2)
 	if (NOT LV2_FOUND)
 		message(FATAL_ERROR "can't find LV2 library")
-	endif(NOT LV2_FOUND)
+	      endif(NOT LV2_FOUND)
   endif()
 endif(GKICK_PLUGIN)
 
@@ -264,6 +267,15 @@ add_library(geonkick_common STATIC
   ${GKICK_COMMON_SOURCES}
   ${GKICK_RC_OUTPUT})
 add_dependencies(geonkick_common gkick_resources)
+
+if (GKICK_PLUGIN)
+    add_library(geonkick_common_single STATIC
+      ${GKICK_COMMON_HEADERS}
+      ${GKICK_COMMON_SOURCES}
+      ${GKICK_RC_OUTPUT})
+    add_dependencies(geonkick_common_single gkick_resources)
+    target_compile_options(geonkick_common_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
+endif(GKICK_PLUGIN)
 
 message(STATUS "------------ Summary ---------")
 if (GKICK_STANDALONE)

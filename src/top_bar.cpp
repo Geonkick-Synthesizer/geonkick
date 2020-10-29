@@ -61,9 +61,11 @@ RK_DECLARE_IMAGE_RC(tune_checkbox_hover);
 RK_DECLARE_IMAGE_RC(topmenu_controls_active);
 RK_DECLARE_IMAGE_RC(topmenu_controls_hover);
 RK_DECLARE_IMAGE_RC(topmenu_controls_off);
+#ifndef GEONKICK_SINGLE
 RK_DECLARE_IMAGE_RC(topmenu_kit_active);
 RK_DECLARE_IMAGE_RC(topmenu_kit_hover);
 RK_DECLARE_IMAGE_RC(topmenu_kit_off);
+#endif // GEONKICK_SINGLE
 RK_DECLARE_IMAGE_RC(topmenu_presets_active);
 RK_DECLARE_IMAGE_RC(topmenu_presets_hover);
 RK_DECLARE_IMAGE_RC(topmenu_presets_off);
@@ -82,7 +84,9 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         , layer3Button{nullptr}
         , geonkickApi{api}
         , controlsButton{nullptr}
+#ifndef GEONKICK_SINGLE
         , kitButton{nullptr}
+#endif // GEONKICK_SINGLE
         , presetsButton{nullptr}
         , samplesButton{nullptr}
 {
@@ -219,6 +223,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     controlsButton, setPressed(view == ViewState::View::Controls));
 
+#ifndef GEONKICK_SINGLE
         // Kit button
         addSeparator(mainLayout);
         kitButton = new GeonkickButton(this);
@@ -236,6 +241,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     kitButton, setPressed(view == ViewState::View::Kit));
         mainLayout->addWidget(kitButton);
+#endif // GEONKICK_SINGLE
 
         // Presets button
         addSeparator(mainLayout);

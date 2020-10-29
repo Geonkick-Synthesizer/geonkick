@@ -50,9 +50,11 @@ void ControlArea::showWidget(ViewState::View view)
         case ViewState::View::Controls:
                 showControls();
                 break;
+#ifndef GEONKICK_SINGLE
         case ViewState::View::Kit:
                 showKit();
                 break;
+#endif // GEONKICK_SINGLE
         case ViewState::View::Presets:
                 showPresets();
                 break;
@@ -79,6 +81,7 @@ void ControlArea::showControls()
         }
 }
 
+#ifndef GEONKICK_SINGLE
 void ControlArea::showKit()
 {
         if (!dynamic_cast<KitWidget*>(currentWidget)) {
@@ -88,6 +91,7 @@ void ControlArea::showKit()
                 currentWidget->show();
         }
 }
+#endif // GEONKICK_SINGLE
 
 void ControlArea::showPresets()
 {

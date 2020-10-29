@@ -1,5 +1,6 @@
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix ls: <http://geontime.com/geonkick#> .
+@prefix ls: <http://geontime.com/geonkick/single#> .
 @prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
 @prefix midi:  <http://lv2plug.in/ns/ext/midi#> .
 @prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
@@ -272,6 +273,63 @@
         pg:group ls:Out16
     ] .
 
+<http://geontime.com/geonkick/single#author>
+	a foaf:Person ;
+	foaf:name "Iurie Nistor" ;
+	foaf:mbox <mailto:iurie@geontime.com> ;
+	foaf:homepage <http://geontime.com/> .
+
+<http://geontime.com/geonkick/single>
+	a doap:Project ;
+	doap:maintainer <http://geontime.com/geonkick/single#author> ;
+	doap:name "Geonkick Single" .
+
+<http://geontime.com/geonkick/single>
+	a doap:Project ;
+	doap:maintainer <http://geontime.com/geonkick/single#author> ;
+	doap:name "Geonkick Single" .
+
+<http://geontime.com/geonkick/single>
+    a lv2:Plugin, lv2:InstrumentPlugin;
+    doap:name "Geonkick Single";
+    lv2:project <http://geontime.com/geonkick/single> ;
+    lv2:extensionData state:interface ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:requiredFeature urid:map ;
+    lv2:minorVersion 20 ;
+    lv2:microVersion 0 ;
+    doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
+    ui:ui <http://geontime.com/geonkick/single#ui> ;
+       lv2:port [
+             a lv2:InputPort , atom:AtomPort ;
+             atom:bufferType atom:Sequence ;
+             atom:supports midi:MidiEvent ;
+	     lv2:designation lv2:control ;
+	     lv2:index 0 ;
+	     lv2:symbol "midi_in" ;
+             lv2:name "MIDI In" ;
+	] , [
+	     a lv2:OutputPort,  atom:AtomPort ;
+	     atom:bufferType atom:Sequence ;
+	     lv2:index 1 ;
+	     lv2:symbol "notify" ;
+	     lv2:name "Notify";
+       ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 2 ;
+        lv2:symbol "out__1_left" ;
+        lv2:name "Output Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out1
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 3 ;
+        lv2:symbol "out__1_right" ;
+        lv2:name "Output Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out1
+    ].
+
 ls:Out1
   a pg:OutputGroup, pg:DiscreteGroup;
     rdfs:label "Out 1" ;
@@ -470,3 +528,11 @@ ls:Out16
     lv2:requiredFeature ui:idleInterface;
     lv2:extensionData ui:idleInterface;
     ui:binary <libgeonkick_lv2.so> .
+
+<http://geontime.com/geonkick/single#ui>
+    a ui:X11UI ;
+    lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
+    lv2:requiredFeature ui:idleInterface;
+    lv2:extensionData ui:idleInterface;
+    ui:binary <libgeonkick_single_lv2.so> .
+
