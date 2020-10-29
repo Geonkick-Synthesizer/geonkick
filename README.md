@@ -95,7 +95,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
  - Doesn't support velocity expression for synthesizer parameters
    (nor for layers), only for total instrument amplitude.
  - The default plugin version (that supports kits) will take per instance
-   about 35 MB from heap. The "Single" version of the plugin will
+   about 35 MB from the heap. The "Single" version of the plugin will
    take about 2 MB per plugin instance. If only one instrument per track is used,
    it is recommended to use the "Single" version of the plugin.
  - Doesn't support automation of synthesizer parameters.

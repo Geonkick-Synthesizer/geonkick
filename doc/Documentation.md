@@ -421,8 +421,17 @@ a sample into osc1 or osc2. There is a preview side where the selected file can 
 
 ### LV2 Plugin
 
-The plugin can be loaded by hosts that support LV2 format. Geonkick LV2
-plugin has one MIDI input channel and 16 output audio channels.
+There are two version of the plugin the default one and "Single" version.
+
+- The default plugin version supports kits of 16 instruments
+   and will created 16 stereo audio output channels per plugin instance.
+   One instance of this plugin will take about 35MB fro the heap.
+
+ - The "Single" plugin version doesn't support kits and has only one
+   instrument and one stereo audio output channel. The UI will not have kit
+   or anything related to kits. One instance of this version will
+   take about 2BM from the heap. If only one instrument per track is used,
+   it is recommended to use the "Single" version of the plugin.
 
 ### Standalone
 
