@@ -425,7 +425,7 @@ There are two version of the plugin the default one and "Single" version.
 
 - The default plugin version supports kits of 16 instruments
    and will created 16 stereo audio output channels per plugin instance.
-   One instance of this plugin will take about 35MB fro the heap.
+   One instance of this plugin will take about 35MB from the heap.
 
  - The "Single" plugin version doesn't support kits and has only one
    instrument and one stereo audio output channel. The UI will not have kit
