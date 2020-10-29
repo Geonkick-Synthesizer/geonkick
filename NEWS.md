@@ -2,7 +2,7 @@
 
 #### Features
 
-  - signle version of LV2 plugin (single instrument and single stereo channel)
+  - "Single" version of LV2 plugin (single instrument and single stereo channel)
 
 
 ### Version 2.4.1
