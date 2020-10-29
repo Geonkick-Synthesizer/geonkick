@@ -4,7 +4,7 @@ Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) per
 
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
-snares, hit-hats, shakers, claps.
+snares, hit-hats, shakers, claps. 
 
 "Geon" in the name "Geonkick" refers to a hypothetical particle called "geon".
 
@@ -84,6 +84,24 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
      - GNU/Linux
 * Manually scale the UI by factor of 2 (useful for HiDPI cases)
 
+#### Technical limitations
+
+ - Supports only GNU/Linux and LV2 plugin format.
+ - Can run properly only at 48000 sample rate. It will run also at other sample 
+   rates but the sound will seem pitch shift up / down.
+ - Doesn't support velocity expression for synthesizer parameters
+   (nor for layers), only for total instrument amplitude.
+ - A plugin instance currently will take about 35 MB from heap. It is recommended
+   to use kits of instruments instead of single instrument per plugin instance.
+   Also, every plugin instance will create 16 stereo audio outputs.
+ - Doesn't support automation of synthesizer parameters.
+ - Doesn't support Bézier curves for envelopes.
+ - It is not polyphonic
+ - UI can be scaled, but it will be blurred
+ - The filters becomes unstable for some extremal combination of cutoff and
+   resonance parameter.
+
+
 #### Requirements
 
 In order Geonkick to run and operate correctly there is a need:
@@ -147,3 +165,4 @@ to point to the needed location.
 #### Documentation
 
  [doc/Documentation.md](doc/Documentation.md)
+
