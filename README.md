@@ -10,7 +10,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.4.1
+Version: 2.5.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -78,8 +78,11 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 * Preset browser
 * Standalone
 * Pitch to note
-* Plugin
-     - LV2
+* LV2 Plugin
+     - "Single" version that supports one
+       instrument and one stereo channel per instance.
+     - The default version that supports kits of 16 instruments
+       and 16 output stereo channels per instance.
 * Platforms:
      - GNU/Linux
 * Manually scale the UI by factor of 2 (useful for HiDPI cases)
@@ -91,9 +94,10 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
    rates but the sound will seem pitch shift up / down.
  - Doesn't support velocity expression for synthesizer parameters
    (nor for layers), only for total instrument amplitude.
- - A plugin instance currently will take about 35 MB from heap. It is recommended
-   to use kits of instruments instead of single instrument per plugin instance.
-   Also, every plugin instance will create 16 stereo audio outputs.
+ - The default plugin version (that supports kits) will take per instance
+   about 35 MB from heap. The "Single" version of the plugin will
+   take about 2 MB per plugin instance. If only one instrument per track is used,
+   it is recommended to use the "Single" version of the plugin.
  - Doesn't support automation of synthesizer parameters.
  - Doesn't support Bézier curves for envelopes.
  - It is not polyphonic
