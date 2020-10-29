@@ -4,7 +4,7 @@ Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) per
 
 Geonkick is a synthesizer that can synthesize elements
 of percussion. The most basic examples are: kicks,
-snares, hit-hats, shakers, claps. 
+snares, hit-hats, shakers, claps.
 
 "Geon" in the name "Geonkick" refers to a hypothetical particle called "geon".
 
@@ -35,15 +35,15 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 
 #### Features
 
-* Percussion kit
+* Kit
    - Supports up to 16 instruments.
    - Save / Load kit in JSON format
 * Multitibral
    - 16 midi key range
    - user configurable key mapping
 * Multichannel
-   - 16 stereo output audio channels for plugin (1 stereo for standalone)
-   - user configurable mapping of kit percussions to output channels
+   - 16 stereo audio output channels for plugin (1 stereo for standalone)
+   - user configurable mapping of kit instrument to output channels
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
@@ -67,7 +67,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
      - distortion drive envelope
      - distortion volume envelope
      - tune percussion option (relative to key A4)
-* Key velocity sensitive
+* Key velocity sensitive for instrument total output amplitude
 * Jack support
 * Export
      - mono, stereo
@@ -87,7 +87,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 #### Technical limitations
 
  - Supports only GNU/Linux and LV2 plugin format.
- - Can run properly only at 48000 sample rate. It will run also at other sample 
+ - Can run properly only at 48000 sample rate. It will run also at other sample
    rates but the sound will seem pitch shift up / down.
  - Doesn't support velocity expression for synthesizer parameters
    (nor for layers), only for total instrument amplitude.
@@ -98,9 +98,8 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
  - Doesn't support Bézier curves for envelopes.
  - It is not polyphonic
  - UI can be scaled, but it will be blurred
- - The filters becomes unstable for some extremal combination of cutoff and
+ - Filters become unstable for some extremal combination of cutoff and
    resonance parameter.
-
 
 #### Requirements
 
