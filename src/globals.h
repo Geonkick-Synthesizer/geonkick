@@ -41,6 +41,7 @@
 #include <array>
 #include <mutex>
 #include <thread>
+#include <iomanip>
 
 #include <RkObject.h>
 
