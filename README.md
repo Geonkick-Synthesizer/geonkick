@@ -8,8 +8,6 @@ snares, hit-hats, shakers, claps.
 
 "Geon" in the name "Geonkick" refers to a hypothetical particle called "geon".
 
-Status: for a while the development and maintenance takes a pause.
-
 License: GPLv3
 
 Version: 2.5.0 (released)
