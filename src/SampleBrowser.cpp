@@ -111,11 +111,11 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
         playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(33, 18);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_pressed)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
         container->addSpace(5);
         container->addWidget(playButton);
@@ -125,11 +125,11 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
         loadButton->setType(RkButton::ButtonType::ButtonPush);
         loadButton->setSize(33, 18);
         loadButton->setImage(RkImage(loadButton->size(), RK_IMAGE_RC(load_preview_sample)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         loadButton->setImage(RkImage(loadButton->size(), RK_IMAGE_RC(load_preview_sample_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         loadButton->setImage(RkImage(loadButton->size(), RK_IMAGE_RC(load_preview_sample_pressed)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         RK_ACT_BIND(loadButton, pressed, RK_ACT_ARGS(), this, loadSample());
         container->addWidget(loadButton);
         container->addSpace(15);
@@ -137,11 +137,11 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
         osc1Button = new GeonkickButton(this);
         osc1Button->setSize(33, 18);
         osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample_pressed)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         RK_ACT_BIND(osc1Button, pressed,
                     RK_ACT_ARGS(), this,
                     setOscillator(GeonkickApi::OscillatorType::Oscillator1));
@@ -151,11 +151,11 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
         osc2Button = new GeonkickButton(this);
         osc2Button->setSize(33, 18);
         osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample_pressed)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         RK_ACT_BIND(osc2Button, pressed,
                     RK_ACT_ARGS(), this,
                     setOscillator(GeonkickApi::OscillatorType::Oscillator2));

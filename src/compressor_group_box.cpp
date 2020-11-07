@@ -52,13 +52,13 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         compressorCheckbox->setCheckable(true);
 	compressorCheckbox->setFixedSize(78, 21);
         compressorCheckbox->setImage(RkImage(compressorCheckbox->size(), RK_IMAGE_RC(compressor_enable)),
-                                     RkButton::ButtonImage::ImageUnpressed);
+                                     RkButton::State::Unpressed);
         compressorCheckbox->setImage(RkImage(compressorCheckbox->size(), RK_IMAGE_RC(compressor_enable_active)),
-                                     RkButton::ButtonImage::ImagePressed);
+                                     RkButton::State::Pressed);
         compressorCheckbox->setImage(RkImage(compressorCheckbox->size(), RK_IMAGE_RC(compressor_enable_hover)),
-                                     RkButton::ButtonImage::ImageUnpressedHover);
+                                     RkButton::State::UnpressedHover);
         compressorCheckbox->setImage(RkImage(compressorCheckbox->size(), RK_IMAGE_RC(compressor_enable_hover)),
-                                     RkButton::ButtonImage::ImagePressedHover);
+                                     RkButton::State::PressedHover);
 	compressorCheckbox->setPosition((width() - compressorCheckbox->width()) / 2, 0);
 
         int sliderW = 56;

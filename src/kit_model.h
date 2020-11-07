@@ -41,6 +41,7 @@ class KitModel : public RkObject {
         void selectPercussion(PercussionIndex index);
         bool isPercussionSelected(PercussionIndex index) const;
         PercussionIndex selectedPercussion() const;
+        PercussionModel* currentPercussion() const;
         size_t numberOfChannels() const;
         int percussionChannel(PercussionIndex index) const;
         bool setPercussionChannel(PercussionIndex index, int channel);
@@ -70,7 +71,7 @@ class KitModel : public RkObject {
         bool soloPercussion(PercussionIndex index, bool b);
         bool isPercussionSolo(PercussionIndex index) const;
         void updatePercussion(PercussionIndex index);
-        GeonkickApi* getApi() const;
+        GeonkickApi* api() const;
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),
@@ -92,6 +93,10 @@ class KitModel : public RkObject {
                     limiterUpdated(PercussionIndex index),
                     RK_ARG_TYPE(PercussionIndex),
                     RK_ARG_VAL(index));
+        RK_DECL_ACT(percussionUpdated,
+                    percussionUpdated(PercussionModel* model),
+                    RK_ARG_TYPE(PercussionModel*),
+                    RK_ARG_VAL(model));
 
  protected:
         int percussionId(int index) const;

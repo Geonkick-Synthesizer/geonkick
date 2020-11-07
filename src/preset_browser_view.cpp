@@ -71,22 +71,22 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         nextFolderPageButton->setType(RkButton::ButtonType::ButtonPush);
         nextFolderPageButton->setSize(24, 24);
         nextFolderPageButton->setImage(RkImage(nextFolderPageButton->size(), RK_IMAGE_RC(next_page)),
-                           RkButton::ButtonImage::ImageUnpressed);
+                           RkButton::State::Unpressed);
         nextFolderPageButton->setImage(RkImage(nextFolderPageButton->size(), RK_IMAGE_RC(next_page_hover)),
-                           RkButton::ButtonImage::ImageUnpressedHover);
+                           RkButton::State::UnpressedHover);
         nextFolderPageButton->setImage(RkImage(nextFolderPageButton->size(), RK_IMAGE_RC(next_page_on)),
-                           RkButton::ButtonImage::ImagePressed);
+                           RkButton::State::Pressed);
         RK_ACT_BIND(nextFolderPageButton, pressed, RK_ACT_ARGS(), browserModel, folderNextPage());
 
         prevFolderPageButton = new RkButton(this);
         prevFolderPageButton->setType(RkButton::ButtonType::ButtonPush);
         prevFolderPageButton->setSize(24, 24);
         prevFolderPageButton->setImage(RkImage(prevFolderPageButton->size(), RK_IMAGE_RC(prev_page)),
-                           RkButton::ButtonImage::ImageUnpressed);
+                           RkButton::State::Unpressed);
         prevFolderPageButton->setImage(RkImage(prevFolderPageButton->size(), RK_IMAGE_RC(prev_page_hover)),
-                           RkButton::ButtonImage::ImageUnpressedHover);
+                           RkButton::State::UnpressedHover);
         prevFolderPageButton->setImage(RkImage(prevFolderPageButton->size(), RK_IMAGE_RC(prev_page_on)),
-                           RkButton::ButtonImage::ImagePressed);
+                           RkButton::State::Pressed);
         RK_ACT_BIND(prevFolderPageButton, pressed, RK_ACT_ARGS(), browserModel, folderPreviousPage());
         bottomContainer->addWidget(prevFolderPageButton);
         bottomContainer->addSpace(5);
@@ -97,11 +97,11 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         nextPresetPageButton->setType(RkButton::ButtonType::ButtonPush);
         nextPresetPageButton->setSize(24, 24);
         nextPresetPageButton->setImage(RkImage(nextPresetPageButton->size(), RK_IMAGE_RC(next_page)),
-                           RkButton::ButtonImage::ImageUnpressed);
+                           RkButton::State::Unpressed);
         nextPresetPageButton->setImage(RkImage(nextPresetPageButton->size(), RK_IMAGE_RC(next_page_hover)),
-                           RkButton::ButtonImage::ImageUnpressedHover);
+                           RkButton::State::UnpressedHover);
         nextPresetPageButton->setImage(RkImage(nextPresetPageButton->size(), RK_IMAGE_RC(next_page_on)),
-                           RkButton::ButtonImage::ImagePressed);
+                           RkButton::State::Pressed);
         RK_ACT_BIND(nextPresetPageButton, pressed, RK_ACT_ARGS(), browserModel, nextPresetPage());
         bottomContainer->addWidget(nextPresetPageButton, Rk::Alignment::AlignRight);
         bottomContainer->addSpace(5, Rk::Alignment::AlignRight);
@@ -110,11 +110,11 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         prevPresetPageButton->setType(RkButton::ButtonType::ButtonPush);
         prevPresetPageButton->setSize(24, 24);
         prevPresetPageButton->setImage(RkImage(prevPresetPageButton->size(), RK_IMAGE_RC(prev_page)),
-                           RkButton::ButtonImage::ImageUnpressed);
+                           RkButton::State::Unpressed);
         prevPresetPageButton->setImage(RkImage(prevPresetPageButton->size(), RK_IMAGE_RC(prev_page_hover)),
-                           RkButton::ButtonImage::ImageUnpressedHover);
+                           RkButton::State::UnpressedHover);
         prevPresetPageButton->setImage(RkImage(prevPresetPageButton->size(), RK_IMAGE_RC(prev_page_on)),
-                           RkButton::ButtonImage::ImagePressed);
+                           RkButton::State::Pressed);
         RK_ACT_BIND(prevPresetPageButton, pressed, RK_ACT_ARGS(), browserModel, previousPresetPage());
         bottomContainer->addWidget(prevPresetPageButton, Rk::Alignment::AlignRight);
         updatePageButtons();

@@ -69,13 +69,13 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         filterCheckbox->setSize(32, 21);
         filterCheckbox->setPosition(width() / 2 - filterCheckbox->width() / 2, 10);
         filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled)),
-                                       RkButton::ButtonImage::ImagePressed);
+                                       RkButton::State::Pressed);
         filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_disabled)),
-                                       RkButton::ButtonImage::ImageUnpressed);
+                                       RkButton::State::Unpressed);
         filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled_hover)),
-                                       RkButton::ButtonImage::ImagePressedHover);
+                                       RkButton::State::PressedHover);
         filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled_hover)),
-                                       RkButton::ButtonImage::ImageUnpressedHover);
+                                       RkButton::State::UnpressedHover);
         RK_ACT_BIND(filterCheckbox, toggled, RK_ACT_ARGS(bool b), this, enabled(b));
 
         cutOffKnob = new Knob(this);
@@ -94,13 +94,13 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         cutoffEnvelopeButton->setPosition(cutOffKnob->x() + cutOffKnob->width() / 2 - cutoffEnvelopeButton->width() / 2,
                                           cutOffKnob->y() + cutOffKnob->height() - 3);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_off)),
-                                       RkButton::ButtonImage::ImageUnpressed);
+                                       RkButton::State::Unpressed);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_on)),
-                                       RkButton::ButtonImage::ImagePressed);
+                                       RkButton::State::Pressed);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_hover)),
-                                       RkButton::ButtonImage::ImagePressedHover);
+                                       RkButton::State::PressedHover);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_hover)),
-                                       RkButton::ButtonImage::ImageUnpressedHover);
+                                       RkButton::State::UnpressedHover);
         RK_ACT_BIND(cutoffEnvelopeButton,
                     pressed,
                     RK_ACT_ARGS(),
@@ -128,11 +128,11 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         lpFilterButton->setFixedSize(25, 18);
         lpFilterButton->setPosition(x,  y);
         lpFilterButton->setImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_lp)),
-                                 RkButton::ButtonImage::ImageUnpressed);
+                                 RkButton::State::Unpressed);
         lpFilterButton->setImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_lp_checked)),
-                                 RkButton::ButtonImage::ImagePressed);
+                                 RkButton::State::Pressed);
         lpFilterButton->setImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_lp_hover)),
-                                 RkButton::ButtonImage::ImageUnpressedHover);
+                                 RkButton::State::UnpressedHover);
         RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
                     setFilterType(GeonkickApi::FilterType::LowPass, b));
 
@@ -142,11 +142,11 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         bpFilterButton->setPosition(lpFilterButton->x() + lpFilterButton->width() + 4,
                                     lpFilterButton->y());
         bpFilterButton->setImage(RkImage(bpFilterButton->size(), RK_IMAGE_RC(filter_type_bp)),
-                                 RkButton::ButtonImage::ImageUnpressed);
+                                 RkButton::State::Unpressed);
         bpFilterButton->setImage(RkImage(bpFilterButton->size(), RK_IMAGE_RC(filter_type_bp_checked)),
-                                 RkButton::ButtonImage::ImagePressed);
+                                 RkButton::State::Pressed);
         bpFilterButton->setImage(RkImage(bpFilterButton->size(), RK_IMAGE_RC(filter_type_bp_hover)),
-                                 RkButton::ButtonImage::ImageUnpressedHover);
+                                 RkButton::State::UnpressedHover);
         RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
                     setFilterType(GeonkickApi::FilterType::BandPass, b));
 
@@ -156,11 +156,11 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         hpFilterButton->setPosition(bpFilterButton->x() + bpFilterButton->width() + 4,
                                     bpFilterButton->y());
         hpFilterButton->setImage(RkImage(hpFilterButton->size(), RK_IMAGE_RC(filter_type_hp)),
-                                 RkButton::ButtonImage::ImageUnpressed);
+                                 RkButton::State::Unpressed);
         hpFilterButton->setImage(RkImage(hpFilterButton->size(), RK_IMAGE_RC(filter_type_hp_checked)),
-                                 RkButton::ButtonImage::ImagePressed);
+                                 RkButton::State::Pressed);
         hpFilterButton->setImage(RkImage(hpFilterButton->size(), RK_IMAGE_RC(filter_type_hp_hover)),
-                                 RkButton::ButtonImage::ImageUnpressedHover);
+                                 RkButton::State::UnpressedHover);
         RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
                     setFilterType(GeonkickApi::FilterType::HighPass, b));
 

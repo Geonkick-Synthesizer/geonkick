@@ -30,13 +30,12 @@
 #include "SampleBrowser.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
-                         GeonkickApi* api,
+                         KitModel* model,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
-        , geonkickApi{api}
+        , kitModel{model}
         , oscillators{oscillators}
-        , kitModel{new KitModel(this, geonkickApi)}
-        , presetsModel{new PresetBrowserModel(this, api)}
+        , presetsModel{new PresetBrowserModel(this, kitModel->api())}
         , currentWidget{nullptr}
 {
         setFixedSize(920, 370);
@@ -61,7 +60,7 @@ void ControlArea::showWidget(ViewState::View view)
         case ViewState::View::Samples:
                 if (currentWidget)
                         currentWidget->close();
-                currentWidget = new SampleBrowser(this, geonkickApi);
+                currentWidget = new SampleBrowser(this, kitModel->api());
                 break;
         default:
                 showControls();
@@ -73,7 +72,7 @@ void ControlArea::showControls()
         if (!dynamic_cast<ControlsWidget*>(currentWidget)) {
                 if (currentWidget)
                         currentWidget->close();
-                auto controlsWidget = new ControlsWidget(this, geonkickApi, oscillators);
+                auto controlsWidget = new ControlsWidget(this, kitModel->api(), oscillators);
                 RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 controlsWidget->setSize({width(), height()});
                 currentWidget = controlsWidget;

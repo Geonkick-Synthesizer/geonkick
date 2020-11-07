@@ -87,13 +87,13 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
                                         - amplEnvelopeButton->width() / 2,
                                         kickAmplitudeKnob->y() + kickAmplitudeKnob->height() - 3);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
-                                        RkButton::ButtonImage::ImageUnpressed);
+                                        RkButton::State::Unpressed);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),
-                                        RkButton::ButtonImage::ImagePressed);
+                                        RkButton::State::Pressed);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
-                                        RkButton::ButtonImage::ImagePressedHover);
+                                        RkButton::State::PressedHover);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
-                                        RkButton::ButtonImage::ImageUnpressedHover);
+                                        RkButton::State::UnpressedHover);
         amplEnvelopeButton->show();
         RK_ACT_BIND(amplEnvelopeButton,
                     pressed,

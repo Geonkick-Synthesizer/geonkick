@@ -136,11 +136,11 @@ void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
         layer1Button->setBackgroundColor(buttomAreaWidget->background());
         layer1Button->setSize(24, 18);
         layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_env)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_env_active)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_env_active)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         layer1Button->setCheckable(true);
         layer1Button->setPressed(true);
         RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b),
@@ -150,11 +150,11 @@ void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
         layer2Button->setBackgroundColor(buttomAreaWidget->background());
         layer2Button->setSize(24, 18);
         layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_env)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_env_active)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_env_active)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         layer2Button->setCheckable(true);
         RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b),
                     this, setLayer(GeonkickApi::Layer::Layer2));
@@ -163,11 +163,11 @@ void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
         layer3Button->setBackgroundColor(buttomAreaWidget->background());
         layer3Button->setSize(24, 18);
         layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_env)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_env_active)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_env_active)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         layer3Button->setCheckable(true);
         RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b),
                     this, setLayer(GeonkickApi::Layer::Layer3));

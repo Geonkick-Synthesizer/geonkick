@@ -156,13 +156,13 @@ void KitPercussionView::createView()
         removeButton->setType(RkButton::ButtonType::ButtonPush);
         removeButton->setSize(16, 16);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_on)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_hover)),
-                             RkButton::ButtonImage::ImagePressedHover);
+                             RkButton::State::PressedHover);
         removeButton->show();
         percussionContainer->addWidget(removeButton);
         percussionContainer->addSpace(3);
@@ -172,13 +172,13 @@ void KitPercussionView::createView()
         copyButton->setType(RkButton::ButtonType::ButtonPush);
         copyButton->setSize(16, 16);
         copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button_on)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         copyButton->setImage(RkImage(copyButton->size(), RK_IMAGE_RC(copy_per_button_hover)),
-                             RkButton::ButtonImage::ImagePressedHover);
+                             RkButton::State::PressedHover);
         copyButton->show();
         percussionContainer->addWidget(copyButton);
         percussionContainer->addSpace(10);
@@ -201,13 +201,13 @@ void KitPercussionView::createView()
         muteButton->setType(RkButton::ButtonType::ButtonCheckable);
         muteButton->setSize(16, 16);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_on)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         muteButton->setImage(RkImage(muteButton->size(), RK_IMAGE_RC(mute_hover)),
-                             RkButton::ButtonImage::ImagePressedHover);
+                             RkButton::State::PressedHover);
         muteButton->show();
         percussionContainer->addWidget(muteButton);
         percussionContainer->addSpace(3);
@@ -217,13 +217,13 @@ void KitPercussionView::createView()
         soloButton->setType(RkButton::ButtonType::ButtonCheckable);
         soloButton->setSize(16, 16);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_on)),
-                             RkButton::ButtonImage::ImagePressed);
+                             RkButton::State::Pressed);
         soloButton->setImage(RkImage(soloButton->size(), RK_IMAGE_RC(solo_hover)),
-                             RkButton::ButtonImage::ImagePressedHover);
+                             RkButton::State::PressedHover);
         soloButton->show();
         percussionContainer->addWidget(soloButton);
         percussionContainer->addSpace(3);
@@ -233,11 +233,11 @@ void KitPercussionView::createView()
         playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(16, 16);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play)),
-                         RkButton::ButtonImage::ImageUnpressed);
+                         RkButton::State::Unpressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_hover)),
-                         RkButton::ButtonImage::ImageUnpressedHover);
+                         RkButton::State::UnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(per_play_on)),
-                         RkButton::ButtonImage::ImagePressed);
+                         RkButton::State::Pressed);
         playButton->show();
         percussionContainer->addWidget(playButton);
 }

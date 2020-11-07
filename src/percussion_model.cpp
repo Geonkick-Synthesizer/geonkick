@@ -190,3 +190,8 @@ void PercussionModel::copy()
 {
         kitModel->copyPercussion(index());
 }
+
+KitModel* PercussionModel::model() const
+{
+        return kitModel;
+}

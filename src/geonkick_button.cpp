@@ -31,10 +31,10 @@ GeonkickButton::GeonkickButton(GeonkickWidget *parent)
 
 void GeonkickButton::setPressedImage(const RkImage &img)
 {
-        setImage(img, RkButton::ButtonImage::ImagePressed);
+        setImage(img, RkButton::State::Pressed);
 }
 
 void GeonkickButton::setUnpressedImage(const RkImage &img)
 {
-        setImage(img, RkButton::ButtonImage::ImageUnpressed);
+        setImage(img, RkButton::State::Unpressed);
 }

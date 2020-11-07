@@ -50,7 +50,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , envelopeWidget{nullptr}
         , presetName{preset}
         , limiterWidget{nullptr}
-        , kitModel{nullptr}
+        , kitModel{new KitModel(this, geonkickApi)}
 {
         GeonkickConfig config;
         setScaleFactor(config.getScaleFactor());
@@ -70,7 +70,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , envelopeWidget{nullptr}
         , presetName{std::string()}
         , limiterWidget{nullptr}
-        , kitModel{nullptr}
+        , kitModel{new KitModel(this, geonkickApi)}
 {
         GeonkickConfig config;
         setScaleFactor(config.getScaleFactor());
@@ -168,7 +168,7 @@ bool MainWindow::init(void)
                                   << "There is a need for jack server running "
                                   << "in order to have audio output.");
         }
-        topBar = new TopBar(this, geonkickApi);
+        topBar = new TopBar(this, kitModel);
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
@@ -199,7 +199,7 @@ bool MainWindow::init(void)
                                    envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
-        controlAreaWidget = new ControlArea(this, geonkickApi, oscillators);
+        controlAreaWidget = new ControlArea(this, kitModel, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());

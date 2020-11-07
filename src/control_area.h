@@ -29,7 +29,6 @@
 #include "ViewState.h"
 
 class Oscillator;
-class GeonkickApi;
 class ControlsWidget;
 class KitModel;
 #ifndef GEONKICK_SINGLE
@@ -43,7 +42,7 @@ class ControlArea: public GeonkickWidget
 {
  public:
         ControlArea(GeonkickWidget *parent,
-                    GeonkickApi* api,
+                    KitModel* model,
                     const std::vector<std::unique_ptr<Oscillator>> &oscillators);
         ~ControlArea() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
@@ -57,9 +56,8 @@ class ControlArea: public GeonkickWidget
         void showWidget(ViewState::View view);
 
  private:
-        GeonkickApi* geonkickApi;
-        const std::vector<std::unique_ptr<Oscillator>> &oscillators;
         KitModel *kitModel;
+        const std::vector<std::unique_ptr<Oscillator>> &oscillators;
         PresetBrowserModel *presetsModel;
         RkWidget* currentWidget;
 };

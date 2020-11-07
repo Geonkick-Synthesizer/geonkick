@@ -110,16 +110,16 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
                 oscillatorCheckbox->setFixedSize(69, 21);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc1_on)),
-                                             RkButton::ButtonImage::ImagePressed);
+                                             RkButton::State::Pressed);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc1_off)),
-                                             RkButton::ButtonImage::ImageUnpressed);
+                                             RkButton::State::Unpressed);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc1_hover)),
-                                             RkButton::ButtonImage::ImageUnpressedHover);
+                                             RkButton::State::UnpressedHover);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc1_hover)),
-                                             RkButton::ButtonImage::ImagePressedHover);
+                                             RkButton::State::PressedHover);
 
 
                 fmCheckbox = new GeonkickButton(this);
@@ -127,42 +127,42 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
                 fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 5, 0);
                 fmCheckbox->setFixedSize(76, 21);
                 fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_active)),
-                                     RkButton::ButtonImage::ImagePressed);
+                                     RkButton::State::Pressed);
                 fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio)),
-                                     RkButton::ButtonImage::ImageUnpressed);
+                                     RkButton::State::Unpressed);
                 fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                                     RkButton::ButtonImage::ImageUnpressedHover);
+                                     RkButton::State::UnpressedHover);
                 fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                                     RkButton::ButtonImage::ImagePressedHover);
+                                     RkButton::State::PressedHover);
                 RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 oscillatorCheckbox->setFixedSize(69, 21);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc2_on)),
-                                             RkButton::ButtonImage::ImagePressed);
+                                             RkButton::State::Pressed);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc2_off)),
-                                             RkButton::ButtonImage::ImageUnpressed);
+                                             RkButton::State::Unpressed);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc2_hover)),
-                                             RkButton::ButtonImage::ImageUnpressedHover);
+                                             RkButton::State::UnpressedHover);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc2_hover)),
-                                             RkButton::ButtonImage::ImagePressedHover);
+                                             RkButton::State::PressedHover);
         } else {
                 oscillatorCheckbox->setFixedSize(69, 21);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_noise_on)),
-                                             RkButton::ButtonImage::ImagePressed);
+                                             RkButton::State::Pressed);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_noise_off)),
-                                             RkButton::ButtonImage::ImageUnpressed);
+                                             RkButton::State::Unpressed);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_noise_hover)),
-                                             RkButton::ButtonImage::ImageUnpressedHover);
+                                             RkButton::State::UnpressedHover);
                                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_noise_hover)),
-                                             RkButton::ButtonImage::ImagePressedHover);
+                                             RkButton::State::PressedHover);
         }
 
         if (oscillator->type() != Oscillator::Type::Noise)
@@ -282,13 +282,13 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         oscAmplEnvelopeButton->setPosition(amplitudeKnob->x() + amplitudeKnob->width() / 2 - oscAmplEnvelopeButton->width() / 2,
                                            amplitudeKnob->y() + amplitudeKnob->height() - 3);
         oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
-                                        RkButton::ButtonImage::ImageUnpressed);
+                                        RkButton::State::Unpressed);
         oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),
-                                        RkButton::ButtonImage::ImagePressed);
+                                        RkButton::State::Pressed);
         oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
-                                        RkButton::ButtonImage::ImagePressedHover);
+                                        RkButton::State::PressedHover);
         oscAmplEnvelopeButton->setImage(RkImage(oscAmplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_hover)),
-                                        RkButton::ButtonImage::ImageUnpressedHover);
+                                        RkButton::State::UnpressedHover);
         oscAmplEnvelopeButton->show();
         RK_ACT_BIND(oscAmplEnvelopeButton,
                     pressed,
@@ -366,13 +366,13 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 oscFreqEnvelopeButton->setPosition(frequencyKnob->x() + frequencyKnob->width() / 2 - oscFreqEnvelopeButton->width() / 2,
                                                    frequencyKnob->y() + frequencyKnob->height() - 3);
                 oscFreqEnvelopeButton->setImage(RkImage(oscFreqEnvelopeButton->size(), RK_IMAGE_RC(osc_freq_button_off)),
-                                                RkButton::ButtonImage::ImageUnpressed);
+                                                RkButton::State::Unpressed);
                 oscFreqEnvelopeButton->setImage(RkImage(oscFreqEnvelopeButton->size(), RK_IMAGE_RC(osc_freq_button_on)),
-                                                RkButton::ButtonImage::ImagePressed);
+                                                RkButton::State::Pressed);
                 oscFreqEnvelopeButton->setImage(RkImage(oscFreqEnvelopeButton->size(), RK_IMAGE_RC(osc_freq_button_hover)),
-                                                RkButton::ButtonImage::ImagePressedHover);
+                                                RkButton::State::PressedHover);
                 oscFreqEnvelopeButton->setImage(RkImage(oscFreqEnvelopeButton->size(), RK_IMAGE_RC(osc_freq_button_hover)),
-                                                RkButton::ButtonImage::ImageUnpressedHover);
+                                                RkButton::State::UnpressedHover);
                 RK_ACT_BIND(oscFreqEnvelopeButton,
                             pressed,
                             RK_ACT_ARGS(),
@@ -392,13 +392,13 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                 pitchEnvelopeButton->setPosition(frequencyKnob->x() + frequencyKnob->width() / 2 - pitchEnvelopeButton->width() / 2,
                                                  frequencyKnob->y() + frequencyKnob->height() - 3);
                 pitchEnvelopeButton->setImage(RkImage(pitchEnvelopeButton->size(), RK_IMAGE_RC(osc_pitch_button_off)),
-                                              RkButton::ButtonImage::ImageUnpressed);
+                                              RkButton::State::Unpressed);
                 pitchEnvelopeButton->setImage(RkImage(pitchEnvelopeButton->size(), RK_IMAGE_RC(osc_pitch_button_on)),
-                                              RkButton::ButtonImage::ImagePressed);
+                                              RkButton::State::Pressed);
                 pitchEnvelopeButton->setImage(RkImage(pitchEnvelopeButton->size(), RK_IMAGE_RC(osc_pitch_button_hover)),
-                                              RkButton::ButtonImage::ImagePressedHover);
+                                              RkButton::State::PressedHover);
                 pitchEnvelopeButton->setImage(RkImage(pitchEnvelopeButton->size(), RK_IMAGE_RC(osc_pitch_button_hover)),
-                                              RkButton::ButtonImage::ImageUnpressedHover);
+                                              RkButton::State::UnpressedHover);
                 RK_ACT_BIND(pitchEnvelopeButton,
                             pressed,
                             RK_ACT_ARGS(),

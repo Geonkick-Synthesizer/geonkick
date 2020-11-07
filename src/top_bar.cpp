@@ -26,6 +26,9 @@
 #include "preset_browser_model.h"
 #include "preset_browser_view.h"
 #include "ViewState.h"
+#include "kit_model.h"
+#include "percussion_model.h"
+#include "MidiKeyWidget.h"
 
 #include <RkLabel.h>
 #include <RkButton.h>
@@ -61,6 +64,9 @@ RK_DECLARE_IMAGE_RC(tune_checkbox_hover);
 RK_DECLARE_IMAGE_RC(topmenu_controls_active);
 RK_DECLARE_IMAGE_RC(topmenu_controls_hover);
 RK_DECLARE_IMAGE_RC(topmenu_controls_off);
+RK_DECLARE_IMAGE_RC(topmenu_midi_off);
+RK_DECLARE_IMAGE_RC(topmenu_midi_active);
+RK_DECLARE_IMAGE_RC(topmenu_midi_hover);
 #ifndef GEONKICK_SINGLE
 RK_DECLARE_IMAGE_RC(topmenu_kit_active);
 RK_DECLARE_IMAGE_RC(topmenu_kit_hover);
@@ -73,8 +79,9 @@ RK_DECLARE_IMAGE_RC(topmenu_samples_active);
 RK_DECLARE_IMAGE_RC(topmenu_samples_hover);
 RK_DECLARE_IMAGE_RC(topmenu_samples_off);
 
-TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
+TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         : GeonkickWidget(parent)
+        , kitModel{model}
         , openFileButton{nullptr}
         , saveFileButton{nullptr}
         , exportFileButton{nullptr}
@@ -82,8 +89,8 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         , layer1Button{nullptr}
         , layer2Button{nullptr}
         , layer3Button{nullptr}
-        , geonkickApi{api}
         , controlsButton{nullptr}
+        , midiKeyButton{nullptr}
 #ifndef GEONKICK_SINGLE
         , kitButton{nullptr}
 #endif // GEONKICK_SINGLE
@@ -108,11 +115,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         openFileButton->setSize(26, 10);
         openFileButton->setType(RkButton::ButtonType::ButtonCheckable);
         openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open)),
-                                 RkButton::ButtonImage::ImageUnpressed);
+                                 RkButton::State::Unpressed);
         openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
-                                 RkButton::ButtonImage::ImageUnpressedHover);
+                                 RkButton::State::UnpressedHover);
         openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
-                                 RkButton::ButtonImage::ImagePressed);
+                                 RkButton::State::Pressed);
         RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=](){openFileButton->setPressed(false);
                                                               action openFile();});
         mainLayout->addWidget(openFileButton);
@@ -122,11 +129,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         saveFileButton->setSize(23, 10);
         saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
         saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save)),
-                                 RkButton::ButtonImage::ImageUnpressed);
+                                 RkButton::State::Unpressed);
         saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
-                                 RkButton::ButtonImage::ImageUnpressedHover);
+                                 RkButton::State::UnpressedHover);
         saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
-                                 RkButton::ButtonImage::ImagePressed);
+                                 RkButton::State::Pressed);
         RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=](){saveFileButton->setPressed(false);
                                                              action saveFile();});
         mainLayout->addWidget(saveFileButton);
@@ -136,11 +143,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         exportFileButton->setSize(29, 10);
         saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
         exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export)),
-                                 RkButton::ButtonImage::ImageUnpressed);
+                                 RkButton::State::Unpressed);
         exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
-                                 RkButton::ButtonImage::ImageUnpressedHover);
+                                 RkButton::State::UnpressedHover);
         exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
-                                RkButton::ButtonImage::ImagePressed);
+                                RkButton::State::Pressed);
         RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=](){exportFileButton->setPressed(false);
                                                                action openExport();});
         mainLayout->addWidget(exportFileButton);
@@ -150,12 +157,12 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(43, 18);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play)),
-                             RkButton::ButtonImage::ImageUnpressed);
+                             RkButton::State::Unpressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_hover)),
-                             RkButton::ButtonImage::ImageUnpressedHover);
+                             RkButton::State::UnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)),
-                             RkButton::ButtonImage::ImagePressed);
-        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playKick());
+                             RkButton::State::Pressed);
+        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), kitModel->api(), playKick());
 	playButton->show();
         mainLayout->addWidget(playButton);
         addSeparator(mainLayout, 10);
@@ -167,11 +174,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         resetButton->setSize(33, 18);
         resetButton->setType(RkButton::ButtonType::ButtonPush);
         resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset)),
-                              RkButton::ButtonImage::ImageUnpressed);
+                              RkButton::State::Unpressed);
         resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_hover)),
-                              RkButton::ButtonImage::ImageUnpressedHover);
+                              RkButton::State::UnpressedHover);
         resetButton->setImage(RkImage(resetButton->size(), RK_IMAGE_RC(reset_active)),
-                              RkButton::ButtonImage::ImagePressed);
+                              RkButton::State::Pressed);
         resetButton->show();
         RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
         mainLayout->addWidget(resetButton);
@@ -182,16 +189,16 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         tuneCheckbox->setCheckable(true);
         tuneCheckbox->setFixedSize(33, 18);
         tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_off)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_on)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_hover)),
-                               RkButton::ButtonImage::ImagePressedHover);
+                               RkButton::State::PressedHover);
         tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         tuneCheckbox->show();
-        RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickApi,
-		    tuneAudioOutput(geonkickApi->currentPercussion(), b));
+        RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), kitModel->api(),
+		    tuneAudioOutput(kitModel->api()->currentPercussion(), b));
         mainLayout->addWidget(tuneCheckbox);
         addSeparator(mainLayout, 10);
 
@@ -201,9 +208,34 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         auto font = presetNameLabel->font();
         font.setSize(10);
         presetNameLabel->setFont(font);
-        presetNameLabel->setSize(150, 30);
+        presetNameLabel->setSize(80, 30);
         presetNameLabel->show();
         mainLayout->addWidget(presetNameLabel);
+
+        addSeparator(mainLayout);
+        midiKeyButton = new GeonkickButton(this);
+        midiKeyButton->setTextColor({200, 200, 200});
+        auto key = model->api()->percussionsReferenceKey()
+                + kitModel->currentPercussion()->key();
+        midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(key));
+        midiKeyButton->setType(RkButton::ButtonType::ButtonUncheckable);
+        midiKeyButton->setSize(36, 20);
+        midiKeyButton->setImage(RkImage(midiKeyButton->size(), RK_IMAGE_RC(topmenu_midi_off)),
+                                RkButton::State::Unpressed);
+        midiKeyButton->setImage(RkImage(midiKeyButton->size(), RK_IMAGE_RC(topmenu_midi_active)),
+                                RkButton::State::Pressed);
+        midiKeyButton->setImage(RkImage(midiKeyButton->size(), RK_IMAGE_RC(topmenu_midi_hover)),
+                                RkButton::State::UnpressedHover);
+        RK_ACT_BINDL(kitModel,
+                     percussionUpdated,
+                     RK_ACT_ARGS(PercuessionModel *model),
+                     [&] (PercussionModel *model) {
+                             auto key = model->model()->api()->percussionsReferenceKey()
+                                     + model->model()->currentPercussion()->key();
+                             midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(key));
+                     });
+        RK_ACT_BIND(midiKeyButton, pressed, RK_ACT_ARGS(), this, showMidiPopup());
+        mainLayout->addWidget(midiKeyButton);
 
         // Controls button
         addSeparator(mainLayout);
@@ -211,11 +243,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         controlsButton->setPressed(viewState()->getMainView() == ViewState::View::Controls);
         controlsButton->setFixedSize(54, 20);
         controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_off)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_active)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         controlsButton->show();
         mainLayout->addWidget(controlsButton);
         RK_ACT_BIND(controlsButton, pressed, RK_ACT_ARGS(),
@@ -230,11 +262,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         kitButton->setPressed(viewState()->getMainView() == ViewState::View::Kit);
         kitButton->setFixedSize(54, 20);
         kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_off)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_active)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         kitButton->show();
         RK_ACT_BIND(kitButton, pressed, RK_ACT_ARGS(),
                     viewState(), setMainView(ViewState::View::Kit));
@@ -249,11 +281,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         presetsButton->setPressed(viewState()->getMainView() == ViewState::View::Presets);
         presetsButton->setFixedSize(54, 20);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_active)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         presetsButton->show();
         RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(),
                     viewState(), setMainView(ViewState::View::Presets));
@@ -267,11 +299,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickApi *api)
         samplesButton->setPressed(viewState()->getMainView() == ViewState::View::Samples);
         samplesButton->setFixedSize(54, 20);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_off)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_active)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
         samplesButton->show();
         RK_ACT_BIND(samplesButton, pressed, RK_ACT_ARGS(),
                     viewState(), setMainView(ViewState::View::Samples));
@@ -299,13 +331,13 @@ void TopBar::createLyersButtons(RkContainer *mainLayout)
         layer1Button->setBackgroundColor(background());
         layer1Button->setSize(24, 18);
         layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_disabled)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_hover)),
-                               RkButton::ButtonImage::ImagePressedHover);
+                               RkButton::State::PressedHover);
         layer1Button->setImage(RkImage(layer1Button->size(), RK_IMAGE_RC(layer1_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
 
         layer1Button->setCheckable(true);
         mainLayout->addWidget(layer1Button);
@@ -315,13 +347,13 @@ void TopBar::createLyersButtons(RkContainer *mainLayout)
         layer2Button->setBackgroundColor(background());
         layer2Button->setSize(24, 18);
         layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_disabled)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_hover)),
-                               RkButton::ButtonImage::ImagePressedHover);
+                               RkButton::State::PressedHover);
         layer2Button->setImage(RkImage(layer2Button->size(), RK_IMAGE_RC(layer2_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
 
         layer2Button->setCheckable(true);
         mainLayout->addWidget(layer2Button);
@@ -331,23 +363,23 @@ void TopBar::createLyersButtons(RkContainer *mainLayout)
         layer3Button->setBackgroundColor(background());
         layer3Button->setSize(24, 18);
         layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_disabled)),
-                               RkButton::ButtonImage::ImageUnpressed);
+                               RkButton::State::Unpressed);
         layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3)),
-                               RkButton::ButtonImage::ImagePressed);
+                               RkButton::State::Pressed);
         layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_hover)),
-                               RkButton::ButtonImage::ImagePressedHover);
+                               RkButton::State::PressedHover);
         layer3Button->setImage(RkImage(layer3Button->size(), RK_IMAGE_RC(layer3_hover)),
-                               RkButton::ButtonImage::ImageUnpressedHover);
+                               RkButton::State::UnpressedHover);
 
         layer3Button->setCheckable(true);
         mainLayout->addWidget(layer3Button);
 
         RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b),
-                    geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer1, b));
+                    kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer1, b));
         RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b),
-                    geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer3, b));
+                    kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer3, b));
         RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b),
-                    geonkickApi, enbaleLayer(GeonkickApi::Layer::Layer2, b));
+                    kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer2, b));
 }
 
 void TopBar::setPresetName(const std::string &name)
@@ -364,9 +396,21 @@ void TopBar::setPresetName(const std::string &name)
 
 void TopBar::updateGui()
 {
-        layer1Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer1));
-        layer2Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer2));
-        layer3Button->setPressed(geonkickApi->isLayerEnabled(GeonkickApi::Layer::Layer3));
-        tuneCheckbox->setPressed(geonkickApi->isAudioOutputTuned(geonkickApi->currentPercussion()));
-        setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
+        auto api = kitModel->api();
+        layer1Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer1));
+        layer2Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer2));
+        layer3Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer3));
+        tuneCheckbox->setPressed(api->isAudioOutputTuned(api->currentPercussion()));
+        setPresetName(api->getPercussionName(api->currentPercussion()));
+        auto key = kitModel->api()->percussionsReferenceKey()
+                + kitModel->currentPercussion()->key();
+        midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(key));
+}
+
+void TopBar::showMidiPopup()
+{
+        auto midiPopup = new MidiKeyWidget(this, kitModel->currentPercussion());
+        midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
+        //        RK_BIND_ACT(midiPopup, keySelected,
+        //                    RK_ACT_ARGS((GeonkickType::MidiKey key), this, setPressed(false));
 }

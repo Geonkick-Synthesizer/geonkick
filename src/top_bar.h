@@ -31,11 +31,12 @@ class RkLabel;
 class GeonkickButton;
 class RkContainer;
 class ViewState;
+class KitModel;
 
 class TopBar : public GeonkickWidget
 {
  public:
-        TopBar(GeonkickWidget *parent, GeonkickApi *api);
+        TopBar(GeonkickWidget *parent, KitModel *model);
         void setPresetName(const std::string &name);
         RK_DECL_ACT(saveFile, saveFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openFile, openFile(), RK_ARG_TYPE(), RK_ARG_VAL());
@@ -48,9 +49,13 @@ class TopBar : public GeonkickWidget
                     RK_ARG_VAL(layer, b));
         void updateGui();
 
+ protected:
+        void showMidiPopup();
+
  private:
         void createLyersButtons(RkContainer *mainLayout);
         void addSeparator(RkContainer *mainLayout, int width = 5);
+        KitModel *kitModel;
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
         GeonkickButton *exportFileButton;
@@ -58,9 +63,9 @@ class TopBar : public GeonkickWidget
         GeonkickButton *layer1Button;
         GeonkickButton *layer2Button;
         GeonkickButton *layer3Button;
-        GeonkickApi *geonkickApi;
         GeonkickButton *tuneCheckbox;
         GeonkickButton *controlsButton;
+        GeonkickButton *midiKeyButton;
 #ifndef GEONKICK_SINGLE
         GeonkickButton *kitButton;
 #endif // GEONKICK_SINGLE

@@ -60,7 +60,7 @@ class PercussionModel : public RkObject {
         bool isSolo() const;
         void remove();
         void copy();
-
+        KitModel* model() const;
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),

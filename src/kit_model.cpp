@@ -72,6 +72,11 @@ KitModel::PercussionIndex KitModel::selectedPercussion() const
         return getIndex(geonkickApi->currentPercussion());
 }
 
+PercussionModel* KitModel::currentPercussion() const
+{
+        return percussionsList[getIndex(geonkickApi->currentPercussion())];
+}
+
 size_t KitModel::numberOfChannels() const
 {
         return geonkickApi->numberOfChannels();
@@ -115,14 +120,19 @@ std::string KitModel::keyName(KeyIndex index) const
 
 bool KitModel::setPercussionKey(PercussionIndex index, KeyIndex keyIndex)
 {
+        if (!isValidIndex(index))
+                return false;
+        
         int key = -1;
         if (keyIndex < static_cast<decltype(keyIndex)>(keysNumber()) - 1) {
                 auto refKey = geonkickApi->percussionsReferenceKey();
                 key = refKey + keyIndex;
         }
 
-        if (geonkickApi->setPercussionPlayingKey(percussionId(index), key))
+        if (geonkickApi->setPercussionPlayingKey(percussionId(index), key)) {
+                action percussionUpdated(percussionsList[index]);
                 return true;
+        }
         return false;
 }
 
@@ -358,7 +368,7 @@ const std::vector<PercussionModel*>& KitModel::percussionModels() const
         return percussionsList;
 }
 
-GeonkickApi* KitModel::getApi() const
+GeonkickApi* KitModel::api() const
 {
         return geonkickApi;
 }
