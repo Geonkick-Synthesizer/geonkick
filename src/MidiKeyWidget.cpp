@@ -37,12 +37,9 @@ MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
         setFixedSize(midiColumns * cellSize.width() + 2 * widgetPadding,
                      midiRows * cellSize.height()  +  2 * widgetPadding);
         setBackgroundColor({68, 68, 70, 240});
-        show();
-}
 
-void MidiKeyWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
-{
-        RkPainter painter(this);
+        RkImage img(size());
+        RkPainter painter(&img);
         auto font = painter.font();
         font.setSize(10);
         painter.setFont(font);
@@ -61,6 +58,8 @@ void MidiKeyWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
                 for (int col = 0; col < midiColumns && key <= 109; col++)
                         drawCell(painter, key++, row, col);
         }
+        setBackgroundImage(img);
+        show();
 }
 
 void MidiKeyWidget::drawCell(RkPainter &painter,
@@ -69,8 +68,10 @@ void MidiKeyWidget::drawCell(RkPainter &painter,
 {
         RkRect cellRect({widgetPadding + col * cellSize.width(),
                          widgetPadding + row * cellSize.height()}, cellSize);
-        painter.drawRect(cellRect);
         auto penBk = painter.pen();
+        painter.fillRect(cellRect, {60, 60, 60});
+        painter.setPen(penBk);
+        painter.drawRect(cellRect);
         auto pen = penBk;
         RkFont font;
         if (col == 0 || row == 0) {
@@ -88,13 +89,78 @@ void MidiKeyWidget::drawCell(RkPainter &painter,
         painter.setPen(penBk);
 }
 
-// std::pair<int, int> MidiKeyWidget::getCell(int x, int y)
-// {
-        
-// }
+void MidiKeyWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
+{
+        if (!currentCell.empty()) {
+                // Draw cell background.
+                RkColor bkColor;
+                if (cell.state() == KeyCell::State::Pressed)
+                        bkColor = RkColor(120, 120, 120);
+                else if (cell.state() == KeyCell::State::Hover)
+                        bkColor = RkColor(80, 80, 80);
+                else
+                        return;
+
+                // Draw background.
+                painter.fillRect(currentCell.rect(), bkColor);
+
+                // Draw cell borders.
+                auto pen = painter.pen();
+                if (cell.state() == KeyCell::State::Pressed)
+                        pen.setColor({60, 60, 60, 230});
+                else
+                        pen.setColor({40, 40, 40, 230});
+                painter.setPen(pen);
+                painter.drawRect(currentCell.rect());
+
+                // Draw cell text.
+                RkFont font = painter.font();
+                font.setSize(10);
+                if (currentCell->column() == 0 || currentCell->row()) {
+                        font.setWeight(RkFont::Weight::Bold);
+                        pen.setColor({200, 200, 230});
+                } else {
+                        pen.setColor({200, 200, 200});
+                        font.setWeight(RkFont::Weight::Normal);
+                }
+                pen.setFont(font);
+                painter.setPen(pen);
+                painter.drawText(currentCell.rect(), midiKeyToNote(currentCell.key()));
+        }
+}
 
 void MidiKeyWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {
+        if (event->button() != RkMouseEvent::ButtonType::Right) {
+                auto cell = getCurrentCell(event->x(), event->y());
+                if (cell.empty() && cell != currentCell) {
+                        currentCell = cell;
+                        currentCell->setState(KeyCell::State::Pressed);
+                        update();
+                }
+        }
+                
+}
+
+MidiKeyWidget::KeyCell MidiKeyWidget::getCurrentCell(int x, int y)
+{
+        KeyCell cell;
+        int row = (y - widgetPadding) / cellSize->height();
+        if (row > midiRows - 1)
+                return KeyCell();
+        int col = (x - widgetPadding) / cellSize->width();
+        if (col > midiColumns - 1)
+                return KeyCell();
+        GeonkickTypes::MidiKey key = row * midiColumns + col + 21;
+        if (key < 21 || key > 109)
+                return KeyCell();
+        cell.setColumn(col);
+        cell.setRow(raw);
+        cell.setKey(key);
+        cell.setRect(RkRect({widgetPadding + col * cellSize.width(),
+                             widgetPadding + raw * cellSize.height()},
+                        cellSize));
+        return cell;
 }
 
 void MidiKeyWidget::mouseButtonReleaseEvent(RkMouseEvent *event)
