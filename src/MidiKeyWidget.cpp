@@ -24,13 +24,15 @@
 #include "MidiKeyWidget.h"
 #include "percussion_model.h"
 
+#include <RkEvent.h>
+
 MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
                              PercussionModel *model,
                              Rk::WindowFlags flag)
         : GeonkickWidget(parent, flag)
         , percussionModel{model}
         , cellSize{32, 32}
-        , widgetPadding{10}
+        , widgetPadding{8}
         , midiRows{8}
         , midiColumns{12}
 {
@@ -45,7 +47,7 @@ MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
         painter.setFont(font);
         auto pen = painter.pen();
         pen.setColor({10, 10, 10, 230});
-        pen.setWidth(2);
+        pen.setWidth(1);
         painter.setPen(pen);
         RkRect borderRect = rect();
         borderRect.setSize({borderRect.width() - 1, borderRect.height() - 1});
@@ -91,76 +93,83 @@ void MidiKeyWidget::drawCell(RkPainter &painter,
 
 void MidiKeyWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
 {
-        if (!currentCell.empty()) {
+        RkPainter painter(this);
+        if (hoverCell.isValid()) {
                 // Draw cell background.
-                RkColor bkColor;
-                if (cell.state() == KeyCell::State::Pressed)
-                        bkColor = RkColor(120, 120, 120);
-                else if (cell.state() == KeyCell::State::Hover)
-                        bkColor = RkColor(80, 80, 80);
-                else
-                        return;
-
-                // Draw background.
-                painter.fillRect(currentCell.rect(), bkColor);
-
-                // Draw cell borders.
-                auto pen = painter.pen();
-                if (cell.state() == KeyCell::State::Pressed)
-                        pen.setColor({60, 60, 60, 230});
-                else
-                        pen.setColor({40, 40, 40, 230});
-                painter.setPen(pen);
-                painter.drawRect(currentCell.rect());
+                RkColor bkColor(80, 80, 80);
+                RkRect innerRect({hoverCell.rect().left() + 1, hoverCell.rect().top() + 1},
+                                 RkSize(hoverCell.rect().width() - 1,
+                                        hoverCell.rect().height() - 1));
+                painter.fillRect(innerRect, bkColor);
 
                 // Draw cell text.
                 RkFont font = painter.font();
                 font.setSize(10);
-                if (currentCell->column() == 0 || currentCell->row()) {
+                if (hoverCell.column() == 0 || hoverCell.row() == 0)
                         font.setWeight(RkFont::Weight::Bold);
-                        pen.setColor({200, 200, 230});
-                } else {
-                        pen.setColor({200, 200, 200});
+                else
                         font.setWeight(RkFont::Weight::Normal);
-                }
-                pen.setFont(font);
+                auto pen = painter.pen();
+                pen.setColor({230, 230, 230});
                 painter.setPen(pen);
-                painter.drawText(currentCell.rect(), midiKeyToNote(currentCell.key()));
+                painter.setFont(font);
+                painter.drawText(hoverCell.rect(), midiKeyToNote(hoverCell.key()));
+        }
+
+        if (selectedCell.isValid()) {
+                // Draw cell background.
+                RkColor bkColor;
+                bkColor = RkColor(100, 100, 100);
+                RkRect innerRect({selectedCell.rect().left() + 1, selectedCell.rect().top() + 1},
+                                 RkSize(selectedCell.rect().width() - 1,
+                                        selectedCell.rect().height() - 1));
+                painter.fillRect(innerRect, bkColor);
+
+                // Draw cell text.
+                RkFont font = painter.font();
+                font.setSize(10);
+                if (selectedCell.column() == 0 || selectedCell.row() == 0)
+                        font.setWeight(RkFont::Weight::Bold);
+                else
+                        font.setWeight(RkFont::Weight::Normal);              
+                auto pen = painter.pen();
+                pen.setColor({230, 230, 230});
+                painter.setPen(pen);
+                painter.setFont(font);
+                painter.drawText(selectedCell.rect(), midiKeyToNote(selectedCell.key()));
         }
 }
 
-void MidiKeyWidget::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        if (event->button() != RkMouseEvent::ButtonType::Right) {
-                auto cell = getCurrentCell(event->x(), event->y());
-                if (cell.empty() && cell != currentCell) {
-                        currentCell = cell;
-                        currentCell->setState(KeyCell::State::Pressed);
-                        update();
-                }
-        }
-                
-}
-
-MidiKeyWidget::KeyCell MidiKeyWidget::getCurrentCell(int x, int y)
+KeyCell MidiKeyWidget::getCell(int x, int y) const
 {
         KeyCell cell;
-        int row = (y - widgetPadding) / cellSize->height();
+        int row = (y - widgetPadding) / cellSize.height();
         if (row > midiRows - 1)
                 return KeyCell();
-        int col = (x - widgetPadding) / cellSize->width();
+        int col = (x - widgetPadding) / cellSize.width();
         if (col > midiColumns - 1)
                 return KeyCell();
         GeonkickTypes::MidiKey key = row * midiColumns + col + 21;
         if (key < 21 || key > 109)
                 return KeyCell();
         cell.setColumn(col);
-        cell.setRow(raw);
+        cell.setRow(row);
         cell.setKey(key);
         cell.setRect(RkRect({widgetPadding + col * cellSize.width(),
-                             widgetPadding + raw * cellSize.height()},
-                        cellSize));
+                             widgetPadding + row * cellSize.height()},
+                        RkSize(cellSize.width(), cellSize.height())));
         return cell;
+}
+
+void MidiKeyWidget::mouseButtonPressEvent(RkMouseEvent *event)
+{
+        if (event->button() != RkMouseEvent::ButtonType::Right) {
+                auto cell = getCell(event->x(), event->y());
+                if (cell != selectedCell) {
+                        selectedCell = cell;
+                        update();
+                }
+        }                
 }
 
 void MidiKeyWidget::mouseButtonReleaseEvent(RkMouseEvent *event)
@@ -169,7 +178,11 @@ void MidiKeyWidget::mouseButtonReleaseEvent(RkMouseEvent *event)
 
 void MidiKeyWidget::mouseMoveEvent(RkMouseEvent *event)
 {
-        
+        auto cell = getCell(event->x(), event->y());
+        if (cell != hoverCell) {
+                hoverCell = cell;
+                update();
+        }        
 }
 
 RkString MidiKeyWidget::midiKeyToNote(GeonkickTypes::MidiKey key)
@@ -182,6 +195,6 @@ RkString MidiKeyWidget::midiKeyToNote(GeonkickTypes::MidiKey key)
                    "D#", "E",  "F",
                    "F#", "G",  "G#",
                    "A",  "A#", "B"};
-        return RkString(notes[(key - 20) % 12]) + std::to_string((key - 20) / 12);
+        return RkString(notes[(key - 21) % 12]) + std::to_string((key - 20) / 12);
 }
 

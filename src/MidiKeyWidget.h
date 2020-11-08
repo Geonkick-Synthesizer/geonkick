@@ -30,6 +30,42 @@
 
 class PercussionModel;
 
+class KeyCell {
+  public:
+        constexpr KeyCell() : midiKey{0}, cellColumn{-1}, cellRow{-1} {}
+        friend constexpr bool operator==(const KeyCell &c1, const KeyCell &c2)
+        {
+                return c1.rect() == c2.rect() && c1.key() == c2.key()
+                        && c1.column() == c2.column() && c1.row() == c2.row();
+        }
+
+        friend constexpr bool operator!=(const KeyCell &c1, const KeyCell &c2)
+        {
+                return c1.rect() != c2.rect() || c1.key() != c2.key()
+                        || c1.column() != c2.column() || c1.row() != c2.row();
+        }
+        constexpr void setColumn(int col) { cellColumn = col; }
+        constexpr int column() const { return cellColumn; }
+        constexpr void setRow(int row) { cellRow = row; }
+        constexpr int row() const { return cellRow; }
+        constexpr void setRect(const RkRect &r) { cellRect = r; }
+        constexpr const RkRect& rect() const {return cellRect; }
+        constexpr void setKey(GeonkickTypes::MidiKey k) { midiKey = k; }
+        constexpr GeonkickTypes::MidiKey key() const { return midiKey; }
+        constexpr bool isValid() const
+        {
+                return (cellColumn >= 0 && cellRow >= 0
+                        && cellColumn <= 12 && cellRow <= 7)
+                        && (midiKey >= 21 && midiKey <= 109);
+        }
+
+  private:
+        RkRect cellRect;
+        GeonkickTypes::MidiKey midiKey;
+        int cellColumn;
+        int cellRow;
+};
+
 class MidiKeyWidget: public GeonkickWidget
 {
  public:
@@ -43,30 +79,20 @@ class MidiKeyWidget: public GeonkickWidget
 
  protected:
         void drawCell(RkPainter &painter, GeonkickTypes::MidiKey key, int row, int col);
+        KeyCell getCell(int x, int y) const;
         void paintWidget(RkPaintEvent *event) override;
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseButtonReleaseEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
 
  private:
-        /* class KeyCell { */
-        /*       KeyCell() */
-        /*               : state{CellState::Default} */
-        /*         , note{"Any"} */
-        /*         { */
-        /*         } */
-        /*         enum class CellState: int { */
-        /*                 CellDefault, */
-        /*                 CellSelected, */
-        /*                 CellHover}; */
-        /*         CellState state; */
-        /*         std::string note; */
-        /* }; */
         PercussionModel *percussionModel;
         RkSize cellSize;
         int widgetPadding;
         int midiRows;
         int midiColumns;
+        KeyCell selectedCell;
+        KeyCell hoverCell;
 };
 
 #endif // GEONKICK_MIDIKEY_WIDGET_H
