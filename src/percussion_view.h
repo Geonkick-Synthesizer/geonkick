@@ -34,19 +34,7 @@ class RkButton;
 class PercussionModel;
 class RkProgressBar;
 class KitWidget;
-
-class KitKeyButton: public RkLabel {
- public:
-        explicit KitKeyButton(GeonkickWidget* parent, PercussionModel *model);
-        ~KitKeyButton() = default;
-        void setKey(GeonkickTypes::MidiKey key);
-
- protected:
-        void mouseButtonPressEvent(RkMouseEvent *event) override;
-
- private:
-        PercussionModel *percussionModel;
-};
+class GeonkickButton;
 
 class PercussionLimiter : public GeonkickSlider {
   public:
@@ -83,6 +71,7 @@ class KitPercussionView: public GeonkickWidget
         void mouseDoubleClickEvent(RkMouseEvent *event) override;
         void updatePercussionName();
         void remove();
+        void showMidiPopup();
 
  private:
         KitWidget *parentView;
@@ -90,7 +79,7 @@ class KitPercussionView: public GeonkickWidget
         int nameWidth;
         int channelWidth;
         RkLineEdit *editPercussion;
-        KitKeyButton *keyButton;
+        GeonkickButton *keyButton;
         RkButton *copyButton;
         RkButton *removeButton;
         RkButton *playButton;

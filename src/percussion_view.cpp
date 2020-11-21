@@ -26,6 +26,7 @@
 #include "percussion_model.h"
 #include "geonkick_slider.h"
 #include "MidiKeyWidget.h"
+#include "geonkick_button.h"
 
 #include <RkEvent.h>
 #include <RkPainter.h>
@@ -49,26 +50,9 @@ RK_DECLARE_IMAGE_RC(remove_per_button_on);
 RK_DECLARE_IMAGE_RC(copy_per_button);
 RK_DECLARE_IMAGE_RC(copy_per_button_hover);
 RK_DECLARE_IMAGE_RC(copy_per_button_on);
-
-KitKeyButton::KitKeyButton(GeonkickWidget* parent, PercussionModel *model)
-                : RkLabel(parent)
-                , percussionModel{model}
-{
-}
-
-void KitKeyButton::setKey(GeonkickTypes::MidiKey key)
-{
-        setText(MidiKeyWidget::midiKeyToNote(key));
-}
-
-void KitKeyButton::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        if (event->button() == RkMouseEvent::ButtonType::Left) {
-                auto midiPopup = new MidiKeyWidget(static_cast<GeonkickWidget*>(parentWidget()),
-                                                   percussionModel);
-                midiPopup->setPosition(x() - midiPopup->width() - 5, y() - midiPopup->height());
-        }
-}
+RK_DECLARE_IMAGE_RC(kit_midi_on);
+RK_DECLARE_IMAGE_RC(kit_midi_off);
+RK_DECLARE_IMAGE_RC(kit_midi_hover);
 
 PercussionLimiter::PercussionLimiter(GeonkickWidget *parent)
         : GeonkickSlider(parent)
@@ -142,13 +126,20 @@ void KitPercussionView::createView()
         auto percussionContainer = new RkContainer(this);
         percussionContainer->setSize(size());
         percussionContainer->setHiddenTakesPlace();
-        percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth);
+        percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth + 10);
 
-        // Channel spinbox
-        keyButton = new KitKeyButton(this, percussionModel);
-        keyButton->setSize(channelWidth, height());
-        keyButton->setTextColor({220, 220, 220});
-        keyButton->show();
+        // Midi key button
+        keyButton = new GeonkickButton(this);
+        keyButton->setTextColor({250, 250, 250});
+        keyButton->setType(RkButton::ButtonType::ButtonUncheckable);
+        keyButton->setSize(30, 20);
+        keyButton->setImage(RkImage(keyButton->size(), RK_IMAGE_RC(kit_midi_off)),
+                            RkButton::State::Unpressed);
+        keyButton->setImage(RkImage(keyButton->size(), RK_IMAGE_RC(kit_midi_on)),
+                                 RkButton::State::Pressed);
+        keyButton->setImage(RkImage(keyButton->size(), RK_IMAGE_RC(kit_midi_hover)),
+                            RkButton::State::UnpressedHover);
+        RK_ACT_BIND(keyButton, pressed, RK_ACT_ARGS(), this, showMidiPopup());
         percussionContainer->addWidget(keyButton);
         percussionContainer->addSpace(10);
 
@@ -247,8 +238,8 @@ void KitPercussionView::updateView()
         percussionLimiter->onSetValue(percussionModel->limiter());
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
-        keyButton->setKey(percussionModel->key());
-        keyButton->setBackgroundColor((index() % 2) ? RkColor(140, 140, 140) : RkColor(120, 120, 120));
+        keyButton->setText(MidiKeyWidget::midiKeyToNote(percussionModel->key()));
+        keyButton->setBackgroundColor((index() % 2) ? RkColor(100, 100, 100) : RkColor(50, 50, 50));
         update();
 }
 
@@ -265,7 +256,7 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, solo(toggled));
         RK_ACT_BIND(percussionLimiter, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
-        RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
+        RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, updateView());
         RK_ACT_BIND(percussionModel, channelUpdated, RK_ACT_ARGS(int val), this, update());
         RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), percussionLimiter, onSetValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
@@ -391,4 +382,11 @@ void KitPercussionView::updateLeveler()
                 percussionLimiter->setLeveler(percussionModel->leveler());
         else if (percussionLimiter->getLeveler() > 0)
                 percussionLimiter->setLeveler(percussionLimiter->getLeveler() - 2);
+}
+
+void KitPercussionView::showMidiPopup()
+{
+        auto midiPopup = new MidiKeyWidget(this, percussionModel);
+        midiPopup->setPosition(keyButton->x() - midiPopup->width() - 5,
+                               keyButton->y() - midiPopup->height());
 }

@@ -207,6 +207,13 @@ button_browse_sample.png
 wf_bk_hbox.png
 layers_mixer.png
 controls_button.png
+
+#----- Kit -----
+
+kit_midi_on.png
+kit_midi_hover.png
+kit_midi_off.png
+
 kit_button.png
 add_per_button.png
 open_kit_button.png
