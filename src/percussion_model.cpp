@@ -86,6 +86,11 @@ void PercussionModel::decreasePercussionChannel()
                 action channelUpdated(channel);
 }
 
+void PercussionModel::setChannel(int index)
+{
+        kitModel->setPercussionChannel(percussionId, index);
+}
+
 size_t PercussionModel::keysNumber() const
 {
         return kitModel->keysNumber();
@@ -116,6 +121,11 @@ std::string PercussionModel::name() const
 int PercussionModel::channel() const
 {
         return kitModel->percussionChannel(index());
+}
+
+size_t PercussionModel::numberOfChannels() const
+{
+        return kitModel->numberOfChannels();
 }
 
 bool PercussionModel::canCopy() const

@@ -192,7 +192,7 @@ KeyCell MidiKeyWidget::getCell(GeonkickTypes::MidiKey key) const
 
 void MidiKeyWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {
-        if (event->button() != RkMouseEvent::ButtonType::Right)
+        if (event->button() == RkMouseEvent::ButtonType::Left)
                 percussionModel->setKey(getCell(event->x(), event->y()).key());
 }
 

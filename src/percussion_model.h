@@ -47,7 +47,9 @@ class PercussionModel : public RkObject {
         KeyIndex key() const;
         void setName(const std::string &name);
         std::string name() const;
+        void setChannel(int index);
         int channel() const;
+        size_t numberOfChannels() const;
         bool canCopy() const;
         bool canRemove() const;
         void play();

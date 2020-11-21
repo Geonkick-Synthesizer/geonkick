@@ -104,10 +104,10 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         topContainer->addWidget(saveKitButton);
         percussionsContainer->setHeight(kitContainer->height() - topContainer->height());
 
-        auto kitKeysView = new KitKeysView(this, kitModel);
-        kitKeysView->show();
+        auto kitChannelsView = new KitChannelsView(this, kitModel);
+        kitChannelsView->show();
         topContainer->addSpace(100 - 3 * 16 - 4 * 5);
-        topContainer->addWidget(kitKeysView);
+        topContainer->addWidget(kitChannelsView);
 
         kitContainer->addContainer(topContainer);
         kitContainer->addContainer(percussionsContainer);
@@ -205,15 +205,15 @@ void KitWidget::keyPressEvent(RkKeyEvent *event)
         }
 }
 
-KitKeysView::KitKeysView(KitWidget *parent, KitModel *model)
+KitChannelsView::KitChannelsView(KitWidget *parent, KitModel *model)
                 : GeonkickWidget(parent)
                 , kitModel{model}
-                , keyWidth{30}
-        {
-                setSize(kitModel->keysNumber() * keyWidth, keyWidth);
-        }
+                , channelWidth{30}
+{
+        setSize(kitModel->numberOfChannels() * channelWidth, channelWidth);
+}
 
-void KitKeysView::paintWidget(RkPaintEvent *event)
+void KitChannelsView::paintWidget(RkPaintEvent *event)
 {
         RkImage img(size());
         RkPainter paint(&img);
@@ -226,9 +226,9 @@ void KitKeysView::paintWidget(RkPaintEvent *event)
         font.setSize(12);
         paint.setFont(font);
 
-        auto nKeys = kitModel->keysNumber();
-        for (decltype(nKeys) i = 0; i < nKeys; i++) {
-                auto rect = RkRect(i * keyWidth, 0, keyWidth, keyWidth);
+        auto nChannels = kitModel->numberOfChannels();
+        for (decltype(nChannels) i = 0; i < nChannels; i++) {
+                auto rect = RkRect(i * channelWidth, 0, channelWidth, channelWidth);
                 if (i % 2)
                         paint.fillRect(rect, {60, 60, 60});
                 else
@@ -236,7 +236,7 @@ void KitKeysView::paintWidget(RkPaintEvent *event)
                 RkRect txtRect(rect.left(), (rect.height() - paint.font().size()) / 2,
                                rect.width(), paint.font().size());
                 paint.setPen(pen);
-                paint.drawText(txtRect, kitModel->keyName(i));
+                paint.drawText(txtRect, std::to_string(i + 1));
         }
         RkPainter painter(this);
         painter.drawImage(img, 0, 0);

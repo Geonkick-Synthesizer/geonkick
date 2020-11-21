@@ -66,17 +66,17 @@ class KitWidget: public GeonkickWidget
         RkTimer *levelersTimer;
 };
 
-class KitKeysView: public GeonkickWidget
+class KitChannelsView: public GeonkickWidget
 {
  public:
-        explicit KitKeysView(KitWidget *parent, KitModel *model);
+        explicit KitChannelsView(KitWidget *parent, KitModel *model);
 
  protected:
         void paintWidget(RkPaintEvent *event) override;
 
  private:
         KitModel *kitModel;
-        int keyWidth;
+        int channelWidth;
 };
 
 #endif // KIT_WIDGET_H

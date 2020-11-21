@@ -25,6 +25,7 @@
 #include "percussion_view.h"
 #include "percussion_model.h"
 #include "geonkick_slider.h"
+#include "MidiKeyWidget.h"
 
 #include <RkEvent.h>
 #include <RkPainter.h>
@@ -49,24 +50,24 @@ RK_DECLARE_IMAGE_RC(copy_per_button);
 RK_DECLARE_IMAGE_RC(copy_per_button_hover);
 RK_DECLARE_IMAGE_RC(copy_per_button_on);
 
-KitChannelSpinBox::KitChannelSpinBox(GeonkickWidget* parent)
+KitKeyButton::KitKeyButton(GeonkickWidget* parent, PercussionModel *model)
                 : RkLabel(parent)
+                , percussionModel{model}
 {
 }
 
-void KitChannelSpinBox::setValue(int  val)
+void KitKeyButton::setKey(GeonkickTypes::MidiKey key)
 {
-        setText("#" + std::to_string(val + 1));
+        setText(MidiKeyWidget::midiKeyToNote(key));
 }
 
-void KitChannelSpinBox::mouseButtonPressEvent(RkMouseEvent *event)
+void KitKeyButton::mouseButtonPressEvent(RkMouseEvent *event)
 {
-        if (event->button() == RkMouseEvent::ButtonType::Left
-            || event->button() == RkMouseEvent::ButtonType::WheelUp)
-                action encreaseChannel();
-        else if (event->button() == RkMouseEvent::ButtonType::Right
-                 || event->button() == RkMouseEvent::ButtonType::WheelDown)
-                action decreaseChannel();
+        if (event->button() == RkMouseEvent::ButtonType::Left) {
+                auto midiPopup = new MidiKeyWidget(static_cast<GeonkickWidget*>(parentWidget()),
+                                                   percussionModel);
+                midiPopup->setPosition(x() - midiPopup->width() - 5, y() - midiPopup->height());
+        }
 }
 
 PercussionLimiter::PercussionLimiter(GeonkickWidget *parent)
@@ -114,9 +115,9 @@ KitPercussionView::KitPercussionView(KitWidget *parent,
         , parentView{parent}
         , percussionModel{model}
         , nameWidth{100}
-        , keyWidth{30}
+        , channelWidth{30}
         , editPercussion{nullptr}
-        , channelSpinBox{nullptr}
+        , keyButton{nullptr}
         , copyButton{nullptr}
         , removeButton{nullptr}
         , playButton{nullptr}
@@ -141,14 +142,14 @@ void KitPercussionView::createView()
         auto percussionContainer = new RkContainer(this);
         percussionContainer->setSize(size());
         percussionContainer->setHiddenTakesPlace();
-        percussionContainer->addSpace(nameWidth + percussionModel->keysNumber() * keyWidth);
+        percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth);
 
         // Channel spinbox
-        channelSpinBox = new KitChannelSpinBox(this);
-        channelSpinBox->setSize(keyWidth, height());
-        channelSpinBox->setTextColor({220, 220, 220});
-        channelSpinBox->show();
-        percussionContainer->addWidget(channelSpinBox);
+        keyButton = new KitKeyButton(this, percussionModel);
+        keyButton->setSize(channelWidth, height());
+        keyButton->setTextColor({220, 220, 220});
+        keyButton->show();
+        percussionContainer->addWidget(keyButton);
         percussionContainer->addSpace(10);
 
         // Remove button
@@ -189,7 +190,6 @@ void KitPercussionView::createView()
         auto limiterBox = new RkContainer(this, Rk::Orientation::Vertical);
         limiterBox->setHiddenTakesPlace();
         limiterBox->setSize({percussionLimiter->width(), percussionContainer->height()});
-        //        limiterBox->addWidget(levelerProgress);
         limiterBox->addSpace((height() - percussionLimiter->height()) / 2);
         limiterBox->addWidget(percussionLimiter);
         percussionContainer->addSpace(5);
@@ -247,8 +247,8 @@ void KitPercussionView::updateView()
         percussionLimiter->onSetValue(percussionModel->limiter());
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
-        channelSpinBox->setValue(percussionModel->channel());
-        channelSpinBox->setBackgroundColor((index() % 2) ? RkColor(140, 140, 140) : RkColor(120, 120, 120));
+        keyButton->setKey(percussionModel->key());
+        keyButton->setBackgroundColor((index() % 2) ? RkColor(140, 140, 140) : RkColor(120, 120, 120));
         update();
 }
 
@@ -258,10 +258,6 @@ void KitPercussionView::setModel(PercussionModel *model)
                 return;
 
         percussionModel = model;
-        RK_ACT_BIND(channelSpinBox, encreaseChannel, RK_ACT_ARGS(),
-                    percussionModel, increasePercussionChannel());
-        RK_ACT_BIND(channelSpinBox, decreaseChannel, RK_ACT_ARGS(),
-                    percussionModel, decreasePercussionChannel());
         RK_ACT_BIND(removeButton, released, RK_ACT_ARGS(), this, remove());
         RK_ACT_BIND(copyButton, released, RK_ACT_ARGS(), percussionModel, copy());
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), percussionModel, play());
@@ -270,12 +266,12 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(percussionLimiter, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, update());
+        RK_ACT_BIND(percussionModel, channelUpdated, RK_ACT_ARGS(int val), this, update());
         RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), percussionLimiter, onSetValue(val));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
         RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
         RK_ACT_BIND(percussionModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
-        RK_ACT_BIND(percussionModel, channelUpdated, RK_ACT_ARGS(int val), channelSpinBox, setValue(val));
         updateView();
 }
 
@@ -308,20 +304,20 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         paint.drawText(RkRect(7, (height() - font.size()) / 2, nameWidth, font.size()),
                        percussionModel->name(), Rk::Alignment::AlignLeft);
 
-        auto n = percussionModel->keysNumber();
+        auto n = percussionModel->numberOfChannels();
         int x = nameWidth;
         while (n--) {
                 if (n % 2)
-                        paint.fillRect(RkRect(x, 0, keyWidth, height()),
+                        paint.fillRect(RkRect(x, 0, channelWidth, height()),
                                                 {backgroundColor.red() + 20,
                                                 backgroundColor.green() + 20,
                                                 backgroundColor.blue() + 20, 80});
                 else
-                        paint.fillRect(RkRect(x, 0, keyWidth, height()),
+                        paint.fillRect(RkRect(x, 0, channelWidth, height()),
                                                 {backgroundColor.red() - 20,
                                                 backgroundColor.green() - 20,
                                                 backgroundColor.blue() - 20, 80});
-                x += keyWidth;
+                x += channelWidth;
         }
 
         if (percussionModel->isSelected())
@@ -331,7 +327,7 @@ void KitPercussionView::paintWidget(RkPaintEvent *event)
         pen.setColor({50, 160, 50});
         pen.setWidth(8);
         paint.setPen(pen);
-        paint.drawCircle({nameWidth + percussionModel->key() * keyWidth + keyWidth / 2 , height() / 2},  4);
+        paint.drawCircle({nameWidth + percussionModel->channel() * channelWidth + channelWidth / 2 , height() / 2},  4);
         RkPainter painter(this);
         painter.drawImage(img, 0, 0);
 }
@@ -347,11 +343,11 @@ void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
         setFocus(true);
         if (event->button() == RkMouseEvent::ButtonType::Left) {
                 int leftLimit  = nameWidth;
-                int rightLimit = nameWidth + keyWidth * percussionModel->keysNumber();
+                int rightLimit = nameWidth + channelWidth * percussionModel->numberOfChannels();
                 if (event->x() <= leftLimit)
                         percussionModel->select();
                 else if (event->x() > leftLimit && event->x() < rightLimit)
-                        percussionModel->setKey(30 + (event->x() - nameWidth) / keyWidth);
+                        percussionModel->setChannel(30 + (event->x() - nameWidth) / channelWidth);
         }
 }
 

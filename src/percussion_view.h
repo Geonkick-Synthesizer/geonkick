@@ -35,16 +35,17 @@ class PercussionModel;
 class RkProgressBar;
 class KitWidget;
 
-class KitChannelSpinBox: public RkLabel {
+class KitKeyButton: public RkLabel {
  public:
-        explicit KitChannelSpinBox(GeonkickWidget* parent);
-        ~KitChannelSpinBox() = default;
-        RK_DECL_ACT(encreaseChannel, encreaseChannel(), RK_ARG_TYPE(), RK_ARG_VAL());
-        RK_DECL_ACT(decreaseChannel, decreaseChannel(), RK_ARG_TYPE(), RK_ARG_VAL());
-        void setValue(int  val);
+        explicit KitKeyButton(GeonkickWidget* parent, PercussionModel *model);
+        ~KitKeyButton() = default;
+        void setKey(GeonkickTypes::MidiKey key);
 
  protected:
         void mouseButtonPressEvent(RkMouseEvent *event) override;
+
+ private:
+        PercussionModel *percussionModel;
 };
 
 class PercussionLimiter : public GeonkickSlider {
@@ -87,9 +88,9 @@ class KitPercussionView: public GeonkickWidget
         KitWidget *parentView;
         PercussionModel *percussionModel;
         int nameWidth;
-        int keyWidth;
+        int channelWidth;
         RkLineEdit *editPercussion;
-        KitChannelSpinBox *channelSpinBox;
+        KitKeyButton *keyButton;
         RkButton *copyButton;
         RkButton *removeButton;
         RkButton *playButton;
