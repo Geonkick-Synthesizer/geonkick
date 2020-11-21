@@ -215,9 +215,6 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         addSeparator(mainLayout);
         midiKeyButton = new GeonkickButton(this);
         midiKeyButton->setTextColor({200, 200, 200});
-        auto key = model->api()->percussionsReferenceKey()
-                + kitModel->currentPercussion()->key();
-        midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(key));
         midiKeyButton->setType(RkButton::ButtonType::ButtonUncheckable);
         midiKeyButton->setSize(36, 20);
         midiKeyButton->setImage(RkImage(midiKeyButton->size(), RK_IMAGE_RC(topmenu_midi_off)),
@@ -226,14 +223,6 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                 RkButton::State::Pressed);
         midiKeyButton->setImage(RkImage(midiKeyButton->size(), RK_IMAGE_RC(topmenu_midi_hover)),
                                 RkButton::State::UnpressedHover);
-        RK_ACT_BINDL(kitModel,
-                     percussionUpdated,
-                     RK_ACT_ARGS(PercuessionModel *model),
-                     [&] (PercussionModel *model) {
-                             auto key = model->model()->api()->percussionsReferenceKey()
-                                     + model->model()->currentPercussion()->key();
-                             midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(key));
-                     });
         RK_ACT_BIND(midiKeyButton, pressed, RK_ACT_ARGS(), this, showMidiPopup());
         mainLayout->addWidget(midiKeyButton);
 
@@ -310,6 +299,13 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     samplesButton, setPressed(view == ViewState::View::Samples));
         mainLayout->addWidget(samplesButton);
+
+        RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateGui());
+        RK_ACT_BINDL(kitModel, percussionUpdated, RK_ACT_ARGS(PercussionModel* model),
+                     [=](PercussionModel* model) {
+                             if (model->isSelected())
+                                     updateGui();
+                     } );
         updateGui();
 }
 
@@ -401,16 +397,12 @@ void TopBar::updateGui()
         layer2Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer2));
         layer3Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer3));
         tuneCheckbox->setPressed(api->isAudioOutputTuned(api->currentPercussion()));
-        setPresetName(api->getPercussionName(api->currentPercussion()));
-        auto key = kitModel->api()->percussionsReferenceKey()
-                + kitModel->currentPercussion()->key();
-        midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(key));
+        setPresetName(kitModel->currentPercussion()->name());
+        midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(kitModel->currentPercussion()->key()));
 }
 
 void TopBar::showMidiPopup()
 {
         auto midiPopup = new MidiKeyWidget(this, kitModel->currentPercussion());
         midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
-        //        RK_BIND_ACT(midiPopup, keySelected,
-        //                    RK_ACT_ARGS((GeonkickType::MidiKey key), this, setPressed(false));
 }

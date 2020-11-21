@@ -57,6 +57,7 @@
 
 namespace GeonkickTypes {
 using MidiKey = unsigned char;
+constexpr MidiKey geonkickAnyKey = GEONKICK_ANY_KEY;
 }
 
 #endif // GEONKICK_GLOBALS_H

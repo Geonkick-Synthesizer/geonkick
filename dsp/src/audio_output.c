@@ -207,8 +207,8 @@ void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output)
 enum geonkick_error
 gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, signed char key)
 {
-        if (key < 0)
-                key = -1;
+        if (key < 21 || key > 108)
+                key = GEONKICK_ANY_KEY;
         audio_output->playing_key = key;
         return GEONKICK_OK;
 }

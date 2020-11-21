@@ -61,6 +61,12 @@ MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
                         drawCell(painter, key++, row, col);
         }
         setBackgroundImage(img);
+        selectedCell = getCell(percussionModel->key());
+        RK_ACT_BINDL(percussionModel, keyUpdated, RK_ACT_ARGS(PercussionModel::KeyIndex key),
+                     [=](PercussionModel::KeyIndex key) {
+                             selectedCell = getCell(key);
+                             update();
+                     });
         show();
 }
 
@@ -161,15 +167,33 @@ KeyCell MidiKeyWidget::getCell(int x, int y) const
         return cell;
 }
 
+KeyCell MidiKeyWidget::getCell(GeonkickTypes::MidiKey key) const
+{
+        int row;
+        int col;
+        if (key < 21 || key > 108) {
+                // Any cell.
+                row = 7;
+                col = 4;
+        } else {
+                row = (key - 20) / midiColumns;
+                col = (key - 21) % 12;
+        }
+
+        KeyCell cell;
+        cell.setColumn(col);
+        cell.setRow(row);
+        cell.setKey(key);
+        cell.setRect(RkRect({widgetPadding + col * cellSize.width(),
+                             widgetPadding + row * cellSize.height()},
+                        RkSize(cellSize.width(), cellSize.height())));
+        return cell;
+}
+
 void MidiKeyWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {
-        if (event->button() != RkMouseEvent::ButtonType::Right) {
-                auto cell = getCell(event->x(), event->y());
-                if (cell != selectedCell) {
-                        selectedCell = cell;
-                        update();
-                }
-        }                
+        if (event->button() != RkMouseEvent::ButtonType::Right)
+                percussionModel->setKey(getCell(event->x(), event->y()).key());
 }
 
 void MidiKeyWidget::mouseButtonReleaseEvent(RkMouseEvent *event)

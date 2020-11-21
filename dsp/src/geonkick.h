@@ -133,6 +133,8 @@ enum geonkick_channel_type {
 #define GEONKICK_MAX_CHANNELS 16
 #endif // defined(GEONKICK_AUDIO_JACK) || defined(GEONKICK_SINGLE)
 
+#define GEONKICK_ANY_KEY -1
+
 struct geonkick;
 
 enum geonkick_error

@@ -33,7 +33,7 @@ class KitModel;
 class PercussionModel : public RkObject {
  public:
         using PercussionIndex = int;
-        using KeyIndex = int;
+        using KeyIndex = GeonkickTypes::MidiKey;
         explicit PercussionModel(KitModel* parent, int id = -1);
         virtual ~PercussionModel() = default;
         void setId(int id);

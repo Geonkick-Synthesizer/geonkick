@@ -351,7 +351,7 @@ void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
                 if (event->x() <= leftLimit)
                         percussionModel->select();
                 else if (event->x() > leftLimit && event->x() < rightLimit)
-                        percussionModel->setKey((event->x() - nameWidth) / keyWidth);
+                        percussionModel->setKey(30 + (event->x() - nameWidth) / keyWidth);
         }
 }
 

@@ -123,13 +123,7 @@ bool KitModel::setPercussionKey(PercussionIndex index, KeyIndex keyIndex)
         if (!isValidIndex(index))
                 return false;
         
-        int key = -1;
-        if (keyIndex < static_cast<decltype(keyIndex)>(keysNumber()) - 1) {
-                auto refKey = geonkickApi->percussionsReferenceKey();
-                key = refKey + keyIndex;
-        }
-
-        if (geonkickApi->setPercussionPlayingKey(percussionId(index), key)) {
+        if (geonkickApi->setPercussionPlayingKey(percussionId(index), keyIndex)) {
                 action percussionUpdated(percussionsList[index]);
                 return true;
         }
@@ -138,14 +132,7 @@ bool KitModel::setPercussionKey(PercussionIndex index, KeyIndex keyIndex)
 
 KitModel::KeyIndex KitModel::percussionKey(PercussionIndex index) const
 {
-        KeyIndex keyIndex = geonkickApi->getPercussionPlayingKey(percussionId(index));
-        if (keyIndex < 0)
-                return keysNumber() - 1;
-        keyIndex -= geonkickApi->percussionsReferenceKey();
-        if (keyIndex < 0 || keyIndex > static_cast<decltype(keyIndex)>(keysNumber() - 1))
-                return keysNumber() - 1;
-        else
-                return keyIndex;
+        return geonkickApi->getPercussionPlayingKey(percussionId(index));
 }
 
 void KitModel::playPercussion(PercussionIndex index)

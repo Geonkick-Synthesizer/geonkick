@@ -56,7 +56,8 @@ class KeyCell {
         {
                 return (cellColumn >= 0 && cellRow >= 0
                         && cellColumn <= 12 && cellRow <= 7)
-                        && (midiKey >= 21 && midiKey <= 109);
+                        && ((midiKey >= 21 && midiKey <= 109)
+                            || (midiKey == GeonkickTypes::geonkickAnyKey));
         }
 
   private:
@@ -72,14 +73,16 @@ class MidiKeyWidget: public GeonkickWidget
         MidiKeyWidget(GeonkickWidget *parent,
                       PercussionModel *model,
                       Rk::WindowFlags flag = Rk::WindowFlags::Popup);
-        /* RK_DECL_ACT(close, close() */
-        /*             RK_ARG_TYPE(), */
-        /*             RK_ARG_VAL()); */
+        RK_DECL_ACT(keySelected,
+                    keySelected(GeonkickTypes::MidiKey key),
+                    RK_ARG_TYPE(GeonkickTypes::MidiKey),
+                    RK_ARG_VAL(key));
         static RkString midiKeyToNote(GeonkickTypes::MidiKey key);
 
  protected:
         void drawCell(RkPainter &painter, GeonkickTypes::MidiKey key, int row, int col);
         KeyCell getCell(int x, int y) const;
+        KeyCell getCell(GeonkickTypes::MidiKey key) const;
         void paintWidget(RkPaintEvent *event) override;
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseButtonReleaseEvent(RkMouseEvent *event) override;
