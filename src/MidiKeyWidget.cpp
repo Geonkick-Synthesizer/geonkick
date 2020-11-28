@@ -215,10 +215,10 @@ RkString MidiKeyWidget::midiKeyToNote(GeonkickTypes::MidiKey key)
                 return RkString("Any");
 
         constexpr std::array<const char*, 17> notes =
-                  {"C",  "C#", "D",
+                  {"A",  "A#", "B",
+                   "C",  "C#", "D",
                    "D#", "E",  "F",
-                   "F#", "G",  "G#",
-                   "A",  "A#", "B"};
+                   "F#", "G",  "G#"};
         return RkString(notes[(key - 21) % 12]) + std::to_string((key - 20) / 12);
 }
 
