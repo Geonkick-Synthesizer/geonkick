@@ -25,10 +25,9 @@
 #define GEONKICK_MIDIKEY_WIDGET_H
 
 #include "geonkick_widget.h"
+#include "percussion_model.h"
 
 #include <RkPainter.h>
-
-class PercussionModel;
 
 class KeyCell {
   public:
@@ -87,6 +86,7 @@ class MidiKeyWidget: public GeonkickWidget
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseButtonReleaseEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
+        void onUpdateKey(PercussionModel::KeyIndex key);
 
  private:
         PercussionModel *percussionModel;

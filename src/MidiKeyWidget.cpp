@@ -22,7 +22,6 @@
  */
 
 #include "MidiKeyWidget.h"
-#include "percussion_model.h"
 
 #include <RkEvent.h>
 
@@ -62,11 +61,10 @@ MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
         }
         setBackgroundImage(img);
         selectedCell = getCell(percussionModel->key());
-        RK_ACT_BINDL(percussionModel, keyUpdated, RK_ACT_ARGS(PercussionModel::KeyIndex key),
-                     [=](PercussionModel::KeyIndex key) {
-                             selectedCell = getCell(key);
-                             update();
-                     });
+        RK_ACT_BIND(percussionModel, keyUpdated,
+                    RK_ACT_ARGS(PercussionModel::KeyIndex key),
+                    this,
+                    onUpdateKey(key));
         show();
 }
 
@@ -222,3 +220,8 @@ RkString MidiKeyWidget::midiKeyToNote(GeonkickTypes::MidiKey key)
         return RkString(notes[(key - 21) % 12]) + std::to_string((key - 20) / 12);
 }
 
+void MidiKeyWidget::onUpdateKey(PercussionModel::KeyIndex key)
+{
+        selectedCell = getCell(key);
+        update();
+}
