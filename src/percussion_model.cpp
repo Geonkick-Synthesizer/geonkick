@@ -88,7 +88,8 @@ void PercussionModel::decreasePercussionChannel()
 
 void PercussionModel::setChannel(int index)
 {
-        kitModel->setPercussionChannel(percussionId, index);
+        if (kitModel->setPercussionChannel(percussionId, index))
+                action channelUpdated(index);
 }
 
 size_t PercussionModel::keysNumber() const
