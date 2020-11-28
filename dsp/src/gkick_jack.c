@@ -198,7 +198,7 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
         gkick_jack_lock(jack);
         for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
                 char name[30];
-                sprintf(name, "%s:outL_%u", GEONKICK_NAME, (unsigned int)(i + 1));
+                sprintf(name, "outL_%u", (unsigned int)(i + 1));
                 jack->output_port[2 * i] = jack_port_register(jack->client, name,
                                                               JACK_DEFAULT_AUDIO_TYPE,
                                                               JackPortIsOutput, 0);
@@ -208,7 +208,7 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
                         break;
                 }
 
-                sprintf(name, "%s:outR_%u", GEONKICK_NAME, (unsigned int)(i + 1));
+                sprintf(name, "outR_%u", (unsigned int)(i + 1));
                 jack->output_port[2 * i + 1] = jack_port_register(jack->client, name,
                                                                   JACK_DEFAULT_AUDIO_TYPE,
                                                                   JackPortIsOutput, 0);
@@ -268,6 +268,16 @@ gkick_create_jack(struct gkick_jack **jack,
                 gkick_log_error("cannot activate client");
                 gkick_jack_free(jack);
                 return GEONKICK_ERROR;
+        }
+
+        // Connect to system playback ports.
+        for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
+                jack_connect((*jack)->client,
+                             jack_port_name((*jack)->output_port[2 * i]),
+                             "system:playback_1");
+                jack_connect((*jack)->client,
+                             jack_port_name((*jack)->output_port[2 * i + 1]),
+                             "system:playback_2");
         }
 
 	return GEONKICK_OK;

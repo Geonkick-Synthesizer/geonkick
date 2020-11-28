@@ -1,3 +1,10 @@
+### Version 2.6.0
+
+#### Features
+
+  - 16 stereo channels for standalone
+  - autoconnect ports to system playback for standalone
+
 ### Version 2.5.0
 
 #### Features
