@@ -8,8 +8,6 @@ snares, hit-hats, shakers, claps.
 
 "Geon" in the name "Geonkick" refers to a hypothetical particle called "geon".
 
-Status: for a while the development and maintenance takes a pause.
-
 License: GPLv3
 
 Version: 2.5.0 (released)
@@ -102,7 +100,6 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
    it is recommended to use the "Single" version of the plugin.
  - Doesn't support automation of synthesizer parameters.
  - Doesn't support Bézier curves for envelopes.
- - It is not polyphonic
  - UI can be scaled, but it will be blurred
  - Filters become unstable for some extremal combination of cutoff and
    resonance parameter.

@@ -24,6 +24,7 @@
 #include "GeonkickConfig.h"
 
 #include <rapidjson/document.h>
+#include <iomanip>
 
 GeonkickConfig::GeonkickConfig()
         : scaleFactor{1}
