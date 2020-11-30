@@ -10,7 +10,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.5.0 (released)
+Version: 2.5.1
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -124,7 +124,7 @@ for plugin:
 
 In order to build Geonkick there is a need to install the following development packages:
 
-* [Redkite](https://github.com/iurie-sw/redkite) GUI toolkit (it is recommented to use release version).
+* [Redkite](https://github.com/iurie-sw/redkite) GUI toolkit (use release version, see tags).
 * libsndfile
 * RapidJSON (version >= 1.1)
 * JACK Audio Connection Kit (optional if building only for plugin)
@@ -143,7 +143,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the Geonkick code repository, compile and install.
 
-Note: It is recommended to use the release version (see repository tags).
+Note: Use the release version (see tags).
 
         git clone https://gitlab.com/iurie-sw/geonkick.git
         mkdir geonkick/build
