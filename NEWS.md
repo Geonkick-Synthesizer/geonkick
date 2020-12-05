@@ -5,6 +5,12 @@
   - 16 stereo channels for standalone
   - autoconnect ports to system playback for standalone
 
+### Version 2.5.1
+
+#### Fixes
+
+  - Fix build for some distros (include iomanip)
+
 ### Version 2.5.0
 
 #### Features
