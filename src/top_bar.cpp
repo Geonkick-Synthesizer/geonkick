@@ -223,7 +223,10 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                 RkButton::State::Pressed);
         midiKeyButton->setImage(RkImage(midiKeyButton->size(), RK_IMAGE_RC(topmenu_midi_hover)),
                                 RkButton::State::UnpressedHover);
-        RK_ACT_BIND(midiKeyButton, pressed, RK_ACT_ARGS(), this, showMidiPopup());
+        RK_ACT_BIND(midiKeyButton, toggled,
+                    RK_ACT_ARGS(bool pressed),
+                    this,
+                    showMidiPopup());
         mainLayout->addWidget(midiKeyButton);
 
         // Controls button
@@ -403,6 +406,13 @@ void TopBar::updateGui()
 
 void TopBar::showMidiPopup()
 {
+        setFocus();
         auto midiPopup = new MidiKeyWidget(this, kitModel->currentPercussion());
         midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
+        RK_ACT_BIND(midiPopup,
+                    isAboutToClose,
+                    RK_ACT_ARGS(),
+                    midiKeyButton,
+                    setPressed(false));
+        midiPopup->show();
 }

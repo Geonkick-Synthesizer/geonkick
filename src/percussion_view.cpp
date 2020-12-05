@@ -139,7 +139,7 @@ void KitPercussionView::createView()
                                  RkButton::State::Pressed);
         keyButton->setImage(RkImage(keyButton->size(), RK_IMAGE_RC(kit_midi_hover)),
                             RkButton::State::UnpressedHover);
-        RK_ACT_BIND(keyButton, pressed, RK_ACT_ARGS(), this, showMidiPopup());
+        RK_ACT_BIND(keyButton, toggled, RK_ACT_ARGS(bool pressed), this, showMidiPopup());
         percussionContainer->addWidget(keyButton);
         percussionContainer->addSpace(10);
 
@@ -391,4 +391,10 @@ void KitPercussionView::showMidiPopup()
         auto midiPopup = new MidiKeyWidget(this, percussionModel);
         midiPopup->setPosition(keyButton->x() - midiPopup->width() - 5,
                                keyButton->y() - midiPopup->height());
+        RK_ACT_BIND(midiPopup,
+                    isAboutToClose,
+                    RK_ACT_ARGS(),
+                    keyButton,
+                    setPressed(false));
+        midiPopup->show();
 }

@@ -76,6 +76,10 @@ class MidiKeyWidget: public GeonkickWidget
                     keySelected(GeonkickTypes::MidiKey key),
                     RK_ARG_TYPE(GeonkickTypes::MidiKey),
                     RK_ARG_VAL(key));
+        RK_DECL_ACT(isAboutToClose,
+                    isAboutToClose(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
         static RkString midiKeyToNote(GeonkickTypes::MidiKey key);
 
  protected:
@@ -87,6 +91,7 @@ class MidiKeyWidget: public GeonkickWidget
         void mouseButtonReleaseEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
         void onUpdateKey(PercussionModel::KeyIndex key);
+        void closeEvent(RkCloseEvent *event) override;
 
  private:
         PercussionModel *percussionModel;

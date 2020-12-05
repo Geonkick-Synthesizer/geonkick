@@ -65,7 +65,6 @@ MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
                     RK_ACT_ARGS(PercussionModel::KeyIndex key),
                     this,
                     onUpdateKey(key));
-        show();
 }
 
 void MidiKeyWidget::drawCell(RkPainter &painter,
@@ -224,4 +223,10 @@ void MidiKeyWidget::onUpdateKey(PercussionModel::KeyIndex key)
 {
         selectedCell = getCell(key);
         update();
+}
+
+void MidiKeyWidget::closeEvent([[maybe_unused]] RkCloseEvent *event)
+{
+        action isAboutToClose();
+        RkWidget::closeEvent(event);
 }
