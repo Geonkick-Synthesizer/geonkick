@@ -299,7 +299,7 @@ void ExportWidget::exportKick()
         memset(&sndinfo, 0, sizeof(sndinfo));
         sndinfo.samplerate = geonkickApi->getSampleRate();
         if (sndinfo.samplerate == 0) {
-                showError("Error on exporting kick3");
+                showError("Error on exporting kick");
                 return;
         }
 
@@ -321,7 +321,7 @@ void ExportWidget::exportKick()
         }
 
         if (kickBuffer.empty() || !sf_format_check(&sndinfo)) {
-                showError("Error: error on exporting kick33");
+                showError("Error: error on exporting kick");
                 return;
         }
 
@@ -333,7 +333,7 @@ void ExportWidget::exportKick()
 
         SNDFILE *sndFile = sf_open(filePath.c_str(), SFM_WRITE, &sndinfo);
         if (!sndFile) {
-                showError("Error on exporting kick2");
+                showError("Error on exporting kick1");
                 return;
         }
 

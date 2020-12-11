@@ -219,6 +219,7 @@ class GeonkickApi : public RkObject {
   void setDistortionInLimiter(double limit);
   void setDistortionDrive(double drive);
   std::vector<gkick_real> getKickBuffer() const;
+  std::vector<gkick_real> getInstrumentBuffer(int id) const;
   void triggerSynthesis();
   void setLayer(Layer layer);
   Layer layer() const;
@@ -309,6 +310,10 @@ class GeonkickApi : public RkObject {
   std::string getState() const;
   std::vector<gkick_real> setPreviewSample(const std::string &file);
   void playSamplePreview();
+  bool exportInstrumentBuffer(int id,
+                              int sampleRate,
+                              size_t channels,
+                              const std::string &filePath);
 
 protected:
   void setupPaths();

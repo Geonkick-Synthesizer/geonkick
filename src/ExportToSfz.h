@@ -1,8 +1,8 @@
 /**
- * File name: geonkick_button.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: ExportToSfz.h
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
  *
  * This file is part of Geonkick.
  *
@@ -21,27 +21,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_BUTTON_H
-#define GEONKICK_BUTTON_H
+#ifndef GEONGKICK_EXPORT_TO_SFZ_H
+#define GEONGKICK_EXPORT_TO_SFZ_H
 
-#include <geonkick_widget.h>
+#include "globals.h"
+#include "kit_state.h"
 
-#include <RkButton.h>
-#include <RkImage.h>
-
-class GeonkickButton: public RkButton
-{
+class ExportToSfz {
  public:
-        explicit GeonkickButton(GeonkickWidget *parent);
-        virtual ~GeonkickButton() = default;
-        void setPressedImage(const RkImage &img);
-        void setUnpressedImage(const RkImage &img);
-        virtual void mouseButtonPressEvent(RkMouseEvent *event) override
-        {
-                RK_UNUSED(event);
-                setFocus(true);
-                RkButton::mouseButtonPressEvent(event);
-        }
+        ExportToSfz(const std::string &file, const KitState *state);
+        bool export();
+        
+protected:
+        std::filesystem::path dataPath() const;
+        static std::string cleanName(const std::string &name);
+
+ private:
+        KitState *kitState;
+        std::string sfzFileName;
 };
 
-#endif // GEONKICK_BUTTON_H
+#endif // GEONGKICK_EXPORT_TO_SFZ_H

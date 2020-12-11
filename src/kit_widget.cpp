@@ -190,6 +190,11 @@ void KitWidget::saveKit(const std::string &file)
         kitModel->save(file);
 }
 
+void KitWidget::exportToSfz(const std::string &file)
+{
+        kitModel->save(file);
+}
+
 void KitWidget::keyPressEvent(RkKeyEvent *event)
 {
         if (event->key() != Rk::Key::Key_Up && event->key() != Rk::Key::Key_Down)

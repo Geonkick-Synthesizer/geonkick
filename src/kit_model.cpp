@@ -236,6 +236,15 @@ bool KitModel::save(const std::string &file)
         return true;
 }
 
+bool KitModel::export(const std::string &file, KitModel::ExportType type)
+{
+        if (type == KitModel::ExportType::Sfz) {
+                ExportToSfz sfzExport(file);
+                return sfzExport->export();
+        }
+        return false;
+}
+
 void KitModel::addNewPercussion()
 {
         int newId = geonkickApi->getUnusedPercussion();

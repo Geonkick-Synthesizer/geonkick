@@ -34,7 +34,7 @@ class GeonkickConfig {
         bool open();
         bool save();
 
- private:
+ protected:
         void loadConfig(const std::string &data);
         std::string toJson() const;
 
