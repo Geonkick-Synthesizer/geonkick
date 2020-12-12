@@ -24,21 +24,22 @@
 #ifndef GEONGKICK_EXPORT_TO_SFZ_H
 #define GEONGKICK_EXPORT_TO_SFZ_H
 
-#include "globals.h"
-#include "kit_state.h"
+#include "ExportAbstract.h"
 
-class ExportToSfz {
+class KitModel;
+
+class ExportToSfz : public ExportAbstract {
  public:
-        ExportToSfz(const std::string &file, const KitState *state);
-        bool export();
+        ExportToSfz(KitModel *model, const std::filesystem::path &file);
+        bool doExport() override;
         
 protected:
         std::filesystem::path dataPath() const;
         static std::string cleanName(const std::string &name);
 
  private:
-        KitState *kitState;
         std::string sfzFileName;
+        KitModel *kitModel;
 };
 
 #endif // GEONGKICK_EXPORT_TO_SFZ_H

@@ -25,6 +25,7 @@
 #define KIT_MODEL_H
 
 #include "globals.h"
+#include "ExportAbstract.h"
 
 class GeonkickApi;
 class GeonkickState;
@@ -32,6 +33,7 @@ class PercussionModel;
 
 class KitModel : public RkObject {
  public:
+        using ExportFormat = ExportAbstract::ExportFormat;
         using PercussionIndex = int;
         using KeyIndex = int;
         explicit KitModel(RkObject* parent, GeonkickApi *api);
@@ -72,6 +74,7 @@ class KitModel : public RkObject {
         bool isPercussionSolo(PercussionIndex index) const;
         void updatePercussion(PercussionIndex index);
         GeonkickApi* api() const;
+        bool doExport(const std::string &file, ExportFormat format);
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),
@@ -97,6 +100,10 @@ class KitModel : public RkObject {
                     percussionUpdated(PercussionModel* model),
                     RK_ARG_TYPE(PercussionModel*),
                     RK_ARG_VAL(model));
+        RkString name() const;
+        RkString author() const;
+        RkString license() const;
+        std::vector<float> instrumentData(PercussionIndex index) const;
 
  protected:
         int percussionId(int index) const;

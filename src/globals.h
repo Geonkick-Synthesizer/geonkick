@@ -55,9 +55,26 @@
 #define GEONKICK_LOG_DEBUG(msg)
 #endif //  // GKICK_LIB_LOG_LEVEL_DEBUG
 
-namespace GeonkickTypes {
+namespace Geonkick
+{
+        constexpr int defaultSampleRate = 48000;
+        constexpr char applicationName[] = GEONKICK_APP_NAME;
+        constexpr char applicationVersionStr[] = GEOKICK_VERSION_STRING; 
+} // namespace Geonkick
+
+namespace GeonkickTypes
+{
 using MidiKey = unsigned char;
 constexpr MidiKey geonkickAnyKey = GEONKICK_ANY_KEY;
-}
+
+enum class Formats : int {
+          Gkick  = 0,
+          Gkit   = 1,
+          Flac   = 2,
+          Wav    = 4,
+          Ogg    = 7,
+          Sfz    = 8
+};
+} // namespace GeonkickTypes
 
 #endif // GEONKICK_GLOBALS_H

@@ -55,6 +55,7 @@ class KitWidget: public GeonkickWidget
         void saveKit(const std::string &file);
         void keyPressEvent(RkKeyEvent *event);
         void onUpdateLevelers();
+        void exportKitDialog();
 
  private:
         KitModel *kitModel;

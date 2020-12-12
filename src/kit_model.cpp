@@ -26,6 +26,7 @@
 #include "percussion_state.h"
 #include "percussion_model.h"
 #include "kit_state.h"
+#include "ExportToSfz.h"
 
 #include <RkAction.h>
 #include <RkEventQueue.h>
@@ -236,15 +237,6 @@ bool KitModel::save(const std::string &file)
         return true;
 }
 
-bool KitModel::export(const std::string &file, KitModel::ExportType type)
-{
-        if (type == KitModel::ExportType::Sfz) {
-                ExportToSfz sfzExport(file);
-                return sfzExport->export();
-        }
-        return false;
-}
-
 void KitModel::addNewPercussion()
 {
         int newId = geonkickApi->getUnusedPercussion();
@@ -368,3 +360,37 @@ GeonkickApi* KitModel::api() const
 {
         return geonkickApi;
 }
+
+bool KitModel::doExport(const std::string &file, KitModel::ExportFormat format)
+{
+        switch (format) {
+        case ExportFormat::Sfz:
+         {
+                 ExportToSfz toSfz(this, file);
+                 return toSfz.doExport();
+         }
+        default:
+                return false;
+        }
+}
+
+RkString KitModel::name() const
+{
+        return RkString("Unknown");
+}
+
+RkString KitModel::author() const
+{
+        return RkString("Unknown");
+}
+
+RkString KitModel::license() const
+{
+        return RkString("Unknown");
+}
+
+std::vector<float> KitModel::instrumentData(PercussionIndex index) const
+{
+        return geonkickApi->getInstrumentBuffer(percussionId(index));
+}
+

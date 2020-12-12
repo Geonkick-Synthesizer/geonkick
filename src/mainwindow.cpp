@@ -33,7 +33,6 @@
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "percussion_state.h"
-#include "about.h"
 #include "ViewState.h"
 #include "UiSettings.h"
 #include "GeonkickConfig.h"
@@ -136,11 +135,6 @@ void MainWindow::createShortcuts()
         addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Right);
 
-        addShortcut(Rk::Key::Key_A, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_A, Rk::KeyModifiers::Control_Right);
-        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Right);
-
         addShortcut(Rk::Key::Key_C, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_C, Rk::KeyModifiers::Control_Right);
         addShortcut(Rk::Key::Key_c, Rk::KeyModifiers::Control_Left);
@@ -176,8 +170,6 @@ bool MainWindow::init(void)
                     this, openFileDialog(FileDialog::Type::Open));
         RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
                     this, openFileDialog(FileDialog::Type::Save));
-        RK_ACT_BIND(topBar, openAbout, RK_ACT_ARGS(),
-                    this, openAboutDialog());
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
@@ -298,11 +290,6 @@ void MainWindow::openFileDialog(FileDialog::Type type)
         }
 }
 
-void MainWindow::openAboutDialog()
-{
-        new AboutDialog(this);
-}
-
 void MainWindow::keyPressEvent(RkKeyEvent *event)
 {
         if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
@@ -323,9 +310,6 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
         } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                    && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
                 openExportDialog();
-        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                   && (event->key() == Rk::Key::Key_a || event->key() == Rk::Key::Key_A)) {
-                openAboutDialog();
         } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                    && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
                 geonkickApi->copyToClipboard();

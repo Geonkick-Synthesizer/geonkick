@@ -928,11 +928,12 @@ void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
 
 std::vector<gkick_real> GeonkickApi::getInstrumentBuffer(int id) const
 {
-        if (id < kickBuffers.size()) {
+        {
                 std::lock_guard<std::mutex> lock(apiMutex);
-                return kickBuffers[id];
+                if (static_cast<decltype(kickBuffers.size())>(id) < kickBuffers.size())
+                        return kickBuffers[id];
         }
-        return std::vector<gkick_real>();
+                return std::vector<gkick_real>();
 }
 
 std::vector<gkick_real> GeonkickApi::getKickBuffer() const
@@ -1790,62 +1791,4 @@ std::vector<gkick_real> GeonkickApi::setPreviewSample(const std::string &file)
                 return sampleData;
         }
         return std::vector<float>();
-}
-
-bool GeonkickApi::exportInstrumentBuffer(int id,
-                                         int sampleRate,
-                                         size_t channels,
-                                         const std::string &filePath)
-{
-        SF_INFO sndinfo;
-        memset(&sndinfo, 0, sizeof(sndinfo));
-        sndinfo.samplerate = sampleRate;
-        if (sndinfo.samplerate == 0) {
-                GEONKICK_LOG_ERROR("error on exporting instrument data");
-                return false;
-        }
-
-        sndinfo.channels   = channelsType == ChannelsType::Mono ? 1 : 2;
-        sndinfo.format     = exportFormat();
-
-        auto tempBuffer = getInstrumentBuffer(id);
-        if (tempBuffer.empty()) {
-                GEONKICK_LOG_ERROR("can't get isntrument buffer for id " << id);
-                return false;
-        }
-        
-        sndinfo.frames = tempBuffer.size();
-        std::vector<gkick_real> kickBuffer;
-        if (sndinfo.channels == 2) {
-                kickBuffer.resize(2 * tempBuffer.size());
-                size_t k = 0;
-                while (k < tempBuffer.size()) {
-                        kickBuffer[2 * k] = kickBuffer[2 * k + 1] = tempBuffer[k];
-                        k++;
-                }
-        } else {
-                kickBuffer = std::move(tempBuffer);
-        }
-
-        if (kickBuffer.empty() || !sf_format_check(&sndinfo)) {
-                GEONKICK_LOG_ERROR("error on exporting instrument data");
-                return false;
-        }
-
-        SNDFILE *sndFile = sf_open(filePath.c_str(), SFM_WRITE, &sndinfo);
-        if (!sndFile) {
-                GEONKICK_LOG_ERROR("error on opening file for exporting");
-                return;
-        }
-
-        size_t n;
-        n = sf_write_float(sndFile, kickBuffer.data(), kickBuffer.size());
-        if (n != kickBuffer.size()) {
-                GEONKICK_LOG_ERROR("error on exporting");
-                sf_close(sndFile);
-                return false;
-        }
-
-        sf_close(sndFile);
-        return true;
 }

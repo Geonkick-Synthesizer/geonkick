@@ -121,7 +121,9 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/kit_state.h
   ${GKICK_COMMON_DIR}/oscillator_envelope.h
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
-  ${GKICK_COMMON_DIR}/about.h
+  ${GKICK_COMMON_DIR}/ExportAbstract.h
+  ${GKICK_COMMON_DIR}/ExportSoundData.h
+  ${GKICK_COMMON_DIR}/ExportToSfz.h
   ${GKICK_COMMON_DIR}/export_widget.h
   ${GKICK_COMMON_DIR}/preset.h
   ${GKICK_COMMON_DIR}/preset_folder.h
@@ -170,7 +172,9 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
   ${GKICK_COMMON_DIR}/export_widget.cpp
-  ${GKICK_COMMON_DIR}/about.cpp
+  ${GKICK_COMMON_DIR}/ExportAbstract.cpp
+  ${GKICK_COMMON_DIR}/ExportSoundData.cpp
+  ${GKICK_COMMON_DIR}/ExportToSfz.cpp
   ${GKICK_COMMON_DIR}/preset.cpp
   ${GKICK_COMMON_DIR}/preset_folder.cpp
   ${GKICK_COMMON_DIR}/preset_browser_model.cpp

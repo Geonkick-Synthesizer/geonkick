@@ -206,3 +206,8 @@ KitModel* PercussionModel::model() const
 {
         return kitModel;
 }
+
+std::vector<float> PercussionModel::data() const
+{
+        return kitModel->instrumentData(index());
+}

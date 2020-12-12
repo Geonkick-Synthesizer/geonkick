@@ -63,6 +63,7 @@ class PercussionModel : public RkObject {
         void remove();
         void copy();
         KitModel* model() const;
+        std::vector<float> data() const;
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),

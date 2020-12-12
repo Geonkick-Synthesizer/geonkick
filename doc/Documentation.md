@@ -124,7 +124,6 @@ and save percussion preset, export percussion.
 * Ctrl + o - open file browser dialog
 * Ctrl + s - open save dialog
 * Ctrl + e - open export dialog
-* Ctrl + a - open about dialog
 * Ctrl + c - copy current selected percussion
 * Ctrl + v - paste the copied percussion into the current selected percussion
 * Left Ctrl + f - scale up the UI by factor of 2 or restore the original

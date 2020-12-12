@@ -59,7 +59,6 @@ class MainWindow : public GeonkickWidget
       void setPreset(const std::string &fileName);
       void openExportDialog();
       void openPreset();
-      void openAboutDialog();
       void resetToDefault();
       void updateLimiter(KitModel::PercussionIndex index);
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());

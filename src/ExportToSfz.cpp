@@ -22,62 +22,89 @@
  */
 
 #include "ExportToSfz.h"
+#include "ExportSoundData.h"
+#include "kit_model.h"
+#include "percussion_model.h"
 
-ExportToSfz::ExportToSfz(KitModel *model, const std::string &file, const KitState *state)
-        : sfzFileName{file},
-          kitState{state}
+ExportToSfz::ExportToSfz(KitModel *model, const std::filesystem::path &file)
+        : ExportAbstract(model, file, ExportFormat::Sfz)
+        , kitModel{model}
 {
 }
 
-bool ExportToSfz::export()
-{
-        bool res = exportSfzFile();
-        if (res)
-                res = exportData();
-        return res;
-}
-
-ExportToSfz::exportSfzFile()
+bool ExportToSfz::doExport()
 {
         std::ostringstream sfzStream;
-        sfz << "// Exported from " << Geonkick::applicationName()
-            << " v " << Geonkick::version() << std::endl;
-        sfz << "// Name: " << kitModel->name() << std::endl;
-        sfz  << "// Author: " << kitModel->author() << std::endl;
-        sfz << "// License: " << kitModel->license() << std::endl;
-        sfz << "// Instruments:" std::endl;
-        for (const auto &per : percussionModels())
-                sfz << "//    * " << per->name() << std::endl;
-        sfz << std::endl;
-        sfz << "<control>" << std::endl;
-        sfz << "default_path=" << dataPath() << std::endl;
-        sfz << "<global>" << std::endl;
-        sfz << "ampeg_attack=0.001" << std::endl;
-        sfz << "ampeg_release=3" << std::endl;
-        sfz << "ampeg_dynamic=1" << std::endl;
-        sfz << "volume=0" << std::endl;
-        sfz << "<group>" << std::endl;
-        sfz << "seq_length=2" << std::endl;
-        sfz << "seq_position=1" << std::endl;
+        sfzStream << "// Exported from " << Geonkick::applicationName
+            << " version " << Geonkick::applicationVersionStr << std::endl;
+        sfzStream << "// Name: " << kitModel->name() << std::endl;
+        sfzStream << "// Author: " << kitModel->author() << std::endl;
+        sfzStream << "// License: " << kitModel->license() << std::endl;
+        sfzStream << "// Instruments:" << std::endl;
+        for (const auto &per : kitModel->percussionModels())
+                sfzStream << "//    * " << per->name() << std::endl;
+        sfzStream << std::endl;
+        sfzStream << "<control>" << std::endl;
+        sfzStream << "default_path=" << (dataPath() / std::filesystem::path()).string() << std::endl;
+        sfzStream << "<global>" << std::endl;
+        sfzStream << "ampeg_attack=0.001" << std::endl;
+        sfzStream << "ampeg_release=3" << std::endl;
+        sfzStream << "ampeg_dynamic=1" << std::endl;
+        sfzStream << "volume=0" << std::endl << std::endl;
+        sfzStream << "<group>" << std::endl;
+        sfzStream << "seq_length=2" << std::endl;
+        sfzStream << "seq_position=1" << std::endl << std::endl;
 
-        for (const auto &instrument : percussionModels()) {
-                sfz << "<region>" << std::endl;
-                std::filesystem::path wavFile = dataPath()
-                        / std::filesystem::path(cleanName() + ".wav");
-                sfz << "sample=" <<  wavFileName << std::endl;
-                sfz << "lokey=" << instrument->key() << std::endl;
-                sfz << "hikey=" << instrument->key() << std::endl;
-                sfz << "pitch_keycenter" << instrument->key() << std::endl;
-                sfz << "lovel=0" << std::endl;
-                sfz << "hivel=127" << std::endl;
-                sfz << "volume=15" << std::endl;
-		sfz << "volume=15" << std::endl;
-		sfz << std::endl << std::endl;
-                instrument->export(wavFile);
+        try {
+                if (!std::filesystem::exists(dataPath())) {
+                        if (!std::filesystem::create_directories(dataPath())) {
+                                GEONKICK_LOG_ERROR("can't create path " << dataPath());
+                                return false;
+                        }
+                }
+        } catch(const std::exception& e) {
+                GEONKICK_LOG_ERROR("error on setup user data paths: " << e.what());
+                return false;
         }
+
+        for (const auto &instrument : kitModel->percussionModels()) {
+                sfzStream << "<region>" << std::endl;
+                std::filesystem::path wavFile = dataPath()
+                        / std::filesystem::path(cleanName(instrument->name()) + ".wav");
+                sfzStream << "sample=" <<  wavFile.filename().string() << std::endl;
+                sfzStream << "lokey=" << static_cast<int>(instrument->key()) << std::endl;
+                sfzStream << "hikey=" << static_cast<int>(instrument->key()) << std::endl;
+                sfzStream << "pitch_keycenter=" << static_cast<int>(instrument->key()) << std::endl;
+                sfzStream << "lovel=0" << std::endl;
+                sfzStream << "hivel=127" << std::endl;
+                sfzStream << "volume=15" << std::endl;
+		sfzStream << std::endl;
+                ExportSoundData exportToWav(this,
+                                            wavFile,
+                                            instrument->data(),
+                                            ExportSoundData::ExportFormat::Wav);
+                exportToWav.setSubformat(ExportSoundData::Subformat::Wav32);
+                exportToWav.doExport();
+                if (exportToWav.isError())
+                        setError(exportToWav.errorString());
+        }
+
+        auto sfzFilePath = getExportPath();
+        if (!sfzFilePath.has_extension() && sfzFilePath.extension() != ".sfz"
+            && sfzFilePath.extension() != ".SFZ")
+                sfzFilePath += ".sfz";
+        std::ofstream sfzFile (sfzFilePath);
+        if (!sfzFile.is_open()) {
+                GEONKICK_LOG_INFO("can't open sfz file " << getExportPath());
+                return false;
+        } else {
+                sfzFile << sfzStream.str();
+        }
+        sfzFile.close();
+        return true;
 }
 
-static std::string ExportToSfz::cleanName(const std::string &name)
+std::string ExportToSfz::cleanName(const std::string &name)
 {
         std::string str = name;
         std::replace(str.begin(), str.end(), ' ', '_');
@@ -86,5 +113,5 @@ static std::string ExportToSfz::cleanName(const std::string &name)
 
 std::filesystem::path ExportToSfz::dataPath() const
 {
-        std::filesystem::path(sfzFileName).parent_path();
+        return getExportPath().parent_path() / getExportPath().stem();
 }

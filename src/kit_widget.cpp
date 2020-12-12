@@ -38,6 +38,7 @@
 RK_DECLARE_IMAGE_RC(add_per_button);
 RK_DECLARE_IMAGE_RC(save_kit_button);
 RK_DECLARE_IMAGE_RC(open_kit_button);
+RK_DECLARE_IMAGE_RC(export_kit_button);
 
 KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 	: GeonkickWidget(parent)
@@ -102,6 +103,17 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
                     this, showFileDialog(FileDialog::Type::Save));
         saveKitButton->show();
         topContainer->addWidget(saveKitButton);
+
+        auto exportKitButton = new RkButton(this);
+        exportKitButton->setBackgroundColor(background());
+        exportKitButton->setCheckable(true);
+        exportKitButton->setSize(16, 16);
+        exportKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(export_kit_button)));
+        RK_ACT_BIND(exportKitButton, toggled, RK_ACT_ARGS(bool b),
+                    this, exportKitDialog());
+        exportKitButton->show();
+        topContainer->addWidget(exportKitButton);
+
         percussionsContainer->setHeight(kitContainer->height() - topContainer->height());
 
         auto kitChannelsView = new KitChannelsView(this, kitModel);
@@ -190,11 +202,6 @@ void KitWidget::saveKit(const std::string &file)
         kitModel->save(file);
 }
 
-void KitWidget::exportToSfz(const std::string &file)
-{
-        kitModel->save(file);
-}
-
 void KitWidget::keyPressEvent(RkKeyEvent *event)
 {
         if (event->key() != Rk::Key::Key_Up && event->key() != Rk::Key::Key_Down)
@@ -257,3 +264,15 @@ void KitWidget::onUpdateLevelers()
         for (const auto &per: percussionViewList)
                 per->updateLeveler();
 }
+
+void KitWidget::exportKitDialog()
+{
+        auto fileDialog = new FileDialog(this, FileDialog::Type::Save,  "Export kit to sfz");
+        fileDialog->setFilters({".sfz", ".sfz"});
+        fileDialog->setHomeDirectory(kitModel->getHomePath());       
+        fileDialog->setCurrentDirectoy(kitModel->workingPath("Export/Kit/Sfz"));
+        RK_ACT_BIND(fileDialog, selectedFile,
+                    RK_ACT_ARGS(const std::string &file),
+                    kitModel, doExport(file, KitModel::ExportFormat::Sfz));
+}
+
