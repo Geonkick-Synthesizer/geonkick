@@ -2,8 +2,10 @@
 
 #### Features
 
+  - Set MDI key popup for instruments
+  - Export instrument kit to SFZ
   - 16 stereo channels for standalone
-  - autoconnect ports to system playback for standalone
+  - Autoconnect ports to system playback for standalone
 
 ### Version 2.5.1
 

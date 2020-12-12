@@ -35,7 +35,7 @@ ExportToSfz::ExportToSfz(KitModel *model, const std::filesystem::path &file)
 bool ExportToSfz::doExport()
 {
         std::ostringstream sfzStream;
-        sfzStream << "// Exported from " << Geonkick::applicationName
+        sfzStream << "// Exported from " << Geonkick::appName
             << " version " << Geonkick::applicationVersionStr << std::endl;
         sfzStream << "// Name: " << kitModel->name() << std::endl;
         sfzStream << "// Author: " << kitModel->author() << std::endl;
