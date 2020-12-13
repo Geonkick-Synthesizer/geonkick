@@ -501,7 +501,7 @@ void FileDialog::onCancel()
 void FileDialog::closeEvent(RkCloseEvent *event)
 {
         status = AcceptStatus::Cancel;
-        close();
+        RkWidget::closeEvent(event);
 }
 
 std::string FileDialog::currentDirectory() const

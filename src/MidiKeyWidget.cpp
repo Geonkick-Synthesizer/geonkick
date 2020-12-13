@@ -225,7 +225,7 @@ void MidiKeyWidget::onUpdateKey(PercussionModel::KeyIndex key)
         update();
 }
 
-void MidiKeyWidget::closeEvent([[maybe_unused]] RkCloseEvent *event)
+void MidiKeyWidget::closeEvent(RkCloseEvent *event)
 {
         action isAboutToClose();
         RkWidget::closeEvent(event);
