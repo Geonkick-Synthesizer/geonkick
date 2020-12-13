@@ -406,8 +406,8 @@ void TopBar::updateGui()
 
 void TopBar::showMidiPopup()
 {
-        setFocus();
-        auto midiPopup = new MidiKeyWidget(this, kitModel->currentPercussion());
+        auto midiPopup = new MidiKeyWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
+                                           kitModel->currentPercussion());
         midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
         RK_ACT_BIND(midiPopup,
                     isAboutToClose,

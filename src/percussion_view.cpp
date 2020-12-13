@@ -388,9 +388,11 @@ void KitPercussionView::updateLeveler()
 
 void KitPercussionView::showMidiPopup()
 {
-        auto midiPopup = new MidiKeyWidget(this, percussionModel);
+        auto midiPopup = new MidiKeyWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
+                                           percussionModel);
         midiPopup->setPosition(keyButton->x() - midiPopup->width() - 5,
-                               keyButton->y() - midiPopup->height());
+                               getTopWidget()->height() - 2 * midiPopup->height()
+                               + height() * (index() - 3));
         RK_ACT_BIND(midiPopup,
                     isAboutToClose,
                     RK_ACT_ARGS(),
