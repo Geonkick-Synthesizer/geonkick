@@ -118,7 +118,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 
         auto kitChannelsView = new KitChannelsView(this, kitModel);
         kitChannelsView->show();
-        topContainer->addSpace(100 - 3 * 16 - 4 * 5);
+        topContainer->addSpace(100 - 4 * 16 - 3 * 5 - 10);
         topContainer->addWidget(kitChannelsView);
 
         kitContainer->addContainer(topContainer);

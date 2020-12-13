@@ -1288,7 +1288,7 @@ bool GeonkickApi::setPercussionPlayingKey(int index, int key)
         auto res = geonkick_set_playing_key(geonkickApi,
                                             index,
                                             key);
-        GEONKICK_LOG_INFO("index " << index << " key:" << key);
+        GEONKICK_LOG_DEBUG("index " << index << " key:" << key);
         return res == GEONKICK_OK;
 }
 
