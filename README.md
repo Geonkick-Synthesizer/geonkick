@@ -38,6 +38,7 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 * Kit
    - Supports up to 16 instruments.
    - Save / Load kit in JSON format
+   - Export instrument kit to SFZ
 * Multitibral
    - 16 midi key range
    - user configurable key mapping
@@ -91,14 +92,14 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 
  - Supports only GNU/Linux and LV2 plugin format.
  - Can run properly only at 48000 sample rate. It will run also at other sample
-   rates but the sound will seem pitch shift up / down.
+   rates but the sound will seem pitch shifted up / down.
  - Doesn't support velocity expression for synthesizer parameters
    (nor for layers), only for total instrument amplitude.
  - The default plugin version (that supports kits) will take per instance
    about 35 MB from the heap. The "Single" version of the plugin will
    take about 2 MB per plugin instance. If only one instrument per track is used,
    it is recommended to use the "Single" version of the plugin.
- - Doesn't support automation of synthesizer parameters.
+ - Doesn't support automation of parameters.
  - Doesn't support Bézier curves for envelopes.
  - UI can be scaled, but it will be blurred
  - Filters become unstable for some extremal combination of cutoff and
@@ -167,4 +168,3 @@ to point to the needed location.
 #### Documentation
 
  [doc/Documentation.md](doc/Documentation.md)
-
