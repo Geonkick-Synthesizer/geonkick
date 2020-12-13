@@ -230,3 +230,11 @@ void MidiKeyWidget::closeEvent(RkCloseEvent *event)
         action isAboutToClose();
         RkWidget::closeEvent(event);
 }
+
+void MidiKeyWidget::hoverEvent(RkHoverEvent *event)
+{
+        if (!event->isHover()) {
+                hoverCell = KeyCell();
+                update();
+        }
+}

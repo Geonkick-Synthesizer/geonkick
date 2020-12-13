@@ -92,6 +92,7 @@ class MidiKeyWidget: public GeonkickWidget
         void mouseMoveEvent(RkMouseEvent *event) override;
         void onUpdateKey(PercussionModel::KeyIndex key);
         void closeEvent(RkCloseEvent *event) override;
+        void hoverEvent(RkHoverEvent *event) override;
 
  private:
         PercussionModel *percussionModel;
