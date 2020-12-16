@@ -326,19 +326,17 @@ the MIDI key mapping of the percussion, thus forming a grid. The percussion UI w
 show the current selected percussion from the list that can be controllable. In the
 kit list the current percussion will be emphasized too.
 
- -  "left click" on the percussion name to select the current percussion
- -  "left double click" on the percussion name to edit its name
- -  "add" button (an icon with "plus") to add a new default percussion
- -  "open" button (an icon with an up arrow) opens an kit preset
- -  "save" button (an icon with an down arrow) save the kit preset
- -  "remove" button (an icon with cross) will remove the percussion
- -  "copy" button will copy a percussion and add it into the list
- -  "#x" label at the end of the percussion line shows the audio output
-    channel of the percussion. The user can change this value by "left click"
-    or "scroll" on the "#x" label
+ - "left click" on the percussion name to select the current percussion
+ - "left double click" on the percussion name to edit its name
+ - "add" button (an icon with "plus") to add a new default percussion
+ - "open" button (an icon with an up arrow) opens an kit preset
+ - "save" button (an icon with an down arrow) save the kit preset
+ - "remove" button (an icon with cross) will remove the percussion
+ - "copy" button will copy a percussion and add it into the list
+ - the button and the and of percussion line will show a popup for selecting the MIDI key
  - the columns labels shows the MIDI key a percussion can be mapped. "Any" label
    tells that the percussion will be played by pressing on any key.
- - "green circle" - which percussion to which key is mapped and can be changed
+ - "green circle" - which percussion to which output channel is mapped, and can be changed
    by "left click" on the grid cell.
  - slider for limiter of the current percussion
  - "M" button - mute the current percussion
