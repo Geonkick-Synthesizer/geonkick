@@ -527,12 +527,12 @@ ls:Out16
     lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
     lv2:requiredFeature ui:idleInterface;
     lv2:extensionData ui:idleInterface;
-    ui:binary <libgeonkick_lv2.so> .
+    ui:binary <geonkick_lv2.so> .
 
 <http://geontime.com/geonkick/single#ui>
     a ui:X11UI ;
     lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
     lv2:requiredFeature ui:idleInterface;
     lv2:extensionData ui:idleInterface;
-    ui:binary <libgeonkick_single_lv2.so> .
+    ui:binary <geonkick_single_lv2.so> .
 

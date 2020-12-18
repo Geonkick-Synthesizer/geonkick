@@ -4,12 +4,12 @@
 
 <http://geontime.com/geonkick>
   a lv2:Plugin;
-  lv2:binary <libgeonkick_lv2.so>;
+  lv2:binary <geonkick_lv2.so>;
   rdfs:seeAlso <geonkick.ttl>.
 
 <http://geontime.com/geonkick/single>
   a lv2:Plugin;
-  lv2:binary <libgeonkick_single_lv2.so>;
+  lv2:binary <geonkick_single_lv2.so>;
   rdfs:seeAlso <geonkick.ttl>.
 
 
