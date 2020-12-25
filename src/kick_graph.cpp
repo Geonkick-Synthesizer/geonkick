@@ -128,6 +128,7 @@ void KickGraph::drawKickGraph()
                 if (eventQueue()) {
                         auto act = std::make_unique<RkAction>(this);
                         act->setCallback([this, graphImage](void){ graphUpdated(graphImage); });
+                        graphImage.reset();
                         eventQueue()->postAction(std::move(act));
                 }
                 updateGraph = false;
