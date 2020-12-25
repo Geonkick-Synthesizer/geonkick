@@ -1,3 +1,10 @@
+### Version 2.6.1
+
+#### Fixes
+
+  - Fix potential race condition
+  - Remove lib prefix for plugin shared library
+
 ### Version 2.6.0
 
 #### Features
