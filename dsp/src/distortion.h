@@ -28,6 +28,7 @@
 
 struct gkick_distortion {
         int enabled;
+        int sample_rate;
 	/* Input limiter for distortion. */
 	gkick_real in_limiter;
         gkick_real volume;
@@ -38,7 +39,7 @@ struct gkick_distortion {
 };
 
 enum geonkick_error
-gkick_distortion_new(struct gkick_distortion **distortion);
+gkick_distortion_new(struct gkick_distortion **distortion, int sample_rate);
 
 void
 gkick_distortion_free(struct gkick_distortion **distortion);

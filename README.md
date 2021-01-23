@@ -10,7 +10,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.6.1
+Version: 2.7.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -91,8 +91,6 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 #### Technical limitations
 
  - Supports only GNU/Linux and LV2 plugin format.
- - Can run properly only at 48000 sample rate. It will run also at other sample
-   rates but the sound will seem pitch shifted up / down.
  - Doesn't support velocity expression for synthesizer parameters
    (nor for layers), only for total instrument amplitude.
  - The default plugin version (that supports kits) will take per instance
@@ -112,12 +110,12 @@ In order Geonkick to run and operate correctly there is a need:
 for standalone:
 
 * GNU/Linux operating system
-* Jack server running at 48000 sample rate
+* Jack server running
 
 for plugin:
 
  * GNU/Linux operating system.
- * A host that supports LV2 plugin format running at 48000 sample rate.
+ * A host that supports LV2 plugin format.
 
 #### Install
 

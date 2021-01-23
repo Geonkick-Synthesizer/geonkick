@@ -48,6 +48,8 @@ struct gkick_note_info {
 
 struct gkick_audio_output
 {
+        int sample_rate;
+
 	/* Specifies if this audio output is active. */
         _Atomic bool enabled;
 
@@ -104,7 +106,7 @@ struct gkick_audio_output
 };
 
 enum geonkick_error
-gkick_audio_output_create(struct gkick_audio_output **audio_output);
+gkick_audio_output_create(struct gkick_audio_output **audio_output, int sample_rate);
 
 void gkick_audio_output_free(struct gkick_audio_output **audio_output);
 

@@ -31,6 +31,7 @@ struct gkick_jack;
 struct gkick_mixer;
 
 struct gkick_audio {
+        int sample_rate;
         /* Audio outputs. The last audio ouput is used as a sample preview. */
         struct gkick_audio_output *audio_outputs[GEONKICK_MAX_PERCUSSIONS + 1];
 	struct gkick_mixer *mixer;
@@ -38,7 +39,10 @@ struct gkick_audio {
 };
 
 enum geonkick_error
-gkick_audio_create(struct gkick_audio** audio);
+gkick_audio_create(struct gkick_audio** audio, int sample_rate);
+
+enum geonkick_error
+gkick_start_audio(struct gkick_audio *audio);
 
 void gkick_audio_free(struct gkick_audio** audio);
 

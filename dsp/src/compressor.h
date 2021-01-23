@@ -27,6 +27,7 @@
 #include "geonkick_internal.h"
 
 struct gkick_compressor {
+        int sample_rate;
         int enabled;
 
         /* Attack and release time in number of audio frames. */
@@ -50,7 +51,8 @@ struct gkick_compressor {
 };
 
 enum geonkick_error
-gkick_compressor_new(struct gkick_compressor **compressor);
+gkick_compressor_new(struct gkick_compressor **compressor,
+                     int sample_rate);
 
 void
 gkick_compressor_free(struct gkick_compressor **compressor);

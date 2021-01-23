@@ -32,6 +32,7 @@
 #include <stdatomic.h>
 
 struct gkick_synth {
+	int sample_rate;
       	atomic_size_t id;
         char name[30];
 
@@ -94,7 +95,7 @@ struct gkick_synth {
 };
 
 enum geonkick_error
-gkick_synth_new(struct gkick_synth **synth);
+gkick_synth_new(struct gkick_synth **synth, int sample_rate);
 
 void
 gkick_synth_free(struct gkick_synth **synth);

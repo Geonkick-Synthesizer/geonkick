@@ -32,6 +32,7 @@
 
 struct gkick_filter {
         enum gkick_filter_type type;
+        int sample_rate;
 
         /* Filter cuttoff frequency. */
         gkick_real cutoff_freq;
@@ -54,7 +55,7 @@ struct gkick_filter {
 };
 
 enum geonkick_error
-gkick_filter_new(struct gkick_filter **filter);
+gkick_filter_new(struct gkick_filter **filter, int sample_rate);
 
 enum geonkick_error
 gkick_filter_init(struct gkick_filter *filter);

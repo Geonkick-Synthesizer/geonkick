@@ -25,7 +25,7 @@
 #include "envelope.h"
 
 enum geonkick_error
-gkick_distortion_new(struct gkick_distortion **distortion)
+gkick_distortion_new(struct gkick_distortion **distortion, int sample_rate)
 {
         if (distortion == NULL) {
                 gkick_log_error("wrong arguments");
@@ -40,6 +40,7 @@ gkick_distortion_new(struct gkick_distortion **distortion)
 	(*distortion)->drive_env = NULL;
         (*distortion)->volume_env = NULL;
 	(*distortion)->drive = 1.0f;
+        (*distortion)->sample_rate = sample_rate;
 
 	struct gkick_envelope *env = gkick_envelope_create();
 	if (env == NULL) {

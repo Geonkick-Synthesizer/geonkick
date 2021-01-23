@@ -36,15 +36,13 @@
 
 #include "worker.h"
 
-#define GEONKICK_SAMPLE_RATE 48000
-
 /* Kick maximum length in seconds. */
 #define GEONKICK_MAX_LENGTH 4
-#define GEONKICK_MAX_KICK_BUFFER_SIZE  (GEONKICK_MAX_LENGTH * GEONKICK_SAMPLE_RATE)
 
 struct geonkick {
         size_t id;
         char name[30];
+	int sample_rate;
         /* The list of synths of available synths. */
         struct gkick_synth *synths[GEONKICK_MAX_PERCUSSIONS];
         struct gkick_audio *audio;

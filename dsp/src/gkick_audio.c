@@ -29,12 +29,13 @@
 #endif
 
 enum geonkick_error
-gkick_audio_create(struct gkick_audio** audio)
+gkick_audio_create(struct gkick_audio** audio, int sample_rate)
 {
         if (audio == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+
 
         *audio = (struct gkick_audio*)calloc(1, sizeof(struct gkick_audio));
         if (*audio == NULL) {
@@ -42,8 +43,17 @@ gkick_audio_create(struct gkick_audio** audio)
 		return GEONKICK_ERROR_MEM_ALLOC;
 	}
 
+        (*audio)->sample_rate = sample_rate;
+#ifdef GEONKICK_AUDIO_JACK
+        if (gkick_create_jack(&(*audio)->jack) != GEONKICK_OK) {
+                gkick_log_warning("can't create jack module. "
+				  "Jack server is either not running or not installed");
+        }
+        (*audio)->sample_rate = gkick_jack_sample_rate((*audio)->jack);
+#endif // GEONKICK_AUDIO_JACK
+
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS + 1; i++) {
-                if (gkick_audio_output_create(&(*audio)->audio_outputs[i]) != GEONKICK_OK) {
+                if (gkick_audio_output_create(&(*audio)->audio_outputs[i], sample_rate) != GEONKICK_OK) {
                         gkick_log_error("can't create audio output");
                         gkick_audio_free(audio);
                         return GEONKICK_ERROR;
@@ -59,11 +69,19 @@ gkick_audio_create(struct gkick_audio** audio)
 	}
 	(*audio)->mixer->audio_outputs = (*audio)->audio_outputs;
 
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_start_audio(struct gkick_audio *audio)
+{
 #ifdef GEONKICK_AUDIO_JACK
-        if (gkick_create_jack(&(*audio)->jack, (*audio)->mixer) != GEONKICK_OK)
-                gkick_log_warning("can't create jack module. "
-				  "Jack server is either not running or not installed");
+        if (geonkick_jack_start(audio->jack, audio->mixer) != GEONKICK_OK) {
+                gkick_log_warning("can't start jack module");
+                return GEONKICK_ERROR;
+        }
 #endif // GEONKICK_AUDIO_JACK
+
         return GEONKICK_OK;
 }
 

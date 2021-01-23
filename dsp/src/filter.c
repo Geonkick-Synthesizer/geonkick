@@ -24,7 +24,7 @@
 #include "filter.h"
 
 enum geonkick_error
-gkick_filter_new(struct gkick_filter **filter)
+gkick_filter_new(struct gkick_filter **filter, int sample_rate)
 {
         if (filter == NULL) {
                 gkick_log_error("wrong arguments");
@@ -38,6 +38,7 @@ gkick_filter_new(struct gkick_filter **filter)
         }
         (*filter)->type = GEONKICK_FILTER_LOW_PASS;
         (*filter)->queue_empty = true;
+        (*filter)->sample_rate = sample_rate;
 
         (*filter)->cutoff_env = gkick_envelope_create();
         if ((*filter)->cutoff_env == NULL) {
@@ -109,7 +110,7 @@ gkick_filter_update_coefficents(struct gkick_filter *filter)
                 return GEONKICK_ERROR;
         }
 
-        gkick_real F = 2.0f * sin(M_PI * filter->cutoff_freq / GEONKICK_SAMPLE_RATE);
+        gkick_real F = 2.0f * sin(M_PI * filter->cutoff_freq / filter->sample_rate);
         gkick_real Q = filter->factor;
         filter->coefficients[0] = F;
         filter->coefficients[1] = Q;
