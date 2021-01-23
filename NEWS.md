@@ -1,5 +1,11 @@
 ### Version 2.6.1
 
+#### Improvements
+
+  - Sample rate agnostic
+
+### Version 2.6.1
+
 #### Fixes
 
   - Fix potential race condition
