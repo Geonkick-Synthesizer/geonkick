@@ -64,6 +64,8 @@ typedef float gkick_real;
 #define GKICK_IS_STANDALONE (0)
 #endif
 
+#define GEONKICK_DEFAULT_SAMPLE_RATE 48000
+
 enum geonkick_error {
   	GEONKICK_OK                    = 0,
 	GEONKICK_ERROR                 = 1,
@@ -138,7 +140,7 @@ enum geonkick_channel_type {
 struct geonkick;
 
 enum geonkick_error
-geonkick_create(struct geonkick **kick);
+geonkick_create(struct geonkick **kick, int sample_rate);
 
 void
 geonkick_free(struct geonkick **kick);

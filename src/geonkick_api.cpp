@@ -34,7 +34,7 @@
 
 #include <sndfile.h>
 
-GeonkickApi::GeonkickApi()
+GeonkickApi::GeonkickApi(int sample_rate)
         : geonkickApi{nullptr}
         , limiterLevelers{}
         , jackEnabled{false}
@@ -45,6 +45,7 @@ GeonkickApi::GeonkickApi()
         , kitAuthor{"Author"}
         , clipboardPercussion{nullptr}
         , uiSettings{std::make_unique<UiSettings>()}
+	, sampleRate{sample_rate}
 {
         setupPaths();
         uiSettings->setSamplesBrowserPath(getSettings("GEONKICK_CONFIG/HOME_PATH"));
@@ -70,7 +71,7 @@ void GeonkickApi::setEventQueue(RkEventQueue *queue)
 bool GeonkickApi::init()
 {
         loadPresets();
-  	if (geonkick_create(&geonkickApi) != GEONKICK_OK) {
+  	if (geonkick_create(&geonkickApi, sampleRate) != GEONKICK_OK) {
 	        GEONKICK_LOG_ERROR("can't create geonkick API");
                 return false;
   	}
@@ -944,11 +945,11 @@ std::vector<gkick_real> GeonkickApi::getKickBuffer() const
 
 int GeonkickApi::getSampleRate() const
 {
-        int sampleRate;
-        if (geonkick_get_sample_rate(geonkickApi, &sampleRate) != GEONKICK_OK)
-                sampleRate = 0;
+        int sample_rate;
+        if (geonkick_get_sample_rate(geonkickApi, &sample_rate) != GEONKICK_OK)
+                sample_rate = 0;
 
-        return sampleRate;
+        return sample_rate;
 }
 
 // This function is called only from the audio thread.
@@ -1391,11 +1392,11 @@ size_t GeonkickApi::currentPercussion() const
 void GeonkickApi::setOscillatorSample(const std::string &file,
                                       int oscillatorIndex)
 {
-        int rateRate = 48000;
-        geonkick_get_sample_rate(geonkickApi, &rateRate);
+        int sRate = Geonkick::defaultSampleRate;
+        geonkick_get_sample_rate(geonkickApi, &sRate);
         std::vector<gkick_real> sampleData = loadSample(file,
                                                         kickMaxLength() / 1000,
-                                                        rateRate,
+                                                        sRate,
                                                         1);
         setOscillatorSample(sampleData, oscillatorIndex);
 }
@@ -1780,11 +1781,11 @@ std::string GeonkickApi::getState() const
 
 std::vector<gkick_real> GeonkickApi::setPreviewSample(const std::string &file)
 {
-        int rateRate = 48000;
-        geonkick_get_sample_rate(geonkickApi, &rateRate);
+        int sRate = Geonkick::defaultSampleRate;
+        geonkick_get_sample_rate(geonkickApi, &sRate);
         std::vector<gkick_real> sampleData = loadSample(file,
                                                         kickMaxLength() / 1000,
-                                                        rateRate,
+                                                        sRate,
                                                         1);
         if (!sampleData.empty()) {
                 geonkick_set_preview_sample(geonkickApi, sampleData.data(), sampleData.size());

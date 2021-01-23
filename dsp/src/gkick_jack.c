@@ -223,10 +223,9 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
 }
 
 enum geonkick_error
-gkick_create_jack(struct gkick_jack **jack,
-                  struct gkick_mixer *mixer)
+gkick_create_jack(struct gkick_jack **jack)
 {
-        if (jack == NULL || mixer == NULL) {
+        if (jack == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -234,8 +233,6 @@ gkick_create_jack(struct gkick_jack **jack,
         *jack = (struct gkick_jack*)calloc(1, sizeof(struct gkick_jack));
         if (*jack == NULL)
                 return GEONKICK_ERROR;
-        (*jack)->sample_rate = GEONKICK_SAMPLE_RATE;
-
         if (pthread_mutex_init(&(*jack)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
                 gkick_jack_free(jack);
@@ -251,6 +248,8 @@ gkick_create_jack(struct gkick_jack **jack,
                 return GEONKICK_ERROR;
         }
 
+        (*jack)->sample_rate = jack_get_sample_rate((*jack)->client);
+
         jack_set_process_callback((*jack)->client,
                                   gkick_jack_process_callback,
                                   (void*)(*jack));
@@ -261,27 +260,32 @@ gkick_create_jack(struct gkick_jack **jack,
                 return GEONKICK_ERROR;
         }
 
-        (*jack)->mixer = mixer;
-
         gkick_jack_enable_midi_in(*jack, "midi_in");
-        if (jack_activate((*jack)->client) != 0) {
+
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+geonkick_jack_start(struct gkick_jack *jack, struct gkick_mixer *mixer)
+{
+        jack->mixer = mixer;
+        if (jack_activate(jack->client) != 0) {
                 gkick_log_error("cannot activate client");
-                gkick_jack_free(jack);
                 return GEONKICK_ERROR;
         }
 
         // Connect to system playback ports.
         for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
-                jack_connect((*jack)->client,
-                             jack_port_name((*jack)->output_port[2 * i]),
+                jack_connect(jack->client,
+                             jack_port_name(jack->output_port[2 * i]),
                              "system:playback_1");
-                jack_connect((*jack)->client,
-                             jack_port_name((*jack)->output_port[2 * i + 1]),
+                jack_connect(jack->client,
+                             jack_port_name(jack->output_port[2 * i + 1]),
                              "system:playback_2");
         }
-
-	return GEONKICK_OK;
+        return GEONKICK_OK;
 }
+
 
 int
 gkick_jack_is_midi_in_enabled(struct gkick_jack *jack)

@@ -24,7 +24,7 @@
 #include "audio_output.h"
 
 enum geonkick_error
-gkick_audio_output_create(struct gkick_audio_output **audio_output)
+gkick_audio_output_create(struct gkick_audio_output **audio_output, int sample_rate)
 {
         if (audio_output == NULL) {
                 gkick_log_error("wrong arguments");
@@ -42,9 +42,10 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
         (*audio_output)->muted   = false;
         (*audio_output)->solo    = false;
         (*audio_output)->channel = 0;
+        (*audio_output)->sample_rate = sample_rate;
 
         gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->updated_buffer,
-                         GEONKICK_MAX_KICK_BUFFER_SIZE);
+                         (*audio_output)->sample_rate * GEONKICK_MAX_LENGTH);
         if ((*audio_output)->updated_buffer == NULL) {
                 gkick_log_error("can't create updated buffer");
                 gkick_audio_output_free(audio_output);
@@ -53,7 +54,7 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output)
         gkick_buffer_set_size((struct gkick_buffer*)(*audio_output)->updated_buffer, 0);
 
         gkick_buffer_new((struct gkick_buffer**)&(*audio_output)->playing_buffer,
-                         GEONKICK_MAX_KICK_BUFFER_SIZE);
+                         (*audio_output)->sample_rate * GEONKICK_MAX_LENGTH);
         if ((*audio_output)->playing_buffer == NULL) {
                 gkick_log_error("can't create playing buffer");
                 gkick_audio_output_free(audio_output);

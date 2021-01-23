@@ -77,7 +77,7 @@ class GeonkickApi : public RkObject {
           BandPass = GEONKICK_FILTER_BAND_PASS
   };
 
-  GeonkickApi();
+  GeonkickApi(int sample_rate = Geonkick::defaultSampleRate);
   ~GeonkickApi();
   static unsigned int getVersion();
   size_t numberOfChannels() const;
@@ -361,6 +361,7 @@ private:
   std::vector<int> percussionIdList;
   std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
   std::unique_ptr<UiSettings> uiSettings;
+  int sampleRate;
 };
 
 #endif // GEONKICK_API_H

@@ -25,7 +25,7 @@
 #include "oscillator.h"
 
 enum geonkick_error
-gkick_synth_new(struct gkick_synth **synth)
+gkick_synth_new(struct gkick_synth **synth, int sample_rate)
 {
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
@@ -38,37 +38,38 @@ gkick_synth_new(struct gkick_synth **synth)
 		return GEONKICK_ERROR_MEM_ALLOC;
 	}
 	memset(*synth, 0, sizeof(struct gkick_synth));
+	(*synth)->sample_rate = sample_rate;
         (*synth)->length = 0.3f;
 	(*synth)->oscillators_number = GKICK_OSC_GROUPS_NUMBER * GKICK_OSC_GROUP_SIZE;
         (*synth)->buffer_update = 0;
         (*synth)->amplitude = 1.0f;
-        (*synth)->buffer_size = (size_t)((*synth)->length * GEONKICK_SAMPLE_RATE);
+        (*synth)->buffer_size = (size_t)((*synth)->length * (*synth)->sample_rate);
         (*synth)->buffer_update = false;
         (*synth)->is_active = false;
         memset((*synth)->name, '\0', sizeof((*synth)->name));
         for (size_t i = 0; i < GKICK_OSC_GROUPS_NUMBER; i++)
                 (*synth)->osc_groups_amplitude[i] = 1.0f;
 
-        if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
+        if (gkick_filter_new(&(*synth)->filter, (*synth)->sample_rate) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
                 gkick_synth_free(synth);
 		return GEONKICK_ERROR;
         }
         (*synth)->filter_enabled = 0;
 
-        if (gkick_compressor_new(&(*synth)->compressor) != GEONKICK_OK) {
+        if (gkick_compressor_new(&(*synth)->compressor, (*synth)->sample_rate) != GEONKICK_OK) {
                 gkick_log_error("can't create compressor");
                 gkick_synth_free(synth);
                 return GEONKICK_ERROR;
         }
 
-        if (gkick_distortion_new(&(*synth)->distortion) != GEONKICK_OK) {
+        if (gkick_distortion_new(&(*synth)->distortion, (*synth)->sample_rate) != GEONKICK_OK) {
                 gkick_log_error("can't create distortion");
                 gkick_synth_free(synth);
                 return GEONKICK_ERROR;
         }
 
-        if (gkick_filter_new(&(*synth)->filter) != GEONKICK_OK) {
+        if (gkick_filter_new(&(*synth)->filter, (*synth)->sample_rate) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
                 gkick_synth_free(synth);
 		return GEONKICK_ERROR;
@@ -87,7 +88,7 @@ gkick_synth_new(struct gkick_synth **synth)
 
         /* Create synthesizer kick buffer. */
         struct gkick_buffer *buff;
-        gkick_buffer_new(&buff, GEONKICK_MAX_KICK_BUFFER_SIZE);
+        gkick_buffer_new(&buff, (*synth)->sample_rate * GEONKICK_MAX_LENGTH);
         if (buff == NULL) {
                 gkick_log_error("can't create synthesizer kick buffer");
                 gkick_synth_free(synth);
@@ -169,7 +170,7 @@ gkick_synth_create_oscillators(struct gkick_synth *synth)
         memset(synth->oscillators, 0, size);
 
         for (i = 0; i < synth->oscillators_number; i++) {
-                osc = gkick_osc_create();
+                osc = gkick_osc_create(synth->sample_rate);
                 if (osc == NULL)
                         return GEONKICK_ERROR;
                 synth->oscillators[i] = osc;
@@ -686,7 +687,7 @@ gkick_synth_set_length(struct gkick_synth *synth,
 
         gkick_synth_lock(synth);
         synth->length = len;
-        synth->buffer_size = synth->length * GEONKICK_SAMPLE_RATE;
+        synth->buffer_size = synth->length * synth->sample_rate;
         synth->buffer_update = true;
         gkick_synth_unlock(synth);
 
@@ -1895,7 +1896,7 @@ geonkick_synth_set_osc_sample(struct gkick_synth *synth,
 	}
 
         if (osc->sample == NULL)
-                gkick_buffer_new(&osc->sample, GEONKICK_MAX_KICK_BUFFER_SIZE);
+                gkick_buffer_new(&osc->sample, osc->sample_rate * GEONKICK_MAX_LENGTH);
         gkick_buffer_set_data(osc->sample, data, size);
         gkick_buffer_reset(osc->sample);
         if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]

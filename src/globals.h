@@ -57,7 +57,7 @@
 
 namespace Geonkick
 {
-        constexpr int defaultSampleRate = 48000;
+        constexpr int defaultSampleRate = GEONKICK_DEFAULT_SAMPLE_RATE;
         constexpr char appName[] = GEONKICK_NAME;
         constexpr char applicationName[] = GEONKICK_APP_NAME;
         constexpr char applicationVersionStr[] = GEOKICK_VERSION_STRING; 

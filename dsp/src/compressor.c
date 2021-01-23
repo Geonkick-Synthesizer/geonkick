@@ -24,7 +24,8 @@
 #include "compressor.h"
 
 enum geonkick_error
-gkick_compressor_new(struct gkick_compressor **compressor)
+gkick_compressor_new(struct gkick_compressor **compressor,
+                     int sample_rate)
 {
         if (compressor == NULL) {
                 gkick_log_error("wrong arguments");
@@ -37,8 +38,9 @@ gkick_compressor_new(struct gkick_compressor **compressor)
                 return GEONKICK_ERROR;
         }
 
-        (*compressor)->attack    = 0.01f * GEONKICK_SAMPLE_RATE;
-        (*compressor)->release   = 0.01f * GEONKICK_SAMPLE_RATE;
+        (*compressor)->sample_rate = sample_rate;
+        (*compressor)->attack    = 0.01f * sample_rate;
+        (*compressor)->release   = 0.01f * sample_rate;
         (*compressor)->threshold = 0.0f;
         (*compressor)->ratio     = 1.0f;
         (*compressor)->knee      = 0.0f;
@@ -137,7 +139,7 @@ gkick_compressor_set_attack(struct gkick_compressor *compressor,
                             gkick_real attack)
 {
         gkick_compressor_lock(compressor);
-        compressor->attack = GEONKICK_SAMPLE_RATE * attack;
+        compressor->attack = compressor->sample_rate * attack;
         gkick_compressor_unlock(compressor);
         return GEONKICK_OK;
 }
@@ -147,7 +149,7 @@ gkick_compressor_get_attack(struct gkick_compressor *compressor,
                             gkick_real *attack)
 {
         gkick_compressor_lock(compressor);
-        *attack = (gkick_real)compressor->attack / GEONKICK_SAMPLE_RATE;
+        *attack = (gkick_real)compressor->attack / compressor->sample_rate;
         gkick_compressor_unlock(compressor);
         return GEONKICK_OK;
 }
@@ -157,7 +159,7 @@ gkick_compressor_set_release(struct gkick_compressor *compressor,
                              gkick_real release)
 {
         gkick_compressor_lock(compressor);
-        compressor->release = GEONKICK_SAMPLE_RATE * release;
+        compressor->release = compressor->sample_rate * release;
         gkick_compressor_unlock(compressor);
         return GEONKICK_OK;
 }
@@ -167,7 +169,7 @@ gkick_compressor_get_release(struct gkick_compressor *compressor,
                              gkick_real *release)
 {
         gkick_compressor_lock(compressor);
-        *release = (double)compressor->release / GEONKICK_SAMPLE_RATE;
+        *release = (double)compressor->release / compressor->sample_rate;
         gkick_compressor_unlock(compressor);
         return GEONKICK_OK;
 }

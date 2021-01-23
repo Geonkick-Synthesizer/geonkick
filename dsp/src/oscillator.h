@@ -44,6 +44,7 @@ enum gkick_osc_nevelope_type {
 };
 
 struct gkick_oscillator {
+        int sample_rate;
         enum geonkick_osc_state state;
 	enum geonkick_osc_func_type func;
         /* Used for Brownian noise */
@@ -53,7 +54,6 @@ struct gkick_oscillator {
         unsigned int seed;
         gkick_real initial_phase;
 	gkick_real phase;
-	gkick_real sample_rate;
 	gkick_real frequency;
 	gkick_real amplitude;
         /* Pitch shift semitones. */
@@ -75,7 +75,7 @@ struct gkick_oscillator {
 };
 
 struct gkick_oscillator
-*gkick_osc_create(void);
+*gkick_osc_create(int sample_rate);
 
 void gkick_osc_free(struct gkick_oscillator **osc);
 

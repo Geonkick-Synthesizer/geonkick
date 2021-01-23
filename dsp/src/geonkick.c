@@ -29,7 +29,7 @@
 #include "mixer.h"
 
 enum geonkick_error
-geonkick_create(struct geonkick **kick)
+geonkick_create(struct geonkick **kick, int sample_rate)
 {
 	if (kick == NULL)
 		return GEONKICK_ERROR;
@@ -38,6 +38,7 @@ geonkick_create(struct geonkick **kick)
 	if (*kick == NULL)
 		return GEONKICK_ERROR_MEM_ALLOC;
 	strcpy((*kick)->name, "Geonkick");
+	(*kick)->sample_rate = sample_rate;
         (*kick)->synthesis_on = false;
         (*kick)->per_index = 0;
 
@@ -47,14 +48,16 @@ geonkick_create(struct geonkick **kick)
                 return GEONKICK_ERROR;
 	}
 
-	if (gkick_audio_create(&(*kick)->audio) != GEONKICK_OK) {
+	if (gkick_audio_create(&(*kick)->audio, sample_rate) != GEONKICK_OK) {
                 gkick_log_warning("can't create audio");
 		geonkick_free(kick);
 		return GEONKICK_ERROR;
 	}
 
+        (*kick)->sample_rate = (*kick)->audio->sample_rate;
+
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                if (gkick_synth_new(&(*kick)->synths[i]) != GEONKICK_OK) {
+                if (gkick_synth_new(&(*kick)->synths[i], (*kick)->sample_rate) != GEONKICK_OK) {
                         gkick_log_error("can't create synthesizer %u", i);
                         geonkick_free(kick);
                         return GEONKICK_ERROR;
@@ -81,6 +84,12 @@ geonkick_create(struct geonkick **kick)
                 }
         }
         geonkick_worker_add_instance(*kick);
+
+        if (gkick_start_audio((*kick)->audio) != GEONKICK_OK) {
+                gkick_log_error("can't start audio module");
+                geonkick_free(kick);
+        }
+
 	return GEONKICK_OK;
 }
 
@@ -988,7 +997,7 @@ geonkick_get_sample_rate(struct geonkick *kick,
                 gkick_log_error("wrong arugments");
                 return GEONKICK_ERROR;
         }
-        *sample_rate = GEONKICK_SAMPLE_RATE;
+        *sample_rate = kick->sample_rate;
         return GEONKICK_OK;
 }
 

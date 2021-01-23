@@ -27,7 +27,7 @@
 #define GKICK_2PI 6.283185307
 
 struct gkick_oscillator
-*gkick_osc_create(void)
+*gkick_osc_create(int sample_rate)
 {
         struct gkick_oscillator *osc;
 
@@ -38,7 +38,7 @@ struct gkick_oscillator
         osc->func = GEONKICK_OSC_FUNC_SINE;
         osc->initial_phase = 0.0f;
         osc->phase = osc->initial_phase;
-        osc->sample_rate = GEONKICK_SAMPLE_RATE;
+        osc->sample_rate = sample_rate;
         osc->amplitude = GKICK_OSC_DEFAULT_AMPLITUDE;
         osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
         osc->pitch_shift = 0.0f;
@@ -54,7 +54,7 @@ struct gkick_oscillator
                 return NULL;
         }
 
-        if (gkick_filter_new(&osc->filter) != GEONKICK_OK) {
+        if (gkick_filter_new(&osc->filter, osc->sample_rate) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
                 gkick_osc_free(&osc);
 		return NULL;

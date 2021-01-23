@@ -56,8 +56,8 @@
 class GeonkickLv2Plugin : public RkObject
 {
   public:
-        GeonkickLv2Plugin()
-                : geonkickApi{std::make_unique<GeonkickApi>()}
+        GeonkickLv2Plugin(int sampleRate)
+                : geonkickApi{std::make_unique<GeonkickApi>(sampleRate)}
                 , midiIn{nullptr}
                 , notifyHostChannel{nullptr}
                 , atomInfo{0}
@@ -388,7 +388,7 @@ static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
                                     const char*               bundle_path,
                                     const LV2_Feature* const* features)
 {
-        auto geonkickLv2PLugin = new GeonkickLv2Plugin;
+        auto geonkickLv2PLugin = new GeonkickLv2Plugin(rate);
         if (!geonkickLv2PLugin->init()) {
                 delete geonkickLv2PLugin;
                 return NULL;
