@@ -1,3 +1,10 @@
+### Version 2.7.1
+
+#### Improvements
+
+  - Add scale factor 1.5x for UI
+
+
 ### Version 2.7.0
 
 #### Improvements
