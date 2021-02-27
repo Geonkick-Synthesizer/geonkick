@@ -126,7 +126,7 @@ and save percussion preset, export percussion.
 * Ctrl + e - open export dialog
 * Ctrl + c - copy current selected percussion
 * Ctrl + v - paste the copied percussion into the current selected percussion
-* Left Ctrl + f - scale up the UI by factor of 2 or restore the original
+* Left Ctrl + f - scale up the UI by factor of x1.5, 2x or restore the original
 * Up/Down - to navigate into the kit list
 * Ctrl + Up/Down - to move up/down the position of the current selected percussion from the kit list
 

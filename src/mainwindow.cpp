@@ -320,7 +320,7 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
                 updateGui();
         } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                    && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
-                setScaleFactor(scaleFactor() > 1 ? 1 : 2);
+                setScaleFactor((scaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
                 setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
                 updateGui();
                 GeonkickConfig config;
