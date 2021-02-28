@@ -1,3 +1,11 @@
+### Version 2.7.2
+
+#### Fixes & Improvements
+
+  - Show Geonkick version in the UI
+  - fix crash for standalone when jack server is not running
+
+
 ### Version 2.7.1
 
 #### Improvements

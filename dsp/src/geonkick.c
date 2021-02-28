@@ -1804,3 +1804,9 @@ geonkick_wakeup(struct geonkick *kick)
         if (kick->synthesis_on)
                 geonkick_worker_wakeup();
 }
+
+bool
+geonkick_is_plugin()
+{
+        return !GKICK_IS_STANDALONE;
+}

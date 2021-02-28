@@ -27,6 +27,8 @@
 #include "layers_group_box.h"
 #include "geonkick_api.h"
 
+#include <RkLabel.h>
+
 EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         : GeonkickGroupBox(parent, Orientation::Horizontal)
         , geonkickApi(api)
@@ -43,6 +45,17 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         layers->setBackgroundColor({100, 100, 100});
         layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 4, 4);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
+        auto version = new RkLabel(this, Geonkick::geonkickInfo());
+        version->setSize(120, 14);
+        version->setBackgroundColor(background());
+        version->setTextColor({150, 150, 150});
+        auto f = font();
+        f.setSize(10);
+        f.setWeight(RkFont::Weight::Bold);
+        version->setFont(f);
+        version->setPosition(compressor->x() + (compressor->width() - version->width()) / 2,
+                             compressor->y() + compressor->height() + 5);
+        version->show();
 }
 
 

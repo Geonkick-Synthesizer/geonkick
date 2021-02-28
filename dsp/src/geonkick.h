@@ -53,10 +53,10 @@ typedef float gkick_real;
 
 #define GEONKICK_UNUSED(expr) (void)expr
 
-#define GEONKICK_VERSION 0x020701
+#define GEONKICK_VERSION 0x020702
 #define GEONKICK_NAME "Geonkick"
 #define GEONKICK_APP_NAME "geonkick"
-#define GEOKICK_VERSION_STRING "2.7.1"
+#define GEOKICK_VERSION_STRING "2.7.2"
 
 #ifdef GEONKICK_AUDIO_JACK
 #define GKICK_IS_STANDALONE (1)
@@ -686,6 +686,9 @@ geonkick_set_preview_sample(struct geonkick *kick,
 
 void
 geonkick_play_sample_preview(struct geonkick *kick);
+
+bool
+geonkick_is_plugin();
 
 #ifdef __cplusplus
 }

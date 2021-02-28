@@ -60,7 +60,20 @@ namespace Geonkick
         constexpr int defaultSampleRate = GEONKICK_DEFAULT_SAMPLE_RATE;
         constexpr char appName[] = GEONKICK_NAME;
         constexpr char applicationName[] = GEONKICK_APP_NAME;
-        constexpr char applicationVersionStr[] = GEOKICK_VERSION_STRING; 
+        constexpr char applicationVersionStr[] = GEOKICK_VERSION_STRING;
+        inline  RkString geonkickInfo()
+        {
+                RkString instanceType("Standalone");
+                if (geonkick_is_plugin()) {
+#ifdef GEONKICK_SINGLE
+                        instanceType = "LV2, Single";
+#else
+                        instanceType = "LV2, Multi";
+#endif // GEONKICK_SINGLE
+                }
+                return instanceType + ", v" + RkString(Geonkick::applicationVersionStr);
+        }
+
 } // namespace Geonkick
 
 namespace GeonkickTypes
