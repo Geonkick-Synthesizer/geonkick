@@ -48,9 +48,11 @@ gkick_audio_create(struct gkick_audio** audio, int sample_rate)
         if (gkick_create_jack(&(*audio)->jack) != GEONKICK_OK) {
                 gkick_log_warning("can't create jack module. "
 				  "Jack server is either not running or not installed");
+        } else {
+                (*audio)->sample_rate = gkick_jack_sample_rate((*audio)->jack);
         }
-        (*audio)->sample_rate = gkick_jack_sample_rate((*audio)->jack);
 #endif // GEONKICK_AUDIO_JACK
+        gkick_log_debug("sample rate: %d", (*audio)->sample_rate);
 
         for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS + 1; i++) {
                 if (gkick_audio_output_create(&(*audio)->audio_outputs[i], sample_rate) != GEONKICK_OK) {
@@ -76,7 +78,8 @@ enum geonkick_error
 gkick_start_audio(struct gkick_audio *audio)
 {
 #ifdef GEONKICK_AUDIO_JACK
-        if (geonkick_jack_start(audio->jack, audio->mixer) != GEONKICK_OK) {
+        if (audio->jack != NULL
+            && geonkick_jack_start(audio->jack, audio->mixer) != GEONKICK_OK) {
                 gkick_log_warning("can't start jack module");
                 return GEONKICK_ERROR;
         }
