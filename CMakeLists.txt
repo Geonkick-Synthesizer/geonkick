@@ -4,7 +4,6 @@ project(geonkick VERSION 2.7.2)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 include(GNUInstallDirs)
-include(FindRedkite)
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -54,6 +53,7 @@ set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
 set(GKICK_UTILS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/utils)
+set(GKICK_REDKITE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/redkite)
 
 if (GKICK_PLUGIN)
   if (CMAKE_SYSTEM_NAME MATCHES Windows)
@@ -220,19 +220,14 @@ else ()
 endif ()
 
 include_directories(${GKICK_API_DIR}/src)
+include_directories(${GKICK_REDKITE_DIR}/include)
 include_directories(${GKICK_UTILS_DIR})
+link_directories(${CMAKE_BINARY_DIR}/redkite)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-fPIC)
 add_subdirectory(dsp)
-
-if (CMAKE_SYSTEM_NAME MATCHES Windows)
-    include_directories(${GKICK_REDKITE_SDK_PATH}/include)
-    link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
-else ()
-    include_directories(${REDKITE_INCLUDE_DIR})
-    link_directories(${REDKITE_LIBRARY})
-endif()
-
+add_subdirectory(redkite)
 include(${GKICK_RC_DIR}/resources.rc)
 
 foreach(pngFile ${gkick_rc_png_files})
@@ -242,11 +237,13 @@ foreach(pngFile ${gkick_rc_png_files})
   string(REPLACE " " "_" filename ${filename})
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
-    && rkpng2c "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk__${filename}")
+    && ${CMAKE_BINARY_DIR}/redkite/tools/rkpng2c
+    "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk__${filename}")
     set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
 endforeach()
 
 add_custom_target(gkick_resources ALL DEPENDS ${GKICK_RC_OUTPUT})
+add_dependencies(gkick_resources redkite rkpng2c)
 
 include_directories(${GKICK_COMMON_DIR})
 link_directories(${REDKITE_LIBRARY_DIR})
@@ -295,4 +292,5 @@ endif (GKICK_PLUGIN)
 
 add_subdirectory(data)
 add_subdirectory(presets)
+
 
