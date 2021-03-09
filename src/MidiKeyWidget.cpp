@@ -173,7 +173,7 @@ KeyCell MidiKeyWidget::getCell(GeonkickTypes::MidiKey key) const
                 row = 7;
                 col = 4;
         } else {
-                row = (key - 20) / midiColumns;
+                row = (key - 21) / midiColumns;
                 col = (key - 21) % 12;
         }
 
@@ -189,8 +189,13 @@ KeyCell MidiKeyWidget::getCell(GeonkickTypes::MidiKey key) const
 
 void MidiKeyWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {
-        if (event->button() == RkMouseEvent::ButtonType::Left)
-                percussionModel->setKey(getCell(event->x(), event->y()).key());
+        if (event->button() == RkMouseEvent::ButtonType::Left) {
+		if (auto cell = getCell(event->x(), event->y());
+		    cell.isValid() && cell != selectedCell) {
+			selectedCell = cell;
+			percussionModel->setKey(selectedCell.key());
+		}
+	}
 }
 
 void MidiKeyWidget::mouseButtonReleaseEvent(RkMouseEvent *event)
@@ -199,11 +204,10 @@ void MidiKeyWidget::mouseButtonReleaseEvent(RkMouseEvent *event)
 
 void MidiKeyWidget::mouseMoveEvent(RkMouseEvent *event)
 {
-        auto cell = getCell(event->x(), event->y());
-        if (cell != hoverCell) {
+        if (auto cell = getCell(event->x(), event->y()); cell != hoverCell) {
                 hoverCell = cell;
-                update();
-        }        
+		update();
+        }
 }
 
 RkString MidiKeyWidget::midiKeyToNote(GeonkickTypes::MidiKey key)
