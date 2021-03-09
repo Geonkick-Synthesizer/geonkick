@@ -1,3 +1,12 @@
+### Version 2.7.3
+
+#### Fixes & Improvements
+
+  - Fix selection of last MIDI column in the MIDI key popup
+  - Move Redkite GUI toolkit into Geonkick source and intergate
+    it in the Geonkick build system
+    (no need to install Redkite now to build Geonkick)
+
 ### Version 2.7.2
 
 #### Fixes & Improvements
