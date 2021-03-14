@@ -644,3 +644,12 @@ bool RkWidget::pointerIsOverWindow() const
 {
         return impl_ptr->pointerIsOverWindow();
 }
+
+bool RkWidget::isChild(RkWidget *widget)
+{
+        for (const auto &child: children()) {
+                if (widget == dynamic_cast<RkWidget*>(child))
+                        return true;
+        }
+        return false;
+}

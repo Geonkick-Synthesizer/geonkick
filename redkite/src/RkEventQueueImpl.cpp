@@ -228,7 +228,7 @@ void RkEventQueue::RkEventQueueImpl::processPopups(RkWidget *widget, RkEvent* ev
         if (event->type() == RkEvent::Type::MouseButtonPress) {
                 for (auto it = popupList.begin(); it != popupList.end();) {
                         auto w = static_cast<RkWidget*>((*it).second);
-                        if (widget != w) {
+                        if (widget != w && !w->isChild(widget)) {
                                 w->close();
                                 it = popupList.erase(it);
                         } else {

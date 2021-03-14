@@ -56,7 +56,7 @@ RK_DECLARE_IMAGE_RC(stereo_radio_button);
 RK_DECLARE_IMAGE_RC(stereo_radio_button_active);
 
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
-        : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
+        : GeonkickWidget(parent, Rk::WindowFlags::Popup)
         , geonkickApi{api}
         , locationEdit{nullptr}
         , fileNameEdit{nullptr}
@@ -76,6 +76,10 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         , selectedFormat{ExportFormat::Wav16}
         , channelsType{ChannelsType::Mono}
 {
+        setPosition(30, 40);
+        setBorderWidth(1);
+        setBorderColor(40, 40, 40);
+
         std::string format = geonkickApi->getSettings("ExportDialog/Format");
         if (!format.empty())
                 selectedFormat = static_cast<ExportFormat>(std::stoi(format));

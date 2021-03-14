@@ -135,6 +135,7 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           void setScaleFactor(double factor);
           double scaleFactor() const;
           bool pointerIsOverWindow() const;
+          bool isChild(RkWidget *widget);
 
   protected:
           RK_DELCATE_IMPL_PTR(RkWidget);

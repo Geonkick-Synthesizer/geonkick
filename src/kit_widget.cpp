@@ -175,7 +175,9 @@ void KitWidget::copyPercussion(int index)
 
 void KitWidget::showFileDialog(FileDialog::Type type)
 {
-        auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
+        auto fileDialog = new FileDialog(static_cast<GeonkickWidget*>(getTopWidget()),
+                                         type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
+        fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".gkit", ".GKIT"});
         fileDialog->setHomeDirectory(kitModel->getHomePath());
         if (type == FileDialog::Type::Open) {
@@ -267,7 +269,9 @@ void KitWidget::onUpdateLevelers()
 
 void KitWidget::exportKitDialog()
 {
-        auto fileDialog = new FileDialog(this, FileDialog::Type::Save,  "Export kit to sfz");
+        auto fileDialog = new FileDialog(static_cast<GeonkickWidget*>(getTopWidget()),
+                                         FileDialog::Type::Save,  "Export kit to sfz");
+        fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".sfz", ".sfz"});
         fileDialog->setHomeDirectory(kitModel->getHomePath());       
         fileDialog->setCurrentDirectoy(kitModel->workingPath("Export/Kit/Sfz"));

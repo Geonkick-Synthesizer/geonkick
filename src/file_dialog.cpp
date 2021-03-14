@@ -376,7 +376,7 @@ void FilesView::setFilters(const std::vector<std::string> &filters)
 FileDialog::FileDialog(GeonkickWidget *parent,
                        FileDialog::Type type,
                        const std::string& title)
-        : GeonkickWidget(parent, type == FileDialog::Type::Browse ? Rk::WindowFlags::Widget : Rk::WindowFlags::Dialog)
+        : GeonkickWidget(parent, type == FileDialog::Type::Browse ? Rk::WindowFlags::Widget : Rk::WindowFlags::Popup)
         , dialogType{type}
         , filesView{nullptr}
         , pathLabel{nullptr}
@@ -386,6 +386,9 @@ FileDialog::FileDialog(GeonkickWidget *parent,
 {
         setTitle(title);
         setFixedSize(600, 400);
+        setBorderWidth(1);
+        setBorderColor(40, 40, 40);
+
         filesView = new FilesView(this);
         RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
