@@ -26,6 +26,7 @@
 #include "ViewState.h"
 #include "BufferView.h"
 #include "geonkick_button.h"
+#include "geonkick_slider.h"
 
 #include "RkContainer.h"
 
@@ -51,6 +52,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         , loadButton{nullptr}
         , osc1Button{nullptr}
         , osc2Button{nullptr}
+        , previewLimiter{nullptr}
 
 {
         setFixedSize(parent->size());
@@ -81,18 +83,34 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
                              loadSample();
                     });
 
-        samplePreviewWidget->setSize(300, 260);
+        samplePreviewWidget->setSize(250, 260);
         samplePreviewWidget->show();
         RK_ACT_BIND(samplePreviewWidget, graphPressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
+
+        previewLimiter = new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical);
+        previewLimiter->onSetValue(Geonkick::toDecibel(geonkickApi->samplePreviewLimiter()) + 80);
+        RK_ACT_BIND(previewLimiter,
+                    valueUpdated, RK_ACT_ARGS(int val),
+                    geonkickApi,
+                    setSamplePreviewLimiter(Geonkick::fromDecibel(val - 80)));
+
+        previewLimiter->setSize(16, samplePreviewWidget->height());
 
         auto mainLayout = new RkContainer(this);
         mainLayout->setSize(parent->size());
         mainLayout->addWidget(fileBrowser);
 
+        auto previewWidgetContainer = new RkContainer(this, Rk::Orientation::Horizontal);
+        previewWidgetContainer->setSize({samplePreviewWidget->width() + 10 + previewLimiter->width(),
+                                         samplePreviewWidget->height()});
+        previewWidgetContainer->addWidget(samplePreviewWidget);
+        previewWidgetContainer->addSpace(8);
+        previewWidgetContainer->addWidget(previewLimiter);
+
         auto previewContainer = new RkContainer(this, Rk::Orientation::Vertical);
-        previewContainer->setSize({samplePreviewWidget->width(), mainLayout->height()});
+        previewContainer->setSize({previewWidgetContainer->width() + 10, mainLayout->height()});
         previewContainer->addSpace(35);
-        previewContainer->addWidget(samplePreviewWidget);
+        previewContainer->addContainer(previewWidgetContainer);
 
         auto previewMenuContainer = new RkContainer(this);
         previewMenuContainer->setSize({previewContainer->width(), 25});

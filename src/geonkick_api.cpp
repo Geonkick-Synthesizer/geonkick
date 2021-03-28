@@ -1793,3 +1793,15 @@ std::vector<gkick_real> GeonkickApi::setPreviewSample(const std::string &file)
         }
         return std::vector<float>();
 }
+
+void GeonkickApi::setSamplePreviewLimiter(double val)
+{
+        geonkick_set_sample_preview_limiter(geonkickApi, val);
+}
+
+double GeonkickApi::samplePreviewLimiter() const
+{
+        gkick_real val = 0;
+        geonkick_get_sample_preview_limiter(geonkickApi, &val);
+        return val;
+}

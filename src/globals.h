@@ -74,6 +74,20 @@ namespace Geonkick
                 return instanceType + ", v" + RkString(Geonkick::applicationVersionStr);
         }
 
+        constexpr double toDecibel(double val)
+        {
+                if (val < std::numeric_limits<double>::min())
+                        return -80;
+                return 20 * log10(val);
+        }
+
+        constexpr double fromDecibel(double decibel)
+        {
+                if (decibel < -80)
+                        return 0;
+                return pow(10,  decibel / 20);
+        }
+
 } // namespace Geonkick
 
 namespace GeonkickTypes

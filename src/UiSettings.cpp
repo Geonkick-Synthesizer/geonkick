@@ -46,6 +46,8 @@ void UiSettings::parserSamplesBrowser(const rapidjson::Value &obj)
                         samplesBrowser.currentDirectory = m.value.GetString();
                 if (m.name == "previewFile" && m.value.IsString())
                         samplesBrowser.previewFile = m.value.GetString();
+                if (m.name == "limiterValue" && m.value.IsDouble())
+                        samplesBrowser.previewLimiter = m.value.GetDouble();
                 if (m.name == "oscillator" && m.value.IsInt())
                         samplesBrowser.oscillator = static_cast<Oscillator>(m.value.GetInt());
                 if (m.name == "settings" && m.value.IsArray()) {
@@ -64,8 +66,11 @@ std::string UiSettings::toJson() const
         jsonStream << "{" << std::endl;
         jsonStream << "\"MainView\": " << static_cast<int>(mainView) << ", " << std::endl;
         jsonStream << "\"SamplesBrowser\": { " << std::endl;
-        jsonStream << "    \"currentDirectory\": \"" << samplesBrowser.currentDirectory << "\", " << std::endl;
-        jsonStream << "    \"previewFile\": \"" << samplesBrowser.previewFile << "\", " << std::endl;
+        jsonStream << "    \"currentDirectory\": \"" << samplesBrowser.currentDirectory << "\"," << std::endl;
+        jsonStream << "    \"previewFile\": \"" << samplesBrowser.previewFile << "\"," << std::endl;
+        jsonStream << "    \"previewLimiter\": " << std::fixed << std::setprecision(5)
+                                                 << samplesBrowser.previewLimiter
+                                                 << "," << std::endl;
         jsonStream << "    \"oscillator\": " << static_cast<int>(samplesBrowser.oscillator) << std::endl;
         jsonStream << "}," << std::endl;
         jsonStream << "\"settings\": [" << std::endl;
@@ -109,6 +114,16 @@ void UiSettings::setSamplesBrowserPreviewFile(const std::string &file)
 std::string UiSettings::samplesBrowserPreviewFile() const
 {
         return samplesBrowser.previewFile;
+}
+
+void UiSettings::setSamplesPreviewLimiter(double &value)
+{
+        samplesBrowser.previewLimiter = value;
+}
+
+double UiSettings::samplesPreviewLimiter() const
+{
+        return samplesBrowser.previewLimiter;
 }
 
 void UiSettings::setSamplesBrowserOscillator(UiSettings::Oscillator osc)

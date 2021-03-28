@@ -687,6 +687,12 @@ geonkick_set_preview_sample(struct geonkick *kick,
 void
 geonkick_play_sample_preview(struct geonkick *kick);
 
+enum geonkick_error
+geonkick_set_sample_preview_limiter(struct geonkick *kick, gkick_real val);
+
+enum geonkick_error
+geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val);
+
 bool
 geonkick_is_plugin();
 

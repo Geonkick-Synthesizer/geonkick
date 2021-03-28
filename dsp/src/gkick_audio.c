@@ -111,7 +111,7 @@ gkick_audio_set_limiter_val(struct gkick_audio *audio,
                 limit = 0.0f;
         else if (limit > 10.0f)
                 limit = 10.0f;
-	return gkick_mixer_limiter_set(audio->mixer,
+        return gkick_mixer_limiter_set(audio->mixer,
                                        index,
                                        limit);
 }

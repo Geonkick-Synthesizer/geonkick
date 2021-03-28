@@ -158,7 +158,7 @@ gkick_mixer_limiter_set(struct gkick_mixer *mixer,
                         size_t index,
                         gkick_real val)
 {
-        if (index < GEONKICK_MAX_PERCUSSIONS)
+        if (index <= GEONKICK_MAX_PERCUSSIONS)
                 mixer->audio_outputs[index]->limiter = 1000000 * val;
 	return GEONKICK_OK;
 }
@@ -169,7 +169,7 @@ gkick_mixer_limiter_get(struct gkick_mixer *mixer,
                         gkick_real *val)
 {
         *val = 0.0f;
-        if (index < GEONKICK_MAX_PERCUSSIONS)
+        if (index <= GEONKICK_MAX_PERCUSSIONS)
                 *val = (gkick_real)mixer->audio_outputs[index]->limiter / 1000000;
 	return GEONKICK_OK;
 }

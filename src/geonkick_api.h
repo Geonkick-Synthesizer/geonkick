@@ -310,6 +310,8 @@ class GeonkickApi : public RkObject {
   std::string getState() const;
   std::vector<gkick_real> setPreviewSample(const std::string &file);
   void playSamplePreview();
+  void setSamplePreviewLimiter(double val);
+  double samplePreviewLimiter() const;
   bool exportInstrumentBuffer(int id,
                               int sampleRate,
                               size_t channels,

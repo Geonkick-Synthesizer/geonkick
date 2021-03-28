@@ -45,6 +45,8 @@ class UiSettings {
         std::string samplesBrowserPath() const;
         void setSamplesBrowserPreviewFile(const std::string &file);
         std::string samplesBrowserPreviewFile() const;
+        void setSamplesPreviewLimiter(double &value);
+        double samplesPreviewLimiter() const;
         void setSamplesBrowserOscillator(UiSettings::Oscillator osc);
         UiSettings::Oscillator samplesBrowserOscillator() const;
         void setSettings(const std::string &key, const std::string &value);
@@ -58,6 +60,7 @@ class UiSettings {
                 std::string currentDirectory;
                 std::string previewFile;
                 Oscillator oscillator;
+                double previewLimiter;
         };
 
         View mainView;

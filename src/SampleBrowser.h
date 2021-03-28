@@ -31,6 +31,7 @@ class FileDialog;
 class BufferView;
 class GeonkickButton;
 class RkContainer;
+class GeonkickSlider;
 
 class SampleBrowser: public GeonkickWidget {
  public:
@@ -50,6 +51,7 @@ class SampleBrowser: public GeonkickWidget {
         GeonkickButton *loadButton;
         GeonkickButton *osc1Button;
         GeonkickButton *osc2Button;
+        GeonkickSlider *previewLimiter;
 };
 
 #endif // GEONKICK_SAMPLE_BROWSER_H

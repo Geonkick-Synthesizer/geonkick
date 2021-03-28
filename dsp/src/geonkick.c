@@ -1798,6 +1798,18 @@ geonkick_play_sample_preview(struct geonkick *kick)
         gkick_audio_play(kick->audio, GEONKICK_MAX_PERCUSSIONS);
 }
 
+enum geonkick_error
+geonkick_set_sample_preview_limiter(struct geonkick *kick, gkick_real val)
+{
+        return gkick_audio_set_limiter_val(kick->audio, GEONKICK_MAX_PERCUSSIONS, val);
+}
+
+enum geonkick_error
+geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val)
+{
+        return gkick_audio_get_limiter_val(kick->audio, GEONKICK_MAX_PERCUSSIONS, val);
+}
+
 void
 geonkick_wakeup(struct geonkick *kick)
 {
