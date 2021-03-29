@@ -31,6 +31,8 @@
 
 #include <stdatomic.h>
 
+#include <pthread.h>
+
 struct gkick_synth {
 	int sample_rate;
       	atomic_size_t id;

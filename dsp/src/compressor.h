@@ -26,6 +26,8 @@
 
 #include "geonkick_internal.h"
 
+#include <pthread.h>
+
 struct gkick_compressor {
         int sample_rate;
         int enabled;
