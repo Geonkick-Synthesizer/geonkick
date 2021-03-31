@@ -231,35 +231,18 @@ add_subdirectory(dsp)
 add_subdirectory(redkite)
 include(${GKICK_RC_DIR}/resources.rc)
 
-foreach(pngFile ${gkick_rc_png_files})
-  message(STATUS "convert file ${pngFile}")
-  get_filename_component(filename ${GKICK_RC_DIR}/${pngFile} NAME)
-  string(REPLACE "." "_" filename ${filename})
-  string(REPLACE " " "_" filename ${filename})
-  add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
-    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
-    && ${CMAKE_BINARY_DIR}/redkite/tools/rkpng2c
-    "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk__${filename}")
-    set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
-endforeach()
-
-add_custom_target(gkick_resources ALL DEPENDS ${GKICK_RC_OUTPUT})
-add_dependencies(gkick_resources redkite rkpng2c)
-
 include_directories(${GKICK_COMMON_DIR})
 link_directories(${REDKITE_LIBRARY_DIR})
 add_library(geonkick_common STATIC
   ${GKICK_COMMON_HEADERS}
   ${GKICK_COMMON_SOURCES}
-  ${GKICK_RC_OUTPUT})
-add_dependencies(geonkick_common gkick_resources)
+  ${GKICK_RESOURCES})
 
 if (GKICK_PLUGIN)
     add_library(geonkick_common_single STATIC
       ${GKICK_COMMON_HEADERS}
       ${GKICK_COMMON_SOURCES}
-      ${GKICK_RC_OUTPUT})
-    add_dependencies(geonkick_common_single gkick_resources)
+      ${GKICK_RESOURCES})
     target_compile_options(geonkick_common_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
 endif(GKICK_PLUGIN)
 
