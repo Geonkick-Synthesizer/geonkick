@@ -56,7 +56,7 @@ RK_DECLARE_IMAGE_RC(stereo_radio_button);
 RK_DECLARE_IMAGE_RC(stereo_radio_button_active);
 
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
-        : GeonkickWidget(parent, Rk::WindowFlags::Popup)
+        : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
         , geonkickApi{api}
         , locationEdit{nullptr}
         , fileNameEdit{nullptr}
@@ -265,6 +265,7 @@ void ExportWidget::browse()
         fileNameEdit->setFocus(false);
         auto fileDialog = new FileDialog(this, FileDialog::Type::Open,
                                          "Select Path - " + std::string(GEONKICK_NAME));
+        fileDialog->setPosition(20, 20);
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location"));
         RK_ACT_BIND(fileDialog, selectedFile,

@@ -215,7 +215,8 @@ bool MainWindow::init(void)
 
 void MainWindow::openExportDialog()
 {
-        new ExportWidget(this, geonkickApi);
+        auto w = new ExportWidget(this, geonkickApi);
+        w->setPosition(30, 40);
 }
 
 void MainWindow::savePreset(const std::string &fileName)
