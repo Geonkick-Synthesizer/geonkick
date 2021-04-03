@@ -1,3 +1,19 @@
+### Version 2.8.0
+
+#### Fixes
+
+  - Fix crash when openning multiple GUI for LV2
+  - Find rapidjson when configuring at build
+  - add musl compatibility patch (Teldra / @teldra@likeable.space)
+
+#### Features
+
+  - Add limiter to samples preview
+
+#### Improvements
+
+  - Integrate Redkite into Geonkick code
+
 ### Version 2.7.3
 
 #### Fixes & Improvements
