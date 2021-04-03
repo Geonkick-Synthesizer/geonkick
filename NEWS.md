@@ -2,7 +2,7 @@
 
 #### Fixes
 
-  - Fix crash when openning multiple GUI for LV2
+  - Fix crash when opening multiple GUI for LV2
   - Find rapidjson when configuring at build
   - add musl compatibility patch (Teldra / @teldra@likeable.space)
 
