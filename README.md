@@ -1,4 +1,4 @@
-This project is no more developed not maintaned.
+This project is no more developed not maintained.
 
 # Geonkick
 
