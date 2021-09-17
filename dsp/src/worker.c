@@ -52,7 +52,6 @@ geonkick_worker_create()
 	geonkick_worker->running = false;
         if (pthread_cond_init(&geonkick_worker->condition_var, NULL) != 0) {
                 gkick_log_error("can't init worker condition variable");
-		pthread_mutex_lock(&geonkick_worker->lock);
 		return GEONKICK_ERROR;
 	}
 	geonkick_worker->cond_var_initilized = true;
