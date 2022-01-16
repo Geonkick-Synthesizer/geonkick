@@ -1,3 +1,9 @@
+### Version 2.9.0
+
+#### Features
+
+  - bring back VST3 plugin
+
 ### Version 2.8.1
 
 #### Fixes

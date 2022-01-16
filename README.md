@@ -10,7 +10,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.8.1
+Version: 2.9.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -148,6 +148,16 @@ Note: Use the release version (see tags).
         cmake ../
         make
         make install
+
+##### VST3
+
+VST build is turned off by default. In order to enable it there is a need to pass
+GKICK_VST_SDK_PATH to cmake:
+
+    cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
+
+Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/d821ee66d0699386f29c28edd9a03c780458087e).
+      Don't forget to build VST3 SDK first.
 
 #### Packages
 
