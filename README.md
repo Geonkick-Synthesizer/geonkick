@@ -1,3 +1,5 @@
+This project is no more developed or maintained.
+
 # Geonkick
 
 Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
