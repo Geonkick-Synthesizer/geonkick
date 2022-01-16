@@ -1,10 +1,16 @@
+### Version 2.8.1
+
+#### Fixes
+
+  - remove redundant lock in the DSP worker
+
 ### Version 2.8.0
 
 #### Fixes
 
-  - Fix crash when opening multiple GUI for LV2
-  - Find rapidjson when configuring at build
-  - add musl compatibility patch (Teldra / @teldra@likeable.space)
+  - Fix crash when opening multiple GUI for LV2 Find rapidjson when
+  - configuring at build add musl compatibility patch (Teldra /
+  - @teldra@likeable.space)
 
 #### Features
 

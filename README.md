@@ -1,5 +1,3 @@
-This project is no more developed not maintained.
-
 # Geonkick
 
 Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
@@ -12,7 +10,7 @@ snares, hit-hats, shakers, claps.
 
 License: GPLv3
 
-Version: 2.8.0
+Version: 2.8.1
 
 If you have an idea about a feature or found an issue, please, submit it:
 
