@@ -27,6 +27,18 @@
 #include "globals.h"
 #include "public.sdk/source/vst/vstsinglecomponenteffect.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+__attribute__((visibility("default"))) bool ModuleEntry (void*);
+
+__attribute__((visibility("default"))) bool ModuleExit (void);
+
+#ifdef __cplusplus
+}
+#endif
+
 class GeonkickApi;
 
 using namespace Steinberg;

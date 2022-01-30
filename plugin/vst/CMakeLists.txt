@@ -28,7 +28,7 @@ add_library(${target} SHARED
     ${GKICK_VST_HEADERS} ${GKICK_VST_SOURCES})
 
 set_target_properties(${target} PROPERTIES PREFIX "")
-set_target_properties(${target} PROPERTIES OUTPUT_NAME "geonkick")
+set_target_properties(${target} PROPERTIES OUTPUT_NAME "Geonkick")
 set_target_properties(${target} PROPERTIES SUFFIX ".so")
 
 target_link_libraries(${target} PRIVATE geonkick_common api_plugin)
@@ -39,4 +39,4 @@ target_link_libraries(${target} PRIVATE "-Wl,--no-undefined")
 
 add_dependencies(${target} geonkick_common)
 
-install(TARGETS geonkick_vst DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/vst3/geonkick.vst3/Contents/${LINUX_ARCHITECTURE_NAME})
+install(TARGETS geonkick_vst DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/vst3/Geonkick.vst3/Contents/${GKICK_ARCHITECTURE}-linux)

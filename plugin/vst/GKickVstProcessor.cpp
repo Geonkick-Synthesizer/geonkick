@@ -33,6 +33,16 @@
 #include "geonkick_api.h"
 #include "kit_state.h"
 
+bool ModuleEntry (void*)
+{
+        return true;
+}
+
+bool ModuleExit (void)
+{
+        return true;
+}
+
 GKickVstProcessor::GKickVstProcessor()
         : geonkickApi{nullptr}
 {
