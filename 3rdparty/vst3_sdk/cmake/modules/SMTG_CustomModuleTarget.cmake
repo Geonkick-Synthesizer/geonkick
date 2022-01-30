@@ -1,0 +1,48 @@
+
+# Custom target in order to get all cmake modules into a VST3 project.
+add_custom_target(cmake_modules
+    SOURCES
+        ${CMAKE_CURRENT_LIST_FILE}
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddCommonOptions.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddSMTGLibrary.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddSubDirectories.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_Bundle.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_CodeSign.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_ConfigureCmakeGenerator.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_DetectPlatform.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_ExportedSymbols.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_GenerateSourceGroups.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_Global.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_PlatformIOS.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_PlatformToolset.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_Platform_Windows.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_PrefixHeader.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_SetDebugExecutable.cmake
+        ${CMAKE_CURRENT_LIST_DIR}/SMTG_UniversalBinary.cmake
+)
+if(VST_SDK)
+    add_custom_target(cmake_VST_modules
+        SOURCES
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_AAXSupport.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddAAXLibrary.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddVST3AuV3.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddVST3Library.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddVST3Options.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_CoreAudioSupport.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_ExportedSymbols.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_FindJack.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_SetupVST3LibraryDefaultPath.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_VST3_SDK.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_VstGuiSupport.cmake
+    )
+endif(VST_SDK)
+
+if(SKI_SDK)
+    add_custom_target(cmake_SKI_modules
+        SOURCES
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddComponentLibrary.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_AddComponentOptions.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_SKI_SDK.cmake
+            ${CMAKE_CURRENT_LIST_DIR}/SMTG_SetupComponentLibraryDefaultPath.cmake
+    )
+endif(SKI_SDK)

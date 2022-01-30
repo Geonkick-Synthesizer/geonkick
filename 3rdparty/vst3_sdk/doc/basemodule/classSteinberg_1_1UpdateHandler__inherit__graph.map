@@ -1,0 +1,8 @@
+<map id="UpdateHandler" name="UpdateHandler">
+<area shape="rect" id="node1" title="UpdateHandler implements IUpdateManager and IUpdateHandler to handle dependencies between objects to ..." alt="" coords="143,475,308,748"/>
+<area shape="rect" id="node2" href="$classSteinberg_1_1FObject.html" title="Implements FUnknown and IDependent." alt="" coords="5,127,147,427"/>
+<area shape="rect" id="node3" title=" " alt="" coords="33,5,119,79"/>
+<area shape="rect" id="node4" title=" " alt="" coords="171,240,280,313"/>
+<area shape="rect" id="node5" href="$classSteinberg_1_1IUpdateManager.html" title="Handle Send and Cancel pending message for a given object." alt="" coords="304,233,469,320"/>
+<area shape="rect" id="node6" title=" " alt="" coords="346,5,427,79"/>
+</map>

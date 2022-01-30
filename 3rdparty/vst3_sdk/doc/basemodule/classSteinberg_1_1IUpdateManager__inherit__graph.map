@@ -1,0 +1,5 @@
+<map id="IUpdateManager" name="IUpdateManager">
+<area shape="rect" id="node1" title="Handle Send and Cancel pending message for a given object." alt="" coords="5,127,171,213"/>
+<area shape="rect" id="node3" href="$classSteinberg_1_1UpdateHandler.html" title="UpdateHandler implements IUpdateManager and IUpdateHandler to handle dependencies between objects to ..." alt="" coords="5,261,171,535"/>
+<area shape="rect" id="node2" title=" " alt="" coords="47,5,129,79"/>
+</map>

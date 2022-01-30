@@ -111,6 +111,7 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 
         size_t nChannels = std::min(geonkickApi->numberOfChannels(),
                                     static_cast<decltype(nChannels)>(data.numOutputs));
+
         for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
                 channelsBuffers.data()[2 * ch]     = data.outputs[ch].channelBuffers32[0];
                 channelsBuffers.data()[2 * ch + 1] = data.outputs[ch].channelBuffers32[1];

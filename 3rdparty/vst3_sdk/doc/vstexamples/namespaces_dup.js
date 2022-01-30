@@ -1,0 +1,5 @@
+var namespaces_dup =
+[
+    [ "Steinberg", "namespaceSteinberg.html", "namespaceSteinberg" ],
+    [ "VSTGUI", "namespaceVSTGUI.html", null ]
+];

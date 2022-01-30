@@ -1,0 +1,12 @@
+<map id="Plug" name="Plug">
+<area shape="rect" id="node1" title=" " alt="" coords="286,1145,442,1392"/>
+<area shape="rect" id="node2" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstsdk/vstsdk.tag$classSteinberg_1_1Vst_1_1AudioEffect.html" title=" " alt="" coords="267,891,461,1097"/>
+<area shape="rect" id="node3" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstsdk/vstsdk.tag$classSteinberg_1_1Vst_1_1Component.html" title=" " alt="" coords="101,596,254,843"/>
+<area shape="rect" id="node4" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstsdk/vstsdk.tag$classSteinberg_1_1Vst_1_1ComponentBase.html" title=" " alt="" coords="5,301,144,548"/>
+<area shape="rect" id="node5" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1IPluginBase.html" title=" " alt="" coords="199,160,289,247"/>
+<area shape="rect" id="node8" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IComponent.html" title=" " alt="" coords="168,335,320,515"/>
+<area shape="rect" id="node6" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1FUnknown.html" title=" " alt="" coords="241,5,359,105"/>
+<area shape="rect" id="node7" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IConnectionPoint.html" title=" " alt="" coords="38,153,154,253"/>
+<area shape="rect" id="node9" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IAudioProcessor.html" title=" " alt="" coords="279,636,449,803"/>
+<area shape="rect" id="node10" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IProcessContextRequirements.html" title=" " alt="" coords="395,315,615,535"/>
+</map>

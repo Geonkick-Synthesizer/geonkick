@@ -1,0 +1,12 @@
+<map id="DelayProcessor" name="DelayProcessor">
+<area shape="rect" id="node1" title=" " alt="" coords="265,1345,399,1685"/>
+<area shape="rect" id="node2" href="$classSteinberg_1_1Vst_1_1mda_1_1SampleAccurateBaseProcessor.html" title=" " alt="" coords="225,1184,439,1297"/>
+<area shape="rect" id="node3" href="$classSteinberg_1_1Vst_1_1mda_1_1Processor.html" title=" " alt="" coords="237,849,427,1136"/>
+<area shape="rect" id="node4" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstsdk/vstsdk.tag$classSteinberg_1_1Vst_1_1AudioEffect.html" title=" " alt="" coords="235,595,429,801"/>
+<area shape="rect" id="node5" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstsdk/vstsdk.tag$classSteinberg_1_1Vst_1_1Component.html" title=" " alt="" coords="69,300,222,547"/>
+<area shape="rect" id="node6" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstsdk/vstsdk.tag$classSteinberg_1_1Vst_1_1ComponentBase.html" title=" " alt="" coords="5,5,144,252"/>
+<area shape="rect" id="node7" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IComponent.html" title=" " alt="" coords="168,39,320,219"/>
+<area shape="rect" id="node8" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IAudioProcessor.html" title=" " alt="" coords="247,340,417,507"/>
+<area shape="rect" id="node9" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1FUnknown.html" title=" " alt="" coords="418,79,537,179"/>
+<area shape="rect" id="node10" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IProcessContextRequirements.html" title=" " alt="" coords="442,313,662,533"/>
+</map>

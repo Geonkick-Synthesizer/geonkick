@@ -1,0 +1,8 @@
+<map id="EditorView" name="EditorView">
+<area shape="rect" id="node1" title="View related to an edit controller." alt="" coords="33,689,185,816"/>
+<area shape="rect" id="node6" href="$classSteinberg_1_1Vst_1_1VSTGUIEditor.html" title="Base class for an edit view using VSTGUI." alt="" coords="20,864,199,1071"/>
+<area shape="rect" id="node2" href="$classSteinberg_1_1CPluginView.html" title="Plug&#45;In view default implementation." alt="" coords="20,421,199,641"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,227,69,300"/>
+<area shape="rect" id="node4" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1IPlugView.html" title=" " alt="" coords="93,153,272,373"/>
+<area shape="rect" id="node5" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1FUnknown.html" title=" " alt="" coords="123,5,242,105"/>
+</map>

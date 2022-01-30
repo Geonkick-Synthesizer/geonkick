@@ -1,0 +1,12 @@
+<map id="AudioEffect" name="AudioEffect">
+<area shape="rect" id="node1" title="Default implementation for a VST 3 audio effect." alt="" coords="307,891,501,1097"/>
+<area shape="rect" id="node2" href="$classSteinberg_1_1Vst_1_1Component.html" title="Default implementation for a VST 3 Component." alt="" coords="167,596,321,843"/>
+<area shape="rect" id="node3" href="$classSteinberg_1_1Vst_1_1ComponentBase.html" title="Base class for VST 3 Component and Edit Controller." alt="" coords="5,301,144,548"/>
+<area shape="rect" id="node4" title=" " alt="" coords="7,167,71,240"/>
+<area shape="rect" id="node5" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1IPluginBase.html" title=" " alt="" coords="236,160,327,247"/>
+<area shape="rect" id="node8" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IComponent.html" title=" " alt="" coords="168,335,320,515"/>
+<area shape="rect" id="node6" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1FUnknown.html" title=" " alt="" coords="279,5,398,105"/>
+<area shape="rect" id="node7" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IConnectionPoint.html" title=" " alt="" coords="95,153,211,253"/>
+<area shape="rect" id="node9" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IAudioProcessor.html" title=" " alt="" coords="344,341,515,508"/>
+<area shape="rect" id="node10" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1IProcessContextRequirements.html" title=" " alt="" coords="442,609,662,829"/>
+</map>
