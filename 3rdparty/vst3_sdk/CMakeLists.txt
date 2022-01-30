@@ -1,6 +1,9 @@
 
 cmake_minimum_required (VERSION 3.4.3)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -fvisibility=hidden")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w -fvisibility=hidden")
+
 #-------------------------------------------------------------------------------
 # Options
 #-------------------------------------------------------------------------------
@@ -88,8 +91,8 @@ if(SMTG_AAX_SDK_PATH)
 endif(SMTG_AAX_SDK_PATH)
 
 # Add hosting examples, it includes the validator (must be done before any plug-ins to support running the validator after building)
-set(SDK_IDE_HOSTING_EXAMPLES_FOLDER FOLDER "HostingExamples")
-add_subdirectory(public.sdk/samples/vst-hosting)
+#set(SDK_IDE_HOSTING_EXAMPLES_FOLDER FOLDER "HostingExamples")
+#add_subdirectory(public.sdk/samples/vst-hosting)
 
 #-------------------------------------------------------------------------------
 # Here is added your own plug-ins folder location
