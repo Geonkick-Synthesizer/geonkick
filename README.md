@@ -88,21 +88,6 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
      - GNU/Linux
 * Manually scale the UI by factor of 2 (useful for HiDPI cases)
 
-#### Technical limitations
-
- - Supports only GNU/Linux and LV2 plugin format.
- - Doesn't support velocity expression for synthesizer parameters
-   (nor for layers), only for total instrument amplitude.
- - The default plugin version (that supports kits) will take per instance
-   about 35 MB from the heap. The "Single" version of the plugin will
-   take about 2 MB per plugin instance. If only one instrument per track is used,
-   it is recommended to use the "Single" version of the plugin.
- - Doesn't support automation of parameters.
- - Doesn't support Bézier curves for envelopes.
- - UI can be scaled but it will be blurred
- - Filters become unstable for some extremal combination of cutoff and
-   resonance parameter.
-
 #### Requirements
 
 In order Geonkick to run and operate correctly there is a need:
@@ -151,13 +136,9 @@ Note: Use the release version (see tags).
 
 ##### VST3
 
-VST build is turned off by default. In order to enable it there is a need to pass
-GKICK_VST_SDK_PATH to cmake:
+To build with VST3 support pass GKICK_VST3 to cmake 
 
-    cmake -DGKICK_VST_SDK_PATH=/full/path/to/vst3sdk ../
-
-Note: at least Geonkick builds and works with VST3 SDK version [vstsdk3614_03_12_2019_build_24](https://github.com/steinbergmedia/vst3sdk/commit/d821ee66d0699386f29c28edd9a03c780458087e).
-      Don't forget to build VST3 SDK first.
+    cmake -DGKICK_VST3=ON ../
 
 #### Packages
 
