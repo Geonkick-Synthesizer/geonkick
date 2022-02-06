@@ -120,6 +120,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
     apt-get install qjackctl libjack-dev libsndfile-dev
     apt-get install rapidjson-dev
     apt-get install lv2-dev
+    apt-get install libcairo2-dev
 
 ##### Build & install Geonkick
 
@@ -136,9 +137,12 @@ Note: Use the release version (see tags).
 
 ##### VST3
 
-To build with VST3 support pass GKICK_VST3 to cmake 
+To build with VST3 support pass GKICK_VST3 to cmake
 
     cmake -DGKICK_VST3=ON ../
+
+To build with VST3 there is a need for additional dependencies.
+Check the VST3 SDK documentation.
 
 #### Packages
 
