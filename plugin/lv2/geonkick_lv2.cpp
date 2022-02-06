@@ -57,7 +57,7 @@ class GeonkickLv2Plugin : public RkObject
 {
   public:
         GeonkickLv2Plugin(int sampleRate)
-                : geonkickApi{std::make_unique<GeonkickApi>(sampleRate)}
+                : geonkickApi{std::make_unique<GeonkickApi>(sampleRate, GeonkickApi::InstanceType::Lv2)}
                 , midiIn{nullptr}
                 , notifyHostChannel{nullptr}
                 , atomInfo{0}

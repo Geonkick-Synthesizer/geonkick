@@ -45,7 +45,13 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         layers->setBackgroundColor({100, 100, 100});
         layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 4, 4);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
-        auto version = new RkLabel(this, Geonkick::geonkickInfo());
+        RkString geonkickInfo{"Standalone"};
+        if (geonkickApi->getInstanceType() == GeonkickApi::InstanceType::Lv2)
+                geonkickInfo = "LV2";
+        else if (geonkickApi->getInstanceType() == GeonkickApi::InstanceType::Vst3)
+                geonkickInfo = "VST3";
+        geonkickInfo += std::string(" ") + Geonkick::applicationVersionStr;
+        auto version = new RkLabel(this, geonkickInfo);
         version->setSize(120, 14);
         version->setBackgroundColor(background());
         version->setTextColor({150, 150, 150});

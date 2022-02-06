@@ -61,14 +61,15 @@ GKickVstProcessor::initialize(FUnknown* context)
         if (res != kResultTrue)
                 return kResultFalse;
 
-        geonkickApi = std::make_unique<GeonkickApi>();
+        geonkickApi = std::make_unique<GeonkickApi>(Geonkick::defaultSampleRate,
+                                                    GeonkickApi::InstanceType::Vst3);
         if (!geonkickApi->init()) {
                 geonkickApi = nullptr;
                 GEONKICK_LOG_ERROR("can't init Geonkick API");
                 return kResultFalse;
         }
 
-        auto nChannels = geonkickApi->numberOfChannels();
+        auto nChannels = GeonkickApi::numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
                 std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
                 std::u16string str16 = convert.from_bytes(std::string("Out" + std::to_string(i)));
@@ -85,7 +86,7 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
                                                          Vst::SpeakerArrangement* outputs,
                                                          int32 numOuts)
 {
-        auto n = geonkickApi->numberOfChannels();
+        auto n = GeonkickApi::numberOfChannels();
         if (numIns == 0 && numOuts == static_cast<decltype(numOuts)>(n))
                 return Vst::SingleComponentEffect::setBusArrangements(inputs, numIns, outputs, numOuts);
         return kResultFalse;
@@ -94,6 +95,17 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
 tresult PLUGIN_API
 GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
+        auto data = geonkickApi->getKitState()->toJson();
+        geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
+                                                    GeonkickApi::InstanceType::Vst3);
+        if (!geonkickApi->init()) {
+                geonkickApi = nullptr;
+                GEONKICK_LOG_ERROR("can't init Geonkick API");
+                return kResultFalse;
+        }
+        geonkickApi->setKitState(data);
+        geonkickApi->notifyUpdateGui();
+        geonkickApi->notifyKitUpdated();
         return Vst::SingleComponentEffect::setupProcessing(setup);
 }
 
@@ -232,7 +244,7 @@ GKickVstProcessor::getState(IBStream* state)
 IPlugView* PLUGIN_API
 GKickVstProcessor::createView(FIDString name)
 {
-        if (name && std::string(name) == std::string("editor"))
+        if (geonkickApi && name && std::string(name) == std::string("editor"))
                 return static_cast<IPlugView*>(new GKickVstEditor(this, geonkickApi.get()));
         return nullptr;
 }

@@ -39,6 +39,12 @@ class GeonkickApi : public RkObject {
 
  public:
 
+  enum class InstanceType: int {
+                             Standalone,
+                             Lv2,
+                             Vst3
+  };
+
   enum class Layer: int {
                 Layer1 = 0,
                 Layer2 = 1,
@@ -51,7 +57,7 @@ class GeonkickApi : public RkObject {
          Noise       = 2
   };
 
-  enum class FunctionType:int {
+  enum class FunctionType: int {
           Sine          = GEONKICK_OSC_FUNC_SINE,
           Square        = GEONKICK_OSC_FUNC_SQUARE,
           Triangle      = GEONKICK_OSC_FUNC_TRIANGLE,
@@ -62,7 +68,7 @@ class GeonkickApi : public RkObject {
           Sample        = GEONKICK_OSC_FUNC_SAMPLE,
   };
 
-  enum class EnvelopeType:int {
+  enum class EnvelopeType: int {
           Amplitude = GEONKICK_AMPLITUDE_ENVELOPE,
           Frequency = GEONKICK_FREQUENCY_ENVELOPE,
 	  FilterCutOff = GEONKICK_FILTER_CUTOFF_ENVELOPE,
@@ -71,16 +77,19 @@ class GeonkickApi : public RkObject {
           PitchShift = GEONKICK_PITCH_SHIFT_ENVELOPE
   };
 
-  enum class FilterType:int {
+  enum class FilterType: int {
           LowPass  = GEONKICK_FILTER_LOW_PASS,
           HighPass = GEONKICK_FILTER_HIGH_PASS,
           BandPass = GEONKICK_FILTER_BAND_PASS
   };
 
-  GeonkickApi(int sample_rate = Geonkick::defaultSampleRate);
+        GeonkickApi(int sample_rate = Geonkick::defaultSampleRate,
+                    InstanceType instance = InstanceType::Standalone);
   ~GeonkickApi();
+  void setInstanceType(InstanceType type);
+  InstanceType getInstanceType() const;
   static unsigned int getVersion();
-  size_t numberOfChannels() const;
+  size_t static numberOfChannels();
   void setEventQueue(RkEventQueue *queue);
   bool init();
   void registerCallbacks(bool b);
@@ -341,6 +350,7 @@ protected:
 
 private:
   mutable struct geonkick *geonkickApi;
+  InstanceType instanceType;
   std::array<std::atomic<double>, GEONKICK_MAX_PERCUSSIONS> limiterLevelers;
   bool jackEnabled;
   bool standaloneInstance;

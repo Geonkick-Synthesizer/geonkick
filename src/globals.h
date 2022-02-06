@@ -61,19 +61,6 @@ namespace Geonkick
         constexpr char appName[] = GEONKICK_NAME;
         constexpr char applicationName[] = GEONKICK_APP_NAME;
         constexpr char applicationVersionStr[] = GEOKICK_VERSION_STRING;
-        inline  RkString geonkickInfo()
-        {
-                RkString instanceType("Standalone");
-                if (geonkick_is_plugin()) {
-#ifdef GEONKICK_SINGLE
-                        instanceType = "LV2, Single";
-#else
-                        instanceType = "LV2, Multi";
-#endif // GEONKICK_SINGLE
-                }
-                return instanceType + ", v" + RkString(Geonkick::applicationVersionStr);
-        }
-
         constexpr double toDecibel(double val)
         {
                 if (val < std::numeric_limits<double>::min())

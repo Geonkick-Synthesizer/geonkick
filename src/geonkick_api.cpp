@@ -34,8 +34,9 @@
 
 #include <sndfile.h>
 
-GeonkickApi::GeonkickApi(int sample_rate)
+GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance)
         : geonkickApi{nullptr}
+        , instanceType{instance}
         , limiterLevelers{}
         , jackEnabled{false}
         , standaloneInstance{false}
@@ -55,6 +56,16 @@ GeonkickApi::~GeonkickApi()
 {
   	if (geonkickApi)
                 geonkick_free(&geonkickApi);
+}
+
+void GeonkickApi::setInstanceType(InstanceType type)
+{
+        instanceType = type;
+}
+
+GeonkickApi::InstanceType GeonkickApi::getInstanceType() const
+{
+        return instanceType;
 }
 
 unsigned int GeonkickApi::getVersion()
@@ -98,7 +109,7 @@ bool GeonkickApi::init()
         return true;
 }
 
-size_t GeonkickApi::numberOfChannels() const
+size_t GeonkickApi::numberOfChannels()
 {
         return geonkick_channels_number();
 }
