@@ -46,12 +46,23 @@
 #include <RkObject.h>
 
 #ifdef RK_LOG_DEBUG_LEVEL
-#define GEONKICK_LOG_INFO(msg) std::cout << __PRETTY_FUNCTION__ << "[INFO] " << msg << std::endl;
-#define GEONKICK_LOG_ERROR(msg) std::cout << __PRETTY_FUNCTION__ << "[ERROR] " << msg << std::endl;
-#define GEONKICK_LOG_DEBUG(msg) std::cout << __PRETTY_FUNCTION__ << "[DEBUG] " << msg << std::endl;
+#define GEONKICK_LOG_INFO(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+                               << " [" << std::this_thread::get_id() << "] " \
+                               << __PRETTY_FUNCTION__ << "[INFO] " \
+                               << msg << std::endl;
+#define GEONKICK_LOG_ERROR(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+                                << " [" << std::this_thread::get_id() << "] " \
+                                << __PRETTY_FUNCTION__ << "[ERROR] " \
+                                << msg << std::endl;
+#define GEONKICK_LOG_DEBUG(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+                                << " [" << std::this_thread::get_id() << "] " \
+                                << __PRETTY_FUNCTION__ << "[DEBUG] " \
+                                << msg << std::endl;
 #else
-#define GEONKICK_LOG_INFO(msg) std::cout << "[INFO] " << msg << std::endl;
-#define GEONKICK_LOG_ERROR(msg) std::cout << "[ERROR] " << msg << std::endl;
+#define GEONKICK_LOG_INFO(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+                               << "[INFO] " << msg << std::endl;
+#define GEONKICK_LOG_ERROR(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+                               << "[ERROR] " << msg << std::endl;
 #define GEONKICK_LOG_DEBUG(msg)
 #endif //  // GKICK_LIB_LOG_LEVEL_DEBUG
 

@@ -69,12 +69,12 @@ class GeonkickLv2Plugin : public RkObject
 
         bool init()
         {
-                if (geonkickApi->init()) {
-                        outputChannels = std::vector<float*>(2 * geonkickApi->numberOfChannels(), nullptr);
-                        return true;
+                if (!geonkickApi->init()) {
+                        GEONKICK_LOG_ERROR("can't init DSP");
+                        return false;
                 }
-
-                return false;
+                outputChannels = std::vector<float*>(2 * geonkickApi->numberOfChannels(), nullptr);
+                return true;
         }
 
         void setAudioChannel(float *data, size_t channel)
@@ -95,7 +95,6 @@ class GeonkickLv2Plugin : public RkObject
 
         void setStateId(LV2_URID id)
         {
-                GEONKICK_LOG_DEBUG("STATE id: " << id);
                 atomInfo.stateId = id;
         }
 
@@ -289,19 +288,18 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                                          const LV2_Feature* const* features)
 {
         GeonkickLv2Plugin *geonkickLv2PLugin = nullptr;
-        if (!features) {
+        if (!features)
                 return nullptr;
-        }
 
         void *parent = nullptr;
         LV2UI_Resize *resize = nullptr;
         const LV2_Feature *feature;
         while ((feature = *features)) {
                 if (std::string(feature->URI) == std::string(LV2_UI__parent))
-                        parent = feature->data;
+                        parent = static_cast<LV2UI_Resize*>(feature->data);
 
                 if (std::string(feature->URI) == std::string(LV2_UI__resize))
-                        resize = (LV2UI_Resize*)feature->data;
+                        resize = static_cast<LV2UI_Resize*>(feature->data);
 
                 if (std::string(feature->URI) == std::string(LV2_INSTANCE_ACCESS_URI)) {
                         geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(feature->data);
@@ -379,7 +377,7 @@ const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index)
 	switch (index)
         {
 	case 0:	return &gkick_descriptor_ui;
-	default: return NULL;
+	default: return nullptr;
         }
 }
 
@@ -390,8 +388,9 @@ static LV2_Handle gkick_instantiate(const LV2_Descriptor*     descriptor,
 {
         auto geonkickLv2PLugin = new GeonkickLv2Plugin(rate);
         if (!geonkickLv2PLugin->init()) {
+                GEONKICK_LOG_ERROR("can't create DSP instance");
                 delete geonkickLv2PLugin;
-                return NULL;
+                return nullptr;
         }
 
         const LV2_Feature *feature;
@@ -443,7 +442,8 @@ static void gkick_deactivate(LV2_Handle instance)
 
 static void gkick_cleaup(LV2_Handle instance)
 {
-        delete static_cast<GeonkickLv2Plugin*>(instance);
+        auto geonkickLv2PLugin = static_cast<GeonkickLv2Plugin*>(instance);
+        delete geonkickLv2PLugin;
 }
 
 static LV2_State_Status

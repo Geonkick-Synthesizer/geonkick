@@ -40,9 +40,9 @@ class GeonkickApi : public RkObject {
  public:
 
   enum class InstanceType: int {
-                             Standalone,
-                             Lv2,
-                             Vst3
+                             Standalone = 0,
+                             Lv2        = 1,
+                             Vst3       = 2
   };
 
   enum class Layer: int {

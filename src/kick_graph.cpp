@@ -40,9 +40,11 @@ KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
 
 KickGraph::~KickGraph()
 {
-        isRunning = false;
-        threadConditionVar.notify_one();
-        graphThread->join();
+        if (graphThread) {
+                isRunning = false;
+                threadConditionVar.notify_one();
+                graphThread->join();
+        }
 }
 
 void KickGraph::start()
