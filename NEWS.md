@@ -5,6 +5,9 @@
   - bring back VST3 plugin
   - support the session sample rate for VST3 plugin
   - integrate VST3 SDK into Geonkick build by providing the library into the 3rdparty dir
+
+#### Fixes
+
   - export ModuleEntry/ModuleExit symbols for VST3 SDK
   - don't try to build standalone if there is no libjack dev library installed
   - fix a potential crash if the GUI graph thread was not created
