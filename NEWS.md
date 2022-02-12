@@ -3,6 +3,12 @@
 #### Features
 
   - bring back VST3 plugin
+  - support the session sample rate for VST3 plugin
+  - integrate VST3 SDK into Geonkick build by providing the library into the 3rdparty dir
+  - export ModuleEntry/ModuleExit symbols for VST3 SDK
+  - don't try to build standalone if there is no libjack dev library installed
+  - fix a potential crash if the GUI graph thread was not created
+  - for LV2 plugin tell the host that there is required ui:parent and ui:resize (manifest file changes)
 
 ### Version 2.8.1
 
