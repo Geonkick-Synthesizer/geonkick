@@ -1233,7 +1233,7 @@ gkick_synth_set_output(struct gkick_synth *synth,
                        struct gkick_audio_output *output)
 {
         if (synth == NULL || output == NULL) {
-                gkick_log_error("wrong arugment");
+                gkick_log_error("wrong argument");
                 return;
         }
         synth->output = output;
@@ -1393,7 +1393,7 @@ gkick_synth_set_osc_filter_type(struct gkick_synth *synth,
         enum geonkick_error res;
 
         if (synth == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
@@ -1423,7 +1423,7 @@ gkick_synth_get_osc_filter_type(struct gkick_synth *synth,
                                 enum gkick_filter_type *type)
 {
         if (synth == NULL || type == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
@@ -1449,7 +1449,7 @@ gkick_synth_set_osc_filter_cutoff(struct gkick_synth *synth,
                                   gkick_real cutoff)
 {
         if (synth == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
@@ -1479,7 +1479,7 @@ gkick_synth_get_osc_filter_cutoff(struct gkick_synth *synth,
                                   gkick_real *cutoff)
 {
         if (synth == NULL || cutoff == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
@@ -1504,7 +1504,7 @@ gkick_synth_set_osc_filter_factor(struct gkick_synth *synth,
                                gkick_real factor)
 {
         if (synth == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
@@ -1534,7 +1534,7 @@ gkick_synth_get_osc_filter_factor(struct gkick_synth *synth,
                                gkick_real *factor)
 {
         if (synth == NULL || factor == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
@@ -1560,7 +1560,7 @@ gkick_synth_osc_enable_filter(struct gkick_synth *synth,
                               int enable)
 {
         if (synth == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
@@ -1589,7 +1589,7 @@ gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
                                   int *enabled)
 {
         if (synth == NULL || enabled == NULL) {
-                gkick_log_error("wrong arugments");
+                gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 

@@ -73,7 +73,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelopes.insert({static_cast<int>(Envelope::Category::Noise), envelope});
         envelope->setCategory(Envelope::Category::Noise);
 
-        // General nevelope
+        // General envelope
         envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(geonkickApi, rect));
         envelopes.insert({static_cast<int>(Envelope::Category::General), envelope});
         envelope->setCategory(Envelope::Category::General);

@@ -160,7 +160,7 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
         gkick_real v;
         gkick_real env_x;
 
-        // Caluclate the x corrdinate between 0 and 1.0 for the envelope.
+        // Calculate the x coordinate between 0 and 1.0 for the envelope.
         env_x = t / kick_len;
         amp = osc->amplitude * gkick_envelope_get_value(osc->envelopes[GKICK_OSC_AMPLITUDE_ENVELOPE], env_x);
         v = 0.0f;

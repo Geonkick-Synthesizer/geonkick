@@ -32,7 +32,7 @@ struct gkick_mixer;
 
 struct gkick_audio {
         int sample_rate;
-        /* Audio outputs. The last audio ouput is used as a sample preview. */
+        /* Audio outputs. The last audio output is used as a sample preview. */
         struct gkick_audio_output *audio_outputs[GEONKICK_MAX_PERCUSSIONS + 1];
 	struct gkick_mixer *mixer;
         struct gkick_jack *jack;

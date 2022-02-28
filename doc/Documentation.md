@@ -79,7 +79,7 @@ percussion from the kit list and modify it.
 
 A percussion consists of 3 layers that can be turned on/off with the
 buttons "L1", "L2" and "L3" from the top bar menu. Every layer contains
-the 2 oscillators and the noise generator. The sum of thee layers are passed
+the 2 oscillators and the noise generator. The sum of these layers are passed
 to general controls. The contribution of every layer to the output can
 be controlled by the "Layers Mixer". There is only one controllable layer
 by the UI but the user can switch the layer by pressing the button
@@ -114,7 +114,7 @@ and save percussion preset, export percussion.
    - "Tune" - checkbox will turn on/off tuning of the current percussion.
    - Preset label - it shows the name of the current selected percussion,
      by default shows "Default".
-   - "Contorls", "Kit", "Presets" and "Samples" is submenu that will switch to controls, kit, preset and sample browser UI
+   - "Controls", "Kit", "Presets" and "Samples" is submenu that will switch to controls, kit, preset and sample browser UI
 
 #### Shortcut Keys
 
@@ -201,7 +201,7 @@ are grouped and arranged vertically.
      move the start of the sample up to 1/2 of the percussion length
    - Amplitude knob - sets the maximum current amplitude of the oscillator
    - Frequency knob - sets the maximum current frequency of the oscillator
-   - Pitch kbob - will set the pitch shift range when the wave funciton of the oscillator is set as sample
+   - Pitch kbob - will set the pitch shift range when the wave function of the oscillator is set as sample
    -  pitch buttons will show the evelopes. 
    - "Filter" button will enable/disable filter for the oscillator
    - Oscillator envelopes for amplitude, frequency, pitch shift, filter cutoff can be accessed with buttons
@@ -227,7 +227,7 @@ and applied from top to bottom. The compressor is applied the last one.
 - "Amplitude" buttons shows the general amplitude envelope
 - Filter (the sample controls as for oscillator)
 - Distortion
-- Distortion drive and volume envelopes can be accesed with buttons "Drive" and "Volume"
+- Distortion drive and volume envelopes can be accessed with buttons "Drive" and "Volume"
 - Compressor
 
 #### Limiter
@@ -250,7 +250,7 @@ noise generator and after layers mixer, i.e. general filter.
 
 Here are the parameters:
 
-  - "Filter" - buttons that enable/disale filter
+  - "Filter" - buttons that enable/disable filter
   - Cutoff knob - controls the cutoff frequency of the filter, the range is logarithmic (20Hz - 20kHz).
   - "Cutoff" - the button the will show the cutoff envelope
   - Resonance "Q". The knob is logarithmic ranging from 0.01 to 10.

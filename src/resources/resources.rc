@@ -250,7 +250,7 @@ ${GKICK_RC_DIR}/env_button_on_png.c
 ${GKICK_RC_DIR}/scrollbar_button_up_png.c
 ${GKICK_RC_DIR}/scrollbar_button_down_png.c
 
-# === Smaples Browser ===
+# === Samples Browser ===
 
 ${GKICK_RC_DIR}/play_preview_sample_png.c
 ${GKICK_RC_DIR}/play_preview_sample_hover_png.c

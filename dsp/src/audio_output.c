@@ -189,7 +189,7 @@ void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output)
         gkick_buffer_reset((struct gkick_buffer*)audio_output->playing_buffer);
 
         /**
-         * Try lock. If succesfull, swap buffers. If not, continue with
+         * Try lock. If successful, swap buffers. If not, continue with
          * the current one to play until the next press of the key.
          */
         if (pthread_mutex_trylock(&audio_output->lock) == 0) {

@@ -26,10 +26,10 @@ if (NOT GKICK_ARCHITECTURE)
 endif ()
 
 if (GKICK_ARCHITECTURE MATCHES x86_64)
-  message(STATUS "set optimisation complier flags for ${GKICK_ARCHITECTURE}")
+  message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
   set(GKICK_OPTIMISATION_FLAGS "-O3 -msse -msse2 -mfpmath=sse -ffast-math -fomit-frame-pointer")
 else ()
-  message(STATUS "set optimisation complier flags for ${GKICK_ARCHITECTURE}")
+  message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
   set(GKICK_OPTIMISATION_FLAGS "-O3 -ffast-math -fomit-frame-pointer")
 endif ()
 

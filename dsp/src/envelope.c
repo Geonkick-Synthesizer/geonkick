@@ -121,7 +121,7 @@ void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
 	        point->prev = envelope->last;
 		envelope->last = point;
 	} else if (point->x <= envelope->first->x) {
-                /* Add as a frist element. */
+                /* Add as a first element. */
 		envelope->first->prev = point;
 	        point->next = envelope->first;
 		envelope->first = point;

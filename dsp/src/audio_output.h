@@ -33,7 +33,7 @@
  * is an interface to an array that holds the synthesised percussion.
  * Is has nothing to do with any real audio interfaces.
  * It provides access to the samples from the array in a "playable mode",
- * i.e. in a state machine fasion.
+ * i.e. in a state machine fashion.
  */
 
 /* Decay time measured in number of audio frames. */
@@ -72,7 +72,7 @@ struct gkick_audio_output
 
         /**
          * Triggers the audio thread to start to play
-         * the precussion with the maximum key velocity.
+         * the percussion with the maximum key velocity.
          */
         _Atomic bool play;
 
