@@ -71,9 +71,9 @@ void GeonkickCheckbox::setUncheckedImage(const std::string &file)
         setUncheckedImage(QPixmap(file));
 }
 
-void GeonkickCheckbox::setPadding(int left, int top, int right, int buttom)
+void GeonkickCheckbox::setPadding(int left, int top, int right, int bottom)
 {
-        mainLayout->setContentsMargins(left, top, right, buttom);
+        mainLayout->setContentsMargins(left, top, right, bottom);
 }
 
 void GeonkickCheckbox::setChecked(bool checked)
