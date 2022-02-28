@@ -43,7 +43,7 @@ class ExportSoundData : public ExportAbstract {
                         ExportFormat exportFormat = ExportFormat::Flac);
         bool doExport() override;
         Subformat subformat() const;
-        void setSubformat(Subformat fromat);
+        void setSubformat(Subformat format);
         int getSampleRate() const;
         void setSmapleRate(int srate);
         int numberOfChannels() const;
@@ -51,7 +51,7 @@ class ExportSoundData : public ExportAbstract {
 
  protected:
         Subformat getDefaultSubformat() const;
-        bool validateSubfromat(Subformat subFormat);
+        bool validateSubformat(Subformat subFormat);
         int sfExportFormat() const;
 
  private:
