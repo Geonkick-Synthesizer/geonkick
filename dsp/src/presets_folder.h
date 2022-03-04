@@ -26,8 +26,8 @@
 clss Preset {
  public:
         class enum PresetType : int {
-            PrecussionPreset,
-            KitPresset
+            PercussionPreset,
+            KitPreset
         };
 
         explicit Preset(const std::filesystem::path path);

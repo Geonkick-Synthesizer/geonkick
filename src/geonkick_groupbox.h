@@ -42,7 +42,7 @@ class GeonkickGroupBox: public GeonkickWidget
      void setGroupBoxLabel(GeonkickWidget *label);
      GeonkickWidget* addWidget(GeonkickWidget *widget);
      void setWidgetAlignment(GeonkickWidget *widget);
-     void setPadding(int left, int top, int right, int buttom);
+     void setPadding(int left, int top, int right, int bottom);
 
  private:
      Orientation groupBoxOrientation;

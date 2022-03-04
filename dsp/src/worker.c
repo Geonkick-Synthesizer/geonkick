@@ -123,7 +123,7 @@ void *geonkick_worker_thread(void *arg)
         while (geonkick_worker->running) {
 		/**
                  * Ignore too many updates.
-                 * The last udpates will be processed.
+                 * The last updates will be processed.
                  */
                 usleep(40000);
                 gkick_log_debug("process...");

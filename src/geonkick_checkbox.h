@@ -38,7 +38,7 @@ class GeonkickCheckbox: public GeonkickWidget {
         void setUncheckedImage(const QPixmap &pixmap);
         void setCheckedImage(const std::string &file);
         void setUncheckedImage(const std::string &file);
-        void setPadding(int left, int top, int right, int buttom);
+        void setPadding(int left, int top, int right, int bottom);
         void setChecked(bool checked);
         void stateUpdated(bool state);
 

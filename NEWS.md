@@ -195,7 +195,7 @@ Updating to this version must be backward compatible.
 
 #### Fixes
 
-   - fix compliers flags
+   - fix compilers flags
 
 ### Changes from 2.2.1 to 2.2.2
 

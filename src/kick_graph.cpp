@@ -67,7 +67,7 @@ void KickGraph::updateGraphBuffer()
 void KickGraph::drawKickGraph()
 {
         while (isRunning) {
-                // Ignore too many updates. The last udpate will be processed.
+                // Ignore too many updates. The last update will be processed.
                 std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
                 if (!updateGraph)

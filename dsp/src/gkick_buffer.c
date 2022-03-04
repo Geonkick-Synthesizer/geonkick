@@ -27,7 +27,7 @@ void
 gkick_buffer_new(struct gkick_buffer **buffer, int size)
 {
         if (buffer == NULL || size < 1) {
-                gkick_log_error("wrong argumnets");
+                gkick_log_error("wrong arguments");
                 return;
         }
 

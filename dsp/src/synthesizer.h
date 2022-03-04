@@ -74,8 +74,8 @@ struct gkick_synth {
         atomic_bool buffer_update;
 
         /**
-         * Kick smaples buffer where the synthesizer is doing the synthesis.
-         * It is swaped with one of the oudio output buffers atomically.
+         * Kick samples buffer where the synthesizer is doing the synthesis.
+         * It is swapped with one of the oudio output buffers atomically.
          */
         char* _Atomic buffer;
         /* Kick buffer size. */
@@ -87,7 +87,7 @@ struct gkick_synth {
         struct gkick_audio_output *output;
 
         /**
-         * Pointer to a funtion to be
+         * Pointer to a function to be
          * called when the synth has finished the synthesis.
          */
         void (*buffer_callback) (void*, gkick_real *buff,

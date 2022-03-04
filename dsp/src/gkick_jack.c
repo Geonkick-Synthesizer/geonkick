@@ -293,7 +293,7 @@ gkick_jack_is_midi_in_enabled(struct gkick_jack *jack)
         int enabled;
 
         if (jack == NULL) {
-                gkick_log_error("wrong arugment");
+                gkick_log_error("wrong argument");
                 return 0;
         }
 

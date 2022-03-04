@@ -94,7 +94,7 @@ ExportSoundData::Subformat ExportSoundData::subformat() const
 
 void ExportSoundData::setSubformat(ExportSoundData::Subformat subFormat)
 {
-        if (!validateSubfromat(subFormat)) {
+        if (!validateSubformat(subFormat)) {
                 GEONKICK_LOG_ERROR("wrong subformat " << static_cast<int>(subFormat)
                                    << " for format "
                                    << static_cast<int>(format()));
@@ -123,7 +123,7 @@ void ExportSoundData::setNumberOfChannels(int channels)
         nChannels = channels;
 }
 
-bool ExportSoundData::validateSubfromat(Subformat subFormat)
+bool ExportSoundData::validateSubformat(Subformat subFormat)
 {
         switch (format()) {
         case ExportFormat::Flac:

@@ -37,7 +37,7 @@ enum geonkick_osc_state {
         GEONKICK_OSC_STATE_ENABLED  = 1
 };
 
-enum gkick_osc_nevelope_type {
+enum gkick_osc_envelope_type {
         GKICK_OSC_AMPLITUDE_ENVELOPE   = 0,
         GKICK_OSC_FREQUENCY_ENVELOPE   = 1,
         GKICK_OSC_PITCH_SHIFT_ENVELOPE = 2
