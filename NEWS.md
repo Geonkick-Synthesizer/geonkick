@@ -1,3 +1,7 @@
+### Version 2.9.1
+
+- fix crash in Reaper for LV2 (if the event frame is given wrong by the host)
+
 ### Version 2.9.0
 
 #### Features

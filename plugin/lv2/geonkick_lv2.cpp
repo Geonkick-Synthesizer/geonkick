@@ -188,7 +188,7 @@ class GeonkickLv2Plugin : public RkObject
                         size_t eventFrame = it->time.frames;
                         size_t size = eventFrame - currentFrame;
 
-                        if (size > 0) {
+                        if (size > 0 && size <= nsamples) {
                                 geonkickApi->process(outputChannels.data(), offset, size);
                                 offset += size;
                         }
