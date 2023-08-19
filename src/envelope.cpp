@@ -584,47 +584,23 @@ void Envelope::setDotRadius(int radius)
 
 std::string Envelope::frequencyToNote(rk_real f)
 {
-        if (f < 16.35160 || f > 7902.133)
+        if (f < 27.50 || f > 13289.75)
                 return "";
-
-        int n = 0;
-        while (f > 32.70320) {
-                f /= 2;
-                n++;
-        }
-
-        int octave = n;
-        std::vector<double> pitches {
-		        16.35160,
-                        17.32391,
-                        18.35405,
-			19.44544,
-                        20.60172,
-                        21.82676,
-                        23.12465,
-                        24.49971,
-                        25.95654,
-                        27.50000,
-                        29.13524,
-                        30.86771};
-	std::vector<std::string> notes{
-		        "C",
-			"C#",
-			"D",
-			"D#",
-			"E",
-			"F",
-			"F#",
-			"G",
-			"G#",
-			"A",
-			"A#",
-			"B"};
-        n = 12;
-        while (--n && pitches[n] > f);
-        if (n < 11 && f > (pitches[n + 1] - pitches[n]) / 2)
-                n++;
-
-        return "(" + notes[n] + std::to_string(octave) + ")";
+        constexpr std::array<const char*, 12> noteNames = {"C",
+                                                           "C#",
+                                                           "D",
+                                                           "D#",
+                                                           "E",
+                                                           "F",
+                                                           "F#",
+                                                           "G",
+                                                           "G#",
+                                                           "A",
+                                                           "A#",
+                                                           "B"};
+        int midiNote  = 12 * (log2(f / 27.5)) + 21;
+        int octave    = midiNote / 12 - 1;
+        int noteIndex = midiNote % 12;
+        return noteNames[noteIndex] + std::to_string(octave);
 }
 
