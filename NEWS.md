@@ -1,3 +1,10 @@
+### Version 2.9.2
+
+#### Bug fix
+
+- fix conversion from frequency to note in the frequency envelope graph
+
+
 ### Version 2.9.1
 
 - fix crash in Reaper for LV2 (if the event frame is given wrong by the host)
