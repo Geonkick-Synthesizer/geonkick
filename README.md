@@ -1,31 +1,30 @@
 # Geonkick
 
-Geonkick - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
+**Geonkick** - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
 
-Geonkick is a synthesizer that can synthesize elements
-of percussion. The most basic examples are: kicks,
-snares, hit-hats, shakers, claps.
+Geonkick is a synthesizer capable of producing various percussion elements.
+The most basic examples are: kicks, snares, hi-hats, shakers, claps.
 
-"Geon" in the name "Geonkick" refers to a hypothetical particle called "geon".
+The term **"Geon"** in the name "Geonkick" refers to a hypothetical particle called "geon".
 
-License: GPLv3
+**License:** GPLv3
 
-Version: 2.9.2
+**Version:** 2.9.2
 
 If you have an idea about a feature or found an issue, please, submit it:
 
-* on [GitLab](https://gitlab.com/iurie-sw/geonkick/issues)
-* on [GitHub](https://github.com/iurie-sw/geonkick/issues)
+- [on GitLab](https://gitlab.com/iurie-sw/geonkick/issues)
+- [on GitHub](https://github.com/iurie-sw/geonkick/issues)
 
-If you want your created presets to be added in the list of Geonkick presets
-, please, create a merge request with the preset archive on GitLab or GitHub.
-See the folder "presets" how to create a preset archive.
+If you want your created presets to be added to the list of Geonkick presets, please, create a pull request
+with the preset archive on GitLab or GitHub.
+See the folder "presets" for instructions on creating a preset archive.
 
 ![Screenshot](data/screenshot.png)
 
 ![Screenshot](data/screenshot_kit.png)
 
-#### Download
+## Download
 
 Source code repository:
 
@@ -106,7 +105,8 @@ for plugin:
 
 ##### Install dependencies
 
-In order to build Geonkick there is a need to install the following development packages:
+In order to build Geonkick there is a need to install
+the following development packages:
 
 * libsndfile
 * RapidJSON (version >= 1.1)
