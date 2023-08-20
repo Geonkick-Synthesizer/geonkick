@@ -4,6 +4,10 @@
 
 - fix conversion from frequency to note in the frequency envelope graph
 
+#### Other changes
+
+- moved redkite to 3rdparty folder
+
 
 ### Version 2.9.1
 
