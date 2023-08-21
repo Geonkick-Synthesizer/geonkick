@@ -61,6 +61,8 @@ class Envelope : public RkObject
         bool hasSelected() const;
         bool hasOverPoint() const;
         void selectPoint(const RkPoint &point);
+        void setSelectedPointValue(double val);
+        double getSelectedPointValue() const;
         void unselectPoint(void);
         void moveSelectedPoint(int x, int y);
         void addPoint(const RkPoint &point);
@@ -113,6 +115,7 @@ class Envelope : public RkObject
         double getLeftPointLimit(void) const;
         double getRightPointLimit(void) const;
         std::string frequencyToNote(rk_real f);
+        double convertToHumanValue(double val) const;
 
  private:
         RkRect drawingArea;

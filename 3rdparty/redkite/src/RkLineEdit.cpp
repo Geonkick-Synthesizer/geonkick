@@ -133,6 +133,10 @@ void RkLineEdit::keyPressEvent(RkKeyEvent *event)
                 action enterPressed();
 		action editingFinished();
                 return;
+        case Rk::Key::Key_Escape:
+                hideCursor();
+                action escapePressed();
+                return;
         case Rk::Key::Key_a:
         case Rk::Key::Key_A:
                 if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)) {

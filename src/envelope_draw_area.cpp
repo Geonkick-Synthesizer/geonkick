@@ -2,7 +2,7 @@
  * File name: envelope_draw_area.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -24,6 +24,7 @@
 #include "envelope_draw_area.h"
 #include "envelope.h"
 #include "kick_graph.h"
+#include "EnvelopePointContextWidget.h"
 
 #include <RkPainter.h>
 #include <RkEvent.h>
@@ -35,6 +36,7 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
           , hideEnvelope{false}
           , kickGraphImage{nullptr}
           , kickGraphics{nullptr}
+          , controlActive{false}
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -164,8 +166,27 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(RkMouseEvent *event)
 void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
 {
         if (event->button() == RkMouseEvent::ButtonType::Left) {
+                if (!currentEnvelope)
+                        return;
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
-                if (currentEnvelope) {
+                if (controlActive) {
+                        auto act = std::make_unique<RkAction>();
+                        int x = event->x();
+                        int y = event->y();
+                        auto topWidget = RkWidget::getTopWidget();
+                        act->setCallback([&, x, y, topWidget](void){
+                                auto widget = new EnvelopePointContextWidget(dynamic_cast<GeonkickWidget*>(topWidget));
+                                widget->setValue(currentEnvelope->getSelectedPointValue());
+                                widget->setPosition({x, y + 40});
+                                widget->show();
+                                RK_ACT_BIND(widget,
+                                            valueUpdated,
+                                            RK_ACT_ARGS(rk_real val),
+                                            currentEnvelope,
+                                            setSelectedPointValue(val));
+                        });
+                        eventQueue()->postAction(std::move(act));
+                } else {
                         currentEnvelope->addPoint(point);
                         currentEnvelope->selectPoint(point);
                         update();
@@ -225,4 +246,18 @@ void EnvelopeWidgetDrawingArea::setHideEnvelope(bool b)
                 hideEnvelope = b;
                 update();
         }
+}
+
+void EnvelopeWidgetDrawingArea::keyPressEvent(RkKeyEvent *event)
+{
+        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)) {
+                controlActive = true;
+        }
+}
+
+void EnvelopeWidgetDrawingArea::keyReleaseEvent(RkKeyEvent *event)
+{
+        //        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)) {
+        controlActive = false;
+                //        }
 }

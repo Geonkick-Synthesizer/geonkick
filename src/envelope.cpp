@@ -349,6 +349,27 @@ void Envelope::selectPoint(const RkPoint &point)
         }
 }
 
+void Envelope::setSelectedPointValue(double val)
+{
+        if (isEditingPoint() && editingPointIndex < envelopePoints.size()) {
+                auto &point = envelopePoints[editingPointIndex];
+                point.setY(convertFromHumanValue(val));
+                pointUpdatedEvent(editingPointIndex, point.x(), point.y());
+        }        
+}
+
+double Envelope::getSelectedPointValue() const
+{
+        if (hasSelected()) {
+                if (overPointIndex < envelopePoints.size())
+                        return convertToHumanValue(envelopePoints[selectedPointIndex].y());
+        } else if (hasOverPoint()) {
+                if (overPointIndex < envelopePoints.size())
+                        return convertToHumanValue(envelopePoints[overPointIndex].y());
+        }
+        return {};
+}
+
 void Envelope::unselectPoint(void)
 {
         pointSelected = false;
@@ -602,5 +623,24 @@ std::string Envelope::frequencyToNote(rk_real f)
         int octave    = midiNote / 12 - 1;
         int noteIndex = midiNote % 12;
         return noteNames[noteIndex] + std::to_string(octave);
+}
+
+double Envelope::convertToHumanValue(double val) const
+{
+        if (type() == Envelope::Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume) {
+                val *= envelopeAmplitude();
+		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
+			return val * pow(10, 36.0 / 20);
+		else
+			return val;
+        } else if (type() == Type::PitchShift) {
+                val *= envelopeAmplitude();
+                return 2 * val - envelopeAmplitude();
+        } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
+                val *= envelopeAmplitude();
+        }
+        return val;
 }
 

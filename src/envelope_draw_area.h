@@ -51,12 +51,14 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void setHideEnvelope(bool b);
 
  protected:
-   void paintWidget(RkPaintEvent *event) final;
-   void mouseMoveEvent(RkMouseEvent *event) final;
-   void mouseButtonPressEvent(RkMouseEvent *event) final;
-   void mouseButtonReleaseEvent(RkMouseEvent *event) final;
-   void mouseDoubleClickEvent(RkMouseEvent *event) final;
+   void paintWidget(RkPaintEvent *event) override;
+   void mouseMoveEvent(RkMouseEvent *event) override;
+   void mouseButtonPressEvent(RkMouseEvent *event) override;
+   void mouseButtonReleaseEvent(RkMouseEvent *event) override;
+   void mouseDoubleClickEvent(RkMouseEvent *event) override;
    std::string getEnvStateText() const;
+   void keyPressEvent(RkKeyEvent *event) override;
+   void keyReleaseEvent(RkKeyEvent *event) override;
 
  private:
    GeonkickApi* geonkickApi;
@@ -67,6 +69,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    std::shared_ptr<RkImage> kickGraphImage;
    RkImage envelopeImage;
    KickGraph *kickGraphics;
+   bool controlActive;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

@@ -41,6 +41,10 @@ class RK_EXPORT RkLineEdit : public RkWidget {
                 textEdited(const std::string &text),
                 RK_ARG_TYPE(const std::string&),
                 RK_ARG_VAL(text));
+    RK_DECL_ACT(escapePressed,
+                escapePressed(),
+                RK_ARG_TYPE(),
+                RK_ARG_VAL());
     RK_DECL_ACT(enterPressed,
                 enterPressed(),
                 RK_ARG_TYPE(),

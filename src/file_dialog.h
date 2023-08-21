@@ -60,11 +60,11 @@ class FilesView: public GeonkickWidget {
  protected:
         void createScrollBar();
         void showScrollBar(bool b);
-        void paintWidget(RkPaintEvent *event) final;
-        void mouseButtonPressEvent(RkMouseEvent *event) final;
-        void mouseDoubleClickEvent(RkMouseEvent *event) final;
-        void mouseMoveEvent(RkMouseEvent *event) final;
-        void keyPressEvent(RkKeyEvent *event) final;
+        void paintWidget(RkPaintEvent *event) override;
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
+        void mouseDoubleClickEvent(RkMouseEvent *event) override;
+        void mouseMoveEvent(RkMouseEvent *event) override;
+        void keyPressEvent(RkKeyEvent *event) override;
         void loadCurrentDirectory();
         int getLine(int x, int y) const;
         void onLineUp();

@@ -106,6 +106,7 @@ RkEventQueueX::getEvents()
                 }
                 case ClientMessage:
                 {
+                        RK_LOG_INFO("WM_DELETE_WINDOW");
                         auto atom = XInternAtom(xDisplay, "WM_DELETE_WINDOW", True);
                         if (static_cast<Atom>(e.xclient.data.l[0]) == atom)
                                 event = std::make_unique<RkCloseEvent>();
