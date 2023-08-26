@@ -173,17 +173,12 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
                         auto act = std::make_unique<RkAction>();
                         int x = event->x();
                         int y = event->y();
-                        auto topWidget = RkWidget::getTopWidget();
+                        auto topWidget = dynamic_cast<GeonkickWidget*>(RkWidget::getTopWidget());
                         act->setCallback([&, x, y, topWidget](void){
-                                auto widget = new EnvelopePointContextWidget(dynamic_cast<GeonkickWidget*>(topWidget));
-                                widget->setValue(currentEnvelope->getSelectedPointValue());
+                                auto widget = new EnvelopePointContextWidget(currentEnvelope,
+                                                                             topWidget);
                                 widget->setPosition({x, y + 40});
                                 widget->show();
-                                RK_ACT_BIND(widget,
-                                            valueUpdated,
-                                            RK_ACT_ARGS(rk_real val),
-                                            currentEnvelope,
-                                            setSelectedPointValue(val));
                         });
                         eventQueue()->postAction(std::move(act));
                 } else {
@@ -250,14 +245,11 @@ void EnvelopeWidgetDrawingArea::setHideEnvelope(bool b)
 
 void EnvelopeWidgetDrawingArea::keyPressEvent(RkKeyEvent *event)
 {
-        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)) {
+        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                 controlActive = true;
-        }
 }
 
 void EnvelopeWidgetDrawingArea::keyReleaseEvent(RkKeyEvent *event)
 {
-        //        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)) {
         controlActive = false;
-                //        }
 }

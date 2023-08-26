@@ -22,13 +22,16 @@
  */
 
 #include "EnvelopePointContextWidget.h"
+#include "envelope.h"
 
 #include <RkEvent.h>
 #include <RkLineEdit.h>
 
-EnvelopePointContextWidget::EnvelopePointContextWidget(GeonkickWidget *parent,
+EnvelopePointContextWidget::EnvelopePointContextWidget(Envelope* envelope,
+                                                       GeonkickWidget *parent,
                                                        Rk::WindowFlags flag)
         : GeonkickWidget(parent, flag)
+        , pointEnvelope{envelope}
         , lineEdit{new RkLineEdit(this)}
 {
         setFixedSize(150, 20);
@@ -46,7 +49,8 @@ EnvelopePointContextWidget::EnvelopePointContextWidget(GeonkickWidget *parent,
                     RK_ACT_ARGS(),
                     this,
                     close());
-        GEONKICK_LOG_INFO("EnvelopePointContextWidget::EnvelopePointContextWidget");
+        pointEnvelope->setEditCurrentPoint();
+        setValue(pointEnvelope->getSelectedPointValue());
 }
 
 void EnvelopePointContextWidget::setFocus()
@@ -82,7 +86,11 @@ void EnvelopePointContextWidget::closeEvent(RkCloseEvent *event)
 
 void EnvelopePointContextWidget::onUpdateValue()
 {
-//        lineEdit->getText();
-        action valueUpdated(0.0f);
+        double value = 0.0;
+        try {
+                value = std::stod(lineEdit->text());
+        } catch (...) {
+        }
+        pointEnvelope->updateSelectedPointValue(value);
         close();
 }

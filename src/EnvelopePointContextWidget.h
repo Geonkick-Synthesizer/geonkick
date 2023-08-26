@@ -26,12 +26,14 @@
 
 #include "geonkick_widget.h"
 
+class Envelope;
 class RkLineEdit;
 
 class EnvelopePointContextWidget: public GeonkickWidget
 {
  public:        
-        EnvelopePointContextWidget(GeonkickWidget *parent,
+        EnvelopePointContextWidget(Envelope *envelope,
+                                   GeonkickWidget *parent,
                                    Rk::WindowFlags flag = Rk::WindowFlags::Popup);
         void setValue(rk_real val);
         RK_DECL_ACT(valueUpdated,
@@ -47,6 +49,7 @@ class EnvelopePointContextWidget: public GeonkickWidget
         void onUpdateValue();
 
  private:
+        Envelope *pointEnvelope;
         RkLineEdit *lineEdit;
 };
 

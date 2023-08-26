@@ -43,6 +43,8 @@ Envelope::Envelope(const RkRect &area)
         , pointSelected{false}
         , envelopeCategory{Category::Oscillator1}
         , envelopeType{Type::Amplitude}
+        , editedPointIndex{0}
+        , isEditingPoint{false}
 {
 }
 
@@ -349,13 +351,25 @@ void Envelope::selectPoint(const RkPoint &point)
         }
 }
 
-void Envelope::setSelectedPointValue(double val)
+void Envelope::updateSelectedPointValue(double val)
 {
-        if (isEditingPoint() && editingPointIndex < envelopePoints.size()) {
-                auto &point = envelopePoints[editingPointIndex];
-                point.setY(convertFromHumanValue(val));
-                pointUpdatedEvent(editingPointIndex, point.x(), point.y());
+        if (hasEditingPoint() && editedPointIndex < envelopePoints.size()) {
+                pointUpdatedEvent(editedPointIndex,
+                                  envelopePoints[editedPointIndex].x(),
+                                  convertFromHumanValue(val));
+                updatePoints();
         }        
+}
+
+void Envelope::setEditCurrentPoint(bool edit)
+{
+        if (hasOverPoint() && overPointIndex < envelopePoints.size()) {
+                editedPointIndex = overPointIndex;
+                isEditingPoint = edit;
+                return;
+        }
+        editedPointIndex = 0;
+        isEditingPoint = false;
 }
 
 double Envelope::getSelectedPointValue() const
@@ -644,3 +658,27 @@ double Envelope::convertToHumanValue(double val) const
         return val;
 }
 
+double Envelope::convertFromHumanValue(double val) const
+{
+        if ( envelopeAmplitude() == 0.0 )
+                return val;
+        
+        if (type() == Envelope::Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume) {
+                val /= envelopeAmplitude();
+		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
+			val /= pow(10, 36.0 / 20);
+        } else if (type() == Type::PitchShift) {
+                val = (val / envelopeAmplitude() + 1.0) / 2.0;
+        } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
+                val /= envelopeAmplitude();
+        }
+
+        return std::clamp(val, 0.0, 1.0);        
+}
+
+bool Envelope::hasEditingPoint() const
+{
+        return isEditingPoint;
+}

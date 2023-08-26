@@ -61,8 +61,9 @@ class Envelope : public RkObject
         bool hasSelected() const;
         bool hasOverPoint() const;
         void selectPoint(const RkPoint &point);
-        void setSelectedPointValue(double val);
         double getSelectedPointValue() const;
+        void updateSelectedPointValue(double val);
+        void setEditCurrentPoint(bool edit = true);
         void unselectPoint(void);
         void moveSelectedPoint(int x, int y);
         void addPoint(const RkPoint &point);
@@ -116,6 +117,8 @@ class Envelope : public RkObject
         double getRightPointLimit(void) const;
         std::string frequencyToNote(rk_real f);
         double convertToHumanValue(double val) const;
+        double convertFromHumanValue(double val) const;
+        bool hasEditingPoint() const;
 
  private:
         RkRect drawingArea;
@@ -129,6 +132,8 @@ class Envelope : public RkObject
         bool pointSelected;
         Category envelopeCategory;
         Type envelopeType;
+        size_t editedPointIndex;
+        bool isEditingPoint;
 };
 
 #endif // GEONKICK_ENVELOPE_H
