@@ -284,9 +284,8 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
                                          Geonkick::doubleToStr(value, 0)
                                          + "Hz " + frequencyToNote(value));
                 } else if (value >= 1000 && value <= 20000) {
-                        value /= 1000;
                         painter.drawText(point.x(), point.y(),
-                                         Geonkick::doubleToStr(value, 0)
+                                         Geonkick::doubleToStr(value / 1000, 0)
                                          + std::string("kHz ")
                                          + frequencyToNote(value));
                 }
