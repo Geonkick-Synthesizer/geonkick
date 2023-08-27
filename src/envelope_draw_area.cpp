@@ -169,7 +169,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
                 if (!currentEnvelope)
                         return;
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
-                if (controlActive) {
+                if (controlActive && currentEnvelope->hasOverPoint()) {
                         auto act = std::make_unique<RkAction>();
                         int x = event->x();
                         int y = event->y();

@@ -268,29 +268,27 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume) {
                 value *= envelopeAmplitude();
-                std::ostringstream ss;
 		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
-			ss << std::setprecision(2) << value * pow(10, 36.0 / 20);
-		else
-			ss << std::setprecision(2) << value;
-                painter.drawText(point.x(), point.y(), ss.str());
+			value *= pow(10, 36.0 / 20);
+                painter.drawText(point.x(), point.y(), Geonkick::doubleToStr(value, 2));
         } else if (type() == Type::PitchShift) {
                 value *= envelopeAmplitude();
-                std::ostringstream ss;
-                ss << std::fixed << std::setprecision(1) << 2 * value - envelopeAmplitude();
-                painter.drawText(point.x(), point.y(), ss.str());
+                value = 2 * value - envelopeAmplitude();
+                painter.drawText(point.x(), point.y(), Geonkick::doubleToStr(value, 1));
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
                 value *= envelopeAmplitude();
                 if (value < 20)
                         painter.drawText(point.x(), point.y(), "20Hz " + frequencyToNote(20));
                 if (value >= 20 && value < 1000) {
-                        painter.drawText(point.x(), point.y(), std::to_string(std::llround(value))
+                        painter.drawText(point.x(), point.y(),
+                                         Geonkick::doubleToStr(value, 0)
                                          + "Hz " + frequencyToNote(value));
                 } else if (value >= 1000 && value <= 20000) {
-                        std::ostringstream ss;
-                        ss.precision(1);
-                        ss << std::fixed << value / 1000;
-                        painter.drawText(point.x(), point.y(), ss.str() + "kHz " + frequencyToNote(value));
+                        value /= 1000;
+                        painter.drawText(point.x(), point.y(),
+                                         Geonkick::doubleToStr(value, 0)
+                                         + std::string("kHz ")
+                                         + frequencyToNote(value));
                 }
         }
 }

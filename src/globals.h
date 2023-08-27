@@ -42,6 +42,7 @@
 #include <mutex>
 #include <thread>
 #include <iomanip>
+#include <math.h>
 
 #include <RkObject.h>
 
@@ -84,6 +85,21 @@ namespace Geonkick
                 if (decibel < -80)
                         return 0;
                 return pow(10,  decibel / 20);
+        }
+
+        constexpr double truncateDouble(double val, unsigned int precision)
+        {
+                double n = std::pow(10, precision);
+                return std::trunc(val * n) / n;
+        }
+
+        inline std::string doubleToStr(double val, unsigned int precision)
+        {
+                std::stringstream ss;
+                ss << std::fixed
+                   << std::setprecision(precision)
+                   << truncateDouble(val, precision);
+                return ss.str();
         }
 
 } // namespace Geonkick

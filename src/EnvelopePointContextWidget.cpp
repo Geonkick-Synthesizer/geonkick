@@ -34,10 +34,12 @@ EnvelopePointContextWidget::EnvelopePointContextWidget(Envelope* envelope,
         , pointEnvelope{envelope}
         , lineEdit{new RkLineEdit(this)}
 {
-        setFixedSize(150, 20);
-        setBackgroundColor({68, 68, 70, 240});
-        lineEdit->setSize(width(), height());
-        lineEdit->moveCursorToEnd();
+        setFixedSize(110, 30);
+        setBackgroundColor({68, 68, 70});
+        setBorderColor(40, 40, 40);
+        setBorderWidth(1);
+        lineEdit->setSize(100, 20);
+        lineEdit->setPosition(5, 5);
         lineEdit->show();
         RK_ACT_BIND(lineEdit,
                     editingFinished,
@@ -55,13 +57,13 @@ EnvelopePointContextWidget::EnvelopePointContextWidget(Envelope* envelope,
 
 void EnvelopePointContextWidget::setFocus()
 {
-        GEONKICK_LOG_INFO("EnvelopePointContextWidget::setFocus()");
         lineEdit->setFocus();
 }
 
 void EnvelopePointContextWidget::setValue(rk_real val)
 {
         lineEdit->setText(std::to_string(val));
+        lineEdit->moveCursorToEnd();
 }
 
 void EnvelopePointContextWidget::mouseButtonPressEvent(RkMouseEvent *event)
