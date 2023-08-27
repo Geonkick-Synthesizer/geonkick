@@ -630,9 +630,10 @@ std::string Envelope::frequencyToNote(rk_real f)
                                                            "A",
                                                            "A#",
                                                            "B"};
-        int midiNote  = 12 * (log2(f / 27.5)) + 21;
+        f = Geonkick::truncateDouble(f, 4);
+        auto midiNote  = 12.0 * (log2(f / 27.5)) + 21.0;
         int octave    = midiNote / 12 - 1;
-        int noteIndex = midiNote % 12;
+        int noteIndex = static_cast<int>(midiNote) % 12;
         return noteNames[noteIndex] + std::to_string(octave);
 }
 
