@@ -848,6 +848,7 @@ double PercussionState::getDistortionDrive() const
 std::string PercussionState::toJson() const
 {
         std::ostringstream jsonStream;
+        jsonStream << std::fixed << std::setprecision(7);
         jsonStream << "{" << std::endl;
         oscJson(jsonStream);
         kickJson(jsonStream);
@@ -867,8 +868,8 @@ void PercussionState::envelopeToJson(std::ostringstream &jsonStream,
         for (const auto &point: envelope) {
                 if (!first)
                         jsonStream << ", ";
-                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
-                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+                jsonStream << "[ "  << point.x()
+                           << " , "  << point.y() << "]";
                 first = false;
         }
         jsonStream << "]" << std::endl;
@@ -884,7 +885,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 if (val.second->function == GeonkickApi::FunctionType::Sample && !val.second->sample.empty())
                         jsonStream <<  "\"sample\": \"" << toBase64F(val.second->sample) << "\"," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
-                jsonStream <<  "\"phase\": " << std::fixed << std::setprecision(5)
+                jsonStream <<  "\"phase\": " 
                            << val.second->phase << ", " << std::endl;
                 jsonStream <<  "\"seed\": " << val.second->seed << ", " << std::endl;
                 envelopeToJson(jsonStream,
@@ -906,7 +907,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream << "\"enabled\": " << (val.second->isFilterEnabled ? "true" : "false");
                 jsonStream << ", " << std::endl;
                 jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
-                jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(5)
+                jsonStream << "\"cutoff\": " 
                            << val.second->filterFrequency << ", " << std::endl;
                 jsonStream << "\"cutoff_env\": [";
                 bool first = true;
@@ -915,11 +916,11 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                                 first = false;
                         else
                                 jsonStream << ", ";
-                        jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
-                                   << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+                        jsonStream << "[ "  << point.x()
+                                   << " , "  << point.y() << "]";
                 }
                 jsonStream << "], " << std::endl;
-                jsonStream << "\"factor\": " << std::fixed << std::setprecision(5)
+                jsonStream << "\"factor\": " 
                            << val.second->filterFactor << std::endl;
                 jsonStream << "}" << std::endl;  // filter;
                 jsonStream << "}" << std::endl;  // osc;
@@ -957,10 +958,10 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                                 first = false;
                         else
                                 jsonStream << ", ";
-                        jsonStream << std::fixed << std::setprecision(5) << layersAmplitude[i];
+                        jsonStream  << layersAmplitude[i];
         }
         jsonStream << "]," << std::endl;
-        jsonStream << "\"limiter\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"limiter\": " 
                    << getLimiterValue() << ", " << std::endl;
         jsonStream << "\"tuned_output\": " << (isOutputTuned() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
@@ -974,8 +975,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                         first = false;
                 else
                         jsonStream << ", ";
-                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
-                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+                jsonStream << "[ "  << point.x()
+                           << " , "  << point.y() << "]";
         }
 
         jsonStream << "]}, " << std::endl;
@@ -996,34 +997,34 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                         first = false;
                 else
                         jsonStream << ", ";
-                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
-                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+                jsonStream << "[ "  << point.x()
+                           << " , "  << point.y() << "]";
         }
         jsonStream << "]" << std::endl; // points
         jsonStream << "}, " << std::endl;  // filter;
         jsonStream << "\"compressor\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isCompressorEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"attack\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"attack\": " 
                    << getCompressorAttack() << ", " << std::endl;
-        jsonStream << "\"release\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"release\": " 
                    << getCompressorRelease() << ", " << std::endl;
-        jsonStream << "\"threshold\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"threshold\": " 
                    << getCompressorThreshold() << ", " << std::endl;
-        jsonStream << "\"ratio\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"ratio\": " 
                    << getCompressorRatio() << ", " << std::endl;
-        jsonStream << "\"knee\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"knee\": " 
                    << getCompressorKnee() << ", " << std::endl;
-        jsonStream << "\"makeup\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"makeup\": " 
                    << getCompressorMakeup() << std::endl;
         jsonStream << "}, " << std::endl;
 
         jsonStream << "\"distortion\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"in_limiter\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"in_limiter\": " 
                    << getDistortionInLimiter()  << ", " << std::endl;
-        jsonStream << "\"volume\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"volume\": " 
                    << getDistortionVolume()  << ", " << std::endl;
-        jsonStream << "\"drive\": " << std::fixed << std::setprecision(5)
+        jsonStream << "\"drive\": " 
                    << getDistortionDrive() << ", " << std::endl;
 	jsonStream << "\"drive_env\": [" << std::endl;
 	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive);
@@ -1033,8 +1034,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                         first = false;
                 else
                         jsonStream << ", ";
-                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
-                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+                jsonStream << "[ "  << point.x()
+                           << " , "  << point.y() << "]";
         }
         jsonStream << "], " << std::endl;
         jsonStream << "\"volume_env\": [" << std::endl;
@@ -1045,8 +1046,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                         first = false;
                 else
                         jsonStream << ", ";
-                jsonStream << "[ " << std::fixed << std::setprecision(5) << point.x()
-                           << " , " << std::fixed << std::setprecision(5) << point.y() << "]";
+                jsonStream << "[ "  << point.x()
+                           << " , " << point.y() << "]";
         }
 	jsonStream << "]" << std::endl;
         jsonStream << "}" << std::endl; // distortion
