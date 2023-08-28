@@ -614,9 +614,13 @@ void Envelope::setDotRadius(int radius)
         dotRadius = radius;
 }
 
+/**
+ * This conversion should comply with this table:
+ * https://homes.luddy.indiana.edu/donbyrd/Teach/MusicalPitchesTable.htm
+ */
 std::string Envelope::frequencyToNote(rk_real f)
 {
-        if (f < 27.50 || f > 13289.75)
+        if (f < 27.500 || f > 13289.752)
                 return "";
         constexpr std::array<const char*, 12> noteNames = {"C",
                                                            "C#",
@@ -630,8 +634,7 @@ std::string Envelope::frequencyToNote(rk_real f)
                                                            "A",
                                                            "A#",
                                                            "B"};
-        f = Geonkick::truncateDouble(f, 4);
-        auto midiNote  = 12.0 * (log2(f / 27.5)) + 21.0;
+        int midiNote  = std::round(12.0 * (log2(f / 27.5)) + 21.0);
         int octave    = midiNote / 12 - 1;
         int noteIndex = static_cast<int>(midiNote) % 12;
         return noteNames[noteIndex] + std::to_string(octave);
