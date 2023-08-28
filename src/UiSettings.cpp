@@ -63,14 +63,14 @@ void UiSettings::parserSamplesBrowser(const rapidjson::Value &obj)
 std::string UiSettings::toJson() const
 {
         std::ostringstream jsonStream;
+        jsonStream << std::fixed << std::setprecision(7);
         jsonStream << "{" << std::endl;
         jsonStream << "\"MainView\": " << static_cast<int>(mainView) << ", " << std::endl;
         jsonStream << "\"SamplesBrowser\": { " << std::endl;
         jsonStream << "    \"currentDirectory\": \"" << samplesBrowser.currentDirectory << "\"," << std::endl;
         jsonStream << "    \"previewFile\": \"" << samplesBrowser.previewFile << "\"," << std::endl;
-        jsonStream << "    \"previewLimiter\": " << std::fixed << std::setprecision(5)
-                                                 << samplesBrowser.previewLimiter
-                                                 << "," << std::endl;
+        jsonStream << "    \"previewLimiter\": " << samplesBrowser.previewLimiter
+                   << "," << std::endl;
         jsonStream << "    \"oscillator\": " << static_cast<int>(samplesBrowser.oscillator) << std::endl;
         jsonStream << "}," << std::endl;
         jsonStream << "\"settings\": [" << std::endl;

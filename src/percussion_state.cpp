@@ -965,8 +965,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                    << getLimiterValue() << ", " << std::endl;
         jsonStream << "\"tuned_output\": " << (isOutputTuned() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
-        jsonStream << "\"amplitude\": " << static_cast<double>(getKickAmplitude()) << ", " << std::endl;
-        jsonStream << "\"length\": " << static_cast<double>(getKickLength()) << ", " << std::endl;
+        jsonStream << "\"amplitude\": " << getKickAmplitude() << ", " << std::endl;
+        jsonStream << "\"length\": " << getKickLength() << ", " << std::endl;
         auto points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::Amplitude);
         jsonStream << "\"points\": [";
         first = true;
@@ -985,9 +985,9 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "\"enabled\": " << (isKickFilterEnabled() ? "true" : "false");
         jsonStream << ", " << std::endl;
         jsonStream << "\"type\": " << static_cast<int>(getKickFilterType()) << ", " << std::endl;
-        jsonStream << "\"cutoff\": " << std::fixed << std::setprecision(2)
+        jsonStream << "\"cutoff\": "
                    << getKickFilterFrequency() << ", " << std::endl;
-        jsonStream << "\"factor\": " << std::fixed << std::setprecision(2)
+        jsonStream << "\"factor\": "
                    << getKickFilterQFactor() << ", " << std::endl;
         points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff);
         jsonStream << "\"cutoff_env\": [";
