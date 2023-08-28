@@ -1,3 +1,17 @@
+### Version 2.10.0
+
+#### Bug fix
+
+- fix conversion from frequency to note (more fixes)
+
+#### Improvements
+
+- improve the precision for saving into presets
+
+#### New features
+
+- set manually the exact value of envelope points
+
 ### Version 2.9.2
 
 #### Bug fix
