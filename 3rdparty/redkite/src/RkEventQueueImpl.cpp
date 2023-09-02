@@ -264,9 +264,14 @@ void RkEventQueue::RkEventQueueImpl::processShortcuts(RkKeyEvent *event, RkObjec
 
         auto res = shortcutsList.find(hashKey);
         if (res != shortcutsList.end()) {
-                for (const auto &obj : res->second->objects()) {
-                        if (excludedObj != obj)
+                for (RkObject* obj : res->second->objects()) {
+                        if (excludedObj != obj) {
+                                auto shurtcutEvent = std::make_unique<RkShortcutEvent>(event->key(),
+                                                                                       static_cast<Rk::KeyModifiers>(event->modifiers()));
+                                auto pair = std::make_pair(obj, std::move(shurtcutEvent));
+                                eventsQueue.push_back(std::move(pair));
                                 processEvent(obj, event);
+                        }
                 }
         } else {
                 RK_LOG_DEBUG("can't find shortcut");

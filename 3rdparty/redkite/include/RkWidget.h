@@ -35,6 +35,7 @@
 class RkEvent;
 class RkCloseEvent;
 class RkKeyEvent;
+class RkShortcutEvent;
 class RkMouseEvent;
 class RkWheelEvent;
 class RkDropEvent;
@@ -140,11 +141,11 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
   protected:
           RK_DELCATE_IMPL_PTR(RkWidget);
           RkWidget(RkWidget *parent, std::unique_ptr<RkWidgetImpl> impl);
-          virtual void event(RkEvent *event) override;
+          void event(RkEvent *event) override;
           virtual void closeEvent(RkCloseEvent *event);
           virtual void keyPressEvent(RkKeyEvent *event);
           virtual void keyReleaseEvent(RkKeyEvent *event);
-          virtual void shortcutEvent(RkKeyEvent *event);
+          virtual void shortcutEvent(RkShortcutEvent *event);
           virtual void mouseMoveEvent(RkMouseEvent *event);
           virtual void mouseButtonPressEvent(RkMouseEvent *event);
           virtual void mouseButtonReleaseEvent(RkMouseEvent *event);

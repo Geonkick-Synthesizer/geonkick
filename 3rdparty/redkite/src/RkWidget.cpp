@@ -472,9 +472,8 @@ void RkWidget::keyReleaseEvent(RkKeyEvent *event)
         RK_UNUSED(event);
 }
 
-void RkWidget::shortcutEvent(RkKeyEvent *event)
+void RkWidget::shortcutEvent([[maybe_unused]] RkShortcutEvent *event)
 {
-        RK_UNUSED(event);
 }
 
 void RkWidget::mouseMoveEvent(RkMouseEvent *event)

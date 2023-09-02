@@ -110,7 +110,7 @@ void MainWindow::createViewState()
 
 void MainWindow::createShortcuts()
 {
-        /*        addShortcut(Rk::Key::Key_K, Rk::KeyModifiers::Control_Left);
+        addShortcut(Rk::Key::Key_K, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_K, Rk::KeyModifiers::Control_Right);
         addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Right);
@@ -153,7 +153,7 @@ void MainWindow::createShortcuts()
         addShortcut(Rk::Key::Key_f, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_F, Rk::KeyModifiers::Control_Left);
 
-        addShortcut(Rk::Key::Key_Control_Left, Rk::KeyModifiers::Control_Left);*/
+        addShortcut(Rk::Key::Key_Control_Left, Rk::KeyModifiers::Control_Left);
 }
 
 bool MainWindow::init(void)
@@ -294,13 +294,16 @@ void MainWindow::openFileDialog(FileDialog::Type type)
         }
 }
 
-void MainWindow::keyPressEvent(RkKeyEvent *event)
+void MainWindow::keyReleaseEvent(RkKeyEvent *event)
 {
-        GEONKICK_LOG_INFO("keyPressEvent");
-        if (event->key() == Rk::Key::Key_Control_Left) {
-                GEONKICK_LOG_INFO("setPointEditingMode(true)");
+        envelopeWidget->setPointEditingMode(false);
+        envelopeWidget->hideEnvelope(false);
+}
+
+void MainWindow::shortcutEvent(RkShortcutEvent *event)
+{
+        if (event->key() == Rk::Key::Key_Control_Left)
                 envelopeWidget->setPointEditingMode(true);
-        }
 
         if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
             && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
@@ -324,7 +327,7 @@ void MainWindow::keyPressEvent(RkKeyEvent *event)
                    && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
                 geonkickApi->copyToClipboard();
         } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
-                    && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
+                   && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
                 geonkickApi->pasteFromClipboard();
                 geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
                 updateGui();
@@ -351,17 +354,6 @@ void MainWindow::resetToDefault()
         geonkickApi->setPercussionState(state);
         geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
         updateGui();
-}
-
-void MainWindow::keyReleaseEvent(RkKeyEvent *event)
-{
-        if (event->key() == Rk::Key::Key_Control_Left)
-                envelopeWidget->setPointEditingMode(false);
-
-        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-            && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
-                envelopeWidget->hideEnvelope(false);
-        }
 }
 
 void MainWindow::dropEvent(RkDropEvent *event)

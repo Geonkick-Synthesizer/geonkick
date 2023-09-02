@@ -50,8 +50,8 @@ class MainWindow : public GeonkickWidget
       RK_DECL_ACT(onScaleFactor, onScaleFactor(double factor), RK_ARG_TYPE(double), RK_ARG_VAL(factor));
 
  protected:
-      void keyPressEvent(RkKeyEvent *event) override;
       void keyReleaseEvent(RkKeyEvent *event) override;
+      void shortcutEvent(RkShortcutEvent *event) override;
       void dropEvent(RkDropEvent *event) override;
       void openFileDialog(FileDialog::Type type);
       void openPreset(const std::string &fileName);

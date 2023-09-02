@@ -50,7 +50,7 @@ class RkShortcut {
         bool hasObject(RkObject *obj) const { return shortcutObjects.find(obj) != shortcutObjects.end(); }
         Rk::Key key() const { return shortcutKey; }
         Rk::KeyModifiers modifiers() const { return shortcutModifier; }
-        const std::unordered_set<RkObject*>& objects() const { return shortcutObjects; };
+        std::unordered_set<RkObject*> objects() { return shortcutObjects; };
 
   private:
         Rk::Key shortcutKey;

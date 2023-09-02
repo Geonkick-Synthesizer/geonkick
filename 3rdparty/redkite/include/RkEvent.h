@@ -29,6 +29,7 @@
 
 class RkCloseEvent;
 class RkKeyEvent;
+class RkShortcutEvent;
 class RkMouseEvent;
 class RkWheelEvent;
 class RkMoveEvent;
@@ -218,6 +219,17 @@ class RkScaleFactorEvent: public RkEvent {
       double factor() const { return scaleFactor; }
  private:
       double scaleFactor;
+};
+
+class RkShortcutEvent: public RkKeyEvent {
+ public:
+        RkShortcutEvent(Rk::Key key,
+                        Rk::KeyModifiers modifier = Rk::KeyModifiers::NoModifier)
+                : RkKeyEvent(RkEvent::Type::Shortcut)
+        {
+                setKey(key);
+                setModifiers(static_cast<int>(modifier));
+        }
 };
 
 #endif // RK_EVENT_H
