@@ -42,9 +42,6 @@ class EnvelopePointContextWidget: public GeonkickWidget
                     RK_ARG_VAL(val));
         void setFocus();
  protected:
-        void mouseButtonPressEvent(RkMouseEvent *event) override;
-        void mouseButtonReleaseEvent(RkMouseEvent *event) override;
-        void mouseMoveEvent(RkMouseEvent *event) override;
         void closeEvent(RkCloseEvent *event) override;
         void onUpdateValue();
 

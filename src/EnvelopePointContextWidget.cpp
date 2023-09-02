@@ -68,23 +68,8 @@ void EnvelopePointContextWidget::setValue(rk_real val)
         lineEdit->moveCursorToEnd();
 }
 
-void EnvelopePointContextWidget::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        if (event->button() == RkMouseEvent::ButtonType::Left) {
-	}
-}
-
-void EnvelopePointContextWidget::mouseButtonReleaseEvent(RkMouseEvent *event)
-{
-}
-
-void EnvelopePointContextWidget::mouseMoveEvent(RkMouseEvent *event)
-{
-}
-
 void EnvelopePointContextWidget::closeEvent(RkCloseEvent *event)
 {
-        GEONKICK_LOG_INFO("void EnvelopePointContextWidget::closeEvent(RkCloseEvent *event)");
         RkWidget::closeEvent(event);
 }
 
