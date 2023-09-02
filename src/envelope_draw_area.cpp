@@ -36,7 +36,7 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
           , hideEnvelope{false}
           , kickGraphImage{nullptr}
           , kickGraphics{nullptr}
-          , controlActive{false}
+          , pointEditingMode{false}
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -169,7 +169,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
                 if (!currentEnvelope)
                         return;
                 RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
-                if (controlActive && currentEnvelope->hasOverPoint()) {
+                if (pointEditingMode && currentEnvelope->hasOverPoint()) {
                         auto act = std::make_unique<RkAction>();
                         int x = event->x();
                         int y = event->y();
@@ -243,13 +243,8 @@ void EnvelopeWidgetDrawingArea::setHideEnvelope(bool b)
         }
 }
 
-void EnvelopeWidgetDrawingArea::keyPressEvent(RkKeyEvent *event)
+void EnvelopeWidgetDrawingArea::setPointEditingMode(bool b)
 {
-        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
-                controlActive = true;
+        pointEditingMode = b;
 }
 
-void EnvelopeWidgetDrawingArea::keyReleaseEvent(RkKeyEvent *event)
-{
-        controlActive = false;
-}

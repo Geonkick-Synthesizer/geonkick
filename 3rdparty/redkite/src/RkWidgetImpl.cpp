@@ -167,7 +167,8 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                         inf_ptr->keyReleaseEvent(static_cast<RkKeyEvent*>(event));
                 break;
         case RkEvent::Type::Shortcut:
-                RK_LOG_DEBUG("RkEvent::Type::Shortcut: " << title());
+                std::cout << "RkEvent::Type::Shortcut" << std::endl;
+                RK_LOG_INFO("RkEvent::Type::Shortcut: " << title());
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled))
                         inf_ptr->shortcutEvent(static_cast<RkKeyEvent*>(event));
                 break;

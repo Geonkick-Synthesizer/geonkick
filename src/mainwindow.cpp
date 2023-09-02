@@ -110,7 +110,7 @@ void MainWindow::createViewState()
 
 void MainWindow::createShortcuts()
 {
-        addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Left);
+        /*        addShortcut(Rk::Key::Key_K, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_K, Rk::KeyModifiers::Control_Right);
         addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Right);
@@ -152,6 +152,8 @@ void MainWindow::createShortcuts()
 
         addShortcut(Rk::Key::Key_f, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_F, Rk::KeyModifiers::Control_Left);
+
+        addShortcut(Rk::Key::Key_Control_Left, Rk::KeyModifiers::Control_Left);*/
 }
 
 bool MainWindow::init(void)
@@ -294,6 +296,12 @@ void MainWindow::openFileDialog(FileDialog::Type type)
 
 void MainWindow::keyPressEvent(RkKeyEvent *event)
 {
+        GEONKICK_LOG_INFO("keyPressEvent");
+        if (event->key() == Rk::Key::Key_Control_Left) {
+                GEONKICK_LOG_INFO("setPointEditingMode(true)");
+                envelopeWidget->setPointEditingMode(true);
+        }
+
         if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
             && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
                 geonkickApi->playKick();
@@ -347,6 +355,9 @@ void MainWindow::resetToDefault()
 
 void MainWindow::keyReleaseEvent(RkKeyEvent *event)
 {
+        if (event->key() == Rk::Key::Key_Control_Left)
+                envelopeWidget->setPointEditingMode(false);
+
         if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
             && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
                 envelopeWidget->hideEnvelope(false);

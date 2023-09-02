@@ -195,3 +195,8 @@ Oscillator* EnvelopeWidget::getCurrentOscillator() const
                 return static_cast<OscillatorEnvelope*>(envelope)->getOscillator();
         return nullptr;
 }
+
+void EnvelopeWidget::setPointEditingMode(bool b)
+{
+        drawArea->setPointEditingMode(b);
+}

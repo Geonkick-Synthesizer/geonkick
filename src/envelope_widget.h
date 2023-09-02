@@ -50,6 +50,7 @@ public:
                  RK_ARG_TYPE(Envelope::Type),
                  RK_ARG_VAL(type));
      Oscillator* getCurrentOscillator() const;
+     void setPointEditingMode(bool b = true);
 
  protected:
      Envelope* getEnvelope(Envelope::Category category);
