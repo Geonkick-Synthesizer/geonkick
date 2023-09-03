@@ -1,6 +1,6 @@
 
 /**
- * File name: mainwindow.cpp
+ * File name: MainWindow.cpp
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor <http://iuriepage.wordpress.com>
@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "oscillator.h"
 #include "envelope_widget.h"
 #include "oscillator_group_box.h"
@@ -300,7 +300,7 @@ void MainWindow::keyReleaseEvent(RkKeyEvent *event)
         envelopeWidget->hideEnvelope(false);
 }
 
-void MainWindow::shortcutEvent(RkShortcutEvent *event)
+void MainWindow::shortcutEvent(RkKeyEvent *event)
 {
         if (event->key() == Rk::Key::Key_Control_Left)
                 envelopeWidget->setPointEditingMode(true);

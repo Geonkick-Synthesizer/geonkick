@@ -2,7 +2,7 @@
  * File name: RkWidget.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor <http://geontime.com>
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -472,8 +472,9 @@ void RkWidget::keyReleaseEvent(RkKeyEvent *event)
         RK_UNUSED(event);
 }
 
-void RkWidget::shortcutEvent([[maybe_unused]] RkShortcutEvent *event)
+void RkWidget::shortcutEvent(RkKeyEvent *event)
 {
+        RK_UNUSED(event);
 }
 
 void RkWidget::mouseMoveEvent(RkMouseEvent *event)

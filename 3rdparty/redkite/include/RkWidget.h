@@ -35,7 +35,6 @@
 class RkEvent;
 class RkCloseEvent;
 class RkKeyEvent;
-class RkShortcutEvent;
 class RkMouseEvent;
 class RkWheelEvent;
 class RkDropEvent;
@@ -145,7 +144,7 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           virtual void closeEvent(RkCloseEvent *event);
           virtual void keyPressEvent(RkKeyEvent *event);
           virtual void keyReleaseEvent(RkKeyEvent *event);
-          virtual void shortcutEvent(RkShortcutEvent *event);
+          virtual void shortcutEvent(RkKeyEvent *event);
           virtual void mouseMoveEvent(RkMouseEvent *event);
           virtual void mouseButtonPressEvent(RkMouseEvent *event);
           virtual void mouseButtonReleaseEvent(RkMouseEvent *event);

@@ -216,7 +216,7 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
         decltype(eventsQueue) queue = std::move(eventsQueue);
         for (const auto &e: queue) {
                 if (e.second->type() == RkEvent::Type::KeyPressed)
-                        processShortcuts(dynamic_cast<RkKeyEvent*>(e.second.get()), e.first);
+                        processShortcuts(dynamic_cast<RkKeyEvent*>(e.second.get()));
                 if (!popupList.empty() && dynamic_cast<RkWidget*>(e.first))
                         processPopups(dynamic_cast<RkWidget*>(e.first), e.second.get());
                 processEvent(e.first, e.second.get());
@@ -248,9 +248,9 @@ bool RkEventQueue::RkEventQueueImpl::isTopWidget(RkObject *obj) const
         return false;
 }
 
-void RkEventQueue::RkEventQueueImpl::processShortcuts(RkKeyEvent *event, RkObject *excludedObj)
+void RkEventQueue::RkEventQueueImpl::processShortcuts(RkKeyEvent *event)
 {
-        if (!event || !excludedObj) {
+        if (!event) {
                 RK_LOG_ERROR("wrong arguments");
                 return;
         }
@@ -265,13 +265,12 @@ void RkEventQueue::RkEventQueueImpl::processShortcuts(RkKeyEvent *event, RkObjec
         auto res = shortcutsList.find(hashKey);
         if (res != shortcutsList.end()) {
                 for (RkObject* obj : res->second->objects()) {
-                        if (excludedObj != obj) {
-                                auto shurtcutEvent = std::make_unique<RkShortcutEvent>(event->key(),
-                                                                                       static_cast<Rk::KeyModifiers>(event->modifiers()));
-                                auto pair = std::make_pair(obj, std::move(shurtcutEvent));
-                                eventsQueue.push_back(std::move(pair));
-                                processEvent(obj, event);
-                        }
+                        auto shurtcutEvent = std::make_unique<RkKeyEvent>(RkEvent::Type::Shortcut);
+                        shurtcutEvent->setKey(event->key());
+                        shurtcutEvent->setModifiers(event->modifiers());
+                        auto pair = std::make_pair(obj, std::move(shurtcutEvent));
+                        eventsQueue.push_back(std::move(pair));
+                        processEvent(obj, event);
                 }
         } else {
                 RK_LOG_DEBUG("can't find shortcut");

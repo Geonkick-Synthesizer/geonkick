@@ -33,7 +33,6 @@ class GeonkickApi;
 class TopBar;
 class EnvelopeWidget;
 class ControlArea;
-class RkKeyEvent;
 class Limiter;
 
 class MainWindow : public GeonkickWidget
@@ -51,7 +50,7 @@ class MainWindow : public GeonkickWidget
 
  protected:
       void keyReleaseEvent(RkKeyEvent *event) override;
-      void shortcutEvent(RkShortcutEvent *event) override;
+      void shortcutEvent(RkKeyEvent *event) override;
       void dropEvent(RkDropEvent *event) override;
       void openFileDialog(FileDialog::Type type);
       void openPreset(const std::string &fileName);

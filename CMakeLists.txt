@@ -120,7 +120,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/preset_browser_view.h
   ${GKICK_COMMON_DIR}/MidiKeyWidget.h
   ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
-  ${GKICK_COMMON_DIR}/mainwindow.h)
+  ${GKICK_COMMON_DIR}/MainWindow.h)
 
 set(GKICK_COMMON_SOURCES
   ${GKICK_UTILS_DIR}/base64.cpp
@@ -171,7 +171,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/preset_browser_view.cpp
   ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
   ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
-  ${GKICK_COMMON_DIR}/mainwindow.cpp)
+  ${GKICK_COMMON_DIR}/MainWindow.cpp)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")

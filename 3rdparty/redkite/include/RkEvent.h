@@ -29,7 +29,6 @@
 
 class RkCloseEvent;
 class RkKeyEvent;
-class RkShortcutEvent;
 class RkMouseEvent;
 class RkWheelEvent;
 class RkMoveEvent;
@@ -87,7 +86,7 @@ class RkCloseEvent: public RkEvent {
 	}
 };
 
-class RkKeyEvent: public RkEvent {
+class RK_EXPORT RkKeyEvent: public RkEvent {
    public:
         RkKeyEvent(Type type = Type::KeyPressed)
                 : RkEvent(type)
@@ -110,7 +109,7 @@ class RkKeyEvent: public RkEvent {
         int keyModifiers;
 };
 
-class RkMouseEvent: public RkEvent {
+class RK_EXPORT RkMouseEvent: public RkEvent {
   public:
 
         enum class ButtonType : int {
@@ -219,17 +218,6 @@ class RkScaleFactorEvent: public RkEvent {
       double factor() const { return scaleFactor; }
  private:
       double scaleFactor;
-};
-
-class RkShortcutEvent: public RkKeyEvent {
- public:
-        RkShortcutEvent(Rk::Key key,
-                        Rk::KeyModifiers modifier = Rk::KeyModifiers::NoModifier)
-                : RkKeyEvent(RkEvent::Type::Shortcut)
-        {
-                setKey(key);
-                setModifiers(static_cast<int>(modifier));
-        }
 };
 
 #endif // RK_EVENT_H

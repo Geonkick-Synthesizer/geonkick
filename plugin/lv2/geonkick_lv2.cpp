@@ -30,7 +30,7 @@
 #include <lv2/lv2plug.in/ns/ext/instance-access/instance-access.h>
 #include <lv2/lv2plug.in/ns/ext/state/state.h>
 
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "geonkick_api.h"
 #include "kit_state.h"
 #include "GeonkickConfig.h"

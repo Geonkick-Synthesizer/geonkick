@@ -68,7 +68,7 @@ class RkEventQueue::RkEventQueueImpl {
         void setScaleFactor(double factor);
 
  protected:
-        void processShortcuts(RkKeyEvent *event, RkObject *excludedObj);
+        void processShortcuts(RkKeyEvent *event);
         void processPopups(RkWidget *widget, RkEvent* event);
         void removeObjectShortcuts(RkObject *obj);
         bool isTopWidget(RkObject *obj) const;

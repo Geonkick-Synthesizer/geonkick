@@ -53,7 +53,7 @@ class KitWidget: public GeonkickWidget
         void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
-        void keyPressEvent(RkKeyEvent *event);
+        void keyPressEvent(RkKeyEvent *event) override;
         void onUpdateLevelers();
         void exportKitDialog();
 

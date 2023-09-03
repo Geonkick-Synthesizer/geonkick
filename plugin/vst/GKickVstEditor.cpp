@@ -22,7 +22,7 @@
  */
 
 #include "geonkick_api.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "GKickVstEditor.h"
 
 #include <RkPlatform.h>

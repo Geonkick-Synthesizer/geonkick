@@ -19,6 +19,8 @@
 #include "fstrdefs.h"
 
 #include <cstdio>
+#include <cstdint>
+#include <atomic>
 
 #if SMTG_OS_WINDOWS
 #include <objbase.h>
@@ -88,7 +90,7 @@ namespace FUnknownPrivate {
 int32 PLUGIN_API atomicAdd (int32& var, int32 d)
 {
 #if SMTG_USE_STDATOMIC_H
-	return atomic_fetch_add (reinterpret_cast<atomic_int_least32_t*> (&var), d) + d;
+	return atomic_fetch_add (reinterpret_cast<std::atomic<std::int_least32_t>*> (&var), d) + d;
 #else
 #if SMTG_OS_WINDOWS
 #ifdef __MINGW32__
