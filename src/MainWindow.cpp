@@ -294,52 +294,56 @@ void MainWindow::openFileDialog(FileDialog::Type type)
         }
 }
 
-void MainWindow::keyReleaseEvent(RkKeyEvent *event)
-{
-        envelopeWidget->setPointEditingMode(false);
-        envelopeWidget->hideEnvelope(false);
-}
-
 void MainWindow::shortcutEvent(RkKeyEvent *event)
 {
-        if (event->key() == Rk::Key::Key_Control_Left)
-                envelopeWidget->setPointEditingMode(true);
+        if (event->type() == RkEvent::Type::KeyPressed) {
+                if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                    && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
+                        geonkickApi->playKick();
+                } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                           && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
+                        resetToDefault();
+                } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                           && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
+                        openFileDialog(FileDialog::Type::Open);
+                } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                           && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
+                        openFileDialog(FileDialog::Type::Save);
+                } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                           && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
+                        openExportDialog();
+                } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                           && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
+                        geonkickApi->copyToClipboard();
+                } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                           && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
+                        geonkickApi->pasteFromClipboard();
+                        geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
+                        updateGui();
+                } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                           && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
+                        setScaleFactor((scaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
+                        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+                        updateGui();
+                        GeonkickConfig config;
+                        config.setScaleFactor(scaleFactor());
+                        config.save();
+                        action onScaleFactor(scaleFactor());
+                }
 
-        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-            && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
-                geonkickApi->playKick();
-        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                   && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
-                resetToDefault();
-        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                   && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H)) {
-                envelopeWidget->hideEnvelope(true);
-        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                   && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
-                openFileDialog(FileDialog::Type::Open);
-        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                   && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
-                openFileDialog(FileDialog::Type::Save);
-        } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                   && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
-                openExportDialog();
-        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
-                   && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
-                geonkickApi->copyToClipboard();
-        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
-                   && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
-                geonkickApi->pasteFromClipboard();
-                geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
-                updateGui();
-        } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
-                   && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
-                setScaleFactor((scaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
-                setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
-                updateGui();
-                GeonkickConfig config;
-                config.setScaleFactor(scaleFactor());
-                config.save();
-                action onScaleFactor(scaleFactor());
+                if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control_Left))
+                        envelopeWidget->setPointEditingMode(true);
+
+                if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
+                    && (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H))
+                        envelopeWidget->hideEnvelope(true);
+        } else {
+                if (!(event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control_Left)))
+                        envelopeWidget->setPointEditingMode(false);
+
+                if (!(event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                      || (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H))
+                        envelopeWidget->hideEnvelope(false);
         }
 }
 

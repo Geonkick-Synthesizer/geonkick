@@ -1,16 +1,18 @@
 ### Version 2.10.0
 
-#### Bug fix
+#### New features
+
+- set manually the exact value of envelope points
+
+#### Fixes
 
 - fix conversion from frequency to note (more fixes)
+- fix shortcut for hide/show envelope
 
 #### Improvements
 
 - improve the precision for saving into presets
 
-#### New features
-
-- set manually the exact value of envelope points
 
 ### Version 2.9.2
 

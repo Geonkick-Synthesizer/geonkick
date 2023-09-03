@@ -60,9 +60,8 @@ class RK_EXPORT RkEvent {
                 FocusedIn = 15,
                 FocusedOut = 16,
                 Hover = 17,
-                Shortcut = 18,
-                Drop = 19,
-                ScaleFactor = 20
+                Drop = 18,
+                ScaleFactor = 19
       };
 
         explicit RkEvent(Type type = Type::NoEvent)
@@ -92,6 +91,7 @@ class RK_EXPORT RkKeyEvent: public RkEvent {
                 : RkEvent(type)
                 , keyValue{Rk::Key::Key_None}
                 , keyModifiers{0}
+                , typeShortcut{false}
         {
         }
 
@@ -103,10 +103,13 @@ class RK_EXPORT RkKeyEvent: public RkEvent {
         Rk::Key key() const { return keyValue; }
         void setModifiers(int mod) { keyModifiers = mod; }
         int modifiers() const { return keyModifiers; }
+        void setShortcut(bool b = true) { typeShortcut = b; }
+        bool isShortcut() const { return typeShortcut; }
 
  private:
         Rk::Key keyValue;
         int keyModifiers;
+        bool typeShortcut;
 };
 
 class RK_EXPORT RkMouseEvent: public RkEvent {

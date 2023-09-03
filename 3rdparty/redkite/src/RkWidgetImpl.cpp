@@ -158,18 +158,23 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 break;
         case RkEvent::Type::KeyPressed:
                 RK_LOG_DEBUG("RkEvent::Type::KeyPressed: " << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled))
-                        inf_ptr->keyPressEvent(static_cast<RkKeyEvent*>(event));
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled)) {
+                        auto keyEvent = static_cast<RkKeyEvent*>(event);
+                        if (keyEvent->isShortcut())
+                                inf_ptr->shortcutEvent(keyEvent);
+                        else
+                                inf_ptr->keyPressEvent(keyEvent);
+                }
                 break;
         case RkEvent::Type::KeyReleased:
                 RK_LOG_DEBUG("RkEvent::Type::KeyReleased: " << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled))
-                        inf_ptr->keyReleaseEvent(static_cast<RkKeyEvent*>(event));
-                break;
-        case RkEvent::Type::Shortcut:
-                RK_LOG_DEBUG("RkEvent::Type::Shortcut: " << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled))
-                        inf_ptr->shortcutEvent(static_cast<RkKeyEvent*>(event));
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled)) {
+                        auto keyEvent = static_cast<RkKeyEvent*>(event);
+                        if (keyEvent->isShortcut())
+                                inf_ptr->shortcutEvent(keyEvent);
+                        else
+                                inf_ptr->keyReleaseEvent(keyEvent);
+                }
                 break;
         case RkEvent::Type::FocusedIn:
                 RK_LOG_DEBUG("RkEvent::Type::FocsedIn:" << title());

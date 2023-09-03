@@ -79,7 +79,7 @@ class RkEventQueue::RkEventQueueImpl {
         RK_DISABLE_MOVE(RkEventQueueImpl);
         std::unordered_set<RkObject*> objectsList;
         std::unordered_map<unsigned long long int, RkObject*> windowIdsMap;
-        std::unordered_map<unsigned long long int, std::unique_ptr<RkShortcut>> shortcutsList;
+        std::unordered_map<int, std::unique_ptr<RkShortcut>> shortcutsList;
         std::vector<std::pair<RkObject*, std::unique_ptr<RkEvent>>> eventsQueue;
         std::vector<std::unique_ptr<RkAction>> actionsQueue;
         std::unordered_set<RkTimer*> timersList;
