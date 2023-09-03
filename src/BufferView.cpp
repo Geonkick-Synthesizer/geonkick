@@ -2,7 +2,7 @@
  * File name: BufferView.cpp
  * Project: Geonkick (A percussion synthesizer)
 F *
- * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2020 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *

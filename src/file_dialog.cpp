@@ -2,7 +2,7 @@
  * File name: file_dialog.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2019 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *

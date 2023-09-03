@@ -2,7 +2,7 @@
  * File name: export_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2018 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *

@@ -2,7 +2,7 @@
  * File name: percussion_state.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iuri Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2018 Iuri Nistor 
  *
  * This file is part of Geonkick.
  *

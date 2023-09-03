@@ -2,7 +2,7 @@
  * File name: ExportToSfz.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2020 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *

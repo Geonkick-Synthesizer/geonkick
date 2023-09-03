@@ -2,7 +2,7 @@
  * File name: geonkick_api.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2017 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *

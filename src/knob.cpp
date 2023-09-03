@@ -2,7 +2,7 @@
  * File name: knob.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor <http://iuriepage.wordpress.com>
+ * Copyright (C) 2017 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *
