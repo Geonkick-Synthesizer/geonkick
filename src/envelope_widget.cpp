@@ -79,10 +79,11 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelope->setCategory(Envelope::Category::General);
         createButtomMenu();
         showEnvelope(Envelope::Category::General, Envelope::Type::Amplitude);
-
         RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     this, showEnvelope(category, envelope));
+        
+        createPointInfoLabel();
 }
 
 void EnvelopeWidget::createButtomMenu()
@@ -101,7 +102,20 @@ void EnvelopeWidget::createButtomMenu()
         menuContainer->addWidget(layer2Button);
         menuContainer->addSpace(5);
         menuContainer->addWidget(layer3Button);
+}
 
+void EnvelopeWidget::createPointInfoLabel()
+{
+        auto pointInfoLabel = new RkLabel(this);
+        pointInfoLabel->setBackgroundColor(drawArea->background());
+        pointInfoLabel->setTextColor({200, 200, 200});
+        pointInfoLabel->setFixedSize(150, 20);
+        pointInfoLabel->setPosition(drawArea->width() - 160,
+                                    drawArea->y() + drawArea->height() - pointInfoLabel->height() - 6);
+        pointInfoLabel->show();
+        RK_ACT_BIND(drawArea, isOverPoint,
+                    RK_ACT_ARGS(const std::string &info),
+                    pointInfoLabel, setText(info));
 }
 
 void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)

@@ -57,8 +57,10 @@ public:
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
      void setLayer(GeonkickApi::Layer layer);
- private:
      void createButtomMenu();
+     void createPointInfoLabel();
+
+ private:
      std::unordered_map<int, std::shared_ptr<Envelope>> envelopes;
      EnvelopeWidgetDrawingArea *drawArea;
      GeonkickButton *layer1Button;

@@ -62,8 +62,7 @@ void EnvelopePointContextWidget::setFocus()
 
 void EnvelopePointContextWidget::setValue(rk_real val)
 {
-        double factor = std::pow(10, 4);
-        double roundedValue = std::round(val * factor) / factor;
+        double roundedValue = std::round(val * 10000.0) / 10000.0;
         lineEdit->setText(Geonkick::doubleToStr(roundedValue, 4));
         lineEdit->moveCursorToEnd();
 }

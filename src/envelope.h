@@ -93,6 +93,7 @@ class Envelope : public RkObject
                      envelopeUpdated(),
                      RK_ARG_TYPE(),
                      RK_ARG_VAL());
+        std::string getCurrentPointInfo() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -115,7 +116,7 @@ class Envelope : public RkObject
         void setDotRadius(int radius);
         double getLeftPointLimit(void) const;
         double getRightPointLimit(void) const;
-        std::string frequencyToNote(rk_real f);
+        std::string frequencyToNote(rk_real f) const;
         double convertToHumanValue(double val) const;
         double convertFromHumanValue(double val) const;
         bool hasEditingPoint() const;

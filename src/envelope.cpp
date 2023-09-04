@@ -618,7 +618,7 @@ void Envelope::setDotRadius(int radius)
  * This conversion should comply with this table:
  * https://homes.luddy.indiana.edu/donbyrd/Teach/MusicalPitchesTable.htm
  */
-std::string Envelope::frequencyToNote(rk_real f)
+std::string Envelope::frequencyToNote(rk_real f) const
 {
         if (f < 27.500 || f > 13289.752)
                 return "";
@@ -682,4 +682,23 @@ double Envelope::convertFromHumanValue(double val) const
 bool Envelope::hasEditingPoint() const
 {
         return isEditingPoint;
+}
+
+std::string Envelope::getCurrentPointInfo() const
+{
+        if (!hasSelected() && !hasOverPoint() )
+                return std::string();
+
+        auto val = getSelectedPointValue();
+        double roundedValue = std::round(val * 10000.0) / 10000.0;
+        std::string info = Geonkick::doubleToStr(roundedValue, 4);
+        switch (type()) {
+        case Type::Frequency:
+        case Type::FilterCutOff:
+                info += "Hz " + frequencyToNote(val);
+                break;
+        default:
+                break;
+        }
+        return info;
 }

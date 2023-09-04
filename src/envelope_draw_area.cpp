@@ -49,15 +49,11 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
                     this, updateKickGraph(graphImage));
 }
 
-EnvelopeWidgetDrawingArea::~EnvelopeWidgetDrawingArea()
-{
-}
-
 void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
                 currentEnvelope = envelope;
-                update();
+                envelopeUpdated();
         }
 }
 
@@ -131,7 +127,7 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(RkMouseEvent *event)
         if (event->button() == RkMouseEvent::ButtonType::Right) {
                 if (currentEnvelope) {
                         currentEnvelope->removePoint(point);
-                        update();
+                        envelopeUpdated();
                 }
         } else {
                 mousePoint.setX(event->x());
@@ -139,7 +135,7 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(RkMouseEvent *event)
                 if (currentEnvelope) {
                         currentEnvelope->selectPoint(point);
                         if (currentEnvelope->hasSelected())
-                                update();
+                                envelopeUpdated();
                 }
         }
         setFocus(true);
@@ -160,7 +156,7 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(RkMouseEvent *event)
                 toUpdate = true;
 
         if (toUpdate)
-                update();
+                envelopeUpdated();
 }
 
 void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
@@ -184,7 +180,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
                 } else {
                         currentEnvelope->addPoint(point);
                         currentEnvelope->selectPoint(point);
-                        update();
+                        envelopeUpdated();
                 }
         }
 }
@@ -199,18 +195,19 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
-                update();
+                envelopeUpdated();
 		return;
         }
 
 	auto overPoint = currentEnvelope->hasOverPoint();
         currentEnvelope->overPoint(point);
 	if (overPoint != currentEnvelope->hasOverPoint())
-		update();
+                envelopeUpdated();
 }
 
 void EnvelopeWidgetDrawingArea::envelopeUpdated()
 {
+        action isOverPoint(currentEnvelope->getCurrentPointInfo());
         update();
 }
 
