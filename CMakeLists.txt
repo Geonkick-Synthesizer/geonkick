@@ -78,105 +78,107 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 #set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
-  ${GKICK_UTILS_DIR}/base64.h
-  ${GKICK_COMMON_DIR}/GeonkickConfig.h
-  ${GKICK_COMMON_DIR}/UiSettings.h
-  ${GKICK_COMMON_DIR}/ViewState.h
-  ${GKICK_COMMON_DIR}/geonkick_slider.h
-  ${GKICK_COMMON_DIR}/geonkick_button.h
-  ${GKICK_COMMON_DIR}/PathListModel.h
-  ${GKICK_COMMON_DIR}/file_dialog.h
-  ${GKICK_COMMON_DIR}/SampleBrowser.h
-  ${GKICK_COMMON_DIR}/filter.h
-  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
-  ${GKICK_COMMON_DIR}/top_bar.h
-  ${GKICK_COMMON_DIR}/control_area.h
-  ${GKICK_COMMON_DIR}/controls_widget.h
-  ${GKICK_COMMON_DIR}/percussion_model.h
-  ${GKICK_COMMON_DIR}/kit_model.h
-  ${GKICK_COMMON_DIR}/percussion_view.h
-  ${GKICK_COMMON_DIR}/kit_widget.h
-  ${GKICK_COMMON_DIR}/envelope_draw_area.h
-  ${GKICK_COMMON_DIR}/limiter.h
-  ${GKICK_COMMON_DIR}/general_envelope.h
-  ${GKICK_COMMON_DIR}/effects_group_box.h
-  ${GKICK_COMMON_DIR}/compressor_group_box.h
-  ${GKICK_COMMON_DIR}/distortion_group_box.h
-  ${GKICK_COMMON_DIR}/layers_group_box.h
-  ${GKICK_COMMON_DIR}/general_group_box.h
-  ${GKICK_COMMON_DIR}/envelope.h
-  ${GKICK_COMMON_DIR}/BufferView.h
-  ${GKICK_COMMON_DIR}/kick_graph.h
-  ${GKICK_COMMON_DIR}/envelope_widget.h
-  ${GKICK_COMMON_DIR}/knob.h
-  ${GKICK_COMMON_DIR}/oscillator.h
+#  ${GKICK_UTILS_DIR}/base64.h
+#  ${GKICK_COMMON_DIR}/GeonkickConfig.h
+#  ${GKICK_COMMON_DIR}/UiSettings.h
+#  ${GKICK_COMMON_DIR}/ViewState.h
+#  ${GKICK_COMMON_DIR}/geonkick_slider.h
+#  ${GKICK_COMMON_DIR}/geonkick_button.h
+#  ${GKICK_COMMON_DIR}/PathListModel.h
+#  ${GKICK_COMMON_DIR}/file_dialog.h
+#  ${GKICK_COMMON_DIR}/SampleBrowser.h
+#  ${GKICK_COMMON_DIR}/filter.h
+#  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
+#  ${GKICK_COMMON_DIR}/top_bar.h
+#  ${GKICK_COMMON_DIR}/control_area.h
+#  ${GKICK_COMMON_DIR}/controls_widget.h
+#  ${GKICK_COMMON_DIR}/percussion_model.h
+#  ${GKICK_COMMON_DIR}/kit_model.h
+#  ${GKICK_COMMON_DIR}/percussion_view.h
+#  ${GKICK_COMMON_DIR}/kit_widget.h
+#  ${GKICK_COMMON_DIR}/envelope_draw_area.h
+#  ${GKICK_COMMON_DIR}/limiter.h
+#  ${GKICK_COMMON_DIR}/general_envelope.h
+#  ${GKICK_COMMON_DIR}/effects_group_box.h
+#  ${GKICK_COMMON_DIR}/compressor_group_box.h
+#  ${GKICK_COMMON_DIR}/distortion_group_box.h
+#  ${GKICK_COMMON_DIR}/layers_group_box.h
+#  ${GKICK_COMMON_DIR}/general_group_box.h
+#  ${GKICK_COMMON_DIR}/envelope.h
+#  ${GKICK_COMMON_DIR}/BufferView.h
+#  ${GKICK_COMMON_DIR}/kick_graph.h
+#  ${GKICK_COMMON_DIR}/envelope_widget.h
+#  ${GKICK_COMMON_DIR}/knob.h
+#  ${GKICK_COMMON_DIR}/oscillator.h
   ${GKICK_COMMON_DIR}/geonkick_api.h
-  ${GKICK_COMMON_DIR}/percussion_state.h
-  ${GKICK_COMMON_DIR}/kit_state.h
-  ${GKICK_COMMON_DIR}/oscillator_envelope.h
-  ${GKICK_COMMON_DIR}/oscillator_group_box.h
-  ${GKICK_COMMON_DIR}/ExportAbstract.h
-  ${GKICK_COMMON_DIR}/ExportSoundData.h
-  ${GKICK_COMMON_DIR}/ExportToSfz.h
-  ${GKICK_COMMON_DIR}/export_widget.h
-  ${GKICK_COMMON_DIR}/preset.h
-  ${GKICK_COMMON_DIR}/preset_folder.h
-  ${GKICK_COMMON_DIR}/preset_browser_model.h
-  ${GKICK_COMMON_DIR}/preset_browser_view.h
-  ${GKICK_COMMON_DIR}/MidiKeyWidget.h
-  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
-  ${GKICK_COMMON_DIR}/MainWindow.h)
+#  ${GKICK_COMMON_DIR}/percussion_state.h
+#  ${GKICK_COMMON_DIR}/kit_state.h
+#  ${GKICK_COMMON_DIR}/oscillator_envelope.h
+#  ${GKICK_COMMON_DIR}/oscillator_group_box.h
+#  ${GKICK_COMMON_DIR}/ExportAbstract.h
+#  ${GKICK_COMMON_DIR}/ExportSoundData.h
+#  ${GKICK_COMMON_DIR}/ExportToSfz.h
+#  ${GKICK_COMMON_DIR}/export_widget.h
+#  ${GKICK_COMMON_DIR}/preset.h
+#  ${GKICK_COMMON_DIR}/preset_folder.h
+#  ${GKICK_COMMON_DIR}/preset_browser_model.h
+#  ${GKICK_COMMON_DIR}/preset_browser_view.h
+#  ${GKICK_COMMON_DIR}/MidiKeyWidget.h
+#  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
+#  ${GKICK_COMMON_DIR}/MainWindow.h
+)
 
 set(GKICK_COMMON_SOURCES
-  ${GKICK_UTILS_DIR}/base64.cpp
-  ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
-  ${GKICK_COMMON_DIR}/UiSettings.cpp
-  ${GKICK_COMMON_DIR}/ViewState.cpp
-  ${GKICK_COMMON_DIR}/geonkick_widget.cpp
-  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
-  ${GKICK_COMMON_DIR}/geonkick_button.cpp
-  ${GKICK_COMMON_DIR}/PathListModel.cpp
-  ${GKICK_COMMON_DIR}/file_dialog.cpp
-  ${GKICK_COMMON_DIR}/SampleBrowser.cpp
-  ${GKICK_COMMON_DIR}/filter.cpp
-  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
-  ${GKICK_COMMON_DIR}/top_bar.cpp
-  ${GKICK_COMMON_DIR}/control_area.cpp
-  ${GKICK_COMMON_DIR}/controls_widget.cpp
-  ${GKICK_COMMON_DIR}/percussion_model.cpp
-  ${GKICK_COMMON_DIR}/kit_model.cpp
-  ${GKICK_COMMON_DIR}/percussion_view.cpp
-  ${GKICK_COMMON_DIR}/kit_widget.cpp
-  ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
-  ${GKICK_COMMON_DIR}/limiter.cpp
-  ${GKICK_COMMON_DIR}/general_envelope.cpp
-  ${GKICK_COMMON_DIR}/effects_group_box.cpp
-  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
-  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
-  ${GKICK_COMMON_DIR}/layers_group_box.cpp
-  ${GKICK_COMMON_DIR}/general_group_box.cpp
-  ${GKICK_COMMON_DIR}/envelope.cpp
-  ${GKICK_COMMON_DIR}/BufferView.cpp
-  ${GKICK_COMMON_DIR}/kick_graph.cpp
-  ${GKICK_COMMON_DIR}/envelope_widget.cpp
-  ${GKICK_COMMON_DIR}/knob.cpp
-  ${GKICK_COMMON_DIR}/oscillator.cpp
+#  ${GKICK_UTILS_DIR}/base64.cpp
+#  ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
+#  ${GKICK_COMMON_DIR}/UiSettings.cpp
+#  ${GKICK_COMMON_DIR}/ViewState.cpp
+#  ${GKICK_COMMON_DIR}/geonkick_widget.cpp
+#  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
+#  ${GKICK_COMMON_DIR}/geonkick_button.cpp
+#  ${GKICK_COMMON_DIR}/PathListModel.cpp
+#  ${GKICK_COMMON_DIR}/file_dialog.cpp
+#  ${GKICK_COMMON_DIR}/SampleBrowser.cpp
+#  ${GKICK_COMMON_DIR}/filter.cpp
+#  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
+#  ${GKICK_COMMON_DIR}/top_bar.cpp
+#  ${GKICK_COMMON_DIR}/control_area.cpp
+#  ${GKICK_COMMON_DIR}/controls_widget.cpp
+#  ${GKICK_COMMON_DIR}/percussion_model.cpp
+#  ${GKICK_COMMON_DIR}/kit_model.cpp
+#  ${GKICK_COMMON_DIR}/percussion_view.cpp
+#  ${GKICK_COMMON_DIR}/kit_widget.cpp
+#  ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
+#  ${GKICK_COMMON_DIR}/limiter.cpp
+#  ${GKICK_COMMON_DIR}/general_envelope.cpp
+#  ${GKICK_COMMON_DIR}/effects_group_box.cpp
+#  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
+#  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
+#  ${GKICK_COMMON_DIR}/layers_group_box.cpp
+#  ${GKICK_COMMON_DIR}/general_group_box.cpp
+#  ${GKICK_COMMON_DIR}/envelope.cpp
+#  ${GKICK_COMMON_DIR}/BufferView.cpp
+#  ${GKICK_COMMON_DIR}/kick_graph.cpp
+#  ${GKICK_COMMON_DIR}/envelope_widget.cpp
+#  ${GKICK_COMMON_DIR}/knob.cpp
+#  ${GKICK_COMMON_DIR}/oscillator.cpp
   ${GKICK_COMMON_DIR}/geonkick_api.cpp
-  ${GKICK_COMMON_DIR}/percussion_state.cpp
-  ${GKICK_COMMON_DIR}/kit_state.cpp
-  ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
-  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
-  ${GKICK_COMMON_DIR}/export_widget.cpp
-  ${GKICK_COMMON_DIR}/ExportAbstract.cpp
-  ${GKICK_COMMON_DIR}/ExportSoundData.cpp
-  ${GKICK_COMMON_DIR}/ExportToSfz.cpp
-  ${GKICK_COMMON_DIR}/preset.cpp
-  ${GKICK_COMMON_DIR}/preset_folder.cpp
-  ${GKICK_COMMON_DIR}/preset_browser_model.cpp
-  ${GKICK_COMMON_DIR}/preset_browser_view.cpp
-  ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
-  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
-  ${GKICK_COMMON_DIR}/MainWindow.cpp)
+#  ${GKICK_COMMON_DIR}/percussion_state.cpp
+#  ${GKICK_COMMON_DIR}/kit_state.cpp
+#  ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
+#  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
+#  ${GKICK_COMMON_DIR}/export_widget.cpp
+#  ${GKICK_COMMON_DIR}/ExportAbstract.cpp
+#  ${GKICK_COMMON_DIR}/ExportSoundData.cpp
+#  ${GKICK_COMMON_DIR}/ExportToSfz.cpp
+#  ${GKICK_COMMON_DIR}/preset.cpp
+#  ${GKICK_COMMON_DIR}/preset_folder.cpp
+#  ${GKICK_COMMON_DIR}/preset_browser_model.cpp
+#  ${GKICK_COMMON_DIR}/preset_browser_view.cpp
+#  ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
+#  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
+#  ${GKICK_COMMON_DIR}/MainWindow.cpp
+)
 
 #if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 #    message(STATUS "Enable application logging")
@@ -245,20 +247,22 @@ add_subdirectory(dsp)
 #add_subdirectory(${GKICK_REDKITE_DIR})
 #include(${GKICK_RC_DIR}/resources.rc)
 
-#include_directories(${GKICK_COMMON_DIR})
+include_directories(${GKICK_COMMON_DIR})
 #link_directories(${REDKITE_LIBRARY_DIR})
-#add_library(geonkick_common STATIC
-#  ${GKICK_COMMON_HEADERS}
-#  ${GKICK_COMMON_SOURCES}
-#  ${GKICK_RESOURCES})
+add_library(geonkick_common STATIC
+  ${GKICK_COMMON_HEADERS}
+  ${GKICK_COMMON_SOURCES}
+#  ${GKICK_RESOURCES}
+)
 
-#if (GKICK_PLUGIN)
-#    add_library(geonkick_common_single STATIC
-#      ${GKICK_COMMON_HEADERS}
-#      ${GKICK_COMMON_SOURCES}
-#      ${GKICK_RESOURCES})
-#    target_compile_options(geonkick_common_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
-#endif(GKICK_PLUGIN)
+if (GKICK_PLUGIN)
+    add_library(geonkick_common_single STATIC
+      ${GKICK_COMMON_HEADERS}
+      ${GKICK_COMMON_SOURCES}
+#      ${GKICK_RESOURCES}
+      )
+    target_compile_options(geonkick_common_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
+endif(GKICK_PLUGIN)
 
 message(STATUS "------------ Summary ---------")
 #if (GKICK_STANDALONE)
@@ -295,11 +299,10 @@ message(STATUS "------------ Summary ---------")
 #endif (GKICK_STANDALONE)
 
 if (GKICK_PLUGIN)
-#  add_subdirectory(plugin)
+  add_subdirectory(plugin)
   if (GKICK_PLUGIN_VST)
-    message(STATUS "-------------- ADD subdirectory GKICK_VST_SDK_PATH ----------------")
       add_subdirectory(${GKICK_VST_SDK_PATH})
-  endif(GKICK_PLUGIN_VST)
+   endif(GKICK_PLUGIN_VST)
 endif (GKICK_PLUGIN)
 
 #add_subdirectory(data)

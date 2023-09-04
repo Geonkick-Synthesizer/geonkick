@@ -25,7 +25,7 @@
 #define GEONKICK_GLOBALS_H
 
 #include "geonkick.h"
-#include "RkLog.h"
+//#include "RkLog.h"
 
 #include <iostream>
 #include <string>
@@ -44,7 +44,7 @@
 #include <iomanip>
 #include <math.h>
 
-#include <RkObject.h>
+//#include <RkObject.h>
 
 #ifdef RK_LOG_DEBUG_LEVEL
 #define GEONKICK_LOG_INFO(msg) std::cout << "[" << GEONKICK_NAME << "] " \

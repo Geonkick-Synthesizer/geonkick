@@ -95,7 +95,7 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
 tresult PLUGIN_API
 GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
-        auto data = geonkickApi->getKitState()->toJson();
+        //auto data = geonkickApi->getKitState()->toJson();
         geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
                                                     GeonkickApi::InstanceType::Vst3);
         if (!geonkickApi->init()) {
@@ -103,9 +103,9 @@ GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
                 GEONKICK_LOG_ERROR("can't init Geonkick API");
                 return kResultFalse;
         }
-        geonkickApi->setKitState(data);
-        geonkickApi->notifyUpdateGui();
-        geonkickApi->notifyKitUpdated();
+        //geonkickApi->setKitState(data);
+        //geonkickApi->notifyUpdateGui();
+        //geonkickApi->notifyKitUpdated();
         return Vst::SingleComponentEffect::setupProcessing(setup);
 }
 
@@ -213,9 +213,9 @@ GKickVstProcessor::setState(IBStream* state)
                 GEONKICK_LOG_ERROR("error on reading the state");
                 return kResultFalse;
         }
-        geonkickApi->setKitState(data);
-        geonkickApi->notifyUpdateGui();
-        geonkickApi->notifyKitUpdated();
+        //        geonkickApi->setKitState(data);
+        //        geonkickApi->notifyUpdateGui();
+        //        geonkickApi->notifyKitUpdated();
         return kResultOk;
 }
 
@@ -228,16 +228,16 @@ GKickVstProcessor::getState(IBStream* state)
         }
 
         int32 nBytes = 0;
-        auto data = geonkickApi->getKitState()->toJson();
-        if (state->write(data.data(), data.size(), &nBytes) == kResultFalse) {
-                GEONKICK_LOG_ERROR("error on saving the state");
-                return kResultFalse;
-        }
+        //        auto data = geonkickApi->getKitState()->toJson();
+        // if (state->write(data.data(), data.size(), &nBytes) == kResultFalse) {
+        //        GEONKICK_LOG_ERROR("error on saving the state");
+        //        return kResultFalse;
+        //}
 
-        if (static_cast<decltype(nBytes)>(data.size()) != nBytes) {
-                GEONKICK_LOG_ERROR("error on saving the state");
-                return kResultFalse;
-        }
+        // if (static_cast<decltype(nBytes)>(data.size()) != nBytes) {
+        //        GEONKICK_LOG_ERROR("error on saving the state");
+        //        return kResultFalse;
+        //}
         return kResultOk;
 }
 

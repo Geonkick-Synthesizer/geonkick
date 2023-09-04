@@ -26,7 +26,7 @@
 #include "GKickVstEditor.h"
 
 //#include <RkPlatform.h>
-#include <RkMain.h>
+//#include <RkMain.h>
 
 GKickVstTimer::GKickVstTimer(/*RkMain *app*/)
 //        : guiApp{app}
@@ -51,9 +51,8 @@ GKickVstEditor::GKickVstEditor(Vst::EditController *controller, GeonkickApi *api
 }
 
 tresult PLUGIN_API
-GKickVstEditor::isPlatformTypeSupported(Steinberg::FIDString type)
+GKickVstEditor::isPlatformTypeSupported([[maybe_unused]]Steinberg::FIDString type)
 {
-        RK_UNUSED(type);
         return kResultTrue;
 }
 
@@ -84,7 +83,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
                 GEONKICK_LOG_INFO("can't get loop");
                 return kResultFalse;
                 }*/
-        return return kResultFalse;//Vst::EditorView::attached(parent, type);
+        return kResultFalse;//Vst::EditorView::attached(parent, type);
 }
 
 tresult PLUGIN_API
