@@ -35,7 +35,7 @@
 #define gkickFileDescription	gkickPluginName" Geonkick"
 #endif
 #define gkickCompanyName	"Geonkick"
-#define gkickCompanyWeb		"http://iurienistor.wordpress.com"
+#define gkickCompanyWeb		"http://geonkick.gitlab.io"
 #define gkickCompanyEmail	""
 #define gkickLegalCopyright	"Copyright (C) 2020 Iurie Nistor"
 #define gkickLegalTrademarks	"Licence GPLv3"
