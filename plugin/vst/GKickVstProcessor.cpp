@@ -22,7 +22,7 @@
  */
 
 #include "GKickVstProcessor.h"
-#include "GKickVstEditor.h"
+//#include "GKickVstEditor.h"
 #include "VstIds.h"
 
 #include "base/source/fstreamer.h"
@@ -31,7 +31,7 @@
 #include "pluginterfaces/vst/ivstevents.h"
 
 #include "geonkick_api.h"
-#include "kit_state.h"
+//#include "kit_state.h"
 
 bool ModuleEntry (void*)
 {
@@ -72,8 +72,9 @@ GKickVstProcessor::initialize(FUnknown* context)
         auto nChannels = GeonkickApi::numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
                 std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
-                std::u16string str16 = convert.from_bytes(std::string("Out" + std::to_string(i)));
-                addAudioOutput(str16.c_str(), Vst::SpeakerArr::kStereo);
+                //std::u16string str16 = convert.from_bytes(std::string("Out" + std::to_string(i)));
+                std::wstring outStr(std::wstring(L"Out" + std::to_wstring(i)));// = convert.from_bytes(std::string("Out" + std::to_string(i)));
+                addAudioOutput(outStr.c_str(), Vst::SpeakerArr::kStereo);
         }
         addEventInput(STR16("MIDI in"), 1);
         channelsBuffers = std::vector<float*>(2 * nChannels, nullptr);
@@ -244,8 +245,8 @@ GKickVstProcessor::getState(IBStream* state)
 IPlugView* PLUGIN_API
 GKickVstProcessor::createView(FIDString name)
 {
-        if (geonkickApi && name && std::string(name) == std::string("editor"))
-                return static_cast<IPlugView*>(new GKickVstEditor(this, geonkickApi.get()));
+        //        if (geonkickApi && name && std::string(name) == std::string("editor"))
+        //                return static_cast<IPlugView*>(new GKickVstEditor(this, geonkickApi.get()));
         return nullptr;
 }
 

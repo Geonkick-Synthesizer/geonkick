@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.7)
 
 project(geonkick VERSION 2.10.0)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_SYSTEM_NAME Windows)
 #set(CMAKE_C_COMPILER /usr/bin/x86_64-w64-mingw32-gcc)
 #set(CMAKE_CXX_COMPILER /usr/bin/x86_64-w64-mingw32-g++)
@@ -32,10 +32,10 @@ endif ()
 
 if (GKICK_ARCHITECTURE MATCHES x86_64)
   message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
-  set(GKICK_OPTIMISATION_FLAGS "-O3 -msse -msse2 -mfpmath=sse -ffast-math -fomit-frame-pointer")
+  set(GKICK_OPTIMISATION_FLAGS "-O3 -m64 -msse -msse2 -mfpmath=sse -ffast-math -fomit-frame-pointer")
 else ()
   message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
-  set(GKICK_OPTIMISATION_FLAGS "-O3 -ffast-math -fomit-frame-pointer")
+  set(GKICK_OPTIMISATION_FLAGS "-O3 -m64 -ffast-math -fomit-frame-pointer")
 endif ()
 
 set(CMAKE_CXX_STANDARD 17)
