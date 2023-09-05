@@ -24,10 +24,10 @@
 #ifndef GEONKICK_PLUGIN_VST_PROCESSOR_H
 #define GEONKICK_PLUGIN_VST_PROCESSOR_H
 
-#include "globals.h"
+//#include "globals.h"
 #include "public.sdk/source/vst/vstsinglecomponenteffect.h"
 
-#ifdef __cplusplus
+/*#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -37,9 +37,9 @@ __attribute__((visibility("default"))) bool ModuleExit (void);
 
 #ifdef __cplusplus
 }
-#endif
+#endif*/
 
-class GeonkickApi;
+//class GeonkickApi;
 
 using namespace Steinberg;
 
@@ -62,7 +62,7 @@ class GKickVstProcessor : public Vst::SingleComponentEffect {
         tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE;
 
   protected:
-        std::unique_ptr<GeonkickApi> geonkickApi;
+        //std::unique_ptr<GeonkickApi> geonkickApi;
         std::vector<float*> channelsBuffers;
 };
 

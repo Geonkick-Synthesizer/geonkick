@@ -1706,7 +1706,7 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
 
 void GeonkickApi::setupPaths()
 {
-        std::filesystem::path dataPath;
+        /*        std::filesystem::path dataPath;
         const char *dataHome = std::getenv("XDG_DATA_HOME");
         if (dataHome == nullptr || *dataHome == '\0') {
                 const char *homeDir = std::getenv("HOME");
@@ -1741,7 +1741,7 @@ void GeonkickApi::setupPaths()
                 setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", presetsPath);
         } catch(const std::exception& e) {
                 GEONKICK_LOG_ERROR("error on setup user data paths: " << e.what());
-        }
+                }*/
 }
 
 /*PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
