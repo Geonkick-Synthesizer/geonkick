@@ -24,10 +24,12 @@
 #ifndef GEONKICK_PLUGIN_VST_PROCESSOR_H
 #define GEONKICK_PLUGIN_VST_PROCESSOR_H
 
-//#include "globals.h"
+#include "globals.h"
 #include "public.sdk/source/vst/vstsinglecomponenteffect.h"
 
-/*#ifdef __cplusplus
+
+#ifdef GEONKICK_OS_GNU
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -37,7 +39,8 @@ __attribute__((visibility("default"))) bool ModuleExit (void);
 
 #ifdef __cplusplus
 }
-#endif*/
+#endif
+#endif // GEONKICK_OS_GNU
 
 //class GeonkickApi;
 

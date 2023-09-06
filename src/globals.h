@@ -89,17 +89,17 @@ namespace Geonkick
 
         constexpr double truncateDouble(double val, unsigned int precision)
         {
-                double n = std::pow(10, precision);
-                return std::trunc(val * n) / n;
+            //double n = std::pow(10, precision);
+            return 0;// std::trunc(val * n) / n;
         }
 
         inline std::string doubleToStr(double val, unsigned int precision)
         {
-                std::stringstream ss;
-                ss << std::fixed
-                   << std::setprecision(precision)
-                   << truncateDouble(val, precision);
-                return ss.str();
+               // std::stringstream ss;
+               // ss << std::fixed
+               //    << std::setprecision(precision)
+               //    << truncateDouble(val, precision);
+            return "";// ss.str();
         }
 
 } // namespace Geonkick
