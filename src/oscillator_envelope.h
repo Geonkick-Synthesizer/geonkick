@@ -33,7 +33,7 @@ class OscillatorEnvelope: public Envelope
  public:
 
   OscillatorEnvelope(Oscillator* osc, const RkRect &area);
-  double envelopeLengh(void) const;
+  double envelopeLength(void) const;
   Oscillator* getOscillator() const;
 
  protected:

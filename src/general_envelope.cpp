@@ -51,7 +51,7 @@ void GeneralEnvelope::pointRemovedEvent(unsigned int index)
         geonkickApi->removeKickEnvelopePoint(type(), index);
 }
 
-double GeneralEnvelope::envelopeLengh(void) const
+double GeneralEnvelope::envelopeLength(void) const
 {
         return geonkickApi->kickLength();
 }

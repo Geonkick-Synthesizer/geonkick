@@ -53,7 +53,7 @@ class Envelope : public RkObject
         virtual ~Envelope() = default;
         int W(void) const;
         int H(void) const;
-        virtual double envelopeLengh(void) const { return 0;}
+        virtual double envelopeLength(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
         RkPoint getOrigin(void) const;
         void draw(RkPainter &painter, DrawLayer layer);
@@ -62,6 +62,7 @@ class Envelope : public RkObject
         bool hasOverPoint() const;
         void selectPoint(const RkPoint &point);
         double getSelectedPointValue() const;
+        RkRealPoint getSelectedPoint() const;
         void updateSelectedPointValue(double val);
         void setEditCurrentPoint(bool edit = true);
         void unselectPoint(void);

@@ -57,7 +57,7 @@ void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
 
 }
 
-double OscillatorEnvelope::envelopeLengh(void) const
+double OscillatorEnvelope::envelopeLength(void) const
 {
         return oscillator->envelopeLength();
 }
