@@ -2,6 +2,8 @@
 
 **Geonkick** - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
 
+Home page: https://geonkick.gitlab.io
+
 Geonkick is a synthesizer capable of producing various percussion elements.
 The most basic examples are: kicks, snares, hi-hats, shakers, claps.
 
@@ -13,11 +15,12 @@ The term "Geon" in the name "Geonkick" refers to a hypothetical particle called 
 
 If you have an idea about a feature or found an issue, please, submit it:
 
-- [on GitLab](https://gitlab.com/iurie-sw/geonkick/issues)
-- [on GitHub](https://github.com/iurie-sw/geonkick/issues)
+- [on GitLab](https://codeberg.com/geonkick/geonkick/issues)
+- [on Codeberg](https://codeberg.org/geonkick/geonkick/issues)
+- [on GitHub](https://github.com/geonkick/geonkick/issues)
 
 If you want your created presets to be added to the list of Geonkick presets, please, create a pull request
-with the preset archive on GitLab or GitHub.
+with the preset archive.
 See the folder "presets" for instructions on creating a preset archive.
 
 ![Screenshot](data/screenshot.png)
@@ -28,9 +31,9 @@ See the folder "presets" for instructions on creating a preset archive.
 
 Source code repository:
 
-https://gitlab.com/iurie-sw/geonkick
-
-Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/tags).
+- https://codeberg.com/geonkick/geonkick
+- https://codeberg.org/geonkick/geonkick
+- https://github.com/geonkick/geonkick
 
 #### Features
 
@@ -78,12 +81,12 @@ Latest releases can be found on [tags](https://gitlab.com/iurie-sw/geonkick/-/ta
 * Preset browser
 * Standalone
 * Pitch to note
-* LV2 Plugin
+* LV2 & VST3 Plugin
      - "Single" version that supports one
        instrument and one stereo channel per instance.
      - The default version that supports kits of 16 instruments
        and 16 output stereo channels per instance.
-* Platforms:
+* Operating System:
      - GNU/Linux
 * Manually scale the UI by factor of 2 (useful for HiDPI cases)
 
@@ -109,8 +112,8 @@ In order to build Geonkick there is a need to install
 the following development packages:
 
 * libsndfile
-* RapidJSON (version >= 1.1)
-* JACK Audio Connection Kit (optional if building only for plugin)
+* RapidJSON
+* JACK Audio Connection Kit (optional if building only plugin)
 * LV2 development library
 
 On Debian, Ubuntu, Ubuntu Studio install:
@@ -126,9 +129,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the Geonkick code repository, compile and install.
 
-Note: Use the release version (see tags).
-
-        git clone https://gitlab.com/iurie-sw/geonkick.git
+        copy the source code of the latest release ([see repository releases](https://gitlab.com/geonkick/geonkick/-/releases))
         mkdir geonkick/build
         cd geonkick/build
         cmake ../
@@ -137,12 +138,9 @@ Note: Use the release version (see tags).
 
 ##### VST3
 
-To build with VST3 support pass GKICK_VST3 to cmake
+To build VST3 plugin pass GKICK_VST3 to cmake
 
     cmake -DGKICK_VST3=ON ../
-
-To build with VST3 there is a need for additional dependencies.
-Check the VST3 SDK documentation.
 
 #### Packages
 
@@ -151,7 +149,7 @@ Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora
 
 ##### Packaging
 
-Please, use only release versions (see the repository tags).
+Please use only release versions ([see repository releases](https://gitlab.com/geonkick/geonkick/-/releases)).
 
 #### Documentation
 

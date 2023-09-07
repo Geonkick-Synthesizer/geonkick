@@ -10,6 +10,8 @@
   * [Percussion envelope area](#percussion-envelope-area)
   * [Envelope points](#envelope-points)
   * [Envelope point label](#envelope-point-label)
+  * [Manually input envelope point value](#manually-input-envelope-point-value)
+  * [Display Current Selected Coordinates of Envelope Point](#display-current-selected-coordinates-of-envelope-point)       
   * [Percussion graph](#percussion-graph)
   * [Percussion preset](#percussion-preset)
   * [Oscillator](#oscillator)
@@ -165,6 +167,25 @@ maps the current frequency to a midi key.
 
 Note: Point keys labels in reality are shown not only for an exact frequency
       but for a frequency region that are close or exact to the particular key.
+
+#### Manually input envelope point value
+
+You can set the value of an envelope point manually with a maximum
+precision of 4 digits after the floating point. To do this:
+
+1. Press `Left Ctrl` and double-click on the envelope point.
+   An input context line edit will be displayed.
+
+2. Enter the desired value and press `Enter`.
+
+3. To cancel, press `Esc` or click outside the line edit widget,
+   which will close this widget.
+
+#### Display Current Selected Coordinates of Envelope Point
+
+The coordinates of the currently hovered or selected envelope point
+are shown in the bottom-right area of the envelope graph as
+both value and time in milliseconds.
 
 #### Percussion graph
 
