@@ -31,7 +31,7 @@ See the folder "presets" for instructions on creating a preset archive.
 
 Source code repository:
 
-- https://codeberg.com/geonkick/geonkick
+- https://gitlab.com/geonkick/geonkick
 - https://codeberg.org/geonkick/geonkick
 - https://github.com/geonkick-synthesizer/geonkick
 
