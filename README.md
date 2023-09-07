@@ -129,7 +129,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
 
 Clone the Geonkick code repository, compile and install.
 
-        copy the source code of the latest release ([see repository releases](https://gitlab.com/geonkick/geonkick/-/releases))
+        copy the source code of the latest release
         mkdir geonkick/build
         cd geonkick/build
         cmake ../
