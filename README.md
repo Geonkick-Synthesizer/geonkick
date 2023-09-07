@@ -17,7 +17,7 @@ If you have an idea about a feature or found an issue, please, submit it:
 
 - [on GitLab](https://gitlab.com/geonkick/geonkick/issues)
 - [on Codeberg](https://codeberg.org/geonkick/geonkick/issues)
-- [on GitHub](https://github.com/geonkick/geonkick/issues)
+- [on GitHub](https://github.com/Geonkick-Synthesizer/geonkick/issues)
 
 If you want your created presets to be added to the list of Geonkick presets, please, create a pull request
 with the preset archive.
@@ -33,7 +33,7 @@ Source code repository:
 
 - https://codeberg.com/geonkick/geonkick
 - https://codeberg.org/geonkick/geonkick
-- https://github.com/geonkick/geonkick
+- https://github.com/geonkick-synthesizer/geonkick
 
 #### Features
 
