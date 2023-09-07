@@ -15,7 +15,7 @@ The term "Geon" in the name "Geonkick" refers to a hypothetical particle called 
 
 If you have an idea about a feature or found an issue, please, submit it:
 
-- [on GitLab](https://codeberg.com/geonkick/geonkick/issues)
+- [on GitLab](https://gitlab.com/geonkick/geonkick/issues)
 - [on Codeberg](https://codeberg.org/geonkick/geonkick/issues)
 - [on GitHub](https://github.com/geonkick/geonkick/issues)
 
