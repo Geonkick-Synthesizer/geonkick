@@ -3,6 +3,7 @@
 #### New features
 
 - set manually the exact value of envelope points
+- display the current envelope point coordinates (value, time)
 
 #### Fixes
 
