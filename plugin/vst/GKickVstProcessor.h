@@ -42,7 +42,7 @@ __attribute__((visibility("default"))) bool ModuleExit (void);
 #endif
 #endif // GEONKICK_OS_GNU
 
-//class GeonkickApi;
+class GeonkickApi;
 
 using namespace Steinberg;
 
@@ -65,7 +65,7 @@ class GKickVstProcessor : public Vst::SingleComponentEffect {
         tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE;
 
   protected:
-        //std::unique_ptr<GeonkickApi> geonkickApi;
+        std::unique_ptr<GeonkickApi> geonkickApi;
         std::vector<float*> channelsBuffers;
 };
 

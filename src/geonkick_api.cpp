@@ -24,8 +24,8 @@
 #include "geonkick_api.h"
 //#include "oscillator.h"
 #include "globals.h"
-//#include "percussion_state.h"
-//#include "kit_state.h"
+#include "percussion_state.h"
+#include "kit_state.h"
 //#include "preset.h"
 //#include "preset_folder.h"
 //#include "UiSettings.h"
@@ -90,16 +90,16 @@ bool GeonkickApi::init()
 	geonkick_enable_synthesis(geonkickApi, false);
 
 	auto n = getPercussionsNumber();
-        auto nChannels = numberOfChannels();
-        kickBuffers = std::vector<std::vector<gkick_real>>(n);
-	/*for (decltype(n) i = 0; i < n; i++) {
+    auto nChannels = numberOfChannels();
+    kickBuffers = std::vector<std::vector<gkick_real>>(n);
+	for (decltype(n) i = 0; i < n; i++) {
                 auto state = getDefaultPercussionState();
                 state->setId(i);
                 state->setChannel(i % nChannels);
 		setPercussionState(state);
-                }*/
+    }
 
-        //        setKitState(std::move(getDefaultKitState()));
+        setKitState(std::move(getDefaultKitState()));
         enablePercussion(0, true);
         addOrderedPercussionId(0);
 
@@ -119,10 +119,10 @@ size_t GeonkickApi::numberOfChannels()
 //        return std::make_unique<KitState>();
 //}
 
-//std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
-//{
-        //        std::shared_ptr<PercussionState> state = std::make_shared<PercussionState>();
-        /*state->setName("Default");
+std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
+{
+        std::shared_ptr<PercussionState> state = std::make_shared<PercussionState>();
+        state->setName("Default");
         state->setId(0);
         state->setPlayingKey(-1);
         state->setChannel(0);
@@ -139,7 +139,7 @@ size_t GeonkickApi::numberOfChannels()
         envelope.push_back({1, 1});
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::Amplitude, envelope);
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff, envelope);
-	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive, envelope);
+	    state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive, envelope);
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume, envelope);
         state->enableCompressor(false);
         state->setCompressorAttack(0.01);
@@ -198,12 +198,12 @@ size_t GeonkickApi::numberOfChannels()
                         state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::FilterCutOff);
                         state->setOscillatorPitchShift(index, 12);
                 }
-                }*/
+                }
 
-//        return state;
-//}
+        return state;
+}
 
-/*void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &state)
+void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &state)
 {
         if (!state)
                 return;
@@ -426,16 +426,16 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
                 i++;
         }
         return kit;
-        }*/
+}
 
-//bool GeonkickApi::setKitState(const std::string &data)
-//{
-        //        auto state = std::make_unique<KitState>();
-        //        state->fromJson(data);
-        //        return true;//setKitState(state);
-        //}
+/*bool GeonkickApi::setKitState(const std::string &data)
+{
+                auto state = std::make_unique<KitState>();
+                state->fromJson(data);
+                return setKitState(state);
+}*/
 
-/*bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
+bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
 {
         auto n = getPercussionsNumber();
         for (decltype(n) i = 0; i < n; i++)
@@ -455,7 +455,7 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
         else
                  setCurrentPercussion(0);
         return true;
-        }*/
+}
 
 //std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
 //{

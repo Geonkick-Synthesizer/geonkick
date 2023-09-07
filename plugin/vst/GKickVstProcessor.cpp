@@ -30,8 +30,12 @@
 #include "pluginterfaces/vst/ivstparameterchanges.h"
 #include "pluginterfaces/vst/ivstevents.h"
 
-//#include "geonkick_api.h"
+#include "geonkick_api.h"
 //#include "kit_state.h"
+
+	// Open a file for writing
+std::ofstream outputFile("C:\\proj\\build\\log.txt");
+
 
 bool ModuleEntry (void*)
 {
@@ -44,12 +48,28 @@ bool ModuleExit (void)
 }
 
 GKickVstProcessor::GKickVstProcessor()
-//        : geonkickApi{nullptr}
+        : geonkickApi{nullptr}
 {
 }
 
 FUnknown* GKickVstProcessor::createInstance(void*)
 {
+
+    // Check if the file is open
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening file." << std::endl;
+    }
+	else {
+
+    // Write some logs to the file
+    outputFile << "Log 1: This is the first log message." << std::endl;
+    outputFile << "Log 2: Another log message." << std::endl;
+    outputFile << "Log 3: Yet another log message." << std::endl;
+
+    // Close the file
+    outputFile.close();
+	}
+
         return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
 }
 
@@ -61,15 +81,15 @@ GKickVstProcessor::initialize(FUnknown* context)
         if (res != kResultTrue)
                 return kResultFalse;
 
-        //geonkickApi = std::make_unique<GeonkickApi>(Geonkick::defaultSampleRate,
-                                                    //GeonkickApi::InstanceType::Vst3);
-        //if (!geonkickApi->init()) {
-        //        geonkickApi = nullptr;
-        //        GEONKICK_LOG_ERROR("can't init Geonkick API");
-        //        return kResultFalse;
-        //}
+        geonkickApi = std::make_unique<GeonkickApi>(Geonkick::defaultSampleRate,
+                                                    GeonkickApi::InstanceType::Vst3);
+        if (!geonkickApi->init()) {
+                geonkickApi = nullptr;
+                GEONKICK_LOG_ERROR("can't init Geonkick API");
+                return kResultFalse;
+        }
 
-        /*auto nChannels = GeonkickApi::numberOfChannels();
+        auto nChannels = GeonkickApi::numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
                 std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
                 //std::u16string str16 = convert.from_bytes(std::string("Out" + std::to_string(i)));
@@ -77,7 +97,7 @@ GKickVstProcessor::initialize(FUnknown* context)
                 addAudioOutput(outStr.c_str(), Vst::SpeakerArr::kStereo);
         }
         addEventInput(STR16("MIDI in"), 1);
-        channelsBuffers = std::vector<float*>(2 * nChannels, nullptr);*/
+        channelsBuffers = std::vector<float*>(2 * nChannels, nullptr);
         return kResultTrue;
 }
 
@@ -87,9 +107,9 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
                                                          Vst::SpeakerArrangement* outputs,
                                                          int32 numOuts)
 {
-        /*auto n = GeonkickApi::numberOfChannels();
+        auto n = GeonkickApi::numberOfChannels();
         if (numIns == 0 && numOuts == static_cast<decltype(numOuts)>(n))
-                return Vst::SingleComponentEffect::setBusArrangements(inputs, numIns, outputs, numOuts);*/
+                return Vst::SingleComponentEffect::setBusArrangements(inputs, numIns, outputs, numOuts);
         return kResultFalse;
 }
 
@@ -97,13 +117,13 @@ tresult PLUGIN_API
 GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
         //auto data = geonkickApi->getKitState()->toJson();
-        /*geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
-                                                    GeonkickApi::InstanceType::Vst3);
-        if (!geonkickApi->init()) {
-                geonkickApi = nullptr;
-                GEONKICK_LOG_ERROR("can't init Geonkick API");
-                return kResultFalse;
-        }
+        //geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
+                                                    //GeonkickApi::InstanceType::Vst3);
+        //if (!geonkickApi->init()) {
+        //        geonkickApi = nullptr;
+        //        GEONKICK_LOG_ERROR("can't init Geonkick API");
+        //        return kResultFalse;
+        //}
         //geonkickApi->setKitState(data);
         //geonkickApi->notifyUpdateGui();
         //geonkickApi->notifyKitUpdated();*/
@@ -122,10 +142,10 @@ GKickVstProcessor::process(Vst::ProcessData& data)
         if (data.numSamples < 1)
                 return kResultOk;
 
-        //size_t nChannels = std::min(geonkickApi->numberOfChannels(),
-        //                            static_cast<decltype(nChannels)>(data.numOutputs));
+        size_t nChannels = std::min(geonkickApi->numberOfChannels(),
+                                    static_cast<decltype(nChannels)>(data.numOutputs));
 
-        /*for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
+        for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
                 channelsBuffers.data()[2 * ch]     = data.outputs[ch].channelBuffers32[0];
                 channelsBuffers.data()[2 * ch + 1] = data.outputs[ch].channelBuffers32[1];
                 memset(channelsBuffers.data()[2 * ch], 0, data.numSamples * sizeof(float));
@@ -172,7 +192,7 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 
         if (static_cast<decltype(data.numSamples)>(currentFrame) < data.numSamples)
                 geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
-                */
+                
         return kResultOk;
 }
 

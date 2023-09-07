@@ -240,7 +240,7 @@ gkick_osc_func_sawtooth(gkick_real phase)
 
 gkick_real gkick_osc_func_noise_white(unsigned int *seed)
 {
-        return 2.0f * ((gkick_real)(rand_r(seed) % RAND_MAX)) / (gkick_real)RAND_MAX - 1.0f;
+        return 2.0f * ((gkick_real)(geonkick_rand(seed) % RAND_MAX)) / (gkick_real)RAND_MAX - 1.0f;
 }
 
 gkick_real gkick_osc_func_noise_pink(void)
@@ -254,10 +254,10 @@ gkick_osc_func_noise_brownian(gkick_real *previous,
 {
         gkick_real sign = 1.0f;
         gkick_real walk;
-        if (rand_r(seed) % 2)
+        if (geonkick_rand(seed) % 2)
                 sign = -1.0f;
 
-        walk = sign * 0.1f * (((gkick_real)(rand_r(seed) % RAND_MAX)) / (gkick_real)RAND_MAX);
+        walk = sign * 0.1f * (((gkick_real)(geonkick_rand(seed) % RAND_MAX)) / (gkick_real)RAND_MAX);
         if (*previous + walk > 1.0f || *previous + walk < -1.0f)
                 *previous -= walk;
         else

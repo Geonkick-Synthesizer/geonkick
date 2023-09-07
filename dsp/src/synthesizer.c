@@ -1263,7 +1263,7 @@ gkick_synth_process(struct gkick_synth *synth)
                  * of the synthesizer parameters for too long time.
                  */
                 if (pthread_mutex_trylock(&synth->lock) != 0) {
-                        usleep(50);
+                        geonkick_usleep(50);
                         /**
                          * Check how many tries for locking to avoind infinite loop.
                          * It should be maximum around 30ms.

@@ -72,4 +72,10 @@ geonkick_process(struct geonkick *kick);
 void
 geonkick_wakeup(struct geonkick *kick);
 
+void
+geonkick_usleep(unsigned long int usecods);
+
+int
+geonkick_rand(unsigned int *seed);
+
 #endif // GEONKICK_INTERNAL_H

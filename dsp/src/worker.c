@@ -125,7 +125,7 @@ void *geonkick_worker_thread(void *arg)
                  * Ignore too many updates.
                  * The last updates will be processed.
                  */
-                usleep(40000);
+                geonkick_usleep(40000);
                 gkick_log_debug("process...");
                 pthread_mutex_lock(&geonkick_worker->lock);
                 for (size_t i = 0; geonkick_worker->instances[i] != NULL && i < GEONKICK_MAX_INSTANCES; i++)

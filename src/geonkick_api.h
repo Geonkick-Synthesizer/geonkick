@@ -29,8 +29,8 @@
 //#include <RkRealPoint.h>
 
 //class Oscillator;
-//class PercussionState;
-//class KitState;
+class PercussionState;
+class KitState;
 //class RkEventQueue;
 //class PresetFolder;
 //class UiSettings;
@@ -169,8 +169,8 @@ class GeonkickApi /*: public RkObject*/ {
                               double amplitude);
   double limiterValue() const;
   int getSampleRate() const;
-        //  static std::unique_ptr<KitState> getDefaultKitState();
-        //  static std::shared_ptr<PercussionState> getDefaultPercussionState();
+  static std::unique_ptr<KitState> getDefaultKitState();
+  static std::shared_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
   gkick_real getAudioFrame(int channel) const;
   // This function is called only from the audio thread.
@@ -179,8 +179,8 @@ class GeonkickApi /*: public RkObject*/ {
   // This function is called only from the audio thread.
   void process(float** out, size_t channel, size_t size);
 
-        //  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
-        //  std::shared_ptr<PercussionState> getPercussionState() const;
+  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
+  std::shared_ptr<PercussionState> getPercussionState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -203,11 +203,11 @@ class GeonkickApi /*: public RkObject*/ {
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
         //  void setPercussionState(const std::string &data);
-        //  void setPercussionState(const std::shared_ptr<PercussionState> &state);
-        //  std::unique_ptr<KitState> getKitState() const;
-        //  bool setKitState(const std::string &data);
-        //  bool setKitState(const std::unique_ptr<KitState> &state);
-        //  void setKitName(const std::string &name);
+  void setPercussionState(const std::shared_ptr<PercussionState> &state);
+  std::unique_ptr<KitState> getKitState() const;
+      //  bool setKitState(const std::string &data);
+  bool setKitState(const std::unique_ptr<KitState> &state);
+  //void setKitName(const std::string &name);
   std::string getKitName() const;
   void setKitAuthor(const std::string &author);
   std::string getKitAuthor() const;
