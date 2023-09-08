@@ -1,14 +1,15 @@
 ### Version 2.10.0
 
+#### Fixes
+
+- fix linking VST3 agains wrong Redkite library path
+- fix conversion from frequency to note (more fixes)
+- fix shortcut for hide/show envelope
+
 #### New features
 
 - set manually the exact value of envelope points
 - display the current envelope point coordinates (value, time)
-
-#### Fixes
-
-- fix conversion from frequency to note (more fixes)
-- fix shortcut for hide/show envelope
 
 #### Improvements
 
