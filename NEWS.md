@@ -2,7 +2,7 @@
 
 #### Fixes
 
-- fix linking VST3 agains wrong Redkite library path
+- fix linking VST3 against wrong Redkite library path
 - fix conversion from frequency to note (more fixes)
 - fix shortcut for hide/show envelope
 
