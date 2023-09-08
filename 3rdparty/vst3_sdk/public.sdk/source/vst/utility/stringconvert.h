@@ -37,6 +37,7 @@
 #pragma once
 
 #include "pluginterfaces/vst/vsttypes.h"
+#include <cstdint>
 #include <string>
 
 //------------------------------------------------------------------------
