@@ -33,6 +33,10 @@
 #include "geonkick_api.h"
 //#include "kit_state.h"
 
+	// Open a file for writing
+std::ofstream outputFile("C:\\proj\\build\\log.txt");
+
+
 bool ModuleEntry (void*)
 {
         return true;
@@ -50,6 +54,22 @@ GKickVstProcessor::GKickVstProcessor()
 
 FUnknown* GKickVstProcessor::createInstance(void*)
 {
+
+    // Check if the file is open
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening file." << std::endl;
+    }
+	else {
+
+    // Write some logs to the file
+    outputFile << "Log 1: This is the first log message." << std::endl;
+    outputFile << "Log 2: Another log message." << std::endl;
+    outputFile << "Log 3: Yet another log message." << std::endl;
+
+    // Close the file
+    outputFile.close();
+	}
+
         return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
 }
 
@@ -97,16 +117,16 @@ tresult PLUGIN_API
 GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
         //auto data = geonkickApi->getKitState()->toJson();
-        geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
-                                                    GeonkickApi::InstanceType::Vst3);
-        if (!geonkickApi->init()) {
-                geonkickApi = nullptr;
-                GEONKICK_LOG_ERROR("can't init Geonkick API");
-                return kResultFalse;
-        }
+        //geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
+                                                    //GeonkickApi::InstanceType::Vst3);
+        //if (!geonkickApi->init()) {
+        //        geonkickApi = nullptr;
+        //        GEONKICK_LOG_ERROR("can't init Geonkick API");
+        //        return kResultFalse;
+        //}
         //geonkickApi->setKitState(data);
         //geonkickApi->notifyUpdateGui();
-        //geonkickApi->notifyKitUpdated();
+        //geonkickApi->notifyKitUpdated();*/
         return Vst::SingleComponentEffect::setupProcessing(setup);
 }
 
@@ -172,14 +192,14 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 
         if (static_cast<decltype(data.numSamples)>(currentFrame) < data.numSamples)
                 geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
-
+                
         return kResultOk;
 }
 
 tresult PLUGIN_API
 GKickVstProcessor::setState(IBStream* state)
 {
-        if (state == nullptr || geonkickApi == nullptr) {
+        /*if (state == nullptr || geonkickApi == nullptr) {
                 GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
                 return kResultFalse;
         }
@@ -216,14 +236,14 @@ GKickVstProcessor::setState(IBStream* state)
         }
         //        geonkickApi->setKitState(data);
         //        geonkickApi->notifyUpdateGui();
-        //        geonkickApi->notifyKitUpdated();
+        //        geonkickApi->notifyKitUpdated();*/
         return kResultOk;
 }
 
 tresult PLUGIN_API
 GKickVstProcessor::getState(IBStream* state)
 {
-        if (state == nullptr || geonkickApi == nullptr) {
+        /*if (state == nullptr || geonkickApi == nullptr) {
                 GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
                 return kResultFalse;
         }
@@ -238,7 +258,7 @@ GKickVstProcessor::getState(IBStream* state)
         // if (static_cast<decltype(nBytes)>(data.size()) != nBytes) {
         //        GEONKICK_LOG_ERROR("error on saving the state");
         //        return kResultFalse;
-        //}
+        //}*/
         return kResultOk;
 }
 

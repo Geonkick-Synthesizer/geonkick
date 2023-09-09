@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 3.7)
 
 project(geonkick VERSION 2.10.0)
 
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/c/msys64/mingw64/lib/cmake")
 set(CMAKE_SYSTEM_NAME Windows)
 #set(CMAKE_C_COMPILER /usr/bin/x86_64-w64-mingw32-gcc)
 #set(CMAKE_CXX_COMPILER /usr/bin/x86_64-w64-mingw32-g++)
@@ -78,7 +79,7 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 #set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
-#  ${GKICK_UTILS_DIR}/base64.h
+  ${GKICK_UTILS_DIR}/base64.h
 #  ${GKICK_COMMON_DIR}/GeonkickConfig.h
 #  ${GKICK_COMMON_DIR}/UiSettings.h
 #  ${GKICK_COMMON_DIR}/ViewState.h
@@ -109,10 +110,10 @@ set(GKICK_COMMON_HEADERS
 #  ${GKICK_COMMON_DIR}/kick_graph.h
 #  ${GKICK_COMMON_DIR}/envelope_widget.h
 #  ${GKICK_COMMON_DIR}/knob.h
-#  ${GKICK_COMMON_DIR}/oscillator.h
+  ${GKICK_COMMON_DIR}/oscillator.h
   ${GKICK_COMMON_DIR}/geonkick_api.h
-#  ${GKICK_COMMON_DIR}/percussion_state.h
-#  ${GKICK_COMMON_DIR}/kit_state.h
+  ${GKICK_COMMON_DIR}/percussion_state.h
+  ${GKICK_COMMON_DIR}/kit_state.h
 #  ${GKICK_COMMON_DIR}/oscillator_envelope.h
 #  ${GKICK_COMMON_DIR}/oscillator_group_box.h
 #  ${GKICK_COMMON_DIR}/ExportAbstract.h
@@ -129,7 +130,7 @@ set(GKICK_COMMON_HEADERS
 )
 
 set(GKICK_COMMON_SOURCES
-#  ${GKICK_UTILS_DIR}/base64.cpp
+  ${GKICK_UTILS_DIR}/base64.cpp
 #  ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
 #  ${GKICK_COMMON_DIR}/UiSettings.cpp
 #  ${GKICK_COMMON_DIR}/ViewState.cpp
@@ -161,10 +162,10 @@ set(GKICK_COMMON_SOURCES
 #  ${GKICK_COMMON_DIR}/kick_graph.cpp
 #  ${GKICK_COMMON_DIR}/envelope_widget.cpp
 #  ${GKICK_COMMON_DIR}/knob.cpp
-#  ${GKICK_COMMON_DIR}/oscillator.cpp
+  ${GKICK_COMMON_DIR}/oscillator.cpp
   ${GKICK_COMMON_DIR}/geonkick_api.cpp
-#  ${GKICK_COMMON_DIR}/percussion_state.cpp
-#  ${GKICK_COMMON_DIR}/kit_state.cpp
+  ${GKICK_COMMON_DIR}/percussion_state.cpp
+  ${GKICK_COMMON_DIR}/kit_state.cpp
 #  ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
 #  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
 #  ${GKICK_COMMON_DIR}/export_widget.cpp
@@ -199,6 +200,7 @@ set(GKICK_COMMON_SOURCES
 
 find_package(PkgConfig REQUIRED)
 find_package(RapidJSON REQUIRED)
+include_directories(${RapidJSON_INCLUDE_DIR})
 #pkg_check_modules(SNDFILE sndfile)
 #if (NOT SNDFILE_FOUND)
 #    message(FATAL_ERROR "can't find sndfile library")
@@ -238,7 +240,7 @@ endif ()
 
 include_directories(${GKICK_API_DIR}/src)
 #include_directories(${GKICK_REDKITE_DIR}/include)
-#include_directories(${GKICK_UTILS_DIR})
+include_directories(${GKICK_UTILS_DIR})
 #link_directories(${GKICK_REDKITE_DIR})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)

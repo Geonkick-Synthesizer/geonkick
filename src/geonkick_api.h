@@ -28,9 +28,9 @@
 
 //#include <RkRealPoint.h>
 
-//class Oscillator;
-//class PercussionState;
-//class KitState;
+class Oscillator;
+class PercussionState;
+class KitState;
 //class RkEventQueue;
 //class PresetFolder;
 //class UiSettings;
@@ -93,20 +93,20 @@ class GeonkickApi /*: public RkObject*/ {
         //  void setEventQueue(RkEventQueue *queue);
   bool init();
   void registerCallbacks(bool b);
-        //  std::vector<std::unique_ptr<Oscillator>> oscillators(void);
+          std::vector<std::unique_ptr<Oscillator>> oscillators(void);
   bool isOscillatorEnabled(int oscillatorIndex) const;
-        //  std::vector<RkRealPoint> oscillatorEvelopePoints(int oscillatorIndex,
-        //                                           EnvelopeType envelope) const;
-        //  void addOscillatorEnvelopePoint(int oscillatorIndex,
-        //                                  EnvelopeType envelope,
-        //                                  const RkRealPoint &point);
+          std::vector<RkRealPoint> oscillatorEvelopePoints(int oscillatorIndex,
+                                                   EnvelopeType envelope) const;
+          void addOscillatorEnvelopePoint(int oscillatorIndex,
+                                          EnvelopeType envelope,
+                                          const RkRealPoint &point);
   void removeOscillatorEvelopePoint(int oscillatorIndex,
                                     EnvelopeType envelope,
                                     int pointIndex);
-        //  void updateOscillatorEvelopePoint(int oscillatorIndex,
-        //                            EnvelopeType envelope,
-        //                            int pointIndex,
-        //                            const RkRealPoint &point);
+          void updateOscillatorEvelopePoint(int oscillatorIndex,
+                                    EnvelopeType envelope,
+                                    int pointIndex,
+                                    const RkRealPoint &point);
   FunctionType oscillatorFunction(int oscillatorIndex) const;
   gkick_real oscillatorPhase(int oscillatorIndex) const;
   int oscillatorSeed(int oscillatorIndex) const;
@@ -122,7 +122,7 @@ class GeonkickApi /*: public RkObject*/ {
   double kickFilterFrequency(void) const;
   double kickFilterQFactor() const;
   FilterType kickFilterType() const;
-        //  std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
+  std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
   bool setOscillatorFrequency(int oscillatorIndex,
                               double frequency);
   bool setOscillatorPitchShift(int oscillatorIndex,
@@ -142,9 +142,9 @@ class GeonkickApi /*: public RkObject*/ {
                                int index,
                                double x,
                                double y);
-        //  void setOscillatorEvelopePoints(int index,
-        //                                  EnvelopeType envelope,
-        //                                  const std::vector<RkRealPoint> &points);
+  void setOscillatorEvelopePoints(int index,
+                                  EnvelopeType envelope,
+                                  const std::vector<RkRealPoint> &points);
   void setOscillatorFunction(int oscillatorIndex,
                              FunctionType function);
   void setOscillatorPhase(int oscillatorIndex,
@@ -169,8 +169,8 @@ class GeonkickApi /*: public RkObject*/ {
                               double amplitude);
   double limiterValue() const;
   int getSampleRate() const;
-        //  static std::unique_ptr<KitState> getDefaultKitState();
-        //  static std::shared_ptr<PercussionState> getDefaultPercussionState();
+  static std::unique_ptr<KitState> getDefaultKitState();
+  static std::shared_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
   gkick_real getAudioFrame(int channel) const;
   // This function is called only from the audio thread.
@@ -179,8 +179,8 @@ class GeonkickApi /*: public RkObject*/ {
   // This function is called only from the audio thread.
   void process(float** out, size_t channel, size_t size);
 
-        //  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
-        //  std::shared_ptr<PercussionState> getPercussionState() const;
+  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
+  std::shared_ptr<PercussionState> getPercussionState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -202,19 +202,18 @@ class GeonkickApi /*: public RkObject*/ {
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
-        //  void setPercussionState(const std::string &data);
-        //  void setPercussionState(const std::shared_ptr<PercussionState> &state);
-        //  std::unique_ptr<KitState> getKitState() const;
-        //  bool setKitState(const std::string &data);
-        //  bool setKitState(const std::unique_ptr<KitState> &state);
-        //  void setKitName(const std::string &name);
+  void setPercussionState(const std::string &data);
+  void setPercussionState(const std::shared_ptr<PercussionState> &state);
+  std::unique_ptr<KitState> getKitState() const;
+  bool setKitState(const std::string &data);
+  bool setKitState(const std::unique_ptr<KitState> &state);
+  void setKitName(const std::string &name);
   std::string getKitName() const;
   void setKitAuthor(const std::string &author);
   std::string getKitAuthor() const;
   void setKitUrl(const std::string &url);
   std::string getKitUrl() const;
-        //  void setKickEnvelopePoints(EnvelopeType envelope,
-        //                             const std::vector<RkRealPoint> &points);
+  void setKickEnvelopePoints(EnvelopeType envelope, const std::vector<RkRealPoint> &points);
   void playKick(int id = -1);
   void enableCompressor(bool enable);
   void setCompressorAttack(double attack);
@@ -336,12 +335,12 @@ protected:
                                   size_t id);
   static void limiterCallback(void *arg, size_t index, gkick_real val);
   void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
-        //  void setOscillatorState(Layer layer,
-        //                          OscillatorType oscillator,
-        //                          const std::shared_ptr<PercussionState> &state);
-        //  void getOscillatorState(Layer layer,
-        //                          OscillatorType osc,
-        //                          const std::shared_ptr<PercussionState> &state) const;
+  void setOscillatorState(Layer layer,
+                          OscillatorType oscillator,
+                          const std::shared_ptr<PercussionState> &state);
+  void getOscillatorState(Layer layer,
+                         OscillatorType osc,
+                         const std::shared_ptr<PercussionState> &state) const;
   void setLimiterLevelerValue(size_t index, double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,

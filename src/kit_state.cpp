@@ -35,7 +35,7 @@ KitState::KitState()
 bool KitState::open(const std::string &fileName)
 {
         if (fileName.size() < 6) {
-                RK_LOG_ERROR("can't open preset. File name empty or wrong format.");
+                GEONKICK_LOG_ERROR("can't open preset. File name empty or wrong format.");
                 return false;
         }
 
@@ -43,14 +43,14 @@ bool KitState::open(const std::string &fileName)
         if (filePath.extension().empty()
             || (filePath.extension() != ".gkit"
             && filePath.extension() != ".GKIT")) {
-                RK_LOG_ERROR("can't open kit. Wrong file format.");
+                GEONKICK_LOG_ERROR("can't open kit. Wrong file format.");
                 return false;
         }
 
         std::ifstream sfile;
         sfile.open(std::filesystem::absolute(filePath));
         if (!sfile.is_open()) {
-                RK_LOG_ERROR("can't open kit.");
+                GEONKICK_LOG_ERROR("can't open kit.");
                 return false;
         }
 
@@ -65,7 +65,7 @@ bool KitState::open(const std::string &fileName)
 bool KitState::save(const std::string &fileName)
 {
         if (fileName.size() < 6) {
-                RK_LOG_ERROR("can't save kit. Wrong file name");
+                GEONKICK_LOG_ERROR("can't save kit. Wrong file name");
                 return false;
         }
 
@@ -79,7 +79,7 @@ bool KitState::save(const std::string &fileName)
         std::ofstream file;
         file.open(std::filesystem::absolute(filePath));
         if (!file.is_open()) {
-                RK_LOG_ERROR("can't open file for saving: " << filePath);
+                GEONKICK_LOG_ERROR("can't open file for saving: " << filePath);
                 return false;
         }
         file << toJson();

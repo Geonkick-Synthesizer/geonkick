@@ -158,7 +158,7 @@ bool FUID::generate ()
 	return false;
 #else
 	GUID guid;
-	HRESULT hr = CoCreateGuid (&guid);
+	HRESULT hr;// = CoCreateGuid (&guid);
 	switch (hr)
 	{
 		case RPC_S_OK: memcpy (data, (char*)&guid, sizeof (TUID)); return true;

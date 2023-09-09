@@ -27,6 +27,8 @@
 #include "globals.h"
 #include "public.sdk/source/vst/vstsinglecomponenteffect.h"
 
+
+#ifdef GEONKICK_OS_GNU
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -38,6 +40,7 @@ __attribute__((visibility("default"))) bool ModuleExit (void);
 #ifdef __cplusplus
 }
 #endif
+#endif // GEONKICK_OS_GNU
 
 class GeonkickApi;
 

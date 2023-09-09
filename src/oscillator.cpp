@@ -28,10 +28,10 @@ Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
         , oscillatorType{type}
         , filterType{FilterType::LowPass}
 {
-        RK_ACT_BIND(geonkickApi,
-                    kickLengthUpdated,
-                    RK_ACT_ARGS(double val),
-                    this, kickLengthUpdated(val));
+//        RK_ACT_BIND(geonkickApi,
+//                    kickLengthUpdated,
+//                    RK_ACT_ARGS(double val),
+//                    this, kickLengthUpdated(val));
 }
 
 void Oscillator::setAsFm(bool b)
@@ -114,8 +114,8 @@ Oscillator::Type Oscillator::type() const
 
 void Oscillator::setAmplitude(double amp)
 {
-        if (geonkickApi->setOscillatorAmplitude(index(), amp))
-                amplitudeUpdated(amp);
+        //if (geonkickApi->setOscillatorAmplitude(index(), amp))
+        //        action amplitudeUpdated(amp);
 }
 
 double Oscillator::amplitude(void) const
@@ -125,14 +125,14 @@ double Oscillator::amplitude(void) const
 
 void Oscillator::setFrequency(double freq)
 {
-	if (geonkickApi->setOscillatorFrequency(index(), freq))
-                frequencyUpdated(freq);
+	//if (geonkickApi->setOscillatorFrequency(index(), freq))
+    //            action frequencyUpdated(freq);
 }
 
 void Oscillator::setPitchShift(double semitones)
 {
-	if (geonkickApi->setOscillatorPitchShift(index(), semitones))
-                pitchShiftUpdated(semitones);
+	//if (geonkickApi->setOscillatorPitchShift(index(), semitones))
+    //            action pitchShiftUpdated(semitones);
 }
 
 double Oscillator::frequency(void) const
@@ -209,10 +209,10 @@ void Oscillator::setSample(const std::string &file)
 {
         geonkickApi->setOscillatorSample(file, index());
         auto path = std::filesystem::path(file);
-        geonkickApi->setCurrentWorkingPath("Samples", path.has_parent_path() ? path.parent_path() : path);
+        //geonkickApi->setCurrentWorkingPath("Samples", path.has_parent_path() ? path.parent_path() : path);
 }
 
 std::string Oscillator::samplesPath() const
 {
-        return geonkickApi->currentWorkingPath("Samples");
+        return "";//geonkickApi->currentWorkingPath("Samples");
 }

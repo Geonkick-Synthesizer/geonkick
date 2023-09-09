@@ -1822,3 +1822,25 @@ geonkick_is_plugin()
 {
         return !GKICK_IS_STANDALONE;
 }
+
+void
+geonkick_usleep(unsigned long int usecods)
+{
+#ifdef GEONKICK_OS_WINDOWS
+        
+#else
+        // usleep(usecods);
+#endif // GEONKICK_OS_GNU	
+}
+
+
+int geonkick_rand(unsigned int *seed)
+{
+#ifdef GEONKICK_OS_WINDOWS
+    return 0;    
+#else
+        // rand_r();
+	return 0;
+#endif // GEONKICK_OS_GNU	
+}
+

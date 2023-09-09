@@ -18,6 +18,8 @@
 
 #include "fplatform.h"
 
+#include <cstdint>
+
 //#define UNICODE_OFF 	// disable / enable unicode
 
 #ifdef UNICODE_OFF

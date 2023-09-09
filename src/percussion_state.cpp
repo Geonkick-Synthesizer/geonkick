@@ -55,7 +55,7 @@ PercussionState::PercussionState()
 bool PercussionState::loadFile(const std::string &file)
 {
         if (file.size() < 7) {
-                RK_LOG_ERROR("can't open preset.");
+                GEONKICK_LOG_ERROR("can't open preset.");
                 return false;
         }
 
@@ -63,14 +63,14 @@ bool PercussionState::loadFile(const std::string &file)
         if (filePath.extension().empty()
             || (filePath.extension() != ".gkick"
             && filePath.extension() != ".GKICK")) {
-                RK_LOG_ERROR("can't open preset. Wrong file format.");
+                GEONKICK_LOG_ERROR("can't open preset. Wrong file format.");
                 return false;
         }
 
         std::ifstream sfile;
         sfile.open(std::filesystem::absolute(filePath));
         if (!sfile.is_open()) {
-                RK_LOG_ERROR("can't open preset.");
+                GEONKICK_LOG_ERROR("can't open preset.");
                 return false;
         }
 
