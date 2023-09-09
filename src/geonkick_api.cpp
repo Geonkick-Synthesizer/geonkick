@@ -23,6 +23,7 @@
 
 #include "geonkick_api.h"
 #include "oscillator.h"
+#include "globals.h"
 #include "percussion_state.h"
 #include "kit_state.h"
 //#include "preset.h"

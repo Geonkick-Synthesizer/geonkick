@@ -3,7 +3,6 @@ cmake_minimum_required (VERSION 3.7)
 project(geonkick VERSION 2.10.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
-#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "/c/msys64/mingw64/lib/cmake")
 set(CMAKE_SYSTEM_NAME Windows)
 #set(CMAKE_C_COMPILER /usr/bin/x86_64-w64-mingw32-gcc)
 #set(CMAKE_CXX_COMPILER /usr/bin/x86_64-w64-mingw32-g++)
