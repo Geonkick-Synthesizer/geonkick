@@ -34,10 +34,11 @@ set_target_properties(${target} PROPERTIES OUTPUT_NAME "Geonkick")
 #set_target_properties(${target} PROPERTIES SUFFIX ".so")
 set_target_properties(${target} PROPERTIES SUFFIX ".dll")
 
+#target_link_libraries(${target} PRIVATE geonkick_common api_plugin redkite)
 target_link_libraries(${target} PRIVATE geonkick_common api_plugin)
 #target_link_libraries(${target} PRIVATE "-lstdc++fs")
 target_link_libraries(${target} PRIVATE base sdk sdk_common pluginterfaces)
-#target_link_libraries(${target} PRIVATE "-lredkite -lX11 -lsndfile -lrt -lm -ldl -lpthread -lcairo")
+#target_link_libraries(${target} PRIVATE "-lX11 -lsndfile -lrt -lm -ldl -lpthread -lcairo")
 target_link_libraries(${target} PRIVATE "-lstdc++ -lstdc++fs -lm -lpthread")
 
 target_link_libraries(${target} PRIVATE "-Wl,--no-undefined")
