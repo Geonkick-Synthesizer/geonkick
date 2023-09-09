@@ -55,9 +55,6 @@ void RkLabel::RkLabelImpl::setImage(const RkImage &image)
 
 void RkLabel::RkLabelImpl::drawLabel()
 {
-        if (labelText.empty() && labelImage.isNull())
-                return;
-
         RkImage img(size());
         RkPainter painter(&img);
         painter.fillRect(rect(), background());

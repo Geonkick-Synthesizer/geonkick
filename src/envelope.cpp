@@ -97,7 +97,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
         font.setSize(10);
         painter.setFont(font);
 
-        auto val = envelopeLengh() / 10;
+        auto val = envelopeLength() / 10;
         int dx = W() / 10;
         RkPoint point = getOrigin();
         int x  = point.x() + dx;
@@ -117,7 +117,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
         painter.setFont(font);
         painter.setPen(RkPen(RkColor(180, 180, 180, 200)));
         painter.drawText(point.x() + W() / 2 - 35, point.y() +  font.size() + 10,
-                         "Length, " + std::to_string(std::llround(envelopeLengh())) + " ms");
+                         "Length, " + std::to_string(std::llround(envelopeLength())) + " ms");
 }
 
 void Envelope::drawValueScale(RkPainter &painter)
@@ -371,12 +371,17 @@ void Envelope::setEditCurrentPoint(bool edit)
 
 double Envelope::getSelectedPointValue() const
 {
+        return convertToHumanValue(getSelectedPoint().y());
+}
+
+RkRealPoint Envelope::getSelectedPoint() const
+{
         if (hasSelected()) {
                 if (overPointIndex < envelopePoints.size())
-                        return convertToHumanValue(envelopePoints[selectedPointIndex].y());
+                        return envelopePoints[selectedPointIndex];
         } else if (hasOverPoint()) {
                 if (overPointIndex < envelopePoints.size())
-                        return convertToHumanValue(envelopePoints[overPointIndex].y());
+                        return envelopePoints[overPointIndex];
         }
         return {};
 }
@@ -618,7 +623,7 @@ void Envelope::setDotRadius(int radius)
  * This conversion should comply with this table:
  * https://homes.luddy.indiana.edu/donbyrd/Teach/MusicalPitchesTable.htm
  */
-std::string Envelope::frequencyToNote(rk_real f)
+std::string Envelope::frequencyToNote(rk_real f) const
 {
         if (f < 27.500 || f > 13289.752)
                 return "";
@@ -682,4 +687,25 @@ double Envelope::convertFromHumanValue(double val) const
 bool Envelope::hasEditingPoint() const
 {
         return isEditingPoint;
+}
+
+std::string Envelope::getCurrentPointInfo() const
+{
+        if (!hasSelected() && !hasOverPoint() )
+                return std::string();
+
+        auto point = getSelectedPoint();
+        double roundedValue = std::round(convertToHumanValue(point.y()) * 10000.0) / 10000.0;
+        std::string info = Geonkick::doubleToStr(roundedValue, 4);
+        switch (type()) {
+        case Type::Frequency:
+        case Type::FilterCutOff:
+                info += "Hz " + frequencyToNote(point.y());
+                break;
+        default:
+                break;
+        }
+
+        info += ", " + Geonkick::doubleToStr(point.x() * envelopeLength(), 0) + "ms";
+        return info;
 }

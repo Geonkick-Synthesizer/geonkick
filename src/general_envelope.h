@@ -34,7 +34,7 @@ class GeneralEnvelope: public Envelope
  public:
 
   GeneralEnvelope(GeonkickApi *api, const RkRect &area);
-  double envelopeLengh(void) const final;
+  double envelopeLength(void) const final;
   void setEnvelopeLengh(double len) final;
   void updatePoints() final;
 

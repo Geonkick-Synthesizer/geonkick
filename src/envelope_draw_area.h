@@ -41,7 +41,6 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
 {
  public:
    EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api);
-   ~EnvelopeWidgetDrawingArea();
    Envelope* getEnvelope() const;
    const RkRect getDrawingArea();
    void updateKickGraph(const std::shared_ptr<RkImage> &graphImage);
@@ -50,6 +49,10 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void envelopeUpdated();
    void setHideEnvelope(bool b);
    void setPointEditingMode(bool b = true);
+   RK_DECL_ACT(isOverPoint,
+               isOverPoint(const std::string info),
+               RK_ARG_TYPE(const std::string),
+               RK_ARG_VAL(info));
 
  protected:
    void paintWidget(RkPaintEvent *event) override;

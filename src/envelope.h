@@ -53,7 +53,7 @@ class Envelope : public RkObject
         virtual ~Envelope() = default;
         int W(void) const;
         int H(void) const;
-        virtual double envelopeLengh(void) const { return 0;}
+        virtual double envelopeLength(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
         RkPoint getOrigin(void) const;
         void draw(RkPainter &painter, DrawLayer layer);
@@ -62,6 +62,7 @@ class Envelope : public RkObject
         bool hasOverPoint() const;
         void selectPoint(const RkPoint &point);
         double getSelectedPointValue() const;
+        RkRealPoint getSelectedPoint() const;
         void updateSelectedPointValue(double val);
         void setEditCurrentPoint(bool edit = true);
         void unselectPoint(void);
@@ -93,6 +94,7 @@ class Envelope : public RkObject
                      envelopeUpdated(),
                      RK_ARG_TYPE(),
                      RK_ARG_VAL());
+        std::string getCurrentPointInfo() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -115,7 +117,7 @@ class Envelope : public RkObject
         void setDotRadius(int radius);
         double getLeftPointLimit(void) const;
         double getRightPointLimit(void) const;
-        std::string frequencyToNote(rk_real f);
+        std::string frequencyToNote(rk_real f) const;
         double convertToHumanValue(double val) const;
         double convertFromHumanValue(double val) const;
         bool hasEditingPoint() const;
