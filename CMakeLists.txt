@@ -2,12 +2,13 @@ cmake_minimum_required (VERSION 3.7)
 
 project(geonkick VERSION 2.10.0)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 set(CMAKE_SYSTEM_NAME Windows)
-#set(CMAKE_C_COMPILER /usr/bin/x86_64-w64-mingw32-gcc)
-#set(CMAKE_CXX_COMPILER /usr/bin/x86_64-w64-mingw32-g++)
 
-#include(GNUInstallDirs)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+
+if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
+    include(GNUInstallDirs)
+endif()
 
 option(GKICK_STANDALONE "Enable build for standalone" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -238,29 +239,29 @@ else ()
 endif ()
 
 include_directories(${GKICK_API_DIR}/src)
-#include_directories(${GKICK_REDKITE_DIR}/include)
+include_directories(${GKICK_REDKITE_DIR}/include)
 include_directories(${GKICK_UTILS_DIR})
-#link_directories(${GKICK_REDKITE_DIR})
+link_directories(${GKICK_REDKITE_DIR})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-fPIC)
 add_subdirectory(dsp)
-#add_subdirectory(${GKICK_REDKITE_DIR})
-#include(${GKICK_RC_DIR}/resources.rc)
+add_subdirectory(${GKICK_REDKITE_DIR})
+include(${GKICK_RC_DIR}/resources.rc)
 
 include_directories(${GKICK_COMMON_DIR})
-#link_directories(${REDKITE_LIBRARY_DIR})
+link_directories(${REDKITE_LIBRARY_DIR})
 add_library(geonkick_common STATIC
   ${GKICK_COMMON_HEADERS}
   ${GKICK_COMMON_SOURCES}
-#  ${GKICK_RESOURCES}
+  ${GKICK_RESOURCES}
 )
 
 if (GKICK_PLUGIN)
     add_library(geonkick_common_single STATIC
       ${GKICK_COMMON_HEADERS}
       ${GKICK_COMMON_SOURCES}
-#      ${GKICK_RESOURCES}
+      ${GKICK_RESOURCES}
       )
     target_compile_options(geonkick_common_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
 endif(GKICK_PLUGIN)
