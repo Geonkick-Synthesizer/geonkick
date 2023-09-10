@@ -2,7 +2,7 @@
  * File name: RkWindowWin.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor (http://quamplex.com/redkite)
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
