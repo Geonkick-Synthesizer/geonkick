@@ -274,7 +274,7 @@ void RkWindowWin::freeCanvasInfo()
         }*/
 }
 #else
-#error No graphics backend defined
+//#error No graphics backend defined
 #endif // RK_GRAPHICS_CAIRO_BACKEND
 
 void RkWindowWin::setFocus(bool b)

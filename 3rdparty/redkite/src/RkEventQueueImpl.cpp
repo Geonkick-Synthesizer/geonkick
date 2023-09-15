@@ -72,18 +72,20 @@ void RkEventQueue::RkEventQueueImpl::addObject(RkObject *obj)
                         RK_LOG_ERROR("can't cast o_ptr to RkWidgetImpl");
                         return;
                 }
- #if !defined(RK_OS_WIN) && !defined(RK_OS_MAC)
-         // Set the display from the top window.
+				
+ #ifdef RK_OS_WIN
+ #elif RK_OS_MAC
+ #else
+                // Set the display from the top window.
                 if (!widgetImpl->parent() && !platformEventQueue->display()) {
                         RK_LOG_DEBUG("widget " << obj << " is top window");
                         platformEventQueue->setDisplay(widgetImpl->nativeWindowInfo()->display);
                 }
- #else
- #error platform not implemented
  #endif
 
                 RK_LOG_DEBUG("add widget window id");
-                auto id = widgetImpl->nativeWindowInfo()->window;
+				
+                auto id = reinterpret_cast<EventQueueWindowId>(widgetImpl->nativeWindowInfo()->window);
                 windowIdsMap.insert({id, obj});
                 if (static_cast<int>(widgetImpl->windowFlags())
                     & static_cast<int>(Rk::WindowFlags::Popup)) {

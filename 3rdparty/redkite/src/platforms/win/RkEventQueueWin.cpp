@@ -27,6 +27,7 @@
 #include "RkEvent.h"
 
 RkEventQueueWin::RkEventQueueWin()
+: scaleFactor{1}
 {
         RK_LOG_INFO("called");
 }
@@ -35,7 +36,7 @@ RkEventQueueWin::~RkEventQueueWin()
 {
 }
 
-void RkEventQueueWin::getEvents(std::vector<std::pair<RkWindowId, std::shared_ptr<RkEvent>>> &eventsQueue)
+std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> RkEventQueueWin::getEvents() const;
 {
         MSG msg;
         while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) > 0) {
@@ -83,4 +84,11 @@ void RkEventQueueWin::getEvents(std::vector<std::pair<RkWindowId, std::shared_pt
                 //                if (event)
                 //        eventsQueue.push_back({rk_id_from_win(msg.hwnd), event});
         }
+		return {};
 }
+
+void RkEventQueueWin::setScaleFactor(double factor)
+{
+        scaleFactor = factor;
+}
+

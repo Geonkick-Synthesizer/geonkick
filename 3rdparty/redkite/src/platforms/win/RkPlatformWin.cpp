@@ -29,13 +29,13 @@
 #include <random>
 
 static std::string rk_winApiClassName;
-static HINSTANCE rk_winApiInstance = nullptr;
-#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
-#include <d2d1_1.h>
-#include <dwrite.h>
-static ID2D1Factory1* rk_d2d1Factory = nullptr;
-static IDWriteFactory* rk_dWriteFactory = nullptr;
-#endif // RK_GRAPHICS_BACKEND_DIRECT2D
+static HINSTANCE rk_winApiInstance = 0;//nullptr;
+//#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
+//#include <d2d1_1.h>
+//#include <dwrite.h>
+//static ID2D1Factory1* rk_d2d1Factory = nullptr;
+//static IDWriteFactory* rk_dWriteFactory = nullptr;
+//#endif // RK_GRAPHICS_BACKEND_DIRECT2D
 
 
 HINSTANCE rk_win_api_instance()
@@ -48,23 +48,23 @@ std::string rk_win_api_class_name()
         return rk_winApiClassName;
 }
 
-RkNativeWindowInfo rk_from_native_win(HWND window, HINSTANCE instance = nullptr, LPCSTR className = nullptr)
+RkNativeWindowInfo rk_from_native_win(HWND window, HINSTANCE instance = 0/*nullptr*/, LPCSTR className = nullptr)
 {
-        RkNativeWindowInfo info;
-        info.instance = instance ? instance : rk_winApiInstance;
-        info.className = className ? className : rk_winApiClassName;
-        info.window = window;
-        return info;
+        //RkNativeWindowInfo info;
+        //info.instance = instance ? instance : rk_winApiInstance;
+        //info.className = className ? className : rk_winApiClassName;
+        //info.window = window;
+        return RkNativeWindowInfo(0);// info;
 }
 
 RkWindowId rk_id_from_win(HWND window)
 {
-        RkWindowId id;
+        RkWindowId id (0);
         id.id = window;
         return id;
 }
 
-#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
+/*#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
 ID2D1Factory1* rk_direct2d_factory()
 {
         return rk_d2d1Factory;
@@ -74,9 +74,9 @@ IDWriteFactory* rk_direct_write_factory()
 {
         return rk_dWriteFactory;
 }
-#endif // RK_GRAPHICS_BACKEND_DIRECT2D
+#endif // RK_GRAPHICS_BACKEND_DIRECT2D*/
 
-static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+/*static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
         auto eventQueue = (RkEventQueue*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
         if (!eventQueue)
@@ -123,9 +123,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
 
         return DefWindowProc(hWnd, msg, wParam, lParam);
-}
+}*/
 
-#ifdef RK_FOR_SHARED
+/*#ifdef RK_FOR_SHARED
 BOOL WINAPI DllMain(HINSTANCE hInstance,
                     DWORD fdwReason,
                     LPVOID lpvReserved)
@@ -245,4 +245,4 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
         return exitCode;
 }
-#endif // RK_FOR_SHARED
+#endif // RK_FOR_SHARED*/
