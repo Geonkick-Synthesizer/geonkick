@@ -46,6 +46,8 @@ void rkLogMessage(RkLogLevel level, const std::string &func_name, const std::str
                 strLevel = "Unknown";
         }
 
+        std::cout << "[" << strLevel << "] " << func_name << ": " << msg << std::endl;
+
         //OutputDebugString(("[" + strLevel + "] " + func_name + ": " + msg).c_str());
 }
 

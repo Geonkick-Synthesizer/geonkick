@@ -228,5 +228,5 @@ add_library(redkite STATIC
 
 #add_subdirectory(tools)
 if (ENABLE_EXAMPLES)
-#  add_subdirectory(examples)
+   add_subdirectory(examples)
 endif (ENABLE_EXAMPLES)

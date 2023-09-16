@@ -28,26 +28,22 @@
 #include "RkLog.h"
 
 #ifdef RK_OS_WIN
-//#include <windows.h>
-
-using HWND = long long unsigned int;
-using HINSTANCE = long long unsigned int;
-using LPCSTR = char*;
+#include <windows.h>
 
 struct RK_EXPORT RkWindowId {
-    RkWindowId(HWND arg = 0) : id(arg) {}
+    RkWindowId(HWND arg = nullptr) : id(arg) {}
     HWND id;
 };
 
 class RK_EXPORT RkNativeWindowInfo {
 	 public:
-        RkNativeWindowInfo(HWND arg = 0)
-		: window(arg) {}
-		~RkNativeWindowInfo() = default;
+        RkNativeWindowInfo(HWND arg = nullptr)
+	  : window(arg) {}
+        ~RkNativeWindowInfo() = default;
         HINSTANCE instance;
         std::string className;
         HWND window;
-		double scaleFactor;
+	double scaleFactor;
 };
 
 HINSTANCE RK_EXPORT rk_win_api_instance();

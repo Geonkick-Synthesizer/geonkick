@@ -41,7 +41,7 @@
 class RkEventQueue::RkEventQueueImpl {
  public:
         using EventQueueWindowId = unsigned long long int;
-        explicit RkEventQueueImpl(RkEventQueue* interface);
+        explicit RkEventQueueImpl(RkEventQueue* queueInterface);
         virtual ~RkEventQueueImpl();
 
         bool objectExists(RkObject *t) const;

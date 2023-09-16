@@ -69,22 +69,25 @@ Rk::WindowFlags RkWindowWin::flags() const
 
 bool RkWindowWin::hasParent() const
 {
-  return false;// parentWindowInfo != nullptr;
+        return parentWindowInfo.window != nullptr;
 }
 
 bool RkWindowWin::init()
 {
-  /*        windowHandle.id = CreateWindowExA(0,
-                                          hasParent() ? parentWindowInfo->className.c_str() : rk_win_api_class_name().c_str(),
+        RK_LOG_DEBUG("hasParent(): " << hasParent());
+        auto className = hasParent() ? parentWindowInfo.className.c_str() : rk_win_api_class_name().c_str();
+        RK_LOG_DEBUG("className: " << className);
+        windowHandle.id = CreateWindowExA(0,
+                                          className,
                                           "RkWidget",
                                           hasParent() ? (WS_CHILD | WS_CLIPCHILDREN | WS_VISIBLE) : (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN),
                                           windowPosition.x(),
                                           windowPosition.y(),
                                           windowSize.width(),
                                           windowSize.height(),
-                                          !hasParent() ? nullptr : parentWindowInfo->window,
+                                          !hasParent() ? nullptr : parentWindowInfo.window,
                                           nullptr,
-                                          hasParent() ? parentWindowInfo->instance : rk_win_api_instance(),
+                                          hasParent() ? parentWindowInfo.instance : rk_win_api_instance(),
                                           nullptr);
 
         if (!windowHandle.id) {
@@ -94,80 +97,81 @@ bool RkWindowWin::init()
 
         if (eventQueue)
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
-		createCanvasInfo();*/
+        
+        //		createCanvasInfo();
         return true;
 }
 
 void RkWindowWin::show(bool b)
 {
-  /*        if (isWindowCreated()) {
+        if (isWindowCreated()) {
                 ShowWindow(windowHandle.id, b ? SW_SHOW : SW_HIDE);
                 UpdateWindow(windowHandle.id);
-		}*/
+        }
 }
 
-const RkNativeWindowInfo* RkWindowWin::nativeWindowInfo() const
+const RkNativeWindowInfo* RkWindowWin::nativeWindowInfo()
 {
-  /*        if (isWindowCreated()) {
+        if (isWindowCreated()) {
                 windowInfo            = std::make_unique<RkNativeWindowInfo>();
-                windowInfo->className = hasParent() ? parentWindowInfo->className : rk_win_api_class_name();
+                windowInfo->className = hasParent() ? parentWindowInfo.className : rk_win_api_class_name();
                 windowInfo->window    = windowHandle.id;
-                windowInfo->instance  = hasParent() ? parentWindowInfo->instance : rk_win_api_instance();
-                return info.get();
-		}*/
+                windowInfo->instance  = hasParent() ? parentWindowInfo.instance : rk_win_api_instance();
+                return windowInfo.get();
+        }
 
         return nullptr;
 }
 
 void RkWindowWin::setTitle(const std::string &title)
 {
-  //        if (isWindowCreated() && !title.empty())
-  //              SetWindowTextA(windowHandle.id, title.c_str());
+        if (isWindowCreated() && !title.empty())
+                SetWindowTextA(windowHandle.id, title.c_str());
 }
 
 bool RkWindowWin::isWindowCreated() const
 {
-  return false;//windowHandle.id != nullptr;
+        return windowHandle.id != nullptr;
 }
 
 const RkSize& RkWindowWin::size() const
 {
-  //    if (isWindowCreated()) {
-  //            RECT rect;
-  //            GetWindowRect(windowHandle.id, &rect);
-  //            windowSize = {rect.right - rect.left, rect.bottom - rect.top};
-  //    }
+        if (isWindowCreated()) {
+                RECT rect;
+                GetWindowRect(windowHandle.id, &rect);
+                windowSize = {rect.right - rect.left, rect.bottom - rect.top};
+        }
         return windowSize;
 }
 
 void RkWindowWin::setSize(const RkSize &size)
 {
-  /*    if (size.width() > 0 && size.height() > 0) {
+        if (size.width() > 0 && size.height() > 0) {
                 windowSize = size;
                 if (isWindowCreated())
                         SetWindowPos(windowHandle.id, 0, 0, 0, size.width(), size.height(), SWP_NOMOVE | SWP_NOZORDER);
                 resizeCanvas();
-		}*/
+        }
 }
 
 RkPoint& RkWindowWin::position() const
 {
-  /*        if (isWindowCreated()) {
+        if (isWindowCreated()) {
                 RECT rect;
                 GetWindowRect(windowHandle.id, &rect);
                 RECT rect0 = rect;
                 if (hasParent())
                         MapWindowPoints(windowHandle.id, GetParent(windowHandle.id), reinterpret_cast<LPPOINT>(&rect), 2);
                 windowPosition = {rect.left - rect0.left, rect.top - rect0.top};
-		}*/
+        }
         return windowPosition;
 }
 
 void RkWindowWin::setPosition(const RkPoint &position)
 {
-  /*        windowPosition = position;
+        windowPosition = position;
         if (isWindowCreated())
-	SetWindowPos(windowHandle.id, 0, position.x(), position.y(), 0, 0, SWP_NOSIZE | SWP_NOZORDER);*/
+                SetWindowPos(windowHandle.id, 0, position.x(), position.y(), 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 }
 
 void RkWindowWin::setBorderWidth(int width)
@@ -218,7 +222,7 @@ void RkWindowWin::update()
 {
 }
 
-#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
+//#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
 void RkWindowWin::createCanvasInfo()
 {
 /*        canvasInfo = std::make_shared<RkCanvasInfo>();
@@ -273,9 +277,9 @@ void RkWindowWin::freeCanvasInfo()
                 canvasInfo = nullptr;
         }*/
 }
-#else
+//#else
 //#error No graphics backend defined
-#endif // RK_GRAPHICS_CAIRO_BACKEND
+//#endif // RK_GRAPHICS_CAIRO_BACKEND
 
 void RkWindowWin::setFocus(bool b)
 {
@@ -301,10 +305,10 @@ void RkWindowWin::setPointerShape(Rk::PointerShape shape)
 
 void RkWindowWin::setEventQueue(RkEventQueue *queue)
 {
-  /*        eventQueue = queue;
+        eventQueue = queue;
         SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
         InvalidateRect(windowHandle.id, nullptr, FALSE);
-        UpdateWindow(windowHandle.id);*/
+        UpdateWindow(windowHandle.id);
 }
 
 void RkWindowWin::setScaleFactor(double factor)

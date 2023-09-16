@@ -36,8 +36,8 @@
 #endif
 
 
-RkEventQueue::RkEventQueueImpl::RkEventQueueImpl(RkEventQueue* interface)
-        : inf_ptr{interface}
+RkEventQueue::RkEventQueueImpl::RkEventQueueImpl(RkEventQueue* queueInterface)
+        : inf_ptr{queueInterface}
 #ifdef RK_OS_WIN
         , platformEventQueue{std::make_unique<RkEventQueueWin>()}
 #elif RK_OS_MAC
@@ -142,7 +142,7 @@ void RkEventQueue::RkEventQueueImpl::removeObject(RkObject *obj)
                                 RK_LOG_ERROR("can't cast o_ptr to RkWidgetImpl");
                                 return;
                         }
-                        auto id = widgetImpl->nativeWindowInfo()->window;
+                        auto id = reinterpret_cast<EventQueueWindowId>(widgetImpl->nativeWindowInfo()->window);
                         if (windowIdsMap.find(id) != windowIdsMap.end()) {
                                 RK_LOG_DEBUG("widget id removed from queue");
                                 windowIdsMap.erase(id);
@@ -163,7 +163,7 @@ void RkEventQueue::RkEventQueueImpl::removeObjectShortcuts(RkObject *obj)
 
 RkWidget* RkEventQueue::RkEventQueueImpl::findWidget(const RkWindowId &id) const
 {
-        auto it = windowIdsMap.find(id.id);
+        auto it = windowIdsMap.find(reinterpret_cast<EventQueueWindowId>(id.id));
         if (it != windowIdsMap.end()) {
                 if (it->second->type() == Rk::ObjectType::Widget) {
                         auto widget = dynamic_cast<RkWidget*>(it->second);
