@@ -63,7 +63,7 @@ class RkWindowWin {
         void setBackgroundColor(const RkColor &color);
         const RkColor& background() const;
         void resizeCanvas();
-        const RkCanvasInfo* getCanvasInfo() const;
+//        const RkCanvasInfo* getCanvasInfo() const;
         void update();
         void setFocus(bool b);
         bool hasFocus();
@@ -81,7 +81,7 @@ class RkWindowWin {
 
  private:
         RkNativeWindowInfo parentWindowInfo;
-		std::unique_ptr<RkNativeWindowInfo> windowInfo;
+        std::unique_ptr<RkNativeWindowInfo> windowInfo;
         RkWindowId windowHandle;
         mutable RkPoint windowPosition;
         mutable RkSize windowSize;

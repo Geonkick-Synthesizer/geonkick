@@ -39,7 +39,7 @@ class RkEventQueueWin
         RkEventQueueWin& operator=(const RkEventQueueWin &other) = delete;
         RkEventQueueWin(RkEventQueueWin &&other) = delete;
         RkEventQueueWin& operator=(RkEventQueueWin &&other) = delete;
-		std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> getEvents() const;
+        std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> getEvents() const;
 		void setScaleFactor(double factor);
 		
 		private:

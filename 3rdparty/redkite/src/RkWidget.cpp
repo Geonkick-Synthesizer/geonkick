@@ -548,10 +548,10 @@ void RkWidget::update()
         impl_ptr->update();
 }
 
-const RkCanvasInfo* RkWidget::getCanvasInfo() const
+/*const RkCanvasInfo* RkWidget::getCanvasInfo() const
 {
         return impl_ptr->getCanvasInfo();
-}
+	}*/
 
 RkRect RkWidget::rect() const
 {

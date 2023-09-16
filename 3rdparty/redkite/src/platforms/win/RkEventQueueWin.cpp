@@ -36,10 +36,10 @@ RkEventQueueWin::~RkEventQueueWin()
 {
 }
 
-std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> RkEventQueueWin::getEvents() const;
+std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> RkEventQueueWin::getEvents() const
 {
-        MSG msg;
-        while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) > 0) {
+  //MSG msg;
+        //while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) > 0) {
                 /*std::shared_ptr<RkEvent> event = nullptr;
                 switch (msg.message)
                 {
@@ -78,12 +78,12 @@ std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> RkEventQueueWin::ge
                         break;
                         }*/
 
-                TranslateMessage (&msg);
-                DispatchMessage (&msg);
+  //            TranslateMessage (&msg);
+  //              DispatchMessage (&msg);
 
                 //                if (event)
                 //        eventsQueue.push_back({rk_id_from_win(msg.hwnd), event});
-        }
+  //    }
 		return {};
 }
 

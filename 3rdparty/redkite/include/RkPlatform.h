@@ -35,13 +35,13 @@ using HINSTANCE = long long unsigned int;
 using LPCSTR = char*;
 
 struct RK_EXPORT RkWindowId {
-    RkWindowId(HWND arg /*= nullptr*/) : id(arg) {}
+    RkWindowId(HWND arg = 0) : id(arg) {}
     HWND id;
 };
 
 class RK_EXPORT RkNativeWindowInfo {
 	 public:
-        RkNativeWindowInfo(HWND arg /*= nullptr*/)
+        RkNativeWindowInfo(HWND arg = 0)
 		: window(arg) {}
 		~RkNativeWindowInfo() = default;
         HINSTANCE instance;
