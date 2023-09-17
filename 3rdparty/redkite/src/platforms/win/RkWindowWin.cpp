@@ -306,6 +306,7 @@ void RkWindowWin::setPointerShape(Rk::PointerShape shape)
 void RkWindowWin::setEventQueue(RkEventQueue *queue)
 {
         eventQueue = queue;
+        RK_LOG_DEBUG("eventQueue: " << eventQueue);
         SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
         InvalidateRect(windowHandle.id, nullptr, FALSE);
         UpdateWindow(windowHandle.id);

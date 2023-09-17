@@ -66,6 +66,7 @@ const std::unordered_set<RkObject*>& RkObject::children() const
 
 void RkObject::setEventQueue(RkEventQueue* queue)
 {
+        RK_LOG_DEBUG("queue: " << queue);
         o_ptr->setEventQueue(queue);
 }
 

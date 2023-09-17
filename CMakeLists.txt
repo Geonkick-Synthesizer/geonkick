@@ -187,10 +187,10 @@ set(GKICK_COMMON_SOURCES
    ${GKICK_COMMON_DIR}/MainWindow.cpp
 )
 
-#if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-#    message(STATUS "Enable application logging")
-#    option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
-#endif()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Enable application logging")
+    option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
+endif()
 
 #if (ENABLE_LOGGING)
 #  message(STATUS "set debug level")

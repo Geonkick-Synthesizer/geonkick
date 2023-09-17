@@ -56,6 +56,7 @@ class RkEventQueue::RkEventQueueImpl {
         RkWidget* findWidget(const RkWindowId &id) const;
         void removeObjEvents(RkObject *obj);
         void postEvent(RkObject *obj, std::unique_ptr<RkEvent> event);
+        void postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event);
         void processEvent(RkObject *obj, RkEvent *event);
         void processEvents();
         void postAction(std::unique_ptr<RkAction> act);

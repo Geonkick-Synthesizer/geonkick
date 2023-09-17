@@ -95,8 +95,10 @@ void RkEventQueue::RkEventQueueImpl::addObject(RkObject *obj)
         }
 
         objectsList.insert(obj);
-        if (!obj->eventQueue())
+        if (!obj->eventQueue()) {
+                RK_LOG_DEBUG("obj->setEventQueue: " << obj->eventQueue());
                 obj->setEventQueue(inf_ptr);
+        }
 }
 
 void RkEventQueue::RkEventQueueImpl::addShortcut(RkObject *obj,
@@ -181,6 +183,13 @@ RkWidget* RkEventQueue::RkEventQueueImpl::findWidget(const RkWindowId &id) const
 void RkEventQueue::RkEventQueueImpl::postEvent(RkObject *obj, std::unique_ptr<RkEvent> event)
 {
         eventsQueue.push_back({obj, std::move(event)});
+}
+
+void RkEventQueue::RkEventQueueImpl::postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event)
+{
+        auto it = windowIdsMap.find(reinterpret_cast<EventQueueWindowId>(id.id));
+        if (it != windowIdsMap.end())
+                eventsQueue.push_back({it->second, std::move(event)});
 }
 
 void RkEventQueue::RkEventQueueImpl::processEvent(RkObject *obj, RkEvent *event)

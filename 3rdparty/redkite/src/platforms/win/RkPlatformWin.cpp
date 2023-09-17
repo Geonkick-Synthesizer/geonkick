@@ -88,7 +88,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
         case WM_DESTROY:
         {
-                //        eventQueue->processEvent(rk_id_from_win(hWnd), std::make_shared<RkCloseEvent>());
+                RK_LOG_DEBUG("WM_DESTROY");
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkCloseEvent>());
                 return 0;
         }
         case WM_LBUTTONDOWN:

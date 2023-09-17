@@ -98,6 +98,14 @@ RkWidget::RkWidgetImpl::~RkWidgetImpl()
         RK_LOG_DEBUG("called");
 }
 
+void RkWidget::RkWidgetImpl::setEventQueue(RkEventQueue *queue)
+{
+        RkObjectImpl::setEventQueue(queue);
+#ifdef RK_OS_WIN
+        platformWindow->setEventQueue(queue);
+#endif // RK_OS_WIN
+}
+
 Rk::WindowFlags RkWidget::RkWidgetImpl::windowFlags() const
 {
         return platformWindow->flags();

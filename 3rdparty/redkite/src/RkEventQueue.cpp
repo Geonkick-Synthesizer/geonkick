@@ -66,6 +66,11 @@ void RkEventQueue::postEvent(RkObject *obj, std::unique_ptr<RkEvent> event)
         o_ptr->postEvent(obj, std::move(event));
 }
 
+void RkEventQueue::postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event)
+{
+        o_ptr->postEvent(id, std::move(event));
+}
+
 void RkEventQueue::postAction(std::unique_ptr<RkAction> act)
 {
         o_ptr->postAction(std::move(act));
