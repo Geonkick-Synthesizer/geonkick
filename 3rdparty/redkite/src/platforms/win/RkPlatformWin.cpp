@@ -40,11 +40,13 @@ static HINSTANCE rk_winApiInstance = nullptr;
 
 HINSTANCE rk_win_api_instance()
 {
+        RK_LOG_DEBUG("rk_winApiClassName: " << rk_winApiInstance);
         return rk_winApiInstance;
 }
 
 std::string rk_win_api_class_name()
 {
+        RK_LOG_DEBUG("rk_winApiClassName: " << rk_winApiClassName);
         return rk_winApiClassName;
 }
 
@@ -243,7 +245,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 args[i] = wideToMulti(CP_ACP, argvW[i]);
         LocalFree(argvW);
 
-        //        const int exitCode = main(args.size(), args.data());
+        const int exitCode = main(args.size(), args.data());
         for (auto arg : args)
                 delete [] arg;
 

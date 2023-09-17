@@ -5,12 +5,11 @@ project(redkite VERSION 1.3.1)
 #Temporary (passing as cmake argumnet is not including headers)
 set(CMAKE_SYSTEM_NAME Windows)
 
-option(ENABLE_EXAMPLES "Build examples" ON)
+option(ENABLE_EXAMPLES "Build examples" OFF)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
   message(STATUS "Build Redkite for Windows")
   add_compile_options(-DRK_OS_WIN)
-  add_compile_options(-DRK_FOR_SHARED)
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
   message(FATAL_ERROR "Redkite is not implemented yet for Mac OS X")
 elseif (CMAKE_SYSTEM_NAME MATCHES Linux)

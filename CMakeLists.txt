@@ -10,9 +10,9 @@ if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
     include(GNUInstallDirs)
 endif()
 
-option(GKICK_STANDALONE "Enable build for standalone" OFF)
-option(GKICK_PLUGIN "Enable build for plugin" ON)
-set(GKICK_VST3 "ON")
+option(GKICK_STANDALONE "Enable build for standalone" ON)
+option(GKICK_PLUGIN "Enable build for plugin" OFF)
+set(GKICK_VST3 "OFF")
 
 if (GKICK_PLUGIN)
   option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" OFF)
@@ -44,6 +44,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_C_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_C_FLAGS} -fvisibility=hidden")
+
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGEONKICK_OS_WINDOWS")
+   set(CMAKE_C_FLAGS "${GKICK_OPTIMISATION_FLAGS} -DGEONKICK_OS_WINDOWS")
+endif()
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
@@ -83,6 +88,7 @@ set(GKICK_COMMON_HEADERS
 #  ${GKICK_COMMON_DIR}/GeonkickConfig.h
 #  ${GKICK_COMMON_DIR}/UiSettings.h
 #  ${GKICK_COMMON_DIR}/ViewState.h
+   ${GKICK_COMMON_DIR}/geonkick_widget.h
 #  ${GKICK_COMMON_DIR}/geonkick_slider.h
 #  ${GKICK_COMMON_DIR}/geonkick_button.h
 #  ${GKICK_COMMON_DIR}/PathListModel.h
@@ -126,7 +132,7 @@ set(GKICK_COMMON_HEADERS
 #  ${GKICK_COMMON_DIR}/preset_browser_view.h
 #  ${GKICK_COMMON_DIR}/MidiKeyWidget.h
 #  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
-#  ${GKICK_COMMON_DIR}/MainWindow.h
+   ${GKICK_COMMON_DIR}/MainWindow.h
 )
 
 set(GKICK_COMMON_SOURCES
@@ -134,7 +140,7 @@ set(GKICK_COMMON_SOURCES
 #  ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
 #  ${GKICK_COMMON_DIR}/UiSettings.cpp
 #  ${GKICK_COMMON_DIR}/ViewState.cpp
-#  ${GKICK_COMMON_DIR}/geonkick_widget.cpp
+   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
 #  ${GKICK_COMMON_DIR}/geonkick_button.cpp
 #  ${GKICK_COMMON_DIR}/PathListModel.cpp
@@ -178,7 +184,7 @@ set(GKICK_COMMON_SOURCES
 #  ${GKICK_COMMON_DIR}/preset_browser_view.cpp
 #  ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
 #  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
-#  ${GKICK_COMMON_DIR}/MainWindow.cpp
+   ${GKICK_COMMON_DIR}/MainWindow.cpp
 )
 
 #if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -232,7 +238,6 @@ endif(GKICK_PLUGIN)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_WIN")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_WIN")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_FOR_SHARED")
 else ()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_GNU")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_GNU")
@@ -267,38 +272,38 @@ if (GKICK_PLUGIN)
 endif(GKICK_PLUGIN)
 
 message(STATUS "------------ Summary ---------")
-#if (GKICK_STANDALONE)
-#  message(STATUS "Standalone: yes" )
-#else(GKICK_STANDALONE)
-#  if (GKICK_JACK_NOT_FOUND)
-#    message(STATUS "Standalone: no (install jack development library)")
-#  else ()
-#    message(STATUS "Standalone: no")
-#  endif()
-#endif(GKICK_STANDALONE)
+if (GKICK_STANDALONE)
+    message(STATUS "Standalone: yes" )
+else(GKICK_STANDALONE)
+    if (GKICK_JACK_NOT_FOUND)
+        message(STATUS "Standalone: no (install jack development library)")
+    else ()
+        message(STATUS "Standalone: no")
+    endif()
+endif(GKICK_STANDALONE)
 
-#if (GKICK_PLUGIN_LV2)
-#  message(STATUS "LV2 plugin: yes" )
-#else(GKICK_PLUGIN_LV2)
-#  message(STATUS "LV2 plugin: no")
-#endif(GKICK_PLUGIN_LV2)
+if (GKICK_PLUGIN_LV2)
+  message(STATUS "LV2 plugin: yes" )
+else(GKICK_PLUGIN_LV2)
+  message(STATUS "LV2 plugin: no")
+endif(GKICK_PLUGIN_LV2)
 
-#if (GKICK_PLUGIN_VST)
-#  message(STATUS "VST plugin: yes" )
-#else(GKICK_PLUGIN_VST)
-#  message(STATUS "VST plugin: no")
-#endif(GKICK_PLUGIN_VST)
+if (GKICK_PLUGIN_VST)
+  message(STATUS "VST plugin: yes" )
+else(GKICK_PLUGIN_VST)
+  message(STATUS "VST plugin: no")
+endif(GKICK_PLUGIN_VST)
 
-#if (ENABLE_LOGGING)
-#  message(STATUS "Debug enabled: yes" )
-#else(ENABLE_LOGGING)
-#  message(STATUS "Debug enabled: no" )
-#endif(ENABLE_LOGGING)
-#message(STATUS "------------------------------")
+if (ENABLE_LOGGING)
+  message(STATUS "Debug enabled: yes" )
+else(ENABLE_LOGGING)
+  message(STATUS "Debug enabled: no" )
+endif(ENABLE_LOGGING)
+message(STATUS "------------------------------")
 
-#if (GKICK_STANDALONE)
-#  add_subdirectory(standalone)
-#endif (GKICK_STANDALONE)
+if (GKICK_STANDALONE)
+  add_subdirectory(standalone)
+endif (GKICK_STANDALONE)
 
 if (GKICK_PLUGIN)
   add_subdirectory(plugin)

@@ -75,10 +75,10 @@ bool RkWindowWin::hasParent() const
 bool RkWindowWin::init()
 {
         RK_LOG_DEBUG("hasParent(): " << hasParent());
-        auto className = hasParent() ? parentWindowInfo.className.c_str() : rk_win_api_class_name().c_str();
+        auto className = hasParent() ? parentWindowInfo.className : rk_win_api_class_name();
         RK_LOG_DEBUG("className: " << className);
         windowHandle.id = CreateWindowExA(0,
-                                          className,
+                                          className.c_str(),
                                           "RkWidget",
                                           hasParent() ? (WS_CHILD | WS_CLIPCHILDREN | WS_VISIBLE) : (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN),
                                           windowPosition.x(),

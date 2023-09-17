@@ -26,7 +26,7 @@
 
 #include "globals.h"
 
-//#include <RkRealPoint.h>
+#include <RkRealPoint.h>
 
 class Oscillator;
 class PercussionState;
