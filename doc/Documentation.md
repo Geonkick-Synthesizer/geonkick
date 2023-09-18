@@ -2,7 +2,7 @@
 
 **Author:** Iurie Nistor
 
-**License:** This work (including all images it uses) is released under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+**License:** This work (including all images it uses) is released under [CC0 1.0 Universal (CC0 1.0) Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/deed.en).
 
 - [Introduction](#introduction)
 - [How it works](#how-it-works)
