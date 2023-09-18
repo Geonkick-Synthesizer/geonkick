@@ -1,3 +1,9 @@
+# Geonkick User Guide
+
+**Author:** Iurie Nistor
+
+**License:** This work (including all images it uses) is released under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+
 - [Introduction](#introduction)
 - [How it works](#how-it-works)
 - [Block diagram](#block-diagram)
