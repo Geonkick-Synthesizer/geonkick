@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.1
+MimeType=application/x-geonkick-preset;
+Name=Geonkick
+GenericName=Percussion Synthesizer
+GenericName[fr]=Synthétiseur de kick de batterie
+Comment=Synthesizes elements of percussion
+Comment[fr]=Synthétise les éléments de percussion
+Icon=geonkick
+Categories=AudioVideo;Audio;AudioVideoEditing;
+Exec=env UBUNTU_MENUPROXY=0 geonkick %F
+Terminal=false
+StartupNotify=false
