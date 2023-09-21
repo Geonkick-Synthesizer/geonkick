@@ -2,7 +2,7 @@
 
 **Geonkick** - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
 
-Home page: https://geonkick.gitlab.io
+Home page: https://geonkick.org
 
 Geonkick is a synthesizer capable of producing various percussion elements.
 The most basic examples are: kicks, snares, hi-hats, shakers, claps.
@@ -15,8 +15,8 @@ The term "Geon" in the name "Geonkick" refers to a hypothetical particle called 
 
 If you have an idea about a feature or found an issue, please, submit it:
 
-- [on GitLab](https://gitlab.com/geonkick/geonkick/issues)
-- [on Codeberg](https://codeberg.org/geonkick/geonkick/issues)
+- [on GitLab](https://gitlab.com/Geonkick-Synthesizer/geonkick/issues)
+- [on Codeberg](https://codeberg.org/Geonkick-Synthesizer/geonkick/issues)
 - [on GitHub](https://github.com/Geonkick-Synthesizer/geonkick/issues)
 
 If you want your created presets to be added to the list of Geonkick presets, please, create a pull request
@@ -31,9 +31,9 @@ See the folder "presets" for instructions on creating a preset archive.
 
 Source code repository:
 
-- https://gitlab.com/geonkick/geonkick
-- https://codeberg.org/geonkick/geonkick
-- https://github.com/geonkick-synthesizer/geonkick
+- https://gitlab.com/Geonkick-Synthesizer/geonkick
+- https://codeberg.org/Geonkick-Synthesizer/geonkick
+- https://github.com/Geonkick-Synthesizer/geonkick
 
 #### Features
 
@@ -149,7 +149,7 @@ Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora
 
 ##### Packaging
 
-Please use only release versions ([see repository releases](https://gitlab.com/geonkick/geonkick/-/releases)).
+Please use only release versions ([see repository releases](https://gitlab.com/Geonkick-Synthesizer/geonkick/-/releases)).
 
 #### Documentation
 
