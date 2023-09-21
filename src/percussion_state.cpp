@@ -22,7 +22,7 @@
  */
 
 #include "percussion_state.h"
-#include "base64.h"
+#include "Base64EncoderDecoder.h"
 
 #include <iomanip>
 
@@ -1102,31 +1102,12 @@ bool PercussionState::isOutputTuned() const
 
 std::vector<float> PercussionState::fromBase64F(const std::string &str)
 {
-        size_t len;
-        auto data_str = base64_decode(reinterpret_cast<const unsigned char*>(str.c_str()),
-                                      str.size(),
-                                      &len);
-        if (data_str && len > sizeof(float)) {
-                std::vector<float> data(reinterpret_cast<float*>(data_str),
-                                        reinterpret_cast<float*>(data_str) + len / sizeof(float));
-                free(data_str);
-                return data;
-        }
-        return {};
+        return Base64EncoderDecoder::decode(str);
 }
 
 std::string PercussionState::toBase64F(const std::vector<float> &data)
 {
-        size_t len;
-        auto base64 = base64_encode(reinterpret_cast<const unsigned char*>(data.data()),
-                                    data.size() * sizeof(float), &len);
-        if (base64  && len > 0) {
-                std::string str(reinterpret_cast<const char*>(base64), len);
-                free(base64);
-                str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
-                return str;
-        }
-        return {};
+        return Base64EncoderDecoder::encode(data);
 }
 
 bool PercussionState::save(const std::string &fileName)

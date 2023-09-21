@@ -56,7 +56,6 @@ set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dsp)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
-set(GKICK_UTILS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/utils)
 set(GKICK_REDKITE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/redkite)
 
 if (GKICK_PLUGIN)
@@ -73,7 +72,7 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
-  ${GKICK_UTILS_DIR}/base64.h
+  ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
   ${GKICK_COMMON_DIR}/GeonkickConfig.h
   ${GKICK_COMMON_DIR}/UiSettings.h
   ${GKICK_COMMON_DIR}/ViewState.h
@@ -123,7 +122,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/MainWindow.h)
 
 set(GKICK_COMMON_SOURCES
-  ${GKICK_UTILS_DIR}/base64.cpp
+  ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
   ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
   ${GKICK_COMMON_DIR}/UiSettings.cpp
   ${GKICK_COMMON_DIR}/ViewState.cpp
@@ -192,6 +191,7 @@ endif()
 
 find_package(PkgConfig REQUIRED)
 find_package(RapidJSON REQUIRED)
+find_package(OpenSSL REQUIRED)
 pkg_check_modules(SNDFILE sndfile)
 if (NOT SNDFILE_FOUND)
     message(FATAL_ERROR "can't find sndfile library")
@@ -231,7 +231,6 @@ endif ()
 
 include_directories(${GKICK_API_DIR}/src)
 include_directories(${GKICK_REDKITE_DIR}/include)
-include_directories(${GKICK_UTILS_DIR})
 link_directories(${GKICK_REDKITE_DIR})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
