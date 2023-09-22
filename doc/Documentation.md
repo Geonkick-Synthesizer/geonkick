@@ -473,7 +473,3 @@ Please, see README file how to build and install Geonkick.
 Here is a list of videos that show how to synthesize various percussion with Geonkick:
 
 * YouTube: https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY
-
-### Documentation license
-
-Geonkick documentation is released under CC-BY 4.0 license.
