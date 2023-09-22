@@ -11,12 +11,14 @@ link_directories(${GKICK_VST_SDK_PATH}/build/lib)
 link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
 
 set(GKICK_VST_HEADERS
+  ${GKICK_VST_SDK_PATH}/public.sdk/source/vst/vstcomponentbase.h
   ${GKICK_VST_SDK_PATH}/public.sdk/source/vst/vstsinglecomponenteffect.h
   ${GKICK_VST_DIR}/VstIds.h
   ${GKICK_VST_DIR}/GKickVstProcessor.h
   ${GKICK_VST_DIR}/GKickVstEditor.h)
 
 set(GKICK_VST_SOURCES
+  ${GKICK_VST_SDK_PATH}/public.sdk/source/vst/vstcomponentbase.cpp
   ${GKICK_VST_SDK_PATH}/public.sdk/source/vst/vstsinglecomponenteffect.cpp
   ${GKICK_VST_DIR}/VstFactory.cpp
   ${GKICK_VST_DIR}/GKickVstProcessor.cpp

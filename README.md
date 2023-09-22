@@ -140,9 +140,22 @@ Clone the Geonkick code repository, compile and install.
 
 ##### VST3
 
-To build VST3 plugin pass GKICK_VST3 to cmake
+Get VST3 SDK and build it
 
-    cmake -DGKICK_VST3=ON ../
+        cd vst3sdk
+        mkdir build
+        cd build
+        cmake ../
+        make
+
+than build Geonkick VST3 plugin:
+
+        copy the source code of the latest Geonkick release
+        mkdir geonkick/build
+        cd geonkick/build
+        cmake -DVST3_SDK_PATH=<full system path to vst3sdk folder> ../
+        make
+        make install
 
 #### Packages
 
