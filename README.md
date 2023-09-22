@@ -112,6 +112,7 @@ In order to build Geonkick there is a need to install
 the following development packages:
 
 * libsndfile
+* OpenSSL
 * RapidJSON
 * JACK Audio Connection Kit (optional if building only plugin)
 * LV2 development library
@@ -121,6 +122,7 @@ On Debian, Ubuntu, Ubuntu Studio install:
     apt-get install build-essential
     apt-get install cmake
     apt-get install qjackctl libjack-dev libsndfile-dev
+    apt-get install libssl-dev
     apt-get install rapidjson-dev
     apt-get install lv2-dev
     apt-get install libcairo2-dev
