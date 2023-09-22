@@ -56,7 +56,7 @@ set(GKICK_API_DIR ${CMAKE_CURRENT_SOURCE_DIR}/dsp)
 set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/standalone)
-set(GKICK_REDKITE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/redkite)
+set(GKICK_REDKITE_DIR ${GKICK_COMMON_DIR}/redkite)
 
 if (GKICK_PLUGIN)
     if (GKICK_PLUGIN_VST)
@@ -246,7 +246,7 @@ foreach(pngFile ${gkick_rc_png_files})
   string(REPLACE " " "_" filename ${filename})
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
-    && ${CMAKE_BINARY_DIR}/3rdparty/redkite/tools/rkpng2c
+    && ${CMAKE_BINARY_DIR}/src/redkite/tools/rkpng2c
     "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk__${filename}")
     set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
 endforeach()
