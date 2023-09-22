@@ -1,3 +1,16 @@
+### Version 2.10.1
+
+#### Fixes
+
+- Use OpenSSL for base64 encoding/decoding and eliminated third-party code related to base64.
+- Generate PNG resources during the build process and removed the generated C files from the repository.
+- Sanitized all SVG images by removing sensitive data.
+- Relocated the 'redkite,' 'dsp,' 'plugin,' and 'standalone' folders to the 'src' directory.
+- Eliminated the '3rdparty' folder and excluded 'vst3sdk' from the repository.
+- Introduced a CMake option to specify the path to the VST3 SDK.
+- Additional clean-up to remove sensitive data and unnecessary files.
+- Added licensing (CC0) information for all images, documentation, and other non-code materials.
+
 ### Version 2.10.0
 
 #### Fixes

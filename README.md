@@ -11,7 +11,7 @@ The term "Geon" in the name "Geonkick" refers to a hypothetical particle called 
 
 **License:** GPLv3
 
-**Version:** 2.10.0
+**Version:** 2.10.1
 
 If you have an idea about a feature or found an issue, please, submit it:
 
