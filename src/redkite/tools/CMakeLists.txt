@@ -2,6 +2,8 @@ set(RK_TOOLS_SOURCES ${RK_TOOLS_PATH}/rkpng2c.c)
 
 if (RK_GRAPHICS_BACKEND MATCHES Cairo)
   set(RK_GRAPHICS_BACKEND_LINK_LIBS "-lcairo")
+else()
+  set(RK_GRAPHICS_BACKEND_LINK_LIBS "-lcairo")
 endif()
 
 add_executable(rkpng2c ${RK_EXEC_OPTION} ${RK_TOOLS_SOURCES})

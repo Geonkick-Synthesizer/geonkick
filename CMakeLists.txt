@@ -15,9 +15,9 @@ option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 
 if (GKICK_PLUGIN)
-  option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" ON)
+  option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" OFF)
   if (VST3_SDK_PATH)
-    option(GKICK_PLUGIN_VST "Enable build VST plugin" ON)
+    option(GKICK_PLUGIN_VST "Enable build VST plugin" OFF)
   endif(VST3_SDK_PATH)
 endif (GKICK_PLUGIN)
 
@@ -83,7 +83,7 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
-# ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
+   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
 #  ${GKICK_COMMON_DIR}/GeonkickConfig.h
 #  ${GKICK_COMMON_DIR}/UiSettings.h
 #  ${GKICK_COMMON_DIR}/ViewState.h
@@ -135,7 +135,7 @@ set(GKICK_COMMON_HEADERS
 )
 
 set(GKICK_COMMON_SOURCES
-#  ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
+   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
 #  ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
 #  ${GKICK_COMMON_DIR}/UiSettings.cpp
 #  ${GKICK_COMMON_DIR}/ViewState.cpp
@@ -206,7 +206,7 @@ endif()
 find_package(PkgConfig REQUIRED)
 find_package(RapidJSON REQUIRED)
 include_directories(${RapidJSON_INCLUDE_DIR})
-#find_package(OpenSSL REQUIRED)
+find_package(OpenSSL REQUIRED)
 #pkg_check_modules(SNDFILE sndfile)
 #if (NOT SNDFILE_FOUND)
 #    message(FATAL_ERROR "can't find sndfile library")

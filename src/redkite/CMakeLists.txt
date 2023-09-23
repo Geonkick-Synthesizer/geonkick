@@ -227,9 +227,9 @@ add_library(redkite STATIC
 #  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
 #endif()
 
-if (RK_BUILD_TOOLS)
+if(RK_BUILD_TOOLS)
 	add_subdirectory(tools)
-endif (RK_BUILD_TOOLS)
-if (RK_ENABLE_EXAMPLES)
+endif(RK_BUILD_TOOLS)
+if(RK_ENABLE_EXAMPLES)
    add_subdirectory(examples)
-endif (ENABLE_EXAMPLES)
+endif(RK_ENABLE_EXAMPLES)
