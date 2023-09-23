@@ -70,10 +70,10 @@ void RkImage::fill(const RkColor &color)
         o_ptr->fill(color);
 }
 
-const RkCanvasInfo* RkImage::getCanvasInfo() const
+/*const RkCanvasInfo* RkImage::getCanvasInfo() const
 {
         return o_ptr->getCanvasInfo();
-}
+        }*/
 
 unsigned char* RkImage::data() const
 {

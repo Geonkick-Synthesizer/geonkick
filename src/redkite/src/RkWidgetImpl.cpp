@@ -98,6 +98,14 @@ RkWidget::RkWidgetImpl::~RkWidgetImpl()
         RK_LOG_DEBUG("called");
 }
 
+void RkWidget::RkWidgetImpl::setEventQueue(RkEventQueue *queue)
+{
+        RkObjectImpl::setEventQueue(queue);
+#ifdef RK_OS_WIN
+        platformWindow->setEventQueue(queue);
+#endif // RK_OS_WIN
+}
+
 Rk::WindowFlags RkWidget::RkWidgetImpl::windowFlags() const
 {
         return platformWindow->flags();
@@ -340,10 +348,10 @@ RkRect RkWidget::RkWidgetImpl::rect() const
         return RkRect(RkPoint(0, 0), size());
 }
 
-const RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
-{
-        return platformWindow->getCanvasInfo();
-}
+//const RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
+//{
+//        return platformWindow->getCanvasInfo();
+//}
 
 void RkWidget::RkWidgetImpl::update()
 {

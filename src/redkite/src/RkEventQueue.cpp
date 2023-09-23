@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "RkEventQueue.h"
 #include "RkEventQueueImpl.h"
 
 RkEventQueue::RkEventQueue()
@@ -65,6 +64,11 @@ void RkEventQueue::removeObject(RkObject *obj)
 void RkEventQueue::postEvent(RkObject *obj, std::unique_ptr<RkEvent> event)
 {
         o_ptr->postEvent(obj, std::move(event));
+}
+
+void RkEventQueue::postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event)
+{
+        o_ptr->postEvent(id, std::move(event));
 }
 
 void RkEventQueue::postAction(std::unique_ptr<RkAction> act)

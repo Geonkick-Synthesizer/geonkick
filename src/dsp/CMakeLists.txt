@@ -15,7 +15,11 @@ set(GKICK_API_HEADERS
         ${GKICK_API_DIR}/src/worker.h)
 
 if (GKICK_STANDALONE)
-  list(APPEND GKICK_API_HEADERS ${GKICK_API_DIR}/src/gkick_jack.h)
+  if (CMAKE_SYSTEM_NAME MATCHES Windows)
+  	message(STATUS "No Jack implementation for Windows")
+  elseif()
+        list(APPEND GKICK_API_HEADERS ${GKICK_API_DIR}/src/gkick_jack.h)
+  endif()
 endif(GKICK_STANDALONE)
 
 set(GKICK_API_SOURCES
@@ -34,7 +38,11 @@ set(GKICK_API_SOURCES
         ${GKICK_API_DIR}/src/worker.c)
 
 if (GKICK_STANDALONE)
-  list(APPEND GKICK_API_SOURCES ${GKICK_API_DIR}/src/gkick_jack.c)
+  if (CMAKE_SYSTEM_NAME MATCHES Windows)
+  	message(STATUS "No Jack implementation for Windows")
+  elseif()
+       list(APPEND GKICK_API_SOURCES ${GKICK_API_DIR}/src/gkick_jack.c)
+  endif()
 endif(GKICK_STANDALONE)
 
 include_directories(${GKICK_API_DIR}/src)

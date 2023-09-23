@@ -36,8 +36,8 @@
 #endif
 
 
-RkEventQueue::RkEventQueueImpl::RkEventQueueImpl(RkEventQueue* interface)
-        : inf_ptr{interface}
+RkEventQueue::RkEventQueueImpl::RkEventQueueImpl(RkEventQueue* queueInterface)
+        : inf_ptr{queueInterface}
 #ifdef RK_OS_WIN
         , platformEventQueue{std::make_unique<RkEventQueueWin>()}
 #elif RK_OS_MAC
@@ -72,18 +72,20 @@ void RkEventQueue::RkEventQueueImpl::addObject(RkObject *obj)
                         RK_LOG_ERROR("can't cast o_ptr to RkWidgetImpl");
                         return;
                 }
- #if !defined(RK_OS_WIN) && !defined(RK_OS_MAC)
-         // Set the display from the top window.
+				
+ #ifdef RK_OS_WIN
+ #elif RK_OS_MAC
+ #else
+                // Set the display from the top window.
                 if (!widgetImpl->parent() && !platformEventQueue->display()) {
                         RK_LOG_DEBUG("widget " << obj << " is top window");
                         platformEventQueue->setDisplay(widgetImpl->nativeWindowInfo()->display);
                 }
- #else
- #error platform not implemented
  #endif
 
                 RK_LOG_DEBUG("add widget window id");
-                auto id = widgetImpl->nativeWindowInfo()->window;
+				
+                auto id = reinterpret_cast<EventQueueWindowId>(widgetImpl->nativeWindowInfo()->window);
                 windowIdsMap.insert({id, obj});
                 if (static_cast<int>(widgetImpl->windowFlags())
                     & static_cast<int>(Rk::WindowFlags::Popup)) {
@@ -93,8 +95,10 @@ void RkEventQueue::RkEventQueueImpl::addObject(RkObject *obj)
         }
 
         objectsList.insert(obj);
-        if (!obj->eventQueue())
+        if (!obj->eventQueue()) {
+                RK_LOG_DEBUG("obj->setEventQueue: " << obj->eventQueue());
                 obj->setEventQueue(inf_ptr);
+        }
 }
 
 void RkEventQueue::RkEventQueueImpl::addShortcut(RkObject *obj,
@@ -140,7 +144,7 @@ void RkEventQueue::RkEventQueueImpl::removeObject(RkObject *obj)
                                 RK_LOG_ERROR("can't cast o_ptr to RkWidgetImpl");
                                 return;
                         }
-                        auto id = widgetImpl->nativeWindowInfo()->window;
+                        auto id = reinterpret_cast<EventQueueWindowId>(widgetImpl->nativeWindowInfo()->window);
                         if (windowIdsMap.find(id) != windowIdsMap.end()) {
                                 RK_LOG_DEBUG("widget id removed from queue");
                                 windowIdsMap.erase(id);
@@ -161,7 +165,7 @@ void RkEventQueue::RkEventQueueImpl::removeObjectShortcuts(RkObject *obj)
 
 RkWidget* RkEventQueue::RkEventQueueImpl::findWidget(const RkWindowId &id) const
 {
-        auto it = windowIdsMap.find(id.id);
+        auto it = windowIdsMap.find(reinterpret_cast<EventQueueWindowId>(id.id));
         if (it != windowIdsMap.end()) {
                 if (it->second->type() == Rk::ObjectType::Widget) {
                         auto widget = dynamic_cast<RkWidget*>(it->second);
@@ -179,6 +183,13 @@ RkWidget* RkEventQueue::RkEventQueueImpl::findWidget(const RkWindowId &id) const
 void RkEventQueue::RkEventQueueImpl::postEvent(RkObject *obj, std::unique_ptr<RkEvent> event)
 {
         eventsQueue.push_back({obj, std::move(event)});
+}
+
+void RkEventQueue::RkEventQueueImpl::postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event)
+{
+        auto it = windowIdsMap.find(reinterpret_cast<EventQueueWindowId>(id.id));
+        if (it != windowIdsMap.end())
+                eventsQueue.push_back({it->second, std::move(event)});
 }
 
 void RkEventQueue::RkEventQueueImpl::processEvent(RkObject *obj, RkEvent *event)

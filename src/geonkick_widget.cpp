@@ -23,13 +23,13 @@
 
 #include "geonkick_widget.h"
 
-#include <RkPainter.h>
+//#include <RkPainter.h>
 
 GeonkickWidget::GeonkickWidget(RkMain *app,
                                const RkNativeWindowInfo &info,
                                Rk::WindowFlags flags)
         : RkWidget(app, info, flags)
-       , viewingState{nullptr}
+          //       , viewingState{nullptr}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});
@@ -40,7 +40,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
 
 GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
         : RkWidget(app, flags)
-        , viewingState{nullptr}
+          //        , viewingState{nullptr}
 {
         setBackgroundColor({68, 68, 70});
         setTextColor({210, 226, 226, 140});
@@ -51,7 +51,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
 
 GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
         : RkWidget(parent, flags)
-        , viewingState{parent->viewState()}
+          //        , viewingState{parent->viewState()}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});
@@ -60,17 +60,17 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
         setFont(f);
 }
 
-void GeonkickWidget::setViewState(ViewState *state)
-{
-        viewingState = state;
-}
+//void GeonkickWidget::setViewState(ViewState *state)
+//{
+//        viewingState = state;
+//}
 
-ViewState* GeonkickWidget::viewState() const
-{
-        return viewingState;
-}
+//ViewState* GeonkickWidget::viewState() const
+//{
+//        return viewingState;
+//}
 
-void GeonkickWidget::paintEvent(RkPaintEvent *event)
+/*void GeonkickWidget::paintEvent(RkPaintEvent *event)
 {
         if (!backgroundImage.isNull()) {
                 RkPainter painter(this);
@@ -91,7 +91,7 @@ void GeonkickWidget::setBackgroundImage(const RkImage &img)
                 backgroundImage = img;
                 update();
         }
-}
+        }*/
 
 void GeonkickWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {

@@ -31,11 +31,11 @@
 class Oscillator;
 class PercussionState;
 class KitState;
-class RkEventQueue;
-class PresetFolder;
-class UiSettings;
+//class RkEventQueue;
+//class PresetFolder;
+//class UiSettings;
 
-class GeonkickApi : public RkObject {
+class GeonkickApi /*: public RkObject*/ {
 
  public:
 
@@ -90,7 +90,7 @@ class GeonkickApi : public RkObject {
   InstanceType getInstanceType() const;
   static unsigned int getVersion();
   size_t static numberOfChannels();
-  void setEventQueue(RkEventQueue *queue);
+        //  void setEventQueue(RkEventQueue *queue);
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
@@ -267,7 +267,7 @@ class GeonkickApi : public RkObject {
   void copyToClipboard();
   void pasteFromClipboard();
 
-  RK_DECL_ACT(kickLengthUpdated,
+        /*RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double val),
               RK_ARG_TYPE(double),
               RK_ARG_VAL(val));
@@ -298,7 +298,7 @@ class GeonkickApi : public RkObject {
     RK_DECL_ACT(percussionUpdated,
               percussionUpdated(int id),
               RK_ARG_TYPE(int),
-              RK_ARG_VAL(id));
+              RK_ARG_VAL(id));*/
 
   void setSettings(const std::string &key, const std::string &value);
   std::string getSettings(const std::string &key) const;
@@ -312,9 +312,9 @@ class GeonkickApi : public RkObject {
   void addOrderedPercussionId(int id);
   void clearOrderedPercussionIds();
   bool moveOrdrepedPercussionId(int index, int n);
-  PresetFolder* getPresetFolder(size_t index) const;
+        //  PresetFolder* getPresetFolder(size_t index) const;
   size_t numberOfPresetFolders() const;
-  UiSettings* getUiSettings() const;
+        //  UiSettings* getUiSettings() const;
   void setState(const std::string &data);
   std::string getState() const;
   std::vector<gkick_real> setPreviewSample(const std::string &file);
@@ -328,8 +328,8 @@ class GeonkickApi : public RkObject {
 
 protected:
   void setupPaths();
-  void loadPresets();
-  void loadPresetsFolders(const std::filesystem::path &path);
+        //  void loadPresets();
+        //  void loadPresetsFolders(const std::filesystem::path &path);
   static void kickUpdatedCallback(void *arg,
                                   gkick_real *buff,
                                   size_t size,
@@ -355,13 +355,13 @@ private:
   bool jackEnabled;
   bool standaloneInstance;
   mutable std::mutex apiMutex;
-  RkEventQueue *eventQueue;
+        //  RkEventQueue *eventQueue;
   std::vector<std::vector<gkick_real>> kickBuffers;
   mutable Layer currentLayer;
   std::string kitName;
   std::string kitAuthor;
   std::string kitUrl;
-  std::shared_ptr<PercussionState> clipboardPercussion;
+        //  std::shared_ptr<PercussionState> clipboardPercussion;
 
   /**
    * Current working paths for entire application.
@@ -371,8 +371,8 @@ private:
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
   std::unordered_map<std::string, std::string> apiSettings;
   std::vector<int> percussionIdList;
-  std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
-  std::unique_ptr<UiSettings> uiSettings;
+        //  std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
+        //  std::unique_ptr<UiSettings> uiSettings;
   int sampleRate;
 };
 

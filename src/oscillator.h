@@ -26,7 +26,7 @@
 
 #include "geonkick_api.h"
 
-class Oscillator: public RkObject
+class Oscillator//: public RkObject
 {
  public:
 
@@ -77,7 +77,7 @@ class Oscillator: public RkObject
   int index() const;
   std::string samplesPath() const;
 
-  RK_DECL_ACT(amplitudeUpdated,
+  /*RK_DECL_ACT(amplitudeUpdated,
               amplitudeUpdated(double v),
               RK_ARG_TYPE(double),
               RK_ARG_VAL(v));
@@ -92,7 +92,7 @@ class Oscillator: public RkObject
   RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double len),
               RK_ARG_TYPE(double),
-              RK_ARG_VAL(len));
+              RK_ARG_VAL(len));*/
 
  protected:
           int envelopeIndex(EnvelopeType type) const;

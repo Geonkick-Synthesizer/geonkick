@@ -22,45 +22,44 @@
  */
 
 #include "geonkick_api.h"
-#include "MainWindow.h"
+//#include "MainWindow.h"
 #include "GKickVstEditor.h"
 
-#include <RkPlatform.h>
-#include <RkMain.h>
+//#include <RkPlatform.h>
+//#include <RkMain.h>
 
-GKickVstTimer::GKickVstTimer(RkMain *app)
-        : guiApp{app}
-        , countT{1}
+GKickVstTimer::GKickVstTimer(/*RkMain *app*/)
+//        : guiApp{app}
+        : countT{1}
 {
 }
 
 void PLUGIN_API
 GKickVstTimer::onTimer()
 {
-        if (guiApp)
-                guiApp->exec(false);
+        //if (guiApp)
+        //        guiApp->exec(false);
 }
 
 GKickVstEditor::GKickVstEditor(Vst::EditController *controller, GeonkickApi *api)
         : Vst::EditorView(controller)
-        , guiApp{nullptr}
-        , mainWindow{nullptr}
+          //        , guiApp{nullptr}
+          //        , mainWindow{nullptr}
         , geonkickApi{api}
         , loopTimer{nullptr}
 {
 }
 
 tresult PLUGIN_API
-GKickVstEditor::isPlatformTypeSupported(Steinberg::FIDString type)
+GKickVstEditor::isPlatformTypeSupported([[maybe_unused]]Steinberg::FIDString type)
 {
-        RK_UNUSED(type);
         return kResultTrue;
 }
 
 tresult PLUGIN_API
 GKickVstEditor::attached(void* parent, FIDString type)
 {
-        guiApp = std::make_unique<RkMain>();
+        /*guiApp = std::make_unique<RkMain>();
         loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
         geonkickApi->setEventQueue(guiApp->eventQueue());
         Display* xDisplay = XOpenDisplay(nullptr);
@@ -83,14 +82,14 @@ GKickVstEditor::attached(void* parent, FIDString type)
         } else {
                 GEONKICK_LOG_INFO("can't get loop");
                 return kResultFalse;
-        }
-        return Vst::EditorView::attached(parent, type);
+                }*/
+        return kResultFalse;//Vst::EditorView::attached(parent, type);
 }
 
 tresult PLUGIN_API
 GKickVstEditor::removed()
 {
-        IRunLoop* loop = nullptr;
+        /*IRunLoop* loop = nullptr;
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
                 loop->unregisterTimer(loopTimer.get());
         } else {
@@ -98,19 +97,19 @@ GKickVstEditor::removed()
                 return kResultFalse;
         }
         if (guiApp)
-        guiApp = nullptr;
+        guiApp = nullptr;*/
         return kResultOk;
 }
 
 tresult PLUGIN_API
 GKickVstEditor::getSize(ViewRect* newSize)
 {
-	if (newSize == nullptr || mainWindow == nullptr)
+        /*	if (newSize == nullptr || mainWindow == nullptr)
 		return kResultFalse;
 
 	newSize->left   = mainWindow->x();
 	newSize->right  = mainWindow->x() + mainWindow->width();
 	newSize->top    = mainWindow->y();
-	newSize->bottom = mainWindow->y() + mainWindow->height();
+	newSize->bottom = mainWindow->y() + mainWindow->height();*/
 	return kResultOk;
 }

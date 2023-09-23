@@ -2,8 +2,14 @@ cmake_minimum_required (VERSION 3.7)
 
 project(geonkick VERSION 2.10.1)
 
+# Temportary
+set(CMAKE_SYSTEM_NAME Windows)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
-include(GNUInstallDirs)
+
+if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
+    include(GNUInstallDirs)
+endif()
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
@@ -39,6 +45,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_C_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_C_FLAGS} -fvisibility=hidden")
 
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGEONKICK_OS_WINDOWS")
+   set(CMAKE_C_FLAGS "${GKICK_OPTIMISATION_FLAGS} -DGEONKICK_OS_WINDOWS")
+endif()
+
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
 endif()
@@ -72,140 +83,144 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
-  ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
-  ${GKICK_COMMON_DIR}/GeonkickConfig.h
-  ${GKICK_COMMON_DIR}/UiSettings.h
-  ${GKICK_COMMON_DIR}/ViewState.h
-  ${GKICK_COMMON_DIR}/geonkick_slider.h
-  ${GKICK_COMMON_DIR}/geonkick_button.h
-  ${GKICK_COMMON_DIR}/PathListModel.h
-  ${GKICK_COMMON_DIR}/file_dialog.h
-  ${GKICK_COMMON_DIR}/SampleBrowser.h
-  ${GKICK_COMMON_DIR}/filter.h
-  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
-  ${GKICK_COMMON_DIR}/top_bar.h
-  ${GKICK_COMMON_DIR}/control_area.h
-  ${GKICK_COMMON_DIR}/controls_widget.h
-  ${GKICK_COMMON_DIR}/percussion_model.h
-  ${GKICK_COMMON_DIR}/kit_model.h
-  ${GKICK_COMMON_DIR}/percussion_view.h
-  ${GKICK_COMMON_DIR}/kit_widget.h
-  ${GKICK_COMMON_DIR}/envelope_draw_area.h
-  ${GKICK_COMMON_DIR}/limiter.h
-  ${GKICK_COMMON_DIR}/general_envelope.h
-  ${GKICK_COMMON_DIR}/effects_group_box.h
-  ${GKICK_COMMON_DIR}/compressor_group_box.h
-  ${GKICK_COMMON_DIR}/distortion_group_box.h
-  ${GKICK_COMMON_DIR}/layers_group_box.h
-  ${GKICK_COMMON_DIR}/general_group_box.h
-  ${GKICK_COMMON_DIR}/envelope.h
-  ${GKICK_COMMON_DIR}/BufferView.h
-  ${GKICK_COMMON_DIR}/kick_graph.h
-  ${GKICK_COMMON_DIR}/envelope_widget.h
-  ${GKICK_COMMON_DIR}/knob.h
+# ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
+#  ${GKICK_COMMON_DIR}/GeonkickConfig.h
+#  ${GKICK_COMMON_DIR}/UiSettings.h
+#  ${GKICK_COMMON_DIR}/ViewState.h
+   ${GKICK_COMMON_DIR}/geonkick_widget.h
+#  ${GKICK_COMMON_DIR}/geonkick_slider.h
+#  ${GKICK_COMMON_DIR}/geonkick_button.h
+#  ${GKICK_COMMON_DIR}/PathListModel.h
+#  ${GKICK_COMMON_DIR}/file_dialog.h
+#  ${GKICK_COMMON_DIR}/SampleBrowser.h
+#  ${GKICK_COMMON_DIR}/filter.h
+#  ${GKICK_COMMON_DIR}/geonkick_groupbox.h
+#  ${GKICK_COMMON_DIR}/top_bar.h
+#  ${GKICK_COMMON_DIR}/control_area.h
+#  ${GKICK_COMMON_DIR}/controls_widget.h
+#  ${GKICK_COMMON_DIR}/percussion_model.h
+#  ${GKICK_COMMON_DIR}/kit_model.h
+#  ${GKICK_COMMON_DIR}/percussion_view.h
+#  ${GKICK_COMMON_DIR}/kit_widget.h
+#  ${GKICK_COMMON_DIR}/envelope_draw_area.h
+#  ${GKICK_COMMON_DIR}/limiter.h
+#  ${GKICK_COMMON_DIR}/general_envelope.h
+#  ${GKICK_COMMON_DIR}/effects_group_box.h
+#  ${GKICK_COMMON_DIR}/compressor_group_box.h
+#  ${GKICK_COMMON_DIR}/distortion_group_box.h
+#  ${GKICK_COMMON_DIR}/layers_group_box.h
+#  ${GKICK_COMMON_DIR}/general_group_box.h
+#  ${GKICK_COMMON_DIR}/envelope.h
+#  ${GKICK_COMMON_DIR}/BufferView.h
+#  ${GKICK_COMMON_DIR}/kick_graph.h
+#  ${GKICK_COMMON_DIR}/envelope_widget.h
+#  ${GKICK_COMMON_DIR}/knob.h
   ${GKICK_COMMON_DIR}/oscillator.h
   ${GKICK_COMMON_DIR}/geonkick_api.h
   ${GKICK_COMMON_DIR}/percussion_state.h
   ${GKICK_COMMON_DIR}/kit_state.h
-  ${GKICK_COMMON_DIR}/oscillator_envelope.h
-  ${GKICK_COMMON_DIR}/oscillator_group_box.h
-  ${GKICK_COMMON_DIR}/ExportAbstract.h
-  ${GKICK_COMMON_DIR}/ExportSoundData.h
-  ${GKICK_COMMON_DIR}/ExportToSfz.h
-  ${GKICK_COMMON_DIR}/export_widget.h
-  ${GKICK_COMMON_DIR}/preset.h
-  ${GKICK_COMMON_DIR}/preset_folder.h
-  ${GKICK_COMMON_DIR}/preset_browser_model.h
-  ${GKICK_COMMON_DIR}/preset_browser_view.h
-  ${GKICK_COMMON_DIR}/MidiKeyWidget.h
-  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
-  ${GKICK_COMMON_DIR}/MainWindow.h)
+#  ${GKICK_COMMON_DIR}/oscillator_envelope.h
+#  ${GKICK_COMMON_DIR}/oscillator_group_box.h
+#  ${GKICK_COMMON_DIR}/ExportAbstract.h
+#  ${GKICK_COMMON_DIR}/ExportSoundData.h
+#  ${GKICK_COMMON_DIR}/ExportToSfz.h
+#  ${GKICK_COMMON_DIR}/export_widget.h
+#  ${GKICK_COMMON_DIR}/preset.h
+#  ${GKICK_COMMON_DIR}/preset_folder.h
+#  ${GKICK_COMMON_DIR}/preset_browser_model.h
+#  ${GKICK_COMMON_DIR}/preset_browser_view.h
+#  ${GKICK_COMMON_DIR}/MidiKeyWidget.h
+#  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
+   ${GKICK_COMMON_DIR}/MainWindow.h
+)
 
 set(GKICK_COMMON_SOURCES
-  ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
-  ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
-  ${GKICK_COMMON_DIR}/UiSettings.cpp
-  ${GKICK_COMMON_DIR}/ViewState.cpp
-  ${GKICK_COMMON_DIR}/geonkick_widget.cpp
-  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
-  ${GKICK_COMMON_DIR}/geonkick_button.cpp
-  ${GKICK_COMMON_DIR}/PathListModel.cpp
-  ${GKICK_COMMON_DIR}/file_dialog.cpp
-  ${GKICK_COMMON_DIR}/SampleBrowser.cpp
-  ${GKICK_COMMON_DIR}/filter.cpp
-  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
-  ${GKICK_COMMON_DIR}/top_bar.cpp
-  ${GKICK_COMMON_DIR}/control_area.cpp
-  ${GKICK_COMMON_DIR}/controls_widget.cpp
-  ${GKICK_COMMON_DIR}/percussion_model.cpp
-  ${GKICK_COMMON_DIR}/kit_model.cpp
-  ${GKICK_COMMON_DIR}/percussion_view.cpp
-  ${GKICK_COMMON_DIR}/kit_widget.cpp
-  ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
-  ${GKICK_COMMON_DIR}/limiter.cpp
-  ${GKICK_COMMON_DIR}/general_envelope.cpp
-  ${GKICK_COMMON_DIR}/effects_group_box.cpp
-  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
-  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
-  ${GKICK_COMMON_DIR}/layers_group_box.cpp
-  ${GKICK_COMMON_DIR}/general_group_box.cpp
-  ${GKICK_COMMON_DIR}/envelope.cpp
-  ${GKICK_COMMON_DIR}/BufferView.cpp
-  ${GKICK_COMMON_DIR}/kick_graph.cpp
-  ${GKICK_COMMON_DIR}/envelope_widget.cpp
-  ${GKICK_COMMON_DIR}/knob.cpp
+#  ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
+#  ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
+#  ${GKICK_COMMON_DIR}/UiSettings.cpp
+#  ${GKICK_COMMON_DIR}/ViewState.cpp
+   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
+#  ${GKICK_COMMON_DIR}/geonkick_slider.cpp
+#  ${GKICK_COMMON_DIR}/geonkick_button.cpp
+#  ${GKICK_COMMON_DIR}/PathListModel.cpp
+#  ${GKICK_COMMON_DIR}/file_dialog.cpp
+#  ${GKICK_COMMON_DIR}/SampleBrowser.cpp
+#  ${GKICK_COMMON_DIR}/filter.cpp
+#  ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
+#  ${GKICK_COMMON_DIR}/top_bar.cpp
+#  ${GKICK_COMMON_DIR}/control_area.cpp
+#  ${GKICK_COMMON_DIR}/controls_widget.cpp
+#  ${GKICK_COMMON_DIR}/percussion_model.cpp
+#  ${GKICK_COMMON_DIR}/kit_model.cpp
+#  ${GKICK_COMMON_DIR}/percussion_view.cpp
+#  ${GKICK_COMMON_DIR}/kit_widget.cpp
+#  ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
+#  ${GKICK_COMMON_DIR}/limiter.cpp
+#  ${GKICK_COMMON_DIR}/general_envelope.cpp
+#  ${GKICK_COMMON_DIR}/effects_group_box.cpp
+#  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
+#  ${GKICK_COMMON_DIR}/distortion_group_box.cpp
+#  ${GKICK_COMMON_DIR}/layers_group_box.cpp
+#  ${GKICK_COMMON_DIR}/general_group_box.cpp
+#  ${GKICK_COMMON_DIR}/envelope.cpp
+#  ${GKICK_COMMON_DIR}/BufferView.cpp
+#  ${GKICK_COMMON_DIR}/kick_graph.cpp
+#  ${GKICK_COMMON_DIR}/envelope_widget.cpp
+#  ${GKICK_COMMON_DIR}/knob.cpp
   ${GKICK_COMMON_DIR}/oscillator.cpp
   ${GKICK_COMMON_DIR}/geonkick_api.cpp
   ${GKICK_COMMON_DIR}/percussion_state.cpp
   ${GKICK_COMMON_DIR}/kit_state.cpp
-  ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
-  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
-  ${GKICK_COMMON_DIR}/export_widget.cpp
-  ${GKICK_COMMON_DIR}/ExportAbstract.cpp
-  ${GKICK_COMMON_DIR}/ExportSoundData.cpp
-  ${GKICK_COMMON_DIR}/ExportToSfz.cpp
-  ${GKICK_COMMON_DIR}/preset.cpp
-  ${GKICK_COMMON_DIR}/preset_folder.cpp
-  ${GKICK_COMMON_DIR}/preset_browser_model.cpp
-  ${GKICK_COMMON_DIR}/preset_browser_view.cpp
-  ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
-  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
-  ${GKICK_COMMON_DIR}/MainWindow.cpp)
+#  ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
+#  ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
+#  ${GKICK_COMMON_DIR}/export_widget.cpp
+#  ${GKICK_COMMON_DIR}/ExportAbstract.cpp
+#  ${GKICK_COMMON_DIR}/ExportSoundData.cpp
+#  ${GKICK_COMMON_DIR}/ExportToSfz.cpp
+#  ${GKICK_COMMON_DIR}/preset.cpp
+#  ${GKICK_COMMON_DIR}/preset_folder.cpp
+#  ${GKICK_COMMON_DIR}/preset_browser_model.cpp
+#  ${GKICK_COMMON_DIR}/preset_browser_view.cpp
+#  ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
+#  ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
+   ${GKICK_COMMON_DIR}/MainWindow.cpp
+)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
     option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 endif()
 
-if (ENABLE_LOGGING)
-  message(STATUS "set debug level")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
-  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
-  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
-  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
-  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
-  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
-endif()
+#if (ENABLE_LOGGING)
+#  message(STATUS "set debug level")
+#  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+#  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+#  list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
+#  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+#  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
+#  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
+#  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
+#endif()
 
 find_package(PkgConfig REQUIRED)
 find_package(RapidJSON REQUIRED)
+include_directories(${RapidJSON_INCLUDE_DIR})
 find_package(OpenSSL REQUIRED)
-pkg_check_modules(SNDFILE sndfile)
-if (NOT SNDFILE_FOUND)
-    message(FATAL_ERROR "can't find sndfile library")
-endif(NOT SNDFILE_FOUND)
+#pkg_check_modules(SNDFILE sndfile)
+#if (NOT SNDFILE_FOUND)
+#    message(FATAL_ERROR "can't find sndfile library")
+#endif(NOT SNDFILE_FOUND)
 
-if (GKICK_STANDALONE)
-  pkg_check_modules(JACK jack)
-  if (NOT JACK_FOUND)
-    message(STATUS "can't find jack library")
-    set(GKICK_STANDALONE OFF)
-    set(GKICK_JACK_NOT_FOUND ON)
-  endif(NOT JACK_FOUND)
-  list(APPEND GKICK_API_FLAGS "-DGEONKICK_AUDIO_JACK")
-endif()
+#if (GKICK_STANDALONE)
+#  pkg_check_modules(JACK jack)
+#  if (NOT JACK_FOUND)
+#    message(STATUS "can't find jack library")
+#    set(GKICK_STANDALONE OFF)
+#    set(GKICK_JACK_NOT_FOUND ON)
+#  endif(NOT JACK_FOUND)
+#  list(APPEND GKICK_API_FLAGS "-DGEONKICK_AUDIO_JACK")
+#endif()
 
 if (GKICK_PLUGIN)
   list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGEONKICK_SINGLE")
@@ -223,7 +238,7 @@ endif(GKICK_PLUGIN)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_WIN")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_WIN")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_FOR_SHARED")
+#	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_FOR_SHARED")
 else ()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_GNU")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_GNU")

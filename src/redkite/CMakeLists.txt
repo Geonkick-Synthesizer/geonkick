@@ -2,12 +2,15 @@ cmake_minimum_required (VERSION 3.8)
 
 project(redkite VERSION 1.3.1)
 
+#Temporary (passing as cmake argumnet is not including headers)
+set(CMAKE_SYSTEM_NAME Windows)
+
 option(ENABLE_EXAMPLES "Build examples" OFF)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
   message(STATUS "Build Redkite for Windows")
   add_compile_options(-DRK_OS_WIN)
-  add_compile_options(-DRK_FOR_SHARED)
+#  add_compile_options(-DRK_FOR_SHARED)
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
   message(FATAL_ERROR "Redkite is not implemented yet for Mac OS X")
 elseif (CMAKE_SYSTEM_NAME MATCHES Linux)
@@ -68,6 +71,9 @@ elseif (RK_GRAPHICS_BACKEND MATCHES Cairo)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_GRAPHICS_CAIRO_BACKEND")
 endif()
 
+include_directories(${RK_INCLUDE_PATH})
+include_directories(${RK_INCLUDE_PATH}/impl)
+
 set(RK_HEADERS
   ${RK_INCLUDE_PATH}/Rk.h
   ${RK_INCLUDE_PATH}/RkVariant.h
@@ -87,14 +93,14 @@ set(RK_HEADERS
   ${RK_INCLUDE_PATH}/RkEventQueue.h
   ${RK_INCLUDE_PATH}/RkTimer.h
   ${RK_INCLUDE_PATH}/RkWidget.h
-  ${RK_INCLUDE_PATH}/RkLabel.h
-  ${RK_INCLUDE_PATH}/RkButton.h
-  ${RK_INCLUDE_PATH}/RkLineEdit.h
-  ${RK_INCLUDE_PATH}/RkList.h
-  ${RK_INCLUDE_PATH}/RkProgressBar.h
-  ${RK_INCLUDE_PATH}/RkCanvas.h
-  ${RK_INCLUDE_PATH}/RkImage.h
-  ${RK_INCLUDE_PATH}/RkPainter.h
+#  ${RK_INCLUDE_PATH}/RkLabel.h
+#  ${RK_INCLUDE_PATH}/RkButton.h
+#  ${RK_INCLUDE_PATH}/RkLineEdit.h
+#  ${RK_INCLUDE_PATH}/RkList.h
+#  ${RK_INCLUDE_PATH}/RkProgressBar.h
+#  ${RK_INCLUDE_PATH}/RkCanvas.h
+#  ${RK_INCLUDE_PATH}/RkImage.h
+#  ${RK_INCLUDE_PATH}/RkPainter.h
   ${RK_INCLUDE_PATH}/RkMain.h
   ${RK_INCLUDE_PATH}/RkModel.h
   ${RK_INCLUDE_PATH}/RkContainerItem.h
@@ -103,29 +109,30 @@ set(RK_HEADERS
   ${RK_INCLUDE_PATH}/RkTransition.h)
 
 set(RK_HEADERS_IMPL
-  ${RK_INCLUDE_PATH}/impl/RkMainImpl.h
   ${RK_INCLUDE_PATH}/impl/RkObjectImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkMainImpl.h
   ${RK_INCLUDE_PATH}/impl/RkShortcut.h
   ${RK_INCLUDE_PATH}/impl/RkEventQueueImpl.h
   ${RK_INCLUDE_PATH}/impl/RkWidgetImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkLabelImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkListImpl.h
+#  ${RK_INCLUDE_PATH}/impl/RkLabelImpl.h
+#  ${RK_INCLUDE_PATH}/impl/RkListImpl.h
   ${RK_INCLUDE_PATH}/impl/RkModelImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkButtonImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkLineEditImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkProgressBarImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
-  ${RK_INCLUDE_PATH}/impl/RkImageImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkPainterImpl.h)
+#  ${RK_INCLUDE_PATH}/impl/RkButtonImpl.h
+#  ${RK_INCLUDE_PATH}/impl/RkLineEditImpl.h
+#  ${RK_INCLUDE_PATH}/impl/RkProgressBarImpl.h
+#  ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
+#  ${RK_INCLUDE_PATH}/impl/RkImageImpl.h
+#  ${RK_INCLUDE_PATH}/impl/RkPainterImpl.h
+  )
 
-if (RK_GRAPHICS_BACKEND MATCHES Cairo)
-  set(RK_GRAPHICS_BACKEND_HEADRES
-    ${RK_INCLUDE_PATH}/impl/RkCairoGraphicsBackend.h
-    ${RK_INCLUDE_PATH}/impl/RkCairoImageBackendCanvas.h)
-  set(RK_GRAPHICS_BACKEND_SOURCES
-    ${RK_SRC_PATH}/RkCairoGraphicsBackend.cpp
-    ${RK_SRC_PATH}/RkCairoImageBackendCanvas.cpp)
-endif()
+#if (RK_GRAPHICS_BACKEND MATCHES Cairo)
+#  set(RK_GRAPHICS_BACKEND_HEADRES
+#    ${RK_INCLUDE_PATH}/impl/RkCairoGraphicsBackend.h
+#    ${RK_INCLUDE_PATH}/impl/RkCairoImageBackendCanvas.h)
+#  set(RK_GRAPHICS_BACKEND_SOURCES
+#    ${RK_SRC_PATH}/RkCairoGraphicsBackend.cpp
+#    ${RK_SRC_PATH}/RkCairoImageBackendCanvas.cpp)
+#endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
 set(RK_HEADERS_PLATFORM
@@ -153,20 +160,20 @@ set(RK_SOURCES
   ${RK_SRC_PATH}/RkMainImpl.cpp
   ${RK_SRC_PATH}/RkModel.cpp
   ${RK_SRC_PATH}/RkModelImpl.cpp
-  ${RK_SRC_PATH}/RkLabel.cpp
-  ${RK_SRC_PATH}/RkLabelImpl.cpp
-  ${RK_SRC_PATH}/RkButton.cpp
-  ${RK_SRC_PATH}/RkButtonImpl.cpp
-  ${RK_SRC_PATH}/RkLineEdit.cpp
-  ${RK_SRC_PATH}/RkLineEditImpl.cpp
-  ${RK_SRC_PATH}/RkList.cpp
-  ${RK_SRC_PATH}/RkListImpl.cpp
-  ${RK_SRC_PATH}/RkProgressBar.cpp
-  ${RK_SRC_PATH}/RkProgressBarImpl.cpp
-  ${RK_SRC_PATH}/RkPainter.cpp
-  ${RK_SRC_PATH}/RkImage.cpp
-  ${RK_SRC_PATH}/RkImageImpl.cpp
-  ${RK_SRC_PATH}/RkPainterImpl.cpp
+#  ${RK_SRC_PATH}/RkLabel.cpp
+#  ${RK_SRC_PATH}/RkLabelImpl.cpp
+#  ${RK_SRC_PATH}/RkButton.cpp
+#  ${RK_SRC_PATH}/RkButtonImpl.cpp
+#  ${RK_SRC_PATH}/RkLineEdit.cpp
+#  ${RK_SRC_PATH}/RkLineEditImpl.cpp
+#  ${RK_SRC_PATH}/RkList.cpp
+#  ${RK_SRC_PATH}/RkListImpl.cpp
+#  ${RK_SRC_PATH}/RkProgressBar.cpp
+#  ${RK_SRC_PATH}/RkProgressBarImpl.cpp
+#  ${RK_SRC_PATH}/RkPainter.cpp
+#  ${RK_SRC_PATH}/RkImage.cpp
+#  ${RK_SRC_PATH}/RkImageImpl.cpp
+#  ${RK_SRC_PATH}/RkPainterImpl.cpp
   ${RK_SRC_PATH}/RkContainer.cpp)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
@@ -188,16 +195,13 @@ else() # defaut GNU/Linux
     ${RK_SRC_PATH}/platforms/xwin/RkEventQueueX.cpp)
 endif()
 
-add_definitions(-fPIC)
-include_directories(${RK_INCLUDE_PATH})
-include_directories(${RK_INCLUDE_PATH}/impl)
-
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
   include_directories(${RK_INCLUDE_PATH}/impl/platforms/win)
 elseif (CMAKE_SYSTEM_NAME MATCHES Darwin)
   include_directories(${RK_INCLUDE_PATH}/impl/platforms/mac)
 # not implemented yet
 else() # defualt GNU/Linux
+add_definitions(-fPIC)
 include_directories(${RK_INCLUDE_PATH}/impl/platforms/xwin)
 endif()
 
@@ -222,7 +226,7 @@ add_library(redkite STATIC
 #  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
 #endif()
 
-add_subdirectory(tools)
+#add_subdirectory(tools)
 if (ENABLE_EXAMPLES)
-  add_subdirectory(examples)
+   add_subdirectory(examples)
 endif (ENABLE_EXAMPLES)

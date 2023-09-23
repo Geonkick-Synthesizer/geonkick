@@ -24,11 +24,11 @@
 #ifndef GEONKICK_VST_IDS_H
 #define GEONKICK_VST_IDS_H
 
-#include "globals.h"
+//#include "globals.h"
 
 #include "pluginterfaces/base/funknown.h"
 
-#include <RkLog.h>
+//#include <RkLog.h>
 
 using namespace Steinberg;
 static const FUID GKickVstProcessorUID(0xE2CC9532, 0x90E863F0, 0x6405E139, 0x24E34B24);

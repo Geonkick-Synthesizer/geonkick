@@ -37,8 +37,7 @@
 #define gkickCompanyName	"Geonkick"
 #define gkickCompanyWeb		"http://iurienistor.wordpress.com"
 #define gkickCompanyEmail	""
-#define gkickLegalCopyright	"Copyright (C) 2020 Iurie Nistor"
-#define gkickLegalTrademarks	"Licence GPLv3"
+#define gkickLegalCopyright	"Copyright (C) 2020 Iurie Nistor. Licensed under the GNU General Public License version 3 (GPLv3)."
 
 BEGIN_FACTORY_DEF(gkickCompanyName, gkickCompanyWeb, gkickCompanyEmail)
 
@@ -48,7 +47,7 @@ DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstProcessorUID),
            gkickPluginName,
            0,
            Vst::PlugType::kInstrumentSynth,
-           GEOKICK_VERSION_STRING,
+           "3.0.0"/*GEOKICK_VERSION_STRING*/,
            kVstVersionString,
            GKickVstProcessor::createInstance)
 
