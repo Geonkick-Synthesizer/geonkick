@@ -35,10 +35,9 @@
 #define gkickFileDescription	gkickPluginName" Geonkick"
 #endif
 #define gkickCompanyName	"Geonkick"
-#define gkickCompanyWeb		"http://iurienistor.wordpress.com"
+#define gkickCompanyWeb		"http://geonkick.org"
 #define gkickCompanyEmail	""
-#define gkickLegalCopyright	"Copyright (C) 2020 Iurie Nistor"
-#define gkickLegalTrademarks	"Licence GPLv3"
+#define gkickLegalCopyright	"Copyright (C) 2020 Iurie Nistor. Licensed under the GNU General Public License, Version 3"
 
 BEGIN_FACTORY_DEF(gkickCompanyName, gkickCompanyWeb, gkickCompanyEmail)
 
