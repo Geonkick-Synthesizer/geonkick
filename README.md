@@ -2,14 +2,15 @@
 
 **Geonkick** - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
 
-Home page: https://geonkick.org
+**Website:** [https://geonkick.org](https://geonkick.org)
 
-Geonkick is a synthesizer capable of producing various percussion elements.
-The most basic examples are: kicks, snares, hi-hats, shakers, claps.
+Geonkick is a free software synthesizer capable of generating
+a wide range of percussive sounds, including kicks, snares,
+claps, hi-hats, shakers, and unique effect sounds.
 
-The term "Geon" in the name "Geonkick" refers to a hypothetical particle called "geon".
+**License:** GNU General Public License, Version 3
 
-**License:** GPLv3
+**Author and Maintainer:** Iurie Nistor
 
 **Version:** 2.10.1
 
