@@ -1,4 +1,3 @@
-
 /**
  * File name: RkEventQueueImpl.h
  * Project: Redkite (A small GUI toolkit)
