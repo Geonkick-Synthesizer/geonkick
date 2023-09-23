@@ -5,7 +5,8 @@ project(redkite VERSION 1.3.1)
 #Temporary (passing as cmake argumnet is not including headers)
 set(CMAKE_SYSTEM_NAME Windows)
 
-option(ENABLE_EXAMPLES "Build examples" OFF)
+option(RK_ENABLE_EXAMPLES "Build examples" OFF)
+option(RK_BUILD_TOOLS "Build tools" ON)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
   message(STATUS "Build Redkite for Windows")
@@ -226,7 +227,9 @@ add_library(redkite STATIC
 #  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
 #endif()
 
-#add_subdirectory(tools)
-if (ENABLE_EXAMPLES)
+if (RK_BUILD_TOOLS)
+	add_subdirectory(tools)
+endif (RK_BUILD_TOOLS)
+if (RK_ENABLE_EXAMPLES)
    add_subdirectory(examples)
 endif (ENABLE_EXAMPLES)
