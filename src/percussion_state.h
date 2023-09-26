@@ -37,7 +37,7 @@ class PercussionState
  public:
         PercussionState();
         bool loadFile(const std::string &file);
-        void loadData(const std::string &data);
+        bool loadData(const std::string &data);
         void loadObject(const rapidjson::Value &obj);
         size_t getId() const;
         void setId(size_t id);
