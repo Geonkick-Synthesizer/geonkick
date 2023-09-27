@@ -139,24 +139,20 @@ Clone the Geonkick code repository, compile and install.
         make
         make install
 
-##### VST3
+##### Build Geonkick with VST3 Plugin
 
-Get VST3 SDK and build it
+Install additional dependences:
 
-        cd vst3sdk
-        mkdir build
-        cd build
-        cmake ../
-        make
+    apt-get install libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev
 
-than build Geonkick VST3 plugin:
 
-        copy the source code of the latest Geonkick release
-        mkdir geonkick/build
-        cd geonkick/build
-        cmake -DVST3_SDK_PATH=<full system path to vst3sdk folder> ../
-        make
-        make install
+Get VST3 SDK than build Geonkick VST3 plugin:
+
+	mkdir geonkick/build
+	cd geonkick/build
+        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> ../
+	make
+	make install
 
 #### Packages
 
