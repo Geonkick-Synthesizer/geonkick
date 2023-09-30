@@ -348,10 +348,10 @@ RkRect RkWidget::RkWidgetImpl::rect() const
         return RkRect(RkPoint(0, 0), size());
 }
 
-//const RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
-//{
-//        return platformWindow->getCanvasInfo();
-//}
+const RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
+{
+        return platformWindow->getCanvasInfo();
+}
 
 void RkWidget::RkWidgetImpl::update()
 {

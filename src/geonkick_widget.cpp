@@ -23,7 +23,7 @@
 
 #include "geonkick_widget.h"
 
-//#include <RkPainter.h>
+#include <RkPainter.h>
 
 GeonkickWidget::GeonkickWidget(RkMain *app,
                                const RkNativeWindowInfo &info,
@@ -70,15 +70,16 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
 //        return viewingState;
 //}
 
-/*void GeonkickWidget::paintEvent(RkPaintEvent *event)
+void GeonkickWidget::paintEvent(RkPaintEvent *event)
 {
-        if (!backgroundImage.isNull()) {
+        GEONKICK_LOG_INFO("called");
+//        if (!backgroundImage.isNull()) {
                 RkPainter painter(this);
-                painter.fillRect(rect(), background());
-                painter.drawImage(backgroundImage, 0, 0);
-        }
+                painter.fillRect(rect(), {44, 44, 44}/*background()*/);
+//                painter.drawImage(backgroundImage, 0, 0);
+//        }
 
-        paintWidget(event);
+//        paintWidget(event);
 }
 
 void GeonkickWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
@@ -91,7 +92,7 @@ void GeonkickWidget::setBackgroundImage(const RkImage &img)
                 backgroundImage = img;
                 update();
         }
-        }*/
+}
 
 void GeonkickWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {

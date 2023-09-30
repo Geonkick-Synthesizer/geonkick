@@ -26,7 +26,12 @@
 #include "RkCanvasInfo.h"
 #include "RkLog.h"
 
+#ifdef RK_OS_WIN
+#define _USE_MATH_DEFINES
+#include <cmath>
+#else // GNU/Linux
 #include <math.h>
+#endif
 
 RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
         : cairoContext{cairo_create(canvas->getCanvasInfo()->cairo_surface)}

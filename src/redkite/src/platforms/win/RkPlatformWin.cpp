@@ -96,17 +96,17 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
 	{
-                //        eventQueue->processEvent(rk_id_from_win(hWnd), std::make_shared<RkMouseEvent>());
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkMouseEvent>());
                 return 0;
         }
         case WM_SIZE:
 	{
-                // eventQueue->processEvent(rk_id_from_win(hWnd), std::make_shared<RkResizeEvent>());
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkResizeEvent>());
                 return 0;
         }
         case WM_PAINT:
         {
-                // eventQueue->processEvent(rk_id_from_win(hWnd), std::make_shared<RkPaintEvent>());
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkPaintEvent>());
                 ValidateRect(hWnd, NULL);
                 return 0;
         }
@@ -118,8 +118,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 RECT rect;
                 GetClientRect(hWnd, &rect);
                 FillRect(hdc, &rect, background);
-                DeleteObject(background);*/
-                return 1L;
+                DeleteObject(background);
+                return 1L;*/
         }
         default:
                 break;

@@ -31,7 +31,7 @@
 #include "RkColor.h"
 
 class RkEventQueue;
-//union RkCanvasInfo;
+struct RkCanvasInfo;
 
 class RkWindowWin {
  public:
@@ -63,7 +63,7 @@ class RkWindowWin {
         void setBackgroundColor(const RkColor &color);
         const RkColor& background() const;
         void resizeCanvas();
-//        const RkCanvasInfo* getCanvasInfo() const;
+        const RkCanvasInfo* getCanvasInfo() const;
         void update();
         void setFocus(bool b);
         bool hasFocus();
@@ -89,9 +89,10 @@ class RkWindowWin {
         RkColor winBorderColor;
         RkColor backgroundColor;
         RkEventQueue* eventQueue;
-//        std::shared_ptr<RkCanvasInfo> canvasInfo;
+        std::unique_ptr<RkCanvasInfo> canvasInfo;
         Rk::WindowFlags windowFlags;
-		bool isTopWindow;
+        bool isTopWindow;
+        double scaleFactor;
 };
 
 #endif // RK_WIDGET_WIN_H

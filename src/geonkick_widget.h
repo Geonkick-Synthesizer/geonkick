@@ -27,9 +27,9 @@
 #include "globals.h"
 
 #include <RkWidget.h>
-//#include <RkImage.h>
+#include <RkImage.h>
 
-//class RkPaintEvent;
+class RkPaintEvent;
 class RkNativeWindowInfo;
 //class ViewState;
 
@@ -44,18 +44,18 @@ class GeonkickWidget: public RkWidget
         explicit GeonkickWidget(GeonkickWidget *parent,
                                 Rk::WindowFlags flags = Rk::WindowFlags::Widget);
         virtual ~GeonkickWidget() = default;
-        //        void setBackgroundImage(const RkImage &img);
-        //        void setBackgroundImage(const std::string &file);
-        //        void setViewState(ViewState *state);
+        void setBackgroundImage(const RkImage &img);
+        void setBackgroundImage(const std::string &file);
+        //void setViewState(ViewState *state);
         //        ViewState* viewState() const;
 
  protected:
-        //        void paintEvent(RkPaintEvent *event) final;
-        //        virtual void paintWidget(RkPaintEvent *event);
+        void paintEvent(RkPaintEvent *event) override;
+        virtual void paintWidget(RkPaintEvent *event);
         void mouseButtonPressEvent(RkMouseEvent *event) override;
 
 private:
-        //        RkImage backgroundImage;
+        RkImage backgroundImage;
         //        ViewState* viewingState;
 };
 

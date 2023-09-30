@@ -110,7 +110,7 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           void setColor(const RkColor &color);
           const RkFont& font() const;
           void setFont(const RkFont &font);
-          //          const RkCanvasInfo *getCanvasInfo() const override;
+          const RkCanvasInfo *getCanvasInfo() const override;
           RkRect rect() const;
           void update();
           void close();

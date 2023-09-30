@@ -23,7 +23,7 @@
 
 #include "RkLog.h"
 #include "RkWindowWin.h"
-//#include "RkCanvasInfo.h"
+#include "RkCanvasInfo.h"
 
 RkWindowWin::RkWindowWin(const RkNativeWindowInfo *parent, Rk::WindowFlags flags, bool isTop)
         : parentWindowInfo{parent ? *parent : RkNativeWindowInfo() }
@@ -35,9 +35,10 @@ RkWindowWin::RkWindowWin(const RkNativeWindowInfo *parent, Rk::WindowFlags flags
         , winBorderColor{255, 255, 255}
         , backgroundColor{255, 255, 255}
         , eventQueue{nullptr}
-        //, canvasInfo{nullptr}
+        , canvasInfo{nullptr}
         , windowFlags{flags}
 	, isTopWindow{isTop}
+        , scaleFactor{parent ? parent->scaleFactor : 1}
 {
 }
 
@@ -51,9 +52,10 @@ RkWindowWin::RkWindowWin(const RkNativeWindowInfo &parent, Rk::WindowFlags flags
         , winBorderColor{255, 255, 255}
         , backgroundColor{255, 255, 255}
         , eventQueue{nullptr}
-        //, canvasInfo{nullptr}
+        , canvasInfo{nullptr}
         , windowFlags{flags}
 	, isTopWindow{isTop}
+        , scaleFactor{parent.scaleFactor}
 {
 }
 
@@ -98,7 +100,7 @@ bool RkWindowWin::init()
         if (eventQueue)
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
         
-        //		createCanvasInfo();
+        createCanvasInfo();
         return true;
 }
 
@@ -213,73 +215,36 @@ const RkColor& RkWindowWin::background() const
 	return backgroundColor;
 }
 
-/*RkCanvasInfo* RkWindowWin::getCanvasInfo() const
-{
-	return canvasInfo;
-	}*/
-
 void RkWindowWin::update()
 {
 }
 
-//#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
+#ifdef RK_GRAPHICS_CAIRO_BACKEND
 void RkWindowWin::createCanvasInfo()
 {
-/*        canvasInfo = std::make_shared<RkCanvasInfo>();
-        RkDirect2DDeviceInfo* device2DInfo = &canvasInfo->direct2DInfo;
-        device2DInfo->window = windowHandle.id;
-        D3D_FEATURE_LEVEL featureLevels[] = {
-                D3D_FEATURE_LEVEL_11_1,
-                D3D_FEATURE_LEVEL_11_0,
-                D3D_FEATURE_LEVEL_10_1,
-                D3D_FEATURE_LEVEL_10_0,
-                D3D_FEATURE_LEVEL_9_3,
-                D3D_FEATURE_LEVEL_9_2,
-                D3D_FEATURE_LEVEL_9_1};
-
-       auto hr =  D3D11CreateDevice(
-                                    nullptr,
-                                    D3D_DRIVER_TYPE_HARDWARE,
-                                    nullptr,
-                                    D3D11_CREATE_DEVICE_BGRA_SUPPORT | D3D11_CREATE_DEVICE_DEBUG,
-                                    featureLevels,
-                                    ARRAYSIZE(featureLevels),
-                                    D3D11_SDK_VERSION,
-                                    &device2DInfo->device3D,
-                                    nullptr,
-                                    nullptr);
-       if (!SUCCEEDED(hr)) {
-               RK_LOG_ERROR("can't create 3D device");
-               canvasInfo = nullptr;
-       } else {
-               device2DInfo->device3D->QueryInterface(&device2DInfo->dxgiDevice);
-               hr = rk_direct2d_factory()->CreateDevice(device2DInfo->dxgiDevice, &device2DInfo->device2D);
-               if (!SUCCEEDED(hr)) {
-                       RK_LOG_ERROR("can't create 2D device");
-					   device2DInfo->dxgiDevice->Release();
-                       device2DInfo->device3D->Release();
-                       canvasInfo = nullptr;
-               }
-       }*/
+        canvasInfo = std::make_unique<RkCanvasInfo>();
+        canvasInfo->cairo_surface = cairo_win32_surface_create(GetDC(windowHandle.id));
+        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
 void RkWindowWin::resizeCanvas()
 {
-// No need to be implemented for Direct2D.
+        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
+}
+
+const RkCanvasInfo* RkWindowWin::getCanvasInfo() const
+{
+        return canvasInfo ? canvasInfo.get() : nullptr;
 }
 
 void RkWindowWin::freeCanvasInfo()
 {
-        /*if (canvasInfo) {
-                canvasInfo->direct2DInfo.device2D->Release();
-                canvasInfo->direct2DInfo.dxgiDevice->Release();
-                canvasInfo->direct2DInfo.device3D->Release();
-                canvasInfo = nullptr;
-        }*/
+        if (canvasInfo)
+                cairo_surface_destroy(canvasInfo->cairo_surface);
 }
-//#else
-//#error No graphics backend defined
-//#endif // RK_GRAPHICS_CAIRO_BACKEND
+#else
+#error No graphics backend defined
+#endif // RK_GRAPHICS_CAIRO_BACKEND
 
 void RkWindowWin::setFocus(bool b)
 {
@@ -314,12 +279,11 @@ void RkWindowWin::setEventQueue(RkEventQueue *queue)
 
 void RkWindowWin::setScaleFactor(double factor)
 {
-	// IMPLEMENT
+        scaleFactor = factor;
 }
 
 double RkWindowWin::getScaleFactor() const
 {
-	// IMPLEMENT
-	return 1.0;
+	return scaleFactor;
 }
 

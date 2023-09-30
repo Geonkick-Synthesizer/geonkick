@@ -99,9 +99,9 @@ set(RK_HEADERS
 #  ${RK_INCLUDE_PATH}/RkLineEdit.h
 #  ${RK_INCLUDE_PATH}/RkList.h
 #  ${RK_INCLUDE_PATH}/RkProgressBar.h
-#  ${RK_INCLUDE_PATH}/RkCanvas.h
-#  ${RK_INCLUDE_PATH}/RkImage.h
-#  ${RK_INCLUDE_PATH}/RkPainter.h
+  ${RK_INCLUDE_PATH}/RkCanvas.h
+  ${RK_INCLUDE_PATH}/RkImage.h
+  ${RK_INCLUDE_PATH}/RkPainter.h
   ${RK_INCLUDE_PATH}/RkMain.h
   ${RK_INCLUDE_PATH}/RkModel.h
   ${RK_INCLUDE_PATH}/RkContainerItem.h
@@ -121,19 +121,19 @@ set(RK_HEADERS_IMPL
 #  ${RK_INCLUDE_PATH}/impl/RkButtonImpl.h
 #  ${RK_INCLUDE_PATH}/impl/RkLineEditImpl.h
 #  ${RK_INCLUDE_PATH}/impl/RkProgressBarImpl.h
-#  ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
-#  ${RK_INCLUDE_PATH}/impl/RkImageImpl.h
-#  ${RK_INCLUDE_PATH}/impl/RkPainterImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
+  ${RK_INCLUDE_PATH}/impl/RkImageImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkPainterImpl.h
   )
 
-#if (RK_GRAPHICS_BACKEND MATCHES Cairo)
-#  set(RK_GRAPHICS_BACKEND_HEADRES
-#    ${RK_INCLUDE_PATH}/impl/RkCairoGraphicsBackend.h
-#    ${RK_INCLUDE_PATH}/impl/RkCairoImageBackendCanvas.h)
-#  set(RK_GRAPHICS_BACKEND_SOURCES
-#    ${RK_SRC_PATH}/RkCairoGraphicsBackend.cpp
-#    ${RK_SRC_PATH}/RkCairoImageBackendCanvas.cpp)
-#endif()
+if (RK_GRAPHICS_BACKEND MATCHES Cairo)
+  set(RK_GRAPHICS_BACKEND_HEADRES
+    ${RK_INCLUDE_PATH}/impl/RkCairoGraphicsBackend.h
+    ${RK_INCLUDE_PATH}/impl/RkCairoImageBackendCanvas.h)
+  set(RK_GRAPHICS_BACKEND_SOURCES
+    ${RK_SRC_PATH}/RkCairoGraphicsBackend.cpp
+    ${RK_SRC_PATH}/RkCairoImageBackendCanvas.cpp)
+endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES Windows)
 set(RK_HEADERS_PLATFORM
@@ -171,10 +171,10 @@ set(RK_SOURCES
 #  ${RK_SRC_PATH}/RkListImpl.cpp
 #  ${RK_SRC_PATH}/RkProgressBar.cpp
 #  ${RK_SRC_PATH}/RkProgressBarImpl.cpp
-#  ${RK_SRC_PATH}/RkPainter.cpp
-#  ${RK_SRC_PATH}/RkImage.cpp
-#  ${RK_SRC_PATH}/RkImageImpl.cpp
-#  ${RK_SRC_PATH}/RkPainterImpl.cpp
+  ${RK_SRC_PATH}/RkPainter.cpp
+  ${RK_SRC_PATH}/RkImage.cpp
+  ${RK_SRC_PATH}/RkImageImpl.cpp
+  ${RK_SRC_PATH}/RkPainterImpl.cpp
   ${RK_SRC_PATH}/RkContainer.cpp)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
@@ -206,8 +206,6 @@ add_definitions(-fPIC)
 include_directories(${RK_INCLUDE_PATH}/impl/platforms/xwin)
 endif()
 
-# Redkite is not supposed to be provided as shared library,
-# it must be only as static library for development.
 add_library(redkite STATIC
   ${RK_HEADERS}
   ${RK_HEADERS_IMPL}
