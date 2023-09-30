@@ -95,7 +95,7 @@ bool GeonkickApi::init()
         if (!initDSP())
 	        return false;
 
-	loadPresets();
+//	loadPresets();
 
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
 	geonkick_enable_synthesis(geonkickApi, false);

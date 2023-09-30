@@ -26,7 +26,9 @@
 
 #include <RkMain.h>
 
+#ifdef GEONKICK_OS_GNU
 #include <sys/mman.h>
+#endif // GEONKICK_OS_GNU
 
 static geonkick* createDSP()
 {
@@ -47,10 +49,12 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
+#ifdef GEONKICK_OS_GNU
 	if (mlockall(MCL_CURRENT) == -1) {
 	        GEONKICK_LOG_ERROR("can't lock memory");
                 exit(EXIT_FAILURE);
         }
+#endif // GEONKICK_OS_GNU
 
         RkMain app(argc, argv);
         std::string preset;
@@ -60,7 +64,7 @@ int main(int argc, char *argv[])
         auto api = new GeonkickApi(Geonkick::defaultSampleRate,
 				   GeonkickApi::InstanceType::Standalone,
 		                   dsp);
-        api->setEventQueue(app.eventQueue());
+//        api->setEventQueue(app.eventQueue());
         api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");
@@ -75,11 +79,12 @@ int main(int argc, char *argv[])
         }
 
         auto res = app.exec();
-
+#ifdef GEONKICK_OS_GNU
         if (munlockall() == -1) {
 	        GEONKICK_LOG_ERROR("can't unlock memory");
                 exit(EXIT_FAILURE);
         }
+#endif // GEONKICK_OS_GNU
 	
         return res;
 }
