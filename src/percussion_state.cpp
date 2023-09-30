@@ -70,21 +70,28 @@ bool PercussionState::loadFile(const std::string &file)
         std::ifstream sfile;
         sfile.open(std::filesystem::absolute(filePath));
         if (!sfile.is_open()) {
-                GEONKICK_LOG_ERROR("can't open preset.");
+	        GEONKICK_LOG_ERROR("can't open preset file " << file);
                 return false;
         }
 
         std::string fileData((std::istreambuf_iterator<char>(sfile)),
                              (std::istreambuf_iterator<char>()));
-        loadData(fileData);
+        if (!loadData(fileData)) {
+	        GEONKICK_LOG_ERROR("error on parsing preset file " << file);
+	        return false;
+        }
         return true;
 }
 
-void PercussionState::loadData(const std::string &data)
+bool PercussionState::loadData(const std::string &data)
 {
         rapidjson::Document document;
-        document.Parse(data.c_str());
+        if (document.Parse(data.c_str()).HasParseError()) {
+	        GEONKICK_LOG_ERROR("error on parsing JSON data");
+	        return false;
+        }
         loadObject(document);
+	return true;
 }
 
 void PercussionState::loadObject(const rapidjson::Value &obj)

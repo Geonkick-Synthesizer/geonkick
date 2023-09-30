@@ -1,5 +1,5 @@
 /**
- * File name: RkTimer.h
+ * File name: RkTimer.cpp
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2019 Iurie Nistor 

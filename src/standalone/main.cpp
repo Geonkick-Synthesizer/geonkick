@@ -26,28 +26,60 @@
 
 #include <RkMain.h>
 
+#include <sys/mman.h>
+
+static geonkick* createDSP()
+{
+        geonkick* geonkickApi = nullptr;
+        if (geonkick_create(&geonkickApi, Geonkick::defaultSampleRate) != GEONKICK_OK) {
+                GEONKICK_LOG_ERROR("can't create geonkick API");
+                return nullptr;
+        }
+
+        return geonkickApi;
+}
+
 int main(int argc, char *argv[])
 {
-        RkMain app(argc, argv);
+        auto dsp = createDSP();
+	if (!dsp) {
+                GEONKICK_LOG_ERROR("can't create DSP");
+		exit(EXIT_FAILURE);
+	}
 
+	if (mlockall(MCL_CURRENT) == -1) {
+	        GEONKICK_LOG_ERROR("can't lock memory");
+                exit(EXIT_FAILURE);
+        }
+
+        RkMain app(argc, argv);
         std::string preset;
         if (argc == 2)
                 preset = argv[1];
 
-        auto api = new GeonkickApi;
-        //        api->setEventQueue(app.eventQueue());
+        auto api = new GeonkickApi(Geonkick::defaultSampleRate,
+				   GeonkickApi::InstanceType::Standalone,
+		                   dsp);
+        api->setEventQueue(app.eventQueue());
         api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");
                 delete api;
-                exit(1);
+                exit(EXIT_FAILURE);
         }
 
         auto window = new MainWindow(&app, api, preset);
         if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
-                exit(1);
+                exit(EXIT_FAILURE);
         }
 
-        return app.exec();
+        auto res = app.exec();
+
+        if (munlockall() == -1) {
+	        GEONKICK_LOG_ERROR("can't unlock memory");
+                exit(EXIT_FAILURE);
+        }
+	
+        return res;
 }

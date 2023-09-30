@@ -34,8 +34,8 @@
 
 //#include <sndfile.h>
 
-GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance)
-        : geonkickApi{nullptr}
+GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance, geonkick *dsp)
+        : geonkickApi{dsp}
         , instanceType{instance}
         , limiterLevelers{}
         , jackEnabled{false}
@@ -79,13 +79,24 @@ unsigned int GeonkickApi::getVersion()
 //        eventQueue = queue;
 //}
 
+bool GeonkickApi::initDSP()
+{
+          if (!geonkickApi) {
+                  if (geonkick_create(&geonkickApi, sampleRate) != GEONKICK_OK) {
+	                  GEONKICK_LOG_ERROR("can't create geonkick API");
+                          return false;
+                  }
+	  }
+	  return true;
+}
+
 bool GeonkickApi::init()
 {
-        //        loadPresets();
-  	if (geonkick_create(&geonkickApi, sampleRate) != GEONKICK_OK) {
-	        GEONKICK_LOG_ERROR("can't create geonkick API");
-                return false;
-  	}
+        if (!initDSP())
+	        return false;
+
+	loadPresets();
+
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
 	geonkick_enable_synthesis(geonkickApi, false);
 

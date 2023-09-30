@@ -84,13 +84,15 @@ class GeonkickApi /*: public RkObject*/ {
   };
 
         GeonkickApi(int sample_rate = Geonkick::defaultSampleRate,
-                    InstanceType instance = InstanceType::Standalone);
+                    InstanceType instance = InstanceType::Standalone,
+                    geonkick *dsp = nullptr);
   ~GeonkickApi();
   void setInstanceType(InstanceType type);
   InstanceType getInstanceType() const;
   static unsigned int getVersion();
   size_t static numberOfChannels();
-        //  void setEventQueue(RkEventQueue *queue);
+  //  void setEventQueue(RkEventQueue *queue);
+  bool initDSP();
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);

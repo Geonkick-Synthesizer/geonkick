@@ -115,14 +115,14 @@ the following development packages:
 * libsndfile
 * OpenSSL
 * RapidJSON
-* JACK Audio Connection Kit (optional if building only plugin)
+* JACK Audio Connection Kit
 * LV2 development library
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
     apt-get install build-essential
     apt-get install cmake
-    apt-get install qjackctl libjack-dev libsndfile-dev
+    apt-get install libjack-dev libsndfile-dev
     apt-get install libssl-dev
     apt-get install rapidjson-dev
     apt-get install lv2-dev
@@ -139,24 +139,20 @@ Clone the Geonkick code repository, compile and install.
         make
         make install
 
-##### VST3
+##### Build Geonkick with VST3 Plugin
 
-Get VST3 SDK and build it
+Install additional dependences:
 
-        cd vst3sdk
-        mkdir build
-        cd build
-        cmake ../
-        make
+    apt-get install libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev
 
-than build Geonkick VST3 plugin:
 
-        copy the source code of the latest Geonkick release
-        mkdir geonkick/build
-        cd geonkick/build
-        cmake -DVST3_SDK_PATH=<full system path to vst3sdk folder> ../
-        make
-        make install
+Get VST3 SDK than build Geonkick VST3 plugin:
+
+	mkdir geonkick/build
+	cd geonkick/build
+        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> ../
+	make
+	make install
 
 #### Packages
 

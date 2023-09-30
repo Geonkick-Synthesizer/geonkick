@@ -1,14 +1,17 @@
 set(GKICK_VST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-if (GKICK_VST_SDK_PATH)
-  list(APPEND CMAKE_MODULE_PATH "${GKICK_VST_SDK_PATH}/cmake/modules")
-else (GKICK_VST_SDK_PATH)
-  message(STATUS "GKICK_VST_SDK_PATH was not set")
-endif(GKICK_VST_SDK_PATH)
-
+list(APPEND CMAKE_MODULE_PATH "${GKICK_VST_SDK_PATH}/cmake/modules")
 include_directories(${GKICK_VST_SDK_PATH})
 include_directories(${GKICK_REDKITE_SDK_PATH}/include)
-link_directories(${GKICK_VST_SDK_PATH}/build/lib)
 link_directories(${GKICK_REDKITE_SDK_PATH}/lib)
+
+get_filename_component(VST3SDK_FOLDER_NAME ${GKICK_VST_SDK_PATH} NAME)
+if(NAME_FROM_PATH STREQUAL "" AND (VST3SDK_FOLDER_NAME STREQUAL "." OR VST3SDK_FOLDER_NAME STREQUAL ".."))
+    message(FATAL_ERROR "The folder name '${VST3SDK_FOLDER_NAME}' of VST3 SDK is invalid or empty.")
+else()
+    link_directories(${CMAKE_BINARY_DIR}/${VST3SDK_FOLDER_NAME}/build/lib)
+endif()
+
+add_subdirectory(${GKICK_VST_SDK_PATH} EXTERN)
 
 set(GKICK_VST_HEADERS
   ${GKICK_VST_SDK_PATH}/public.sdk/source/vst/vstcomponentbase.h
