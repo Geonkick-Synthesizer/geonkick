@@ -1,4 +1,5 @@
 set(GKICK_PRESETS
+  GeonkickBells.tar.xz
   AVL-Drumkit.tar.xz
   DigitalSamba.tar.xz
   DSoS.tar.xz
