@@ -25,18 +25,12 @@
 #include "RkEventQueue.h"
 #include "RkEvent.h"
 #include "RkWidget.h"
+#include "RkCanvasInfo.h"
 
 #include <random>
 
 static std::string rk_winApiClassName;
 static HINSTANCE rk_winApiInstance = nullptr;
-//#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
-//#include <d2d1_1.h>
-//#include <dwrite.h>
-//static ID2D1Factory1* rk_d2d1Factory = nullptr;
-//static IDWriteFactory* rk_dWriteFactory = nullptr;
-//#endif // RK_GRAPHICS_BACKEND_DIRECT2D
-
 
 HINSTANCE rk_win_api_instance()
 {
@@ -97,14 +91,20 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_PAINT:
         {
+                RK_LOG_DEBUG("WM_PAINT");
+                RK_LOG_DEBUG("BeginPaint");
+                PAINTSTRUCT ps;
+                BeginPaint(hWnd, &ps);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkPaintEvent>());
-                ValidateRect(hWnd, NULL);
-		eventQueue->processQueue();
+                eventQueue->processQueue();
+                //ValidateRect(hWnd, NULL);
+                EndPaint(hWnd, &ps);
+                RK_LOG_DEBUG("EndPaint");
                 return 0;
         }
         case WM_ERASEBKGND:
 	{
-                /*auto color = eventQueue->getWidget(rk_id_from_win(hWnd))->background();
+/*                auto color = eventQueue->getWidget(rk_id_from_win(hWnd))->background();
                 auto background = CreateSolidBrush(static_cast<COLORREF>((color.blue() << 16 ) | (color.green() << 8 ) | (color.red())));
                 auto hdc = (HDC)wParam;
                 RECT rect;

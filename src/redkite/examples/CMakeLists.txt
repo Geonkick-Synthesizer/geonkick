@@ -1,9 +1,9 @@
-set(RK_EXAMPLES_SOURCES ${RK_EXAMPLES_PATH}/hello.cpp)
+#set(RK_EXAMPLES_SOURCES ${RK_EXAMPLES_PATH}/hello.cpp)
 #set(RK_EXAMPLES_SOURCES_CHILD ${RK_EXAMPLES_PATH}/child.cpp)
 #set(RK_EXAMPLES_SOURCES_PROPERTY ${RK_EXAMPLES_PATH}/property.cpp)
 #set(RK_EXAMPLES_SOURCES_LABEL ${RK_EXAMPLES_PATH}/label.cpp)
 #set(RK_EXAMPLES_SOURCES_WIDGET_COLORS ${RK_EXAMPLES_PATH}/widget_colors.cpp)
-#set(RK_EXAMPLES_SOURCES_PAINTER ${RK_EXAMPLES_PATH}/painter.cpp)
+set(RK_EXAMPLES_SOURCES_PAINTER ${RK_EXAMPLES_PATH}/painter.cpp)
 #set(RK_EXAMPLES_SOURCES_ACTION ${RK_EXAMPLES_PATH}/action.cpp)
 #set(RK_EXAMPLES_SOURCES_DIALOG ${RK_EXAMPLES_PATH}/dialog.cpp)
 #set(RK_EXAMPLES_SOURCES_TIMER ${RK_EXAMPLES_PATH}/timer.cpp)
@@ -18,9 +18,9 @@ set(RK_EXAMPLES_SOURCES ${RK_EXAMPLES_PATH}/hello.cpp)
 
 # ------------ Hello exmaple -------
 
-add_executable(hello ${RK_EXEC_OPTION}
-	${RK_HEADERS}
-	${RK_EXAMPLES_SOURCES})
+#add_executable(hello ${RK_EXEC_OPTION}
+#	${RK_HEADERS}
+#	${RK_EXAMPLES_SOURCES})
 
 #add_dependencies(hello redkite)
 #target_link_libraries(hello redkite)
@@ -32,7 +32,7 @@ add_executable(hello ${RK_EXEC_OPTION}
 #  target_link_libraries(hello ${RK_GRAPHICS_BACKEND_LINK_LIBS})
 #endif()
 
-if (RK_ALL_EXMAPLES)
+#if (RK_ALL_EXMAPLES)
 # ------------ Child Example -------
 
 #add_executable(child ${RK_EXEC_OPTION}
@@ -84,18 +84,18 @@ if (RK_ALL_EXMAPLES)
 #target_link_libraries(widget_colors ${RK_GRAPHICS_BACKEND_LINK_LIBS})
 
 # ------------ Painter Exmaple -------
-#add_executable(painter
-#  ${RK_HEADERS}
-#  ${RK_EXAMPLES_SOURCES_PAINTER})
+add_executable(painter
+  ${RK_HEADERS}
+  ${RK_EXAMPLES_SOURCES_PAINTER})
 
-#add_dependencies(painter redkite)
-#target_link_libraries(painter redkite)
-#if (CMAKE_SYSTEM_NAME MATCHES Windows)
-# target_link_libraries(painter "-mwindows -s -static -ld3d11 -ld2d1 -ldwrite -lm")
-#else ()
-# target_link_libraries(painter ${RK_LINK_}"-lX11 -lrt -lm -ldl")
-# target_link_libraries(painter ${RK_GRAPHICS_BACKEND_LINK_LIBS})
-#endif()
+add_dependencies(painter redkite)
+target_link_libraries(painter redkite)
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+ target_link_libraries(painter "-mwindows -lstdc++ -lcrypto -lm -lcairo")
+else ()
+ target_link_libraries(painter ${RK_LINK_}"-lX11 -lrt -lm -ldl")
+ target_link_libraries(painter ${RK_GRAPHICS_BACKEND_LINK_LIBS})
+endif()
 # ------------ Action Exmaple -------
 
 #add_executable(action
@@ -151,5 +151,5 @@ if (RK_ALL_EXMAPLES)
 #target_link_libraries(lineedit redkite)
 #target_link_libraries(lineedit "-lX11 -lrt -lm -ldl")
 #target_link_libraries(lineedit ${RK_GRAPHICS_BACKEND_LINK_LIBS})
-endif () # ALL EXAMPLES
+#endif () # ALL EXAMPLES
 

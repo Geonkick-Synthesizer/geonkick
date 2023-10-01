@@ -72,10 +72,24 @@ GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
 
 void GeonkickWidget::paintEvent(RkPaintEvent *event)
 {
-        GEONKICK_LOG_INFO("called");
+        GEONKICK_LOG_INFO("GeonkickWidget::paintEvent");
+        RkPainter painter(this);
+        RkPen pen(RkColor(255, 0, 0));
+        pen.setWidth(1);
+        pen.setStyle(RkPen::PenStyle::DashLine);
+        painter.setPen(pen);
+        painter.drawLine({10, 10}, {100, 100});
+        painter.drawCircle(50, 50, 40);
+        painter.fillRect({50, 50, 20, 20}, background());
+        
+        pen.setStyle(RkPen::PenStyle::DotLine);
+        pen.setColor({0, 55, 123});
+        painter.setPen(pen);
+        painter.drawRect({10, 10, 10, 10});
+        
 //        if (!backgroundImage.isNull()) {
-                RkPainter painter(this);
-                painter.fillRect(rect(), {44, 44, 44}/*background()*/);
+//                RkPainter painter(this);
+//                painter.fillRect(rect(), {44, 44, 44}/*background()*/);
 //                painter.drawImage(backgroundImage, 0, 0);
 //        }
 

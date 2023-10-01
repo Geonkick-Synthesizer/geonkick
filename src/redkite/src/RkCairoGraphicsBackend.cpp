@@ -34,10 +34,23 @@
 #endif
 
 RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
-        : cairoContext{cairo_create(canvas->getCanvasInfo()->cairo_surface)}
+        : canvas {canvas}
+        , cairoContext{nullptr}
 {
-        cairo_set_font_size(context(), 10);
-        cairo_set_line_width (context(), 1);
+        RK_LOG_DEBUG("called");
+        auto canvaseInfo = canvas->getCanvasInfo();
+        if (!canvaseInfo) {
+                RK_LOG_ERROR("can't get canvas info");
+        } else {
+                cairoContext = cairo_create(canvaseInfo->cairo_surface);
+                if (!cairoContext) {
+                        RK_LOG_ERROR("can't create Cairo context");
+                } else {
+                        RK_LOG_DEBUG("Cairo context created");
+                        cairo_set_font_size(context(), 10);
+                        cairo_set_line_width (context(), 1);
+                }
+        }
 }
 
 cairo_t* RkCairoGraphicsBackend::context() const
@@ -48,6 +61,7 @@ cairo_t* RkCairoGraphicsBackend::context() const
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
         cairo_destroy(context());
+        canvas->freeCanvasInfo();
 }
 
 void RkCairoGraphicsBackend::drawText(const std::string &text, int x, int y)

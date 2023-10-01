@@ -33,6 +33,7 @@ class RK_EXPORT RkCanvas {
         RkCanvas() = default;
         virtual ~RkCanvas() = default;
         virtual const RkCanvasInfo* getCanvasInfo() const = 0;
+        virtual void freeCanvasInfo() = 0;
 };
 
 #endif // RK_CANVAS_H

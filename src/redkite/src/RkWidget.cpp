@@ -553,6 +553,11 @@ const RkCanvasInfo* RkWidget::getCanvasInfo() const
         return impl_ptr->getCanvasInfo();
 }
 
+void RkWidget::freeCanvasInfo()
+{
+        return impl_ptr->freeCanvasInfo();
+}
+
 RkRect RkWidget::rect() const
 {
         return impl_ptr->rect();

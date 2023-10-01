@@ -100,7 +100,7 @@ bool RkWindowWin::init()
         if (eventQueue)
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
         
-        createCanvasInfo();
+//        createCanvasInfo();
         return true;
 }
 
@@ -217,6 +217,7 @@ const RkColor& RkWindowWin::background() const
 
 void RkWindowWin::update()
 {
+        InvalidateRect(windowHandle.id, NULL, TRUE);
 }
 
 #ifdef RK_GRAPHICS_CAIRO_BACKEND
@@ -224,23 +225,33 @@ void RkWindowWin::createCanvasInfo()
 {
         canvasInfo = std::make_unique<RkCanvasInfo>();
         canvasInfo->cairo_surface = cairo_win32_surface_create(GetDC(windowHandle.id));
+        if (!canvasInfo->cairo_surface) {
+                RK_LOG_ERROR("error on creating Cairo Win32 surface");
+                return;
+        }
         cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
+        RK_LOG_DEBUG("Cairo Win32 surface was created");
 }
 
 void RkWindowWin::resizeCanvas()
 {
-        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
+//        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
-const RkCanvasInfo* RkWindowWin::getCanvasInfo() const
+const RkCanvasInfo* RkWindowWin::getCanvasInfo()
 {
+        if (!canvasInfo)
+                createCanvasInfo();
         return canvasInfo ? canvasInfo.get() : nullptr;
 }
 
 void RkWindowWin::freeCanvasInfo()
 {
-        if (canvasInfo)
+        if (canvasInfo) {
                 cairo_surface_destroy(canvasInfo->cairo_surface);
+                RK_LOG_DEBUG("Cairo Win32 surface destroyed");
+        }
+        canvasInfo.reset();
 }
 #else
 #error No graphics backend defined

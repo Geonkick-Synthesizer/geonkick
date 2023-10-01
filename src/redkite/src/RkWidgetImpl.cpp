@@ -353,6 +353,11 @@ const RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
         return platformWindow->getCanvasInfo();
 }
 
+void RkWidget::RkWidgetImpl::freeCanvasInfo()
+{
+        platformWindow->freeCanvasInfo();
+}
+
 void RkWidget::RkWidgetImpl::update()
 {
         platformWindow->update();

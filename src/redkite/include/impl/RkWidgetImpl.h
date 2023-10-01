@@ -79,6 +79,7 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         const RkColor& background() const;
         RkRect rect() const;
         const RkCanvasInfo* getCanvasInfo() const;
+        void freeCanvasInfo();
         void update();
         static Rk::WidgetAttribute defaultWidgetAttributes();
         Rk::Modality modality() const;

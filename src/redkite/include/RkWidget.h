@@ -110,7 +110,6 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           void setColor(const RkColor &color);
           const RkFont& font() const;
           void setFont(const RkFont &font);
-          const RkCanvasInfo *getCanvasInfo() const override;
           RkRect rect() const;
           void update();
           void close();
@@ -160,6 +159,8 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           virtual void hoverEvent(RkHoverEvent *event);
 
  private:
+          const RkCanvasInfo *getCanvasInfo() const override;
+          void freeCanvasInfo() override;
           RK_DISABLE_COPY(RkWidget);
           RK_DISABLE_MOVE(RkWidget);
           friend class RkEventQueue;

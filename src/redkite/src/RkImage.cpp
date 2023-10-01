@@ -75,6 +75,10 @@ const RkCanvasInfo* RkImage::getCanvasInfo() const
         return o_ptr->getCanvasInfo();
 }
 
+void RkImage::freeCanvasInfo()
+{
+}
+
 unsigned char* RkImage::data() const
 {
         return o_ptr->data();

@@ -33,7 +33,7 @@ class  PainterExample: public RkWidget {
         PainterExample(RkMain *app)
                 : RkWidget(app)
                 , clickPoint(50, 50)
-                , startDraw{false}
+                , startDraw{true}
         {
                 RK_LOG_INFO("called");
                 setBackgroundColor(80, 80, 80);
@@ -42,24 +42,25 @@ class  PainterExample: public RkWidget {
         ~PainterExample() = default;
 
   protected:
-        void paintEvent(const std::shared_ptr<RkPaintEvent> &event) final
+        void paintEvent(RkPaintEvent *event) override
         {
-			 RK_LOG_INFO("called");
-			 RkPainter painter(this);
-			 RK_LOG_INFO("called1");
-			 RkPen pen(RkColor(255, 0, 0));
-			 pen.setWidth(1);
-			 pen.setStyle(RkPen::PenStyle::DashLine);
-			 painter.setPen(pen);
-			 painter.drawLine({10, 10}, {100, 100});
-			 painter.drawCircle(50, 50, 40);
-			 painter.fillRect({50, 50, 20, 20}, background());
-			 pen.setStyle(RkPen::PenStyle::DotLine);
-			 pen.setColor({0, 55, 123});
-			 painter.setPen(pen);
-			 painter.drawRect({10, 10, 10, 10});
+                RK_LOG_INFO("called");
+                if (startDraw) {
+                        RK_LOG_INFO("start draw");
+                        RkPainter painter(this);
+                        RkPen pen(RkColor(255, 0, 0));
+                        pen.setWidth(1);
+                        pen.setStyle(RkPen::PenStyle::DashLine);
+                        painter.setPen(pen);
+                        painter.drawLine({10, 10}, {100, 100});
+                        painter.drawCircle(50, 50, 40);
+                        painter.fillRect({50, 50, 20, 20}, background());
+                        pen.setStyle(RkPen::PenStyle::DotLine);
+                        pen.setColor({0, 55, 123});
+                        painter.setPen(pen);
+                        painter.drawRect({10, 10, 10, 10});
+                }
 
-             RK_UNUSED(event);
 			 /*
                 if (startDraw) {
 
@@ -114,14 +115,14 @@ class  PainterExample: public RkWidget {
                 }
 				
 
-        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final
+        void mouseButtonPressEvent(RkMouseEvent *event) override
         {
                 clickPoint = RkPoint(event->x(), event->y());
                 startDraw = !startDraw;
                 update();
         }
 
-        void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event) final
+        void mouseMoveEvent(RkMouseEvent* event) override
         {
                 if (startDraw) {
                         clickPoint = RkPoint(event->x(), event->y());
