@@ -13,6 +13,7 @@ endif()
 
 option(GKICK_STANDALONE "Enable build for standalone" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
+option(GKICK_PRESETS "Enable presets" ON)
 
 if (GKICK_PLUGIN)
   option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" OFF)
@@ -309,6 +310,12 @@ else(GKICK_PLUGIN_VST)
   message(STATUS "VST plugin: no")
 endif(GKICK_PLUGIN_VST)
 
+if(GKICK_PRESETS)
+  message(STATUS "Geonkick presets: yes" )
+else(GKICK_PRESETS)
+  message(STATUS "Geonkick presets: no")
+endif(GKICK_PRESETS)
+
 if (ENABLE_LOGGING)
   message(STATUS "Debug enabled: yes" )
 else(ENABLE_LOGGING)
@@ -317,12 +324,15 @@ endif(ENABLE_LOGGING)
 message(STATUS "------------------------------")
 
 if (GKICK_STANDALONE)
-  add_subdirectory(${GKICK_STANDALONE_DIR})
+   add_subdirectory(${GKICK_STANDALONE_DIR})
 endif (GKICK_STANDALONE)
 
 if (GKICK_PLUGIN)
-  add_subdirectory(${GKICK_COMMON_DIR}/plugin)
+   add_subdirectory(${GKICK_COMMON_DIR}/plugin)
 endif (GKICK_PLUGIN)
 
 add_subdirectory(data)
-add_subdirectory(presets)
+
+if (GKICK_PRESETS)
+   add_subdirectory(presets)
+endif (GKICK_PRESETS)
