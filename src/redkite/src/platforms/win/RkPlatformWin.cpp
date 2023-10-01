@@ -66,18 +66,6 @@ RkWindowId rk_id_from_win(HWND window)
         return id;
 }
 
-/*#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
-ID2D1Factory1* rk_direct2d_factory()
-{
-        return rk_d2d1Factory;
-}
-
-IDWriteFactory* rk_direct_write_factory()
-{
-        return rk_dWriteFactory;
-}
-#endif // RK_GRAPHICS_BACKEND_DIRECT2D*/
-
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
         auto eventQueue = reinterpret_cast<RkEventQueue*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -90,6 +78,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
                 RK_LOG_DEBUG("WM_DESTROY");
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkCloseEvent>());
+		eventQueue->processQueue();
                 return 0;
         }
         case WM_LBUTTONDOWN:
@@ -97,17 +86,20 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         case WM_MBUTTONDOWN:
 	{
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkMouseEvent>());
+		eventQueue->processQueue();
                 return 0;
         }
         case WM_SIZE:
 	{
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkResizeEvent>());
+		eventQueue->processQueue();
                 return 0;
         }
         case WM_PAINT:
         {
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkPaintEvent>());
                 ValidateRect(hWnd, NULL);
+		eventQueue->processQueue();
                 return 0;
         }
         case WM_ERASEBKGND:

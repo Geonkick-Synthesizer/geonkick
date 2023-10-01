@@ -29,7 +29,7 @@
 RkEventQueueWin::RkEventQueueWin()
 : scaleFactor{1}
 {
-        RK_LOG_INFO("called");
+        RK_LOG_DEBUG("called");
 }
 
 RkEventQueueWin::~RkEventQueueWin()
@@ -40,49 +40,8 @@ std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> RkEventQueueWin::ge
 {
         MSG msg;
         while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) > 0) {
-                /*std::shared_ptr<RkEvent> event = nullptr;
-                switch (msg.message)
-                {
-                case RK_WIN_MESSAGE_PAINT:
-					    event = std::make_shared<RkPaintEvent>();
-                        break;
-                //case WM_PAINT:
-                //        OutputDebugString("getEvents [REDKITE]Event:paint");
-                //        event = RkEvent::paintEvent();
-                //        break;
-                case WM_KEYDOWN:
-                        //event = RkEvent::keyPressEvent();
-                        break;
-                case WM_KEYUP:
-                        //event = RkEvent::keyReleaseEvent();
-                        break;
-                case WM_LBUTTONDOWN:
-                case WM_RBUTTONDOWN:
-                case WM_MBUTTONDOWN:
-					     event = std::make_shared<RkMouseEvent>();
-                        break;
-                case WM_LBUTTONUP:
-                case WM_RBUTTONUP:
-                case WM_MBUTTONUP:
-						event = std::make_shared<RkMouseEvent>();
-                        break;
-                case WM_SIZE:
-                        //event = RkEvent::resizeEvent();
-                        break;
-                case WM_QUIT:
-                case WM_CLOSE:
-                case WM_DESTROY:
-                        event = std::make_shared<RkCloseEvent>();
-                        break;
-                default:
-                        break;
-                        }*/
-
                 TranslateMessage (&msg);
                 DispatchMessage (&msg);
-
-                //                if (event)
-                //        eventsQueue.push_back({rk_id_from_win(msg.hwnd), event});
         }
         return {};
 }
@@ -91,4 +50,3 @@ void RkEventQueueWin::setScaleFactor(double factor)
 {
         scaleFactor = factor;
 }
-
