@@ -464,12 +464,7 @@ There are two version of the plugin the default one and "Single" version.
 The standalone version of Geonkick has the same features as LV2 plugin
 but has only one audio output channel and one MIDI input channel.
 
-### Install
+### Build & Install
 
 Please, see README file how to build and install Geonkick.
 
-### Tutorials
-
-Here is a list of videos that show how to synthesize various percussion with Geonkick:
-
-* YouTube: https://www.youtube.com/playlist?list=PL9Z4qz_xHZ-JfNARCWeR1Jx8Cf1upcWwY
