@@ -1,11 +1,9 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 2.10.1)
+project(geonkick VERSION 2.10.2)
 
 # Temportary
 set(CMAKE_SYSTEM_NAME Windows)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
     include(GNUInstallDirs)
