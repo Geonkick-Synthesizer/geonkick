@@ -155,3 +155,8 @@ void RkEventQueue::setScaleFactor(double factor)
 {
         o_ptr->setScaleFactor(factor);
 }
+
+RkWidget* RkEventQueue::getWidget(const RkWindowId &id) const
+{
+        return o_ptr->findWidget(id);
+}

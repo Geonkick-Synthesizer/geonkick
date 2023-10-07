@@ -31,6 +31,7 @@
 class RkEvent;
 class RkTimer;
 class RkWindowId;
+class RkWidget;
 
 class RK_EXPORT RkEventQueue {
  public:
@@ -60,6 +61,7 @@ class RK_EXPORT RkEventQueue {
         void clearQueue();
         RkObject* findObjectByName(const std::string &name) const;
         void setScaleFactor(double factor);
+        RkWidget* getWidget(const RkWindowId &id) const;
 
  protected:
         RK_DECLARE_IMPL(RkEventQueue);

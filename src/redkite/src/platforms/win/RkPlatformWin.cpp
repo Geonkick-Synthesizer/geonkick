@@ -97,21 +97,26 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 BeginPaint(hWnd, &ps);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkPaintEvent>());
                 eventQueue->processQueue();
-                //ValidateRect(hWnd, NULL);
                 EndPaint(hWnd, &ps);
                 RK_LOG_DEBUG("EndPaint");
                 return 0;
         }
         case WM_ERASEBKGND:
 	{
-/*                auto color = eventQueue->getWidget(rk_id_from_win(hWnd))->background();
-                auto background = CreateSolidBrush(static_cast<COLORREF>((color.blue() << 16 ) | (color.green() << 8 ) | (color.red())));
-                auto hdc = (HDC)wParam;
-                RECT rect;
-                GetClientRect(hWnd, &rect);
-                FillRect(hdc, &rect, background);
-                DeleteObject(background);
-                return 1L;*/
+                RK_LOG_DEBUG("WM_ERASEBKGND");
+                auto widget = eventQueue->getWidget(rk_id_from_win(hWnd));
+                if (widget) {
+                        auto color = widget->background();
+                        auto background = CreateSolidBrush(static_cast<COLORREF>((color.blue() << 16 )
+                                                                                 | (color.green() << 8 )
+                                                                                 | (color.red())));
+                        auto hdc = reinterpret_cast<HDC>(wParam);
+                        RECT rect;
+                        GetClientRect(hWnd, &rect);
+                        FillRect(hdc, &rect, background);
+                        DeleteObject(background);
+                        return 1L;
+                }
         }
         default:
                 break;
