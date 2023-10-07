@@ -1,3 +1,21 @@
+## [2.10.2]
+
+### Fixes
+
+- Added lock memory for standalone.
+- Added external sub directory path to VST3 SDK for building.
+- Error check on parsing JSON.
+- Fixed info about vst plugin.
+
+### Features
+
+- Added Geonkick Bells presets.
+
+### Other
+
+- Cleanups, adding new info
+
+
 ## [2.10.1]
 
 ### Fixes
@@ -22,7 +40,7 @@
 ### Features
 
 - Set manually the exact value of envelope points.
-- display the current envelope point coordinates (value, time).
+- Display the current envelope point coordinates (value, time).
 
 ### Improvements
 
