@@ -43,13 +43,13 @@
 #include <atomic>
 
 #ifdef GEONKICK_SINGLE
-#define GEONKICK_URI "http://geontime.com/geonkick/single"
-#define GEONKICK_URI_UI "http://geontime.com/geonkick/single#ui"
-#define GEONKICK_URI_STATE "http://geontime.com/geonkick/single#state"
+#define GEONKICK_URI "http://geonkick.org/geonkick/single"
+#define GEONKICK_URI_UI "http://geonkick.org/geonkick/single#ui"
+#define GEONKICK_URI_STATE "http://geonkick.org/geonkick/single#state"
 #else
-#define GEONKICK_URI "http://geontime.com/geonkick"
-#define GEONKICK_URI_UI "http://geontime.com/geonkick#ui"
-#define GEONKICK_URI_STATE "http://geontime.com/geonkick#state"
+#define GEONKICK_URI "http://geonkick.org/geonkick"
+#define GEONKICK_URI_UI "http://geonkick.org/geonkick#ui"
+#define GEONKICK_URI_STATE "http://geonkick.org/geonkick#state"
 #endif // GEONKICK_SINGLE
 #define GEONKICK_URI_STATE_CHANGED "http://lv2plug.in/ns/ext/state#StateChanged"
 
