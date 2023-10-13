@@ -51,7 +51,7 @@
 
 ### Introduction
 
-Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer, currently available only for GNU/Linux. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and glide between the samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin.
+Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer, currently available only for GNU/Linux. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and blend samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin.
 
 ### How it works
 
