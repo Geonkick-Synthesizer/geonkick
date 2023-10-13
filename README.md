@@ -165,4 +165,4 @@ Please use only release versions ([see repository releases](https://gitlab.com/G
 
 #### Documentation
 
- [doc/Documentation.md](doc/Documentation.md)
+ [doc/Geonkick_User_Guide.md](doc/Geonkick_User_Guide.md)
