@@ -59,7 +59,6 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
-        show();
 }
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
@@ -79,7 +78,6 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
-        show();
 }
 
 MainWindow::~MainWindow()
@@ -167,7 +165,7 @@ bool MainWindow::init(void)
         topBar = new TopBar(this, kitModel);
         topBar->setX(10);
         topBar->show();
-        /*       RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
         RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
                     this, openFileDialog(FileDialog::Type::Open));
         RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
@@ -178,7 +176,7 @@ bool MainWindow::init(void)
                     this, openExportDialog());
         RK_ACT_BIND(topBar, layerSelected,
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
-                    geonkickApi, enbaleLayer(layer, b));*/
+                    geonkickApi, enbaleLayer(layer, b));
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
@@ -213,6 +211,7 @@ bool MainWindow::init(void)
                 openPreset(presetName);
         topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
         updateGui();
+        show();
         return true;
 }
 
@@ -400,6 +399,6 @@ void MainWindow::setSample(const std::string &file)
 
 void MainWindow::updateLimiter(KitModel::PercussionIndex index)
 {
-//        if (kitModel->isPercussionSelected(index))
-//                limiterWidget->onUpdateLimiter();
+        if (kitModel->isPercussionSelected(index))
+                limiterWidget->onUpdateLimiter();
 }

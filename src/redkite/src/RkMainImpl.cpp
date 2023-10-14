@@ -86,12 +86,13 @@ int RkMain::RkMainImpl::exec(bool block)
 	}
 
         if (!block) {
+                eventQueue->dispatchEvents();
                 eventQueue->processQueue();
         } else {
                 for (; block ;) {
-                        if (n > 1000)
-                                n = 0;
-                        RK_LOG_DEBUG("process queue: " << n++);
+//                        if (n > 1000)
+//                                n = 0;
+//                        RK_LOG_DEBUG("process queue: " << n++);
                         eventQueue->dispatchEvents();
                         eventQueue->processQueue();
                         if (topWidget->isClose()) {

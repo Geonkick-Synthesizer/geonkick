@@ -60,6 +60,9 @@ RkWindowId rk_id_from_win(HWND window)
         return id;
 }
 
+static DWORD lastClickTime = 0;
+static POINT lastClickPos = {0};
+
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
         auto eventQueue = reinterpret_cast<RkEventQueue*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -79,15 +82,50 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
 	{
+/*                {
+                        POINT currentClickPos;
+                        GetCursorPos(&currentClickPos);
+
+                        // Calculate time difference between this click and the last click
+                        DWORD currentTime = GetTickCount();
+                        DWORD timeDiff = currentTime - lastClickTime;
+
+                        // Calculate distance between this click and the last click
+                        int distance = abs(currentClickPos.x - lastClickPos.x) + abs(currentClickPos.y - lastClickPos.y);
+
+                        // If the time difference and distance are within the double-click threshold, it's a double-click
+                        if (timeDiff < GetDoubleClickTime() && distance < GetSystemMetrics(SM_CXDOUBLECLK) / 2)
+                        {
+                                RK_LOG_DEBUG("WM_LBUTTONDBLCLK");
+                                // Handle double-click logic here
+                                auto event = std::make_unique<RkMouseEvent>();
+                                event->setType(RkEvent::Type::MouseDoubleClick);
+                                event->setButton(RkMouseEvent::ButtonType::Left);
+                                event->setX(LOWORD(lParam));
+                                event->setY(HIWORD(lParam));
+                                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                                eventQueue->processQueue();
+
+                                // Reset last click time and position
+                                lastClickTime = 0;
+                                lastClickPos = {0};
+                                return 0;
+                        }
+                        }*/
+                
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
-                if (msg == WM_LBUTTONDOWN)
+                if (msg == WM_LBUTTONDOWN) {
+                        RK_LOG_DEBUG("WM_LBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Left);
-                else if (msg == WM_RBUTTONDOWN)
+                } else if (msg == WM_RBUTTONDOWN) {
+                        RK_LOG_DEBUG("WM_RBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Right);
-                else
+                } else {
+                        RK_LOG_DEBUG("WM_MBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Middle);
+                }
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
 		eventQueue->processQueue();
                 return 0;
@@ -100,29 +138,104 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setType(RkEvent::Type::MouseButtonRelease);
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
-                if (msg == WM_LBUTTONDOWN)
+                if (msg == WM_LBUTTONUP) {
+                        RK_LOG_DEBUG("WM_LBUTTONUP");
                         event->setButton(RkMouseEvent::ButtonType::Left);
-                else if (msg == WM_RBUTTONDOWN)
+                } else if (msg == WM_RBUTTONUP) {
+                        RK_LOG_DEBUG("WM_RBUTTONUP");
                         event->setButton(RkMouseEvent::ButtonType::Right);
-                else
+                } else {
+                        RK_LOG_DEBUG("WM_MBUTTONUP");
                         event->setButton(RkMouseEvent::ButtonType::Middle);
+                }
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
 		eventQueue->processQueue();
                 return 0;
         }
-        case WM_MBUTTONDBLCLK:
-	{
-                auto event = std::make_unique<RkMouseEvent>(RkEvent::Type::MouseDoubleClick);
+        case WM_MOUSEMOVE:
+        {
+                RK_LOG_DEBUG("WM_MOUSEMOVE");
+                auto event = std::make_unique<RkMouseEvent>();
+                event->setType(RkEvent::Type::MouseMove);
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
-                if (msg == WM_LBUTTONDOWN)
-                        event->setButton(RkMouseEvent::ButtonType::Left);
-                else if (msg == WM_RBUTTONDOWN)
-                        event->setButton(RkMouseEvent::ButtonType::Right);
-                else
-                        event->setButton(RkMouseEvent::ButtonType::Middle);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-		eventQueue->processQueue();
+                eventQueue->processQueue();
+                return 0;
+        }
+        case WM_MOUSEHOVER:
+        {
+                RK_LOG_DEBUG("WM_MOUSEHOVER");
+                auto event = std::make_unique<RkHoverEvent>();
+                event->setHover(true);
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+        case WM_MOUSELEAVE:
+        {
+                RK_LOG_DEBUG("WM_MOUSELEAVE");
+                auto event = std::make_unique<RkHoverEvent>();
+                event->setHover(false);
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+        case WM_LBUTTONDBLCLK:
+        {
+                RK_LOG_DEBUG("WM_LBUTTONDBLCLK");
+                auto event = std::make_unique<RkMouseEvent>();
+                event->setType(RkEvent::Type::MouseDoubleClick);
+                event->setButton(RkMouseEvent::ButtonType::Left);
+                event->setX(LOWORD(lParam));
+                event->setY(HIWORD(lParam));
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+
+        case WM_RBUTTONDBLCLK:
+        {
+                RK_LOG_DEBUG("WM_RBUTTONDBLCLK");
+                auto event = std::make_unique<RkMouseEvent>();
+                event->setType(RkEvent::Type::MouseDoubleClick);
+                event->setButton(RkMouseEvent::ButtonType::Right);
+                event->setX(LOWORD(lParam));
+                event->setY(HIWORD(lParam));
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+
+        case WM_MBUTTONDBLCLK:
+        {
+                RK_LOG_DEBUG("WM_MBUTTONDBLCLK");
+                auto event = std::make_unique<RkMouseEvent>();
+                event->setType(RkEvent::Type::MouseDoubleClick);
+                event->setButton(RkMouseEvent::ButtonType::Middle);
+                event->setX(LOWORD(lParam));
+                event->setY(HIWORD(lParam));
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+        case WM_KEYDOWN:
+        {
+                auto event = std::make_unique<RkKeyEvent>();
+                event->setType(RkEvent::Type::KeyPressed);
+                event->setKey(static_cast<Rk::Key>(wParam));
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+
+        case WM_KEYUP:
+        {
+                auto event = std::make_unique<RkKeyEvent>();
+                event->setType(RkEvent::Type::KeyReleased);
+                event->setKey(static_cast<Rk::Key>(wParam));
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
                 return 0;
         }
         case WM_SIZE:
@@ -133,20 +246,36 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_PAINT:
         {
-                RK_LOG_DEBUG("--------------- WM_PAINT --------------------");
-                RK_LOG_DEBUG("BeginPaint");
+//                RK_LOG_DEBUG("WM_PAINT");
+//                RK_LOG_DEBUG("BeginPaint");
                 PAINTSTRUCT ps;
                 BeginPaint(hWnd, &ps);
                 auto id = rk_id_from_win(hWnd);
-                RK_LOG_DEBUG("win id: " << id.id);
+//                RK_LOG_DEBUG("win id: " << id.id);
                 eventQueue->postEvent(id, std::make_unique<RkPaintEvent>());
-                RK_LOG_DEBUG("processQueue()");
+//                RK_LOG_DEBUG("processQueue()");
                 eventQueue->processQueue();
-                RK_LOG_DEBUG("EndPaint...");
+//                RK_LOG_DEBUG("EndPaint...");
                 EndPaint(hWnd, &ps);
-                RK_LOG_DEBUG("--------------- END WM_PAITN -----------------");
                 return 0;
         }
+        case WM_SETFOCUS:
+        {
+                auto event = std::make_unique<RkFocusEvent>();
+                event->setType(RkEvent::Type::FocusedIn);
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+        case WM_KILLFOCUS:
+        {
+                auto event = std::make_unique<RkFocusEvent>();
+                event->setType(RkEvent::Type::FocusedOut);
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+        
         case WM_ERASEBKGND:
 	{
                 RK_LOG_DEBUG("WM_ERASEBKGND");
@@ -240,7 +369,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         rk_winApiInstance = hInstance;
         WNDCLASSEX wc;
         wc.cbSize        = sizeof(WNDCLASSEX);
-        wc.style         = 0;
+        wc.style         = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
         wc.lpfnWndProc   = RkWindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
@@ -258,22 +387,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         wc.lpszClassName = rk_winApiClassName.c_str();
         wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
         RK_LOG_DEBUG("rk_winApiClassName : " << rk_winApiClassName);
-
-        /*#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
-        if (D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &rk_d2d1Factory) != S_OK) {
-                RK_LOG_ERROR("can't create D2D1 factory");
-                return FALSE;
-        }
-
-        if (DWriteCreateFactory(DWRITE_FACTORY_TYPE_ISOLATED,
-                                __uuidof(IDWriteFactory),
-                                reinterpret_cast<IUnknown**>(&rk_dWriteFactory)) != S_OK) {
-                RK_LOG_ERROR("can't create Direct Write factory");
-                rk_d2d1Factory->Release();
-                return FALSE;
-        }
-        #endif // RK_GRAPHICS_BACKEND_DIRECT2D*/
-
         if (!RegisterClassEx(&wc)) {
                 RK_LOG_ERROR("can't register window class");
                 return 1;

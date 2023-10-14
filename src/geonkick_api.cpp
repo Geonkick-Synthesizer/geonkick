@@ -916,9 +916,9 @@ void GeonkickApi::kickUpdatedCallback(void *arg,
 
 void GeonkickApi::limiterCallback(void *arg, size_t index, gkick_real val)
 {
-/*        GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
+        GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
-        obj->setLimiterLevelerValue(index, val);*/
+                obj->setLimiterLevelerValue(index, val);
 }
 
 void GeonkickApi::setLimiterLevelerValue(size_t index, double val)
