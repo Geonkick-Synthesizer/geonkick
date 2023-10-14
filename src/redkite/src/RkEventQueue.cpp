@@ -108,7 +108,7 @@ void RkEventQueue::processQueue()
 #ifdef RK_LOG_DEBUG_LEVEL
         static int n = 0;
         if (++n > 10000) {
-                RK_LOG_DEBUG("called");
+                RK_LOG_DEBUG("called: " << n);
                 n = 0;
         }
 #endif // RK_LOG_DEBUG_LEVEL
@@ -159,4 +159,9 @@ void RkEventQueue::setScaleFactor(double factor)
 RkWidget* RkEventQueue::getWidget(const RkWindowId &id) const
 {
         return o_ptr->findWidget(id);
+}
+
+void RkEventQueue::dispatchEvents()
+{
+        return o_ptr->dispatchEvents();
 }

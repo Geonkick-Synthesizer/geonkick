@@ -201,6 +201,9 @@ void RkEventQueue::RkEventQueueImpl::processEvent(RkObject *obj, RkEvent *event)
 
 void RkEventQueue::RkEventQueueImpl::processEvents()
 {
+#ifdef RK_OS_WIN
+#elif RK_OS_MAC
+#else
         auto events = platformEventQueue->getEvents();
         if (!events.empty()) {
                 for (auto &event: events) {
@@ -213,6 +216,7 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
                 }
         }
         events.clear();
+#endif
 
         /**
          * Moving events in a separeted queue for processing
@@ -220,6 +224,7 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
          * may add new events into the queue and this for
          * in some cases can lead to a infinite looping.
          */
+        RK_LOG_DEBUG("process events");
         decltype(eventsQueue) queue = std::move(eventsQueue);
         for (const auto &e: queue) {
                 if (e.second->type() == RkEvent::Type::KeyPressed
@@ -228,8 +233,10 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
                 }
                 if (!popupList.empty() && dynamic_cast<RkWidget*>(e.first))
                         processPopups(dynamic_cast<RkWidget*>(e.first), e.second.get());
+                RK_LOG_DEBUG("process event: " << e.second.get());
                 processEvent(e.first, e.second.get());
         }
+        RK_LOG_DEBUG("process events end");
 }
 
 void RkEventQueue::RkEventQueueImpl::processPopups(RkWidget *widget, RkEvent* event)
@@ -384,4 +391,13 @@ RkObject* RkEventQueue::RkEventQueueImpl::findObjectByName(const std::string &na
 void RkEventQueue::RkEventQueueImpl::setScaleFactor(double factor)
 {
         platformEventQueue->setScaleFactor(factor);
+}
+
+void RkEventQueue::RkEventQueueImpl::dispatchEvents()
+{
+#ifdef RK_OS_WIN
+        platformEventQueue->dispatchEvents();
+#elif RK_OS_MAC
+#else
+#endif
 }

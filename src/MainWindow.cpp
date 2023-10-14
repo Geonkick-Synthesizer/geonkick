@@ -56,7 +56,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
-//        geonkickApi->registerCallbacks(true);
+        geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
         show();
@@ -76,7 +76,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
-//        geonkickApi->registerCallbacks(true);
+        geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
         show();
@@ -181,38 +181,38 @@ bool MainWindow::init(void)
                     geonkickApi, enbaleLayer(layer, b));*/
 
         // Create envelope widget.
-        /*envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
+        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
         envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 305);
         envelopeWidget->show();
         
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
-        RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());*/
-        //       limiterWidget = new Limiter(geonkickApi, this);
-//        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8,
-//                                   envelopeWidget->y());
-//        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
-//        limiterWidget->show();
-        //controlAreaWidget = new ControlArea(this, kitModel, oscillators);
-        //controlAreaWidget->setPosition(10, /*envelopeWidget->y() + envelopeWidget->height()*/topBar->y() + topBar->height() + 305);
-        //controlAreaWidget->show();
-        //RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
+        RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
+        limiterWidget = new Limiter(geonkickApi, this);
+        limiterWidget->setPosition(envelopeWidget->x() + envelopeWidget->width() + 8,
+                                   envelopeWidget->y());
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
+        limiterWidget->show();
+        controlAreaWidget = new ControlArea(this, kitModel, oscillators);
+        controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
+        controlAreaWidget->show();
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
 
-        //kitModel = controlAreaWidget->getKitModel();
-        //RK_ACT_BIND(kitModel,
-        //            limiterUpdated,
-        //            RK_ACT_ARGS(KitModel::PercussionIndex index),
-        //            this,
-        //            updateLimiter(index));
-//        RK_ACT_BIND(limiterWidget, limiterUpdated, RK_ACT_ARGS(int val),
-//                    kitModel, updatePercussion(kitModel->selectedPercussion()));
+        kitModel = controlAreaWidget->getKitModel();
+        RK_ACT_BIND(kitModel,
+                    limiterUpdated,
+                    RK_ACT_ARGS(KitModel::PercussionIndex index),
+                    this,
+                    updateLimiter(index));
+        RK_ACT_BIND(limiterWidget, limiterUpdated, RK_ACT_ARGS(int val),
+                    kitModel, updatePercussion(kitModel->selectedPercussion()));
 
-        //RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
-//        if (geonkickApi->isStandalone() && !presetName.empty())
-//                openPreset(presetName);
-//        topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
-//        updateGui();
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
+        if (geonkickApi->isStandalone() && !presetName.empty())
+                openPreset(presetName);
+        topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
+        updateGui();
         return true;
 }
 

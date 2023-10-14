@@ -291,11 +291,11 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         samplesButton->setPressed(viewState()->getMainView() == ViewState::View::Samples);
         samplesButton->setFixedSize(54, 20);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_off)),
-                               RkButton::State::Unpressed);
+                                RkButton::State::Unpressed);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_active)),
-                               RkButton::State::Pressed);
+                                RkButton::State::Pressed);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_hover)),
-                               RkButton::State::UnpressedHover);
+                                RkButton::State::UnpressedHover);
         samplesButton->show();
         RK_ACT_BIND(samplesButton, pressed, RK_ACT_ARGS(),
                     viewState(), setMainView(ViewState::View::Samples));
@@ -308,7 +308,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                      [=](PercussionModel* model) {
                              if (model->isSelected())
                                      updateGui();
-                                     } );
+                     } );
         updateGui();
 }
 

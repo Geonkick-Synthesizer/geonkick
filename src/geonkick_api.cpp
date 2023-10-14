@@ -907,11 +907,11 @@ void GeonkickApi::kickUpdatedCallback(void *arg,
                                       size_t size,
                                       size_t id)
 {
-/*        std::vector<gkick_real> buffer(size, 0);
+        std::vector<gkick_real> buffer(size, 0);
         std::memcpy(buffer.data(), buff, size * sizeof(gkick_real));
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
-        obj->updateKickBuffer(std::move(buffer), id);*/
+        obj->updateKickBuffer(std::move(buffer), id);
 }
 
 void GeonkickApi::limiterCallback(void *arg, size_t index, gkick_real val)
@@ -939,14 +939,14 @@ double GeonkickApi::getLimiterLevelerValue(size_t index) const
 void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
                                    size_t id)
 {
-/*        std::lock_guard<std::mutex> lock(apiMutex);
+        std::lock_guard<std::mutex> lock(apiMutex);
         if (id < getPercussionsNumber())
                 kickBuffers[id] = buffer;
         if (eventQueue && id == currentPercussion()) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ kickUpdated(); });
                 eventQueue->postAction(std::move(act));
-                }*/
+        }
 }
 
 std::vector<gkick_real> GeonkickApi::getInstrumentBuffer(int id) const

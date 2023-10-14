@@ -79,6 +79,7 @@ RkEventQueue* RkMain::RkMainImpl::getEventQueue() const
 
 int RkMain::RkMainImpl::exec(bool block)
 {
+        int n = 0;
         if (!topLevelWidget()) {
                 RK_LOG_ERROR("top window not defined");
 		return 1;
@@ -88,9 +89,15 @@ int RkMain::RkMainImpl::exec(bool block)
                 eventQueue->processQueue();
         } else {
                 for (; block ;) {
+                        if (n > 1000)
+                                n = 0;
+                        RK_LOG_DEBUG("process queue: " << n++);
+                        eventQueue->dispatchEvents();
                         eventQueue->processQueue();
-                        if (topWidget->isClose())
+                        if (topWidget->isClose()) {
+                                RK_LOG_DEBUG("exit");
                                 break;
+                        }
                         std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
         }

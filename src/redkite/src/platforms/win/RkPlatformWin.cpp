@@ -140,7 +140,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto id = rk_id_from_win(hWnd);
                 RK_LOG_DEBUG("win id: " << id.id);
                 eventQueue->postEvent(id, std::make_unique<RkPaintEvent>());
+                RK_LOG_DEBUG("processQueue()");
                 eventQueue->processQueue();
+                RK_LOG_DEBUG("EndPaint...");
                 EndPaint(hWnd, &ps);
                 RK_LOG_DEBUG("--------------- END WM_PAITN -----------------");
                 return 0;

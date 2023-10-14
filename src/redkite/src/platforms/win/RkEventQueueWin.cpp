@@ -36,17 +36,16 @@ RkEventQueueWin::~RkEventQueueWin()
 {
 }
 
-std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> RkEventQueueWin::getEvents() const
+void RkEventQueueWin::setScaleFactor(double factor)
+{
+        scaleFactor = factor;
+}
+
+void RkEventQueueWin::dispatchEvents()
 {
         MSG msg;
         while (PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) > 0) {
                 TranslateMessage (&msg);
                 DispatchMessage (&msg);
         }
-        return {};
-}
-
-void RkEventQueueWin::setScaleFactor(double factor)
-{
-        scaleFactor = factor;
 }
