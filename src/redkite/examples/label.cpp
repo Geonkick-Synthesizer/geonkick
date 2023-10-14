@@ -25,12 +25,32 @@
 #include "RkLabel.h"
 #include "RkLog.h"
 
+#include "RkPainter.h"
+#include "RkImage.h"
+
 /**
  * Generated with png2c
  * File name: label.png
  * Image size name: 100x94
  */
 const unsigned char rk_image[] = {};
+
+class MyImage : public RkWidget {
+public:
+        MyImage(RkWidget * parent)
+                : RkWidget(parent)
+                {
+                        setSize(48, 48);
+                }
+protected:
+        void paintEvent(RkPaintEvent *event) override {
+                //RK_LOG_DEBUG("called====================================>");
+                RkPainter painter(this);
+                RK_LOG_DEBUG("called===================================[1]=>");
+                RkImage img(48, 48, rk_image);
+                painter.drawImage(img, 0, 0);
+        } 
+};
 
 int main(int arc, char **argv)
 {
@@ -41,14 +61,17 @@ int main(int arc, char **argv)
         widget->setTitle("Label Example");
         widget->setSize(250, 250);
 
-        auto label = new RkLabel(widget);
-		label->setImage(RkImage(100, 94, rk_image));
-		label->setText("Text");
-        label->setX(10);
-        label->setY(10);
-        label->setSize(100, 94);
-        label->setBackgroundColor(200, 200, 200);
-        label->show();
+        auto image = new MyImage(widget);
+        image->show();
+
+        //auto label = new RkLabel(widget);
+        //label->setImage(RkImage(48, 48, rk_image));
+//        label->setText("Text");
+        //label->setX(10);
+        //label->setY(10);
+        //label->setSize(48, 48);
+        //label->setBackgroundColor(200, 200, 200);
+        //label->show();
 
         //auto label = new RkLabel(widget);
         /*label->setTitle("Label with image");

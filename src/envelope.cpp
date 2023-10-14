@@ -25,7 +25,6 @@
 #include "globals.h"
 
 #include <iomanip>
-#include <math.h>
 
 Envelope::Envelope(const RkRect &area)
         : drawingArea{area}

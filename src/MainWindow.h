@@ -1,5 +1,5 @@
 /**
- * File name: mainwindow.h
+ * File name: MainWindow.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor 
@@ -25,15 +25,15 @@
 #define GEONGKICK_MAINWINDOW_H
 
 #include "geonkick_widget.h"
-//#include "file_dialog.h"
-//#include "kit_model.h"
+#include "file_dialog.h"
+#include "kit_model.h"
 
-//class Oscillator;
+class Oscillator;
 class GeonkickApi;
-//class TopBar;
-//class EnvelopeWidget;
-//class ControlArea;
-//class Limiter;
+class TopBar;
+class EnvelopeWidget;
+class ControlArea;
+class Limiter;
 
 class MainWindow : public GeonkickWidget
 {
@@ -51,14 +51,14 @@ class MainWindow : public GeonkickWidget
  protected:
       void shortcutEvent(RkKeyEvent *event) override;
       void dropEvent(RkDropEvent *event) override;
-        //      void openFileDialog(FileDialog::Type type);
+      void openFileDialog(FileDialog::Type type);
       void openPreset(const std::string &fileName);
       void savePreset(const std::string &fileName);
       void setPreset(const std::string &fileName);
       void openExportDialog();
       void openPreset();
       void resetToDefault();
-        //      void updateLimiter(KitModel::PercussionIndex index);
+      void updateLimiter(KitModel::PercussionIndex index);
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
       void setSample(const std::string &file);
 
@@ -66,14 +66,14 @@ class MainWindow : public GeonkickWidget
       void createViewState();
       void createShortcuts();
       GeonkickApi *geonkickApi;
-        //      std::vector<std::unique_ptr<Oscillator>> oscillators;
-        //TopBar *topBar;
-        //EnvelopeWidget* envelopeWidget;
-        //ControlArea* controlAreaWidget;
+      std::vector<std::unique_ptr<Oscillator>> oscillators;
+      TopBar *topBar;
+      EnvelopeWidget* envelopeWidget;
+      ControlArea* controlAreaWidget;
       std::string presetName;
       std::string currentWorkingPath;
-        //Limiter *limiterWidget;
-        //KitModel *kitModel;
+      Limiter *limiterWidget;
+      KitModel *kitModel;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

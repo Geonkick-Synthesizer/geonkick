@@ -76,7 +76,7 @@ bool RkWindowWin::hasParent() const
 
 bool RkWindowWin::init()
 {
-        RK_LOG_DEBUG("hasParent(): " << hasParent());
+        RK_LOG_DEBUG("hasParent(): ==========================================>" << hasParent());
         auto className = hasParent() ? parentWindowInfo.className : rk_win_api_class_name();
         RK_LOG_DEBUG("className: " << className);
         windowHandle.id = CreateWindowExA(0,
@@ -100,7 +100,6 @@ bool RkWindowWin::init()
         if (eventQueue)
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
         
-//        createCanvasInfo();
         return true;
 }
 
@@ -223,14 +222,17 @@ void RkWindowWin::update()
 #ifdef RK_GRAPHICS_CAIRO_BACKEND
 void RkWindowWin::createCanvasInfo()
 {
+        RK_LOG_DEBUG(".............................: " << windowHandle.id);
         canvasInfo = std::make_unique<RkCanvasInfo>();
+        RK_LOG_DEBUG(".............................[1]: " << windowHandle.id);
         canvasInfo->cairo_surface = cairo_win32_surface_create(GetDC(windowHandle.id));
+                RK_LOG_DEBUG(".............................[2]: " << windowHandle.id);
         if (!canvasInfo->cairo_surface) {
                 RK_LOG_ERROR("error on creating Cairo Win32 surface");
                 return;
         }
-        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
-        RK_LOG_DEBUG("Cairo Win32 surface was created");
+//        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
+        RK_LOG_DEBUG("............................. Cairo Win32 surface was created: " << windowHandle.id);
 }
 
 void RkWindowWin::resizeCanvas()
@@ -240,6 +242,7 @@ void RkWindowWin::resizeCanvas()
 
 const RkCanvasInfo* RkWindowWin::getCanvasInfo()
 {
+        RK_LOG_DEBUG("called -------------------------------->");
         if (!canvasInfo)
                 createCanvasInfo();
         return canvasInfo ? canvasInfo.get() : nullptr;

@@ -26,13 +26,13 @@
 #include "globals.h"
 #include "percussion_state.h"
 #include "kit_state.h"
-//#include "preset.h"
-//#include "preset_folder.h"
-//#include "UiSettings.h"
+#include "preset.h"
+#include "preset_folder.h"
+#include "UiSettings.h"
 
-//#include <RkEventQueue.h>
+#include <RkEventQueue.h>
 
-//#include <sndfile.h>
+#include <sndfile.h>
 
 GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance, geonkick *dsp)
         : geonkickApi{dsp}
@@ -40,16 +40,16 @@ GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance, geonkick *dsp)
         , limiterLevelers{}
         , jackEnabled{false}
         , standaloneInstance{false}
-          //        , eventQueue{nullptr}
+        , eventQueue{nullptr}
         , currentLayer{Layer::Layer1}
         , kitName{"Unknown"}
         , kitAuthor{"Author"}
-          //        , clipboardPercussion{nullptr}
-          //        , uiSettings{std::make_unique<UiSettings>()}
+        , clipboardPercussion{nullptr}
+        , uiSettings{std::make_unique<UiSettings>()}
 	, sampleRate{sample_rate}
 {
         setupPaths();
-        //        uiSettings->setSamplesBrowserPath(getSettings("GEONKICK_CONFIG/HOME_PATH"));
+        uiSettings->setSamplesBrowserPath(getSettings("GEONKICK_CONFIG/HOME_PATH"));
 }
 
 GeonkickApi::~GeonkickApi()
@@ -73,21 +73,21 @@ unsigned int GeonkickApi::getVersion()
         return GEONKICK_VERSION;
 }
 
-//void GeonkickApi::setEventQueue(RkEventQueue *queue)
-//{
-//        std::lock_guard<std::mutex> lock(apiMutex);
-//        eventQueue = queue;
-//}
+void GeonkickApi::setEventQueue(RkEventQueue *queue)
+{
+        std::lock_guard<std::mutex> lock(apiMutex);
+        eventQueue = queue;
+}
 
 bool GeonkickApi::initDSP()
 {
-          if (!geonkickApi) {
-                  if (geonkick_create(&geonkickApi, sampleRate) != GEONKICK_OK) {
-	                  GEONKICK_LOG_ERROR("can't create geonkick API");
-                          return false;
-                  }
-	  }
-	  return true;
+        if (!geonkickApi) {
+                if (geonkick_create(&geonkickApi, sampleRate) != GEONKICK_OK) {
+                        GEONKICK_LOG_ERROR("can't create geonkick API");
+                        return false;
+                }
+        }
+        return true;
 }
 
 bool GeonkickApi::init()
@@ -95,20 +95,20 @@ bool GeonkickApi::init()
         if (!initDSP())
 	        return false;
 
-//	loadPresets();
+	loadPresets();
 
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
 	geonkick_enable_synthesis(geonkickApi, false);
 
 	auto n = getPercussionsNumber();
-    auto nChannels = numberOfChannels();
-    kickBuffers = std::vector<std::vector<gkick_real>>(n);
+        auto nChannels = numberOfChannels();
+        kickBuffers = std::vector<std::vector<gkick_real>>(n);
 	for (decltype(n) i = 0; i < n; i++) {
                 auto state = getDefaultPercussionState();
                 state->setId(i);
                 state->setChannel(i % nChannels);
 		setPercussionState(state);
-    }
+        }
 
         setKitState(std::move(getDefaultKitState()));
         enablePercussion(0, true);
@@ -468,15 +468,15 @@ bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         return true;
 }
 
-//std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
-//{
-//        std::vector<std::unique_ptr<Oscillator>> oscillators;
-//        size_t n = 0;
-//        geonkick_get_oscillators_number(geonkickApi, &n);
-//        for (decltype(n) i = 0; i < n; i++)
-//                oscillators.push_back(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i % GKICK_OSC_GROUP_SIZE)));
-//        return oscillators;
-//}
+std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
+{
+        std::vector<std::unique_ptr<Oscillator>> oscillators;
+        size_t n = 0;
+        geonkick_get_oscillators_number(geonkickApi, &n);
+        for (decltype(n) i = 0; i < n; i++)
+                oscillators.push_back(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i % GKICK_OSC_GROUP_SIZE)));
+        return oscillators;
+}
 
 std::vector<RkRealPoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeType envelope) const
 {
@@ -907,7 +907,7 @@ void GeonkickApi::kickUpdatedCallback(void *arg,
                                       size_t size,
                                       size_t id)
 {
-        /*        std::vector<gkick_real> buffer(size, 0);
+/*        std::vector<gkick_real> buffer(size, 0);
         std::memcpy(buffer.data(), buff, size * sizeof(gkick_real));
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
@@ -916,9 +916,9 @@ void GeonkickApi::kickUpdatedCallback(void *arg,
 
 void GeonkickApi::limiterCallback(void *arg, size_t index, gkick_real val)
 {
-        GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
+/*        GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
         if (obj)
-                obj->setLimiterLevelerValue(index, val);
+        obj->setLimiterLevelerValue(index, val);*/
 }
 
 void GeonkickApi::setLimiterLevelerValue(size_t index, double val)
@@ -939,7 +939,7 @@ double GeonkickApi::getLimiterLevelerValue(size_t index) const
 void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
                                    size_t id)
 {
-        /*        std::lock_guard<std::mutex> lock(apiMutex);
+/*        std::lock_guard<std::mutex> lock(apiMutex);
         if (id < getPercussionsNumber())
                 kickBuffers[id] = buffer;
         if (eventQueue && id == currentPercussion()) {
@@ -956,7 +956,7 @@ std::vector<gkick_real> GeonkickApi::getInstrumentBuffer(int id) const
                 if (static_cast<decltype(kickBuffers.size())>(id) < kickBuffers.size())
                         return kickBuffers[id];
         }
-                return std::vector<gkick_real>();
+        return std::vector<gkick_real>();
 }
 
 std::vector<gkick_real> GeonkickApi::getKickBuffer() const
@@ -1374,12 +1374,12 @@ std::string GeonkickApi::getPercussionName(int index) const
 
 void GeonkickApi::setSettings(const std::string &key, const std::string &value)
 {
-        //        uiSettings->setSettings(key, value);
+        uiSettings->setSettings(key, value);
 }
 
 std::string GeonkickApi::getSettings(const std::string &key) const
 {
-        return "";//uiSettings->getSettings(key);
+        return uiSettings->getSettings(key);
 }
 
 void GeonkickApi::tuneAudioOutput(int id, bool tune)
@@ -1451,7 +1451,7 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                                                 int sampleRate,
                                                 int channels)
 {
-        /*        GEONKICK_UNUSED(channels);
+        GEONKICK_UNUSED(channels);
 
         SF_INFO sndinfo;
         memset(&sndinfo, 0, sizeof(sndinfo));
@@ -1512,9 +1512,9 @@ std::vector<gkick_real> GeonkickApi::loadSample(const std::string &file,
                         out_data.push_back(val);
                 }
                 return out_data;
-                }*/
+        }
 
-        return {};// data;
+        return data;
 }
 
 void GeonkickApi::setKitName(const std::string &name)
@@ -1549,12 +1549,12 @@ std::string GeonkickApi::getKitUrl() const
 
 void GeonkickApi::copyToClipboard()
 {
-        //        clipboardPercussion = getPercussionState();
+        clipboardPercussion = getPercussionState();
 }
 
 void GeonkickApi::pasteFromClipboard()
 {
-        /*        if (clipboardPercussion) {
+        if (clipboardPercussion) {
                 auto state = std::make_shared<PercussionState>(*clipboardPercussion);
                 auto currId = currentPercussion();
                 state->setId(currId);
@@ -1564,60 +1564,60 @@ void GeonkickApi::pasteFromClipboard()
                 state->setMute(isPercussionMuted(currId));
                 state->setSolo(isPercussionSolo(currId));
                 setPercussionState(state);
-                }*/
+        }
 }
 
 void GeonkickApi::notifyUpdateGraph()
 {
-        /*        if (eventQueue) {
+        if (eventQueue) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ action kickUpdated(); });
                 eventQueue->postAction(std::move(act));
-                }*/
+        }
 }
 
 void GeonkickApi::notifyUpdateParameters()
 {
-        /*        if (eventQueue) {
+        if (eventQueue) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ action stateChanged(); });
                 eventQueue->postAction(std::move(act));
-                }*/
+        }
 }
 
 void GeonkickApi::notifyUpdateGui()
 {
-        /*        if (eventQueue) {
+        if (eventQueue) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){
                                 action kickUpdated();
                                 action stateChanged();
                         });
                 eventQueue->postAction(std::move(act));
-                }*/
+        }
 }
 
 void GeonkickApi::notifyPercussionUpdated(int id)
 {
-        /*        if (eventQueue) {
+        if (eventQueue) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([this, id](void){
                                 GEONKICK_LOG_DEBUG("update percussion :" << id);
                                 action percussionUpdated(id);
                         });
                 eventQueue->postAction(std::move(act));
-                }*/
+        }
 }
 
 void GeonkickApi::notifyKitUpdated()
 {
-        /*        if (eventQueue) {
+        if (eventQueue) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){
                                 action kitUpdated();
                         });
                 eventQueue->postAction(std::move(act));
-                }*/
+        }
 }
 
 std::vector<int> GeonkickApi::ordredPercussionIds() const
@@ -1664,26 +1664,26 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
         return false;
 }
 
-/*void GeonkickApi::loadPresets()
+void GeonkickApi::loadPresets()
 {
         std::unordered_set<std::string> prestsPaths;
         auto presetsPathSufix = std::filesystem::path(GEONKICK_APP_NAME) / "presets";
         std::filesystem::path presetsPath = getSettings("GEONKICK_CONFIG/USER_PRESETS_PATH");
-        prestsPaths.insert(presetsPath);
+        prestsPaths.insert(presetsPath.string());
 
 #ifdef GEONKICK_DATA_DIR
-        prestsPaths.insert(std::filesystem::path(GEONKICK_DATA_DIR) / presetsPathSufix);
+        prestsPaths.insert((std::filesystem::path(GEONKICK_DATA_DIR) / presetsPathSufix).string());
 #endif // GEONKICK_DATA_DIR
 
         const char *dataDirs = std::getenv("XDG_DATA_DIRS");
         if (dataDirs == nullptr || *dataDirs == '\0') {
-                prestsPaths.insert("/usr/share" / presetsPathSufix);
-                prestsPaths.insert("/usr/local/share" / presetsPathSufix);
+                prestsPaths.insert((std::filesystem::path("/usr/share") / presetsPathSufix).string());
+                prestsPaths.insert((std::filesystem::path("/usr/local/share") / presetsPathSufix).string());
         } else {
                 std::stringstream ss(dataDirs);
                 std::string path;
                 while (std::getline(ss, path, ':'))
-                        prestsPaths.insert(std::filesystem::path(path) / presetsPathSufix);
+                        prestsPaths.insert((std::filesystem::path(path) / presetsPathSufix).string());
         }
 
         for (const auto &path: prestsPaths) {
@@ -1694,9 +1694,9 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
                         GEONKICK_LOG_ERROR("error on reading path: " << path << ": " << e.what());
                 }
         }
-        }*/
+}
 
-/*void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
+void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
 {
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(path)) {
@@ -1713,11 +1713,11 @@ bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
         } catch(...) {
                 GEONKICK_LOG_ERROR("error on reading path: " << path);
         }
-        }*/
+}
 
 void GeonkickApi::setupPaths()
 {
-        /*        std::filesystem::path dataPath;
+        std::filesystem::path dataPath;
         const char *dataHome = std::getenv("XDG_DATA_HOME");
         if (dataHome == nullptr || *dataHome == '\0') {
                 const char *homeDir = std::getenv("HOME");
@@ -1740,7 +1740,7 @@ void GeonkickApi::setupPaths()
                                 return;
                         }
                 }
-                setSettings("GEONKICK_CONFIG/USER_DATA_PATH", dataPath);
+                setSettings("GEONKICK_CONFIG/USER_DATA_PATH", dataPath.string());
 
                 auto presetsPath = dataPath / std::filesystem::path("presets");
                 if (!std::filesystem::exists(presetsPath)) {
@@ -1749,61 +1749,61 @@ void GeonkickApi::setupPaths()
                                 return;
                         }
                 }
-                setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", presetsPath);
+                setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", presetsPath.string());
         } catch(const std::exception& e) {
                 GEONKICK_LOG_ERROR("error on setup user data paths: " << e.what());
-                }*/
+        }
 }
 
-/*PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
+PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
 {
         if (index < presetsFoldersList.size())
                 return presetsFoldersList[index].get();
         return nullptr;
-        }*/
+}
 
 size_t GeonkickApi::numberOfPresetFolders() const
 {
-        return 0;//presetsFoldersList.size();
+        return presetsFoldersList.size();
 }
 
-//UiSettings* GeonkickApi::getUiSettings() const
-//{
-//        return uiSettings.get();
-//}
+UiSettings* GeonkickApi::getUiSettings() const
+{
+        return uiSettings.get();
+}
 
 void GeonkickApi::setState(const std::string &data)
 {
-        /*rapidjson::Document document;
+        rapidjson::Document document;
         document.Parse(data.c_str());
         if (!document.IsObject())
                 return;
 
         for (const auto &m: document.GetObject()) {
-                //                if (m.name == "UiSettings" && m.value.IsObject())
-                //                        uiSettings->fromJsonObject(m.value);
+                if (m.name == "UiSettings" && m.value.IsObject())
+                        uiSettings->fromJsonObject(m.value);
                 if (m.name == "KitState" && m.value.IsObject()) {
                         auto kitState = std::make_unique<KitState>();
                         kitState->fromJsonObject(m.value);
                         setKitState(std::move(kitState));
                 }
-                }*/
+        }
 }
 
 std::string GeonkickApi::getState() const
 {
         std::ostringstream jsonStream;
-        //        jsonStream << "{\"UiSettings\": " << std::endl;
-        //        jsonStream << uiSettings->toJson() << ", " << std::endl;
-        // jsonStream << "\"KitState\": " << std::endl;
-        //jsonStream << getKitState()->toJson() << std::endl;
-        //jsonStream << "}" << std::endl;
-        return "";//jsonStream.str();
+        jsonStream << "{\"UiSettings\": " << std::endl;
+        jsonStream << uiSettings->toJson() << ", " << std::endl;
+        jsonStream << "\"KitState\": " << std::endl;
+        jsonStream << getKitState()->toJson() << std::endl;
+        jsonStream << "}" << std::endl;
+        return jsonStream.str();
 }
 
 std::vector<gkick_real> GeonkickApi::setPreviewSample(const std::string &file)
 {
-        /*        int sRate = Geonkick::defaultSampleRate;
+        int sRate = Geonkick::defaultSampleRate;
         geonkick_get_sample_rate(geonkickApi, &sRate);
         std::vector<gkick_real> sampleData = loadSample(file,
                                                         kickMaxLength() / 1000,
@@ -1812,7 +1812,7 @@ std::vector<gkick_real> GeonkickApi::setPreviewSample(const std::string &file)
         if (!sampleData.empty()) {
                 geonkick_set_preview_sample(geonkickApi, sampleData.data(), sampleData.size());
                 return sampleData;
-                }*/
+        }
         return std::vector<float>();
 }
 

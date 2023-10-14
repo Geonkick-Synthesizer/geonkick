@@ -34,6 +34,7 @@ RkCairoImageBackendCanvas::RkCairoImageBackendCanvas(const RkSize &size,
 //#ifdef RK_OS_WIN
 //#elif RK_OS_MAC
 //#else // X11
+        RK_LOG_DEBUG("data================================================>: " << data);
         auto cairoFormat = toCairoFormat(format);
         if (cairoFormat != CAIRO_FORMAT_INVALID && imageSize.width() > 0 && imageSize.height() > 0) {
                 canvasInfo = std::make_unique<RkCanvasInfo>();
@@ -47,6 +48,7 @@ RkCairoImageBackendCanvas::RkCairoImageBackendCanvas(const RkSize &size,
                                                                                 imageSize.width(),
                                                                                 imageSize.height(),
                                                                                 stride);
+                RK_LOG_DEBUG("canvasInfo->cairo_surface: " << canvasInfo->cairo_surface);
         }
 //#endif
 }
@@ -99,11 +101,13 @@ std::vector<unsigned char> RkCairoImageBackendCanvas::dataCopy() const
 
 RkCanvasInfo* RkCairoImageBackendCanvas::getCanvasInfo() const
 {
+        RK_LOG_DEBUG("called");
         return canvasInfo.get();
 }
 
 void RkCairoImageBackendCanvas::fill(const RkColor &color)
 {
+        RK_LOG_DEBUG("clled");
         unsigned char *data = imageData.data();
         for (decltype(imageData.size()) i = 0; i < imageData.size() - 4; i += 4) {
                 *(data + i)     = color.red();

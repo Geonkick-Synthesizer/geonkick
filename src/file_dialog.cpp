@@ -316,7 +316,7 @@ std::string FilesView::getSelectedFile() const
         if (!filesList.empty() && selectedFileIndex > -1
             && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()
 	    && !filesList[selectedFileIndex].empty()) {
-                return filesList[selectedFileIndex];
+                return filesList[selectedFileIndex].string();
         }
         return "";
 }
@@ -473,8 +473,7 @@ void FileDialog::onAccept()
                 break;
         case Type::Save:
                 if (!fileNameEdit->text().empty()) {
-                        pathSelected = filesView->getCurrentPath()
-                                / std::filesystem::path(fileNameEdit->text());
+                        pathSelected = (filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text())).string();
                         action selectedFile(pathSelected);
                         close();
                 } else if (!filesView->selectedFile().empty()
