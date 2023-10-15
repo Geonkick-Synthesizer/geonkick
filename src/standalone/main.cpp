@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
         auto api = new GeonkickApi(Geonkick::defaultSampleRate,
 				   GeonkickApi::InstanceType::Standalone,
 		                   dsp);
-//        api->setEventQueue(app.eventQueue());
+        api->setEventQueue(app.eventQueue());
         api->setStandalone(true);
         if (!api->init()) {
                 GEONKICK_LOG_ERROR("can't init API");

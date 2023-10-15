@@ -60,9 +60,6 @@ RkWindowId rk_id_from_win(HWND window)
         return id;
 }
 
-static DWORD lastClickTime = 0;
-static POINT lastClickPos = {0};
-
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
         auto eventQueue = reinterpret_cast<RkEventQueue*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -82,37 +79,6 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
 	{
-/*                {
-                        POINT currentClickPos;
-                        GetCursorPos(&currentClickPos);
-
-                        // Calculate time difference between this click and the last click
-                        DWORD currentTime = GetTickCount();
-                        DWORD timeDiff = currentTime - lastClickTime;
-
-                        // Calculate distance between this click and the last click
-                        int distance = abs(currentClickPos.x - lastClickPos.x) + abs(currentClickPos.y - lastClickPos.y);
-
-                        // If the time difference and distance are within the double-click threshold, it's a double-click
-                        if (timeDiff < GetDoubleClickTime() && distance < GetSystemMetrics(SM_CXDOUBLECLK) / 2)
-                        {
-                                RK_LOG_DEBUG("WM_LBUTTONDBLCLK");
-                                // Handle double-click logic here
-                                auto event = std::make_unique<RkMouseEvent>();
-                                event->setType(RkEvent::Type::MouseDoubleClick);
-                                event->setButton(RkMouseEvent::ButtonType::Left);
-                                event->setX(LOWORD(lParam));
-                                event->setY(HIWORD(lParam));
-                                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                                eventQueue->processQueue();
-
-                                // Reset last click time and position
-                                lastClickTime = 0;
-                                lastClickPos = {0};
-                                return 0;
-                        }
-                        }*/
-                
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
@@ -154,7 +120,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_MOUSEMOVE:
         {
-                RK_LOG_DEBUG("WM_MOUSEMOVE");
+//                RK_LOG_DEBUG("WM_MOUSEMOVE");
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseMove);
                 event->setX(LOWORD(lParam));
@@ -215,6 +181,18 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setButton(RkMouseEvent::ButtonType::Middle);
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
+                eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                eventQueue->processQueue();
+                return 0;
+        }
+        case WM_MOUSEWHEEL:
+        {
+                int delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
+                auto event = std::make_unique<RkMouseEvent>();
+                auto buttonType = (delta > 0) ? RkMouseEvent::ButtonType::WheelUp : RkMouseEvent::ButtonType::WheelDown;
+                event->setX(LOWORD(lParam));
+                event->setY(HIWORD(lParam));
+                event->setButton(buttonType);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processQueue();
                 return 0;

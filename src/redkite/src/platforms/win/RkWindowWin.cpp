@@ -216,7 +216,7 @@ const RkColor& RkWindowWin::background() const
 
 void RkWindowWin::update()
 {
-        InvalidateRect(windowHandle.id, NULL, TRUE);
+        InvalidateRect(windowHandle.id, NULL, FALSE);
 }
 
 #ifdef RK_GRAPHICS_CAIRO_BACKEND
