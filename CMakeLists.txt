@@ -9,14 +9,14 @@ if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
     include(GNUInstallDirs)
 endif()
 
-option(GKICK_STANDALONE "Enable build for standalone" ON)
-option(GKICK_PLUGIN "Enable build for plugin" OFF)
+option(GKICK_STANDALONE "Enable build for standalone" OFF)
+option(GKICK_PLUGIN "Enable build for plugin" ON)
 option(GKICK_PRESETS "Enable presets" OFF)
 
 if (GKICK_PLUGIN)
   option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" OFF)
   if (VST3_SDK_PATH)
-    option(GKICK_PLUGIN_VST "Enable build VST plugin" OFF)
+    option(GKICK_PLUGIN_VST "Enable build VST plugin" ON)
   endif(VST3_SDK_PATH)
 endif (GKICK_PLUGIN)
 

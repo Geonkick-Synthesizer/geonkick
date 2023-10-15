@@ -38,10 +38,10 @@ HINSTANCE rk_win_api_instance()
         return rk_winApiInstance;
 }
 
-std::string rk_win_api_class_name()
+LPCSTR rk_win_api_class_name()
 {
         RK_LOG_DEBUG("rk_winApiClassName: " << rk_winApiClassName);
-        return rk_winApiClassName;
+        return rk_winApiClassName.c_str();
 }
 
 RkNativeWindowInfo rk_from_native_win(HWND window, HINSTANCE instance, LPCSTR className)
@@ -287,7 +287,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance,
         RK_LOG_DEBUG("instance:" << rk_winApiInstance);
         WNDCLASSEX wc;
         wc.cbSize        = sizeof(WNDCLASSEX);
-        wc.style         = 0;
+        wc.style         = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;;
         wc.lpfnWndProc   = RkWindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
@@ -304,22 +304,6 @@ BOOL WINAPI DllMain(HINSTANCE hInstance,
         rk_winApiClassName = ("Redkite_" + std::to_string(mean)).c_str();
         wc.lpszClassName = rk_winApiClassName.c_str();
         wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
-
-        /*#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
-        if (D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &rk_d2d1Factory) != S_OK) {
-                RK_LOG_ERROR("can't create D2D1 factory");
-                return FALSE;
-        }
-
-        if (DWriteCreateFactory(DWRITE_FACTORY_TYPE_ISOLATED,
-                                __uuidof(IDWriteFactory),
-                                reinterpret_cast<IUnknown**>(&rk_dWriteFactory)) != S_OK) {
-                RK_LOG_ERROR("can't create Direct Write factory");
-                rk_d2d1Factory->Release();
-                return FALSE;
-        }
-#endif // RK_GRAPHICS_BACKEND_DIRECT2D
-        */
 
         if (!RegisterClassEx(&wc)) {
                 RK_LOG_ERROR("can't register window class");

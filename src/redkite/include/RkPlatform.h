@@ -47,15 +47,9 @@ class RK_EXPORT RkNativeWindowInfo {
 };
 
 HINSTANCE RK_EXPORT rk_win_api_instance();
-std::string RK_EXPORT rk_win_api_class_name();
-RkNativeWindowInfo RK_EXPORT rk_from_native_win(HINSTANCE instance, LPCSTR className, HWND window);
+LPCSTR RK_EXPORT rk_win_api_class_name();
+RkNativeWindowInfo RK_EXPORT rk_from_native_win(HWND window, HINSTANCE instance, LPCSTR className);
 RkWindowId RK_EXPORT rk_id_from_win(HWND window);
-//#ifdef RK_GRAPHICS_BACKEND_DIRECT2D
-//struct ID2D1Factory1;
-//struct IDWriteFactory;
-//#ID2D1Factory1* RK_EXPORT rk_direct2d_factory();
-//#IDWriteFactory* RK_EXPORT rk_direct_write_factory();
-//#endif // RK_DIRECT2D_GRAPHICS_BACKEND
 
 #define RK_WIN_MESSAGE_PAINT (WM_USER + 0x0001)
 

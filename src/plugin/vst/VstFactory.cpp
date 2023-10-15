@@ -47,7 +47,7 @@ DEF_CLASS2(INLINE_UID_FROM_FUID(GKickVstProcessorUID),
            gkickPluginName,
            0,
            Vst::PlugType::kInstrumentSynth,
-           "3.0.0"/*GEOKICK_VERSION_STRING*/,
+           GEOKICK_VERSION_STRING,
            kVstVersionString,
            GKickVstProcessor::createInstance)
 
@@ -62,5 +62,3 @@ bool DeinitModule()
 {
         return true;
 }
-
-

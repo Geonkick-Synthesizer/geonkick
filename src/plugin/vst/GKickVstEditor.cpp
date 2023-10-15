@@ -22,14 +22,14 @@
  */
 
 #include "geonkick_api.h"
-//#include "MainWindow.h"
+#include "MainWindow.h"
 #include "GKickVstEditor.h"
 
-//#include <RkPlatform.h>
-//#include <RkMain.h>
+#include <RkPlatform.h>
+#include <RkMain.h>
 
-GKickVstTimer::GKickVstTimer(/*RkMain *app*/)
-//        : guiApp{app}
+/*GKickVstTimer::GKickVstTimer(RkMain *app)
+        : guiApp{app}
         : countT{1}
 {
 }
@@ -37,16 +37,16 @@ GKickVstTimer::GKickVstTimer(/*RkMain *app*/)
 void PLUGIN_API
 GKickVstTimer::onTimer()
 {
-        //if (guiApp)
-        //        guiApp->exec(false);
-}
+        if (guiApp)
+                guiApp->exec(false);
+                }*/
 
 GKickVstEditor::GKickVstEditor(Vst::EditController *controller, GeonkickApi *api)
         : Vst::EditorView(controller)
-          //        , guiApp{nullptr}
-          //        , mainWindow{nullptr}
+        , guiApp{nullptr}
+        , mainWindow{nullptr}
         , geonkickApi{api}
-        , loopTimer{nullptr}
+//        , loopTimer{nullptr}
 {
 }
 
@@ -59,16 +59,19 @@ GKickVstEditor::isPlatformTypeSupported([[maybe_unused]]Steinberg::FIDString typ
 tresult PLUGIN_API
 GKickVstEditor::attached(void* parent, FIDString type)
 {
-        /*guiApp = std::make_unique<RkMain>();
-        loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
+        guiApp = std::make_unique<RkMain>();
+//        loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
         geonkickApi->setEventQueue(guiApp->eventQueue());
-        Display* xDisplay = XOpenDisplay(nullptr);
-        if (!xDisplay) {
-                GEONKICK_LOG_ERROR("can't open display");
-                return kResultFalse;
-        }
-        int screenNumber = DefaultScreen(xDisplay);
-        auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
+//        Display* xDisplay = XOpenDisplay(nullptr);
+//        if (!xDisplay) {
+//                GEONKICK_LOG_ERROR("can't open display");
+//                return kResultFalse;
+//        }
+//        int screenNumber = DefaultScreen(xDisplay);
+//        auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
+        auto info = rk_from_native_win(reinterpret_cast<HWND>(parent),
+                                       rk_win_api_instance(),
+                                       rk_win_api_class_name());
         mainWindow = new MainWindow(guiApp.get(), geonkickApi, info);
         mainWindow->show();
         if (!mainWindow->init()) {
@@ -76,13 +79,13 @@ GKickVstEditor::attached(void* parent, FIDString type)
                 return kResultFalse;
         }
 
-        IRunLoop* loop = nullptr;
-        if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
-                loop->registerTimer(loopTimer.get(), 30);
-        } else {
-                GEONKICK_LOG_INFO("can't get loop");
-                return kResultFalse;
-                }*/
+//        IRunLoop* loop = nullptr;
+//        if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
+//                loop->registerTimer(loopTimer.get(), 30);
+//        } else {
+//                GEONKICK_LOG_INFO("can't get loop");
+//                return kResultFalse;
+//        }
         return kResultFalse;//Vst::EditorView::attached(parent, type);
 }
 
@@ -96,20 +99,21 @@ GKickVstEditor::removed()
                 GEONKICK_LOG_INFO("can't get loop");
                 return kResultFalse;
         }
+        */
         if (guiApp)
-        guiApp = nullptr;*/
+                guiApp = nullptr;
         return kResultOk;
 }
 
 tresult PLUGIN_API
 GKickVstEditor::getSize(ViewRect* newSize)
 {
-        /*	if (newSize == nullptr || mainWindow == nullptr)
+        if (newSize == nullptr || mainWindow == nullptr)
 		return kResultFalse;
 
 	newSize->left   = mainWindow->x();
 	newSize->right  = mainWindow->x() + mainWindow->width();
 	newSize->top    = mainWindow->y();
-	newSize->bottom = mainWindow->y() + mainWindow->height();*/
+	newSize->bottom = mainWindow->y() + mainWindow->height();
 	return kResultOk;
 }

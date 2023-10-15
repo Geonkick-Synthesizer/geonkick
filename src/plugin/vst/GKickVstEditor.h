@@ -30,15 +30,16 @@
 #include <memory>
 
 using namespace Steinberg;
-using namespace Linux;
+//using namespace Linux;
+//using namespace Windows;
 
-//class MainWindow;
+class MainWindow;
 class GeonkickApi;
-//class RkMain;
+class RkMain;
 
-class GKickVstTimer: public ITimerHandler {
+/*class GKickVstTimer: public ITimerHandler {
  public:
-        explicit GKickVstTimer(/*RkMain *app*/);
+        explicit GKickVstTimer(RkMain *app);
         virtual ~GKickVstTimer() = default;
         tresult PLUGIN_API queryInterface (const TUID _iid, void** obj) override { return 0; }
         uint32 PLUGIN_API addRef() override { return countT++; }
@@ -48,10 +49,10 @@ class GKickVstTimer: public ITimerHandler {
         void PLUGIN_API onTimer() override;
 
  private:
-        //        RkMain *guiApp;
+        RkMain *guiApp;
         uint32 countT;
 };
-
+*/
 
 class GKickVstEditor : public Vst::EditorView {
  public:
@@ -62,10 +63,10 @@ class GKickVstEditor : public Vst::EditorView {
         tresult PLUGIN_API getSize(ViewRect* newSize) override;
 
  private:
-        //        std::unique_ptr<RkMain> guiApp;
-        //        MainWindow *mainWindow;
+        std::unique_ptr<RkMain> guiApp;
+        MainWindow *mainWindow;
         GeonkickApi *geonkickApi;
-        std::unique_ptr<GKickVstTimer> loopTimer;
+//        std::unique_ptr<GKickVstTimer> loopTimer;
 };
 
 #endif // GKICK_VST_EDITOR_H
