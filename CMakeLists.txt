@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 2.10.2)
+project(geonkick VERSION 3.0.0)
 
 # Temportary
 set(CMAKE_SYSTEM_NAME Windows)
