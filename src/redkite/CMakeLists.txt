@@ -2,9 +2,6 @@ cmake_minimum_required (VERSION 3.8)
 
 project(redkite VERSION 1.3.1)
 
-#Temporary (passing as cmake argumnet is not including headers)
-set(CMAKE_SYSTEM_NAME Windows)
-
 option(RK_ENABLE_EXAMPLES "Build examples" OFF)
 option(RK_BUILD_TOOLS "Build tools" ON)
 

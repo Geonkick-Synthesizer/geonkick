@@ -42,7 +42,7 @@ class RK_EXPORT RkNativeWindowInfo {
         ~RkNativeWindowInfo() = default;
         HINSTANCE instance;
         std::string className;
-        HWND window;
+        HWND id;
 	double scaleFactor;
 };
 

@@ -84,7 +84,6 @@ void RkEventQueue::RkEventQueueImpl::addObject(RkObject *obj)
  #endif
 
                 RK_LOG_DEBUG("add widget window id");
-				
                 auto id = reinterpret_cast<EventQueueWindowId>(widgetImpl->nativeWindowInfo()->window);
                 windowIdsMap.insert({id, obj});
                 if (static_cast<int>(widgetImpl->windowFlags())
