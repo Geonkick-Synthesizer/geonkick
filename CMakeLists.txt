@@ -205,7 +205,12 @@ endif()
 find_package(PkgConfig REQUIRED)
 find_package(RapidJSON REQUIRED)
 include_directories(${RapidJSON_INCLUDE_DIR})
+set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 pkg_check_modules(SNDFILE sndfile)
 if (NOT SNDFILE_FOUND)
     message(FATAL_ERROR "can't find sndfile library")

@@ -24,7 +24,7 @@
 #ifndef GEONKICK_VST_IDS_H
 #define GEONKICK_VST_IDS_H
 
-//#include "globals.h"
+#include "globals.h"
 
 #include "pluginterfaces/base/funknown.h"
 

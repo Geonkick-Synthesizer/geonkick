@@ -53,12 +53,14 @@ GKickVstEditor::GKickVstEditor(Vst::EditController *controller, GeonkickApi *api
 tresult PLUGIN_API
 GKickVstEditor::isPlatformTypeSupported([[maybe_unused]]Steinberg::FIDString type)
 {
+        GEONKICK_LOG_INFO("called: " << type);
         return kResultTrue;
 }
 
 tresult PLUGIN_API
 GKickVstEditor::attached(void* parent, FIDString type)
 {
+        GEONKICK_LOG_INFO("called");
         guiApp = std::make_unique<RkMain>();
 //        loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
         geonkickApi->setEventQueue(guiApp->eventQueue());
@@ -92,6 +94,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
 tresult PLUGIN_API
 GKickVstEditor::removed()
 {
+        GEONKICK_LOG_INFO("called");
         /*IRunLoop* loop = nullptr;
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
                 loop->unregisterTimer(loopTimer.get());
@@ -108,6 +111,7 @@ GKickVstEditor::removed()
 tresult PLUGIN_API
 GKickVstEditor::getSize(ViewRect* newSize)
 {
+        GEONKICK_LOG_INFO("called");
         if (newSize == nullptr || mainWindow == nullptr)
 		return kResultFalse;
 

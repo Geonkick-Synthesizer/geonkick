@@ -30,6 +30,12 @@ set(GKICK_VST_SOURCES
   )
 
 set(target geonkick_vst)
+link_directories(C:/msys64/ucrt64/lib)
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+
+# Set the linker flags to link against static version of pthreads
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++ -static-libwinpthread")
 
 add_library(${target} SHARED ${GKICK_VST_HEADERS} ${GKICK_VST_SOURCES})
 
@@ -43,8 +49,46 @@ endif ()
 
 target_link_libraries(${target} PRIVATE geonkick_common api_plugin redkite)
 target_link_libraries(${target} PRIVATE base sdk sdk_common pluginterfaces)
-target_link_libraries(${target} PRIVATE "-lstdc++ -lstdc++fs -lcrypto -lsndfile -lcairo -lm -lpthread")
-target_link_libraries(${target} PRIVATE "-Wl,--no-undefined")
+#target_link_libraries(${target} PRIVATE "-lstdc++ -lstdc++fs -lcrypto -lsndfile -lcairo -lm -lpthread")
+#target_link_libraries(${target} PRIVATE "-Wl,--trace-symbol=_ZSt28__throw_bad_array_new_lengthv -mwindows -static-libgcc -static-libstdc++ -lcrypto -lsndfile -lcairo -lm -lpthread")
+target_link_libraries(${target} PRIVATE
+      "-mwindows"
+      OpenSSL::Crypto
+      "libcairo.a"
+      "libfontconfig.a"
+      "libfreetype.a"
+      "libpixman-1.a"
+      "libpng.a"
+      "libmsimg32.a"
+      "libintl.a"
+      "libiconv.a"
+      "libexpat.a"
+      "libbrotlidec.a"
+      "libharfbuzz.a"
+      "libz.a"
+      "libbz2.a"
+      "libbrotlicommon.a"
+      "libgraphite2.a"
+      "librpcrt4.a"
+      "libsndfile.a"
+      "libvorbis.a"
+      "libvorbisenc.a"
+      "libogg.a"
+      "libFLAC.a"
+      "libmpg123.a"
+      "libmp3lame.a"
+      "libopus.a"
+      "libout123.a"
+      "libmpg123.a"
+      "libshlwapi.a"
+      "-static-libgcc"
+      "-static-libstdc++"
+      "libm.a"
+      Threads::Threads
+      )
+
+
+#target_link_libraries(${target} PRIVATE "-Wl,--no-undefined")
 
 add_dependencies(${target} geonkick_common)
 
