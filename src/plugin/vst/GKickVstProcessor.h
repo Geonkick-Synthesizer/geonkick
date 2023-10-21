@@ -28,19 +28,21 @@
 #include "public.sdk/source/vst/vstsinglecomponenteffect.h"
 
 
-#ifdef GEONKICK_OS_GNU
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif // __cplusplus
 
+#ifdef GEONKICK_OS_WINDOWS
+__declspec(dllexport) bool ModuleEntry(void*);
+__declspec(dllexport) bool ModuleExit(void);
+#else // GEONKICK_OS_GNU
 __attribute__((visibility("default"))) bool ModuleEntry (void*);
-
 __attribute__((visibility("default"))) bool ModuleExit (void);
-
+#endif // GEONKICK_OS_GNU
+        
 #ifdef __cplusplus
 }
-#endif
-#endif // GEONKICK_OS_GNU
+#endif // __cplusplus
 
 class GeonkickApi;
 

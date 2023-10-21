@@ -30,14 +30,17 @@
 #include <memory>
 
 using namespace Steinberg;
-//using namespace Linux;
-//using namespace Windows;
+
+#ifdef GEONKICK_OS_GNU
+using namespace Linux;
+#endif // GEONKICK_OS_GNU
 
 class MainWindow;
 class GeonkickApi;
 class RkMain;
 
-/*class GKickVstTimer: public ITimerHandler {
+#ifdef GEONKICK_OS_GNU
+class GKickVstTimer: public ITimerHandler {
  public:
         explicit GKickVstTimer(RkMain *app);
         virtual ~GKickVstTimer() = default;
@@ -52,7 +55,8 @@ class RkMain;
         RkMain *guiApp;
         uint32 countT;
 };
-*/
+#endif // GEONKICK_OS_GNU
+
 
 class GKickVstEditor : public Vst::EditorView {
  public:
@@ -66,7 +70,9 @@ class GKickVstEditor : public Vst::EditorView {
         std::unique_ptr<RkMain> guiApp;
         MainWindow *mainWindow;
         GeonkickApi *geonkickApi;
-//        std::unique_ptr<GKickVstTimer> loopTimer;
+#ifdef GEONKICK_OS_GNU
+        std::unique_ptr<GKickVstTimer> loopTimer;
+#endif // GEONKICK_OS_GNU
 };
 
 #endif // GKICK_VST_EDITOR_H

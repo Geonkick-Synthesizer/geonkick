@@ -28,7 +28,8 @@
 #include <RkPlatform.h>
 #include <RkMain.h>
 
-/*GKickVstTimer::GKickVstTimer(RkMain *app)
+#ifdef GEONKICK_OS_GNU
+GKickVstTimer::GKickVstTimer(RkMain *app)
         : guiApp{app}
         : countT{1}
 {
@@ -39,14 +40,18 @@ GKickVstTimer::onTimer()
 {
         if (guiApp)
                 guiApp->exec(false);
-                }*/
+}
+
+#endif // GEONKICK_OS_GNU
 
 GKickVstEditor::GKickVstEditor(Vst::EditController *controller, GeonkickApi *api)
         : Vst::EditorView(controller)
         , guiApp{nullptr}
         , mainWindow{nullptr}
         , geonkickApi{api}
-//        , loopTimer{nullptr}
+#ifdef GEONKICK_OS_GNU
+        , loopTimer{nullptr}
+#endif // GEONKICK_OS_GNU
 {
 }
 
@@ -60,20 +65,27 @@ GKickVstEditor::isPlatformTypeSupported([[maybe_unused]]Steinberg::FIDString typ
 tresult PLUGIN_API
 GKickVstEditor::attached(void* parent, FIDString type)
 {
-        GEONKICK_LOG_INFO("called");
         guiApp = std::make_unique<RkMain>();
-//        loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
+#ifdef GEONKICK_OS_GNU
+        loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
+#endif // GEONKICK_OS_GNU
+        
         geonkickApi->setEventQueue(guiApp->eventQueue());
-//        Display* xDisplay = XOpenDisplay(nullptr);
-//        if (!xDisplay) {
-//                GEONKICK_LOG_ERROR("can't open display");
-//                return kResultFalse;
-//        }
-//        int screenNumber = DefaultScreen(xDisplay);
-//        auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
+
+#ifdef GEONKICK_OS_WINDOWS // GEONKICK_OS_GNU
         auto info = rk_from_native_win(reinterpret_cast<HWND>(parent),
                                        rk_win_api_instance(),
                                        rk_win_api_class_name());
+#else // GEONKICK_OS_GNU
+        auto xDisplay = XOpenDisplay(nullptr);
+        if (!xDisplay) {
+                GEONKICK_LOG_ERROR("can't open display");
+                return kResultFalse;
+        }
+        auto screenNumber = DefaultScreen(xDisplay);
+        auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
+#endif // GEONKICK_OS_GNU
+
         mainWindow = new MainWindow(guiApp.get(), geonkickApi, info);
         mainWindow->show();
         if (!mainWindow->init()) {
@@ -81,28 +93,32 @@ GKickVstEditor::attached(void* parent, FIDString type)
                 return kResultFalse;
         }
 
-//        IRunLoop* loop = nullptr;
-//        if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
-//                loop->registerTimer(loopTimer.get(), 30);
-//        } else {
-//                GEONKICK_LOG_INFO("can't get loop");
-//                return kResultFalse;
-//        }
-        return kResultFalse;//Vst::EditorView::attached(parent, type);
+#ifdef GEONKICK_OS_GNU
+        IRunLoop* loop = nullptr;
+        if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
+                loop->registerTimer(loopTimer.get(), 30);
+        } else {
+                GEONKICK_LOG_INFO("can't get loop");
+                return kResultFalse;
+        }
+#endif // GEONKICK_OS_GNU
+        return Vst::EditorView::attached(parent, type);
 }
 
 tresult PLUGIN_API
 GKickVstEditor::removed()
 {
         GEONKICK_LOG_INFO("called");
-        /*IRunLoop* loop = nullptr;
+#ifdef GEONKICK_OS_GNU        
+        IRunLoop* loop = nullptr;
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
                 loop->unregisterTimer(loopTimer.get());
         } else {
                 GEONKICK_LOG_INFO("can't get loop");
                 return kResultFalse;
         }
-        */
+#endif // GEONKICK_OS_GNU
+        
         if (guiApp)
                 guiApp = nullptr;
         return kResultOk;

@@ -33,6 +33,8 @@
 class RkEventQueue;
 struct RkCanvasInfo;
 
+constexpr int RK_MAIN_WINDOW_TIMER_ID = 101;
+
 class RkWindowWin {
  public:
         explicit RkWindowWin(const RkNativeWindowInfo *parent,

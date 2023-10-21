@@ -97,6 +97,11 @@ bool RkWindowWin::init()
                 return false;
         }
 
+        if (isTopWindow) {
+                SetTimer(windowHandle.id, RK_MAIN_WINDOW_TIMER_ID, 10, nullptr);
+                RK_LOG_DEBUG("timer created for top window");
+        }
+
         if (eventQueue)
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
         

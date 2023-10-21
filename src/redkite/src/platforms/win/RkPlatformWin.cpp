@@ -26,6 +26,7 @@
 #include "RkEvent.h"
 #include "RkWidget.h"
 #include "RkCanvasInfo.h"
+#include "RkWindowWin.h"
 
 #include <random>
 
@@ -70,9 +71,22 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
         case WM_DESTROY:
         {
+                auto winId = rk_id_from_win(hWnd);
+                auto widget = eventQueue->getWidget(winId);
+                if (widget && widget->isTopWindow())
+                        KillTimer(hWnd, RK_MAIN_WINDOW_TIMER_ID);
                 RK_LOG_DEBUG("WM_DESTROY");
-                eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkCloseEvent>());
+                eventQueue->postEvent(winId, std::make_unique<RkCloseEvent>());
 		eventQueue->processQueue();
+                return 0;
+        }
+        case WM_TIMER:
+        {
+                if (wParam == RK_MAIN_WINDOW_TIMER_ID) {
+                        auto widget = eventQueue->getWidget(rk_id_from_win(hWnd));
+                        if (widget && widget->isTopWindow())
+                                eventQueue->processQueue();
+                }
                 return 0;
         }
         case WM_LBUTTONDOWN:
