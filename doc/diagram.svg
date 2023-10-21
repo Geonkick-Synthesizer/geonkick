@@ -2104,7 +2104,7 @@
                style="stroke-width:0.296783"
                y="110.0492"
                x="134.81607"
-               id="tspan4136">Percussion</tspan></text>
+               id="tspan4136">Instrument</tspan></text>
           <rect
              y="134.24315"
              x="13.286501"
@@ -2146,7 +2146,7 @@
                style="stroke-width:1.64547;stroke-miterlimit:4;stroke-dasharray:none"
                y="145.06122"
                x="18.621376"
-               id="tspan4136-3">Percussion 1</tspan></text>
+               id="tspan4136-3">Instrument 1</tspan></text>
           <text
              id="text4138-2-2"
              y="168.90959"
@@ -2156,7 +2156,7 @@
                style="stroke-width:1.64547;stroke-miterlimit:4;stroke-dasharray:none"
                y="168.90959"
                x="18.277069"
-               id="tspan4136-3-8">Percussion 2</tspan></text>
+               id="tspan4136-3-8">Instrument 2</tspan></text>
           <text
              id="text4138-2-9"
              y="194.10474"
@@ -2166,7 +2166,7 @@
                style="stroke-width:1.64547;stroke-miterlimit:4;stroke-dasharray:none"
                y="194.10474"
                x="16.968504"
-               id="tspan4136-3-7">Percussion 16</tspan></text>
+               id="tspan4136-3-7">Instrument 16</tspan></text>
           <rect
              y="136.05771"
              x="69.492432"
