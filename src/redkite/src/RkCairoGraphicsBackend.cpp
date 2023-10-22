@@ -60,6 +60,9 @@ cairo_t* RkCairoGraphicsBackend::context() const
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
         cairo_destroy(context());
+#ifdef RK_OS_WIN
+        canvas->freeCanvasInfo();
+#endif // RK_OS_WIN
 }
 
 void RkCairoGraphicsBackend::drawText(const std::string &text, int x, int y)

@@ -42,7 +42,7 @@ class RK_EXPORT RkNativeWindowInfo {
         ~RkNativeWindowInfo() = default;
         HINSTANCE instance;
         std::string className;
-        HWND id;
+        HWND window;
 	double scaleFactor;
 };
 
@@ -54,7 +54,6 @@ RkWindowId RK_EXPORT rk_id_from_win(HWND window);
 #define RK_WIN_MESSAGE_PAINT (WM_USER + 0x0001)
 
 #elif RK_OS_MAC
-// to be defined
 #else // X11 as default
 #include <X11/Xlib.h>
 

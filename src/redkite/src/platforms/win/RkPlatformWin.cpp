@@ -337,7 +337,7 @@ static inline char *wideToMulti(int codePage, const wchar_t *aw)
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif // __cplusplus
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -387,6 +387,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 #ifdef __cplusplus
 }
-#endif
-
+#endif // __cplusplus
 #endif // RK_FOR_SHARED
