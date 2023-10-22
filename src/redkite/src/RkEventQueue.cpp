@@ -105,13 +105,6 @@ void RkEventQueue::processTimers()
 
 void RkEventQueue::processQueue()
 {
-#ifdef RK_LOG_DEBUG_LEVEL
-        static int n = 0;
-        if (++n > 10000) {
-                RK_LOG_DEBUG("called: " << n);
-                n = 0;
-        }
-#endif // RK_LOG_DEBUG_LEVEL
         // The order is important.
         processTimers();
         processActions();

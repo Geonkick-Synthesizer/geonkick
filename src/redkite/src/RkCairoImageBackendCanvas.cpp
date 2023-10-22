@@ -95,13 +95,11 @@ std::vector<unsigned char> RkCairoImageBackendCanvas::dataCopy() const
 
 RkCanvasInfo* RkCairoImageBackendCanvas::getCanvasInfo() const
 {
-        RK_LOG_DEBUG("called");
         return canvasInfo.get();
 }
 
 void RkCairoImageBackendCanvas::fill(const RkColor &color)
 {
-        RK_LOG_DEBUG("clled");
         unsigned char *data = imageData.data();
         for (decltype(imageData.size()) i = 0; i < imageData.size() - 4; i += 4) {
                 *(data + i)     = color.red();

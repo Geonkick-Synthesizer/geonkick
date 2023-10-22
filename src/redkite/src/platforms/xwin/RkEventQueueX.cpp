@@ -77,7 +77,7 @@ RkEventQueueX::getEvents()
                         event = getKeyEvent(&e);
                         break;
                 case KeyRelease:
-                        event = getKeoyEvent(&e);
+                        event = getKeyEvent(&e);
                         break;
                 case FocusIn:
                 case FocusOut:

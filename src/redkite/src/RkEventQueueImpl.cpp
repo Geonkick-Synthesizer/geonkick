@@ -84,7 +84,7 @@ void RkEventQueue::RkEventQueueImpl::addObject(RkObject *obj)
  #endif
 
                 RK_LOG_DEBUG("add widget window id");
-                auto id = reinterpret_cast<EventQueueWindowId>(widgetImpl->nativeWindowInfo()->window);
+                auto id = (EventQueueWindowId)(widgetImpl->nativeWindowInfo()->window);
                 windowIdsMap.insert({id, obj});
                 if (static_cast<int>(widgetImpl->windowFlags())
                     & static_cast<int>(Rk::WindowFlags::Popup)) {
@@ -143,7 +143,7 @@ void RkEventQueue::RkEventQueueImpl::removeObject(RkObject *obj)
                                 RK_LOG_ERROR("can't cast o_ptr to RkWidgetImpl");
                                 return;
                         }
-                        auto id = reinterpret_cast<EventQueueWindowId>(widgetImpl->nativeWindowInfo()->window);
+                        auto id = (EventQueueWindowId)(widgetImpl->nativeWindowInfo()->window);
                         if (windowIdsMap.find(id) != windowIdsMap.end()) {
                                 RK_LOG_DEBUG("widget id removed from queue");
                                 windowIdsMap.erase(id);
@@ -164,7 +164,7 @@ void RkEventQueue::RkEventQueueImpl::removeObjectShortcuts(RkObject *obj)
 
 RkWidget* RkEventQueue::RkEventQueueImpl::findWidget(const RkWindowId &id) const
 {
-        auto it = windowIdsMap.find(reinterpret_cast<EventQueueWindowId>(id.id));
+        auto it = windowIdsMap.find((EventQueueWindowId)(id.id));
         if (it != windowIdsMap.end()) {
                 if (it->second->type() == Rk::ObjectType::Widget) {
                         auto widget = dynamic_cast<RkWidget*>(it->second);
@@ -186,7 +186,7 @@ void RkEventQueue::RkEventQueueImpl::postEvent(RkObject *obj, std::unique_ptr<Rk
 
 void RkEventQueue::RkEventQueueImpl::postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event)
 {
-        auto it = windowIdsMap.find(reinterpret_cast<EventQueueWindowId>(id.id));
+        auto it = windowIdsMap.find((EventQueueWindowId)(id.id));
         if (it != windowIdsMap.end())
                 eventsQueue.push_back({it->second, std::move(event)});
 }
@@ -223,7 +223,6 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
          * may add new events into the queue and this for
          * in some cases can lead to a infinite looping.
          */
-//        RK_LOG_DEBUG("process events");
         decltype(eventsQueue) queue = std::move(eventsQueue);
         for (const auto &e: queue) {
                 if (e.second->type() == RkEvent::Type::KeyPressed
@@ -232,10 +231,8 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
                 }
                 if (!popupList.empty() && dynamic_cast<RkWidget*>(e.first))
                         processPopups(dynamic_cast<RkWidget*>(e.first), e.second.get());
-//                RK_LOG_DEBUG("process event: " << e.second.get());
                 processEvent(e.first, e.second.get());
         }
-//        RK_LOG_DEBUG("process events end");
 }
 
 void RkEventQueue::RkEventQueueImpl::processPopups(RkWidget *widget, RkEvent* event)

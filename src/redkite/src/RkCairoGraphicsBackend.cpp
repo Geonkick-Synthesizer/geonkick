@@ -37,9 +37,7 @@ RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
         : canvas {canvas}
         , cairoContext{nullptr}
 {
-        RK_LOG_DEBUG("called, canves: " << canvas);
         auto canvaseInfo = canvas->getCanvasInfo();
-        RK_LOG_DEBUG("called, canves1: " << canvas);
         if (!canvaseInfo) {
                 RK_LOG_ERROR("can't get canvas info");
         } else {
@@ -62,7 +60,6 @@ cairo_t* RkCairoGraphicsBackend::context() const
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
         cairo_destroy(context());
-        canvas->freeCanvasInfo();
 }
 
 void RkCairoGraphicsBackend::drawText(const std::string &text, int x, int y)
@@ -81,7 +78,6 @@ void RkCairoGraphicsBackend::drawImage(const std::string &file, int x, int y)
 
 void RkCairoGraphicsBackend::drawImage(const RkImage &image, int x, int y)
 {
-        RK_LOG_DEBUG("called: " << context());
         cairo_set_source_surface(context(),
                                  image.getCanvasInfo()->cairo_surface,
                                  x, y);
@@ -92,7 +88,6 @@ void RkCairoGraphicsBackend::drawImage(const RkImage &image, int x, int y)
         if (auto status = cairo_status(context()); status != CAIRO_STATUS_SUCCESS) {
                 RK_LOG_ERROR("cairo_paint: " << static_cast<int>(status));
         }
-        RK_LOG_DEBUG("end ok");
 }
 
 void RkCairoGraphicsBackend::drawEllipse(const RkPoint& p, int width, int height)
