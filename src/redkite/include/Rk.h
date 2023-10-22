@@ -458,11 +458,15 @@ namespace Rk {
         \
         void prot \
         { \
-                for (const auto& ob: rk__observers()) {                  \
+                for (const auto& ob: rk__observers()) { \
+                        RK_LOG_DEBUG("observerCallback[get]"); \
                         auto observer = dynamic_cast<rk__observer_ ##name *>(ob.get()); \
-                        if (observer) \
+                        if (observer) {                                 \
+                                RK_LOG_DEBUG("observerCallback");      \
                                 observer->observerCallback(val); \
+                                RK_LOG_DEBUG("observerCallback[end]"); } \
                 } \
+                RK_LOG_DEBUG("observerCallback[exit]"); \
         } \
         void rk__add_action_cb_##name (RkObject *obj, const std::function<void(type)> &cb) \
         { \

@@ -83,11 +83,16 @@ void ControlArea::showControls()
 #ifndef GEONKICK_SINGLE
 void ControlArea::showKit()
 {
+        GEONKICK_LOG_INFO("ControlArea::showKit()");
         if (!dynamic_cast<KitWidget*>(currentWidget)) {
+                GEONKICK_LOG_INFO("ControlArea::showKit()1");
                 if (currentWidget)
                         currentWidget->close();
+                GEONKICK_LOG_INFO("ControlArea::showKit()2");
                 currentWidget = new KitWidget(this, kitModel);
+                GEONKICK_LOG_INFO("ControlArea::showKit()3");
                 currentWidget->show();
+                GEONKICK_LOG_INFO("ControlArea::showKit()4");
         }
 }
 #endif // GEONKICK_SINGLE

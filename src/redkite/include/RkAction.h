@@ -29,20 +29,24 @@
 
 class RK_EXPORT RkAction {
  public:
-        explicit RkAction(RkObject *obj = nullptr)
-                : actionObject{obj} {}
+        explicit RkAction(RkObject *obj = nullptr, const std::string &name = std::string())
+                : actionObject{obj}
+        , actionName{name} {}
 
         virtual ~RkAction() = default;
 
         void setCallback(const std::function<void(void)> &cb)
         {
+                RK_LOG_DEBUG("action name : " << actionName);
                 actionCallback = cb;
         }
 
         void call()
         {
+                RK_LOG_DEBUG("action name : " << actionName);
                 if (actionCallback)
                         actionCallback();
+                RK_LOG_DEBUG("action name[called] : " << actionName);
         }
 
         RkObject *object() { return actionObject; }
@@ -50,6 +54,7 @@ class RK_EXPORT RkAction {
   private:
         RkObject *actionObject;
         std::function<void(void)> actionCallback;
+        std::string actionName;
 };
 
 #endif // RK_ACTION_H

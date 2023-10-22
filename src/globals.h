@@ -59,7 +59,7 @@
                                 << " [" << std::this_thread::get_id() << "] " \
                                 << __PRETTY_FUNCTION__ << "[ERROR] " \
                                 << msg << std::endl;
-#define GEONKICK_LOG_DEBUG(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+#define GEONKICK_LOG_DEBUG(msg) std::cout << "[" << std::this_thread::get_id() << "][" << GEONKICK_NAME << "] " \
                                 << " [" << std::this_thread::get_id() << "] " \
                                 << __PRETTY_FUNCTION__ << "[DEBUG] " \
                                 << msg << std::endl;

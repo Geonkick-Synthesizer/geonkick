@@ -77,7 +77,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                         KillTimer(hWnd, RK_MAIN_WINDOW_TIMER_ID);
                 RK_LOG_DEBUG("WM_DESTROY");
                 eventQueue->postEvent(winId, std::make_unique<RkCloseEvent>());
-		eventQueue->processQueue();
+		eventQueue->processEvents();
                 return 0;
         }
         case WM_TIMER:
@@ -85,7 +85,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 if (wParam == RK_MAIN_WINDOW_TIMER_ID) {
                         auto widget = eventQueue->getWidget(rk_id_from_win(hWnd));
                         if (widget && widget->isTopWindow())
-                                eventQueue->processQueue();
+                                eventQueue->processEvents();
                 }
                 return 0;
         }
@@ -107,7 +107,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                         event->setButton(RkMouseEvent::ButtonType::Middle);
                 }
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-		eventQueue->processQueue();
+		eventQueue->processEvents();
                 return 0;
         }
         case WM_LBUTTONUP:
@@ -129,7 +129,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                         event->setButton(RkMouseEvent::ButtonType::Middle);
                 }
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-		eventQueue->processQueue();
+		eventQueue->processEvents();
                 return 0;
         }
         case WM_MOUSEMOVE:
@@ -140,7 +140,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_MOUSEHOVER:
@@ -149,7 +149,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkHoverEvent>();
                 event->setHover(true);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_MOUSELEAVE:
@@ -158,7 +158,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkHoverEvent>();
                 event->setHover(false);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_LBUTTONDBLCLK:
@@ -170,7 +170,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
 
@@ -183,7 +183,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
 
@@ -196,7 +196,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setX(LOWORD(lParam));
                 event->setY(HIWORD(lParam));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_MOUSEWHEEL:
@@ -208,7 +208,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setY(HIWORD(lParam));
                 event->setButton(buttonType);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_KEYDOWN:
@@ -217,7 +217,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setType(RkEvent::Type::KeyPressed);
                 event->setKey(static_cast<Rk::Key>(wParam));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
 
@@ -227,13 +227,13 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setType(RkEvent::Type::KeyReleased);
                 event->setKey(static_cast<Rk::Key>(wParam));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_SIZE:
 	{
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::make_unique<RkResizeEvent>());
-		eventQueue->processQueue();
+		eventQueue->processEvents();
                 return 0;
         }
         case WM_PAINT:
@@ -246,7 +246,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 //                RK_LOG_DEBUG("win id: " << id.id);
                 eventQueue->postEvent(id, std::make_unique<RkPaintEvent>());
 //                RK_LOG_DEBUG("processQueue()");
-                eventQueue->processQueue();
+                eventQueue->processEvents();
 //                RK_LOG_DEBUG("EndPaint...");
                 EndPaint(hWnd, &ps);
                 return 0;
@@ -256,7 +256,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkFocusEvent>();
                 event->setType(RkEvent::Type::FocusedIn);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_KILLFOCUS:
@@ -264,7 +264,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkFocusEvent>();
                 event->setType(RkEvent::Type::FocusedOut);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processQueue();
+                eventQueue->processEvents();
                 return 0;
         }
         

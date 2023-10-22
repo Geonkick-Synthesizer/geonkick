@@ -41,10 +41,15 @@ ViewState::View ViewState::getMainView() const
 
 void ViewState::setMainView(ViewState::View view)
 {
+        GEONKICK_LOG_INFO("called: ViewState::setMainView");
         if (mainView != view) {
                 mainView = view;
-                auto act = std::make_unique<RkAction>(this);
-                act->setCallback([this](void){ mainViewChanged(mainView); });
+                auto act = std::make_unique<RkAction>(this, "view: " + std::to_string((int)view) );
+                act->setCallback([this](void){
+                        GEONKICK_LOG_INFO("called: mainViewChanged(mainView): ");
+                        GEONKICK_LOG_INFO("called: mainViewChanged(mainView): " << (int)mainView);
+                        mainViewChanged(mainView);
+                });
                 eventQueue()->postAction(std::move(act));
         }
 }
