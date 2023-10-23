@@ -97,6 +97,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         , presetsButton{nullptr}
         , samplesButton{nullptr}
 {
+        setName("TopBar");
         setFixedSize({parent->width(), 30});
         auto mainLayout = new RkContainer(this);
         mainLayout->setSize(size());
@@ -262,8 +263,8 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         kitButton->show();
         RK_ACT_BIND(kitButton, pressed, RK_ACT_ARGS(),
                     viewState(), setMainView(ViewState::View::Kit));
-//        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
-//                    kitButton, setPressed(view == ViewState::View::Kit));
+        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
+                    kitButton, setPressed(view == ViewState::View::Kit));
         mainLayout->addWidget(kitButton);
 #endif // GEONKICK_SINGLE
 

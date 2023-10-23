@@ -37,7 +37,15 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , oscillators{oscillators}
         , presetsModel{new PresetBrowserModel(this, kitModel->api())}
         , currentWidget{nullptr}
+        , controlsWidget{nullptr}
+#ifndef GEONKICK_SINGLE
+        , kitWidget{nullptr}
+#endif // GEONKICK_SINGLE
+        , presetsWidget{nullptr}
+        , samplesWidget{nullptr}
+
 {
+        setName("ControlArea");
         setFixedSize(920, 370);
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
         showWidget(viewState()->getMainView());
@@ -59,8 +67,11 @@ void ControlArea::showWidget(ViewState::View view)
                 break;
         case ViewState::View::Samples:
                 if (currentWidget)
-                        currentWidget->close();
-                currentWidget = new SampleBrowser(this, kitModel->api());
+                        currentWidget->hide();
+                if (!samplesWidget)
+                        samplesWidget = new SampleBrowser(this, kitModel->api());
+                currentWidget = samplesWidget;
+                currentWidget->show();
                 break;
         default:
                 showControls();
@@ -71,9 +82,12 @@ void ControlArea::showControls()
 {
         if (!dynamic_cast<ControlsWidget*>(currentWidget)) {
                 if (currentWidget)
-                        currentWidget->close();
-                auto controlsWidget = new ControlsWidget(this, kitModel->api(), oscillators);
-                RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
+                        currentWidget->hide();
+                if (!controlsWidget) {
+                        controlsWidget = new ControlsWidget(this, kitModel->api(), oscillators);
+                        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
+                }
+                currentWidget = controlsWidget;
                 controlsWidget->setSize({width(), height()});
                 currentWidget = controlsWidget;
                 currentWidget->show();
@@ -83,16 +97,13 @@ void ControlArea::showControls()
 #ifndef GEONKICK_SINGLE
 void ControlArea::showKit()
 {
-        GEONKICK_LOG_INFO("ControlArea::showKit()");
         if (!dynamic_cast<KitWidget*>(currentWidget)) {
-                GEONKICK_LOG_INFO("ControlArea::showKit()1");
                 if (currentWidget)
-                        currentWidget->close();
-                GEONKICK_LOG_INFO("ControlArea::showKit()2");
-                currentWidget = new KitWidget(this, kitModel);
-                GEONKICK_LOG_INFO("ControlArea::showKit()3");
+                        currentWidget->hide();
+                if (!kitWidget)
+                        kitWidget = new KitWidget(this, kitModel);
+                currentWidget = kitWidget;
                 currentWidget->show();
-                GEONKICK_LOG_INFO("ControlArea::showKit()4");
         }
 }
 #endif // GEONKICK_SINGLE
@@ -101,8 +112,10 @@ void ControlArea::showPresets()
 {
         if (!dynamic_cast<PresetBrowserView*>(currentWidget)) {
                 if (currentWidget)
-                        currentWidget->close();
-                currentWidget = new PresetBrowserView(this, presetsModel);
+                        currentWidget->hide();
+                if (!presetsWidget)
+                        presetsWidget = new PresetBrowserView(this, presetsModel);
+                currentWidget = presetsWidget;
                 currentWidget->show();
         }
 }

@@ -26,6 +26,7 @@
 GeonkickButton::GeonkickButton(GeonkickWidget *parent)
         : RkButton(parent)
 {
+        setName("GeonkickButton");
         show();
 }
 
