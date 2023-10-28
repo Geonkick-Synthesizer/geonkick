@@ -95,8 +95,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 	{
                 SetCapture(hWnd);
                 auto event = std::make_unique<RkMouseEvent>();
-                event->setX(LOWORD(lParam));
-                event->setY(HIWORD(lParam));
+                event->setX(static_cast<short int>(LOWORD(lParam)));
+                event->setY(static_cast<short int>(HIWORD(lParam)));
                 if (msg == WM_LBUTTONDOWN) {
                         RK_LOG_DEBUG("WM_LBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Left);
@@ -118,8 +118,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 ReleaseCapture();
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseButtonRelease);
-                event->setX(LOWORD(lParam));
-                event->setY(HIWORD(lParam));
+                event->setX(static_cast<short int>(LOWORD(lParam)));
+                event->setY(static_cast<short int>(HIWORD(lParam)));
                 if (msg == WM_LBUTTONUP) {
                         RK_LOG_DEBUG("WM_LBUTTONUP");
                         event->setButton(RkMouseEvent::ButtonType::Left);
@@ -136,11 +136,10 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_MOUSEMOVE:
         {
-//                RK_LOG_DEBUG("WM_MOUSEMOVE");
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseMove);
-                event->setX(LOWORD(lParam));
-                event->setY(HIWORD(lParam));
+                event->setX(static_cast<short int>(LOWORD(lParam)));
+                event->setY(static_cast<short int>(HIWORD(lParam)));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
@@ -169,8 +168,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseDoubleClick);
                 event->setButton(RkMouseEvent::ButtonType::Left);
-                event->setX(LOWORD(lParam));
-                event->setY(HIWORD(lParam));
+                event->setX(static_cast<short int>(LOWORD(lParam)));
+                event->setY(static_cast<short int>(HIWORD(lParam)));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
@@ -182,8 +181,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseDoubleClick);
                 event->setButton(RkMouseEvent::ButtonType::Right);
-                event->setX(LOWORD(lParam));
-                event->setY(HIWORD(lParam));
+                event->setX(static_cast<short int>(LOWORD(lParam)));
+                event->setY(static_cast<short int>(HIWORD(lParam)));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
@@ -195,8 +194,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseDoubleClick);
                 event->setButton(RkMouseEvent::ButtonType::Middle);
-                event->setX(LOWORD(lParam));
-                event->setY(HIWORD(lParam));
+                event->setX(static_cast<short int>(LOWORD(lParam)));
+                event->setY(static_cast<short int>(HIWORD(lParam)));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
@@ -206,8 +205,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 int delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
                 auto event = std::make_unique<RkMouseEvent>();
                 auto buttonType = (delta > 0) ? RkMouseEvent::ButtonType::WheelUp : RkMouseEvent::ButtonType::WheelDown;
-                event->setX(LOWORD(lParam));
-                event->setY(HIWORD(lParam));
+                event->setX(static_cast<short int>(LOWORD(lParam)));
+                event->setY(static_cast<short int>(HIWORD(lParam)));
                 event->setButton(buttonType);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
