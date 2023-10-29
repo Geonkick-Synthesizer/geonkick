@@ -94,7 +94,6 @@ void RkLineEdit::keyPressEvent(RkKeyEvent *event)
                 update();
                 return;
         case Rk::Key::Key_Right:
-                RK_LOG_INFO("Rk::Key::Key_Right");
                 if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Shift)) {
                         impl_ptr->enableSelectionMode(true);
                         impl_ptr->showCursor(false);

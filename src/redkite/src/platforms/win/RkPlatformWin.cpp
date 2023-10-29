@@ -77,67 +77,108 @@ static Rk::Key convertToRkKey(unsigned int winKey)
         switch(winKey) {
         case VK_BACK:
                 rkKey = Rk::Key::Key_BackSpace;
+                break;
         case VK_TAB:
                 rkKey = Rk::Key::Key_Tab;
+                break;
         case VK_CLEAR:
                 rkKey = Rk::Key::Key_Linefeed;
+                break;
         case VK_RETURN:
-                rkKey = Rk::Key::Key_Clear;
+                rkKey = Rk::Key::Key_Return;
+                break;
         case VK_PAUSE:
                 rkKey = Rk::Key::Key_Pause;
+                break;
         case VK_SCROLL:
                 rkKey = Rk::Key::Key_Scroll_Lock;
+                break;
         case VK_PRINT:
                 rkKey = Rk::Key::Key_Sys_Req;
+                break;
         case VK_ESCAPE:
                 rkKey = Rk::Key::Key_Escape;
+                break;
         case VK_DELETE:
                 rkKey = Rk::Key::Key_Delete;
+                break;
         case VK_SHIFT:
         case VK_LSHIFT:
                 rkKey = Rk::Key::Key_Shift_Left;
+                break;
         case VK_RSHIFT:
                 rkKey = Rk::Key::Key_Shift_Right;
+                break;
         case VK_CONTROL:
         case VK_LCONTROL:
                 rkKey = Rk::Key::Key_Control_Left;
+                break;
         case VK_RCONTROL:
                 rkKey = Rk::Key::Key_Control_Right;
+                break;
         case VK_MENU:
         case VK_LMENU:
                 rkKey = Rk::Key::Key_Alt_Left;
+                break;
         case VK_RMENU:
                 rkKey = Rk::Key::Key_Alt_Right;
+                break;
         case VK_CAPITAL:
                 rkKey = Rk::Key::Key_Caps_Lock;
+                break;
         case VK_NUMLOCK:
                 rkKey = Rk::Key::Key_Shift_Lock;
+                break;
         case VK_LWIN:
                 rkKey = Rk::Key::Key_Meta_Left;
+                break;
         case VK_RWIN:
                 rkKey = Rk::Key::Key_Meta_Right;
+                break;
         case VK_HOME:
                 rkKey = Rk::Key::Key_Home;
+                break;
         case VK_LEFT:
-                RK_LOG_INFO("Rk::Key::Key_Left");
                 rkKey = Rk::Key::Key_Left;
+                break;
         case VK_RIGHT:
-                RK_LOG_INFO("Rk::Key::Key_Right");
                 rkKey = Rk::Key::Key_Right;
+                break;
         case VK_UP:
                 rkKey = Rk::Key::Key_Up;
+                break;
         case VK_DOWN:
                 rkKey = Rk::Key::Key_Down;
+                break;
         case VK_PRIOR:
                 rkKey = Rk::Key::Key_Page_Up;
+                break;
         case VK_NEXT:
                 rkKey = Rk::Key::Key_Page_Down;
+                break;
         case VK_END:
                 rkKey = Rk::Key::Key_End;
+                break;
         default:
                 rkKey = Rk::Key::Key_None;
         }
         return rkKey;
+}
+
+int rkKeyModifiers = 0;
+
+static void rkUpdateModifiers(Rk::Key key, RkEvent::Type type)
+{
+        if (key == Rk::Key::Key_Shift_Left
+            || key == Rk::Key::Key_Shift_Right
+            || key == Rk::Key::Key_Control_Left
+            || key == Rk::Key::Key_Control_Right)
+        {
+                if (type == RkEvent::Type::KeyPressed)
+                        rkKeyModifiers |= static_cast<int>(key) >> 16;
+                else
+                        rkKeyModifiers &= ~(static_cast<int>(key) >> 16);
+        }
 }
 
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -296,6 +337,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyPressed);
                 event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
+                rkUpdateModifiers(event->key(), event->type());
+                if (rkKeyModifiers != static_cast<int>(Rk::KeyModifiers::NoModifier))
+                        event->setModifiers(rkKeyModifiers);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
@@ -306,6 +350,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyReleased);
                 event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
+                rkUpdateModifiers(event->key(), event->type());
+                if (rkKeyModifiers != static_cast<int>(Rk::KeyModifiers::NoModifier))
+                        event->setModifiers(rkKeyModifiers);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
