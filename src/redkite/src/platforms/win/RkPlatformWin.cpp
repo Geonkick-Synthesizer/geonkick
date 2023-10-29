@@ -61,6 +61,85 @@ RkWindowId rk_id_from_win(HWND window)
         return id;
 }
 
+#include <Windows.h>
+
+static Rk::Key convertToRkKey(unsigned int winKey)
+{
+        // LATIN1 group keys
+        if (winKey >= 0x41 && winKey <= 0x5A) {
+                if (!(GetKeyState(VK_SHIFT) & 0x8000))
+                        return static_cast<Rk::Key>(tolower(winKey));
+                else
+                        return static_cast<Rk::Key>(winKey);
+        }
+
+        Rk::Key rkKey;
+        switch(winKey) {
+        case VK_BACK:
+                rkKey = Rk::Key::Key_BackSpace;
+        case VK_TAB:
+                rkKey = Rk::Key::Key_Tab;
+        case VK_CLEAR:
+                rkKey = Rk::Key::Key_Linefeed;
+        case VK_RETURN:
+                rkKey = Rk::Key::Key_Clear;
+        case VK_PAUSE:
+                rkKey = Rk::Key::Key_Pause;
+        case VK_SCROLL:
+                rkKey = Rk::Key::Key_Scroll_Lock;
+        case VK_PRINT:
+                rkKey = Rk::Key::Key_Sys_Req;
+        case VK_ESCAPE:
+                rkKey = Rk::Key::Key_Escape;
+        case VK_DELETE:
+                rkKey = Rk::Key::Key_Delete;
+        case VK_SHIFT:
+        case VK_LSHIFT:
+                rkKey = Rk::Key::Key_Shift_Left;
+        case VK_RSHIFT:
+                rkKey = Rk::Key::Key_Shift_Right;
+        case VK_CONTROL:
+        case VK_LCONTROL:
+                rkKey = Rk::Key::Key_Control_Left;
+        case VK_RCONTROL:
+                rkKey = Rk::Key::Key_Control_Right;
+        case VK_MENU:
+        case VK_LMENU:
+                rkKey = Rk::Key::Key_Alt_Left;
+        case VK_RMENU:
+                rkKey = Rk::Key::Key_Alt_Right;
+        case VK_CAPITAL:
+                rkKey = Rk::Key::Key_Caps_Lock;
+        case VK_NUMLOCK:
+                rkKey = Rk::Key::Key_Shift_Lock;
+        case VK_LWIN:
+                rkKey = Rk::Key::Key_Meta_Left;
+        case VK_RWIN:
+                rkKey = Rk::Key::Key_Meta_Right;
+        case VK_HOME:
+                rkKey = Rk::Key::Key_Home;
+        case VK_LEFT:
+                RK_LOG_INFO("Rk::Key::Key_Left");
+                rkKey = Rk::Key::Key_Left;
+        case VK_RIGHT:
+                RK_LOG_INFO("Rk::Key::Key_Right");
+                rkKey = Rk::Key::Key_Right;
+        case VK_UP:
+                rkKey = Rk::Key::Key_Up;
+        case VK_DOWN:
+                rkKey = Rk::Key::Key_Down;
+        case VK_PRIOR:
+                rkKey = Rk::Key::Key_Page_Up;
+        case VK_NEXT:
+                rkKey = Rk::Key::Key_Page_Down;
+        case VK_END:
+                rkKey = Rk::Key::Key_End;
+        default:
+                rkKey = Rk::Key::Key_None;
+        }
+        return rkKey;
+}
+
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
         auto eventQueue = reinterpret_cast<RkEventQueue*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -216,11 +295,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyPressed);
-                auto keyValue = static_cast<unsigned int>(wParam);
-                RK_LOG_DEBUG("WM_KEYDOWN key : " << keyValue);
-                if ((keyValue >= 0x41 && keyValue <= 0x5A) && !(GetKeyState(VK_SHIFT) & 0x8000))
-                        keyValue = tolower(keyValue);
-                event->setKey(static_cast<Rk::Key>(keyValue));
+                event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
@@ -230,11 +305,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyReleased);
-                auto keyValue = static_cast<unsigned int>(wParam);
-                RK_LOG_DEBUG("WM_KEYDOWN key : " << keyValue);
-                if ((keyValue >= 0x41 && keyValue <= 0x5A) && !(GetKeyState(VK_SHIFT) & 0x8000))
-                        keyValue = tolower(keyValue);
-                event->setKey(static_cast<Rk::Key>(keyValue));
+                event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
