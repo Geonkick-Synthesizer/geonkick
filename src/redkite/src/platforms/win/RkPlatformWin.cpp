@@ -181,6 +181,8 @@ static void rkUpdateModifiers(Rk::Key key, RkEvent::Type type)
         }
 }
 
+HWND rkCurrnetWind{};
+
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
         auto eventQueue = reinterpret_cast<RkEventQueue*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
@@ -256,17 +258,37 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_MOUSEMOVE:
         {
+                TRACKMOUSEEVENT tme;
+                tme.cbSize = sizeof(TRACKMOUSEEVENT);
+                tme.dwFlags = TME_HOVER | TME_LEAVE;
+                tme.hwndTrack = hWnd;
+                tme.dwHoverTime = HOVER_DEFAULT;
+                TrackMouseEvent(&tme);
+                
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseMove);
                 event->setX(static_cast<short int>(LOWORD(lParam)));
                 event->setY(static_cast<short int>(HIWORD(lParam)));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
-                eventQueue->processEvents();
+
+                if (rkCurrnetWind != hWnd) {
+                        auto event = std::make_unique<RkHoverEvent>();
+                        event->setHover(true);
+                        eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
+                        auto widget = eventQueue->getWidget(rk_id_from_win(rkCurrnetWind));
+                        if (widget) {
+                                auto event = std::make_unique<RkHoverEvent>();
+                                event->setHover(false);
+                                eventQueue->postEvent(rk_id_from_win(rkCurrnetWind), std::move(event));
+                        }
+                        rkCurrnetWind = hWnd;
+                }
+                
+                eventQueue->processEvents();                
                 return 0;
         }
         case WM_MOUSEHOVER:
         {
-                RK_LOG_DEBUG("WM_MOUSEHOVER");
                 auto event = std::make_unique<RkHoverEvent>();
                 event->setHover(true);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
@@ -275,7 +297,6 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_MOUSELEAVE:
         {
-                RK_LOG_DEBUG("WM_MOUSELEAVE");
                 auto event = std::make_unique<RkHoverEvent>();
                 event->setHover(false);
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
@@ -428,7 +449,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance,
         RK_LOG_DEBUG("instance:" << rk_winApiInstance);
         WNDCLASSEX wc;
         wc.cbSize        = sizeof(WNDCLASSEX);
-        wc.style         = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;;
+        wc.style         = CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
         wc.lpfnWndProc   = RkWindowProc;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
