@@ -62,6 +62,8 @@ RkWindowWin::RkWindowWin(const RkNativeWindowInfo &parent, Rk::WindowFlags flags
 RkWindowWin::~RkWindowWin()
 {
 	freeCanvasInfo();
+        if (windowHandle.id)
+                DestroyWindow(windowHandle.id);
 }
 
 Rk::WindowFlags RkWindowWin::flags() const
@@ -263,19 +265,26 @@ void RkWindowWin::freeCanvasInfo()
 
 void RkWindowWin::setFocus(bool b)
 {
-        // IMPLEMENT
+        if (!isWindowCreated())
+                return;
+        if (b)
+                SetFocus(windowHandle.id);
 }
 
 bool RkWindowWin::hasFocus()
 {
-        // IMPLEMENT
-        return false;
+        if (!isWindowCreated())
+                return false;
+        return GetFocus() == windowHandle.id;
 }
 
 bool RkWindowWin::pointerIsOverWindow() const
 {
-	// IMPLEMENT
-	return false;
+        if (!isWindowCreated())
+                return false;
+	POINT cursorPos;
+        GetCursorPos(&cursorPos);
+        return WindowFromPoint(cursorPos) == windowHandle.id;
 }
 
 void RkWindowWin::setPointerShape(Rk::PointerShape shape)
@@ -285,6 +294,9 @@ void RkWindowWin::setPointerShape(Rk::PointerShape shape)
 
 void RkWindowWin::setEventQueue(RkEventQueue *queue)
 {
+        if (!isWindowCreated())
+                return;
+
         eventQueue = queue;
         RK_LOG_DEBUG("eventQueue: " << eventQueue);
         SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));

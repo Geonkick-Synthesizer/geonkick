@@ -216,7 +216,11 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyPressed);
-                event->setKey(static_cast<Rk::Key>(wParam));
+                auto keyValue = static_cast<unsigned int>(wParam);
+                RK_LOG_DEBUG("WM_KEYDOWN key : " << keyValue);
+                if ((keyValue >= 0x41 && keyValue <= 0x5A) && !(GetKeyState(VK_SHIFT) & 0x8000))
+                        keyValue = tolower(keyValue);
+                event->setKey(static_cast<Rk::Key>(keyValue));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;
@@ -226,7 +230,11 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyReleased);
-                event->setKey(static_cast<Rk::Key>(wParam));
+                auto keyValue = static_cast<unsigned int>(wParam);
+                RK_LOG_DEBUG("WM_KEYDOWN key : " << keyValue);
+                if ((keyValue >= 0x41 && keyValue <= 0x5A) && !(GetKeyState(VK_SHIFT) & 0x8000))
+                        keyValue = tolower(keyValue);
+                event->setKey(static_cast<Rk::Key>(keyValue));
                 eventQueue->postEvent(rk_id_from_win(hWnd), std::move(event));
                 eventQueue->processEvents();
                 return 0;

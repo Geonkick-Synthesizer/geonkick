@@ -139,7 +139,7 @@ namespace Rk {
                 CloseInputEnabled = 0x00000004
         };
 
-        enum class Key : int {
+        enum class Key : unsigned int {
                 Key_None        = 0x00000000,
 
                 /**
