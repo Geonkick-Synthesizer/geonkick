@@ -53,6 +53,7 @@ RkLineEdit::RkLineEditImpl::~RkLineEditImpl()
 void RkLineEdit::RkLineEditImpl::init()
 {
         cursorTimer = new RkTimer(inf_ptr, 800);
+        cursorTimer->setName("RkLineEdit");
         hasFocus() ? showCursor(true) : showCursor(false);
         RK_ACT_BIND(cursorTimer, timeout, RK_ACT_ARGS(), this, onCursorTimeout());
 }
