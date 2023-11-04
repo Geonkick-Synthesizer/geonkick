@@ -214,7 +214,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 if (wParam == RK_MAIN_WINDOW_TIMER_ID) {
                         auto widget = eventQueue->getWidget(rk_id_from_win(hWnd));
                         if (widget && widget->isTopWindow())
-                                eventQueue->processEvents();
+                                eventQueue->processQueue();
                 }
                 return 0;
         }

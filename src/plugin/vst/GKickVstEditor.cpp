@@ -96,7 +96,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
 #ifdef GEONKICK_OS_GNU
         IRunLoop* loop = nullptr;
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
-                loop->registerTimer(loopTimer.get(), 30);
+                loop->registerTimer(loopTimer.get(), 1);
         } else {
                 GEONKICK_LOG_INFO("can't get loop");
                 return kResultFalse;
