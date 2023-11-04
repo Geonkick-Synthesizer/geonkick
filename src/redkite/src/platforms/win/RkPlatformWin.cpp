@@ -65,12 +65,13 @@ RkWindowId rk_id_from_win(HWND window)
 
 static Rk::Key convertToRkKey(unsigned int winKey)
 {
-        // LATIN1 group keys
+        if (winKey >= 0x30 && winKey <= 0x39)
+                return static_cast<Rk::Key>(winKey);
+
         if (winKey >= 0x41 && winKey <= 0x5A) {
                 if (!(GetKeyState(VK_SHIFT) & 0x8000))
                         return static_cast<Rk::Key>(tolower(winKey));
-                else
-                        return static_cast<Rk::Key>(winKey);
+                return static_cast<Rk::Key>(winKey);
         }
 
         Rk::Key rkKey;
@@ -158,6 +159,12 @@ static Rk::Key convertToRkKey(unsigned int winKey)
                 break;
         case VK_END:
                 rkKey = Rk::Key::Key_End;
+                break;
+        case VK_OEM_PLUS:
+                rkKey = Rk::Key::Key_Plus;
+                break;
+        case VK_OEM_MINUS:
+                rkKey = Rk::Key::Key_Minus;
                 break;
         default:
                 rkKey = Rk::Key::Key_None;
