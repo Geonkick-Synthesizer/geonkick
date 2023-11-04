@@ -376,7 +376,7 @@ void FilesView::setFilters(const std::vector<std::string> &filters)
 FileDialog::FileDialog(GeonkickWidget *parent,
                        FileDialog::Type type,
                        const std::string& title)
-        : GeonkickWidget(parent, type == FileDialog::Type::Browse ? Rk::WindowFlags::Widget : Rk::WindowFlags::Dialog)
+        : GeonkickWidget(parent, type == FileDialog::Type::Browse ? Rk::WindowFlags::Widget : Rk::WindowFlags::Popup)
         , dialogType{type}
         , filesView{nullptr}
         , pathLabel{nullptr}
