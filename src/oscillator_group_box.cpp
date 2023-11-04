@@ -183,7 +183,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 
         sineButton = new GeonkickButton(waveFunctionHBox);
         sineButton->setBackgroundColor(waveFunctionHBox->background());
-        sineButton->setFixedSize(67, 14);
+        sineButton->setFixedSize(53, 14);
         sineButton->setPosition(20, 25);
         sineButton->setUnpressedImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine)));
         sineButton->setPressedImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine_active)));
@@ -192,7 +192,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 
         squareButton = new GeonkickButton(waveFunctionHBox);
         squareButton->setBackgroundColor(waveFunctionHBox->background());
-        squareButton->setFixedSize(67, 14);
+        squareButton->setFixedSize(53, 14);
         squareButton->setPosition(sineButton->x(),  sineButton->y() + sineButton->height() + 5);
         squareButton->setUnpressedImage(RkImage(squareButton->size(), RK_IMAGE_RC(wave_button_square)));
         squareButton->setPressedImage(RkImage(squareButton->size(), RK_IMAGE_RC(wave_button_square_active)));
