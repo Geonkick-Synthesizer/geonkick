@@ -78,13 +78,16 @@ bool RkWindowWin::hasParent() const
 
 bool RkWindowWin::init()
 {
-        RK_LOG_DEBUG("hasParent(): ==========================================>" << hasParent());
+        RK_LOG_DEBUG("hasParent(): " << hasParent());
         auto className = hasParent() ? parentWindowInfo.className : rk_win_api_class_name();
         RK_LOG_DEBUG("className: " << className);
+        auto winStyle = hasParent() ? (WS_CHILD | WS_CLIPCHILDREN | WS_VISIBLE) : (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN);
+        if (static_cast<int>(windowFlags) & static_cast<int>(Rk::WindowFlags::Popup))
+                winStyle = WS_POPUP | WS_CLIPCHILDREN | WS_VISIBLE;
         windowHandle.id = CreateWindowExA(0,
                                           className.c_str(),
                                           "RkWidget",
-                                          hasParent() ? (WS_CHILD | WS_CLIPCHILDREN | WS_VISIBLE) : (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN),
+                                          winStyle,
                                           windowPosition.x(),
                                           windowPosition.y(),
                                           windowSize.width(),

@@ -283,8 +283,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                         }
                         rkCurrnetWind = hWnd;
                 }
-                
-                eventQueue->processEvents();                
+                eventQueue->processEvents();
                 return 0;
         }
         case WM_MOUSEHOVER:

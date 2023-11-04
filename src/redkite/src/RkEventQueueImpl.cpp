@@ -243,6 +243,7 @@ void RkEventQueue::RkEventQueueImpl::processPopups(RkWidget *widget, RkEvent* ev
                 for (auto it = popupList.begin(); it != popupList.end();) {
                         auto w = static_cast<RkWidget*>((*it).second);
                         if (widget != w && !w->isChild(widget)) {
+                                RK_LOG_DEBUG("w->close()");
                                 w->close();
                                 it = popupList.erase(it);
                         } else {
