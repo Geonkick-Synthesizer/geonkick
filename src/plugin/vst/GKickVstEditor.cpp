@@ -58,7 +58,6 @@ GKickVstEditor::GKickVstEditor(Vst::EditController *controller, GeonkickApi *api
 tresult PLUGIN_API
 GKickVstEditor::isPlatformTypeSupported([[maybe_unused]]Steinberg::FIDString type)
 {
-        GEONKICK_LOG_INFO("called: " << type);
         return kResultTrue;
 }
 
@@ -98,7 +97,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
                 loop->registerTimer(loopTimer.get(), 1);
         } else {
-                GEONKICK_LOG_INFO("can't get loop");
+                GEONKICK_LOG_ERROR("can't get loop");
                 return kResultFalse;
         }
 #endif // GEONKICK_OS_GNU
@@ -108,13 +107,12 @@ GKickVstEditor::attached(void* parent, FIDString type)
 tresult PLUGIN_API
 GKickVstEditor::removed()
 {
-        GEONKICK_LOG_INFO("called");
 #ifdef GEONKICK_OS_GNU        
         IRunLoop* loop = nullptr;
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
                 loop->unregisterTimer(loopTimer.get());
         } else {
-                GEONKICK_LOG_INFO("can't get loop");
+                GEONKICK_LOG_ERROR("can't get loop");
                 return kResultFalse;
         }
 #endif // GEONKICK_OS_GNU
@@ -127,7 +125,6 @@ GKickVstEditor::removed()
 tresult PLUGIN_API
 GKickVstEditor::getSize(ViewRect* newSize)
 {
-        GEONKICK_LOG_INFO("called");
         if (newSize == nullptr || mainWindow == nullptr)
 		return kResultFalse;
 

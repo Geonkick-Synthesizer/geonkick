@@ -337,10 +337,8 @@ void KitPercussionView::mouseButtonPressEvent(RkMouseEvent *event)
                 int rightLimit = nameWidth + channelWidth * percussionModel->numberOfChannels();
                 if (event->x() <= leftLimit)
                         percussionModel->select();
-                else if (event->x() > leftLimit && event->x() < rightLimit) {
-                        GEONKICK_LOG_INFO("set channel: " << (event->x() - nameWidth) / channelWidth);
+                else if (event->x() > leftLimit && event->x() < rightLimit)
                         percussionModel->setChannel((event->x() - nameWidth) / channelWidth);
-                }
         }
 }
 

@@ -35,25 +35,21 @@
 
 bool ModuleEntry (void*)
 {
-        GEONKICK_LOG_INFO("called");
         return true;
 }
 
 bool ModuleExit (void)
 {
-        GEONKICK_LOG_INFO("called");
         return true;
 }
 
 GKickVstProcessor::GKickVstProcessor()
         : geonkickApi{nullptr}
 {
-        GEONKICK_LOG_INFO("called");
 }
 
 FUnknown* GKickVstProcessor::createInstance(void*)
 {
-        GEONKICK_LOG_INFO("called");
         return static_cast<Vst::IAudioProcessor*>(new GKickVstProcessor());
 }
 
@@ -61,7 +57,6 @@ FUnknown* GKickVstProcessor::createInstance(void*)
 tresult PLUGIN_API
 GKickVstProcessor::initialize(FUnknown* context)
 {
-        GEONKICK_LOG_INFO("called");
         auto res = Vst::SingleComponentEffect::initialize(context);
         if (res != kResultTrue)
                 return kResultFalse;
@@ -90,7 +85,6 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
                                                          Vst::SpeakerArrangement* outputs,
                                                          int32 numOuts)
 {
-        GEONKICK_LOG_INFO("called");
         auto n = GeonkickApi::numberOfChannels();
         if (numIns == 0 && numOuts == static_cast<decltype(numOuts)>(n))
                 return Vst::SingleComponentEffect::setBusArrangements(inputs, numIns, outputs, numOuts);
@@ -100,7 +94,6 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
 tresult PLUGIN_API
 GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
-        GEONKICK_LOG_INFO("called");
         auto data = geonkickApi->getKitState()->toJson();
         geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
                                                     GeonkickApi::InstanceType::Vst3);
@@ -118,7 +111,6 @@ GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 tresult PLUGIN_API
 GKickVstProcessor::setActive(TBool state)
 {
-        GEONKICK_LOG_INFO("called");
         return Vst::SingleComponentEffect::setActive(state);
 }
 
@@ -185,8 +177,6 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 tresult PLUGIN_API
 GKickVstProcessor::setState(IBStream* state)
 {
-        GEONKICK_LOG_INFO("called");
-                        
         if (state == nullptr || geonkickApi == nullptr) {
                 GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
                 return kResultFalse;
@@ -231,8 +221,6 @@ GKickVstProcessor::setState(IBStream* state)
 tresult PLUGIN_API
 GKickVstProcessor::getState(IBStream* state)
 {
-        GEONKICK_LOG_INFO("called");
-                        
         if (state == nullptr || geonkickApi == nullptr) {
                 GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
                 return kResultFalse;
@@ -255,7 +243,6 @@ GKickVstProcessor::getState(IBStream* state)
 IPlugView* PLUGIN_API
 GKickVstProcessor::createView(FIDString name)
 {
-        GEONKICK_LOG_INFO("called");
         if (geonkickApi && name && std::string(name) == std::string("editor"))
                 return static_cast<IPlugView*>(new GKickVstEditor(this, geonkickApi.get()));
         return nullptr;
@@ -264,6 +251,5 @@ GKickVstProcessor::createView(FIDString name)
 tresult PLUGIN_API
 GKickVstProcessor::setComponentState(IBStream* state)
 {
-        GEONKICK_LOG_INFO("called");
         return kResultOk;
 }
