@@ -28,6 +28,9 @@
 #include "envelope.h"
 #include "mixer.h"
 
+#include <unistd.h>
+#include <stdlib.h>
+
 enum geonkick_error
 geonkick_create(struct geonkick **kick, int sample_rate)
 {
@@ -1826,20 +1829,18 @@ geonkick_is_plugin()
 void
 geonkick_usleep(unsigned long int usecods)
 {
-#ifdef GEONKICK_OS_WINDOWS
-        
-#else
-	usleep(usecods);
-#endif // GEONKICK_OS_GNU	
+        usleep(usecods);
 }
 
 
 int geonkick_rand(unsigned int *seed)
 {
 #ifdef GEONKICK_OS_WINDOWS
-    return 0;    
+        GEONKICK_UNUSED(seed);
+        // Use rand & srand since the calls are only from a single thread.
+        return rand();
 #else
-    return rand_r(seed);
-#endif // GEONKICK_OS_GNU	
+        return rand_r(seed);
+#endif // GEONKICK_OS_GNU
 }
 

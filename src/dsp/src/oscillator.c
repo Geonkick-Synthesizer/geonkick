@@ -159,6 +159,11 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
         gkick_real amp;
         gkick_real v;
         gkick_real env_x;
+#ifdef GEONKICK_OS_WINDOWS
+        // Use rand & srand since the calls are only from a single thread.
+        if (t == 0.0)
+                srand(osc->seed);
+#endif // GEONKICK_OS_WINDOWS
 
         // Calculate the x coordinate between 0 and 1.0 for the envelope.
         env_x = t / kick_len;
