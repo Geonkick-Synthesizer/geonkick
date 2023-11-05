@@ -79,7 +79,6 @@ RkEventQueue* RkMain::RkMainImpl::getEventQueue() const
 
 int RkMain::RkMainImpl::exec(bool block)
 {
-        int n = 0;
         if (!topLevelWidget()) {
                 RK_LOG_ERROR("top window not defined");
 		return 1;
