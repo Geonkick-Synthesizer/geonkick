@@ -16,8 +16,8 @@ build:
     - cmake -DCMAKE_INSTALL_PREFIX=./install ..
     - make
     - make install
-    - tar czf ${ARCHIVE_NAME}.tar.gz build/install
-    - tar cjf ${ARCHIVE_NAME}.tar.bz2 build/install
+    - tar czf ${ARCHIVE_NAME}.tar.gz install
+    - tar cjf ${ARCHIVE_NAME}.tar.bz2 install
   artifacts:
     paths:
       - ${ARCHIVE_NAME}.tar.gz
