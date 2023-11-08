@@ -20,7 +20,7 @@ build:
     - tar cjf ${ARCHIVE_NAME}.tar.bz2 install
   artifacts:
     paths:
-      - ${ARCHIVE_NAME}.tar.gz
-      - ${ARCHIVE_NAME}.tar.bz2
+      - build/${ARCHIVE_NAME}.tar.gz
+      - build/${ARCHIVE_NAME}.tar.bz2
   only:
     - version3
