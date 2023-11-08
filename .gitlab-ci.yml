@@ -1,17 +1,26 @@
 stages:
   - build
 
+variables:
+  ARCHIVE_NAME: geonkick
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y build-essential cmake libjack-dev libsndfile-dev libssl-dev rapidjson-dev lv2-dev libcairo2-dev
+
 build:
   stage: build
   script:
-    - apt-get update -qy
-    - apt-get install -y build-essential cmake libjack-dev libsndfile-dev libssl-dev rapidjson-dev lv2-dev libcairo2-dev
-    - mkdir build
+    - mkdir -p build/install
     - cd build
-    - cmake ..
+    - cmake -DCMAKE_INSTALL_PREFIX=./install ..
     - make
+    - make install
+    - tar czf ${ARCHIVE_NAME}.tar.gz build/install
+    - tar cjf ${ARCHIVE_NAME}.tar.bz2 build/install
   artifacts:
     paths:
-      - build/src/standalone/geonkick
+      - ${ARCHIVE_NAME}.tar.gz
+      - ${ARCHIVE_NAME}.tar.bz2
   only:
     - version3
