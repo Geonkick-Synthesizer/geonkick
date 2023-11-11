@@ -18,7 +18,7 @@ jobs:
       with:
         msystem: UCRT64
         update: true
-        install: git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-jack2 mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-lv2 mingw-w64-ucrt-x86_64-cairo
+        install: git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-rapidjson  mingw-w64-ucrt-x86_64-cairo
     
     - name: Clone VST3 SDK
       run: |
@@ -29,6 +29,7 @@ jobs:
       run: |
         mkdir -p build/install
         cd build
+        pacman -S mingw-w64-x86_64-ucrt-x86_64-rapidjson
         cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=${{ github.workspace }}/vst3sdk ..
         make
         make install
