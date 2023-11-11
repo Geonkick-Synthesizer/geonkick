@@ -5,15 +5,15 @@ variables:
   ARCHIVE_NAME: geonkick
 
 before_script:
-  - apt-get update -qy
-  - apt-get install -y build-essential cmake libjack-dev libsndfile-dev libssl-dev rapidjson-dev lv2-dev libcairo2-dev
+  - pacman -Syu --noconfirm
+  - pacman -S --noconfirm mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-jack2 mingw-w64-x86_64-libsndfile mingw-w64-x86_64-openssl mingw-w64-x86_64-rapidjson mingw-w64-x86_64-lv2 mingw-w64-x86_64-cairo
 
 build:
   stage: build
   script:
     - mkdir -p build/install
     - cd build
-    - cmake -DCMAKE_INSTALL_PREFIX=./install ..
+    - cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install ..
     - make
     - make install
     - tar czf ${ARCHIVE_NAME}.tar.gz install
