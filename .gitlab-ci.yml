@@ -3,7 +3,6 @@ stages:
 
 variables:
   ARCHIVE_NAME: geonkick
-  ARTIFACTS_PATH: GNU/Linux (LV2 & Standalone)
 
 before_script:
   - apt-get update -qy
@@ -21,7 +20,7 @@ build:
     - tar cjf "${ARCHIVE_NAME}.tar.bz2" install
   artifacts:
     paths:
-      - ${ARTIFACTS_PATH}/${ARCHIVE_NAME}.tar.gz
-      - ${ARTIFACTS_PATH}/${ARCHIVE_NAME}.tar.bz2
+      - build/${ARCHIVE_NAME}.tar.gz
+      - build/${ARCHIVE_NAME}.tar.bz2
   only:
     - main
