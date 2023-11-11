@@ -1,4 +1,4 @@
-name: Build
+name: GNU/Linux (LV2 & Standalone)
 
 on:
   push:
