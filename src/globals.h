@@ -44,6 +44,10 @@
 #include <iomanip>
 #include <math.h>
 
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
+
 #include <RkObject.h>
 
 #ifdef RK_LOG_DEBUG_LEVEL
@@ -55,7 +59,7 @@
                                 << " [" << std::this_thread::get_id() << "] " \
                                 << __PRETTY_FUNCTION__ << "[ERROR] " \
                                 << msg << std::endl;
-#define GEONKICK_LOG_DEBUG(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+#define GEONKICK_LOG_DEBUG(msg) std::cout << "[" << std::this_thread::get_id() << "][" << GEONKICK_NAME << "] " \
                                 << " [" << std::this_thread::get_id() << "] " \
                                 << __PRETTY_FUNCTION__ << "[DEBUG] " \
                                 << msg << std::endl;
@@ -99,7 +103,7 @@ namespace Geonkick
                 ss << std::fixed
                    << std::setprecision(precision)
                    << truncateDouble(val, precision);
-                return ss.str();
+                return  ss.str();
         }
 
 } // namespace Geonkick

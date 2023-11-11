@@ -297,7 +297,7 @@ class GeonkickApi : public RkObject {
               kitUpdated(),
               RK_ARG_TYPE(),
               RK_ARG_VAL());
-    RK_DECL_ACT(percussionUpdated,
+  RK_DECL_ACT(percussionUpdated,
               percussionUpdated(int id),
               RK_ARG_TYPE(int),
               RK_ARG_VAL(id));

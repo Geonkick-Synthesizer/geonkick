@@ -51,15 +51,15 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , limiterWidget{nullptr}
         , kitModel{new KitModel(this, geonkickApi)}
 {
+        setName("MainWindow");
         GeonkickConfig config;
         setScaleFactor(config.getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
-	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
+        RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
-        show();
 }
 
 MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
@@ -79,7 +79,6 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
-        show();
 }
 
 MainWindow::~MainWindow()
@@ -186,6 +185,7 @@ bool MainWindow::init(void)
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 305);
         envelopeWidget->show();
+        
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
         limiterWidget = new Limiter(geonkickApi, this);
@@ -212,6 +212,7 @@ bool MainWindow::init(void)
                 openPreset(presetName);
         topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
         updateGui();
+        show();
         return true;
 }
 
@@ -267,7 +268,7 @@ void MainWindow::openPreset(const std::string &fileName)
         action geonkickApi->percussionUpdated(state->getId());
         file.close();
         geonkickApi->setCurrentWorkingPath("OpenPreset",
-                                           filePath.has_parent_path() ? filePath.parent_path() : filePath);
+                                           filePath.has_parent_path() ? filePath.parent_path().string() : filePath.string());
         updateGui();
 }
 
@@ -278,14 +279,14 @@ void MainWindow::openFileDialog(FileDialog::Type type)
         fileDialog->setFilters({".gkick", ".GKICK"});
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         if (type == FileDialog::Type::Open) {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset"));
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset").string());
                 RK_ACT_BIND(fileDialog,
                             selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this,
                             openPreset(file));
         } else {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset"));
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset").string());
                 RK_ACT_BIND(fileDialog,
                             selectedFile,
                             RK_ACT_ARGS(const std::string &file),
@@ -365,7 +366,7 @@ void MainWindow::dropEvent(RkDropEvent *event)
         std::string fileExtention;
         try {
                 std::filesystem::path path(event->getFilePath());
-                fileExtention = path.extension();
+                fileExtention = path.extension().string();
         } catch (const std::exception& e) {
                 GEONKICK_LOG_ERROR("can't create path " << e.what());
                 return;

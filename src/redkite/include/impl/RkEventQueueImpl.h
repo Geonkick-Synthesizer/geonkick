@@ -39,7 +39,8 @@
 
 class RkEventQueue::RkEventQueueImpl {
  public:
-        explicit RkEventQueueImpl(RkEventQueue* interface);
+        using EventQueueWindowId = unsigned long long int;
+        explicit RkEventQueueImpl(RkEventQueue* queueInterface);
         virtual ~RkEventQueueImpl();
 
         bool objectExists(RkObject *t) const;
@@ -54,6 +55,7 @@ class RkEventQueue::RkEventQueueImpl {
         RkWidget* findWidget(const RkWindowId &id) const;
         void removeObjEvents(RkObject *obj);
         void postEvent(RkObject *obj, std::unique_ptr<RkEvent> event);
+        void postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event);
         void processEvent(RkObject *obj, RkEvent *event);
         void processEvents();
         void postAction(std::unique_ptr<RkAction> act);
@@ -65,6 +67,7 @@ class RkEventQueue::RkEventQueueImpl {
         void clearActions(const RkObject *obj);
         RkObject* findObjectByName(const std::string &name) const;
         void setScaleFactor(double factor);
+        void dispatchEvents();
 
  protected:
         void processShortcuts(RkKeyEvent *event);
@@ -77,12 +80,12 @@ class RkEventQueue::RkEventQueueImpl {
         RK_DISABLE_COPY(RkEventQueueImpl);
         RK_DISABLE_MOVE(RkEventQueueImpl);
         std::unordered_set<RkObject*> objectsList;
-        std::unordered_map<unsigned long long int, RkObject*> windowIdsMap;
+        std::unordered_map<EventQueueWindowId, RkObject*> windowIdsMap;
         std::unordered_map<int, std::unique_ptr<RkShortcut>> shortcutsList;
         std::vector<std::pair<RkObject*, std::unique_ptr<RkEvent>>> eventsQueue;
         std::vector<std::unique_ptr<RkAction>> actionsQueue;
         std::unordered_set<RkTimer*> timersList;
-        std::unordered_map<unsigned long long int, RkObject*> popupList;
+        std::unordered_map<EventQueueWindowId, RkObject*> popupList;
         std::mutex actionsQueueMutex;
 
 #ifdef RK_OS_WIN

@@ -85,12 +85,16 @@ int RkMain::RkMainImpl::exec(bool block)
 	}
 
         if (!block) {
+                eventQueue->dispatchEvents();
                 eventQueue->processQueue();
         } else {
                 for (; block ;) {
+                        eventQueue->dispatchEvents();
                         eventQueue->processQueue();
-                        if (topWidget->isClose())
+                        if (topWidget->isClose()) {
+                                RK_LOG_DEBUG("exit");
                                 break;
+                        }
                         std::this_thread::sleep_for(std::chrono::milliseconds(1));
                 }
         }

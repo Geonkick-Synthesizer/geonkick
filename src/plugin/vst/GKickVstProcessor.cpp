@@ -71,9 +71,8 @@ GKickVstProcessor::initialize(FUnknown* context)
 
         auto nChannels = GeonkickApi::numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
-                std::wstring_convert<std::codecvt_utf8<char16_t>,char16_t> convert;
-                std::u16string str16 = convert.from_bytes(std::string("Out" + std::to_string(i)));
-                addAudioOutput(str16.c_str(), Vst::SpeakerArr::kStereo);
+                auto outStr = std::wstring(L"Out") + std::to_wstring(i);
+                addAudioOutput(reinterpret_cast<const char16_t*>(outStr.c_str()), Vst::SpeakerArr::kStereo);
         }
         addEventInput(STR16("MIDI in"), 1);
         channelsBuffers = std::vector<float*>(2 * nChannels, nullptr);
@@ -170,7 +169,7 @@ GKickVstProcessor::process(Vst::ProcessData& data)
         }
 
         if (static_cast<decltype(data.numSamples)>(currentFrame) < data.numSamples)
-                geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
+        geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
 
         return kResultOk;
 }
@@ -254,4 +253,3 @@ GKickVstProcessor::setComponentState(IBStream* state)
 {
         return kResultOk;
 }
-

@@ -1,14 +1,23 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 2.10.2)
+project(geonkick VERSION 3.0.0)
 
-include(GNUInstallDirs)
+if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
+    include(GNUInstallDirs)
+endif()
 
-option(GKICK_STANDALONE "Enable build for standalone" ON)
+if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
+   option(GKICK_STANDALONE "Enable build for standalone" ON)
+endif()
 option(GKICK_PLUGIN "Enable build for plugin" ON)
+if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
+   option(GKICK_PRESETS "Enable presets" ON)
+endif()
 
 if (GKICK_PLUGIN)
+if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
   option(GKICK_PLUGIN_LV2 "Enable build LV2 plugin" ON)
+endif()
   if (VST3_SDK_PATH)
     option(GKICK_PLUGIN_VST "Enable build VST plugin" ON)
   endif(VST3_SDK_PATH)
@@ -37,6 +46,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_C_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_C_FLAGS} -fvisibility=hidden")
+
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGEONKICK_OS_WINDOWS")
+   set(CMAKE_C_FLAGS "${GKICK_OPTIMISATION_FLAGS} -DGEONKICK_OS_WINDOWS")
+endif()
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set (CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "default install path" FORCE)
@@ -75,6 +89,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/GeonkickConfig.h
   ${GKICK_COMMON_DIR}/UiSettings.h
   ${GKICK_COMMON_DIR}/ViewState.h
+  ${GKICK_COMMON_DIR}/geonkick_widget.h
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
   ${GKICK_COMMON_DIR}/PathListModel.h
@@ -118,7 +133,8 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/preset_browser_view.h
   ${GKICK_COMMON_DIR}/MidiKeyWidget.h
   ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
-  ${GKICK_COMMON_DIR}/MainWindow.h)
+  ${GKICK_COMMON_DIR}/MainWindow.h
+)
 
 set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
@@ -169,7 +185,8 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/preset_browser_view.cpp
   ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
   ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
-  ${GKICK_COMMON_DIR}/MainWindow.cpp)
+  ${GKICK_COMMON_DIR}/MainWindow.cpp
+)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
@@ -190,21 +207,27 @@ endif()
 
 find_package(PkgConfig REQUIRED)
 find_package(RapidJSON REQUIRED)
+include_directories(${RapidJSON_INCLUDE_DIR})
+set(OPENSSL_USE_STATIC_LIBS TRUE)
 find_package(OpenSSL REQUIRED)
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 pkg_check_modules(SNDFILE sndfile)
 if (NOT SNDFILE_FOUND)
     message(FATAL_ERROR "can't find sndfile library")
 endif(NOT SNDFILE_FOUND)
 
-if (GKICK_STANDALONE)
-  pkg_check_modules(JACK jack)
-  if (NOT JACK_FOUND)
-    message(STATUS "can't find jack library")
-    set(GKICK_STANDALONE OFF)
-    set(GKICK_JACK_NOT_FOUND ON)
-  endif(NOT JACK_FOUND)
-  list(APPEND GKICK_API_FLAGS "-DGEONKICK_AUDIO_JACK")
-endif()
+#if (GKICK_STANDALONE)
+#  pkg_check_modules(JACK jack)
+#  if (NOT JACK_FOUND)
+#    message(STATUS "can't find jack library")
+#    set(GKICK_STANDALONE OFF)
+#    set(GKICK_JACK_NOT_FOUND ON)
+#  endif(NOT JACK_FOUND)
+#  list(APPEND GKICK_API_FLAGS "-DGEONKICK_AUDIO_JACK")
+#endif()
 
 if (GKICK_PLUGIN)
   list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGEONKICK_SINGLE")
@@ -222,7 +245,7 @@ endif(GKICK_PLUGIN)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_WIN")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_WIN")
-	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_FOR_SHARED")
+#	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_FOR_SHARED")
 else ()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_OS_GNU")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_OS_GNU")
@@ -293,6 +316,12 @@ else(GKICK_PLUGIN_VST)
   message(STATUS "VST plugin: no")
 endif(GKICK_PLUGIN_VST)
 
+if(GKICK_PRESETS)
+  message(STATUS "Geonkick presets: yes" )
+else(GKICK_PRESETS)
+  message(STATUS "Geonkick presets: no")
+endif(GKICK_PRESETS)
+
 if (ENABLE_LOGGING)
   message(STATUS "Debug enabled: yes" )
 else(ENABLE_LOGGING)
@@ -301,12 +330,15 @@ endif(ENABLE_LOGGING)
 message(STATUS "------------------------------")
 
 if (GKICK_STANDALONE)
-  add_subdirectory(${GKICK_STANDALONE_DIR})
+   add_subdirectory(${GKICK_STANDALONE_DIR})
 endif (GKICK_STANDALONE)
 
 if (GKICK_PLUGIN)
-  add_subdirectory(${GKICK_COMMON_DIR}/plugin)
+   add_subdirectory(${GKICK_COMMON_DIR}/plugin)
 endif (GKICK_PLUGIN)
 
 add_subdirectory(data)
-add_subdirectory(presets)
+
+if (GKICK_PRESETS)
+   add_subdirectory(presets)
+endif (GKICK_PRESETS)

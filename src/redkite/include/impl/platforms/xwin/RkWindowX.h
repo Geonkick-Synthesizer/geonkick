@@ -69,13 +69,13 @@ class RkWindowX {
         bool pointerIsOverWindow() const;
         void setScaleFactor(double factor);
         double getScaleFactor() const;
+	void freeCanvasInfo();
 
  protected:
         bool openDisplay();
         bool isWindowCreated() const;
         bool hasParent() const;
         void createCanvasInfo();
-        void freeCanvasInfo();
 
  private:
         RK_DISABLE_COPY(RkWindowX);

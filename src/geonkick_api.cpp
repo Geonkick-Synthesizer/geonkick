@@ -81,13 +81,13 @@ void GeonkickApi::setEventQueue(RkEventQueue *queue)
 
 bool GeonkickApi::initDSP()
 {
-          if (!geonkickApi) {
-                  if (geonkick_create(&geonkickApi, sampleRate) != GEONKICK_OK) {
-	                  GEONKICK_LOG_ERROR("can't create geonkick API");
-                          return false;
-                  }
-	  }
-	  return true;
+        if (!geonkickApi) {
+                if (geonkick_create(&geonkickApi, sampleRate) != GEONKICK_OK) {
+                        GEONKICK_LOG_ERROR("can't create geonkick API");
+                        return false;
+                }
+        }
+        return true;
 }
 
 bool GeonkickApi::init()
@@ -96,6 +96,7 @@ bool GeonkickApi::init()
 	        return false;
 
 	loadPresets();
+
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
 	geonkick_enable_synthesis(geonkickApi, false);
 
@@ -906,6 +907,7 @@ void GeonkickApi::kickUpdatedCallback(void *arg,
                                       size_t size,
                                       size_t id)
 {
+        GEONKICK_LOG_DEBUG("size[" << id << "] : " << size);
         std::vector<gkick_real> buffer(size, 0);
         std::memcpy(buffer.data(), buff, size * sizeof(gkick_real));
         GeonkickApi *obj = static_cast<GeonkickApi*>(arg);
@@ -938,13 +940,17 @@ double GeonkickApi::getLimiterLevelerValue(size_t index) const
 void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
                                    size_t id)
 {
+        GEONKICK_LOG_DEBUG("id: " << id);
         std::lock_guard<std::mutex> lock(apiMutex);
-        if (id < getPercussionsNumber())
+        if (id < getPercussionsNumber()) {
+                GEONKICK_LOG_DEBUG("kickBuffers[id] = buffer" << id);
                 kickBuffers[id] = buffer;
+        }
         if (eventQueue && id == currentPercussion()) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ kickUpdated(); });
                 eventQueue->postAction(std::move(act));
+                GEONKICK_LOG_DEBUG("eventQueue->postAction / kickUpdated()");
         }
 }
 
@@ -955,7 +961,7 @@ std::vector<gkick_real> GeonkickApi::getInstrumentBuffer(int id) const
                 if (static_cast<decltype(kickBuffers.size())>(id) < kickBuffers.size())
                         return kickBuffers[id];
         }
-                return std::vector<gkick_real>();
+        return std::vector<gkick_real>();
 }
 
 std::vector<gkick_real> GeonkickApi::getKickBuffer() const
@@ -1668,21 +1674,21 @@ void GeonkickApi::loadPresets()
         std::unordered_set<std::string> prestsPaths;
         auto presetsPathSufix = std::filesystem::path(GEONKICK_APP_NAME) / "presets";
         std::filesystem::path presetsPath = getSettings("GEONKICK_CONFIG/USER_PRESETS_PATH");
-        prestsPaths.insert(presetsPath);
+        prestsPaths.insert(presetsPath.string());
 
 #ifdef GEONKICK_DATA_DIR
-        prestsPaths.insert(std::filesystem::path(GEONKICK_DATA_DIR) / presetsPathSufix);
+        prestsPaths.insert((std::filesystem::path(GEONKICK_DATA_DIR) / presetsPathSufix).string());
 #endif // GEONKICK_DATA_DIR
 
         const char *dataDirs = std::getenv("XDG_DATA_DIRS");
         if (dataDirs == nullptr || *dataDirs == '\0') {
-                prestsPaths.insert("/usr/share" / presetsPathSufix);
-                prestsPaths.insert("/usr/local/share" / presetsPathSufix);
+                prestsPaths.insert((std::filesystem::path("/usr/share") / presetsPathSufix).string());
+                prestsPaths.insert((std::filesystem::path("/usr/local/share") / presetsPathSufix).string());
         } else {
                 std::stringstream ss(dataDirs);
                 std::string path;
                 while (std::getline(ss, path, ':'))
-                        prestsPaths.insert(std::filesystem::path(path) / presetsPathSufix);
+                        prestsPaths.insert((std::filesystem::path(path) / presetsPathSufix).string());
         }
 
         for (const auto &path: prestsPaths) {
@@ -1739,7 +1745,7 @@ void GeonkickApi::setupPaths()
                                 return;
                         }
                 }
-                setSettings("GEONKICK_CONFIG/USER_DATA_PATH", dataPath);
+                setSettings("GEONKICK_CONFIG/USER_DATA_PATH", dataPath.string());
 
                 auto presetsPath = dataPath / std::filesystem::path("presets");
                 if (!std::filesystem::exists(presetsPath)) {
@@ -1748,7 +1754,7 @@ void GeonkickApi::setupPaths()
                                 return;
                         }
                 }
-                setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", presetsPath);
+                setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", presetsPath.string());
         } catch(const std::exception& e) {
                 GEONKICK_LOG_ERROR("error on setup user data paths: " << e.what());
         }

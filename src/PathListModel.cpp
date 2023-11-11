@@ -48,7 +48,7 @@ RkVariant PathListModel::itemData(size_t index, int dataType) const
                 if (index == 0)
                         return "Home";
                 else if (pathList[index].has_filename())
-                        return pathList[index].filename();
+                        return pathList[index].filename().string();
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Size) {
                 return RkSize(0, 18);
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Font) {
@@ -56,7 +56,7 @@ RkVariant PathListModel::itemData(size_t index, int dataType) const
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Color) {
                 return RkColor(150, 150, 150);
         } else if (static_cast<PathListDataType>(dataType) == PathListDataType::Path) {
-                return pathList[index];
+                return pathList[index].string();
         }
         return RkVariant();
 }

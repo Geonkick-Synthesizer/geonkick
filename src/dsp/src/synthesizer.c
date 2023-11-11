@@ -932,6 +932,7 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth,
                                gkick_real x,
                                gkick_real y)
 {
+        gkick_log_info("addd points------------------------------------->");
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -1263,7 +1264,7 @@ gkick_synth_process(struct gkick_synth *synth)
                  * of the synthesizer parameters for too long time.
                  */
                 if (pthread_mutex_trylock(&synth->lock) != 0) {
-                        usleep(50);
+                        geonkick_usleep(50);
                         /**
                          * Check how many tries for locking to avoind infinite loop.
                          * It should be maximum around 30ms.
@@ -1293,6 +1294,7 @@ gkick_synth_process(struct gkick_synth *synth)
 
 	gkick_synth_lock(synth);
         if (synth->buffer_callback != NULL && synth->callback_args != NULL) {
+                gkick_log_debug("synth->buffer_callback");
                 synth->buffer_callback(synth->callback_args,
                                        ((struct gkick_buffer*)synth->buffer)->buff,
                                        synth->buffer_size,

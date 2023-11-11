@@ -179,14 +179,14 @@ void KitWidget::showFileDialog(FileDialog::Type type)
                                          type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".gkit", ".GKIT"});
-        fileDialog->setHomeDirectory(kitModel->getHomePath());
+        fileDialog->setHomeDirectory(kitModel->getHomePath().string());
         if (type == FileDialog::Type::Open) {
-                fileDialog->setCurrentDirectoy(kitModel->workingPath("OpenKit"));
+                fileDialog->setCurrentDirectoy(kitModel->workingPath("OpenKit").string());
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this, openKit(file));
         } else {
-                fileDialog->setCurrentDirectoy(kitModel->workingPath("SaveKit"));
+                fileDialog->setCurrentDirectoy(kitModel->workingPath("SaveKit").string());
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this, saveKit(file));
@@ -273,8 +273,8 @@ void KitWidget::exportKitDialog()
                                          FileDialog::Type::Save,  "Export kit to sfz");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".sfz", ".sfz"});
-        fileDialog->setHomeDirectory(kitModel->getHomePath());       
-        fileDialog->setCurrentDirectoy(kitModel->workingPath("Export/Kit/Sfz"));
+        fileDialog->setHomeDirectory(kitModel->getHomePath().string());
+        fileDialog->setCurrentDirectoy(kitModel->workingPath("Export/Kit/Sfz").string());
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file),
                     kitModel, doExport(file, KitModel::ExportFormat::Sfz));

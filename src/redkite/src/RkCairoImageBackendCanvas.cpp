@@ -31,9 +31,6 @@ RkCairoImageBackendCanvas::RkCairoImageBackendCanvas(const RkSize &size,
         : canvasInfo{nullptr}
         , imageSize{size}
 {
-#ifdef RK_OS_WIN
-#elif RK_OS_MAC
-#else // X11
         auto cairoFormat = toCairoFormat(format);
         if (cairoFormat != CAIRO_FORMAT_INVALID && imageSize.width() > 0 && imageSize.height() > 0) {
                 canvasInfo = std::make_unique<RkCanvasInfo>();
@@ -48,7 +45,6 @@ RkCairoImageBackendCanvas::RkCairoImageBackendCanvas(const RkSize &size,
                                                                                 imageSize.height(),
                                                                                 stride);
         }
-#endif
 }
 
 RkCairoImageBackendCanvas::~RkCairoImageBackendCanvas()

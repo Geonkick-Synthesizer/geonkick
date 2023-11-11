@@ -26,13 +26,30 @@
 #include "RkCanvasInfo.h"
 #include "RkLog.h"
 
+#ifdef RK_OS_WIN
+#define _USE_MATH_DEFINES
+#include <cmath>
+#else // GNU/Linux
 #include <math.h>
+#endif
 
 RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
-        : cairoContext{cairo_create(canvas->getCanvasInfo()->cairo_surface)}
+        : canvas {canvas}
+        , cairoContext{nullptr}
 {
-        cairo_set_font_size(context(), 10);
-        cairo_set_line_width (context(), 1);
+        auto canvaseInfo = canvas->getCanvasInfo();
+        if (!canvaseInfo) {
+                RK_LOG_ERROR("can't get canvas info");
+        } else {
+                cairoContext = cairo_create(canvaseInfo->cairo_surface);
+                if (!cairoContext) {
+                        RK_LOG_ERROR("can't create Cairo context");
+                } else {
+                        RK_LOG_DEBUG("Cairo context created");
+                        cairo_set_font_size(context(), 10);
+                        cairo_set_line_width (context(), 1);
+                }
+        }
 }
 
 cairo_t* RkCairoGraphicsBackend::context() const
@@ -43,6 +60,9 @@ cairo_t* RkCairoGraphicsBackend::context() const
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
         cairo_destroy(context());
+#ifdef RK_OS_WIN
+        canvas->freeCanvasInfo();
+#endif // RK_OS_WIN
 }
 
 void RkCairoGraphicsBackend::drawText(const std::string &text, int x, int y)
@@ -64,7 +84,13 @@ void RkCairoGraphicsBackend::drawImage(const RkImage &image, int x, int y)
         cairo_set_source_surface(context(),
                                  image.getCanvasInfo()->cairo_surface,
                                  x, y);
+        if (auto status = cairo_status(context()); status != CAIRO_STATUS_SUCCESS) {
+                RK_LOG_ERROR("cairo_set_source_surface: " << static_cast<int>(status));
+        }
         cairo_paint(context());
+        if (auto status = cairo_status(context()); status != CAIRO_STATUS_SUCCESS) {
+                RK_LOG_ERROR("cairo_paint: " << static_cast<int>(status));
+        }
 }
 
 void RkCairoGraphicsBackend::drawEllipse(const RkPoint& p, int width, int height)

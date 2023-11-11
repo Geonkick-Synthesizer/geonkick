@@ -30,6 +30,8 @@
 
 class RkEvent;
 class RkTimer;
+class RkWindowId;
+class RkWidget;
 
 class RK_EXPORT RkEventQueue {
  public:
@@ -44,6 +46,7 @@ class RK_EXPORT RkEventQueue {
                             Rk::KeyModifiers modifier = Rk::KeyModifiers::NoModifier);
         void removeObject(RkObject *obj);
         void postEvent(RkObject *obj, std::unique_ptr<RkEvent> event);
+        void postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event);
         void postAction(std::unique_ptr<RkAction> act);
         void subscribeTimer(RkTimer *timer);
         void unsubscribeTimer(RkTimer *timer);
@@ -58,6 +61,8 @@ class RK_EXPORT RkEventQueue {
         void clearQueue();
         RkObject* findObjectByName(const std::string &name) const;
         void setScaleFactor(double factor);
+        RkWidget* getWidget(const RkWindowId &id) const;
+        void dispatchEvents();
 
  protected:
         RK_DECLARE_IMPL(RkEventQueue);

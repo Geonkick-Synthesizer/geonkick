@@ -67,7 +67,6 @@ class RK_EXPORT RkImage : public RkCanvas {
 
          }
         void fill(const RkColor &color);
-        const RkCanvasInfo* getCanvasInfo() const;
         unsigned char* data() const;
         std::vector<unsigned char> dataCopy() const;
         Format format() const;
@@ -75,6 +74,8 @@ class RK_EXPORT RkImage : public RkCanvas {
         int height() const;
         RkSize size() const;
         bool isNull() const;
+        const RkCanvasInfo* getCanvasInfo() const override;
+        void freeCanvasInfo() override;
 
  protected:
         RK_DECLARE_IMPL(RkImage);

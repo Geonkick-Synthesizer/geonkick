@@ -29,6 +29,7 @@ RkLabel::RkLabel(RkWidget *parent, const std::string &text)
         : RkWidget(parent, std::make_unique<RkLabel::RkLabelImpl>(this, text, parent))
         , impl_ptr{static_cast<RkLabel::RkLabelImpl*>(o_ptr.get())}
 {
+        RK_LOG_DEBUG("called");
 }
 
 void RkLabel::setText(const std::string &text)
@@ -49,6 +50,7 @@ void RkLabel::setImage(const RkImage &image)
 
 void RkLabel::paintEvent(RkPaintEvent *event)
 {
+        RK_LOG_DEBUG("called");
         RK_UNUSED(event);
         impl_ptr->drawLabel();
 }

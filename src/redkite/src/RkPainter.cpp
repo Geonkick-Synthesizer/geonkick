@@ -24,6 +24,8 @@
 #include "RkPainter.h"
 #include "RkPainterImpl.h"
 
+#include <RkLog.h>
+
 RkPainter::RkPainter(RkCanvas *canvas)
         : o_ptr{std::make_unique<RkPainterImpl>(this, canvas)}
 {
@@ -64,6 +66,7 @@ void RkPainter::drawText(const RkRect &rect,
 
 void RkPainter::drawImage(const RkImage &image, int x, int y)
 {
+        RK_LOG_DEBUG("called");
         if (!image.isNull())
                 o_ptr->drawImage(image, x, y);
 }

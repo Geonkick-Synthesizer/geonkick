@@ -318,6 +318,10 @@ void RkWindowX::createCanvasInfo()
         canvasInfo->cairo_surface = cairo_xlib_surface_create(display(), xWindow,
                                                               visualInfo.visual,
                                                               size().width() * scaleFactor, size().height() * scaleFactor);
+	if (!canvasInfo->cairo_surface) {
+                RK_LOG_ERROR("error on creating Cairo Win32 surface");
+                return;
+        }
         cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 

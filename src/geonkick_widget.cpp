@@ -29,7 +29,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
                                const RkNativeWindowInfo &info,
                                Rk::WindowFlags flags)
         : RkWidget(app, info, flags)
-       , viewingState{nullptr}
+        , viewingState{nullptr}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});

@@ -37,6 +37,7 @@ class KitWidget;
 class EnvelopeWidget;
 class PresetBrowserView;
 class PresetBrowserModel;
+class SampleBrowser;
 
 class ControlArea: public GeonkickWidget
 {
@@ -60,6 +61,12 @@ class ControlArea: public GeonkickWidget
         const std::vector<std::unique_ptr<Oscillator>> &oscillators;
         PresetBrowserModel *presetsModel;
         RkWidget* currentWidget;
+        ControlsWidget *controlsWidget;
+#ifndef GEONKICK_SINGLE
+        KitWidget *kitWidget;
+#endif // GEONKICK_SINGLE
+        PresetBrowserView *presetsWidget;
+        SampleBrowser *samplesWidget;
 };
 
 #endif // GKICK_CONTROL_AREA_H

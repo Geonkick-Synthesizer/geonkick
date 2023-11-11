@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "RkEventQueue.h"
 #include "RkEventQueueImpl.h"
 
 RkEventQueue::RkEventQueue()
@@ -67,6 +66,11 @@ void RkEventQueue::postEvent(RkObject *obj, std::unique_ptr<RkEvent> event)
         o_ptr->postEvent(obj, std::move(event));
 }
 
+void RkEventQueue::postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event)
+{
+        o_ptr->postEvent(id, std::move(event));
+}
+
 void RkEventQueue::postAction(std::unique_ptr<RkAction> act)
 {
         o_ptr->postAction(std::move(act));
@@ -101,13 +105,6 @@ void RkEventQueue::processTimers()
 
 void RkEventQueue::processQueue()
 {
-#ifdef RK_LOG_DEBUG_LEVEL
-        static int n = 0;
-        if (++n > 10000) {
-                RK_LOG_DEBUG("called");
-                n = 0;
-        }
-#endif // RK_LOG_DEBUG_LEVEL
         // The order is important.
         processTimers();
         processActions();
@@ -150,4 +147,14 @@ RkObject* RkEventQueue::findObjectByName(const std::string &name) const
 void RkEventQueue::setScaleFactor(double factor)
 {
         o_ptr->setScaleFactor(factor);
+}
+
+RkWidget* RkEventQueue::getWidget(const RkWindowId &id) const
+{
+        return o_ptr->findWidget(id);
+}
+
+void RkEventQueue::dispatchEvents()
+{
+        return o_ptr->dispatchEvents();
 }

@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 3.8)
 
 project(redkite VERSION 1.3.1)
 
-option(ENABLE_EXAMPLES "Build examples" OFF)
+option(RK_ENABLE_EXAMPLES "Build examples" OFF)
+option(RK_BUILD_TOOLS "Build tools" ON)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
   message(STATUS "Build Redkite for Windows")
@@ -68,6 +69,9 @@ elseif (RK_GRAPHICS_BACKEND MATCHES Cairo)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_GRAPHICS_CAIRO_BACKEND")
 endif()
 
+include_directories(${RK_INCLUDE_PATH})
+include_directories(${RK_INCLUDE_PATH}/impl)
+
 set(RK_HEADERS
   ${RK_INCLUDE_PATH}/Rk.h
   ${RK_INCLUDE_PATH}/RkVariant.h
@@ -103,8 +107,8 @@ set(RK_HEADERS
   ${RK_INCLUDE_PATH}/RkTransition.h)
 
 set(RK_HEADERS_IMPL
-  ${RK_INCLUDE_PATH}/impl/RkMainImpl.h
   ${RK_INCLUDE_PATH}/impl/RkObjectImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkMainImpl.h
   ${RK_INCLUDE_PATH}/impl/RkShortcut.h
   ${RK_INCLUDE_PATH}/impl/RkEventQueueImpl.h
   ${RK_INCLUDE_PATH}/impl/RkWidgetImpl.h
@@ -116,7 +120,8 @@ set(RK_HEADERS_IMPL
   ${RK_INCLUDE_PATH}/impl/RkProgressBarImpl.h
   ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
   ${RK_INCLUDE_PATH}/impl/RkImageImpl.h
-  ${RK_INCLUDE_PATH}/impl/RkPainterImpl.h)
+  ${RK_INCLUDE_PATH}/impl/RkPainterImpl.h
+  )
 
 if (RK_GRAPHICS_BACKEND MATCHES Cairo)
   set(RK_GRAPHICS_BACKEND_HEADRES
@@ -188,21 +193,16 @@ else() # defaut GNU/Linux
     ${RK_SRC_PATH}/platforms/xwin/RkEventQueueX.cpp)
 endif()
 
-add_definitions(-fPIC)
-include_directories(${RK_INCLUDE_PATH})
-include_directories(${RK_INCLUDE_PATH}/impl)
-
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
   include_directories(${RK_INCLUDE_PATH}/impl/platforms/win)
 elseif (CMAKE_SYSTEM_NAME MATCHES Darwin)
   include_directories(${RK_INCLUDE_PATH}/impl/platforms/mac)
 # not implemented yet
 else() # defualt GNU/Linux
+add_definitions(-fPIC)
 include_directories(${RK_INCLUDE_PATH}/impl/platforms/xwin)
 endif()
 
-# Redkite is not supposed to be provided as shared library,
-# it must be only as static library for development.
 add_library(redkite STATIC
   ${RK_HEADERS}
   ${RK_HEADERS_IMPL}
@@ -222,7 +222,9 @@ add_library(redkite STATIC
 #  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
 #endif()
 
-add_subdirectory(tools)
-if (ENABLE_EXAMPLES)
-  add_subdirectory(examples)
-endif (ENABLE_EXAMPLES)
+if(RK_BUILD_TOOLS)
+	add_subdirectory(tools)
+endif(RK_BUILD_TOOLS)
+if(RK_ENABLE_EXAMPLES)
+   add_subdirectory(examples)
+endif(RK_ENABLE_EXAMPLES)

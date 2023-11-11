@@ -103,7 +103,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         locationEdit->setFont(font());
         locationEdit->setTitle("locationEdit");
         locationEdit->show();
-        locationEdit->setText(geonkickApi->currentWorkingPath("ExportDialog/Location"));
+        locationEdit->setText(geonkickApi->currentWorkingPath("ExportDialog/Location").string());
         locationEdit->setSize(120, 25);
         locationEdit->setPosition(82, 54);
         RK_ACT_BIND(locationEdit, textEdited, RK_ACT_ARGS(const std::string& text), this, resetProgressBar());
@@ -267,7 +267,7 @@ void ExportWidget::browse()
                                          "Select Path - " + std::string(GEONKICK_NAME));
         fileDialog->setPosition(20, 20);
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
-        fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location"));
+        fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location").string());
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file), this,
                     setLocation(fileDialog->currentDirectory()));
@@ -391,7 +391,7 @@ int ExportWidget::exportFormat()
 std::string ExportWidget::getFilePath()
 {
         auto path = std::filesystem::path(fileNameEdit->text());
-        std::string ext = path.extension();
+        std::string ext = path.extension().string();
         if (ext == ".wav" || ext == ".WAV"
             || ext == ".flac" || ext == ".FLAC"
             || ext == ".ogg" || ext == ".OGG") {
@@ -400,7 +400,7 @@ std::string ExportWidget::getFilePath()
                 path = std::filesystem::path(path.string() + "." + fileSuffix());
         }
 
-        return std::filesystem::path(locationEdit->text()) / path;
+        return (std::filesystem::path(locationEdit->text()) / path).string();
 }
 
 std::string ExportWidget::fileSuffix()

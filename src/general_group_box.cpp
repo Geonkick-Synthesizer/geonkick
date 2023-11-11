@@ -67,7 +67,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplitudeEnvelopeBox->show();
 
         kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-        kickAmplitudeKnob->setFixedSize(80, 80);
+        kickAmplitudeKnob->setFixedSize(80, 78);
         kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         kickAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
@@ -85,7 +85,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplEnvelopeButton->setFixedSize(63, 21);
         amplEnvelopeButton->setPosition(kickAmplitudeKnob->x() + kickAmplitudeKnob->width() / 2
                                         - amplEnvelopeButton->width() / 2,
-                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height() - 3);
+                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height());
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
                                         RkButton::State::Unpressed);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),

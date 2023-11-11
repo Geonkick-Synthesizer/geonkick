@@ -58,6 +58,7 @@ class RkCairoGraphicsBackend {
         cairo_t* context() const;
 
  private:
+        RkCanvas *canvas;
         cairo_t* cairoContext;
 };
 

@@ -37,7 +37,7 @@ class RkObject::RkObjectImpl {
         void removeChildrens();
         RkObject* parent() const;
         const std::unordered_set<RkObject*>& getChildren() const;
-        void setEventQueue(RkEventQueue *queue);
+        virtual void setEventQueue(RkEventQueue *queue);
         RkEventQueue* getEventQueue() const;
         void addObserver(std::unique_ptr<RkObserver> ob);
         void removeObservers(RkObject *obj);

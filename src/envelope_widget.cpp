@@ -88,7 +88,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
 
 void EnvelopeWidget::createButtomMenu()
 {
-        auto buttomAreaWidget = new GeonkickWidget(this);
+        auto buttomAreaWidget = new GeonkickWidget(drawArea);
         buttomAreaWidget->setBackgroundColor(40, 40, 40);
         buttomAreaWidget->setFixedSize(90, 20);
         buttomAreaWidget->setPosition(55 + drawArea->x(),

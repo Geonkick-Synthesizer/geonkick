@@ -29,7 +29,11 @@
 #ifdef RK_GRAPHICS_CAIRO_BACKEND
 
 #include <cairo/cairo.h>
+#if RK_OS_WIN
+#include <cairo/cairo-win32.h>
+#else // GNU/Linux
 #include <cairo/cairo-xlib.h>
+#endif 
 
 struct RkCanvasInfo {
         cairo_surface_t* cairo_surface;

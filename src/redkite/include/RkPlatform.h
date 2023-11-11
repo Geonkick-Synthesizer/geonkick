@@ -27,6 +27,34 @@
 #include "Rk.h"
 #include "RkLog.h"
 
+#ifdef RK_OS_WIN
+#include <windows.h>
+
+struct RK_EXPORT RkWindowId {
+    RkWindowId(HWND arg = nullptr) : id(arg) {}
+    HWND id;
+};
+
+class RK_EXPORT RkNativeWindowInfo {
+	 public:
+        RkNativeWindowInfo(HWND arg = nullptr)
+	  : window(arg) {}
+        ~RkNativeWindowInfo() = default;
+        HINSTANCE instance;
+        std::string className;
+        HWND window;
+	double scaleFactor;
+};
+
+HINSTANCE RK_EXPORT rk_win_api_instance();
+LPCSTR RK_EXPORT rk_win_api_class_name();
+RkNativeWindowInfo RK_EXPORT rk_from_native_win(HWND window, HINSTANCE instance, LPCSTR className);
+RkWindowId RK_EXPORT rk_id_from_win(HWND window);
+
+#define RK_WIN_MESSAGE_PAINT (WM_USER + 0x0001)
+
+#elif RK_OS_MAC
+#else // X11 as default
 #include <X11/Xlib.h>
 
 struct RK_EXPORT RkWindowId {
@@ -56,4 +84,5 @@ RkNativeWindowInfo RK_EXPORT rk_from_native_x11(Display* display,
                                                 Window window);
 RkWindowId RK_EXPORT rk_id_from_x11(Window window);
 
+#endif // X11
 #endif // RK_PLATFORM_H

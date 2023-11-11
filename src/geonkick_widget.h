@@ -50,7 +50,7 @@ class GeonkickWidget: public RkWidget
         ViewState* viewState() const;
 
  protected:
-        void paintEvent(RkPaintEvent *event) final;
+        void paintEvent(RkPaintEvent *event) override;
         virtual void paintWidget(RkPaintEvent *event);
         void mouseButtonPressEvent(RkMouseEvent *event) override;
 

@@ -49,6 +49,7 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         RkWidgetImpl(RkWidgetImpl &&other) = delete;
         RkWidgetImpl& operator=(RkWidgetImpl &&other) = delete;
         virtual ~RkWidgetImpl();
+        void setEventQueue(RkEventQueue *queue) override;
         Rk::WindowFlags windowFlags() const;
         void show(bool b);
 	bool isShown() const;
@@ -78,6 +79,7 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         const RkColor& background() const;
         RkRect rect() const;
         const RkCanvasInfo* getCanvasInfo() const;
+        void freeCanvasInfo();
         void update();
         static Rk::WidgetAttribute defaultWidgetAttributes();
         Rk::Modality modality() const;

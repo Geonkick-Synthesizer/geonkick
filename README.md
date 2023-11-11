@@ -12,7 +12,7 @@ claps, hi-hats, shakers, and unique effect sounds.
 
 **Author and Maintainer:** Iurie Nistor
 
-**Version:** 2.10.2
+**Version:** 3.0.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 

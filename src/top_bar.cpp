@@ -97,14 +97,15 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         , presetsButton{nullptr}
         , samplesButton{nullptr}
 {
+        setName("TopBar");
         setFixedSize({parent->width(), 30});
         auto mainLayout = new RkContainer(this);
         mainLayout->setSize(size());
 
         auto logo = new RkLabel(this);
+        logo->setBackgroundColor(background());
         RkImage image(62, 10, RK_IMAGE_RC(logo));
         logo->setSize(image.width(), image.height());
-        logo->setBackgroundColor(68, 68, 70);
         logo->setImage(image);
         logo->show();
         mainLayout->addWidget(logo);
@@ -291,11 +292,11 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         samplesButton->setPressed(viewState()->getMainView() == ViewState::View::Samples);
         samplesButton->setFixedSize(54, 20);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_off)),
-                               RkButton::State::Unpressed);
+                                RkButton::State::Unpressed);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_active)),
-                               RkButton::State::Pressed);
+                                RkButton::State::Pressed);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_hover)),
-                               RkButton::State::UnpressedHover);
+                                RkButton::State::UnpressedHover);
         samplesButton->show();
         RK_ACT_BIND(samplesButton, pressed, RK_ACT_ARGS(),
                     viewState(), setMainView(ViewState::View::Samples));
@@ -378,7 +379,7 @@ void TopBar::createLyersButtons(RkContainer *mainLayout)
         RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b),
                     kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer3, b));
         RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b),
-                    kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer2, b));
+        kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer2, b));
 }
 
 void TopBar::setPresetName(const std::string &name)
