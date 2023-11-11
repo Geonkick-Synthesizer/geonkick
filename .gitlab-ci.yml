@@ -1,44 +1,26 @@
-name: Windows Build
+stages:
+  - build
 
-on:
-  push:
-    branches:
-      - version3
+variables:
+  ARCHIVE_NAME: geonkick
 
-jobs:
-  build:
-    runs-on: windows-latest
-    
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-    
-    - name: Install MSYS2
-      run: |
-        Invoke-WebRequest -Uri 'https://github.com/msys2/msys2-installer/releases/download/2023-10-26/msys2-x86_64-20231026.exe' -OutFile 'msys2-x86_64-20231026.exe'
-        Start-Process -FilePath 'msys2-x86_64-20231026.exe' -ArgumentList '/S' -Wait
-        RefreshEnv
-        pacman -Syu --noconfirm
-        pacman -S --noconfirm mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-x86_64-jack2 mingw-w64-x86_64-libsndfile mingw-w64-x86_64-openssl mingw-w64-x86_64-rapidjson mingw-w64-x86_64-lv2 mingw-w64-x86_64-cairo
-	
-    - name: Clone VST3 SDK
-      run: git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
-      working-directory: ${{ github.workspace }}
-    
-    - name: Build Project
-      run: |
-        mkdir -p build/install
-        cd build
-        cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=${{ github.workspace }}/vst3sdk ..
-        make
-        make install
-        tar czf geonkick.tar.gz install
-        tar cjf geonkick.tar.bz2 install
-    
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: geonkick-artifacts
-        path: |
-          build/geonkick.tar.gz
-          build/geonkick.tar.bz2
+before_script:
+  - apt-get update -qy
+  - apt-get install -y build-essential cmake libjack-dev libsndfile-dev libssl-dev rapidjson-dev lv2-dev libcairo2-dev
+
+build:
+  stage: build
+  script:
+    - mkdir -p build/install
+    - cd build
+    - cmake -DCMAKE_INSTALL_PREFIX=./install ..
+    - make
+    - make install
+    - tar czf ${ARCHIVE_NAME}.tar.gz install
+    - tar cjf ${ARCHIVE_NAME}.tar.bz2 install
+  artifacts:
+    paths:
+      - build/${ARCHIVE_NAME}.tar.gz
+      - build/${ARCHIVE_NAME}.tar.bz2
+  only:
+    - main
