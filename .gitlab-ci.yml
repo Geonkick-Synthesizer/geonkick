@@ -3,6 +3,7 @@ stages:
 
 variables:
   ARCHIVE_NAME: geonkick
+  ARTIFACTS_PATH: GNU/Linux (LV2 & Standalone)
 
 before_script:
   - apt-get update -qy
@@ -16,11 +17,11 @@ build:
     - cmake -DCMAKE_INSTALL_PREFIX=./install ..
     - make
     - make install
-    - tar czf ${ARCHIVE_NAME}.tar.gz install
-    - tar cjf ${ARCHIVE_NAME}.tar.bz2 install
+    - tar czf "${ARCHIVE_NAME}.tar.gz" install
+    - tar cjf "${ARCHIVE_NAME}.tar.bz2" install
   artifacts:
     paths:
-      - build/${ARCHIVE_NAME}.tar.gz
-      - build/${ARCHIVE_NAME}.tar.bz2
+      - ${ARTIFACTS_PATH}/${ARCHIVE_NAME}.tar.gz
+      - ${ARTIFACTS_PATH}/${ARCHIVE_NAME}.tar.bz2
   only:
     - main
