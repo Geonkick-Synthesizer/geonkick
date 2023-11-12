@@ -23,7 +23,7 @@ jobs:
       run: C:\Windows\system32\cmd.exe /D /S /C D:\a\_temp\setup-msys2\msys2.cmd -c "'pacman' '--noconfirm' '-Syuu' '--overwrite' '*'"
     
     - name: Install Dependencies
-      run: C:\Windows\system32\cmd.exe /D /S /C D:\a\_temp\setup-msys2\msys2.cmd -c "'pacman' '--noconfirm' '-S' 'git' 'mingw-w64-ucrt-x86_64-toolchain' 'mingw-w64-ucrt-x86_64-cmake' 'mingw-w64-ucrt-x86_64-libsndfile' 'mingw-w64-ucrt-x86_64-openssl' 'mingw-w64-ucrt-x86_64-rapidjson' 'mingw-w64-ucrt-x86_64-cairo' 'mingw-w64-ucrt-x86_64-jack2'"
+      run: C:\Windows\system32\cmd.exe /D /S /C D:\a\_temp\setup-msys2\msys2.cmd -c "'pacman' '--noconfirm' '-S' 'git' 'mingw-w64-ucrt-x86_64-toolchain' 'mingw-w64-ucrt-x86_64-cmake' 'mingw-w64-ucrt-x86_64-libsndfile' 'mingw-w64-ucrt-x86_64-openssl' 'mingw-w64-ucrt-x86_64-rapidjson' 'mingw-w64-ucrt-x86_64-cairo'"
     
     - name: Clone VST3 SDK
       run: |
@@ -35,7 +35,7 @@ jobs:
         mkdir -p build/install
         cd build
         find / -name *.cmake
-        cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=${{ github.workspace }}/vst3sdk ..
+        cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=D:/a/geonkick/geonkick/vst3sdk -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF ..
         make
     
     - name: Upload Artifacts
