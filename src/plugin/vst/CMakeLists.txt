@@ -30,7 +30,7 @@ set(GKICK_VST_SOURCES
   )
 
 set(target geonkick_vst)
-link_directories(C:/msys64/ucrt64/lib)
+link_directories(/ucrt64/lib)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
@@ -49,8 +49,6 @@ endif ()
 
 target_link_libraries(${target} PRIVATE geonkick_common api_plugin redkite)
 target_link_libraries(${target} PRIVATE base sdk sdk_common pluginterfaces)
-#target_link_libraries(${target} PRIVATE "-lstdc++ -lstdc++fs -lcrypto -lsndfile -lcairo -lm -lpthread")
-#target_link_libraries(${target} PRIVATE "-Wl,--trace-symbol=_ZSt28__throw_bad_array_new_lengthv -mwindows -static-libgcc -static-libstdc++ -lcrypto -lsndfile -lcairo -lm -lpthread")
 target_link_libraries(${target} PRIVATE
       "-mwindows"
       OpenSSL::Crypto

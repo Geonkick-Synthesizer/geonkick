@@ -8,40 +8,37 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    
+    defaults:
+      run:
+        shell: msys2 {0}
+
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-    
-    - name: Set up MSYS2
-      uses: msys2/setup-msys2@v2
-      with:
-        msystem: UCRT64
-        update: true
-    
-    - name: Update Package Databases
-      run: C:\Windows\system32\cmd.exe /D /S /C D:\a\_temp\setup-msys2\msys2.cmd -c "'pacman' '--noconfirm' '-Syuu' '--overwrite' '*'"
-    
-    - name: Install Dependencies
-      run: C:\Windows\system32\cmd.exe /D /S /C D:\a\_temp\setup-msys2\msys2.cmd -c "'pacman' '--noconfirm' '-S' 'git' 'mingw-w64-ucrt-x86_64-toolchain' 'mingw-w64-ucrt-x86_64-cmake' 'mingw-w64-ucrt-x86_64-libsndfile' 'mingw-w64-ucrt-x86_64-openssl' 'mingw-w64-ucrt-x86_64-rapidjson' 'mingw-w64-ucrt-x86_64-cairo'"
-    
-    - name: Clone VST3 SDK
-      run: |
-        D:\a\_temp\setup-msys2\msys2.cmd -c "'git' 'clone' '--recursive' 'https://github.com/steinbergmedia/vst3sdk.git'"
-      working-directory: ${{ github.workspace }}
-    
-    - name: Build Project
-      run: |
-        mkdir -p build/install
-        cd build
-        find / -name "*.cmake"
-        D:\a\_temp\setup-msys2\msys2.cmd -c "'cmake' '-G' '\"MinGW Makefiles\"' '-DCMAKE_INSTALL_PREFIX=./install' '-DVST3_SDK_PATH=D:/a/geonkick/geonkick/vst3sdk' '-DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF' '-DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF' '-DSMTG_ENABLE_VSTGUI_SUPPORT=OFF' .."
-        D:\a\_temp\setup-msys2\msys2.cmd -c "'make'"
-    
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: geonkick-artifacts
-        path: |
-          build/geonkick.tar.gz
-          build/geonkick.tar.bz2
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: git make mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo
+
+      - name: Clone Repositories
+        run: |
+          git clone https://github.com/Geonkick-Synthesizer/geonkick.git
+          git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
+
+      - name: Build Project
+        run: |
+          mkdir -p build/install
+          cd build
+          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF /d/a/geonkick/geonkick/geonkick
+          ls ./
+          sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
+          make
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: geonkick-artifacts
+          path: build/geonkick.tar.gz build/geonkick.tar.bz2
