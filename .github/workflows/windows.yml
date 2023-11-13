@@ -35,7 +35,7 @@ jobs:
         mkdir -p build/install
         cd build
         find / -name "*.cmake"
-        D:\a\_temp\setup-msys2\msys2.cmd -c "'cmake' '-G' 'Unix Makefiles' '-DCMAKE_INSTALL_PREFIX=./install' '-DVST3_SDK_PATH=D:/a/geonkick/geonkick/vst3sdk' '-DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF' '-DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF' '-DSMTG_ENABLE_VSTGUI_SUPPORT=OFF' .."
+        D:\a\_temp\setup-msys2\msys2.cmd -c "'cmake' '-G' 'MinGW Makefiles' '-DCMAKE_INSTALL_PREFIX=./install' '-DVST3_SDK_PATH=D:/a/geonkick/geonkick/vst3sdk' '-DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF' '-DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF' '-DSMTG_ENABLE_VSTGUI_SUPPORT=OFF' .."
         D:\a\_temp\setup-msys2\msys2.cmd -c "'make'"
     
     - name: Upload Artifacts
