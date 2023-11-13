@@ -27,7 +27,7 @@ jobs:
     
     - name: Clone VST3 SDK
       run: |
-        D:\a\_temp\setup-msys2\msys2.cmd -c "'git clone --recursive https://github.com/steinbergmedia/vst3sdk.git'"
+        D:\a\_temp\setup-msys2\msys2.cmd -c "'git' 'clone' '--recursive' 'https://github.com/steinbergmedia/vst3sdk.git'"
       working-directory: ${{ github.workspace }}
     
     - name: Build Project
