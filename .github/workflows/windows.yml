@@ -34,7 +34,7 @@ jobs:
           cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF /d/a/geonkick/geonkick/geonkick
           ls ./
           sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
-          make
+          make VERBOSE=1
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
