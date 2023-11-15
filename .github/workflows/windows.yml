@@ -40,10 +40,10 @@ jobs:
         run: |
           tar -czvf /d/a/geonkick/build/Geonkick.vst3.tar.gz -C /d/a/geonkick/build/ Geonkick.vst3
           ls -l /d/a/geonkick/build/
-          ls /d/a/_temp/msys64/home
+          ls /d/a/_temp/msys64/home/runneradmin
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-artifacts
-          path: /d/a/geonkick/build/Geonkick.vst3.tar.gz
+          path: D:\a\geonkick\build\Geonkick.vst3.tar.gz 
