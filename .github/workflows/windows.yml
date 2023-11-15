@@ -40,5 +40,8 @@ jobs:
         run: |
           tar -czvf /d/a/geonkick/build/Geonkick.vst3.tar.gz -C /d/a/geonkick/build/ Geonkick.vst3
           ls -l /d/a/geonkick/build/
-          echo "Uploading artifacts..."
-          gh run artifact upload --name geonkick-artifacts /d/a/geonkick/build/Geonkick.vst3.tar.gz
+
+      - name: Upload Artifacts
+        run: |
+         echo "Uploading artifacts..."
+         gh run artifact upload --name geonkick-artifacts /d/a/geonkick/build/Geonkick.vst3.tar.gz
