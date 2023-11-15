@@ -27,19 +27,21 @@ jobs:
           pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo make
           git clone https://github.com/Geonkick-Synthesizer/geonkick.git
           git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
-          mkdir -p "$GITHUB_WORKSPACE/geonkick/build"
-          cd "$GITHUB_WORKSPACE/geonkick/build"
-          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH="$GITHUB_WORKSPACE/geonkick/geonkick/vst3sdk" -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF "$GITHUB_WORKSPACE/geonkick/geonkick/geonkick"
-          sed -i 's/std:://g' "$GITHUB_WORKSPACE/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h"
+          mkdir -p /d/a/geonkick/build
+          cd /d/a/geonkick/build
+          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF /d/a/geonkick/geonkick/geonkick
+          sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
           make VERBOSE=1
-          mkdir -p "Geonkick.vst3/Contents/x86-win"
-          cp -fr "$GITHUB_WORKSPACE/geonkick/build/src/plugin/vst/Geonkick.dll" "$GITHUB_WORKSPACE/geonkick/build/Geonkick.vst3/Contents/x86-win/Geonkick.vst3"
+          mkdir -p Geonkick.vst3/Contents/x86-win
+          cp -fr /d/a/geonkick/build/src/plugin/vst/Geonkick.dll  /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/Geonkick.vst3
+          ls -l /d/a/geonkick/build/
 
       - name: Create Tarball
-        run: tar -czvf "$GITHUB_WORKSPACE/geonkick/build/Geonkick.vst3.tar.gz" -C "$GITHUB_WORKSPACE/geonkick/build/" "Geonkick.vst3"
+        run: |
+          tar -czvf /d/a/geonkick/build/Geonkick.vst3.tar.gz -C /d/a/geonkick/build/ Geonkick.vst3
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-artifacts
-          path: "$GITHUB_WORKSPACE/geonkick/build/Geonkick.vst3.tar.gz"
+          path: /d/a/geonkick/build/Geonkick.vst3.tar.gz
