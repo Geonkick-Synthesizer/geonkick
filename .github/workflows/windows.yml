@@ -34,7 +34,6 @@ jobs:
           make VERBOSE=1
           mkdir -p Geonkick.vst3/Contents/x86-win
           cp -fr /d/a/geonkick/build/src/plugin/vst/Geonkick.dll Geonkick.vst3/Contents/x86-win/Geonkick.vst3
-          ldd Geonkick.vst3/Contents/x86-win/Geonkick.vst3
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
