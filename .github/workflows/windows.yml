@@ -39,7 +39,7 @@ jobs:
       - name: Create Tarball
         run: |
           tar -czvf /d/a/geonkick/build/Geonkick.vst3.tar.gz -C /d/a/geonkick/build/ Geonkick.vst3
-
+          ls -l /d/a/geonkick/build/
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
