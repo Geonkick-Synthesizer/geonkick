@@ -39,5 +39,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-artifacts
-          path: Geonkick.vst3
+          path: /d/a/geonkick/build/Geonkick.vst3
 
