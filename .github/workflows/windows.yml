@@ -32,27 +32,27 @@ jobs:
           cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF /d/a/geonkick/geonkick/geonkick
           sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
           make VERBOSE=1
-          mkdir -p Geonkick.vst3/Contents/x86-win
-          cp -fr /d/a/geonkick/build/src/plugin/vst/Geonkick.dll  /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/Geonkick.vst3
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libcairo-2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libgcc_s_seh-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libstdc++-6.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libfontconfig-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libfreetype-6.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpng16-16.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/zlib1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libwinpthread-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libexpat-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libiconv-2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libintl-8.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbz2-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbrotlidec.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libharfbuzz-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbrotlicommon.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libglib-2.0-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpixman-1-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libgraphite2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpcre2-8-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86-win/
+          mkdir -p Geonkick.vst3/Contents/x86_64-win
+          cp -fr /d/a/geonkick/build/src/plugin/vst/Geonkick.dll  /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/Geonkick.vst3
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libcairo-2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libgcc_s_seh-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libstdc++-6.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libfontconfig-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libfreetype-6.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpng16-16.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/zlib1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libwinpthread-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libexpat-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libiconv-2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libintl-8.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbz2-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbrotlidec.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libharfbuzz-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbrotlicommon.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libglib-2.0-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpixman-1-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libgraphite2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpcre2-8-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
 
       - name: Create Tarball
         run: |
