@@ -31,7 +31,7 @@
 #ifdef GEONKICK_OS_GNU
 GKickVstTimer::GKickVstTimer(RkMain *app)
         : guiApp{app}
-        : countT{1}
+        , countT{1}
 {
 }
 
