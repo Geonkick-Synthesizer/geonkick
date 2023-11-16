@@ -23,72 +23,83 @@ F *
 
 #include "Base64EncoderDecoder.h"
 
-#include <openssl/bio.h>
-#include <openssl/evp.h>
-#include <openssl/buffer.h>
-
 #include <cstring>
 
 std::string Base64EncoderDecoder::encode(const std::vector<float> &data)
 {
-        auto b64 = BIO_new(BIO_f_base64());
-        if (!b64) {
-                GEONKICK_LOG_ERROR("can't create bio64");
-                return std::string();
-        }
+	constexpr std::array<char, 64> base64Chars = {{
+			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+			'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+			'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+			'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+			'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+			'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+			'w', 'x', 'y', 'z', '0', '1', '2', '3',
+			'4', '5', '6', '7', '8', '9', '+', '/'
+		}};
 
-        BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-        auto bio = BIO_new(BIO_s_mem());
-        if (!bio) {
-                GEONKICK_LOG_ERROR("can't create bio");
-                BIO_free_all(b64);
-                return {};
-        }
+    std::string result;
+    size_t i = 0;
+    auto bytes = reinterpret_cast<const unsigned char*>(data.data());
+    auto bytesSize = data.size() * sizeof(float);
+    while (i < bytesSize) {
+        unsigned char b1 = (i < bytesSize) ? bytes[i++] : 0;
+        unsigned char b2 = (i < bytesSize) ? bytes[i++] : 0;
+        unsigned char b3 = (i < bytesSize) ? bytes[i++] : 0;
+        result += base64Chars[(b1 & 0xfc) >> 2];
+        result += base64Chars[((b1 & 0x03) << 4) | ((b2 & 0xf0) >> 4)];
+        result += base64Chars[((b2 & 0x0f) << 2) | ((b3 & 0xc0) >> 6)];
+        result += base64Chars[b3 & 0x3f];
+    }
 
-        BIO_push(b64, bio);
-        BIO_write(b64, data.data(), static_cast<int>(data.size() * sizeof(float)));
-        BIO_flush(b64);
-        BUF_MEM *bufferPtr;
-        if (BIO_get_mem_ptr(b64, &bufferPtr) != 1) {
-               GEONKICK_LOG_ERROR("can't read BIO ptr");
-               BIO_free_all(b64);
-               return {};
-        }
-
-        std::string encoded(bufferPtr->data, bufferPtr->length);
-        BIO_free_all(b64);
-        GEONKICK_LOG_DEBUG("ecoded: " << encoded);
-        return encoded;
+    // Pad with '=' if necessary.
+    while (result.size() % 4 != 0)
+        result += '=';
+    return result;
 }
 
 std::vector<float> Base64EncoderDecoder::decode(const std::string &input)
 {
-        auto bio = BIO_new_mem_buf(input.c_str(), -1);
-        if (!bio) {
-                GEONKICK_LOG_ERROR("can't create bio");
-                return {};
-        }
-        auto b64 = BIO_new(BIO_f_base64());
-        if (!b64) {
-                GEONKICK_LOG_ERROR("can't create bio64");
-                BIO_free_all(bio);
-                return {};
-        }
-        BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-        BIO_push(b64, bio);
+	auto decodeChar = [&](char c) {
+		constexpr std::array<char, 256> base64CharMap = {{
+				/* Initialize with -1 for characters not in base64Chars */
+				-1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, -1, -1, -1, -1, -1,
+				-1, -1, -1, 62, -1, -1, -1, 63,
+				52, 53, 54, 55, 56, 57, 58, 59,
+				60, 61, -1, -1, -1, -1, -1, -1,
+				-1, 0, 1, 2, 3, 4, 5, 6,
+				7, 8, 9, 10, 11, 12, 13, 14,
+				15, 16, 17, 18, 19, 20, 21, 22,
+				23, 24, 25, -1, -1, -1, -1, -1,
+				-1, 26, 27, 28, 29, 30, 31, 32,
+				33, 34, 35, 36, 37, 38, 39, 40,
+				41, 42, 43, 44, 45, 46, 47, 48,
+				49, 50, 51, -1, -1, -1, -1, -1
+			}};
+		return static_cast<unsigned char>(base64CharMap[static_cast<unsigned char>(c)]);
+        };
 
-        std::string outputBuffer(input.length(), 0x0);
-        auto decodedLength = BIO_read(b64, outputBuffer.data(), input.length());
-        if (decodedLength < 1 ) {
-                GEONKICK_LOG_ERROR("can't decode base64");
-        } else {
-                GEONKICK_LOG_DEBUG("decoded lengh: " << decodedLength);
-                std::vector<float> decoded(static_cast<size_t>(decodedLength / sizeof(float)));
-                std::memcpy(decoded.data(), outputBuffer.data(), decodedLength);
-                BIO_free_all(b64);
-                return decoded;
+        std::vector<unsigned char> bytes;
+        size_t i = 0;
+        while (i < input.size()) {
+            unsigned char b1 = decodeChar(input[i++]);
+            unsigned char b2 = decodeChar(input[i++]);
+            bytes.push_back((b1 << 2) | ((b2 & 0x30) >> 4));
+            if (i < input.size() && input[i] != '=') {
+                unsigned char b3 = decodeChar(input[i++]);
+                bytes.push_back(((b2 & 0x0f) << 4) | ((b3 & 0x3c) >> 2));
+                if (i < input.size() && input[i] != '=') {
+                    unsigned char b4 = decodeChar(input[i++]);
+                    bytes.push_back(((b3 & 0x03) << 6) | (b4 & 0x3f));
+                }
+            }
         }
 
-        BIO_free_all(b64);
-        return {};
+        std::vector<float> result(bytes.size() / sizeof(float));
+        std::memcpy(result.data(), bytes.data(), bytes.size());
+        return result;
 }
