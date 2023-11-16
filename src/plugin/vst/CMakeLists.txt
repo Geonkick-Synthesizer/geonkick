@@ -49,6 +49,7 @@ endif ()
 
 target_link_libraries(${target} PRIVATE geonkick_common api_plugin redkite)
 target_link_libraries(${target} PRIVATE base sdk sdk_common pluginterfaces)
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
 target_link_libraries(${target} PRIVATE
       "-mwindows"
 # Fix this in order ot use static linking      
@@ -84,6 +85,9 @@ target_link_libraries(${target} PRIVATE
       "libm.a"
       Threads::Threads
       )
+else()
+	target_link_libraries(${target} PRIVATE "-lstdc++ -lstdc++fs -lsndfile -lcairo -lm -lpthread")
+endif()
 
 add_dependencies(${target} geonkick_common)
 
