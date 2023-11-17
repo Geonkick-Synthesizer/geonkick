@@ -54,14 +54,13 @@ jobs:
           cp -fr /d/a/_temp/msys64/ucrt64/bin/libgraphite2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
           cp -fr /d/a/_temp/msys64/ucrt64/bin/libpcre2-8-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
 
-      - name: Create Tarball
+      - name: Create MSI Installer
         run: |
-          tar -czvf /d/a/geonkick/build/Geonkick.vst3.tar.gz -C /d/a/geonkick/build/ Geonkick.vst3
-          ls -l /d/a/geonkick/build/
-          ls /d/a/_temp/msys64/home/runneradmin
+          candle.exe /d/a/geonkick/.github/workflows/GeonkickInstall.wxs
+          light.exe -out GeonkickInstaller.msi GeonkickInstall.wixobj
 
-      - name: Upload Artifacts
+      - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
-          name: geonkick-artifacts
-          path: D:\a\geonkick\build\Geonkick.vst3.tar.gz 
+          name: geonkick-installer
+          path: GeonkickInstaller.msi
