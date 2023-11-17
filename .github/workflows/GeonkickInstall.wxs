@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+    <Product Id='D996DFE5-13D8-4ED0-BFEE-0C13F16B1C43' Name='Geonkick Plugin' Version='1.0.0.0' Manufacturer='YourCompany' UpgradeCode='C63F35A1-4A8F-4DE5-A3A7-4D2CC05E791A'>
+        <Package InstallerVersion='200' Compressed='yes' />
+        <Media Id='1' Cabinet='media1.cab' EmbedCab='yes' />
+
+        <Directory Id='TARGETDIR' Name='SourceDir'>
+            <Directory Id='ProgramFilesFolder'>
+                <Directory Id='COMMONFILES' Name='CommonFiles'>
+                    <Directory Id='VST3Folder' Name='VST3'>
+                        <Directory Id='INSTALLDIR' Name='Geonkick.vst3'>
+                            <Directory Id='CONTENTSDIR' Name='Contents'>
+                                <Directory Id='X86_64_DIR' Name='x86_64-win'>
+                                    <Component Id='GeonkickVST3' Guid='FE501DE5-53A5-4D8C-BC0F-8AA4D164D8F9'>
+                                        <File Id='GeonkickVST3File' Source='D:\a\geonkick\build\Geonkick.vst3' KeyPath='yes' />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+                        </Directory>
+                    </Directory>
+                    <Directory Id='GEONKICKDLLSDIR' Name='Geonkick'>
+                        <Component Id='GeonkickDLLsComponent' Guid='B4884A51-8324-471D-A470-B5DDA8CBBB9F'>
+                            <!-- Use * to copy all DLL files from the specified directory -->
+                            <File Id='DependencyDLLs' Source='D:\a\geonkick\build\Geonkick.vst3\Contents\x86_64-win\*.dll' KeyPath='no' />
+                        </Component>
+                    </Directory>
+                </Directory>
+            </Directory>
+        </Directory>
+
+        <Feature Id='Complete' Level='1'>
+            <ComponentRef Id='GeonkickVST3' />
+            <ComponentRef Id='GeonkickDLLsComponent' />
+        </Feature>
+    </Product>
+</Wix>
