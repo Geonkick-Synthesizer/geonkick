@@ -75,7 +75,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: geonkick-build
-          path: D:\a\geonkick\build\Geonkick.vst3\Contents\x86_64-win
+          path: D:\a\geonkick\build\Geonkick.vst3
 
       - name: Download and Install WiX Toolset
         run: |
@@ -87,8 +87,10 @@ jobs:
 
       - name: Create MSI Installer
         run: |
-          & "C:\Program Files (x86)\WiX Toolset v3.x\bin\candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
-          & "C:\Program Files (x86)\WiX Toolset v3.x\bin\light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
+	  ls "D:"
+	  ls "C:\Program Files (x86)"
+          & "candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
+          & "light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
           
       - name: Upload Installer
         uses: actions/upload-artifact@v2
