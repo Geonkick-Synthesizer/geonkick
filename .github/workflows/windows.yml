@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        shell: msys2 {0}
+        shell: pwsh {0}
 
     steps:
       - name: Checkout Code
@@ -65,8 +65,8 @@ jobs:
       - name: Create MSI Installer
         run: |
           & "C:\Program Files (x86)\WiX Toolset v3.x\bin\candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
-          & "C:\Program Files (x86)\WiX Toolset v3.x\bin\light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
-          
+          & "C:\Program Files (x86)\WiX Toolset v3.x\bin\light.exe" -out GeonkickInstaller
+
       - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
