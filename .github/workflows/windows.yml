@@ -54,6 +54,29 @@ jobs:
           cp -fr /d/a/_temp/msys64/ucrt64/bin/libgraphite2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
           cp -fr /d/a/_temp/msys64/ucrt64/bin/libpcre2-8-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
 
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: geonkick-build
+          path: D:\a\geonkick\build\Geonkick.vst3\Contents\x86_64-win
+          
+  create-msi:
+    needs: build
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh {0}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: geonkick-build
+          path: D:\a\geonkick\build\Geonkick.vst3\Contents\x86_64-win
+
       - name: Download and Install WiX Toolset
         run: |
           $url = 'https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311.exe'
@@ -61,12 +84,12 @@ jobs:
           Invoke-WebRequest -Uri $url -OutFile $output
           Start-Process -Wait -FilePath $output -ArgumentList '/quiet', '/norestart'
           Remove-Item -Path $output
-          
+
       - name: Create MSI Installer
         run: |
           & "C:\Program Files (x86)\WiX Toolset v3.x\bin\candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
-          & "C:\Program Files (x86)\WiX Toolset v3.x\bin\light.exe" -out GeonkickInstaller
-
+          & "C:\Program Files (x86)\WiX Toolset v3.x\bin\light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
+          
       - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
