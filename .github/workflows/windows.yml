@@ -89,8 +89,8 @@ jobs:
         run: |
           ls "D:"
           ls "C:\Program Files (x86)"
-          & "candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
-          & "light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
+          & "C:\Program Files (x86)\WiX Toolset v3.11\candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
+          & "C:\Program Files (x86)\WiX Toolset v3.11\light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
           
       - name: Upload Installer
         uses: actions/upload-artifact@v2
