@@ -87,8 +87,8 @@ jobs:
 
       - name: Create MSI Installer
         run: |
-	  ls "D:"
-	  ls "C:\Program Files (x86)"
+          ls "D:"
+          ls "C:\Program Files (x86)"
           & "candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
           & "light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
           
