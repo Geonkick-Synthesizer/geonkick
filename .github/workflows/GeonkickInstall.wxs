@@ -11,7 +11,6 @@
                             <Directory Id='CONTENTSDIR' Name='Contents'>
                                 <Directory Id='X86_64_DIR' Name='x86_64-win'>
                                     <Component Id='GeonkickVST3' Guid='FE501DE5-53A5-4D8C-BC0F-8AA4D164D8F9' Win64="yes">
-                                        <!-- Corrected Source Path -->
                                         <File Id='GeonkickVST3File' Source='D:\a\geonkick\build\Geonkick.vst3\Geonkick.vst3' KeyPath='yes' />
                                         <Environment Id="Path" Action="set" Name="PATH" Part="last" Value="[ProgramFiles64Folder]Geonkick" System="yes" />
                                     </Component>
@@ -22,7 +21,6 @@
                 </Directory>
 		<Directory Id='GEONKICKDLLSDIR' Name='Geonkick'>
                   <Component Id='GeonkickDLLsComponent' Guid='B4884A51-8324-471D-A470-B5DDA8CBBB9F' Win64="yes">
-                    <!-- Corrected Source Paths -->
                     <File Id='DependencyDLLs' Source='D:\a\geonkick\build\Geonkick.vst3\libbrotlicommon.dll' KeyPath='no' />
                     <File Id='DependencyDLLs1' Source='D:\a\geonkick\build\Geonkick.vst3\libbrotlidec.dll' KeyPath='no' />
                     <File Id='DependencyDLLs2' Source='D:\a\geonkick\build\Geonkick.vst3\libbz2-1.dll' KeyPath='no' />
@@ -42,7 +40,6 @@
                     <File Id='DependencyDLLs16' Source='D:\a\geonkick\build\Geonkick.vst3\libstdc++-6.dll' KeyPath='no' />
                     <File Id='DependencyDLLs17' Source='D:\a\geonkick\build\Geonkick.vst3\libwinpthread-1.dll' KeyPath='no' />
                     <File Id='DependencyDLLs18' Source='D:\a\geonkick\build\Geonkick.vst3\zlib1.dll' KeyPath='no' />
-                    <!-- Add more File elements for each DLL -->
                   </Component>
                 </Directory>
             </Directory>

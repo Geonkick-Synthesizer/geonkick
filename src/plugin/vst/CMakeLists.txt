@@ -52,7 +52,7 @@ target_link_libraries(${target} PRIVATE base sdk sdk_common pluginterfaces)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
 target_link_libraries(${target} PRIVATE
       "-mwindows"
-# Fix this in order ot use static linking      
+# Fix this in order to use static linking
       "libcairo.dll.a"
       "libfontconfig.a"
       "libfreetype.a"
