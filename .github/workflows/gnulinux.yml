@@ -1,4 +1,4 @@
-name: GNU/Linux (LV2 & Standalone)
+name: GNU/Linux (LV2, VST3, Standalone)
 
 on:
   push:
