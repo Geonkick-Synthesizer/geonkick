@@ -20,14 +20,17 @@ jobs:
       - name: Set up build environment
         run: |
           sudo apt-get update -qy
-          sudo apt-get install -y build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev
+          sudo apt-get install -y git build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev
+          sudo apt-get install -y libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev
 
       - name: Build
         run: |
           mkdir -p build/install
+          git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
+          VST3SDKPATH=$(pwd)/vst3sdk
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=./install ..
-          make
+          cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH ..
+          make -j 4
           make install
           tar czf "${{ matrix.ARCHIVE_NAME }}.tar.gz" install
           tar cjf "${{ matrix.ARCHIVE_NAME }}.tar.bz2" install
