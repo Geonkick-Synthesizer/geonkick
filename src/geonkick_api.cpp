@@ -22,6 +22,7 @@
  */
 
 #include "geonkick_api.h"
+#include "DesktopPaths.h"
 #include "oscillator.h"
 #include "globals.h"
 #include "percussion_state.h"
@@ -1722,40 +1723,26 @@ void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
 
 void GeonkickApi::setupPaths()
 {
-        std::filesystem::path dataPath;
-        const char *dataHome = std::getenv("XDG_DATA_HOME");
-        if (dataHome == nullptr || *dataHome == '\0') {
-                const char *homeDir = std::getenv("HOME");
-                if (homeDir == nullptr || *homeDir == '\0') {
-                        GEONKICK_LOG_ERROR("can't get home directory");
-                        return;
-                }
-                dataPath = homeDir / std::filesystem::path(".local/share")
-                        / std::filesystem::path(GEONKICK_APP_NAME);
-                setSettings("GEONKICK_CONFIG/HOME_PATH", homeDir);
-        } else {
-                dataPath = dataHome / std::filesystem::path(GEONKICK_APP_NAME);
-                setSettings("GEONKICK_CONFIG/HOME_PATH", dataHome);
-        }
+	DesktopPaths desktopPaths;
+	setSettings("GEONKICK_CONFIG/HOME_PATH", desktopPaths.getHomePath().string());
+	setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", desktopPaths.getPresetsPath().string());
+	setSettings("GEONKICK_CONFIG/USER_DATA_PATH", desktopPaths.getDataPath().string());
 
-        try {
-                if (!std::filesystem::exists(dataPath)) {
-                        if (!std::filesystem::create_directories(dataPath)) {
-                                GEONKICK_LOG_ERROR("can't create path " << dataPath);
+	try {
+                if (!std::filesystem::exists(desktopPaths.getDataPath())) {
+                        if (!std::filesystem::create_directories(desktopPaths.getDataPath())) {
+                                GEONKICK_LOG_ERROR("can't create path " << desktopPaths.getDataPath());
                                 return;
                         }
                 }
-                setSettings("GEONKICK_CONFIG/USER_DATA_PATH", dataPath.string());
 
-                auto presetsPath = dataPath / std::filesystem::path("presets");
-                if (!std::filesystem::exists(presetsPath)) {
-                        if (!std::filesystem::create_directories(presetsPath)) {
-                                GEONKICK_LOG_ERROR("can't create path " << presetsPath);
+                if (!std::filesystem::exists(desktopPaths.getPresetsPath())) {
+                        if (!std::filesystem::create_directories(desktopPaths.getPresetsPath())) {
+                                GEONKICK_LOG_ERROR("can't create path " << desktopPaths.getPresetsPath());
                                 return;
                         }
                 }
-                setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", presetsPath.string());
-        } catch(const std::exception& e) {
+	} catch(const std::exception& e) {
                 GEONKICK_LOG_ERROR("error on setup user data paths: " << e.what());
         }
 }

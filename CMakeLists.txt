@@ -91,6 +91,7 @@ set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
+  ${GKICK_COMMON_DIR}/DesktopPaths.h
   ${GKICK_COMMON_DIR}/GeonkickConfig.h
   ${GKICK_COMMON_DIR}/UiSettings.h
   ${GKICK_COMMON_DIR}/ViewState.h
@@ -143,6 +144,7 @@ set(GKICK_COMMON_HEADERS
 
 set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
+  ${GKICK_COMMON_DIR}/DesktopPaths.cpp
   ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
   ${GKICK_COMMON_DIR}/UiSettings.cpp
   ${GKICK_COMMON_DIR}/ViewState.cpp

@@ -22,6 +22,7 @@
  */
 
 #include "PathListModel.h"
+#include "DesktopPaths.h"
 
 PathListModel::PathListModel(RkObject *parent)
         : RkModel(parent)
@@ -34,8 +35,9 @@ PathListModel::PathListModel(RkObject *parent)
 void PathListModel::setHomeDirectory(const std::string &path)
 {
         pathList[0] = path;
-        pathList[1] = std::filesystem::path(path) / "Desktop";
-        pathList[2] = std::filesystem::path(path) / "Downloads";
+	DesktopPaths desktopPaths;
+        pathList[1] = desktopPaths.getDesktopPath();
+        pathList[2] = desktopPaths.getDownloadsPath();
         action modelChanged();
 }
 

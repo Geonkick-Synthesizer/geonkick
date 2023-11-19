@@ -22,26 +22,17 @@
  */
 
 #include "GeonkickConfig.h"
+#include "DesktopPaths.h"
 
 #include <rapidjson/document.h>
 #include <iomanip>
 
 GeonkickConfig::GeonkickConfig()
         : scaleFactor{1}
+	, configFile{DesktopPaths().getConfigPath()
+		     / std::filesystem::path(GEONKICK_APP_NAME)
+		     / "config.json"}
 {
-        const char *configHome = std::getenv("XDG_CONFIG_HOME");
-        if (configHome == nullptr || *configHome == '\0') {
-                const char *homeDir = std::getenv("HOME");
-                if (homeDir == nullptr || *homeDir == '\0') {
-                        configFile = std::filesystem::path(".") / std::filesystem::path(".config")
-                                / std::filesystem::path(GEONKICK_APP_NAME) / "config.json";
-                } else {
-                        configFile = homeDir / std::filesystem::path(".config")
-                                / std::filesystem::path(GEONKICK_APP_NAME) / "config.json";
-                }
-        } else {
-                configFile = configHome / std::filesystem::path(GEONKICK_APP_NAME) / "config.json";
-        }
         open();
 }
 
@@ -119,4 +110,3 @@ std::string GeonkickConfig::toJson() const
         jsonStream << "}" << std::endl;
         return jsonStream.str();
 }
-
