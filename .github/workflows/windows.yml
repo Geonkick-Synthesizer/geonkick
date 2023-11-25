@@ -1,4 +1,4 @@
-name: Windows (VST3)
+name: Windows (LV2, VST3)
 
 on:
   push:
