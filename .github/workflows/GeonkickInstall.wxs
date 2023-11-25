@@ -1,52 +1,180 @@
 <?xml version='1.0'?>
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
-    <Product Id='D996DFE5-13D8-4ED0-BFEE-0C13F16B1C43' Name='Geonkick VST3 Plugin' Version='3.0.0' Manufacturer='Iurie Nistor' UpgradeCode='C63F35A1-4A8F-4DE5-A3A7-4D2CC05E791A' Language='1033'>
-        <Package InstallerVersion='200' Compressed='yes' Platform="x64" />
-        <Media Id='1' Cabinet='media1.cab' EmbedCab='yes' />
-        <Directory Id='TARGETDIR' Name='SourceDir'>
-            <Directory Id='ProgramFiles64Folder'>
-                <Directory Id='COMMONFILES' Name='Common Files'>
-                    <Directory Id='VST3Folder' Name='VST3'>
-                        <Directory Id='INSTALLDIR' Name='Geonkick.vst3'>
-                            <Directory Id='CONTENTSDIR' Name='Contents'>
-                                <Directory Id='X86_64_DIR' Name='x86_64-win'>
-                                    <Component Id='GeonkickVST3' Guid='FE501DE5-53A5-4D8C-BC0F-8AA4D164D8F9' Win64="yes">
-                                        <File Id='GeonkickVST3File' Source='D:\a\geonkick\build\Geonkick.vst3\Geonkick.vst3' KeyPath='yes' />
-                                        <Environment Id="Path" Action="set" Name="PATH" Part="last" Value="[ProgramFiles64Folder]Geonkick" System="yes" />
-                                    </Component>
-                                </Directory>
-                            </Directory>
-                        </Directory>
-                    </Directory>
-                </Directory>
-		<Directory Id='GEONKICKDLLSDIR' Name='Geonkick'>
-                  <Component Id='GeonkickDLLsComponent' Guid='B4884A51-8324-471D-A470-B5DDA8CBBB9F' Win64="yes">
-                    <File Id='DependencyDLLs' Source='D:\a\geonkick\build\Geonkick.vst3\libbrotlicommon.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs1' Source='D:\a\geonkick\build\Geonkick.vst3\libbrotlidec.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs2' Source='D:\a\geonkick\build\Geonkick.vst3\libbz2-1.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs3' Source='D:\a\geonkick\build\Geonkick.vst3\libcairo-2.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs4' Source='D:\a\geonkick\build\Geonkick.vst3\libexpat-1.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs5' Source='D:\a\geonkick\build\Geonkick.vst3\libfontconfig-1.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs6' Source='D:\a\geonkick\build\Geonkick.vst3\libfreetype-6.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs7' Source='D:\a\geonkick\build\Geonkick.vst3\libgcc_s_seh-1.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs8' Source='D:\a\geonkick\build\Geonkick.vst3\libglib-2.0-0.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs9' Source='D:\a\geonkick\build\Geonkick.vst3\libgraphite2.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs10' Source='D:\a\geonkick\build\Geonkick.vst3\libharfbuzz-0.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs11' Source='D:\a\geonkick\build\Geonkick.vst3\libiconv-2.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs12' Source='D:\a\geonkick\build\Geonkick.vst3\libintl-8.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs13' Source='D:\a\geonkick\build\Geonkick.vst3\libpcre2-8-0.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs14' Source='D:\a\geonkick\build\Geonkick.vst3\libpixman-1-0.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs15' Source='D:\a\geonkick\build\Geonkick.vst3\libpng16-16.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs16' Source='D:\a\geonkick\build\Geonkick.vst3\libstdc++-6.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs17' Source='D:\a\geonkick\build\Geonkick.vst3\libwinpthread-1.dll' KeyPath='no' />
-                    <File Id='DependencyDLLs18' Source='D:\a\geonkick\build\Geonkick.vst3\zlib1.dll' KeyPath='no' />
+  <Product Id='D996DFE5-13D8-4ED0-BFEE-0C13F16B1C43' Name='Geonkick Plugin' Version='3.0.0' Manufacturer='Iurie Nistor' UpgradeCode='C63F35A1-4A8F-4DE5-A3A7-4D2CC05E791A' Language='1033'>
+    <Package InstallerVersion='200' Compressed='yes' Platform="x64" />
+    <Media Id='1' Cabinet='media1.cab' EmbedCab='yes' />
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFiles64Folder'>
+        <Directory Id='COMMONFILES' Name='Common Files'>
+          <Directory Id='VST3Folder' Name='VST3'>
+            <Directory Id='VST3_INSTALLDIR' Name='Geonkick.vst3'>
+              <Directory Id='CONTENTSDIR' Name='Contents'>
+                <Directory Id='X86_64_DIR' Name='x86_64-win'>
+                  <Component Id='GeonkickVST3' Guid='FE501DE5-53A5-4D8C-BC0F-8AA4D164D8F9' Win64="yes">
+                    <File Id='GeonkickVST3File' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\Geonkick.vst3' KeyPath='yes' />
                   </Component>
                 </Directory>
+              </Directory>
             </Directory>
+          </Directory>
+          <Directory Id='LV2Folder' Name='LV2'>
+            <Directory Id='LV2_INSTALLDIR' Name='geonkick.lv2'>
+              <Component Id='GeonkickLV2' Guid='FE521DE5-54A5-4D8C-BC0F-8AA4D064D0F9' Win64="yes">
+                <File Id='GeonkickLV21' Source='D:\a\geonkick\build\plugins\geonkick.lv2\geonkick_lv2.dll' KeyPath='no' />
+                <File Id='GeonkickLV22' Source='D:\a\geonkick\build\plugins\geonkick.lv2\geonkick_single_lv2.dll' KeyPath='no' />
+                <File Id='GeonkickLV24' Source='D:\a\geonkick\build\plugins\geonkick.lv2\geonkick.ttl' KeyPath='no' />
+                <File Id='GeonkickLV25' Source='D:\a\geonkick\build\plugins\geonkick.lv2\manifest.ttl' KeyPath='no' />
+                <Environment Id="Path" Action="set" Name="PATH" Part="last" Value="[ProgramFiles64Folder]Geonkick" System="yes" />
+              </Component>
+            </Directory>
+          </Directory>
         </Directory>
-        <Feature Id='Complete' Level='1'>
-            <ComponentRef Id='GeonkickVST3' />
-            <ComponentRef Id='GeonkickDLLsComponent' />
-        </Feature>
-    </Product>
+        <Directory Id='GEONKICKDLLSDIR' Name='Geonkick'>
+          <Component Id='GeonkickDLLsComponent' Guid='B4884A51-8324-471D-A470-B5DDA8CBBB9F' Win64="yes">
+	    <File Id='DependencyDLLs' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libbrotlicommon.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs1' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libbrotlidec.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs2' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libbz2-1.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs3' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libcairo-2.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs4' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libexpat-1.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs5' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libfontconfig-1.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs6' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libfreetype-6.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs7' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libgcc_s_seh-1.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs8' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libglib-2.0-0.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs9' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libgraphite2.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs10' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libharfbuzz-0.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs11' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libiconv-2.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs12' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libintl-8.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs13' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libpcre2-8-0.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs14' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libpixman-1-0.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs15' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libpng16-16.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs16' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libstdc++-6.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs17' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libwinpthread-1.dll' KeyPath='no' />
+	    <File Id='DependencyDLLs18' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\zlib1.dll' KeyPath='no' />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id='AppDataFolder'>
+        <Directory Id='GeonkickAppDataFolder' Name='geonkick'>
+          <Directory Id="dir00006A71DC814513D166CD3EAA973941" Name="AVL-Drumkit">
+            <Component Id="cmp0AE8CAD4426F3371AA02910A3E27A5D2" Guid="B4884A51-8324-471D-A470-BBCDE8CBABF5">
+	      <RegistryValue Root="HKCU" Key="Software\Geonkick\Geonkick" Name="AVL-Drumkit" Type="string" Value="AVL-DrumkitPresets" KeyPath="yes" />
+              <File Id="fil53C35D79FDF6C3A89DDB11210A55D60A" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\AVL-Drumkit\AVL-Drumkit.gkit" />
+              <File Id="fil5726F14545ED6ED230DDC93801516107" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\AVL-Drumkit\README" />
+	      <RemoveFile Id="RemoveAVLDrumkitDir" Directory="dir00006A71DC814513D166CD3EAA973941" Name="AVL-Drumkit" On="uninstall" />
+            </Component>
+          </Directory>
+          <Directory Id="dir42934BF3A4ADBCE5CF0C3DC6D7166A63" Name="DigitalSamba">
+            <Component Id="cmpAAE5D5B4BC290F5FAB8B5757E1898543" Guid="B4884A51-8324-471D-A470-BBCDC8CBABF3">
+	      <RegistryValue Root="HKCU" Key="Software\Geonkick\Geonkick" Name="DigitalSamba" Type="string" Value="DigitalSambaPresets" KeyPath="yes" />
+              <File Id="filB423D487CF9BCD64C0528C4B66662352" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\Anvil-HH.gkick" />
+              <File Id="fil2BB69D2D7B0CE44F86A081FAB728D949" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\Cowbell.gkick" />
+              <File Id="fil3762CB20212747C71AA1E58E29A27120" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\DigitalSamba.gkit" />
+              <File Id="fil9AFC4BB7D9852D5AEEAD799C4C2FD681" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\GunShotSnare.gkick" />
+              <File Id="fil9B235D5D6F9E9B152827F7C6454058C5" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\HiSurdo.gkick" />
+              <File Id="filB1ACD9D35224D835E10E92ADCF306260" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\Kick1.gkick" />
+              <File Id="fil7F167B75D0999CCC7CB6F8BC5E94B837" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\Kick1Double.gkick" />
+              <File Id="fil10DB15D848452DE04CFD69D69B55BF2A" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\Kick2.gkick" />
+              <File Id="filCF29270C63A171B20CD046F744D55D86" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\LowSurdo.gkick" />
+              <File Id="filFA23ED9B4B1FE2C14284F5BF9FBE1826" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\LowSurdoDouble.gkick" />
+              <File Id="fil598396D3455FF8A88B216E76164C9BC3" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\MetalicSnare.gkick" />
+              <File Id="filBC55AEC6B1D20585AFAA82F00451194B" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\OpenHH.gkick" />
+              <File Id="filDFC2703491C7B264C447CD3B14ACFD49" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\README" />
+              <File Id="filD8DCB1CC597F4BC89B15F2125581B348" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\Ride.gkick" />
+              <File Id="fil714CB3416F289E44137072299D9BC8E4" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\SoftSnareHi.gkick" />
+              <File Id="filEFB954B2E58BABA1FF84C5E78779FDEA" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\SoftSnareLow.gkick" />
+              <File Id="fil887DB395CC35B0BA08FA2BF86CEA92D2" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\ThumpSnareL.gkick" />
+              <File Id="fil2C38BFA451B3057B4A02D5C7273C30CE" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DigitalSamba\ThumpSnareR.gkick" />
+	          <RemoveFile Id="RemoveDigitalSambaDir" Name="DigitalSamba" Directory="dir42934BF3A4ADBCE5CF0C3DC6D7166A63" On="uninstall" />
+            </Component>
+          </Directory>
+          <Directory Id="dir147B8F3883E395228346079F24A97C75" Name="DSoS">
+            <Component Id="cmp8F7AD4D23B98CD56C68418A38920A4E3" Guid="B4884A51-8324-471D-A470-BBCDC8CBABD6">
+	      <RegistryValue Root="HKCU" Key="Software\Geonkick\Geonkick" Name="DSoS" Type="string" Value="DSoSPresets" KeyPath="yes" />
+              <File Id="filD898C125C11F5D28C54A6603010CBA56" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DSoS\Chiptune.gkick" />
+              <File Id="filAF3D0FCDF06411AC191E7E052208D291" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DSoS\DSos.gkit" />
+              <File Id="filF8546491E9A85DD196CB3314DDFE6861" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DSoS\Hi-Hat.gkick" />
+              <File Id="fil196DADB25C09256E1F6C24908133A0D1" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DSoS\Kick.gkick" />
+              <File Id="filD400E6EC2C831591FDDBE10424314027" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DSoS\README" />
+              <File Id="fil9B80F47A6BC83DB5029390CCF3D622D0" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DSoS\Snare.gkick" />
+              <File Id="filDD6352DC52B98FE6B54578F9602CEC00" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\DSoS\Squilchy.gkick" />
+	      <RemoveFile Id="RemoveDSosDir" Name="DSoS" Directory="dir147B8F3883E395228346079F24A97C75" On="uninstall" />
+            </Component>
+          </Directory>
+          <Directory Id="dir4E98F00187AB3ECDC7EE857F13A83B5F" Name="GeonkickBells">
+            <Component Id="cmpFE055523F403A443BB5B81C8866D383F" Guid="B4884A51-8324-471D-A470-BBCDC8CBABC8">
+	      <RegistryValue Root="HKCU" Key="Software\Geonkick\Geonkick" Name="GeonkickBells" Type="string" Value="GeonkickBellsPresets" KeyPath="yes" />
+              <File Id="filA81B46FED34B8D1FADE5AD05B386924A" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell1.gkick" />
+              <File Id="filEB09544972AE490476B7E26C6F82C199" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell10.gkick" />
+              <File Id="filCDC744460365D57CEE0493F46F13DA48" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell11.gkick" />
+              <File Id="filC275D7658ACE19BE8399F75207F34191" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell12.gkick" />
+              <File Id="fil546CBD0113D96C17E8C3DF3837B77CBD" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell13.gkick" />
+              <File Id="fil92BFB67B183DAC325AF775C909E45DA8" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell14.gkick" />
+              <File Id="fil9452ED3711752EDA2AF47F6EB1879DD8" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell15.gkick" />
+              <File Id="fil3228C702F2E08AFF1910D70AABED1A06" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell16.gkick" />
+              <File Id="fil1A545046A869D488F379AD68DC129601" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell2.gkick" />
+              <File Id="filE5C3854C43AB14C6D68FF66C717D8B21" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell3.gkick" />
+              <File Id="filF699FC0794953F1DF5D64FC1CCEA166D" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell4.gkick" />
+              <File Id="filBE67A17B44D41FE888CCEA8D20E247DE" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell5.gkick" />
+              <File Id="filACEDE34394F44BB1034B148C284DFB19" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell6.gkick" />
+              <File Id="filC15C1CCD4FDD4DFFAF10C0F13E18B3DD" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell7.gkick" />
+              <File Id="filDE9BE02FB3B120439FA43A462527DC17" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell8.gkick" />
+              <File Id="fil90508A6260264D7C0762BB72FA09B843" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\Bell9.gkick" />
+              <File Id="filC2256CFF135BF0853C75C91C7464D15E" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\GeonkickBells.gkit" />
+              <File Id="filDE60C6DBA7BA5DF1540279425942C064" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\GeonkickBells\README" />
+	      <RemoveFile Id="RemoveGeonkickBells" Name="GeonkickBells" Directory="dir4E98F00187AB3ECDC7EE857F13A83B5F" On="uninstall" />
+            </Component>
+          </Directory>
+          <Directory Id="dirCD7C4CA8ED19518ABA25BB697E9522E8" Name="TimeKit">
+            <Component Id="cmp1AAB60799117FE61EE821AD4E3B9A33C" Guid="B4884A51-8324-471D-A470-BBCDC8CBABAB">
+	      <RegistryValue Root="HKCU" Key="Software\Geonkick\Geonkick" Name="TimeKit" Type="string" Value="TimeKitPresets" KeyPath="yes" />
+              <File Id="fil562196482AB719BFAFA4BCCEAF22750F" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\Clap.gkick" />
+              <File Id="fil2D76FBAAAFE9D374952DABA66F8C8E49" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\Hit-Hat-Closed.gkick" />
+              <File Id="filDF09124FCC68791AD58DBA09A2176837" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\Hit-Hat-Open.gkick" />
+              <File Id="fil6FF1EADCB39D9325983621DBEB33184D" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\Hit-Hat.gkick" />
+              <File Id="filE502773F764716555E7BE18B3EFDB3E7" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\Kick.gkick" />
+              <File Id="filA14C28FC64E2B4C82486BEA605A32101" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\README" />
+              <File Id="fil08B2D61CBD5BC715EF6474172C31C423" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\Shaker.gkick" />
+              <File Id="filC8B03321FB71C8A3416D6B8A6F9DFBEF" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\Snare.gkick" />
+              <File Id="filDA4C4AE624A9FD0F03CC2C12CF106FA9" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\SnareT.gkick" />
+              <File Id="filDE2A5126C264BE7003B56892D46F53EC" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\TimeKit\TimeKit.gkit" />
+	      <RemoveFile Id="RemoveTimeKit" Name="TimeKit" Directory="dirCD7C4CA8ED19518ABA25BB697E9522E8" On="uninstall" />
+            </Component>
+          </Directory>
+          <Directory Id="dirB6790B30B604A8C2C570A8FD6782B581" Name="UnfaTutorial">
+            <Component Id="cmp2A21DE12380CBAA13234A973A4B0365F" Guid="B4884A51-8324-471D-A470-BBCDC8CBABA1">
+	      <RegistryValue Root="HKCU" Key="Software\Geonkick\Geonkick" Name="UnfaTutorial" Type="string" Value="UnfaTutorialPresets" KeyPath="yes" />
+              <File Id="filE69E95BCB8FADC6DA447C544C0442A03" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\808.gkick" />
+              <File Id="fil0931D8ECB734323E0E50583B282660F6" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\Acoustic-Kick.gkick" />
+              <File Id="fil014866E7E346DFD73AE10B6EB223F47B" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\Clap-Snare.gkick" />
+              <File Id="filC1FD79E71DB01573614D638FF178B11A" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\Crash-Cymbal.gkick" />
+              <File Id="fil04ED1F1AB480BCF5DECB36D94712D6C5" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\DnBKick.gkick" />
+              <File Id="fil3E0C968F2E255F9B9ACF9177A076F69E" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\Hard-Style-Kick.gkick" />
+              <File Id="filF944F58E9EDFC969CB1A2E389305E4B4" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\HH-1.gkick" />
+              <File Id="filB40E2E4DBBE20A7584B75E51E4B0E24F" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\HH-2.gkick" />
+              <File Id="fil0128C83FE9C228D199D099AEF94E1631" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\HH-3.gkick" />
+              <File Id="fil086582FB1EDC3CC11933AB32058E9881" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\Metalic-Snare.gkick" />
+              <File Id="fil13E6F10DEB1B68C76F85EC85E0F6E63D" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\Neuro-Snare.gkick" />
+              <File Id="filE0D6F8D7A949BBDA960429D5480CF598" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\PsyKick.gkick" />
+              <File Id="filFB4C076E95BE106F569BD8F0FEB46EA4" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\README" />
+              <File Id="filF53E3CA69F8AE07C70A2C9811A4E4297" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\Simple-Snare.gkick" />
+              <File Id="fil28EB947056CC69668F50F2558CAFE924" KeyPath="no" Source="D:\a\geonkick\build\plugins\presets\UnfaTutorial\UnfaTutorial.gkit" />
+	      <RemoveFile Id="RemoveUnfaTutorial" Directory="dirB6790B30B604A8C2C570A8FD6782B581" Name="UnfaTutorial" On="uninstall" />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>   
+    <Feature Id='Complete' Level='1'>
+      <ComponentRef Id='GeonkickVST3' />
+      <ComponentRef Id='GeonkickLV2' />
+      <ComponentRef Id='GeonkickDLLsComponent' />
+      <ComponentRef Id="cmp0AE8CAD4426F3371AA02910A3E27A5D2" />
+      <ComponentRef Id="cmpAAE5D5B4BC290F5FAB8B5757E1898543" />
+      <ComponentRef Id="cmp8F7AD4D23B98CD56C68418A38920A4E3" />
+      <ComponentRef Id="cmpFE055523F403A443BB5B81C8866D383F" />
+      <ComponentRef Id="cmp1AAB60799117FE61EE821AD4E3B9A33C" />
+      <ComponentRef Id="cmp2A21DE12380CBAA13234A973A4B0365F" />
+    </Feature>
+  </Product>
 </Wix>
+

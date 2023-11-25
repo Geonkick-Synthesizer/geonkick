@@ -53,12 +53,26 @@ jobs:
           cp -fr /d/a/_temp/msys64/ucrt64/bin/libpixman-1-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
           cp -fr /d/a/_temp/msys64/ucrt64/bin/libgraphite2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
           cp -fr /d/a/_temp/msys64/ucrt64/bin/libpcre2-8-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          mkdir geonkick.lv2
+          cp -fr /d/a/geonkick/build/src/plugin/lv2/*.dll /d/a/geonkick/build/geonkick.lv2
+          cp -fr /d/a/geonkick/geonkick/geonkick/src/plugin/lv2/geonkick_win.lv2/* /d/a/geonkick/build/geonkick.lv2
+          mkdir plugins
+          cp -fr geonkick.lv2 plugins
+          cp -fr Geonkick.vst3 plugins
+          mkdir plugins/presets
+          cp -fr /d/a/geonkick/build/presets/AVL-Drumkit plugins/presets
+          cp -fr /d/a/geonkick/build/presets/DigitalSamba plugins/presets
+          cp -fr /d/a/geonkick/build/presets/DSoS plugins/presets
+          cp -fr /d/a/geonkick/build/presets/GeonkickBells plugins/presets
+          cp -fr /d/a/geonkick/build/presets/TimeKit plugins/presets
+          cp -fr /d/a/geonkick/build/presets/UnfaTutorial plugins/presets
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-build
-          path: D:\a\geonkick\build\Geonkick.vst3\Contents\x86_64-win
+          path: D:\a\geonkick\build\plugins
+          
           
   create-msi:
     needs: build
@@ -75,7 +89,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: geonkick-build
-          path: D:\a\geonkick\build\Geonkick.vst3
+          path: D:\a\geonkick\build\plugins
 
       - name: Download and Install WiX Toolset
         run: |
