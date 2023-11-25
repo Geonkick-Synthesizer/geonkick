@@ -27,3 +27,4 @@ build:
       - build/${ARCHIVE_NAME}.tar.bz2
   only:
     - main
+    - tags
