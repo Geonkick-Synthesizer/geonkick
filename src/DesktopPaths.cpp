@@ -78,8 +78,15 @@ void DesktopPaths::loadPaths()
 	} else {
 		GEONKICK_LOG_ERROR("Failed to get data directory path.");
 	}
-
 	configPath = dataPath / std::filesystem::path("config");
+
+	const char* programDataPath = std::getenv("ProgramData");
+	if (programDataPath != nullptr) {
+		dataPath = programDataPath;
+		dataPath /= std::filesystem::path(GEONKICK_APP_NAME);
+	} else {
+		GEONKICK_LOG_ERROR("Failed to get program data directory path.");
+	}
 	presetsPath = dataPath / std::filesystem::path("presets");
 }
 
