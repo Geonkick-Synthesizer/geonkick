@@ -24,7 +24,7 @@ jobs:
  
       - name: Building 
         run: |
-          pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo make
+          pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo mingw-w64-ucrt-x86_64-lv2 make
           git clone https://github.com/Geonkick-Synthesizer/geonkick.git
           git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
           mkdir -p /d/a/geonkick/build
