@@ -290,7 +290,6 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         GeonkickLv2Plugin *geonkickLv2PLugin = nullptr;
         if (!features)
                 return nullptr;
-
         void *parent = nullptr;
         LV2UI_Resize *resize = nullptr;
         const LV2_Feature *feature;
@@ -308,12 +307,17 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                 }
                 features++;
         }
-
+#ifdef GEONKICK_OS_WINDOWS
+	auto info = rk_from_native_win(reinterpret_cast<HWND>(parent),
+                                       rk_win_api_instance(),
+                                       rk_win_api_class_name());
+#else // GEONKICK_OS_GNU
         // Get the info about X Window parent window.
         const uintptr_t parentWinId = (uintptr_t)parent;
         Display* xDisplay = XOpenDisplay(nullptr);
         int screenNumber = DefaultScreen(xDisplay);
         auto info = rk_from_native_x11(xDisplay, screenNumber, parentWinId);
+#endif // GEONKICK_OS_GNU
         auto guiApp = new RkMain();
         geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue());
         auto mainWidget = new MainWindow(guiApp, geonkickLv2PLugin->getApi(), info);
@@ -331,7 +335,12 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
         }
 
         auto winId = mainWidget->nativeWindowInfo()->window;
-        *widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
+#ifdef GEONKICK_OS_WINDOWS
+	GEONKICK_LOG_INFO("LV2UI_Widget");
+        *widget = reinterpret_cast<LV2UI_Widget>(winId);
+#else // GEONKICK_OS_GNU
+	*widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);
+#endif // GEONKICK_OS_GNU
         resize->ui_resize(resize->handle, mainWidget->width() * mainWidget->scaleFactor(),
                           mainWidget->height() * mainWidget->scaleFactor());
         return static_cast<LV2UI_Handle>(guiApp);

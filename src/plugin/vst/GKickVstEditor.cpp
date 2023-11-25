@@ -71,7 +71,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
         
         geonkickApi->setEventQueue(guiApp->eventQueue());
 
-#ifdef GEONKICK_OS_WINDOWS // GEONKICK_OS_GNU
+#ifdef GEONKICK_OS_WINDOWS
         auto info = rk_from_native_win(reinterpret_cast<HWND>(parent),
                                        rk_win_api_instance(),
                                        rk_win_api_class_name());

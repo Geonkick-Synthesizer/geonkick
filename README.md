@@ -10,7 +10,7 @@ claps, hi-hats, shakers, and unique effect sounds.
 
 **License:** GNU General Public License, Version 3
 
-**Author and Maintainer:** Iurie Nistor
+**Author and maintainer:** Iurie Nistor
 
 **Version:** 3.0.0
 
@@ -19,10 +19,6 @@ If you have an idea about a feature or found an issue, please, submit it:
 - [on GitLab](https://gitlab.com/Geonkick-Synthesizer/geonkick/issues)
 - [on Codeberg](https://codeberg.org/Geonkick-Synthesizer/geonkick/issues)
 - [on GitHub](https://github.com/Geonkick-Synthesizer/geonkick/issues)
-
-If you want your created presets to be added to the list of Geonkick presets, please, create a pull request
-with the preset archive.
-See the folder "presets" for instructions on creating a preset archive.
 
 ![Screenshot](data/screenshot.png)
 
@@ -88,8 +84,9 @@ Source code repository:
      - The default version that supports kits of 16 instruments
        and 16 output stereo channels per instance.
 * Operating System:
-     - GNU/Linux
-* Manually scale the UI by factor of 2 (useful for HiDPI cases)
+     - GNU/Linux (LV2, VST3, Standalone)
+     - Windows (LV2, VST3)
+* Only on GNU/Linux : manually scale the UI by factor (useful for HiDPI cases)
 
 #### Requirements
 
@@ -102,8 +99,8 @@ for standalone:
 
 for plugin:
 
- * GNU/Linux operating system.
- * A host that supports LV2 plugin format.
+ * GNU/Linux or Windows operating system.
+ * A host that supports LV2 or VST3 plugin format.
 
 #### Install
 
@@ -147,16 +144,21 @@ Install additional dependences:
 
 Get VST3 SDK than build Geonkick VST3 plugin:
 
-	mkdir geonkick/build
-	cd geonkick/build
+        mkdir geonkick/build
+        cd geonkick/build
         cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> ../
-	make
-	make install
+        make
+        make install
 
-#### Packages
+##### Building on Windows
 
-Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora
-, Manjaro, FreeBSD, KXStudio and Ubuntu Studio.
+To build on Windows, you need to install MSYS2/UCRT64 and follow the same steps as mentioned above. Alternatively, you can refer to the 'Building' step in the file .github/workflows/windows.yml of Geonkick repository.
+
+##### Packages or Binaries
+
+Geonkick can be found in the repositories of Arch Linux, openSUSE, Fedora, Manjaro, FreeBSD, KXStudio, and Ubuntu Studio.
+
+Additionally, binareis/installer are attached as artifacts to the repository release notes or pipelines that generate builds from the main branch. It is recommended to use release tag artifacts only.
 
 ##### Packaging
 

@@ -1,3 +1,22 @@
+## [3.0.0]
+
+### Features
+
+- Windows port of LV2 and VST3
+
+### Fixes
+
+- Added GEONKICK_OS_GNU preprocessor to enable memory lock for standalone on GNU/Linux
+
+### Improvements
+
+- Removed OpenSSL, using own code for Base64 encoding
+
+### Other
+
+- For Windows, export to audio file is turned off (available only through SFZ/WAV export)
+- Added config files for pipeline builds
+
 ## [2.10.2]
 
 ### Fixes

@@ -1,6 +1,6 @@
 set(GKICK_PRESETS
   GeonkickBells.tar.xz
-  AVL-Drumkit.tar.xz
+  AVL-Drumkit.tar
   DigitalSamba.tar.xz
   DSoS.tar.xz
   TimeKit.tar.xz
@@ -10,12 +10,12 @@ foreach(compressedFolder ${GKICK_PRESETS})
   message(STATUS "uncompress file ${compressedFolder}")
   
   get_filename_component(presetsFolder ${compressedFolder} NAME_WE)
-  set(outputDir "${CMAKE_BINARY_DIR}/presets/folders/${presetsFolder}")
+  set(outputDir "${CMAKE_BINARY_DIR}/presets/${presetsFolder}")
 
   add_custom_command(
     OUTPUT ${outputDir}
     COMMAND ${CMAKE_COMMAND} -E make_directory ${outputDir}
-    COMMAND ${CMAKE_COMMAND} -E chdir ${outputDir} tar xvf "${GKICK_PRESETS_DIR}/${compressedFolder}"
+    COMMAND ${CMAKE_COMMAND} -E tar xvf "${GKICK_PRESETS_DIR}/${compressedFolder}"
     COMMENT "Extracting ${compressedFolder}"
   )
 

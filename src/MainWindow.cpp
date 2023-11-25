@@ -173,8 +173,10 @@ bool MainWindow::init(void)
                     this, openFileDialog(FileDialog::Type::Save));
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
+#ifndef GEONKICK_OS_WINDOWS
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
                     this, openExportDialog());
+#endif // GEONKICK_OS_WINDOWS
         RK_ACT_BIND(topBar, layerSelected,
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
                     geonkickApi, enbaleLayer(layer, b));
@@ -216,11 +218,13 @@ bool MainWindow::init(void)
         return true;
 }
 
+#ifndef GEONKICK_OS_WINDOWS
 void MainWindow::openExportDialog()
 {
         auto w = new ExportWidget(this, geonkickApi);
         w->setPosition(30, 40);
 }
+#endif // GEONKICK_OS_WINDOWS
 
 void MainWindow::savePreset(const std::string &fileName)
 {
@@ -312,7 +316,9 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         openFileDialog(FileDialog::Type::Save);
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
+#ifndef GEONKICK_OS_WINDOWS
                         openExportDialog();
+#endif // GEONKICK_OS_WINDOWS
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
                         geonkickApi->copyToClipboard();
