@@ -42,6 +42,7 @@ PercussionState::PercussionState()
         , kickFilterFrequency{200}
         , kickFilterQFactor{1.0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
+	, kickCutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Linear}
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 1.0, 1.0, 1.0}
         , layers{false, false, false}
@@ -275,6 +276,9 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                         enableKickFilter(el.value.GetBool());
                                 if (el.name == "cutoff" && el.value.IsDouble())
                                         setKickFilterFrequency(el.value.GetDouble());
+				if (el.name == "apply_type")
+					setKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff,
+								 getApplyTypeFromObj(el.value));
                                 if (el.name == "factor" && el.value.IsDouble())
                                         setKickFilterQFactor(el.value.GetDouble());
                                 if (el.name == "type" && el.value.IsInt())
@@ -361,6 +365,10 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                                 for (const auto &el: m.value.GetObject()) {
                                         if (el.name == "amplitude" && el.value.IsDouble())
                                                 setOscillatorFrequency(index, el.value.GetDouble());
+					if (el.name == "apply_type")
+						setOscillatorEnvelopeApplyType(index,
+									       GeonkickApi::EnvelopeType::Frequency,
+									       getApplyTypeFromObj(el.value));
                                         if (el.name == "points" && el.value.IsArray())
                                                 setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
                                                                             GeonkickApi::EnvelopeType::Frequency);
@@ -386,6 +394,10 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                                         setOscillatorFilterCutOffFreq(index, el.value.GetDouble());
                                 if (el.name == "factor" && el.value.IsDouble())
                                         setOscillatorFilterFactor(index, el.value.GetDouble());
+				if (el.name == "apply_type")
+					setOscillatorEnvelopeApplyType(index,
+								       GeonkickApi::EnvelopeType::FilterCutOff,
+								       getApplyTypeFromObj(el.value));
                                 if (el.name == "type" && el.value.IsInt())
                                         setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
                                 if (el.name == "cutoff_env" && el.value.IsArray()) {
@@ -455,6 +467,23 @@ void PercussionState::setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope,
 		kickDistortionDriveEnvelope = points;
         else if (envelope == GeonkickApi::EnvelopeType::DistortionVolume)
 		kickDistortionVolumeEnvelope = points;
+}
+
+void PercussionState::setKickEnvelopeApplyType(GeonkickApi::EnvelopeType envelope,
+					       GeonkickApi::EnvelopeApplyType applyType)
+{
+
+	if (envelope == GeonkickApi::EnvelopeType::FilterCutOff)
+		kickCutOffEnvelopeApplyType = applyType;
+}
+
+GeonkickApi::EnvelopeApplyType
+PercussionState::getKickEnvelopeApplyType(GeonkickApi::EnvelopeType envelope) const
+{
+
+	if (envelope == GeonkickApi::EnvelopeType::FilterCutOff)
+		return kickCutOffEnvelopeApplyType;
+	return GeonkickApi::EnvelopeApplyType::Linear;
 }
 
 double PercussionState::getLimiterValue() const
@@ -617,6 +646,44 @@ void PercussionState::setOscillatorEnvelopePoints(int index,
                         return;
                 }
         }
+}
+
+void PercussionState::setOscillatorEnvelopeApplyType(int index,
+						     GeonkickApi::EnvelopeType envelopeType,
+						     GeonkickApi::EnvelopeApplyType applyType)
+{
+        auto oscillator = getOscillator(index);
+        if (!oscillator)
+                return;
+
+	switch (envelopeType) {
+	case GeonkickApi::EnvelopeType::Frequency:
+		oscillator->frequencyEnvelopeApplyType = applyType;
+		break;
+	case GeonkickApi::EnvelopeType::FilterCutOff:
+		oscillator->cutOffEnvelopeApplyType = applyType;
+		break;
+	default:
+		return;
+	}
+}
+
+GeonkickApi::EnvelopeApplyType PercussionState::getOscillatorEnvelopeApplyType(int index,
+									       GeonkickApi::EnvelopeType envelope) const
+{
+        auto oscillator = getOscillator(index);
+        if (!oscillator)
+                return GeonkickApi::EnvelopeApplyType::Linear;
+
+	switch (envelope) {
+	case GeonkickApi::EnvelopeType::Frequency:
+		return oscillator->frequencyEnvelopeApplyType;
+		break;
+	case GeonkickApi::EnvelopeType::FilterCutOff:
+		return oscillator->cutOffEnvelopeApplyType;
+	default:
+		return GeonkickApi::EnvelopeApplyType::Linear;
+	}
 }
 
 bool PercussionState::isOscillatorAsFm(int index) const
@@ -866,10 +933,12 @@ std::string PercussionState::toJson() const
 void PercussionState::envelopeToJson(std::ostringstream &jsonStream,
                                      const std::string &envName,
                                      double amplitude,
-                                     const std::vector<RkRealPoint> &envelope)
+                                     const std::vector<RkRealPoint> &envelope,
+ 				     GeonkickApi::EnvelopeApplyType applyType)
 {
         jsonStream << "\"" << envName << "\": {" << std::endl;
         jsonStream << "\"amplitude\": " << amplitude << ", " << std::endl;
+	jsonStream << "\"apply_type\": " << static_cast<int>(applyType) << ", " << std::endl;
         jsonStream << "\"points\": [" << std::endl;
         bool first = true;
         for (const auto &point: envelope) {
@@ -903,7 +972,8 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 envelopeToJson(jsonStream,
                                "freq_env",
                                val.second->frequency,
-                               val.second->frequencyEnvelope);
+                               val.second->frequencyEnvelope,
+			       val.second->frequencyEnvelopeApplyType);
                 jsonStream << "," << std::endl;
                 envelopeToJson(jsonStream,
                                "pitchshift_env",
@@ -916,6 +986,8 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
                 jsonStream << "\"cutoff\": " 
                            << val.second->filterFrequency << ", " << std::endl;
+		jsonStream << "\"apply_type\": " 
+                           << static_cast<int>(val.second->cutOffEnvelopeApplyType) << ", " << std::endl;
                 jsonStream << "\"cutoff_env\": [";
                 bool first = true;
                 for (const auto &point: val.second->filterCutOffEnvelope) {
@@ -994,6 +1066,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "\"type\": " << static_cast<int>(getKickFilterType()) << ", " << std::endl;
         jsonStream << "\"cutoff\": "
                    << getKickFilterFrequency() << ", " << std::endl;
+	jsonStream << "\"apply_type\": "
+                   << static_cast<int>(getKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff)) << ", " << std::endl;
         jsonStream << "\"factor\": "
                    << getKickFilterQFactor() << ", " << std::endl;
         points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff);
@@ -1152,4 +1226,11 @@ std::vector<float> PercussionState::getOscillatorSample(int oscillatorIndex) con
 {
         auto oscillator = getOscillator(oscillatorIndex);
         return oscillator->sample;
+}
+
+GeonkickApi::EnvelopeApplyType PercussionState::getApplyTypeFromObj(const rapidjson::Value &value) const
+{
+	if (value.IsInt())
+		return static_cast<GeonkickApi::EnvelopeApplyType>(value.GetInt());
+	return GeonkickApi::EnvelopeApplyType::Linear;
 }

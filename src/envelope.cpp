@@ -275,18 +275,19 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
                 value = 2 * value - envelopeAmplitude();
                 painter.drawText(point.x(), point.y(), Geonkick::doubleToStr(value, 1));
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-                value *= envelopeAmplitude();
-                if (value < 20)
-                        painter.drawText(point.x(), point.y(), "20Hz " + frequencyToNote(20));
-                if (value >= 20 && value < 1000) {
+	        auto frequency =  pow(10, (log10(envelopeAmplitude()) - log10(20)) * value + log10(20));
+                if (frequency >= 20 && frequency < 1000) {
+		        double roundedValue = std::round(frequency * 10.0) / 10.0;
                         painter.drawText(point.x(), point.y(),
-                                         Geonkick::doubleToStr(value, 0)
-                                         + "Hz " + frequencyToNote(value));
-                } else if (value >= 1000 && value <= 20000) {
+                                         Geonkick::doubleToStr(roundedValue, 1)
+                                         + "Hz " + frequencyToNote(frequency));
+                } else if (frequency >= 1000 && frequency <= 20000) {
+		        frequency /= 1000;
+		        double roundedValue = std::round(frequency * 10.0) / 10.0;
                         painter.drawText(point.x(), point.y(),
-                                         Geonkick::doubleToStr(value / 1000, 0)
+                                         Geonkick::doubleToStr(roundedValue, 1)
                                          + std::string("kHz ")
-                                         + frequencyToNote(value));
+                                         + frequencyToNote(1000 * frequency));
                 }
         }
 }
@@ -548,44 +549,13 @@ void Envelope::setDrawingArea(const RkRect &rect)
 
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
-        RkRealPoint scaledPoint;
-        if (type() == Type::Amplitude
-            || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume
-            || type() == Type::PitchShift) {
-                scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
-                                          static_cast<double>(point.y()) / H());
-        } else {
-                scaledPoint.setX(static_cast<double>(point.x()) / W());
-                double logVal = (static_cast<double>(point.y()) / H()) * (log10(envelopeAmplitude()) - log10(20));
-                double val = pow(10, logVal + log10(20));
-                scaledPoint.setY(val / envelopeAmplitude());
-        }
-
-        return scaledPoint;
+        return {static_cast<double>(point.x()) / W(),
+		static_cast<double>(point.y()) / H()};
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
-        int x, y;
-        if (type() == Type::Amplitude
-            || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume
-            || type() == Type::PitchShift) {
-                x = point.x() * W();
-                y = point.y() * H();
-        } else {
-                x = static_cast<int>(point.x() * W());
-                double logRange = log10(envelopeAmplitude()) - log10(20);
-                double k = 0;
-                if (point.y() > 0) {
-                        double logValue = log10(envelopeAmplitude() * point.y()) - log10(20);
-                        if (logValue > 0)
-                                k = logValue / logRange;
-                }
-                y = k * H();
-        }
-        return RkPoint(x, y);
+        return RkPoint(point.x() * W(), point.y() * H());
 }
 
 bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)
@@ -658,7 +628,7 @@ double Envelope::convertToHumanValue(double val) const
                 val *= envelopeAmplitude();
                 return 2 * val - envelopeAmplitude();
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-                val *= envelopeAmplitude();
+	        return pow(10, (log10(envelopeAmplitude()) - log10(20)) * val + log10(20));
         }
         return val;
 }
@@ -677,10 +647,17 @@ double Envelope::convertFromHumanValue(double val) const
         } else if (type() == Type::PitchShift) {
                 val = (val / envelopeAmplitude() + 1.0) / 2.0;
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-                val /= envelopeAmplitude();
+	  GEONKICK_LOG_INFO("------- ");
+	        GEONKICK_LOG_INFO("F: " << val);
+	        if (val >= 20 && envelopeAmplitude() >= 20) {
+		        val = log10(val / 20) / log10(envelopeAmplitude() / 20);
+			GEONKICK_LOG_INFO("k: " << val);
+                        return std::clamp(val, 0.0, 1.0);
+		}
+                return 0;
         }
 
-        return std::clamp(val, 0.0, 1.0);        
+        return std::clamp(val, 0.0, 1.0);
 }
 
 bool Envelope::hasEditingPoint() const

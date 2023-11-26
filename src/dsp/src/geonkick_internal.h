@@ -31,6 +31,10 @@
 
 #include <pthread.h>
 #include <stdatomic.h>
+#include <math.h>
+
+#define GKICK_2PI 6.2831853f
+#define GKICK_LOG20 1.3010299f
 
 #define GEONKICK_MAX_INSTANCES 500
 

@@ -22,9 +22,6 @@
  */
 
 #include "oscillator.h"
-#include <math.h>
-
-#define GKICK_2PI 6.283185307
 
 struct gkick_oscillator
 *gkick_osc_create(int sample_rate)
@@ -144,12 +141,18 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
                                gkick_real t,
 			       gkick_real kick_len)
 {
-        gkick_real f;
-        f = osc->frequency * gkick_envelope_get_value(osc->envelopes[GKICK_OSC_FREQUENCY_ENVELOPE], t / kick_len);
+	struct gkick_envelope *frequency_envelope = osc->envelopes[GKICK_OSC_FREQUENCY_ENVELOPE];
+        gkick_real env_val = gkick_envelope_get_value(frequency_envelope, t / kick_len);
+	enum gkick_envelope_apply_type apply_type = gkick_envelope_get_apply_type(frequency_envelope);
+	gkick_real f;
+	//if (apply_type == GEONKICK_ENVELOPE_APPLY_LOGARITHMIC)
+	//	f = pow(10, (log10(osc->frequency) - GKICK_LOG20) * env_val + GKICK_LOG20);
+	//else
+	f = (osc->frequency - 20.0f) * env_val + 20.0f;
         f += f * osc->fm_input;
         osc->phase += (GKICK_2PI * f) / (osc->sample_rate);
         if (osc->phase > GKICK_2PI)
-                osc->phase -= GKICK_2PI;
+	          osc->phase -= GKICK_2PI;
 }
 
 gkick_real gkick_osc_value(struct gkick_oscillator *osc,

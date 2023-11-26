@@ -28,7 +28,20 @@ gkick_envelope_create(void)
 {
 	struct gkick_envelope *envelope;
 	envelope = (struct gkick_envelope*)calloc(1, sizeof(struct gkick_envelope));
+	envelope->apply_type = GEONKICK_ENVELOPE_APPLY_LINEAR;
 	return envelope;
+}
+
+void gkick_envelope_set_apply_type(struct gkick_envelope* envelope,
+				   enum gkick_envelope_apply_type apply_type)
+{
+        envelope->apply_type = apply_type;
+}
+
+enum gkick_envelope_apply_type
+gkick_envelope_get_apply_type(const struct gkick_envelope* envelope)
+{
+        return envelope->apply_type;
 }
 
 gkick_real

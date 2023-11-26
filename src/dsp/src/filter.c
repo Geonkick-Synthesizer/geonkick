@@ -110,10 +110,7 @@ gkick_filter_update_coefficents(struct gkick_filter *filter)
                 return GEONKICK_ERROR;
         }
 
-        gkick_real F = 2.0f * sin(M_PI * filter->cutoff_freq / filter->sample_rate);
-        gkick_real Q = filter->factor;
-        filter->coefficients[0] = F;
-        filter->coefficients[1] = Q;
+        filter->coefficients[1] = filter->factor;
         return GEONKICK_OK;
 }
 
@@ -235,8 +232,17 @@ gkick_filter_val(struct gkick_filter *filter,
         gkick_real *l = filter->queue_l;
         gkick_real *b = filter->queue_b;
         gkick_real *h = filter->queue_h;
-        gkick_real F = gkick_envelope_get_value(filter->cutoff_env, env_x) * filter->coefficients[0];
-        gkick_real Q = filter->coefficients[1];
+
+	gkick_real env_val = gkick_envelope_get_value(filter->cutoff_env, env_x);
+	enum gkick_envelope_apply_type apply_type = gkick_envelope_get_apply_type(filter->cutoff_env);
+	gkick_real f;
+	if (apply_type == GEONKICK_ENVELOPE_APPLY_LOGARITHMIC)
+		f = pow(10, (log10(filter->cutoff_freq) - GKICK_LOG20) * env_val + GKICK_LOG20);
+	else
+		f *= env_val;
+        gkick_real F = 2.0f * sin(M_PI * f / filter->sample_rate);
+        gkick_real Q  = filter->coefficients[1];
+	
         size_t n = 1;
         if (filter->queue_empty) {
                 l[n - 1] = l[n] = 0;

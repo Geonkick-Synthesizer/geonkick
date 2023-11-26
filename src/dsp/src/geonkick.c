@@ -272,6 +272,41 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 }
 
 enum geonkick_error
+geonkick_osc_envelope_set_apply_type(struct geonkick *kick, 
+				     size_t osc_index,
+				     size_t env_index,
+				     enum gkick_envelope_apply_type apply_type)
+{
+	if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        enum geonkick_error res;
+        res = synth_osc_env_set_apply_type(kick->synths[kick->per_index],
+					   index,
+					   env_index,
+					   apply_type);
+        if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
+                geonkick_wakeup(kick);
+        return res;
+}
+
+enum geonkick_error
+geonkick_osc_envelope_get_apply_type(struct geonkick *kick,
+				     size_t osc_index,
+				     size_t env_index,
+				     enum gkick_envelope_apply_type *apply_type)
+{
+        if (kick == NULL || apply_type == NULL)
+                return GEONKICK_ERROR;
+        return synth_osc_env_get_apply_type(kick->synths[kick->per_index],
+					    index,
+					    env_index,
+					    apply_type);
+}
+
+enum geonkick_error
 geonkick_osc_set_fm(struct geonkick *kick, size_t index, bool is_fm)
 {
         if (kick == NULL) {
@@ -645,6 +680,39 @@ geonkick_kick_update_env_point(struct geonkick *kick,
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
                 geonkick_wakeup(kick);
         return res;
+}
+
+enum geonkick_error
+geonkick_kick_env_set_apply_type(struct geonkick *kick, 
+				 enum geonkick_envelope_type env_type,
+				 enum gkick_envelope_apply_type apply_type)
+{
+	if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        enum geonkick_error res;
+        res = synth_kick_env_set_apply_type(kick->synths[kick->per_index],
+					    env_type,
+                                            apply_type);
+        if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
+                geonkick_wakeup(kick);
+        return res;
+}
+
+enum geonkick_error
+geonkick_kick_env_get_apply_type(struct geonkick *kick,
+				 enum geonkick_envelope_type env_type,
+				 enum gkick_envelope_apply_type *apply_type)
+{
+	if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return synth_kick_env_get_apply_type(kick->synths[kick->per_index],
+					     env_type,
+					     apply_type);
 }
 
 enum geonkick_error

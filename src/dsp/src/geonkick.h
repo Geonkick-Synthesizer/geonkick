@@ -120,6 +120,11 @@ enum geonkick_channel_type {
         GEONKICK_CHANNEL_MIDI_OUTPUT  = 3
 };
 
+enum gkick_envelope_apply_type {
+	GEONKICK_ENVELOPE_APPLY_LINEAR       = 0,
+	GEONKICK_ENVELOPE_APPLY_LOGARITHMIC  = 1
+};
+
 #ifdef GEONKICK_SINGLE
 #define GEONKICK_MAX_PERCUSSIONS 1
 #else
@@ -203,6 +208,18 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
   				   size_t index,
 				   gkick_real x,
 				   gkick_real y);
+
+enum geonkick_error
+geonkick_osc_envelope_set_apply_type(struct geonkick *kick, 
+				     size_t osc_index,
+				     size_t env_index,
+				     enum gkick_envelope_apply_type apply_type);
+
+enum geonkick_error
+geonkick_osc_envelope_get_apply_type(struct geonkick *kick,
+				     size_t osc_index,
+				     size_t env_index,
+				     enum gkick_envelope_apply_type *apply_type);
 
 enum geonkick_error
 geonkick_osc_set_fm(struct geonkick *kick,
@@ -324,6 +341,16 @@ geonkick_kick_update_env_point(struct geonkick *kick,
                                size_t index,
                                gkick_real x,
                                gkick_real y);
+
+enum geonkick_error
+geonkick_kick_env_set_apply_type(struct geonkick *kick, 
+				 enum geonkick_envelope_type env_type,
+				 enum gkick_envelope_apply_type apply_type);
+
+enum geonkick_error
+geonkick_kick_env_get_apply_type(struct geonkick *kick,
+				 enum geonkick_envelope_type env_type,
+				 enum gkick_envelope_apply_type *apply_type);
 
 enum geonkick_error
 geonkick_set_osc_amplitude(struct geonkick *kick,

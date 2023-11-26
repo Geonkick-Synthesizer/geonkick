@@ -77,6 +77,11 @@ class GeonkickApi : public RkObject {
           PitchShift = GEONKICK_PITCH_SHIFT_ENVELOPE
   };
 
+  enum class EnvelopeApplyType: int {
+	  Linear = GEONKICK_ENVELOPE_APPLY_LINEAR,
+	  Logarithmic = GEONKICK_ENVELOPE_APPLY_LOGARITHMIC
+  };
+
   enum class FilterType: int {
           LowPass  = GEONKICK_FILTER_LOW_PASS,
           HighPass = GEONKICK_FILTER_HIGH_PASS,
@@ -99,6 +104,8 @@ class GeonkickApi : public RkObject {
   bool isOscillatorEnabled(int oscillatorIndex) const;
   std::vector<RkRealPoint> oscillatorEvelopePoints(int oscillatorIndex,
                                                    EnvelopeType envelope) const;
+  EnvelopeApplyType getOscillatorEnvelopeApplyType(int index,
+						   EnvelopeType envelope) const;
   void addOscillatorEnvelopePoint(int oscillatorIndex,
                                   EnvelopeType envelope,
                                   const RkRealPoint &point);
@@ -125,6 +132,7 @@ class GeonkickApi : public RkObject {
   double kickFilterQFactor() const;
   FilterType kickFilterType() const;
   std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
+  EnvelopeApplyType getKickEnvelopeApplyType(EnvelopeType envelope) const;
   bool setOscillatorFrequency(int oscillatorIndex,
                               double frequency);
   bool setOscillatorPitchShift(int oscillatorIndex,
@@ -147,6 +155,9 @@ class GeonkickApi : public RkObject {
   void setOscillatorEvelopePoints(int index,
                                   EnvelopeType envelope,
                                   const std::vector<RkRealPoint> &points);
+  void setOscillatorEnvelopeApplyType(int index,
+				      EnvelopeType envelope,
+				      EnvelopeApplyType applyType);
   void setOscillatorFunction(int oscillatorIndex,
                              FunctionType function);
   void setOscillatorPhase(int oscillatorIndex,
@@ -217,6 +228,8 @@ class GeonkickApi : public RkObject {
   std::string getKitUrl() const;
   void setKickEnvelopePoints(EnvelopeType envelope,
                              const std::vector<RkRealPoint> &points);
+  void setKickEnvelopeApplyType(EnvelopeType envelope,
+				EnvelopeApplyType applyType);
   void playKick(int id = -1);
   void enableCompressor(bool enable);
   void setCompressorAttack(double attack);

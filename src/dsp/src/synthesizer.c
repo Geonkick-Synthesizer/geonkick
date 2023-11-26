@@ -497,6 +497,66 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
 }
 
 enum geonkick_error
+synth_osc_env_set_apply_type(struct gkick_synth *synth, 
+			     size_t osc_index,
+			     size_t env_index,
+			     enum gkick_envelope_apply_type apply_type)
+{
+	if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+	        struct gkick_oscillator *osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (osc == NULL) {
+                 gkick_log_error("can't get oscillator %d", osc_index);
+                 gkick_synth_unlock(synth);
+                 return GEONKICK_ERROR;
+        }
+
+        struct gkick_envelope *env = gkick_osc_get_envelope(osc, env_index);
+        if (env == NULL) {
+                gkick_synth_unlock(synth);
+                gkick_log_error("can't get envelope");
+                return GEONKICK_ERROR;
+        }
+        gkick_envelope_set_apply_type(env, apply_type);
+	osc = gkick_synth_get_oscillator(synth, osc_index);
+        if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
+            && osc->state == GEONKICK_OSC_STATE_ENABLED) {
+                synth->buffer_update = true;
+        }
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+synth_osc_env_get_apply_type(struct gkick_synth *synth,
+			     size_t osc_index,
+			     size_t env_index,
+			     enum gkick_envelope_apply_type *apply_type)
+{
+	if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        gkick_synth_lock(synth);
+	struct gkick_envelope *env = gkick_synth_osc_get_env(synth, osc_index, env_index);
+        if (env == NULL) {
+                gkick_synth_unlock(synth);
+                gkick_log_error("can't get envelope %d", env_index);
+                return GEONKICK_ERROR;
+        }
+	*apply_type = gkick_envelope_get_apply_type(env);
+        gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 gkick_synth_set_osc_function(struct gkick_synth *synth,
                              size_t osc_index,
                              enum geonkick_osc_func_type type)
@@ -1033,6 +1093,51 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
 	}
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
+}
+
+enum geonkick_error
+synth_kick_env_set_apply_type(struct gkick_synth *synth, 
+			      enum geonkick_envelope_type env_type,
+			      enum gkick_envelope_apply_type apply_type)
+{
+        gkick_synth_lock(synth);
+        switch (env_type) {
+	case GEONKICK_AMPLITUDE_ENVELOPE:
+		gkick_envelope_set_apply_type(synth->envelope, apply_type);
+		break;
+	case GEONKICK_FILTER_CUTOFF_ENVELOPE:
+		gkick_envelope_set_apply_type(synth->filter->cutoff_env, apply_type);
+		break;
+	}
+
+        if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
+            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+                && synth->filter_enabled)
+	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
+                 || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
+                && synth->distortion->enabled)) {
+                synth->buffer_update = true;
+        }
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;	
+}
+
+enum geonkick_error
+synth_kick_env_get_apply_type(struct gkick_synth *synth,
+			      enum geonkick_envelope_type env_type,
+			      enum gkick_envelope_apply_type *apply_type)
+{
+	gkick_synth_lock(synth);
+        switch (env_type) {
+	case GEONKICK_AMPLITUDE_ENVELOPE:
+		*apply_type = gkick_envelope_get_apply_type(synth->envelope);
+		break;
+	case GEONKICK_FILTER_CUTOFF_ENVELOPE:
+		*apply_type = gkick_envelope_get_apply_type(synth->filter->cutoff_env);
+		break;
+	}
+        gkick_synth_unlock(synth);
+        return GEONKICK_OK;	
 }
 
 enum geonkick_error

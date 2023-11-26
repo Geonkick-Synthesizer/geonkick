@@ -180,6 +180,18 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
                                  gkick_real y);
 
 enum geonkick_error
+synth_osc_env_set_apply_type(struct gkick_synth *synth,
+			     size_t osc_index,
+			     size_t env_index,
+			     enum gkick_envelope_apply_type apply_type);
+
+enum geonkick_error
+synth_osc_env_get_apply_type(struct gkick_synth *synth,
+			     size_t osc_index,
+			     size_t env_index,
+			     enum gkick_envelope_apply_type *apply_type);
+
+enum geonkick_error
 gkick_synth_set_osc_function(struct gkick_synth *synth,
                              size_t osc_index,
                              enum geonkick_osc_func_type type);
@@ -286,6 +298,16 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
                                   size_t index,
                                   gkick_real x,
                                   gkick_real y);
+
+enum geonkick_error
+synth_kick_env_set_apply_type(struct gkick_synth *synth,
+			      enum geonkick_envelope_type env_type,
+			      enum gkick_envelope_apply_type apply_type);
+
+enum geonkick_error
+synth_kick_env_get_apply_type(struct gkick_synth *synth,
+			      enum geonkick_envelope_type env_type,
+			      enum gkick_envelope_apply_type *apply_type);
 
 enum geonkick_error
 gkick_synth_set_osc_frequency(struct gkick_synth *synth,
