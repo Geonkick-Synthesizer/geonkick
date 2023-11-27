@@ -418,7 +418,7 @@ void Envelope::moveSelectedPoint(int x, int y)
 {
         if (!pointSelected || envelopePoints.empty())
 		return;
-
+	y = std::clamp(y, 0, H());
         auto scaledPoint = scaleDown(RkPoint(x, y));
         auto &selectedPoint = envelopePoints[selectedPointIndex];
 	if (scaledPoint.x() < getLeftPointLimit())
@@ -427,14 +427,7 @@ void Envelope::moveSelectedPoint(int x, int y)
                 selectedPoint.setX(getRightPointLimit());
 	else
                 selectedPoint.setX(scaledPoint.x());
-
-	if (y < 0)
-                selectedPoint.setY(0);
-	else if (y > H())
-                selectedPoint.setY(1);
-	else
-                selectedPoint.setY(scaledPoint.y());
-
+	selectedPoint.setY(scaledPoint.y());
         pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
 }
 
@@ -557,7 +550,8 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                                           static_cast<double>(point.y()) / H());
         } else {
                 scaledPoint.setX(static_cast<double>(point.x()) / W());
-                double logVal = (static_cast<double>(point.y()) / H()) * (log10(envelopeAmplitude()) - log10(20));
+                auto k = static_cast<double>(point.y()) / H();
+                double logVal = k * (log10(envelopeAmplitude()) - log10(20));
                 double val = pow(10, logVal + log10(20));
                 scaledPoint.setY(val / envelopeAmplitude());
         }
