@@ -419,7 +419,7 @@ void Envelope::moveSelectedPoint(int x, int y)
 {
         if (!pointSelected || envelopePoints.empty())
 		return;
-
+	y = std::clamp(y, 0, H());
         auto scaledPoint = scaleDown(RkPoint(x, y));
         auto &selectedPoint = envelopePoints[selectedPointIndex];
 	if (scaledPoint.x() < getLeftPointLimit())
@@ -428,14 +428,7 @@ void Envelope::moveSelectedPoint(int x, int y)
                 selectedPoint.setX(getRightPointLimit());
 	else
                 selectedPoint.setX(scaledPoint.x());
-
-	if (y < 0)
-                selectedPoint.setY(0);
-	else if (y > H())
-                selectedPoint.setY(1);
-	else
-                selectedPoint.setY(scaledPoint.y());
-
+	selectedPoint.setY(scaledPoint.y());
         pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
 }
 
