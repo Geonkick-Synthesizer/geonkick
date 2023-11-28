@@ -146,7 +146,7 @@ Get VST3 SDK than build Geonkick VST3 plugin:
 
         mkdir geonkick/build
         cd geonkick/build
-        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> ../
+        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF ../
         make
         make install
 
