@@ -37,11 +37,12 @@ class OscillatorEnvelope: public Envelope
   Oscillator* getOscillator() const;
 
  protected:
-  void updatePoints() final;
-  void pointAddedEvent(double x, double y) final;
-  void pointUpdatedEvent(unsigned int index, double x, double y) final;
-  void pointRemovedEvent(unsigned int index) final;
-  double envelopeAmplitude() const final;
+  void updateEnvelope() override;
+  void updatePoints() override;
+  void pointAddedEvent(double x, double y) override;
+  void pointUpdatedEvent(unsigned int index, double x, double y) override;
+  void pointRemovedEvent(unsigned int index) override;
+  double envelopeAmplitude() const override;
 
  private:
           Oscillator *oscillator;

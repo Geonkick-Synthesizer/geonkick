@@ -44,6 +44,7 @@ Envelope::Envelope(const RkRect &area)
         , envelopeType{Type::Amplitude}
         , editedPointIndex{0}
         , isEditingPoint{false}
+	, applyType{ApplyType::Linear}
 {
 }
 
@@ -492,7 +493,7 @@ void Envelope::setType(Type type)
 {
         if (isSupportedType(type)) {
                 envelopeType = type;
-                updatePoints();
+                updateEnvelope();
         }
 }
 
@@ -540,15 +541,64 @@ void Envelope::setDrawingArea(const RkRect &rect)
         drawingArea = rect;
 }
 
+void Envelope::updateEnvelope()
+{
+}
+
+void Envelope::updatePoints()
+{
+}
+
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
-        return {static_cast<double>(point.x()) / W(),
-		static_cast<double>(point.y()) / H()};
+	if (applyType == ApplyType::Logarithmic) {
+		GEONKICK_LOG_INFO("ApplyType::Logarithmic");
+		return {static_cast<double>(point.x()) / W(),
+			static_cast<double>(point.y()) / H()};
+	}
+
+	RkRealPoint scaledPoint;
+        if (type() == Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume
+            || type() == Type::PitchShift) {
+                scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
+                                          static_cast<double>(point.y()) / H());
+        } else {
+                scaledPoint.setX(static_cast<double>(point.x()) / W());
+                auto k = static_cast<double>(point.y()) / H();
+                double logVal = k * (log10(envelopeAmplitude()) - log10(20));
+                double val = pow(10, logVal + log10(20));
+                scaledPoint.setY(val / envelopeAmplitude());
+        }
+	GEONKICK_LOG_INFO("ApplyType::Linear");
+        return scaledPoint;
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
-        return RkPoint(point.x() * W(), point.y() * H());
+	if (getApplyType() == ApplyType::Logarithmic)
+		return RkPoint(point.x() * W(), point.y() * H());
+	
+	int x, y;
+        if (type() == Type::Amplitude
+            || type() == Type::DistortionDrive
+            || type() == Type::DistortionVolume
+            || type() == Type::PitchShift) {
+                x = point.x() * W();
+                y = point.y() * H();
+        } else {
+                x = static_cast<int>(point.x() * W());
+                double logRange = log10(envelopeAmplitude()) - log10(20);
+                double k = 0;
+                if (point.y() > 0) {
+                        double logValue = log10(envelopeAmplitude() * point.y()) - log10(20);
+                        if (logValue > 0)
+                                k = logValue / logRange;
+                }
+                y = k * H();
+        }
+        return RkPoint(x, y);
 }
 
 bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)
@@ -640,11 +690,8 @@ double Envelope::convertFromHumanValue(double val) const
         } else if (type() == Type::PitchShift) {
                 val = (val / envelopeAmplitude() + 1.0) / 2.0;
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-	  GEONKICK_LOG_INFO("------- ");
-	        GEONKICK_LOG_INFO("F: " << val);
 	        if (val >= 20 && envelopeAmplitude() >= 20) {
 		        val = log10(val / 20) / log10(envelopeAmplitude() / 20);
-			GEONKICK_LOG_INFO("k: " << val);
                         return std::clamp(val, 0.0, 1.0);
 		}
                 return 0;
@@ -677,4 +724,14 @@ std::string Envelope::getCurrentPointInfo() const
 
         info += ", " + Geonkick::doubleToStr(point.x() * envelopeLength(), 0) + "ms";
         return info;
+}
+
+void Envelope::setApplyType(Envelope::ApplyType apply)
+{
+	applyType = apply;
+}
+
+Envelope::ApplyType Envelope::getApplyType() const
+{
+	return applyType;
 }

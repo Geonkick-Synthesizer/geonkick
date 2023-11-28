@@ -145,10 +145,10 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
         gkick_real env_val = gkick_envelope_get_value(frequency_envelope, t / kick_len);
 	enum gkick_envelope_apply_type apply_type = gkick_envelope_get_apply_type(frequency_envelope);
 	gkick_real f;
-	//if (apply_type == GEONKICK_ENVELOPE_APPLY_LOGARITHMIC)
-	//	f = pow(10, (log10(osc->frequency) - GKICK_LOG20) * env_val + GKICK_LOG20);
-	//else
-	f = (osc->frequency - 20.0f) * env_val + 20.0f;
+	if (apply_type == GEONKICK_ENVELOPE_APPLY_LOGARITHMIC)
+		f = pow(10, (log10(osc->frequency) - GKICK_LOG20) * env_val + GKICK_LOG20);
+	else
+		f = osc->frequency * env_val;
         f += f * osc->fm_input;
         osc->phase += (GKICK_2PI * f) / (osc->sample_rate);
         if (osc->phase > GKICK_2PI)

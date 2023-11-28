@@ -35,6 +35,7 @@
 class Envelope : public RkObject
 {
  public:
+	using ApplyType = GeonkickApi::EnvelopeApplyType;
 
         enum class DrawLayer {
                 Axies,
@@ -81,7 +82,8 @@ class Envelope : public RkObject
         void setPoints(const std::vector<RkRealPoint>  &points);
         void removePoints();
         void setDrawingArea(const RkRect &rect);
-        virtual void updatePoints() {};
+        virtual void updateEnvelope();
+	virtual void updatePoints();
          RK_DECL_ACT(envelopeLengthUpdated,
                      envelopeLengthUpdated(double val),
                      RK_ARG_TYPE(double),
@@ -95,6 +97,8 @@ class Envelope : public RkObject
                      RK_ARG_TYPE(),
                      RK_ARG_VAL());
         std::string getCurrentPointInfo() const;
+	void setApplyType(ApplyType apply);
+	ApplyType getApplyType() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -136,6 +140,7 @@ class Envelope : public RkObject
         Type envelopeType;
         size_t editedPointIndex;
         bool isEditingPoint;
+	ApplyType applyType;
 };
 
 #endif // GEONKICK_ENVELOPE_H

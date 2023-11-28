@@ -41,6 +41,12 @@ void OscillatorEnvelope::updatePoints()
         setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
 }
 
+void OscillatorEnvelope::updateEnvelope()
+{
+	updatePoints();
+	setApplyType(oscillator->envelopeApplyType(static_cast<Oscillator::EnvelopeType>(type())));
+}
+
 void OscillatorEnvelope::pointAddedEvent(double x, double y)
 {
         oscillator->addEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), x, y);
@@ -54,7 +60,6 @@ void OscillatorEnvelope::pointUpdatedEvent(unsigned int index, double x, double 
 void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
 {
         oscillator->removeEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), index);
-
 }
 
 double OscillatorEnvelope::envelopeLength(void) const

@@ -33,6 +33,7 @@ class Oscillator: public RkObject
   using Type = GeonkickApi::OscillatorType;
   using FunctionType = GeonkickApi::FunctionType;
   using EnvelopeType = GeonkickApi::EnvelopeType;
+  using EnvelopeApplyType = GeonkickApi::EnvelopeApplyType;
   using FilterType   = GeonkickApi::FilterType;
 
   explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
@@ -73,6 +74,9 @@ class Oscillator: public RkObject
                            int point_index,
                            double x,
                            double y);
+  void setEnvelopeApplyType(EnvelopeType envelope,
+			    EnvelopeApplyType apply);
+  EnvelopeApplyType envelopeApplyType(EnvelopeType envelope) const;
   void setSample(const std::string &file);
   int index() const;
   std::string samplesPath() const;

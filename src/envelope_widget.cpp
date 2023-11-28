@@ -199,7 +199,7 @@ void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
 void EnvelopeWidget::updateGui()
 {
         for (const auto &envelope: envelopes)
-                envelope.second->updatePoints();
+                envelope.second->updateEnvelope();
         drawArea->update();
 }
 

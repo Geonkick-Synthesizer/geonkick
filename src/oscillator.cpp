@@ -216,3 +216,15 @@ std::string Oscillator::samplesPath() const
 {
         return geonkickApi->currentWorkingPath("Samples").string();
 }
+
+void Oscillator::setEnvelopeApplyType(Oscillator::EnvelopeType envelope,
+				      Oscillator::EnvelopeApplyType apply)
+{
+	geonkickApi->setOscillatorEnvelopeApplyType(index(), envelope, apply);
+}
+
+Oscillator::EnvelopeApplyType
+Oscillator::envelopeApplyType(Oscillator::EnvelopeType envelope) const
+{
+	return geonkickApi->getOscillatorEnvelopeApplyType(index(), envelope);
+}

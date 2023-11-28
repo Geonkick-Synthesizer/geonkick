@@ -204,7 +204,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                         if (osc != GeonkickApi::OscillatorType::Noise) {
 				state->setOscillatorEnvelopeApplyType(index,
 								      GeonkickApi::EnvelopeType::Frequency,
-								      GeonkickApi::EnvelopeApplyType::Linear);
+								      GeonkickApi::EnvelopeApplyType::Logarithmic);
                                 state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Frequency);
                                 state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::PitchShift);
                                 std::vector<RkRealPoint> env = envelope;
@@ -528,6 +528,7 @@ GeonkickApi::EnvelopeApplyType GeonkickApi::getOscillatorEnvelopeApplyType(int i
 					     getOscIndex(index),
 					     static_cast<int>(envelope),
 					     &applyType);
+	GEONKICK_LOG_INFO("GeonkickApi::getOscillatorEnvelopeApplyType: " << (int)applyType);
 	return static_cast<EnvelopeApplyType>(applyType);
 }
 
@@ -556,6 +557,7 @@ void GeonkickApi::setOscillatorEnvelopeApplyType(int index,
 						 EnvelopeType envelope,
 						 EnvelopeApplyType applyType)
 {
+	GEONKICK_LOG_INFO("GeonkickApi::getOscillatorEnvelopeApplyType: " << (int)applyType);
 	geonkick_osc_envelope_set_apply_type(geonkickApi,
 					     getOscIndex(index),
 					     static_cast<int>(envelope),
