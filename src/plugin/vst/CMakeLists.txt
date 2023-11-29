@@ -1,4 +1,7 @@
 set(GKICK_VST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(SMTG_ENABLE_VST3_HOSTING_EXAMPLES OFF CACHE BOOL "disable hosting examples")
+set(SMTG_ENABLE_VST3_PLUGIN_EXAMPLES OFF CACHE BOOL "disable plugin examples")
+set(SMTG_ENABLE_VSTGUI_SUPPORT OFF CACHE BOOL "disable vstgui examples")
 list(APPEND CMAKE_MODULE_PATH "${GKICK_VST_SDK_PATH}/cmake/modules")
 include_directories(${GKICK_VST_SDK_PATH})
 include_directories(${GKICK_REDKITE_SDK_PATH}/include)

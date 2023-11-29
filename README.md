@@ -32,7 +32,7 @@ Source code repository:
 - https://codeberg.org/Geonkick-Synthesizer/geonkick
 - https://github.com/Geonkick-Synthesizer/geonkick
 
-#### Features
+## Features
 
 * Kit
    - Supports up to 16 instruments.
@@ -88,7 +88,7 @@ Source code repository:
      - Windows (LV2, VST3)
 * Only on GNU/Linux : manually scale the UI by factor (useful for HiDPI cases)
 
-#### Requirements
+## Requirements
 
 In order Geonkick to run and operate correctly there is a need:
 
@@ -102,7 +102,7 @@ for plugin:
  * GNU/Linux or Windows operating system.
  * A host that supports LV2 or VST3 plugin format.
 
-#### Install
+## Build & Install
 
 ##### Install dependencies
 
@@ -146,7 +146,7 @@ Get VST3 SDK than build Geonkick VST3 plugin:
 
         mkdir geonkick/build
         cd geonkick/build
-        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> ../
+        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF ../
         make
         make install
 
@@ -154,7 +154,7 @@ Get VST3 SDK than build Geonkick VST3 plugin:
 
 To build on Windows, you need to install MSYS2/UCRT64 and follow the same steps as mentioned above. Alternatively, you can refer to the 'Building' step in the file .github/workflows/windows.yml of Geonkick repository.
 
-##### Packages or Binaries
+## Packages & Binaries
 
 Geonkick can be found in the repositories of Arch Linux, openSUSE, Fedora, Manjaro, FreeBSD, KXStudio, and Ubuntu Studio.
 
@@ -164,6 +164,6 @@ Additionally, binareis/installer are attached as artifacts to the repository rel
 
 Please use only release versions ([see repository releases](https://gitlab.com/Geonkick-Synthesizer/geonkick/-/releases)).
 
-#### Documentation
+## Documentation
 
  [doc/Geonkick_User_Guide.md](doc/Geonkick_User_Guide.md)

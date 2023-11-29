@@ -16,7 +16,7 @@ build:
     - git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
     - VST3SDKPATH=$(pwd)/vst3sdk
     - cd build
-    - cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH ..
+    - cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF ..
     - make -j 4
     - make install
     - tar czf "${ARCHIVE_NAME}.tar.gz" install
