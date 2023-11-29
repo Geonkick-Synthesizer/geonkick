@@ -284,7 +284,7 @@ geonkick_osc_envelope_set_apply_type(struct geonkick *kick,
 
         enum geonkick_error res;
         res = synth_osc_env_set_apply_type(kick->synths[kick->per_index],
-					   index,
+					   osc_index,
 					   env_index,
 					   apply_type);
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
@@ -301,7 +301,7 @@ geonkick_osc_envelope_get_apply_type(struct geonkick *kick,
         if (kick == NULL || apply_type == NULL)
                 return GEONKICK_ERROR;
         return synth_osc_env_get_apply_type(kick->synths[kick->per_index],
-					    index,
+					    osc_index,
 					    env_index,
 					    apply_type);
 }

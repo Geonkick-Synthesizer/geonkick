@@ -174,8 +174,8 @@ private:
                 , filterType{GeonkickApi::FilterType::LowPass}
                 , filterFrequency{200}
                 , filterFactor{1.0}
-	        , frequencyEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Linear}
-	        , cutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Linear} {}
+	        , frequencyEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
+	        , cutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic} {}
                 GeonkickApi::OscillatorType type;
                 std::vector<float> sample;
                 bool isEnabled;

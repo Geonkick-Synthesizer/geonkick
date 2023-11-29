@@ -35,6 +35,7 @@ gkick_envelope_create(void)
 void gkick_envelope_set_apply_type(struct gkick_envelope* envelope,
 				   enum gkick_envelope_apply_type apply_type)
 {
+	gkick_log_error("apply: %d", (int)apply_type);
         envelope->apply_type = apply_type;
 }
 

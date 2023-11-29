@@ -44,7 +44,9 @@ void OscillatorEnvelope::updatePoints()
 void OscillatorEnvelope::updateEnvelope()
 {
 	updatePoints();
-	setApplyType(oscillator->envelopeApplyType(static_cast<Oscillator::EnvelopeType>(type())));
+	auto applyType = oscillator->envelopeApplyType(static_cast<Oscillator::EnvelopeType>(type()));
+	GEONKICK_LOG_INFO("void OscillatorEnvelope::updateEnvelope():" << (int)(applyType));
+	setApplyType(applyType);
 }
 
 void OscillatorEnvelope::pointAddedEvent(double x, double y)

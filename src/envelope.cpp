@@ -32,11 +32,11 @@ Envelope::Envelope(const RkRect &area)
         , dotRadius{3}
         , selectedPointIndex{0}
         , supportedTypes({Type::Amplitude,
-			 Type::Frequency,
-			 Type::FilterCutOff,
-                         Type::DistortionDrive,
-                         Type::DistortionVolume,
-                         Type::PitchShift})
+			Type::Frequency,
+			Type::FilterCutOff,
+			Type::DistortionDrive,
+			Type::DistortionVolume,
+			Type::PitchShift})
         , overPointIndex{0}
         , isOverPoint{false}
         , pointSelected{false}
@@ -276,20 +276,36 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
                 value = 2 * value - envelopeAmplitude();
                 painter.drawText(point.x(), point.y(), Geonkick::doubleToStr(value, 1));
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-	        auto frequency =  pow(10, (log10(envelopeAmplitude()) - log10(20)) * value + log10(20));
-                if (frequency >= 20 && frequency < 1000) {
-		        double roundedValue = std::round(frequency * 10.0) / 10.0;
-                        painter.drawText(point.x(), point.y(),
-                                         Geonkick::doubleToStr(roundedValue, 1)
-                                         + "Hz " + frequencyToNote(frequency));
-                } else if (frequency >= 1000 && frequency <= 20000) {
-		        frequency /= 1000;
-		        double roundedValue = std::round(frequency * 10.0) / 10.0;
-                        painter.drawText(point.x(), point.y(),
-                                         Geonkick::doubleToStr(roundedValue, 1)
-                                         + std::string("kHz ")
-                                         + frequencyToNote(1000 * frequency));
-                }
+                if (getApplyType() == ApplyType::Linear) {
+			value *= envelopeAmplitude();
+			if (value < 20)
+				painter.drawText(point.x(), point.y(), "20Hz " + frequencyToNote(20));
+			if (value >= 20 && value < 1000) {
+				painter.drawText(point.x(), point.y(),
+						 Geonkick::doubleToStr(value, 0)
+						 + "Hz " + frequencyToNote(value));
+			} else if (value >= 1000 && value <= 20000) {
+				painter.drawText(point.x(), point.y(),
+						 Geonkick::doubleToStr(value / 1000, 0)
+						 + std::string("kHz ")
+						 + frequencyToNote(value));
+			}
+                } else {    
+			auto frequency =  pow(10, (log10(envelopeAmplitude()) - log10(20)) * value + log10(20));
+			if (frequency >= 20 && frequency < 1000) {
+				double roundedValue = std::round(frequency * 10.0) / 10.0;
+				painter.drawText(point.x(), point.y(),
+						 Geonkick::doubleToStr(roundedValue, 1)
+						 + "Hz " + frequencyToNote(frequency));
+			} else if (frequency >= 1000 && frequency <= 20000) {
+				frequency /= 1000;
+				double roundedValue = std::round(frequency * 10.0) / 10.0;
+				painter.drawText(point.x(), point.y(),
+						 Geonkick::doubleToStr(roundedValue, 1)
+						 + std::string("kHz ")
+						 + frequencyToNote(1000 * frequency));
+			}
+		}
         }
 }
 
@@ -303,7 +319,7 @@ void Envelope::drawLines(RkPainter &painter)
 	for (const auto& point : envelopePoints) {
                 auto scaledPoint = scaleUp(point);
 	        points.push_back(RkPoint(origin.x() + scaledPoint.x(),
-                                        origin.y() - scaledPoint.y()));
+					 origin.y() - scaledPoint.y()));
 	}
 
 	auto pen = painter.pen();
@@ -671,7 +687,10 @@ double Envelope::convertToHumanValue(double val) const
                 val *= envelopeAmplitude();
                 return 2 * val - envelopeAmplitude();
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-	        return pow(10, (log10(envelopeAmplitude()) - log10(20)) * val + log10(20));
+                if (getApplyType() == ApplyType::Linear) 
+			val *= envelopeAmplitude();
+                else 
+	                return pow(10, (log10(envelopeAmplitude()) - log10(20)) * val + log10(20));
         }
         return val;
 }
@@ -690,10 +709,14 @@ double Envelope::convertFromHumanValue(double val) const
         } else if (type() == Type::PitchShift) {
                 val = (val / envelopeAmplitude() + 1.0) / 2.0;
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-	        if (val >= 20 && envelopeAmplitude() >= 20) {
-		        val = log10(val / 20) / log10(envelopeAmplitude() / 20);
-                        return std::clamp(val, 0.0, 1.0);
-		}
+                if (getApplyType() == ApplyType::Linear) {
+                        val /= envelopeAmplitude();
+                } else {
+			if (val >= 20 && envelopeAmplitude() >= 20) {
+				val = log10(val / 20) / log10(envelopeAmplitude() / 20);
+				return std::clamp(val, 0.0, 1.0);
+			}
+                }
                 return 0;
         }
 
@@ -728,6 +751,7 @@ std::string Envelope::getCurrentPointInfo() const
 
 void Envelope::setApplyType(Envelope::ApplyType apply)
 {
+	GEONKICK_LOG_INFO("Envelope::setApplyType" << (int)apply);
 	applyType = apply;
 }
 

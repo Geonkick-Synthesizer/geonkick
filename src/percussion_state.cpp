@@ -42,7 +42,7 @@ PercussionState::PercussionState()
         , kickFilterFrequency{200}
         , kickFilterQFactor{1.0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
-	, kickCutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Linear}
+	, kickCutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
         , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 1.0, 1.0, 1.0}
         , layers{false, false, false}
@@ -271,14 +271,14 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                 }
 
                 if (m.name == "filter" && m.value.IsObject()) {
+			auto applyType = GeonkickApi::EnvelopeApplyType::Linear;
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "enabled" && el.value.IsBool())
                                         enableKickFilter(el.value.GetBool());
                                 if (el.name == "cutoff" && el.value.IsDouble())
                                         setKickFilterFrequency(el.value.GetDouble());
 				if (el.name == "apply_type")
-					setKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff,
-								 getApplyTypeFromObj(el.value));
+					applyType = getApplyTypeFromObj(el.value);
                                 if (el.name == "factor" && el.value.IsDouble())
                                         setKickFilterQFactor(el.value.GetDouble());
                                 if (el.name == "type" && el.value.IsInt())
@@ -288,6 +288,7 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                                               parseEnvelopeArray(el.value));
                                 }
                         }
+			setKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff, applyType);
                 }
 
                 if (m.name == "compressor" && m.value.IsObject()) {
@@ -362,17 +363,19 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
 
                 if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise) {
                         if (m.name == "freq_env" && m.value.IsObject()) {
+				auto applyType = GeonkickApi::EnvelopeApplyType::Linear;
                                 for (const auto &el: m.value.GetObject()) {
                                         if (el.name == "amplitude" && el.value.IsDouble())
                                                 setOscillatorFrequency(index, el.value.GetDouble());
 					if (el.name == "apply_type")
-						setOscillatorEnvelopeApplyType(index,
-									       GeonkickApi::EnvelopeType::Frequency,
-									       getApplyTypeFromObj(el.value));
+						applyType = getApplyTypeFromObj(el.value);
                                         if (el.name == "points" && el.value.IsArray())
                                                 setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
                                                                             GeonkickApi::EnvelopeType::Frequency);
                                 }
+			        setOscillatorEnvelopeApplyType(index,
+							       GeonkickApi::EnvelopeType::Frequency,
+							       applyType);
                         }
 
                         if (m.name == "pitchshift_env" && m.value.IsObject()) {
@@ -387,6 +390,7 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                 }
 
                 if (m.name == "filter" && m.value.IsObject()) {
+			auto applyType = GeonkickApi::EnvelopeApplyType::Linear;
                         for (const auto &el: m.value.GetObject()) {
                                 if (el.name == "enabled" && el.value.IsBool())
                                         setOscillatorFilterEnabled(index, el.value.GetBool());
@@ -395,17 +399,17 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                                 if (el.name == "factor" && el.value.IsDouble())
                                         setOscillatorFilterFactor(index, el.value.GetDouble());
 				if (el.name == "apply_type")
-					setOscillatorEnvelopeApplyType(index,
-								       GeonkickApi::EnvelopeType::FilterCutOff,
-								       getApplyTypeFromObj(el.value));
+					applyType = getApplyTypeFromObj(el.value);
                                 if (el.name == "type" && el.value.IsInt())
                                         setOscillatorFilterType(index, static_cast<GeonkickApi::FilterType>(el.value.GetInt()));
                                 if (el.name == "cutoff_env" && el.value.IsArray()) {
                                         setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
                                                                     GeonkickApi::EnvelopeType::FilterCutOff);
                                 }
-
                         }
+			setOscillatorEnvelopeApplyType(index,
+						       GeonkickApi::EnvelopeType::FilterCutOff,
+						       applyType);
                 }
         }
 }

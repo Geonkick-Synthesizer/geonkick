@@ -525,8 +525,8 @@ GeonkickApi::EnvelopeApplyType GeonkickApi::getOscillatorEnvelopeApplyType(int i
 {
 	enum gkick_envelope_apply_type applyType;
 	geonkick_osc_envelope_get_apply_type(geonkickApi,
-					     getOscIndex(index),
-					     static_cast<int>(envelope),
+					     static_cast<size_t>(getOscIndex(index)),
+					     static_cast<size_t>(envelope),
 					     &applyType);
 	GEONKICK_LOG_INFO("GeonkickApi::getOscillatorEnvelopeApplyType: " << (int)applyType);
 	return static_cast<EnvelopeApplyType>(applyType);
@@ -557,7 +557,6 @@ void GeonkickApi::setOscillatorEnvelopeApplyType(int index,
 						 EnvelopeType envelope,
 						 EnvelopeApplyType applyType)
 {
-	GEONKICK_LOG_INFO("GeonkickApi::getOscillatorEnvelopeApplyType: " << (int)applyType);
 	geonkick_osc_envelope_set_apply_type(geonkickApi,
 					     getOscIndex(index),
 					     static_cast<int>(envelope),
