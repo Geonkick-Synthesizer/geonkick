@@ -75,6 +75,13 @@ double GeneralEnvelope::envelopeAmplitude(void) const
         return 0;
 }
 
+void GeneralEnvelope::updateEnvelope()
+{
+	auto applyType = geonkickApi->getKickEnvelopeApplyType(type());
+	setApplyType(applyType);
+	updatePoints();
+}
+
 void GeneralEnvelope::updatePoints()
 {
         setPoints(geonkickApi->getKickEnvelopePoints(type()));
