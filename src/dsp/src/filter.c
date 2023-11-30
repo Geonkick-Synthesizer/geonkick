@@ -239,7 +239,7 @@ gkick_filter_val(struct gkick_filter *filter,
 	if (apply_type == GEONKICK_ENVELOPE_APPLY_LOGARITHMIC)
 		f = pow(10, (log10(filter->cutoff_freq) - GKICK_LOG20) * env_val + GKICK_LOG20);
 	else
-		f *= env_val;
+		f = filter->cutoff_freq * env_val;
         gkick_real F = 2.0f * sin(M_PI * f / filter->sample_rate);
         gkick_real Q  = filter->coefficients[1];
 	
