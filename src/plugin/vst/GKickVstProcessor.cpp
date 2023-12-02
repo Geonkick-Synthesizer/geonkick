@@ -33,6 +33,7 @@
 #include "geonkick_api.h"
 #include "kit_state.h"
 
+#ifndef GEONKICK_OS_WINDOWS
 bool ModuleEntry (void*)
 {
         return true;
@@ -42,9 +43,15 @@ bool ModuleExit (void)
 {
         return true;
 }
+#endif // GEONKICK_OS_WINDOWS
 
 GKickVstProcessor::GKickVstProcessor()
         : geonkickApi{nullptr}
+	, sampleRate{Geonkick::defaultSampleRate}
+{
+}
+
+GKickVstProcessor::~GKickVstProcessor()
 {
 }
 
@@ -59,15 +66,7 @@ GKickVstProcessor::initialize(FUnknown* context)
 {
         auto res = Vst::SingleComponentEffect::initialize(context);
         if (res != kResultTrue)
-                return kResultFalse;
-
-        geonkickApi = std::make_unique<GeonkickApi>(Geonkick::defaultSampleRate,
-                                                    GeonkickApi::InstanceType::Vst3);
-        if (!geonkickApi->init()) {
-                geonkickApi = nullptr;
-                GEONKICK_LOG_ERROR("can't init Geonkick API");
-                return kResultFalse;
-        }
+                return res;
 
         auto nChannels = GeonkickApi::numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
@@ -81,9 +80,9 @@ GKickVstProcessor::initialize(FUnknown* context)
 
 tresult PLUGIN_API
 GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
-                                                         int32 numIns,
-                                                         Vst::SpeakerArrangement* outputs,
-                                                         int32 numOuts)
+                                      int32 numIns,
+                                      Vst::SpeakerArrangement* outputs,
+                                      int32 numOuts)
 {
         auto n = GeonkickApi::numberOfChannels();
         if (numIns == 0 && numOuts == static_cast<decltype(numOuts)>(n))
@@ -94,18 +93,21 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
 tresult PLUGIN_API
 GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 {
-        auto data = geonkickApi->getKitState()->toJson();
-        geonkickApi = std::make_unique<GeonkickApi>(setup.sampleRate,
-                                                    GeonkickApi::InstanceType::Vst3);
-        if (!geonkickApi->init()) {
-                geonkickApi = nullptr;
-                GEONKICK_LOG_ERROR("can't init Geonkick API");
-                return kResultFalse;
+        auto res = Vst::SingleComponentEffect::setupProcessing(setup);
+        if (res != kResultTrue)
+                return res;
+
+        if (!geonkickApi || sampleRate != setup.sampleRate) {
+                sampleRate = setup.sampleRate;
+                geonkickApi = std::make_unique<GeonkickApi>(sampleRate,
+                                                            GeonkickApi::InstanceType::Vst3);
+                if (!geonkickApi->init()) {
+                        geonkickApi = nullptr;
+                        GEONKICK_LOG_ERROR("can't init Geonkick API");
+                        return kResultFalse;
+                }
         }
-        geonkickApi->setKitState(data);
-        geonkickApi->notifyUpdateGui();
-        geonkickApi->notifyKitUpdated();
-        return Vst::SingleComponentEffect::setupProcessing(setup);
+        return kResultTrue;
 }
 
 tresult PLUGIN_API
@@ -169,7 +171,7 @@ GKickVstProcessor::process(Vst::ProcessData& data)
         }
 
         if (static_cast<decltype(data.numSamples)>(currentFrame) < data.numSamples)
-        geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
+                geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
 
         return kResultOk;
 }
@@ -177,10 +179,8 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 tresult PLUGIN_API
 GKickVstProcessor::setState(IBStream* state)
 {
-        if (state == nullptr || geonkickApi == nullptr) {
-                GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
-                return kResultFalse;
-        }
+        if (state == nullptr || geonkickApi == nullptr)
+                return kResultTrue;
 
         if (state->seek(0, IBStream::kIBSeekEnd, 0) == kResultFalse) {
                 GEONKICK_LOG_ERROR("can't seek in stream");
@@ -221,10 +221,8 @@ GKickVstProcessor::setState(IBStream* state)
 tresult PLUGIN_API
 GKickVstProcessor::getState(IBStream* state)
 {
-        if (state == nullptr || geonkickApi == nullptr) {
-                GEONKICK_LOG_ERROR("wrong arguments or DSP is not ready");
-                return kResultFalse;
-        }
+        if (state == nullptr || geonkickApi == nullptr)
+                return kResultTrue;
 
         int32 nBytes = 0;
         auto data = geonkickApi->getKitState()->toJson();
