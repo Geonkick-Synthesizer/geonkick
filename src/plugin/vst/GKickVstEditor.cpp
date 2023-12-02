@@ -125,12 +125,13 @@ GKickVstEditor::removed()
 tresult PLUGIN_API
 GKickVstEditor::getSize(ViewRect* newSize)
 {
-        if (newSize == nullptr || mainWindow == nullptr)
+        if (newSize == nullptr)
 		return kResultFalse;
 
-	newSize->left   = mainWindow->x();
-	newSize->right  = mainWindow->x() + mainWindow->width();
-	newSize->top    = mainWindow->y();
-	newSize->bottom = mainWindow->y() + mainWindow->height();
+        auto winRect = MainWindow::getWindowSize();
+	newSize->left   = winRect.left();
+	newSize->right  = winRect.right();
+	newSize->top    = winRect.top();
+	newSize->bottom = winRect.bottom();
 	return kResultOk;
 }
