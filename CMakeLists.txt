@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 3.0.0)
+project(geonkick VERSION 3.0.1)
 
 if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
     include(GNUInstallDirs)
