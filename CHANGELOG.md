@@ -9,7 +9,7 @@
 ### Improvements
 
 - Disable building the vst3sdk examples and gui (merge request from Christian Heusel @christian-heusel)
-- Pipilines scripts cleaunps related to	vst3sdk
+- Pipelines scripts cleanups related to	vst3sdk
 
 ## [3.0.0]
 
@@ -256,7 +256,6 @@
 ### Other
 
    - remove experimental file system support.
- 
 
 ## [2.3.4]
 
