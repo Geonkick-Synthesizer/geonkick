@@ -26,12 +26,12 @@ jobs:
  
       - name: Building 
         run: |
-          pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo mingw-w64-ucrt-x86_64-lv2 make
+          pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo mingw-w64-ucrt-x86_64-lv2 make
           git clone https://github.com/Geonkick-Synthesizer/geonkick.git
           git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
           mkdir -p /d/a/geonkick/build
           cd /d/a/geonkick/build
-          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF /d/a/geonkick/geonkick/geonkick
+          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk /d/a/geonkick/geonkick/geonkick
           sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
           make VERBOSE=1
           mkdir -p Geonkick.vst3/Contents/x86_64-win

@@ -32,13 +32,10 @@
 extern "C" {
 #endif // __cplusplus
 
-#ifdef GEONKICK_OS_WINDOWS
-__declspec(dllexport) bool ModuleEntry(void*);
-__declspec(dllexport) bool ModuleExit(void);
-#else // GEONKICK_OS_GNU
+#ifndef GEONKICK_OS_WINDOWS
 __attribute__((visibility("default"))) bool ModuleEntry (void*);
 __attribute__((visibility("default"))) bool ModuleExit (void);
-#endif // GEONKICK_OS_GNU
+#endif // GEONKICK_OS_WINDOWS
         
 #ifdef __cplusplus
 }
@@ -51,7 +48,7 @@ using namespace Steinberg;
 class GKickVstProcessor : public Vst::SingleComponentEffect {
   public:
         GKickVstProcessor();
-        ~GKickVstProcessor() = default;
+        ~GKickVstProcessor();
         tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE;
         static FUnknown* createInstance(void*);
         tresult PLUGIN_API setBusArrangements(Vst::SpeakerArrangement* inputs,
@@ -69,6 +66,7 @@ class GKickVstProcessor : public Vst::SingleComponentEffect {
   protected:
         std::unique_ptr<GeonkickApi> geonkickApi;
         std::vector<float*> channelsBuffers;
+        int sampleRate;
 };
 
 #endif // GEONKICK_PLUGIN_VST_PROCESSOR_H

@@ -218,6 +218,11 @@ bool MainWindow::init(void)
         return true;
 }
 
+RkRect MainWindow::getWindowSize()
+{
+        return {0, 0, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT};
+}
+
 #ifndef GEONKICK_OS_WINDOWS
 void MainWindow::openExportDialog()
 {

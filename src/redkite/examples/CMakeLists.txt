@@ -91,7 +91,7 @@ add_executable(painter
 add_dependencies(painter redkite)
 target_link_libraries(painter redkite)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
- target_link_libraries(painter "-mwindows -lstdc++ -lcrypto -lm -lcairo")
+ target_link_libraries(painter "-mwindows -lstdc++ -lm -lcairo")
 else ()
  target_link_libraries(painter ${RK_LINK_}"-lX11 -lrt -lm -ldl")
  target_link_libraries(painter ${RK_GRAPHICS_BACKEND_LINK_LIBS})

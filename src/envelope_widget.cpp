@@ -51,8 +51,6 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
 {
         // Create drawing area.
         drawArea = new EnvelopeWidgetDrawingArea(this, geonkickApi);
-        drawArea->show();
-
         auto rect = drawArea->getDrawingArea();
 
         // Oscillator1 envelope
@@ -84,6 +82,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                     this, showEnvelope(category, envelope));
         
         createPointInfoLabel();
+        drawArea->show();
 }
 
 void EnvelopeWidget::createButtomMenu()
@@ -93,7 +92,6 @@ void EnvelopeWidget::createButtomMenu()
         buttomAreaWidget->setFixedSize(90, 20);
         buttomAreaWidget->setPosition(55 + drawArea->x(),
                                       drawArea->y() + drawArea->height() - buttomAreaWidget->height() - 6);
-        buttomAreaWidget->show();
 
         createLayersButtons(buttomAreaWidget);
 	menuContainer = new RkContainer(buttomAreaWidget);
@@ -102,6 +100,7 @@ void EnvelopeWidget::createButtomMenu()
         menuContainer->addWidget(layer2Button);
         menuContainer->addSpace(5);
         menuContainer->addWidget(layer3Button);
+        buttomAreaWidget->show();
 }
 
 void EnvelopeWidget::createPointInfoLabel()

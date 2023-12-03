@@ -1,3 +1,16 @@
+## [3.0.1]
+
+### Fixes
+
+- Fix for VST3 plugin that caused fails to load in many hosts
+- Fix the VST3 plugin window size that on some hosts cause problems
+- Fix oscillator frequency envelope for <=20 Hz
+
+### Improvements
+
+- Disable building the vst3sdk examples and gui (merge request from Christian Heusel @christian-heusel)
+- Pipelines scripts cleanups related to	vst3sdk
+
 ## [3.0.0]
 
 ### Features
@@ -243,7 +256,6 @@
 ### Other
 
    - remove experimental file system support.
- 
 
 ## [2.3.4]
 
