@@ -226,6 +226,5 @@ void Oscillator::setEnvelopeApplyType(Oscillator::EnvelopeType envelope,
 Oscillator::EnvelopeApplyType
 Oscillator::envelopeApplyType(Oscillator::EnvelopeType envelope) const
 {
-	GEONKICK_LOG_INFO("Oscillator::envelopeApplyType called");
 	return geonkickApi->getOscillatorEnvelopeApplyType(index(), envelope);
 }

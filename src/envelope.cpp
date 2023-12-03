@@ -568,7 +568,6 @@ void Envelope::updatePoints()
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
 	if (applyType == ApplyType::Logarithmic) {
-		GEONKICK_LOG_INFO("ApplyType::Logarithmic");
 		return {static_cast<double>(point.x()) / W(),
 			static_cast<double>(point.y()) / H()};
 	}
@@ -587,7 +586,6 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                 double val = pow(10, logVal + log10(20));
                 scaledPoint.setY(val / envelopeAmplitude());
         }
-	GEONKICK_LOG_INFO("ApplyType::Linear");
         return scaledPoint;
 }
 
@@ -751,7 +749,6 @@ std::string Envelope::getCurrentPointInfo() const
 
 void Envelope::setApplyType(Envelope::ApplyType apply)
 {
-	GEONKICK_LOG_INFO("Envelope::setApplyType" << (int)apply);
 	applyType = apply;
 }
 

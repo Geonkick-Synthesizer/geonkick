@@ -336,7 +336,6 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 
         auto winId = mainWidget->nativeWindowInfo()->window;
 #ifdef GEONKICK_OS_WINDOWS
-	GEONKICK_LOG_INFO("LV2UI_Widget");
         *widget = reinterpret_cast<LV2UI_Widget>(winId);
 #else // GEONKICK_OS_GNU
 	*widget = (LV2UI_Widget)static_cast<uintptr_t>(winId);

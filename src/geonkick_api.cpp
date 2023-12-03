@@ -528,7 +528,6 @@ GeonkickApi::EnvelopeApplyType GeonkickApi::getOscillatorEnvelopeApplyType(int i
 					     static_cast<size_t>(getOscIndex(index)),
 					     static_cast<size_t>(envelope),
 					     &applyType);
-	GEONKICK_LOG_INFO("GeonkickApi::getOscillatorEnvelopeApplyType: " << (int)applyType);
 	return static_cast<EnvelopeApplyType>(applyType);
 }
 
