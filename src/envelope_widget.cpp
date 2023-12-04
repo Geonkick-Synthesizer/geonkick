@@ -105,12 +105,11 @@ void EnvelopeWidget::createButtomMenu()
 
 void EnvelopeWidget::createPointInfoLabel()
 {
-        auto pointInfoLabel = new RkLabel(this);
+        auto pointInfoLabel = new RkLabel(drawArea);
         pointInfoLabel->setBackgroundColor(drawArea->background());
         pointInfoLabel->setTextColor({200, 200, 200});
-        pointInfoLabel->setFixedSize(150, 20);
-        pointInfoLabel->setPosition(drawArea->width() - 160,
-                                    drawArea->y() + drawArea->height() - pointInfoLabel->height() - 6);
+        pointInfoLabel->setFixedSize(150, 16);
+        pointInfoLabel->setPosition(drawArea->width() - 160, drawArea->height() - pointInfoLabel->height() - 7);
         pointInfoLabel->show();
         RK_ACT_BIND(drawArea, isOverPoint,
                     RK_ACT_ARGS(const std::string &info),
