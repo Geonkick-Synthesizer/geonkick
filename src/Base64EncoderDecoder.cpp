@@ -61,7 +61,7 @@ std::string Base64EncoderDecoder::encode(const std::vector<float> &data)
 std::vector<float> Base64EncoderDecoder::decode(const std::string &input)
 {
 	auto decodeChar = [&](char c) {
-		constexpr std::array<char, 256> base64CharMap = {{
+		constexpr std::array<signed char, 256> base64CharMap = {{
 				/* Initialize with -1 for characters not in base64Chars */
 				-1, -1, -1, -1, -1, -1, -1, -1,
 				-1, -1, -1, -1, -1, -1, -1, -1,
