@@ -79,6 +79,8 @@ double OscillatorEnvelope::envelopeAmplitude() const
                 return oscillator->pitchShift();
         case Type::FilterCutOff:
                 return oscillator->filterFrequency();
+	case Type::FilterQFactor:
+                return oscillator->filterQFactor();
         default:
                 return 0;
         }

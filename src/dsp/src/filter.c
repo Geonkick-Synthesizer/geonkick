@@ -50,6 +50,16 @@ gkick_filter_new(struct gkick_filter **filter, int sample_rate)
                 gkick_envelope_add_point((*filter)->cutoff_env, 1.0f, 1.0f);
         }
 
+	(*filter)->q_env = gkick_envelope_create();
+        if ((*filter)->q_env == NULL) {
+                gkick_log_error("can't create filter q factor envelope");
+                gkick_filter_free(filter);
+                return GEONKICK_ERROR;
+        } else {
+                gkick_envelope_add_point((*filter)->q_env, 0.0f, 1.0f);
+                gkick_envelope_add_point((*filter)->q_env, 1.0f, 1.0f);
+        }
+
         if (pthread_mutex_init(&(*filter)->lock, NULL) != 0) {
                 gkick_log_error("error on init mutex");
                 gkick_filter_free(filter);
@@ -86,6 +96,7 @@ void gkick_filter_free(struct gkick_filter **filter)
 {
         if (filter != NULL && *filter != NULL) {
                 gkick_envelope_destroy((*filter)->cutoff_env);
+		gkick_envelope_destroy((*filter)->q_env);
                 pthread_mutex_destroy(&(*filter)->lock);
                 free(*filter);
                 *filter = NULL;
@@ -241,7 +252,15 @@ gkick_filter_val(struct gkick_filter *filter,
 	else
 		f = filter->cutoff_freq * env_val;
         gkick_real F = 2.0f * sin(M_PI * f / filter->sample_rate);
-        gkick_real Q  = filter->coefficients[1];
+	gkick_real q_env_val = gkick_envelope_get_value(filter->q_env, env_x);
+	gkick_real Q;
+	if (q_env_val > 0) {
+		Q = filter->coefficients[1] * (1.0f / q_env_val);
+		if (Q > 10.0f)
+			Q  = 10.0f;
+	} else {
+		Q = 10.0f;
+	}
 	
         size_t n = 1;
         if (filter->queue_empty) {

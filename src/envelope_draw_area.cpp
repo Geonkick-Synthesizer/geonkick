@@ -110,8 +110,10 @@ std::string EnvelopeWidgetDrawingArea::getEnvStateText() const
                 str += "DIST / DRIVE";
         else if (currentEnvelope->type() == Envelope::Type::DistortionVolume)
                 str += "DIST / VOL";
-        else
-                str += "CFENV";
+        else if (currentEnvelope->type() == Envelope::Type::FilterCutOff)
+		str += "CFENV";
+	else if (currentEnvelope->type() == Envelope::Type::FilterQFactor)
+		str += "QENV";
 
         return str;
 }

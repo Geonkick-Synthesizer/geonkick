@@ -195,6 +195,7 @@ private:
                 std::vector<RkRealPoint> frequencyEnvelope;
 		GeonkickApi::EnvelopeApplyType cutOffEnvelopeApplyType;
                 std::vector<RkRealPoint> filterCutOffEnvelope;
+		std::vector<RkRealPoint> filterQFactorEnvelope;
                 std::vector<RkRealPoint> pitchShiftEnvelope;
         };
 
@@ -235,6 +236,7 @@ private:
         GeonkickApi::FilterType kickFilterType;
 	GeonkickApi::EnvelopeApplyType kickCutOffEnvelopeApplyType;
         std::vector<RkRealPoint> kickFilterCutOffEnvelope;
+	std::vector<RkRealPoint> kickFilterQFactorEnvelope;
         std::vector<RkRealPoint> kickEnvelopePoints;
 	std::vector<RkRealPoint> kickDistortionDriveEnvelope;
         std::vector<RkRealPoint> kickDistortionVolumeEnvelope;

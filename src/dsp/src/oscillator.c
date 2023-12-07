@@ -126,6 +126,8 @@ gkick_osc_get_envelope(struct gkick_oscillator *osc,
         switch (env_index) {
         case GEONKICK_FILTER_CUTOFF_ENVELOPE:
                 return osc->filter->cutoff_env;
+	case GEONKICK_FILTER_Q_ENVELOPE:
+                return osc->filter->q_env;
         case GEONKICK_AMPLITUDE_ENVELOPE:
                 return osc->envelopes[GKICK_OSC_AMPLITUDE_ENVELOPE];
         case GEONKICK_FREQUENCY_ENVELOPE:

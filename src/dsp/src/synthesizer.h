@@ -269,6 +269,10 @@ enum geonkick_error
 gkick_synth_get_kick_filter_type(struct gkick_synth *synth,
 				 enum gkick_filter_type *type);
 
+struct gkick_envelope*
+synth_get_kick_envelope(struct gkick_synth *synth,
+			enum geonkick_envelope_type env_type);
+
 enum geonkick_error
 gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
                                      enum geonkick_envelope_type env_type,

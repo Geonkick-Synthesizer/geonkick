@@ -907,6 +907,26 @@ gkick_synth_get_kick_filter_type(struct gkick_synth *synth,
         return gkick_filter_get_type(synth->filter, type);
 }
 
+struct gkick_envelope*
+synth_get_kick_envelope(struct gkick_synth *synth,
+			enum geonkick_envelope_type env_type)
+{
+	switch(env_type) {
+	case GEONKICK_AMPLITUDE_ENVELOPE:
+                return synth->envelope;
+	case GEONKICK_FILTER_CUTOFF_ENVELOPE:
+                return synth->filter->cutoff_env;
+	case GEONKICK_FILTER_Q_ENVELOPE:
+                return synth->filter->q_env;
+	case GEONKICK_DISTORTION_DRIVE_ENVELOPE:
+		return synth->distortion->drive_env;
+	case GEONKICK_DISTORTION_VOLUME_ENVELOPE:
+                return synth->distortion->volume_env;
+	default:
+		return NULL;
+	}
+}
+
 enum geonkick_error
 gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
                                      enum geonkick_envelope_type env_type,
@@ -920,27 +940,11 @@ gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
 
         *npoints = 0;
         *buf = NULL;
-
         gkick_synth_lock(synth);
-        if (env_type == GEONKICK_AMPLITUDE_ENVELOPE)
-                gkick_envelope_get_points(synth->envelope,
-                                          buf,
-                                          npoints);
-        else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                gkick_envelope_get_points(synth->filter->cutoff_env,
-                                          buf,
-                                          npoints);
-	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
-		gkick_envelope_get_points(synth->distortion->drive_env,
-                                          buf,
-                                          npoints);
-        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
-                gkick_envelope_get_points(synth->distortion->volume_env,
-                                          buf,
-                                          npoints);
-
+	struct gkick_envelope *env = synth_get_kick_envelope(synth, env_type);
+	if (env != NULL)
+		gkick_envelope_get_points(env, buf, npoints);
         gkick_synth_unlock(synth);
-
         return GEONKICK_OK;
 }
 
@@ -956,26 +960,13 @@ gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
         }
 
         gkick_synth_lock(synth);
-        if (env_type == GEONKICK_AMPLITUDE_ENVELOPE)
-                gkick_envelope_set_points(synth->envelope,
-                                          buf,
-                                          npoints);
-        else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                gkick_envelope_set_points(synth->filter->cutoff_env,
-                                          buf,
-                                          npoints);
-	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
-		gkick_envelope_set_points(synth->distortion->drive_env,
-                                          buf,
-                                          npoints);
-        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
-		gkick_envelope_set_points(synth->distortion->volume_env,
-                                          buf,
-                                          npoints);
-
+	struct gkick_envelope *env = synth_get_kick_envelope(synth, env_type);
+	if (env != NULL)
+		gkick_envelope_set_points(env, buf, npoints);
 
 	if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
-            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+            || ((env_type == GEONKICK_FILTER_Q_ENVELOPE
+		 || env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
                 && synth->filter_enabled)
 	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
                  || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
@@ -992,25 +983,19 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth,
                                gkick_real x,
                                gkick_real y)
 {
-        gkick_log_info("addd points------------------------------------->");
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
 
         gkick_synth_lock(synth);
-        if (env_type == GEONKICK_AMPLITUDE_ENVELOPE)
-                gkick_envelope_add_point(synth->envelope, x, y);
-        else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                gkick_envelope_add_point(synth->filter->cutoff_env, x, y);
-	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
-		gkick_envelope_add_point(synth->distortion->drive_env, x, y);
-        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
-		gkick_envelope_add_point(synth->distortion->volume_env, x, y);
-
+	struct gkick_envelope *env = synth_get_kick_envelope(synth, env_type);
+	if (env != NULL)
+		gkick_envelope_add_point(env, x, y);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
-            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+            || ((env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+		 || env_type == GEONKICK_FILTER_Q_ENVELOPE)
                 && synth->filter_enabled)
 	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
                  || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
@@ -1031,18 +1016,13 @@ gkick_synth_kick_remove_env_point(struct gkick_synth *synth,
         }
 
         gkick_synth_lock(synth);
-        if (env_type == GEONKICK_AMPLITUDE_ENVELOPE)
-                gkick_envelope_remove_point(synth->envelope, index);
-        else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                gkick_envelope_remove_point(synth->filter->cutoff_env, index);
-	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
-		gkick_envelope_remove_point(synth->distortion->drive_env, index);
-        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
-		gkick_envelope_remove_point(synth->distortion->volume_env, index);
-
+	struct gkick_envelope *env = synth_get_kick_envelope(synth, env_type);
+	if (env != NULL)
+		gkick_envelope_remove_point(env, index);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
-            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+            || ((env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+		|| env_type == GEONKICK_FILTER_Q_ENVELOPE)
                 && synth->filter_enabled)
 	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
                  || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
@@ -1066,25 +1046,13 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
         }
 
         gkick_synth_lock(synth);
-        if (env_type == GEONKICK_AMPLITUDE_ENVELOPE)
-                gkick_envelope_update_point(synth->envelope,
-                                            index,
-                                            x, y);
-        else if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE)
-                gkick_envelope_update_point(synth->filter->cutoff_env,
-                                            index,
-                                            x, y);
-	else if (env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE)
-		gkick_envelope_update_point(synth->distortion->drive_env,
-                                            index,
-                                            x, y);
-        else if (env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
-		gkick_envelope_update_point(synth->distortion->volume_env,
-                                            index,
-                                            x, y);
+	struct gkick_envelope *env = synth_get_kick_envelope(synth, env_type);
+	if (env != NULL)
+		gkick_envelope_update_point(env, index, x, y);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
-            || (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+            || ((env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
+		 || env_type == GEONKICK_FILTER_Q_ENVELOPE)
                 && synth->filter_enabled)
 	    || ((env_type == GEONKICK_DISTORTION_DRIVE_ENVELOPE
                  || env_type == GEONKICK_DISTORTION_VOLUME_ENVELOPE)
@@ -1102,9 +1070,6 @@ synth_kick_env_set_apply_type(struct gkick_synth *synth,
 {
         gkick_synth_lock(synth);
         switch (env_type) {
-	case GEONKICK_AMPLITUDE_ENVELOPE:
-		gkick_envelope_set_apply_type(synth->envelope, apply_type);
-		break;
 	case GEONKICK_FILTER_CUTOFF_ENVELOPE:
 		gkick_envelope_set_apply_type(synth->filter->cutoff_env, apply_type);
 		break;
@@ -1129,9 +1094,6 @@ synth_kick_env_get_apply_type(struct gkick_synth *synth,
 {
 	gkick_synth_lock(synth);
         switch (env_type) {
-	case GEONKICK_AMPLITUDE_ENVELOPE:
-		*apply_type = gkick_envelope_get_apply_type(synth->envelope);
-		break;
 	case GEONKICK_FILTER_CUTOFF_ENVELOPE:
 		*apply_type = gkick_envelope_get_apply_type(synth->filter->cutoff_env);
 		break;

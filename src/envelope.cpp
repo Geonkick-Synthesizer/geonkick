@@ -36,7 +36,8 @@ Envelope::Envelope(const RkRect &area)
 			Type::FilterCutOff,
 			Type::DistortionDrive,
 			Type::DistortionVolume,
-			Type::PitchShift})
+			Type::PitchShift,
+			Type::FilterQFactor})
         , overPointIndex{0}
         , isOverPoint{false}
         , pointSelected{false}
@@ -137,6 +138,9 @@ void Envelope::drawValueScale(RkPainter &painter)
         case Type::FilterCutOff:
                 text = "Frequency, Hz";
                 break;
+	case Type::FilterQFactor:
+                text = "Resonance";
+                break;	
         case Type::PitchShift:
                 text = "Semitones";
                 break;
@@ -158,6 +162,7 @@ void Envelope::drawValueScale(RkPainter &painter)
         painter.setPen(RkPen(RkColor(110, 110, 110)));
 
         if (type() == Type::Amplitude
+	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume) {
                 double step = envelopeAmplitude() / 10;
@@ -265,6 +270,7 @@ void Envelope::drawPoint(RkPainter &painter, const RkPoint &point)
 void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double value)
 {
         if (type() == Envelope::Type::Amplitude
+	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume) {
                 value *= envelopeAmplitude();
@@ -574,6 +580,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 
 	RkRealPoint scaledPoint;
         if (type() == Type::Amplitude
+	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
@@ -596,6 +603,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
 	
 	int x, y;
         if (type() == Type::Amplitude
+	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
@@ -674,6 +682,7 @@ std::string Envelope::frequencyToNote(rk_real f) const
 double Envelope::convertToHumanValue(double val) const
 {
         if (type() == Envelope::Type::Amplitude
+	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume) {
                 val *= envelopeAmplitude();
@@ -699,6 +708,7 @@ double Envelope::convertFromHumanValue(double val) const
                 return val;
         
         if (type() == Envelope::Type::Amplitude
+	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume) {
                 val /= envelopeAmplitude();

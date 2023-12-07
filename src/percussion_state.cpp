@@ -287,6 +287,10 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                         setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff,
                                                               parseEnvelopeArray(el.value));
                                 }
+				if (el.name == "qfactor_env" && el.value.IsArray()) {
+                                        setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor,
+                                                              parseEnvelopeArray(el.value));
+                                }
                         }
 			setKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff, applyType);
                 }
@@ -406,6 +410,10 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                                         setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
                                                                     GeonkickApi::EnvelopeType::FilterCutOff);
                                 }
+				if (el.name == "qfactor_env" && el.value.IsArray()) {
+                                        setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                    GeonkickApi::EnvelopeType::FilterQFactor);
+                                }
                         }
 			setOscillatorEnvelopeApplyType(index,
 						       GeonkickApi::EnvelopeType::FilterCutOff,
@@ -463,14 +471,25 @@ void PercussionState::setKickFilterType(GeonkickApi::FilterType type)
 void PercussionState::setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope,
                                             const std::vector<RkRealPoint> &points)
 {
-        if (envelope == GeonkickApi::EnvelopeType::Amplitude)
+	switch(envelope) {
+	case GeonkickApi::EnvelopeType::Amplitude:
                 kickEnvelopePoints = points;
-        else if (envelope == GeonkickApi::EnvelopeType::FilterCutOff)
+		break;
+	case GeonkickApi::EnvelopeType::FilterCutOff:
                 kickFilterCutOffEnvelope = points;
-	else if (envelope == GeonkickApi::EnvelopeType::DistortionDrive)
+		break;
+	case GeonkickApi::EnvelopeType::FilterQFactor:
+                kickFilterQFactorEnvelope = points;
+		break;
+	case GeonkickApi::EnvelopeType::DistortionDrive:
 		kickDistortionDriveEnvelope = points;
-        else if (envelope == GeonkickApi::EnvelopeType::DistortionVolume)
+		break;
+	case GeonkickApi::EnvelopeType::DistortionVolume:
 		kickDistortionVolumeEnvelope = points;
+		break;
+	default:
+		break;
+	}
 }
 
 void PercussionState::setKickEnvelopeApplyType(GeonkickApi::EnvelopeType envelope,
@@ -528,16 +547,20 @@ GeonkickApi::FilterType PercussionState::getKickFilterType() const
 std::vector<RkRealPoint>
 PercussionState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
 {
-        if (envelope == GeonkickApi::EnvelopeType::Amplitude)
+	switch(envelope) {
+        case GeonkickApi::EnvelopeType::Amplitude:
                 return kickEnvelopePoints;
-        else if (envelope == GeonkickApi::EnvelopeType::FilterCutOff)
+        case GeonkickApi::EnvelopeType::FilterCutOff:
                 return kickFilterCutOffEnvelope;
-	else if (envelope == GeonkickApi::EnvelopeType::DistortionDrive)
+	case GeonkickApi::EnvelopeType::FilterQFactor:
+		return kickFilterQFactorEnvelope;
+	case GeonkickApi::EnvelopeType::DistortionDrive:
 		return kickDistortionDriveEnvelope;
-        else if (envelope == GeonkickApi::EnvelopeType::DistortionVolume)
+	case GeonkickApi::EnvelopeType::DistortionVolume:
 		return kickDistortionVolumeEnvelope;
-	else
+	default:
 		return {};
+	}
 }
 
 std::shared_ptr<PercussionState::OscillatorInfo>
@@ -645,6 +668,9 @@ void PercussionState::setOscillatorEnvelopePoints(int index,
                         break;
                 case GeonkickApi::EnvelopeType::FilterCutOff:
                         oscillator->filterCutOffEnvelope = points;
+                        break;
+		case GeonkickApi::EnvelopeType::FilterQFactor:
+                        oscillator->filterQFactorEnvelope = points;
                         break;
                 default:
                         return;
@@ -806,6 +832,8 @@ PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType t
                         return oscillator->pitchShiftEnvelope;
                 case GeonkickApi::EnvelopeType::FilterCutOff:
                         return oscillator->filterCutOffEnvelope;
+		case GeonkickApi::EnvelopeType::FilterQFactor:
+                        return oscillator->filterQFactorEnvelope;
                 default:
                         return {};
                 }
@@ -1004,7 +1032,18 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 }
                 jsonStream << "], " << std::endl;
                 jsonStream << "\"factor\": " 
-                           << val.second->filterFactor << std::endl;
+                           << val.second->filterFactor << "," << std::endl;
+		jsonStream << "\"qfactor_env\": [";
+                first = true;
+                for (const auto &point: val.second->filterQFactorEnvelope) {
+                        if (first)
+                                first = false;
+                        else
+                                jsonStream << ", ";
+                        jsonStream << "[ "  << point.x()
+                                   << " , "  << point.y() << "]";
+                }
+		jsonStream << "] " << std::endl;
                 jsonStream << "}" << std::endl;  // filter;
                 jsonStream << "}" << std::endl;  // osc;
                 jsonStream << "," << std::endl;
@@ -1076,6 +1115,18 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                    << getKickFilterQFactor() << ", " << std::endl;
         points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff);
         jsonStream << "\"cutoff_env\": [";
+        first = true;
+        for (const auto &point: points) {
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ "  << point.x()
+                           << " , "  << point.y() << "]";
+        }
+        jsonStream << "]," << std::endl; // points
+	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor);
+        jsonStream << "\"qfactor_env\": [";
         first = true;
         for (const auto &point: points) {
                 if (first)

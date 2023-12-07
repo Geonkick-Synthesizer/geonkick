@@ -153,6 +153,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
         state->setKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff,
 					EnvelopeApplyType::Logarithmic);
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff, envelope);
+	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor, envelope);
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive, envelope);
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume, envelope);
         state->enableCompressor(false);
@@ -216,6 +217,9 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                         state->setOscillatorEnvelopePoints(index,
 							   envelope,
 							   GeonkickApi::EnvelopeType::FilterCutOff);
+			state->setOscillatorEnvelopePoints(index,
+							   envelope,
+							   GeonkickApi::EnvelopeType::FilterQFactor);
 			state->setOscillatorEnvelopeApplyType(index,
 							      GeonkickApi::EnvelopeType::FilterCutOff,
 							      GeonkickApi::EnvelopeApplyType::Logarithmic);
@@ -258,6 +262,8 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
 				 state->getKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff));
 	setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff,
                               state->getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff));
+	setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor,
+                              state->getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor));
 	setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive,
                               state->getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive));
         setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume,
@@ -335,6 +341,8 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
                                      getKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff));
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff,
                                      getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterCutOff));
+	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor,
+                                     getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor));
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive,
                                      getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive));
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume,
@@ -397,6 +405,8 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         state->setOscillatorEnvelopeApplyType(index, GeonkickApi::EnvelopeType::FilterCutOff, applyType);
         points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::FilterCutOff);
         state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::FilterCutOff);
+	points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::FilterQFactor);
+        state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::FilterQFactor);
         state->setOscillatorAsFm(index, isOscillatorAsFm(index));
         currentLayer = temp;
 }
@@ -443,8 +453,9 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
 									     EnvelopeType::FilterCutOff));
         setOscillatorEvelopePoints(osc, EnvelopeType::FilterCutOff,
                                    state->oscillatorEnvelopePoints(osc, EnvelopeType::FilterCutOff));
+	setOscillatorEvelopePoints(osc, EnvelopeType::FilterQFactor,
+                                   state->oscillatorEnvelopePoints(osc, EnvelopeType::FilterQFactor));
         setOscillatorAsFm(osc, state->isOscillatorAsFm(osc));
-
         currentLayer = temp;
 }
 

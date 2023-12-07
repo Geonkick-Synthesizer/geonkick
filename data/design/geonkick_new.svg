@@ -7,12 +7,38 @@
    viewBox="0 0 507.99998 285.74998"
    version="1.1"
    id="svg13507"
+   sodipodi:docname="geonkick_new.svg"
+   inkscape:export-filename="../../src/resources/fl_qfactor_button_off.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1777"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="14.225941"
+     inkscape:cx="708.17812"
+     inkscape:cy="1026.3996"
+     inkscape:window-width="1920"
+     inkscape:window-height="908"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
   <defs
      id="defs13501">
     <radialGradient
@@ -39,7 +65,7 @@
     <filter
        style="color-interpolation-filters:sRGB"
        id="filter10330-7-9-8-8"
-       x="-0.0041969221"
+       x="-0.004196916"
        width="1.0083938"
        y="-0.020990064"
        height="1.0419801">
@@ -72,8 +98,8 @@
     <filter
        style="color-interpolation-filters:sRGB"
        id="filter10330-7-9-5-3"
-       x="-0.0030873755"
-       width="1.0061748"
+       x="-0.0030873654"
+       width="1.0061747"
        y="-0.020990064"
        height="1.0419801">
       <feGaussianBlur
@@ -83,7 +109,7 @@
     <filter
        style="color-interpolation-filters:sRGB"
        id="filter10330-7-9-8"
-       x="-0.0063568601"
+       x="-0.0063568456"
        width="1.0127137"
        y="-0.021352925"
        height="1.0427058">
@@ -138,7 +164,7 @@
     <filter
        style="color-interpolation-filters:sRGB"
        id="filter10330-7-9-5"
-       x="-0.0031803211"
+       x="-0.0031803103"
        width="1.0063606"
        y="-0.020990064"
        height="1.0419801">
@@ -171,7 +197,7 @@
     <filter
        style="color-interpolation-filters:sRGB"
        id="filter10330-7-9-0"
-       x="-0.003206354"
+       x="-0.0032063504"
        width="1.0064127"
        y="-0.017247475"
        height="1.034495">
@@ -204,7 +230,7 @@
     <filter
        style="color-interpolation-filters:sRGB"
        id="filter10330-7-9"
-       x="-0.0031878953"
+       x="-0.0031878904"
        width="1.0063758"
        y="-0.017247475"
        height="1.034495">
@@ -3028,13 +3054,13 @@
        rx="0.52916664"
        ry="0.52916664" />
     <rect
-       style="display:inline;opacity:1;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.11920471;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.119205;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5816-2-5-3-6"
        width="7.2770996"
        height="2.3362038"
        x="194.85667"
        y="278.87335"
-       rx="0.23545393"
+       rx="0.23547916"
        ry="0.21775207" />
     <text
        xml:space="preserve"
@@ -3047,7 +3073,7 @@
          y="280.37369"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19938px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#a0a0a0;fill-opacity:1;stroke-width:0.0128505">Amplitude</tspan></text>
     <rect
-       style="display:inline;opacity:1;fill:#59595c;fill-opacity:1;stroke:#373636;stroke-width:0.11463615;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#59595c;fill-opacity:1;stroke:#373636;stroke-width:0.11456458;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5816-2-5-3-6-3"
        width="7.2770996"
        height="2.3362038"
@@ -4039,5 +4065,73 @@
        height="5.2916665"
        x="339.69739"
        y="272.59882" />
+    <rect
+       style="display:inline;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.114565;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect5816-2-5-3-6-7-6"
+       width="2.785157"
+       height="2.3478835"
+       x="185.49588"
+       y="277.30972"
+       rx="0.23547916"
+       ry="0.23547916"
+       inkscape:export-filename="../../src/resources/fl_qfactor_button_off.png"
+       inkscape:export-xdpi="188.78395"
+       inkscape:export-ydpi="188.78395" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5147px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#a0a0a0;fill-opacity:1;stroke:none;stroke-width:0.016229"
+       x="186.23865"
+       y="279.04184"
+       id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-0-1"><tspan
+         id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-9-8"
+         x="186.23865"
+         y="279.04184"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5147px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#a0a0a0;fill-opacity:1;stroke-width:0.016229">Q</tspan></text>
+    <rect
+       style="display:inline;fill:#59595c;fill-opacity:1;stroke:#373636;stroke-width:0.114565;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect5816-2-5-3-6-3-36-7"
+       width="2.785157"
+       height="2.3478835"
+       x="185.49588"
+       y="280.47134"
+       rx="0.23547916"
+       ry="0.23547916"
+       inkscape:export-filename="../../src/resources/fl_qfactor_button_hover.png"
+       inkscape:export-xdpi="189.00577"
+       inkscape:export-ydpi="189.00577" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c7c7c7;fill-opacity:1;stroke:none;stroke-width:0.0162286"
+       x="186.2244"
+       y="282.22498"
+       id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-5-0-9"
+       transform="scale(1.0000764,0.99992361)"><tspan
+         id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-6-626-2"
+         x="186.2244"
+         y="282.22498"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#c7c7c7;fill-opacity:1;stroke-width:0.0162286">Q</tspan></text>
+    <rect
+       style="display:inline;fill:#6f6f72;fill-opacity:1;stroke:#373636;stroke-width:0.114565;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect5816-2-5-3-6-2-1-0"
+       width="2.785157"
+       height="2.3478835"
+       x="185.49588"
+       y="283.67047"
+       rx="0.23547916"
+       ry="0.23547916"
+       inkscape:export-filename="../../src/resources/fl_qfactor_button_on.png"
+       inkscape:export-xdpi="189.00577"
+       inkscape:export-ydpi="189.00577" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0162286"
+       x="186.22446"
+       y="285.42419"
+       id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-5-3-8-23"
+       transform="scale(1.000076,0.999924)"><tspan
+         id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-6-6-7-7"
+         x="186.22446"
+         y="285.42419"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.0162286">Q</tspan></text>
   </g>
 </svg>

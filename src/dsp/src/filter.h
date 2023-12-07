@@ -51,6 +51,7 @@ struct gkick_filter {
 
         /* Filter cutoff envelope. */
         struct gkick_envelope *cutoff_env;
+	struct gkick_envelope *q_env;
         pthread_mutex_t lock;
 };
 
