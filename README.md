@@ -117,13 +117,8 @@ the following development packages:
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
-    apt-get install build-essential
-    apt-get install cmake
-    apt-get install libjack-dev libsndfile-dev
-    apt-get install rapidjson-dev
-    apt-get install lv2-dev
-    apt-get install libcairo2-dev
-
+    apt-get install build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev
+    
 ##### Build & install Geonkick
 
 Clone the Geonkick code repository, compile and install.
@@ -136,11 +131,6 @@ Clone the Geonkick code repository, compile and install.
         make install
 
 ##### Build Geonkick with VST3 Plugin
-
-Install additional dependences:
-
-    apt-get install libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libfontconfig1-dev libcairo2-dev libgtkmm-3.0-dev libsqlite3-dev libxcb-keysyms1-dev
-
 
 Get VST3 SDK than build Geonkick VST3 plugin:
 
