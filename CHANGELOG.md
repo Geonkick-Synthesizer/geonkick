@@ -1,3 +1,16 @@
+## [3.1.0]
+
+### Features
+
+- Add envelope for filter resonance
+- Logarithmic apply for the entire line segment of OSC pitch and filter	cutoff	envelope
+
+### Fixes
+
+- Some fixes in	the filter DSP
+- Correct the shading of the envelope area affected by the information box displaying point coordinates.
+- Other	small fixes and improvements related to building
+
 ## [3.0.1]
 
 ### Fixes
