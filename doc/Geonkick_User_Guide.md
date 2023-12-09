@@ -4,7 +4,7 @@
 
 **License:** This work (including all images it uses) is released under [CC0 1.0 Universal (CC0 1.0) Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/deed.en).
 
-**Version:** 2.10.0
+**Version:** 3.1.0
 
 **Website:** [https://geonkick.org](https://geonkick.org)
 
@@ -221,7 +221,8 @@ Parameters:
 - **"Filter" Buttons:** Enable/Disable filter.
 - **Cutoff Knob:** Controls the cutoff frequency of the filter in a logarithmic range (20Hz - 20kHz).
 - **"Cutoff" Button:** Shows the cutoff envelope.
-- **Resonance "Q" Knob:** Logarithmic range from 0.01 to 10.
+- **Resonance Knob:** Logarithmic range from 0.01 to 10.
+- **"Q" Button:** Shows the envelope for the resonance.
 - **Filter Type Buttons:** "LP" for low-pass, "BP" for band-pass, and "HP" for high-pass filters.
 
 The filter becomes unstable for extreme combinations of cutoff frequency and Q parameter. If it becomes unstable, the instrument graph will be hard-limited. Proper adjustments of the Q factor are necessary to maintain desired cutoff frequency ranges. This behavior can be used as a feature to generate special effect sounds.
