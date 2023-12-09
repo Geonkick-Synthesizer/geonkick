@@ -42,24 +42,24 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
 
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(8 + 224, 0);
+        widget->setPosition(8 + 223, 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
         widget->show();
 
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator3)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(2 * (8 + 224), 0);
+        widget->setPosition(2 * (8 + 223), 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
         widget->show();
 
         auto generalWidget = new GeneralGroupBox(this, geonkickApi);
-        generalWidget->setPosition(3 * (8 + 224), 0);
+        generalWidget->setPosition(3 * (8 + 223), 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), generalWidget, updateGui());
         generalWidget->show();
 
         effectsWidget = new EffectsGroupBox(geonkickApi, this);
-        effectsWidget->setFixedSize(500, 82);
-        effectsWidget->setPosition(2 * (8 + 224), 283);
+        effectsWidget->setFixedSize(380, 74);
+        effectsWidget->setPosition(3 * (8 + 223), 260);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
         effectsWidget->show();
 }

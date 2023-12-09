@@ -203,14 +203,14 @@ void PercussionState::initOscillators()
 {
         for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
                 oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator1)
-                                        + GKICK_OSC_GROUP_SIZE * i,
-                                        std::make_shared<OscillatorInfo>()});
+                                + GKICK_OSC_GROUP_SIZE * i,
+                                std::make_shared<OscillatorInfo>()});
                 oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator2)
-                                        + GKICK_OSC_GROUP_SIZE * i,
-                                        std::make_shared<OscillatorInfo>()});
-                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Noise)
-                                        + GKICK_OSC_GROUP_SIZE * i,
-                                        std::make_shared<OscillatorInfo>()});
+                                + GKICK_OSC_GROUP_SIZE * i,
+                                std::make_shared<OscillatorInfo>()});
+                oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator3)
+                                + GKICK_OSC_GROUP_SIZE * i,
+                                std::make_shared<OscillatorInfo>()});
         }
 }
 
@@ -365,31 +365,29 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                         }
                 }
 
-                if (static_cast<GeonkickApi::OscillatorType>(index) != GeonkickApi::OscillatorType::Noise) {
-                        if (m.name == "freq_env" && m.value.IsObject()) {
-				auto applyType = GeonkickApi::EnvelopeApplyType::Linear;
-                                for (const auto &el: m.value.GetObject()) {
-                                        if (el.name == "amplitude" && el.value.IsDouble())
-                                                setOscillatorFrequency(index, el.value.GetDouble());
-					if (el.name == "apply_type")
-						applyType = getApplyTypeFromObj(el.value);
-                                        if (el.name == "points" && el.value.IsArray())
-                                                setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
-                                                                            GeonkickApi::EnvelopeType::Frequency);
-                                }
-			        setOscillatorEnvelopeApplyType(index,
-							       GeonkickApi::EnvelopeType::Frequency,
-							       applyType);
+                if (m.name == "freq_env" && m.value.IsObject()) {
+                        auto applyType = GeonkickApi::EnvelopeApplyType::Linear;
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "amplitude" && el.value.IsDouble())
+                                        setOscillatorFrequency(index, el.value.GetDouble());
+                                if (el.name == "apply_type")
+                                        applyType = getApplyTypeFromObj(el.value);
+                                if (el.name == "points" && el.value.IsArray())
+                                        setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                    GeonkickApi::EnvelopeType::Frequency);
                         }
+                        setOscillatorEnvelopeApplyType(index,
+                                                       GeonkickApi::EnvelopeType::Frequency,
+                                                       applyType);
+                }
 
-                        if (m.name == "pitchshift_env" && m.value.IsObject()) {
-                                for (const auto &el: m.value.GetObject()) {
-                                        if (el.name == "amplitude" && el.value.IsDouble())
-                                                setOscillatorPitchShift(index, el.value.GetDouble());
-                                        if (el.name == "points" && el.value.IsArray())
-                                                setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
-                                                                            GeonkickApi::EnvelopeType::PitchShift);
-                                }
+                if (m.name == "pitchshift_env" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "amplitude" && el.value.IsDouble())
+                                        setOscillatorPitchShift(index, el.value.GetDouble());
+                                if (el.name == "points" && el.value.IsArray())
+                                        setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                    GeonkickApi::EnvelopeType::PitchShift);
                         }
                 }
 

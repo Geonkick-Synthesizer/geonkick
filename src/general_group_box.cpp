@@ -61,7 +61,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
 void GeneralGroupBox::createAplitudeEnvelopeHBox()
 {
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
-        amplitudeEnvelopeBox->setPosition(0, 25);
+        amplitudeEnvelopeBox->setPosition(0, 0);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_ampl_env)));
         amplitudeEnvelopeBox->show();
@@ -123,7 +123,7 @@ void GeneralGroupBox::createFilterHBox()
         filterBox = new Filter(this, Envelope::Category::General);
         filterBox->setCutOffRange(20, 20000);
         filterBox->setResonanceRange(1, 1000);
-        filterBox->setPosition(0, 150);
+        filterBox->setPosition(0, 125);
         RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b),
                     geonkickApi, enableKickFilter(b));
         RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val),
