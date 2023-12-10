@@ -39,9 +39,9 @@ RK_DECLARE_IMAGE_RC(controls_osc1_off);
 RK_DECLARE_IMAGE_RC(controls_osc2_on);
 RK_DECLARE_IMAGE_RC(controls_osc2_hover);
 RK_DECLARE_IMAGE_RC(controls_osc2_off);
-RK_DECLARE_IMAGE_RC(controls_noise_on);
-RK_DECLARE_IMAGE_RC(controls_noise_hover);
-RK_DECLARE_IMAGE_RC(controls_noise_off);
+RK_DECLARE_IMAGE_RC(controls_osc3_on);
+RK_DECLARE_IMAGE_RC(controls_osc3_hover);
+RK_DECLARE_IMAGE_RC(controls_osc3_off);
 RK_DECLARE_IMAGE_RC(fm_radio);
 RK_DECLARE_IMAGE_RC(fm_radio_hover);
 RK_DECLARE_IMAGE_RC(fm_radio_active);
@@ -53,11 +53,12 @@ RK_DECLARE_IMAGE_RC(wave_button_square_active);
 RK_DECLARE_IMAGE_RC(wave_button_triangle);
 RK_DECLARE_IMAGE_RC(wave_button_triangle_active);
 RK_DECLARE_IMAGE_RC(wave_button_sawtooth);
-RK_DECLARE_IMAGE_RC(phase_label);
+RK_DECLARE_IMAGE_RC(wave_button_sawtooth_active);
+RK_DECLARE_IMAGE_RC(wave_button_noise);
+RK_DECLARE_IMAGE_RC(wave_button_noise_active);
 RK_DECLARE_IMAGE_RC(wave_button_sample);
 RK_DECLARE_IMAGE_RC(wave_button_sample_active);
-RK_DECLARE_IMAGE_RC(wave_button_sawtooth_active);
-RK_DECLARE_IMAGE_RC(button_browse_sample);
+RK_DECLARE_IMAGE_RC(phase_label);
 RK_DECLARE_IMAGE_RC(hboxbk_noise_env);
 RK_DECLARE_IMAGE_RC(hboxbk_osc_env);
 RK_DECLARE_IMAGE_RC(knob);
@@ -86,6 +87,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , squareButton{nullptr}
           , triangleButton{nullptr}
           , sawtoothButton{nullptr}
+          , noiseButton{nullptr}
           , sampleButton{nullptr}
           , sampleBrowseButton{nullptr}
           , phaseSlider{nullptr}
@@ -100,71 +102,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , pitchEnvelopeButton{nullptr}
 {
         setFixedSize(224, 380);
-        oscillatorCheckbox = new GeonkickButton(this);
-        oscillatorCheckbox->setCheckable(true);
-        oscillatorCheckbox->setX(3);
-        RK_ACT_BIND(oscillatorCheckbox, toggled,
-                    RK_ACT_ARGS(bool b), oscillator, enable(b));
-
-        if (oscillator->type() == Oscillator::Type::Oscillator1) {
-                oscillatorCheckbox->setFixedSize(69, 21);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc1_on)),
-                                             RkButton::State::Pressed);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc1_off)),
-                                             RkButton::State::Unpressed);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc1_hover)),
-                                             RkButton::State::UnpressedHover);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc1_hover)),
-                                             RkButton::State::PressedHover);
-
-
-                fmCheckbox = new GeonkickButton(this);
-                fmCheckbox->setCheckable(true);
-                fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 5, 0);
-                fmCheckbox->setFixedSize(76, 21);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_active)),
-                                     RkButton::State::Pressed);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio)),
-                                     RkButton::State::Unpressed);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                                     RkButton::State::UnpressedHover);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                                     RkButton::State::PressedHover);
-                RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
-        } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
-                oscillatorCheckbox->setFixedSize(69, 21);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc2_on)),
-                                             RkButton::State::Pressed);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc2_off)),
-                                             RkButton::State::Unpressed);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc2_hover)),
-                                             RkButton::State::UnpressedHover);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_osc2_hover)),
-                                             RkButton::State::PressedHover);
-        } else {
-                oscillatorCheckbox->setFixedSize(69, 21);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_noise_on)),
-                                             RkButton::State::Pressed);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_noise_off)),
-                                             RkButton::State::Unpressed);
-                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_noise_hover)),
-                                             RkButton::State::UnpressedHover);
-                                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
-                                                     RK_IMAGE_RC(controls_noise_hover)),
-                                             RkButton::State::PressedHover);
-        }
-
         createWaveFunctionGroupBox();
         createEvelopeGroupBox();
         createFilterGroupBox();
@@ -179,70 +116,139 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         waveFunctionHBox->setBackgroundImage(RkImage(waveFunctionHBox->size(), RK_IMAGE_RC(wf_bk_hbox)));
         waveFunctionHBox->show();
 
+        oscillatorCheckbox = new GeonkickButton(waveFunctionHBox);
+        oscillatorCheckbox->setCheckable(true);
+        oscillatorCheckbox->setFixedSize(69, 21);
+        oscillatorCheckbox->setPosition((waveFunctionHBox->width() - oscillatorCheckbox->width()) / 2, 0);
+        if (oscillator->type() == Oscillator::Type::Oscillator1) {
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc1_on)),
+                                             RkButton::State::Pressed);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc1_off)),
+                                             RkButton::State::Unpressed);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc1_hover)),
+                                             RkButton::State::UnpressedHover);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc1_hover)),
+                                             RkButton::State::PressedHover);
+                fmCheckbox = new GeonkickButton(this);
+                fmCheckbox->setCheckable(true);
+                fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 5, oscillatorCheckbox->y());
+                fmCheckbox->setFixedSize(76, 21);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_active)),
+                                     RkButton::State::Pressed);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio)),
+                                     RkButton::State::Unpressed);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
+                                     RkButton::State::UnpressedHover);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
+                                     RkButton::State::PressedHover);
+                fmCheckbox->hide();
+                RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
+        } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc2_on)),
+                                             RkButton::State::Pressed);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc2_off)),
+                                             RkButton::State::Unpressed);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc2_hover)),
+                                             RkButton::State::UnpressedHover);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc2_hover)),
+                                             RkButton::State::PressedHover);
+        } else {
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc3_on)),
+                                             RkButton::State::Pressed);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc3_off)),
+                                             RkButton::State::Unpressed);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc3_hover)),
+                                             RkButton::State::UnpressedHover);
+                oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
+                                                     RK_IMAGE_RC(controls_osc3_hover)),
+                                             RkButton::State::PressedHover);
+        }
+        RK_ACT_BIND(oscillatorCheckbox, toggled,
+                    RK_ACT_ARGS(bool b), oscillator, enable(b));
+
+
         sineButton = new GeonkickButton(waveFunctionHBox);
         sineButton->setBackgroundColor(waveFunctionHBox->background());
-        sineButton->setFixedSize(53, 14);
-        sineButton->setPosition(20, 25);
+        sineButton->setFixedSize(26, 18);
+        sineButton->setPosition(20, 32);
         sineButton->setUnpressedImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine)));
         sineButton->setPressedImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine_active)));
-        RK_ACT_BIND(sineButton, toggled, RK_ACT_ARGS(bool b), this, setSineWave(b));
+        RK_ACT_BIND(sineButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sine));
         sineButton->show();
 
         squareButton = new GeonkickButton(waveFunctionHBox);
         squareButton->setBackgroundColor(waveFunctionHBox->background());
-        squareButton->setFixedSize(53, 14);
-        squareButton->setPosition(sineButton->x(),  sineButton->y() + sineButton->height() + 5);
+        squareButton->setFixedSize(26, 18);
+        squareButton->setPosition(sineButton->x() + sineButton->width() + 5,  sineButton->y());
         squareButton->setUnpressedImage(RkImage(squareButton->size(), RK_IMAGE_RC(wave_button_square)));
         squareButton->setPressedImage(RkImage(squareButton->size(), RK_IMAGE_RC(wave_button_square_active)));
-        RK_ACT_BIND(squareButton, toggled, RK_ACT_ARGS(bool b), this, setSquareWave(b));
+        RK_ACT_BIND(squareButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Square));
         squareButton->show();
 
         triangleButton = new GeonkickButton(waveFunctionHBox);
         triangleButton->setBackgroundColor(waveFunctionHBox->background());
-        triangleButton->setFixedSize(67, 14);
-        triangleButton->setPosition(sineButton->x() + 60, sineButton->y());
+        triangleButton->setFixedSize(26, 18);
+        triangleButton->setPosition(squareButton->x() + squareButton->width() + 5, squareButton->y());
         triangleButton->setUnpressedImage(RkImage(triangleButton->size(), RK_IMAGE_RC(wave_button_triangle)));
         triangleButton->setPressedImage(RkImage(triangleButton->size(), RK_IMAGE_RC(wave_button_triangle_active)));
-        RK_ACT_BIND(triangleButton, toggled, RK_ACT_ARGS(bool b), this, setTriangleWave(b));
+        RK_ACT_BIND(triangleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Triangle));
         triangleButton->show();
 
         sawtoothButton = new GeonkickButton(waveFunctionHBox);
         sawtoothButton->setBackgroundColor(waveFunctionHBox->background());
-        sawtoothButton->setSize(67, 14);
-        sawtoothButton->setPosition(sineButton->x() + 60, sineButton->y() + sineButton->height() + 5);
+        sawtoothButton->setSize(26, 18);
+        sawtoothButton->setPosition(sineButton->x(), sineButton->y() + sineButton->height() + 5);
         sawtoothButton->setUnpressedImage(RkImage(sawtoothButton->size(), RK_IMAGE_RC(wave_button_sawtooth)));
         sawtoothButton->setPressedImage(RkImage(sawtoothButton->size(), RK_IMAGE_RC(wave_button_sawtooth_active)));
-        RK_ACT_BIND(sawtoothButton, toggled, RK_ACT_ARGS(bool b), this, setSawtoothWave(b));
-        sawtoothButton->show();
+        RK_ACT_BIND(sawtoothButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sawtooth));
+
+        noiseButton = new GeonkickButton(waveFunctionHBox);
+        noiseButton->setBackgroundColor(waveFunctionHBox->background());
+        noiseButton->setSize(26, 18);
+        noiseButton->setPosition(sawtoothButton->x() + sawtoothButton->width() + 5, sawtoothButton->y());
+        noiseButton->setUnpressedImage(RkImage(noiseButton->size(), RK_IMAGE_RC(wave_button_noise)));
+        noiseButton->setPressedImage(RkImage(noiseButton->size(), RK_IMAGE_RC(wave_button_noise_active)));
+        RK_ACT_BIND(noiseButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::NoiseWhite));
 
         sampleButton = new GeonkickButton(waveFunctionHBox);
         sampleButton->setBackgroundColor(waveFunctionHBox->background());
-        sampleButton->setFixedSize(67, 14);
-        sampleButton->setPosition(triangleButton->x() + 73, triangleButton->y());
+        sampleButton->setFixedSize(26, 18);
+        sampleButton->setPosition(noiseButton->x() + noiseButton->width() + 5, noiseButton->y());
         sampleButton->setUnpressedImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample)));
         sampleButton->setPressedImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample_active)));
-        RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setSampleFunction(b));
+        RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sample));
 
-        sampleBrowseButton = new GeonkickButton(waveFunctionHBox);
+        /*sampleBrowseButton = new GeonkickButton(waveFunctionHBox);
         sampleBrowseButton->setCheckable(true);
         sampleBrowseButton->setBackgroundColor(waveFunctionHBox->background());
-        sampleBrowseButton->setFixedSize(67, 14);
+        sampleBrowseButton->setFixedSize(26, 18);
         sampleBrowseButton->setPosition(triangleButton->x() + 73, sampleButton->y() + sampleButton->height() + 5);
         sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(), RK_IMAGE_RC(button_browse_sample)));
-        RK_ACT_BIND(sampleBrowseButton, pressed, RK_ACT_ARGS(), this, browseSample());
+        RK_ACT_BIND(sampleBrowseButton, pressed, RK_ACT_ARGS(), this, browseSample());*/
 
         auto phaseLabel = new RkLabel(waveFunctionHBox);
         phaseLabel->setFixedSize(30, 8);
         phaseLabel->setPosition(sineButton->x(), sawtoothButton->y() + sawtoothButton->height() + 8);
         phaseLabel->setBackgroundColor(waveFunctionHBox->background());
         phaseLabel->setImage(RkImage(phaseLabel->size(), RK_IMAGE_RC(phase_label)));
-        phaseLabel->show();
+        phaseLabel->hide();
 
         phaseSlider = new GeonkickSlider(waveFunctionHBox);
         phaseSlider->setFixedSize(150, 8);
         phaseSlider->onSetValue(50);
         phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
-        phaseSlider->show();
+        phaseSlider->hide();
         RK_ACT_BIND(phaseSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorPhase(value));
 }
 
@@ -394,64 +400,16 @@ void OscillatorGroupBox::createFilterGroupBox()
                     oscillator, setFilterType(type));
 }
 
-void OscillatorGroupBox::setSineWave(bool pressed)
+void OscillatorGroupBox::setWaveFunction(Oscillator::FunctionType type)
 {
-        if (pressed) {
-                squareButton->setPressed(false);
-                triangleButton->setPressed(false);
-                sawtoothButton->setPressed(false);
-                sampleButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::Sine);
-                updateAmpltudeEnvelopeBox();
-        }
-}
-
-void OscillatorGroupBox::setSquareWave(bool pressed)
-{
-        if (pressed) {
-                sineButton->setPressed(false);
-                triangleButton->setPressed(false);
-                sawtoothButton->setPressed(false);
-                sampleButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::Square);
-                updateAmpltudeEnvelopeBox();
-        }
-}
-
-void OscillatorGroupBox::setTriangleWave(bool pressed)
-{
-        if (pressed) {
-                sineButton->setPressed(false);
-                squareButton->setPressed(false);
-                sawtoothButton->setPressed(false);
-                sampleButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::Triangle);
-                updateAmpltudeEnvelopeBox();
-        }
-}
-
-void OscillatorGroupBox::setSawtoothWave(bool pressed)
-{
-        if (pressed) {
-                sineButton->setPressed(false);
-                squareButton->setPressed(false);
-                triangleButton->setPressed(false);
-                sampleButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::Sawtooth);
-                updateAmpltudeEnvelopeBox();
-        }
-}
-
-void OscillatorGroupBox::setSampleFunction(bool pressed)
-{
-        if (pressed) {
-                sineButton->setPressed(false);
-                squareButton->setPressed(false);
-                triangleButton->setPressed(false);
-                sawtoothButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::Sample);
-                updateAmpltudeEnvelopeBox();
-        }
+        sineButton->setPressed(type == Oscillator::FunctionType::Sine);
+        squareButton->setPressed(type == Oscillator::FunctionType::Square);
+        triangleButton->setPressed(type == Oscillator::FunctionType::Triangle);
+        sawtoothButton->setPressed(type == Oscillator::FunctionType::Sawtooth);
+        noiseButton->setPressed(type == Oscillator::FunctionType::NoiseWhite);
+        sampleButton->setPressed(type == Oscillator::FunctionType::Sample);
+        oscillator->setFunction(type);
+        updateAmpltudeEnvelopeBox();
 }
 
 void OscillatorGroupBox::setOscillatorPhase(int value)
@@ -494,6 +452,7 @@ void OscillatorGroupBox::updateGui()
         squareButton->setPressed(oscillator->function() == Oscillator::FunctionType::Square);
         triangleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Triangle);
         sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
+        noiseButton->setPressed(oscillator->function() == Oscillator::FunctionType::NoiseWhite);
         sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
         phaseSlider->onSetValue(oscillator->getPhase());
         updateAmpltudeEnvelopeBox();

@@ -82,9 +82,9 @@ controls_osc1_off.png
 controls_osc2_on.png
 controls_osc2_hover.png
 controls_osc2_off.png
-controls_noise_on.png
-controls_noise_hover.png
-controls_noise_off.png
+controls_osc3_on.png
+controls_osc3_hover.png
+controls_osc3_off.png
 fm_radio.png
 fm_radio_hover.png
 fm_radio_active.png
@@ -196,14 +196,16 @@ save_active.png
 save.png
 save_hover.png
 
-wave_button_sawtooth_active.png
-wave_button_sawtooth.png
-wave_button_sine_active.png
 wave_button_sine.png
-wave_button_square_active.png
+wave_button_sine_active.png
 wave_button_square.png
-wave_button_triangle_active.png
+wave_button_square_active.png
 wave_button_triangle.png
+wave_button_triangle_active.png
+wave_button_sawtooth.png
+wave_button_sawtooth_active.png
+wave_button_noise.png
+wave_button_noise_active.png
 wave_button_sample.png
 wave_button_sample_active.png
 button_browse_sample.png
