@@ -103,7 +103,7 @@ bool RkWindowWin::init()
         }
 
         if (isTopWindow) {
-                SetTimer(windowHandle.id, RK_MAIN_WINDOW_TIMER_ID, 10, nullptr);
+                SetTimer(windowHandle.id, RK_MAIN_WINDOW_TIMER_ID, 1, nullptr);
                 RK_LOG_DEBUG("timer created for top window");
         }
 
@@ -233,7 +233,8 @@ void RkWindowWin::update()
 void RkWindowWin::createCanvasInfo()
 {
         canvasInfo = std::make_unique<RkCanvasInfo>();
-        canvasInfo->cairo_surface = cairo_win32_surface_create(GetDC(windowHandle.id));
+        auto hDC = GetDC(windowHandle.id);
+        canvasInfo->cairo_surface = cairo_win32_surface_create(hDC);
         if (!canvasInfo->cairo_surface) {
                 RK_LOG_ERROR("error on creating Cairo Win32 surface");
                 return;
@@ -257,7 +258,9 @@ const RkCanvasInfo* RkWindowWin::getCanvasInfo()
 void RkWindowWin::freeCanvasInfo()
 {
         if (canvasInfo) {
+                auto hDC = cairo_win32_surface_get_dc(canvasInfo->cairo_surface);
                 cairo_surface_destroy(canvasInfo->cairo_surface);
+                ReleaseDC(windowHandle.id, hDC);
                 RK_LOG_DEBUG("Cairo Win32 surface destroyed");
         }
         canvasInfo.reset();

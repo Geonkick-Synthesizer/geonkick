@@ -223,7 +223,7 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
          * may add new events into the queue and this for
          * in some cases can lead to a infinite looping.
          */
-        decltype(eventsQueue) queue = std::move(eventsQueue);
+        auto queue = std::move(eventsQueue);
         for (const auto &e: queue) {
                 if (e.second->type() == RkEvent::Type::KeyPressed
                     || e.second->type() == RkEvent::Type::KeyReleased) {
