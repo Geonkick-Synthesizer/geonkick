@@ -46,7 +46,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         , kickAmplitudeKnob{nullptr}
         , kickLengthKnob{nullptr}
 {
-        setFixedSize(224, 380);
+        setFixedSize(224, 276);
         auto label = new RkLabel(this);
         label->setBackgroundColor(background());
         label->setPosition(10, 0);

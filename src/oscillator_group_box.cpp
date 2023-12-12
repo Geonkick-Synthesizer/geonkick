@@ -150,6 +150,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
                                                      RK_IMAGE_RC(controls_osc2_hover)),
                                              RkButton::State::PressedHover);
         } else {
+                setFixedSize(224, 276);
                 oscillatorCheckbox->setFixedSize(69, 21);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_noise_on)),
