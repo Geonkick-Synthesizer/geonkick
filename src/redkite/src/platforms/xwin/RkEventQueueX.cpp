@@ -129,8 +129,8 @@ std::unique_ptr<RkEvent> RkEventQueueX::getButtonPressEvent(XEvent *e)
         auto buttonEvent = reinterpret_cast<XButtonEvent*>(e);
         auto mouseEvent = std::make_unique<RkMouseEvent>();
         mouseEvent->setTime(std::chrono::system_clock::time_point(std::chrono::milliseconds(buttonEvent->time)));
-        mouseEvent->setX(buttonEvent->x / scaleFactor);
-        mouseEvent->setY(buttonEvent->y / scaleFactor);
+        mouseEvent->setX(static_cast<double>(buttonEvent->x / scaleFactor));
+        mouseEvent->setY(static_cast<double>(buttonEvent->y / scaleFactor));
 
         switch (buttonEvent->button)
         {
@@ -167,8 +167,8 @@ std::unique_ptr<RkEvent> RkEventQueueX::getMouseMove(XEvent *e)
         auto mouseEvent = std::make_unique<RkMouseEvent>();
         mouseEvent->setTime(std::chrono::system_clock::time_point(std::chrono::milliseconds(buttonEvent->time)));
         mouseEvent->setType(RkEvent::Type::MouseMove);
-        mouseEvent->setX(buttonEvent->x / scaleFactor);
-        mouseEvent->setY(buttonEvent->y / scaleFactor);
+        mouseEvent->setX(static_cast<double>(buttonEvent->x / scaleFactor));
+        mouseEvent->setY(static_cast<double>(buttonEvent->y / scaleFactor));
         return mouseEvent;
 }
 
@@ -263,3 +263,9 @@ void RkEventQueueX::setScaleFactor(double factor)
 {
         scaleFactor = factor;
 }
+
+double RkEventQueueX::getScaleFactor() const
+{
+        return scaleFactor;
+}
+

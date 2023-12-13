@@ -61,6 +61,7 @@ class RK_EXPORT RkEventQueue {
         void clearQueue();
         RkObject* findObjectByName(const std::string &name) const;
         void setScaleFactor(double factor);
+        double getScaleFactor() const;
         RkWidget* getWidget(const RkWindowId &id) const;
         void dispatchEvents();
 

@@ -128,7 +128,7 @@ bool RkWindowX::init()
         auto winSize = size();
         RK_LOG_DEBUG("create window: d: " << xDisplay << ", p: " << parent);
         xWindow = XCreateWindow(xDisplay, parent,
-                                pos.x(), pos.y(),
+                                pos.x() * scaleFactor, pos.y() * scaleFactor,
                                 winSize.width() * scaleFactor, winSize.height() * scaleFactor,
                                 winBorderWidth,
                                 visualInfo.depth,
@@ -194,7 +194,8 @@ RkSize RkWindowX::size() const
         if (isWindowCreated()) {
                 XWindowAttributes attributes;
                 XGetWindowAttributes(xDisplay, xWindow, &attributes);
-                return RkSize(attributes.width / scaleFactor, attributes.height / scaleFactor);
+                return RkSize(static_cast<double>(attributes.width) / scaleFactor,
+                              static_cast<double>(attributes.height) / scaleFactor);
         }
 
         return {250, 250};
@@ -202,10 +203,9 @@ RkSize RkWindowX::size() const
 
 void RkWindowX::setSize(const RkSize &size)
 {
-        if (size.width() > 0 && size.height() > 0) {
-                if (isWindowCreated())
-                        XResizeWindow(display(), xWindow, size.width() * scaleFactor,
-                                      size.height() * scaleFactor);
+        if (isWindowCreated() && size.width() > 0 && size.height() > 0) {
+                XResizeWindow(display(), xWindow, size.width() * scaleFactor,
+                              size.height() * scaleFactor);
         }
 }
 
@@ -214,8 +214,8 @@ RkPoint RkWindowX::position() const
         if (isWindowCreated()) {
                 XWindowAttributes attributes;
                 XGetWindowAttributes(xDisplay, xWindow, &attributes);
-                return RkPoint(attributes.x / scaleFactor,
-                               attributes.y / scaleFactor);
+                return RkPoint(static_cast<double>(attributes.x) / scaleFactor,
+                               static_cast<double>(attributes.y) / scaleFactor);
         }
         return {0, 0};
 }
@@ -256,7 +256,7 @@ void RkWindowX::setBorderWidth(int width)
 
 int RkWindowX::borderWidth() const
 {
-        return winBorderWidth / scaleFactor;
+        return static_cast<double>(winBorderWidth) / scaleFactor;
 }
 
 void RkWindowX::setBorderColor(const RkColor &color)

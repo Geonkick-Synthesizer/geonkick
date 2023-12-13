@@ -67,6 +67,7 @@ class RkEventQueue::RkEventQueueImpl {
         void clearActions(const RkObject *obj);
         RkObject* findObjectByName(const std::string &name) const;
         void setScaleFactor(double factor);
+        double getScaleFactor() const;
         void dispatchEvents();
 
  protected:

@@ -53,9 +53,9 @@ class RkWindowWin {
         void show(bool b = true);
         const RkNativeWindowInfo* nativeWindowInfo();
         void setTitle(const std::string &title);
-        const RkSize& size() const;
+        RkSize size() const;
         void setSize(const RkSize &size);
-        RkPoint& position() const;
+        RkPoint position() const;
         void setPosition(const RkPoint &position);
         RkWindowId id() const;
         void setBorderWidth(int width);

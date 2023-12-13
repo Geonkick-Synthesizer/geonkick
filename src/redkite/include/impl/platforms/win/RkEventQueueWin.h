@@ -41,6 +41,7 @@ class RkEventQueueWin
         RkEventQueueWin& operator=(RkEventQueueWin &&other) = delete;
         void dispatchEvents();
         void setScaleFactor(double factor);
+        double getScaleFactor() const;
 		
 private:
         double scaleFactor;

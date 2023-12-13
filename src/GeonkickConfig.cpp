@@ -28,10 +28,8 @@
 #include <iomanip>
 
 GeonkickConfig::GeonkickConfig()
-        : scaleFactor{1}
-	, configFile{DesktopPaths().getConfigPath()
-		     / std::filesystem::path(GEONKICK_APP_NAME)
-		     / "config.json"}
+        : scaleFactor{1.0}
+	, configFile{DesktopPaths().getConfigPath() / "config.json"}
 {
         open();
 }
@@ -69,6 +67,7 @@ bool GeonkickConfig::open()
 
 void GeonkickConfig::loadConfig(const std::string &data)
 {
+        G_LOG_PLUGIN("called");
         rapidjson::Document document;
         document.Parse(data.c_str());
         for (const auto &m: document.GetObject()) {

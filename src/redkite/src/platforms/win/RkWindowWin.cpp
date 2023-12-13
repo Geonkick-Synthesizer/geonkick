@@ -38,7 +38,7 @@ RkWindowWin::RkWindowWin(const RkNativeWindowInfo *parent, Rk::WindowFlags flags
         , canvasInfo{nullptr}
         , windowFlags{flags}
 	, isTopWindow{isTop}
-        , scaleFactor{parent ? parent->scaleFactor : 1}
+        , scaleFactor{parent ? parent->scaleFactor : 1.0}
 {
 }
 
@@ -84,14 +84,16 @@ bool RkWindowWin::init()
         auto winStyle = hasParent() ? (WS_CHILD | WS_CLIPCHILDREN | WS_VISIBLE) : (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN);
         if (static_cast<int>(windowFlags) & static_cast<int>(Rk::WindowFlags::Popup))
                 winStyle = WS_POPUP | WS_CLIPCHILDREN | WS_VISIBLE;
+        auto pos = position();
+        auto winSize = size();
         windowHandle.id = CreateWindowExA(0,
                                           className.c_str(),
                                           "RkWidget",
                                           winStyle,
-                                          windowPosition.x(),
-                                          windowPosition.y(),
-                                          windowSize.width(),
-                                          windowSize.height(),
+                                          pos.x() * scaleFactor,
+                                          pos.y() * scaleFactor,
+                                          winSize.width() * scaleFactor,
+                                          winSize.height() * scaleFactor,
                                           !hasParent() ? nullptr : parentWindowInfo.window,
                                           nullptr,
                                           hasParent() ? parentWindowInfo.instance : rk_win_api_instance(),
@@ -128,6 +130,7 @@ const RkNativeWindowInfo* RkWindowWin::nativeWindowInfo()
                 windowInfo->className = hasParent() ? parentWindowInfo.className : rk_win_api_class_name();
                 windowInfo->window    = windowHandle.id;
                 windowInfo->instance  = hasParent() ? parentWindowInfo.instance : rk_win_api_instance();
+                windowInfo->scaleFactor = scaleFactor;
                 return windowInfo.get();
         }
 
@@ -145,27 +148,28 @@ bool RkWindowWin::isWindowCreated() const
         return windowHandle.id != nullptr;
 }
 
-const RkSize& RkWindowWin::size() const
+RkSize RkWindowWin::size() const
 {
         if (isWindowCreated()) {
                 RECT rect;
                 GetWindowRect(windowHandle.id, &rect);
-                windowSize = {rect.right - rect.left, rect.bottom - rect.top};
+                return RkSize (static_cast<double>(rect.right - rect.left) / scaleFactor,
+                               static_cast<double>(rect.bottom - rect.top) / scaleFactor);
         }
-        return windowSize;
+        return {250, 250};
 }
 
 void RkWindowWin::setSize(const RkSize &size)
 {
-        if (size.width() > 0 && size.height() > 0) {
-                windowSize = size;
-                if (isWindowCreated())
-                        SetWindowPos(windowHandle.id, 0, 0, 0, size.width(), size.height(), SWP_NOMOVE | SWP_NOZORDER);
-                resizeCanvas();
+        if (isWindowCreated() && size.width() > 0 && size.height() > 0) {
+                SetWindowPos(windowHandle.id, 0, 0, 0,
+                             size.width() * scaleFactor,
+                             size.height() * scaleFactor,
+                             SWP_NOMOVE | SWP_NOZORDER);
         }
 }
 
-RkPoint& RkWindowWin::position() const
+RkPoint RkWindowWin::position() const
 {
         if (isWindowCreated()) {
                 RECT rect;
@@ -173,28 +177,32 @@ RkPoint& RkWindowWin::position() const
                 RECT rect0 = rect;
                 if (hasParent())
                         MapWindowPoints(windowHandle.id, GetParent(windowHandle.id), reinterpret_cast<LPPOINT>(&rect), 2);
-                windowPosition = {rect.left - rect0.left, rect.top - rect0.top};
+                return RkPoint(static_cast<double>(rect.left - rect0.left) / scaleFactor,
+                               static_cast<double>(rect.left - rect0.left) / scaleFactor);
         }
-        return windowPosition;
+        return {0, 0};
 }
 
 void RkWindowWin::setPosition(const RkPoint &position)
 {
-        windowPosition = position;
-        if (isWindowCreated())
-                SetWindowPos(windowHandle.id, 0, position.x(), position.y(), 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+        if (isWindowCreated()) {
+                SetWindowPos(windowHandle.id, 0,
+                             windowPosition.x() * scaleFactor,
+                             windowPosition.y() * scaleFactor,
+                             0, 0, SWP_NOSIZE | SWP_NOZORDER);
+        }
 }
 
 void RkWindowWin::setBorderWidth(int width)
 {
 	// IMPLEMENT
-        winBorderWidth = width;
+        winBorderWidth = scaleFactor * width;
 }
 
 int RkWindowWin::borderWidth() const
 {
 	//IMPLEMENT
-	return winBorderWidth;
+	return static_cast<double>(winBorderWidth) / scaleFactor;
 }
 
 void RkWindowWin::setBorderColor(const RkColor &color)
@@ -239,17 +247,17 @@ void RkWindowWin::createCanvasInfo()
                 RK_LOG_ERROR("error on creating Cairo Win32 surface");
                 return;
         }
-//        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
+        resizeCanvas();
 }
 
 void RkWindowWin::resizeCanvas()
 {
-//        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
+        if (canvasInfo)
+                cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
 const RkCanvasInfo* RkWindowWin::getCanvasInfo()
 {
-        RK_LOG_DEBUG("called -------------------------------->");
         if (!canvasInfo)
                 createCanvasInfo();
         return canvasInfo ? canvasInfo.get() : nullptr;

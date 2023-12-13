@@ -391,6 +391,11 @@ void RkEventQueue::RkEventQueueImpl::setScaleFactor(double factor)
         platformEventQueue->setScaleFactor(factor);
 }
 
+double RkEventQueue::RkEventQueueImpl::getScaleFactor() const
+{
+        return platformEventQueue->getScaleFactor();
+}
+
 void RkEventQueue::RkEventQueueImpl::dispatchEvents()
 {
 #ifdef RK_OS_WIN

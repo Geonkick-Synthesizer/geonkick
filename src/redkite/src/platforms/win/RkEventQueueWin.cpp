@@ -41,6 +41,11 @@ void RkEventQueueWin::setScaleFactor(double factor)
         scaleFactor = factor;
 }
 
+double RkEventQueueWin::getScaleFactor() const
+{
+        return scaleFactor;
+}
+
 void RkEventQueueWin::dispatchEvents()
 {
         MSG msg;

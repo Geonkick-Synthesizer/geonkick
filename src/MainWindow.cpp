@@ -220,7 +220,8 @@ bool MainWindow::init(void)
 
 RkRect MainWindow::getWindowSize()
 {
-        return {0, 0, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT};
+        GeonkickConfig config;
+        return RkRect(0, 0, config.getScaleFactor() * MAIN_WINDOW_WIDTH, config.getScaleFactor() * MAIN_WINDOW_HEIGHT);
 }
 
 #ifndef GEONKICK_OS_WINDOWS

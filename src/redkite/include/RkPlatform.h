@@ -31,19 +31,22 @@
 #include <windows.h>
 
 struct RK_EXPORT RkWindowId {
-    RkWindowId(HWND arg = nullptr) : id(arg) {}
-    HWND id;
+        RkWindowId(HWND arg = nullptr) : id{arg} {}
+        HWND id;
 };
 
 class RK_EXPORT RkNativeWindowInfo {
-	 public:
-        RkNativeWindowInfo(HWND arg = nullptr)
-	  : window(arg) {}
+ public:
+ RkNativeWindowInfo(HWND arg = nullptr)
+         : window(arg)
+        , instance{}
+        , scaleFactor{1.0}
+        {}
         ~RkNativeWindowInfo() = default;
-        HINSTANCE instance;
-        std::string className;
         HWND window;
+        HINSTANCE instance;
 	double scaleFactor;
+        std::string className;
 };
 
 HINSTANCE RK_EXPORT rk_win_api_instance();
@@ -71,7 +74,7 @@ class RK_EXPORT RkNativeWindowInfo
         display{nullptr}
         , screenNumber{0}
         , window{0}
-        , scaleFactor{1}{}
+        , scaleFactor{1.0}{}
         ~RkNativeWindowInfo() = default;
         Display* display;
         int screenNumber;
