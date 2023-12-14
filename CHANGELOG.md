@@ -1,3 +1,10 @@
+## [3.1.1]
+
+### Fixes
+
+- For Windows: Fix GUI getting slow after a time of working (fix release of DC after distroy of the Cairo win32 surface)
+- Fix shading of effects group box by the global and noise group box
+
 ## [3.1.0]
 
 ### Features
