@@ -29,8 +29,6 @@ RkWindowWin::RkWindowWin(const RkNativeWindowInfo *parent, Rk::WindowFlags flags
         : parentWindowInfo{parent ? *parent : RkNativeWindowInfo() }
 	, windowInfo{nullptr}
         , windowHandle{0}
-        , windowPosition{0, 0}
-        , windowSize{250, 250}
         , winBorderWidth{0}
         , winBorderColor{255, 255, 255}
         , backgroundColor{255, 255, 255}
@@ -46,8 +44,6 @@ RkWindowWin::RkWindowWin(const RkNativeWindowInfo &parent, Rk::WindowFlags flags
         : parentWindowInfo{parent}
 	, windowInfo{nullptr}
         , windowHandle{0}
-        , windowPosition{0, 0}
-        , windowSize{250, 250}
         , winBorderWidth{0}
         , winBorderColor{255, 255, 255}
         , backgroundColor{255, 255, 255}
@@ -159,12 +155,12 @@ RkSize RkWindowWin::size() const
         return {250, 250};
 }
 
-void RkWindowWin::setSize(const RkSize &size)
+void RkWindowWin::setSize(const RkSize &winSize)
 {
-        if (isWindowCreated() && size.width() > 0 && size.height() > 0) {
+        if (isWindowCreated() && winSize.width() > 0 && winSize.height() > 0) {
                 SetWindowPos(windowHandle.id, 0, 0, 0,
-                             size.width() * scaleFactor,
-                             size.height() * scaleFactor,
+                             winSize.width() * scaleFactor,
+                             winSize.height() * scaleFactor,
                              SWP_NOMOVE | SWP_NOZORDER);
         }
 }
@@ -178,17 +174,17 @@ RkPoint RkWindowWin::position() const
                 if (hasParent())
                         MapWindowPoints(windowHandle.id, GetParent(windowHandle.id), reinterpret_cast<LPPOINT>(&rect), 2);
                 return RkPoint(static_cast<double>(rect.left - rect0.left) / scaleFactor,
-                               static_cast<double>(rect.left - rect0.left) / scaleFactor);
+                               static_cast<double>(rect.top - rect0.top) / scaleFactor);
         }
         return {0, 0};
 }
 
-void RkWindowWin::setPosition(const RkPoint &position)
+void RkWindowWin::setPosition(const RkPoint &pos)
 {
         if (isWindowCreated()) {
                 SetWindowPos(windowHandle.id, 0,
-                             windowPosition.x() * scaleFactor,
-                             windowPosition.y() * scaleFactor,
+                             pos.x() * scaleFactor,
+                             pos.y() * scaleFactor,
                              0, 0, SWP_NOSIZE | SWP_NOZORDER);
         }
 }
@@ -320,7 +316,13 @@ void RkWindowWin::setEventQueue(RkEventQueue *queue)
 
 void RkWindowWin::setScaleFactor(double factor)
 {
+        auto p = position();
+        auto z = size();
         scaleFactor = factor;
+        windowInfo->scaleFactor = scaleFactor;
+        setPosition(p);
+        setSize(z);
+        resizeCanvas();
 }
 
 double RkWindowWin::getScaleFactor() const

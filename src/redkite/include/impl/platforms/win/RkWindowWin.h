@@ -54,9 +54,9 @@ class RkWindowWin {
         const RkNativeWindowInfo* nativeWindowInfo();
         void setTitle(const std::string &title);
         RkSize size() const;
-        void setSize(const RkSize &size);
+        void setSize(const RkSize &winSize);
         RkPoint position() const;
-        void setPosition(const RkPoint &position);
+        void setPosition(const RkPoint &pos);
         RkWindowId id() const;
         void setBorderWidth(int width);
         int borderWidth() const;
@@ -85,8 +85,6 @@ class RkWindowWin {
         RkNativeWindowInfo parentWindowInfo;
         std::unique_ptr<RkNativeWindowInfo> windowInfo;
         RkWindowId windowHandle;
-        mutable RkPoint windowPosition;
-        mutable RkSize windowSize;
         int winBorderWidth;
         RkColor winBorderColor;
         RkColor backgroundColor;
