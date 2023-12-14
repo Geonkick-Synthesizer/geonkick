@@ -278,10 +278,11 @@ class GeonkickApi : public RkObject {
   bool isPercussionMuted(size_t id) const;
   bool soloPercussion(size_t id, bool b);
   bool isPercussionSolo(size_t id) const;
-
   std::string getPercussionName(int index) const;
   void copyToClipboard();
   void pasteFromClipboard();
+  void setScaleFactor(double factor);
+  double getScaleFactor() const;
 
   RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double val),
@@ -390,6 +391,7 @@ private:
   std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
   std::unique_ptr<UiSettings> uiSettings;
   int sampleRate;
+  double scaleFactor;
 };
 
 #endif // GEONKICK_API_H

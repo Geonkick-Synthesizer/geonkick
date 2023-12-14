@@ -43,6 +43,7 @@ class RkEventQueueX
         Display* display() const;
         std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> getEvents();
         void setScaleFactor(double factor);
+        double getScaleFactor() const;
 
  protected:
         std::unique_ptr<RkEvent> getButtonPressEvent(XEvent *e);

@@ -39,7 +39,7 @@ RkWindowX::RkWindowX(const RkNativeWindowInfo *parent, Rk::WindowFlags flags, bo
          , winBackgroundColor{255, 255, 255}
          , canvasInfo{nullptr}
          , windowInfo{nullptr}
-         , scaleFactor{parent ? parent->scaleFactor : 1}
+         , scaleFactor{parent ? parent->scaleFactor : 1.0}
          , isTopWindow{isTop}
  {
          RK_LOG_DEBUG("called: d: " << xDisplay << ", s: " << screenNumber);

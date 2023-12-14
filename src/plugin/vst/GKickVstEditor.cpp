@@ -129,9 +129,9 @@ GKickVstEditor::getSize(ViewRect* newSize)
 		return kResultFalse;
 
         auto winRect = MainWindow::getWindowSize();
-	newSize->left   = winRect.left();
-	newSize->right  = winRect.right();
-	newSize->top    = winRect.top();
-	newSize->bottom = winRect.bottom();
+        newSize->left   = 0;
+	newSize->right  = winRect.width() * geonkickApi->getScaleFactor();
+	newSize->top    = 0;
+	newSize->bottom = winRect.height() * geonkickApi->getScaleFactor();
 	return kResultOk;
 }

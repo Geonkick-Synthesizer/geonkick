@@ -30,6 +30,7 @@
 #include "preset.h"
 #include "preset_folder.h"
 #include "UiSettings.h"
+#include "GeonkickConfig.h"
 
 #include <RkEventQueue.h>
 
@@ -48,9 +49,11 @@ GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance, geonkick *dsp)
         , clipboardPercussion{nullptr}
         , uiSettings{std::make_unique<UiSettings>()}
 	, sampleRate{sample_rate}
+        , scaleFactor{1.0}
 {
         setupPaths();
         uiSettings->setSamplesBrowserPath(getSettings("GEONKICK_CONFIG/HOME_PATH"));
+        scaleFactor = GeonkickConfig().getScaleFactor();
 }
 
 GeonkickApi::~GeonkickApi()
@@ -78,6 +81,8 @@ void GeonkickApi::setEventQueue(RkEventQueue *queue)
 {
         std::lock_guard<std::mutex> lock(apiMutex);
         eventQueue = queue;
+        if (eventQueue)
+                eventQueue->setScaleFactor(getScaleFactor());
 }
 
 bool GeonkickApi::initDSP()
@@ -1891,4 +1896,17 @@ double GeonkickApi::samplePreviewLimiter() const
         gkick_real val = 0;
         geonkick_get_sample_preview_limiter(geonkickApi, &val);
         return val;
+}
+
+double GeonkickApi::getScaleFactor() const
+{
+        return scaleFactor;
+}
+
+void GeonkickApi::setScaleFactor(double factor)
+{
+        scaleFactor = factor;
+        GeonkickConfig config;
+        config.setScaleFactor(scaleFactor);
+        config.save();
 }

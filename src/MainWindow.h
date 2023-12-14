@@ -46,8 +46,8 @@ class MainWindow : public GeonkickWidget
                           const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
+      static RkSize getWindowSize();
       RK_DECL_ACT(onScaleFactor, onScaleFactor(double factor), RK_ARG_TYPE(double), RK_ARG_VAL(factor));
-      static RkRect getWindowSize();
 
  protected:
       void shortcutEvent(RkKeyEvent *event) override;
@@ -60,7 +60,6 @@ class MainWindow : public GeonkickWidget
       void openExportDialog();
 #endif // GEONKICK_OS_WINDOWS
       void openPreset();
-      void scaleGui();
       void resetToDefault();
       void updateLimiter(KitModel::PercussionIndex index);
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());

@@ -35,7 +35,6 @@
 #include "percussion_state.h"
 #include "ViewState.h"
 #include "UiSettings.h"
-#include "GeonkickConfig.h"
 
 #include <RkEvent.h>
 
@@ -52,8 +51,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , kitModel{new KitModel(this, geonkickApi)}
 {
         setName("MainWindow");
-        GeonkickConfig config;
-        setScaleFactor(config.getScaleFactor());
+        setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
@@ -71,8 +69,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , limiterWidget{nullptr}
         , kitModel{new KitModel(this, geonkickApi)}
 {
-        GeonkickConfig config;
-        setScaleFactor(config.getScaleFactor());
+        setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
@@ -218,12 +215,6 @@ bool MainWindow::init(void)
         return true;
 }
 
-RkRect MainWindow::getWindowSize()
-{
-        GeonkickConfig config;
-        return RkRect(0, 0, config.getScaleFactor() * MAIN_WINDOW_WIDTH, config.getScaleFactor() * MAIN_WINDOW_HEIGHT);
-}
-
 #ifndef GEONKICK_OS_WINDOWS
 void MainWindow::openExportDialog()
 {
@@ -335,13 +326,11 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         updateGui();
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
-                        setScaleFactor((scaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
+                        geonkickApi->setScaleFactor((geonkickApi->getScaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
+                        setScaleFactor(geonkickApi->getScaleFactor());
                         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
                         updateGui();
-                        GeonkickConfig config;
-                        config.setScaleFactor(scaleFactor());
-                        config.save();
-                        action onScaleFactor(scaleFactor());
+                        action onScaleFactor(geonkickApi->getScaleFactor());
                 }
 
                 if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control_Left))
@@ -414,4 +403,9 @@ void MainWindow::updateLimiter(KitModel::PercussionIndex index)
 {
         if (kitModel->isPercussionSelected(index))
                 limiterWidget->onUpdateLimiter();
+}
+
+RkSize MainWindow::getWindowSize()
+{
+        return RkSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 }
