@@ -26,18 +26,25 @@
 
 PathListModel::PathListModel(RkObject *parent)
         : RkModel(parent)
-        , pathList{"", "", ""}
 {
+        DesktopPaths desktopPaths;
+        pathList.emplace_back(desktopPaths.getHomePath());
+        pathList.emplace_back(desktopPaths.getDesktopPath());
+        pathList.emplace_back(desktopPaths.getDownloadsPath());
+        auto drives = desktopPaths.getDrivesList();
+        for (auto d: drives)
+                pathList.emplace_back(d);
+    
         stringFont.setWeight(RkFont::Weight::Bold);
         stringFont.setSize(12);
 }
 
 void PathListModel::setHomeDirectory(const std::string &path)
 {
-        pathList[0] = path;
-	DesktopPaths desktopPaths;
-        pathList[1] = desktopPaths.getDesktopPath();
-        pathList[2] = desktopPaths.getDownloadsPath();
+        if (!pathList.empty())
+                pathList[0] = path;
+        else
+                pathList.push_back(path);
         action modelChanged();
 }
 
@@ -51,6 +58,8 @@ RkVariant PathListModel::itemData(size_t index, int dataType) const
                         return "Home";
                 else if (pathList[index].has_filename())
                         return pathList[index].filename().string();
+                else                     
+                        return pathList[index].root_name().string();
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Size) {
                 return RkSize(0, 18);
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Font) {

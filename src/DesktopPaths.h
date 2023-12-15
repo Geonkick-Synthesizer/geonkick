@@ -35,8 +35,13 @@ class DesktopPaths {
 	std::filesystem::path getConfigPath() const;
 	std::filesystem::path getDataPath() const;
 	std::filesystem::path getPresetsPath() const;
+        std::vector<std::filesystem::path> getDrivesList() const;
+
  protected:
 	void loadPaths();
+#ifdef GEONKICK_OS_WINDOWS
+        void loadDrivesList();
+#endif // GEONKICK_OS_WINDOWS
 
  private:
 	std::filesystem::path homePath;
@@ -45,6 +50,7 @@ class DesktopPaths {
 	std::filesystem::path configPath;
 	std::filesystem::path dataPath;
 	std::filesystem::path presetsPath;
+        std::vector<std::filesystem::path> drivesList;
 };
 
 #endif // GEONGKICK_DESKTOP_PATHS_H

@@ -82,14 +82,14 @@ void FilesView::createScrollBar()
 {
         topScrollBarButton = new GeonkickButton(this);
         topScrollBarButton->setUnpressedImage(RkImage(12, 17, RK_IMAGE_RC(scrollbar_button_up)));
-        topScrollBarButton->setSize(scrollBarWidth, ((float)3 / 2) * scrollBarWidth);
+        topScrollBarButton->setSize(scrollBarWidth, (static_cast<double>(3) / 2) * scrollBarWidth);
         topScrollBarButton->setPosition(width() - scrollBarWidth, 0);
         topScrollBarButton->setCheckable(true);
         RK_ACT_BIND(topScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineUp());
 
         bottomScrollBarButton = new GeonkickButton(this);
         bottomScrollBarButton->setUnpressedImage(RkImage(12, 17, RK_IMAGE_RC(scrollbar_button_down)));
-        bottomScrollBarButton->setSize(scrollBarWidth, ((float)3 / 2) * scrollBarWidth);
+        bottomScrollBarButton->setSize(scrollBarWidth, (static_cast<double>(3) / 2) * scrollBarWidth);
         bottomScrollBarButton->setPosition(width() - scrollBarWidth, height() -  bottomScrollBarButton->height());
         bottomScrollBarButton->setCheckable(true);
         RK_ACT_BIND(bottomScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineDown());
