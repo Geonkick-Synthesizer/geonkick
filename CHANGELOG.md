@@ -1,3 +1,17 @@
+## [3.2.0]
+
+### Fixes
+
+- Windows: Fixed installation of presets.
+- Windows: Linked statically all dependencies.
+- Windows: Removed installation of dependencies' DLLs and environment variable path from the installer.
+- Fixed the path to the config folder.
+
+### Features
+
+- Windows: Added scaling for GUI.
+- Windows: Added logical disks for file browser.
+
 ## [3.1.1]
 
 ### Fixes
