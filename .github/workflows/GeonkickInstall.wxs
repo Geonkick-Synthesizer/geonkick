@@ -24,33 +24,9 @@
                 <File Id='GeonkickLV22' Source='D:\a\geonkick\build\plugins\geonkick.lv2\geonkick_single_lv2.dll' KeyPath='no' />
                 <File Id='GeonkickLV24' Source='D:\a\geonkick\build\plugins\geonkick.lv2\geonkick.ttl' KeyPath='no' />
                 <File Id='GeonkickLV25' Source='D:\a\geonkick\build\plugins\geonkick.lv2\manifest.ttl' KeyPath='no' />
-                <Environment Id="Path" Action="set" Name="PATH" Part="last" Value="[ProgramFiles64Folder]Geonkick" System="yes" />
               </Component>
             </Directory>
           </Directory>
-        </Directory>
-        <Directory Id='GEONKICKDLLSDIR' Name='Geonkick'>
-          <Component Id='GeonkickDLLsComponent' Guid='B4884A51-8324-471D-A470-B5DDA8CBBB9F' Win64="yes">
-	    <File Id='DependencyDLLs' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libbrotlicommon.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs1' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libbrotlidec.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs2' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libbz2-1.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs3' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libcairo-2.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs4' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libexpat-1.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs5' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libfontconfig-1.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs6' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libfreetype-6.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs7' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libgcc_s_seh-1.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs8' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libglib-2.0-0.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs9' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libgraphite2.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs10' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libharfbuzz-0.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs11' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libiconv-2.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs12' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libintl-8.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs13' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libpcre2-8-0.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs14' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libpixman-1-0.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs15' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libpng16-16.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs16' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libstdc++-6.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs17' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\libwinpthread-1.dll' KeyPath='no' />
-	    <File Id='DependencyDLLs18' Source='D:\a\geonkick\build\plugins\Geonkick.vst3\Contents\x86_64-win\zlib1.dll' KeyPath='no' />
-          </Component>
         </Directory>
       </Directory>
       <Directory Id='CommonAppDataFolder'>
@@ -157,7 +133,6 @@
     <Feature Id='Complete' Level='1'>
       <ComponentRef Id='GeonkickVST3' />
       <ComponentRef Id='GeonkickLV2' />
-      <ComponentRef Id='GeonkickDLLsComponent' />
       <ComponentRef Id="cmp0AE8CAD4426F3371AA02910A3E27A5D2" />
       <ComponentRef Id="cmpAAE5D5B4BC290F5FAB8B5757E1898543" />
       <ComponentRef Id="cmp8F7AD4D23B98CD56C68418A38920A4E3" />
@@ -167,4 +142,3 @@
     </Feature>
   </Product>
 </Wix>
-
