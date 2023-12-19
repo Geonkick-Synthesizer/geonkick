@@ -229,11 +229,6 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
    include_directories(${RapidJSON_INCLUDE_DIR})
 endif()
 
-if (CMAKE_SYSTEM_NAME MATCHES Windows)
-   set(THREADS_PREFER_PTHREAD_FLAG ON)
-   find_package(Threads REQUIRED)
-endif()
-
 pkg_check_modules(SNDFILE sndfile)
 if (NOT SNDFILE_FOUND)
     message(FATAL_ERROR "can't find sndfile library")
