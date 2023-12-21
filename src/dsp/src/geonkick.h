@@ -127,9 +127,9 @@ enum gkick_envelope_apply_type {
 };
 
 #ifdef GEONKICK_SINGLE
-#define GEONKICK_MAX_PERCUSSIONS 1
+#define GEONKICK_MAX_INSTRUMENTS 1
 #else
-#define GEONKICK_MAX_PERCUSSIONS 16
+#define GEONKICK_MAX_INSTRUMENTS 16
 #endif
 
 /**
@@ -471,11 +471,6 @@ geonkick_get_sample_rate(struct geonkick *kick,
 enum geonkick_error
 geonkick_enable_synthesis(struct geonkick *kick,
                           bool enable);
-
-enum geonkick_error
-geonkick_get_audio_frame(struct geonkick *kick,
-                         int channel,
-                         gkick_real *val);
 
 enum geonkick_error
 geonkick_audio_process(struct geonkick *kick,

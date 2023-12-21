@@ -25,6 +25,7 @@
 #define GKICK_AUDO_OUTPUT_H
 
 #include "geonkick_internal.h"
+#include "ring_buffer.h"
 
 #include <stdatomic.h>
 
@@ -52,10 +53,9 @@ struct gkick_audio_output
 
 	/* Specifies if this audio output is active. */
         _Atomic bool enabled;
-
-        // On this buffer the synthesizer is copying.
-        char* _Atomic updated_buffer;
-        char* _Atomic playing_buffer;
+        struct gkick_buffer *updated_buffer;
+        struct gkick_buffer* playing_buffer;
+        struct ring_buffer* ring_buffer;
         _Atomic bool buffer_updated;
 
         /* Note info is changed only by the audio thread. */
@@ -117,15 +117,18 @@ enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                struct gkick_note_info *key);
 
+void
+gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output);
+
 enum geonkick_error
 gkick_audio_output_play(struct gkick_audio_output *audio_output);
 
+/* This funciton is called from the audio thread. */
+void
+gkick_audio_set_play(struct gkick_audio_output *audio_output);
+
 gkick_real
 gkick_audio_output_tune_factor(int note_number);
-
-enum geonkick_error
-gkick_audio_output_get_frame(struct gkick_audio_output *audio_output,
-                             gkick_real *val);
 
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output);
 

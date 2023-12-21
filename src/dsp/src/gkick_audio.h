@@ -33,7 +33,7 @@ struct gkick_mixer;
 struct gkick_audio {
         int sample_rate;
         /* Audio outputs. The last audio output is used as a sample preview. */
-        struct gkick_audio_output *audio_outputs[GEONKICK_MAX_PERCUSSIONS + 1];
+        struct gkick_audio_output *audio_outputs[GEONKICK_MAX_INSTRUMENTS + 1];
 	struct gkick_mixer *mixer;
         struct gkick_jack *jack;
 };
@@ -65,11 +65,6 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
                         bool pressed,
                         int note,
                         int velocity);
-
-enum geonkick_error
-gkick_audio_get_frame(struct gkick_audio *audio,
-                      int channel,
-                      gkick_real *val);
 
 enum geonkick_error
 gkick_audio_process(struct gkick_audio *audio,

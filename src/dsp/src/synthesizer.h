@@ -77,9 +77,7 @@ struct gkick_synth {
          * Kick samples buffer where the synthesizer is doing the synthesis.
          * It is swapped with one of the oudio output buffers atomically.
          */
-        char* _Atomic buffer;
-        /* Kick buffer size. */
-        _Atomic size_t buffer_size;
+        struct gkick_buffer* buffer;
 
         /**
          * Audio output that is shared with audio thread

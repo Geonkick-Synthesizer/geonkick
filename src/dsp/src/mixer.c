@@ -22,6 +22,7 @@
  */
 
 #include "mixer.h"
+#include "ring_buffer.h"
 
 enum geonkick_error
 gkick_mixer_create(struct gkick_mixer **mixer)
@@ -43,7 +44,7 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 	if (note->note_number < 0 || note->note_number > 127)
 		return GEONKICK_ERROR;
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
                 if (output->enabled && (output->playing_key == GEONKICK_ANY_KEY
                     || output->playing_key == note->note_number
@@ -59,7 +60,7 @@ gkick_mixer_tune_output(struct gkick_mixer *mixer,
                         size_t index,
                         bool tune)
 {
-	if (index < GEONKICK_MAX_PERCUSSIONS)
+	if (index < GEONKICK_MAX_INSTRUMENTS)
 		gkick_audio_output_tune_output(mixer->audio_outputs[index],
                                                tune);
 	return GEONKICK_OK;
@@ -70,29 +71,9 @@ gkick_mixer_is_output_tuned(struct gkick_mixer *mixer,
                             size_t index,
                             bool *tune)
 {
-	if (index < GEONKICK_MAX_PERCUSSIONS)
+	if (index < GEONKICK_MAX_INSTRUMENTS)
 		*tune = gkick_audio_output_is_tune_output(mixer->audio_outputs[index]);
 	return GEONKICK_OK;
-}
-
-enum geonkick_error
-gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      int channel,
-		      gkick_real *val)
-{
-        *val = 0.0f;
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                struct gkick_audio_output *out = mixer->audio_outputs[i];
-                if (out->enabled  && !out->muted && mixer->solo == out->solo && out->channel == channel) {
-                        gkick_real v = 0.0f;
-                        gkick_audio_output_get_frame(out, &v);
-                        if (i == mixer->limiter_callback_index)
-                                gkick_mixer_set_leveler(mixer, i, v);
-                        *val += v;
-                }
-        }
-
-        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -107,32 +88,62 @@ gkick_mixer_process(struct gkick_mixer *mixer,
         for (size_t channel = 0; channel < GEONKICK_MAX_CHANNELS; channel++) {
                 size_t left_index  = 2 * channel;
                 size_t right_index = left_index + 1;
-                for (size_t per = 0; per < GEONKICK_MAX_PERCUSSIONS; per++) {
-                        struct gkick_audio_output *output = mixer->audio_outputs[per];
-                        if (output->enabled && !output->muted
-                            && mixer->solo == output->solo
-                            && output->channel == channel) {
-                                for (size_t i = 0; i < size; i++) {
-                                        gkick_real v = 0.0f;
-                                        gkick_audio_output_get_frame(output, &v);
-                                        out[left_index][i + offset]  += v;
-                                        out[right_index][i + offset] += v;
-                                        if (i == 0)
-                                                gkick_mixer_set_leveler(mixer, per, v);
-                                }
+                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
+                        struct gkick_audio_output *output = mixer->audio_outputs[i];
+                        if (output->channel != channel)
+                                continue;
+
+                        if (!output->enabled || output->muted || mixer->solo != output->solo) {
+                                ring_buffer_reset(output->ring_buffer);
+                                output->play = false;
+                        } else {
+                                if (output->play)
+                                        gkick_audio_set_play(output);
+                                ring_buffer_get_data(output->ring_buffer,
+                                                     out[left_index] + offset,
+                                                     size);
+                                ring_buffer_get_data(output->ring_buffer,
+                                                     out[right_index] + offset,
+                                                     size);
+                                ring_buffer_next(output->ring_buffer, size);
+
+                                gkick_mixer_apply_limiter(out[left_index] + offset,
+                                                          out[right_index] + offset,
+                                                          size,
+                                                          (gkick_real)output->limiter / 1000000);
+                                gkick_mixer_set_leveler(mixer, i, out[right_index][offset]);
                         }
                 }
         }
 
-        struct gkick_audio_output *output = mixer->audio_outputs[GEONKICK_MAX_PERCUSSIONS];
-        for (size_t i = 0; i < size; i++) {
-                gkick_real v = 0.0f;
-                gkick_audio_output_get_frame(output, &v);
-                out[0][i + offset]  += v;
-                out[1][i + offset]  += v;
-        }
+        struct gkick_audio_output *output = mixer->audio_outputs[GEONKICK_MAX_INSTRUMENTS];
+        if (output->play)
+                gkick_audio_set_play(output);
+
+        ring_buffer_get_data(output->ring_buffer,
+                             out[0] + offset,
+                             size);
+        ring_buffer_get_data(output->ring_buffer,
+                             out[1] + offset,
+                             size);
+        ring_buffer_next(output->ring_buffer, size);
+        gkick_mixer_apply_limiter(out[0] + offset,
+                                  out[1] + offset,
+                                  size,
+                                  (gkick_real)output->limiter / 1000000);
 
         return GEONKICK_OK;
+}
+
+void gkick_mixer_apply_limiter(float *out_left,
+                               float *out_right,
+                               size_t size,
+                               float limiter)
+{
+        for (size_t i = 0; i < size; i++) {
+                out_left[i]  *= limiter;
+                out_right[i] *= limiter;
+        }
 }
 
 void
@@ -158,7 +169,7 @@ gkick_mixer_limiter_set(struct gkick_mixer *mixer,
                         size_t index,
                         gkick_real val)
 {
-        if (index <= GEONKICK_MAX_PERCUSSIONS)
+        if (index <= GEONKICK_MAX_INSTRUMENTS)
                 mixer->audio_outputs[index]->limiter = 1000000 * val;
 	return GEONKICK_OK;
 }
@@ -169,7 +180,7 @@ gkick_mixer_limiter_get(struct gkick_mixer *mixer,
                         gkick_real *val)
 {
         *val = 0.0f;
-        if (index <= GEONKICK_MAX_PERCUSSIONS)
+        if (index <= GEONKICK_MAX_INSTRUMENTS)
                 *val = (gkick_real)mixer->audio_outputs[index]->limiter / 1000000;
 	return GEONKICK_OK;
 }
@@ -193,7 +204,7 @@ gkick_mixer_solo(struct gkick_mixer *mixer, size_t id, bool b)
 {
         mixer->audio_outputs[id]->solo = b;
         bool is_solo = false;
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 if (mixer->audio_outputs[i]->enabled && mixer->audio_outputs[i]->solo)
                         is_solo = true;
         }

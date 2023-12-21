@@ -59,7 +59,7 @@ geonkick_create(struct geonkick **kick, int sample_rate)
 
         (*kick)->sample_rate = (*kick)->audio->sample_rate;
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 if (gkick_synth_new(&(*kick)->synths[i], (*kick)->sample_rate) != GEONKICK_OK) {
                         gkick_log_error("can't create synthesizer %u", i);
                         geonkick_free(kick);
@@ -68,7 +68,7 @@ geonkick_create(struct geonkick **kick, int sample_rate)
                 (*kick)->synths[i]->id = i;
         }
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 gkick_synth_set_output((*kick)->synths[i], (*kick)->audio->audio_outputs[i]);
                 geonkick_set_percussion_channel(*kick, i, i % GEONKICK_MAX_CHANNELS);
         }
@@ -103,7 +103,7 @@ void geonkick_free(struct geonkick **kick)
                 if (geonkick_worker_reference_count() == 0)
                         geonkick_worker_destroy();
                 gkick_log_debug("ref count: %d", geonkick_worker_reference_count());
-                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++)
                         gkick_synth_free(&((*kick)->synths[i]));
                 gkick_audio_free(&((*kick)->audio));
 		pthread_mutex_destroy(&(*kick)->lock);
@@ -811,7 +811,7 @@ geonkick_get_osc_pitch_shift(struct geonkick *kick,
 enum geonkick_error
 geonkick_play(struct geonkick *kick, size_t id)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -877,7 +877,7 @@ geonkick_set_kick_buffer_callback(struct geonkick *kick,
         }
 
 	geonkick_lock(kick);
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 kick->synths[i]->buffer_callback = callback;
                 kick->synths[i]->callback_args = arg;
         }
@@ -1083,23 +1083,13 @@ geonkick_enable_synthesis(struct geonkick *kick,
 
 	kick->synthesis_on = enable;
         if (kick->synthesis_on) {
-                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                         if (kick->synths[i]->is_active)
                                 kick->synths[i]->buffer_update = true;
                 }
                 geonkick_wakeup(kick);
         }
         return GEONKICK_OK;
-}
-
-enum geonkick_error
-geonkick_get_audio_frame(struct geonkick *kick,
-                         int channel,
-                         gkick_real *val)
-{
-        return gkick_audio_get_frame(kick->audio,
-                                     channel,
-                                     val);
 }
 
 enum geonkick_error
@@ -1534,7 +1524,7 @@ geonkick_is_audio_output_tuned(struct geonkick *kick,
                                bool *tune)
 {
         if (kick == NULL || tune == NULL
-            || index >= GEONKICK_MAX_PERCUSSIONS) {
+            || index >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1585,7 +1575,7 @@ enum geonkick_error
 geonkick_set_current_percussion(struct geonkick *kick,
                                 size_t index)
 {
-        if (kick == NULL || index >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || index >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1610,7 +1600,7 @@ geonkick_get_current_percussion(struct geonkick *kick,
 
 void geonkick_process(struct geonkick *kick)
 {
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 struct gkick_synth *synth = kick->synths[i];
                 if (synth != NULL && synth->is_active && synth->buffer_update)
                         gkick_synth_process(synth);
@@ -1630,7 +1620,7 @@ geonkick_unused_percussion(struct geonkick *kick,
         }
 
 	*index = -1;
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 if (!kick->synths[i]->is_active) {
                         *index = i;
                         return GEONKICK_OK;
@@ -1644,7 +1634,7 @@ geonkick_enable_percussion(struct geonkick *kick,
                            size_t index,
                            bool enable)
 {
-        if (kick == NULL || index >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || index >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1659,7 +1649,7 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
                                bool *enable)
 {
         if (kick == NULL || enable == NULL
-            || index >= GEONKICK_MAX_PERCUSSIONS) {
+            || index >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1671,7 +1661,7 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
 
 size_t geonkick_percussion_number()
 {
-	return GEONKICK_MAX_PERCUSSIONS;
+	return GEONKICK_MAX_INSTRUMENTS;
 }
 
 enum geonkick_error
@@ -1679,7 +1669,7 @@ geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
                          signed char key)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1690,7 +1680,7 @@ enum geonkick_error
 geonkick_get_playing_key(struct geonkick *kick, size_t id, signed char *key)
 {
         if (kick == NULL || key == NULL
-            || id >= GEONKICK_MAX_PERCUSSIONS) {
+            || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1704,7 +1694,7 @@ geonkick_set_percussion_name(struct geonkick *kick,
                              const char *name,
                              size_t size)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS
             || name == NULL || size < 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -1726,7 +1716,7 @@ geonkick_get_percussion_name(struct geonkick *kick,
                              char *name,
                              size_t size)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS
             || name == NULL || size < 1) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -1753,7 +1743,7 @@ geonkick_set_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t channel)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS
             || channel >= GEONKICK_MAX_CHANNELS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
@@ -1766,7 +1756,7 @@ geonkick_get_percussion_channel(struct geonkick *kick,
                                 size_t id,
                                 size_t *channel)
 {
-        if (kick == NULL || channel == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || channel == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1779,7 +1769,7 @@ geonkick_percussion_set_limiter(struct geonkick *kick,
                                 size_t id,
                                 gkick_real val)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1791,7 +1781,7 @@ geonkick_percussion_get_limiter(struct geonkick *kick,
                                 size_t id,
                                 gkick_real *val)
 {
-        if (kick == NULL || val == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || val == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1803,7 +1793,7 @@ geonkick_percussion_mute(struct geonkick *kick,
                          size_t id,
                          bool b)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1815,7 +1805,7 @@ geonkick_percussion_is_muted(struct geonkick *kick,
                              size_t id,
                              bool *b)
 {
-        if (kick == NULL || b == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || b == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1827,7 +1817,7 @@ geonkick_percussion_solo(struct geonkick *kick,
                          size_t id,
                          bool b)
 {
-        if (kick == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1839,7 +1829,7 @@ geonkick_percussion_is_solo(struct geonkick *kick,
                             size_t id,
                             bool *b)
 {
-        if (kick == NULL || b == NULL || id >= GEONKICK_MAX_PERCUSSIONS) {
+        if (kick == NULL || b == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
@@ -1856,7 +1846,7 @@ geonkick_set_preview_sample(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        struct gkick_audio_output *output = kick->audio->mixer->audio_outputs[GEONKICK_MAX_PERCUSSIONS];
+        struct gkick_audio_output *output = kick->audio->mixer->audio_outputs[GEONKICK_MAX_INSTRUMENTS];
         gkick_audio_output_lock(output);
         gkick_buffer_set_data((struct gkick_buffer*)output->updated_buffer, data, size);
         gkick_audio_output_unlock(output);
@@ -1866,19 +1856,19 @@ geonkick_set_preview_sample(struct geonkick *kick,
 void
 geonkick_play_sample_preview(struct geonkick *kick)
 {
-        gkick_audio_play(kick->audio, GEONKICK_MAX_PERCUSSIONS);
+        gkick_audio_play(kick->audio, GEONKICK_MAX_INSTRUMENTS);
 }
 
 enum geonkick_error
 geonkick_set_sample_preview_limiter(struct geonkick *kick, gkick_real val)
 {
-        return gkick_audio_set_limiter_val(kick->audio, GEONKICK_MAX_PERCUSSIONS, val);
+        return gkick_audio_set_limiter_val(kick->audio, GEONKICK_MAX_INSTRUMENTS, val);
 }
 
 enum geonkick_error
 geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val)
 {
-        return gkick_audio_get_limiter_val(kick->audio, GEONKICK_MAX_PERCUSSIONS, val);
+        return gkick_audio_get_limiter_val(kick->audio, GEONKICK_MAX_INSTRUMENTS, val);
 }
 
 void

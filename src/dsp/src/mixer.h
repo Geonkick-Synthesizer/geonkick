@@ -54,11 +54,6 @@ gkick_mixer_is_output_tuned(struct gkick_mixer *mixer,
                             bool *tune);
 
 enum geonkick_error
-gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      int channel,
-		      gkick_real *val);
-
-enum geonkick_error
 gkick_mixer_process(struct gkick_mixer *mixer,
                     float** out,
                     size_t offset,
@@ -69,6 +64,10 @@ gkick_mixer_set_leveler(struct gkick_mixer *mixer,
                         size_t index,
                         gkick_real val);
 
+void gkick_mixer_apply_limiter(float *out_left,
+                               float *out_right,
+                               size_t size,
+                               float limiter);
 
 void
 gkick_mixer_free(struct gkick_mixer **mixer);

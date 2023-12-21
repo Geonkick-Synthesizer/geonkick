@@ -54,7 +54,7 @@ gkick_audio_create(struct gkick_audio** audio, int sample_rate)
 #endif // GEONKICK_AUDIO_JACK
         gkick_log_debug("sample rate: %d", (*audio)->sample_rate);
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS + 1; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
                 if (gkick_audio_output_create(&(*audio)->audio_outputs[i], sample_rate) != GEONKICK_OK) {
                         gkick_log_error("can't create audio output");
                         gkick_audio_free(audio);
@@ -62,7 +62,7 @@ gkick_audio_create(struct gkick_audio** audio, int sample_rate)
                 }
 		(*audio)->audio_outputs[i]->enabled = true;
         }
-        (*audio)->audio_outputs[GEONKICK_MAX_PERCUSSIONS]->limiter = 1000000;
+        (*audio)->audio_outputs[GEONKICK_MAX_INSTRUMENTS]->limiter = 1000000;
 
 	if (gkick_mixer_create(&(*audio)->mixer) != GEONKICK_OK) {
 		gkick_log_error("can't create mixer");
@@ -95,7 +95,7 @@ void gkick_audio_free(struct gkick_audio** audio)
                 gkick_jack_free(&(*audio)->jack);
 #endif // GEONKICK_AUDIO_JACK
 		gkick_mixer_free(&(*audio)->mixer);
-                for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++)
+                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++)
                         gkick_audio_output_free(&(*audio)->audio_outputs[i]);
                 free(*audio);
                 *audio = NULL;
@@ -135,9 +135,10 @@ gkick_audio_play(struct gkick_audio *audio,
                 return GEONKICK_ERROR;
         }
 
-        if (id < GEONKICK_MAX_PERCUSSIONS && audio->audio_outputs[id]->enabled) {
+        gkick_log_info("play %d", id);
+        if (id < GEONKICK_MAX_INSTRUMENTS && audio->audio_outputs[id]->enabled) {
                 gkick_audio_output_play(audio->audio_outputs[id]);
-        } else if (id == GEONKICK_MAX_PERCUSSIONS) {
+        } else if (id == GEONKICK_MAX_INSTRUMENTS) {
                 // Play sample preview.
                 gkick_audio_output_play(audio->audio_outputs[id]);
         }
@@ -161,19 +162,6 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
         key.velocity    = velocity;
         key.state = pressed ? GKICK_KEY_STATE_PRESSED : GKICK_KEY_STATE_RELEASED;
         return gkick_mixer_key_pressed(audio->mixer, &key);
-}
-
-enum geonkick_error
-gkick_audio_get_frame(struct gkick_audio *audio,
-                      int channel
-                      , gkick_real *val)
-{
-        if (audio == NULL) {
-                gkick_log_error("wrong arguments");
-                return GEONKICK_ERROR;
-        }
-
-        return gkick_mixer_get_frame(audio->mixer, channel, val);
 }
 
 enum geonkick_error
