@@ -61,9 +61,18 @@ ring_buffer_add_data(struct ring_buffer *buffer,
                      const gkick_real *data,
                      size_t data_size);
 
+void
+ring_buffer_add_value(struct ring_buffer *buffer,
+                      size_t index,
+                      gkick_real val);
+
 gkick_real
 ring_buffer_get_data(struct ring_buffer *buffer,
                      size_t size);
+
+void
+gkick_ring_buffer_next(struct ring_buffer *ring,
+                       size_t n);
 
 size_t
 ring_buffer_get_size(struct ring_buffer *buffer);

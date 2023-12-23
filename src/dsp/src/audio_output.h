@@ -52,10 +52,9 @@ struct gkick_audio_output
 
 	/* Specifies if this audio output is active. */
         _Atomic bool enabled;
-
-        // On this buffer the synthesizer is copying.
-        char* _Atomic updated_buffer;
-        char* _Atomic playing_buffer;
+        struct gkick_buffer *updated_buffer;
+        struct gkick_buffer* playing_buffer;
+        struct gkick_ring_buffer* ring_buffer;
         _Atomic bool buffer_updated;
 
         /* Note info is changed only by the audio thread. */
