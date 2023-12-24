@@ -43,7 +43,6 @@ gkick_synth_new(struct gkick_synth **synth, int sample_rate)
 	(*synth)->oscillators_number = GKICK_OSC_GROUPS_NUMBER * GKICK_OSC_GROUP_SIZE;
         (*synth)->buffer_update = 0;
         (*synth)->amplitude = 1.0f;
-        (*synth)->buffer_size = (size_t)((*synth)->length * (*synth)->sample_rate);
         (*synth)->buffer_update = false;
         (*synth)->is_active = false;
         memset((*synth)->name, '\0', sizeof((*synth)->name));
@@ -93,8 +92,8 @@ gkick_synth_new(struct gkick_synth **synth, int sample_rate)
                 gkick_log_error("can't create synthesizer kick buffer");
                 gkick_synth_free(synth);
         }
-        gkick_buffer_set_size(buff, (*synth)->buffer_size);
-        (*synth)->buffer = (char*)buff;
+        gkick_buffer_set_size(buff, (size_t)((*synth)->length * (*synth)->sample_rate));
+        (*synth)->buffer = buff;
 
         if (gkick_synth_create_oscillators(*synth) != GEONKICK_OK) {
                 gkick_log_error("can't create oscillators");
@@ -114,10 +113,8 @@ void gkick_synth_free(struct gkick_synth **synth)
                         free((*synth)->oscillators);
                         (*synth)->oscillators = NULL;
 
-                        if ((*synth)->buffer != NULL) {
-                                free((*synth)->buffer);
-                                (*synth)->buffer = NULL;
-                        }
+                        if ((*synth)->buffer != NULL)
+                                gkick_buffer_free(&(*synth)->buffer);
 
                         if ((*synth)->filter)
                                 gkick_filter_free(&(*synth)->filter);
@@ -747,7 +744,7 @@ gkick_synth_set_length(struct gkick_synth *synth,
 
         gkick_synth_lock(synth);
         synth->length = len;
-        synth->buffer_size = synth->length * synth->sample_rate;
+        gkick_buffer_set_size(synth->buffer, synth->length * synth->sample_rate);
         synth->buffer_update = true;
         gkick_synth_unlock(synth);
 
@@ -1267,7 +1264,7 @@ gkick_synth_get_buffer_size(struct gkick_synth *synth,
         }
 
         gkick_synth_lock(synth);
-        *size = synth->buffer_size;
+        *size = gkick_buffer_size(synth->buffer);
         gkick_synth_unlock(synth);
         return GEONKICK_OK;
 }
@@ -1283,14 +1280,8 @@ gkick_synth_get_buffer(struct gkick_synth *synth,
         }
 
         gkick_synth_lock(synth);
-
-        if (size >= synth->buffer_size)
-                memcpy(buffer, synth->buffer,
-                       synth->buffer_size * sizeof(gkick_real));
-        else
-                memcpy(buffer, synth->buffer,
-                       size * sizeof(gkick_real));
-
+        size = min(gkick_buffer_size(synth->buffer), size);
+        memcpy(buffer, synth->buffer->buff, size * sizeof(gkick_real));
         gkick_synth_unlock(synth);
 
         return GEONKICK_ERROR;
@@ -1315,9 +1306,8 @@ gkick_synth_process(struct gkick_synth *synth)
 
 	gkick_synth_lock(synth);
 	synth->buffer_update = false;
-	gkick_buffer_set_size((struct gkick_buffer*)synth->buffer,
-                              synth->buffer_size);
-	gkick_real dt = synth->length / synth->buffer_size;
+        gkick_buffer_set_size(synth->buffer, synth->length * synth->sample_rate);
+	gkick_real dt = synth->length / gkick_buffer_size(synth->buffer);
 	gkick_synth_reset_oscillators(synth);
 	gkick_filter_init(synth->filter);
 	gkick_synth_unlock(synth);
@@ -1353,7 +1343,7 @@ gkick_synth_process(struct gkick_synth *synth)
 				val = 1.0f;
 			else if (val < -1.0f)
 				val = -1.0f;
-			gkick_buffer_push_back((struct gkick_buffer*)synth->buffer, val);
+			gkick_buffer_push_back(synth->buffer, val);
 			i++;
 		}
                 gkick_synth_unlock(synth);
@@ -1363,8 +1353,8 @@ gkick_synth_process(struct gkick_synth *synth)
         if (synth->buffer_callback != NULL && synth->callback_args != NULL) {
                 gkick_log_debug("synth->buffer_callback");
                 synth->buffer_callback(synth->callback_args,
-                                       ((struct gkick_buffer*)synth->buffer)->buff,
-                                       synth->buffer_size,
+                                       synth->buffer->buff,
+                                       gkick_buffer_size(synth->buffer),
                                        synth->id);
         }
 
@@ -1375,7 +1365,7 @@ gkick_synth_process(struct gkick_synth *synth)
          */
         if (!synth->buffer_update) {
                 gkick_audio_output_lock(synth->output);
-                char* buff = synth->output->updated_buffer;
+                struct gkick_buffer *buff = synth->output->updated_buffer;
                 synth->output->updated_buffer = synth->buffer;
                 synth->buffer = buff;
                 gkick_audio_output_unlock(synth->output);

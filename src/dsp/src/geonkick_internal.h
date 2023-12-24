@@ -48,7 +48,7 @@ struct geonkick {
         char name[30];
 	int sample_rate;
         /* The list of synths of available synths. */
-        struct gkick_synth *synths[GEONKICK_MAX_PERCUSSIONS];
+        struct gkick_synth *synths[GEONKICK_MAX_INSTRUMENTS];
         struct gkick_audio *audio;
 
         /* Current controllable percussion index. */
@@ -81,5 +81,12 @@ geonkick_usleep(unsigned long int usecods);
 
 int
 geonkick_rand(unsigned int *seed);
+
+#define min(a, b) ((a) < (b) ? (a) : (b))
+
+inline gkick_real geonkick_clamp(gkick_real value, gkick_real min_v, gkick_real max_v)
+{
+        return (value < min_v) ? min_v : (value > max_v) ? max_v : value;
+}
 
 #endif // GEONKICK_INTERNAL_H

@@ -25,6 +25,7 @@
 #define GKICK_AUDO_OUTPUT_H
 
 #include "geonkick_internal.h"
+#include "ring_buffer.h"
 
 #include <stdatomic.h>
 
@@ -54,7 +55,7 @@ struct gkick_audio_output
         _Atomic bool enabled;
         struct gkick_buffer *updated_buffer;
         struct gkick_buffer* playing_buffer;
-        struct gkick_ring_buffer* ring_buffer;
+        struct ring_buffer* ring_buffer;
         _Atomic bool buffer_updated;
 
         /* Note info is changed only by the audio thread. */
@@ -115,6 +116,9 @@ gkick_audio_output_get_buffer(struct gkick_audio_output  *audio_output);
 enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                struct gkick_note_info *key);
+
+void
+gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output);
 
 enum geonkick_error
 gkick_audio_output_play(struct gkick_audio_output *audio_output);

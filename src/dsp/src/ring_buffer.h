@@ -47,37 +47,40 @@ struct ring_buffer {
         size_t index;
 };
 
-void
-ring_buffer_new(struct ring_buffer **buffer, int size);
+enum geonkick_error
+ring_buffer_new(struct ring_buffer **ring,
+                int size);
 
 void
-ring_buffer_free(struct ring_buffer **buffer);
+ring_buffer_free(struct ring_buffer **ring);
 
 void
-ring_buffer_clear(struct ring_buffer *buffer);
+ring_buffer_clear(struct ring_buffer *ring);
 
 void
-ring_buffer_add_data(struct ring_buffer *buffer,
+ring_buffer_add_data(struct ring_buffer *ring,
                      const gkick_real *data,
                      size_t data_size);
 
 void
-ring_buffer_add_value(struct ring_buffer *buffer,
+ring_buffer_add_value(struct ring_buffer *ring,
                       size_t index,
                       gkick_real val);
 
-gkick_real
-ring_buffer_get_data(struct ring_buffer *buffer,
-                     size_t size);
+void
+ring_buffer_get_data(struct ring_buffer *ring,
+                     gkick_real *data,
+                     size_t data_size);
 
 void
-gkick_ring_buffer_next(struct ring_buffer *ring,
-                       size_t n);
+ring_buffer_next(struct ring_buffer *ring,
+                 size_t n);
 
 size_t
-ring_buffer_get_size(struct ring_buffer *buffer);
+ring_buffer_get_size(struct ring_buffer *ring);
 
 size_t
-ring_buffer_resize(struct ring_buffer *buffer, size_t size);
+ring_buffer_resize(struct ring_buffer *ring,
+                   size_t size);
 
 #endif // GKICK_RING_BUFFER_H

@@ -186,8 +186,6 @@ class GeonkickApi : public RkObject {
   static std::unique_ptr<KitState> getDefaultKitState();
   static std::shared_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
-  gkick_real getAudioFrame(int channel) const;
-  // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
 
   // This function is called only from the audio thread.
@@ -368,7 +366,7 @@ protected:
 private:
   mutable struct geonkick *geonkickApi;
   InstanceType instanceType;
-  std::array<std::atomic<double>, GEONKICK_MAX_PERCUSSIONS> limiterLevelers;
+  std::array<std::atomic<double>, GEONKICK_MAX_INSTRUMENTS> limiterLevelers;
   bool jackEnabled;
   bool standaloneInstance;
   mutable std::mutex apiMutex;

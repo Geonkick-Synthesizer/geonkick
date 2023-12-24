@@ -1076,14 +1076,6 @@ void GeonkickApi::playSamplePreview()
         geonkick_play_sample_preview(geonkickApi);
 }
 
-// This function is called only from the audio thread.
-gkick_real GeonkickApi::getAudioFrame(int channel) const
-{
-        gkick_real val;
-        geonkick_get_audio_frame(geonkickApi, channel, &val);
-        return val;
-}
-
 void GeonkickApi::process(float** out, size_t offset, size_t size)
 {
         geonkick_audio_process(geonkickApi, out, offset, size);
