@@ -124,13 +124,13 @@ gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output)
         factor = geonkick_clamp(factor, 0.5f, 2.0f);
         while (!gkick_buffer_is_end(audio_output->playing_buffer)) {
                 gkick_real val;
-                if (audio_output->tune) {
-                        val = gkick_buffer_stretch_get_next(audio_output->playing_buffer,
-                                                            factor);
-                } else {
-                        val = gkick_buffer_get_next(audio_output->playing_buffer);
-                }
-                ring_buffer_add_value(audio_output->ring_buffer, i, val);
+                //                if (audio_output->tune) {
+                //        val = gkick_buffer_stretch_get_next(audio_output->playing_buffer,
+                //                                            factor);
+                //} else {
+                val = gkick_buffer_get_next(audio_output->playing_buffer);
+                //}
+                ring_buffer_add_value(audio_output->ring_buffer, i++, val);
         }
 }
 
