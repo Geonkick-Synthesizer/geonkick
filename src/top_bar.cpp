@@ -27,7 +27,7 @@
 #include "preset_browser_view.h"
 #include "ViewState.h"
 #include "kit_model.h"
-#include "percussion_model.h"
+#include "instrument_model.h"
 #include "MidiKeyWidget.h"
 
 #include <RkLabel.h>
@@ -202,7 +202,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                RkButton::State::UnpressedHover);
         tuneCheckbox->show();
         RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), kitModel->api(),
-		    tuneAudioOutput(kitModel->api()->currentPercussion(), b));
+		    tuneAudioOutput(kitModel->api()->currentInstrument(), b));
         mainLayout->addWidget(tuneCheckbox);
         addSeparator(mainLayout, 10);
 
@@ -308,8 +308,8 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         mainLayout->addWidget(samplesButton);
 
         RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateGui());
-        RK_ACT_BINDL(kitModel, percussionUpdated, RK_ACT_ARGS(PercussionModel* model),
-                     [=](PercussionModel* model) {
+        RK_ACT_BINDL(kitModel, instrumentUpdated, RK_ACT_ARGS(InstrumentModel* model),
+                     [=](InstrumentModel* model) {
                              if (model->isSelected())
                                      updateGui();
                      } );
@@ -403,15 +403,15 @@ void TopBar::updateGui()
         layer1Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer1));
         layer2Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer2));
         layer3Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer3));
-        tuneCheckbox->setPressed(api->isAudioOutputTuned(api->currentPercussion()));
-        setPresetName(kitModel->currentPercussion()->name());
-        midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(kitModel->currentPercussion()->key()));
+        tuneCheckbox->setPressed(api->isAudioOutputTuned(api->currentInstrument()));
+        setPresetName(kitModel->currentInstrument()->name());
+        midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(kitModel->currentInstrument()->key()));
 }
 
 void TopBar::showMidiPopup()
 {
         auto midiPopup = new MidiKeyWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
-                                           kitModel->currentPercussion());
+                                           kitModel->currentInstrument());
         midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
         RK_ACT_BIND(midiPopup,
                     isAboutToClose,

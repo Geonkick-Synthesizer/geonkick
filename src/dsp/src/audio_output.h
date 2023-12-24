@@ -31,7 +31,7 @@
 
 /**
  * Audio output (which maybe is not the best name)
- * is an interface to an array that holds the synthesised percussion.
+ * is an interface to an array that holds the synthesised instrument.
  * Is has nothing to do with any real audio interfaces.
  * It provides access to the samples from the array in a "playable mode",
  * i.e. in a state machine fashion.
@@ -66,13 +66,13 @@ struct gkick_audio_output
 
         /**
          * Specifies if the audio output is in the
-         * playing state (the percussion is playing)
+         * playing state (the instrument is playing)
          */
         _Atomic bool is_play;
 
         /**
          * Triggers the audio thread to start to play
-         * the percussion with the maximum key velocity.
+         * the instrument with the maximum key velocity.
          */
         _Atomic bool play;
 

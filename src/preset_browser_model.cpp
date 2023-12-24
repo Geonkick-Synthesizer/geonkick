@@ -1,6 +1,6 @@
 /**
  * File name: preset_browser_model.cpp
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
  *
@@ -25,7 +25,7 @@
 #include "preset_folder.h"
 #include "preset.h"
 #include "geonkick_api.h"
-#include "percussion_state.h"
+#include "instrument_state.h"
 #include "kit_state.h"
 
 PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
@@ -57,7 +57,7 @@ std::string PresetBrowserModel::presetName(int row, int column) const
 bool PresetBrowserModel::isKit(int row, int column) const
 {
         auto preset = getPreset(row, column);
-        return preset && preset->type() == Preset::PresetType::PercussionKit;
+        return preset && preset->type() == Preset::PresetType::InstrumentKit;
 }
 
 PresetFolder* PresetBrowserModel::getPresetFolder(int row) const
@@ -182,20 +182,20 @@ bool PresetBrowserModel::isSelected(size_t row, size_t column) const
 
 bool PresetBrowserModel::setPreset(Preset* preset)
 {
-        if (preset->type() == Preset::PresetType::Percussion) {
+        if (preset->type() == Preset::PresetType::Instrument) {
                 GEONKICK_LOG_DEBUG("path:" << preset->path());
-                auto state = geonkickApi->getDefaultPercussionState();
+                auto state = geonkickApi->getDefaultInstrumentState();
                 if (!state->loadFile(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open preset");
                         return false;
                 } else {
-                        state->setId(geonkickApi->currentPercussion());
-                        geonkickApi->setPercussionState(state);
+                        state->setId(geonkickApi->currentInstrument());
+                        geonkickApi->setInstrumentState(state);
                         geonkickApi->notifyUpdateGui();
-                        geonkickApi->notifyPercussionUpdated(state->getId());
+                        geonkickApi->notifyInstrumentUpdated(state->getId());
                         return true;
                 }
-        } else if (preset->type() == Preset::PresetType::PercussionKit) {
+        } else if (preset->type() == Preset::PresetType::InstrumentKit) {
                 auto kit = std::make_unique<KitState>();
                 if (kit->open(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open kit");

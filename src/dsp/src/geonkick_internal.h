@@ -51,7 +51,7 @@ struct geonkick {
         struct gkick_synth *synths[GEONKICK_MAX_INSTRUMENTS];
         struct gkick_audio *audio;
 
-        /* Current controllable percussion index. */
+        /* Current controllable instrument index. */
         _Atomic size_t per_index;
 
         /**

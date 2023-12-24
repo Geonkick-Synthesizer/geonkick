@@ -25,7 +25,7 @@
 #define GEONKICK_MIDIKEY_WIDGET_H
 
 #include "geonkick_widget.h"
-#include "percussion_model.h"
+#include "instrument_model.h"
 
 #include <RkPainter.h>
 
@@ -70,7 +70,7 @@ class MidiKeyWidget: public GeonkickWidget
 {
  public:
         MidiKeyWidget(GeonkickWidget *parent,
-                      PercussionModel *model,
+                      InstrumentModel *model,
                       Rk::WindowFlags flag = Rk::WindowFlags::Popup);
         RK_DECL_ACT(keySelected,
                     keySelected(GeonkickTypes::MidiKey key),
@@ -90,12 +90,12 @@ class MidiKeyWidget: public GeonkickWidget
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseButtonReleaseEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
-        void onUpdateKey(PercussionModel::KeyIndex key);
+        void onUpdateKey(InstrumentModel::KeyIndex key);
         void closeEvent(RkCloseEvent *event) override;
         void hoverEvent(RkHoverEvent *event) override;
 
  private:
-        PercussionModel *percussionModel;
+        InstrumentModel *instrumentModel;
         RkSize cellSize;
         int widgetPadding;
         int midiRows;

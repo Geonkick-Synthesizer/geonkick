@@ -61,7 +61,7 @@ class MainWindow : public GeonkickWidget
 #endif // GEONKICK_OS_WINDOWS
       void openPreset();
       void resetToDefault();
-      void updateLimiter(KitModel::PercussionIndex index);
+      void updateLimiter(KitModel::InstrumentIndex index);
       RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
       void setSample(const std::string &file);
 

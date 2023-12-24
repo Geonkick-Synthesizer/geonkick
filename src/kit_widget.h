@@ -1,6 +1,6 @@
 /**
  * File name: kit_widget.h
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
  *
@@ -33,23 +33,23 @@ class RkLineEdit;
 class RkButton;
 class KitModel;
 class RkContainer;
-class PercussionModel;
-class KitPercussionView;
+class InstrumentModel;
+class KitInstrumentView;
 class RkTimer;
 
 class KitWidget: public GeonkickWidget
 {
  public:
-        using PercussionIndex = int;
+        using InstrumentIndex = int;
         KitWidget(GeonkickWidget *parent, KitModel *model);
         KitModel* getModel() const;
 
  protected:
         void updateView();
-        void addPercussion(PercussionModel *model);
-        void updatePercussion(PercussionIndex index, PercussionModel *model);
-        void removePercussion(PercussionIndex index);
-        void copyPercussion(int index);
+        void addInstrument(InstrumentModel *model);
+        void updateInstrument(InstrumentIndex index, InstrumentModel *model);
+        void removeInstrument(InstrumentIndex index);
+        void copyInstrument(int index);
         void showFileDialog(FileDialog::Type type);
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
@@ -62,8 +62,8 @@ class KitWidget: public GeonkickWidget
         RkButton *addButton;
         RkButton *openKitButton;
         RkButton *saveKitButton;
-        RkContainer *percussionsContainer;
-        std::vector<KitPercussionView*> percussionViewList;
+        RkContainer *instrumentsContainer;
+        std::vector<KitInstrumentView*> instrumentViewList;
         RkTimer *levelersTimer;
 };
 

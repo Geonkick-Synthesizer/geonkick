@@ -1,6 +1,6 @@
 /**
- * File name: percussion_view.h
- * Project: Geonkick (A percussion synthesizer)
+ * File name: instrument_view.h
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
  *
@@ -31,14 +31,14 @@
 
 class RkLineEdit;
 class RkButton;
-class PercussionModel;
+class InstrumentModel;
 class RkProgressBar;
 class KitWidget;
 class GeonkickButton;
 
-class PercussionLimiter : public GeonkickSlider {
+class InstrumentLimiter : public GeonkickSlider {
   public:
-        PercussionLimiter(GeonkickWidget *parent);
+        InstrumentLimiter(GeonkickWidget *parent);
         void setLeveler(int value);
         int getLeveler() const;
 
@@ -49,16 +49,16 @@ class PercussionLimiter : public GeonkickSlider {
         int levelerValue;
 };
 
-class KitPercussionView: public GeonkickWidget
+class KitInstrumentView: public GeonkickWidget
 {
  public:
-        using PercussionIndex = int;
+        using InstrumentIndex = int;
         using KeyIndex = int;
-        explicit KitPercussionView(KitWidget *parent,
-                                   PercussionModel *model = nullptr);
-        void setModel(PercussionModel *model);
-        PercussionModel* getModel();
-        PercussionIndex index() const;
+        explicit KitInstrumentView(KitWidget *parent,
+                                   InstrumentModel *model = nullptr);
+        void setModel(InstrumentModel *model);
+        InstrumentModel* getModel();
+        InstrumentIndex index() const;
         void updateLeveler();
 
  protected:
@@ -69,23 +69,23 @@ class KitPercussionView: public GeonkickWidget
         void paintWidget(RkPaintEvent *event) override;
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseDoubleClickEvent(RkMouseEvent *event) override;
-        void updatePercussionName();
+        void updateInstrumentName();
         void remove();
         void showMidiPopup();
 
  private:
         KitWidget *parentView;
-        PercussionModel *percussionModel;
+        InstrumentModel *instrumentModel;
         int nameWidth;
         int channelWidth;
-        RkLineEdit *editPercussion;
+        RkLineEdit *editInstrument;
         GeonkickButton *keyButton;
         RkButton *copyButton;
         RkButton *removeButton;
         RkButton *playButton;
         RkButton *muteButton;
         RkButton *soloButton;
-        PercussionLimiter *percussionLimiter;
+        InstrumentLimiter *instrumentLimiter;
 };
 
 #endif // KIT_WIDGET_H

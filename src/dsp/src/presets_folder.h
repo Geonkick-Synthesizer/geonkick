@@ -26,7 +26,7 @@
 clss Preset {
  public:
         class enum PresetType : int {
-            PercussionPreset,
+            InstrumentPreset,
             KitPreset
         };
 

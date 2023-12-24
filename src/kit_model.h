@@ -1,6 +1,6 @@
 /**
  * File name: kit_model.h
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
  *
@@ -29,50 +29,50 @@
 
 class GeonkickApi;
 class GeonkickState;
-class PercussionModel;
+class InstrumentModel;
 
 class KitModel : public RkObject {
  public:
         using ExportFormat = ExportAbstract::ExportFormat;
-        using PercussionIndex = int;
+        using InstrumentIndex = int;
         using KeyIndex = int;
         explicit KitModel(RkObject* parent, GeonkickApi *api);
-        bool isValidIndex(PercussionIndex index);
+        bool isValidIndex(InstrumentIndex index);
         bool open(const std::string &file);
         bool save(const std::string &file);
-        void selectPercussion(PercussionIndex index);
-        bool isPercussionSelected(PercussionIndex index) const;
-        PercussionIndex selectedPercussion() const;
-        PercussionModel* currentPercussion() const;
+        void selectInstrument(InstrumentIndex index);
+        bool isInstrumentSelected(InstrumentIndex index) const;
+        InstrumentIndex selectedInstrument() const;
+        InstrumentModel* currentInstrument() const;
         size_t numberOfChannels() const;
-        int percussionChannel(PercussionIndex index) const;
-        bool setPercussionChannel(PercussionIndex index, int channel);
-        bool setPercussionKey(PercussionIndex index, KeyIndex key);
-        KeyIndex percussionKey(PercussionIndex index) const;
-        bool setPercussionName(PercussionIndex index, const std::string &name);
-        std::string percussionName(PercussionIndex index) const;
-        void addNewPercussion();
-        void copyPercussion(PercussionIndex index);
-        void removePercussion(PercussionIndex index);
-        void moveSelectedPercussion(bool down = true);
-        int percussionKeyIndex(PercussionIndex index) const;
+        int instrumentChannel(InstrumentIndex index) const;
+        bool setInstrumentChannel(InstrumentIndex index, int channel);
+        bool setInstrumentKey(InstrumentIndex index, KeyIndex key);
+        KeyIndex instrumentKey(InstrumentIndex index) const;
+        bool setInstrumentName(InstrumentIndex index, const std::string &name);
+        std::string instrumentName(InstrumentIndex index) const;
+        void addNewInstrument();
+        void copyInstrument(InstrumentIndex index);
+        void removeInstrument(InstrumentIndex index);
+        void moveSelectedInstrument(bool down = true);
+        int instrumentKeyIndex(InstrumentIndex index) const;
         size_t keysNumber() const;
         std::string keyName(KeyIndex index) const;
-        size_t percussionNumber() const;
-        size_t maxPercussionNumber() const;
-        void playPercussion(PercussionIndex index);
+        size_t instrumentNumber() const;
+        size_t maxInstrumentNumber() const;
+        void playInstrument(InstrumentIndex index);
         std::filesystem::path workingPath(const std::string &key) const;
         std::filesystem::path getHomePath() const;
-        const std::vector<PercussionModel*>& percussionModels() const;
-        PercussionIndex getIndex(int id) const;
-        bool setPercussionLimiter(PercussionIndex index, int value);
-        int percussionLimiter(PercussionIndex index) const;
-        int percussionLeveler(PercussionIndex index) const;
-        bool mutePercussion(PercussionIndex index, bool b);
-        bool isPercussionMuted(PercussionIndex index) const;
-        bool soloPercussion(PercussionIndex index, bool b);
-        bool isPercussionSolo(PercussionIndex index) const;
-        void updatePercussion(PercussionIndex index);
+        const std::vector<InstrumentModel*>& instrumentModels() const;
+        InstrumentIndex getIndex(int id) const;
+        bool setInstrumentLimiter(InstrumentIndex index, int value);
+        int instrumentLimiter(InstrumentIndex index) const;
+        int instrumentLeveler(InstrumentIndex index) const;
+        bool muteInstrument(InstrumentIndex index, bool b);
+        bool isInstrumentMuted(InstrumentIndex index) const;
+        bool soloInstrument(InstrumentIndex index, bool b);
+        bool isInstrumentSolo(InstrumentIndex index) const;
+        void updateInstrument(InstrumentIndex index);
         GeonkickApi* api() const;
         bool doExport(const std::string &file, ExportFormat format);
 
@@ -80,38 +80,38 @@ class KitModel : public RkObject {
                     modelUpdated(),
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
-        RK_DECL_ACT(percussionAdded,
-                    percussionAdded(PercussionModel* model),
-                    RK_ARG_TYPE(PercussionModel*),
+        RK_DECL_ACT(instrumentAdded,
+                    instrumentAdded(InstrumentModel* model),
+                    RK_ARG_TYPE(InstrumentModel*),
                     RK_ARG_VAL(model));
-        RK_DECL_ACT(percussionRemoved,
-                    percussionRemoved(PercussionIndex index),
-                    RK_ARG_TYPE(PercussionIndex),
+        RK_DECL_ACT(instrumentRemoved,
+                    instrumentRemoved(InstrumentIndex index),
+                    RK_ARG_TYPE(InstrumentIndex),
                     RK_ARG_VAL(index));
-        RK_DECL_ACT(percussionSelected,
-                    percussionSelected(),
+        RK_DECL_ACT(instrumentSelected,
+                    instrumentSelected(),
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
         RK_DECL_ACT(limiterUpdated,
-                    limiterUpdated(PercussionIndex index),
-                    RK_ARG_TYPE(PercussionIndex),
+                    limiterUpdated(InstrumentIndex index),
+                    RK_ARG_TYPE(InstrumentIndex),
                     RK_ARG_VAL(index));
-        RK_DECL_ACT(percussionUpdated,
-                    percussionUpdated(PercussionModel* model),
-                    RK_ARG_TYPE(PercussionModel*),
+        RK_DECL_ACT(instrumentUpdated,
+                    instrumentUpdated(InstrumentModel* model),
+                    RK_ARG_TYPE(InstrumentModel*),
                     RK_ARG_VAL(model));
         RkString name() const;
         RkString author() const;
         RkString license() const;
-        std::vector<float> instrumentData(PercussionIndex index) const;
+        std::vector<float> instrumentData(InstrumentIndex index) const;
 
  protected:
-        int percussionId(int index) const;
+        int instrumentId(int index) const;
         void loadModelData();
 
  private:
         GeonkickApi *geonkickApi;
-        std::vector<PercussionModel*> percussionsList;
+        std::vector<InstrumentModel*> instrumentsList;
         std::vector<std::string> midiKeys;
 };
 

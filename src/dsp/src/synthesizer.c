@@ -1312,7 +1312,7 @@ gkick_synth_process(struct gkick_synth *synth)
 	gkick_filter_init(synth->filter);
 	gkick_synth_unlock(synth);
 
-	/* Synthesize the percussion into the synthesizer buffer. */
+	/* Synthesize the instrument into the synthesizer buffer. */
 	size_t i = 0;
         size_t tries = 0;
 	while (1) {

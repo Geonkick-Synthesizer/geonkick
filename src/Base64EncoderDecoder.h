@@ -1,6 +1,6 @@
 /**
  * File name: Base64EncoderDecoder.h
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
 F *
  * Copyright (C) 2023 Iurie Nistor 
  *

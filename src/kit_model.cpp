@@ -1,6 +1,6 @@
 /**
  * File name: kit.cpp
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
  *
@@ -23,8 +23,8 @@
 
 #include "kit_model.h"
 #include "geonkick_api.h"
-#include "percussion_state.h"
-#include "percussion_model.h"
+#include "instrument_state.h"
+#include "instrument_model.h"
 #include "kit_state.h"
 #include "ExportToSfz.h"
 
@@ -41,41 +41,41 @@ KitModel::KitModel(RkObject *parent, GeonkickApi *api)
 {
         loadModelData();
         RK_ACT_BIND(geonkickApi, kitUpdated, RK_ACT_ARGS(), this, loadModelData());
-        RK_ACT_BIND(geonkickApi, percussionUpdated, RK_ACT_ARGS(size_t id), this, updatePercussion(getIndex(id)));
+        RK_ACT_BIND(geonkickApi, instrumentUpdated, RK_ACT_ARGS(size_t id), this, updateInstrument(getIndex(id)));
 }
 
-void KitModel::updatePercussion(PercussionIndex index)
+void KitModel::updateInstrument(InstrumentIndex index)
 {
         if (isValidIndex(index))
-                action percussionsList[index]->modelUpdated();
+                action instrumentsList[index]->modelUpdated();
 }
 
-bool KitModel::isValidIndex(PercussionIndex index)
+bool KitModel::isValidIndex(InstrumentIndex index)
 {
-        return index > -1 && static_cast<size_t>(index) < percussionsList.size();
+        return index > -1 && static_cast<size_t>(index) < instrumentsList.size();
 }
 
-void KitModel::selectPercussion(PercussionIndex index)
+void KitModel::selectInstrument(InstrumentIndex index)
 {
-        if (isValidIndex(index) && geonkickApi->setCurrentPercussion(percussionId(index))) {
+        if (isValidIndex(index) && geonkickApi->setCurrentInstrument(instrumentId(index))) {
                 geonkickApi->notifyUpdateGui();
-                action percussionSelected();
+                action instrumentSelected();
         }
 }
 
-bool KitModel::isPercussionSelected(PercussionIndex index) const
+bool KitModel::isInstrumentSelected(InstrumentIndex index) const
 {
-        return static_cast<size_t>(percussionId(index)) == geonkickApi->currentPercussion();
+        return static_cast<size_t>(instrumentId(index)) == geonkickApi->currentInstrument();
 }
 
-KitModel::PercussionIndex KitModel::selectedPercussion() const
+KitModel::InstrumentIndex KitModel::selectedInstrument() const
 {
-        return getIndex(geonkickApi->currentPercussion());
+        return getIndex(geonkickApi->currentInstrument());
 }
 
-PercussionModel* KitModel::currentPercussion() const
+InstrumentModel* KitModel::currentInstrument() const
 {
-        return percussionsList[getIndex(geonkickApi->currentPercussion())];
+        return instrumentsList[getIndex(geonkickApi->currentInstrument())];
 }
 
 size_t KitModel::numberOfChannels() const
@@ -83,28 +83,28 @@ size_t KitModel::numberOfChannels() const
         return geonkickApi->numberOfChannels();
 }
 
-int KitModel::percussionChannel(PercussionIndex index) const
+int KitModel::instrumentChannel(InstrumentIndex index) const
 {
-        return geonkickApi->getPercussionChannel(percussionId(index));
+        return geonkickApi->getInstrumentChannel(instrumentId(index));
 }
 
-bool KitModel::setPercussionChannel(PercussionIndex index, int channel)
+bool KitModel::setInstrumentChannel(InstrumentIndex index, int channel)
 {
-        return geonkickApi->setPercussionChannel(percussionId(index), channel);
+        return geonkickApi->setInstrumentChannel(instrumentId(index), channel);
 }
 
-bool KitModel::setPercussionName(PercussionIndex index, const std::string &name)
+bool KitModel::setInstrumentName(InstrumentIndex index, const std::string &name)
 {
-        if (geonkickApi->setPercussionName(percussionId(index), name)) {
+        if (geonkickApi->setInstrumentName(instrumentId(index), name)) {
                 geonkickApi->notifyUpdateGui();
                 return true;
         }
         return false;
 }
 
-std::string KitModel::percussionName(PercussionIndex index) const
+std::string KitModel::instrumentName(InstrumentIndex index) const
 {
-        return geonkickApi->getPercussionName(percussionId(index));
+        return geonkickApi->getInstrumentName(instrumentId(index));
 }
 
 size_t KitModel::keysNumber() const
@@ -119,50 +119,50 @@ std::string KitModel::keyName(KeyIndex index) const
         return std::string();
 }
 
-bool KitModel::setPercussionKey(PercussionIndex index, KeyIndex keyIndex)
+bool KitModel::setInstrumentKey(InstrumentIndex index, KeyIndex keyIndex)
 {
         if (!isValidIndex(index))
                 return false;
         
-        if (geonkickApi->setPercussionPlayingKey(percussionId(index), keyIndex)) {
-                action percussionUpdated(percussionsList[index]);
+        if (geonkickApi->setInstrumentPlayingKey(instrumentId(index), keyIndex)) {
+                action instrumentUpdated(instrumentsList[index]);
                 return true;
         }
         return false;
 }
 
-KitModel::KeyIndex KitModel::percussionKey(PercussionIndex index) const
+KitModel::KeyIndex KitModel::instrumentKey(InstrumentIndex index) const
 {
-        return geonkickApi->getPercussionPlayingKey(percussionId(index));
+        return geonkickApi->getInstrumentPlayingKey(instrumentId(index));
 }
 
-void KitModel::playPercussion(PercussionIndex index)
+void KitModel::playInstrument(InstrumentIndex index)
 {
-        geonkickApi->playKick(percussionId(index));
+        geonkickApi->playKick(instrumentId(index));
 }
 
-bool KitModel::setPercussionLimiter(PercussionIndex index, int value)
+bool KitModel::setInstrumentLimiter(InstrumentIndex index, int value)
 {
         double logVal = (75.0 / 100) * value - 55;
         auto realVal = pow(10, logVal / 20);
-        if (geonkickApi->setPercussionLimiter(percussionId(index), realVal)) {
+        if (geonkickApi->setInstrumentLimiter(instrumentId(index), realVal)) {
                 action limiterUpdated(index);
                 return true;
         }
         return false;
 }
 
-int KitModel::percussionLimiter(PercussionIndex index) const
+int KitModel::instrumentLimiter(InstrumentIndex index) const
 {
-        auto realVal = geonkickApi->percussionLimiter(percussionId(index));
+        auto realVal = geonkickApi->instrumentLimiter(instrumentId(index));
         double logVal = 20 * log10(realVal);
         int val = (logVal + 55.0) * 100.0 / 75;
         return  val;
 }
 
-int KitModel::percussionLeveler(PercussionIndex index) const
+int KitModel::instrumentLeveler(InstrumentIndex index) const
 {
-        auto realVal = geonkickApi->getLimiterLevelerValue(percussionId(index));
+        auto realVal = geonkickApi->getLimiterLevelerValue(instrumentId(index));
         double logVal = 20 * log10(realVal);
         int val = (logVal + 55.0) * 100.0 / 75;
         if (val < 0)
@@ -170,34 +170,34 @@ int KitModel::percussionLeveler(PercussionIndex index) const
         return val;
 }
 
-bool KitModel::mutePercussion(PercussionIndex index, bool b)
+bool KitModel::muteInstrument(InstrumentIndex index, bool b)
 {
-        return geonkickApi->mutePercussion(percussionId(index), b);
+        return geonkickApi->muteInstrument(instrumentId(index), b);
 }
 
-bool KitModel::isPercussionMuted(PercussionIndex index) const
+bool KitModel::isInstrumentMuted(InstrumentIndex index) const
 {
-        return geonkickApi->isPercussionMuted(percussionId(index));
+        return geonkickApi->isInstrumentMuted(instrumentId(index));
 }
 
-bool KitModel::soloPercussion(PercussionIndex index, bool b)
+bool KitModel::soloInstrument(InstrumentIndex index, bool b)
 {
-        return geonkickApi->soloPercussion(percussionId(index), b);
+        return geonkickApi->soloInstrument(instrumentId(index), b);
 }
 
-bool KitModel::isPercussionSolo(PercussionIndex index) const
+bool KitModel::isInstrumentSolo(InstrumentIndex index) const
 {
-        return geonkickApi->isPercussionSolo(percussionId(index));
+        return geonkickApi->isInstrumentSolo(instrumentId(index));
 }
 
 void KitModel::loadModelData()
 {
-        for (auto &per: percussionsList)
+        for (auto &per: instrumentsList)
                 delete per;
-        percussionsList.clear();
-        for (const auto &id : geonkickApi->ordredPercussionIds()) {
-                auto model = new PercussionModel(this, id);
-                percussionsList.push_back(model);
+        instrumentsList.clear();
+        for (const auto &id : geonkickApi->ordredInstrumentIds()) {
+                auto model = new InstrumentModel(this, id);
+                instrumentsList.push_back(model);
         }
         action modelUpdated();
 }
@@ -237,102 +237,102 @@ bool KitModel::save(const std::string &file)
         return true;
 }
 
-void KitModel::addNewPercussion()
+void KitModel::addNewInstrument()
 {
-        int newId = geonkickApi->getUnusedPercussion();
+        int newId = geonkickApi->getUnusedInstrument();
         if (newId < 0)
                 return;
 
-        auto state = geonkickApi->getDefaultPercussionState();
+        auto state = geonkickApi->getDefaultInstrumentState();
         state->setId(newId);
         state->enable(true);
-        geonkickApi->setPercussionState(state);
-        geonkickApi->addOrderedPercussionId(newId);
-        auto model = new PercussionModel(this, newId);
-        percussionsList.push_back(model);
-        action percussionAdded(model);
+        geonkickApi->setInstrumentState(state);
+        geonkickApi->addOrderedInstrumentId(newId);
+        auto model = new InstrumentModel(this, newId);
+        instrumentsList.push_back(model);
+        action instrumentAdded(model);
 }
 
-void KitModel::copyPercussion(PercussionIndex index)
+void KitModel::copyInstrument(InstrumentIndex index)
 {
         if (!isValidIndex(index))
                 return;
 
-        auto newId = geonkickApi->getUnusedPercussion();
+        auto newId = geonkickApi->getUnusedInstrument();
         if (newId < 0)
                 return;
 
-        auto state = geonkickApi->getPercussionState(percussionId(index));
+        auto state = geonkickApi->getInstrumentState(instrumentId(index));
         if (state) {
                 state->setId(newId);
                 state->enable(true);
-                geonkickApi->setPercussionState(state);
-                geonkickApi->addOrderedPercussionId(newId);
-                auto model = new PercussionModel(this, newId);
-                percussionsList.push_back(model);
-                action percussionAdded(model);
+                geonkickApi->setInstrumentState(state);
+                geonkickApi->addOrderedInstrumentId(newId);
+                auto model = new InstrumentModel(this, newId);
+                instrumentsList.push_back(model);
+                action instrumentAdded(model);
         }
 }
 
-void KitModel::removePercussion(PercussionIndex index)
+void KitModel::removeInstrument(InstrumentIndex index)
 {
-        if (!isValidIndex(index) || percussionsList.size() < 2)
+        if (!isValidIndex(index) || instrumentsList.size() < 2)
                 return;
 
-        for (auto it = percussionsList.begin(); it != percussionsList.end(); ++it) {
-                if ((*it)->index() == index && geonkickApi->enablePercussion(percussionId(index), false)) {
-                        action percussionRemoved(index);
+        for (auto it = instrumentsList.begin(); it != instrumentsList.end(); ++it) {
+                if ((*it)->index() == index && geonkickApi->enableInstrument(instrumentId(index), false)) {
+                        action instrumentRemoved(index);
                         bool notify = (*it)->isSelected();
                         delete *it;
-                        percussionsList.erase(it);
-                        geonkickApi->removeOrderedPercussionId(percussionId(index));
+                        instrumentsList.erase(it);
+                        geonkickApi->removeOrderedInstrumentId(instrumentId(index));
                         if (notify) {
-                                geonkickApi->setCurrentPercussion(percussionId(0));
-                                action selectPercussion(0);
+                                geonkickApi->setCurrentInstrument(instrumentId(0));
+                                action selectInstrument(0);
                         }
                         break;
                 }
         }
 
-        for (const auto & per: percussionsList)
+        for (const auto & per: instrumentsList)
                 action per->modelUpdated();
 }
 
-void KitModel::moveSelectedPercussion(bool down)
+void KitModel::moveSelectedInstrument(bool down)
 {
-        auto currentIndex = getIndex(geonkickApi->currentPercussion());
+        auto currentIndex = getIndex(geonkickApi->currentInstrument());
         auto nextIndex = currentIndex + (down ? 1 : -1);
         if (isValidIndex(currentIndex) && isValidIndex(nextIndex)) {
-                bool res = geonkickApi->moveOrdrepedPercussionId(geonkickApi->currentPercussion(), down ? 1 : -1);
+                bool res = geonkickApi->moveOrdrepedInstrumentId(geonkickApi->currentInstrument(), down ? 1 : -1);
                 if (res) {
-                        percussionsList[currentIndex]->setId(percussionId(currentIndex));
-                        percussionsList[nextIndex]->setId(percussionId(nextIndex));
-                        selectPercussion(nextIndex);
+                        instrumentsList[currentIndex]->setId(instrumentId(currentIndex));
+                        instrumentsList[nextIndex]->setId(instrumentId(nextIndex));
+                        selectInstrument(nextIndex);
                 }
         }
 }
 
-size_t KitModel::percussionNumber() const
+size_t KitModel::instrumentNumber() const
 {
-        return geonkickApi->ordredPercussionIds().size();
+        return geonkickApi->ordredInstrumentIds().size();
 }
 
-size_t KitModel::maxPercussionNumber() const
+size_t KitModel::maxInstrumentNumber() const
 {
-        return geonkickApi->getPercussionsNumber();
+        return geonkickApi->getInstrumentsNumber();
 }
 
-int KitModel::percussionId(int index) const
+int KitModel::instrumentId(int index) const
 {
-        const auto &ids = geonkickApi->ordredPercussionIds();
+        const auto &ids = geonkickApi->ordredInstrumentIds();
         if (index < -1 || index > static_cast<decltype(index)>(ids.size() - 1))
                 return -1;
         return ids[index];
 }
 
-KitModel::PercussionIndex KitModel::getIndex(int id) const
+KitModel::InstrumentIndex KitModel::getIndex(int id) const
 {
-        const auto &ids = geonkickApi->ordredPercussionIds();
+        const auto &ids = geonkickApi->ordredInstrumentIds();
         auto it = std::find(ids.begin(), ids.end(), id);
         if (it != ids.end())
                 return it - ids.begin();
@@ -351,9 +351,9 @@ KitModel::getHomePath() const
         return geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH");
 }
 
-const std::vector<PercussionModel*>& KitModel::percussionModels() const
+const std::vector<InstrumentModel*>& KitModel::instrumentModels() const
 {
-        return percussionsList;
+        return instrumentsList;
 }
 
 GeonkickApi* KitModel::api() const
@@ -389,8 +389,8 @@ RkString KitModel::license() const
         return RkString("Unknown");
 }
 
-std::vector<float> KitModel::instrumentData(PercussionIndex index) const
+std::vector<float> KitModel::instrumentData(InstrumentIndex index) const
 {
-        return geonkickApi->getInstrumentBuffer(percussionId(index));
+        return geonkickApi->getInstrumentBuffer(instrumentId(index));
 }
 

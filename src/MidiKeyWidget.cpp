@@ -26,10 +26,10 @@
 #include <RkEvent.h>
 
 MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
-                             PercussionModel *model,
+                             InstrumentModel *model,
                              Rk::WindowFlags flag)
         : GeonkickWidget(parent, flag)
-        , percussionModel{model}
+        , instrumentModel{model}
         , cellSize{32, 32}
         , widgetPadding{8}
         , midiRows{8}
@@ -60,9 +60,9 @@ MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
                         drawCell(painter, key++, row, col);
         }
         setBackgroundImage(img);
-        selectedCell = getCell(percussionModel->key());
-        RK_ACT_BIND(percussionModel, keyUpdated,
-                    RK_ACT_ARGS(PercussionModel::KeyIndex key),
+        selectedCell = getCell(instrumentModel->key());
+        RK_ACT_BIND(instrumentModel, keyUpdated,
+                    RK_ACT_ARGS(InstrumentModel::KeyIndex key),
                     this,
                     onUpdateKey(key));
 }
@@ -193,7 +193,7 @@ void MidiKeyWidget::mouseButtonPressEvent(RkMouseEvent *event)
 		if (auto cell = getCell(event->x(), event->y());
 		    cell.isValid() && cell != selectedCell) {
 			selectedCell = cell;
-			percussionModel->setKey(selectedCell.key());
+			instrumentModel->setKey(selectedCell.key());
 		}
 	}
 }
@@ -223,7 +223,7 @@ RkString MidiKeyWidget::midiKeyToNote(GeonkickTypes::MidiKey key)
         return RkString(notes[(key - 21 + 9) % 12]) + std::to_string((key - 20 + 9) / 12);
 }
 
-void MidiKeyWidget::onUpdateKey(PercussionModel::KeyIndex key)
+void MidiKeyWidget::onUpdateKey(InstrumentModel::KeyIndex key)
 {
         selectedCell = getCell(key);
         update();

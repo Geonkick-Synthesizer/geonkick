@@ -32,7 +32,7 @@
 #include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
-#include "percussion_state.h"
+#include "instrument_state.h"
 #include "ViewState.h"
 #include "UiSettings.h"
 
@@ -200,16 +200,16 @@ bool MainWindow::init(void)
         kitModel = controlAreaWidget->getKitModel();
         RK_ACT_BIND(kitModel,
                     limiterUpdated,
-                    RK_ACT_ARGS(KitModel::PercussionIndex index),
+                    RK_ACT_ARGS(KitModel::InstrumentIndex index),
                     this,
                     updateLimiter(index));
         RK_ACT_BIND(limiterWidget, limiterUpdated, RK_ACT_ARGS(int val),
-                    kitModel, updatePercussion(kitModel->selectedPercussion()));
+                    kitModel, updateInstrument(kitModel->selectedInstrument()));
 
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
-        topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
+        topBar->setPresetName(geonkickApi->getInstrumentName(geonkickApi->currentInstrument()));
         updateGui();
         show();
         return true;
@@ -225,7 +225,7 @@ void MainWindow::openExportDialog()
 
 void MainWindow::savePreset(const std::string &fileName)
 {
-        auto state = geonkickApi->getPercussionState();
+        auto state = geonkickApi->getInstrumentState();
         if (state->save(fileName)) {
                 std::filesystem::path filePath(fileName);
                 topBar->setPresetName(state->getName());
@@ -262,11 +262,11 @@ void MainWindow::openPreset(const std::string &fileName)
 
         std::string fileData((std::istreambuf_iterator<char>(file)),
                              (std::istreambuf_iterator<char>()));
-        auto state = geonkickApi->getDefaultPercussionState();
+        auto state = geonkickApi->getDefaultInstrumentState();
         state->loadData(fileData);
-        state->setId(geonkickApi->currentPercussion());
-        geonkickApi->setPercussionState(state);
-        action geonkickApi->percussionUpdated(state->getId());
+        state->setId(geonkickApi->currentInstrument());
+        geonkickApi->setInstrumentState(state);
+        action geonkickApi->instrumentUpdated(state->getId());
         file.close();
         geonkickApi->setCurrentWorkingPath("OpenPreset",
                                            filePath.has_parent_path() ? filePath.parent_path().string() : filePath.string());
@@ -322,7 +322,7 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_v || event->key() == Rk::Key::Key_V)) {
                         geonkickApi->pasteFromClipboard();
-                        geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
+                        geonkickApi->notifyInstrumentUpdated(geonkickApi->currentInstrument());
                         updateGui();
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
@@ -351,14 +351,14 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
 
 void MainWindow::resetToDefault()
 {
-        auto currId = geonkickApi->currentPercussion();
-        auto state = geonkickApi->getDefaultPercussionState();
+        auto currId = geonkickApi->currentInstrument();
+        auto state = geonkickApi->getDefaultInstrumentState();
         state->setId(currId);
-        state->setName(geonkickApi->getPercussionName(currId));
-        state->setPlayingKey(geonkickApi->getPercussionPlayingKey(currId));
-        state->setChannel(geonkickApi->getPercussionChannel(currId));
-        geonkickApi->setPercussionState(state);
-        geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
+        state->setName(geonkickApi->getInstrumentName(currId));
+        state->setPlayingKey(geonkickApi->getInstrumentPlayingKey(currId));
+        state->setChannel(geonkickApi->getInstrumentChannel(currId));
+        geonkickApi->setInstrumentState(state);
+        geonkickApi->notifyInstrumentUpdated(geonkickApi->currentInstrument());
         updateGui();
 }
 
@@ -394,14 +394,14 @@ void MainWindow::setSample(const std::string &file)
         if (osc) {
                 osc->setFunction(Oscillator::FunctionType::Sample);
                 geonkickApi->setOscillatorSample(file, osc->index());
-                geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
+                geonkickApi->notifyInstrumentUpdated(geonkickApi->currentInstrument());
                 updateGui();
         }
 }
 
-void MainWindow::updateLimiter(KitModel::PercussionIndex index)
+void MainWindow::updateLimiter(KitModel::InstrumentIndex index)
 {
-        if (kitModel->isPercussionSelected(index))
+        if (kitModel->isInstrumentSelected(index))
                 limiterWidget->onUpdateLimiter();
 }
 

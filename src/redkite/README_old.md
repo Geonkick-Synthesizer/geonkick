@@ -130,4 +130,4 @@ Note: it is recommended to use release versions (see repository tags)
 
 ### What applications were developed with Redkite?
 
-* [Geonkick](https://gitlab.com/iurie-sw/geonkick) - a percussion synthesizer.
+* [Geonkick](https://gitlab.com/iurie-sw/geonkick) - a instrument synthesizer.

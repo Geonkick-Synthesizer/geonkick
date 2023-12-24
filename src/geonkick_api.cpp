@@ -25,7 +25,7 @@
 #include "DesktopPaths.h"
 #include "oscillator.h"
 #include "globals.h"
-#include "percussion_state.h"
+#include "instrument_state.h"
 #include "kit_state.h"
 #include "preset.h"
 #include "preset_folder.h"
@@ -46,7 +46,7 @@ GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance, geonkick *dsp)
         , currentLayer{Layer::Layer1}
         , kitName{"Unknown"}
         , kitAuthor{"Author"}
-        , clipboardPercussion{nullptr}
+        , clipboardInstrument{nullptr}
         , uiSettings{std::make_unique<UiSettings>()}
 	, sampleRate{sample_rate}
         , scaleFactor{1.0}
@@ -106,22 +106,22 @@ bool GeonkickApi::init()
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
 	geonkick_enable_synthesis(geonkickApi, false);
 
-	auto n = getPercussionsNumber();
+	auto n = getInstrumentsNumber();
         auto nChannels = numberOfChannels();
         kickBuffers = std::vector<std::vector<gkick_real>>(n);
 	for (decltype(n) i = 0; i < n; i++) {
-                auto state = getDefaultPercussionState();
+                auto state = getDefaultInstrumentState();
                 state->setId(i);
                 state->setChannel(i % nChannels);
-		setPercussionState(state);
+		setInstrumentState(state);
         }
 
         setKitState(std::move(getDefaultKitState()));
-        enablePercussion(0, true);
-        addOrderedPercussionId(0);
+        enableInstrument(0, true);
+        addOrderedInstrumentId(0);
 
-        // Set the first the percussion by default to be controllable.
-	geonkick_set_current_percussion(geonkickApi, 0);
+        // Set the first the instrument by default to be controllable.
+	geonkick_set_current_instrument(geonkickApi, 0);
 	geonkick_enable_synthesis(geonkickApi, true);
         return true;
 }
@@ -136,9 +136,9 @@ std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
         return std::make_unique<KitState>();
 }
 
-std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
+std::shared_ptr<InstrumentState> GeonkickApi::getDefaultInstrumentState()
 {
-        std::shared_ptr<PercussionState> state = std::make_shared<PercussionState>();
+        std::shared_ptr<InstrumentState> state = std::make_shared<InstrumentState>();
         state->setName("Default");
         state->setId(0);
         state->setPlayingKey(-1);
@@ -235,20 +235,20 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
         return state;
 }
 
-void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &state)
+void GeonkickApi::setInstrumentState(const std::shared_ptr<InstrumentState> &state)
 {
         if (!state)
                 return;
 
         geonkick_enable_synthesis(geonkickApi, false);
-        geonkick_enable_percussion(geonkickApi, state->getId(), state->isEnabled());
-        auto currentId = currentPercussion();
-        geonkick_set_current_percussion(geonkickApi, state->getId());
-        setPercussionName(state->getId(), state->getName());
-        setPercussionPlayingKey(state->getId(), state->getPlayingKey());
-        setPercussionChannel(state->getId(), state->getChannel());
-        mutePercussion(state->getId(), state->isMuted());
-        soloPercussion(state->getId(), state->isSolo());
+        geonkick_enable_instrument(geonkickApi, state->getId(), state->isEnabled());
+        auto currentId = currentInstrument();
+        geonkick_set_current_instrument(geonkickApi, state->getId());
+        setInstrumentName(state->getId(), state->getName());
+        setInstrumentPlayingKey(state->getId(), state->getPlayingKey());
+        setInstrumentChannel(state->getId(), state->getChannel());
+        muteInstrument(state->getId(), state->isMuted());
+        soloInstrument(state->getId(), state->isSolo());
         for (auto i = 0; i < 3; i++) {
                 enbaleLayer(static_cast<Layer>(i), state->isLayerEnabled(static_cast<Layer>(i)));
                 setLayerAmplitude(static_cast<Layer>(i), state->getLayerAmplitude(static_cast<Layer>(i)));
@@ -291,45 +291,45 @@ void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &sta
         setDistortionVolume(state->getDistortionVolume());
         setDistortionDrive(state->getDistortionDrive());
 
-        geonkick_set_current_percussion(geonkickApi, currentId);
+        geonkick_set_current_instrument(geonkickApi, currentId);
         geonkick_enable_synthesis(geonkickApi, true);
 }
 
-void GeonkickApi::setPercussionState(const std::string &data)
+void GeonkickApi::setInstrumentState(const std::string &data)
 {
-        auto state = getDefaultPercussionState();
+        auto state = getDefaultInstrumentState();
         state->loadData(data);
-        setPercussionState(state);
+        setInstrumentState(state);
 }
 
-std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) const
+std::shared_ptr<InstrumentState> GeonkickApi::getInstrumentState(size_t id) const
 {
-        if (id == currentPercussion()) {
-                return getPercussionState();
+        if (id == currentInstrument()) {
+                return getInstrumentState();
         } else {
-                auto tmpId = currentPercussion();
-                auto res = geonkick_set_current_percussion(geonkickApi, id);
+                auto tmpId = currentInstrument();
+                auto res = geonkick_set_current_instrument(geonkickApi, id);
                 if (res != GEONKICK_OK) {
-                        geonkick_set_current_percussion(geonkickApi, tmpId);
-                        return getPercussionState();
+                        geonkick_set_current_instrument(geonkickApi, tmpId);
+                        return getInstrumentState();
                 }
-                auto state = getPercussionState();
-                geonkick_set_current_percussion(geonkickApi, tmpId);
+                auto state = getInstrumentState();
+                geonkick_set_current_instrument(geonkickApi, tmpId);
                 return state;
         }
 }
 
-std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
+std::shared_ptr<InstrumentState> GeonkickApi::getInstrumentState() const
 {
-        auto state = std::make_shared<PercussionState>();
-        state->setId(currentPercussion());
-        state->setName(getPercussionName(state->getId()));
+        auto state = std::make_shared<InstrumentState>();
+        state->setId(currentInstrument());
+        state->setName(getInstrumentName(state->getId()));
         state->setLimiterValue(limiterValue());
         state->tuneOutput(isAudioOutputTuned(state->getId()));
-        state->setPlayingKey(getPercussionPlayingKey(state->getId()));
-        state->setChannel(getPercussionChannel(state->getId()));
-        state->setMute(isPercussionMuted(state->getId()));
-        state->setSolo(isPercussionSolo(state->getId()));
+        state->setPlayingKey(getInstrumentPlayingKey(state->getId()));
+        state->setChannel(getInstrumentChannel(state->getId()));
+        state->setMute(isInstrumentMuted(state->getId()));
+        state->setSolo(isInstrumentSolo(state->getId()));
         for (int i = 0; i < 3; i++) {
                 state->setLayerEnabled(static_cast<Layer>(i), isLayerEnabled(static_cast<Layer>(i)));
                 state->setLayerAmplitude(static_cast<Layer>(i), getLayerAmplitude(static_cast<Layer>(i)));
@@ -376,7 +376,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
 
 void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
                                      OscillatorType osc,
-                                     const std::shared_ptr<PercussionState> &state) const
+                                     const std::shared_ptr<InstrumentState> &state) const
 {
         auto temp = currentLayer;
         currentLayer = layer;
@@ -418,7 +418,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
 
 void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
                                      OscillatorType oscillator,
-                                     const std::shared_ptr<PercussionState> &state)
+                                     const std::shared_ptr<InstrumentState> &state)
 {
         auto temp = currentLayer;
         currentLayer = layer;
@@ -471,10 +471,10 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
         kit->setAuthor(getKitAuthor());
         kit->setUrl(getKitUrl());
         size_t i = 0;
-        for (const auto &id : ordredPercussionIds()) {
-                auto state = getPercussionState(id);
+        for (const auto &id : ordredInstrumentIds()) {
+                auto state = getInstrumentState(id);
                 state->setId(i);
-                kit->addPercussion(state);
+                kit->addInstrument(state);
                 GEONKICK_LOG_DEBUG("PER: " << state->getName() << ": id = " << state->getId());
                 i++;
         }
@@ -490,23 +490,23 @@ bool GeonkickApi::setKitState(const std::string &data)
 
 bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
 {
-        auto n = getPercussionsNumber();
+        auto n = getInstrumentsNumber();
         for (decltype(n) i = 0; i < n; i++)
-                enablePercussion(i, false);
+                enableInstrument(i, false);
         setKitName(state->getName());
         setKitAuthor(state->getAuthor());
         setKitUrl(state->getUrl());
-        clearOrderedPercussionIds();
-        for (const auto &per: state->percussions()) {
+        clearOrderedInstrumentIds();
+        for (const auto &per: state->instruments()) {
                 GEONKICK_LOG_DEBUG("PER: " << per->getName() << ": id = " << per->getId());
-                setPercussionState(per);
-                addOrderedPercussionId(per->getId());
+                setInstrumentState(per);
+                addOrderedInstrumentId(per->getId());
         }
 
-        if (!percussionIdList.empty())
-                setCurrentPercussion(percussionIdList.front());
+        if (!instrumentIdList.empty())
+                setCurrentInstrument(instrumentIdList.front());
         else
-                 setCurrentPercussion(0);
+                 setCurrentInstrument(0);
         return true;
 }
 
@@ -1010,7 +1010,7 @@ void GeonkickApi::setLimiterLevelerValue(size_t index, double val)
 double GeonkickApi::getLimiterLevelerValue(size_t index) const
 {
         if (index == static_cast<size_t>(-1))
-                index = currentPercussion();
+                index = currentInstrument();
         if (index < limiterLevelers.size())
                 return limiterLevelers[index];
         return 0;
@@ -1021,11 +1021,11 @@ void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
 {
         GEONKICK_LOG_DEBUG("id: " << id);
         std::lock_guard<std::mutex> lock(apiMutex);
-        if (id < getPercussionsNumber()) {
+        if (id < getInstrumentsNumber()) {
                 GEONKICK_LOG_DEBUG("kickBuffers[id] = buffer" << id);
                 kickBuffers[id] = buffer;
         }
-        if (eventQueue && id == currentPercussion()) {
+        if (eventQueue && id == currentInstrument()) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([&](void){ kickUpdated(); });
                 eventQueue->postAction(std::move(act));
@@ -1046,7 +1046,7 @@ std::vector<gkick_real> GeonkickApi::getInstrumentBuffer(int id) const
 std::vector<gkick_real> GeonkickApi::getKickBuffer() const
 {
         std::lock_guard<std::mutex> lock(apiMutex);
-        return kickBuffers[currentPercussion()];
+        return kickBuffers[currentInstrument()];
 }
 
 int GeonkickApi::getSampleRate() const
@@ -1067,7 +1067,7 @@ void GeonkickApi::setKeyPressed(bool b, int note, int velocity)
 void GeonkickApi::playKick(int id)
 {
         if (id < 0)
-                id = currentPercussion();
+                id = currentInstrument();
         geonkick_play(geonkickApi, id);
 }
 
@@ -1310,79 +1310,79 @@ void GeonkickApi::setCurrentWorkingPath(const std::string &key,
         workingPaths[key] = path;
 }
 
-bool GeonkickApi::setPercussionLimiter(size_t id, double val)
+bool GeonkickApi::setInstrumentLimiter(size_t id, double val)
 {
-	return geonkick_percussion_set_limiter(geonkickApi, id, val) == GEONKICK_OK;
+	return geonkick_instrument_set_limiter(geonkickApi, id, val) == GEONKICK_OK;
 }
 
-double GeonkickApi::percussionLimiter(size_t id) const
+double GeonkickApi::instrumentLimiter(size_t id) const
 {
         gkick_real val = 0.0f;
-        geonkick_percussion_get_limiter(geonkickApi, id, &val);
+        geonkick_instrument_get_limiter(geonkickApi, id, &val);
         return val;
 }
 
-bool GeonkickApi::mutePercussion(size_t id, bool b)
+bool GeonkickApi::muteInstrument(size_t id, bool b)
 {
-        return geonkick_percussion_mute(geonkickApi, id, b) == GEONKICK_OK;
+        return geonkick_instrument_mute(geonkickApi, id, b) == GEONKICK_OK;
 }
 
-bool GeonkickApi::isPercussionMuted(size_t id) const
+bool GeonkickApi::isInstrumentMuted(size_t id) const
 {
         bool muted = false;
-        geonkick_percussion_is_muted(geonkickApi, id, &muted);
+        geonkick_instrument_is_muted(geonkickApi, id, &muted);
         return muted;
 }
 
-bool GeonkickApi::soloPercussion(size_t id, bool b)
+bool GeonkickApi::soloInstrument(size_t id, bool b)
 {
-        return geonkick_percussion_solo(geonkickApi, id, b) == GEONKICK_OK;
+        return geonkick_instrument_solo(geonkickApi, id, b) == GEONKICK_OK;
 }
 
-bool GeonkickApi::isPercussionSolo(size_t id) const
+bool GeonkickApi::isInstrumentSolo(size_t id) const
 {
         bool solo = false;
-        geonkick_percussion_is_solo(geonkickApi, id, &solo);
+        geonkick_instrument_is_solo(geonkickApi, id, &solo);
         return solo;
 }
 
-size_t GeonkickApi::getPercussionsNumber() const
+size_t GeonkickApi::getInstrumentsNumber() const
 {
-	return geonkick_percussion_number();
+	return geonkick_instrument_number();
 }
 
-int GeonkickApi::getUnusedPercussion() const
+int GeonkickApi::getUnusedInstrument() const
 {
         int index;
-        geonkick_unused_percussion(geonkickApi, &index);
+        geonkick_unused_instrument(geonkickApi, &index);
         return index;
 }
 
-bool GeonkickApi::enablePercussion(int index, bool enable)
+bool GeonkickApi::enableInstrument(int index, bool enable)
 {
-        auto res = geonkick_enable_percussion(geonkickApi, index, enable);
+        auto res = geonkick_enable_instrument(geonkickApi, index, enable);
         return res == GEONKICK_OK;
 }
 
-bool GeonkickApi::isPercussionEnabled(int index) const
+bool GeonkickApi::isInstrumentEnabled(int index) const
 {
         bool enabled = false;
-        geonkick_is_percussion_enabled(geonkickApi, index, &enabled);
+        geonkick_is_instrument_enabled(geonkickApi, index, &enabled);
         return enabled;
 }
 
-size_t GeonkickApi::enabledPercussions() const
+size_t GeonkickApi::enabledInstruments() const
 {
-        auto n = getPercussionsNumber();
+        auto n = getInstrumentsNumber();
         size_t enabled  = 0;
         for (decltype(n) i = 0; i < n; i++) {
-                if (isPercussionEnabled(i))
+                if (isInstrumentEnabled(i))
                         enabled++;
         }
         return enabled;
 }
 
-bool GeonkickApi::setPercussionPlayingKey(int index, int key)
+bool GeonkickApi::setInstrumentPlayingKey(int index, int key)
 {
         auto res = geonkick_set_playing_key(geonkickApi,
                                             index,
@@ -1391,7 +1391,7 @@ bool GeonkickApi::setPercussionPlayingKey(int index, int key)
         return res == GEONKICK_OK;
 }
 
-int GeonkickApi::getPercussionPlayingKey(int index) const
+int GeonkickApi::getInstrumentPlayingKey(int index) const
 {
         signed char key = -1;
         geonkick_get_playing_key(geonkickApi,
@@ -1400,24 +1400,24 @@ int GeonkickApi::getPercussionPlayingKey(int index) const
         return key;
 }
 
-int GeonkickApi::percussionsReferenceKey() const
+int GeonkickApi::instrumentsReferenceKey() const
 {
         // MIDI key A4
         return 69;
 }
 
-bool GeonkickApi::setPercussionChannel(int index, size_t channel)
+bool GeonkickApi::setInstrumentChannel(int index, size_t channel)
 {
-        auto res = geonkick_set_percussion_channel(geonkickApi,
+        auto res = geonkick_set_instrument_channel(geonkickApi,
                                                    index,
                                                    channel);
         return res == GEONKICK_OK;
 }
 
-int GeonkickApi::getPercussionChannel(int index) const
+int GeonkickApi::getInstrumentChannel(int index) const
 {
         size_t channel;
-        auto res = geonkick_get_percussion_channel(geonkickApi,
+        auto res = geonkick_get_instrument_channel(geonkickApi,
                                                    index,
                                                    &channel);
         if (res != GEONKICK_OK)
@@ -1425,21 +1425,21 @@ int GeonkickApi::getPercussionChannel(int index) const
         return channel;
 }
 
-bool GeonkickApi::setPercussionName(int index, const std::string &name)
+bool GeonkickApi::setInstrumentName(int index, const std::string &name)
 {
-        auto res = geonkick_set_percussion_name(geonkickApi,
+        auto res = geonkick_set_instrument_name(geonkickApi,
                                                 index,
                                                 name.c_str(),
                                                 name.size());
         return res == GEONKICK_OK;
 }
 
-std::string GeonkickApi::getPercussionName(int index) const
+std::string GeonkickApi::getInstrumentName(int index) const
 {
-        auto n = getPercussionsNumber();
+        auto n = getInstrumentsNumber();
         if (index > -1 && index < static_cast<decltype(index)>(n)) {
                 char name[30];
-                geonkick_get_percussion_name(geonkickApi,
+                geonkick_get_instrument_name(geonkickApi,
                                              index,
                                              name,
                                              sizeof(name));
@@ -1474,16 +1474,16 @@ bool GeonkickApi::isAudioOutputTuned(int id) const
         return tune;
 }
 
-bool GeonkickApi::setCurrentPercussion(int index)
+bool GeonkickApi::setCurrentInstrument(int index)
 {
-        auto res = geonkick_set_current_percussion(geonkickApi, index);
+        auto res = geonkick_set_current_instrument(geonkickApi, index);
         return res == GEONKICK_OK;
 }
 
-size_t GeonkickApi::currentPercussion() const
+size_t GeonkickApi::currentInstrument() const
 {
         size_t index = 0;
-        geonkick_get_current_percussion(geonkickApi, &index);
+        geonkick_get_current_instrument(geonkickApi, &index);
         return index;
 }
 
@@ -1625,21 +1625,21 @@ std::string GeonkickApi::getKitUrl() const
 
 void GeonkickApi::copyToClipboard()
 {
-        clipboardPercussion = getPercussionState();
+        clipboardInstrument = getInstrumentState();
 }
 
 void GeonkickApi::pasteFromClipboard()
 {
-        if (clipboardPercussion) {
-                auto state = std::make_shared<PercussionState>(*clipboardPercussion);
-                auto currId = currentPercussion();
+        if (clipboardInstrument) {
+                auto state = std::make_shared<InstrumentState>(*clipboardInstrument);
+                auto currId = currentInstrument();
                 state->setId(currId);
-                state->setName(getPercussionName(currId));
-                state->setPlayingKey(getPercussionPlayingKey(currId));
-                state->setChannel(getPercussionChannel(currId));
-                state->setMute(isPercussionMuted(currId));
-                state->setSolo(isPercussionSolo(currId));
-                setPercussionState(state);
+                state->setName(getInstrumentName(currId));
+                state->setPlayingKey(getInstrumentPlayingKey(currId));
+                state->setChannel(getInstrumentChannel(currId));
+                state->setMute(isInstrumentMuted(currId));
+                state->setSolo(isInstrumentSolo(currId));
+                setInstrumentState(state);
         }
 }
 
@@ -1673,13 +1673,13 @@ void GeonkickApi::notifyUpdateGui()
         }
 }
 
-void GeonkickApi::notifyPercussionUpdated(int id)
+void GeonkickApi::notifyInstrumentUpdated(int id)
 {
         if (eventQueue) {
                 auto act = std::make_unique<RkAction>();
                 act->setCallback([this, id](void){
-                                GEONKICK_LOG_DEBUG("update percussion :" << id);
-                                action percussionUpdated(id);
+                                GEONKICK_LOG_DEBUG("update instrument :" << id);
+                                action instrumentUpdated(id);
                         });
                 eventQueue->postAction(std::move(act));
         }
@@ -1696,43 +1696,43 @@ void GeonkickApi::notifyKitUpdated()
         }
 }
 
-std::vector<int> GeonkickApi::ordredPercussionIds() const
+std::vector<int> GeonkickApi::ordredInstrumentIds() const
 {
-        return percussionIdList;
+        return instrumentIdList;
 }
 
-void GeonkickApi::removeOrderedPercussionId(int id)
+void GeonkickApi::removeOrderedInstrumentId(int id)
 {
-        for (auto it = percussionIdList.begin(); it != percussionIdList.end(); ++it) {
+        for (auto it = instrumentIdList.begin(); it != instrumentIdList.end(); ++it) {
                 if (*it == id) {
-                        percussionIdList.erase(it);
+                        instrumentIdList.erase(it);
                         break;
                 }
         }
 }
 
-void GeonkickApi::addOrderedPercussionId(int id)
+void GeonkickApi::addOrderedInstrumentId(int id)
 {
-        removeOrderedPercussionId(id);
-        percussionIdList.push_back(id);
+        removeOrderedInstrumentId(id);
+        instrumentIdList.push_back(id);
 }
 
-void GeonkickApi::clearOrderedPercussionIds()
+void GeonkickApi::clearOrderedInstrumentIds()
 {
-        percussionIdList.clear();
+        instrumentIdList.clear();
 }
 
-bool GeonkickApi::moveOrdrepedPercussionId(int index, int n)
+bool GeonkickApi::moveOrdrepedInstrumentId(int index, int n)
 {
         if (index < 0)
                 return false;
 
-        auto size = percussionIdList.size();
-        for (decltype(percussionIdList.size()) i = 0; i < size; i++) {
-                if (percussionIdList[i] == index) {
+        auto size = instrumentIdList.size();
+        for (decltype(instrumentIdList.size()) i = 0; i < size; i++) {
+                if (instrumentIdList[i] == index) {
                         auto newId = static_cast<decltype(n)>(i) + n;
                         if (newId > -1 && static_cast<decltype(size)>(newId) < size) {
-                                std::swap(percussionIdList[i], percussionIdList[newId]);
+                                std::swap(instrumentIdList[i], instrumentIdList[newId]);
                                 return true;
                         }
                 }

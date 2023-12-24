@@ -27,7 +27,7 @@
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
 
-class PercussionState;
+class InstrumentState;
 
 class KitState {
  public:
@@ -43,15 +43,15 @@ class KitState {
         void setUrl(const std::string &url);
         std::string getUrl() const;
         std::string toJson() const;
-        void addPercussion(const std::shared_ptr<PercussionState> &percussion);
-        std::shared_ptr<PercussionState> getPercussion(size_t id);
-        std::vector<std::shared_ptr<PercussionState>>& percussions();
+        void addInstrument(const std::shared_ptr<InstrumentState> &instrument);
+        std::shared_ptr<InstrumentState> getInstrument(size_t id);
+        std::vector<std::shared_ptr<InstrumentState>>& instruments();
 
  protected:
-        void parsePercussions(const rapidjson::Value &percussionsArray);
+        void parseInstruments(const rapidjson::Value &instrumentsArray);
 
  private:
-        std::vector<std::shared_ptr<PercussionState>> percussionsList;
+        std::vector<std::shared_ptr<InstrumentState>> instrumentsList;
         int kitAppVersion;
         std::string kitName;
         std::string kitAuthor;

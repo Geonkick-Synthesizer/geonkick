@@ -110,9 +110,9 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/top_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
   ${GKICK_COMMON_DIR}/controls_widget.h
-  ${GKICK_COMMON_DIR}/percussion_model.h
+  ${GKICK_COMMON_DIR}/instrument_model.h
   ${GKICK_COMMON_DIR}/kit_model.h
-  ${GKICK_COMMON_DIR}/percussion_view.h
+  ${GKICK_COMMON_DIR}/instrument_view.h
   ${GKICK_COMMON_DIR}/kit_widget.h
   ${GKICK_COMMON_DIR}/envelope_draw_area.h
   ${GKICK_COMMON_DIR}/limiter.h
@@ -129,7 +129,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/knob.h
   ${GKICK_COMMON_DIR}/oscillator.h
   ${GKICK_COMMON_DIR}/geonkick_api.h
-  ${GKICK_COMMON_DIR}/percussion_state.h
+  ${GKICK_COMMON_DIR}/instrument_state.h
   ${GKICK_COMMON_DIR}/kit_state.h
   ${GKICK_COMMON_DIR}/oscillator_envelope.h
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
@@ -163,9 +163,9 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/top_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
   ${GKICK_COMMON_DIR}/controls_widget.cpp
-  ${GKICK_COMMON_DIR}/percussion_model.cpp
+  ${GKICK_COMMON_DIR}/instrument_model.cpp
   ${GKICK_COMMON_DIR}/kit_model.cpp
-  ${GKICK_COMMON_DIR}/percussion_view.cpp
+  ${GKICK_COMMON_DIR}/instrument_view.cpp
   ${GKICK_COMMON_DIR}/kit_widget.cpp
   ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
   ${GKICK_COMMON_DIR}/limiter.cpp
@@ -182,7 +182,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/knob.cpp
   ${GKICK_COMMON_DIR}/oscillator.cpp
   ${GKICK_COMMON_DIR}/geonkick_api.cpp
-  ${GKICK_COMMON_DIR}/percussion_state.cpp
+  ${GKICK_COMMON_DIR}/instrument_state.cpp
   ${GKICK_COMMON_DIR}/kit_state.cpp
   ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp

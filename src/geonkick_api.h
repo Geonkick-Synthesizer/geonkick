@@ -1,6 +1,6 @@
 /**
  * File name: geonkick_api.h
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor 
  *
@@ -29,7 +29,7 @@
 #include <RkRealPoint.h>
 
 class Oscillator;
-class PercussionState;
+class InstrumentState;
 class KitState;
 class RkEventQueue;
 class PresetFolder;
@@ -184,15 +184,15 @@ class GeonkickApi : public RkObject {
   double limiterValue() const;
   int getSampleRate() const;
   static std::unique_ptr<KitState> getDefaultKitState();
-  static std::shared_ptr<PercussionState> getDefaultPercussionState();
+  static std::shared_ptr<InstrumentState> getDefaultInstrumentState();
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
 
   // This function is called only from the audio thread.
   void process(float** out, size_t channel, size_t size);
 
-  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
-  std::shared_ptr<PercussionState> getPercussionState() const;
+  std::shared_ptr<InstrumentState> getInstrumentState(size_t id) const;
+  std::shared_ptr<InstrumentState> getInstrumentState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -214,8 +214,8 @@ class GeonkickApi : public RkObject {
   void setKickFilterQFactor(double factor);
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
-  void setPercussionState(const std::string &data);
-  void setPercussionState(const std::shared_ptr<PercussionState> &state);
+  void setInstrumentState(const std::string &data);
+  void setInstrumentState(const std::shared_ptr<InstrumentState> &state);
   std::unique_ptr<KitState> getKitState() const;
   bool setKitState(const std::string &data);
   bool setKitState(const std::unique_ptr<KitState> &state);
@@ -257,26 +257,26 @@ class GeonkickApi : public RkObject {
                              const std::filesystem::path &path);
   void tuneAudioOutput(int id, bool tune);
   bool isAudioOutputTuned(int id) const;
-  size_t getPercussionsNumber() const;
-  bool setCurrentPercussion(int index);
-  size_t currentPercussion() const;
-  int getUnusedPercussion() const;
-  bool enablePercussion(int index, bool enable = true);
-  bool isPercussionEnabled(int index) const;
-  size_t enabledPercussions() const;
-  bool setPercussionPlayingKey(int index, int key);
-  int getPercussionPlayingKey(int index) const;
-  int percussionsReferenceKey() const;
-  bool setPercussionChannel(int index, size_t channel);
-  int getPercussionChannel(int index) const;
-  bool setPercussionName(int index, const std::string &name);
-  bool setPercussionLimiter(size_t id, double val);
-  double percussionLimiter(size_t id) const;
-  bool mutePercussion(size_t id, bool b);
-  bool isPercussionMuted(size_t id) const;
-  bool soloPercussion(size_t id, bool b);
-  bool isPercussionSolo(size_t id) const;
-  std::string getPercussionName(int index) const;
+  size_t getInstrumentsNumber() const;
+  bool setCurrentInstrument(int index);
+  size_t currentInstrument() const;
+  int getUnusedInstrument() const;
+  bool enableInstrument(int index, bool enable = true);
+  bool isInstrumentEnabled(int index) const;
+  size_t enabledInstruments() const;
+  bool setInstrumentPlayingKey(int index, int key);
+  int getInstrumentPlayingKey(int index) const;
+  int instrumentsReferenceKey() const;
+  bool setInstrumentChannel(int index, size_t channel);
+  int getInstrumentChannel(int index) const;
+  bool setInstrumentName(int index, const std::string &name);
+  bool setInstrumentLimiter(size_t id, double val);
+  double instrumentLimiter(size_t id) const;
+  bool muteInstrument(size_t id, bool b);
+  bool isInstrumentMuted(size_t id) const;
+  bool soloInstrument(size_t id, bool b);
+  bool isInstrumentSolo(size_t id) const;
+  std::string getInstrumentName(int index) const;
   void copyToClipboard();
   void pasteFromClipboard();
   void setScaleFactor(double factor);
@@ -310,8 +310,8 @@ class GeonkickApi : public RkObject {
               kitUpdated(),
               RK_ARG_TYPE(),
               RK_ARG_VAL());
-  RK_DECL_ACT(percussionUpdated,
-              percussionUpdated(int id),
+  RK_DECL_ACT(instrumentUpdated,
+              instrumentUpdated(int id),
               RK_ARG_TYPE(int),
               RK_ARG_VAL(id));
 
@@ -320,13 +320,13 @@ class GeonkickApi : public RkObject {
   void notifyUpdateGraph();
   void notifyUpdateParameters();
   void notifyUpdateGui();
-  void notifyPercussionUpdated(int id);
+  void notifyInstrumentUpdated(int id);
   void notifyKitUpdated();
-  std::vector<int> ordredPercussionIds() const;
-  void removeOrderedPercussionId(int id);
-  void addOrderedPercussionId(int id);
-  void clearOrderedPercussionIds();
-  bool moveOrdrepedPercussionId(int index, int n);
+  std::vector<int> ordredInstrumentIds() const;
+  void removeOrderedInstrumentId(int id);
+  void addOrderedInstrumentId(int id);
+  void clearOrderedInstrumentIds();
+  bool moveOrdrepedInstrumentId(int index, int n);
   PresetFolder* getPresetFolder(size_t index) const;
   size_t numberOfPresetFolders() const;
   UiSettings* getUiSettings() const;
@@ -353,10 +353,10 @@ protected:
   void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
   void setOscillatorState(Layer layer,
                           OscillatorType oscillator,
-                          const std::shared_ptr<PercussionState> &state);
+                          const std::shared_ptr<InstrumentState> &state);
   void getOscillatorState(Layer layer,
                           OscillatorType osc,
-                          const std::shared_ptr<PercussionState> &state) const;
+                          const std::shared_ptr<InstrumentState> &state) const;
   void setLimiterLevelerValue(size_t index, double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,
@@ -376,7 +376,7 @@ private:
   std::string kitName;
   std::string kitAuthor;
   std::string kitUrl;
-  std::shared_ptr<PercussionState> clipboardPercussion;
+  std::shared_ptr<InstrumentState> clipboardInstrument;
 
   /**
    * Current working paths for entire application.
@@ -385,7 +385,7 @@ private:
    */
   std::unordered_map<std::string, std::filesystem::path> workingPaths;
   std::unordered_map<std::string, std::string> apiSettings;
-  std::vector<int> percussionIdList;
+  std::vector<int> instrumentIdList;
   std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
   std::unique_ptr<UiSettings> uiSettings;
   int sampleRate;

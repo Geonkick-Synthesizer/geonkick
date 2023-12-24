@@ -1,6 +1,6 @@
 /**
  * File name: EnvelopePointContextWidget.h
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2023 Iurie Nistor
  *

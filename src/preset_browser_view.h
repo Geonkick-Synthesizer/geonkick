@@ -1,6 +1,6 @@
 /**
  * File name: preset_browser_view.h
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2017 Iurie Nistor 
  *

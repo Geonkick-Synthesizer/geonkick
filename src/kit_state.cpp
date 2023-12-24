@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "percussion_state.h"
+#include "instrument_state.h"
 #include "kit_state.h"
 
 
@@ -118,9 +118,9 @@ std::string KitState::getUrl() const
         return kitUrl;
 }
 
-std::vector<std::shared_ptr<PercussionState>>& KitState::percussions()
+std::vector<std::shared_ptr<InstrumentState>>& KitState::instruments()
 {
-        return percussionsList;
+        return instrumentsList;
 }
 
 void KitState::fromJson(const std::string &jsonData)
@@ -143,19 +143,19 @@ void KitState::fromJsonObject(const rapidjson::Value &obj)
                         setAuthor(m.value.GetString());
                 if (m.name == "url" && m.value.IsString())
                         setUrl(m.value.GetString());
-                if (m.name == "percussions" && m.value.IsArray())
-                        parsePercussions(m.value);
+                if (m.name == "instruments" && m.value.IsArray())
+                        parseInstruments(m.value);
         }
 }
 
-void KitState::parsePercussions(const rapidjson::Value &percussionsArray)
+void KitState::parseInstruments(const rapidjson::Value &instrumentsArray)
 {
         size_t i = 0;
-        for (const auto &per: percussionsArray.GetArray()) {
-                auto state = std::make_shared<PercussionState>();
+        for (const auto &per: instrumentsArray.GetArray()) {
+                auto state = std::make_shared<InstrumentState>();
                 state->setId(i++);
                 state->loadObject(per);
-                addPercussion(state);
+                addInstrument(state);
         }
 }
 
@@ -167,11 +167,11 @@ std::string KitState::toJson() const
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
         jsonStream << "\"author\": \"" << getAuthor() << "\"," << std::endl;
         jsonStream << "\"url\": \"" << getUrl() << "\"," << std::endl;
-        jsonStream <<  "\"percussions\": [" << std::endl;
+        jsonStream <<  "\"instruments\": [" << std::endl;
 
         size_t i = 0;
-        for (const auto &per: percussionsList) {
-                if (i < percussionsList.size() - 1)
+        for (const auto &per: instrumentsList) {
+                if (i < instrumentsList.size() - 1)
                         jsonStream << per->toJson() << "," << std::endl;
                 else
                         jsonStream << per->toJson();
@@ -182,14 +182,14 @@ std::string KitState::toJson() const
         return jsonStream.str();
 }
 
-void KitState::addPercussion(const std::shared_ptr<PercussionState> &percussion)
+void KitState::addInstrument(const std::shared_ptr<InstrumentState> &instrument)
 {
-        percussionsList.push_back(percussion);
+        instrumentsList.push_back(instrument);
 }
 
-std::shared_ptr<PercussionState> KitState::getPercussion(size_t id)
+std::shared_ptr<InstrumentState> KitState::getInstrument(size_t id)
 {
-        if (id < percussionsList.size())
-                return percussionsList[id];
+        if (id < instrumentsList.size())
+                return instrumentsList[id];
         return nullptr;
 }

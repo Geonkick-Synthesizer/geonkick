@@ -1,6 +1,6 @@
 /**
- * File name: percussion_model.h
- * Project: Geonkick (A percussion synthesizer)
+ * File name: instrument_model.h
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
  *
@@ -30,18 +30,18 @@ class GeonkickApi;
 class GeonkickState;
 class KitModel;
 
-class PercussionModel : public RkObject {
+class InstrumentModel : public RkObject {
  public:
-        using PercussionIndex = int;
+        using InstrumentIndex = int;
         using KeyIndex = GeonkickTypes::MidiKey;
-        explicit PercussionModel(KitModel* parent, int id = -1);
-        virtual ~PercussionModel() = default;
+        explicit InstrumentModel(KitModel* parent, int id = -1);
+        virtual ~InstrumentModel() = default;
         void setId(int id);
-        PercussionIndex index() const;
+        InstrumentIndex index() const;
         void select();
         bool isSelected() const;
-        void increasePercussionChannel();
-        void decreasePercussionChannel();
+        void increaseInstrumentChannel();
+        void decreaseInstrumentChannel();
         size_t keysNumber() const;
         void setKey(KeyIndex keyIndex);
         KeyIndex key() const;
@@ -103,11 +103,11 @@ class PercussionModel : public RkObject {
                     RK_ARG_VAL(b));
 
  protected:
-        void onPercussionSelected();
+        void onInstrumentSelected();
 
  private:
         KitModel* kitModel;
-        int percussionId;
+        int instrumentId;
 };
 
 #endif // PERCUSSION_MODEL_H

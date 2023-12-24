@@ -1,6 +1,6 @@
 /**
  * File name: ExportToSfz.cpp
- * Project: Geonkick (A percussion synthesizer)
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 
  *
@@ -24,7 +24,7 @@
 #include "ExportToSfz.h"
 #include "ExportSoundData.h"
 #include "kit_model.h"
-#include "percussion_model.h"
+#include "instrument_model.h"
 
 ExportToSfz::ExportToSfz(KitModel *model, const std::filesystem::path &file)
         : ExportAbstract(model, file, ExportFormat::Sfz)
@@ -41,7 +41,7 @@ bool ExportToSfz::doExport()
         sfzStream << "// Author: " << kitModel->author() << std::endl;
         sfzStream << "// License: " << kitModel->license() << std::endl;
         sfzStream << "// Instruments:" << std::endl;
-        for (const auto &per : kitModel->percussionModels())
+        for (const auto &per : kitModel->instrumentModels())
                 sfzStream << "//    * " << per->name() << std::endl;
         sfzStream << std::endl;
         sfzStream << "<control>" << std::endl;
@@ -67,7 +67,7 @@ bool ExportToSfz::doExport()
                 return false;
         }
 
-        for (const auto &instrument : kitModel->percussionModels()) {
+        for (const auto &instrument : kitModel->instrumentModels()) {
                 sfzStream << "<region>" << std::endl;
                 std::filesystem::path wavFile = dataPath()
                         / std::filesystem::path(cleanName(instrument->name()) + ".wav");

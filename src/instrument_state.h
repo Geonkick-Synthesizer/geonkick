@@ -1,5 +1,5 @@
 /**
- * File name: percussion_state.h
+ * File name: instrument_state.h
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor 
@@ -32,10 +32,10 @@
 
 #include <unordered_map>
 
-class PercussionState
+class InstrumentState
 {
  public:
-        PercussionState();
+        InstrumentState();
         bool loadFile(const std::string &file);
         bool loadData(const std::string &data);
         void loadObject(const rapidjson::Value &obj);
@@ -224,8 +224,8 @@ private:
         signed char playingKey;
         size_t outputChannel;
         bool kickEnabled;
-        bool percussionMuted;
-        bool percussionSolo;
+        bool instrumentMuted;
+        bool instrumentSolo;
 
         double limiterValue;
         double kickLength;
