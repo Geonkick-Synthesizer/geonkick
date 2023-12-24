@@ -93,6 +93,15 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                         if (output->enabled && !output->muted
                             && mixer->solo == output->solo
                             && output->channel == channel) {
+                                if (output->play) {
+                                        struct gkick_note_info key;
+                                        key.channel     = 1;
+                                        key.note_number = 69;
+                                        key.velocity    = 127;
+                                        key.state       = GKICK_KEY_STATE_PRESSED;
+                                        output->play = false;
+                                        gkick_audio_output_key_pressed(output, &key);
+                                }
                                 ring_buffer_get_data(output->ring_buffer,
                                                      out[left_index] + offset,
                                                      size);

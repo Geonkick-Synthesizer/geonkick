@@ -135,6 +135,7 @@ gkick_audio_play(struct gkick_audio *audio,
                 return GEONKICK_ERROR;
         }
 
+        gkick_log_info("play %d", id);
         if (id < GEONKICK_MAX_INSTRUMENTS && audio->audio_outputs[id]->enabled) {
                 gkick_audio_output_play(audio->audio_outputs[id]);
         } else if (id == GEONKICK_MAX_INSTRUMENTS) {

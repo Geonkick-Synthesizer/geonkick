@@ -104,7 +104,6 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
 {
         if (key->state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->key = *key;
-                audio_output->is_play = true;
                 gkick_audio_output_swap_buffers(audio_output);
                 gkick_audio_add_playing_buffer_to_ring(audio_output);
         } else {
