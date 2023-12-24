@@ -129,6 +129,7 @@ gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output)
                 //} else {
                 val = gkick_buffer_get_next(audio_output->playing_buffer);
                 //}
+                val *= (gkick_real)audio_output->key.velocity / 127;
                 ring_buffer_add_value(audio_output->ring_buffer, i++, val);
         }
 }
