@@ -64,6 +64,10 @@ gkick_mixer_set_leveler(struct gkick_mixer *mixer,
                         size_t index,
                         gkick_real val);
 
+void gkick_mixer_apply_limiter(float *out_left,
+                               float *out_right,
+                               size_t size,
+                               float limiter);
 
 void
 gkick_mixer_free(struct gkick_mixer **mixer);

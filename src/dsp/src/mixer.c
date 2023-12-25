@@ -109,9 +109,12 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                                                      out[right_index] + offset,
                                                      size);
                                 ring_buffer_next(output->ring_buffer, size);
-                                gkick_mixer_set_leveler(mixer,
-                                                        i,
-                                                        out[right_index][offset]);
+
+                                gkick_mixer_apply_limiter(out[left_index] + offset,
+                                                          out[right_index] + offset,
+                                                          size,
+                                                          (gkick_real)output->limiter / 1000000);
+                                gkick_mixer_set_leveler(mixer, i, out[right_index][offset]);
                         }
                 }
         }
@@ -124,7 +127,23 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                              out[1] + offset,
                              size);
         ring_buffer_next(output->ring_buffer, size);
+        gkick_mixer_apply_limiter(out[0] + offset,
+                                  out[1] + offset,
+                                  size,
+                                  (gkick_real)output->limiter / 1000000);
+
         return GEONKICK_OK;
+}
+
+void gkick_mixer_apply_limiter(float *out_left,
+                               float *out_right,
+                               size_t size,
+                               float limiter)
+{
+        for (size_t i = 0; i < size; i++) {
+                out_left[i]  *= limiter;
+                out_right[i] *= limiter;
+        }
 }
 
 void
