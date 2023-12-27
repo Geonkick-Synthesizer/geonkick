@@ -55,7 +55,7 @@ void
 ring_buffer_free(struct ring_buffer **ring);
 
 void
-ring_buffer_clear(struct ring_buffer *ring);
+ring_buffer_reset(struct ring_buffer *ring);
 
 void
 ring_buffer_add_data(struct ring_buffer *ring,

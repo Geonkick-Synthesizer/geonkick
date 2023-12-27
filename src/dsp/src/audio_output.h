@@ -123,12 +123,12 @@ gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output);
 enum geonkick_error
 gkick_audio_output_play(struct gkick_audio_output *audio_output);
 
+/* This funciton is called from the audio thread. */
+void
+gkick_audio_set_play(struct gkick_audio_output *audio_output);
+
 gkick_real
 gkick_audio_output_tune_factor(int note_number);
-
-enum geonkick_error
-gkick_audio_output_get_frame(struct gkick_audio_output *audio_output,
-                             gkick_real *val);
 
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output);
 

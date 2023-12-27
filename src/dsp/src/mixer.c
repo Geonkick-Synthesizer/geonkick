@@ -90,18 +90,15 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                 size_t right_index = left_index + 1;
                 for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                         struct gkick_audio_output *output = mixer->audio_outputs[i];
-                        if (output->enabled && !output->muted
-                            && mixer->solo == output->solo
-                            && output->channel == channel) {
-                                if (output->play) {
-                                        struct gkick_note_info key;
-                                        key.channel     = 1;
-                                        key.note_number = 69;
-                                        key.velocity    = 127;
-                                        key.state       = GKICK_KEY_STATE_PRESSED;
-                                        output->play = false;
-                                        gkick_audio_output_key_pressed(output, &key);
-                                }
+                        if (output->channel != channel)
+                                continue;
+
+                        if (!output->enabled || output->muted || mixer->solo != output->solo) {
+                                ring_buffer_reset(output->ring_buffer);
+                                output->play = false;
+                        } else {
+                                if (output->play)
+                                        gkick_audio_set_play(output);
                                 ring_buffer_get_data(output->ring_buffer,
                                                      out[left_index] + offset,
                                                      size);
@@ -120,6 +117,9 @@ gkick_mixer_process(struct gkick_mixer *mixer,
         }
 
         struct gkick_audio_output *output = mixer->audio_outputs[GEONKICK_MAX_INSTRUMENTS];
+        if (output->play)
+                gkick_audio_set_play(output);
+
         ring_buffer_get_data(output->ring_buffer,
                              out[0] + offset,
                              size);
