@@ -1,3 +1,9 @@
+## [3.3.0]
+
+### Improvements
+
+- Mix the playing sounds instead cutting it on note off
+
 ## [3.2.0]
 
 ### Fixes
