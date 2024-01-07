@@ -58,7 +58,7 @@ jobs:
           path: D:\a\geonkick\build\plugins
           
           
-  create-msi:
+  create-ssi:
     needs: build
     runs-on: windows-latest
     defaults:
@@ -75,16 +75,17 @@ jobs:
           name: geonkick-build
           path: D:\a\geonkick\build\plugins
 
-     - name: Download and Install Inno Setup
-       run: |
+      - name: Download and Install Inno Setup
+        run: |
            Invoke-WebRequest -Uri 'https://jrsoftware.org/download.php/is.exe' -OutFile 'C:\is.exe'
            Start-Process -Wait -FilePath 'C:\is.exe' -ArgumentList '/VERYSILENT', '/NORESTART'
            Remove-Item -Path 'C:\is.exe'
 
-     - name: Compile Inno Setup Script
-       run: & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
+      - name: Compile Inno Setup Script
+        run: |
+             & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
           
-     - name: Upload Installer
+      - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
