@@ -83,10 +83,10 @@ jobs:
 
       - name: Compile Inno Setup Script
         run: |
-             & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
+             & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss" /O"D:\a\geonkick\build\plugins"
           
       - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
-          path: GeonkickInstaller.msi
+          path: GeonkickInstaller.exe
