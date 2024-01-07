@@ -12,7 +12,7 @@ AppUpdatesURL=https://geonkick.org
 DefaultDirName={pf64}\Geonkick
 DefaultGroupName=Geonkick
 AllowNoIcons=yes
-LicenseFile={src}\geonkick\LICENSE
+LicenseFile=D:\a\geonkick\geonkick\LICENSE
 PrivilegesRequired=lowest
 Compression=lzma
 SolidCompression=yes
@@ -27,8 +27,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Files]
-Source: "{src}\plugins\geonkick.lv2\*"; DestDir: "{code:GetLV2Path}\geonkick.lv2"; Flags: ignoreversion recursesubdirs createallsubdirs;
-Source: "{src}\plugins\Geonkick.vst3\*"; DestDir: "{code:GetVST3Path}\Geonkick.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs;
+Source: "D:\a\geonkick\build\plugins\plugins\geonkick.lv2\*"; DestDir: "{code:GetLV2Path}\geonkick.lv2"; Flags: ignoreversion recursesubdirs createallsubdirs;
+Source: "D:\a\geonkick\build\plugins\Geonkick.vst3\*"; DestDir: "{code:GetVST3Path}\Geonkick.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs;
 
 
 [Code]

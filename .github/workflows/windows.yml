@@ -75,20 +75,16 @@ jobs:
           name: geonkick-build
           path: D:\a\geonkick\build\plugins
 
-      - name: Download and Install WiX Toolset
-        run: |
-          $url = 'https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311.exe'
-          $output = 'C:\wix311.exe'
-          Invoke-WebRequest -Uri $url -OutFile $output
-          Start-Process -Wait -FilePath $output -ArgumentList '/quiet', '/norestart'
-          Remove-Item -Path $output
+     - name: Download and Install Inno Setup
+       run: |
+           Invoke-WebRequest -Uri 'https://jrsoftware.org/download.php/is.exe' -OutFile 'C:\is.exe'
+           Start-Process -Wait -FilePath 'C:\is.exe' -ArgumentList '/VERYSILENT', '/NORESTART'
+           Remove-Item -Path 'C:\is.exe'
 
-      - name: Create MSI Installer
-        run: |
-          & "C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
-          & "C:\Program Files (x86)\WiX Toolset v3.11\bin\light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
+     - name: Compile Inno Setup Script
+       run: & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
           
-      - name: Upload Installer
+     - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
