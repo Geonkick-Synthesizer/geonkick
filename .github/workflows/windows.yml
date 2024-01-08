@@ -71,14 +71,13 @@ jobs:
       - name: Determine Version Info
         id: version
         run: |
-          if ($env:GITHUB_REF -like 'refs/tags/*') {
-            $tag = $env:GITHUB_REF -replace 'refs/tags/', ''
-            $version = "tag-$tag"
-          } else {
-            $version = "commit-$env:GITHUB_SHA.Substring(0, 7)"
-          }
-          $env:VERSION_INFO = $version
-          echo "VERSION_INFO = $env:VERSION_INFO"
+              if ($env:GITHUB_REF -like 'refs/tags/*') {
+                $tag = $env:GITHUB_REF -replace 'refs/tags/', ''
+                $env:VERSION_INFO = "tag-$tag"
+              } else {
+                $env:VERSION_INFO = "commit-" + $env:GITHUB_SHA.Substring(0, 7)
+              }
+              echo "VERSION_INFO = $env:VERSION_INFO"
         shell: pwsh
   
       - name: Download Build Artifacts
