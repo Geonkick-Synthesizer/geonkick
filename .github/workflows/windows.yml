@@ -71,13 +71,13 @@ jobs:
       - name: Determine Version Info
         id: version
         run: |
-              if ($env:GITHUB_REF -like 'refs/tags/*') {
-                $tag = $env:GITHUB_REF -replace 'refs/tags/', ''
-                $env:VERSION_INFO = "tag-$tag"
-              } else {
-                $env:VERSION_INFO = "commit-" + $env:GITHUB_SHA.Substring(0, 7)
-              }
-              echo "VERSION_INFO = $env:VERSION_INFO"
+            if ($env:GITHUB_REF -like 'refs/tags/*') {
+              $tag = $env:GITHUB_REF -replace 'refs/tags/', ''
+              echo "VERSION_INFO=tag-$tag" >> $GITHUB_ENV
+            } else {
+              echo "VERSION_INFO=commit-" + $env:GITHUB_SHA.Substring(0, 7) >> $GITHUB_ENV
+            }
+            echo "VERSION_INFO = $env:VERSION_INFO"
         shell: pwsh
   
       - name: Download Build Artifacts
@@ -95,11 +95,11 @@ jobs:
       - name: Compile Inno Setup Script
         run: |
            & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
-           & "cp" "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-${{ env:VERSION_INFO }}-x86_64.exe"
+           & "cp" "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-${env:VERSION_INFO}-x86_64.exe"
            & "ls" "D:\a\geonkick\build\plugins"
   
       - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
-          path: GeonkickInstaller-${ env:VERSION_INFO }-x86_64.exe
+          path: GeonkickInstaller-${env:VERSION_INFO}-x86_64.exe
