@@ -94,7 +94,7 @@ jobs:
   
       - name: Compile Inno Setup Script
         run: |
-           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss" "/O=D:\a\geonkick\build\plugins" "/DVersionInfo=$env:VERSION_INFO" "/DArchInfo=x86_64"
+           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss" "/O=D:\a\geonkick\build\plugins" "/DVersionInfo=$env:VERSION_INFO" "/DArchInfo=x64"
            Rename-Item "D:\a\geonkick\build\plugins\mysetup.exe" ("D:\a\geonkick\build\plugins\GeonkickInstaller-$env:VERSION_INFO-x86_64.exe")
   
       - name: Upload Installer
