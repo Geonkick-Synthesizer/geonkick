@@ -102,4 +102,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
-          path: GeonkickInstaller-${{ env:VERSION_INFO }}-x86_64.exe
+          path: GeonkickInstaller-${ env:VERSION_INFO }-x86_64.exe
