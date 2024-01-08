@@ -30,7 +30,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 [Files]
 Source: "D:\a\geonkick\build\plugins\geonkick.lv2\*"; DestDir: "{code:GetLV2Path}\geonkick.lv2"; Flags: ignoreversion recursesubdirs createallsubdirs;
 Source: "D:\a\geonkick\build\plugins\Geonkick.vst3\*"; DestDir: "{code:GetVST3Path}\Geonkick.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs;
-
+Source: "D:\a\geonkick\build\plugins\presets\*"; DestDir: "{commonappdata}\geonkick\presets"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Code]
 var
