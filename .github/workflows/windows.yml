@@ -78,6 +78,7 @@ jobs:
             $version = "commit-$env:GITHUB_SHA.Substring(0, 7)"
           }
           $env:VERSION_INFO = $version
+          echo "VERSION_INFO = $env:VERSION_INFO"
         shell: pwsh
   
       - name: Download Build Artifacts
