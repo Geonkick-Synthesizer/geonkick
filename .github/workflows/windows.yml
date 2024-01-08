@@ -57,36 +57,48 @@ jobs:
           name: geonkick-build
           path: D:\a\geonkick\build\plugins
           
-          
   create-ssi:
     needs: build
     runs-on: windows-latest
     defaults:
       run:
         shell: pwsh {0}
-
+  
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
+  
+      - name: Determine Version Info
+        id: version
+        run: |
+          if ($env:GITHUB_REF -like 'refs/tags/*') {
+            $tag = $env:GITHUB_REF -replace 'refs/tags/', ''
+            $version = "tag-$tag"
+          } else {
+            $version = "commit-$env:GITHUB_SHA.Substring(0, 7)"
+          }
+          $env:VERSION_INFO = $version
+        shell: pwsh
+  
       - name: Download Build Artifacts
         uses: actions/download-artifact@v2
         with:
           name: geonkick-build
           path: D:\a\geonkick\build\plugins
-
+  
       - name: Download and Install Inno Setup
         run: |
            Invoke-WebRequest -Uri 'https://jrsoftware.org/download.php/is.exe' -OutFile 'C:\is.exe'
            Start-Process -Wait -FilePath 'C:\is.exe' -ArgumentList '/VERYSILENT', '/NORESTART'
            Remove-Item -Path 'C:\is.exe'
-
+  
       - name: Compile Inno Setup Script
         run: |
-             & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss" /O"D:\a\geonkick\build\plugins"
-          
+           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss" "/O=D:\a\geonkick\build\plugins" "/D=VersionInfo=$env:VERSION_INFO" "/D=ArchInfo=x86_64"
+           Rename-Item "D:\a\geonkick\build\plugins\mysetup.exe" ("D:\a\geonkick\build\plugins\GeonkickInstaller-$env:VERSION_INFO-x86_64.exe")
+  
       - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
-          path: GeonkickInstaller.exe
+          path: GeonkickInstaller-*.exe
