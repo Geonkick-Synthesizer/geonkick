@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppId={{74939DD5-910E-4FEA-AF81-487E30ED451B}
+AppId=74939DD5-910E-4FEA-AF81-487E30ED451B
 AppName=Geonkick
 AppVersion=3.0.0
 ArchitecturesAllowed=x64
@@ -14,7 +14,7 @@ DefaultDirName={pf64}\Geonkick
 DefaultGroupName=Geonkick
 AllowNoIcons=yes
 LicenseFile=D:\a\geonkick\geonkick\LICENSE
-PrivilegesRequired=lowest
+PrivilegesRequired=admin
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -58,7 +58,7 @@ end;
 
 procedure FormatCheckBoxClick(Sender: TObject);
 begin
-  if PluginFormatCheckListBox.Checked[0] or PluginFormatCheckListBox.Checked[1] then
+  if PluginFormatCheckListBox.Checked[0] then
   begin
     LV2PathEdit.Enabled := True;
     LV2BrowseButton.Enabled := True;
@@ -69,7 +69,7 @@ begin
     LV2BrowseButton.Enabled := False;
   end;
 
-  if PluginFormatCheckListBox.Checked[2] then
+  if PluginFormatCheckListBox.Checked[1] then
   begin
     VST3PathEdit.Enabled := True;
     VST3BrowseButton.Enabled := True;
@@ -80,7 +80,6 @@ begin
     VST3BrowseButton.Enabled := False;
   end;
 end;
-
 
 procedure InitializeWizard;
 begin
