@@ -95,7 +95,7 @@ jobs:
       - name: Compile Inno Setup Script
         run: |
            & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
-           Rename-Item "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" ("D:\a\geonkick\build\plugins\GeonkickInstaller-$env:VERSION_INFO-x86_64.exe")
+           Copy-Item -Path "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" -Destination ("D:\a\geonkick\build\plugins\GeonkickInstaller-$env:VERSION_INFO-x86_64.exe") -Force
   
       - name: Upload Installer
         uses: actions/upload-artifact@v2
