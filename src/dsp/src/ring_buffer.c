@@ -68,15 +68,6 @@ ring_buffer_reset(struct ring_buffer *ring)
 }
 
 void
-ring_buffer_add_data(struct ring_buffer *ring,
-                     const gkick_real *data,
-                     size_t data_size)
-{
-        for (size_t i = 0; i < data_size; i++)
-                ring->buff[(ring->index + i) % ring->size] += data[i];
-}
-
-void
 ring_buffer_add_value(struct ring_buffer *ring,
                            size_t index,
                            gkick_real val)
@@ -89,8 +80,7 @@ ring_buffer_get_data(struct ring_buffer *ring,
                      gkick_real *data,
                      size_t data_size)
 {
-        size_t size = min(ring->size, data_size);
-        for (size_t i = 0; i < size; i++)
+        for (size_t i = 0; i < data_size; i++)
                 data[i] += ring->buff[(ring->index + i) % ring->size];
 }
 
@@ -98,8 +88,9 @@ void
 ring_buffer_next(struct ring_buffer *ring,
                  size_t n)
 {
-        n = min(ring->size, n);
-        memset(ring->buff + ring->index, 0, n * sizeof(gkick_real));
+
+        for (size_t i = 0; i < n; i++)
+                ring->buff[(ring->index + i) % ring->size] = 0.0f;
         ring->index = (ring->index + n) % ring->size;
 }
 

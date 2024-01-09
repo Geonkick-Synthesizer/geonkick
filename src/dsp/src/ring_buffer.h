@@ -58,11 +58,6 @@ void
 ring_buffer_reset(struct ring_buffer *ring);
 
 void
-ring_buffer_add_data(struct ring_buffer *ring,
-                     const gkick_real *data,
-                     size_t data_size);
-
-void
 ring_buffer_add_value(struct ring_buffer *ring,
                       size_t index,
                       gkick_real val);
