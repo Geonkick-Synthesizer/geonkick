@@ -67,6 +67,9 @@ ring_buffer_get_data(struct ring_buffer *ring,
                      gkick_real *data,
                      size_t data_size);
 
+gkick_real
+ring_buffer_get_cur_data(struct ring_buffer *ring);
+
 void
 ring_buffer_next(struct ring_buffer *ring,
                  size_t n);

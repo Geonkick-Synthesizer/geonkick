@@ -84,6 +84,14 @@ ring_buffer_get_data(struct ring_buffer *ring,
                 data[i] += ring->buff[(ring->index + i) % ring->size];
 }
 
+gkick_real
+ring_buffer_get_cur_data(struct ring_buffer *ring)
+{
+        if (ring->size > 0 && ring->index < ring->size)
+                return ring->buff[ring->index];
+        return 0.0f;
+}
+
 void
 ring_buffer_next(struct ring_buffer *ring,
                  size_t n)
