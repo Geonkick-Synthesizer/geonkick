@@ -4,7 +4,7 @@
 [Setup]
 AppId=74939DD5-910E-4FEA-AF81-487E30ED451B
 AppName=Geonkick
-AppVersion=3.0.0
+AppVersion=3.3.0
 ArchitecturesAllowed=x64
 AppPublisher=Iurie Nistor
 AppPublisherURL=https://geonkick.org
@@ -28,9 +28,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Files]
-Source: "D:\a\geonkick\build\plugins\geonkick.lv2\*"; DestDir: "{code:GetLV2Path}\geonkick.lv2"; Flags: ignoreversion recursesubdirs createallsubdirs;
-Source: "D:\a\geonkick\build\plugins\Geonkick.vst3\*"; DestDir: "{code:GetVST3Path}\Geonkick.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs;
-Source: "D:\a\geonkick\build\plugins\presets\*"; DestDir: "{commonappdata}\geonkick\presets"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\a\geonkick\build\plugins\geonkick.lv2\*"; DestDir: "{code:GetLV2Path}\geonkick.lv2"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallLV2
+Source: "D:\a\geonkick\build\plugins\Geonkick.vst3\*"; DestDir: "{code:GetVST3Path}\Geonkick.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallVST3
+Source: "D:\a\geonkick\build\plugins\presets\*"; DestDir: "{commonappdata}\geonkick\presets"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallPresets
 
 [Code]
 var
@@ -42,6 +42,34 @@ var
   VST3BrowseButton: TNewButton;
   LV2Path: String;
   VST3Path: String;
+  InstallLV2: Boolean;
+  InstallVST3: Boolean;
+  InstallPresets: Boolean;
+
+function GetLV2Path(Param: String): String;
+begin
+  Result := LV2PathEdit.Text;
+end;
+
+function GetVST3Path(Param: String): String;
+begin
+  Result := VST3PathEdit.Text;
+end;
+
+function ShouldInstallLV2: Boolean;
+begin
+  Result := InstallLV2;
+end;
+
+function ShouldInstallVST3: Boolean;
+begin
+  Result := InstallVST3;
+end;
+
+function ShouldInstallPresets: Boolean;
+begin
+  Result := InstallPresets;
+end;
 
 procedure BrowseButtonOnClickPath(Sender: TObject);
 var
@@ -62,29 +90,51 @@ begin
   begin
     LV2PathEdit.Enabled := True;
     LV2BrowseButton.Enabled := True;
+    InstallLV2 := True;
   end
   else
   begin
     LV2PathEdit.Enabled := False;
     LV2BrowseButton.Enabled := False;
+    InstallLV2 := False;
   end;
 
   if PluginFormatCheckListBox.Checked[1] then
   begin
     VST3PathEdit.Enabled := True;
     VST3BrowseButton.Enabled := True;
+    InstallVST3 := True;
   end
   else
   begin
     VST3PathEdit.Enabled := False;
     VST3BrowseButton.Enabled := False;
+    InstallVST3 := False;
+  end;
+
+  if PluginFormatCheckListBox.Checked[2] then
+  begin
+    InstallPresets := True;
+  end
+  else
+  begin
+    InstallPresets := False;
   end;
 end;
 
 procedure InitializeWizard;
+var
+
+  VST3PathEditLabel: TLabel;
+  LV2PathEditLabel: TLabel;
+
 begin
 
-  PluginFormatPage := CreateCustomPage(wpSelectDir, 'Select Plugin Formats', 'Choose which plugin formats & version to install:');
+  InstallLV2 := True;
+  InstallVST3 := True;
+  InstallPresets := True;
+
+  PluginFormatPage := CreateCustomPage(wpSelectDir, 'Select Plugin Formats', 'Select the plugin components you want to install:');
   PluginFormatCheckListBox := TNewCheckListBox.Create(WizardForm);
   PluginFormatCheckListBox.Parent := PluginFormatPage.Surface;
   PluginFormatCheckListBox.Left := 18;
@@ -93,16 +143,23 @@ begin
   PluginFormatCheckListBox.Height := PluginFormatPage.SurfaceHeight - 120;
   PluginFormatCheckListBox.AddCheckBox('Geonkick Plugin LV2', '', 0, True, True, False, False, nil);
   PluginFormatCheckListBox.AddCheckBox('Geonkick Plugin VST3', '', 0, True, True, False, False, nil);
+  PluginFormatCheckListBox.AddCheckBox('Geonkick Presets', '', 0, True, True, False, False, nil);
   PluginFormatCheckListBox.OnClickCheck := @FormatCheckBoxClick;
-
+  
   LV2PathEdit := TEdit.Create(WizardForm);
   LV2PathEdit.Parent := PluginFormatPage.Surface;
   LV2PathEdit.Left := 18;
-  LV2PathEdit.Top := PluginFormatCheckListBox.Top + PluginFormatCheckListBox.Height + 16;
+  LV2PathEdit.Top := PluginFormatCheckListBox.Top + PluginFormatCheckListBox.Height + 16 + 10;
   LV2PathEdit.Width := PluginFormatPage.SurfaceWidth - 82;
   LV2PathEdit.Text := ExpandConstant('{pf64}\Common Files\LV2');
   LV2PathEdit.Name := 'LV2PathEdit';
   LV2PathEdit.Enabled := True;
+  
+  LV2PathEditLabel := TLabel.Create(WizardForm);
+  LV2PathEditLabel.Parent := PluginFormatPage.Surface;
+  LV2PathEditLabel.Left := 18;
+  LV2PathEditLabel.Top := LV2PathEdit.Top - 18;
+  LV2PathEditLabel.Caption := 'LV2 Path:';
 
   LV2BrowseButton := TNewButton.Create(WizardForm);
   LV2BrowseButton.Parent := PluginFormatPage.Surface;
@@ -112,15 +169,21 @@ begin
   LV2BrowseButton.Caption := 'Browse...';
   LV2BrowseButton.OnClick := @BrowseButtonOnClickPath;
   LV2BrowseButton.Tag := Integer(LV2PathEdit);
-
+  
   VST3PathEdit := TEdit.Create(WizardForm);
   VST3PathEdit.Parent := PluginFormatPage.Surface;
   VST3PathEdit.Left := 18;
-  VST3PathEdit.Top := LV2PathEdit.Top + LV2PathEdit.Height + 16;
+  VST3PathEdit.Top := LV2PathEdit.Top + LV2PathEdit.Height + 16 + 8;
   VST3PathEdit.Width := PluginFormatPage.SurfaceWidth - 82;
   VST3PathEdit.Text := ExpandConstant('{pf64}\Common Files\VST3');
   VST3PathEdit.Name := 'VST3PathEdit';
   VST3PathEdit.Enabled := True;
+  
+  VST3PathEditLabel := TLabel.Create(WizardForm);
+  VST3PathEditLabel.Parent := PluginFormatPage.Surface;
+  VST3PathEditLabel.Left := 18;
+  VST3PathEditLabel.Top := VST3PathEdit.Top - 18;
+  VST3PathEditLabel.Caption := 'VST3 Path:';
 
   VST3BrowseButton := TNewButton.Create(WizardForm);
   VST3BrowseButton.Parent := PluginFormatPage.Surface;
@@ -130,16 +193,6 @@ begin
   VST3BrowseButton.Caption := 'Browse...';
   VST3BrowseButton.OnClick := @BrowseButtonOnClickPath;
   VST3BrowseButton.Tag := Integer(VST3PathEdit);
-end;
-
-function GetLV2Path(Param: String): String;
-begin
-  Result := LV2Path;
-end;
-
-function GetVST3Path(Param: String): String;
-begin
-  Result := VST3Path;
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
