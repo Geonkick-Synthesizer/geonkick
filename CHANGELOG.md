@@ -2,7 +2,7 @@
 
 ### Features
 
-- Windows: Use SSI script for installer
+- Windows: Use ISS script for installer
 - Windows: Add plugin custom paths for installer
 
 ### Improvements
