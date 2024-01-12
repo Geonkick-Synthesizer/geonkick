@@ -1,8 +1,13 @@
 ## [3.3.0]
 
+### Features
+
+- Windows: Use SSI script for installer
+- Windows: Add plugin custom paths for installer
+
 ### Improvements
 
-- Mix the playing sounds instead cutting it on note off
+- Core DSP: Mix the playing sounds instead cutting it on note off
 
 ## [3.2.0]
 
