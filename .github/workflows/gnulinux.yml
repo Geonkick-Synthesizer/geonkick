@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: |
           mkdir -p build/install
-          git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
+          git clone --recursive https://github.com/Geonkick-Synthesizer/vst3sdk.git
           VST3SDKPATH=$(pwd)/vst3sdk
           cd build
           cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH ..
