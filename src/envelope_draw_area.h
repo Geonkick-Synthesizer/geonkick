@@ -49,6 +49,8 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void envelopeUpdated();
    void setHideEnvelope(bool b);
    void setPointEditingMode(bool b = true);
+   void zoomIn();
+   void zoomOut();
    RK_DECL_ACT(isOverPoint,
                isOverPoint(const std::string info),
                RK_ARG_TYPE(const std::string),
@@ -60,6 +62,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void mouseButtonPressEvent(RkMouseEvent *event) override;
    void mouseButtonReleaseEvent(RkMouseEvent *event) override;
    void mouseDoubleClickEvent(RkMouseEvent *event) override;
+   void wheelEvent(RkWheelEvent *event) override;
    std::string getEnvStateText() const;
 
  private:
@@ -72,6 +75,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    RkImage envelopeImage;
    KickGraph *kickGraphics;
    bool pointEditingMode;
+   double zoomCoefficient;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

@@ -37,6 +37,7 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
           , kickGraphImage{nullptr}
           , kickGraphics{nullptr}
           , pointEditingMode{false}
+          , zoomCoefficient{1.0}
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -53,6 +54,8 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
                 currentEnvelope = envelope;
+                if (currentEnvelope)
+                        currentEnvelope->setZoom(zoomCoefficient);
                 envelopeUpdated();
         }
 }
@@ -205,6 +208,27 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
         currentEnvelope->overPoint(point);
 	if (overPoint != currentEnvelope->hasOverPoint())
                 envelopeUpdated();
+}
+
+void EnvelopeWidgetDrawingArea::wheelEvent(RkWheelEvent *event)
+{
+        event->direction() == RkWheelEvent::WheelDirection::DirectionUp ? zoomIn() : zoomOut();
+}
+
+void EnvelopeWidgetDrawingArea::zoomIn()
+{
+        zoomCoefficient = std::clamp(zoomCoefficient * 2, 1.0, 30.0);
+        if (currentEnvelope)
+                currentEnvelope->setZoom(zoomCoefficient);
+        update();
+}
+
+void EnvelopeWidgetDrawingArea::zoomOut()
+{
+        zoomCoefficient = std::clamp(zoomCoefficient / 2, 1.0, 30.0);
+        if (currentEnvelope)
+                currentEnvelope->setZoom(zoomCoefficient);
+        update();
 }
 
 void EnvelopeWidgetDrawingArea::envelopeUpdated()

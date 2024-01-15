@@ -46,6 +46,7 @@ Envelope::Envelope(const RkRect &area)
         , editedPointIndex{0}
         , isEditingPoint{false}
 	, applyType{ApplyType::Linear}
+        , zoomCoefficient{1.0}
 {
 }
 
@@ -57,6 +58,16 @@ int Envelope::W(void) const
 int Envelope::H(void) const
 {
         return drawingArea.height();
+}
+
+void Envelope::setZoom(double val)
+{
+        zoomCoefficient = val;
+}
+
+double Envelope::getZoom() const
+{
+        return zoomCoefficient;
 }
 
 RkPoint Envelope::getOrigin(void) const
@@ -98,7 +109,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
         font.setSize(10);
         painter.setFont(font);
 
-        auto val = envelopeLength() / 10;
+        auto val = (envelopeLength() / getZoom()) / 10;
         int dx = W() / 10;
         RkPoint point = getOrigin();
         int x  = point.x() + dx;
@@ -110,7 +121,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
 
                 RkRect rect(x - 12, point.y() - 12, 25, font.size());
                 painter.setPen(RkColor(110, 110, 110));
-                painter.drawText(rect, std::to_string(std::llround(i * val)));
+                painter.drawText(rect, Geonkick::doubleToStr(i * val, 3));
                 x += dx;
         }
 
@@ -574,8 +585,8 @@ void Envelope::updatePoints()
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
 	if (applyType == ApplyType::Logarithmic) {
-		return {static_cast<double>(point.x()) / W(),
-			static_cast<double>(point.y()) / H()};
+		return {(static_cast<double>(point.x()) / W()) / getZoom(),
+			(static_cast<double>(point.y()) / H()) / getZoom()};
 	}
 
 	RkRealPoint scaledPoint;
@@ -593,7 +604,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                 double val = pow(10, logVal + log10(20));
                 scaledPoint.setY(val / envelopeAmplitude());
         }
-        return scaledPoint;
+        return RkRealPoint(scaledPoint.x() / getZoom(), scaledPoint.y() / getZoom());
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
@@ -620,7 +631,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                 }
                 y = k * H();
         }
-        return RkPoint(x, y);
+        return RkPoint(getZoom() * x, getZoom() * y);
 }
 
 bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)

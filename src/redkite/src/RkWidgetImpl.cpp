@@ -194,8 +194,18 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 break;
         case RkEvent::Type::MouseButtonPress:
                 RK_LOG_DEBUG("RkEvent::Type::MouseButtonPress: " << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
-                        inf_ptr->mouseButtonPressEvent(static_cast<RkMouseEvent*>(event));
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
+                        auto mouseEvent = static_cast<RkMouseEvent*>(event);
+                        inf_ptr->mouseButtonPressEvent(mouseEvent);
+                        if (mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
+                            || mouseEvent->button() == RkMouseEvent::ButtonType::WheelDown) {
+                                auto wheelEvent = std::make_unique<RkWheelEvent>();
+                                wheelEvent->setDirection(mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
+                                                         ? RkWheelEvent::WheelDirection::DirectionUp
+                                                         : RkWheelEvent::WheelDirection::DirectionDown);
+                                inf_ptr->wheelEvent(wheelEvent.get());
+                        }
+                }
                 break;
         case RkEvent::Type::MouseDoubleClick:
                 RK_LOG_DEBUG("RkEvent::Type::MouseDoubleClick:" << title());

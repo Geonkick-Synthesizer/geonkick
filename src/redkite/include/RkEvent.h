@@ -30,8 +30,8 @@
 class RkCloseEvent;
 class RkKeyEvent;
 class RkMouseEvent;
-class RkWheelEvent;
 class RkMoveEvent;
+class RkWheelEvent;
 class RkResizeEvent;
 class RkPaintEvent;
 class RkShowEvent;
@@ -158,7 +158,22 @@ class RkDropEvent: public RkEvent {
       std::string filePath;
 };
 
-class RkWheelEvent: public RkEvent {
+class RkWheelEvent: public RkEvent
+{
+public:
+        enum class WheelDirection : int {
+                DirectionNone = 0,
+                DirectionUp   = 1,
+                DirectionDown = 2
+        };
+
+        RkWheelEvent() : RkEvent(Type::Wheel)
+                       , wheelDirection {WheelDirection::DirectionNone} {}
+        void setDirection(WheelDirection val) { wheelDirection = val; }
+        WheelDirection direction() const { return wheelDirection; }
+
+private:
+        WheelDirection wheelDirection;
 };
 
 class RkMoveEvent: public RkEvent {

@@ -57,6 +57,8 @@ class Envelope : public RkObject
         virtual double envelopeLength(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
         RkPoint getOrigin(void) const;
+        void setZoom(double val);
+        double getZoom() const;
         void draw(RkPainter &painter, DrawLayer layer);
         void overPoint(const RkPoint &point);
         bool hasSelected() const;
@@ -141,6 +143,7 @@ class Envelope : public RkObject
         size_t editedPointIndex;
         bool isEditingPoint;
 	ApplyType applyType;
+        double zoomCoefficient;
 };
 
 #endif // GEONKICK_ENVELOPE_H
