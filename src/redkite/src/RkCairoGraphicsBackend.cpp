@@ -34,8 +34,7 @@
 #endif
 
 RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
-        : canvas {canvas}
-        , cairoContext{nullptr}
+        : cairoContext{nullptr}
 {
         auto canvaseInfo = canvas->getCanvasInfo();
         if (!canvaseInfo) {
