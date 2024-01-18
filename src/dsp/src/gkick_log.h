@@ -34,7 +34,7 @@ gkick_log_msg(const char *message, ...);
 #define GKICK_LIB_LOG_LEVEL_DEBUG
 #ifdef GKICK_LIB_LOG_FUNCTION
 #define gkick_log_trace(message, ...) \
-  gkick_log_msg("[TRACE][%s] "message, __func__, ##__VA_ARGS__)
+  gkick_log_msg("[TRACE][%s] " message, __func__, ##__VA_ARGS__)
 #else
 #define gkick_log_trace(message, ...) gkick_log_msg("[TRACE] " message, ##__VA_ARGS__)
 #endif
@@ -46,7 +46,7 @@ gkick_log_msg(const char *message, ...);
 #define GKICK_LIB_LOG_LEVEL_INFO
 #ifdef GKICK_LIB_LOG_FUNCTION
 #define gkick_log_debug(message, ...) \
-  gkick_log_msg("[DEBUG][%s] "message, __func__, ##__VA_ARGS__)
+  gkick_log_msg("[DEBUG][%s] " message, __func__, ##__VA_ARGS__)
 #else
 #define gkick_log_debug(message, ...) gkick_log_msg("[DEBUG] " message, ##__VA_ARGS__)
   #endif
@@ -58,7 +58,7 @@ gkick_log_msg(const char *message, ...);
 #define GKICK_LIB_LOG_LEVEL_WARNING
 #ifdef GKICK_LIB_LOG_FUNCTION
 #define gkick_log_info(message, ...) \
-  gkick_log_msg("[INFO][%s] "message, __func__, ##__VA_ARGS__)
+  gkick_log_msg("[INFO][%s] " message, __func__, ##__VA_ARGS__)
 #else
 #define gkick_log_info(message, ...) gkick_log_msg("[INFO] " message, ##__VA_ARGS__)
   #endif
@@ -70,7 +70,7 @@ gkick_log_msg(const char *message, ...);
   #define GKICK_LIB_LOG_LEVEL_ERROR
 #ifdef GKICK_LIB_LOG_FUNCTION
 #define gkick_log_warning(message, ...) \
-  gkick_log_msg("[WARNING][%s] "message, __func__, ##__VA_ARGS__)
+  gkick_log_msg("[WARNING][%s] " message, __func__, ##__VA_ARGS__)
 #else
 #define gkick_log_warning(message, ...) gkick_log_msg("[WARNING] " message, ##__VA_ARGS__)
 #endif
@@ -82,7 +82,7 @@ gkick_log_msg(const char *message, ...);
 #define GKICK_LIB_LOG_LEVEL_CRITICAL
 #ifdef GKICK_LIB_LOG_FUNCTION
 #define gkick_log_error(message, ...) \
-  gkick_log_msg("[ERROR][%s] "message, __func__, ##__VA_ARGS__)
+  gkick_log_msg("[ERROR][%s] " message, __func__, ##__VA_ARGS__)
 #else
 #define gkick_log_error(message, ...) gkick_log_msg("[ERROR] " message, ##__VA_ARGS__)
 #endif
