@@ -30,7 +30,7 @@
 
 class RkEvent;
 class RkTimer;
-class RkWindowId;
+struct RkWindowId;
 class RkWidget;
 
 class RK_EXPORT RkEventQueue {
