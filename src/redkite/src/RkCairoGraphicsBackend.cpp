@@ -35,6 +35,9 @@
 
 RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
         : cairoContext{nullptr}
+#ifdef RK_OS_WIN
+        , canvas {canvas}
+#endif // RK_OS_WIN
 {
         auto canvaseInfo = canvas->getCanvasInfo();
         if (!canvaseInfo) {
