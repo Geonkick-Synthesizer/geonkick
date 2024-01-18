@@ -325,7 +325,7 @@ size_t KitModel::maxPercussionNumber() const
 int KitModel::percussionId(int index) const
 {
         const auto &ids = geonkickApi->ordredPercussionIds();
-        if (index < -1 || index > static_cast<decltype(index)>(ids.size() - 1))
+        if (index < 0 || index >= static_cast<decltype(index)>(ids.size()))
                 return -1;
         return ids[index];
 }
