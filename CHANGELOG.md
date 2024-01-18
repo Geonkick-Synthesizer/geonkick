@@ -1,3 +1,9 @@
+## [3.3.1]
+
+### Fixes
+
+- Fix out of bound index in KitModel (found by @treapster)
+
 ## [3.3.0]
 
 ### Features
