@@ -1066,10 +1066,8 @@ synth_kick_env_set_apply_type(struct gkick_synth *synth,
 			      enum gkick_envelope_apply_type apply_type)
 {
         gkick_synth_lock(synth);
-        switch (env_type) {
-	case GEONKICK_FILTER_CUTOFF_ENVELOPE:
+        if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE) {
 		gkick_envelope_set_apply_type(synth->filter->cutoff_env, apply_type);
-		break;
 	}
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
@@ -1090,10 +1088,8 @@ synth_kick_env_get_apply_type(struct gkick_synth *synth,
 			      enum gkick_envelope_apply_type *apply_type)
 {
 	gkick_synth_lock(synth);
-        switch (env_type) {
-	case GEONKICK_FILTER_CUTOFF_ENVELOPE:
+        if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE) {
 		*apply_type = gkick_envelope_get_apply_type(synth->filter->cutoff_env);
-		break;
 	}
         gkick_synth_unlock(synth);
         return GEONKICK_OK;	
