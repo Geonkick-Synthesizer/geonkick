@@ -77,7 +77,7 @@ ring_buffer_next(struct ring_buffer *ring,
 size_t
 ring_buffer_get_size(struct ring_buffer *ring);
 
-size_t
+void
 ring_buffer_resize(struct ring_buffer *ring,
                    size_t size);
 
