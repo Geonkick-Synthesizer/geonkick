@@ -51,8 +51,9 @@ int main(int argc, char *argv[])
 
 #ifdef GEONKICK_OS_GNU
 	if (mlockall(MCL_CURRENT) == -1) {
-	        GEONKICK_LOG_ERROR("can't lock memory");
-                exit(EXIT_FAILURE);
+	        GEONKICK_LOG_INFO("can't lock memory. Please, check your "
+                                  << "system settings reladed locked memory"
+                                  << "(https://jackaudio.org/faq/linux_rt_config.html)");
         }
 #endif // GEONKICK_OS_GNU
 
@@ -80,10 +81,7 @@ int main(int argc, char *argv[])
 
         auto res = app.exec();
 #ifdef GEONKICK_OS_GNU
-        if (munlockall() == -1) {
-	        GEONKICK_LOG_ERROR("can't unlock memory");
-                exit(EXIT_FAILURE);
-        }
+        munlockall();
 #endif // GEONKICK_OS_GNU
 	
         return res;
