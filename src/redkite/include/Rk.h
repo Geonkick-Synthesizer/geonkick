@@ -482,12 +482,11 @@ namespace Rk {
         }
 
 #define RK_ACT_BIND(obj1, act, act_args, obj2, callback) \
-        obj1->rk__add_action_cb_##act (obj2, [=](act_args){ obj2->callback; }); \
+        obj1->rk__add_action_cb_##act (obj2, [=, this](act_args){ obj2->callback; }); \
         obj2->rk__add_bound_object(obj1)
 
-// Bind lamda functions to object actions.
-#define RK_ACT_BINDL(obj1, act, act_args, lamda)   \
-        obj1->rk__add_action_cb_##act (nullptr, lamda)
+#define RK_ACT_BINDL(obj1, act, act_args, ...) \
+    obj1->rk__add_action_cb_##act (nullptr, __VA_ARGS__)
 
 #define action
 

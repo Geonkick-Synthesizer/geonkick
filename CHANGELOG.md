@@ -1,3 +1,11 @@
+## [3.3.1]
+
+### Fixes
+
+- Fix out of bound index in KitModel (by @treapster)
+- Fix warning related to clang (by @treapster)
+- Fix not running Geonkick standalone if can't lock memory (warn only)
+
 ## [3.3.0]
 
 ### Features

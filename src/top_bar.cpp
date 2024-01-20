@@ -123,7 +123,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                  RkButton::State::UnpressedHover);
         openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
                                  RkButton::State::Pressed);
-        RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=](){openFileButton->setPressed(false);
+        RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=,this](){openFileButton->setPressed(false);
                                                               action openFile();});
         mainLayout->addWidget(openFileButton);
         addSeparator(mainLayout, 10);
@@ -137,7 +137,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                  RkButton::State::UnpressedHover);
         saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
                                  RkButton::State::Pressed);
-        RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=](){saveFileButton->setPressed(false);
+        RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=,this](){saveFileButton->setPressed(false);
                                                              action saveFile();});
         mainLayout->addWidget(saveFileButton);
         addSeparator(mainLayout, 10);
@@ -151,7 +151,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                  RkButton::State::UnpressedHover);
         exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
                                 RkButton::State::Pressed);
-        RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=](){exportFileButton->setPressed(false);
+        RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=,this](){exportFileButton->setPressed(false);
                                                                action openExport();});
         mainLayout->addWidget(exportFileButton);
         addSeparator(mainLayout, 10);
@@ -309,7 +309,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
 
         RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateGui());
         RK_ACT_BINDL(kitModel, percussionUpdated, RK_ACT_ARGS(PercussionModel* model),
-                     [=](PercussionModel* model) {
+                     [=, this](PercussionModel* model) {
                              if (model->isSelected())
                                      updateGui();
                      } );
