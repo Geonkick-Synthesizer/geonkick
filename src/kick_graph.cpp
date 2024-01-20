@@ -64,6 +64,12 @@ void KickGraph::updateGraphBuffer()
         threadConditionVar.notify_one();
 }
 
+void KickGraph::setZoom(double val)
+{
+        zoomFactor = val;
+        updateGraphBuffer();
+}
+
 void KickGraph::drawKickGraph()
 {
         while (isRunning) {
@@ -86,7 +92,8 @@ void KickGraph::drawKickGraph()
                 painter.setPen(pen);
 
                 std::vector<RkPoint> graphPoints(kickBuffer.size());
-                gkick_real k = static_cast<gkick_real>(graphSize.width()) / kickBuffer.size();
+                auto buffSize = static_cast<double>(kickBuffer.size()) / zoomFactor;
+                gkick_real k = static_cast<gkick_real>(graphSize.width()) / buffSize;
 
                 /**
                  * In this loop there is an implementation of an

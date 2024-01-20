@@ -43,6 +43,7 @@ public:
                  graphUpdated(std::shared_ptr<RkImage> graphImage),
                  RK_ARG_TYPE(std::shared_ptr<RkImage>),
                  RK_ARG_VAL(graphImage));
+     void setZoom(double val);
      void updateGraphBuffer();
 
 protected:
@@ -57,6 +58,7 @@ private:
      RkSize graphSize;
      std::atomic<bool> isRunning;
      std::atomic<bool> updateGraph;
+     std::atomic<gkick_real> zoomFactor;
 };
 
 #endif // GEONKICK_GRAPH

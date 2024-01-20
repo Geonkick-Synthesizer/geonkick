@@ -54,8 +54,10 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
                 currentEnvelope = envelope;
-                if (currentEnvelope)
+                if (currentEnvelope) {
                         currentEnvelope->setZoom(zoomCoefficient);
+                        kickGraphics->setZoom(zoomCoefficient);
+                }
                 envelopeUpdated();
         }
 }
@@ -195,6 +197,8 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
         if (!currentEnvelope)
                 return;
 
+        zoomIn();
+
         RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
         if (currentEnvelope->hasSelected()) {
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
@@ -218,16 +222,20 @@ void EnvelopeWidgetDrawingArea::wheelEvent(RkWheelEvent *event)
 void EnvelopeWidgetDrawingArea::zoomIn()
 {
         zoomCoefficient = std::clamp(zoomCoefficient * 2, 1.0, 30.0);
-        if (currentEnvelope)
+        if (currentEnvelope) {
                 currentEnvelope->setZoom(zoomCoefficient);
+                kickGraphics->setZoom(zoomCoefficient);
+        }
         update();
 }
 
 void EnvelopeWidgetDrawingArea::zoomOut()
 {
         zoomCoefficient = std::clamp(zoomCoefficient / 2, 1.0, 30.0);
-        if (currentEnvelope)
+        if (currentEnvelope) {
                 currentEnvelope->setZoom(zoomCoefficient);
+                kickGraphics->setZoom(zoomCoefficient);
+        }
         update();
 }
 

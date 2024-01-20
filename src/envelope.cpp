@@ -109,7 +109,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
         font.setSize(10);
         painter.setFont(font);
 
-        auto val = (envelopeLength() / getZoom()) / 10;
+        auto val = (envelopeLength() / 1/*getZoom()*/) / 10;
         int dx = W() / 10;
         RkPoint point = getOrigin();
         int x  = point.x() + dx;
@@ -586,7 +586,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
 	if (applyType == ApplyType::Logarithmic) {
 		return {(static_cast<double>(point.x()) / W()) / getZoom(),
-			(static_cast<double>(point.y()) / H()) / getZoom()};
+			(static_cast<double>(point.y()) / H()) / 1/*getZoom()*/};
 	}
 
 	RkRealPoint scaledPoint;
@@ -604,7 +604,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                 double val = pow(10, logVal + log10(20));
                 scaledPoint.setY(val / envelopeAmplitude());
         }
-        return RkRealPoint(scaledPoint.x() / getZoom(), scaledPoint.y() / getZoom());
+        return RkRealPoint(scaledPoint.x() / getZoom(), scaledPoint.y() / 1/*getZoom()*/);
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
@@ -631,7 +631,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                 }
                 y = k * H();
         }
-        return RkPoint(getZoom() * x, getZoom() * y);
+        return RkPoint(getZoom() * x, 1 * /*getZoom() */ y);
 }
 
 bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)
