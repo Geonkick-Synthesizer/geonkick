@@ -70,7 +70,11 @@ GKickVstProcessor::initialize(FUnknown* context)
 
         auto nChannels = GeonkickApi::numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
-                auto outStr = std::wstring(L"Out") + std::to_wstring(i);
+                td::wstring outStr;
+                if ( i == GEONKICK_AUDITION_CHANNEL_INDEX)
+                        outStr = std::wstring(L"Audition");
+                else
+                        outStr = std::wstring(L"Out") + std::to_wstring(i);
                 addAudioOutput(reinterpret_cast<const char16_t*>(outStr.c_str()), Vst::SpeakerArr::kStereo);
         }
         addEventInput(STR16("MIDI in"), 1);

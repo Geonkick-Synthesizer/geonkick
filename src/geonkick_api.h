@@ -96,6 +96,7 @@ class GeonkickApi : public RkObject {
   void setInstanceType(InstanceType type);
   InstanceType getInstanceType() const;
   static unsigned int getVersion();
+  size_t static numberOfInstruments();
   size_t static numberOfChannels();
   void setEventQueue(RkEventQueue *queue);
   bool initDSP();
@@ -257,7 +258,6 @@ class GeonkickApi : public RkObject {
                              const std::filesystem::path &path);
   void tuneAudioOutput(int id, bool tune);
   bool isAudioOutputTuned(int id) const;
-  size_t getPercussionsNumber() const;
   bool setCurrentPercussion(int index);
   size_t currentPercussion() const;
   int getUnusedPercussion() const;

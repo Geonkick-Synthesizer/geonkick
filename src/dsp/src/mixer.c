@@ -88,7 +88,7 @@ gkick_mixer_process(struct gkick_mixer *mixer,
         for (size_t channel = 0; channel < GEONKICK_MAX_CHANNELS; channel++) {
                 size_t left_index  = 2 * channel;
                 size_t right_index = left_index + 1;
-                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
+                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
                         struct gkick_audio_output *output = mixer->audio_outputs[i];
                         if (output->channel != channel)
                                 continue;
@@ -115,22 +115,6 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                         ring_buffer_next(output->ring_buffer, size);
                 }
         }
-
-        struct gkick_audio_output *output = mixer->audio_outputs[GEONKICK_MAX_INSTRUMENTS];
-        if (output->play)
-                gkick_audio_set_play(output);
-
-        ring_buffer_get_data(output->ring_buffer,
-                             out[0] + offset,
-                             size);
-        ring_buffer_get_data(output->ring_buffer,
-                             out[1] + offset,
-                             size);
-        ring_buffer_next(output->ring_buffer, size);
-        gkick_mixer_apply_limiter(out[0] + offset,
-                                  out[1] + offset,
-                                  size,
-                                  (gkick_real)output->limiter / 1000000);
 
         return GEONKICK_OK;
 }
