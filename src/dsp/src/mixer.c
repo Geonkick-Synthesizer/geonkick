@@ -94,7 +94,6 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                                 continue;
 
                         if (!output->enabled || output->muted || mixer->solo != output->solo) {
-                                ring_buffer_reset(output->ring_buffer);
                                 output->play = false;
                         } else {
                                 if (output->play)
@@ -106,8 +105,6 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                                                      out[right_index] + offset,
                                                      size);
                                 gkick_real leveler_val = ring_buffer_get_cur_data(output->ring_buffer);
-                                ring_buffer_next(output->ring_buffer, size);
-
                                 gkick_real limiter_val = (gkick_real)output->limiter / 1000000;
                                 gkick_mixer_apply_limiter(out[left_index] + offset,
                                                           out[right_index] + offset,
@@ -115,6 +112,7 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                                                           limiter_val);
                                 gkick_mixer_set_leveler(mixer, i, leveler_val);
                         }
+                        ring_buffer_next(output->ring_buffer, size);
                 }
         }
 
