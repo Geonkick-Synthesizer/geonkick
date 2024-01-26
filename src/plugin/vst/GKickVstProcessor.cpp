@@ -70,7 +70,7 @@ GKickVstProcessor::initialize(FUnknown* context)
 
         auto nChannels = GeonkickApi::numberOfChannels();
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
-                td::wstring outStr;
+                std::wstring outStr;
                 if ( i == GEONKICK_AUDITION_CHANNEL_INDEX)
                         outStr = std::wstring(L"Audition");
                 else
