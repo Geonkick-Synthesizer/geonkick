@@ -104,12 +104,13 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                                 ring_buffer_get_data(output->ring_buffer,
                                                      out[right_index] + offset,
                                                      size);
-                                gkick_real leveler_val = ring_buffer_get_cur_data(output->ring_buffer);
                                 gkick_real limiter_val = (gkick_real)output->limiter / 1000000;
                                 gkick_mixer_apply_limiter(out[left_index] + offset,
                                                           out[right_index] + offset,
                                                           size,
                                                           limiter_val);
+                                gkick_real leveler_val = ring_buffer_get_cur_data(output->ring_buffer);
+                                leveler_val *= limiter_val;
                                 gkick_mixer_set_leveler(mixer, i, leveler_val);
                         }
                         ring_buffer_next(output->ring_buffer, size);
