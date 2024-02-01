@@ -46,7 +46,11 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 
         for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
-                if (output->enabled && (output->playing_key == GEONKICK_ANY_KEY
+                gkick_log_info("output: [index: %d, midi ch: %d]", i, output->midi_channel);
+                if (output->enabled
+                    && (output->midi_channel == GEONKICK_ANY_MIDI_CHANNEL
+                        || output->midi_channel == note->channel)
+                    && (output->playing_key == GEONKICK_ANY_KEY
                     || output->playing_key == note->note_number
 		    || output->tune)) {
                         gkick_audio_output_key_pressed(output, note);

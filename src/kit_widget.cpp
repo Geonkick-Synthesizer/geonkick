@@ -81,8 +81,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         addButton->setSize(16, 16);
         addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
         RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), kitModel, addNewPercussion());
-        addButton->show();
-        topContainer->addWidget(addButton);
+        //topContainer->addWidget(addButton);
+        addButton->hide();
 
         openKitButton = new RkButton(this);
         openKitButton->setBackgroundColor(background());
@@ -118,9 +118,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
 
         auto kitChannelsView = new KitChannelsView(this, kitModel);
         kitChannelsView->show();
-        topContainer->addSpace(100 - 4 * 16 - 3 * 5 - 10);
+        topContainer->addSpace(33);
         topContainer->addWidget(kitChannelsView);
-
         kitContainer->addContainer(topContainer);
         kitContainer->addContainer(percussionsContainer);
 

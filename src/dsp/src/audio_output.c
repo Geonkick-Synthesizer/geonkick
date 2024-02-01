@@ -36,13 +36,14 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output, int sample_r
                 gkick_log_error("can't allocate memory");
                 return GEONKICK_ERROR;
         }
-        (*audio_output)->decay   = -1;
-        (*audio_output)->play    = false;
-	(*audio_output)->enabled = true;
-        (*audio_output)->muted   = false;
-        (*audio_output)->solo    = false;
-        (*audio_output)->channel = 0;
-        (*audio_output)->sample_rate = sample_rate;
+        (*audio_output)->play         = false;
+	(*audio_output)->enabled      = true;
+        (*audio_output)->muted        = false;
+        (*audio_output)->solo         = false;
+        (*audio_output)->channel      = 0;
+        (*audio_output)->playing_key  = GEONKICK_ANY_KEY;
+        (*audio_output)->midi_channel = GEONKICK_ANY_MIDI_CHANNEL;
+        (*audio_output)->sample_rate  = sample_rate;
 
         gkick_buffer_new(&(*audio_output)->updated_buffer,
                          (*audio_output)->sample_rate * GEONKICK_MAX_LENGTH);
@@ -107,7 +108,6 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                 gkick_audio_output_swap_buffers(audio_output);
                 gkick_audio_add_playing_buffer_to_ring(audio_output);
         } else {
-                audio_output->decay = GEKICK_KEY_RELESE_DECAY_TIME;
                 audio_output->key.state = key->state;
         }
 
@@ -119,7 +119,7 @@ void
 gkick_audio_set_play(struct gkick_audio_output *audio_output)
 {
         struct gkick_note_info key;
-        key.channel     = 1;
+        key.channel     = GEONKICK_ANY_MIDI_CHANNEL;
         key.note_number = 69;
         key.velocity    = 127;
         key.state       = GKICK_KEY_STATE_PRESSED;
@@ -216,6 +216,25 @@ gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, sign
         return GEONKICK_OK;
 }
 
+
+enum geonkick_error
+gkick_audio_output_set_midi_channel(struct gkick_audio_output *audio_output, signed char channel)
+{
+        if (channel < -1 && channel > 15) {
+                gkick_log_error("wrong channel value: %d", channel);
+                return GEONKICK_ERROR;
+        }
+
+        audio_output->midi_channel = channel;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_audio_output_get_midi_channel(struct gkick_audio_output *audio_output, signed char *channel)
+{
+        *channel = audio_output->midi_channel;
+        return GEONKICK_OK;
+}
 
 void gkick_audio_output_tune_output(struct gkick_audio_output *audio_output, bool tune)
 {

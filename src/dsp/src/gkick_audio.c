@@ -162,7 +162,7 @@ gkick_audio_key_pressed(struct gkick_audio *audio,
         key.channel     = 1;
         key.note_number = note;
         key.velocity    = velocity;
-        key.state = pressed ? GKICK_KEY_STATE_PRESSED : GKICK_KEY_STATE_RELEASED;
+        key.state       = pressed ? GKICK_KEY_STATE_PRESSED : GKICK_KEY_STATE_RELEASED;
         return gkick_mixer_key_pressed(audio->mixer, &key);
 }
 

@@ -125,6 +125,7 @@ gkick_jack_get_note_info(jack_midi_event_t *event,
                 note->note_number = event->buffer[1];
                 note->velocity    = event->buffer[2];
         }
+        gkick_log_debug("note->channel: %d", note->channel);
 }
 
 jack_port_t*

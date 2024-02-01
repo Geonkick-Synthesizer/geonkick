@@ -1683,6 +1683,32 @@ geonkick_get_playing_key(struct geonkick *kick, size_t id, signed char *key)
 }
 
 enum geonkick_error
+geonkick_set_midi_channel(struct geonkick *kick,
+                          size_t id,
+                          signed char channel)
+{
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_set_midi_channel(kick->synths[id]->output, channel);
+}
+
+enum geonkick_error
+geonkick_get_midi_channel(struct geonkick *kick,
+                          size_t id,
+                          signed char *channel)
+{
+        if (kick == NULL
+            || channel == NULL
+            || id >= GEONKICK_MAX_INSTRUMENTS) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_get_midi_channel(kick->synths[id]->output, channel);
+}
+
+enum geonkick_error
 geonkick_set_percussion_name(struct geonkick *kick,
                              size_t id,
                              const char *name,

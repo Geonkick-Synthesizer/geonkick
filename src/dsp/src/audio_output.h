@@ -62,7 +62,10 @@ struct gkick_audio_output
         struct gkick_note_info key;
 
         /* The key number that triggres playing. */
-        _Atomic char playing_key;
+        _Atomic signed char playing_key;
+
+        /* MIDI channel for playing. */
+        _Atomic signed char midi_channel;
 
         /**
          * Specifies if the audio output is in the
@@ -81,14 +84,6 @@ struct gkick_audio_output
          * the note (central note is A4).
          */
         _Atomic bool tune;
-
-        /**
-         * decay - note release time measured in number of audio frames.
-         * Relaxation curve for audio is liniear:
-         *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,
-         *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
-         */
-        _Atomic int decay;
 
         /* Output channel. */
       	atomic_size_t channel;
@@ -138,6 +133,12 @@ void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output);
 
 enum geonkick_error
 gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, signed char key);
+
+enum geonkick_error
+gkick_audio_output_set_midi_channel(struct gkick_audio_output *audio_output, signed char channel);
+
+enum geonkick_error
+gkick_audio_output_get_midi_channel(struct gkick_audio_output *audio_output, signed char *channel);
 
 enum geonkick_error
 gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, signed char *key);
