@@ -1658,12 +1658,6 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
         return GEONKICK_OK;
 }
 
-
-size_t geonkick_percussion_number()
-{
-	return GEONKICK_MAX_INSTRUMENTS;
-}
-
 enum geonkick_error
 geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
@@ -1736,6 +1730,12 @@ size_t
 geonkick_channels_number()
 {
         return GEONKICK_MAX_CHANNELS;
+}
+
+size_t
+geonkick_instruments_number()
+{
+        return GEONKICK_MAX_INSTRUMENTS;
 }
 
 enum geonkick_error
@@ -1846,7 +1846,8 @@ geonkick_set_preview_sample(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        struct gkick_audio_output *output = kick->audio->mixer->audio_outputs[GEONKICK_MAX_INSTRUMENTS];
+        struct gkick_audio_output *output;
+        output = kick->audio->mixer->audio_outputs[GEONKICK_AUDITION_CHANNEL_INDEX];
         gkick_audio_output_lock(output);
         gkick_buffer_set_data((struct gkick_buffer*)output->updated_buffer, data, size);
         gkick_audio_output_unlock(output);
@@ -1856,19 +1857,24 @@ geonkick_set_preview_sample(struct geonkick *kick,
 void
 geonkick_play_sample_preview(struct geonkick *kick)
 {
-        gkick_audio_play(kick->audio, GEONKICK_MAX_INSTRUMENTS);
+        gkick_audio_play(kick->audio,
+                         GEONKICK_AUDITION_CHANNEL_INDEX);
 }
 
 enum geonkick_error
 geonkick_set_sample_preview_limiter(struct geonkick *kick, gkick_real val)
 {
-        return gkick_audio_set_limiter_val(kick->audio, GEONKICK_MAX_INSTRUMENTS, val);
+        return gkick_audio_set_limiter_val(kick->audio,
+                                           GEONKICK_AUDITION_CHANNEL_INDEX,
+                                           val);
 }
 
 enum geonkick_error
 geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val)
 {
-        return gkick_audio_get_limiter_val(kick->audio, GEONKICK_MAX_INSTRUMENTS, val);
+        return gkick_audio_get_limiter_val(kick->audio,
+                                           GEONKICK_AUDITION_CHANNEL_INDEX,
+                                           val);
 }
 
 void

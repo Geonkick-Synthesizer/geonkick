@@ -106,10 +106,10 @@ bool GeonkickApi::init()
         jackEnabled = geonkick_is_module_enabed(geonkickApi, GEONKICK_MODULE_JACK);
 	geonkick_enable_synthesis(geonkickApi, false);
 
-	auto n = getPercussionsNumber();
+	auto nInstruments = numberOfInstruments();
         auto nChannels = numberOfChannels();
-        kickBuffers = std::vector<std::vector<gkick_real>>(n);
-	for (decltype(n) i = 0; i < n; i++) {
+        kickBuffers = std::vector<std::vector<gkick_real>>(nInstruments);
+	for (decltype(nInstruments) i = 0; i < nInstruments; i++) {
                 auto state = getDefaultPercussionState();
                 state->setId(i);
                 state->setChannel(i % nChannels);
@@ -124,6 +124,11 @@ bool GeonkickApi::init()
 	geonkick_set_current_percussion(geonkickApi, 0);
 	geonkick_enable_synthesis(geonkickApi, true);
         return true;
+}
+
+size_t GeonkickApi::numberOfInstruments()
+{
+        return geonkick_instruments_number();
 }
 
 size_t GeonkickApi::numberOfChannels()
@@ -490,7 +495,7 @@ bool GeonkickApi::setKitState(const std::string &data)
 
 bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
 {
-        auto n = getPercussionsNumber();
+        auto n = numberOfInstruments();
         for (decltype(n) i = 0; i < n; i++)
                 enablePercussion(i, false);
         setKitName(state->getName());
@@ -1021,7 +1026,7 @@ void GeonkickApi::updateKickBuffer(const std::vector<gkick_real> &&buffer,
 {
         GEONKICK_LOG_DEBUG("id: " << id);
         std::lock_guard<std::mutex> lock(apiMutex);
-        if (id < getPercussionsNumber()) {
+        if (id < numberOfInstruments()) {
                 GEONKICK_LOG_DEBUG("kickBuffers[id] = buffer" << id);
                 kickBuffers[id] = buffer;
         }
@@ -1346,11 +1351,6 @@ bool GeonkickApi::isPercussionSolo(size_t id) const
         return solo;
 }
 
-size_t GeonkickApi::getPercussionsNumber() const
-{
-	return geonkick_percussion_number();
-}
-
 int GeonkickApi::getUnusedPercussion() const
 {
         int index;
@@ -1373,7 +1373,7 @@ bool GeonkickApi::isPercussionEnabled(int index) const
 
 size_t GeonkickApi::enabledPercussions() const
 {
-        auto n = getPercussionsNumber();
+        auto n = numberOfInstruments();
         size_t enabled  = 0;
         for (decltype(n) i = 0; i < n; i++) {
                 if (isPercussionEnabled(i))
@@ -1436,7 +1436,7 @@ bool GeonkickApi::setPercussionName(int index, const std::string &name)
 
 std::string GeonkickApi::getPercussionName(int index) const
 {
-        auto n = getPercussionsNumber();
+        auto n = numberOfInstruments();
         if (index > -1 && index < static_cast<decltype(index)>(n)) {
                 char name[30];
                 geonkick_get_percussion_name(geonkickApi,

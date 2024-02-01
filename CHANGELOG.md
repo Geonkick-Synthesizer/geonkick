@@ -1,3 +1,12 @@
+## [3.3.2]
+
+### Fixes
+
+- Fix high CPU usage by DSP
+- Fix limiter for the audition channel
+	, use a separate audition channel for samples preview
+- Fix instrument leveler value
+
 ## [3.3.1]
 
 ### Fixes

@@ -61,6 +61,8 @@ gkick_audio_create(struct gkick_audio** audio, int sample_rate)
                         return GEONKICK_ERROR;
                 }
 		(*audio)->audio_outputs[i]->enabled = true;
+                if (i == GEONKICK_AUDITION_CHANNEL_INDEX)
+                        (*audio)->audio_outputs[i]->channel = GEONKICK_AUDITION_CHANNEL_INDEX;
         }
         (*audio)->audio_outputs[GEONKICK_MAX_INSTRUMENTS]->limiter = 1000000;
 
@@ -138,7 +140,7 @@ gkick_audio_play(struct gkick_audio *audio,
         gkick_log_info("play %d", id);
         if (id < GEONKICK_MAX_INSTRUMENTS && audio->audio_outputs[id]->enabled) {
                 gkick_audio_output_play(audio->audio_outputs[id]);
-        } else if (id == GEONKICK_MAX_INSTRUMENTS) {
+        } else if (id == GEONKICK_AUDITION_CHANNEL_INDEX) {
                 // Play sample preview.
                 gkick_audio_output_play(audio->audio_outputs[id]);
         }

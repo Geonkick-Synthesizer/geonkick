@@ -132,14 +132,8 @@ enum gkick_envelope_apply_type {
 #define GEONKICK_MAX_INSTRUMENTS 16
 #endif
 
-/**
-* Maximum audio number of output stereo channels.
-*/
-#if defined(GEONKICK_SINGLE)
-#define GEONKICK_MAX_CHANNELS 1
-#else
-#define GEONKICK_MAX_CHANNELS 16
-#endif // if defined(GEONKICK_SINGLE)
+#define GEONKICK_MAX_CHANNELS (GEONKICK_MAX_INSTRUMENTS + 1)
+#define GEONKICK_AUDITION_CHANNEL_INDEX (GEONKICK_MAX_CHANNELS - 1)
 
 #define GEONKICK_ANY_KEY -1
 
@@ -633,9 +627,6 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
                                size_t index,
                                bool *enable);
 
-size_t
-geonkick_percussion_number();
-
 enum geonkick_error
 geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
@@ -657,6 +648,10 @@ geonkick_get_percussion_name(struct geonkick *kick,
                              size_t id,
                              char *name,
                              size_t size);
+
+
+size_t
+geonkick_instruments_number();
 
 size_t
 geonkick_channels_number();

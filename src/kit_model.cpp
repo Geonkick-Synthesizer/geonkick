@@ -80,7 +80,7 @@ PercussionModel* KitModel::currentPercussion() const
 
 size_t KitModel::numberOfChannels() const
 {
-        return geonkickApi->numberOfChannels();
+        return geonkickApi->numberOfInstruments();
 }
 
 int KitModel::percussionChannel(PercussionIndex index) const
@@ -319,7 +319,7 @@ size_t KitModel::percussionNumber() const
 
 size_t KitModel::maxPercussionNumber() const
 {
-        return geonkickApi->getPercussionsNumber();
+        return geonkickApi->numberOfInstruments();
 }
 
 int KitModel::percussionId(int index) const

@@ -198,7 +198,10 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
         gkick_jack_lock(jack);
         for (size_t i = 0; i < GEONKICK_MAX_CHANNELS; i++) {
                 char name[30];
-                sprintf(name, "outL_%u", (unsigned int)(i + 1));
+                if (i == GEONKICK_AUDITION_CHANNEL_INDEX)
+                        sprintf(name, "auditionL");
+                else
+                        sprintf(name, "outL_%u", (unsigned int)(i + 1));
                 jack->output_port[2 * i] = jack_port_register(jack->client, name,
                                                               JACK_DEFAULT_AUDIO_TYPE,
                                                               JackPortIsOutput, 0);
@@ -208,7 +211,10 @@ gkick_jack_create_output_ports(struct gkick_jack *jack)
                         break;
                 }
 
-                sprintf(name, "outR_%u", (unsigned int)(i + 1));
+                if (i == GEONKICK_AUDITION_CHANNEL_INDEX)
+                        sprintf(name, "auditionR");
+                else
+                        sprintf(name, "outR_%u", (unsigned int)(i + 1));
                 jack->output_port[2 * i + 1] = jack_port_register(jack->client, name,
                                                                   JACK_DEFAULT_AUDIO_TYPE,
                                                                   JackPortIsOutput, 0);

@@ -69,8 +69,13 @@ GKickVstProcessor::initialize(FUnknown* context)
                 return res;
 
         auto nChannels = GeonkickApi::numberOfChannels();
+        GEONKICK_LOG_DEBUG("nChannels : " << nChannels);
         for (decltype(nChannels) i = 0; i < nChannels; i++) {
-                auto outStr = std::wstring(L"Out") + std::to_wstring(i);
+                std::wstring outStr;
+                if ( i == GEONKICK_AUDITION_CHANNEL_INDEX)
+                        outStr = std::wstring(L"Audition");
+                else
+                        outStr = std::wstring(L"Out") + std::to_wstring(i);
                 addAudioOutput(reinterpret_cast<const char16_t*>(outStr.c_str()), Vst::SpeakerArr::kStereo);
         }
         addEventInput(STR16("MIDI in"), 1);
@@ -84,6 +89,7 @@ GKickVstProcessor::setBusArrangements(Vst::SpeakerArrangement* inputs,
                                       Vst::SpeakerArrangement* outputs,
                                       int32 numOuts)
 {
+        GEONKICK_LOG_DEBUG("numIns : " << numIns << ", numOuts: " << numOuts);
         auto n = GeonkickApi::numberOfChannels();
         if (numIns == 0 && numOuts == static_cast<decltype(numOuts)>(n))
                 return Vst::SingleComponentEffect::setBusArrangements(inputs, numIns, outputs, numOuts);
@@ -124,7 +130,6 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 
         size_t nChannels = std::min(geonkickApi->numberOfChannels(),
                                     static_cast<decltype(nChannels)>(data.numOutputs));
-
         for (decltype(nChannels) ch = 0; ch < nChannels; ch++) {
                 channelsBuffers.data()[2 * ch]     = data.outputs[ch].channelBuffers32[0];
                 channelsBuffers.data()[2 * ch + 1] = data.outputs[ch].channelBuffers32[1];
