@@ -34,6 +34,7 @@
 #include <RkButton.h>
 #include <RkContainer.h>
 #include <RkProgressBar.h>
+#include <RkSpinBox.h>
 
 RK_DECLARE_IMAGE_RC(mute);
 RK_DECLARE_IMAGE_RC(mute_hover);
@@ -101,6 +102,7 @@ KitPercussionView::KitPercussionView(KitWidget *parent,
         , nameWidth{100}
         , channelWidth{30}
         , editPercussion{nullptr}
+        , midiChannelSpinBox{nullptr}
         , keyButton{nullptr}
         , copyButton{nullptr}
         , removeButton{nullptr}
@@ -128,7 +130,16 @@ void KitPercussionView::createView()
         percussionContainer->setHiddenTakesPlace();
         percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth + 10);
 
-        // Midi key button
+        // Midi channel spinbox.
+        midiChannelSpinBox = new RkSpinBox(this);
+        midiChannelSpinBox->setSize(40, 20);
+        midiChannelSpinBox->setTextColor({250, 250, 250});
+        midiChannelSpinBox->setBackgroundColor({0, 255, 0});
+        midiChannelSpinBox->show();
+        percussionContainer->addWidget(midiChannelSpinBox);
+        percussionContainer->addSpace(10);
+
+        // Midi key button.
         keyButton = new GeonkickButton(this);
         keyButton->setTextColor({250, 250, 250});
         keyButton->setType(RkButton::ButtonType::ButtonUncheckable);
@@ -238,6 +249,10 @@ void KitPercussionView::updateView()
         percussionLimiter->onSetValue(percussionModel->limiter());
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
+        //size_t nMidiChannels = percussionModel->numberOfMidiChannels();
+        //for (size_t i; i < nMidiChannels; i++)
+        //        midiChannelSpinBox->addItem(i, std::to_string(i + 1));
+        //midiChannelSpinBox->setCurrentIndex(percussionModel->miciChannel());
         keyButton->setText(MidiKeyWidget::midiKeyToNote(percussionModel->key()));
         keyButton->setBackgroundColor((index() % 2) ? RkColor(100, 100, 100) : RkColor(50, 50, 50));
         update();

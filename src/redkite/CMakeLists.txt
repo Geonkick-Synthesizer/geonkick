@@ -101,6 +101,7 @@ set(RK_HEADERS
   ${RK_INCLUDE_PATH}/RkWidget.h
   ${RK_INCLUDE_PATH}/RkLabel.h
   ${RK_INCLUDE_PATH}/RkButton.h
+  ${RK_INCLUDE_PATH}/RkSpinBox.h
   ${RK_INCLUDE_PATH}/RkLineEdit.h
   ${RK_INCLUDE_PATH}/RkList.h
   ${RK_INCLUDE_PATH}/RkProgressBar.h
