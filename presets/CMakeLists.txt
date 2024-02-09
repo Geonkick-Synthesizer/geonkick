@@ -5,7 +5,8 @@ set(GKICK_PRESETS
   DSoS.tar.xz
   TimeKit.tar.xz
   UnfaTutorial.tar.xz
-  HaraldReveryKicks.tar.xz)
+  HaraldReveryKicks.tar.xz
+  SPKickPresetsVol1.tar.xz)
 
 foreach(compressedFolder ${GKICK_PRESETS})
   message(STATUS "uncompress file ${compressedFolder}")
