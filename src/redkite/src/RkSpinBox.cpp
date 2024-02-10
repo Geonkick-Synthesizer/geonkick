@@ -1,8 +1,8 @@
 /**
- * File name: RkSpinBox.h
+ * File name: RkSpinBox.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2024Iurie Nistor 
+ * Copyright (C) 2024 Iurie Nistor 
  *
  * This file is part of Redkite.
  *
@@ -21,36 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef RK_SPINBOX_H
-#define RK_LABEL_H
-
-#include "RkWidget.h"
-
-class RkSpinBox : public RkWidget {
- public:
-    RkSpinBox(RkWidget *parent);
-    virtual ~RkSpinBox() = default;
-    void setCurrentIndex(size_t index);
-    size_t currentIndex() const;
-    void addItem(const std::string& text);
-    std::string currentText() const;
-    RK_DECL_ACT(currentIndexChanged,
-                currentIndexChanged(size_t index),
-                RK_ARG_TYPE(size_t),
-                RK_ARG_VAL(index));
-
- protected:
-    virtual void paintEvent(RkPaintEvent *event) override;
-
- private:
-    RK_DISABLE_COPY(RkSpinBox);
-    RK_DISABLE_MOVE(RkSpinBox);
-    RK_DELCATE_IMPL_PTR(RkSpinBox);
-};
-
-#endif // RK_SPINBOX_H
-
-
 #include "RkSpinBox.h"
 #include "RkSpinBoxImpl.h"
 #include "RkLog.h"
@@ -60,6 +30,7 @@ RkSpinBox::RkSpinBox(RkWidget *parent)
         , impl_ptr{static_cast<RkSpinBox::RkSpinBoxImpl*>(o_ptr.get())}
 {
         RK_LOG_DEBUG("called");
+        impl_ptr->init();
 }
 
 void RkSpinBox::setCurrentIndex(size_t index)
@@ -73,12 +44,22 @@ size_t RkSpinBox::currentIndex() const
         return impl_ptr->currentIndex();
 }
 
-void RkSpinBox::addItem(const std::string& text)
+void RkSpinBox::addItem(const RkVariant& item)
 {
-        return impl_ptr->addItem(text);
+        return impl_ptr->addItem(item);
 }
 
-std::string RkSpinBox::currentText() const
+RkVariant RkSpinBox::currentItem() const
 {
-        return impl_ptr->currentText();
+        return impl_ptr->currentItem();
+}
+
+RkButton* RkSpinBox::upControl() const
+{
+        return impl_ptr->upControl();
+}
+
+RkButton* RkSpinBox::downControl() const
+{
+        return impl_ptr->downControl();
 }

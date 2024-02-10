@@ -1,8 +1,8 @@
 /**
- * File name: RkLabelImpl.h
+ * File name: RkSpinBoxImpl.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2024 Iurie Nistor 
  *
  * This file is part of Redkite.
  *
@@ -25,25 +25,30 @@
 #define RK_LABEL_IMPL_H
 
 #include "RkWidgetImpl.h"
-#include "RkLabel.h"
-#include "RkImage.h"
+#include "RkSpinBox.h"
 
-class RkLabel::RkLabelImpl : public RkWidget::RkWidgetImpl {
+class RkButton;
+class RkLabel;
+
+class RkSpinBox::RkSpinBoxImpl : public RkWidget::RkWidgetImpl {
  public:
-    RkLabelImpl(RkLabel *interface,
-                const std::string &text,
-                RkWidget *parent = nullptr);
-
-    virtual ~RkLabelImpl();
-    void setText(const std::string &text);
-    std::string text() const;
-    void setImage(const RkImage &image);
-    void drawLabel();
+    RkSpinBoxImpl(RkSpinBox *interface, RkWidget *parent = nullptr);
+    virtual ~RkSpinBoxImpl();
+    void init();
+    void setCurrentIndex(size_t index);
+    size_t currentIndex() const;
+    void addItem(const RkVariant& item);
+    RkVariant currentItem() const;
+    RkButton* upControl() const;
+    RkButton* downControl() const;
 
  private:
-    RK_DECALRE_INTERFACE_PTR(RkLabel);
-    std::string labelText;
-    RkImage labelImage;
+    RK_DECALRE_INTERFACE_PTR(RkSpinBox);
+    size_t currentItemIndex;
+    std::vector<RkVariant> spinBoxItems;
+    RkButton *upButton;
+    RkButton *downButton;
+    RkLabel *displayLabel;
 };
 
 #endif // RK_LABEL_IMPL_H

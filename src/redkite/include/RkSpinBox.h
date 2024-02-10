@@ -2,7 +2,7 @@
  * File name: RkSpinBox.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2024Iurie Nistor 
+ * Copyright (C) 2024 Iurie Nistor 
  *
  * This file is part of Redkite.
  *
@@ -22,9 +22,12 @@
  */
 
 #ifndef RK_SPINBOX_H
-#define RK_LABEL_H
+#define RK_SPINBOX_H
 
 #include "RkWidget.h"
+#include "RkVariant.h"
+
+class RkButton;
 
 class RkSpinBox : public RkWidget {
  public:
@@ -32,20 +35,15 @@ class RkSpinBox : public RkWidget {
     virtual ~RkSpinBox() = default;
     void setCurrentIndex(size_t index);
     size_t currentIndex() const;
-    void addItem(const std::string& text);
-    void setUpControl(RkWidget* button) const;
-    void setDownControl(RkWidget* button) const;
-    RkWidget* upControl() const;
-    RkWidget* downControl() const;
-    std::string currentText() const;
+    void addItem(const RkVariant& item);
+    RkVariant currentItem() const;
+    RkButton* upControl() const;
+    RkButton* downControl() const;
     RK_DECL_ACT(currentIndexChanged,
                 currentIndexChanged(size_t index),
                 RK_ARG_TYPE(size_t),
                 RK_ARG_VAL(index));
 
- protected:
-    virtual void setupLayout();
-    
  private:
     RK_DISABLE_COPY(RkSpinBox);
     RK_DISABLE_MOVE(RkSpinBox);

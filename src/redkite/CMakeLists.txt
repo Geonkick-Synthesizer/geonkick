@@ -125,6 +125,7 @@ set(RK_HEADERS_IMPL
   ${RK_INCLUDE_PATH}/impl/RkListImpl.h
   ${RK_INCLUDE_PATH}/impl/RkModelImpl.h
   ${RK_INCLUDE_PATH}/impl/RkButtonImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkSpinBoxImpl.h
   ${RK_INCLUDE_PATH}/impl/RkLineEditImpl.h
   ${RK_INCLUDE_PATH}/impl/RkProgressBarImpl.h
   ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
@@ -169,6 +170,8 @@ set(RK_SOURCES
   ${RK_SRC_PATH}/RkModelImpl.cpp
   ${RK_SRC_PATH}/RkLabel.cpp
   ${RK_SRC_PATH}/RkLabelImpl.cpp
+  ${RK_SRC_PATH}/RkSpinBox.cpp
+  ${RK_SRC_PATH}/RkSpinBoxImpl.cpp
   ${RK_SRC_PATH}/RkButton.cpp
   ${RK_SRC_PATH}/RkButtonImpl.cpp
   ${RK_SRC_PATH}/RkLineEdit.cpp
