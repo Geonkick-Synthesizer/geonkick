@@ -29,7 +29,7 @@ RkSpinBox::RkSpinBoxImpl::RkSpinBoxImpl(RkSpinBox *interface,
                                         RkWidget *parent)
         : RkWidgetImpl(static_cast<RkWidget*>(interface), parent)
         , inf_ptr{interface}
-        , currentItemIndex{0}
+        , currentItemIndex{-1}
         , upButton{nullptr}
         , downButton{nullptr}
         , displayLabel{nullptr}
@@ -43,34 +43,40 @@ RkSpinBox::RkSpinBoxImpl::~RkSpinBoxImpl()
 void RkSpinBox::RkSpinBoxImpl::init()
 {
         upButton = new RkButton(inf_ptr);
+        upButton->setType(RkButton::ButtonType::ButtonPush);
         upButton->setBackgroundColor(0, 0, 255);
-        upButton->setSize(inf_ptr->width() / 4, inf_ptr->height() / 2);
-        //        upButton->setPosition(inf_ptr->width() - upButton->width(), 0);
         upButton->show();
-        
-        /*downButton = new RkButton(inf_ptr);
+        downButton = new RkButton(inf_ptr);
+        downButton->setType(RkButton::ButtonType::ButtonPush);
         downButton->setBackgroundColor(45, 99, 255);
-        downButton->setSize(upButton->size());
-        downButton->setPosition(upButton->x(), upButton->y() + upButton->height());
-        downButton->show();
-        
+        downButton->show();       
         displayLabel = new RkLabel(inf_ptr);
         displayLabel->setBackgroundColor(0, 255, 0);
-        displayLabel->setSize(inf_ptr->width() - upButton->width(), inf_ptr->height());
-        displayLabel->show();*/
+        displayLabel->show();     
+        updateControls();
 }
 
-
-void RkSpinBox::RkSpinBoxImpl::setCurrentIndex(size_t index)
+void RkSpinBox::RkSpinBoxImpl::updateControls()
 {
-        if (!spinBoxItems.empty() && index < spinBoxItems.size()) {
-                currentItemIndex = index;
-                if (std::holds_alternative<std::string>(spinBoxItems[currentItemIndex]))
-                        displayLabel->setText(std::get<std::string>(spinBoxItems[currentItemIndex]));
-        }
+        upButton->setSize(inf_ptr->width() / 4, inf_ptr->height() / 2);
+        upButton->setPosition(inf_ptr->width() - upButton->width(), 0);
+        downButton->setSize(upButton->size());
+        downButton->setPosition(upButton->x(), upButton->y() + upButton->height());
+        displayLabel->setSize(inf_ptr->width() - upButton->width(), inf_ptr->height());
+
 }
 
-size_t RkSpinBox::RkSpinBoxImpl::currentIndex() const
+void RkSpinBox::RkSpinBoxImpl::setCurrentIndex(int index)
+{
+        if (spinBoxItems.empty())
+                return;
+
+        currentItemIndex = std::clamp(index, 0, static_cast<int>(spinBoxItems.size() - 1));        
+        if (std::holds_alternative<std::string>(spinBoxItems[static_cast<size_t>(currentItemIndex)]))
+                displayLabel->setText(std::get<std::string>(spinBoxItems[static_cast<size_t>(currentItemIndex)]));
+}
+
+int RkSpinBox::RkSpinBoxImpl::currentIndex() const
 {
         return currentItemIndex;
 }
@@ -82,7 +88,8 @@ void RkSpinBox::RkSpinBoxImpl::addItem(const RkVariant& item)
 
 RkVariant RkSpinBox::RkSpinBoxImpl::currentItem() const
 {
-        if (!spinBoxItems.empty() && currentItemIndex < spinBoxItems.size())
+        if (!spinBoxItems.empty()
+            && static_cast<size_t>(currentItemIndex) < spinBoxItems.size())
                 return spinBoxItems[currentItemIndex];
         return {};
 }

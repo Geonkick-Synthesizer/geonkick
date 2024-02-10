@@ -137,6 +137,7 @@ enum gkick_envelope_apply_type {
 
 #define GEONKICK_ANY_KEY -1
 #define GEONKICK_ANY_MIDI_CHANNEL -1
+#define GEONKICK_MAX_MIDI_CHANNELS 16
 
 struct geonkick;
 
@@ -647,6 +648,9 @@ enum geonkick_error
 geonkick_get_midi_channel(struct geonkick *kick,
                           size_t id,
                           signed char *channel);
+
+size_t
+geonkick_midi_channels_number();
 
 enum geonkick_error
 geonkick_set_percussion_name(struct geonkick *kick,

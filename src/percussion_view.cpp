@@ -249,10 +249,11 @@ void KitPercussionView::updateView()
         percussionLimiter->onSetValue(percussionModel->limiter());
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
-        //size_t nMidiChannels = percussionModel->numberOfMidiChannels();
-        //for (size_t i; i < nMidiChannels; i++)
-        //        midiChannelSpinBox->addItem(i, std::to_string(i + 1));
-        //midiChannelSpinBox->setCurrentIndex(percussionModel->miciChannel());
+        size_t nMidiChannels = percussionModel->numberOfMidiChannels();
+        midiChannelSpinBox->addItem("Any");
+        for (size_t i = 0; i < nMidiChannels; i++)
+                midiChannelSpinBox->addItem(std::to_string(i + 1));
+        midiChannelSpinBox->setCurrentIndex(percussionModel->midiChannel() + 1);
         keyButton->setText(MidiKeyWidget::midiKeyToNote(percussionModel->key()));
         keyButton->setBackgroundColor((index() % 2) ? RkColor(100, 100, 100) : RkColor(50, 50, 50));
         update();
@@ -278,6 +279,7 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
         RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
         RK_ACT_BIND(percussionModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
+        RK_ACT_BIND(percussionModel, midiChannelUpdated, RK_ACT_ARGS(int val), this, update());
         updateView();
 }
 

@@ -33,16 +33,19 @@ class RkSpinBox : public RkWidget {
  public:
     RkSpinBox(RkWidget *parent);
     virtual ~RkSpinBox() = default;
-    void setCurrentIndex(size_t index);
-    size_t currentIndex() const;
+    void setCurrentIndex(int index);
+    int currentIndex() const;
     void addItem(const RkVariant& item);
     RkVariant currentItem() const;
     RkButton* upControl() const;
     RkButton* downControl() const;
     RK_DECL_ACT(currentIndexChanged,
-                currentIndexChanged(size_t index),
+                currentIndexChanged(int index),
                 RK_ARG_TYPE(size_t),
                 RK_ARG_VAL(index));
+
+protected:
+    void resizeEvent(RkResizeEvent *event) override;
 
  private:
     RK_DISABLE_COPY(RkSpinBox);

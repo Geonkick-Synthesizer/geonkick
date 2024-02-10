@@ -136,6 +136,11 @@ size_t GeonkickApi::numberOfChannels()
         return geonkick_channels_number();
 }
 
+size_t GeonkickApi::numberOfMidiChannels()
+{
+        return geonkick_midi_channels_number();
+}
+
 std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
 {
         return std::make_unique<KitState>();
@@ -1420,6 +1425,25 @@ int GeonkickApi::getPercussionChannel(int index) const
         auto res = geonkick_get_percussion_channel(geonkickApi,
                                                    index,
                                                    &channel);
+        if (res != GEONKICK_OK)
+                return -1;
+        return channel;
+}
+
+bool GeonkickApi::setPercussionMidiChannel(int index, size_t channel)
+{
+        auto res = geonkick_set_midi_channel(geonkickApi,
+                                             index,
+                                             channel);
+        return res == GEONKICK_OK;        
+}
+
+int GeonkickApi::getPercussionMidiChannel(int index) const
+{
+        signed char channel;
+        auto res = geonkick_get_midi_channel(geonkickApi,
+                                             index,
+                                             &channel);
         if (res != GEONKICK_OK)
                 return -1;
         return channel;

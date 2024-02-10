@@ -64,6 +64,9 @@ class PercussionModel : public RkObject {
         void copy();
         KitModel* model() const;
         std::vector<float> data() const;
+        size_t numberOfMidiChannels() const;
+        int midiChannel() const;
+        void setMidiChannel(int index);
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),
@@ -101,6 +104,10 @@ class PercussionModel : public RkObject {
                     soloUpdated(bool b),
                     RK_ARG_TYPE(bool),
                     RK_ARG_VAL(b));
+        RK_DECL_ACT(midiChannelUpdated,
+                    midiChannelUpdated(int val),
+                    RK_ARG_TYPE(int),
+                    RK_ARG_VAL(val));
 
  protected:
         void onPercussionSelected();

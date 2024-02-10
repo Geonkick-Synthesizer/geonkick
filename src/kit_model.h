@@ -47,6 +47,9 @@ class KitModel : public RkObject {
         size_t numberOfChannels() const;
         int percussionChannel(PercussionIndex index) const;
         bool setPercussionChannel(PercussionIndex index, int channel);
+        size_t numberOfMidiChannels() const;
+        int percussionMidiChannel(PercussionIndex index) const;
+        bool setPercussionMidiChannel(PercussionIndex index, int channel);
         bool setPercussionKey(PercussionIndex index, KeyIndex key);
         KeyIndex percussionKey(PercussionIndex index) const;
         bool setPercussionName(PercussionIndex index, const std::string &name);

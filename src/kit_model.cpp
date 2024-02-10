@@ -93,6 +93,21 @@ bool KitModel::setPercussionChannel(PercussionIndex index, int channel)
         return geonkickApi->setPercussionChannel(percussionId(index), channel);
 }
 
+size_t KitModel::numberOfMidiChannels() const
+{
+        return geonkickApi->numberOfMidiChannels();
+}
+
+int KitModel::percussionMidiChannel(PercussionIndex index) const
+{
+        return geonkickApi->getPercussionMidiChannel(percussionId(index));
+}
+
+bool KitModel::setPercussionMidiChannel(PercussionIndex index, int channel)
+{
+        return geonkickApi->setPercussionChannel(percussionId(index), channel);
+}
+
 bool KitModel::setPercussionName(PercussionIndex index, const std::string &name)
 {
         if (geonkickApi->setPercussionName(percussionId(index), name)) {

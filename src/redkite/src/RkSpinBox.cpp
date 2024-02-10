@@ -23,6 +23,7 @@
 
 #include "RkSpinBox.h"
 #include "RkSpinBoxImpl.h"
+#include "RkButton.h"
 #include "RkLog.h"
 
 RkSpinBox::RkSpinBox(RkWidget *parent)
@@ -31,15 +32,22 @@ RkSpinBox::RkSpinBox(RkWidget *parent)
 {
         RK_LOG_DEBUG("called");
         impl_ptr->init();
+        RK_ACT_BIND(upControl(),
+                    pressed,
+                    RK_ACT_ARGS(),
+                    this, setCurrentIndex(currentIndex() + 1));
+        RK_ACT_BIND(downControl(),
+                    pressed,
+                    RK_ACT_ARGS(),
+                    this, setCurrentIndex(currentIndex() - 1));
 }
 
-void RkSpinBox::setCurrentIndex(size_t index)
+void RkSpinBox::setCurrentIndex(int index)
 {
         impl_ptr->setCurrentIndex(index);
-        update();
 }
 
-size_t RkSpinBox::currentIndex() const
+int RkSpinBox::currentIndex() const
 {
         return impl_ptr->currentIndex();
 }
@@ -62,4 +70,9 @@ RkButton* RkSpinBox::upControl() const
 RkButton* RkSpinBox::downControl() const
 {
         return impl_ptr->downControl();
+}
+
+void RkSpinBox::resizeEvent(RkResizeEvent *event)
+{
+        impl_ptr->updateControls();
 }

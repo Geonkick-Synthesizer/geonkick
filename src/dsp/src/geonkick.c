@@ -1708,6 +1708,12 @@ geonkick_get_midi_channel(struct geonkick *kick,
         return gkick_audio_output_get_midi_channel(kick->synths[id]->output, channel);
 }
 
+size_t
+geonkick_midi_channels_number(struct geonkick *kick)
+{
+        return GEONKICK_MAX_MIDI_CHANNELS;
+}
+
 enum geonkick_error
 geonkick_set_percussion_name(struct geonkick *kick,
                              size_t id,

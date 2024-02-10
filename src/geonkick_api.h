@@ -98,6 +98,7 @@ class GeonkickApi : public RkObject {
   static unsigned int getVersion();
   size_t static numberOfInstruments();
   size_t static numberOfChannels();
+  size_t static numberOfMidiChannels();
   void setEventQueue(RkEventQueue *queue);
   bool initDSP();
   bool init();
@@ -269,6 +270,8 @@ class GeonkickApi : public RkObject {
   int percussionsReferenceKey() const;
   bool setPercussionChannel(int index, size_t channel);
   int getPercussionChannel(int index) const;
+  bool setPercussionMidiChannel(int index, size_t channel);
+  int getPercussionMidiChannel(int index) const;
   bool setPercussionName(int index, const std::string &name);
   bool setPercussionLimiter(size_t id, double val);
   double percussionLimiter(size_t id) const;

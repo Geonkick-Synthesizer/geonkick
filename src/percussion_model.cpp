@@ -211,3 +211,19 @@ std::vector<float> PercussionModel::data() const
 {
         return kitModel->instrumentData(index());
 }
+
+size_t PercussionModel::numberOfMidiChannels() const
+{
+        return kitModel->numberOfMidiChannels();
+}
+
+int PercussionModel::midiChannel() const
+{
+        return kitModel->percussionMidiChannel(index());
+}
+
+void PercussionModel::setMidiChannel(int index)
+{
+        if (kitModel->setPercussionMidiChannel(percussionId, index))
+                action midiChannelUpdated(index);
+}

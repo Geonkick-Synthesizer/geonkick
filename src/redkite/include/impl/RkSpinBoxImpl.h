@@ -35,16 +35,17 @@ class RkSpinBox::RkSpinBoxImpl : public RkWidget::RkWidgetImpl {
     RkSpinBoxImpl(RkSpinBox *interface, RkWidget *parent = nullptr);
     virtual ~RkSpinBoxImpl();
     void init();
-    void setCurrentIndex(size_t index);
-    size_t currentIndex() const;
+    void setCurrentIndex(int index);
+    int currentIndex() const;
     void addItem(const RkVariant& item);
     RkVariant currentItem() const;
     RkButton* upControl() const;
     RkButton* downControl() const;
+    void updateControls();
 
  private:
     RK_DECALRE_INTERFACE_PTR(RkSpinBox);
-    size_t currentItemIndex;
+    int currentItemIndex;
     std::vector<RkVariant> spinBoxItems;
     RkButton *upButton;
     RkButton *downButton;
