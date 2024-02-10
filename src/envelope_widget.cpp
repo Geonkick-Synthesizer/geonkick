@@ -42,12 +42,12 @@ RK_DECLARE_IMAGE_RC(layer3_env_active);
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
                                const std::vector<std::unique_ptr<Oscillator>> &oscillators)
-          : GeonkickWidget(parent)
-          , drawArea{nullptr}
-          , layer1Button{nullptr}
-          , layer2Button{nullptr}
-          , layer3Button{nullptr}
-          , geonkickApi{api}
+        : GeonkickWidget(parent)
+        , drawArea{nullptr}
+        , layer1Button{nullptr}
+        , layer2Button{nullptr}
+        , layer3Button{nullptr}
+        , geonkickApi{api}
 {
         // Create drawing area.
         drawArea = new EnvelopeWidgetDrawingArea(this, geonkickApi);
@@ -55,26 +55,30 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
 
         // Oscillator1 envelope
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
-        auto envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator1), envelope});
+        auto envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator1);
+        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator1),
+                        std::move(envelope)});
 
         // Oscillator2 envelope
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
-        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator2), envelope});
+        envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator2);
+        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator2),
+                        std::move(envelope)});
 
         // Noise envelope
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
-        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::Noise), envelope});
+        envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Noise);
+        envelopes.insert({static_cast<int>(Envelope::Category::Noise),
+                        std::move(envelope)});
 
         // General envelope
-        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(geonkickApi, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::General), envelope});
-        envelope->setCategory(Envelope::Category::General);
+        auto generalEnvelope = std::make_unique<GeneralEnvelope>(geonkickApi, rect);
+        generalEnvelope->setCategory(Envelope::Category::General);
+        envelopes.insert({static_cast<int>(Envelope::Category::General),
+                        std::move(generalEnvelope)});
         createButtomMenu();
         showEnvelope(Envelope::Category::General, Envelope::Type::Amplitude);
         RK_ACT_BIND(viewState(), envelopeChanged,

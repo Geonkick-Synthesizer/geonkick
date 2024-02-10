@@ -141,9 +141,9 @@ std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
         return std::make_unique<KitState>();
 }
 
-std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
+std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 {
-        std::shared_ptr<PercussionState> state = std::make_shared<PercussionState>();
+        auto state = std::make_unique<PercussionState>();
         state->setName("Default");
         state->setId(0);
         state->setPlayingKey(-1);
@@ -240,7 +240,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
         return state;
 }
 
-void GeonkickApi::setPercussionState(const std::shared_ptr<PercussionState> &state)
+void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &state)
 {
         if (!state)
                 return;
@@ -307,7 +307,7 @@ void GeonkickApi::setPercussionState(const std::string &data)
         setPercussionState(state);
 }
 
-std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) const
+std::unique_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) const
 {
         if (id == currentPercussion()) {
                 return getPercussionState();
@@ -324,9 +324,9 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState(size_t id) cons
         }
 }
 
-std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
+std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
 {
-        auto state = std::make_shared<PercussionState>();
+        auto state = std::make_unique<PercussionState>();
         state->setId(currentPercussion());
         state->setName(getPercussionName(state->getId()));
         state->setLimiterValue(limiterValue());
@@ -381,7 +381,7 @@ std::shared_ptr<PercussionState> GeonkickApi::getPercussionState() const
 
 void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
                                      OscillatorType osc,
-                                     const std::shared_ptr<PercussionState> &state) const
+                                     const std::unique_ptr<PercussionState> &state) const
 {
         auto temp = currentLayer;
         currentLayer = layer;
@@ -423,7 +423,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
 
 void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
                                      OscillatorType oscillator,
-                                     const std::shared_ptr<PercussionState> &state)
+                                     const std::unique_ptr<PercussionState> &state)
 {
         auto temp = currentLayer;
         currentLayer = layer;
@@ -479,7 +479,7 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
         for (const auto &id : ordredPercussionIds()) {
                 auto state = getPercussionState(id);
                 state->setId(i);
-                kit->addPercussion(state);
+                kit->addPercussion(std::move(state));
                 GEONKICK_LOG_DEBUG("PER: " << state->getName() << ": id = " << state->getId());
                 i++;
         }
@@ -1631,7 +1631,7 @@ void GeonkickApi::copyToClipboard()
 void GeonkickApi::pasteFromClipboard()
 {
         if (clipboardPercussion) {
-                auto state = std::make_shared<PercussionState>(*clipboardPercussion);
+                auto state = std::make_unique<PercussionState>(*clipboardPercussion);
                 auto currId = currentPercussion();
                 state->setId(currId);
                 state->setName(getPercussionName(currId));

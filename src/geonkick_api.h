@@ -185,15 +185,15 @@ class GeonkickApi : public RkObject {
   double limiterValue() const;
   int getSampleRate() const;
   static std::unique_ptr<KitState> getDefaultKitState();
-  static std::shared_ptr<PercussionState> getDefaultPercussionState();
+  static std::unique_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
 
   // This function is called only from the audio thread.
   void process(float** out, size_t channel, size_t size);
 
-  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
-  std::shared_ptr<PercussionState> getPercussionState() const;
+  std::unique_ptr<PercussionState> getPercussionState(size_t id) const;
+  std::unique_ptr<PercussionState> getPercussionState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -216,7 +216,7 @@ class GeonkickApi : public RkObject {
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
   void setPercussionState(const std::string &data);
-  void setPercussionState(const std::shared_ptr<PercussionState> &state);
+  void setPercussionState(const std::unique_ptr<PercussionState> &state);
   std::unique_ptr<KitState> getKitState() const;
   bool setKitState(const std::string &data);
   bool setKitState(const std::unique_ptr<KitState> &state);
@@ -353,10 +353,10 @@ protected:
   void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
   void setOscillatorState(Layer layer,
                           OscillatorType oscillator,
-                          const std::shared_ptr<PercussionState> &state);
+                          const std::unique_ptr<PercussionState> &state);
   void getOscillatorState(Layer layer,
                           OscillatorType osc,
-                          const std::shared_ptr<PercussionState> &state) const;
+                          const std::unique_ptr<PercussionState> &state) const;
   void setLimiterLevelerValue(size_t index, double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,
@@ -376,7 +376,7 @@ private:
   std::string kitName;
   std::string kitAuthor;
   std::string kitUrl;
-  std::shared_ptr<PercussionState> clipboardPercussion;
+  std::unique_ptr<PercussionState> clipboardPercussion;
 
   /**
    * Current working paths for entire application.
