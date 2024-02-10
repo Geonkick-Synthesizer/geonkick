@@ -118,7 +118,7 @@ std::string KitState::getUrl() const
         return kitUrl;
 }
 
-std::vector<std::shared_ptr<PercussionState>>& KitState::percussions()
+const std::vector<std::unique_ptr<PercussionState>>& KitState::percussions() const
 {
         return percussionsList;
 }
@@ -152,10 +152,10 @@ void KitState::parsePercussions(const rapidjson::Value &percussionsArray)
 {
         size_t i = 0;
         for (const auto &per: percussionsArray.GetArray()) {
-                auto state = std::make_shared<PercussionState>();
+                auto state = std::make_unique<PercussionState>();
                 state->setId(i++);
                 state->loadObject(per);
-                addPercussion(state);
+                addPercussion(std::move(state));
         }
 }
 
@@ -182,14 +182,14 @@ std::string KitState::toJson() const
         return jsonStream.str();
 }
 
-void KitState::addPercussion(const std::shared_ptr<PercussionState> &percussion)
+void KitState::addPercussion(std::unique_ptr<PercussionState> percussion)
 {
-        percussionsList.push_back(percussion);
+        percussionsList.push_back(std::move(percussion));
 }
 
-std::shared_ptr<PercussionState> KitState::getPercussion(size_t id)
+const PercussionState* KitState::getPercussion(size_t id) const
 {
         if (id < percussionsList.size())
-                return percussionsList[id];
+                return percussionsList[id].get();
         return nullptr;
 }
