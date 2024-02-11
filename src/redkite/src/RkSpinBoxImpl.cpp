@@ -24,6 +24,8 @@
 #include "RkSpinBoxImpl.h"
 #include "RkButton.h"
 #include "RkLabel.h"
+#include "RkImage.h"
+#include "RkPainter.h"
 
 RkSpinBox::RkSpinBoxImpl::RkSpinBoxImpl(RkSpinBox *interface,
                                         RkWidget *parent)
@@ -44,14 +46,11 @@ void RkSpinBox::RkSpinBoxImpl::init()
 {
         upButton = new RkButton(inf_ptr);
         upButton->setType(RkButton::ButtonType::ButtonPush);
-        upButton->setBackgroundColor(0, 0, 255);
         upButton->show();
         downButton = new RkButton(inf_ptr);
         downButton->setType(RkButton::ButtonType::ButtonPush);
-        downButton->setBackgroundColor(45, 99, 255);
         downButton->show();       
         displayLabel = new RkLabel(inf_ptr);
-        displayLabel->setBackgroundColor(0, 255, 0);
         displayLabel->show();     
         updateControls();
 }
@@ -59,11 +58,37 @@ void RkSpinBox::RkSpinBoxImpl::init()
 void RkSpinBox::RkSpinBoxImpl::updateControls()
 {
         upButton->setSize(inf_ptr->width() / 4, inf_ptr->height() / 2);
+        displayLabel->setTextColor(inf_ptr->textColor());
+        displayLabel->setBackgroundColor(inf_ptr->background());
         upButton->setPosition(inf_ptr->width() - upButton->width(), 0);
+        {
+                RkImage img(upButton->size());
+                RkPainter painter(&img);
+                painter.fillRect(RkRect(1, 1, img.width() - 1, img.height()),
+                                 upButton->background());
+                auto pen = painter.pen();
+                pen.setColor(upButton->textColor());
+                painter.setPen(pen);
+                painter.drawLine(img.width() / 2, 2, img.width() / 2, img.height() - 2);
+                painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
+                upButton->setImage(img);
+        }
+        
         downButton->setSize(upButton->size());
         downButton->setPosition(upButton->x(), upButton->y() + upButton->height());
-        displayLabel->setSize(inf_ptr->width() - upButton->width(), inf_ptr->height());
+        {
+                RkImage img(downButton->size());
+                RkPainter painter(&img);
+                painter.fillRect(RkRect(1, 1, img.width() - 1, img.height()),
+                                 downButton->background());
+                auto pen = painter.pen();
+                pen.setColor(downButton->textColor());
+                painter.setPen(pen);
+                painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
+                downButton->setImage(img);
+        }
 
+        displayLabel->setSize(inf_ptr->width() - upButton->width(), inf_ptr->height());
 }
 
 void RkSpinBox::RkSpinBoxImpl::setCurrentIndex(int index)

@@ -111,7 +111,7 @@ KitPercussionView::KitPercussionView(KitWidget *parent,
         , soloButton{nullptr}
         , percussionLimiter{nullptr}
 {
-        setSize(parent->width(), 20);
+        setSize(parent->width(), 21);
         createView();
         setModel(model);
 }
@@ -128,13 +128,17 @@ void KitPercussionView::createView()
         auto percussionContainer = new RkContainer(this);
         percussionContainer->setSize(size());
         percussionContainer->setHiddenTakesPlace();
-        percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth + 10);
+        percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth + 5);
 
         // Midi channel spinbox.
         midiChannelSpinBox = new RkSpinBox(this);
-        midiChannelSpinBox->setSize(40, 20);
         midiChannelSpinBox->setTextColor({250, 250, 250});
-        midiChannelSpinBox->setBackgroundColor({0, 255, 0});
+        midiChannelSpinBox->setBackgroundColor({60, 57, 57});
+        midiChannelSpinBox->setSize(50, 20);
+        midiChannelSpinBox->upControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->upControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->downControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->downControl()->setTextColor({100, 100, 100});
         midiChannelSpinBox->show();
         percussionContainer->addWidget(midiChannelSpinBox);
         percussionContainer->addSpace(10);

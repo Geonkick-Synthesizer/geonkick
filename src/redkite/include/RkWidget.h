@@ -103,6 +103,7 @@ class RK_EXPORT RkWidget: public RkObject, public RkCanvas {
           void setBackgroundColor(const RkColor &color);
           const RkColor& background() const;
           void setBorderColor(int red, int green, int blue);
+          void setBorderColor(const RkColor &color);
           const RkColor& borderColor() const;
           void setTextColor(const RkColor &color);
           const RkColor& textColor() const;

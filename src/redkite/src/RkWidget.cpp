@@ -310,6 +310,11 @@ int RkWidget::borderWidth() const
         return impl_ptr->borderWidth();
 }
 
+void RkWidget::setBorderColor(const RkColor &color)
+{
+        setBorderColor(color.red(), color.green(), color.blue());
+}
+
 void RkWidget::setBorderColor(int red, int green, int blue)
 {
         if (red > 255)
