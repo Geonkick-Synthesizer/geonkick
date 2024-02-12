@@ -28,7 +28,6 @@
 #include "envelope.h"
 
 class GeonkickSlider;
-class GeonkickCheckbox;
 class GeonkickApi;
 class GeonkickButton;
 class EnvelopeWidget;

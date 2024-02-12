@@ -1,8 +1,8 @@
 /**
- * File name: general_group_box.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: SettingsWidget.cpp
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *
@@ -21,33 +21,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GKICK_GENERAL_GROUP_BOX_H
-#define GKICK_GENERAL_GROUP_BOX_H
+#include "SettingsWidget.h"
+#include "geonkick_api.h"
 
-#include "oscillator.h"
-#include "geonkick_groupbox.h"
+#include "RkContainer.h"
+#include "RkLabel.h"
+#include "RkSpinBox.h"
 
-class Oscillator;
-class GeonkickApi;
-class Knob;
-class GeonkickButton;
-class Filter;
-
-class GeneralGroupBox: public GeonkickGroupBox
+SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
+        : GeonkickWidget(parent)
+        , geonkickApi{api}
 {
- public:
-        GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
-        void updateGui();
+        setFixedSize(parent->size());
+        auto mainContianer = new RkContainer(this);
+        mainContianer->setSize({20, width()});
+        auto label = new RkLabel(this, "Force all midi channels to ");
+        label->setTextColor(textColor());
+        label->setBackgroundColor(background());
+        label->show();
+        mainContianer->addWidget(label);
+}
 
- protected:
-        void createAplitudeEnvelopeHBox();
-        void createFilterHBox();
-
- private:
-        GeonkickApi* geonkickApi;
-        Filter *filterBox;
-        Knob *kickAmplitudeKnob;
-        Knob *kickLengthKnob;
-};
-
-#endif //GKICK_GENERAL_GROUP_BOX_H
