@@ -23,6 +23,7 @@
 
 #include "SettingsWidget.h"
 #include "geonkick_api.h"
+#include "GeonkickConfig.h"
 
 #include "RkContainer.h"
 #include "RkLabel.h"
@@ -34,11 +35,29 @@ SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
 {
         setFixedSize(parent->size());
         auto mainContianer = new RkContainer(this);
-        mainContianer->setSize({20, width()});
+        mainContianer->setSize({width(), 20});
         auto label = new RkLabel(this, "Force all midi channels to ");
-        label->setTextColor(textColor());
-        label->setBackgroundColor(background());
+        label->setSize({130, 20});
+        //label->setTextColor(textColor());
+        //label->setBackgroundColor(background());
         label->show();
         mainContianer->addWidget(label);
-}
 
+        // MIDI channels spin box.
+        auto midiChannelSpinBox = new RkSpinBox(this);
+        midiChannelSpinBox->setSize({60, 20});
+        midiChannelSpinBox->addItem("Any");
+        for (size_t i = 0; i < geonkickApi->numberOfMidiChannels(); i++)
+                midiChannelSpinBox->addItem(std::to_string(i + 1));
+        midiChannelSpinBox->setCurrentIndex(GeonkickConfig().getMidiChannel() + 1);
+        RK_ACT_BINDL(midiChannelSpinBox,
+                     currentIndexChanged,
+                     RK_ACT_ARGS(int index),
+                     [=, this](int index){
+                             GeonkickConfig cfg;
+                                          cfg.setMidiChannel(index - 1);
+                                          cfg.save(); });
+        midiChannelSpinBox->show();
+        mainContianer->addSpace(5);
+        mainContianer->addWidget(midiChannelSpinBox);
+}

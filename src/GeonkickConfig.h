@@ -31,6 +31,8 @@ class GeonkickConfig {
         GeonkickConfig();
         void setScaleFactor(double factor);
         double getScaleFactor() const;
+        void setMidiChannel(int channel);
+        int getMidiChannel() const;
         bool open();
         bool save();
 
@@ -40,6 +42,7 @@ class GeonkickConfig {
 
  private:
         double scaleFactor;
+        int channelNumber;
         std::filesystem::path configFile;
 };
 
