@@ -120,6 +120,18 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         kitChannelsView->show();
         topContainer->addSpace(100 - 4 * 16 - 3 * 5 - 10);
         topContainer->addWidget(kitChannelsView);
+        auto label = new RkLabel(this, "MIDI Ch.");
+        label->setTextColor(textColor());
+        label->setBackgroundColor(background());
+        label->setSize({50, 20});
+        label->show();
+        topContainer->addWidget(label);
+        label = new RkLabel(this, "Key");
+        label->setTextColor(textColor());
+        label->setBackgroundColor(background());
+        label->setSize({30, 20});
+        label->show();
+        topContainer->addWidget(label);
         kitContainer->addContainer(topContainer);
         kitContainer->addContainer(percussionsContainer);
 

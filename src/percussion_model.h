@@ -105,9 +105,9 @@ class PercussionModel : public RkObject {
                     RK_ARG_TYPE(bool),
                     RK_ARG_VAL(b));
         RK_DECL_ACT(midiChannelUpdated,
-                    midiChannelUpdated(int val),
+                    midiChannelUpdated(int index),
                     RK_ARG_TYPE(int),
-                    RK_ARG_VAL(val));
+                    RK_ARG_VAL(index));
 
  protected:
         void onPercussionSelected();

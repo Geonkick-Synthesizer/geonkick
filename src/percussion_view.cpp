@@ -140,8 +140,18 @@ void KitPercussionView::createView()
         midiChannelSpinBox->downControl()->setBackgroundColor({50, 47, 47});
         midiChannelSpinBox->downControl()->setTextColor({100, 100, 100});
         midiChannelSpinBox->show();
+        RK_ACT_BIND(midiChannelSpinBox,
+                    currentIndexChanged,
+                    RK_ACT_ARGS(int index),
+                    percussionModel,
+                    setMidiChannel(index - 1));
+        RK_ACT_BIND(percussionModel,
+                    midiChannelUpdated,
+                    RK_ACT_ARGS(int index),
+                    midiChannelSpinBox,
+                    setCurrentIndex(index + 1));
         percussionContainer->addWidget(midiChannelSpinBox);
-        percussionContainer->addSpace(10);
+        percussionContainer->addSpace(5);
 
         // Midi key button.
         keyButton = new GeonkickButton(this);
