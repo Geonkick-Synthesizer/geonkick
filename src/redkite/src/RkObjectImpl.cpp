@@ -107,7 +107,7 @@ void RkObject::RkObjectImpl::removeObservers(RkObject *obj)
                                 , observersList.end());
 }
 
-const std::vector<std::unique_ptr<RkObserver>>&
+const std::list<std::unique_ptr<RkObserver>>&
 RkObject::RkObjectImpl::observers() const
 {
         return observersList;

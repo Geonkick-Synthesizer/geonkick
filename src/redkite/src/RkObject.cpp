@@ -96,7 +96,7 @@ void RkObject::rk__add_observer(std::unique_ptr<RkObserver> observer)
         o_ptr->addObserver(std::move(observer));
 }
 
-const std::vector<std::unique_ptr<RkObserver>>& RkObject::rk__observers() const
+const std::list<std::unique_ptr<RkObserver>>& RkObject::rk__observers() const
 {
         return o_ptr->observers();
 }
