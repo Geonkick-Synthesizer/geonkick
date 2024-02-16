@@ -52,8 +52,8 @@ RkObject::RkObjectImpl::~RkObjectImpl()
         observersList.clear();
 
         // Remove myself from the paren object.
-        if (inf_ptr->parent())
-                inf_ptr->parent()->removeChild(inf_ptr);
+        if (parent())
+                parent()->removeChild(inf_ptr);
 }
 
 void RkObject::RkObjectImpl::removeChildrens()
