@@ -163,7 +163,8 @@ int KitModel::percussionLimiter(PercussionIndex index) const
 int KitModel::percussionLeveler(PercussionIndex index) const
 {
         auto realVal = geonkickApi->getLimiterLevelerValue(percussionId(index));
-        double logVal = 20 * log10(realVal);
+        // add small delta to avoid -inf for zero value
+        double logVal = 20 * log10(realVal + 0.000000001);
         int val = (logVal + 55.0) * 100.0 / 75;
         if (val < 0)
                 val = 0;
