@@ -1449,6 +1449,19 @@ int GeonkickApi::getPercussionMidiChannel(int index) const
         return channel;
 }
 
+bool GeonkickApi::forceMidiChannel(size_t channel, bool force)
+{
+        auto res = geonkick_force_midi_channel(geonkickApi, channel, force);
+        return res == GEONKICK_OK;
+}
+
+bool GeonkickApi::isMidiChannelForced() const
+{
+        bool forced = false;
+        geonkick_ged_forced_midi_channel(geonkickApi, nullptr, &forced);
+        return forced;
+}
+ 
 bool GeonkickApi::setPercussionName(int index, const std::string &name)
 {
         auto res = geonkick_set_percussion_name(geonkickApi,

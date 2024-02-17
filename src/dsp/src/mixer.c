@@ -46,13 +46,27 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 
         for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
-                gkick_log_info("output: [index: %d, midi ch: %d]", i, output->midi_channel);
-                if (output->enabled
-                    && (output->midi_channel == GEONKICK_ANY_MIDI_CHANNEL
-                        || output->midi_channel == note->channel)
+                if (!output->enabled)
+                        continue;
+                
+                gkick_log_info("output: [index: %d, midi ch: %d]"
+                               , i, output->midi_channel);
+                
+                short forced_midi_channel = mixer->forced_midi_channel;
+                gkick_log_info("output: [index: %d, forced midi ch: %d]",
+                               i, forced_midi_channel >> 8);
+
+                signed char midi_channel;
+                if (forced_midi_channel & 0x0100)
+                        midi_channel = forced_midi_channel & 0x00ff;
+                else
+                        midi_channel = output->midi_channel;
+                
+                if ((midi_channel == GEONKICK_ANY_MIDI_CHANNEL
+                     || midi_channel == note->channel)
                     && (output->playing_key == GEONKICK_ANY_KEY
-                    || output->playing_key == note->note_number
-		    || output->tune)) {
+                        || output->playing_key == note->note_number
+                        || output->tune)) {
                         gkick_audio_output_key_pressed(output, note);
                 }
         }
@@ -216,5 +230,31 @@ gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
 {
         mixer->limiter_callback = callback;
         mixer->limiter_callback_arg = arg;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_force_midi_channel(struct gkick_mixer *mixer,
+                               signed char channel,
+                               bool force)
+{
+        short forced_midi = mixer->forced_midi_channel;
+        forced_midi &= force ? 0x01ff : 0x00ff;
+        if (force)
+                forced_midi &= (0x0100 | channel) ;
+        mixer->forced_midi_channel = forced_midi;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
+                                    signed char *channel,
+                                    bool *force)
+{
+        short forced_midi = mixer->forced_midi_channel;
+        if (channel)
+                *channel = forced_midi & 0x00ff;
+        if (force)
+                *force = forced_midi & 0x0100;
         return GEONKICK_OK;
 }

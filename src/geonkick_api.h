@@ -272,6 +272,8 @@ class GeonkickApi : public RkObject {
   int getPercussionChannel(int index) const;
   bool setPercussionMidiChannel(int index, size_t channel);
   int getPercussionMidiChannel(int index) const;
+  bool forceMidiChannel(size_t channel, bool force);
+  bool isMidiChannelForced() const;
   bool setPercussionName(int index, const std::string &name);
   bool setPercussionLimiter(size_t id, double val);
   double percussionLimiter(size_t id) const;

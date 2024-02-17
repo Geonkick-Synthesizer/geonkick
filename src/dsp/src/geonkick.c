@@ -1708,6 +1708,32 @@ geonkick_get_midi_channel(struct geonkick *kick,
         return gkick_audio_output_get_midi_channel(kick->synths[id]->output, channel);
 }
 
+enum geonkick_error
+geonkick_force_midi_channel(struct geonkick *kick,
+                            signed char channel,
+                            bool force)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_mixer_force_midi_channel(kick->audio->mixer, channel, force);
+}
+
+enum geonkick_error
+geonkick_ged_forced_midi_channel(struct geonkick *kick,
+                                 signed char *channel,
+                                 bool *force)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_mixer_get_forced_midi_channel(kick->audio->mixer, channel, force);
+}
+
 size_t
 geonkick_midi_channels_number(struct geonkick *kick)
 {

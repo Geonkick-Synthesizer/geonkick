@@ -649,6 +649,16 @@ geonkick_get_midi_channel(struct geonkick *kick,
                           size_t id,
                           signed char *channel);
 
+enum geonkick_error
+geonkick_force_midi_channel(struct geonkick *kick,
+                            signed char channel,
+                            bool force);
+
+enum geonkick_error
+geonkick_ged_forced_midi_channel(struct geonkick *kick,
+                                 signed char *channel,
+                                 bool *force);
+        
 size_t
 geonkick_midi_channels_number();
 

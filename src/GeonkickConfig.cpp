@@ -30,6 +30,7 @@
 GeonkickConfig::GeonkickConfig()
         : scaleFactor{1.0}
         , channelNumber{GeonkickTypes::geonkickAnyMidiChannel}
+        , midiChannelForced{false}
 	, configFile{DesktopPaths().getConfigPath() / "config.json"}
 {
         open();
@@ -43,6 +44,16 @@ void GeonkickConfig::setMidiChannel(int channel)
 int GeonkickConfig::getMidiChannel() const
 {
         return channelNumber;
+}
+
+bool GeonkickConfig::isMidiChannelForced() const
+{
+        return midiChannelForced;
+}
+
+void GeonkickConfig::setMidiChannelForced(bool b)
+{
+        midiChannelForced = b;
 }
         
 void GeonkickConfig::setScaleFactor(double factor)
@@ -85,6 +96,8 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         scaleFactor = m.value.GetDouble();
                 if (m.name == "midiChannel" && m.value.IsInt())
                         channelNumber = m.value.GetInt();
+                if (m.name == "midiChannelForced" && m.value.IsBool())
+                        midiChannelForced = m.value.GetBool();
         }
 }
 
@@ -121,6 +134,8 @@ std::string GeonkickConfig::toJson() const
         jsonStream << "\"scaleFactor\": " << std::fixed << std::setprecision(2) << scaleFactor << std::endl;
         jsonStream << "," << std::endl;
         jsonStream << "\"midiChannel\": " << channelNumber << std::endl;
+        jsonStream << "," << std::endl;
+        jsonStream << "\"midiChannelForced\": " << midiChannelForced << std::endl;
         jsonStream << "}" << std::endl;
         return jsonStream.str();
 }
