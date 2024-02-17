@@ -27,10 +27,14 @@
 #include "geonkick_widget.h"
 
 class GeonkickApi;
+class RkContainer;
 
 class SettingsWidget: public GeonkickWidget {
  public:
         SettingsWidget(GeonkickWidget *parent, GeonkickApi* api);
+
+ protected:
+        void createMidiChannelSettings(RkContainer *container);
 
  private:
         GeonkickApi *geonkickApi;

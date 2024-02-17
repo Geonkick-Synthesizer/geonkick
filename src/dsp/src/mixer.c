@@ -49,19 +49,17 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
                 if (!output->enabled)
                         continue;
                 
-                gkick_log_info("output: [index: %d, midi ch: %d]"
-                               , i, output->midi_channel);
-                
                 short forced_midi_channel = mixer->forced_midi_channel;
-                gkick_log_info("output: [index: %d, forced midi ch: %d]",
-                               i, forced_midi_channel >> 8);
-
                 signed char midi_channel;
                 if (forced_midi_channel & 0x0100)
                         midi_channel = forced_midi_channel & 0x00ff;
                 else
                         midi_channel = output->midi_channel;
-                
+
+                gkick_log_debug("output: index[%d], forced[%d], midi ch[%d]",
+                                i,
+                                (forced_midi_channel & 0x0100) != 0,
+                                midi_channel);
                 if ((midi_channel == GEONKICK_ANY_MIDI_CHANNEL
                      || midi_channel == note->channel)
                     && (output->playing_key == GEONKICK_ANY_KEY
@@ -238,10 +236,16 @@ gkick_mixer_force_midi_channel(struct gkick_mixer *mixer,
                                signed char channel,
                                bool force)
 {
+        gkick_log_info("forced %d midi %d", force, channel);
         short forced_midi = mixer->forced_midi_channel;
-        forced_midi &= force ? 0x01ff : 0x00ff;
+        forced_midi = force ? (forced_midi | 0x0100) : (forced_midi & 0x00ff);
         if (force)
-                forced_midi &= (0x0100 | channel) ;
+                forced_midi |= channel;
+
+        short forced_midi_channel = mixer->forced_midi_channel;
+        gkick_log_info("forced [%d] midi ch: %d]",
+                       (forced_midi & 0x0100) != 0,
+                       forced_midi & 0x00ff);
         mixer->forced_midi_channel = forced_midi;
         return GEONKICK_OK;
 }

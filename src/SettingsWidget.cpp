@@ -40,8 +40,47 @@ SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
         auto mainContianer = new RkContainer(this);
         mainContianer->setSize({width(), 30});
 
+        createMidiChannelSettings(mainContianer);
+        
+        auto label = new RkLabel(this, "Force all midi channels to ");
+        label->setSize({130, 20});
+        label->setTextColor({255, 255, 255});
+        label->setBackgroundColor(background());
+        label->show();
+        mainContianer->addWidget(label);
+
+        // MIDI channels spin box.
+        auto midiChannelSpinBox = new RkSpinBox(this);
+        midiChannelSpinBox->setTextColor({250, 250, 250});
+        midiChannelSpinBox->setBackgroundColor({60, 57, 57});
+        midiChannelSpinBox->upControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->upControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->downControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->downControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->setSize({50, 20});
+        midiChannelSpinBox->addItem("Any");
+        for (size_t i = 0; i < geonkickApi->numberOfMidiChannels(); i++)
+                midiChannelSpinBox->addItem(std::to_string(i + 1));
+        midiChannelSpinBox->setCurrentIndex(GeonkickConfig().getMidiChannel() + 1);
+        RK_ACT_BINDL(midiChannelSpinBox,
+                     currentIndexChanged,
+                     RK_ACT_ARGS(int index),
+                     [=, this](int index){
+                             GeonkickConfig cfg;
+                             cfg.setMidiChannel(index - 1);
+                             geonkickApi->forceMidiChannel(index - 1,
+                                                           cfg.isMidiChannelForced());
+                             cfg.save(); });
+        midiChannelSpinBox->show();
+        mainContianer->addSpace(5);
+        mainContianer->addWidget(midiChannelSpinBox);
+}
+
+void SettingsWidget::createMidiChannelSettings(RkContainer *container)
+{
         auto forceMidiCheckBox = new GeonkickButton(this);
         forceMidiCheckBox->setBorderWidth(1);
+        forceMidiCheckBox->setPressed(GeonkickConfig().isMidiChannelForced());
         forceMidiCheckBox->setBorderColor({55, 55, 55});
         forceMidiCheckBox->setBackgroundColor({255, 255, 255});
         forceMidiCheckBox->setCheckable(true);
@@ -67,39 +106,6 @@ SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
                              geonkickApi->forceMidiChannel(cfg.getMidiChannel(),
                                                            cfg.isMidiChannelForced());
                              cfg.save();});
-        mainContianer->addWidget(forceMidiCheckBox);
-        mainContianer->addSpace(3);
-        
-        auto label = new RkLabel(this, "Force all midi channels to ");
-        label->setSize({130, 20});
-        label->setTextColor({255, 255, 255});
-        label->setBackgroundColor(background());
-        label->show();
-        mainContianer->addWidget(label);
-
-        // MIDI channels spin box.
-        auto midiChannelSpinBox = new RkSpinBox(this);
-        midiChannelSpinBox->setTextColor({250, 250, 250});
-        midiChannelSpinBox->setBackgroundColor({60, 57, 57});
-        midiChannelSpinBox->upControl()->setBackgroundColor({50, 47, 47});
-        midiChannelSpinBox->upControl()->setTextColor({100, 100, 100});
-        midiChannelSpinBox->downControl()->setBackgroundColor({50, 47, 47});
-        midiChannelSpinBox->downControl()->setTextColor({100, 100, 100});
-        midiChannelSpinBox->setSize({60, 20});
-        midiChannelSpinBox->addItem("Any");
-        for (size_t i = 0; i < geonkickApi->numberOfMidiChannels(); i++)
-                midiChannelSpinBox->addItem(std::to_string(i + 1));
-        midiChannelSpinBox->setCurrentIndex(GeonkickConfig().getMidiChannel() + 1);
-        RK_ACT_BINDL(midiChannelSpinBox,
-                     currentIndexChanged,
-                     RK_ACT_ARGS(int index),
-                     [=, this](int index){
-                             GeonkickConfig cfg;
-                             cfg.setMidiChannel(index - 1);
-                             geonkickApi->forceMidiChannel(index - 1,
-                                                           cfg.isMidiChannelForced());
-                             cfg.save(); });
-        midiChannelSpinBox->show();
-        mainContianer->addSpace(5);
-        mainContianer->addWidget(midiChannelSpinBox);
+        container->addWidget(forceMidiCheckBox);
+        container->addSpace(3);
 }

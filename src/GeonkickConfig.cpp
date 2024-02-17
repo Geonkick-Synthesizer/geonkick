@@ -96,8 +96,8 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         scaleFactor = m.value.GetDouble();
                 if (m.name == "midiChannel" && m.value.IsInt())
                         channelNumber = m.value.GetInt();
-                if (m.name == "midiChannelForced" && m.value.IsBool())
-                        midiChannelForced = m.value.GetBool();
+                if (m.name == "midiChannelForced" && m.value.IsInt())
+                        midiChannelForced = m.value.GetInt();
         }
 }
 

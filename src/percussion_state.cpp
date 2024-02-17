@@ -32,6 +32,7 @@ PercussionState::PercussionState()
         , kickName{"Default"}
         , playingKey{-1}
         , outputChannel{0}
+        , outputMidiChannel{GeonkickTypes::geonkickAnyMidiChannel}
         , kickEnabled{true}
         , percussionMuted{false}
         , percussionSolo{false}
@@ -164,6 +165,11 @@ void PercussionState::setChannel(size_t channel)
         outputChannel = channel;
 }
 
+void PercussionState::setMidiChannel(signed char channel)
+{
+        outputMidiChannel = channel;
+}
+
 void PercussionState::setMute(bool b)
 {
         percussionMuted = b;
@@ -187,6 +193,11 @@ bool PercussionState::isSolo() const
 size_t PercussionState::getChannel() const
 {
         return outputChannel;
+}
+
+signed char PercussionState::getMidiChannel() const
+{
+        return outputMidiChannel;
 }
 
 bool PercussionState::isEnabled() const
@@ -228,6 +239,8 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                         setId(m.value.GetInt());
                 if (m.name == "channel" && m.value.IsInt())
                         setChannel(m.value.GetInt());
+                if (m.name == "midiChannel" && m.value.IsInt())
+                        setMidiChannel(m.value.GetInt());
                 if (m.name == "mute" && m.value.IsBool())
                         setMute(m.value.GetBool());
                 if (m.name == "solo" && m.value.IsBool())
@@ -1067,6 +1080,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "\"PercussionAppVersion\": " << GEONKICK_VERSION << "," << std::endl;
 	jsonStream << "\"id\": " << getId() << "," << std::endl;
         jsonStream << "\"channel\": " << getChannel() << "," << std::endl;
+        jsonStream << "\"midiChannel\": " << getMidiChannel() << "," << std::endl;
         jsonStream << "\"mute\": " << (isMuted() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"solo\": " << (isSolo() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;

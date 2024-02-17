@@ -53,7 +53,9 @@ GeonkickApi::GeonkickApi(int sample_rate, InstanceType instance, geonkick *dsp)
 {
         setupPaths();
         uiSettings->setSamplesBrowserPath(getSettings("GEONKICK_CONFIG/HOME_PATH"));
-        scaleFactor = GeonkickConfig().getScaleFactor();
+        GeonkickConfig cfg;
+        scaleFactor = cfg.getScaleFactor();
+        forceMidiChannel(cfg.getMidiChannel(), cfg.isMidiChannelForced());
 }
 
 GeonkickApi::~GeonkickApi()
@@ -257,6 +259,7 @@ void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &sta
         setPercussionName(state->getId(), state->getName());
         setPercussionPlayingKey(state->getId(), state->getPlayingKey());
         setPercussionChannel(state->getId(), state->getChannel());
+        setPercussionMidiChannel(state->getId(), state->getMidiChannel());
         mutePercussion(state->getId(), state->isMuted());
         soloPercussion(state->getId(), state->isSolo());
         for (auto i = 0; i < 3; i++) {
@@ -1674,6 +1677,7 @@ void GeonkickApi::pasteFromClipboard()
                 state->setName(getPercussionName(currId));
                 state->setPlayingKey(getPercussionPlayingKey(currId));
                 state->setChannel(getPercussionChannel(currId));
+                state->setMidiChannel(getPercussionMidiChannel(currId));
                 state->setMute(isPercussionMuted(currId));
                 state->setSolo(isPercussionSolo(currId));
                 setPercussionState(state);

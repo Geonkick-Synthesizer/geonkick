@@ -105,7 +105,7 @@ int KitModel::percussionMidiChannel(PercussionIndex index) const
 
 bool KitModel::setPercussionMidiChannel(PercussionIndex index, int channel)
 {
-        return geonkickApi->setPercussionChannel(percussionId(index), channel);
+        return geonkickApi->setPercussionMidiChannel(percussionId(index), channel);
 }
 
 bool KitModel::setPercussionName(PercussionIndex index, const std::string &name)

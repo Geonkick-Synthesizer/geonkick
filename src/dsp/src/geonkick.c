@@ -1691,6 +1691,7 @@ geonkick_set_midi_channel(struct geonkick *kick,
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
+        gkick_log_debug("id: %d, ch: %d", id, channel);
         return gkick_audio_output_set_midi_channel(kick->synths[id]->output, channel);
 }
 
