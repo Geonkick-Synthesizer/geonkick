@@ -41,7 +41,7 @@ class RkObject::RkObjectImpl {
         RkEventQueue* getEventQueue() const;
         void addObserver(std::unique_ptr<RkObserver> ob);
         void removeObservers(RkObject *obj);
-        const std::vector<std::unique_ptr<RkObserver>>& observers() const;
+        const std::list<std::unique_ptr<RkObserver>>& observers() const;
         void addBoundObject(RkObject *obj);
         void removeBoundObject(RkObject *obj);
         void addChild(RkObject* child);
@@ -56,7 +56,7 @@ class RkObject::RkObjectImpl {
         RkObject *parentObject;
         RkEventQueue *eventQueue;
         std::unordered_set<RkObject*> objectChildren;
-        std::vector<std::unique_ptr<RkObserver>> observersList;
+        std::list<std::unique_ptr<RkObserver>> observersList;
         std::vector<RkObject*> boundObjects;
         std::string objectName;
 };

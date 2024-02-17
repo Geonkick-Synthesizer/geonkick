@@ -52,8 +52,8 @@ RkObject::RkObjectImpl::~RkObjectImpl()
         observersList.clear();
 
         // Remove myself from the paren object.
-        if (inf_ptr->parent())
-                inf_ptr->parent()->removeChild(inf_ptr);
+        if (parent())
+                parent()->removeChild(inf_ptr);
 }
 
 void RkObject::RkObjectImpl::removeChildrens()
@@ -107,7 +107,7 @@ void RkObject::RkObjectImpl::removeObservers(RkObject *obj)
                                 , observersList.end());
 }
 
-const std::vector<std::unique_ptr<RkObserver>>&
+const std::list<std::unique_ptr<RkObserver>>&
 RkObject::RkObjectImpl::observers() const
 {
         return observersList;
