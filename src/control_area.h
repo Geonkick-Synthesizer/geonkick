@@ -38,6 +38,7 @@ class EnvelopeWidget;
 class PresetBrowserView;
 class PresetBrowserModel;
 class SampleBrowser;
+class SettingsWidget;
 
 class ControlArea: public GeonkickWidget
 {
@@ -67,6 +68,7 @@ class ControlArea: public GeonkickWidget
 #endif // GEONKICK_SINGLE
         PresetBrowserView *presetsWidget;
         SampleBrowser *samplesWidget;
+        SettingsWidget *settingsWidget;
 };
 
 #endif // GKICK_CONTROL_AREA_H

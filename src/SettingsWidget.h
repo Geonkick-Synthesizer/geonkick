@@ -1,8 +1,8 @@
 /**
- * File name: compressor_group_box.h
- * Project: Geonkick (A kick synthesizer)
+ * File name: SettingsWidget.h
+ * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor 
  *
  * This file is part of Geonkick.
  *
@@ -21,32 +21,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_COMPRESSOR_GROUPBOX_H
-#define GEONKICK_COMPRESSOR_GROUPBOX_H
+#ifndef GEONKICK_SETTINGS_WIDGET_H
+#define GEONKICK_SETTINGS_WIDGET_H
 
-#include "geonkick_groupbox.h"
+#include "geonkick_widget.h"
 
-class GeonkickSlider;
 class GeonkickApi;
-class GeonkickButton;
 
-class CompressorGroupBox: public GeonkickGroupBox
-{
+class SettingsWidget: public GeonkickWidget {
  public:
-        CompressorGroupBox(GeonkickApi *api, GeonkickWidget* parent);
-        void updateGui();
-        void setAttack(int val);
-        void setThreshold(int val);
-        void setRatio(int val);
-        void setMakeup(int val);
+        SettingsWidget(GeonkickWidget *parent, GeonkickApi* api);
 
  private:
         GeonkickApi *geonkickApi;
-        GeonkickSlider *attackSlider;
-        GeonkickSlider *thresholdSlider;
-        GeonkickSlider *ratioSlider;
-        GeonkickSlider *makeupSlider;
-        GeonkickButton *compressorCheckbox;
 };
 
-#endif // GEONKICK_COMPRESSOR_WIDGET_H
+#endif // GEONKICK_SETTINGS_WIDGET

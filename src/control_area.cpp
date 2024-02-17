@@ -28,6 +28,7 @@
 #include "preset_browser_model.h"
 #include "preset_browser_view.h"
 #include "SampleBrowser.h"
+#include "SettingsWidget.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
                          KitModel* model,
@@ -43,6 +44,7 @@ ControlArea::ControlArea(GeonkickWidget *parent,
 #endif // GEONKICK_SINGLE
         , presetsWidget{nullptr}
         , samplesWidget{nullptr}
+        , settingsWidget{nullptr}
 
 {
         setName("ControlArea");
@@ -71,6 +73,14 @@ void ControlArea::showWidget(ViewState::View view)
                 if (!samplesWidget)
                         samplesWidget = new SampleBrowser(this, kitModel->api());
                 currentWidget = samplesWidget;
+                currentWidget->show();
+                break;
+        case ViewState::View::Settings:
+                if (currentWidget)
+                        currentWidget->hide();
+                if (!settingsWidget)
+                        settingsWidget = new SettingsWidget(this, kitModel->api());
+                currentWidget = settingsWidget;
                 currentWidget->show();
                 break;
         default:

@@ -29,11 +29,22 @@
 
 GeonkickConfig::GeonkickConfig()
         : scaleFactor{1.0}
+        , channelNumber{GeonkickTypes::geonkickAnyMidiChannel}
 	, configFile{DesktopPaths().getConfigPath() / "config.json"}
 {
         open();
 }
 
+void GeonkickConfig::setMidiChannel(int channel)
+{
+        channelNumber = channel;
+}
+
+int GeonkickConfig::getMidiChannel() const
+{
+        return channelNumber;
+}
+        
 void GeonkickConfig::setScaleFactor(double factor)
 {
         scaleFactor = factor;
@@ -72,6 +83,8 @@ void GeonkickConfig::loadConfig(const std::string &data)
         for (const auto &m: document.GetObject()) {
                 if (m.name == "scaleFactor" && m.value.IsDouble())
                         scaleFactor = m.value.GetDouble();
+                if (m.name == "midiChannel" && m.value.IsInt())
+                        channelNumber = m.value.GetInt();
         }
 }
 
@@ -79,6 +92,7 @@ bool GeonkickConfig::save()
 {
         try {
                 auto configPath = configFile.parent_path();
+                GEONKICK_LOG_INFO("configPath" << configPath);
                 if (!std::filesystem::exists(configPath)) {
                         if (!std::filesystem::create_directories(configPath)) {
                                 GEONKICK_LOG_ERROR("can't create path " << configPath);
@@ -105,6 +119,8 @@ std::string GeonkickConfig::toJson() const
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
         jsonStream << "\"scaleFactor\": " << std::fixed << std::setprecision(2) << scaleFactor << std::endl;
+        jsonStream << "," << std::endl;
+        jsonStream << "\"midiChannel\": " << channelNumber << std::endl;
         jsonStream << "}" << std::endl;
         return jsonStream.str();
 }

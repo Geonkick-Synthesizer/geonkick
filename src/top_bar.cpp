@@ -78,6 +78,9 @@ RK_DECLARE_IMAGE_RC(topmenu_presets_off);
 RK_DECLARE_IMAGE_RC(topmenu_samples_active);
 RK_DECLARE_IMAGE_RC(topmenu_samples_hover);
 RK_DECLARE_IMAGE_RC(topmenu_samples_off);
+RK_DECLARE_IMAGE_RC(topmenu_settings_active);
+RK_DECLARE_IMAGE_RC(topmenu_settings_hover);
+RK_DECLARE_IMAGE_RC(topmenu_settings_off);
 
 TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         : GeonkickWidget(parent)
@@ -106,7 +109,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
 
         auto logo = new RkLabel(this);
         logo->setBackgroundColor(background());
-        RkImage image(62, 10, RK_IMAGE_RC(logo));
+        RkImage image(22, 22, RK_IMAGE_RC(logo));
         logo->setSize(image.width(), image.height());
         logo->setImage(image);
         logo->show();
@@ -306,6 +309,27 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     samplesButton, setPressed(view == ViewState::View::Samples));
         mainLayout->addWidget(samplesButton);
+
+        // Setting button
+        addSeparator(mainLayout);
+        auto settingsButton = new GeonkickButton(this);
+        settingsButton->setPressed(viewState()->getMainView() == ViewState::View::Samples);
+        settingsButton->setFixedSize(54, 20);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_off)),
+                                 RkButton::State::Unpressed);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_active)),
+                                 RkButton::State::Pressed);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_hover)),
+                                 RkButton::State::UnpressedHover);
+        settingsButton->show();
+        RK_ACT_BIND(settingsButton, pressed, RK_ACT_ARGS(),
+                    viewState(), setMainView(ViewState::View::Settings));
+        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
+                    settingsButton, setPressed(view == ViewState::View::Settings));
+        mainLayout->addWidget(settingsButton);
 
         RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateGui());
         RK_ACT_BINDL(kitModel, percussionUpdated, RK_ACT_ARGS(PercussionModel* model),

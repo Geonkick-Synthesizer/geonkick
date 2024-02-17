@@ -44,7 +44,11 @@ RkSpinBox::RkSpinBox(RkWidget *parent)
 
 void RkSpinBox::setCurrentIndex(int index)
 {
+        if (index == impl_ptr->currentIndex())
+                return;
+        
         impl_ptr->setCurrentIndex(index);
+        action currentIndexChanged(impl_ptr->currentIndex());
 }
 
 int RkSpinBox::currentIndex() const

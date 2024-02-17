@@ -112,6 +112,7 @@ namespace GeonkickTypes
 {
 using MidiKey = unsigned char;
 constexpr MidiKey geonkickAnyKey = GEONKICK_ANY_KEY;
+constexpr int geonkickAnyMidiChannel = GEONKICK_ANY_MIDI_CHANNEL;
 
 enum class Formats : int {
           Gkick  = 0,

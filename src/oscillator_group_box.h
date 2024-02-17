@@ -30,7 +30,6 @@
 class GKickOscillator;
 class GeonkickWidget;
 class GeonkickButton;
-class GeonkickCheckbox;
 class Knob;
 class GeonkickSlider;
 class Filter;
