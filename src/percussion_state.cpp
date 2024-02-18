@@ -1081,7 +1081,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "\"PercussionAppVersion\": " << GEONKICK_VERSION << "," << std::endl;
 	jsonStream << "\"id\": " << getId() << "," << std::endl;
         jsonStream << "\"channel\": " << getChannel() << "," << std::endl;
-        jsonStream << "\"midiChannel\": " << getMidiChannel() << "," << std::endl;
+        jsonStream << "\"midiChannel\": " << static_cast<int>(getMidiChannel()) << "," << std::endl;
         jsonStream << "\"mute\": " << (isMuted() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"solo\": " << (isSolo() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;

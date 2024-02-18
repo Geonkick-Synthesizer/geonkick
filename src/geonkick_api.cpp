@@ -341,6 +341,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
         state->tuneOutput(isAudioOutputTuned(state->getId()));
         state->setPlayingKey(getPercussionPlayingKey(state->getId()));
         state->setChannel(getPercussionChannel(state->getId()));
+        state->setMidiChannel(getPercussionMidiChannel(state->getId()));
         state->setMute(isPercussionMuted(state->getId()));
         state->setSolo(isPercussionSolo(state->getId()));
         for (int i = 0; i < 3; i++) {
