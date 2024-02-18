@@ -58,8 +58,7 @@ bool KitState::open(const std::string &fileName)
                              (std::istreambuf_iterator<char>()));
 
         sfile.close();
-        fromJson(fileData);
-        return false;
+        return fromJson(fileData);
 }
 
 bool KitState::save(const std::string &fileName)
@@ -123,17 +122,18 @@ std::vector<std::shared_ptr<PercussionState>>& KitState::percussions()
         return percussionsList;
 }
 
-void KitState::fromJson(const std::string &jsonData)
+bool KitState::fromJson(const std::string &jsonData)
 {
         rapidjson::Document document;
         document.Parse(jsonData.c_str());
         if (!document.IsObject())
-                return;
-        fromJsonObject(document);
+                return false;
+        return fromJsonObject(document);
 }
 
-void KitState::fromJsonObject(const rapidjson::Value &obj)
+bool KitState::fromJsonObject(const rapidjson::Value &obj)
 {
+        bool isOk = true;
         for (const auto &m: obj.GetObject()) {
                 if (m.name == "KitAppVersion" && m.value.IsInt())
                         kitAppVersion = m.value.GetInt();
@@ -144,19 +144,25 @@ void KitState::fromJsonObject(const rapidjson::Value &obj)
                 if (m.name == "url" && m.value.IsString())
                         setUrl(m.value.GetString());
                 if (m.name == "percussions" && m.value.IsArray())
-                        parsePercussions(m.value);
+                        isOk = parsePercussions(m.value);
         }
+        return isOk;
 }
 
-void KitState::parsePercussions(const rapidjson::Value &percussionsArray)
+bool KitState::parsePercussions(const rapidjson::Value &percussionsArray)
 {
+        if (percussionsArray.Empty())
+                return false;
+
         size_t i = 0;
         for (const auto &per: percussionsArray.GetArray()) {
                 auto state = std::make_shared<PercussionState>();
                 state->setId(i++);
-                state->loadObject(per);
+                if (!state->loadObject(per))
+                        return false;
                 addPercussion(state);
         }
+        return true;
 }
 
 std::string KitState::toJson() const

@@ -34,8 +34,8 @@ class KitState {
         KitState();
         bool open(const std::string &fileName);
         bool save(const std::string &fileName);
-        void fromJson(const std::string &jsonData);
-        void fromJsonObject(const rapidjson::Value &obj);
+        bool fromJson(const std::string &jsonData);
+        bool fromJsonObject(const rapidjson::Value &obj);
         void setName(const std::string &name);
         std::string getName() const;
         void setAuthor(const std::string &author);
@@ -48,7 +48,7 @@ class KitState {
         std::vector<std::shared_ptr<PercussionState>>& percussions();
 
  protected:
-        void parsePercussions(const rapidjson::Value &percussionsArray);
+        bool parsePercussions(const rapidjson::Value &percussionsArray);
 
  private:
         std::vector<std::shared_ptr<PercussionState>> percussionsList;
