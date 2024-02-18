@@ -39,6 +39,10 @@ extern "C" {
 #include <float.h>
 #include <stdbool.h>
 
+#ifdef __FAST_MATH__
+#error -ffast-math disables nan detection needed by geonkick
+#endif
+
 #ifdef __STDC_NO_ATOMICS__
 #error atomic operations are not supported
 #endif

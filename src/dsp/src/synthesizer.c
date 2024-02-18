@@ -1088,9 +1088,14 @@ synth_kick_env_get_apply_type(struct gkick_synth *synth,
 			      enum gkick_envelope_apply_type *apply_type)
 {
 	gkick_synth_lock(synth);
-        if (env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE) {
+        switch (env_type) {
+        case GEONKICK_FILTER_CUTOFF_ENVELOPE:
 		*apply_type = gkick_envelope_get_apply_type(synth->filter->cutoff_env);
-	}
+                break;
+        default:
+                *apply_type = GEONKICK_ENVELOPE_APPLY_LINEAR;
+                break;
+        }
         gkick_synth_unlock(synth);
         return GEONKICK_OK;	
 }

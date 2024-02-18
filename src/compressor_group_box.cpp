@@ -156,7 +156,8 @@ void CompressorGroupBox::updateGui()
         compressorCheckbox->setPressed(geonkickApi->isCompressorEnabled());
 
         // Attack
-        attackSlider->onSetValue(100 * (log10(1000 * geonkickApi->getCompressorAttack()) / log10(2000)));
+        double attack = 100 * (log10(1000 * geonkickApi->getCompressorAttack()) / log10(2000));
+        attackSlider->onSetValue(static_cast<int>(std::max(attack, 0.0)));
 
         // Threshold
         auto threshold = geonkickApi->getCompressorThreshold();

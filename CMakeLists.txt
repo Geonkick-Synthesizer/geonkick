@@ -41,10 +41,10 @@ endif ()
 
 if (GKICK_ARCHITECTURE MATCHES x86_64)
   message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
-  set(GKICK_OPTIMISATION_FLAGS "-O3 -msse -msse2 -mfpmath=sse -ffast-math -fomit-frame-pointer")
+  set(GKICK_OPTIMISATION_FLAGS "-O3 -msse -msse2 -mfpmath=sse -funsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
 else ()
   message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
-  set(GKICK_OPTIMISATION_FLAGS "-O3 -ffast-math -fomit-frame-pointer")
+  set(GKICK_OPTIMISATION_FLAGS "-O3 -funsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
 endif ()
 
 set(CMAKE_CXX_STANDARD 20)
