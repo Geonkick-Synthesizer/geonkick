@@ -96,10 +96,10 @@ bool PercussionState::loadData(const std::string &data)
 	return true;
 }
 
-void PercussionState::loadObject(const rapidjson::Value &obj)
+bool PercussionState::loadObject(const rapidjson::Value &obj)
 {
         if (!obj.IsObject())
-                return;
+                return false;
 
         bool kickParsed = false;
         for (const auto &m: obj.GetObject()) {
@@ -111,7 +111,7 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
         }
 
         if (!kickParsed)
-                return;
+                return false;
 
         for (const auto &m: obj.GetObject()) {
                 for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
@@ -128,6 +128,7 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
                         }
                 }
         }
+        return true;
 }
 
 size_t PercussionState::getId() const
