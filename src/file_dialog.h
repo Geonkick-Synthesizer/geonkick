@@ -35,6 +35,7 @@ class RkLabel;
 class GeonkickSlider;
 class PathListModel;
 class RkList;
+class RkContainer;
 
 class FilesView: public GeonkickWidget {
  public:
@@ -126,8 +127,10 @@ class FileDialog: public GeonkickWidget {
         AcceptStatus acceptStatus() const;
         void setFilters(const std::vector<std::string> &filters);
         void setHomeDirectory(const std::string &path);
+        bool createDirectory(const std::filesystem::path &dir);
 
  protected:
+        void createNewDirectoryControls(RkContainer *container);
         void onAccept();
         void onCancel();
         void onPathChanged(const std::string &pathName);

@@ -2,7 +2,7 @@
  * File name: file_dialog.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -38,6 +38,7 @@ RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(cancel);
 RK_DECLARE_IMAGE_RC(scrollbar_button_up);
 RK_DECLARE_IMAGE_RC(scrollbar_button_down);
+RK_DECLARE_IMAGE_RC(new_directory);
 
 FilesView::FilesView(GeonkickWidget *parent)
         : GeonkickWidget(parent)
@@ -54,9 +55,9 @@ FilesView::FilesView(GeonkickWidget *parent)
         , scrollBar{nullptr}
         , isScrollBarVisible{false}
 {
-        setFixedSize(parent->width() - 110, parent->height() - 100);
+        setFixedSize(parent->width() - 110, parent->height() - 85);
         visibleLines = height() / (lineHeight + lineSacing);
-        setPosition(104, 50);
+        setPosition(104, 40);
         setBackgroundColor(50, 50, 50);
         setBorderColor(40, 40, 40);
         setBorderWidth(1);
@@ -389,6 +390,14 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         setBorderWidth(1);
         setBorderColor(40, 40, 40);
 
+        auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
+        mainContainer->addSpace(8);
+        mainContainer->setSize(size());
+
+        auto topContainer = new RkContainer(this);
+        topContainer->setSize({mainContainer->width(), 20});
+        mainContainer->addContainer(topContainer);
+
         filesView = new FilesView(this);
         RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
@@ -397,7 +406,6 @@ FileDialog::FileDialog(GeonkickWidget *parent,
                     this, onPathChanged(pathName));
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
                     this, directoryChanged(pathName));
-
         RK_ACT_BIND(shortcutDirectoriesModel,
                     itemSelected,
                     RK_ACT_ARGS(RkModelItem item),
@@ -410,17 +418,23 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         shortcutDirectoriesView->setSize(100 ,filesView->height());
         shortcutDirectoriesView->show();
 
+        // Create path label
         pathLabel = new RkLabel(this, "Path: " + filesView->getCurrentPath());
         pathLabel->setBackgroundColor(background());
-        pathLabel->setFixedSize(filesView->width(), 20);
+        pathLabel->setFixedSize(200, 20);
         pathLabel->setPosition(filesView->x(), 15);
         pathLabel->setFont(font());
         pathLabel->setTextColor(textColor());
         pathLabel->show();
+        topContainer->addSpace(shortcutDirectoriesView->width() + 5);
+        topContainer->addWidget(pathLabel);
+
+        createNewDirectoryControls(topContainer);
 
         auto buttomContainer = new RkContainer(this);
-        buttomContainer->setSize({width(), 30});
-        buttomContainer->setPosition({5, height() - buttomContainer->height() - 5});
+        buttomContainer->setSize({mainContainer->width(), 30});
+        mainContainer->addSpace(5, Rk::Alignment::AlignBottom);
+        mainContainer->addContainer(buttomContainer, Rk::Alignment::AlignBottom);
 
         if (dialogType != Type::Browse) {
                 auto acceptButton = new GeonkickButton(this);
@@ -452,6 +466,64 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         }
 
         show();
+}
+
+void FileDialog::createNewDirectoryControls(RkContainer *container)
+{
+        container->addSpace(200);
+        // Create directory button
+        auto createDirectoryButton = new GeonkickButton(this);
+        createDirectoryButton->setSize(16, 16);
+        createDirectoryButton->setImage(RkImage(createDirectoryButton->size(),
+                                                RK_IMAGE_RC(new_directory)),
+                                        RkButton::State::Unpressed);
+        createDirectoryButton->show();
+        container->addWidget(createDirectoryButton);
+
+        auto editDirectoryName = new RkLineEdit(this);
+        editDirectoryName->setSize(80, 16);
+        container->addWidget(editDirectoryName);
+
+        RK_ACT_BINDL(createDirectoryButton,
+                     pressed,
+                     RK_ACT_ARGS(),
+                     [=,this](){
+                             createDirectoryButton->hide();
+                             editDirectoryName->show();
+                             container->update();
+                             editDirectoryName->setFocus();
+                     });
+
+        RK_ACT_BINDL(editDirectoryName,
+                     escapePressed,
+                     RK_ACT_ARGS(),
+                     [=,this](){
+                             editDirectoryName->hide();
+                             createDirectoryButton->show();
+                             editDirectoryName->setText("");
+                             container->update();
+                     });
+
+        RK_ACT_BINDL(editDirectoryName,
+                     enterPressed,
+                     RK_ACT_ARGS(),
+                     [=,this](){
+                             editDirectoryName->hide();
+                             createDirectoryButton->show();
+                             createDirectory(editDirectoryName->text());
+                             editDirectoryName->setText("");
+                             container->update();
+                     });
+
+        RK_ACT_BINDL(editDirectoryName,
+                     editingFinished,
+                     RK_ACT_ARGS(),
+                     [=,this](){
+                             editDirectoryName->hide();
+                             createDirectoryButton->show();
+                             editDirectoryName->setText("");
+                             container->update();
+                     });
 }
 
 void FileDialog::onPathChanged(const std::string &pathName)
@@ -534,4 +606,21 @@ void FileDialog::setFilters(const std::vector<std::string> &filters)
 void FileDialog::setHomeDirectory(const std::string &path)
 {
         shortcutDirectoriesModel->setHomeDirectory(path);
+}
+
+bool FileDialog::createDirectory(const std::filesystem::path &dir)
+{
+        auto newPath = std::filesystem::path(currentDirectory()) / dir;
+        try {
+                if (!std::filesystem::create_directory(newPath)) {
+                        GEONKICK_LOG_ERROR("Failed to create directory: " << newPath);
+                        return false;
+                }
+        } catch (...) {
+                GEONKICK_LOG_ERROR("Failed to create directory: " << newPath);
+                return false;
+        }
+
+        setCurrentDirectoy(newPath);
+        return true;
 }
