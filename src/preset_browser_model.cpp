@@ -197,7 +197,7 @@ bool PresetBrowserModel::setPreset(Preset* preset)
                 }
         } else if (preset->type() == Preset::PresetType::PercussionKit) {
                 auto kit = std::make_unique<KitState>();
-                if (kit->open(preset->path().string())) {
+                if (!kit->open(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open kit");
                         return false;
                 } else if (geonkickApi->setKitState(kit)) {
