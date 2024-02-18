@@ -32,6 +32,7 @@
 
 #include "geonkick_api.h"
 #include "kit_state.h"
+#include "percussion_state.h"
 
 #ifndef GEONKICK_OS_WINDOWS
 bool ModuleEntry (void*)
