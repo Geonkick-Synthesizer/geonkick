@@ -256,6 +256,9 @@ env_button_on.png
 scrollbar_button_up.png
 scrollbar_button_down.png
 new_directory.png
+bookmark_16x16_hover.png
+bookmark_16x16_pressed.png
+bookmark_16x16_unpressed.png
 
 # === Samples Browser ===
 

@@ -128,8 +128,10 @@ class FileDialog: public GeonkickWidget {
         void setFilters(const std::vector<std::string> &filters);
         void setHomeDirectory(const std::string &path);
         bool createDirectory(const std::filesystem::path &dir);
+        void bookmarkDirectory(const std::filesystem::path &dir);
 
  protected:
+        void createBookmarkDirectoryControls(RkContainer *container);
         void createNewDirectoryControls(RkContainer *container);
         void onAccept();
         void onCancel();

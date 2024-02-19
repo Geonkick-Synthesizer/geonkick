@@ -37,9 +37,13 @@ class GeonkickConfig {
         void setMidiChannelForced(bool b);
         bool open();
         bool save();
+        bool bookmarkPath(const std::filesystem::path &path);
+        void removeBookmarkedPath(const std::filesystem::path &path);
+        const std::vector<std::filesystem::path> & getBookmarkedPaths() const;
 
  protected:
         void loadConfig(const std::string &data);
+        void parseBookmarkedPaths(const auto &value);
         std::string toJson() const;
 
  private:
@@ -47,6 +51,7 @@ class GeonkickConfig {
         int channelNumber;
         bool midiChannelForced;
         std::filesystem::path configFile;
+        std::vector<std::filesystem::path> bookmarkedPaths;
 };
 
 #endif // GEONGKICK_CONFIG_H

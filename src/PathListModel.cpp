@@ -85,11 +85,22 @@ int PathListModel::itemSpan() const
 void PathListModel::addPath(const std::filesystem::path &path)
 {
         auto it = std::find(pathList.begin(), pathList.end(), path);
-        if (it != pathList.end()) {
-                if (pathList.size() > 8)
-                        pathList.erase(pathList.begin() + 3);
+        if (it == pathList.end()) {
                 pathList.push_back(path);
                 action modelChanged();
         }
 }
 
+void PathListModel::removePath(const std::filesystem::path &path)
+{
+        auto it = std::find(pathList.begin(), pathList.end(), path);
+        if (it != pathList.end()) {
+                pathList.erase(it);
+                action modelChanged();
+        }
+}
+
+const std::vector<std::filesystem::path>& PathListModel::getPaths() const
+{
+        return pathList;
+}

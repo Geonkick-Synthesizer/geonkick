@@ -26,6 +26,7 @@
 
 #include <rapidjson/document.h>
 #include <iomanip>
+#include <ranges>
 
 GeonkickConfig::GeonkickConfig()
         : scaleFactor{1.0}
@@ -98,7 +99,21 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         channelNumber = m.value.GetInt();
                 if (m.name == "midiChannelForced" && m.value.IsInt())
                         midiChannelForced = m.value.GetInt();
+                if (m.name == "bookmarkedPaths" && m.value.IsArray())
+                        parseBookmarkedPaths(m.value);
         }
+}
+
+void GeonkickConfig::parseBookmarkedPaths(const auto &value)
+{
+        if (!value.IsArray())
+                return;
+        
+        for (const auto &el: value.GetArray()) {
+                if (el.IsString())
+                        bookmarkedPaths.push_back(el.GetString());
+        }
+
 }
 
 bool GeonkickConfig::save()
@@ -127,15 +142,44 @@ bool GeonkickConfig::save()
         return true;
 }
 
+bool GeonkickConfig::bookmarkPath(const std::filesystem::path &path)
+{
+        auto it = std::find(bookmarkedPaths.begin(), bookmarkedPaths.end(), path);
+        if (it == bookmarkedPaths.end()) {
+                bookmarkedPaths.push_back(path);
+                return true;
+        }
+        return false;
+}
+
+void GeonkickConfig::removeBookmarkedPath(const std::filesystem::path &path)
+{
+        std::ranges::remove(bookmarkedPaths, path);
+}
+
+const std::vector<std::filesystem::path>& GeonkickConfig::getBookmarkedPaths() const
+{
+        return bookmarkedPaths;
+}
+
 std::string GeonkickConfig::toJson() const
 {
         std::ostringstream jsonStream;
         jsonStream << "{" << std::endl;
-        jsonStream << "\"scaleFactor\": " << std::fixed << std::setprecision(2) << scaleFactor << std::endl;
-        jsonStream << "," << std::endl;
-        jsonStream << "\"midiChannel\": " << channelNumber << std::endl;
-        jsonStream << "," << std::endl;
-        jsonStream << "\"midiChannelForced\": " << midiChannelForced << std::endl;
+        jsonStream << "\"scaleFactor\": "
+                   << std::fixed << std::setprecision(2) << scaleFactor
+                   << "," << std::endl;
+        jsonStream << "\"midiChannel\": " << channelNumber << "," << std::endl;
+        jsonStream << "\"midiChannelForced\": " << midiChannelForced << ", " << std::endl;
+        jsonStream << "\"bookmarkedPaths\": [";
+        bool addComma = false;
+        for (const auto &path: bookmarkedPaths) {
+                if (addComma)
+                        jsonStream << ", ";
+                addComma = true;
+                jsonStream << "\"" << path.string() << "\"";
+        }
+        jsonStream << "]" << std::endl;
         jsonStream << "}" << std::endl;
         return jsonStream.str();
 }
