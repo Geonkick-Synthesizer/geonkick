@@ -148,7 +148,7 @@ To build on Windows, you need to install MSYS2/UCRT64 and follow the same steps 
 
 Geonkick can be found in the repositories of Arch Linux, openSUSE, Fedora, Manjaro, FreeBSD, KXStudio, and Ubuntu Studio.
 
-Additionally, binareis/installer are attached as artifacts to the repository release notes or pipelines that generate builds from the main branch. It is recommended to use release tag artifacts only.
+Additionally, binaries/installer are attached as artifacts to the repository release notes or pipelines that generate builds from the main branch. It is recommended to use release tag artifacts only.
 
 ##### Packaging
 
