@@ -389,6 +389,7 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
         , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
+        , bookmarkDirectoryButton{nullptr}
 {
         setTitle(title);
         setFixedSize(600, 400);
@@ -415,8 +416,6 @@ FileDialog::FileDialog(GeonkickWidget *parent,
                     this, onPathChanged(pathName));
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
                     this, directoryChanged(pathName));
-        RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
-                    this, updateBookmakButton(std::filesystem::path(pathName)));
         RK_ACT_BIND(shortcutDirectoriesModel,
                     itemSelected,
                     RK_ACT_ARGS(RkModelItem item),
@@ -484,8 +483,8 @@ FileDialog::FileDialog(GeonkickWidget *parent,
 void FileDialog::createBookmarkDirectoryControls(RkContainer *container)
 {
         container->addSpace(200);
-        auto bookmarkDirectoryButton = new GeonkickButton(this);
-        bookmarkDirectoryButton->setType(RkButton::ButtonType::ButtonPush);
+        bookmarkDirectoryButton = new GeonkickButton(this);
+        bookmarkDirectoryButton->setCheckable(true);
         bookmarkDirectoryButton->setSize(16, 16);
         bookmarkDirectoryButton->setImage(RkImage(bookmarkDirectoryButton->size(),
                                                   RK_IMAGE_RC(bookmark_16x16_unpressed)),
@@ -495,14 +494,20 @@ void FileDialog::createBookmarkDirectoryControls(RkContainer *container)
                                           RkButton::State::Pressed);
         bookmarkDirectoryButton->setImage(RkImage(bookmarkDirectoryButton->size(),
                                                   RK_IMAGE_RC(bookmark_16x16_hover)),
+                                          RkButton::State::PressedHover);
+        bookmarkDirectoryButton->setImage(RkImage(bookmarkDirectoryButton->size(),
+                                                  RK_IMAGE_RC(bookmark_16x16_hover)),
                                           RkButton::State::UnpressedHover);
         bookmarkDirectoryButton->show();
         container->addWidget(bookmarkDirectoryButton);
         RK_ACT_BIND(bookmarkDirectoryButton,
-                    pressed,
-                    RK_ACT_ARGS(),
+                    toggled,
+                    RK_ACT_ARGS(bool b),
                     this,
-                    bookmarkDirectory(currentDirectory()));
+                    bookmarkDirectory(currentDirectory(), b));
+
+        RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
+                    this, updateBookmarkButton(std::filesystem::path(pathName)));
 }
 
 void FileDialog::createNewDirectoryControls(RkContainer *container)
@@ -662,37 +667,38 @@ bool FileDialog::createDirectory(const std::filesystem::path &dir)
         return true;
 }
 
-void FileDialog::bookmarkDirectory(const std::filesystem::path &dir)
+void FileDialog::bookmarkDirectory(const std::filesystem::path &dir, bool bookmark)
 {
-        const auto &paths = shortcutDirectoriesModel->getPaths();
-        auto it = std::find(paths.begin(), paths.end(), dir);
-        if (it == paths.end()) {
-                GeonkickConfig cfg;
-                auto res = cfg.bookmarkPath(dir);
-                if (res)
-                        res = cfg.save();
-                if (res)
-                        shortcutDirectoriesModel->addPath(dir);
+        if (bookmark) {
+                if (!isPathBookmarked(dir)) {
+                        GeonkickConfig cfg;
+                        auto res = cfg.bookmarkPath(dir);
+                        if (res)
+                                res = cfg.save();
+                        if (res)
+                                shortcutDirectoriesModel->addPath(dir);
+                }
         } else {
-                GeonkickConfig cfg;
-                cfg.removeBookmarkedPath(dir);
-                auto res = cfg.save();
-                if (res)
-                        shortcutDirectoriesModel->removePath(dir);
+                if (isPathBookmarked(dir)) {
+                        GeonkickConfig cfg;
+                        auto res = cfg.removeBookmarkedPath(dir);
+                        if (res)
+                                res = cfg.save();
+                        if (res)
+                                shortcutDirectoriesModel->removePath(dir);
+                }
         }
+        updateBookmarkButton(dir);
 }
 
-bool FileDialog::isPathBookmarked() const
+bool FileDialog::isPathBookmarked(const std::filesystem::path &path) const
 {
         const auto &paths = shortcutDirectoriesModel->getPaths();
-        auto it = std::find(paths.begin(), paths.end(), dir);
+        auto it = std::find(paths.begin(), paths.end(), path);
         return it != paths.end();
 }
 
-void FileDialog::updateBookmakButton(const std::filesystem::path &dir)
+void FileDialog::updateBookmarkButton(const std::filesystem::path &path)
 {
-        if (isPathBookmarked(dir))
-                bookmarkDirectoryButton->setPressed();
-        else
-                bookmarkDirectoryButton->set(false);
+        bookmarkDirectoryButton->setPressed(isPathBookmarked(path));
 }

@@ -36,6 +36,7 @@ class GeonkickSlider;
 class PathListModel;
 class RkList;
 class RkContainer;
+class GeonkickButton;
 
 class FilesView: public GeonkickWidget {
  public:
@@ -128,11 +129,13 @@ class FileDialog: public GeonkickWidget {
         void setFilters(const std::vector<std::string> &filters);
         void setHomeDirectory(const std::string &path);
         bool createDirectory(const std::filesystem::path &dir);
-        void bookmarkDirectory(const std::filesystem::path &dir);
+        void bookmarkDirectory(const std::filesystem::path &dir, bool bookmark = true);
+        bool isPathBookmarked(const std::filesystem::path &path) const;
 
  protected:
         void createBookmarkDirectoryControls(RkContainer *container);
         void createNewDirectoryControls(RkContainer *container);
+        void updateBookmarkButton(const std::filesystem::path &path);
         void onAccept();
         void onCancel();
         void onPathChanged(const std::string &pathName);
@@ -147,6 +150,7 @@ class FileDialog: public GeonkickWidget {
         AcceptStatus status;
         PathListModel* shortcutDirectoriesModel;
         RkList *shortcutDirectoriesView;
+        GeonkickButton *bookmarkDirectoryButton;
 };
 
 #endif // GEONKICK_FILE_DIALOG_H

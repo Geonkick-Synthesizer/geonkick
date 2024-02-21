@@ -38,7 +38,8 @@ class GeonkickConfig {
         bool open();
         bool save();
         bool bookmarkPath(const std::filesystem::path &path);
-        void removeBookmarkedPath(const std::filesystem::path &path);
+        bool isPathBookmarked(const std::filesystem::path &path) const;
+        bool removeBookmarkedPath(const std::filesystem::path &path);
         const std::vector<std::filesystem::path> & getBookmarkedPaths() const;
 
  protected:

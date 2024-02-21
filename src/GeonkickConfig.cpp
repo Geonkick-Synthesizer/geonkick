@@ -2,7 +2,7 @@
  * File name: GeonkickConfig.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -56,7 +56,7 @@ void GeonkickConfig::setMidiChannelForced(bool b)
 {
         midiChannelForced = b;
 }
-        
+
 void GeonkickConfig::setScaleFactor(double factor)
 {
         scaleFactor = factor;
@@ -108,7 +108,7 @@ void GeonkickConfig::parseBookmarkedPaths(const auto &value)
 {
         if (!value.IsArray())
                 return;
-        
+
         for (const auto &el: value.GetArray()) {
                 if (el.IsString())
                         bookmarkedPaths.push_back(el.GetString());
@@ -120,7 +120,6 @@ bool GeonkickConfig::save()
 {
         try {
                 auto configPath = configFile.parent_path();
-                GEONKICK_LOG_INFO("configPath" << configPath);
                 if (!std::filesystem::exists(configPath)) {
                         if (!std::filesystem::create_directories(configPath)) {
                                 GEONKICK_LOG_ERROR("can't create path " << configPath);
@@ -144,17 +143,30 @@ bool GeonkickConfig::save()
 
 bool GeonkickConfig::bookmarkPath(const std::filesystem::path &path)
 {
-        auto it = std::find(bookmarkedPaths.begin(), bookmarkedPaths.end(), path);
-        if (it == bookmarkedPaths.end()) {
+        if (!isPathBookmarked(path)) {
                 bookmarkedPaths.push_back(path);
                 return true;
         }
         return false;
 }
 
-void GeonkickConfig::removeBookmarkedPath(const std::filesystem::path &path)
+bool GeonkickConfig::isPathBookmarked(const std::filesystem::path &path) const
 {
-        std::ranges::remove(bookmarkedPaths, path);
+        auto it = std::find(bookmarkedPaths.begin(), bookmarkedPaths.end(), path);
+        return it != bookmarkedPaths.end();
+}
+
+bool GeonkickConfig::removeBookmarkedPath(const std::filesystem::path &path)
+{
+        if (isPathBookmarked(path)) {
+                bookmarkedPaths.erase(std::remove_if(bookmarkedPaths.begin(),
+                                                     bookmarkedPaths.end(),
+                                                     [&path](std::filesystem::path & p)
+                                                     { return p == path; }),
+                                      bookmarkedPaths.end());
+                return true;
+        }
+        return false;
 }
 
 const std::vector<std::filesystem::path>& GeonkickConfig::getBookmarkedPaths() const
