@@ -31,7 +31,6 @@ class RkPaintEvent;
 class RkMouseEvent;
 class RkCloseEvent;
 class GeonkickButton;
-class RkLabel;
 class GeonkickSlider;
 class PathListModel;
 class RkList;
@@ -138,14 +137,12 @@ class FileDialog: public GeonkickWidget {
         void updateBookmarkButton(const std::filesystem::path &path);
         void onAccept();
         void onCancel();
-        void onPathChanged(const std::string &pathName);
         void closeEvent(RkCloseEvent *event) final;
 
  private:
         RkLineEdit *fileNameEdit;
         Type dialogType;
         FilesView *filesView;
-        RkLabel *pathLabel;
         std::string pathSelected;
         AcceptStatus status;
         PathListModel* shortcutDirectoriesModel;

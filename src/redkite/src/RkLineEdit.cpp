@@ -180,8 +180,8 @@ void RkLineEdit::focusEvent(RkFocusEvent* event)
 	} else if (event->type() == RkEvent::Type::FocusedOut) {
                 RK_LOG_DEBUG("RkEvent::Type::FocusedOut");
 		if (impl_ptr->hasEditFocus())
-			action editingFinished();
-		hideCursor();
+                        action editingFinished();
+                hideCursor();
 	}
 }
 
