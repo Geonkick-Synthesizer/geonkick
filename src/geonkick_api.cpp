@@ -2,7 +2,7 @@
  * File name: geonkick_api.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -1439,7 +1439,7 @@ bool GeonkickApi::setPercussionMidiChannel(int index, size_t channel)
         auto res = geonkick_set_midi_channel(geonkickApi,
                                              index,
                                              channel);
-        return res == GEONKICK_OK;        
+        return res == GEONKICK_OK;
 }
 
 int GeonkickApi::getPercussionMidiChannel(int index) const
@@ -1465,7 +1465,7 @@ bool GeonkickApi::isMidiChannelForced() const
         geonkick_ged_forced_midi_channel(geonkickApi, nullptr, &forced);
         return forced;
 }
- 
+
 bool GeonkickApi::setPercussionName(int index, const std::string &name)
 {
         auto res = geonkick_set_percussion_name(geonkickApi,
@@ -1812,6 +1812,14 @@ void GeonkickApi::loadPresets()
                         GEONKICK_LOG_ERROR("error on reading path: " << path << ": " << e.what());
                 }
         }
+
+        // Load custom preset folders.
+        GeonkickConfig cfg;
+        for (const auto &folder: cfg.getCustomPresetFolders()) {
+                auto presetFolder = std::make_unique<PresetFolder>(folder);
+                presetFolder->setAsCustom();
+                presetsFoldersList.emplace_back(std::move(presetFolder));
+        }
 }
 
 void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
@@ -1820,12 +1828,8 @@ void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
                 for (const auto &entry : std::filesystem::directory_iterator(path)) {
                         if (!entry.path().empty() && std::filesystem::is_directory(entry.path())) {
                                 auto presetFolder = std::make_unique<PresetFolder>(entry.path());
-                                GEONKICK_LOG_DEBUG("preset folder " << presetFolder->path());
-                                if (!presetFolder->loadPresets()) {
-                                        GEONKICK_LOG_ERROR("can't load preset from folder " << presetFolder->path());
-                                } else if (presetFolder->numberOfPresets() > 0) {
+                                if (presetFolder->numberOfPresets() > 0)
                                         presetsFoldersList.push_back(std::move(presetFolder));
-                                }
                         }
                 }
         } catch(...) {
@@ -1864,6 +1868,39 @@ PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
         if (index < presetsFoldersList.size())
                 return presetsFoldersList[index].get();
         return nullptr;
+}
+
+PresetFolder* GeonkickApi::addPresetFolder(const std::filesystem::path &folder, bool custom)
+{
+        auto it = std::find_if(presetsFoldersList.cbegin(),
+                               presetsFoldersList.cend(), [&folder](const auto &e)
+                               {
+                                       return e->path() == folder;
+                               });
+        if (it == presetsFoldersList.cend()) {
+                auto presetFolder = std::make_unique<PresetFolder>(folder);
+                presetFolder->setAsCustom(custom);
+                GeonkickConfig cfg;
+                cfg.addCustomPresetFolder(presetFolder->path());
+                cfg.save();
+                return presetsFoldersList.emplace_back(std::move(presetFolder)).get();
+        }
+        return nullptr;
+}
+
+bool GeonkickApi::removePresetFolder(const PresetFolder *folder)
+{
+        auto folderPath = folder->path();
+        presetsFoldersList.erase(std::remove_if(presetsFoldersList.begin(),
+                                                presetsFoldersList.end(),
+                                                [&folder](const auto &p)
+                                                { return p->path() == folder->path(); }),
+                                 presetsFoldersList.end());
+
+        GeonkickConfig cfg;
+        cfg.removeCustomPresetFolder(folderPath);
+        cfg.save();
+        return true;
 }
 
 size_t GeonkickApi::numberOfPresetFolders() const

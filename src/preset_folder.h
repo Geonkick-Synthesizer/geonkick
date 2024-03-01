@@ -37,9 +37,12 @@ class PresetFolder {
         bool loadPresets();
         Preset* preset(size_t index) const;
         size_t numberOfPresets() const;
+        void setAsCustom(bool b = true);
+        bool isCustom() const;
 
  private:
         std::filesystem::path folderPath;
+        bool isCustomFolder;
         std::vector<std::unique_ptr<Preset>> presetList;
 };
 

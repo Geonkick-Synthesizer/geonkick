@@ -39,7 +39,7 @@ RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(cancel);
 RK_DECLARE_IMAGE_RC(scrollbar_button_up);
 RK_DECLARE_IMAGE_RC(scrollbar_button_down);
-RK_DECLARE_IMAGE_RC(new_directory);
+RK_DECLARE_IMAGE_RC(add_button_16x16);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
@@ -418,7 +418,7 @@ FileDialog::FileDialog(GeonkickWidget *parent,
                     RK_ACT_ARGS(RkModelItem item),
                     filesView,
                     setCurrentPath(std::get<std::string>(item.data(static_cast<int>(PathListModel::PathListDataType::Path)))));
-        
+
         shortcutDirectoriesView->setBorderColor(40, 40, 40);
         shortcutDirectoriesView->setBorderWidth(1);
         shortcutDirectoriesView->setBackgroundColor({50, 50, 50});
@@ -427,7 +427,7 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         shortcutDirectoriesView->show();
 
         createBookmarkDirectoryControls(topContainer);
-        createNewDirectoryControls(topContainer);
+        //        createNewDirectoryControls(topContainer);
 
         auto buttomContainer = new RkContainer(this);
         buttomContainer->setSize({mainContainer->width(), 30});
@@ -503,7 +503,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
         auto createDirectoryButton = new GeonkickButton(this);
         createDirectoryButton->setSize(16, 16);
         createDirectoryButton->setImage(RkImage(createDirectoryButton->size(),
-                                                RK_IMAGE_RC(new_directory)),
+                                                RK_IMAGE_RC(add_button_16x16)),
                                         RkButton::State::Unpressed);
         createDirectoryButton->show();
         container->addWidget(createDirectoryButton);

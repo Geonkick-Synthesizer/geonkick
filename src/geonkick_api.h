@@ -333,6 +333,8 @@ class GeonkickApi : public RkObject {
   void clearOrderedPercussionIds();
   bool moveOrdrepedPercussionId(int index, int n);
   PresetFolder* getPresetFolder(size_t index) const;
+  PresetFolder* addPresetFolder(const std::filesystem::path &folder, bool custom = false);
+  bool removePresetFolder(const PresetFolder *folder);
   size_t numberOfPresetFolders() const;
   UiSettings* getUiSettings() const;
   void setState(const std::string &data);

@@ -4,6 +4,10 @@ set(gkick_rc_png_files
 app_icon.png
 logo_about.png
 about.png
+add_button_16x16.png
+add_button_16x16_hover.png
+remove_button_16x16.png
+remove_button_16x16_hover.png
 
 # === Top Menu ===
 
