@@ -643,7 +643,7 @@ bool FileDialog::createDirectory(const std::filesystem::path &dir)
                 return false;
         }
 
-        setCurrentDirectoy(newPath);
+        setCurrentDirectoy(newPath.string());
         return true;
 }
 
