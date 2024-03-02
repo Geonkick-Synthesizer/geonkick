@@ -28,9 +28,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Files]
-Source: "D:\a\geonkick\build\plugins\geonkick.lv2\*"; DestDir: "{code:GetLV2Path}\geonkick.lv2"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallLV2
-Source: "D:\a\geonkick\build\plugins\Geonkick.vst3\*"; DestDir: "{code:GetVST3Path}\Geonkick.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallVST3
-Source: "D:\a\geonkick\build\plugins\presets\*"; DestDir: "{commonappdata}\geonkick\presets"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallPresets
+Source: "D:\a\geonkick\geonkick\build\plugins\geonkick.lv2\*"; DestDir: "{code:GetLV2Path}\geonkick.lv2"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallLV2
+Source: "D:\a\geonkick\geonkick\build\plugins\Geonkick.vst3\*"; DestDir: "{code:GetVST3Path}\Geonkick.vst3"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallVST3
+Source: "D:\a\geonkick\geonkick\build\plugins\presets\*"; DestDir: "{commonappdata}\geonkick\presets"; Flags: ignoreversion recursesubdirs createallsubdirs; Check: ShouldInstallPresets
 
 [Code]
 var
