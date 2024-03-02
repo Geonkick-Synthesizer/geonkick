@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - 'release/*'
     tags:
       - '*'
 
@@ -29,36 +30,39 @@ jobs:
         run: |
           pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo mingw-w64-ucrt-x86_64-lv2 make
           rm -fr /ucrt64/lib/*thread*.dll.a
-          git clone https://github.com/Geonkick-Synthesizer/geonkick.git
           git clone --recursive https://github.com/Geonkick-Synthesizer/vst3sdk.git
-          mkdir -p /d/a/geonkick/build
-          cd /d/a/geonkick/build
-          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk /d/a/geonkick/geonkick/geonkick
-          sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
+          pwd
+          ls -l
+          mkdir -p build
+          cd build
+          cmake -G "Unix Makefiles" -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk ../
+          sed -i 's/std:://g' ../vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
           make VERBOSE=1
+          cd /d/a/geonkick/geonkick/build
           mkdir -p Geonkick.vst3/Contents/x86_64-win
-          cp -fr /d/a/geonkick/build/src/plugin/vst/Geonkick.dll  /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/Geonkick.vst3
+          cp -fr src/plugin/vst/Geonkick.dll  Geonkick.vst3/Contents/x86_64-win/Geonkick.vst3
           mkdir geonkick.lv2
-          cp -fr /d/a/geonkick/build/src/plugin/lv2/*.dll /d/a/geonkick/build/geonkick.lv2
-          cp -fr /d/a/geonkick/geonkick/geonkick/src/plugin/lv2/geonkick_win.lv2/* /d/a/geonkick/build/geonkick.lv2
+          cp -fr src/plugin/lv2/*.dll geonkick.lv2
+          cp -fr ../src/plugin/lv2/geonkick_win.lv2/* geonkick.lv2
           mkdir plugins
           cp -fr geonkick.lv2 plugins
           cp -fr Geonkick.vst3 plugins
+          cp ../LICENSE plugins
           mkdir plugins/presets
-          cp -fr /d/a/geonkick/build/presets/AVL-Drumkit plugins/presets
-          cp -fr /d/a/geonkick/build/presets/DigitalSamba plugins/presets
-          cp -fr /d/a/geonkick/build/presets/DSoS plugins/presets
-          cp -fr /d/a/geonkick/build/presets/GeonkickBells plugins/presets
-          cp -fr /d/a/geonkick/build/presets/TimeKit plugins/presets
-          cp -fr /d/a/geonkick/build/presets/UnfaTutorial plugins/presets
-          cp -fr /d/a/geonkick/build/presets/HaraldReveryKicks plugins/presets
-          cp -fr /d/a/geonkick/build/presets/SPKickPresetsVol1 plugins/presets
+          cp -fr presets/HaraldReveryKicks plugins/presets
+          cp -fr presets/SPKickPresetsVol1 plugins/presets
+          cp -fr presets/AVL-Drumkit plugins/presets
+          cp -fr presets/DigitalSamba plugins/presets
+          cp -fr presets/DSoS plugins/presets
+          cp -fr presets/GeonkickBells plugins/presets
+          cp -fr presets/TimeKit plugins/presets
+          cp -fr presets/UnfaTutorial plugins/presets
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-build
-          path: D:\a\geonkick\build\plugins
+          path: D:\a\geonkick\geonkick\build\plugins
           
   create-ssi:
     needs: build
@@ -98,11 +102,10 @@ jobs:
       - name: Compile Inno Setup Script
         run: |
            & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
-           & "cp" "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-v3.4.0-x86_64.exe"
-           & "ls" "D:\a\geonkick\build\plugins"
+           & "cp" "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-v3.4.0-x86_64_unreleased.exe"
   
       - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
-          path: D:\a\geonkick\build\plugins\GeonkickInstaller-v3.4.0-x86_64.exe
+          path: D:\a\geonkick\build\plugins\GeonkickInstaller-v3.4.0-x86_64_unreleased.exe
