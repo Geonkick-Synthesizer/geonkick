@@ -43,7 +43,7 @@ jobs:
           cp -fr src/plugin/vst/Geonkick.dll  Geonkick.vst3/Contents/x86_64-win/Geonkick.vst3
           mkdir geonkick.lv2
           cp -fr src/plugin/lv2/*.dll geonkick.lv2
-          cp -fr src/plugin/lv2/geonkick_win.lv2/* geonkick.lv2
+          cp -fr ../src/plugin/lv2/geonkick_win.lv2/* geonkick.lv2
           mkdir plugins
           cp -fr geonkick.lv2 plugins
           cp -fr Geonkick.vst3 plugins
