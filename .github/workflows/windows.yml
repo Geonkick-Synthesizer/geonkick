@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - 'release/*'
     tags:
       - '*'
 
@@ -29,18 +30,17 @@ jobs:
         run: |
           pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo mingw-w64-ucrt-x86_64-lv2 make
           rm -fr /ucrt64/lib/*thread*.dll.a
-          git clone https://github.com/Geonkick-Synthesizer/geonkick.git
           git clone --recursive https://github.com/Geonkick-Synthesizer/vst3sdk.git
-          mkdir -p /d/a/geonkick/build
-          cd /d/a/geonkick/build
-          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk /d/a/geonkick/geonkick/geonkick
-          sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
+          mkdir -p build
+          cd build
+          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/vst3sdk ../
+          sed -i 's/std:://g' /d/a/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
           make VERBOSE=1
           mkdir -p Geonkick.vst3/Contents/x86_64-win
           cp -fr /d/a/geonkick/build/src/plugin/vst/Geonkick.dll  /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/Geonkick.vst3
           mkdir geonkick.lv2
           cp -fr /d/a/geonkick/build/src/plugin/lv2/*.dll /d/a/geonkick/build/geonkick.lv2
-          cp -fr /d/a/geonkick/geonkick/geonkick/src/plugin/lv2/geonkick_win.lv2/* /d/a/geonkick/build/geonkick.lv2
+          cp -fr /d/a/geonkick/src/plugin/lv2/geonkick_win.lv2/* /d/a/geonkick/build/geonkick.lv2
           mkdir plugins
           cp -fr geonkick.lv2 plugins
           cp -fr Geonkick.vst3 plugins
@@ -96,7 +96,7 @@ jobs:
       - name: Compile Inno Setup Script
         run: |
            & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
-           & "cp" "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-v3.3.2-x86_64.exe"
+           & "cp" "D:\a\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-v3.3.2-x86_64.exe"
            & "ls" "D:\a\geonkick\build\plugins"
   
       - name: Upload Installer
