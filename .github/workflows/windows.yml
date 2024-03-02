@@ -47,6 +47,7 @@ jobs:
           mkdir plugins
           cp -fr geonkick.lv2 plugins
           cp -fr Geonkick.vst3 plugins
+          cp ../LICENSE plugins
           mkdir plugins/presets
           cp -fr presets/AVL-Drumkit plugins/presets
           cp -fr presets/DigitalSamba plugins/presets
