@@ -101,7 +101,6 @@ jobs:
         run: |
            & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
            & "cp" "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-v3.4.0-x86_64_unreleased.exe"
-           & "ls" "D:\a\geonkick\geonkick\build\plugins"
   
       - name: Upload Installer
         uses: actions/upload-artifact@v2
