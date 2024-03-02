@@ -4,7 +4,7 @@
 [Setup]
 AppId=74939DD5-910E-4FEA-AF81-487E30ED451B
 AppName=Geonkick
-AppVersion=3.3.2
+AppVersion=3.4.0
 ArchitecturesAllowed=x64
 AppPublisher=Iurie Nistor
 AppPublisherURL=https://geonkick.org
