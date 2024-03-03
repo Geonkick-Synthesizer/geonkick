@@ -2,7 +2,7 @@
  * File name: mixer.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -48,7 +48,7 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
                 if (!output->enabled)
                         continue;
-                
+
                 short forced_midi_channel = mixer->forced_midi_channel;
                 signed char midi_channel;
                 if (forced_midi_channel & 0x0100)
@@ -56,10 +56,11 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
                 else
                         midi_channel = output->midi_channel;
 
-                gkick_log_debug("output: index[%d], forced[%d], midi ch[%d]",
+                gkick_log_debug("output: index[%d], forced[%d], midi ch[%d], note_ch[%d]",
                                 i,
                                 (forced_midi_channel & 0x0100) != 0,
-                                midi_channel);
+                                midi_channel,
+                                note->channel);
                 if ((midi_channel == GEONKICK_ANY_MIDI_CHANNEL
                      || midi_channel == note->channel)
                     && (output->playing_key == GEONKICK_ANY_KEY
@@ -236,16 +237,13 @@ gkick_mixer_force_midi_channel(struct gkick_mixer *mixer,
                                signed char channel,
                                bool force)
 {
-        gkick_log_info("forced %d midi %d", force, channel);
+        gkick_log_debug("forced %d midi ch %d", force, channel);
         short forced_midi = mixer->forced_midi_channel;
-        forced_midi = force ? (forced_midi | 0x0100) : (forced_midi & 0x00ff);
-        if (force)
-                forced_midi |= channel;
-
+        forced_midi = (channel & 0x01ff) | (force << 8);
         short forced_midi_channel = mixer->forced_midi_channel;
-        gkick_log_info("forced [%d] midi ch: %d]",
-                       (forced_midi & 0x0100) != 0,
-                       forced_midi & 0x00ff);
+        gkick_log_debug("forced [%d] midi ch: %d]",
+                        (forced_midi & 0x0100) != 0,
+                        forced_midi & 0x00ff);
         mixer->forced_midi_channel = forced_midi;
         return GEONKICK_OK;
 }
