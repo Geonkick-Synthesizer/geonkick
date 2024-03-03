@@ -25,6 +25,9 @@
 #include "DesktopPaths.h"
 
 #include <rapidjson/document.h>
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+
 #include <iomanip>
 #include <ranges>
 
@@ -90,8 +93,14 @@ bool GeonkickConfig::open()
 
 void GeonkickConfig::loadConfig(const std::string &data)
 {
+
         rapidjson::Document document;
         document.Parse(data.c_str());
+        if (!document.IsObject()) {
+                GEONKICK_LOG_ERROR("can't parse JSON document");
+                return;
+        }
+
         for (const auto &m: document.GetObject()) {
                 if (m.name == "scaleFactor" && m.value.IsDouble())
                         scaleFactor = m.value.GetDouble();
@@ -110,7 +119,7 @@ void GeonkickConfig::parseBookmarkedPaths(const auto &value)
 {
         if (!value.IsArray())
                 return;
-
+ 
         for (const auto &el: value.GetArray()) {
                 if (el.IsString())
                         bookmarkedPaths.push_back(el.GetString());
@@ -212,31 +221,27 @@ GeonkickConfig::getCustomPresetFolders() const
 
 std::string GeonkickConfig::toJson() const
 {
-        std::ostringstream jsonStream;
-        jsonStream << "{" << std::endl;
-        jsonStream << "\"scaleFactor\": "
-                   << std::fixed << std::setprecision(2) << scaleFactor
-                   << "," << std::endl;
-        jsonStream << "\"midiChannel\": " << channelNumber << "," << std::endl;
-        jsonStream << "\"midiChannelForced\": " << midiChannelForced << ", " << std::endl;
-        jsonStream << "\"bookmarkedPaths\": [";
-        bool addComma = false;
-        for (const auto &path: bookmarkedPaths) {
-                if (addComma)
-                        jsonStream << ", ";
-                addComma = true;
-                jsonStream << "\"" << path.string() << "\"";
-        }
-        jsonStream << "]," << std::endl;
-        jsonStream << "\"customPresetFolders\": [";
-        addComma = false;
-        for (const auto &path: customPresetFolders) {
-                if (addComma)
-                        jsonStream << ", ";
-                addComma = true;
-                jsonStream << "\"" << path.string() << "\"";
-        }
-        jsonStream << "]" << std::endl;
-        jsonStream << "}" << std::endl;
-        return jsonStream.str();
+        rapidjson::StringBuffer s;
+        rapidjson::Writer<decltype(s)> writer(s);
+        writer.StartObject();
+        writer.Key("scaleFactor");
+        writer.Double(scaleFactor);
+        writer.Key("midiChannel");
+        writer.Int(channelNumber);
+        writer.Key("midiChannelForced");
+        writer.Bool(midiChannelForced);
+
+        writer.Key("bookmarkedPaths");
+        writer.StartArray();
+        for (const auto &path : bookmarkedPaths)
+                writer.String(path.string().c_str());
+        writer.EndArray();
+
+        writer.Key("customPresetFolders");
+        writer.StartArray();
+        for (const auto &path : customPresetFolders)
+                writer.String(path.string().c_str());
+        writer.EndArray();
+        writer.EndObject();
+        return s.GetString();
 }
