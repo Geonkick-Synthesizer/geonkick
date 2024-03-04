@@ -71,7 +71,34 @@ void RkSpinBox::RkSpinBoxImpl::updateControls()
                 painter.setPen(pen);
                 painter.drawLine(img.width() / 2, 2, img.width() / 2, img.height() - 2);
                 painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
-                upButton->setImage(img);
+                upButton->setImage(img, RkButton::State::Unpressed);
+
+                painter.fillRect(RkRect(1, 1, img.width() - 1, img.height()),
+                                 RkColor(upButton->background().red() + 10,
+                                         upButton->background().green() + 10,
+                                         upButton->background().blue() + 10));
+                pen = painter.pen();
+                pen.setColor(RkColor(upButton->textColor().red() + 10,
+                                     upButton->textColor().green() + 10,
+                                     upButton->textColor().blue() + 10));
+                painter.setPen(pen);
+                painter.drawLine(img.width() / 2, 2, img.width() / 2, img.height() - 2);
+                painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
+                upButton->setImage(img, RkButton::State::UnpressedHover);
+                upButton->setImage(img, RkButton::State::PressedHover);
+
+                painter.fillRect(RkRect(1, 1, img.width() - 1, img.height()),
+                                 RkColor(upButton->background().red() + 60,
+                                         upButton->background().green() + 60,
+                                         upButton->background().blue() + 60));
+                pen = painter.pen();
+                pen.setColor(RkColor(upButton->textColor().red() + 20,
+                                     upButton->textColor().green() + 20,
+                                     upButton->textColor().blue() + 20));
+                painter.setPen(pen);
+                painter.drawLine(img.width() / 2, 2, img.width() / 2, img.height() - 2);
+                painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
+                upButton->setImage(img, RkButton::State::Pressed);
         }
         
         downButton->setSize(upButton->size());
@@ -85,7 +112,32 @@ void RkSpinBox::RkSpinBoxImpl::updateControls()
                 pen.setColor(downButton->textColor());
                 painter.setPen(pen);
                 painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
-                downButton->setImage(img);
+                downButton->setImage(img, RkButton::State::Unpressed);
+
+                painter.fillRect(RkRect(1, 1, img.width() - 1, img.height()),
+                                 RkColor(downButton->background().red() + 10,
+                                         downButton->background().green() + 10,
+                                         downButton->background().blue() + 10));
+                pen = painter.pen();
+                pen.setColor(RkColor(downButton->textColor().red() + 10,
+                                     downButton->textColor().green() + 10,
+                                     downButton->textColor().blue() + 10));
+                painter.setPen(pen);
+                painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
+                downButton->setImage(img, RkButton::State::UnpressedHover);
+                downButton->setImage(img, RkButton::State::PressedHover);
+
+                painter.fillRect(RkRect(1, 1, img.width() - 1, img.height()),
+                                 RkColor(downButton->background().red() + 60,
+                                         downButton->background().green() + 60,
+                                         downButton->background().blue() + 60));
+                pen = painter.pen();
+                pen.setColor(RkColor(downButton->textColor().red() + 20,
+                                     downButton->textColor().green() + 20,
+                                     downButton->textColor().blue() + 20));
+                painter.setPen(pen);
+                painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
+                downButton->setImage(img, RkButton::State::Pressed);
         }
 
         displayLabel->setSize(inf_ptr->width() - upButton->width(), inf_ptr->height());
