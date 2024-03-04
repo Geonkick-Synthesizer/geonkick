@@ -10,7 +10,8 @@
 - UI/File Browser: bookmark folder option
 - UI/Preset Browser: Add custom preset folder
 
-	### Fixes
+### Fixes
+
 - Code: fix memory corruption when loading presets with samples
 - Code: remove the usage of shared pointers from the Geonkick code
 - DSP/Filter: fix the hardclip for high values ( bug found by @DerozerDSP )
@@ -20,7 +21,7 @@
 - DSP: Fix uninitialized gkick_envelope_apply_type ( @treapster )
 - DSP & UI: Fix nan/inf values for leveler ( @treapster )
 - Build system: use funsafe-math-optimizations -fno-math-errno -fno-trapping-math ( @treapster )
-	- Code: error checking on parsing presets (fix potential crashes)
+- Code: error checking on parsing presets (fix potential crashes)
 
 ### Improvements
 
