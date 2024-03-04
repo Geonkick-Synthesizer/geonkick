@@ -132,13 +132,13 @@ void KitPercussionView::createView()
 
         // Midi channel spinbox.
         midiChannelSpinBox = new RkSpinBox(this);
-        midiChannelSpinBox->setTextColor({250, 250, 250});
+                midiChannelSpinBox->setTextColor({250, 250, 250});
         midiChannelSpinBox->setBackgroundColor({60, 57, 57});
-        midiChannelSpinBox->setSize(50, 20);
         midiChannelSpinBox->upControl()->setBackgroundColor({50, 47, 47});
         midiChannelSpinBox->upControl()->setTextColor({100, 100, 100});
         midiChannelSpinBox->downControl()->setBackgroundColor({50, 47, 47});
         midiChannelSpinBox->downControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->setSize(50, 20);
         midiChannelSpinBox->show();
         RK_ACT_BIND(midiChannelSpinBox,
                     currentIndexChanged,
