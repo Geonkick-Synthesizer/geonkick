@@ -25,7 +25,7 @@
 
 ### Improvements
 
-- Presets: update key mapping for kit prests to foloow closer the general MIDI percussion key map
+- Presets: update key mapping for kit presets to follow closer the general MIDI percussion key map
 - Code: move to C++20
 
 ## [3.3.2]
