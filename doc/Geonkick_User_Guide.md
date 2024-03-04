@@ -317,6 +317,9 @@ The preset browser can be accessed by clicking the "Presets" button on the top b
 
 The first column of the preset browser lists the names of preset folders. Each folder may contain instrument and kit presets. When a folder is selected, the browser displays all the presets within that folder in subsequent columns. Kit presets are marked with the prefix "KIT:".
 
+- "+" / "-" -  to add or remove a custom preset folder (for all instances).
+- ">", "<" - to navigate the preset pages
+
 **Note2:**
 - To add new presets to the browser, users need to save the presets (both kit and instrument types) in one of the following paths, then reopen the program or reload the plugin:
     - /usr/share/geonkick/presets/<PresetFolder>/<Preset>
