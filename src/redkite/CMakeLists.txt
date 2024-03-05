@@ -227,15 +227,13 @@ add_library(redkite STATIC
   ${RK_SOURCES}
   ${RK_SOURCES_PLATFORM})
 
-#if (CMAKE_SYSTEM_NAME MATCHES Windows)
-#  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX})
-#  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
-#elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
-# Not implemented
-#else()
-#  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_LIBDIR})
-#  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
-#endif()
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX})
+  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+else()
+  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
+endif()
 
 if(RK_BUILD_TOOLS)
 	add_subdirectory(tools)
