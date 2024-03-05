@@ -61,7 +61,8 @@ class RK_EXPORT RkEvent {
                 FocusedOut = 16,
                 Hover = 17,
                 Drop = 18,
-                ScaleFactor = 19
+                ScaleFactor = 19,
+                Action = 20
       };
 
         explicit RkEvent(Type type = Type::NoEvent)
@@ -132,6 +133,8 @@ class RK_EXPORT RkMouseEvent: public RkEvent {
       void setX(int x) { mouseCoordinates.setX(x); }
       int y() const { return mouseCoordinates.y(); }
       void setY(int y) { mouseCoordinates.setY(y); }
+      void setPoint(const RkPoint &p) { mouseCoordinates = p; }
+      const RkPoint& point() const { return mouseCoordinates; }
       ButtonType button() const { return buttonType; }
       void setButton(ButtonType type) { buttonType = type; }
 

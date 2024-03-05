@@ -27,7 +27,7 @@
 
 MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
                              PercussionModel *model,
-                             Rk::WindowFlags flag)
+                             Rk::WidgetFlags flag)
         : GeonkickWidget(parent, flag)
         , percussionModel{model}
         , cellSize{32, 32}

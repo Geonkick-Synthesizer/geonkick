@@ -101,7 +101,7 @@ class  LineEditExample: public RkWidget {
 
         void openDialog()
         {
-                auto dialog = new RkWidget(this, Rk::WindowFlags::Dialog);
+                auto dialog = new RkWidget(this, Rk::WidgetFlags::Dialog);
                 dialog->setSize(50, 50);
                 dialog->show();
         }

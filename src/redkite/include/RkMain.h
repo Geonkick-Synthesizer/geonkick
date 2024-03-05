@@ -28,19 +28,21 @@
 
 class RkWidget;
 class RkEventQueue;
+class RkNativeWindowInfo;
 
-class RK_EXPORT RkMain {
+class RkMain {
   public:
           RkMain();
           RkMain(int argc, char **argv);
           ~RkMain();
-          bool setTopLevelWidget(RkWidget* widget);
           RkWidget* topLevelWidget(void) const;
           int exec(bool block = true);
           RkEventQueue* eventQueue() const;
 
+ protected:
+          RK_DECLARE_O_PTR(RkMain);
+
  private:
-       	  RK_DECLARE_IMPL(RkMain);
           RK_DISABLE_COPY(RkMain);
           RK_DISABLE_MOVE(RkMain);
 };

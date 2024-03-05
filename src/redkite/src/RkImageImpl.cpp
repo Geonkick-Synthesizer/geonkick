@@ -51,7 +51,7 @@ RkImage::RkImageImpl::~RkImageImpl()
 {
 }
 
-const RkCanvasInfo* RkImage::RkImageImpl::getCanvasInfo() const
+RkCanvasInfo* RkImage::RkImageImpl::getCanvasInfo() const
 {
         if (imageBackendCanvas)
                 return imageBackendCanvas->getCanvasInfo();

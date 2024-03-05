@@ -81,7 +81,7 @@ void SettingsWidget::createMidiChannelSettings(RkContainer *container)
         auto forceMidiCheckBox = new GeonkickButton(this);
         forceMidiCheckBox->setBorderWidth(1);
         forceMidiCheckBox->setPressed(GeonkickConfig().isMidiChannelForced());
-        forceMidiCheckBox->setBorderColor({55, 55, 55});
+        forceMidiCheckBox->setBorderColor(55, 55, 55);
         forceMidiCheckBox->setBackgroundColor({255, 255, 255});
         forceMidiCheckBox->setCheckable(true);
         forceMidiCheckBox->setFixedSize(16, 16);

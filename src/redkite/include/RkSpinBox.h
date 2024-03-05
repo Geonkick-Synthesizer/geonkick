@@ -45,12 +45,12 @@ class RkSpinBox : public RkWidget {
                 RK_ARG_VAL(index));
 
 protected:
+    RK_DECLARE_IMPL_PTR(RkSpinBox);
     void resizeEvent(RkResizeEvent *event) override;
 
  private:
     RK_DISABLE_COPY(RkSpinBox);
     RK_DISABLE_MOVE(RkSpinBox);
-    RK_DELCATE_IMPL_PTR(RkSpinBox);
 };
 
 #endif // RK_SPINBOX_H

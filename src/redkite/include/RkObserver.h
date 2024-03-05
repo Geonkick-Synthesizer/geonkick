@@ -29,7 +29,7 @@
 
 class RkObject;
 
-class RK_EXPORT RkObserver {
+class RkObserver {
  public:
         RkObserver(RkObject *obj = nullptr)
                 : observerObject{obj} { }

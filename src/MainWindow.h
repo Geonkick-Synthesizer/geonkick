@@ -38,10 +38,10 @@ class Limiter;
 class MainWindow : public GeonkickWidget
 {
  public:
-      explicit MainWindow(RkMain* app,
+      explicit MainWindow(RkMain& app,
                           GeonkickApi *api,
                           const std::string &preset = std::string());
-      explicit MainWindow(RkMain* app,
+      explicit MainWindow(RkMain& app,
                           GeonkickApi *api,
                           const RkNativeWindowInfo &info);
       ~MainWindow();

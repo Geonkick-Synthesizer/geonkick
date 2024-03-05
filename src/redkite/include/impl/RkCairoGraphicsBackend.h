@@ -58,10 +58,7 @@ class RkCairoGraphicsBackend {
         cairo_t* context() const;
 
  private:
-        cairo_t* cairoContext;
-#ifdef RK_OS_WIN
         RkCanvas *canvas;
-#endif // RK_OS_WIN
 };
 
 #endif // RK_CAIRO_GRAPHICS_BACKEND_H

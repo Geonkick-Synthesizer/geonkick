@@ -21,7 +21,7 @@ int main(int arc, char **argv)
         child->setSize(50, 50);
         child->show();
 
-        auto modal = new RkWidget(mainWindow, Rk::WindowFlags::Dialog);
+        auto modal = new RkWidget(mainWindow, Rk::WidgetFlags::Dialog);
         modal->setTitle("Dialog");
         modal->setBackgroundColor(80, 80, 80);
         modal->setSize(170, 110);

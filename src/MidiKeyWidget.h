@@ -71,7 +71,7 @@ class MidiKeyWidget: public GeonkickWidget
  public:
         MidiKeyWidget(GeonkickWidget *parent,
                       PercussionModel *model,
-                      Rk::WindowFlags flag = Rk::WindowFlags::Popup);
+                      Rk::WidgetFlags flag = Rk::WidgetFlags::Popup);
         RK_DECL_ACT(keySelected,
                     keySelected(GeonkickTypes::MidiKey key),
                     RK_ARG_TYPE(GeonkickTypes::MidiKey),

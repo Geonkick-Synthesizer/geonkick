@@ -22,6 +22,7 @@
  */
 
 #include "RkImage.h"
+#include "RkCanvas.h"
 
 #ifdef RK_GRAPHICS_CAIRO_BACKEND
 class RkCairoImageBackendCanvas;
@@ -37,7 +38,7 @@ class RkImage::RkImageImpl {
                     const unsigned char *data,
                     RkImage::Format format = RkImage::Format::ARGB32);
         virtual ~RkImageImpl();
-        const RkCanvasInfo *getCanvasInfo() const;
+        RkCanvasInfo *getCanvasInfo() const;
         unsigned char* data() const;
         std::vector<unsigned char> dataCopy() const;
         Format format() const;

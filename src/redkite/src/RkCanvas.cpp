@@ -2,7 +2,7 @@
  * File name: RkCanvas.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2024 Iurie Nistor 
  *
  * This file is part of Redkite.
  *
@@ -21,19 +21,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef RK_CANVAS_H
-#define RK_CANVAS_H
+#include "RkCanvas.h"
 
-#include "Rk.h"
+RkCanvasInfo* RkCanvas::getCanvasInfo() const
+{
+        return nullptr;
+}
 
-struct RkCanvasInfo;
+void RkCanvas::freeCanvasInfo()
+{
+        
+}
 
-class RkCanvas {
- public:
-        RkCanvas() = default;
-        virtual ~RkCanvas() = default;
-        virtual RkCanvasInfo* getCanvasInfo() const;
-        virtual void freeCanvasInfo();
-};
-
-#endif // RK_CANVAS_H

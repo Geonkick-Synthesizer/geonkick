@@ -59,17 +59,19 @@ Display* RkEventQueueX::display() const
         return xDisplay;
 }
 
-std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>>
+std::vector<std::unique_ptr<RkEvent>>
 RkEventQueueX::getEvents()
 {
-        std::vector<std::pair<RkWindowId, std::unique_ptr<RkEvent>>> events;
+        std::vector<std::unique_ptr<RkEvent>> events;
         while (pending()) {
                 XEvent e;
                 XNextEvent(xDisplay, &e);
+                RK_LOG_DEBUG("New event");
                 std::unique_ptr<RkEvent> event = nullptr;
                 switch (e.type)
                 {
                 case Expose:
+                        RK_LOG_DEBUG("Expose");
                         if (reinterpret_cast<XExposeEvent*>(&e)->count == 0)
                                 event = std::make_unique<RkPaintEvent>();
                 break;
@@ -87,9 +89,15 @@ RkEventQueueX::getEvents()
                         event = getButtonPressEvent(&e);
                         break;
                 case ButtonRelease:
-                        event = std::make_unique<RkMouseEvent>();
-                        event->setType(RkEvent::Type::MouseButtonRelease);
+                {
+                        auto mouseEvent = std::make_unique<RkMouseEvent>();
+                        auto buttonEvent = reinterpret_cast<XButtonEvent*>(&e);
+                        mouseEvent->setX(static_cast<double>(buttonEvent->x / scaleFactor));
+                        mouseEvent->setY(static_cast<double>(buttonEvent->y / scaleFactor));
+                        mouseEvent->setType(RkEvent::Type::MouseButtonRelease);
+                        event = std::move(mouseEvent);
                         break;
+                }
                 case MotionNotify:
                         event = getMouseMove(&e);
                         break;
@@ -115,11 +123,8 @@ RkEventQueueX::getEvents()
                         break;
                 }
 
-                if (event) {
-                        auto id = rk_id_from_x11(reinterpret_cast<XAnyEvent*>(&e)->window);
-                        std::pair<RkWindowId, std::unique_ptr<RkEvent>> pair(id, std::move(event));
-                        events.push_back(std::move(pair));
-                }
+                if (event)
+                        events.emplace_back(std::move(event));
         }
         return events;
 }

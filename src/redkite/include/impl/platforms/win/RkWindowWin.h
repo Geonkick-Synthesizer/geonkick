@@ -37,14 +37,9 @@ constexpr int RK_MAIN_WINDOW_TIMER_ID = 101;
 
 class RkWindowWin {
  public:
-        explicit RkWindowWin(const RkNativeWindowInfo *parent,
-                           Rk::WindowFlags flags = Rk::WindowFlags::Widget,
-                           bool isTop = false);
-        explicit RkWindowWin(const RkNativeWindowInfo &parent,
-                           Rk::WindowFlags flags = Rk::WindowFlags::Widget,
-                           bool isTop = false);
+        explicit RkWindowWin(const RkNativeWindowInfo *parent);
+        explicit RkWindowWin(const RkNativeWindowInfo &parent);
         ~RkWindowWin();
-		Rk::WindowFlags flags() const;
         RkWindowWin(const RkWindowWin &other) = delete;
         RkWindowWin& operator=(const RkWindowWin &other) = delete;
         RkWindowWin(RkWindowWin &&other) = delete;
@@ -90,7 +85,6 @@ class RkWindowWin {
         RkColor backgroundColor;
         RkEventQueue* eventQueue;
         mutable std::unique_ptr<RkCanvasInfo> canvasInfo;
-        Rk::WindowFlags windowFlags;
         bool isTopWindow;
         double scaleFactor;
 };

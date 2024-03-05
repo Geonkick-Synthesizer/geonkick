@@ -32,7 +32,6 @@
 
 #include <RkLabel.h>
 #include <RkButton.h>
-#include <RkTransition.h>
 #include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(separator);

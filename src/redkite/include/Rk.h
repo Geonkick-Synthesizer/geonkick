@@ -67,13 +67,21 @@
 #endif
 #endif
 
-#define RK_DECLARE_IMPL(Class) \
-  class Class##Impl; \
-  std::unique_ptr<Class##Impl> o_ptr
+#define RK_DECLARE_O_PTR(Class) \
+          class Class##Impl; \
+      public: \
+          Class##Impl* rkImpl() const { return o_ptr.get(); } \
+      protected: \
+          std::unique_ptr<Class##Impl> o_ptr
 
-#define RK_DELCATE_IMPL_PTR(Class) \
-  class Class##Impl; \
-  Class##Impl *impl_ptr
+#define RK_DECLARE_IMPL_PTR(Class) \
+           class Class##Impl; \
+       public: \
+           Class##Impl* rkImpl() const { return impl_ptr; } \
+       protected: \
+           Class##Impl* impl_ptr
+
+#define RK_IMPL_PTR(obj) obj->rkImpl()
 
 #define RK_DECALRE_INTERFACE_PTR(Class) Class *inf_ptr
 
@@ -113,7 +121,7 @@ namespace Rk {
                 Vertical = 1
         };
 
-        enum class WindowFlags: int {
+        enum class WidgetFlags: int {
                 Widget = 0x00000000,
                 Dialog = 0x00000001,
                 Popup  = 0x00000002

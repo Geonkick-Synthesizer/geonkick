@@ -27,7 +27,7 @@
 #include "RkWidget.h"
 #include "RkImage.h"
 
-class RK_EXPORT RkLabel : public RkWidget {
+class RkLabel : public RkWidget {
  public:
     RkLabel(RkWidget *parent, const std::string &text = std::string());
     virtual ~RkLabel() = default;
@@ -37,12 +37,12 @@ class RK_EXPORT RkLabel : public RkWidget {
     void setImage(const RkImage &image);
 
  protected:
+    RK_DECLARE_IMPL_PTR(RkLabel);
     virtual void paintEvent(RkPaintEvent *event) override;
 
  private:
     RK_DISABLE_COPY(RkLabel);
     RK_DISABLE_MOVE(RkLabel);
-    RK_DELCATE_IMPL_PTR(RkLabel);
 };
 
 #endif // RK_LABEL_H

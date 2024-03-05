@@ -41,7 +41,7 @@
 constexpr int MAIN_WINDOW_WIDTH  = 940;
 constexpr int MAIN_WINDOW_HEIGHT = 705;
 
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
+MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
         , geonkickApi{api}
         , topBar{nullptr}
@@ -51,7 +51,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         , kitModel{new KitModel(this, geonkickApi)}
 {
         setName("MainWindow");
-        setScaleFactor(geonkickApi->getScaleFactor());
+        //        setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
@@ -60,7 +60,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         createShortcuts();
 }
 
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
+MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const RkNativeWindowInfo &info)
         : GeonkickWidget(app, info)
         , geonkickApi{api}
         , topBar{nullptr}
@@ -69,7 +69,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &
         , limiterWidget{nullptr}
         , kitModel{new KitModel(this, geonkickApi)}
 {
-        setScaleFactor(geonkickApi->getScaleFactor());
+        //        setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
@@ -326,8 +326,8 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         updateGui();
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
-                        geonkickApi->setScaleFactor((geonkickApi->getScaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
-                        setScaleFactor(geonkickApi->getScaleFactor());
+                        geonkickApi->setScaleFactor((geonkickApi->getScaleFactor() + 0.5 > 2.1) ? 1 : /*scaleFactor()*/ 1.0 + 0.5);
+                        //                        setScaleFactor(geonkickApi->getScaleFactor());
                         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
                         updateGui();
                         action onScaleFactor(geonkickApi->getScaleFactor());

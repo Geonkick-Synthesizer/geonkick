@@ -33,6 +33,7 @@
 #include "GeonkickConfig.h"
 
 #include <RkEventQueue.h>
+#include <RkAction.h>
 
 #include <sndfile.h>
 
@@ -83,8 +84,8 @@ void GeonkickApi::setEventQueue(RkEventQueue *queue)
 {
         std::lock_guard<std::mutex> lock(apiMutex);
         eventQueue = queue;
-        if (eventQueue)
-                eventQueue->setScaleFactor(getScaleFactor());
+        //        if (eventQueue)
+        //                eventQueue->setScaleFactor(getScaleFactor());
 }
 
 bool GeonkickApi::initDSP()

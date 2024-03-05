@@ -26,6 +26,7 @@
 #include "globals.h"
 
 #include <RkEventQueue.h>
+#include <RkAction.h>
 
 KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
         : RkObject(parent)

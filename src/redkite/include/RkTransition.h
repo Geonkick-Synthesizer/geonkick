@@ -28,7 +28,8 @@
 #include "RkTimer.h"
 #include <math.h>
 
-class RK_EXPORT RkTransition : public RkObject {
+class RkTransition : public RkObject {
+ RK_DECLARE_INTERFACE(RkTransition)
  public:
         enum class TransitionDirection: int {
                 TransitionForward = 0,

@@ -29,7 +29,7 @@
 #include "RkSize.h"
 #include "RkColor.h"
 
-class RK_EXPORT RkImage : public RkCanvas {
+class RkImage : public RkCanvas {
  public:
         enum class Format : int {
                 ARGB32 = 0,
@@ -74,15 +74,11 @@ class RK_EXPORT RkImage : public RkCanvas {
         int height() const;
         RkSize size() const;
         bool isNull() const;
-        const RkCanvasInfo* getCanvasInfo() const override;
-        void freeCanvasInfo() override;
+        RkCanvasInfo *getCanvasInfo() const override;
 
  protected:
-        RK_DECLARE_IMPL(RkImage);
+        RK_DECLARE_O_PTR(RkImage);
         explicit RkImage(std::unique_ptr<RkImageImpl> impl);
-
- private:
-        RK_DISABLE_MOVE(RkImage);
 };
 
 #endif // RK_IMAGE_H

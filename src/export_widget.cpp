@@ -56,7 +56,7 @@ RK_DECLARE_IMAGE_RC(stereo_radio_button);
 RK_DECLARE_IMAGE_RC(stereo_radio_button_active);
 
 ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
-        : GeonkickWidget(parent, Rk::WindowFlags::Dialog)
+        : GeonkickWidget(parent, Rk::WidgetFlags::Dialog)
         , geonkickApi{api}
         , locationEdit{nullptr}
         , fileNameEdit{nullptr}

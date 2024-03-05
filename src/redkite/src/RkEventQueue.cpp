@@ -23,6 +23,8 @@
 
 #include "RkEventQueueImpl.h"
 
+#include <RkAction.h>
+
 RkEventQueue::RkEventQueue()
         : o_ptr{std::make_unique<RkEventQueueImpl>(this)}
 {
@@ -37,38 +39,9 @@ RkEventQueue::~RkEventQueue()
 {
 }
 
-void RkEventQueue::addObject(RkObject *obj)
-{
-        o_ptr->addObject(obj);
-}
-
-void RkEventQueue::addShortcut(RkObject *obj,
-                               Rk::Key key,
-                               Rk::KeyModifiers modifier)
-{
-        o_ptr->addShortcut(obj, key, modifier);
-}
-
-void RkEventQueue::removeShortcut(RkObject *obj,
-                                  Rk::Key key,
-                                  Rk::KeyModifiers modifier)
-{
-        o_ptr->removeShortcut(obj, key, modifier);
-}
-
-void RkEventQueue::removeObject(RkObject *obj)
-{
-        o_ptr->removeObject(obj);
-}
-
 void RkEventQueue::postEvent(RkObject *obj, std::unique_ptr<RkEvent> event)
 {
         o_ptr->postEvent(obj, std::move(event));
-}
-
-void RkEventQueue::postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event)
-{
-        o_ptr->postEvent(id, std::move(event));
 }
 
 void RkEventQueue::postAction(std::unique_ptr<RkAction> act)
@@ -76,90 +49,7 @@ void RkEventQueue::postAction(std::unique_ptr<RkAction> act)
         o_ptr->postAction(std::move(act));
 }
 
-void RkEventQueue::subscribeTimer(RkTimer *timer)
-{
-        if (timer)
-                o_ptr->subscribeTimer(timer);
-}
-
-void RkEventQueue::unsubscribeTimer(RkTimer *timer)
-{
-        if (timer)
-                o_ptr->unsubscribeTimer(timer);
-}
-
-void RkEventQueue::processEvents()
-{
-        o_ptr->processEvents();
-}
-
-void RkEventQueue::processActions()
-{
-        o_ptr->processActions();
-}
-
-void RkEventQueue::processTimers()
-{
-        o_ptr->processTimers();
-}
-
 void RkEventQueue::processQueue()
 {
-        // The order is important.
-        processTimers();
-        processActions();
-        processEvents();
-}
-
-void RkEventQueue::clearObjectEvents(const RkObject *obj)
-{
-        if (obj)
-                o_ptr->clearEvents(obj);
-}
-
-void RkEventQueue::clearObjectActions(const RkObject *act)
-{
-        if (act)
-                o_ptr->clearActions(act);
-}
-
-void RkEventQueue::clearEvents()
-{
-        o_ptr->clearEvents(nullptr);
-}
-
-void RkEventQueue::clearActions()
-{
-        o_ptr->clearActions(nullptr);
-}
-
-void RkEventQueue::clearQueue()
-{
-        clearEvents();
-        clearActions();
-}
-
-RkObject* RkEventQueue::findObjectByName(const std::string &name) const
-{
-        return o_ptr->findObjectByName(name);
-}
-
-void RkEventQueue::setScaleFactor(double factor)
-{
-        o_ptr->setScaleFactor(factor);
-}
-
-double RkEventQueue::getScaleFactor() const
-{
-        return o_ptr->getScaleFactor();
-}
-
-RkWidget* RkEventQueue::getWidget(const RkWindowId &id) const
-{
-        return o_ptr->findWidget(id);
-}
-
-void RkEventQueue::dispatchEvents()
-{
-        return o_ptr->dispatchEvents();
+        o_ptr->processQueue();
 }

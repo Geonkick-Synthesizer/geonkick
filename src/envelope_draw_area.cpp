@@ -28,6 +28,7 @@
 
 #include <RkPainter.h>
 #include <RkEvent.h>
+#include <RkAction.h>
 
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api)
           : GeonkickWidget(parent)

@@ -30,7 +30,7 @@
 class RkEvent;
 class RkEventQueue;
 
-class RK_EXPORT RkObject {
+class RkObject {
  public:
         explicit RkObject(RkObject *parent = nullptr);
         virtual ~RkObject();
@@ -48,19 +48,19 @@ class RK_EXPORT RkObject {
         void rk__add_bound_object(RkObject* obj);
 
  protected:
-        RK_DECLARE_IMPL(RkObject);
+        RK_DECLARE_O_PTR(RkObject);
         explicit RkObject(RkObject *parent, std::unique_ptr<RkObjectImpl> impl);
         void rk__add_observer(std::unique_ptr<RkObserver> observer);
         const std::list<std::unique_ptr<RkObserver>>& rk__observers() const;
 
  private:
-        RK_DISABLE_COPY(RkObject);
-        RK_DISABLE_MOVE(RkObject);
         void addChild(RkObject *child);
         void removeChild(RkObject *child);
         void removeObservers(RkObject *ob);
         void removeBoundObject(RkObject *obj);
         friend class RkEventQueue;
+        RK_DISABLE_COPY(RkObject);
+        RK_DISABLE_MOVE(RkObject);
 };
 
 #endif // RK_OBJECT_H

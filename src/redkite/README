@@ -1,3 +1,11 @@
-Redkite is no longer developed as a standalone library;
-its code has become a part of the Geonkick codebase
-and is now released under the same license as Geonkick.
+## Redkite
+
+Status: no release, redefine Redkite system windows to graphics widgets
+
+A lightweight graphics widget toolkit for embedded GUI.
+
+Author: Iurie Nistor
+
+License: GNU General Public License v3.0
+
+Used by Geonkick synthesizer - https://geonkick.org

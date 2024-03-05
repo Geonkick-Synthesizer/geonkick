@@ -22,7 +22,7 @@
  */
 
 #include "RkObjectImpl.h"
-#include "RkEventQueue.h"
+#include "RkEventQueueImpl.h"
 #include "RkObserver.h"
 
 RkObject::RkObjectImpl::RkObjectImpl(RkObject* interface,
@@ -89,6 +89,11 @@ RkEventQueue* RkObject::RkObjectImpl::getEventQueue() const
         return eventQueue;
 }
 
+void RkObject::RkObjectImpl::event(RkEvent *event)
+{
+        inf_ptr->event(event);
+}
+
 void RkObject::RkObjectImpl::addObserver(std::unique_ptr<RkObserver> ob)
 {
         auto res = std::find(observersList.begin(), observersList.end(), ob);
@@ -138,7 +143,7 @@ void RkObject::RkObjectImpl::addChild(RkObject* child)
         objectChildren.insert(child);
         if (eventQueue) {
                 RK_LOG_DEBUG("add child to queue: " << child);
-                eventQueue->addObject(child);
+                RK_IMPL_PTR(eventQueue)->addObject(child);
         }
 }
 
