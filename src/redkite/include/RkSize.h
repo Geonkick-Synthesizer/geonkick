@@ -66,6 +66,11 @@ class RkSize {
                heightValue = height;
        }
 
+       constexpr bool isEmpty() const
+       {
+               return widthValue <= 0 || heightValue <= 0;
+       }
+
  private:
         int widthValue;
         int heightValue;

@@ -78,7 +78,16 @@ set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_API_DIR ${GKICK_COMMON_DIR}/dsp)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${GKICK_COMMON_DIR}/standalone)
-set(GKICK_REDKITE_DIR ${GKICK_COMMON_DIR}/redkite)
+
+if (REDKITE_PATH)
+  get_filename_component(REDKITE_FOLDER_NAME ${REDKITE_PATH} NAME)
+if(NAME_FROM_PATH STREQUAL "" AND (REDKITE_FOLDER_NAME STREQUAL "." OR REDKITE_FOLDER_NAME STREQUAL ".."))
+  message(FATAL_ERROR "The folder name '${REDKITE_FOLDER_NAME}' of Redkite is invalid or empty.")
+endif()
+  set(GKICK_REDKITE_DIR ${REDKITE_PATH})
+else(REDKITE_PATH)
+  set(GKICK_REDKITE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/redkite)
+endif(REDKITE_PATH)
 
 if (GKICK_PLUGIN)
     if (GKICK_PLUGIN_VST)
@@ -272,7 +281,7 @@ link_directories(${GKICK_REDKITE_DIR})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-fPIC)
 add_subdirectory(${GKICK_API_DIR})
-add_subdirectory(${GKICK_REDKITE_DIR})
+add_subdirectory(${GKICK_REDKITE_DIR} redkite)
 include(${GKICK_RC_DIR}/resources.rc)
 
 foreach(pngFile ${gkick_rc_png_files})
@@ -282,7 +291,7 @@ foreach(pngFile ${gkick_rc_png_files})
   string(REPLACE " " "_" filename ${filename})
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
-    && ${CMAKE_BINARY_DIR}/src/redkite/tools/rkpng2c
+    && ${CMAKE_BINARY_DIR}/redkite/tools/rkpng2c
     "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk__${filename}")
     set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
 endforeach()

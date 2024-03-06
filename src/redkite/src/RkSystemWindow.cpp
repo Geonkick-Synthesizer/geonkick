@@ -110,6 +110,7 @@ RkWindowId RkSystemWindow::id() const
 void RkSystemWindow::setSize(const RkSize &size)
 {
         platformWindow->setSize(size);
+        RK_LOG_DEBUG("size w: " << size.width() << ", h: " << size.width());
         systemWindowImage = RkImage(size);
         systemWindowImage.fill(platformWindow->background());
 }

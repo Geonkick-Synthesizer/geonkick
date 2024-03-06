@@ -37,6 +37,7 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
         , systemWindow{nullptr}
         , widgetClosed{false}
         , widgetMaximumSize{1000000, 1000000}
+        , widgetSize{250, 250}
         , widgetBorderWidth{0}
         , widgetAttributes{defaultWidgetAttributes()}
         , widgetFlags{flags}
@@ -268,6 +269,7 @@ void RkWidget::RkWidgetImpl::setSize(const RkSize &size)
         widgetSize = size;
         if (isTopWidget())
                 systemWindow->setSize(widgetSize);
+        RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::move(std::make_unique<RkResizeEvent>()));
 }
 
 const RkSize& RkWidget::RkWidgetImpl::size() const

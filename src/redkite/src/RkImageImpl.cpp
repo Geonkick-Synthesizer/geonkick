@@ -37,13 +37,9 @@ RkImage::RkImageImpl::RkImageImpl(RkImage *interface,
                                   RkImage::Format format)
         : inf_ptr{interface}
         , imageFormat{format}
-//#ifdef RK_GRAPHICS_CAIRO_BACKEND
         , imageBackendCanvas{std::make_unique<RkCairoImageBackendCanvas>(RkSize(width, height), imageFormat, data)}
-//#else
-//#error No graphics backend defined
-//#endif
 {
-        RK_LOG_DEBUG("called--------------------------------------->");
+        RK_LOG_DEBUG("called");
         RK_UNUSED(inf_ptr);
 }
 
@@ -53,6 +49,7 @@ RkImage::RkImageImpl::~RkImageImpl()
 
 RkCanvasInfo* RkImage::RkImageImpl::getCanvasInfo() const
 {
+        RK_LOG_DEBUG("called");
         if (imageBackendCanvas)
                 return imageBackendCanvas->getCanvasInfo();
         return nullptr;

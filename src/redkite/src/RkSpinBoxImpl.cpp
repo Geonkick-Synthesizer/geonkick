@@ -49,15 +49,19 @@ void RkSpinBox::RkSpinBoxImpl::init()
         upButton->show();
         downButton = new RkButton(inf_ptr);
         downButton->setType(RkButton::ButtonType::ButtonPush);
-        downButton->show();       
+        downButton->show();
         displayLabel = new RkLabel(inf_ptr);
-        displayLabel->show();     
+        displayLabel->show();
         updateControls();
 }
 
 void RkSpinBox::RkSpinBoxImpl::updateControls()
 {
-        upButton->setSize(inf_ptr->width() / 4, inf_ptr->height() / 2);
+        RkSize controlsSize = RkSize(inf_ptr->width() / 4, inf_ptr->height() / 2);
+        if (controlsSize.isEmpty())
+                return;
+
+        upButton->setSize(controlsSize);
         displayLabel->setTextColor(inf_ptr->textColor());
         displayLabel->setBackgroundColor(inf_ptr->background());
         upButton->setPosition(inf_ptr->width() - upButton->width(), 0);
@@ -100,8 +104,8 @@ void RkSpinBox::RkSpinBoxImpl::updateControls()
                 painter.drawLine(2, img.height() / 2, img.width() - 2, img.height() / 2);
                 upButton->setImage(img, RkButton::State::Pressed);
         }
-        
-        downButton->setSize(upButton->size());
+
+        downButton->setSize(controlsSize);
         downButton->setPosition(upButton->x(), upButton->y() + upButton->height());
         {
                 RkImage img(downButton->size());
@@ -148,7 +152,7 @@ void RkSpinBox::RkSpinBoxImpl::setCurrentIndex(int index)
         if (spinBoxItems.empty())
                 return;
 
-        currentItemIndex = std::clamp(index, 0, static_cast<int>(spinBoxItems.size() - 1));        
+        currentItemIndex = std::clamp(index, 0, static_cast<int>(spinBoxItems.size() - 1));
         if (std::holds_alternative<std::string>(spinBoxItems[static_cast<size_t>(currentItemIndex)]))
                 displayLabel->setText(std::get<std::string>(spinBoxItems[static_cast<size_t>(currentItemIndex)]));
 }

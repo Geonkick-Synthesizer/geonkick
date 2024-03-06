@@ -32,7 +32,7 @@ class RkCanvas {
  public:
         RkCanvas() = default;
         virtual ~RkCanvas() = default;
-        virtual RkCanvasInfo* getCanvasInfo() const;
+        virtual RkCanvasInfo* getCanvasInfo() const = 0;
         virtual void freeCanvasInfo();
 };
 
