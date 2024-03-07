@@ -32,7 +32,7 @@ jobs:
           git clone --recursive https://github.com/Geonkick-Synthesizer/vst3sdk.git
           VST3SDKPATH=$(pwd)/vst3sdk
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH ..
+          cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH -DGKICK_DOCUMENTATION=ON ..
           make -j 4
           make install
           tar czf "${{ matrix.ARCHIVE_NAME }}.tar.gz" install
