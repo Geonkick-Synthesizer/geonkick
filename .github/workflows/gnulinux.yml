@@ -24,7 +24,7 @@ jobs:
       - name: Set up build environment
         run: |
           sudo apt-get update -qy
-          sudo apt-get install -y git build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev
+          sudo apt-get install -y git build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev texlive-xetex texlive-latex-base pandoc
 
       - name: Build
         run: |

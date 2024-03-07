@@ -64,7 +64,7 @@ Each instrument in the kit list is monophonic. However, the instrument can be di
 
 ### Block diagram
 
-![Screenshot](diagram.png)
+![Diagram](diagram.png)
 
 ### Instrument
 

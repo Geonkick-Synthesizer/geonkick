@@ -29,6 +29,8 @@ if (GKICK_PLUGIN)
   endif(VST3_SDK_PATH)
 endif (GKICK_PLUGIN)
 
+option(GKICK_DOCUMENTATION "Enable build documentation" OFF)
+
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "no build type selected, set default to Release")
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type Release" FORCE)
@@ -316,7 +318,25 @@ if (GKICK_PLUGIN)
     target_compile_options(geonkick_common_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
 endif(GKICK_PLUGIN)
 
-message(STATUS "------------ Summary ---------")
+if (GKICK_STANDALONE)
+   add_subdirectory(${GKICK_STANDALONE_DIR})
+endif (GKICK_STANDALONE)
+
+if (GKICK_PLUGIN)
+   add_subdirectory(${GKICK_COMMON_DIR}/plugin)
+endif (GKICK_PLUGIN)
+
+add_subdirectory(data)
+
+if (GKICK_PRESETS)
+   add_subdirectory(presets)
+ endif (GKICK_PRESETS)
+
+if (GKICK_DOCUMENTATION)
+   add_subdirectory(doc)
+ endif (GKICK_DOCUMENTATION)
+
+ message(STATUS "------------ Summary ---------")
 if (GKICK_STANDALONE)
   message(STATUS "Standalone: yes" )
 else(GKICK_STANDALONE)
@@ -340,10 +360,16 @@ else(GKICK_PLUGIN_VST)
 endif(GKICK_PLUGIN_VST)
 
 if(GKICK_PRESETS)
-  message(STATUS "Geonkick presets: yes" )
+  message(STATUS "Pesets: yes" )
 else(GKICK_PRESETS)
-  message(STATUS "Geonkick presets: no")
+  message(STATUS "Presets: no")
 endif(GKICK_PRESETS)
+
+if (GKICK_DOCUMENTATION)
+  message(STATUS "Documentation: yes" )
+else(GKICK_DOCUMENTATION)
+  message(STATUS "Documentation: no" )
+endif(GKICK_DOCUMENTATION)
 
 if (ENABLE_LOGGING)
   message(STATUS "Debug enabled: yes" )
@@ -352,16 +378,4 @@ else(ENABLE_LOGGING)
 endif(ENABLE_LOGGING)
 message(STATUS "------------------------------")
 
-if (GKICK_STANDALONE)
-   add_subdirectory(${GKICK_STANDALONE_DIR})
-endif (GKICK_STANDALONE)
 
-if (GKICK_PLUGIN)
-   add_subdirectory(${GKICK_COMMON_DIR}/plugin)
-endif (GKICK_PLUGIN)
-
-add_subdirectory(data)
-
-if (GKICK_PRESETS)
-   add_subdirectory(presets)
-endif (GKICK_PRESETS)
