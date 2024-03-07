@@ -15,4 +15,4 @@ else()
   target_link_libraries(rkpng2c ${RK_GRAPHICS_BACKEND_LINK_LIBS})
 endif()
 
-install(TARGETS rkpng2c DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+#install(TARGETS rkpng2c DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
