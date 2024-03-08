@@ -391,7 +391,7 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         , bookmarkDirectoryButton{nullptr}
 {
         setTitle(title);
-        setFixedSize(600, 400);
+        setFixedSize(600, 370);
         setBorderWidth(1);
         setBorderColor(40, 40, 40);
 

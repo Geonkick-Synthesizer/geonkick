@@ -194,6 +194,7 @@ bool MainWindow::init(void)
         limiterWidget->show();
         controlAreaWidget = new ControlArea(this, kitModel, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
+        controlAreaWidget->setBackgroundColor(0, 255, 0);
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
 

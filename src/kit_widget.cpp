@@ -234,8 +234,9 @@ KitChannelsView::KitChannelsView(KitWidget *parent, KitModel *model)
                 : GeonkickWidget(parent)
                 , kitModel{model}
                 , channelWidth{30}
+                , channelHeight{25}
 {
-        setSize(kitModel->numberOfChannels() * channelWidth, channelWidth);
+        setSize(kitModel->numberOfChannels() * channelWidth, channelHeight);
 }
 
 void KitChannelsView::paintWidget(RkPaintEvent *event)

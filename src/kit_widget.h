@@ -78,6 +78,7 @@ class KitChannelsView: public GeonkickWidget
  private:
         KitModel *kitModel;
         int channelWidth;
+        int channelHeight;
 };
 
 #endif // KIT_WIDGET_H
