@@ -247,7 +247,7 @@ The compressor is applied after distortion and has the following controls:
 - **"Ratio"**
 - **"Drive"**
 
-*Note:* The compressor is not a standard compressor; it only compresses signal aplitude with a zero release time. It is more useful for creating distortion effects. For standard sound compression, it is recommended to use a dedicated compressor.
+*Note:* The compressor is not a standard compressor; it only compresses signal amplitude with a zero release time. It is more useful for creating distortion effects. For standard sound compression, it is recommended to use a dedicated compressor.
 
 #### Tune
 
