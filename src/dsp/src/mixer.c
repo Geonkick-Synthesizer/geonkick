@@ -102,20 +102,18 @@ gkick_mixer_process(struct gkick_mixer *mixer,
         if (size < 1)
                 return GEONKICK_OK;
 
-        for (size_t channel = 0; channel < GEONKICK_MAX_CHANNELS; channel++) {
-                size_t left_index  = 2 * channel;
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
+                struct gkick_audio_output *output = mixer->audio_outputs[i];
+                if (!output->enabled || output->muted
+                    || mixer->solo != output->solo || !output->play)
+                        continue;
+                size_t left_index  = 2 * output->channel;
                 size_t right_index = left_index + 1;
                 gkick_real *data[2] = {out[left_index] + offset, out[right_index] + offset};
-                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
-                        struct gkick_audio_output *output = mixer->audio_outputs[i];
-                        if (output->channel != channel || !output->enabled
-                            || output->muted || mixer->solo != output->solo || !output->play)
-                                continue;
-
-                        gkick_audio_get_data(output, data, size);
-                        gkick_mixer_set_leveler(mixer, i, fabsf(data[0][0]));
-                        ring_buffer_next(output->ring_buffer, size);
-                }
+                gkick_real leveler = 0.0f;
+                gkick_audio_get_data(output, data, &leveler, size);
+                gkick_mixer_set_leveler(mixer, i, fabsf(leveler));
+                ring_buffer_next(output->ring_buffer, size);
         }
 
         return GEONKICK_OK;

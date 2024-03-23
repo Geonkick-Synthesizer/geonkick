@@ -299,10 +299,12 @@ gkick_audio_output_get_channel(struct gkick_audio_output *audio_output,
 
 void gkick_audio_get_data(struct gkick_audio_output *audio_output,
                           gkick_real **data,
+                          gkick_real *leveler,
                           size_t size)
 {
         if (gkick_audio_note_off(audio_output))
                 gkick_audio_add_playing_buffer_to_ring(audio_output, size);
+        *leveler = ring_buffer_get_cur_data(audio_output->ring_buffer);
         ring_buffer_get_data(audio_output->ring_buffer,
                              data[0],
                              size);
@@ -314,4 +316,9 @@ void gkick_audio_get_data(struct gkick_audio_output *audio_output,
                 data[0][i] *= limiter;
                 data[1][i] *= limiter;
         }
+}
+
+bool gkick_audio_note_off(struct gkick_audio_output *audio_output)
+{
+        return audio_output->note_off;
 }

@@ -164,6 +164,10 @@ gkick_audio_output_get_channel(struct gkick_audio_output *audio_output,
                                size_t *channel);
 
 void gkick_audio_get_data(struct gkick_audio_output *audio_output,
-                          gkick_real **data, size_t size);
+                          gkick_real **data,
+                          gkick_real *leveler,
+                          size_t size);
+
+bool gkick_audio_note_off(struct gkick_audio_output *audio_output);
 
 #endif // GKICK_AUDO_OUTPUT_H
