@@ -99,6 +99,9 @@ struct gkick_audio_output
         /* Output audio limiter value. */
         atomic_int limiter;
 
+        /* Enable/disable note off */
+        _Atomic bool note_off;
+
         pthread_mutex_t lock;
 };
 

@@ -45,6 +45,7 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output, int sample_r
         (*audio_output)->playing_key  = GEONKICK_ANY_KEY;
         (*audio_output)->midi_channel = GEONKICK_ANY_MIDI_CHANNEL;
         (*audio_output)->sample_rate  = sample_rate;
+        (*audio_output)->note_off     = false;
 
         gkick_buffer_new(&(*audio_output)->updated_buffer,
                          (*audio_output)->sample_rate * GEONKICK_MAX_LENGTH);
@@ -109,6 +110,10 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                 audio_output->play  = true;
                 audio_output->decay = -1;
                 gkick_audio_output_swap_buffers(audio_output);
+                if (!gkick_audio_note_off(audio_output)) {
+                        size_t size = gkick_buffer_size(audio_output->playing_buffer);
+                        gkick_audio_add_playing_buffer_to_ring(audio_output, size);
+                }
         } else {
                 audio_output->key.state = key->state;
                 audio_output->decay     = GEKICK_KEY_RELESE_DECAY_TIME;
@@ -132,7 +137,7 @@ gkick_audio_set_play(struct gkick_audio_output *audio_output)
 gkick_real gkick_audio_get_decay_val(struct gkick_audio_output *audio_output)
 {
         gkick_real decay_val = 1.0f;
-        /*int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
+        int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
         if (audio_output->key.state == GKICK_KEY_STATE_RELEASED) {
                 audio_output->decay--;
                 if (audio_output->decay < 0) {
@@ -143,7 +148,7 @@ gkick_real gkick_audio_get_decay_val(struct gkick_audio_output *audio_output)
                         decay_val = - 1.0f * ((gkick_real)(release_time - audio_output->decay)
                                               / release_time) + 1.0f;
                 }
-                }*/
+        }
         return decay_val;
 }
 
@@ -296,7 +301,8 @@ void gkick_audio_get_data(struct gkick_audio_output *audio_output,
                           gkick_real **data,
                           size_t size)
 {
-        gkick_audio_add_playing_buffer_to_ring(audio_output, size);
+        if (gkick_audio_note_off(audio_output))
+                gkick_audio_add_playing_buffer_to_ring(audio_output, size);
         ring_buffer_get_data(audio_output->ring_buffer,
                              data[0],
                              size);
