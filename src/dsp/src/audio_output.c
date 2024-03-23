@@ -132,15 +132,18 @@ gkick_audio_set_play(struct gkick_audio_output *audio_output)
 gkick_real gkick_audio_get_decay_val(struct gkick_audio_output *audio_output)
 {
         gkick_real decay_val = 1.0f;
-        int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
+        /*int release_time = GEKICK_KEY_RELESE_DECAY_TIME;
         if (audio_output->key.state == GKICK_KEY_STATE_RELEASED) {
                 audio_output->decay--;
-                if (audio_output->decay < 0)
+                if (audio_output->decay < 0) {
                         audio_output->play = false;
-                else
+                        decay_val = 0.0f;
+                        audio_output->decay = -1;
+                } else {
                         decay_val = - 1.0f * ((gkick_real)(release_time - audio_output->decay)
                                               / release_time) + 1.0f;
-        }
+                }
+                }*/
         return decay_val;
 }
 
