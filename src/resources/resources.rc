@@ -254,6 +254,9 @@ prev_page_on.png
 env_button.png
 env_button_hover.png
 env_button_on.png
+note_off_unpressed.png
+note_off_hover.png
+note_off_pressed.png
 
 # === File Dialog ===
 

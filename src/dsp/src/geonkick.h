@@ -740,6 +740,16 @@ geonkick_set_sample_preview_limiter(struct geonkick *kick, gkick_real val);
 enum geonkick_error
 geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val);
 
+enum geonkick_error
+geonkick_percussion_enable_note_off(struct geonkick *kick,
+                                    size_t id,
+                                    bool enable);
+
+enum geonkick_error
+geonkick_percussion_note_off_enabled(struct geonkick *kick,
+                                     size_t id,
+                                     bool *enabled);
+
 bool
 geonkick_is_plugin();
 

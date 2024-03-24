@@ -113,4 +113,14 @@ gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
                                     signed char *channel,
                                     bool *force);
 
+enum geonkick_error
+gkick_mixer_enable_note_off(struct geonkick *kick,
+                            size_t id,
+                            bool enable);
+
+enum geonkick_error
+gkick_mixer_note_off_enabled(struct gkick_audio *audio,
+                             size_t id,
+                             bool *enabled);
+
 #endif // GKICK_MIXER_H

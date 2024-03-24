@@ -238,3 +238,20 @@ gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
                 *force = forced_midi & 0x0100;
         return GEONKICK_OK;
 }
+
+enum geonkick_error
+gkick_mixer_enable_note_off(struct geonkick *kick,
+                            size_t id,
+                            bool enable);
+{
+        mixer->audio_outputs[id]->note_off = enable;
+}
+
+enum geonkick_error
+gkick_mixer_note_off_enabled(struct gkick_audio *audio,
+                             size_t id,
+                             bool *enabled)
+{
+        *enabled = mixer->audio_outputs[id]->note_off;
+        return GEONKICK_OK;
+}

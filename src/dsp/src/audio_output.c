@@ -318,6 +318,12 @@ void gkick_audio_get_data(struct gkick_audio_output *audio_output,
         }
 }
 
+void gkick_audio_enable_note_off(struct gkick_audio_output *audio_output,
+                                 bool enable)
+{
+        audio_output->note_off = enable;
+}
+
 bool gkick_audio_note_off(struct gkick_audio_output *audio_output)
 {
         return audio_output->note_off;

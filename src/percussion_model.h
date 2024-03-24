@@ -67,6 +67,8 @@ class PercussionModel : public RkObject {
         size_t numberOfMidiChannels() const;
         int midiChannel() const;
         void setMidiChannel(int index);
+        void enableNoteOff(bool b);
+        bool isNoteOffEnabled() const;
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),

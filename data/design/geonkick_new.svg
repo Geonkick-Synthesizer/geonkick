@@ -7,38 +7,12 @@
    viewBox="0 0 507.99998 285.74998"
    version="1.1"
    id="svg13507"
-   sodipodi:docname="geonkick_new.svg"
-   inkscape:export-filename="../../src/resources/fl_qfactor_button_off.png"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview1777"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     showgrid="false"
-     inkscape:zoom="14.225941"
-     inkscape:cx="708.17812"
-     inkscape:cy="1026.3996"
-     inkscape:window-width="1920"
-     inkscape:window-height="908"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
   <defs
      id="defs13501">
     <radialGradient
@@ -3481,19 +3455,19 @@
          y="85.842979"
          style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#fffffa;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">HP</tspan></text>
     <rect
-       style="display:inline;opacity:1;fill:#434444;fill-opacity:1;stroke:none;stroke-width:0.04666101;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#434444;fill-opacity:1;stroke:none;stroke-width:0.046661;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5922-3-3-3"
        width="6.9170156"
        height="2.6303561"
-       x="178.23117"
-       y="77.373413" />
+       x="176.49612"
+       y="74.695755" />
     <rect
-       style="display:inline;opacity:1;fill:#434444;fill-opacity:1;stroke:none;stroke-width:0.04330336;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="display:inline;opacity:1;fill:#434444;fill-opacity:1;stroke:none;stroke-width:0.0433034;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5922-3-3-2-6"
        width="5.9573579"
        height="2.6303561"
-       x="187.21217"
-       y="77.373413" />
+       x="191.33633"
+       y="74.191315" />
     <rect
        style="display:inline;opacity:1;fill:#434444;fill-opacity:1;stroke:none;stroke-width:0.04877127;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="rect5922-3-3-2-2-7"
@@ -3504,24 +3478,24 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:2.67509px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="186.81067"
-       y="75.829712"
+       x="184.99202"
+       y="73.275139"
        id="text8698-6-5"
        transform="scale(0.9540306,1.0481844)"><tspan
          id="tspan8696-2-3"
-         x="186.81067"
-         y="75.829712"
+         x="184.99202"
+         y="73.275139"
          style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Open</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:2.67509px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';letter-spacing:0px;word-spacing:0px;display:inline;opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="196.19548"
-       y="75.829712"
+       x="200.51836"
+       y="72.793892"
        id="text8698-7-6-5"
        transform="scale(0.9540306,1.0481844)"><tspan
          id="tspan8696-0-1-6"
-         x="196.19548"
-         y="75.829712"
+         x="200.51836"
+         y="72.793892"
          style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Save</tspan></text>
     <text
        xml:space="preserve"
@@ -4073,10 +4047,7 @@
        x="185.49588"
        y="277.30972"
        rx="0.23547916"
-       ry="0.23547916"
-       inkscape:export-filename="../../src/resources/fl_qfactor_button_off.png"
-       inkscape:export-xdpi="188.78395"
-       inkscape:export-ydpi="188.78395" />
+       ry="0.23547916" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5147px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#a0a0a0;fill-opacity:1;stroke:none;stroke-width:0.016229"
@@ -4095,10 +4066,7 @@
        x="185.49588"
        y="280.47134"
        rx="0.23547916"
-       ry="0.23547916"
-       inkscape:export-filename="../../src/resources/fl_qfactor_button_hover.png"
-       inkscape:export-xdpi="189.00577"
-       inkscape:export-ydpi="189.00577" />
+       ry="0.23547916" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c7c7c7;fill-opacity:1;stroke:none;stroke-width:0.0162286"
@@ -4118,10 +4086,7 @@
        x="185.49588"
        y="283.67047"
        rx="0.23547916"
-       ry="0.23547916"
-       inkscape:export-filename="../../src/resources/fl_qfactor_button_on.png"
-       inkscape:export-xdpi="189.00577"
-       inkscape:export-ydpi="189.00577" />
+       ry="0.23547916" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0162286"
@@ -4133,5 +4098,64 @@
          x="186.22446"
          y="285.42419"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.0162286">Q</tspan></text>
+    <rect
+       style="display:inline;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.126739;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect5816-2-5-3-6-7-6-3"
+       width="3.4262912"
+       height="2.3357093"
+       x="184.87093"
+       y="77.336754"
+       rx="0.2896857"
+       ry="0.23425817" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5147px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#a0a0a0;fill-opacity:1;stroke:none;stroke-width:0.016229"
+       x="185.20494"
+       y="79.054443"
+       id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-0-1-6"><tspan
+         id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-9-8-7"
+         x="185.20494"
+         y="79.054443"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.5147px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#a0a0a0;fill-opacity:1;stroke-width:0.016229">noff</tspan></text>
+    <rect
+       style="display:inline;fill:#59595c;fill-opacity:1;stroke:#373636;stroke-width:0.12674;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect5816-2-5-3-6-3-36-7-5"
+       width="3.4263494"
+       height="2.3357365"
+       x="185.02228"
+       y="80.498383"
+       rx="0.28969058"
+       ry="0.23426089" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c7c7c7;fill-opacity:1;stroke:none;stroke-width:0.0162286"
+       x="185.34209"
+       y="82.222313"
+       id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-5-0-9-3"
+       transform="scale(1.0000764,0.99992361)"><tspan
+         id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-6-626-2-5"
+         x="185.34209"
+         y="82.222313"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#c7c7c7;fill-opacity:1;stroke-width:0.0162286">noff</tspan></text>
+    <rect
+       style="display:inline;fill:#6f6f72;fill-opacity:1;stroke:#373636;stroke-width:0.12674;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect5816-2-5-3-6-2-1-0-6"
+       width="3.4263492"
+       height="2.3357365"
+       x="185.02228"
+       y="83.697502"
+       rx="0.28969058"
+       ry="0.23426089" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0162286"
+       x="185.34215"
+       y="85.421646"
+       id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-5-3-8-23-2"
+       transform="scale(1.000076,0.999924)"><tspan
+         id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-6-6-7-7-9"
+         x="185.34215"
+         y="85.421646"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.51467px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.0162286">noff</tspan></text>
   </g>
 </svg>

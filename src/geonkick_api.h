@@ -281,6 +281,8 @@ class GeonkickApi : public RkObject {
   bool isPercussionMuted(size_t id) const;
   bool soloPercussion(size_t id, bool b);
   bool isPercussionSolo(size_t id) const;
+  bool enableNoteOff(size_t id, bool b = true);
+  bool isNoteOffEmabled(size_t id) const;
   std::string getPercussionName(int index) const;
   void copyToClipboard();
   void pasteFromClipboard();
