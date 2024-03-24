@@ -168,4 +168,10 @@ void gkick_audio_get_data(struct gkick_audio_output *audio_output,
                           gkick_real *leveler,
                           size_t size);
 
+void gkick_audio_output_enable_note_off(struct gkick_audio_output *audio_output,
+                                 bool enable);
+
+bool gkick_audio_output_note_off(struct gkick_audio_output *audio_output);
+
+
 #endif // GKICK_AUDO_OUTPUT_H

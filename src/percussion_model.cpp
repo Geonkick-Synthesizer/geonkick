@@ -231,10 +231,10 @@ void PercussionModel::setMidiChannel(int index)
 void PercussionModel::enableNoteOff(bool b)
 {
         if (kitModel->enableNoteOff(percussionId, b))
-                action noteOffUpdated(index);
+                action noteOffUpdated(b);
 }
 
-bool void PercussionModel::isNoteOffEnabled() const
+bool PercussionModel::isNoteOffEnabled() const
 {
         return kitModel->isNoteOffEnabled(percussionId);
 }

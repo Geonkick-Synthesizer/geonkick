@@ -2,7 +2,7 @@
  * File name: geonkick.h
  * Project: GeonKick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of GeonKick.
  *
@@ -30,7 +30,6 @@ extern "C" {
 
 #include <stdio.h>
 #include <errno.h>
-//#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
@@ -662,7 +661,7 @@ enum geonkick_error
 geonkick_ged_forced_midi_channel(struct geonkick *kick,
                                  signed char *channel,
                                  bool *force);
-        
+
 size_t
 geonkick_midi_channels_number();
 

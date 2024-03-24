@@ -1365,7 +1365,7 @@ bool GeonkickApi::enableNoteOff(size_t id, bool b)
         return geonkick_percussion_enable_note_off(geonkickApi, id, b) == GEONKICK_OK;
 }
 
-bool GeonkickApi::isNoteOffEmabled(size_t id) const
+bool GeonkickApi::isNoteOffEnabled(size_t id) const
 {
         bool enabled = false;
         geonkick_percussion_note_off_enabled(geonkickApi, id, &enabled);

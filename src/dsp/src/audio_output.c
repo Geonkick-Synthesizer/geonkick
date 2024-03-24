@@ -110,7 +110,7 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                 audio_output->play  = true;
                 audio_output->decay = -1;
                 gkick_audio_output_swap_buffers(audio_output);
-                if (!gkick_audio_note_off(audio_output)) {
+                if (!gkick_audio_output_note_off(audio_output)) {
                         size_t size = gkick_buffer_size(audio_output->playing_buffer);
                         gkick_audio_add_playing_buffer_to_ring(audio_output, size);
                 }
@@ -302,7 +302,7 @@ void gkick_audio_get_data(struct gkick_audio_output *audio_output,
                           gkick_real *leveler,
                           size_t size)
 {
-        if (gkick_audio_note_off(audio_output))
+        if (gkick_audio_output_note_off(audio_output))
                 gkick_audio_add_playing_buffer_to_ring(audio_output, size);
         *leveler = ring_buffer_get_cur_data(audio_output->ring_buffer);
         ring_buffer_get_data(audio_output->ring_buffer,
@@ -318,13 +318,13 @@ void gkick_audio_get_data(struct gkick_audio_output *audio_output,
         }
 }
 
-void gkick_audio_enable_note_off(struct gkick_audio_output *audio_output,
+void gkick_audio_output_enable_note_off(struct gkick_audio_output *audio_output,
                                  bool enable)
 {
         audio_output->note_off = enable;
 }
 
-bool gkick_audio_note_off(struct gkick_audio_output *audio_output)
+bool gkick_audio_output_note_off(struct gkick_audio_output *audio_output)
 {
         return audio_output->note_off;
 }

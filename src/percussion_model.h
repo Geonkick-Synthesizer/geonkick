@@ -110,6 +110,10 @@ class PercussionModel : public RkObject {
                     midiChannelUpdated(int index),
                     RK_ARG_TYPE(int),
                     RK_ARG_VAL(index));
+        RK_DECL_ACT(noteOffUpdated,
+                    noteOffUpdated(bool b),
+                    RK_ARG_TYPE(bool),
+                    RK_ARG_VAL(b));
 
  protected:
         void onPercussionSelected();

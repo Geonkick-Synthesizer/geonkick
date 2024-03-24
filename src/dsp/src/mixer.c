@@ -240,18 +240,19 @@ gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
 }
 
 enum geonkick_error
-gkick_mixer_enable_note_off(struct geonkick *kick,
+gkick_mixer_enable_note_off(struct gkick_mixer *mixer,
                             size_t id,
-                            bool enable);
+                            bool enable)
 {
-        mixer->audio_outputs[id]->note_off = enable;
+        gkick_audio_output_enable_note_off(mixer->audio_outputs[id], enable);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_mixer_note_off_enabled(struct gkick_audio *audio,
+gkick_mixer_note_off_enabled(struct gkick_mixer *mixer,
                              size_t id,
                              bool *enabled)
 {
-        *enabled = mixer->audio_outputs[id]->note_off;
+        *enabled = gkick_audio_output_note_off(mixer->audio_outputs[id]);
         return GEONKICK_OK;
 }

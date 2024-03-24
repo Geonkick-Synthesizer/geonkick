@@ -316,6 +316,7 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
         RK_ACT_BIND(percussionModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
         RK_ACT_BIND(percussionModel, midiChannelUpdated, RK_ACT_ARGS(int val), this, update());
+        RK_ACT_BIND(percussionModel, noteOffUpdated, RK_ACT_ARGS(bool b), this, update());
         updateView();
 }
 
