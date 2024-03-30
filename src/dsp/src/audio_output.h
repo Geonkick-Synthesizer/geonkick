@@ -74,6 +74,11 @@ struct gkick_audio_output
         _Atomic bool play;
 
         /**
+         * Triggers the play, usualy changed from UI call.
+         */
+        _Atomic bool start_play;
+
+        /**
          * decay - note release time measured in number of audio frames.
          * Relaxation curve for audio is liniear:
          *   - 1.0 * (GEKICK_NOTE_RELEASE_TIME - decay) / GEKICK_NOTE_RELEASE_TIME + 1.0,

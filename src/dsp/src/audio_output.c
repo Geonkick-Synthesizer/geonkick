@@ -37,6 +37,7 @@ gkick_audio_output_create(struct gkick_audio_output **audio_output, int sample_r
                 return GEONKICK_ERROR;
         }
         (*audio_output)->play         = false;
+        (*audio_output)->start_play   = false;
         (*audio_output)->decay        = -1;
 	(*audio_output)->enabled      = true;
         (*audio_output)->muted        = false;
@@ -128,7 +129,7 @@ gkick_audio_set_play(struct gkick_audio_output *audio_output)
 {
         struct gkick_note_info key;
         key.channel        = GEONKICK_ANY_MIDI_CHANNEL;
-        key.note_number    = 69;
+        key.note_number    = GEONKICK_ANY_KEY;
         key.velocity       = 127;
         key.state          = GKICK_KEY_STATE_PRESSED;
         gkick_audio_output_key_pressed(audio_output, &key);
@@ -185,7 +186,7 @@ gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output,
 enum geonkick_error
 gkick_audio_output_play(struct gkick_audio_output *audio_output)
 {
-        audio_output->play = true;
+        audio_output->start_play = true;
         return GEONKICK_OK;
 }
 

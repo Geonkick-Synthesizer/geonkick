@@ -104,9 +104,16 @@ gkick_mixer_process(struct gkick_mixer *mixer,
 
         for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
+
+                if (output->start_play) {
+                        gkick_audio_set_play(output);
+                        output->start_play = false;
+                }
+
                 if (!output->enabled || output->muted
                     || mixer->solo != output->solo || !output->play)
                         continue;
+
                 size_t left_index  = 2 * output->channel;
                 size_t right_index = left_index + 1;
                 gkick_real *data[2] = {out[left_index] + offset, out[right_index] + offset};
