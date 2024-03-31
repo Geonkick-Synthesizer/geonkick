@@ -410,3 +410,12 @@ std::vector<float> KitModel::instrumentData(PercussionIndex index) const
         return geonkickApi->getInstrumentBuffer(percussionId(index));
 }
 
+bool KitModel::enableNoteOff(PercussionIndex index, bool b)
+{
+        return geonkickApi->enableNoteOff(percussionId(index), b);
+}
+
+bool KitModel::isNoteOffEnabled(PercussionIndex index) const
+{
+        return geonkickApi->isNoteOffEnabled(percussionId(index));
+}

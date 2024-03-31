@@ -2,7 +2,7 @@
  * File name: percussion_state.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iuri Nistor 
+ * Copyright (C) 2018 Iuri Nistor
  *
  * This file is part of Geonkick.
  *
@@ -36,6 +36,7 @@ PercussionState::PercussionState()
         , kickEnabled{true}
         , percussionMuted{false}
         , percussionSolo{false}
+        , noteOffEnabled{false}
         , limiterValue{0}
         , kickLength{50}
         , kickAmplitude{0.8}
@@ -201,6 +202,16 @@ signed char PercussionState::getMidiChannel() const
         return outputMidiChannel;
 }
 
+void PercussionState::setNoteOffEnabled(bool b)
+{
+        noteOffEnabled = b;
+}
+
+bool PercussionState::isNoteOffEnabled() const
+{
+        return noteOffEnabled;
+}
+
 bool PercussionState::isEnabled() const
 {
         return kickEnabled;
@@ -242,6 +253,8 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                         setChannel(m.value.GetInt());
                 if (m.name == "midiChannel" && m.value.IsInt())
                         setMidiChannel(m.value.GetInt());
+                if (m.name == "noteOffEnabled" && m.value.IsBool())
+                        setNoteOffEnabled(m.value.GetBool());
                 if (m.name == "mute" && m.value.IsBool())
                         setMute(m.value.GetBool());
                 if (m.name == "solo" && m.value.IsBool())
@@ -1018,7 +1031,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 if (val.second.function == GeonkickApi::FunctionType::Sample && !val.second.sample.empty())
                         jsonStream <<  "\"sample\": \"" << toBase64F(val.second.sample) << "\"," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second.function) << "," << std::endl;
-                jsonStream <<  "\"phase\": " 
+                jsonStream <<  "\"phase\": "
                            << val.second.phase << ", " << std::endl;
                 jsonStream <<  "\"seed\": " << val.second.seed << ", " << std::endl;
                 envelopeToJson(jsonStream,
@@ -1041,9 +1054,9 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream << "\"enabled\": " << (val.second.isFilterEnabled ? "true" : "false");
                 jsonStream << ", " << std::endl;
                 jsonStream << "\"type\": " << static_cast<int>(val.second.filterType) << ", " << std::endl;
-                jsonStream << "\"cutoff\": " 
+                jsonStream << "\"cutoff\": "
                            << val.second.filterFrequency << ", " << std::endl;
-		jsonStream << "\"apply_type\": " 
+		jsonStream << "\"apply_type\": "
                            << static_cast<int>(val.second.cutOffEnvelopeApplyType) << ", " << std::endl;
                 jsonStream << "\"cutoff_env\": [";
                 bool first = true;
@@ -1056,7 +1069,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                                    << " , "  << point.y() << "]";
                 }
                 jsonStream << "], " << std::endl;
-                jsonStream << "\"factor\": " 
+                jsonStream << "\"factor\": "
                            << val.second.filterFactor << "," << std::endl;
 		jsonStream << "\"qfactor_env\": [";
                 first = true;
@@ -1082,6 +1095,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
 	jsonStream << "\"id\": " << getId() << "," << std::endl;
         jsonStream << "\"channel\": " << getChannel() << "," << std::endl;
         jsonStream << "\"midiChannel\": " << static_cast<int>(getMidiChannel()) << "," << std::endl;
+        jsonStream << "\"noteOffEnabled\": " << (isNoteOffEnabled() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"mute\": " << (isMuted() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"solo\": " << (isSolo() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
@@ -1109,7 +1123,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                         jsonStream  << layersAmplitude[i];
         }
         jsonStream << "]," << std::endl;
-        jsonStream << "\"limiter\": " 
+        jsonStream << "\"limiter\": "
                    << getLimiterValue() << ", " << std::endl;
         jsonStream << "\"tuned_output\": " << (isOutputTuned() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
@@ -1166,27 +1180,27 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "}, " << std::endl;  // filter;
         jsonStream << "\"compressor\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isCompressorEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"attack\": " 
+        jsonStream << "\"attack\": "
                    << getCompressorAttack() << ", " << std::endl;
-        jsonStream << "\"release\": " 
+        jsonStream << "\"release\": "
                    << getCompressorRelease() << ", " << std::endl;
-        jsonStream << "\"threshold\": " 
+        jsonStream << "\"threshold\": "
                    << getCompressorThreshold() << ", " << std::endl;
-        jsonStream << "\"ratio\": " 
+        jsonStream << "\"ratio\": "
                    << getCompressorRatio() << ", " << std::endl;
-        jsonStream << "\"knee\": " 
+        jsonStream << "\"knee\": "
                    << getCompressorKnee() << ", " << std::endl;
-        jsonStream << "\"makeup\": " 
+        jsonStream << "\"makeup\": "
                    << getCompressorMakeup() << std::endl;
         jsonStream << "}, " << std::endl;
 
         jsonStream << "\"distortion\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"in_limiter\": " 
+        jsonStream << "\"in_limiter\": "
                    << getDistortionInLimiter()  << ", " << std::endl;
-        jsonStream << "\"volume\": " 
+        jsonStream << "\"volume\": "
                    << getDistortionVolume()  << ", " << std::endl;
-        jsonStream << "\"drive\": " 
+        jsonStream << "\"drive\": "
                    << getDistortionDrive() << ", " << std::endl;
 	jsonStream << "\"drive_env\": [" << std::endl;
 	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive);

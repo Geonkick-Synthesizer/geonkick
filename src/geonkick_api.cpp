@@ -261,6 +261,7 @@ void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &sta
         setPercussionPlayingKey(state->getId(), state->getPlayingKey());
         setPercussionChannel(state->getId(), state->getChannel());
         setPercussionMidiChannel(state->getId(), state->getMidiChannel());
+        enableNoteOff(state->getId(), state->isNoteOffEnabled());
         mutePercussion(state->getId(), state->isMuted());
         soloPercussion(state->getId(), state->isSolo());
         for (auto i = 0; i < 3; i++) {
@@ -343,6 +344,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
         state->setPlayingKey(getPercussionPlayingKey(state->getId()));
         state->setChannel(getPercussionChannel(state->getId()));
         state->setMidiChannel(getPercussionMidiChannel(state->getId()));
+        state->setNoteOffEnabled(isNoteOffEnabled(state->getId()));
         state->setMute(isPercussionMuted(state->getId()));
         state->setSolo(isPercussionSolo(state->getId()));
         for (int i = 0; i < 3; i++) {
@@ -1359,6 +1361,18 @@ bool GeonkickApi::isPercussionSolo(size_t id) const
         bool solo = false;
         geonkick_percussion_is_solo(geonkickApi, id, &solo);
         return solo;
+}
+
+bool GeonkickApi::enableNoteOff(size_t id, bool b)
+{
+        return geonkick_percussion_enable_note_off(geonkickApi, id, b) == GEONKICK_OK;
+}
+
+bool GeonkickApi::isNoteOffEnabled(size_t id) const
+{
+        bool enabled = false;
+        geonkick_percussion_note_off_enabled(geonkickApi, id, &enabled);
+        return enabled;
 }
 
 int GeonkickApi::getUnusedPercussion() const

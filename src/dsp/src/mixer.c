@@ -102,36 +102,26 @@ gkick_mixer_process(struct gkick_mixer *mixer,
         if (size < 1)
                 return GEONKICK_OK;
 
-        for (size_t channel = 0; channel < GEONKICK_MAX_CHANNELS; channel++) {
-                size_t left_index  = 2 * channel;
-                size_t right_index = left_index + 1;
-                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
-                        struct gkick_audio_output *output = mixer->audio_outputs[i];
-                        if (output->channel != channel)
-                                continue;
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
+                struct gkick_audio_output *output = mixer->audio_outputs[i];
 
-                        if (!output->enabled || output->muted || mixer->solo != output->solo) {
-                                output->play = false;
-                        } else {
-                                if (output->play)
-                                        gkick_audio_set_play(output);
-                                ring_buffer_get_data(output->ring_buffer,
-                                                     out[left_index] + offset,
-                                                     size);
-                                ring_buffer_get_data(output->ring_buffer,
-                                                     out[right_index] + offset,
-                                                     size);
-                                gkick_real limiter_val = (gkick_real)output->limiter / 1000000;
-                                gkick_mixer_apply_limiter(out[left_index] + offset,
-                                                          out[right_index] + offset,
-                                                          size,
-                                                          limiter_val);
-                                gkick_real sample = ring_buffer_get_cur_data(output->ring_buffer);
-                                gkick_real leveler_val = fabsf(sample) * limiter_val;
-                                gkick_mixer_set_leveler(mixer, i, leveler_val);
-                        }
-                        ring_buffer_next(output->ring_buffer, size);
+                if (output->start_play) {
+                        gkick_audio_set_play(output);
+                        output->start_play = false;
                 }
+
+                if (!output->enabled || output->muted
+                    || mixer->solo != output->solo || !output->play) {
+                        ring_buffer_next(output->ring_buffer, size);
+                        continue;
+                }
+
+                size_t left_index  = 2 * output->channel;
+                size_t right_index = left_index + 1;
+                gkick_real *data[2] = {out[left_index] + offset, out[right_index] + offset};
+                gkick_real leveler = 0.0f;
+                gkick_audio_get_data(output, data, &leveler, size);
+                gkick_mixer_set_leveler(mixer, i, fabsf(leveler));
         }
 
         return GEONKICK_OK;
@@ -142,10 +132,6 @@ void gkick_mixer_apply_limiter(float *out_left,
                                size_t size,
                                float limiter)
 {
-        for (size_t i = 0; i < size; i++) {
-                out_left[i]  *= limiter;
-                out_right[i] *= limiter;
-        }
 }
 
 void
@@ -258,5 +244,23 @@ gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
                 *channel = forced_midi & 0x00ff;
         if (force)
                 *force = forced_midi & 0x0100;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_enable_note_off(struct gkick_mixer *mixer,
+                            size_t id,
+                            bool enable)
+{
+        gkick_audio_output_enable_note_off(mixer->audio_outputs[id], enable);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_note_off_enabled(struct gkick_mixer *mixer,
+                             size_t id,
+                             bool *enabled)
+{
+        *enabled = gkick_audio_output_note_off(mixer->audio_outputs[id]);
         return GEONKICK_OK;
 }

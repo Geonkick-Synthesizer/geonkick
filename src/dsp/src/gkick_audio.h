@@ -76,4 +76,13 @@ gkick_audio_set_limiter_callback(struct gkick_audio *audio,
                                  void (*callback)(void*, size_t index, gkick_real val),
                                  void *arg);
 
+enum geonkick_error
+gkick_audio_enable_note_off(struct geonkick *kick,
+                            size_t id,
+                            bool enable);
+enum geonkick_error
+gkick_audio_note_off_enabled(struct gkick_audio *audio,
+                             size_t id,
+                             bool *enabled);
+
 #endif // GKICK_AUDIO_H

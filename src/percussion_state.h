@@ -2,7 +2,7 @@
  * File name: percussion_state.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -45,6 +45,8 @@ class PercussionState
         size_t getChannel() const;
         void setMidiChannel(signed char channel);
         signed char getMidiChannel() const;
+        void setNoteOffEnabled(bool b = true);
+        bool isNoteOffEnabled() const;
         void setMute(bool b);
         bool isMuted() const;
         void setSolo(bool b);
@@ -230,7 +232,7 @@ private:
         bool kickEnabled;
         bool percussionMuted;
         bool percussionSolo;
-
+        bool noteOffEnabled;
         double limiterValue;
         double kickLength;
         double kickAmplitude;

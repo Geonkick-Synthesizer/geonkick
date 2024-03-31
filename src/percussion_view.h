@@ -2,7 +2,7 @@
  * File name: percussion_view.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -87,6 +87,7 @@ class KitPercussionView: public GeonkickWidget
         RkButton *playButton;
         RkButton *muteButton;
         RkButton *soloButton;
+        RkButton *noteOffButton;
         PercussionLimiter *percussionLimiter;
 };
 

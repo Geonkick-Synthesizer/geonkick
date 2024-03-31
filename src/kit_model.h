@@ -78,6 +78,8 @@ class KitModel : public RkObject {
         void updatePercussion(PercussionIndex index);
         GeonkickApi* api() const;
         bool doExport(const std::string &file, ExportFormat format);
+        bool enableNoteOff(PercussionIndex index, bool b);
+        bool isNoteOffEnabled(PercussionIndex index) const;
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),

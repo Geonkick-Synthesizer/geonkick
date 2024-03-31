@@ -1936,6 +1936,22 @@ geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val)
                                            val);
 }
 
+enum geonkick_error
+geonkick_percussion_enable_note_off(struct geonkick *kick,
+                                    size_t id,
+                                    bool enable)
+{
+        return gkick_mixer_enable_note_off(kick->audio->mixer, id, enable);
+}
+
+enum geonkick_error
+geonkick_percussion_note_off_enabled(struct geonkick *kick,
+                                     size_t id,
+                                     bool *enabled)
+{
+        return gkick_mixer_note_off_enabled(kick->audio->mixer, id, enabled);
+}
+
 void
 geonkick_wakeup(struct geonkick *kick)
 {

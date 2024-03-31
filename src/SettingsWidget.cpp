@@ -2,7 +2,7 @@
  * File name: SettingsWidget.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -41,7 +41,7 @@ SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
         mainContianer->setSize({width(), 30});
 
         createMidiChannelSettings(mainContianer);
-        
+
         auto label = new RkLabel(this, "Force all midi channels to ");
         label->setSize({130, 20});
         label->setTextColor({255, 255, 255});
