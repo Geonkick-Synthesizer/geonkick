@@ -2,7 +2,7 @@
  * File name: ring_buffer.c
  * Project: Geonkick (A percussive synthesizer)
  *
- * Copyright (C) 2023 Iurie Nistor 
+ * Copyright (C) 2023 Iurie Nistor
  *
  * This file is part of Geonkick.
  *

@@ -106,6 +106,9 @@ enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                struct gkick_note_info *key)
 {
+        if (audio_output->muted)
+                return GEONKICK_OK;
+
         if (key->state == GKICK_KEY_STATE_PRESSED) {
                 audio_output->key   = *key;
                 audio_output->play  = true;
@@ -127,6 +130,9 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
 void
 gkick_audio_set_play(struct gkick_audio_output *audio_output)
 {
+        if (audio_output->muted)
+                return;
+
         struct gkick_note_info key;
         key.channel        = GEONKICK_ANY_MIDI_CHANNEL;
         key.note_number    = GEONKICK_ANY_KEY;
@@ -309,14 +315,12 @@ void gkick_audio_get_data(struct gkick_audio_output *audio_output,
         ring_buffer_get_data(audio_output->ring_buffer,
                              data[0],
                              size);
-        ring_buffer_get_data(audio_output->ring_buffer,
-                             data[1],
-                             size);
         gkick_real limiter = (gkick_real)audio_output->limiter / 1000000;
         for (size_t i = 0; i < size; i++) {
                 data[0][i] *= limiter;
-                data[1][i] *= limiter;
+                data[1][i] = data[0][i];
         }
+        ring_buffer_next(audio_output->ring_buffer, size);
 }
 
 void gkick_audio_output_enable_note_off(struct gkick_audio_output *audio_output,

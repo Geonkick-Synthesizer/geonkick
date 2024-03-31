@@ -111,8 +111,10 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                 }
 
                 if (!output->enabled || output->muted
-                    || mixer->solo != output->solo || !output->play)
+                    || mixer->solo != output->solo || !output->play) {
+                        ring_buffer_next(output->ring_buffer, size);
                         continue;
+                }
 
                 size_t left_index  = 2 * output->channel;
                 size_t right_index = left_index + 1;
@@ -120,7 +122,6 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                 gkick_real leveler = 0.0f;
                 gkick_audio_get_data(output, data, &leveler, size);
                 gkick_mixer_set_leveler(mixer, i, fabsf(leveler));
-                ring_buffer_next(output->ring_buffer, size);
         }
 
         return GEONKICK_OK;
