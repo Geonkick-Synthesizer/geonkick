@@ -78,6 +78,8 @@ RkWidget::RkWidget(RkWidget *parent, std::unique_ptr<RkWidgetImpl> impl)
 RkWidget::~RkWidget()
 {
         RK_LOG_DEBUG("called: " << this);
+        if (hasFocus())
+                setFocus(false);
         if (parentWidget()) {
                 if (modality() == Rk::Modality::ModalTopWidget) {
                         if (!parentWidget()->isModal()) {
@@ -123,12 +125,9 @@ const std::string& RkWidget::title() const
 
 void RkWidget::show(bool b)
 {
-        impl_ptr->show(b);
-}
-
-bool RkWidget::isShown() const
-{
-	return impl_ptr->isShown();
+        if (!name().empty())
+                RK_LOG_DEV_DEBUG("name" << name() << ", show: " << b);
+        setVisible(b);
 }
 
 void RkWidget::hide()
@@ -616,4 +615,44 @@ RkPoint RkWidget::mapToLocal(const RkPoint& p) const
         return impl_ptr->isTopWidget() ? p - position()
                 : p - parentWidget()->mapToGlobal(position());
 }
+
+void RkWidget::setVisible(bool b)
+{
+        if (!name().empty())
+                RK_LOG_DEV_DEBUG(": " << name() << ": called");
+
+        impl_ptr->setExplicitHidden(!b);
+        if (b && parentWidget() && !parentWidget()->isVisible()) {
+                if (!name().empty())
+                        RK_LOG_DEV_DEBUG(": " << name() << ": show ignored");
+                return;
+        }
+
+        impl_ptr->setVisible(b);
+        if (!b) {
+                eventQueue()->postEvent(this,
+                                        std::move(std::make_unique<RkHideEvent>()));
+        } else {
+                eventQueue()->postEvent(this,
+                                std::move(std::make_unique<RkShowEvent>()));
+        }
+
+        if (!b && parentWidget()) {
+                eventQueue()->postEvent(parentWidget(),
+                                        std::move(std::make_unique<RkPaintEvent>()));
+        } else {
+                eventQueue()->postEvent(this,
+                                        std::move(std::make_unique<RkPaintEvent>()));
+        }
+
+        RK_IMPL_PTR(this)->setChildrenVisible(b);
+        if (!name().empty())
+                RK_LOG_DEV_DEBUG(": " << name() << ": exit");
+}
+
+bool RkWidget::isVisible() const
+{
+        return impl_ptr->isVisible();
+}
+
 

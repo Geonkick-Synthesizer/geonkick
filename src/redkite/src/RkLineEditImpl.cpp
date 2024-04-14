@@ -37,7 +37,7 @@ RkLineEdit::RkLineEditImpl::RkLineEditImpl(RkLineEdit *interface,
     , selectionIndex{0}
     , isSelectionMode{false}
     , cursorTimer{nullptr}
-    , isShowCursor{hasFocus()}
+    , isShowCursor{false}
     , lastCahnges{std::chrono::system_clock::now()}
     , contentsRect{0, 0, 0, 0}
     , beginX{0}

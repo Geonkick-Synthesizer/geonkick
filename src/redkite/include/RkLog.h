@@ -33,7 +33,7 @@ enum class RkLogLevel : int {
         Error
 };
 
-void RK_EXPORT rkLogMessage(RkLogLevel level, const std::string &func_name, const std::string &msg);
+void rkLogMessage(RkLogLevel level, const std::string &func_name, const std::string &msg);
 
 #if defined(__GNUC__) || defined(__MINGW32__)
 #define RK_LOG_FUNC_NAME __PRETTY_FUNCTION__

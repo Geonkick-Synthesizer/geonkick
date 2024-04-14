@@ -2,7 +2,7 @@
  * File name: RkWidgetImpl.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -52,8 +52,8 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         RkSystemWindow* getSystemWindow() const;
         void setEventQueue(RkEventQueue *queue) override;
         Rk::WidgetFlags getWidgetFlags() const;
-        void show(bool b);
-	bool isShown() const;
+        void setVisible(bool b);
+	bool isVisible() const;
         void setTitle(const std::string &title);
         const std::string& title() const;
         bool isClose() const;
@@ -79,7 +79,7 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         void setWidgetAttribute(Rk::WidgetAttribute attribute);
         void clearWidgetAttribute(Rk::WidgetAttribute attribute);
         Rk::WidgetAttribute getWidgetAttributes() const;
-        void setFocus(bool b);
+        void setFocus(bool b = true);
         bool hasFocus() const;
         void setTextColor(const RkColor &color);
         const RkColor& textColor() const;
@@ -96,6 +96,9 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         bool pointerIsOverWindow() const;
         void setScaleFactor(double factor);
         double scaleFactor() const;
+        void setExplicitHidden(bool b = true);
+        bool isExplicitHidden() const;
+        void setChildrenVisible(bool b);
 
 protected:
         void processPaintEvent(RkPaintEvent* event);
@@ -121,9 +124,11 @@ protected:
         RkColor widgetDrawingColor;
         RkFont widgetFont;
         Rk::PointerShape widgetPointerShape;
-	bool isWidgetShown;
+        bool isWidgetExplicitHidden;
+        bool isWidgetVisible;
         bool isGrabKeyEnabled;
         bool isPropagateGrabKey;
+        bool widgetHasFocus;
 };
 
 #endif // RK_WIDGET_IMPL_H

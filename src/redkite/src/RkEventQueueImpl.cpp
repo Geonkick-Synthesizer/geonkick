@@ -2,7 +2,7 @@
  * File name: RkEventQueueImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -87,7 +87,7 @@ void RkEventQueue::RkEventQueueImpl::addObject(RkObject *obj)
 {
  	if (!obj || objectExists(obj))
  		return;
-				
+
         objectsList.insert(obj);
         if (!obj->eventQueue())
                 obj->setEventQueue(inf_ptr);
@@ -162,7 +162,7 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
                 for (auto &event: systemEvents) {
                         auto widgetEvents = systemWindow->processEvent(event.get());
                         for (auto &e: widgetEvents) {
-                                if (e.first && e.first->isShown() && e.second)
+                                if (e.first && e.first->isVisible() && e.second)
                                         postEvent(e.first, std::move(e.second));
                         }
                 }

@@ -135,6 +135,8 @@ class RkWidget: public RkObject, public RkCanvas {
         bool isChild(RkWidget *widget);
         RkPoint mapToGlobal(const RkPoint& p) const;
         RkPoint mapToLocal(const RkPoint& p) const;
+        void setVisible(bool b = true);
+        bool isVisible() const;
 
  protected:
         RK_DECLARE_IMPL_PTR(RkWidget);

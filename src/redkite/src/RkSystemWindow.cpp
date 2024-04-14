@@ -27,6 +27,7 @@
 #include "RkPlatform.h"
 #include "RkMain.h"
 #include "RkWidgetImpl.h"
+#include "RkEventQueueImpl.h"
 
 #ifdef RK_OS_WIN
 #include "RkWindowWin.h"
@@ -57,6 +58,7 @@ RkSystemWindow::RkSystemWindow(RkWidget *widget, const RkNativeWindowInfo* paren
         , isPropagateGrabKey{true}
         , hoverWidget{nullptr}
         , mouseCaptureWidget{nullptr}
+        , focusWidget{nullptr}
 {
         platformWindow->init();
 }
@@ -161,7 +163,7 @@ bool RkSystemWindow::propagateGrabKeyEnabled() const
 RkSystemWindow::WidgetEventList
 RkSystemWindow::processEvent(const RkEvent *event)
 {
-        if (!topWidget->isShown())
+        if (!topWidget->isVisible())
                 return {};
 
         switch(event->type()) {
@@ -194,6 +196,17 @@ RkSystemWindow::processEvent(const RkEvent *event)
                 events.emplace_back(std::make_pair(topWidget, std::make_unique<RkResizeEvent>()));
                 return events;
         }
+        case RkEvent::Type::KeyPressed:
+        case RkEvent::Type::KeyReleased:
+        {
+                WidgetEventList events;
+                if (focusWidget) {
+                        auto keyEvent = std::make_unique<RkKeyEvent>();
+                        *keyEvent.get() = *static_cast<const RkKeyEvent*>(event);
+                        events.emplace_back(std::make_pair(focusWidget, std::move(keyEvent)));
+                }
+                return events;
+        }
         default:
                 RK_LOG_DEBUG("unknown event");
                 break;
@@ -210,26 +223,32 @@ RkSystemWindow::WidgetEventList RkSystemWindow::processMouseEvent(const RkMouseE
                 widget = mouseCaptureWidget;
         else
                 widget = getWidgetByGlobalPoint(topWidget, event->point());
-        
+
         if (event->type() == RkEvent::Type::MouseButtonPress)
                 mouseCaptureWidget = widget;
 
-        auto mouseEvent = std::make_unique<RkMouseEvent>();
-        mouseEvent->setType(event->type());
-        mouseEvent->setButton(event->button());
-        mouseEvent->setPoint(widget->mapToLocal(event->point()));
-        events.emplace_back(std::make_pair(widget, std::move(mouseEvent)));
+        if (widget->isVisible()) {
+                auto mouseEvent = std::make_unique<RkMouseEvent>();
+                mouseEvent->setType(event->type());
+                mouseEvent->setButton(event->button());
+                mouseEvent->setPoint(widget->mapToLocal(event->point()));
+                events.emplace_back(std::make_pair(widget, std::move(mouseEvent)));
+        }
+
         if (widget != hoverWidget) {
                 std::unique_ptr<RkHoverEvent> hoverEvent;
-                if (hoverWidget) {
+                if (hoverWidget && hoverWidget->isVisible()) {
                         hoverEvent = std::make_unique<RkHoverEvent>();
                         hoverEvent->setHover(false);
                         events.emplace_back(std::make_pair(hoverWidget, std::move(hoverEvent)));
                 }
-                hoverEvent = std::make_unique<RkHoverEvent>();
-                hoverEvent->setHover(true);
-                events.emplace_back(std::make_pair(widget, std::move(hoverEvent)));
-                hoverWidget = widget;
+
+                if (widget->isVisible()) {
+                        hoverEvent = std::make_unique<RkHoverEvent>();
+                        hoverEvent->setHover(true);
+                        events.emplace_back(std::make_pair(widget, std::move(hoverEvent)));
+                        hoverWidget = widget;
+                }
         }
 
         if (event->type() == RkEvent::Type::MouseButtonRelease)
@@ -249,7 +268,7 @@ RkWidget* RkSystemWindow::getWidgetByGlobalPoint(RkWidget *widget, const RkPoint
 {
         for (auto &child: widget->children()) {
                 auto childWidget = dynamic_cast<RkWidget*>(child);
-                if (childWidget && childWidget->isShown()
+                if (childWidget && childWidget->isVisible()
                     && containsGlobalPoint(childWidget, globalPoint))
                         return getWidgetByGlobalPoint(childWidget, globalPoint);
         }
@@ -415,3 +434,26 @@ double RkSystemWindow::scaleFactor() const
 {
         return 1.0;
 }
+
+void RkSystemWindow::setFocusWidget(RkWidget *widget, bool b)
+{
+        RK_LOG_DEV_DEBUG("widget: " << widget);
+        if (widget != focusWidget) {
+                if (focusWidget) {
+                        auto focusEvent = std::make_unique<RkFocusEvent>(RkEvent::Type::FocusedOut);
+                        RK_IMPL_PTR(focusWidget->eventQueue())->postEvent(focusWidget, std::move(focusEvent));
+                }
+                focusWidget = widget;
+                auto focusType = b ? RkEvent::Type::FocusedIn : RkEvent::Type::FocusedOut;
+                auto focusEvent = std::make_unique<RkFocusEvent>(focusType);
+                RK_IMPL_PTR(focusWidget->eventQueue())->postEvent(focusWidget, std::move(focusEvent));
+                if (!b)
+                        focusWidget = nullptr;
+        }
+}
+
+RkWidget* RkSystemWindow::getFocusWidget() const
+{
+        return focusWidget;
+}
+

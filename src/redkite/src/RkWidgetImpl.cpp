@@ -2,7 +2,7 @@
  * File name: RkWidgetImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -43,9 +43,11 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
         , widgetFlags{flags}
         , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WidgetFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
         , widgetPointerShape{Rk::PointerShape::Arrow}
-        , isWidgetShown{false}
+        , isWidgetExplicitHidden{false}
+        , isWidgetVisible{false}
         , isGrabKeyEnabled{false}
         , isPropagateGrabKey{true}
+        , widgetHasFocus{false}
 {
         RK_LOG_DEBUG("called");
 }
@@ -64,9 +66,11 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
         , widgetFlags{flags}
         , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WidgetFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
         , widgetPointerShape{Rk::PointerShape::Arrow}
-	, isWidgetShown{false}
+        , isWidgetExplicitHidden{false}
+	, isWidgetVisible{false}
         , isGrabKeyEnabled{false}
         , isPropagateGrabKey{true}
+        , widgetHasFocus{false}
 {
         RK_LOG_DEBUG("called");
 }
@@ -120,16 +124,16 @@ Rk::WidgetAttribute RkWidget::RkWidgetImpl::defaultWidgetAttributes()
 
 }
 
-void RkWidget::RkWidgetImpl::show(bool b)
+void RkWidget::RkWidgetImpl::setVisible(bool b)
 {
-	isWidgetShown = b;
+	isWidgetVisible = b;
         if (isTopWidget())
-                systemWindow->show(isWidgetShown);
+                systemWindow->show(isWidgetVisible);
 }
 
-bool RkWidget::RkWidgetImpl::isShown() const
+bool RkWidget::RkWidgetImpl::isVisible() const
 {
-	return isWidgetShown;
+	return isWidgetVisible;
 }
 
 void RkWidget::RkWidgetImpl::setTitle(const std::string &title)
@@ -155,7 +159,8 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
         switch (event->type())
         {
         case RkEvent::Type::Paint:
-                processPaintEvent(static_cast<RkPaintEvent*>(event));
+                if (isVisible())
+                        processPaintEvent(static_cast<RkPaintEvent*>(event));
                 break;
         case RkEvent::Type::KeyPressed:
                 RK_LOG_DEBUG("RkEvent::Type::KeyPressed: " << title());
@@ -186,18 +191,26 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 inf_ptr->focusEvent(static_cast<RkFocusEvent*>(event));
                 break;
         case RkEvent::Type::MouseButtonPress:
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
+                if (static_cast<int>(widgetAttributes)
+                    & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
                         inf_ptr->mouseButtonPressEvent(static_cast<RkMouseEvent*>(event));
+                        setFocus();
+                }
                 break;
         case RkEvent::Type::MouseDoubleClick:
                 RK_LOG_DEBUG("RkEvent::Type::MouseDoubleClick:" << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
+                if (static_cast<int>(widgetAttributes)
+                    & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
                         inf_ptr->mouseDoubleClickEvent(static_cast<RkMouseEvent*>(event));
+                        setFocus();
+                }
                 break;
         case RkEvent::Type::MouseButtonRelease:
                 RK_LOG_DEBUG("RkEvent::Type::MouseButtonRelease:" << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
+                if (static_cast<int>(widgetAttributes)
+                    & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
                         inf_ptr->mouseButtonReleaseEvent(static_cast<RkMouseEvent*>(event));
+                }
                 break;
         case RkEvent::Type::MouseMove:
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
@@ -218,11 +231,9 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 inf_ptr->resizeEvent(static_cast<RkResizeEvent*>(event));
                 break;
 	case RkEvent::Type::Show:
-		isWidgetShown = true;
                 inf_ptr->showEvent(static_cast<RkShowEvent*>(event));
                 break;
 	case RkEvent::Type::Hide:
-		isWidgetShown = false;
                 inf_ptr->hideEvent(static_cast<RkHideEvent*>(event));
                 break;
         case RkEvent::Type::DeleteChild:
@@ -245,6 +256,8 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
 
 void RkWidget::RkWidgetImpl::processPaintEvent(RkPaintEvent* event)
 {
+        if (!name().empty())
+                RK_LOG_DEV_DEBUG("name :" << name() << ", visible: " <<  isVisible());
         RkPainter painter(inf_ptr);
         auto globalPosition = inf_ptr->mapToGlobal({0, 0});
         painter.translate(globalPosition);
@@ -258,7 +271,7 @@ void RkWidget::RkWidgetImpl::processChildrenEvents(RkEvent *event)
 {
         for (auto &ch: inf_ptr->children()) {
                 auto widget = dynamic_cast<RkWidget*>(ch);
-                if (widget) {
+                if (widget && widget->isVisible()) {
                         RK_IMPL_PTR(widget)->event(event);
                 }
         }
@@ -348,12 +361,16 @@ RkRect RkWidget::RkWidgetImpl::rect() const
 
 void RkWidget::RkWidgetImpl::update(bool updateChildren)
 {
+        if (!isVisible())
+                return;
+
         RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::move(std::make_unique<RkPaintEvent>()));
         if (updateChildren) {
                 for (auto &ch: inf_ptr->children()) {
                         auto widget = dynamic_cast<RkWidget*>(ch);
-                        if (widget)
+                        if (widget && isVisible()) {
                                 RK_IMPL_PTR(widget)->update(updateChildren);
+                        }
                 }
         }
 }
@@ -380,12 +397,14 @@ Rk::WidgetAttribute RkWidget::RkWidgetImpl::getWidgetAttributes() const
 
 void RkWidget::RkWidgetImpl::setFocus(bool b)
 {
-        // TODO: implement?
+        if (RK_IMPL_PTR(getEventQueue()) && RK_IMPL_PTR(getEventQueue())->getSystemWindow())
+                RK_IMPL_PTR(getEventQueue())->getSystemWindow()->setFocusWidget(inf_ptr, b);
 }
 
 bool RkWidget::RkWidgetImpl::hasFocus() const
 {
-        // TODO: implement?
+        if (RK_IMPL_PTR(getEventQueue()) && RK_IMPL_PTR(getEventQueue())->getSystemWindow())
+                return RK_IMPL_PTR(getEventQueue())->getSystemWindow()->getFocusWidget() == inf_ptr;
         return false;
 }
 
@@ -455,4 +474,35 @@ bool RkWidget::RkWidgetImpl::pointerIsOverWindow() const
 {
         // TODO: implement?
         return false;
+}
+
+void RkWidget::RkWidgetImpl::setExplicitHidden(bool b)
+{
+        isWidgetExplicitHidden = b;
+}
+
+bool RkWidget::RkWidgetImpl::isExplicitHidden() const
+{
+        return isWidgetExplicitHidden;
+}
+
+void RkWidget::RkWidgetImpl::setChildrenVisible(bool b)
+
+{
+        if (b && !isVisible())
+                return;
+
+        for (const auto &ch: inf_ptr->children()) {
+                auto widget = dynamic_cast<RkWidget*>(ch);
+                if (widget) {
+                        if (b && RK_IMPL_PTR(widget)->isExplicitHidden())
+                                continue;
+                        RK_IMPL_PTR(widget)->setVisible(b);
+                        RK_IMPL_PTR(widget)->setChildrenVisible(b);
+                        if (!RK_IMPL_PTR(widget)->name().empty())
+                                RK_LOG_DEV_DEBUG(" ch: "
+                                                 << RK_IMPL_PTR(widget)->name()
+                                                 << " : visible: " << b);
+                }
+        }
 }

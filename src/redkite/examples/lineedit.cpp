@@ -35,16 +35,9 @@ class Button: public RkWidget {
         RK_DECL_ACT(toggled, toggled(bool b), RK_ARG_TYPE(bool), RK_ARG_VAL(b));
 
   protected:
-        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final
+        void mouseButtonPressEvent(RkMouseEvent *event) override
         {
                 isToggled = !isToggled;
-                // Post action to be executed by the GUI main thread.
-                eventQueue()->postAction([&](){ toggled(isToggled); });
-                // Or just call toggled(isToggled) directly to be
-                // executed by the thread executing this method.
-                // Anyway, mouseButtonPressEvent is executed only by GUI main thread.
-                // eventQueue()->postAction([&](){ toggled(isToggled); });
-                // can be called from a defferent thread than GUI main thread;
         }
 
 private:
@@ -53,7 +46,7 @@ private:
 
 class  LineEditExample: public RkWidget {
   public:
-        LineEditExample(RkMain *app)
+        LineEditExample(RkMain &app)
                 : RkWidget(app)
         {
                 setSize(350, 350);
@@ -66,10 +59,11 @@ class  LineEditExample: public RkWidget {
                 lineEdit->setTitle("RkLineEdit1");
                 lineEdit->setBorderWidth(1);
                 lineEdit->setBorderColor(80, 80, 80);
+                lineEdit->setBackgroundColor(80, 150, 80);
                 RK_ACT_BIND(lineEdit, textEdited, RK_ACT_ARGS(const std::string &text), this, onUpdateText(text));
                 lineEdit->show();
 
-                lineEdit = new RkLineEdit(this);
+                /*lineEdit = new RkLineEdit(this);
                 font = lineEdit->font();
                 font.setSize(30);
                 lineEdit->setFont(font);
@@ -85,14 +79,14 @@ class  LineEditExample: public RkWidget {
                 button->setBackgroundColor(100, 200, 100);
                 button->setFixedSize(50, 25);
                 button->show();
-                RK_ACT_BIND(button, toggled, RK_ACT_ARGS(bool toggled), this, openDialog());
+                RK_ACT_BIND(button, toggled, RK_ACT_ARGS(bool toggled), this, openDialog());*/
         }
 
   protected:
-        void keyPressEvent(const std::shared_ptr<RkKeyEvent> &event)
+        void keyPressEvent(RkKeyEvent* event)
         {
         }
-        void mouseMoveEvent(const std::shared_ptr<RkMouseEvent> &event)
+        void mouseMoveEvent(RkMouseEvent* event)
         {
         }
         void onUpdateText(const std::string &text)
@@ -101,9 +95,9 @@ class  LineEditExample: public RkWidget {
 
         void openDialog()
         {
-                auto dialog = new RkWidget(this, Rk::WidgetFlags::Dialog);
-                dialog->setSize(50, 50);
-                dialog->show();
+                //auto dialog = new RkWidget(this, Rk::WidgetFlags::Dialog);
+                // dialog->setSize(50, 50);
+                // dialog->show();
         }
 };
 
@@ -111,7 +105,8 @@ int main(int arc, char **argv)
 {
     RkMain app(arc, argv);
 
-    auto widget = new LineEditExample(&app);
+    auto widget = new LineEditExample(app);
     widget->setTitle("Line Edit Example");
+    widget->show();
     return app.exec();
 }

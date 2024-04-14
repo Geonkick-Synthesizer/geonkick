@@ -113,6 +113,8 @@ public:
         void hideEvent(RkHideEvent *event);
         void focusEvent(RkFocusEvent *event);
         void hoverEvent(RkHoverEvent *event);
+        void setFocusWidget(RkWidget *widget, bool b = true);
+        RkWidget* getFocusWidget() const;
 
 protected:
         WidgetEventList processMouseEvent(const RkMouseEvent* event);
@@ -139,6 +141,7 @@ private:
         RkImage systemWindowImage;
         RkWidget *hoverWidget;
         RkWidget *mouseCaptureWidget;
+        RkWidget *focusWidget;
 };
 
 #endif // RK_SYSTEM_WINDOW_H

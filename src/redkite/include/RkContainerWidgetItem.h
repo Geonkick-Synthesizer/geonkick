@@ -49,7 +49,7 @@ class RK_EXPORT RkContainerWidgetItem: public RkContainerItem {
         int height() const override { return itemWidget->height(); }
         RkWidget* widget() const { return itemWidget; }
         void hide(bool b) override { return b ? itemWidget->hide() : itemWidget->show(); }
-        bool isHidden() const override { return !itemWidget->isShown(); }
+        bool isHidden() const override { return !itemWidget->isVisible(); }
 
  private:
         RK_DISABLE_COPY(RkContainerWidgetItem);

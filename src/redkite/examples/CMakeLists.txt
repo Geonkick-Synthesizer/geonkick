@@ -3,12 +3,12 @@ set(RK_EXAMPLE_CHILD ON)
 set(RK_EXAMPLE_PAINTER ON)
 set(RK_EXAMPLE_ACTION ON)
 set(RK_EXAMPLE_TIMER ON)
+set(RK_EXAMPLE_LINEEDIT ON)
 
 #set(RK_EXAMPLES_SOURCES_PROPERTY ${RK_EXAMPLES_PATH}/property.cpp)
 #set(RK_EXAMPLES_SOURCES_WIDGET_COLORS ${RK_EXAMPLES_PATH}/widget_colors.cpp)
 #set(RK_EXAMPLES_SOURCES_DIALOG ${RK_EXAMPLES_PATH}/dialog.cpp)
 #set(RK_EXAMPLES_SOURCES_KEYEVENT ${RK_EXAMPLES_PATH}/keyevent.cpp)
-#set(RK_EXAMPLES_SOURCES_LINEEDIT ${RK_EXAMPLES_PATH}/lineedit.cpp)
 
 # ------------ Hello example -------
 
@@ -141,14 +141,17 @@ endif(RK_EXAMPLE_TIMER)
 #target_link_libraries(keyevent ${RK_GRAPHICS_BACKEND_LINK_LIBS})
 
 # ------------ RkLineEdit example -------
+if (RK_EXAMPLE_LINEEDIT)
+    add_executable(lineedit
+    ${RK_HEADERS}
+    ${RK_EXAMPLES_PATH}/lineedit.cpp)
 
-#add_executable(lineedit
-#  ${RK_HEADERS}
-#  ${RK_EXAMPLES_SOURCES_LINEEDIT})
-
-#add_dependencies(lineedit redkite)
-#target_link_libraries(lineedit redkite)
-#target_link_libraries(lineedit "-lX11 -lrt -lm -ldl")
-#target_link_libraries(lineedit ${RK_GRAPHICS_BACKEND_LINK_LIBS})
-#endif () # ALL EXAMPLES
+    add_dependencies(lineedit redkite)
+    target_link_libraries(lineedit redkite)
+    if (CMAKE_SYSTEM_NAME MATCHES Windows)
+        target_link_libraries(lineedit "-mwindows -lstdc++ -lm -lcairo")
+    else ()
+       target_link_libraries(lineedit "-lX11 -lcairo -lpthread -lrt -lm -ldl")
+    endif()
+endif(RK_EXAMPLE_LINEEDIT)
 

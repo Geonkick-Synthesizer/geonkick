@@ -76,6 +76,7 @@ void RkLineEdit::paintEvent(RkPaintEvent *event)
  */
 void RkLineEdit::keyPressEvent(RkKeyEvent *event)
 {
+        RK_LOG_DEV_DEBUG("called: " << (int)event->key());
         if (!hasFocus())
                 return;
 
