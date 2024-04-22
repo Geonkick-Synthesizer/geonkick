@@ -2,7 +2,7 @@
  * File name: RkLineEdit.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -76,7 +76,7 @@ void RkLineEdit::paintEvent(RkPaintEvent *event)
  */
 void RkLineEdit::keyPressEvent(RkKeyEvent *event)
 {
-        RK_LOG_DEV_DEBUG("called: " << (int)event->key());
+        RK_LOG_DEV_DEBUG("called[" << this << "] " << (int)event->key());
         if (!hasFocus())
                 return;
 
@@ -215,4 +215,3 @@ void RkLineEdit::moveCursorToEnd()
         impl_ptr->moveCursorToBack();
         update();
 }
-

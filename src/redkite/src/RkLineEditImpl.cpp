@@ -2,7 +2,7 @@
  * File name: RkLineEditImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -268,6 +268,7 @@ void RkLineEdit::RkLineEditImpl::deleteSelection()
 void RkLineEdit::RkLineEditImpl::paintEvent(RkPaintEvent *event)
 {
         RK_UNUSED(event);
+        RK_LOG_DEV_DEBUG("called[" << this << "] ");
         if (contentsRect.height() * contentsRect.width() == 0)
                 updateSize();
 
@@ -321,6 +322,7 @@ void RkLineEdit::RkLineEditImpl::paintEvent(RkPaintEvent *event)
                         painter.setPen(pen);
                         painter.drawLine(contentsRect.left() + cursorX + 1, contentsRect.top(),
                                          contentsRect.left() + cursorX + 1, contentsRect.top() + contentsRect.height());
+                        RK_LOG_DEV_DEBUG("called[" << this << "] draw cusor ");
                 }
         }
         RkPainter paint(inf_ptr);
@@ -338,4 +340,3 @@ bool RkLineEdit::RkLineEditImpl::hasEditFocus() const
 {
 	return cursorTimer->started();
 }
-

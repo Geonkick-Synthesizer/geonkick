@@ -449,6 +449,11 @@ void RkSystemWindow::setFocusWidget(RkWidget *widget, bool b)
                 RK_IMPL_PTR(focusWidget->eventQueue())->postEvent(focusWidget, std::move(focusEvent));
                 if (!b)
                         focusWidget = nullptr;
+        } else if (!b) {
+                if (widget->parentWidget())
+                        focusWidget = widget->parentWidget();
+                else
+                        focusWidget = topWidget;
         }
 }
 

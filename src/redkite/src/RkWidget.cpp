@@ -94,6 +94,7 @@ RkWidget::~RkWidget()
                 } else if (modality() == Rk::Modality::ModalParent) {
                         parentWidget()->enableInput();
                 }
+                parentWidget()->update();
         }
 }
 

@@ -42,6 +42,8 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
         , widgetAttributes{defaultWidgetAttributes()}
         , widgetFlags{flags}
         , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WidgetFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
+        , widgetTextColor{0, 0, 0}
+        , widgetDrawingColor{0, 0, 0}
         , widgetPointerShape{Rk::PointerShape::Arrow}
         , isWidgetExplicitHidden{false}
         , isWidgetVisible{false}
@@ -65,6 +67,8 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
         , widgetAttributes{defaultWidgetAttributes()}
         , widgetFlags{flags}
         , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WidgetFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
+        , widgetTextColor{0, 0, 0}
+        , widgetDrawingColor{0, 0, 0}
         , widgetPointerShape{Rk::PointerShape::Arrow}
         , isWidgetExplicitHidden{false}
 	, isWidgetVisible{false}
@@ -193,16 +197,16 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
         case RkEvent::Type::MouseButtonPress:
                 if (static_cast<int>(widgetAttributes)
                     & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
-                        inf_ptr->mouseButtonPressEvent(static_cast<RkMouseEvent*>(event));
                         setFocus();
+                        inf_ptr->mouseButtonPressEvent(static_cast<RkMouseEvent*>(event));
                 }
                 break;
         case RkEvent::Type::MouseDoubleClick:
                 RK_LOG_DEBUG("RkEvent::Type::MouseDoubleClick:" << title());
                 if (static_cast<int>(widgetAttributes)
                     & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
-                        inf_ptr->mouseDoubleClickEvent(static_cast<RkMouseEvent*>(event));
                         setFocus();
+                        inf_ptr->mouseDoubleClickEvent(static_cast<RkMouseEvent*>(event));
                 }
                 break;
         case RkEvent::Type::MouseButtonRelease:
