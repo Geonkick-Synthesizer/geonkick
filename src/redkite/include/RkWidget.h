@@ -137,6 +137,7 @@ class RkWidget: public RkObject, public RkCanvas {
         RkPoint mapToLocal(const RkPoint& p) const;
         void setVisible(bool b = true);
         bool isVisible() const;
+        bool isAncestorOf(RkWidget *child);
 
  protected:
         RK_DECLARE_IMPL_PTR(RkWidget);

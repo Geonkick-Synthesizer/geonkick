@@ -435,6 +435,7 @@ void TopBar::showMidiPopup()
 {
         auto midiPopup = new MidiKeyWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
                                            kitModel->currentPercussion());
+        GEONKICK_LOG_INFO("MidiKeyWidget: " << midiPopup);
         midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
         RK_ACT_BIND(midiPopup,
                     isAboutToClose,

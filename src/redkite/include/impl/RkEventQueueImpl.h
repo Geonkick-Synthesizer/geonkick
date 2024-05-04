@@ -2,7 +2,7 @@
  * File name: RkEventQueueImpl.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -68,10 +68,12 @@ class RkEventQueue::RkEventQueueImpl {
         void clearEvents(const RkObject *obj);
         void clearActions(const RkObject *obj);
         void processQueue();
+        void addPopup(RkWidget* popup);
+        void removePopup(RkWidget* popup);
 
  protected:
-        void processShortcuts(RkKeyEvent *event);
         void processPopups(RkWidget *widget, RkEvent* event);
+        void processShortcuts(RkKeyEvent *event);
         void removeObjectShortcuts(RkObject *obj);
         bool isTopWidget(RkObject *obj) const;
 
@@ -81,6 +83,7 @@ class RkEventQueue::RkEventQueueImpl {
         RK_DISABLE_MOVE(RkEventQueueImpl);
         std::unique_ptr<RkSystemWindow> systemWindow;
         std::unordered_set<RkObject*> objectsList;
+        std::vector<RkWidget*> popupList;
         std::unordered_map<int, std::unique_ptr<RkShortcut>> shortcutsList;
         std::mutex eventsQueueMutex;
         std::vector<std::pair<RkObject*, std::unique_ptr<RkEvent>>> eventsQueue;

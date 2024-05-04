@@ -25,6 +25,7 @@
 #include "RkWidget.h"
 #include "RkEvent.h"
 #include "RkWidgetImpl.h"
+#include "RkEventQueueImpl.h"
 #include "RkPlatform.h"
 #include "RkMain.h"
 #include "RkMainImpl.h"
@@ -52,6 +53,9 @@ RkWidget::RkWidget(RkWidget *parent, Rk::WidgetFlags flags)
         , impl_ptr{static_cast<RkWidgetImpl*>(o_ptr.get())}
 {
         RK_LOG_DEBUG("called: " << this);
+        if (flags == Rk::WidgetFlags::Popup)
+                RK_IMPL_PTR(eventQueue())->addPopup(this);
+
         if (modality() == Rk::Modality::ModalTopWidget) {
                 auto topWidget = getTopWidget();
                 if (topWidget)
@@ -78,6 +82,8 @@ RkWidget::RkWidget(RkWidget *parent, std::unique_ptr<RkWidgetImpl> impl)
 RkWidget::~RkWidget()
 {
         RK_LOG_DEBUG("called: " << this);
+        if (widgetFlags() == Rk::WidgetFlags::Popup)
+                RK_IMPL_PTR(eventQueue())->removePopup(this);
         if (hasFocus())
                 setFocus(false);
         if (parentWidget()) {
@@ -656,4 +662,13 @@ bool RkWidget::isVisible() const
         return impl_ptr->isVisible();
 }
 
+bool RkWidget::isAncestorOf(RkWidget *child)
+{
+        if (!child)
+                return false;
 
+        if (RK_IMPL_PTR(this)->isTopWidget() || child->parentWidget() == this)
+                return true;
+
+        return isAncestorOf(child->parentWidget());
+}

@@ -167,6 +167,7 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
                         }
                 }
         }
+
         /**
          * Move events in a separeted queue for processing
          * because during the processing the execution of some events
@@ -181,31 +182,52 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
 
         bool repaintSystemWindow = false;
         for (const auto &e: queue) {
+                if (!objectExists(e.first)) {
+                        RK_LOG_DEV_DEBUG("OBJECT DO NOT EXIST!");
+                        continue;
+                }
+
+                static int n = 10;
+                if (e.second->type() == RkEvent::Type::MouseMove) {
+                        if (dynamic_cast<RkWidget*>(e.first)->widgetFlags() == Rk::WidgetFlags::Popup) {
+                                RK_LOG_DEV_DEBUG("[" << dynamic_cast<RkWidget*>(e.first) << "]Popup: RkEvent::Type::MouseMove: " << n++);
+                        } else {
+                                RK_LOG_DEV_DEBUG("[" << dynamic_cast<RkWidget*>(e.first) << "]" << n++);
+                        }
+                }
+
+                if (!popupList.empty() && dynamic_cast<RkWidget*>(e.first)
+                    && e.second->type() == RkEvent::Type::MouseButtonPress)
+                        processPopups(dynamic_cast<RkWidget*>(e.first), e.second.get());
+
                 if (e.first) {
                         RK_IMPL_PTR(e.first)->event(e.second.get());
-                        if (e.second.get()->type() == RkEvent::Type::Paint)
+                        if (e.second->type() == RkEvent::Type::Paint)
                                 repaintSystemWindow = true;
                 }
         }
 
-        if (repaintSystemWindow)
+        if (repaintSystemWindow) {
+                for (auto it = popupList.begin(); it != popupList.end(); ++it) {
+                        auto event = std::make_unique<RkPaintEvent>();
+                        RK_IMPL_PTR((*it))->event(event.get());
+                }
                 systemWindow->update();
+        }
 }
 
 void RkEventQueue::RkEventQueueImpl::processPopups(RkWidget *widget, RkEvent* event)
 {
-        /*        if (event->type() == RkEvent::Type::MouseButtonPress) {
-                for (auto it = popupList.begin(); it != popupList.end();) {
-                        auto w = static_cast<RkWidget*>((*it).second);
-                        if (widget != w && !w->isChild(widget)) {
-                                RK_LOG_DEBUG("w->close()");
-                                w->close();
-                                it = popupList.erase(it);
-                        } else {
-                                ++it;
-                        }
+        for (auto it = popupList.begin(); it != popupList.end();) {
+                auto w = static_cast<RkWidget*>(*it);
+                if (widget != w && !w->isAncestorOf(widget)) {
+                        RK_LOG_DEBUG("w->close()");
+                        w->close();
+                        it = popupList.erase(it);
+                } else {
+                        ++it;
                 }
-                }*/
+        }
 }
 
 void RkEventQueue::RkEventQueueImpl::processShortcuts(RkKeyEvent *event)
@@ -302,3 +324,18 @@ void RkEventQueue::RkEventQueueImpl::processQueue()
         }
         return nullptr;
         }*/
+
+void RkEventQueue::RkEventQueueImpl::addPopup(RkWidget* popup)
+{
+        RK_LOG_DEV_DEBUG("ADD POPUP: " << popup);
+        if (std::find(popupList.begin(), popupList.end(), popup) == popupList.end()) {
+                RK_LOG_DEV_DEBUG("ADD[1] POPUP: " << popup);
+                popupList.push_back(popup);
+        }
+}
+
+void RkEventQueue::RkEventQueueImpl::removePopup(RkWidget* popup)
+{
+        RK_LOG_DEV_DEBUG("REMOVE POPUP: " << popup);
+        popupList.erase(std::remove(popupList.begin(), popupList.end(), popup), popupList.end());
+}
