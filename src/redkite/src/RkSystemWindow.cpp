@@ -266,6 +266,11 @@ bool RkSystemWindow::containsGlobalPoint(RkWidget* widget, const RkPoint &global
 
 RkWidget* RkSystemWindow::getWidgetByGlobalPoint(RkWidget *widget, const RkPoint &globalPoint)
 {
+        for (auto &popupWidget: RK_IMPL_PTR(topWidget->eventQueue())->getPopupWidgets()) {
+                if (containsGlobalPoint(popupWidget, globalPoint))
+                        return popupWidget;
+        }
+
         for (auto &child: widget->children()) {
                 auto childWidget = dynamic_cast<RkWidget*>(child);
                 if (childWidget && childWidget->isVisible()

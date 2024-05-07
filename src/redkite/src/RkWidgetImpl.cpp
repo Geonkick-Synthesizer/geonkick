@@ -260,8 +260,8 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
 
 void RkWidget::RkWidgetImpl::processPaintEvent(RkPaintEvent* event)
 {
-        //        if (!name().empty())
-        //                RK_LOG_DEV_DEBUG("name :" << name() << ", visible: " <<  isVisible());
+        if (!name().empty())
+                RK_LOG_DEV_DEBUG("name :" << name() << ", visible: " <<  isVisible());
         RkPainter painter(inf_ptr);
         auto globalPosition = inf_ptr->mapToGlobal({0, 0});
         painter.translate(globalPosition);
@@ -503,10 +503,10 @@ void RkWidget::RkWidgetImpl::setChildrenVisible(bool b)
                                 continue;
                         RK_IMPL_PTR(widget)->setVisible(b);
                         RK_IMPL_PTR(widget)->setChildrenVisible(b);
-                        //                        if (!RK_IMPL_PTR(widget)->name().empty())
-                        //                                RK_LOG_DEV_DEBUG(" ch: "
-                        //                                                 << RK_IMPL_PTR(widget)->name()
-                        //                                                 << " : visible: " << b);
+                        if (!RK_IMPL_PTR(widget)->name().empty())
+                                RK_LOG_DEV_DEBUG(" ch: "
+                                                 << RK_IMPL_PTR(widget)->name()
+                                                 << " : visible: " << b);
                 }
         }
 }

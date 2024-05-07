@@ -339,3 +339,8 @@ void RkEventQueue::RkEventQueueImpl::removePopup(RkWidget* popup)
         RK_LOG_DEV_DEBUG("REMOVE POPUP: " << popup);
         popupList.erase(std::remove(popupList.begin(), popupList.end(), popup), popupList.end());
 }
+
+const std::vector<RkWidget*>& RkEventQueue::RkEventQueueImpl::getPopupWidgets() const
+{
+        return popupList;
+}
