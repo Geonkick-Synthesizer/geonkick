@@ -221,8 +221,14 @@ RkSystemWindow::WidgetEventList RkSystemWindow::processMouseEvent(const RkMouseE
         RkWidget *widget = nullptr;
         if (mouseCaptureWidget)
                 widget = mouseCaptureWidget;
-        else
-                widget = getWidgetByGlobalPoint(topWidget, event->point());
+        else {
+                const auto& popups = RK_IMPL_PTR(topWidget->eventQueue())->getPopupWidgets();
+                if (!popups.empty())
+                        widget = getWidgetByGlobalPoint(popups.front(), event->point());
+
+                if (!widget || widget == popups.front())
+                        widget = getWidgetByGlobalPoint(topWidget, event->point());
+        }
 
         if (event->type() == RkEvent::Type::MouseButtonPress)
                 mouseCaptureWidget = widget;
@@ -266,11 +272,6 @@ bool RkSystemWindow::containsGlobalPoint(RkWidget* widget, const RkPoint &global
 
 RkWidget* RkSystemWindow::getWidgetByGlobalPoint(RkWidget *widget, const RkPoint &globalPoint)
 {
-        for (auto &popupWidget: RK_IMPL_PTR(topWidget->eventQueue())->getPopupWidgets()) {
-                if (containsGlobalPoint(popupWidget, globalPoint))
-                        return popupWidget;
-        }
-
         for (auto &child: widget->children()) {
                 auto childWidget = dynamic_cast<RkWidget*>(child);
                 if (childWidget && childWidget->isVisible()
