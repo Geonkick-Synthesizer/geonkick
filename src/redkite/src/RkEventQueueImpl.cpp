@@ -187,13 +187,9 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
                         continue;
                 }
 
-                static int n = 10;
-                if (e.second->type() == RkEvent::Type::MouseMove) {
-                        if (dynamic_cast<RkWidget*>(e.first)->widgetFlags() == Rk::WidgetFlags::Popup) {
-                                RK_LOG_DEV_DEBUG("[" << dynamic_cast<RkWidget*>(e.first) << "]Popup: RkEvent::Type::MouseMove: " << n++);
-                        } else {
-                                RK_LOG_DEV_DEBUG("[" << dynamic_cast<RkWidget*>(e.first) << "]" << n++);
-                        }
+                if (e.second->type() == RkEvent::Type::KeyPressed
+                    || e.second->type() == RkEvent::Type::KeyReleased) {
+                        processShortcuts(dynamic_cast<RkKeyEvent*>(e.second.get()));
                 }
 
                 if (!popupList.empty() && dynamic_cast<RkWidget*>(e.first)
@@ -232,11 +228,6 @@ void RkEventQueue::RkEventQueueImpl::processPopups(RkWidget *widget, RkEvent* ev
 
 void RkEventQueue::RkEventQueueImpl::processShortcuts(RkKeyEvent *event)
 {
-        /*        if (!event) {
-                RK_LOG_ERROR("wrong arguments");
-                return;
-        }
-
         if (static_cast<RkKeyEvent*>(event)->isShortcut())
                 return;
 
@@ -252,12 +243,11 @@ void RkEventQueue::RkEventQueueImpl::processShortcuts(RkKeyEvent *event)
                         shurtcutEvent->setKey(event->key());
                         shurtcutEvent->setModifiers(event->modifiers());
                         shurtcutEvent->setShortcut();
-                        auto pair = std::make_pair(obj, std::move(shurtcutEvent));
-                        eventsQueue.push_back(std::move(pair));
+                        RK_IMPL_PTR(obj)->event(shurtcutEvent.get());
                 }
         } else {
                 RK_LOG_DEBUG("can't find shortcut");
-                }*/
+        }
 }
 
 void RkEventQueue::RkEventQueueImpl::postAction(std::unique_ptr<RkAction> act)
