@@ -2,7 +2,7 @@
  * File name: RkMain.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -38,6 +38,7 @@ class RkMain {
           RkWidget* topLevelWidget(void) const;
           int exec(bool block = true);
           RkEventQueue* eventQueue() const;
+          const RkNativeWindowInfo* nativeWindowInfo() const;
 
  protected:
           RK_DECLARE_O_PTR(RkMain);

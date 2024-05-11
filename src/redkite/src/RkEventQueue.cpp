@@ -22,8 +22,7 @@
  */
 
 #include "RkEventQueueImpl.h"
-
-#include <RkAction.h>
+#include "RkAction.h"
 
 RkEventQueue::RkEventQueue()
         : o_ptr{std::make_unique<RkEventQueueImpl>(this)}

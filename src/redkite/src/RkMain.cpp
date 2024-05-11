@@ -25,6 +25,8 @@
 #include "RkLog.h"
 #include "RkWidget.h"
 #include "RkMainImpl.h"
+#include "RkEventQueueImpl.h"
+#include "RkSystemWindow.h"
 
 RkMain::RkMain()
         : o_ptr{std::make_unique<RkMainImpl>(this)}
@@ -48,6 +50,11 @@ RkWidget* RkMain::topLevelWidget(void) const
 RkEventQueue* RkMain::eventQueue() const
 {
         return o_ptr->getEventQueue();
+}
+
+const RkNativeWindowInfo* RkMain::nativeWindowInfo() const
+{
+        return RK_IMPL_PTR(o_ptr->getEventQueue())->getSystemWindow()->nativeWindowInfo();
 }
 
 int RkMain::exec(bool block)
