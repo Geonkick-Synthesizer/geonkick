@@ -90,7 +90,6 @@ const RkNativeWindowInfo* RkSystemWindow::nativeWindowInfo() const
 
 RkCanvasInfo* RkSystemWindow::getCanvasInfo() const
 {
-        RK_LOG_DEBUG("called");
         return platformWindow->getCanvasInfo();
 }
 
@@ -223,17 +222,19 @@ RkSystemWindow::WidgetEventList RkSystemWindow::processMouseEvent(const RkMouseE
                 widget = mouseCaptureWidget;
         else {
                 const auto& popups = RK_IMPL_PTR(topWidget->eventQueue())->getPopupWidgets();
-                if (!popups.empty())
+                if (!popups.empty()) {
                         widget = getWidgetByGlobalPoint(popups.front(), event->point());
-
-                if (!widget || widget == popups.front())
+                        if (widget == popups.front() && !containsGlobalPoint(popups.front(), event->point()))
+                                widget = getWidgetByGlobalPoint(topWidget, event->point());
+                } else {
                         widget = getWidgetByGlobalPoint(topWidget, event->point());
+                }
         }
 
         if (event->type() == RkEvent::Type::MouseButtonPress)
                 mouseCaptureWidget = widget;
 
-        if (widget->isVisible()) {
+        if (widgetExists(widget) && widget->isVisible()) {
                 auto mouseEvent = std::make_unique<RkMouseEvent>();
                 mouseEvent->setType(event->type());
                 mouseEvent->setButton(event->button());
@@ -243,13 +244,13 @@ RkSystemWindow::WidgetEventList RkSystemWindow::processMouseEvent(const RkMouseE
 
         if (widget != hoverWidget) {
                 std::unique_ptr<RkHoverEvent> hoverEvent;
-                if (hoverWidget && hoverWidget->isVisible()) {
+                if (hoverWidget && widgetExists(hoverWidget) && hoverWidget->isVisible()) {
                         hoverEvent = std::make_unique<RkHoverEvent>();
                         hoverEvent->setHover(false);
                         events.emplace_back(std::make_pair(hoverWidget, std::move(hoverEvent)));
                 }
 
-                if (widget->isVisible()) {
+                if (widgetExists(widget) && widget->isVisible()) {
                         hoverEvent = std::make_unique<RkHoverEvent>();
                         hoverEvent->setHover(true);
                         events.emplace_back(std::make_pair(widget, std::move(hoverEvent)));
@@ -468,3 +469,8 @@ RkWidget* RkSystemWindow::getFocusWidget() const
         return focusWidget;
 }
 
+bool RkSystemWindow::widgetExists(RkWidget *widget) const
+{
+        auto eventQueueImpl = RK_IMPL_PTR(topWidget->eventQueue());
+        return eventQueueImpl && eventQueueImpl->objectExists(widget);
+}

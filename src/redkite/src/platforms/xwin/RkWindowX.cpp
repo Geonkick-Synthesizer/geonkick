@@ -311,13 +311,11 @@ void RkWindowX::resizeCanvas()
 
 RkCanvasInfo* RkWindowX::getCanvasInfo() const
 {
-        RK_LOG_DEBUG("canvasInfo:" << (canvasInfo != nullptr));
         return canvasInfo ? canvasInfo.get() : nullptr;
 }
 
 void RkWindowX::freeCanvasInfo()
 {
-        RK_LOG_DEBUG("canvasInfo:" << (canvasInfo != nullptr));
         if (canvasInfo)
                 cairo_surface_destroy(canvasInfo->cairo_surface);
 }

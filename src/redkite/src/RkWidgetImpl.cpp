@@ -101,7 +101,6 @@ RkSystemWindow* RkWidget::RkWidgetImpl::getSystemWindow() const
 
 RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
 {
-        RK_LOG_DEBUG("called");
         return systemWindow->getImage().getCanvasInfo();
 }
 
@@ -245,7 +244,7 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 delete static_cast<RkDeleteChild*>(event)->child();
                 break;
         case RkEvent::Type::Close:
-                RK_LOG_DEBUG("RkEvent::Type::Close");
+                RK_LOG_DEBUG("RkEvent::Type::Close" << title());
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::CloseInputEnabled)) {
                         inf_ptr->closeEvent(static_cast<RkCloseEvent*>(event));
                         if (isTopWidget())
@@ -260,8 +259,6 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
 
 void RkWidget::RkWidgetImpl::processPaintEvent(RkPaintEvent* event)
 {
-        if (!name().empty())
-                RK_LOG_DEV_DEBUG("name :" << name() << ", visible: " <<  isVisible());
         RkPainter painter(inf_ptr);
         auto globalPosition = inf_ptr->mapToGlobal({0, 0});
         painter.translate(globalPosition);

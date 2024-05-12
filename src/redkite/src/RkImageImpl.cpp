@@ -49,7 +49,6 @@ RkImage::RkImageImpl::~RkImageImpl()
 
 RkCanvasInfo* RkImage::RkImageImpl::getCanvasInfo() const
 {
-        RK_LOG_DEBUG("called");
         if (imageBackendCanvas)
                 return imageBackendCanvas->getCanvasInfo();
         return nullptr;

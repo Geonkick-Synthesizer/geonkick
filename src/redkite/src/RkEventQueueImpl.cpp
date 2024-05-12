@@ -318,10 +318,8 @@ void RkEventQueue::RkEventQueueImpl::processQueue()
 void RkEventQueue::RkEventQueueImpl::addPopup(RkWidget* popup)
 {
         RK_LOG_DEV_DEBUG("ADD POPUP: " << popup);
-        if (std::find(popupList.begin(), popupList.end(), popup) == popupList.end()) {
-                RK_LOG_DEV_DEBUG("ADD[1] POPUP: " << popup);
+        if (std::find(popupList.begin(), popupList.end(), popup) == popupList.end())
                 popupList.push_back(popup);
-        }
 }
 
 void RkEventQueue::RkEventQueueImpl::removePopup(RkWidget* popup)
