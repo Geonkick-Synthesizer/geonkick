@@ -306,7 +306,7 @@ void RkWindowX::resizeCanvas()
         cairo_xlib_surface_set_size(canvasInfo->cairo_surface,
                                     size().width() * scaleFactor,
                                     size().height() * scaleFactor);
-        //cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
+        cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
 RkCanvasInfo* RkWindowX::getCanvasInfo() const

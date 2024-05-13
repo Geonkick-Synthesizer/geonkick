@@ -332,3 +332,13 @@ const std::vector<RkWidget*>& RkEventQueue::RkEventQueueImpl::getPopupWidgets() 
 {
         return popupList;
 }
+
+void RkEventQueue::RkEventQueueImpl::setScaleFactor(double factor)
+{
+        platformEventQueue->setScaleFactor(factor);
+}
+
+double RkEventQueue::RkEventQueueImpl::scaleFactor() const
+{
+        return platformEventQueue->getScaleFactor();
+}

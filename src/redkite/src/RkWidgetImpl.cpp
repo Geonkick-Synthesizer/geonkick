@@ -507,3 +507,16 @@ void RkWidget::RkWidgetImpl::setChildrenVisible(bool b)
                 }
         }
 }
+
+void RkWidget::RkWidgetImpl::setScaleFactor(double factor)
+{
+        if (systemWindow)
+                systemWindow->setScaleFactor(factor);
+}
+
+double RkWidget::RkWidgetImpl::scaleFactor() const
+{
+        if (systemWindow)
+                return systemWindow->scaleFactor();
+        return 1.0;
+}

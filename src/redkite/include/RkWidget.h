@@ -138,6 +138,8 @@ class RkWidget: public RkObject, public RkCanvas {
         void setVisible(bool b = true);
         bool isVisible() const;
         bool isAncestorOf(RkWidget *child);
+        void setScaleFactor(double factor);
+        double scaleFactor() const;
 
  protected:
         RK_DECLARE_IMPL_PTR(RkWidget);

@@ -32,7 +32,7 @@
 RkEventQueueX::RkEventQueueX()
         : xDisplay{nullptr}
         , keyModifiers{0}
-        , scaleFactor{1}
+        , scaleFactor{1.0}
 {
         RK_LOG_DEBUG("called");
 }

@@ -435,11 +435,13 @@ Rk::PointerShape RkSystemWindow::pointerShape() const
 
 void RkSystemWindow::setScaleFactor(double factor)
 {
+        platformWindow->setScaleFactor(factor);
+        RK_IMPL_PTR(topWidget->eventQueue())->setScaleFactor(factor);
 }
 
 double RkSystemWindow::scaleFactor() const
 {
-        return 1.0;
+        return platformWindow->getScaleFactor();
 }
 
 void RkSystemWindow::setFocusWidget(RkWidget *widget, bool b)

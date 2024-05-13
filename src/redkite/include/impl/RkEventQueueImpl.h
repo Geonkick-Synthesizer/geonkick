@@ -71,6 +71,8 @@ class RkEventQueue::RkEventQueueImpl {
         void addPopup(RkWidget* popup);
         void removePopup(RkWidget* popup);
         const std::vector<RkWidget*>& getPopupWidgets() const;
+        void setScaleFactor(double factor);
+        double scaleFactor() const;
 
  protected:
         void processPopups(RkWidget *widget, RkEvent* event);

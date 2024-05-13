@@ -672,3 +672,14 @@ bool RkWidget::isAncestorOf(RkWidget *child)
 
         return isAncestorOf(child->parentWidget());
 }
+
+void RkWidget::setScaleFactor(double factor)
+{
+        RK_IMPL_PTR(this)->setScaleFactor(factor);
+        update();
+}
+
+double RkWidget::scaleFactor() const
+{
+        return RK_IMPL_PTR(this)->scaleFactor();
+}
