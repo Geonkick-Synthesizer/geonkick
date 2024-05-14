@@ -85,7 +85,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
         auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
 #endif // GEONKICK_OS_GNU
 
-        mainWindow = new MainWindow(guiApp.get(), geonkickApi, info);
+        mainWindow = new MainWindow(*guiApp.get(), geonkickApi, info);
         mainWindow->show();
         if (!mainWindow->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");

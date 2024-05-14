@@ -39,8 +39,8 @@ class RkMain::RkMainImpl
 {
  public:
 
-        RkMainImpl(RkMain *interface);
-        RkMainImpl(RkMain *interface, int argc, char **argv);
+        RkMainImpl(RkMain *inf);
+        RkMainImpl(RkMain *inf, int argc, char **argv);
 	virtual ~RkMainImpl();
         RkMainImpl(const RkMainImpl &other) = delete;
         RkMainImpl& operator=(const RkMainImpl &other) = delete;

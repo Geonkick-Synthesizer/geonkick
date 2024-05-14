@@ -33,7 +33,7 @@
 class RkEventQueue;
 struct RkCanvasInfo;
 
-constexpr int RK_MAIN_WINDOW_TIMER_ID = 101;
+constexpr int RK_SYSTEM_WINDOW_TIMER_ID = 101;
 
 class RkWindowWin {
  public:
@@ -60,12 +60,12 @@ class RkWindowWin {
         void setBackgroundColor(const RkColor &color);
         const RkColor& background() const;
         void resizeCanvas();
-        const RkCanvasInfo* getCanvasInfo();
+        RkCanvasInfo* getCanvasInfo();
         void freeCanvasInfo();
         void update();
         void setFocus(bool b);
         bool hasFocus();
-		bool pointerIsOverWindow() const;
+        bool pointerIsOverWindow() const;
         void setPointerShape(Rk::PointerShape shape);
         void setEventQueue(RkEventQueue* queue);
         void setScaleFactor(double factor);

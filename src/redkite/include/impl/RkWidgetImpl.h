@@ -33,11 +33,11 @@ class RkPaintEvent;
 
 class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
  public:
-        explicit RkWidgetImpl(RkWidget* interface,
+        explicit RkWidgetImpl(RkWidget* inf,
                               RkMain *mainApp,
                               const RkNativeWindowInfo* parent = nullptr,
                               Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
-        explicit RkWidgetImpl(RkWidget* interface,
+        explicit RkWidgetImpl(RkWidget* inf,
                               RkWidget* parent,
                               Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
         virtual ~RkWidgetImpl();

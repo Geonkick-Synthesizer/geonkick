@@ -30,7 +30,7 @@ class RkEventQueue;
 
 class RkObject::RkObjectImpl {
  public:
-        explicit RkObjectImpl(RkObject* interface,
+        explicit RkObjectImpl(RkObject* inf,
                               RkObject* parent,
                               Rk::ObjectType type = Rk::ObjectType::Object);
         virtual ~RkObjectImpl();

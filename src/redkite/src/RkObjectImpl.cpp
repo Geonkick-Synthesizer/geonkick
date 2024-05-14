@@ -25,10 +25,10 @@
 #include "RkEventQueueImpl.h"
 #include "RkObserver.h"
 
-RkObject::RkObjectImpl::RkObjectImpl(RkObject* interface,
+RkObject::RkObjectImpl::RkObjectImpl(RkObject* inf,
                                      RkObject* parent,
                                      Rk::ObjectType type)
-        : inf_ptr{interface}
+        : inf_ptr{inf}
         , objectType{type}
         , parentObject{parent}
         , eventQueue{nullptr}

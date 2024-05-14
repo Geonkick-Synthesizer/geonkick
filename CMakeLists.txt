@@ -19,7 +19,8 @@ if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
 else()
    option(GKICK_STANDALONE "Disable build for standalone" OFF)
 endif()
-option(GKICK_PLUGIN "Enable build for plugin" OFF)
+
+option(GKICK_PLUGIN "Enable build for plugin" ON)
 option(GKICK_PRESETS "Enable presets" ON)
 
 if (GKICK_PLUGIN)

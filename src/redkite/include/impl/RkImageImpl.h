@@ -32,7 +32,7 @@ class RkCairoImageBackendCanvas;
 
 class RkImage::RkImageImpl {
  public:
-        RkImageImpl(RkImage *interface,
+        RkImageImpl(RkImage *inf,
                     int width,
                     int height,
                     const unsigned char *data,

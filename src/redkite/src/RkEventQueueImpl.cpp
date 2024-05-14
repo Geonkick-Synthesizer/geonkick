@@ -203,7 +203,7 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
                 }
         }
 
-        if (repaintSystemWindow) {
+        if (systemWindow && repaintSystemWindow) {
                 for (auto it = popupList.begin(); it != popupList.end(); ++it) {
                         auto event = std::make_unique<RkPaintEvent>();
                         RK_IMPL_PTR((*it))->event(event.get());
@@ -342,3 +342,10 @@ double RkEventQueue::RkEventQueueImpl::scaleFactor() const
 {
         return platformEventQueue->getScaleFactor();
 }
+
+#ifdef RK_OS_WIN
+RkEventQueueWin* RkEventQueue::RkEventQueueImpl::getPlatformEventQueue() const
+{
+  return platformEventQueue.get();
+}
+#endif // RK_OS_WIN

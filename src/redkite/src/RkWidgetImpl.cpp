@@ -27,12 +27,12 @@
 #include "RkSystemWindow.h"
 #include "RkEventQueueImpl.h"
 
-RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
+RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
                                      RkMain* mainApp,
                                      const RkNativeWindowInfo *parent,
                                      Rk::WidgetFlags flags)
-        : RkObject::RkObjectImpl(widgetInterface, nullptr, Rk::ObjectType::Widget)
-        , inf_ptr{widgetInterface}
+        : RkObject::RkObjectImpl(inf, nullptr, Rk::ObjectType::Widget)
+        , inf_ptr{inf}
         , topWidget{true}
         , systemWindow{nullptr}
         , widgetClosed{false}
@@ -54,11 +54,11 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
         RK_LOG_DEBUG("called");
 }
 
-RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
+RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
                                      RkWidget* parent,
                                      Rk::WidgetFlags flags)
-        : RkObject::RkObjectImpl(widgetInterface, parent, Rk::ObjectType::Widget)
-        , inf_ptr{widgetInterface}
+        : RkObject::RkObjectImpl(inf, parent, Rk::ObjectType::Widget)
+        , inf_ptr{inf}
         , topWidget{false}
         , systemWindow{parent ? RK_IMPL_PTR(parent)->getSystemWindow() : nullptr}
         , widgetClosed{false}

@@ -73,6 +73,10 @@ class RkEventQueue::RkEventQueueImpl {
         const std::vector<RkWidget*>& getPopupWidgets() const;
         void setScaleFactor(double factor);
         double scaleFactor() const;
+#ifdef RK_OS_WIN
+        RkEventQueueWin* getPlatformEventQueue() const;
+#endif // RK_OS_WIN
+        
 
  protected:
         void processPopups(RkWidget *widget, RkEvent* event);

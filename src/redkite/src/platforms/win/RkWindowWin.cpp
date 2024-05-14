@@ -57,11 +57,6 @@ RkWindowWin::~RkWindowWin()
                 DestroyWindow(windowHandle.id);
 }
 
-Rk::WidgetFlags RkWindowWin::flags() const
-{
-        return windowFlags;
-}
-
 bool RkWindowWin::hasParent() const
 {
         return parentWindowInfo.window != nullptr;
@@ -73,8 +68,6 @@ bool RkWindowWin::init()
         auto className = hasParent() ? parentWindowInfo.className : rk_win_api_class_name();
         RK_LOG_DEBUG("className: " << className);
         auto winStyle = hasParent() ? (WS_CHILD | WS_CLIPCHILDREN | WS_VISIBLE) : (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN);
-        if (static_cast<int>(windowFlags) & static_cast<int>(Rk::WidgetFlags::Popup))
-                winStyle = WS_POPUP | WS_CLIPCHILDREN | WS_VISIBLE;
         auto pos = position();
         auto winSize = size();
         windowHandle.id = CreateWindowExA(0,
@@ -95,7 +88,7 @@ bool RkWindowWin::init()
                 return false;
         }
 
-        SetTimer(windowHandle.id, RK_MAIN_WINDOW_TIMER_ID, 1, nullptr);
+        SetTimer(windowHandle.id, RK_SYSTEM_WINDOW_TIMER_ID, 1, nullptr);
 
         if (eventQueue)
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
@@ -244,7 +237,7 @@ void RkWindowWin::resizeCanvas()
                 cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
-const RkCanvasInfo* RkWindowWin::getCanvasInfo()
+RkCanvasInfo* RkWindowWin::getCanvasInfo()
 {
         if (!canvasInfo)
                 createCanvasInfo();

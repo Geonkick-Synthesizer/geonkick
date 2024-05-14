@@ -30,12 +30,12 @@
 
 #include "RkLog.h"
 
-RkImage::RkImageImpl::RkImageImpl(RkImage *interface,
+RkImage::RkImageImpl::RkImageImpl(RkImage *inf,
                                   int width,
                                   int height,
                                   const unsigned char *data,
                                   RkImage::Format format)
-        : inf_ptr{interface}
+        : inf_ptr{inf}
         , imageFormat{format}
         , imageBackendCanvas{std::make_unique<RkCairoImageBackendCanvas>(RkSize(width, height), imageFormat, data)}
 {

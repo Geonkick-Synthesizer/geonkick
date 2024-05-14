@@ -31,16 +31,16 @@
 #include <chrono>
 #include <thread>
 
-RkMain::RkMainImpl::RkMainImpl(RkMain *interface)
-        : inf_ptr{interface}
+RkMain::RkMainImpl::RkMainImpl(RkMain *inf)
+        : inf_ptr{inf}
         , eventQueue{std::make_unique<RkEventQueue>()}
 {
         RK_UNUSED(inf_ptr);
         RK_LOG_DEBUG("called");
 }
 
-RkMain::RkMainImpl::RkMainImpl(RkMain *interfaceMain, int argc, char **argv)
-        : inf_ptr{interfaceMain}
+RkMain::RkMainImpl::RkMainImpl(RkMain *inf, int argc, char **argv)
+        : inf_ptr{inf}
         , eventQueue{std::make_unique<RkEventQueue>()}
 {
         RK_UNUSED(inf_ptr);
