@@ -200,7 +200,11 @@ HWND rkCurrnetWind{};
 
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-        auto eventQueue = RK_IMPL_PTR(reinterpret_cast<RkEventQueue*>(GetWindowLongPtr(hWnd, GWLP_USERDATA)));
+        auto userDataPtr = GetWindowLongPtr(hWnd, GWLP_USERDATA);
+        if (!userDataPtr)
+              return DefWindowProc(hWnd, msg, wParam, lParam);
+
+        auto eventQueue = RK_IMPL_PTR(reinterpret_cast<RkEventQueue*>(userDataPtr));
         if (!eventQueue)
                 return DefWindowProc(hWnd, msg, wParam, lParam);
 

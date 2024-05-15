@@ -88,11 +88,21 @@ bool RkWindowWin::init()
                 return false;
         }
 
-        SetTimer(windowHandle.id, RK_SYSTEM_WINDOW_TIMER_ID, 1, nullptr);
+	RK_LOG_DEBUG("window created");
 
-        if (eventQueue)
+	RK_LOG_DEBUG("set RK_SYSTEM_WINDOW_TIMER_ID for " << windowHandle.id);
+        SetTimer(windowHandle.id, RK_SYSTEM_WINDOW_TIMER_ID, 1, nullptr);
+	RK_LOG_DEBUG("set RK_SYSTEM_WINDOW_TIMER_ID OK");
+
+        if (eventQueue) {
+	        RK_LOG_DEBUG("set user data");
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
-        
+	}
+
+	// Create window info
+	nativeWindowInfo();
+
+	RK_LOG_DEBUG("OK");
         return true;
 }
 
