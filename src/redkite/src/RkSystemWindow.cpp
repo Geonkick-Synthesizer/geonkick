@@ -476,3 +476,10 @@ bool RkSystemWindow::widgetExists(RkWidget *widget) const
         auto eventQueueImpl = RK_IMPL_PTR(topWidget->eventQueue());
         return eventQueueImpl && eventQueueImpl->objectExists(widget);
 }
+
+#ifdef RK_OS_WIN
+void RkSystemWindow::setEventQueue(RkEventQueue *eventQueue)
+{
+    platformWindow->setEventQueue(eventQueue);
+}
+#endif // RK_OS_WIN

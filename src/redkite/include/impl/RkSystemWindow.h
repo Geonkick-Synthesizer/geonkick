@@ -115,6 +115,9 @@ public:
         void hoverEvent(RkHoverEvent *event);
         void setFocusWidget(RkWidget *widget, bool b = true);
         RkWidget* getFocusWidget() const;
+#ifdef RK_OS_WIN
+        void setEventQueue(RkEventQueue *eventQueue);
+#endif
 
 protected:
         WidgetEventList processMouseEvent(const RkMouseEvent* event);

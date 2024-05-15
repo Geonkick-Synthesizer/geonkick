@@ -61,7 +61,7 @@ RkSystemWindow* RkEventQueue::RkEventQueueImpl::setTopWidget(RkWidget *widget,
         if (!systemWindow) {
                 systemWindow = std::make_unique<RkSystemWindow>(widget, parent);
 #ifdef RK_OS_WIN
-#elif RK_OS_MAC
+		systemWindow->setEventQueue(inf_ptr);
 #else
                 platformEventQueue->setDisplay(systemWindow->nativeWindowInfo()->display);
 #endif
