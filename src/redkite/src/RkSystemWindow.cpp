@@ -232,7 +232,9 @@ RkSystemWindow::WidgetEventList RkSystemWindow::processMouseEvent(const RkMouseE
                 }
         }
 
-        if (event->type() == RkEvent::Type::MouseButtonPress)
+        if (event->type() == RkEvent::Type::MouseButtonPress
+	    && event->button() != RkMouseEvent::ButtonType::WheelUp
+	    && event->button() != RkMouseEvent::ButtonType::WheelDown)
                 mouseCaptureWidget = widget;
 
         if (widgetExists(widget) && widget->isVisible()) {
@@ -259,8 +261,11 @@ RkSystemWindow::WidgetEventList RkSystemWindow::processMouseEvent(const RkMouseE
                 }
         }
 
-        if (event->type() == RkEvent::Type::MouseButtonRelease)
-                mouseCaptureWidget = nullptr;
+        if (event->type() == RkEvent::Type::MouseButtonRelease
+ 	    && event->button() != RkMouseEvent::ButtonType::WheelUp
+	    && event->button() != RkMouseEvent::ButtonType::WheelDown) {
+	    mouseCaptureWidget = nullptr;
+	}
 
         return events;
 }

@@ -32,6 +32,8 @@
 
 #include <random>
 
+#include <windowsx.h>
+
 static std::string rk_winApiClassName;
 static HINSTANCE rk_winApiInstance = nullptr;
 
@@ -333,10 +335,14 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 int delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
                 auto event = std::make_unique<RkMouseEvent>();
                 auto buttonType = (delta > 0) ? RkMouseEvent::ButtonType::WheelUp : RkMouseEvent::ButtonType::WheelDown;
-                auto x = static_cast<short int>(LOWORD(lParam));
-                auto y = static_cast<short int>(HIWORD(lParam));
-		event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
+		int screenX = GET_X_LPARAM(lParam);
+		int screenY = GET_Y_LPARAM(lParam);
+		POINT screenPoint;
+                screenPoint.x = screenX;
+                screenPoint.y = screenY;
+		ScreenToClient(hWnd, &screenPoint);
+		event->setX(static_cast<double>(screenPoint.x) / eventQueue->scaleFactor());
+                event->setY(static_cast<double>(screenPoint.y) / eventQueue->scaleFactor());
 		event->setButton(buttonType);
 		processSystemEvent(eventQueue, std::move(event));
                 return 0;
