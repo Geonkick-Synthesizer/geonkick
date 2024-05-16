@@ -100,6 +100,6 @@ std::vector<float> Base64EncoderDecoder::decode(const std::string &input)
         }
 
         std::vector<float> result(bytes.size() / sizeof(float));
-        std::memcpy(result.data(), bytes.data(), bytes.size());
+        std::memcpy(result.data(), bytes.data(), result.size() * sizeof(float));
         return result;
 }

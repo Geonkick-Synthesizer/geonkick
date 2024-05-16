@@ -1658,12 +1658,6 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
         return GEONKICK_OK;
 }
 
-
-size_t geonkick_percussion_number()
-{
-	return GEONKICK_MAX_INSTRUMENTS;
-}
-
 enum geonkick_error
 geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
@@ -1686,6 +1680,65 @@ geonkick_get_playing_key(struct geonkick *kick, size_t id, signed char *key)
         }
         return gkick_audio_output_get_playing_key(kick->synths[id]->output,
                                                   key);
+}
+
+enum geonkick_error
+geonkick_set_midi_channel(struct geonkick *kick,
+                          size_t id,
+                          signed char channel)
+{
+        if (kick == NULL || id >= GEONKICK_MAX_INSTRUMENTS) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        gkick_log_debug("id: %d, ch: %d", id, channel);
+        return gkick_audio_output_set_midi_channel(kick->synths[id]->output, channel);
+}
+
+enum geonkick_error
+geonkick_get_midi_channel(struct geonkick *kick,
+                          size_t id,
+                          signed char *channel)
+{
+        if (kick == NULL
+            || channel == NULL
+            || id >= GEONKICK_MAX_INSTRUMENTS) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_audio_output_get_midi_channel(kick->synths[id]->output, channel);
+}
+
+enum geonkick_error
+geonkick_force_midi_channel(struct geonkick *kick,
+                            signed char channel,
+                            bool force)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_mixer_force_midi_channel(kick->audio->mixer, channel, force);
+}
+
+enum geonkick_error
+geonkick_ged_forced_midi_channel(struct geonkick *kick,
+                                 signed char *channel,
+                                 bool *force)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        return gkick_mixer_get_forced_midi_channel(kick->audio->mixer, channel, force);
+}
+
+size_t
+geonkick_midi_channels_number(struct geonkick *kick)
+{
+        return GEONKICK_MAX_MIDI_CHANNELS;
 }
 
 enum geonkick_error
@@ -1736,6 +1789,12 @@ size_t
 geonkick_channels_number()
 {
         return GEONKICK_MAX_CHANNELS;
+}
+
+size_t
+geonkick_instruments_number()
+{
+        return GEONKICK_MAX_INSTRUMENTS;
 }
 
 enum geonkick_error
@@ -1846,7 +1905,8 @@ geonkick_set_preview_sample(struct geonkick *kick,
                 return GEONKICK_ERROR;
         }
 
-        struct gkick_audio_output *output = kick->audio->mixer->audio_outputs[GEONKICK_MAX_INSTRUMENTS];
+        struct gkick_audio_output *output;
+        output = kick->audio->mixer->audio_outputs[GEONKICK_AUDITION_CHANNEL_INDEX];
         gkick_audio_output_lock(output);
         gkick_buffer_set_data((struct gkick_buffer*)output->updated_buffer, data, size);
         gkick_audio_output_unlock(output);
@@ -1856,19 +1916,40 @@ geonkick_set_preview_sample(struct geonkick *kick,
 void
 geonkick_play_sample_preview(struct geonkick *kick)
 {
-        gkick_audio_play(kick->audio, GEONKICK_MAX_INSTRUMENTS);
+        gkick_audio_play(kick->audio,
+                         GEONKICK_AUDITION_CHANNEL_INDEX);
 }
 
 enum geonkick_error
 geonkick_set_sample_preview_limiter(struct geonkick *kick, gkick_real val)
 {
-        return gkick_audio_set_limiter_val(kick->audio, GEONKICK_MAX_INSTRUMENTS, val);
+        return gkick_audio_set_limiter_val(kick->audio,
+                                           GEONKICK_AUDITION_CHANNEL_INDEX,
+                                           val);
 }
 
 enum geonkick_error
 geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val)
 {
-        return gkick_audio_get_limiter_val(kick->audio, GEONKICK_MAX_INSTRUMENTS, val);
+        return gkick_audio_get_limiter_val(kick->audio,
+                                           GEONKICK_AUDITION_CHANNEL_INDEX,
+                                           val);
+}
+
+enum geonkick_error
+geonkick_percussion_enable_note_off(struct geonkick *kick,
+                                    size_t id,
+                                    bool enable)
+{
+        return gkick_mixer_enable_note_off(kick->audio->mixer, id, enable);
+}
+
+enum geonkick_error
+geonkick_percussion_note_off_enabled(struct geonkick *kick,
+                                     size_t id,
+                                     bool *enabled)
+{
+        return gkick_mixer_note_off_enabled(kick->audio->mixer, id, enabled);
 }
 
 void

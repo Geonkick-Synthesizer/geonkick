@@ -2,7 +2,7 @@
  * File name: RkWidgetImpl.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -27,50 +27,45 @@
 #include "RkWidget.h"
 #include "RkObjectImpl.h"
 
-#ifdef RK_OS_WIN
-class RkWindowWin;
-#elif RK_OS_MAC
-#else
-class RkWindowX;
-#endif // RK_WIN_OS
+class RkMain;
+class RkSystemWindow;
+class RkPaintEvent;
 
 class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
  public:
-        explicit RkWidgetImpl(RkWidget* interface,
-                              RkWidget* parent = nullptr,
-                              Rk::WindowFlags flags = Rk::WindowFlags::Widget,
-                              bool isTopWindow = false);
-        explicit RkWidgetImpl(RkWidget* interface,
-                              const RkNativeWindowInfo &parent,
-                              Rk::WindowFlags flags = Rk::WindowFlags::Widget,
-                              bool isTopWindow = false);
+        explicit RkWidgetImpl(RkWidget* inf,
+                              RkMain *mainApp,
+                              const RkNativeWindowInfo* parent = nullptr,
+                              Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
+        explicit RkWidgetImpl(RkWidget* inf,
+                              RkWidget* parent,
+                              Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
+        virtual ~RkWidgetImpl();
         RkWidgetImpl(const RkWidget &other) = delete;
         RkWidgetImpl& operator=(const RkWidgetImpl &other) = delete;
         RkWidgetImpl(RkWidgetImpl &&other) = delete;
         RkWidgetImpl& operator=(RkWidgetImpl &&other) = delete;
-        virtual ~RkWidgetImpl();
+        bool isTopWidget() const;
+        RkCanvasInfo* getCanvasInfo() const;
+        void freeCanvasInfo();
+        void setSystemWindow(RkSystemWindow *window);
+        RkSystemWindow* getSystemWindow() const;
         void setEventQueue(RkEventQueue *queue) override;
-        Rk::WindowFlags windowFlags() const;
-        void show(bool b);
-	bool isShown() const;
+        Rk::WidgetFlags getWidgetFlags() const;
+        void setVisible(bool b);
+	bool isVisible() const;
         void setTitle(const std::string &title);
         const std::string& title() const;
-        const RkNativeWindowInfo* nativeWindowInfo() const;
         bool isClose() const;
-        RkWindowId id() const;
-        void event(RkEvent *event);
+        void event(RkEvent *event) override;
         void setSize(const RkSize &size);
-        RkSize size() const;
-        int minimumWidth() const;
-        int maximumWidth() const;
-        int minimumHeight() const;
-        int maximumHeight() const;
-        void setMinimumWidth(int width);
-        void setMaximumWidth(int widht);
-        void setMinimumHeight(int heigth);
-        void setMaximumHeight(int heigth);
+        const RkSize& size() const;
+        void setMinimumSize(const RkSize& size);
+        const RkSize& minimumSize() const;
+        void setMaximumSize(const RkSize& size);
+        const RkSize& maximumSize() const;
         void setPosition(const RkPoint &position);
-        RkPoint position() const;
+        const RkPoint& position() const;
         void setBorderWidth(int width);
         int borderWidth() const;
         void setBorderColor(const RkColor &color);
@@ -78,15 +73,13 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         void setBackgroundColor(const RkColor &color);
         const RkColor& background() const;
         RkRect rect() const;
-        const RkCanvasInfo* getCanvasInfo() const;
-        void freeCanvasInfo();
-        void update();
+        void update(bool updateChildren = false);
         static Rk::WidgetAttribute defaultWidgetAttributes();
         Rk::Modality modality() const;
         void setWidgetAttribute(Rk::WidgetAttribute attribute);
         void clearWidgetAttribute(Rk::WidgetAttribute attribute);
         Rk::WidgetAttribute getWidgetAttributes() const;
-        void setFocus(bool b);
+        void setFocus(bool b = true);
         bool hasFocus() const;
         void setTextColor(const RkColor &color);
         const RkColor& textColor() const;
@@ -103,31 +96,39 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         bool pointerIsOverWindow() const;
         void setScaleFactor(double factor);
         double scaleFactor() const;
+        void setExplicitHidden(bool b = true);
+        bool isExplicitHidden() const;
+        void setChildrenVisible(bool b);
+
+protected:
+        void processPaintEvent(RkPaintEvent* event);
+        void processChildrenEvents(RkEvent *event);
 
  private:
         RK_DECALRE_INTERFACE_PTR(RkWidget);
-#ifdef RK_OS_WIN
-        std::unique_ptr<RkWindowWin> platformWindow;
-#elif RK_OS_MAC
-#else
-        std::unique_ptr<RkWindowX> platformWindow;
-#endif // RK_WIN_OS
+        bool topWidget;
+        RkSystemWindow* systemWindow;
         std::string widgetTitle;
-        //        std::list<RkWidget*> widgetChildren;
         bool widgetClosed;
         RkSize widgetMinimumSize;
         RkSize widgetMaximumSize;
         RkSize widgetSize;
+        RkPoint widgetPosition;
+        int widgetBorderWidth;
+        RkColor widgetBorderColor;
         RkColor widgetBackground;
         Rk::WidgetAttribute widgetAttributes;
+        Rk::WidgetFlags widgetFlags;
         Rk::Modality widgetModality;
         RkColor widgetTextColor;
         RkColor widgetDrawingColor;
         RkFont widgetFont;
         Rk::PointerShape widgetPointerShape;
-	bool isWidgetSown;
+        bool isWidgetExplicitHidden;
+        bool isWidgetVisible;
         bool isGrabKeyEnabled;
         bool isPropagateGrabKey;
+        bool widgetHasFocus;
 };
 
 #endif // RK_WIDGET_IMPL_H

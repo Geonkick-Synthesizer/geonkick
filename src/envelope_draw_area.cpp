@@ -28,6 +28,7 @@
 
 #include <RkPainter.h>
 #include <RkEvent.h>
+#include <RkAction.h>
 
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api)
           : GeonkickWidget(parent)
@@ -196,8 +197,6 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
 {
         if (!currentEnvelope)
                 return;
-
-        zoomIn();
 
         RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
         if (currentEnvelope->hasSelected()) {

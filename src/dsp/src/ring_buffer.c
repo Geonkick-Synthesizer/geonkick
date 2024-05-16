@@ -2,7 +2,7 @@
  * File name: ring_buffer.c
  * Project: Geonkick (A percussive synthesizer)
  *
- * Copyright (C) 2023 Iurie Nistor 
+ * Copyright (C) 2023 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -80,6 +80,8 @@ ring_buffer_get_data(struct ring_buffer *ring,
                      gkick_real *data,
                      size_t data_size)
 {
+        if (data == NULL)
+                return;
         for (size_t i = 0; i < data_size; i++)
                 data[i] += ring->buff[(ring->index + i) % ring->size];
 }

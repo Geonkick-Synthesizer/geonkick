@@ -67,13 +67,21 @@
 #endif
 #endif
 
-#define RK_DECLARE_IMPL(Class) \
-  class Class##Impl; \
-  std::unique_ptr<Class##Impl> o_ptr
+#define RK_DECLARE_O_PTR(Class) \
+          class Class##Impl; \
+      public: \
+          Class##Impl* rkImpl() const { return o_ptr.get(); } \
+      protected: \
+          std::unique_ptr<Class##Impl> o_ptr
 
-#define RK_DELCATE_IMPL_PTR(Class) \
-  class Class##Impl; \
-  Class##Impl *impl_ptr
+#define RK_DECLARE_IMPL_PTR(Class) \
+           class Class##Impl; \
+       public: \
+           Class##Impl* rkImpl() const { return impl_ptr; } \
+       protected: \
+           Class##Impl* impl_ptr
+
+#define RK_IMPL_PTR(obj) obj->rkImpl()
 
 #define RK_DECALRE_INTERFACE_PTR(Class) Class *inf_ptr
 
@@ -113,7 +121,7 @@ namespace Rk {
                 Vertical = 1
         };
 
-        enum class WindowFlags: int {
+        enum class WidgetFlags: int {
                 Widget = 0x00000000,
                 Dialog = 0x00000001,
                 Popup  = 0x00000002
@@ -459,25 +467,13 @@ namespace Rk {
         void prot \
         { \
                 for (const auto& ob: rk__observers()) { \
-                        RK_LOG_DEBUG("observerCallback[get]: " << RkObject::name()); \
-                        RK_LOG_DEBUG("observerCallback[get]: " << ob.get()); \
-                        RK_LOG_DEBUG("observerCallback[get]: " << ob.get()->object()->name()); \
                         auto observer = dynamic_cast<rk__observer_ ##ObseverName *>(ob.get()); \
-                        RK_LOG_DEBUG("object[call_0]...");                \
-                        if (observer) { \
-                                RK_LOG_DEBUG("object[call]..."); \
-                                RK_LOG_DEBUG("object[call] : " << ob->object()->name()); \
+                        if (observer) \
                                 observer->observerCallback(val); \
-                                RK_LOG_DEBUG("object[end] : " << ob->object()->name()); \
-                        } \
                 } \
-                RK_LOG_DEBUG("observerCallback[exit]"); \
         } \
         void rk__add_action_cb_##ObseverName (RkObject *obj, const std::function<void(type)> &cb) \
         { \
-                if (obj) { \
-                RK_LOG_DEBUG("rk__add_action_cb: " << RkObject::name() << ": " << obj->name()); \
-                } \
                 rk__add_observer(std::make_unique<rk__observer_##ObseverName >(obj, cb)); \
         }
 

@@ -30,20 +30,16 @@
 
 #include "RkLog.h"
 
-RkImage::RkImageImpl::RkImageImpl(RkImage *interface,
+RkImage::RkImageImpl::RkImageImpl(RkImage *inf,
                                   int width,
                                   int height,
                                   const unsigned char *data,
                                   RkImage::Format format)
-        : inf_ptr{interface}
+        : inf_ptr{inf}
         , imageFormat{format}
-//#ifdef RK_GRAPHICS_CAIRO_BACKEND
         , imageBackendCanvas{std::make_unique<RkCairoImageBackendCanvas>(RkSize(width, height), imageFormat, data)}
-//#else
-//#error No graphics backend defined
-//#endif
 {
-        RK_LOG_DEBUG("called--------------------------------------->");
+        RK_LOG_DEBUG("called");
         RK_UNUSED(inf_ptr);
 }
 
@@ -51,7 +47,7 @@ RkImage::RkImageImpl::~RkImageImpl()
 {
 }
 
-const RkCanvasInfo* RkImage::RkImageImpl::getCanvasInfo() const
+RkCanvasInfo* RkImage::RkImageImpl::getCanvasInfo() const
 {
         if (imageBackendCanvas)
                 return imageBackendCanvas->getCanvasInfo();

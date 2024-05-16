@@ -2,7 +2,7 @@
  * File name: RkLineEdit.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -28,8 +28,8 @@
 #include "RkPainter.h"
 
 RkLineEdit::RkLineEdit(RkWidget *parent, const std::string &text)
-        : RkWidget(parent, std::make_unique<RkLineEdit::RkLineEditImpl>(this, parent, text))
-        , impl_ptr{static_cast<RkLineEdit::RkLineEditImpl*>(o_ptr.get())}
+        : RkWidget(parent, std::make_unique<RkLineEditImpl>(this, parent, text))
+        , impl_ptr{static_cast<RkLineEditImpl*>(o_ptr.get())}
 {
         setPointerShape(Rk::PointerShape::IBeam);
         propagateGrabKey(false);
@@ -76,6 +76,7 @@ void RkLineEdit::paintEvent(RkPaintEvent *event)
  */
 void RkLineEdit::keyPressEvent(RkKeyEvent *event)
 {
+        RK_LOG_DEV_DEBUG("called[" << this << "] " << (int)event->key());
         if (!hasFocus())
                 return;
 
@@ -214,4 +215,3 @@ void RkLineEdit::moveCursorToEnd()
         impl_ptr->moveCursorToBack();
         update();
 }
-

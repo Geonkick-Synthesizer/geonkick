@@ -55,9 +55,9 @@ if (NOT CMAKE_INSTALL_LIBDIR)
 endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-#  message(STATUS "enable logging")
-#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-#  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  message(STATUS "enable logging")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
 endif()
 
 if (NOT RK_GRAPHICS_BACKEND)
@@ -101,6 +101,7 @@ set(RK_HEADERS
   ${RK_INCLUDE_PATH}/RkWidget.h
   ${RK_INCLUDE_PATH}/RkLabel.h
   ${RK_INCLUDE_PATH}/RkButton.h
+  ${RK_INCLUDE_PATH}/RkSpinBox.h
   ${RK_INCLUDE_PATH}/RkLineEdit.h
   ${RK_INCLUDE_PATH}/RkList.h
   ${RK_INCLUDE_PATH}/RkProgressBar.h
@@ -119,11 +120,13 @@ set(RK_HEADERS_IMPL
   ${RK_INCLUDE_PATH}/impl/RkMainImpl.h
   ${RK_INCLUDE_PATH}/impl/RkShortcut.h
   ${RK_INCLUDE_PATH}/impl/RkEventQueueImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkSystemWindow.h
   ${RK_INCLUDE_PATH}/impl/RkWidgetImpl.h
   ${RK_INCLUDE_PATH}/impl/RkLabelImpl.h
   ${RK_INCLUDE_PATH}/impl/RkListImpl.h
   ${RK_INCLUDE_PATH}/impl/RkModelImpl.h
   ${RK_INCLUDE_PATH}/impl/RkButtonImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkSpinBoxImpl.h
   ${RK_INCLUDE_PATH}/impl/RkLineEditImpl.h
   ${RK_INCLUDE_PATH}/impl/RkProgressBarImpl.h
   ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
@@ -156,7 +159,9 @@ endif()
 
 set(RK_SOURCES
   ${RK_SRC_PATH}/RkObject.cpp
+  ${RK_SRC_PATH}/RkCanvas.cpp
   ${RK_SRC_PATH}/RkObjectImpl.cpp
+  ${RK_SRC_PATH}/RkSystemWindow.cpp
   ${RK_SRC_PATH}/RkWidget.cpp
   ${RK_SRC_PATH}/RkWidgetImpl.cpp
   ${RK_SRC_PATH}/RkMain.cpp
@@ -168,6 +173,8 @@ set(RK_SOURCES
   ${RK_SRC_PATH}/RkModelImpl.cpp
   ${RK_SRC_PATH}/RkLabel.cpp
   ${RK_SRC_PATH}/RkLabelImpl.cpp
+  ${RK_SRC_PATH}/RkSpinBox.cpp
+  ${RK_SRC_PATH}/RkSpinBoxImpl.cpp
   ${RK_SRC_PATH}/RkButton.cpp
   ${RK_SRC_PATH}/RkButtonImpl.cpp
   ${RK_SRC_PATH}/RkLineEdit.cpp
@@ -220,15 +227,13 @@ add_library(redkite STATIC
   ${RK_SOURCES}
   ${RK_SOURCES_PLATFORM})
 
-#if (CMAKE_SYSTEM_NAME MATCHES Windows)
-#  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX})
-#  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
-#elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
-# Not implemented
-#else()
-#  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_LIBDIR})
-#  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
-#endif()
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX})
+  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+else()
+  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
+endif()
 
 if(RK_BUILD_TOOLS)
 	add_subdirectory(tools)

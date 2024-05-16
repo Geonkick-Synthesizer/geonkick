@@ -28,9 +28,8 @@
 #include <X11/cursorfont.h>
 #include <X11/Xatom.h>
 
-RkWindowX::RkWindowX(const RkNativeWindowInfo *parent, Rk::WindowFlags flags, bool isTop)
+RkWindowX::RkWindowX(const RkNativeWindowInfo *parent)
         : parentWindowInfo{parent ? *parent : RkNativeWindowInfo() }
-         , windowFlags{flags}
          , xDisplay{parent ? parent->display : nullptr}
          , screenNumber{parent ? parent->screenNumber : 0}
          , xWindow{0}
@@ -40,14 +39,12 @@ RkWindowX::RkWindowX(const RkNativeWindowInfo *parent, Rk::WindowFlags flags, bo
          , canvasInfo{nullptr}
          , windowInfo{nullptr}
          , scaleFactor{parent ? parent->scaleFactor : 1.0}
-         , isTopWindow{isTop}
  {
          RK_LOG_DEBUG("called: d: " << xDisplay << ", s: " << screenNumber);
  }
 
-RkWindowX::RkWindowX(const RkNativeWindowInfo &parent, Rk::WindowFlags flags, bool isTop)
+RkWindowX::RkWindowX(const RkNativeWindowInfo &parent)
         : parentWindowInfo{parent}
-        , windowFlags{flags}
         , xDisplay{parent.display}
         , screenNumber{parent.screenNumber}
         , xWindow{0}
@@ -57,7 +54,6 @@ RkWindowX::RkWindowX(const RkNativeWindowInfo &parent, Rk::WindowFlags flags, bo
         , canvasInfo{nullptr}
         , windowInfo{nullptr}
         , scaleFactor{parent.scaleFactor}
-        , isTopWindow{isTop}
 {
         RK_LOG_DEBUG("called: d: " << xDisplay << ", s: " << screenNumber);
 }
@@ -68,7 +64,7 @@ RkWindowX::~RkWindowX()
         if (xDisplay) {
                 freeCanvasInfo();
                 XDestroyWindow(xDisplay, xWindow);
-                if (isTopWindow)
+                if (!hasParent())
                         XCloseDisplay(xDisplay);
         }
 }
@@ -96,13 +92,7 @@ bool RkWindowX::init()
 	}
 
         Window parent = 0;
-        if (static_cast<int>(windowFlags) & static_cast<int>(Rk::WindowFlags::Dialog)) {
-                RK_LOG_DEBUG("is or dialog, get root window");
-                parent = RootWindow(xDisplay, screenNumber);
-        } else {
-                parent = hasParent() ? parentWindowInfo.window : RootWindow(xDisplay, screenNumber);
-        }
-
+        parent = hasParent() ? parentWindowInfo.window : RootWindow(xDisplay, screenNumber);
         auto res = XMatchVisualInfo(xDisplay, screenNumber, 32, TrueColor, &visualInfo);
         if (res == 0) {
                 RK_LOG_ERROR("visual info was not found");
@@ -127,6 +117,8 @@ bool RkWindowX::init()
         auto pos = position();
         auto winSize = size();
         RK_LOG_DEBUG("create window: d: " << xDisplay << ", p: " << parent);
+        RK_LOG_DEBUG("size[" << winSize.width() * scaleFactor
+                     <<", " << winSize.height() * scaleFactor << "]");
         xWindow = XCreateWindow(xDisplay, parent,
                                 pos.x() * scaleFactor, pos.y() * scaleFactor,
                                 winSize.width() * scaleFactor, winSize.height() * scaleFactor,
@@ -139,11 +131,6 @@ bool RkWindowX::init()
         if (!xWindow) {
                 RK_LOG_ERROR("can't create window");
                 return false;
-        }
-
-        if ((static_cast<int>(windowFlags) & static_cast<int>(Rk::WindowFlags::Dialog)) && hasParent()) {
-                RK_LOG_DEBUG("set WM_TRANSIENT_FOR");
-                XSetTransientForHint(xDisplay, parentWindowInfo.window, xWindow);
         }
 
         deleteWindowAtom = XInternAtom(display(), "WM_DELETE_WINDOW", True);
@@ -160,11 +147,15 @@ bool RkWindowX::init()
 
 void RkWindowX::show(bool b)
 {
+        RK_LOG_DEBUG("called, b = " << b);
         if (isWindowCreated()) {
-                if (b)
+                if (b) {
+                        RK_LOG_DEBUG("XMapRaised");
                         XMapRaised(display(), xWindow);
-                else
+                } else {
+                        RK_LOG_DEBUG("XUnmapWindow");
                         XUnmapWindow(display(), xWindow);
+                }
         }
 }
 
@@ -204,6 +195,8 @@ RkSize RkWindowX::size() const
 void RkWindowX::setSize(const RkSize &size)
 {
         if (isWindowCreated() && size.width() > 0 && size.height() > 0) {
+                RK_LOG_DEBUG("w:" << size.width() * scaleFactor <<
+                             ", " << size.height() * scaleFactor);
                 XResizeWindow(display(), xWindow, size.width() * scaleFactor,
                               size.height() * scaleFactor);
         }
@@ -225,24 +218,6 @@ void RkWindowX::setPosition(const RkPoint &position)
         if (isWindowCreated()) {
                 int x = position.x();
                 int y = position.y();
-                if (hasParent() && (static_cast<int>(flags()) & static_cast<int>(Rk::WindowFlags::Dialog))) {
-                        XWindowAttributes parentAttributes;
-                        XGetWindowAttributes(display(), parentWindowInfo.window, &parentAttributes);
-                        int parentRootX;
-                        int parentRootY;
-                        Window child;
-                        XTranslateCoordinates(display(),
-                                              parentWindowInfo.window,
-                                              RootWindow(display(), screenNumber),
-                                              parentAttributes.x,
-                                              parentAttributes.y,
-                                              &parentRootX,
-                                              &parentRootY,
-                                              &child);
-                        RK_UNUSED(child);
-                        x += parentRootX - parentAttributes.x;
-                        y += parentRootY - parentAttributes.y;
-                }
                 XMoveWindow(display(), xWindow, x * scaleFactor, y * scaleFactor);
         }
 }
@@ -314,6 +289,7 @@ void RkWindowX::update()
 #ifdef RK_GRAPHICS_CAIRO_BACKEND
 void RkWindowX::createCanvasInfo()
 {
+        RK_LOG_DEBUG("called");
         canvasInfo = std::make_unique<RkCanvasInfo>();
         canvasInfo->cairo_surface = cairo_xlib_surface_create(display(), xWindow,
                                                               visualInfo.visual,
@@ -333,7 +309,7 @@ void RkWindowX::resizeCanvas()
         cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
-const RkCanvasInfo* RkWindowX::getCanvasInfo() const
+RkCanvasInfo* RkWindowX::getCanvasInfo() const
 {
         return canvasInfo ? canvasInfo.get() : nullptr;
 }
@@ -388,11 +364,6 @@ void RkWindowX::setPointerShape(Rk::PointerShape shape)
                 return;
         };
         XDefineCursor(display(), xWindow, pointer);
-}
-
-Rk::WindowFlags RkWindowX::flags() const
-{
-        return windowFlags;
 }
 
 bool RkWindowX::pointerIsOverWindow() const

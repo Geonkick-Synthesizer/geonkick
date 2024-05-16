@@ -22,8 +22,8 @@
  */
 
 #include "RkCairoGraphicsBackend.h"
-#include "RkCanvas.h"
 #include "RkCanvasInfo.h"
+#include "RkImageImpl.h"
 #include "RkLog.h"
 
 #ifdef RK_OS_WIN
@@ -34,34 +34,33 @@
 #endif
 
 RkCairoGraphicsBackend::RkCairoGraphicsBackend(RkCanvas *canvas)
-        : cairoContext{nullptr}
-#ifdef RK_OS_WIN
-        , canvas {canvas}
-#endif // RK_OS_WIN
+        : canvas {canvas}
 {
         auto canvaseInfo = canvas->getCanvasInfo();
         if (!canvaseInfo) {
                 RK_LOG_ERROR("can't get canvas info");
-        } else {
-                cairoContext = cairo_create(canvaseInfo->cairo_surface);
-                if (!cairoContext) {
+        } else if (!canvaseInfo->cairo_context) {
+                canvaseInfo->cairo_context = cairo_create(canvaseInfo->cairo_surface);
+                if (!canvaseInfo->cairo_context) {
                         RK_LOG_ERROR("can't create Cairo context");
                 } else {
-                        RK_LOG_DEBUG("Cairo context created");
                         cairo_set_font_size(context(), 10);
                         cairo_set_line_width (context(), 1);
+                        RK_LOG_DEBUG("Cairo context created");
                 }
+        } else {
+                RK_LOG_DEBUG("Cairo context already exists");
         }
 }
 
 cairo_t* RkCairoGraphicsBackend::context() const
 {
-        return cairoContext;
+        return canvas->getCanvasInfo()->cairo_context;
 }
 
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
-        cairo_destroy(context());
+        //        cairo_destroy(context());
 #ifdef RK_OS_WIN
         canvas->freeCanvasInfo();
 #endif // RK_OS_WIN
@@ -78,13 +77,14 @@ void RkCairoGraphicsBackend::drawImage(const std::string &file, int x, int y)
         auto image = cairo_image_surface_create_from_png(file.c_str());
         cairo_set_source_surface(context(), image, x, y);
         cairo_paint(context());
+        cairo_surface_flush(canvas->getCanvasInfo()->cairo_surface);
         cairo_surface_destroy(image);
 }
 
 void RkCairoGraphicsBackend::drawImage(const RkImage &image, int x, int y)
 {
         cairo_set_source_surface(context(),
-                                 image.getCanvasInfo()->cairo_surface,
+                                 RK_IMPL_PTR((&image))->getCanvasInfo()->cairo_surface,
                                  x, y);
         if (auto status = cairo_status(context()); status != CAIRO_STATUS_SUCCESS) {
                 RK_LOG_ERROR("cairo_set_source_surface: " << static_cast<int>(status));
@@ -93,6 +93,7 @@ void RkCairoGraphicsBackend::drawImage(const RkImage &image, int x, int y)
         if (auto status = cairo_status(context()); status != CAIRO_STATUS_SUCCESS) {
                 RK_LOG_ERROR("cairo_paint: " << static_cast<int>(status));
         }
+        cairo_surface_flush(canvas->getCanvasInfo()->cairo_surface);
 }
 
 void RkCairoGraphicsBackend::drawEllipse(const RkPoint& p, int width, int height)
@@ -208,6 +209,9 @@ void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkPoint> &points)
 
 void RkCairoGraphicsBackend::fillRect(const RkRect &rect, const RkColor &color)
 {
+        RK_LOG_DEBUG("x: " << rect.left()
+                     << ", y: " << rect.top() << ", w: " << rect.width()
+                     << ", h: " << rect.height());
         cairo_rectangle(context(), rect.left(), rect.top(), rect.width(), rect.height());
         cairo_set_source_rgba(context(),
                              static_cast<double>(color.red()) / 255,

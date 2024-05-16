@@ -96,7 +96,9 @@ class GeonkickApi : public RkObject {
   void setInstanceType(InstanceType type);
   InstanceType getInstanceType() const;
   static unsigned int getVersion();
+  size_t static numberOfInstruments();
   size_t static numberOfChannels();
+  size_t static numberOfMidiChannels();
   void setEventQueue(RkEventQueue *queue);
   bool initDSP();
   bool init();
@@ -184,15 +186,15 @@ class GeonkickApi : public RkObject {
   double limiterValue() const;
   int getSampleRate() const;
   static std::unique_ptr<KitState> getDefaultKitState();
-  static std::shared_ptr<PercussionState> getDefaultPercussionState();
+  static std::unique_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
 
   // This function is called only from the audio thread.
   void process(float** out, size_t channel, size_t size);
 
-  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
-  std::shared_ptr<PercussionState> getPercussionState() const;
+  std::unique_ptr<PercussionState> getPercussionState(size_t id) const;
+  std::unique_ptr<PercussionState> getPercussionState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -215,7 +217,7 @@ class GeonkickApi : public RkObject {
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
   void setPercussionState(const std::string &data);
-  void setPercussionState(const std::shared_ptr<PercussionState> &state);
+  void setPercussionState(const std::unique_ptr<PercussionState> &state);
   std::unique_ptr<KitState> getKitState() const;
   bool setKitState(const std::string &data);
   bool setKitState(const std::unique_ptr<KitState> &state);
@@ -257,7 +259,6 @@ class GeonkickApi : public RkObject {
                              const std::filesystem::path &path);
   void tuneAudioOutput(int id, bool tune);
   bool isAudioOutputTuned(int id) const;
-  size_t getPercussionsNumber() const;
   bool setCurrentPercussion(int index);
   size_t currentPercussion() const;
   int getUnusedPercussion() const;
@@ -269,6 +270,10 @@ class GeonkickApi : public RkObject {
   int percussionsReferenceKey() const;
   bool setPercussionChannel(int index, size_t channel);
   int getPercussionChannel(int index) const;
+  bool setPercussionMidiChannel(int index, size_t channel);
+  int getPercussionMidiChannel(int index) const;
+  bool forceMidiChannel(size_t channel, bool force);
+  bool isMidiChannelForced() const;
   bool setPercussionName(int index, const std::string &name);
   bool setPercussionLimiter(size_t id, double val);
   double percussionLimiter(size_t id) const;
@@ -276,6 +281,8 @@ class GeonkickApi : public RkObject {
   bool isPercussionMuted(size_t id) const;
   bool soloPercussion(size_t id, bool b);
   bool isPercussionSolo(size_t id) const;
+  bool enableNoteOff(size_t id, bool b = true);
+  bool isNoteOffEnabled(size_t id) const;
   std::string getPercussionName(int index) const;
   void copyToClipboard();
   void pasteFromClipboard();
@@ -328,6 +335,8 @@ class GeonkickApi : public RkObject {
   void clearOrderedPercussionIds();
   bool moveOrdrepedPercussionId(int index, int n);
   PresetFolder* getPresetFolder(size_t index) const;
+  PresetFolder* addPresetFolder(const std::filesystem::path &folder, bool custom = false);
+  bool removePresetFolder(const PresetFolder *folder);
   size_t numberOfPresetFolders() const;
   UiSettings* getUiSettings() const;
   void setState(const std::string &data);
@@ -353,10 +362,10 @@ protected:
   void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
   void setOscillatorState(Layer layer,
                           OscillatorType oscillator,
-                          const std::shared_ptr<PercussionState> &state);
+                          const std::unique_ptr<PercussionState> &state);
   void getOscillatorState(Layer layer,
                           OscillatorType osc,
-                          const std::shared_ptr<PercussionState> &state) const;
+                          const std::unique_ptr<PercussionState> &state) const;
   void setLimiterLevelerValue(size_t index, double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,
@@ -376,7 +385,7 @@ private:
   std::string kitName;
   std::string kitAuthor;
   std::string kitUrl;
-  std::shared_ptr<PercussionState> clipboardPercussion;
+  std::unique_ptr<PercussionState> clipboardPercussion;
 
   /**
    * Current working paths for entire application.

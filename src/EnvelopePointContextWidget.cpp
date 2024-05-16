@@ -29,7 +29,7 @@
 
 EnvelopePointContextWidget::EnvelopePointContextWidget(Envelope* envelope,
                                                        GeonkickWidget *parent,
-                                                       Rk::WindowFlags flag)
+                                                       Rk::WidgetFlags flag)
         : GeonkickWidget(parent, flag)
         , pointEnvelope{envelope}
         , lineEdit{new RkLineEdit(this)}

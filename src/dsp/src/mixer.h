@@ -31,6 +31,7 @@ struct gkick_mixer {
 	size_t connection_matrix[127];
         _Atomic int solo;
 	_Atomic int limiter;
+        _Atomic short forced_midi_channel;
         void (*limiter_callback) (void*, size_t index, gkick_real val);
         void *limiter_callback_arg;
         _Atomic size_t limiter_callback_index;
@@ -98,5 +99,28 @@ enum geonkick_error
 gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
 				 void (*callback)(void*, size_t index, gkick_real val),
 				 void *arg);
+
+enum geonkick_error
+gkick_mixer_mute(struct gkick_mixer *mixer, size_t id, bool b);
+
+enum geonkick_error
+gkick_mixer_force_midi_channel(struct gkick_mixer *mixer,
+                               signed char channel,
+                               bool force);
+
+enum geonkick_error
+gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
+                                    signed char *channel,
+                                    bool *force);
+
+enum geonkick_error
+gkick_mixer_enable_note_off(struct gkick_mixer *mixer,
+                            size_t id,
+                            bool enable);
+
+enum geonkick_error
+gkick_mixer_note_off_enabled(struct gkick_mixer *mixer,
+                             size_t id,
+                             bool *enabled);
 
 #endif // GKICK_MIXER_H

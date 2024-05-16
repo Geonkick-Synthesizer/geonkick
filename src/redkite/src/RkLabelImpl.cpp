@@ -50,18 +50,19 @@ std::string RkLabel::RkLabelImpl::text() const
 
 void RkLabel::RkLabelImpl::setImage(const RkImage &image)
 {
-        RK_LOG_DEBUG("called");
         labelImage = image;
 }
 
 void RkLabel::RkLabelImpl::drawLabel()
 {
-        RK_LOG_DEBUG("draw image");
+        if (size().isEmpty())
+                return;
+
         RkImage img(size());
         RkPainter painter(&img);
         painter.fillRect(rect(), background());
         if (!labelImage.isNull()) {
-                RK_LOG_DEBUG("draw image1");
+                RK_LOG_DEBUG("draw image");
                 painter.drawImage(labelImage, 0, 0);
         }
         if (!labelText.empty()) {
@@ -76,4 +77,3 @@ void RkLabel::RkLabelImpl::drawLabel()
         RkPainter paint(inf_ptr);
         paint.drawImage(img, 0, 0);
 }
-

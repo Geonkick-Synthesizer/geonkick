@@ -2,7 +2,7 @@
  * File name: percussion_view.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -34,6 +34,7 @@
 #include <RkButton.h>
 #include <RkContainer.h>
 #include <RkProgressBar.h>
+#include <RkSpinBox.h>
 
 RK_DECLARE_IMAGE_RC(mute);
 RK_DECLARE_IMAGE_RC(mute_hover);
@@ -53,6 +54,9 @@ RK_DECLARE_IMAGE_RC(copy_per_button_on);
 RK_DECLARE_IMAGE_RC(kit_midi_on);
 RK_DECLARE_IMAGE_RC(kit_midi_off);
 RK_DECLARE_IMAGE_RC(kit_midi_hover);
+RK_DECLARE_IMAGE_RC(note_off_unpressed);
+RK_DECLARE_IMAGE_RC(note_off_hover);
+RK_DECLARE_IMAGE_RC(note_off_pressed);
 
 PercussionLimiter::PercussionLimiter(GeonkickWidget *parent)
         : GeonkickSlider(parent)
@@ -101,15 +105,17 @@ KitPercussionView::KitPercussionView(KitWidget *parent,
         , nameWidth{100}
         , channelWidth{30}
         , editPercussion{nullptr}
+        , midiChannelSpinBox{nullptr}
         , keyButton{nullptr}
         , copyButton{nullptr}
         , removeButton{nullptr}
         , playButton{nullptr}
         , muteButton{nullptr}
         , soloButton{nullptr}
+        , noteOffButton{nullptr}
         , percussionLimiter{nullptr}
 {
-        setSize(parent->width(), 20);
+        setSize(parent->width(), 21);
         createView();
         setModel(model);
 }
@@ -126,9 +132,32 @@ void KitPercussionView::createView()
         auto percussionContainer = new RkContainer(this);
         percussionContainer->setSize(size());
         percussionContainer->setHiddenTakesPlace();
-        percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth + 10);
+        percussionContainer->addSpace(nameWidth + percussionModel->numberOfChannels() * channelWidth + 5);
 
-        // Midi key button
+        // Midi channel spinbox.
+        midiChannelSpinBox = new RkSpinBox(this);
+        midiChannelSpinBox->setTextColor({250, 250, 250});
+        midiChannelSpinBox->setBackgroundColor({60, 57, 57});
+        midiChannelSpinBox->upControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->upControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->downControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->downControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->setSize(50, 20);
+        midiChannelSpinBox->show();
+        RK_ACT_BIND(midiChannelSpinBox,
+                    currentIndexChanged,
+                    RK_ACT_ARGS(int index),
+                    percussionModel,
+                    setMidiChannel(index - 1));
+        RK_ACT_BIND(percussionModel,
+                    midiChannelUpdated,
+                    RK_ACT_ARGS(int index),
+                    midiChannelSpinBox,
+                    setCurrentIndex(index + 1));
+        percussionContainer->addWidget(midiChannelSpinBox);
+        percussionContainer->addSpace(5);
+
+        // Midi key button.
         keyButton = new GeonkickButton(this);
         keyButton->setTextColor({250, 250, 250});
         keyButton->setType(RkButton::ButtonType::ButtonUncheckable);
@@ -141,20 +170,36 @@ void KitPercussionView::createView()
                             RkButton::State::UnpressedHover);
         RK_ACT_BIND(keyButton, toggled, RK_ACT_ARGS(bool pressed), this, showMidiPopup());
         percussionContainer->addWidget(keyButton);
-        percussionContainer->addSpace(10);
+        percussionContainer->addSpace(5);
+
+        // Note off button
+        noteOffButton = new RkButton(this);
+        noteOffButton->setType(RkButton::ButtonType::ButtonCheckable);
+        noteOffButton->setSize(23, 16);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_unpressed)),
+                                RkButton::State::Unpressed);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_hover)),
+                                RkButton::State::UnpressedHover);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_pressed)),
+                                RkButton::State::Pressed);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_hover)),
+                                RkButton::State::PressedHover);
+        noteOffButton->show();
+        percussionContainer->addWidget(noteOffButton);
+        percussionContainer->addSpace(5);
 
         // Remove button
         removeButton = new RkButton(this);
         removeButton->setType(RkButton::ButtonType::ButtonPush);
         removeButton->setSize(16, 16);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button)),
-                             RkButton::State::Unpressed);
+                               RkButton::State::Unpressed);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_hover)),
-                             RkButton::State::UnpressedHover);
+                               RkButton::State::UnpressedHover);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_on)),
-                             RkButton::State::Pressed);
+                               RkButton::State::Pressed);
         removeButton->setImage(RkImage(removeButton->size(), RK_IMAGE_RC(remove_per_button_hover)),
-                             RkButton::State::PressedHover);
+                               RkButton::State::PressedHover);
         removeButton->show();
         percussionContainer->addWidget(removeButton);
         percussionContainer->addSpace(3);
@@ -173,7 +218,7 @@ void KitPercussionView::createView()
                              RkButton::State::PressedHover);
         copyButton->show();
         percussionContainer->addWidget(copyButton);
-        percussionContainer->addSpace(10);
+        percussionContainer->addSpace(5);
 
         // Limiter
         percussionLimiter = new PercussionLimiter(this);
@@ -238,6 +283,12 @@ void KitPercussionView::updateView()
         percussionLimiter->onSetValue(percussionModel->limiter());
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
+        noteOffButton->setPressed(percussionModel->isNoteOffEnabled());
+        size_t nMidiChannels = percussionModel->numberOfMidiChannels();
+        midiChannelSpinBox->addItem("Any");
+        for (size_t i = 0; i < nMidiChannels; i++)
+                midiChannelSpinBox->addItem(std::to_string(i + 1));
+        midiChannelSpinBox->setCurrentIndex(percussionModel->midiChannel() + 1);
         keyButton->setText(MidiKeyWidget::midiKeyToNote(percussionModel->key()));
         keyButton->setBackgroundColor((index() % 2) ? RkColor(100, 100, 100) : RkColor(50, 50, 50));
         update();
@@ -252,6 +303,7 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(removeButton, released, RK_ACT_ARGS(), this, remove());
         RK_ACT_BIND(copyButton, released, RK_ACT_ARGS(), percussionModel, copy());
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), percussionModel, play());
+        RK_ACT_BIND(noteOffButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, enableNoteOff(toggled));
         RK_ACT_BIND(muteButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, mute(toggled));
         RK_ACT_BIND(soloButton, toggled, RK_ACT_ARGS(bool toggled), percussionModel, solo(toggled));
         RK_ACT_BIND(percussionLimiter, valueUpdated, RK_ACT_ARGS(int val), percussionModel, setLimiter(val));
@@ -263,6 +315,8 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
         RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
         RK_ACT_BIND(percussionModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
+        RK_ACT_BIND(percussionModel, midiChannelUpdated, RK_ACT_ARGS(int val), this, update());
+        RK_ACT_BIND(percussionModel, noteOffUpdated, RK_ACT_ARGS(bool b), this, update());
         updateView();
 }
 

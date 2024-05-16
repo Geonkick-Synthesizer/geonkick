@@ -50,7 +50,7 @@
 
 #include <RkObject.h>
 
-#ifdef RK_LOG_DEBUG_LEVEL
+#ifdef GKICK_LOG_DEBUG_LEVEL
 #define GEONKICK_LOG_INFO(msg) std::cout << "[" << GEONKICK_NAME << "] " \
                                << " [" << std::this_thread::get_id() << "] " \
                                << __PRETTY_FUNCTION__ << "[INFO] " \
@@ -112,6 +112,7 @@ namespace GeonkickTypes
 {
 using MidiKey = unsigned char;
 constexpr MidiKey geonkickAnyKey = GEONKICK_ANY_KEY;
+constexpr int geonkickAnyMidiChannel = GEONKICK_ANY_MIDI_CHANNEL;
 
 enum class Formats : int {
           Gkick  = 0,

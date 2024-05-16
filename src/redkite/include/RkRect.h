@@ -27,9 +27,8 @@
 #include "RkSize.h"
 #include "RkPoint.h"
 
-class RK_EXPORT RkRect {
+class RkRect {
  public:
-
         constexpr RkRect()
         {
         }
@@ -164,6 +163,12 @@ class RK_EXPORT RkRect {
         constexpr int area() const
         {
                 return width() * height();
+        }
+
+        constexpr bool contains(const RkPoint &p) const
+        {
+                return p.x() >= rectTopLeft.x() && p.x() <= rectBottomRight.x() &&
+                       p.y() >= rectTopLeft.y() && p.y() <= rectBottomRight.y();
         }
 
  private:

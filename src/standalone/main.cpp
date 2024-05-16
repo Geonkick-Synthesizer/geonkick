@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
                 exit(EXIT_FAILURE);
         }
 
-        auto window = new MainWindow(&app, api, preset);
+        auto window = new MainWindow(app, api, preset);
         if (!window->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
                 exit(EXIT_FAILURE);

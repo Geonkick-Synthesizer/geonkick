@@ -1,3 +1,42 @@
+## [3.4.0]
+
+### Features
+
+- UI & DSP: set instrument MIDI channel
+- UI & DSP: Setting to force all instruments to MIDI a channel
+- Presets: new kicks presets by Harald Revery
+- Presets: new kicks presets by Oleh Bardiuk ( @o-bardiuk )
+- UI: Add settings tab
+- UI/File Browser: bookmark folder option
+- UI/Preset Browser: Add custom preset folder
+
+### Fixes
+
+- Code: fix memory corruption when loading presets with samples
+- Code: remove the usage of shared pointers from the Geonkick code
+- DSP/Filter: fix the hardclip for high values ( bug found by @DerozerDSP )
+- Core GUI/redkite: use list container for observers (fix potential crashes espacially for lib++, crash reported by @treapster )
+- Core GUI/redkite: don't access the interface from the ~RkObjectImpl (fixes crashes in libc++ found by @treapster )
+- UI: Fix -inf to int conversion for attack value in the compressor group box ( @treapster )
+- DSP: Fix uninitialized gkick_envelope_apply_type ( @treapster )
+- DSP & UI: Fix nan/inf values for leveler ( @treapster )
+- Build system: use funsafe-math-optimizations -fno-math-errno -fno-trapping-math ( @treapster )
+- Code: error checking on parsing presets (fix potential crashes)
+
+### Improvements
+
+- Presets: update key mapping for kit presets to follow closer the general MIDI percussion key map
+- Code: move to C++20
+
+## [3.3.2]
+
+### Fixes
+
+- Fix high CPU usage by DSP
+- Fix limiter for the audition channel
+	, use a separate audition channel for samples preview
+- Fix instrument leveler value
+
 ## [3.3.1]
 
 ### Fixes

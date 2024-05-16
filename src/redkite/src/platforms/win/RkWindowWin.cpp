@@ -25,7 +25,7 @@
 #include "RkWindowWin.h"
 #include "RkCanvasInfo.h"
 
-RkWindowWin::RkWindowWin(const RkNativeWindowInfo *parent, Rk::WindowFlags flags, bool isTop)
+RkWindowWin::RkWindowWin(const RkNativeWindowInfo *parent)
         : parentWindowInfo{parent ? *parent : RkNativeWindowInfo() }
 	, windowInfo{nullptr}
         , windowHandle{0}
@@ -34,23 +34,18 @@ RkWindowWin::RkWindowWin(const RkNativeWindowInfo *parent, Rk::WindowFlags flags
         , backgroundColor{255, 255, 255}
         , eventQueue{nullptr}
         , canvasInfo{nullptr}
-        , windowFlags{flags}
-	, isTopWindow{isTop}
         , scaleFactor{parent ? parent->scaleFactor : 1.0}
 {
 }
 
-RkWindowWin::RkWindowWin(const RkNativeWindowInfo &parent, Rk::WindowFlags flags, bool isTop)
+RkWindowWin::RkWindowWin(const RkNativeWindowInfo &parent)
         : parentWindowInfo{parent}
-	, windowInfo{nullptr}
         , windowHandle{0}
         , winBorderWidth{0}
         , winBorderColor{255, 255, 255}
         , backgroundColor{255, 255, 255}
         , eventQueue{nullptr}
         , canvasInfo{nullptr}
-        , windowFlags{flags}
-	, isTopWindow{isTop}
         , scaleFactor{parent.scaleFactor}
 {
 }
@@ -60,11 +55,6 @@ RkWindowWin::~RkWindowWin()
 	freeCanvasInfo();
         if (windowHandle.id)
                 DestroyWindow(windowHandle.id);
-}
-
-Rk::WindowFlags RkWindowWin::flags() const
-{
-        return windowFlags;
 }
 
 bool RkWindowWin::hasParent() const
@@ -78,8 +68,6 @@ bool RkWindowWin::init()
         auto className = hasParent() ? parentWindowInfo.className : rk_win_api_class_name();
         RK_LOG_DEBUG("className: " << className);
         auto winStyle = hasParent() ? (WS_CHILD | WS_CLIPCHILDREN | WS_VISIBLE) : (WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN);
-        if (static_cast<int>(windowFlags) & static_cast<int>(Rk::WindowFlags::Popup))
-                winStyle = WS_POPUP | WS_CLIPCHILDREN | WS_VISIBLE;
         auto pos = position();
         auto winSize = size();
         windowHandle.id = CreateWindowExA(0,
@@ -100,14 +88,21 @@ bool RkWindowWin::init()
                 return false;
         }
 
-        if (isTopWindow) {
-                SetTimer(windowHandle.id, RK_MAIN_WINDOW_TIMER_ID, 1, nullptr);
-                RK_LOG_DEBUG("timer created for top window");
-        }
+	RK_LOG_DEBUG("window created");
 
-        if (eventQueue)
+	RK_LOG_DEBUG("set RK_SYSTEM_WINDOW_TIMER_ID for " << windowHandle.id);
+        SetTimer(windowHandle.id, RK_SYSTEM_WINDOW_TIMER_ID, 1, nullptr);
+	RK_LOG_DEBUG("set RK_SYSTEM_WINDOW_TIMER_ID OK");
+
+        if (eventQueue) {
+	        RK_LOG_DEBUG("set user data");
                 SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventQueue));
-        
+	}
+
+	// Create window info
+	nativeWindowInfo();
+
+	RK_LOG_DEBUG("OK");
         return true;
 }
 
@@ -252,7 +247,7 @@ void RkWindowWin::resizeCanvas()
                 cairo_surface_set_device_scale(canvasInfo->cairo_surface, scaleFactor, scaleFactor);
 }
 
-const RkCanvasInfo* RkWindowWin::getCanvasInfo()
+RkCanvasInfo* RkWindowWin::getCanvasInfo()
 {
         if (!canvasInfo)
                 createCanvasInfo();

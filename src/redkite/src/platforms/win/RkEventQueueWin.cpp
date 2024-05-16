@@ -27,7 +27,7 @@
 #include "RkEvent.h"
 
 RkEventQueueWin::RkEventQueueWin()
-: scaleFactor{1}
+: scaleFactor{1.0}
 {
         RK_LOG_DEBUG("called");
 }
@@ -53,4 +53,14 @@ void RkEventQueueWin::dispatchEvents()
                 TranslateMessage (&msg);
                 DispatchMessage (&msg);
         }
+}
+
+void RkEventQueueWin::addEvent(std::unique_ptr<RkEvent> event)
+{
+    eventList.emplace_back(std::move(event));
+}
+
+std::vector<std::unique_ptr<RkEvent>> RkEventQueueWin::getEvents()
+{
+    return std::move(eventList);
 }

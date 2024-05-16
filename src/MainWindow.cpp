@@ -3,7 +3,7 @@
  * File name: MainWindow.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -41,7 +41,7 @@
 constexpr int MAIN_WINDOW_WIDTH  = 940;
 constexpr int MAIN_WINDOW_HEIGHT = 705;
 
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
+MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
         , geonkickApi{api}
         , topBar{nullptr}
@@ -60,7 +60,7 @@ MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
         createShortcuts();
 }
 
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
+MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const RkNativeWindowInfo &info)
         : GeonkickWidget(app, info)
         , geonkickApi{api}
         , topBar{nullptr}
@@ -184,7 +184,7 @@ bool MainWindow::init(void)
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 305);
         envelopeWidget->show();
-        
+
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
         limiterWidget = new Limiter(geonkickApi, this);

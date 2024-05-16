@@ -228,10 +228,10 @@ gkick_filter_val(struct gkick_filter *filter,
                  gkick_real *out_val,
                  gkick_real env_x)
 {
-        if (isnan(in_val) || in_val > 1.0f || in_val < -1.0f) {
-                *out_val = 0.0f;
-                return GEONKICK_ERROR;
-        }
+        if (isnan(in_val))
+                in_val = 0.0;
+        else
+                in_val = geonkick_clamp(in_val, -1.0f, 1.0f);
 
         if (filter == NULL || out_val == NULL) {
                 gkick_log_error("wrong arguments");

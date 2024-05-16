@@ -320,7 +320,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
 #endif // GEONKICK_OS_GNU
         auto guiApp = new RkMain();
         geonkickLv2PLugin->getApi()->setEventQueue(guiApp->eventQueue());
-        auto mainWidget = new MainWindow(guiApp, geonkickLv2PLugin->getApi(), info);
+        auto mainWidget = new MainWindow(*guiApp, geonkickLv2PLugin->getApi(), info);
         RK_ACT_BINDL(mainWidget,
                      onScaleFactor,
                      RK_ACT_ARGS(double factor),
@@ -334,7 +334,7 @@ static LV2UI_Handle gkick_instantiate_ui(const LV2UI_Descriptor*   descriptor,
                 return nullptr;
         }
 
-        auto winId = mainWidget->nativeWindowInfo()->window;
+        auto winId = guiApp->nativeWindowInfo()->window;
 #ifdef GEONKICK_OS_WINDOWS
         *widget = reinterpret_cast<LV2UI_Widget>(winId);
 #else // GEONKICK_OS_GNU

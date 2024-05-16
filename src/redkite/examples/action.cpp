@@ -28,64 +28,71 @@
 #include "RkLog.h"
 #include "RkEvent.h"
 #include "RkEventQueue.h"
+#include "RkButton.h"
 
-class Button: public RkWidget {
-  public:
-        Button(RkWidget *parent = nullptr)
-                : RkWidget(parent)
-                , isToggled{false} {}
+static void setRandomColor(RkWidget* widget)
+{
+        int red = rand() % 151 + 50;
+        int green = rand() % 151 + 50;
+        int blue = rand() % 151 + 50;
 
-        RK_DECL_ACT(toggled, toggled(bool b), RK_ARG_TYPE(bool), RK_ARG_VAL(b));
+        widget->setBorderColor(red, green, blue);
+        widget->setBackgroundColor(red, green, blue);
+}
 
-  protected:
-        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final
-        {
-                isToggled = !isToggled;
-                // Post action to be executed by the GUI main thread.
-                eventQueue()->postAction([&](){ toggled(isToggled); });
-                // Or just call toggled(isToggled) directly to be
-                // executed by the thread executing this method.
-                // Anyway, mouseButtonPressEvent is executed only by GUI main thread.
-                // eventQueue()->postAction([&](){ toggled(isToggled); });
-                // can be called from a defferent thread than GUI main thread;
+static void drawChildren(RkWidget* parent, int l)
+{
+        if (l > 1)
+                return;
+        auto wCh = parent->width() / 10;
+        auto hCh = parent->height() / 10;
+        for (int y = 0; y < parent->height() -  hCh - 1; y += hCh + 1) {
+                for (int x = 0; x < parent->width() - wCh - 1; x += wCh + 1) {
+                        auto child = new RkWidget(parent);
+                        setRandomColor(child);
+                        child->setTitle("Child[" + std::to_string(x) + ":" + std::to_string(y) + "] - " + std::to_string(l));
+                        child->setSize(wCh, hCh);
+                        RK_LOG_DEV_DEBUG("x:" << x);
+                        RK_LOG_DEV_DEBUG("y:" << y);
+                        child->setPosition(x, y);
+                        child->show();
+                        drawChildren(child, l + 1);
+                }
         }
-
-private:
-        bool isToggled;
-};
+}
 
 class  PainterExample: public RkWidget {
   public:
-        PainterExample(RkMain *app)
+        PainterExample(RkMain& app)
                 : RkWidget(app)
                 , startDraw{false}
         {
-                auto button = new Button(this);
-                button->setPosition(30, 30);
+                auto button = new RkButton(this);
+                button->setPosition(800, 800);
                 button->setSize({30, 30});
-                button->setBackgroundColor(255, 30, 100);
-                RK_ACT_BIND(button, toggled, RK_ACT_ARGS(bool b), this, drawCircle(b));
+                button->setBackgroundColor(255, 0, 100);
+                RK_ACT_BIND(button, pressed, RK_ACT_ARGS(), this, drawCircle());
                 button->show();
         }
 
         ~PainterExample() = default;
 
   protected:
-        void paintEvent(const std::shared_ptr<RkPaintEvent> &event) final
+        void paintEvent(RkPaintEvent* event) override
         {
                 RK_UNUSED(event);
                 RkPainter painter(this);
                 painter.fillRect(rect(), RkColor(background()));
-                RkPen pen(RkColor(255, 0, 0));
-                pen.setWidth(1);
+                RkPen pen(RkColor(0, 255, 0));
+                pen.setWidth(3);
                 painter.setPen(pen);
                 if (startDraw)
-                        painter.drawCircle(100, 100, 20);
+                        painter.drawCircle(700, 850, 100);
         }
 
-        void drawCircle(bool b)
+        void drawCircle()
         {
-                startDraw = b;
+                startDraw = !startDraw;
                 update();
         }
 
@@ -97,9 +104,10 @@ int main(int arc, char **argv)
 {
     RkMain app(arc, argv);
 
-    auto widget = new PainterExample(&app);
+    auto widget = new PainterExample(app);
     widget->setTitle("Painter Example");
-    widget->setSize(350, 350);
+    widget->setSize(800, 900);
+    drawChildren(widget, 0);
     widget->show();
 
     return app.exec();

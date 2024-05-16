@@ -2,7 +2,7 @@
  * File name: RkWidgetImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -24,73 +24,59 @@
 #include "RkWidgetImpl.h"
 #include "RkEvent.h"
 #include "RkPainter.h"
+#include "RkSystemWindow.h"
+#include "RkEventQueueImpl.h"
 
-#ifdef RK_OS_WIN
-#include "RkWindowWin.h"
-#elif RK_OS_MAC
-#include "RkWindowMac.h"
-#else // X11
-#include "RkWindowX.h"
-#undef KeyPress
-#undef KeyRelease
-#undef Paint
-#undef FocusIn
-#undef FocusOut
-#endif
-
-RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface, RkWidget* parent, Rk::WindowFlags flags, bool isTopWindow)
-        : RkObject::RkObjectImpl(widgetInterface, parent, Rk::ObjectType::Widget)
-        , inf_ptr{widgetInterface}
-#ifdef RK_OS_WIN
-        , platformWindow{!parent ? std::make_unique<RkWindowWin>(nullptr, flags) : std::make_unique<RkWindowWin>(parent->nativeWindowInfo(), flags, isTopWindow)}
-#elif RK_OS_MAC
-        , platformWindow{!parent ? std::make_unique<RkWindowMac>(nullptr, flags) : std::make_unique<RkWindowMac>(parent->nativeWindowInfo(), flags, isTopWindow)}
-#else // X11
-        , platformWindow{!parent ? std::make_unique<RkWindowX>(nullptr, flags) : std::make_unique<RkWindowX>(parent->nativeWindowInfo(), flags, isTopWindow)}
-#endif
+RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
+                                     RkMain* mainApp,
+                                     const RkNativeWindowInfo *parent,
+                                     Rk::WidgetFlags flags)
+        : RkObject::RkObjectImpl(inf, nullptr, Rk::ObjectType::Widget)
+        , inf_ptr{inf}
+        , topWidget{true}
+        , systemWindow{nullptr}
         , widgetClosed{false}
-        , widgetMinimumSize{0, 0}
         , widgetMaximumSize{1000000, 1000000}
-        , widgetSize{platformWindow->size()}
-        , widgetBackground(platformWindow->background())
+        , widgetSize{250, 250}
+        , widgetBorderWidth{0}
         , widgetAttributes{defaultWidgetAttributes()}
-        , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WindowFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
+        , widgetFlags{flags}
+        , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WidgetFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
         , widgetTextColor{0, 0, 0}
         , widgetDrawingColor{0, 0, 0}
         , widgetPointerShape{Rk::PointerShape::Arrow}
-	, isWidgetSown{false}
+        , isWidgetExplicitHidden{false}
+        , isWidgetVisible{false}
         , isGrabKeyEnabled{false}
         , isPropagateGrabKey{true}
+        , widgetHasFocus{false}
 {
         RK_LOG_DEBUG("called");
-        platformWindow->init();
 }
 
-RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* widgetInterface,
-                                     const RkNativeWindowInfo &parent,
-                                     Rk::WindowFlags flags, bool isTopWindow)
-        : RkObject::RkObjectImpl(widgetInterface, nullptr, Rk::ObjectType::Widget)
-        , inf_ptr{widgetInterface}
-#ifdef RK_OS_WIN
-        , platformWindow{std::make_unique<RkWindowWin>(parent, flags, isTopWindow)}
-#elif RK_OS_MAC
-        , platformWindow{std::make_unique<RkWindowMac>(parent, flags, isTopWindow)}
-#else // X11
-        , platformWindow{std::make_unique<RkWindowX>(parent, flags, isTopWindow)}
-#endif
+RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
+                                     RkWidget* parent,
+                                     Rk::WidgetFlags flags)
+        : RkObject::RkObjectImpl(inf, parent, Rk::ObjectType::Widget)
+        , inf_ptr{inf}
+        , topWidget{false}
+        , systemWindow{parent ? RK_IMPL_PTR(parent)->getSystemWindow() : nullptr}
         , widgetClosed{false}
-        , widgetMinimumSize{0, 0}
         , widgetMaximumSize{1000000, 1000000}
-        , widgetSize{platformWindow->size()}
+        , widgetBorderWidth{0}
         , widgetAttributes{defaultWidgetAttributes()}
-        , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WindowFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
+        , widgetFlags{flags}
+        , widgetModality{(static_cast<int>(flags) & static_cast<int>(Rk::WidgetFlags::Dialog)) ? Rk::Modality::ModalTopWidget : Rk::Modality::NonModal}
         , widgetTextColor{0, 0, 0}
         , widgetDrawingColor{0, 0, 0}
         , widgetPointerShape{Rk::PointerShape::Arrow}
+        , isWidgetExplicitHidden{false}
+	, isWidgetVisible{false}
         , isGrabKeyEnabled{false}
+        , isPropagateGrabKey{true}
+        , widgetHasFocus{false}
 {
         RK_LOG_DEBUG("called");
-        platformWindow->init();
 }
 
 RkWidget::RkWidgetImpl::~RkWidgetImpl()
@@ -98,17 +84,39 @@ RkWidget::RkWidgetImpl::~RkWidgetImpl()
         RK_LOG_DEBUG("called");
 }
 
+bool RkWidget::RkWidgetImpl::isTopWidget() const
+{
+        return topWidget;
+}
+
+void RkWidget::RkWidgetImpl::setSystemWindow(RkSystemWindow *window)
+{
+        systemWindow = window;
+}
+
+RkSystemWindow* RkWidget::RkWidgetImpl::getSystemWindow() const
+{
+        return systemWindow;
+}
+
+RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
+{
+        return systemWindow->getImage().getCanvasInfo();
+}
+
+void RkWidget::RkWidgetImpl::freeCanvasInfo()
+{
+        //        systemWindow->freeCanvasInfo();
+}
+
 void RkWidget::RkWidgetImpl::setEventQueue(RkEventQueue *queue)
 {
         RkObjectImpl::setEventQueue(queue);
-#ifdef RK_OS_WIN
-        platformWindow->setEventQueue(queue);
-#endif // RK_OS_WIN
 }
 
-Rk::WindowFlags RkWidget::RkWidgetImpl::windowFlags() const
+Rk::WidgetFlags RkWidget::RkWidgetImpl::getWidgetFlags() const
 {
-        return platformWindow->flags();
+        return widgetFlags;
 }
 
 Rk::WidgetAttribute RkWidget::RkWidgetImpl::defaultWidgetAttributes()
@@ -119,21 +127,23 @@ Rk::WidgetAttribute RkWidget::RkWidgetImpl::defaultWidgetAttributes()
 
 }
 
-void RkWidget::RkWidgetImpl::show(bool b)
+void RkWidget::RkWidgetImpl::setVisible(bool b)
 {
-	isWidgetSown = b;
-        platformWindow->show(isWidgetSown);
+	isWidgetVisible = b;
+        if (isTopWidget())
+                systemWindow->show(isWidgetVisible);
 }
 
-bool RkWidget::RkWidgetImpl::isShown() const
+bool RkWidget::RkWidgetImpl::isVisible() const
 {
-	return isWidgetSown;
+	return isWidgetVisible;
 }
 
 void RkWidget::RkWidgetImpl::setTitle(const std::string &title)
 {
         widgetTitle = title;
-        platformWindow->setTitle(widgetTitle);
+        if (isTopWidget())
+                systemWindow->setTitle(widgetTitle);
 }
 
 const std::string& RkWidget::RkWidgetImpl::title() const
@@ -141,28 +151,19 @@ const std::string& RkWidget::RkWidgetImpl::title() const
         return widgetTitle;
 }
 
-const RkNativeWindowInfo*
-RkWidget::RkWidgetImpl::nativeWindowInfo() const
-{
-        return platformWindow->nativeWindowInfo();
-}
-
 bool RkWidget::RkWidgetImpl::isClose() const
 {
         return widgetClosed;
 }
 
-RkWindowId RkWidget::RkWidgetImpl::id() const
-{
-        return platformWindow->id();
-}
-
 void RkWidget::RkWidgetImpl::event(RkEvent *event)
 {
+        RkObject::RkObjectImpl::event(event);
         switch (event->type())
         {
         case RkEvent::Type::Paint:
-                inf_ptr->paintEvent(static_cast<RkPaintEvent*>(event));
+                if (isVisible())
+                        processPaintEvent(static_cast<RkPaintEvent*>(event));
                 break;
         case RkEvent::Type::KeyPressed:
                 RK_LOG_DEBUG("RkEvent::Type::KeyPressed: " << title());
@@ -193,29 +194,32 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 inf_ptr->focusEvent(static_cast<RkFocusEvent*>(event));
                 break;
         case RkEvent::Type::MouseButtonPress:
-                RK_LOG_DEBUG("RkEvent::Type::MouseButtonPress: " << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
+                if (static_cast<int>(widgetAttributes)
+                    & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
+                        setFocus();
                         auto mouseEvent = static_cast<RkMouseEvent*>(event);
                         inf_ptr->mouseButtonPressEvent(mouseEvent);
-                        if (mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
-                            || mouseEvent->button() == RkMouseEvent::ButtonType::WheelDown) {
-                                auto wheelEvent = std::make_unique<RkWheelEvent>();
-                                wheelEvent->setDirection(mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
-                                                         ? RkWheelEvent::WheelDirection::DirectionUp
-                                                         : RkWheelEvent::WheelDirection::DirectionDown);
-                                inf_ptr->wheelEvent(wheelEvent.get());
-                        }
+                        auto wheelEvent = std::make_unique<RkWheelEvent>();
+                        wheelEvent->setDirection(mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
+                                                 ? RkWheelEvent::WheelDirection::DirectionUp
+                                                 : RkWheelEvent::WheelDirection::DirectionDown);
+                        inf_ptr->wheelEvent(wheelEvent.get());
                 }
                 break;
         case RkEvent::Type::MouseDoubleClick:
                 RK_LOG_DEBUG("RkEvent::Type::MouseDoubleClick:" << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
+                if (static_cast<int>(widgetAttributes)
+                    & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
+                        setFocus();
                         inf_ptr->mouseDoubleClickEvent(static_cast<RkMouseEvent*>(event));
+                }
                 break;
         case RkEvent::Type::MouseButtonRelease:
                 RK_LOG_DEBUG("RkEvent::Type::MouseButtonRelease:" << title());
-                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
+                if (static_cast<int>(widgetAttributes)
+                    & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled)) {
                         inf_ptr->mouseButtonReleaseEvent(static_cast<RkMouseEvent*>(event));
+                }
                 break;
         case RkEvent::Type::MouseMove:
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
@@ -231,16 +235,14 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 inf_ptr->hoverEvent(static_cast<RkHoverEvent*>(event));
                 break;
         case RkEvent::Type::Resize:
-                widgetSize = platformWindow->size();
-                platformWindow->resizeCanvas();
+                if (isTopWidget())
+                        widgetSize = systemWindow->size();
                 inf_ptr->resizeEvent(static_cast<RkResizeEvent*>(event));
                 break;
 	case RkEvent::Type::Show:
-		isWidgetSown = true;
                 inf_ptr->showEvent(static_cast<RkShowEvent*>(event));
                 break;
 	case RkEvent::Type::Hide:
-		isWidgetSown = false;
                 inf_ptr->hideEvent(static_cast<RkHideEvent*>(event));
                 break;
         case RkEvent::Type::DeleteChild:
@@ -248,10 +250,11 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 delete static_cast<RkDeleteChild*>(event)->child();
                 break;
         case RkEvent::Type::Close:
-                RK_LOG_DEBUG("RkEvent::Type::Close");
+                RK_LOG_DEBUG("RkEvent::Type::Close" << title());
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::CloseInputEnabled)) {
-                        widgetClosed = true;
                         inf_ptr->closeEvent(static_cast<RkCloseEvent*>(event));
+                        if (isTopWidget())
+                                systemWindow->close();
                 }
                 break;
         default:
@@ -260,92 +263,97 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
         }
 }
 
+void RkWidget::RkWidgetImpl::processPaintEvent(RkPaintEvent* event)
+{
+        RkPainter painter(inf_ptr);
+        auto globalPosition = inf_ptr->mapToGlobal({0, 0});
+        painter.translate(globalPosition);
+        painter.fillRect(rect(), background());
+        inf_ptr->paintEvent(event);
+        painter.translate({-globalPosition.x(), -globalPosition.y()});
+        processChildrenEvents(event);
+}
+
+void RkWidget::RkWidgetImpl::processChildrenEvents(RkEvent *event)
+{
+        for (auto &ch: inf_ptr->children()) {
+                auto widget = dynamic_cast<RkWidget*>(ch);
+                if (widget && widget->isVisible()) {
+                        RK_IMPL_PTR(widget)->event(event);
+                }
+        }
+}
+
 void RkWidget::RkWidgetImpl::setSize(const RkSize &size)
 {
-        if (size.width() > 1 && size.height() > 1)
-                platformWindow->setSize(size);
         widgetSize = size;
+        if (isTopWidget())
+                systemWindow->setSize(widgetSize);
+        RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::move(std::make_unique<RkResizeEvent>()));
 }
 
-RkSize RkWidget::RkWidgetImpl::size() const
+const RkSize& RkWidget::RkWidgetImpl::size() const
 {
-        return  widgetSize;
+        return widgetSize;
 }
 
-int RkWidget::RkWidgetImpl::minimumWidth() const
+void RkWidget::RkWidgetImpl::setMinimumSize(const RkSize &size)
 {
-        return widgetMinimumSize.width();
+        widgetMinimumSize = size;
 }
 
-int RkWidget::RkWidgetImpl::maximumWidth() const
+const RkSize& RkWidget::RkWidgetImpl::minimumSize() const
 {
-        return widgetMaximumSize.width();
+        return widgetMinimumSize;
 }
 
-int RkWidget::RkWidgetImpl::minimumHeight() const
+void RkWidget::RkWidgetImpl::setMaximumSize(const RkSize &size)
 {
-        return widgetMinimumSize.height();
+        widgetMinimumSize = size;
 }
 
-int RkWidget::RkWidgetImpl::maximumHeight() const
+const RkSize& RkWidget::RkWidgetImpl::maximumSize() const
 {
-        return widgetMaximumSize.height();
-}
-
-void RkWidget::RkWidgetImpl::setMinimumWidth(int width)
-{
-        widgetMinimumSize.setWidth(width);
-}
-
-void RkWidget::RkWidgetImpl::setMaximumWidth(int width)
-{
-        widgetMaximumSize.setWidth(width);
-}
-
-void RkWidget::RkWidgetImpl::setMinimumHeight(int height)
-{
-        widgetMinimumSize.setHeight(height);
-}
-
-void RkWidget::RkWidgetImpl::setMaximumHeight(int height)
-{
-        widgetMaximumSize.setHeight(height);
+        return widgetMaximumSize;
 }
 
 void RkWidget::RkWidgetImpl::setPosition(const RkPoint &position)
 {
-        platformWindow->setPosition(position);
+        widgetPosition = position;
+        if (isTopWidget())
+                systemWindow->setPosition(widgetPosition);
 }
 
-RkPoint RkWidget::RkWidgetImpl::position() const
+const RkPoint& RkWidget::RkWidgetImpl::position() const
 {
-        return platformWindow->position();
+        return widgetPosition;
 }
 
 void RkWidget::RkWidgetImpl::setBorderWidth(int width)
 {
-        platformWindow->setBorderWidth(width);
+        widgetBorderWidth = width;
 }
 
 int RkWidget::RkWidgetImpl::borderWidth() const
 {
-        return platformWindow->borderWidth();
+        return widgetBorderWidth;
 }
 
 void RkWidget::RkWidgetImpl::setBorderColor(const RkColor &color)
 {
-        platformWindow->setBorderColor(color);
+        widgetBorderColor = color;
 }
 
 const RkColor& RkWidget::RkWidgetImpl::borderColor() const
 {
-        return platformWindow->borderColor();
+        return widgetBorderColor;
 }
 
 void RkWidget::RkWidgetImpl::setBackgroundColor(const RkColor &color)
 {
-        platformWindow->setBackgroundColor(color);
         widgetBackground = color;
+        if (isTopWidget())
+                systemWindow->setBackgroundColor(widgetBackground);
 }
 
 const RkColor& RkWidget::RkWidgetImpl::background() const
@@ -355,22 +363,23 @@ const RkColor& RkWidget::RkWidgetImpl::background() const
 
 RkRect RkWidget::RkWidgetImpl::rect() const
 {
-        return RkRect(RkPoint(0, 0), size());
+        return RkRect({0, 0}, size());
 }
 
-const RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
+void RkWidget::RkWidgetImpl::update(bool updateChildren)
 {
-        return platformWindow->getCanvasInfo();
-}
+        if (!isVisible())
+                return;
 
-void RkWidget::RkWidgetImpl::freeCanvasInfo()
-{
-        platformWindow->freeCanvasInfo();
-}
-
-void RkWidget::RkWidgetImpl::update()
-{
-        platformWindow->update();
+        RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::move(std::make_unique<RkPaintEvent>()));
+        if (updateChildren) {
+                for (auto &ch: inf_ptr->children()) {
+                        auto widget = dynamic_cast<RkWidget*>(ch);
+                        if (widget && isVisible()) {
+                                RK_IMPL_PTR(widget)->update(updateChildren);
+                        }
+                }
+        }
 }
 
 Rk::Modality RkWidget::RkWidgetImpl::modality() const
@@ -395,12 +404,15 @@ Rk::WidgetAttribute RkWidget::RkWidgetImpl::getWidgetAttributes() const
 
 void RkWidget::RkWidgetImpl::setFocus(bool b)
 {
-        platformWindow->setFocus(b);
+        if (RK_IMPL_PTR(getEventQueue()) && RK_IMPL_PTR(getEventQueue())->getSystemWindow())
+                RK_IMPL_PTR(getEventQueue())->getSystemWindow()->setFocusWidget(inf_ptr, b);
 }
 
 bool RkWidget::RkWidgetImpl::hasFocus() const
 {
-        return platformWindow->hasFocus();
+        if (RK_IMPL_PTR(getEventQueue()) && RK_IMPL_PTR(getEventQueue())->getSystemWindow())
+                return RK_IMPL_PTR(getEventQueue())->getSystemWindow()->getFocusWidget() == inf_ptr;
+        return false;
 }
 
 void RkWidget::RkWidgetImpl::setTextColor(const RkColor &color)
@@ -435,10 +447,9 @@ void RkWidget::RkWidgetImpl::setFont(const RkFont &font)
 
 void RkWidget::RkWidgetImpl::setPointerShape(Rk::PointerShape shape)
 {
-        if (widgetPointerShape != shape) {
-                widgetPointerShape = shape;
-                platformWindow->setPointerShape(widgetPointerShape);
-        }
+        widgetPointerShape = shape;
+        if (isTopWidget())
+                systemWindow->setPointerShape(widgetPointerShape);
 }
 
 Rk::PointerShape RkWidget::RkWidgetImpl::pointerShape() const
@@ -468,16 +479,50 @@ bool RkWidget::RkWidgetImpl::propagateGrabKeyEnabled() const
 
 bool RkWidget::RkWidgetImpl::pointerIsOverWindow() const
 {
-        return platformWindow->pointerIsOverWindow();
+        // TODO: implement?
+        return false;
+}
+
+void RkWidget::RkWidgetImpl::setExplicitHidden(bool b)
+{
+        isWidgetExplicitHidden = b;
+}
+
+bool RkWidget::RkWidgetImpl::isExplicitHidden() const
+{
+        return isWidgetExplicitHidden;
+}
+
+void RkWidget::RkWidgetImpl::setChildrenVisible(bool b)
+
+{
+        if (b && !isVisible())
+                return;
+
+        for (const auto &ch: inf_ptr->children()) {
+                auto widget = dynamic_cast<RkWidget*>(ch);
+                if (widget) {
+                        if (b && RK_IMPL_PTR(widget)->isExplicitHidden())
+                                continue;
+                        RK_IMPL_PTR(widget)->setVisible(b);
+                        RK_IMPL_PTR(widget)->setChildrenVisible(b);
+                        if (!RK_IMPL_PTR(widget)->name().empty())
+                                RK_LOG_DEV_DEBUG(" ch: "
+                                                 << RK_IMPL_PTR(widget)->name()
+                                                 << " : visible: " << b);
+                }
+        }
 }
 
 void RkWidget::RkWidgetImpl::setScaleFactor(double factor)
 {
-        platformWindow->setScaleFactor(factor);
+        if (systemWindow)
+                systemWindow->setScaleFactor(factor);
 }
 
 double RkWidget::RkWidgetImpl::scaleFactor() const
 {
-        return platformWindow->getScaleFactor();
+        if (systemWindow)
+                return systemWindow->scaleFactor();
+        return 1.0;
 }
-

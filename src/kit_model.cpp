@@ -80,7 +80,7 @@ PercussionModel* KitModel::currentPercussion() const
 
 size_t KitModel::numberOfChannels() const
 {
-        return geonkickApi->numberOfChannels();
+        return geonkickApi->numberOfInstruments();
 }
 
 int KitModel::percussionChannel(PercussionIndex index) const
@@ -91,6 +91,21 @@ int KitModel::percussionChannel(PercussionIndex index) const
 bool KitModel::setPercussionChannel(PercussionIndex index, int channel)
 {
         return geonkickApi->setPercussionChannel(percussionId(index), channel);
+}
+
+size_t KitModel::numberOfMidiChannels() const
+{
+        return geonkickApi->numberOfMidiChannels();
+}
+
+int KitModel::percussionMidiChannel(PercussionIndex index) const
+{
+        return geonkickApi->getPercussionMidiChannel(percussionId(index));
+}
+
+bool KitModel::setPercussionMidiChannel(PercussionIndex index, int channel)
+{
+        return geonkickApi->setPercussionMidiChannel(percussionId(index), channel);
 }
 
 bool KitModel::setPercussionName(PercussionIndex index, const std::string &name)
@@ -163,7 +178,8 @@ int KitModel::percussionLimiter(PercussionIndex index) const
 int KitModel::percussionLeveler(PercussionIndex index) const
 {
         auto realVal = geonkickApi->getLimiterLevelerValue(percussionId(index));
-        double logVal = 20 * log10(realVal);
+        // add small delta to avoid -inf for zero value
+        double logVal = 20 * log10(realVal + 0.000000001);
         int val = (logVal + 55.0) * 100.0 / 75;
         if (val < 0)
                 val = 0;
@@ -205,8 +221,8 @@ void KitModel::loadModelData()
 bool KitModel::open(const std::string &file)
 {
         auto kit = std::make_unique<KitState>();
-        if (kit->open(file)) {
-                GEONKICK_LOG_ERROR("can't open kit");
+        if (!kit->open(file)) {
+                GEONKICK_LOG_ERROR("can't open kit, the preset might be wrong or corrupted");
                 return false;
         }
 
@@ -319,7 +335,7 @@ size_t KitModel::percussionNumber() const
 
 size_t KitModel::maxPercussionNumber() const
 {
-        return geonkickApi->getPercussionsNumber();
+        return geonkickApi->numberOfInstruments();
 }
 
 int KitModel::percussionId(int index) const
@@ -394,3 +410,12 @@ std::vector<float> KitModel::instrumentData(PercussionIndex index) const
         return geonkickApi->getInstrumentBuffer(percussionId(index));
 }
 
+bool KitModel::enableNoteOff(PercussionIndex index, bool b)
+{
+        return geonkickApi->enableNoteOff(percussionId(index), b);
+}
+
+bool KitModel::isNoteOffEnabled(PercussionIndex index) const
+{
+        return geonkickApi->isNoteOffEnabled(percussionId(index));
+}

@@ -2,7 +2,7 @@
  * File name: preset_browser_model.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -27,6 +27,7 @@
 #include "geonkick_api.h"
 #include "percussion_state.h"
 #include "kit_state.h"
+#include "GeonkickConfig.h"
 
 PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
         : RkObject(parent)
@@ -180,6 +181,15 @@ bool PresetBrowserModel::isSelected(size_t row, size_t column) const
                 return false;
 }
 
+bool PresetBrowserModel::isCustomFolder(size_t row, size_t column) const
+{
+        if (column == 0) {
+                auto presetFolder = getPresetFolder(row);
+                return presetFolder && presetFolder->isCustom();
+        }
+        return false;
+}
+
 bool PresetBrowserModel::setPreset(Preset* preset)
 {
         if (preset->type() == Preset::PresetType::Percussion) {
@@ -197,7 +207,7 @@ bool PresetBrowserModel::setPreset(Preset* preset)
                 }
         } else if (preset->type() == Preset::PresetType::PercussionKit) {
                 auto kit = std::make_unique<KitState>();
-                if (kit->open(preset->path().string())) {
+                if (!kit->open(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open kit");
                         return false;
                 } else if (geonkickApi->setKitState(kit)) {
@@ -207,4 +217,36 @@ bool PresetBrowserModel::setPreset(Preset* preset)
                 }
         }
         return false;
+}
+
+bool PresetBrowserModel::addFolder(const std::filesystem::path &folder, bool custom)
+{
+        auto presetFolder = geonkickApi->addPresetFolder(folder, custom);
+        if (presetFolder) {
+                action presetFolderAdded(presetFolder);
+                return true;
+        }
+        return false;
+}
+
+PresetFolder* PresetBrowserModel::currentSelectedFolder() const
+{
+        return selectedFolder;
+}
+
+bool PresetBrowserModel::removeSelectedFolder()
+{
+        if (selectedFolder && geonkickApi->removePresetFolder(selectedFolder)) {
+                selectedFolder = geonkickApi->getPresetFolder(0);
+                folderPageIndex = 0;
+                presetPageIndex = 0;
+                action presetFolderRemoved();
+                return true;
+        }
+        return false;
+}
+
+GeonkickApi* PresetBrowserModel::getGeonkickApi() const
+{
+        return geonkickApi;
 }

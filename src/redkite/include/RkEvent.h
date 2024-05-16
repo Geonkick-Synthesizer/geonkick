@@ -2,7 +2,7 @@
  * File name: RkEvent.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -39,7 +39,7 @@ class RkHideEvent;
 class RkHoverEvent;
 class RkWidget;
 
-class RK_EXPORT RkEvent {
+class RkEvent {
  public:
         enum class Type: int {
                 NoEvent = 0,
@@ -61,7 +61,8 @@ class RK_EXPORT RkEvent {
                 FocusedOut = 16,
                 Hover = 17,
                 Drop = 18,
-                ScaleFactor = 19
+                ScaleFactor = 19,
+                Action = 20
       };
 
         explicit RkEvent(Type type = Type::NoEvent)
@@ -85,7 +86,7 @@ class RkCloseEvent: public RkEvent {
 	}
 };
 
-class RK_EXPORT RkKeyEvent: public RkEvent {
+class RkKeyEvent: public RkEvent {
    public:
         RkKeyEvent(Type type = Type::KeyPressed)
                 : RkEvent(type)
@@ -112,7 +113,7 @@ class RK_EXPORT RkKeyEvent: public RkEvent {
         bool typeShortcut;
 };
 
-class RK_EXPORT RkMouseEvent: public RkEvent {
+class RkMouseEvent: public RkEvent {
   public:
 
         enum class ButtonType : int {
@@ -132,6 +133,8 @@ class RK_EXPORT RkMouseEvent: public RkEvent {
       void setX(int x) { mouseCoordinates.setX(x); }
       int y() const { return mouseCoordinates.y(); }
       void setY(int y) { mouseCoordinates.setY(y); }
+      void setPoint(const RkPoint &p) { mouseCoordinates = p; }
+      const RkPoint& point() const { return mouseCoordinates; }
       ButtonType button() const { return buttonType; }
       void setButton(ButtonType type) { buttonType = type; }
 
@@ -187,14 +190,17 @@ public:
 
 class RkPaintEvent: public RkEvent {
  public:
-       RkPaintEvent() : RkEvent(Type::Paint) {
-       }
+       RkPaintEvent() : RkEvent(Type::Paint) {}
 };
 
 class RkShowEvent: public RkEvent {
+public:
+        RkShowEvent() : RkEvent(Type::Show) {}
 };
 
 class RkHideEvent: public RkEvent {
+public:
+        RkHideEvent() : RkEvent(Type::Hide) {}
 };
 
 class RkDeleteChild: public RkEvent {
@@ -239,4 +245,3 @@ class RkScaleFactorEvent: public RkEvent {
 };
 
 #endif // RK_EVENT_H
-

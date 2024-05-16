@@ -2,7 +2,7 @@
  * File name: percussion_state.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iuri Nistor 
+ * Copyright (C) 2018 Iuri Nistor
  *
  * This file is part of Geonkick.
  *
@@ -32,9 +32,11 @@ PercussionState::PercussionState()
         , kickName{"Default"}
         , playingKey{-1}
         , outputChannel{0}
+        , outputMidiChannel{GeonkickTypes::geonkickAnyMidiChannel}
         , kickEnabled{true}
         , percussionMuted{false}
         , percussionSolo{false}
+        , noteOffEnabled{false}
         , limiterValue{0}
         , kickLength{50}
         , kickAmplitude{0.8}
@@ -95,10 +97,10 @@ bool PercussionState::loadData(const std::string &data)
 	return true;
 }
 
-void PercussionState::loadObject(const rapidjson::Value &obj)
+bool PercussionState::loadObject(const rapidjson::Value &obj)
 {
         if (!obj.IsObject())
-                return;
+                return false;
 
         bool kickParsed = false;
         for (const auto &m: obj.GetObject()) {
@@ -110,7 +112,7 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
         }
 
         if (!kickParsed)
-                return;
+                return false;
 
         for (const auto &m: obj.GetObject()) {
                 for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
@@ -127,6 +129,7 @@ void PercussionState::loadObject(const rapidjson::Value &obj)
                         }
                 }
         }
+        return true;
 }
 
 size_t PercussionState::getId() const
@@ -164,6 +167,11 @@ void PercussionState::setChannel(size_t channel)
         outputChannel = channel;
 }
 
+void PercussionState::setMidiChannel(signed char channel)
+{
+        outputMidiChannel = channel;
+}
+
 void PercussionState::setMute(bool b)
 {
         percussionMuted = b;
@@ -189,6 +197,21 @@ size_t PercussionState::getChannel() const
         return outputChannel;
 }
 
+signed char PercussionState::getMidiChannel() const
+{
+        return outputMidiChannel;
+}
+
+void PercussionState::setNoteOffEnabled(bool b)
+{
+        noteOffEnabled = b;
+}
+
+bool PercussionState::isNoteOffEnabled() const
+{
+        return noteOffEnabled;
+}
+
 bool PercussionState::isEnabled() const
 {
         return kickEnabled;
@@ -203,14 +226,14 @@ void PercussionState::initOscillators()
 {
         for (decltype(layers.size()) i = 0; i < layers.size(); i++) {
                 oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator1)
-                                        + GKICK_OSC_GROUP_SIZE * i,
-                                        std::make_shared<OscillatorInfo>()});
+                                + GKICK_OSC_GROUP_SIZE * i,
+                                OscillatorInfo()});
                 oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Oscillator2)
-                                        + GKICK_OSC_GROUP_SIZE * i,
-                                        std::make_shared<OscillatorInfo>()});
+                                + GKICK_OSC_GROUP_SIZE * i,
+                                OscillatorInfo()});
                 oscillators.insert({static_cast<int>(GeonkickApi::OscillatorType::Noise)
-                                        + GKICK_OSC_GROUP_SIZE * i,
-                                        std::make_shared<OscillatorInfo>()});
+                                + GKICK_OSC_GROUP_SIZE * i,
+                                OscillatorInfo()});
         }
 }
 
@@ -228,6 +251,10 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                         setId(m.value.GetInt());
                 if (m.name == "channel" && m.value.IsInt())
                         setChannel(m.value.GetInt());
+                if (m.name == "midiChannel" && m.value.IsInt())
+                        setMidiChannel(m.value.GetInt());
+                if (m.name == "noteOffEnabled" && m.value.IsBool())
+                        setNoteOffEnabled(m.value.GetBool());
                 if (m.name == "mute" && m.value.IsBool())
                         setMute(m.value.GetBool());
                 if (m.name == "solo" && m.value.IsBool())
@@ -563,13 +590,24 @@ PercussionState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
 	}
 }
 
-std::shared_ptr<PercussionState::OscillatorInfo>
-PercussionState::getOscillator(int index) const
+PercussionState::OscillatorInfo*
+PercussionState::getOscillator(int index)
 {
         index += GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);
         auto it = oscillators.find(index);
         if (it != oscillators.end())
-                return it->second;
+                return &it->second;
+
+        return nullptr;
+}
+
+const PercussionState::OscillatorInfo*
+PercussionState::getConstOscillator(int index) const
+{
+        index += GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);
+        auto it = oscillators.find(index);
+        if (it != oscillators.end())
+                return &it->second;
 
         return nullptr;
 }
@@ -701,7 +739,7 @@ void PercussionState::setOscillatorEnvelopeApplyType(int index,
 GeonkickApi::EnvelopeApplyType PercussionState::getOscillatorEnvelopeApplyType(int index,
 									       GeonkickApi::EnvelopeType envelope) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (!oscillator)
                 return GeonkickApi::EnvelopeApplyType::Linear;
 
@@ -718,7 +756,7 @@ GeonkickApi::EnvelopeApplyType PercussionState::getOscillatorEnvelopeApplyType(i
 
 bool PercussionState::isOscillatorAsFm(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->isFm;
         return false;
@@ -733,7 +771,7 @@ void PercussionState::setOscillatorAsFm(int index, bool b)
 
 bool PercussionState::isOscillatorEnabled(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->isEnabled;
 
@@ -742,7 +780,7 @@ bool PercussionState::isOscillatorEnabled(int index) const
 
 GeonkickApi::FunctionType PercussionState::oscillatorFunction(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->function;
 
@@ -751,7 +789,7 @@ GeonkickApi::FunctionType PercussionState::oscillatorFunction(int index) const
 
 double PercussionState::oscillatorPhase(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->phase;
 
@@ -760,7 +798,7 @@ double PercussionState::oscillatorPhase(int index) const
 
 int PercussionState::oscillatorSeed(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->seed;
 
@@ -769,35 +807,35 @@ int PercussionState::oscillatorSeed(int index) const
 
 double PercussionState::oscillatorAmplitue(int index) const
 {
-        if (auto oscillator = getOscillator(index); oscillator)
+        if (auto oscillator = getConstOscillator(index); oscillator)
                 return oscillator->amplitude;
         return 0;
 }
 
 double PercussionState::oscillatorFrequency(int index) const
 {
-        if (auto oscillator = getOscillator(index); oscillator)
+        if (auto oscillator = getConstOscillator(index); oscillator)
                 return oscillator->frequency;
         return 0;
 }
 
 double PercussionState::oscillatorPitchShift(int index) const
 {
-        if (auto oscillator = getOscillator(index); oscillator)
+        if (auto oscillator = getConstOscillator(index); oscillator)
                 return oscillator->pitchShift;
         return 0;
 }
 
 bool PercussionState::isOscillatorFilterEnabled(int index) const
 {
-        if (auto oscillator = getOscillator(index); oscillator)
+        if (auto oscillator = getConstOscillator(index); oscillator)
                 return oscillator->isFilterEnabled;
         return false;
 }
 
 GeonkickApi::FilterType PercussionState::oscillatorFilterType(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->filterType;
         return GeonkickApi::FilterType::LowPass;
@@ -805,7 +843,7 @@ GeonkickApi::FilterType PercussionState::oscillatorFilterType(int index) const
 
 double PercussionState::oscillatorFilterCutOffFreq(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->filterFrequency;
         return 0;
@@ -813,7 +851,7 @@ double PercussionState::oscillatorFilterCutOffFreq(int index) const
 
 double PercussionState::oscillatorFilterFactor(int index) const
 {
-        auto oscillator = getOscillator(index);
+        auto oscillator = getConstOscillator(index);
         if (oscillator)
                 return oscillator->filterFactor;
         return 0;
@@ -822,7 +860,7 @@ double PercussionState::oscillatorFilterFactor(int index) const
 std::vector<RkRealPoint>
 PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const
 {
-        if (auto oscillator = getOscillator(index); oscillator) {
+        if (auto oscillator = getConstOscillator(index); oscillator) {
                 switch (type) {
                 case GeonkickApi::EnvelopeType::Amplitude:
                         return oscillator->amplitudeEnvelope;
@@ -988,41 +1026,41 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
 {
         for (const auto& val: oscillators) {
                 jsonStream << "\"osc" << val.first << "\": {" << std::endl;
-                jsonStream << "\"enabled\": " << (val.second->isEnabled ? "true" : "false") << ", " << std::endl;
-                jsonStream << "\"is_fm\": " << (val.second->isFm ? "true" : "false") << ", " << std::endl;
-                if (val.second->function == GeonkickApi::FunctionType::Sample && !val.second->sample.empty())
-                        jsonStream <<  "\"sample\": \"" << toBase64F(val.second->sample) << "\"," << std::endl;
-                jsonStream <<  "\"function\": " << static_cast<int>(val.second->function) << "," << std::endl;
-                jsonStream <<  "\"phase\": " 
-                           << val.second->phase << ", " << std::endl;
-                jsonStream <<  "\"seed\": " << val.second->seed << ", " << std::endl;
+                jsonStream << "\"enabled\": " << (val.second.isEnabled ? "true" : "false") << ", " << std::endl;
+                jsonStream << "\"is_fm\": " << (val.second.isFm ? "true" : "false") << ", " << std::endl;
+                if (val.second.function == GeonkickApi::FunctionType::Sample && !val.second.sample.empty())
+                        jsonStream <<  "\"sample\": \"" << toBase64F(val.second.sample) << "\"," << std::endl;
+                jsonStream <<  "\"function\": " << static_cast<int>(val.second.function) << "," << std::endl;
+                jsonStream <<  "\"phase\": "
+                           << val.second.phase << ", " << std::endl;
+                jsonStream <<  "\"seed\": " << val.second.seed << ", " << std::endl;
                 envelopeToJson(jsonStream,
                                "ampl_env",
-                               val.second->amplitude,
-                               val.second->amplitudeEnvelope);
+                               val.second.amplitude,
+                               val.second.amplitudeEnvelope);
                 jsonStream << "," << std::endl;
                 envelopeToJson(jsonStream,
                                "freq_env",
-                               val.second->frequency,
-                               val.second->frequencyEnvelope,
-			       val.second->frequencyEnvelopeApplyType);
+                               val.second.frequency,
+                               val.second.frequencyEnvelope,
+			       val.second.frequencyEnvelopeApplyType);
                 jsonStream << "," << std::endl;
                 envelopeToJson(jsonStream,
                                "pitchshift_env",
-                               val.second->pitchShift,
-                               val.second->pitchShiftEnvelope);
+                               val.second.pitchShift,
+                               val.second.pitchShiftEnvelope);
                 jsonStream << "," << std::endl;
                 jsonStream << "\"filter\": {" << std::endl;
-                jsonStream << "\"enabled\": " << (val.second->isFilterEnabled ? "true" : "false");
+                jsonStream << "\"enabled\": " << (val.second.isFilterEnabled ? "true" : "false");
                 jsonStream << ", " << std::endl;
-                jsonStream << "\"type\": " << static_cast<int>(val.second->filterType) << ", " << std::endl;
-                jsonStream << "\"cutoff\": " 
-                           << val.second->filterFrequency << ", " << std::endl;
-		jsonStream << "\"apply_type\": " 
-                           << static_cast<int>(val.second->cutOffEnvelopeApplyType) << ", " << std::endl;
+                jsonStream << "\"type\": " << static_cast<int>(val.second.filterType) << ", " << std::endl;
+                jsonStream << "\"cutoff\": "
+                           << val.second.filterFrequency << ", " << std::endl;
+		jsonStream << "\"apply_type\": "
+                           << static_cast<int>(val.second.cutOffEnvelopeApplyType) << ", " << std::endl;
                 jsonStream << "\"cutoff_env\": [";
                 bool first = true;
-                for (const auto &point: val.second->filterCutOffEnvelope) {
+                for (const auto &point: val.second.filterCutOffEnvelope) {
                         if (first)
                                 first = false;
                         else
@@ -1031,11 +1069,11 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                                    << " , "  << point.y() << "]";
                 }
                 jsonStream << "], " << std::endl;
-                jsonStream << "\"factor\": " 
-                           << val.second->filterFactor << "," << std::endl;
+                jsonStream << "\"factor\": "
+                           << val.second.filterFactor << "," << std::endl;
 		jsonStream << "\"qfactor_env\": [";
                 first = true;
-                for (const auto &point: val.second->filterQFactorEnvelope) {
+                for (const auto &point: val.second.filterQFactorEnvelope) {
                         if (first)
                                 first = false;
                         else
@@ -1056,6 +1094,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "\"PercussionAppVersion\": " << GEONKICK_VERSION << "," << std::endl;
 	jsonStream << "\"id\": " << getId() << "," << std::endl;
         jsonStream << "\"channel\": " << getChannel() << "," << std::endl;
+        jsonStream << "\"midiChannel\": " << static_cast<int>(getMidiChannel()) << "," << std::endl;
+        jsonStream << "\"noteOffEnabled\": " << (isNoteOffEnabled() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"mute\": " << (isMuted() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"solo\": " << (isSolo() ? "true" : "false") << "," << std::endl;
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
@@ -1083,7 +1123,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                         jsonStream  << layersAmplitude[i];
         }
         jsonStream << "]," << std::endl;
-        jsonStream << "\"limiter\": " 
+        jsonStream << "\"limiter\": "
                    << getLimiterValue() << ", " << std::endl;
         jsonStream << "\"tuned_output\": " << (isOutputTuned() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"ampl_env\": {" << std::endl;
@@ -1140,27 +1180,27 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "}, " << std::endl;  // filter;
         jsonStream << "\"compressor\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isCompressorEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"attack\": " 
+        jsonStream << "\"attack\": "
                    << getCompressorAttack() << ", " << std::endl;
-        jsonStream << "\"release\": " 
+        jsonStream << "\"release\": "
                    << getCompressorRelease() << ", " << std::endl;
-        jsonStream << "\"threshold\": " 
+        jsonStream << "\"threshold\": "
                    << getCompressorThreshold() << ", " << std::endl;
-        jsonStream << "\"ratio\": " 
+        jsonStream << "\"ratio\": "
                    << getCompressorRatio() << ", " << std::endl;
-        jsonStream << "\"knee\": " 
+        jsonStream << "\"knee\": "
                    << getCompressorKnee() << ", " << std::endl;
-        jsonStream << "\"makeup\": " 
+        jsonStream << "\"makeup\": "
                    << getCompressorMakeup() << std::endl;
         jsonStream << "}, " << std::endl;
 
         jsonStream << "\"distortion\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"in_limiter\": " 
+        jsonStream << "\"in_limiter\": "
                    << getDistortionInLimiter()  << ", " << std::endl;
-        jsonStream << "\"volume\": " 
+        jsonStream << "\"volume\": "
                    << getDistortionVolume()  << ", " << std::endl;
-        jsonStream << "\"drive\": " 
+        jsonStream << "\"drive\": "
                    << getDistortionDrive() << ", " << std::endl;
 	jsonStream << "\"drive_env\": [" << std::endl;
 	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive);
@@ -1279,7 +1319,7 @@ void PercussionState::setOscillatorSample(int oscillatorIndex, const std::vector
 
 std::vector<float> PercussionState::getOscillatorSample(int oscillatorIndex) const
 {
-        auto oscillator = getOscillator(oscillatorIndex);
+        auto oscillator = getConstOscillator(oscillatorIndex);
         return oscillator->sample;
 }
 
