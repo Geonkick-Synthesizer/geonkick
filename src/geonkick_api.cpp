@@ -214,7 +214,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 
                         state->setOscillatorAmplitue(index, 0.26);
                         state->setOscillatorFrequency(index, 800);
-                        state->setOscillatorPitchShift(index, 0);
+                        state->setOscillatorPitchShift(index, 12);
                         state->setOscillatorFilterEnabled(index, false);
                         state->setOscillatorFilterType(index, GeonkickApi::FilterType::LowPass);
                         state->setOscillatorFilterCutOffFreq(index, 800);
@@ -241,7 +241,6 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 			state->setOscillatorEnvelopeApplyType(index,
 							      GeonkickApi::EnvelopeType::FilterCutOff,
 							      GeonkickApi::EnvelopeApplyType::Logarithmic);
-                        state->setOscillatorPitchShift(index, 12);
                 }
         }
 

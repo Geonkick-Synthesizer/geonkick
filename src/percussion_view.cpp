@@ -280,7 +280,7 @@ void KitPercussionView::createView()
 
 void KitPercussionView::updateView()
 {
-        percussionLimiter->onSetValue(percussionModel->limiter());
+        percussionLimiter->onSetValue(percussionModel->limiter(), 55.0 * 100.0 / 75);
         muteButton->setPressed(percussionModel->isMuted());
         soloButton->setPressed(percussionModel->isSolo());
         noteOffButton->setPressed(percussionModel->isNoteOffEnabled());
@@ -310,7 +310,7 @@ void KitPercussionView::setModel(PercussionModel *model)
         RK_ACT_BIND(percussionModel, nameUpdated, RK_ACT_ARGS(std::string name), this, update());
         RK_ACT_BIND(percussionModel, keyUpdated, RK_ACT_ARGS(KeyIndex index), this, updateView());
         RK_ACT_BIND(percussionModel, channelUpdated, RK_ACT_ARGS(int val), this, update());
-        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), percussionLimiter, onSetValue(val));
+        RK_ACT_BIND(percussionModel, limiterUpdated, RK_ACT_ARGS(int val), percussionLimiter, onSetValue(val, 55.0 * 100.0 / 75));
         RK_ACT_BIND(percussionModel, muteUpdated, RK_ACT_ARGS(bool b), muteButton, setPressed(b));
         RK_ACT_BIND(percussionModel, soloUpdated, RK_ACT_ARGS(bool b), soloButton, setPressed(b));
         RK_ACT_BIND(percussionModel, selected, RK_ACT_ARGS(), this, update());
