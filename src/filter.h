@@ -37,9 +37,9 @@ class Filter: public GeonkickWidget
         explicit Filter(GeonkickWidget *parent, Envelope::Category category);
         void enable(bool b);
         bool isEnabled() const;
-        void setCutOff(double val);
+        void setCutOff(double val, double defaultValue = 0);
         double cutOff() const;
-        void setResonance(double val);
+        void setResonance(double val, double defaultValue = 0);
         double resonance() const;
         void setType(GeonkickApi::FilterType type);
         void setCutOffRange(double from, double to);

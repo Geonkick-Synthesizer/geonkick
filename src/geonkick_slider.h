@@ -40,23 +40,25 @@ class GeonkickSlider: public GeonkickWidget
                        Orientation orientation = Orientation::Horizontal);
         ~GeonkickSlider() = default;
         int getValue() const;
-        void onSetValue(int value);
+        void onSetValue(int value, int defaultVal = 0);
         RK_DECL_ACT(valueUpdated, valueUpdated(int value),
                     RK_ARG_TYPE(int), RK_ARG_VAL(value));
         Orientation getOrientation() const;
 
  protected:
-        int  calculateValue(int x, int y);
+        int calculateValue(int x, int y);
         virtual void paintWidget(RkPaintEvent *event) override;
         void mouseButtonPressEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
         void mouseButtonReleaseEvent(RkMouseEvent *event) override;
+        void mouseDoubleClickEvent(RkMouseEvent *event) override;
         int pixelsFromValue() const;
 
  private:
         Orientation sliderOrientation;
         bool isSelected;
         int sliderValue;
+        int defaultValue;
         int sliderPixels;
 };
 

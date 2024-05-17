@@ -203,8 +203,9 @@ bool Filter::isEnabled() const
         return filterCheckbox->isPressed();
 }
 
-void Filter::setCutOff(double val)
+void Filter::setCutOff(double val, double defaultVal)
 {
+        cutOffKnob->setDefaultValue(defaultVal);
         cutOffKnob->setCurrentValue(val);
 }
 
@@ -213,8 +214,9 @@ double Filter::cutOff() const
         return cutOffKnob->getValue();
 }
 
-void Filter::setResonance(double val)
+void Filter::setResonance(double val, double defaultVal)
 {
+        resonanceKnob->setDefaultValue(defaultVal);
         resonanceKnob->setCurrentValue(val);
 }
 

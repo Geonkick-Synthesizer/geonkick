@@ -46,6 +46,7 @@ public:
    void setRange(double from, double to);
    void setRangeType(RangeType type);
    RangeType getRangeType() const;
+   void setDefaultValue(double val);
    void setCurrentValue(double val);
    void setKnobImage(const RkImage &img);
    void setKnobBackgroundImage(const RkImage &img);
@@ -55,10 +56,12 @@ public:
                RK_ARG_TYPE(double),
                RK_ARG_VAL(v));
  protected:
-   void paintWidget(RkPaintEvent *event) final;
-   void mouseButtonPressEvent(RkMouseEvent *event) final;
-   void mouseButtonReleaseEvent(RkMouseEvent *event) final;
-   void mouseMoveEvent(RkMouseEvent *event) final;
+   void paintWidget(RkPaintEvent *event) override;
+   void mouseButtonPressEvent(RkMouseEvent *event) override;
+   void mouseButtonReleaseEvent(RkMouseEvent *event) override;
+   void mouseMoveEvent(RkMouseEvent *event) override;
+   void mouseDoubleClickEvent(RkMouseEvent *event) override;
+   double valueToDegree(double val);
 
  private:
    RkImage knobImage;
@@ -69,6 +72,7 @@ public:
    double rangeTo;
    RangeType rangeType;
    bool isSelected;
+   double defaultValue;
 };
 
 #endif

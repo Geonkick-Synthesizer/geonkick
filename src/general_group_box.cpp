@@ -67,6 +67,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplitudeEnvelopeBox->show();
 
         kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
+        kickAmplitudeKnob->setDefaultValue(0.8);
         kickAmplitudeKnob->setFixedSize(80, 78);
         kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -105,6 +106,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
                                                    && category == Envelope::Category::General));
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
+        kickLengthKnob->setDefaultValue(300);
         kickLengthKnob->setFixedSize(80, 80);
         kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2);
         kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -140,8 +142,8 @@ void GeneralGroupBox::updateGui()
         kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
         kickLengthKnob->setCurrentValue(geonkickApi->kickLength());
         filterBox->enable(geonkickApi->isKickFilterEnabled());
-        filterBox->setCutOff(geonkickApi->kickFilterFrequency());
-        filterBox->setResonance(geonkickApi->kickFilterQFactor());
+        filterBox->setCutOff(geonkickApi->kickFilterFrequency(), 800);
+        filterBox->setResonance(geonkickApi->kickFilterQFactor(), 10);
         filterBox->setType(geonkickApi->kickFilterType());
 }
 

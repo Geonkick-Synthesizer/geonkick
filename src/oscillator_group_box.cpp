@@ -243,7 +243,6 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 
         phaseSlider = new GeonkickSlider(waveFunctionHBox);
         phaseSlider->setFixedSize(150, 8);
-        phaseSlider->onSetValue(50);
         phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
         phaseSlider->show();
         RK_ACT_BIND(phaseSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorPhase(value));
@@ -263,6 +262,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         amplitudeEnvelopeBox->show();
 
         amplitudeKnob = new Knob(amplitudeEnvelopeBox);
+        amplitudeKnob->setDefaultValue(0.26);
         amplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
         amplitudeKnob->setFixedSize(80, 78);
         amplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -329,13 +329,13 @@ void OscillatorGroupBox::createEvelopeGroupBox()
 
                 seedSlider = new GeonkickSlider(amplitudeEnvelopeBox);
                 seedSlider->setFixedSize(115, 8);
-                seedSlider->onSetValue(40);
                 seedSlider->setPosition(noiseBrownianButton->x() - 13, noiseBrownianButton->y() + 55);
                 seedSlider->show();
                 RK_ACT_BIND(seedSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorSeed(value));
 
         } else {
                 pitchShiftKnob = new Knob(amplitudeEnvelopeBox);
+                pitchShiftKnob->setDefaultValue(12);
                 pitchShiftKnob->setSize(80, 78);
                 pitchShiftKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
                 pitchShiftKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -347,6 +347,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                             oscillator,
                             setPitchShift(val));
                 frequencyKnob = new Knob(amplitudeEnvelopeBox);
+                frequencyKnob->setDefaultValue(800);
                 frequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
                 frequencyKnob->setSize(80, 78);
                 frequencyKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
@@ -543,14 +544,14 @@ void OscillatorGroupBox::updateGui()
                         noiseWhiteButton->setPressed(true);
                 else
                         noiseBrownianButton->setPressed(true);
-                seedSlider->onSetValue(oscillator->getSeed() / 10);
+                seedSlider->onSetValue(oscillator->getSeed() / 10, 100 / 10);
         } else {
                 sineButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sine);
                 squareButton->setPressed(oscillator->function() == Oscillator::FunctionType::Square);
                 triangleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Triangle);
                 sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
                 sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
-                phaseSlider->onSetValue(oscillator->getPhase());
+                phaseSlider->onSetValue(oscillator->getPhase(), 0);
                 updateAmpltudeEnvelopeBox();
         }
 
@@ -564,8 +565,8 @@ void OscillatorGroupBox::updateGui()
                 fmCheckbox->setPressed(oscillator->isFm());
 
         filterBox->enable(oscillator->isFilterEnabled());
-        filterBox->setResonance(oscillator->filterQFactor());
-        filterBox->setCutOff(oscillator->filterFrequency());
+        filterBox->setResonance(oscillator->filterQFactor(), 10);
+        filterBox->setCutOff(oscillator->filterFrequency(), 800);
         filterBox->setType(oscillator->filter());
 }
 

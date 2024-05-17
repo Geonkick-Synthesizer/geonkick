@@ -89,7 +89,7 @@ int Limiter::getMeterValue() const
 
 void Limiter::onSetFaderValue(int val)
 {
-        faderSlider->onSetValue(val);
+        faderSlider->onSetValue(val, toMeterValue(1.0));
 }
 
 void Limiter::onUpdateMeter()
