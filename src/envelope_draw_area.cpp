@@ -144,6 +144,11 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(RkMouseEvent *event)
                         currentEnvelope->selectPoint(point);
                         if (currentEnvelope->hasSelected())
                                 envelopeUpdated();
+                        else {
+                                currentEnvelope->setScrollState(true);
+                                mousePoint.setX(event->x());
+                                mousePoint.setY(event->y());
+                        }
                 }
         }
         setFocus(true);
@@ -153,6 +158,11 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         if (!currentEnvelope)
                 return;
+
+        if (currentEnvelope->isScrollState()) {
+                currentEnvelope->setScrollState(false);
+                return;
+        }
 
         auto toUpdate = false;
         if (currentEnvelope->hasSelected()) {
@@ -197,6 +207,15 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
 {
         if (!currentEnvelope)
                 return;
+
+        if (currentEnvelope->isScrollState()) {
+                auto timeorg = (currentEnvelope->envelopeLength() / currentEnvelope->getZoom()) / 10;
+                currentEnvelope->setTimeOrigin(mousePoint.x() < event->x() ? -timeorg : timeorg);
+                mousePoint.setX(event->x());
+                mousePoint.setY(event->y());
+                envelopeUpdated();
+                return;
+        }
 
         RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
         if (currentEnvelope->hasSelected()) {

@@ -2,7 +2,7 @@
  * File name: envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -47,6 +47,8 @@ Envelope::Envelope(const RkRect &area)
         , isEditingPoint{false}
 	, applyType{ApplyType::Linear}
         , zoomCoefficient{1.0}
+        , scrollState{false}
+        , timeOrigin{0.0}
 {
 }
 
@@ -109,7 +111,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
         font.setSize(10);
         painter.setFont(font);
 
-        auto val = (envelopeLength() / 1/*getZoom()*/) / 10;
+        auto val = (envelopeLength() / getZoom()) / 10;
         int dx = W() / 10;
         RkPoint point = getOrigin();
         int x  = point.x() + dx;
@@ -121,7 +123,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
 
                 RkRect rect(x - 12, point.y() - 12, 25, font.size());
                 painter.setPen(RkColor(110, 110, 110));
-                painter.drawText(rect, Geonkick::doubleToStr(i * val, 3));
+                painter.drawText(rect, Geonkick::doubleToStr(timeOrigin + i * val, 3));
                 x += dx;
         }
 
@@ -151,7 +153,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                 break;
 	case Type::FilterQFactor:
                 text = "Resonance";
-                break;	
+                break;
         case Type::PitchShift:
                 text = "Semitones";
                 break;
@@ -307,7 +309,7 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 						 + std::string("kHz ")
 						 + frequencyToNote(value));
 			}
-                } else {    
+                } else {
 			auto frequency =  pow(10, (log10(envelopeAmplitude()) - log10(20)) * value + log10(20));
 			if (frequency >= 20 && frequency < 1000) {
 				double roundedValue = std::round(frequency * 10.0) / 10.0;
@@ -389,7 +391,7 @@ void Envelope::updateSelectedPointValue(double val)
                                   envelopePoints[editedPointIndex].x(),
                                   convertFromHumanValue(val));
                 updatePoints();
-        }        
+        }
 }
 
 void Envelope::setEditCurrentPoint(bool edit)
@@ -611,7 +613,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
 	if (getApplyType() == ApplyType::Logarithmic)
 		return RkPoint(point.x() * W(), point.y() * H());
-	
+
 	int x, y;
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
@@ -705,9 +707,9 @@ double Envelope::convertToHumanValue(double val) const
                 val *= envelopeAmplitude();
                 return 2 * val - envelopeAmplitude();
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-                if (getApplyType() == ApplyType::Linear) 
+                if (getApplyType() == ApplyType::Linear)
 			val *= envelopeAmplitude();
-                else 
+                else
 	                return pow(10, (log10(envelopeAmplitude()) - log10(20)) * val + log10(20));
         }
         return val;
@@ -717,7 +719,7 @@ double Envelope::convertFromHumanValue(double val) const
 {
         if ( envelopeAmplitude() == 0.0 )
                 return val;
-        
+
         if (type() == Envelope::Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
@@ -776,4 +778,22 @@ void Envelope::setApplyType(Envelope::ApplyType apply)
 Envelope::ApplyType Envelope::getApplyType() const
 {
 	return applyType;
+}
+
+void Envelope::setScrollState(bool b)
+{
+        scrollState = b;
+}
+
+bool Envelope::isScrollState() const
+{
+        return scrollState;
+}
+
+void Envelope::setTimeOrigin(double timeOrg)
+{
+        timeOrigin = std::clamp(timeOrigin + timeOrg, 0.0, envelopeLength() - envelopeLength() / getZoom());
+        GEONKICK_LOG_INFO("---" << envelopeLength());
+        GEONKICK_LOG_INFO("envelopeLength(): " << envelopeLength());
+        GEONKICK_LOG_INFO("timeOrigin: " << timeOrigin);
 }

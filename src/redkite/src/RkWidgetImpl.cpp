@@ -199,11 +199,14 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                         setFocus();
                         auto mouseEvent = static_cast<RkMouseEvent*>(event);
                         inf_ptr->mouseButtonPressEvent(mouseEvent);
-                        auto wheelEvent = std::make_unique<RkWheelEvent>();
-                        wheelEvent->setDirection(mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
-                                                 ? RkWheelEvent::WheelDirection::DirectionUp
-                                                 : RkWheelEvent::WheelDirection::DirectionDown);
-                        inf_ptr->wheelEvent(wheelEvent.get());
+                        if (mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
+                            || mouseEvent->button() == RkMouseEvent::ButtonType::WheelDown) {
+                                auto wheelEvent = std::make_unique<RkWheelEvent>();
+                                wheelEvent->setDirection(mouseEvent->button() == RkMouseEvent::ButtonType::WheelUp
+                                                         ? RkWheelEvent::WheelDirection::DirectionUp
+                                                         : RkWheelEvent::WheelDirection::DirectionDown);
+                                inf_ptr->wheelEvent(wheelEvent.get());
+                        }
                 }
                 break;
         case RkEvent::Type::MouseDoubleClick:

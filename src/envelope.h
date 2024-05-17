@@ -101,6 +101,9 @@ class Envelope : public RkObject
         std::string getCurrentPointInfo() const;
 	void setApplyType(ApplyType apply);
 	ApplyType getApplyType() const;
+        void setScrollState(bool b);
+        bool isScrollState() const;
+        void setTimeOrigin(double timeOrg);
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -144,6 +147,8 @@ class Envelope : public RkObject
         bool isEditingPoint;
 	ApplyType applyType;
         double zoomCoefficient;
+        bool scrollState;
+        double timeOrigin;
 };
 
 #endif // GEONKICK_ENVELOPE_H
