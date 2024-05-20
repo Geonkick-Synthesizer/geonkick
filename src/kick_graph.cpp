@@ -2,7 +2,7 @@
  * File name: kick_graph.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -35,6 +35,8 @@ KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
         , graphSize{size}
         , isRunning{true}
         , updateGraph{true}
+        , zoomFactor{1.0}
+        , timeOrigin{0.0}
 {
         RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
 }
@@ -62,12 +64,36 @@ void KickGraph::updateGraphBuffer()
         updateGraph = true;
         if (kickBuffer.empty())
                 geonkickApi->triggerSynthesis();
+        timeOrigin = std::clamp(timeOrigin,
+                                0.0,
+                                geonkickApi->kickLength()
+                                - geonkickApi->kickLength() / zoomFactor);
         threadConditionVar.notify_one();
+}
+
+void KickGraph::setTimeOrigin(double val)
+{
+        {
+                std::unique_lock<std::mutex> lock(graphMutex);
+                timeOrigin = std::clamp(timeOrigin + val,
+                                        0.0,
+                                        geonkickApi->kickLength()
+                                        - geonkickApi->kickLength() / zoomFactor);
+                GEONKICK_LOG_INFO("timeOrigin{GR}: " << timeOrigin);
+        }
+        updateGraphBuffer();
 }
 
 void KickGraph::setZoom(double val)
 {
-        zoomFactor = val;
+        {
+                std::unique_lock<std::mutex> lock(graphMutex);
+                zoomFactor = val;
+                timeOrigin = std::clamp(timeOrigin,
+                                        0.0,
+                                        geonkickApi->kickLength()
+                                        - geonkickApi->kickLength() / zoomFactor);
+        }
         updateGraphBuffer();
 }
 
@@ -95,6 +121,8 @@ void KickGraph::drawKickGraph()
                 std::vector<RkPoint> graphPoints(kickBuffer.size());
                 auto buffSize = static_cast<double>(kickBuffer.size()) / zoomFactor;
                 gkick_real k = static_cast<gkick_real>(graphSize.width()) / buffSize;
+                size_t indexOffset = (kickBuffer.size() / geonkickApi->kickLength()) * timeOrigin;
+                GEONKICK_LOG_INFO("indexOffset{GR}: " << indexOffset);
 
                 /**
                  * In this loop there is an implementation of an
@@ -104,10 +132,10 @@ void KickGraph::drawKickGraph()
                  */
                 int j = 0;
                 RkPoint prev;
-                for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
-                        int x = k * i;
+                for (decltype(kickBuffer.size()) i = indexOffset; i < kickBuffer.size(); i++) {
+                        int x = k * (i - indexOffset);
                         int y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
-                        RkPoint p(k * i, graphSize.height() * 0.5 * (1 - kickBuffer[i]));
+                        RkPoint p(k * (i - indexOffset), graphSize.height() * 0.5 * (1 - kickBuffer[i]));
                         if (p == prev)
                                 continue;
                         else
@@ -118,7 +146,7 @@ void KickGraph::drawKickGraph()
                         int ymin, ymax;
                         ymin = ymax = y;
                         while (++i < kickBuffer.size()) {
-                                if (x != static_cast<int>(k * i))
+                                if (x != static_cast<int>(k * (i - indexOffset)))
                                         break;
                                 y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
                                 if (ymin > y)
