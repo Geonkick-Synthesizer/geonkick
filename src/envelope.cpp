@@ -612,7 +612,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
 	if (getApplyType() == ApplyType::Logarithmic)
-		return RkPoint(point.x() * W(), point.y() * H());
+		return RkPoint((point.x() + timeOrigin) * W(), point.y() * H());
 
 	int x, y;
         if (type() == Type::Amplitude
@@ -620,10 +620,10 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
-                x = point.x() * W();
+                x = (point.x() - timeOrigin / envelopeLength()) * W();
                 y = point.y() * H();
         } else {
-                x = static_cast<int>(point.x() * W());
+                x = static_cast<int>((point.x() + timeOrigin) * W());
                 double logRange = log10(envelopeAmplitude()) - log10(20);
                 double k = 0;
                 if (point.y() > 0) {

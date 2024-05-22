@@ -209,10 +209,11 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
                 return;
 
         if (currentEnvelope->isScrollState()) {
-                auto timeorg = (currentEnvelope->envelopeLength() / currentEnvelope->getZoom()) / 10;
-                currentEnvelope->setTimeOrigin(mousePoint.x() < event->x() ? -timeorg : timeorg);
-                kickGraphics->setTimeOrigin(mousePoint.x() < event->x() ? -timeorg : timeorg);
-
+                auto zoomedLength = currentEnvelope->envelopeLength() / currentEnvelope->getZoom();
+                auto diffX = mousePoint.x() - event->x();
+                auto timeorg = diffX * (zoomedLength / currentEnvelope->W());
+                currentEnvelope->setTimeOrigin(timeorg);
+                kickGraphics->setTimeOrigin(timeorg);
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
                 envelopeUpdated();
