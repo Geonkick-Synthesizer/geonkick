@@ -57,7 +57,8 @@ class Envelope : public RkObject
         virtual double envelopeLength(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
         RkPoint getOrigin(void) const;
-        void setZoom(double val);
+        void zoomOut();
+        void zoomIn();
         double getZoom() const;
         void draw(RkPainter &painter, DrawLayer layer);
         void overPoint(const RkPoint &point);
@@ -104,6 +105,7 @@ class Envelope : public RkObject
         void setScrollState(bool b);
         bool isScrollState() const;
         void setTimeOrigin(double timeOrg);
+        double getTimeOrigin() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;

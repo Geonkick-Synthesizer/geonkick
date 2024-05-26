@@ -38,7 +38,6 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
           , kickGraphImage{nullptr}
           , kickGraphics{nullptr}
           , pointEditingMode{false}
-          , zoomCoefficient{1.0}
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -56,8 +55,8 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
         if (envelope) {
                 currentEnvelope = envelope;
                 if (currentEnvelope) {
-                        currentEnvelope->setZoom(zoomCoefficient);
-                        kickGraphics->setZoom(zoomCoefficient);
+                        kickGraphics->setZoom(currentEnvelope->getZoom());
+                        kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
                 }
                 envelopeUpdated();
         }
@@ -242,20 +241,20 @@ void EnvelopeWidgetDrawingArea::wheelEvent(RkWheelEvent *event)
 
 void EnvelopeWidgetDrawingArea::zoomIn()
 {
-        zoomCoefficient = std::clamp(zoomCoefficient * 2, 1.0, 30.0);
         if (currentEnvelope) {
-                currentEnvelope->setZoom(zoomCoefficient);
-                kickGraphics->setZoom(zoomCoefficient);
+                currentEnvelope->zoomIn();
+                kickGraphics->setZoom(currentEnvelope->getZoom());
+                kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
         }
         update();
 }
 
 void EnvelopeWidgetDrawingArea::zoomOut()
 {
-        zoomCoefficient = std::clamp(zoomCoefficient / 2, 1.0, 30.0);
         if (currentEnvelope) {
-                currentEnvelope->setZoom(zoomCoefficient);
-                kickGraphics->setZoom(zoomCoefficient);
+                currentEnvelope->zoomOut();
+                kickGraphics->setZoom(currentEnvelope->getZoom());
+                kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
         }
         update();
 }

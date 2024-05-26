@@ -75,7 +75,6 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    RkImage envelopeImage;
    KickGraph *kickGraphics;
    bool pointEditingMode;
-   double zoomCoefficient;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

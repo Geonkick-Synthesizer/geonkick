@@ -62,9 +62,14 @@ int Envelope::H(void) const
         return drawingArea.height();
 }
 
-void Envelope::setZoom(double val)
+void Envelope::zoomOut()
 {
-        zoomCoefficient = val;
+        zoomCoefficient = std::clamp(zoomCoefficient / 2, 1.0, 30.0);
+}
+
+void Envelope::zoomIn()
+{
+        zoomCoefficient = std::clamp(zoomCoefficient * 2, 1.0, 30.0);
 }
 
 double Envelope::getZoom() const
@@ -587,8 +592,9 @@ void Envelope::updatePoints()
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
 	if (applyType == ApplyType::Logarithmic) {
-		return {(static_cast<double>(point.x()) / W()) / getZoom(),
-			(static_cast<double>(point.y()) / H()) / 1/*getZoom()*/};
+		return {(static_cast<double>(point.x()) / W()) / getZoom()
+                        + timeOrigin / envelopeLength(),
+			(static_cast<double>(point.y()) / H())};
 	}
 
 	RkRealPoint scaledPoint;
@@ -606,7 +612,8 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                 double val = pow(10, logVal + log10(20));
                 scaledPoint.setY(val / envelopeAmplitude());
         }
-        return RkRealPoint(scaledPoint.x() / getZoom(), scaledPoint.y() / 1/*getZoom()*/);
+        return RkRealPoint(scaledPoint.x() / getZoom() + timeOrigin / envelopeLength(),
+                           scaledPoint.y());
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
@@ -623,7 +630,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                 x = (point.x() - timeOrigin / envelopeLength()) * W();
                 y = point.y() * H();
         } else {
-                x = static_cast<int>((point.x() + timeOrigin) * W());
+                x = static_cast<int>((point.x() - timeOrigin / envelopeLength()) * W());
                 double logRange = log10(envelopeAmplitude()) - log10(20);
                 double k = 0;
                 if (point.y() > 0) {
@@ -796,4 +803,9 @@ void Envelope::setTimeOrigin(double timeOrg)
         GEONKICK_LOG_INFO("---" << envelopeLength());
         GEONKICK_LOG_INFO("envelopeLength(): " << envelopeLength());
         GEONKICK_LOG_INFO("timeOrigin: " << timeOrigin);
+}
+
+double Envelope::getTimeOrigin() const
+{
+        return timeOrigin;
 }
