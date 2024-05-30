@@ -58,6 +58,7 @@ public:
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
      void setLayer(GeonkickApi::Layer layer);
      void createButtomMenu();
+     void createZoomInfoLabel();
      void createPointInfoLabel();
 
  private:

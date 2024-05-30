@@ -57,6 +57,7 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
                 if (currentEnvelope) {
                         kickGraphics->setZoom(currentEnvelope->getZoom());
                         kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
+                        action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
                 }
                 envelopeUpdated();
         }
@@ -245,6 +246,7 @@ void EnvelopeWidgetDrawingArea::zoomIn()
                 currentEnvelope->zoomIn();
                 kickGraphics->setZoom(currentEnvelope->getZoom());
                 kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
+                action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
         }
         update();
 }
@@ -255,6 +257,7 @@ void EnvelopeWidgetDrawingArea::zoomOut()
                 currentEnvelope->zoomOut();
                 kickGraphics->setZoom(currentEnvelope->getZoom());
                 kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
+                action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
         }
         update();
 }

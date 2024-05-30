@@ -55,6 +55,10 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
                isOverPoint(const std::string info),
                RK_ARG_TYPE(const std::string),
                RK_ARG_VAL(info));
+   RK_DECL_ACT(zoomUpdated,
+               zoomUpdated(const std::string info),
+               RK_ARG_TYPE(const std::string),
+               RK_ARG_VAL(info));
 
  protected:
    void paintWidget(RkPaintEvent *event) override;

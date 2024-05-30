@@ -2,7 +2,7 @@
  * File name: envelope_widget.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -85,6 +85,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     this, showEnvelope(category, envelope));
 
+        createZoomInfoLabel();
         createPointInfoLabel();
         drawArea->show();
 }
@@ -118,6 +119,19 @@ void EnvelopeWidget::createPointInfoLabel()
         RK_ACT_BIND(drawArea, isOverPoint,
                     RK_ACT_ARGS(const std::string &info),
                     pointInfoLabel, setText(info));
+}
+
+void EnvelopeWidget::createZoomInfoLabel()
+{
+        auto zoomInfo = "1:" + Geonkick::doubleToStr(drawArea->getEnvelope()->getZoom(), 0);
+        auto zoomInfoLabel = new RkLabel(drawArea, zoomInfo);
+        zoomInfoLabel->setBackgroundColor(drawArea->background());
+        zoomInfoLabel->setTextColor({180, 180, 180});
+        zoomInfoLabel->setFixedSize(30, 16);
+        zoomInfoLabel->setPosition(10, drawArea->height() - zoomInfoLabel->height() - 8);
+        RK_ACT_BIND(drawArea, zoomUpdated,
+                    RK_ACT_ARGS(const std::string &info),
+                    zoomInfoLabel, setText("1:" + info));
 }
 
 void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)
