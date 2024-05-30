@@ -84,7 +84,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     this, showEnvelope(category, envelope));
-        
+
         createPointInfoLabel();
         drawArea->show();
 }

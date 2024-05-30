@@ -46,9 +46,14 @@ Envelope::Envelope(const RkRect &area)
         , editedPointIndex{0}
         , isEditingPoint{false}
 	, applyType{ApplyType::Linear}
-        , zoomCoefficient{1.0}
         , scrollState{false}
-        , timeOrigin{0.0}
+        , zoomInfoMap{{Type::Amplitude, {1.0, 0.0}},
+                      {Type::Frequency, {1.0, 0.0}},
+                      {Type::FilterCutOff, {1.0, 0.0}},
+                      {Type::FilterQFactor, {1.0, 0.0}},
+                      {Type::DistortionDrive, {1.0, 0.0}},
+                      {Type::DistortionVolume, {1.0, 0.0}},
+                      {Type::PitchShift, {1.0, 0.0}}}
 {
 }
 
@@ -64,17 +69,37 @@ int Envelope::H(void) const
 
 void Envelope::zoomOut()
 {
-        zoomCoefficient = std::clamp(zoomCoefficient / 2, 1.0, 30.0);
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+
+        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient / 2, 1.0, 30.0);
+        res->second.timeOrigin = std::clamp(res->second.timeOrigin,
+                                           0.0,
+                                           envelopeLength() - envelopeLength()
+                                           / res->second.zoomCoefficient);
 }
 
 void Envelope::zoomIn()
 {
-        zoomCoefficient = std::clamp(zoomCoefficient * 2, 1.0, 30.0);
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+
+        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient * 2, 1.0, 30.0);
+        res->second.timeOrigin = std::clamp(res->second.timeOrigin,
+                                           0.0,
+                                           envelopeLength() - envelopeLength()
+                                           / res->second.zoomCoefficient);
 }
 
 double Envelope::getZoom() const
 {
-        return zoomCoefficient;
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return 1.0;
+
+        return res->second.zoomCoefficient;
 }
 
 RkPoint Envelope::getOrigin(void) const
@@ -128,7 +153,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
 
                 RkRect rect(x - 12, point.y() - 12, 25, font.size());
                 painter.setPen(RkColor(110, 110, 110));
-                painter.drawText(rect, Geonkick::doubleToStr(timeOrigin + i * val, 3));
+                painter.drawText(rect, Geonkick::doubleToStr(getTimeOrigin() + i * val, 3));
                 x += dx;
         }
 
@@ -591,46 +616,48 @@ void Envelope::updatePoints()
 
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
-	if (applyType == ApplyType::Logarithmic) {
-		return {(static_cast<double>(point.x()) / W()) / getZoom()
-                        + timeOrigin / envelopeLength(),
-			(static_cast<double>(point.y()) / H())};
-	}
+        auto calculateX = [&](double x) {
+                return (static_cast<double>(x) / W()) / getZoom()
+                        + getTimeOrigin() / envelopeLength();
+        };
 
-	RkRealPoint scaledPoint;
+	if (applyType == ApplyType::Logarithmic)
+		return {calculateX(point.x()), (static_cast<double>(point.y()) / H())};
+
+        double y;
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
-                scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
-                                          static_cast<double>(point.y()) / H());
+                y = static_cast<double>(point.y()) / H();
         } else {
-                scaledPoint.setX(static_cast<double>(point.x()) / W());
                 auto k = static_cast<double>(point.y()) / H();
                 double logVal = k * (log10(envelopeAmplitude()) - log10(20));
                 double val = pow(10, logVal + log10(20));
-                scaledPoint.setY(val / envelopeAmplitude());
+                y = val / envelopeAmplitude();
         }
-        return RkRealPoint(scaledPoint.x() / getZoom() + timeOrigin / envelopeLength(),
-                           scaledPoint.y());
+        return {calculateX(point.x()), y};
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
-	if (getApplyType() == ApplyType::Logarithmic)
-		return RkPoint((point.x() + timeOrigin) * W(), point.y() * H());
+        auto calculateX = [&](double x) {
+                return getZoom() * (x - getTimeOrigin() / envelopeLength()) * W();
+        };
 
-	int x, y;
+	if (getApplyType() == ApplyType::Logarithmic)
+		return RkPoint(calculateX(point.x()),
+                               point.y() * H());
+
+	int y;
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
-                x = (point.x() - timeOrigin / envelopeLength()) * W();
                 y = point.y() * H();
         } else {
-                x = static_cast<int>((point.x() - timeOrigin / envelopeLength()) * W());
                 double logRange = log10(envelopeAmplitude()) - log10(20);
                 double k = 0;
                 if (point.y() > 0) {
@@ -640,7 +667,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                 }
                 y = k * H();
         }
-        return RkPoint(getZoom() * x, 1 * /*getZoom() */ y);
+        return RkPoint(calculateX(point.x()), y);
 }
 
 bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)
@@ -799,13 +826,20 @@ bool Envelope::isScrollState() const
 
 void Envelope::setTimeOrigin(double timeOrg)
 {
-        timeOrigin = std::clamp(timeOrigin + timeOrg, 0.0, envelopeLength() - envelopeLength() / getZoom());
-        GEONKICK_LOG_INFO("---" << envelopeLength());
-        GEONKICK_LOG_INFO("envelopeLength(): " << envelopeLength());
-        GEONKICK_LOG_INFO("timeOrigin: " << timeOrigin);
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+
+        res->second.timeOrigin = std::clamp(res->second.timeOrigin + timeOrg,
+                                           0.0,
+                                           envelopeLength() - envelopeLength()
+                                           / res->second.zoomCoefficient);
 }
 
 double Envelope::getTimeOrigin() const
 {
-        return timeOrigin;
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return 0.0;
+        return res->second.timeOrigin;
 }

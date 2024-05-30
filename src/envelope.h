@@ -148,9 +148,12 @@ class Envelope : public RkObject
         size_t editedPointIndex;
         bool isEditingPoint;
 	ApplyType applyType;
-        double zoomCoefficient;
         bool scrollState;
-        double timeOrigin;
+        struct ZoomInfo {
+                double zoomCoefficient;
+                double timeOrigin;
+        };
+        std::unordered_map<Type, ZoomInfo> zoomInfoMap;
 };
 
 #endif // GEONKICK_ENVELOPE_H
