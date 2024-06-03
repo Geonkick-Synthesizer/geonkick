@@ -43,9 +43,14 @@ public:
                  graphUpdated(std::shared_ptr<RkImage> graphImage),
                  RK_ARG_TYPE(std::shared_ptr<RkImage>),
                  RK_ARG_VAL(graphImage));
-     void setZoom(double val);
      void setGraphLegnth(double val);
+     void setZoom(double val);
+     double getZoom() const;
      void setTimeOrigin(double val);
+     double getTimeOrigin() const;
+     void setValueOrigin(double val);
+     double getValueOrigin() const;
+     void updateGraph(bool lock = true);
      void updateGraphBuffer();
 
 protected:
@@ -54,14 +59,15 @@ protected:
 private:
      GeonkickApi *geonkickApi;
      std::unique_ptr<std::thread> graphThread;
-     std::mutex  graphMutex;
+     mutable std::mutex  graphMutex;
      std::condition_variable threadConditionVar;
      std::vector<gkick_real> kickBuffer;
      RkSize graphSize;
      std::atomic<bool> isRunning;
-     std::atomic<bool> updateGraph;
+     bool redrawGraph;
      double zoomFactor;
      double timeOrigin;
+     double valueOrigin;
 };
 
 #endif // GEONKICK_GRAPH

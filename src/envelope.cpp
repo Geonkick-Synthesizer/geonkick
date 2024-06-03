@@ -621,23 +621,31 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                         + getTimeOrigin() / envelopeLength();
         };
 
-	if (applyType == ApplyType::Logarithmic)
-		return {calculateX(point.x()), (static_cast<double>(point.y()) / H())};
+        auto calculateY = [&](double y) {
+                if (std::abs(envelopeAmplitude())
+                    < std::numeric_limits<double>::epsilon()) {
+                        return 0.0;
+                }
+                return (static_cast<double>(y) / H()) / getZoom()
+                        + 0.0/*getTimeOrigin()*/ / envelopeAmplitude();
+        };
 
-        double y;
+	if (applyType == ApplyType::Logarithmic)
+		return {calculateX(point.x()), calculateY(point.y())};
+
+        double y = 0.0;
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
-                y = static_cast<double>(point.y()) / H();
         } else {
-                auto k = static_cast<double>(point.y()) / H();
+                /*auto k = static_cast<double>(point.y()) / H();
                 double logVal = k * (log10(envelopeAmplitude()) - log10(20));
                 double val = pow(10, logVal + log10(20));
-                y = val / envelopeAmplitude();
+                y = val / envelopeAmplitude();*/
         }
-        return {calculateX(point.x()), y};
+        return {calculateX(point.x()), calculateY(point.y())};
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
@@ -646,28 +654,34 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                 return getZoom() * (x - getTimeOrigin() / envelopeLength()) * W();
         };
 
+        auto calculateY = [&](double y) {
+                if (std::abs(envelopeAmplitude())
+                    < std::numeric_limits<double>::epsilon()) {
+                        return 0.0;;
+                }
+                return getZoom() * (y - 0.0/*getValueOrigin()*/ / envelopeAmplitude()) * H();
+        };
+
 	if (getApplyType() == ApplyType::Logarithmic)
 		return RkPoint(calculateX(point.x()),
-                               point.y() * H());
+                               calculateY(point.y()));
 
-	int y;
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
-                y = point.y() * H();
         } else {
-                double logRange = log10(envelopeAmplitude()) - log10(20);
+                /*double logRange = log10(envelopeAmplitude()) - log10(20);
                 double k = 0;
                 if (point.y() > 0) {
                         double logValue = log10(envelopeAmplitude() * point.y()) - log10(20);
                         if (logValue > 0)
                                 k = logValue / logRange;
                 }
-                y = k * H();
+                y = k * H();*/
         }
-        return RkPoint(calculateX(point.x()), y);
+        return RkPoint(calculateX(point.x()), calculateY(point.y()));
 }
 
 bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)

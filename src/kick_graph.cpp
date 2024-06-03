@@ -34,67 +34,79 @@ KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
         , graphThread{nullptr}
         , graphSize{size}
         , isRunning{true}
-        , updateGraph{true}
+        , redrawGraph{true}
         , zoomFactor{1.0}
         , timeOrigin{0.0}
+        , valueOrigin{0.0}
 {
         RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
+        graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
 }
 
 KickGraph::~KickGraph()
 {
-        if (graphThread) {
-                isRunning = false;
-                threadConditionVar.notify_one();
-                graphThread->join();
-        }
-}
-
-void KickGraph::start()
-{
-       graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
-}
-
-void KickGraph::updateGraphBuffer()
-{
-        if (!graphThread)
-                start();
-        std::unique_lock<std::mutex> lock(graphMutex);
-        kickBuffer = geonkickApi->getKickBuffer();
-        updateGraph = true;
-        if (kickBuffer.empty())
-                geonkickApi->triggerSynthesis();
-        timeOrigin = std::clamp(timeOrigin,
-                                0.0,
-                                geonkickApi->kickLength()
-                                - geonkickApi->kickLength() / zoomFactor);
+        isRunning = false;
         threadConditionVar.notify_one();
-}
-
-void KickGraph::setTimeOrigin(double val)
-{
-        {
-                std::unique_lock<std::mutex> lock(graphMutex);
-                timeOrigin = std::clamp(timeOrigin + val,
-                                        0.0,
-                                        geonkickApi->kickLength()
-                                        - geonkickApi->kickLength() / zoomFactor);
-                GEONKICK_LOG_INFO("timeOrigin{GR}: " << timeOrigin);
-        }
-        updateGraphBuffer();
+        graphThread->join();
 }
 
 void KickGraph::setZoom(double val)
 {
-        {
+        std::unique_lock<std::mutex> lock(graphMutex);
+        zoomFactor = val;
+        updateGraph(false);
+}
+
+double KickGraph::getZoom() const
+{
+        std::unique_lock<std::mutex> lock(graphMutex);
+        return zoomFactor;
+}
+
+void KickGraph::setTimeOrigin(double val)
+{
+        std::unique_lock<std::mutex> lock(graphMutex);
+        timeOrigin = val;
+        updateGraph(false);
+}
+
+double KickGraph::getTimeOrigin() const
+{
+        std::unique_lock<std::mutex> lock(graphMutex);
+        return timeOrigin;
+}
+
+void KickGraph::setValueOrigin(double val)
+{
+        std::unique_lock<std::mutex> lock(graphMutex);
+        valueOrigin = val;
+        updateGraph(false);
+}
+
+double KickGraph::getValueOrigin() const
+{
+        std::unique_lock<std::mutex> lock(graphMutex);
+        return valueOrigin;
+}
+
+void KickGraph::updateGraph(bool lock)
+{
+        if (lock) {
                 std::unique_lock<std::mutex> lock(graphMutex);
-                zoomFactor = val;
-                timeOrigin = std::clamp(timeOrigin,
-                                        0.0,
-                                        geonkickApi->kickLength()
-                                        - geonkickApi->kickLength() / zoomFactor);
+                redrawGraph = true;
+        } else {
+                redrawGraph = true;
         }
-        updateGraphBuffer();
+        threadConditionVar.notify_one();
+}
+
+void KickGraph::updateGraphBuffer()
+{
+        std::unique_lock<std::mutex> lock(graphMutex);
+        kickBuffer = geonkickApi->getKickBuffer();
+        if (kickBuffer.empty())
+                geonkickApi->triggerSynthesis();
+        updateGraph(false);
 }
 
 void KickGraph::drawKickGraph()
@@ -103,21 +115,22 @@ void KickGraph::drawKickGraph()
                 // Ignore too many updates. The last update will be processed.
                 std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
-                if (!updateGraph)
+                GEONKICK_LOG_INFO("wait for drawing...");
+                if (!redrawGraph)
                         threadConditionVar.wait(lock);
+                GEONKICK_LOG_INFO("start draw1...");
                 if (!isRunning)
                         break;
-
+                GEONKICK_LOG_INFO("start draw2...");
                 if (kickBuffer.empty()) {
-                        updateGraph = false;
+                        redrawGraph = false;
                         continue;
                 }
-
+                GEONKICK_LOG_INFO("start draw3...");
                 auto graphImage = std::make_shared<RkImage>(graphSize.width(), graphSize.height());
                 RkPainter painter(graphImage.get());
                 RkPen pen(RkColor(59, 130, 4, 255));
                 painter.setPen(pen);
-
                 std::vector<RkPoint> graphPoints(kickBuffer.size());
                 auto buffSize = static_cast<double>(kickBuffer.size()) / zoomFactor;
                 gkick_real k = static_cast<gkick_real>(graphSize.width()) / buffSize;
@@ -162,6 +175,8 @@ void KickGraph::drawKickGraph()
                         }
                 }
                 graphPoints.resize(j);
+                //                for (auto &p: graphPoints)
+                //                        p.setY(zoomFactor * p.y());
                 painter.drawPolyline(graphPoints);
                 if (eventQueue()) {
                         auto act = std::make_unique<RkAction>(this);
@@ -169,6 +184,6 @@ void KickGraph::drawKickGraph()
                         graphImage.reset();
                         eventQueue()->postAction(std::move(act));
                 }
-                updateGraph = false;
+                redrawGraph = false;
         }
 }
