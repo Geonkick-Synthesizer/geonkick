@@ -26,13 +26,14 @@
 
 #include "Rk.h"
 #include "RkImage.h"
-#include "RkPoint.h"
 #include "RkPen.h"
 #include "RkRect.h"
 #include "RkFont.h"
 
 #include <cairo/cairo.h>
 
+class RkPoint;
+class RkRealPoint;
 class RkCanvas;
 
 class RkCairoGraphicsBackend {
@@ -46,6 +47,7 @@ class RkCairoGraphicsBackend {
         void drawLine(const RkPoint &p1, const RkPoint &p2);
         void drawRect(const RkRect &rect);
         void drawPolyLine(const std::vector<RkPoint> &points);
+        void drawPolyLine(const std::vector<RkRealPoint> &points);
         void fillRect(const RkRect &rect, const RkColor &color);
         void applyAlpha(int alpha);
         void setPen(const RkPen &pen);

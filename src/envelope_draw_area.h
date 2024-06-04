@@ -73,7 +73,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    GeonkickApi* geonkickApi;
    Envelope* currentEnvelope;
    RkRect drawingArea;
-   RkRealPoint mousePoint;
+   RkPoint mousePoint;
    bool hideEnvelope;
    std::shared_ptr<RkImage> kickGraphImage;
    RkImage envelopeImage;

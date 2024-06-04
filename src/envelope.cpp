@@ -47,13 +47,13 @@ Envelope::Envelope(const RkRect &area)
         , isEditingPoint{false}
 	, applyType{ApplyType::Linear}
         , scrollState{false}
-        , zoomInfoMap{{Type::Amplitude, {1.0, 0.0}},
-                      {Type::Frequency, {1.0, 0.0}},
-                      {Type::FilterCutOff, {1.0, 0.0}},
-                      {Type::FilterQFactor, {1.0, 0.0}},
-                      {Type::DistortionDrive, {1.0, 0.0}},
-                      {Type::DistortionVolume, {1.0, 0.0}},
-                      {Type::PitchShift, {1.0, 0.0}}}
+        , zoomInfoMap{{Type::Amplitude, {1.0, 0.0, 0.0}},
+                      {Type::Frequency, {1.0, 0.0, 0.0}},
+                      {Type::FilterCutOff, {1.0, 0.0, 0.0}},
+                      {Type::FilterQFactor, {1.0, 0.0, 0.0}},
+                      {Type::DistortionDrive, {1.0, 0.0, 0.0}},
+                      {Type::DistortionVolume, {1.0, 0.0, 0.0}},
+                      {Type::PitchShift, {1.0, 0.0, 0.0}}}
 {
 }
 
@@ -627,7 +627,7 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                         return 0.0;
                 }
                 return (static_cast<double>(y) / H()) / getZoom()
-                        + 0.0/*getTimeOrigin()*/ / envelopeAmplitude();
+                        + getValueOrigin() / envelopeAmplitude();
         };
 
 	if (applyType == ApplyType::Logarithmic)
@@ -659,7 +659,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                     < std::numeric_limits<double>::epsilon()) {
                         return 0.0;;
                 }
-                return getZoom() * (y - 0.0/*getValueOrigin()*/ / envelopeAmplitude()) * H();
+                return getZoom() * (y - getValueOrigin() / envelopeAmplitude()) * H();
         };
 
 	if (getApplyType() == ApplyType::Logarithmic)
@@ -857,3 +857,24 @@ double Envelope::getTimeOrigin() const
                 return 0.0;
         return res->second.timeOrigin;
 }
+
+void Envelope::setValueOrigin(double valueOrg)
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+
+        res->second.valueOrigin = std::clamp(res->second.valueOrigin + valueOrg,
+                                             0.0,
+                                             envelopeAmplitude() - envelopeAmplitude()
+                                             / res->second.zoomCoefficient);
+}
+
+double Envelope::getValueOrigin() const
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return 0.0;
+        return res->second.valueOrigin;
+}
+

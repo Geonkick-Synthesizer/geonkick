@@ -106,6 +106,8 @@ class Envelope : public RkObject
         bool isScrollState() const;
         void setTimeOrigin(double timeOrg);
         double getTimeOrigin() const;
+        void setValueOrigin(double valueOrg);
+        double getValueOrigin() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -152,6 +154,7 @@ class Envelope : public RkObject
         struct ZoomInfo {
                 double zoomCoefficient;
                 double timeOrigin;
+                double valueOrigin;
         };
         std::unordered_map<Type, ZoomInfo> zoomInfoMap;
 };

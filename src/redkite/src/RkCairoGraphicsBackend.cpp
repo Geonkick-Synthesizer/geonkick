@@ -25,6 +25,8 @@
 #include "RkCanvasInfo.h"
 #include "RkImageImpl.h"
 #include "RkLog.h"
+#include "RkPoint.h"
+#include "RkRealPoint.h"
 
 #ifdef RK_OS_WIN
 #define _USE_MATH_DEFINES
@@ -193,6 +195,24 @@ void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkPoint> &points)
 {
         bool first = true;
         RkPoint currPoint;
+        for (const auto &point: points) {
+                if (first) {
+                        cairo_move_to(context(), point.x() + 0.5, point.y() + 0.5);
+                        currPoint = point;
+                        first = false;
+                } else if (currPoint != point) {
+                        cairo_rel_line_to(context(), point.x() - currPoint.x(),
+                                          point.y() - currPoint.y());
+                        currPoint = point;
+                }
+        }
+        cairo_stroke(context());
+}
+
+void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkRealPoint> &points)
+{
+        bool first = true;
+        RkRealPoint currPoint;
         for (const auto &point: points) {
                 if (first) {
                         cairo_move_to(context(), point.x() + 0.5, point.y() + 0.5);

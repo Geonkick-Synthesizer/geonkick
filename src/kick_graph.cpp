@@ -113,7 +113,7 @@ void KickGraph::drawKickGraph()
 {
         while (isRunning) {
                 // Ignore too many updates. The last update will be processed.
-                std::this_thread::sleep_for(std::chrono::milliseconds(60));
+                //                std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
                 GEONKICK_LOG_INFO("wait for drawing...");
                 if (!redrawGraph)
@@ -131,7 +131,7 @@ void KickGraph::drawKickGraph()
                 RkPainter painter(graphImage.get());
                 RkPen pen(RkColor(59, 130, 4, 255));
                 painter.setPen(pen);
-                std::vector<RkPoint> graphPoints(kickBuffer.size());
+                std::vector<RkRealPoint> graphPoints(kickBuffer.size());
                 auto buffSize = static_cast<double>(kickBuffer.size()) / zoomFactor;
                 gkick_real k = static_cast<gkick_real>(graphSize.width()) / buffSize;
                 size_t indexOffset = (kickBuffer.size() / geonkickApi->kickLength()) * timeOrigin;
@@ -144,11 +144,11 @@ void KickGraph::drawKickGraph()
                  * reduces and normalizes the size of the buffer.
                  */
                 int j = 0;
-                RkPoint prev;
+                RkRealPoint prev;
                 for (decltype(kickBuffer.size()) i = indexOffset; i < kickBuffer.size(); i++) {
-                        int x = k * (i - indexOffset);
-                        int y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
-                        RkPoint p(k * (i - indexOffset), graphSize.height() * 0.5 * (1 - kickBuffer[i]));
+                        double x = k * (i - indexOffset);
+                        double y = graphSize.height() - graphSize.height() * 0.5 * (zoomFactor * (kickBuffer[i] - valueOrigin) + 1.0);
+                        RkRealPoint p(k * (i - indexOffset), graphSize.height() - graphSize.height() * 0.5 *  (zoomFactor * (kickBuffer[i] - valueOrigin) + 1.0));
                         if (p == prev)
                                 continue;
                         else
@@ -156,12 +156,12 @@ void KickGraph::drawKickGraph()
                         graphPoints[j++] = p;
 
                         int i0 = i;
-                        int ymin, ymax;
+                        double ymin, ymax;
                         ymin = ymax = y;
                         while (++i < kickBuffer.size()) {
-                                if (x != static_cast<int>(k * (i - indexOffset)))
+                                if (x != k * (i - indexOffset))
                                         break;
-                                y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
+                                y = graphSize.height() - graphSize.height() * 0.5 * (zoomFactor * (kickBuffer[i] - valueOrigin) + 1.0);
                                 if (ymin > y)
                                         ymin = y;
                                 if (ymax < y)
@@ -175,8 +175,10 @@ void KickGraph::drawKickGraph()
                         }
                 }
                 graphPoints.resize(j);
+                GEONKICK_LOG_INFO("add value : valueOrigin: " << valueOrigin);
+                GEONKICK_LOG_INFO("add value : valueOrigin: " << zoomFactor);
                 //                for (auto &p: graphPoints)
-                //                        p.setY(zoomFactor * p.y());
+                //                        p.setY(zoomFactor * (p.y() - timeOrigin * graphSize.height() * 0.5));
                 painter.drawPolyline(graphPoints);
                 if (eventQueue()) {
                         auto act = std::make_unique<RkAction>(this);
