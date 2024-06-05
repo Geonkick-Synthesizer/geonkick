@@ -24,6 +24,7 @@
 #include "kick_graph.h"
 #include "geonkick_api.h"
 #include "globals.h"
+#include "envelope.h"
 
 #include <RkEventQueue.h>
 #include <RkAction.h>
@@ -35,9 +36,7 @@ KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
         , graphSize{size}
         , isRunning{true}
         , redrawGraph{true}
-        , zoomFactor{1.0}
-        , timeOrigin{0.0}
-        , valueOrigin{0.0}
+        , currentEnvelope{nullptr}
 {
         RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
         graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
@@ -50,43 +49,17 @@ KickGraph::~KickGraph()
         graphThread->join();
 }
 
-void KickGraph::setZoom(double val)
+void KickGraph::setEnvelope(Envelope * envelope)
 {
         std::unique_lock<std::mutex> lock(graphMutex);
-        zoomFactor = val;
+        currentEnvelope = envelope;
         updateGraph(false);
 }
 
-double KickGraph::getZoom() const
+Envelope* KickGraph::getEnvelope() const
 {
         std::unique_lock<std::mutex> lock(graphMutex);
-        return zoomFactor;
-}
-
-void KickGraph::setTimeOrigin(double val)
-{
-        std::unique_lock<std::mutex> lock(graphMutex);
-        timeOrigin = val;
-        updateGraph(false);
-}
-
-double KickGraph::getTimeOrigin() const
-{
-        std::unique_lock<std::mutex> lock(graphMutex);
-        return timeOrigin;
-}
-
-void KickGraph::setValueOrigin(double val)
-{
-        std::unique_lock<std::mutex> lock(graphMutex);
-        valueOrigin = val;
-        updateGraph(false);
-}
-
-double KickGraph::getValueOrigin() const
-{
-        std::unique_lock<std::mutex> lock(graphMutex);
-        return valueOrigin;
+        return currentEnvelope;
 }
 
 void KickGraph::updateGraph(bool lock)
@@ -122,11 +95,15 @@ void KickGraph::drawKickGraph()
                 if (!isRunning)
                         break;
                 GEONKICK_LOG_INFO("start draw2...");
-                if (kickBuffer.empty()) {
+                if (!currentEnvelope || kickBuffer.empty()) {
                         redrawGraph = false;
                         continue;
                 }
                 GEONKICK_LOG_INFO("start draw3...");
+                auto zoomFactor = currentEnvelope->getZoom();
+                auto timeOrigin = currentEnvelope->getTimeOrigin();
+                auto valueOrigin = currentEnvelope->getValueOrigin();
+                auto envelopeAmplitude = currentEnvelope->envelopeAmplitude();
                 auto graphImage = std::make_shared<RkImage>(graphSize.width(), graphSize.height());
                 RkPainter painter(graphImage.get());
                 RkPen pen(RkColor(59, 130, 4, 255));
@@ -145,10 +122,15 @@ void KickGraph::drawKickGraph()
                  */
                 int j = 0;
                 RkRealPoint prev;
+                painter.translate({0, graphSize.height()});
+                GEONKICK_LOG_INFO("graphSize.height(): " << graphSize.height());
                 for (decltype(kickBuffer.size()) i = indexOffset; i < kickBuffer.size(); i++) {
                         double x = k * (i - indexOffset);
-                        double y = graphSize.height() - graphSize.height() * 0.5 * (zoomFactor * (kickBuffer[i] - valueOrigin) + 1.0);
-                        RkRealPoint p(k * (i - indexOffset), graphSize.height() - graphSize.height() * 0.5 *  (zoomFactor * (kickBuffer[i] - valueOrigin) + 1.0));
+                        double value = -zoomFactor * (graphSize.height() / 2
+                                                      + graphSize.height() * (kickBuffer[i]
+                                                      - valueOrigin / envelopeAmplitude));
+                        double y = value;
+                        RkRealPoint p(k * (i - indexOffset), value);
                         if (p == prev)
                                 continue;
                         else
@@ -161,7 +143,7 @@ void KickGraph::drawKickGraph()
                         while (++i < kickBuffer.size()) {
                                 if (x != k * (i - indexOffset))
                                         break;
-                                y = graphSize.height() - graphSize.height() * 0.5 * (zoomFactor * (kickBuffer[i] - valueOrigin) + 1.0);
+                                y = graphSize.height() - value;
                                 if (ymin > y)
                                         ymin = y;
                                 if (ymax < y)

@@ -31,6 +31,7 @@
 #include <condition_variable>
 
 class RkEventQueue;
+class Envelope;
 
 class KickGraph : public RkObject {
 
@@ -44,12 +45,8 @@ public:
                  RK_ARG_TYPE(std::shared_ptr<RkImage>),
                  RK_ARG_VAL(graphImage));
      void setGraphLegnth(double val);
-     void setZoom(double val);
-     double getZoom() const;
-     void setTimeOrigin(double val);
-     double getTimeOrigin() const;
-     void setValueOrigin(double val);
-     double getValueOrigin() const;
+     void setEnvelope(Envelope * envelope);
+     Envelope* getEnvelope() const;
      void updateGraph(bool lock = true);
      void updateGraphBuffer();
 
@@ -65,9 +62,7 @@ private:
      RkSize graphSize;
      std::atomic<bool> isRunning;
      bool redrawGraph;
-     double zoomFactor;
-     double timeOrigin;
-     double valueOrigin;
+     Envelope *currentEnvelope;
 };
 
 #endif // GEONKICK_GRAPH

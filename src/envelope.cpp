@@ -78,6 +78,10 @@ void Envelope::zoomOut()
                                            0.0,
                                            envelopeLength() - envelopeLength()
                                            / res->second.zoomCoefficient);
+        res->second.valueOrigin = std::clamp(res->second.valueOrigin,
+                                             0.0,
+                                             envelopeAmplitude() - envelopeAmplitude()
+                                             / res->second.zoomCoefficient);
 }
 
 void Envelope::zoomIn()
@@ -91,6 +95,10 @@ void Envelope::zoomIn()
                                            0.0,
                                            envelopeLength() - envelopeLength()
                                            / res->second.zoomCoefficient);
+        res->second.valueOrigin = std::clamp(res->second.valueOrigin,
+                                             0.0,
+                                             envelopeAmplitude() - envelopeAmplitude()
+                                             / res->second.zoomCoefficient);
 }
 
 double Envelope::getZoom() const
@@ -657,7 +665,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
         auto calculateY = [&](double y) {
                 if (std::abs(envelopeAmplitude())
                     < std::numeric_limits<double>::epsilon()) {
-                        return 0.0;;
+                        return 0.0;
                 }
                 return getZoom() * (y - getValueOrigin() / envelopeAmplitude()) * H();
         };
@@ -845,9 +853,9 @@ void Envelope::setTimeOrigin(double timeOrg)
                 return;
 
         res->second.timeOrigin = std::clamp(res->second.timeOrigin + timeOrg,
-                                           0.0,
-                                           envelopeLength() - envelopeLength()
-                                           / res->second.zoomCoefficient);
+                                            0.0,
+                                            envelopeLength() - envelopeLength()
+                                            / res->second.zoomCoefficient);
 }
 
 double Envelope::getTimeOrigin() const

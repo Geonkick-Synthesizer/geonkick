@@ -55,9 +55,7 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
         if (envelope) {
                 currentEnvelope = envelope;
                 if (currentEnvelope) {
-                        kickGraphics->setZoom(currentEnvelope->getZoom());
-                        kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
-                        kickGraphics->setValueOrigin(currentEnvelope->getValueOrigin());
+                        kickGraphics->setEnvelope(currentEnvelope);
                         action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
                 }
                 envelopeUpdated();
@@ -218,8 +216,7 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
                 auto valueOrg = -pointDiff.y() * (zoomedLengthY / currentEnvelope->H());
                 currentEnvelope->setTimeOrigin(timeOrg);
                 currentEnvelope->setValueOrigin(valueOrg);
-                kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
-                kickGraphics->setValueOrigin(currentEnvelope->getValueOrigin());
+                kickGraphics->updateGraph();
                 mousePoint.setX(event->x());
                 mousePoint.setY(event->y());
                 envelopeUpdated();
@@ -250,9 +247,7 @@ void EnvelopeWidgetDrawingArea::zoomIn()
 {
         if (currentEnvelope) {
                 currentEnvelope->zoomIn();
-                kickGraphics->setZoom(currentEnvelope->getZoom());
-                kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
-                kickGraphics->setValueOrigin(currentEnvelope->getValueOrigin());
+                kickGraphics->updateGraph();
                 action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
         }
         update();
@@ -262,9 +257,7 @@ void EnvelopeWidgetDrawingArea::zoomOut()
 {
         if (currentEnvelope) {
                 currentEnvelope->zoomOut();
-                kickGraphics->setZoom(currentEnvelope->getZoom());
-                kickGraphics->setTimeOrigin(currentEnvelope->getTimeOrigin());
-                kickGraphics->setValueOrigin(currentEnvelope->getValueOrigin());
+                kickGraphics->updateGraph();
                 action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
         }
         update();
