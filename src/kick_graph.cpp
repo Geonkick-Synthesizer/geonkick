@@ -86,7 +86,7 @@ void KickGraph::drawKickGraph()
 {
         while (isRunning) {
                 // Ignore too many updates. The last update will be processed.
-                //                std::this_thread::sleep_for(std::chrono::milliseconds(60));
+                std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
                 GEONKICK_LOG_INFO("wait for drawing...");
                 if (!redrawGraph)

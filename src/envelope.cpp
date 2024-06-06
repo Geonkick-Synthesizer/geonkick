@@ -121,8 +121,17 @@ void Envelope::draw(RkPainter &painter, DrawLayer layer)
                 drawAxies(painter);
                 drawScale(painter);
         } else if (layer == DrawLayer::Envelope) {
-                drawPoints(painter);
-                drawLines(painter);
+                RkImage envelopeImg(W() + 2 * getPointRadius() + 10,
+                                    H() + 3 * getPointRadius() + 6);
+                RkPainter imgPainter(&envelopeImg);
+                imgPainter.fillRect(RkRect({0, 0}, envelopeImg.size()), {0, 0, 0, 0});
+                imgPainter.translate({getPointRadius(),
+                                envelopeImg.size().height() - getPointRadius()});
+                drawPoints(imgPainter);
+                drawLines(imgPainter);
+                painter.drawImage(envelopeImg, getOrigin().x() - getPointRadius(),
+                                  getOrigin().y() + getPointRadius()
+                                  - envelopeImg.size().height());
         }
 }
 
@@ -289,7 +298,6 @@ void Envelope::drawPoints(RkPainter &painter)
         RkPen pen;
         pen.setWidth(2);
         pen.setColor(RkColor(200, 200, 200, 150));
-        RkPoint origin = getOrigin();
 	for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
                 if (pointSelected && i == selectedPointIndex) {
                         RkPen penSeleted;
@@ -305,7 +313,7 @@ void Envelope::drawPoints(RkPainter &painter)
                         painter.setPen(pen);
                 }
                 RkPoint scaledPoint = scaleUp(envelopePoints[i]);
-                scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
+                scaledPoint = RkPoint(scaledPoint.x(), -scaledPoint.y());
 		drawPoint(painter, scaledPoint);
                 scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
                 drawPointValue(painter, scaledPoint, envelopePoints[i].y());
@@ -372,11 +380,9 @@ void Envelope::drawLines(RkPainter &painter)
                 return;
 
         std::vector<RkPoint> points;
-        auto origin = getOrigin();
 	for (const auto& point : envelopePoints) {
                 auto scaledPoint = scaleUp(point);
-	        points.push_back(RkPoint(origin.x() + scaledPoint.x(),
-					 origin.y() - scaledPoint.y()));
+	        points.push_back(RkPoint(scaledPoint.x(), -scaledPoint.y()));
 	}
 
 	auto pen = painter.pen();
