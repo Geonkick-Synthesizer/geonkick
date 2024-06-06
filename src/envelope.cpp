@@ -73,7 +73,7 @@ void Envelope::zoomOut()
         if (res == zoomInfoMap.end())
                 return;
 
-        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient / 2, 1.0, 30.0);
+        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient / 2, 1.0, 32.0);
         res->second.timeOrigin = std::clamp(res->second.timeOrigin,
                                            0.0,
                                            envelopeLength() - envelopeLength()
@@ -90,7 +90,7 @@ void Envelope::zoomIn()
         if (res == zoomInfoMap.end())
                 return;
 
-        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient * 2, 1.0, 30.0);
+        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient * 2, 1.0, 32.0);
         res->second.timeOrigin = std::clamp(res->second.timeOrigin,
                                            0.0,
                                            envelopeLength() - envelopeLength()
@@ -852,7 +852,7 @@ void Envelope::setTimeOrigin(double timeOrg)
         if (res == zoomInfoMap.end())
                 return;
 
-        res->second.timeOrigin = std::clamp(res->second.timeOrigin + timeOrg,
+        res->second.timeOrigin = std::clamp(timeOrg,
                                             0.0,
                                             envelopeLength() - envelopeLength()
                                             / res->second.zoomCoefficient);
@@ -871,8 +871,7 @@ void Envelope::setValueOrigin(double valueOrg)
         auto res = zoomInfoMap.find(type());
         if (res == zoomInfoMap.end())
                 return;
-
-        res->second.valueOrigin = std::clamp(res->second.valueOrigin + valueOrg,
+        res->second.valueOrigin = std::clamp(valueOrg,
                                              0.0,
                                              envelopeAmplitude() - envelopeAmplitude()
                                              / res->second.zoomCoefficient);
