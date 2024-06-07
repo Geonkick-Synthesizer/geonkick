@@ -103,7 +103,7 @@ void KickGraph::drawKickGraph()
                 auto zoomFactor = currentEnvelope->getZoom();
                 auto timeOrigin = currentEnvelope->getTimeOrigin();
                 auto valueOrigin = currentEnvelope->getValueOrigin();
-                auto envelopeAmplitude = currentEnvelope->envelopeAmplitude();
+                auto envelopeAmplitude = currentEnvelope->envelopeAmplitude() * geonkickApi->kickAmplitude();
                 auto graphImage = std::make_shared<RkImage>(graphSize.width(), graphSize.height());
                 RkPainter painter(graphImage.get());
                 RkPen pen(RkColor(59, 130, 4, 255));
@@ -127,7 +127,7 @@ void KickGraph::drawKickGraph()
                 for (decltype(kickBuffer.size()) i = indexOffset; i < kickBuffer.size(); i++) {
                         double x = k * (i - indexOffset);
                         double value = -zoomFactor * (graphSize.height() / 2
-                                                      + graphSize.height() * (kickBuffer[i]
+                                                      + graphSize.height() * (kickBuffer[i] / 2
                                                       - valueOrigin / envelopeAmplitude));
                         double y = value;
                         RkRealPoint p(k * (i - indexOffset), value);
