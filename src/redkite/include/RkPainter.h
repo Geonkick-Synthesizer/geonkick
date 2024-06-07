@@ -60,6 +60,7 @@ class RkPainter {
         void translate(const RkPoint &offset);
         void rotate(rk_real angle);
         int getTextWidth(const std::string &text) const;
+        void scale(double x, double y);
 
 protected:
         RK_DECLARE_O_PTR(RkPainter);

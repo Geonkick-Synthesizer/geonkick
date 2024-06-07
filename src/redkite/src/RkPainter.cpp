@@ -157,3 +157,8 @@ int RkPainter::getTextWidth(const std::string &text) const
 {
         return o_ptr->getTextWidth(text);
 }
+
+void RkPainter::scale(double x, double y)
+{
+        return o_ptr->scale(x, y);
+}

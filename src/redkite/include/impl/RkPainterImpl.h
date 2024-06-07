@@ -53,6 +53,7 @@ class RkPainter::RkPainterImpl {
         void translate(const RkPoint &offset);
         void rotate(rk_real angle);
         int getTextWidth(const std::string &text) const;
+        void scale(double x, double y);
 
  private:
         RK_DECALRE_INTERFACE_PTR(RkPainter);

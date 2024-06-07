@@ -211,20 +211,17 @@ void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkPoint> &points)
 
 void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkRealPoint> &points)
 {
-        bool first = true;
-        RkRealPoint currPoint;
-        for (const auto &point: points) {
-                if (first) {
-                        cairo_move_to(context(), point.x() + 0.5, point.y() + 0.5);
-                        currPoint = point;
-                        first = false;
-                } else if (currPoint != point) {
-                        cairo_rel_line_to(context(), point.x() - currPoint.x(),
-                                          point.y() - currPoint.y());
-                        currPoint = point;
-                }
+        if (points.empty())
+                return;
+
+        auto ctx = context();
+        cairo_move_to(ctx, points.front().x() + 0.5, points.front().y() + 0.5);
+        for (size_t i = 1; i < points.size(); ++i) {
+                const auto &point = points[i];
+                if (points[i - 1] != point)
+                        cairo_line_to(ctx, point.x() + 0.5, point.y() + 0.5);
         }
-        cairo_stroke(context());
+        cairo_stroke(ctx);
 }
 
 void RkCairoGraphicsBackend::fillRect(const RkRect &rect, const RkColor &color)
@@ -264,4 +261,9 @@ int RkCairoGraphicsBackend::getTextWidth(const std::string &text) const
         cairo_text_extents_t extents;
         cairo_text_extents (context(), text.data(), &extents);
         return extents.x_advance;
+}
+
+void RkCairoGraphicsBackend::scale(double x, double y)
+{
+        cairo_scale(context(), x, y);
 }

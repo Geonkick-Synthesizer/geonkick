@@ -129,3 +129,8 @@ void RkPainter::RkPainterImpl::applyAlpha(int alpha)
 {
         backendGraphics->applyAlpha(alpha);
 }
+
+void RkPainter::RkPainterImpl::scale(double x, double y)
+{
+        backendGraphics->scale(x, y);
+}
