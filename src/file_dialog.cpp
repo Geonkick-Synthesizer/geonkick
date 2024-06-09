@@ -427,7 +427,7 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         shortcutDirectoriesView->show();
 
         createBookmarkDirectoryControls(topContainer);
-        //        createNewDirectoryControls(topContainer);
+        createNewDirectoryControls(topContainer);
 
         auto buttomContainer = new RkContainer(this);
         buttomContainer->setSize({mainContainer->width(), 30});
@@ -511,6 +511,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
         auto editDirectoryName = new RkLineEdit(this);
         editDirectoryName->setSize(80, 16);
         container->addWidget(editDirectoryName);
+        editDirectoryName->hide();
 
         RK_ACT_BINDL(createDirectoryButton,
                      pressed,
@@ -547,7 +548,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
                      editingFinished,
                      RK_ACT_ARGS(),
                      [=,this](){
-                             editDirectoryName->close();
+                             editDirectoryName->hide();
                              createDirectoryButton->show();
                              editDirectoryName->setText("");
                              container->update();
