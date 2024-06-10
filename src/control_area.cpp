@@ -31,10 +31,11 @@
 #include "SettingsWidget.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
-                         KitModel* model,
+                         GeonkickModel* model,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
-        , kitModel{model}
+        , geonkickModel{model}
+        , kitModel{geonkickModel->kitModel()}
         , oscillators{oscillators}
         , presetsModel{new PresetBrowserModel(this, kitModel->api())}
         , currentWidget{nullptr}

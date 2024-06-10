@@ -48,7 +48,7 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         , envelopeWidget{nullptr}
         , presetName{preset}
         , limiterWidget{nullptr}
-        , kitModel{new KitModel(this, geonkickApi)}
+        , geonkickModel{new GeonkickModel(this, geonkickApi)}
 {
         setName("MainWindow");
         setScaleFactor(geonkickApi->getScaleFactor());

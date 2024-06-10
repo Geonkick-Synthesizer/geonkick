@@ -32,6 +32,7 @@ class GeonkickButton;
 class RkContainer;
 class ViewState;
 class KitModel;
+class PresetNavigator;
 
 class TopBar : public GeonkickWidget
 {
@@ -63,7 +64,7 @@ class TopBar : public GeonkickWidget
 #ifndef GEONKICK_OS_WINDOWS
         GeonkickButton *exportFileButton;
 #endif // GEONKICK_OS_WINDOWS
-        RkLabel* presetNameLabel;
+        PresetNavigator* presetNavigator;
         GeonkickButton *layer1Button;
         GeonkickButton *layer2Button;
         GeonkickButton *layer3Button;

@@ -138,7 +138,6 @@ bool KitModel::setPercussionKey(PercussionIndex index, KeyIndex keyIndex)
 {
         if (!isValidIndex(index))
                 return false;
-        
         if (geonkickApi->setPercussionPlayingKey(percussionId(index), keyIndex)) {
                 action percussionUpdated(percussionsList[index]);
                 return true;

@@ -29,6 +29,7 @@
 #include "kit_model.h"
 #include "percussion_model.h"
 #include "MidiKeyWidget.h"
+#include "PresetNavigator.h"
 
 #include <RkLabel.h>
 #include <RkButton.h>
@@ -89,7 +90,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
 #ifndef GEONKICK_OS_WINDOWS
         , exportFileButton{nullptr}
 #endif // GEONKICK_OS_WINDOWS
-        , presetNameLabel{nullptr}
+        , presetNavigator{nullptr}
         , layer1Button{nullptr}
         , layer2Button{nullptr}
         , layer3Button{nullptr}
@@ -208,15 +209,8 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         mainLayout->addWidget(tuneCheckbox);
         addSeparator(mainLayout, 10);
 
-        presetNameLabel = new RkLabel(this);
-        presetNameLabel->setBackgroundColor(background());
-        presetNameLabel->setTextColor({210, 226, 226, 140});
-        auto font = presetNameLabel->font();
-        font.setSize(10);
-        presetNameLabel->setFont(font);
-        presetNameLabel->setSize(80, 30);
-        presetNameLabel->show();
-        mainLayout->addWidget(presetNameLabel);
+        presetNavigator = new PresetNavigator(this, geonkickModel->presetBrowserModel());
+        mainLayout->addWidget(presetNavigator);
 
         addSeparator(mainLayout);
         midiKeyButton = new GeonkickButton(this);
@@ -274,8 +268,8 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
 #endif // GEONKICK_SINGLE
 
         // Presets button
-        addSeparator(mainLayout);
-        presetsButton = new GeonkickButton(this);
+        /*        addSeparator(mainLayout);
+                  presetsButton = new GeonkickButton(this);
         presetsButton->setPressed(viewState()->getMainView() == ViewState::View::Presets);
         presetsButton->setFixedSize(54, 20);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
@@ -289,7 +283,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                     viewState(), setMainView(ViewState::View::Presets));
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     presetsButton, setPressed(view == ViewState::View::Presets));
-        mainLayout->addWidget(presetsButton);
+                    mainLayout->addWidget(presetsButton);*/
 
         // Samples button
         addSeparator(mainLayout);
