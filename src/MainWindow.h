@@ -2,7 +2,7 @@
  * File name: MainWindow.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -34,6 +34,7 @@ class TopBar;
 class EnvelopeWidget;
 class ControlArea;
 class Limiter;
+class GeonkickModel;
 
 class MainWindow : public GeonkickWidget
 {
@@ -76,7 +77,7 @@ class MainWindow : public GeonkickWidget
       std::string presetName;
       std::string currentWorkingPath;
       Limiter *limiterWidget;
-      KitModel *kitModel;
+      GeonkickModel *geonkickModel;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

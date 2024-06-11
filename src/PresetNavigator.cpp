@@ -1,5 +1,5 @@
 /**
- * File name: GeonkickModel.h
+ * File name: PresetNavigator.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,28 +21,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_MODEL_H
-#define GEONKICK_MODEL_H
+#include "PresetNavigator.h"
+#include "preset_browser_model.h"
 
-#include "globals.h"
+PresetNavigator::PresetNavigator(GeonkickWidget *parent,
+                                 PresetBrowserModel* model)
+        : GeonkickWidget(parent)
+        , presetsModel{model}
+{
+        setFixedSize(160, 28);
+        setBackgroundColor({255, 255, 255});
+}
 
-#include "RkObject.h"
-
-class GeonkickApi;
-class KitModel;
-class PresetBrowserModel;
-
-class GeonkickModel : public RkObject {
- public:
-        explicit GeonkickModel(RkObject* parent, GeonkickApi *api);
-        GeonkickApi* api() const;
-        KitModel* getKitModel() const;
-        PresetBrowserModel* getPresetsModel() const;
-
- private:
-        GeonkickApi *geonkickApi;
-        KitModel *kitModel;
-        PresetBrowserModel* presetModel;
-};
-
-#endif // GEONKICK_MODEL_H

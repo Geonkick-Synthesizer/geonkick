@@ -1,5 +1,5 @@
 /**
- * File name: GeonkickModel.h
+ * File name: GeonkickModel.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,28 +21,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_MODEL_H
-#define GEONKICK_MODEL_H
+#include "GeonkickModel.h"
+#include "geonkick_api.h"
+#include "kit_model.h"
+#include "preset_browser_model.h"
 
-#include "globals.h"
+GeonkickModel::GeonkickModel(RkObject* parent, GeonkickApi *api)
+        : RkObject(parent)
+        , geonkickApi{api}
+        , kitModel{new KitModel(this, geonkickApi)}
+        , presetModel{new PresetBrowserModel(this, geonkickApi)}
+{
+}
 
-#include "RkObject.h"
+GeonkickApi* GeonkickModel::api() const
+{
+        return geonkickApi;
+}
 
-class GeonkickApi;
-class KitModel;
-class PresetBrowserModel;
+KitModel* GeonkickModel::getKitModel() const
+{
+        return kitModel;
+}
 
-class GeonkickModel : public RkObject {
- public:
-        explicit GeonkickModel(RkObject* parent, GeonkickApi *api);
-        GeonkickApi* api() const;
-        KitModel* getKitModel() const;
-        PresetBrowserModel* getPresetsModel() const;
+PresetBrowserModel* GeonkickModel::getPresetsModel() const
+{
+        return presetModel;
+}
 
- private:
-        GeonkickApi *geonkickApi;
-        KitModel *kitModel;
-        PresetBrowserModel* presetModel;
-};
 
-#endif // GEONKICK_MODEL_H

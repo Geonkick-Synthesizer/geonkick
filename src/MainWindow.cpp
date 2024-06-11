@@ -23,6 +23,7 @@
  */
 
 #include "MainWindow.h"
+#include "GeonkickModel.h"
 #include "oscillator.h"
 #include "envelope_widget.h"
 #include "oscillator_group_box.h"
@@ -67,7 +68,7 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const RkNativeWindowInfo &
         , envelopeWidget{nullptr}
         , presetName{std::string()}
         , limiterWidget{nullptr}
-        , kitModel{new KitModel(this, geonkickApi)}
+        , geonkickModel{new GeonkickModel(this, geonkickApi)}
 {
         setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
@@ -160,7 +161,7 @@ bool MainWindow::init(void)
                                   << "There is a need for jack server running "
                                   << "in order to have audio output.");
         }
-        topBar = new TopBar(this, kitModel);
+        topBar = new TopBar(this, geonkickModel);
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
@@ -192,19 +193,19 @@ bool MainWindow::init(void)
                                    envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
-        controlAreaWidget = new ControlArea(this, kitModel, oscillators);
+        controlAreaWidget = new ControlArea(this, geonkickModel->getKitModel(), oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
 
-        kitModel = controlAreaWidget->getKitModel();
-        RK_ACT_BIND(kitModel,
+        RK_ACT_BIND(geonkickModel->getKitModel(),
                     limiterUpdated,
                     RK_ACT_ARGS(KitModel::PercussionIndex index),
                     this,
                     updateLimiter(index));
         RK_ACT_BIND(limiterWidget, limiterUpdated, RK_ACT_ARGS(int val),
-                    kitModel, updatePercussion(kitModel->selectedPercussion()));
+                    geonkickModel->getKitModel(),
+                    updatePercussion(geonkickModel->getKitModel()->selectedPercussion()));
 
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         if (geonkickApi->isStandalone() && !presetName.empty())
@@ -375,7 +376,7 @@ void MainWindow::dropEvent(RkDropEvent *event)
 
         std::string file = event->getFilePath();
         if (fileExtention == ".gkit" || fileExtention == ".GKIT") {
-                kitModel->open(file);
+                geonkickModel->getKitModel()->open(file);
         } else if  (fileExtention == ".gkick" || fileExtention == ".GKICK") {
                 openPreset(file);
         } else if (fileExtention == ".wav"
@@ -401,7 +402,7 @@ void MainWindow::setSample(const std::string &file)
 
 void MainWindow::updateLimiter(KitModel::PercussionIndex index)
 {
-        if (kitModel->isPercussionSelected(index))
+        if (geonkickModel->getKitModel()->isPercussionSelected(index))
                 limiterWidget->onUpdateLimiter();
 }
 

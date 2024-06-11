@@ -1,5 +1,5 @@
 /**
- * File name: GeonkickModel.h
+ * File name: PresetNavigator.h
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,28 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_MODEL_H
-#define GEONKICK_MODEL_H
+#ifndef PRESET_NAVIGATOR_H
+#define PRESET_NAVIGATOR_H
 
-#include "globals.h"
+#include "geonkick_widget.h"
 
-#include "RkObject.h"
-
-class GeonkickApi;
-class KitModel;
 class PresetBrowserModel;
 
-class GeonkickModel : public RkObject {
+class PresetNavigator: public GeonkickWidget
+{
  public:
-        explicit GeonkickModel(RkObject* parent, GeonkickApi *api);
-        GeonkickApi* api() const;
-        KitModel* getKitModel() const;
-        PresetBrowserModel* getPresetsModel() const;
+        PresetNavigator(GeonkickWidget *parent,
+                        PresetBrowserModel* model);
+        ~PresetNavigator() = default;
 
  private:
-        GeonkickApi *geonkickApi;
-        KitModel *kitModel;
-        PresetBrowserModel* presetModel;
+        PresetBrowserModel *presetsModel;
 };
 
-#endif // GEONKICK_MODEL_H
+#endif // PRESET_NAVIGATOR_H
