@@ -23,13 +23,30 @@
 
 #include "PresetNavigator.h"
 #include "preset_browser_model.h"
+#include "preset_folder.h"
+
+#include "RkContainer.h"
+#include "RkLabel.h"
 
 PresetNavigator::PresetNavigator(GeonkickWidget *parent,
                                  PresetBrowserModel* model)
         : GeonkickWidget(parent)
         , presetsModel{model}
+        , presetFolder{new RkLabel(this)}
+        , presetName{new RkLabel(this)}
 {
         setFixedSize(160, 28);
-        setBackgroundColor({255, 255, 255});
+        presetFolder->setSize(width() / 2 - 2, height() - 2);
+        presetFolder->setBackgroundColor(background());
+        presetFolder->show();
+        presetName->setSize(width() / 2 - 2, height() - 2);
+        presetName->setBackgroundColor(background());
+        presetName->show();
+        auto mainLayout = new RkContainer(this);
+        mainLayout->setSize(size());
+        mainLayout->addWidget(presetFolder);
+        mainLayout->addWidget(presetName);
+        presetFolder->setText(presetsModel->currentSelectedFolder()->name());
+        presetName->setText("Preset Name");
 }
 

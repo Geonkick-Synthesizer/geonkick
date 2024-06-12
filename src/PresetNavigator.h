@@ -27,6 +27,7 @@
 #include "geonkick_widget.h"
 
 class PresetBrowserModel;
+class RkLabel;
 
 class PresetNavigator: public GeonkickWidget
 {
@@ -37,6 +38,8 @@ class PresetNavigator: public GeonkickWidget
 
  private:
         PresetBrowserModel *presetsModel;
+        RkLabel *presetFolder;
+        RkLabel *presetName;
 };
 
 #endif // PRESET_NAVIGATOR_H
