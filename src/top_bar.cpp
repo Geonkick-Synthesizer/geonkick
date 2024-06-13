@@ -320,9 +320,9 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                                  RkButton::State::UnpressedHover);
         settingsButton->show();
         RK_ACT_BIND(settingsButton, pressed, RK_ACT_ARGS(),
-                    viewState(), setMainView(ViewState::View::Settings));
+                    viewState(), setMainView(ViewState::View::Presets));
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
-                    settingsButton, setPressed(view == ViewState::View::Settings));
+                    settingsButton, setPressed(view == ViewState::View::Presets));
         mainLayout->addWidget(settingsButton);
 
         RK_ACT_BIND(geonkickModel->getKitModel(),

@@ -161,12 +161,17 @@ void PresetBrowserModel::select(size_t row, size_t column)
                         selectedFolder = getPresetFolder(row);
                         selectedPreset = nullptr;
                         presetPageIndex = 0;
-                        if (selectedFolder)
+                        if (selectedFolder) {
+                                GEONKICK_LOG_INFO("selectedFolder: " << selectedFolder->name());
                                 action folderSelected(selectedFolder);
+                        }
                 } if (column > 0 && selectedFolder) {
                         selectedPreset = getPreset(row, column);
-                        if (selectedPreset && setPreset(selectedPreset))
+                        if (selectedPreset && setPreset(selectedPreset)) {
+                                GEONKICK_LOG_INFO("selectedFolder: " << selectedPreset->name());
+                                                                
                                 action presetSelected(selectedPreset);
+                        }
                 }
         }
 }
@@ -232,6 +237,11 @@ bool PresetBrowserModel::addFolder(const std::filesystem::path &folder, bool cus
 PresetFolder* PresetBrowserModel::currentSelectedFolder() const
 {
         return selectedFolder;
+}
+
+Preset* PresetBrowserModel::currentSelectedPreset() const
+{
+        return selectedPreset;
 }
 
 bool PresetBrowserModel::removeSelectedFolder()

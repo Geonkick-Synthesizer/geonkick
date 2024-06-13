@@ -36,9 +36,12 @@ class PresetNavigator: public GeonkickWidget
                         PresetBrowserModel* model);
         ~PresetNavigator() = default;
 
+protected:
+        void updateView();
+
  private:
         PresetBrowserModel *presetsModel;
-        RkLabel *presetFolder;
+        RkLabel *presetFolderName;
         RkLabel *presetName;
 };
 

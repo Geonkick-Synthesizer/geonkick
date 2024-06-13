@@ -23,7 +23,7 @@
 
 #include "control_area.h"
 #include "controls_widget.h"
-#include "kit_model.h"
+#include "GeonkickModel.h"
 #include "kit_widget.h"
 #include "preset_browser_model.h"
 #include "preset_browser_view.h"
@@ -31,12 +31,12 @@
 #include "SettingsWidget.h"
 
 ControlArea::ControlArea(GeonkickWidget *parent,
-                         KitModel* model,
+                         GeonkickModel* model,
                          const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
-        , kitModel{model}
+        , geonkickModel{model}
         , oscillators{oscillators}
-        , presetsModel{new PresetBrowserModel(this, kitModel->api())}
+        , presetsModel{geonkickModel->getPresetsModel()}
         , currentWidget{nullptr}
         , controlsWidget{nullptr}
 #ifndef GEONKICK_SINGLE
@@ -71,7 +71,7 @@ void ControlArea::showWidget(ViewState::View view)
                 if (currentWidget)
                         currentWidget->hide();
                 if (!samplesWidget)
-                        samplesWidget = new SampleBrowser(this, kitModel->api());
+                        samplesWidget = new SampleBrowser(this, geonkickModel->api());
                 currentWidget = samplesWidget;
                 currentWidget->show();
                 break;
@@ -79,7 +79,7 @@ void ControlArea::showWidget(ViewState::View view)
                 if (currentWidget)
                         currentWidget->hide();
                 if (!settingsWidget)
-                        settingsWidget = new SettingsWidget(this, kitModel->api());
+                        settingsWidget = new SettingsWidget(this, geonkickModel->api());
                 currentWidget = settingsWidget;
                 currentWidget->show();
                 break;
@@ -94,7 +94,7 @@ void ControlArea::showControls()
                 if (currentWidget)
                         currentWidget->hide();
                 if (!controlsWidget) {
-                        controlsWidget = new ControlsWidget(this, kitModel->api(), oscillators);
+                        controlsWidget = new ControlsWidget(this, geonkickModel->api(), oscillators);
                         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 }
                 currentWidget = controlsWidget;
@@ -111,7 +111,7 @@ void ControlArea::showKit()
                 if (currentWidget)
                         currentWidget->hide();
                 if (!kitWidget)
-                        kitWidget = new KitWidget(this, kitModel);
+                        kitWidget = new KitWidget(this, geonkickModel->getKitModel());
                 currentWidget = kitWidget;
                 currentWidget->show();
         }
@@ -128,9 +128,4 @@ void ControlArea::showPresets()
                 currentWidget = presetsWidget;
                 currentWidget->show();
         }
-}
-
-KitModel* ControlArea::getKitModel() const
-{
-        return kitModel;
 }

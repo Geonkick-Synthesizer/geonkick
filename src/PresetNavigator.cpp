@@ -24,29 +24,97 @@
 #include "PresetNavigator.h"
 #include "preset_browser_model.h"
 #include "preset_folder.h"
+#include "preset.h"
 
 #include "RkContainer.h"
+#include "RkSpinBox.h"
 #include "RkLabel.h"
+#include "RkButton.h"
 
 PresetNavigator::PresetNavigator(GeonkickWidget *parent,
                                  PresetBrowserModel* model)
         : GeonkickWidget(parent)
         , presetsModel{model}
-        , presetFolder{new RkLabel(this)}
+        , presetFolderName{new RkLabel(this)}
         , presetName{new RkLabel(this)}
 {
         setFixedSize(160, 28);
-        presetFolder->setSize(width() / 2 - 2, height() - 2);
-        presetFolder->setBackgroundColor(background());
-        presetFolder->show();
-        presetName->setSize(width() / 2 - 2, height() - 2);
-        presetName->setBackgroundColor(background());
-        presetName->show();
+        setBackgroundColor({0, 134, 156});
         auto mainLayout = new RkContainer(this);
         mainLayout->setSize(size());
-        mainLayout->addWidget(presetFolder);
+        mainLayout->setSpacing(0);
+
+        // Preset folder name
+        presetFolderName->setSize(width() / 2 - height()  / 2, height() - 2);
+        presetFolderName->setBackgroundColor({255, 0,0}/*background()*/);
+        presetFolderName->show();
+        mainLayout->addWidget(presetFolderName);
+
+        // Preset folder controls
+        auto controlsLayout = new RkContainer(this, Rk::Orientation::Vertical);
+        controlsLayout->setSize({height() / 2 - 2, height()});
+        controlsLayout->addSpace(2);
+        auto nextButton = new RkButton(this);
+        nextButton->setSize(height() / 2 - 4, height() / 2 - 4);
+        nextButton->setBackgroundColor({0, 255, 0});
+        nextButton->show();
+        controlsLayout->addWidget(nextButton);
+        controlsLayout->addSpace(4);
+        auto previousButton = new RkButton(this);
+        previousButton->setSize(height() / 2 - 4, height() / 2 - 4);
+        previousButton->setBackgroundColor({0, 255, 0});
+        previousButton->show();
+        controlsLayout->addWidget(previousButton);
+        mainLayout->addContainer(controlsLayout);
+
+        // Preset name
+        presetName->setSize(width() / 2 - height() - 2, height() - 2);
+        presetName->setBackgroundColor({255, 0,0}/*background()*/);
+        presetName->show();
         mainLayout->addWidget(presetName);
-        presetFolder->setText(presetsModel->currentSelectedFolder()->name());
-        presetName->setText("Preset Name");
+
+        // Preset controls
+        controlsLayout = new RkContainer(this, Rk::Orientation::Vertical);
+        controlsLayout->setSize({height() / 2 - 2, height()});
+        controlsLayout->addSpace(2);
+        nextButton = new RkButton(this);
+        nextButton->setSize(height() / 2 - 4, height() / 2 - 4);
+        nextButton->setBackgroundColor({0, 255, 0});
+        nextButton->show();
+        controlsLayout->addWidget(nextButton);
+        controlsLayout->addSpace(4);
+        previousButton = new RkButton(this);
+        previousButton->setSize(height() / 2 - 4, height() / 2 - 4);
+        previousButton->setBackgroundColor({0, 255, 0});
+        previousButton->show();
+        controlsLayout->addWidget(previousButton);
+        mainLayout->addContainer(controlsLayout);
+
+        RK_ACT_BIND(presetsModel,
+                    folderSelected,
+                    RK_ACT_ARGS(PresetFolder*),
+                    this,
+                    updateView());
+        RK_ACT_BIND(presetsModel,
+                    presetSelected,
+                    RK_ACT_ARGS(Preset*),
+                    this,
+                    updateView());
+        updateView();
 }
+
+void PresetNavigator::updateView()
+{
+        GEONKICK_LOG_INFO("---------------------> PresetNavigator::updateView()");
+        auto folder = presetsModel->currentSelectedFolder();
+        if (folder) {
+                presetFolderName->setText(folder->name());
+                auto preset = presetsModel->currentSelectedPreset();
+                if (!preset)
+                        preset = folder->preset(0);
+                if (preset)
+                        presetName->setText(preset->name());
+        }
+}
+
 
