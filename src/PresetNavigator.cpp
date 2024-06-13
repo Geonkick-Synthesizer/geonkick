@@ -55,17 +55,29 @@ PresetNavigator::PresetNavigator(GeonkickWidget *parent,
         controlsLayout->setSize({height() / 2 - 2, height()});
         controlsLayout->addSpace(2);
         auto nextButton = new RkButton(this);
+        nextButton->setType(RkButton::ButtonType::ButtonPush);
         nextButton->setSize(height() / 2 - 4, height() / 2 - 4);
         nextButton->setBackgroundColor({0, 255, 0});
         nextButton->show();
         controlsLayout->addWidget(nextButton);
         controlsLayout->addSpace(4);
         auto previousButton = new RkButton(this);
+        previousButton->setType(RkButton::ButtonType::ButtonPush);
         previousButton->setSize(height() / 2 - 4, height() / 2 - 4);
         previousButton->setBackgroundColor({0, 255, 0});
         previousButton->show();
         controlsLayout->addWidget(previousButton);
         mainLayout->addContainer(controlsLayout);
+        RK_ACT_BIND(nextButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    presetsModel,
+                    selectNextFolder());
+        RK_ACT_BIND(previousButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    presetsModel,
+                    selectPreviousFolder());
 
         // Preset name
         presetName->setSize(width() / 2 - height() - 2, height() - 2);
@@ -78,17 +90,29 @@ PresetNavigator::PresetNavigator(GeonkickWidget *parent,
         controlsLayout->setSize({height() / 2 - 2, height()});
         controlsLayout->addSpace(2);
         nextButton = new RkButton(this);
+        nextButton->setType(RkButton::ButtonType::ButtonPush);
         nextButton->setSize(height() / 2 - 4, height() / 2 - 4);
         nextButton->setBackgroundColor({0, 255, 0});
         nextButton->show();
         controlsLayout->addWidget(nextButton);
         controlsLayout->addSpace(4);
         previousButton = new RkButton(this);
+        previousButton->setType(RkButton::ButtonType::ButtonPush);
         previousButton->setSize(height() / 2 - 4, height() / 2 - 4);
         previousButton->setBackgroundColor({0, 255, 0});
         previousButton->show();
         controlsLayout->addWidget(previousButton);
         mainLayout->addContainer(controlsLayout);
+        RK_ACT_BIND(nextButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    presetsModel,
+                    selectNextPreset());
+        RK_ACT_BIND(previousButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    presetsModel,
+                    selectPreviousPreset());
 
         RK_ACT_BIND(presetsModel,
                     folderSelected,

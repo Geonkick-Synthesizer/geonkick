@@ -57,6 +57,10 @@ class PresetBrowserModel : public RkObject {
         PresetFolder* currentSelectedFolder() const;
         Preset* currentSelectedPreset() const;
         GeonkickApi* getGeonkickApi() const;
+        void selectPreviousFolder();
+        void selectNextFolder();
+        void selectPreviousPreset();
+        void selectNextPreset();
         RK_DECL_ACT(folderSelected,
                     folderSelected(PresetFolder* folder),
                     RK_ARG_TYPE(PresetFolder*),
@@ -94,6 +98,9 @@ class PresetBrowserModel : public RkObject {
         size_t presetPageIndex;
         size_t numberOfPresetColumns;
         size_t rowsPerColumn;
+        int folderSelectedRaw;
+        int presetSelectedRaw;
+        int presetSelectedColumn;
         PresetFolder* selectedFolder;
         Preset* selectedPreset;
 };

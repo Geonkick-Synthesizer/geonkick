@@ -36,6 +36,9 @@ PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
         , presetPageIndex{0}
         , numberOfPresetColumns{3}
         , rowsPerColumn{12}
+        , folderSelectedRaw{0}
+        , presetSelectedRaw{0}
+        , presetSelectedColumn{0}
         , selectedFolder{geonkickApi->getPresetFolder(0)}
         , selectedPreset{nullptr}
 {
@@ -162,14 +165,16 @@ void PresetBrowserModel::select(size_t row, size_t column)
                         selectedPreset = nullptr;
                         presetPageIndex = 0;
                         if (selectedFolder) {
-                                GEONKICK_LOG_INFO("selectedFolder: " << selectedFolder->name());
+                                folderSelectedRaw    = row;
+                                presetSelectedRaw    = 0;
+                                presetSelectedColumn = 0;
                                 action folderSelected(selectedFolder);
                         }
                 } if (column > 0 && selectedFolder) {
                         selectedPreset = getPreset(row, column);
                         if (selectedPreset && setPreset(selectedPreset)) {
-                                GEONKICK_LOG_INFO("selectedFolder: " << selectedPreset->name());
-                                                                
+                                presetSelectedRaw     = row;
+                                presetSelectedColumn  = column;
                                 action presetSelected(selectedPreset);
                         }
                 }
@@ -259,4 +264,50 @@ bool PresetBrowserModel::removeSelectedFolder()
 GeonkickApi* PresetBrowserModel::getGeonkickApi() const
 {
         return geonkickApi;
+}
+
+void PresetBrowserModel::selectPreviousFolder()
+{
+        if (getPresetFolder(presetSelectedRaw - 1)) {
+                select(0, presetSelectedRaw - 1);
+        } else {
+                folderPreviousPage();
+                select(0, 0);
+                select(0, 1);
+        }
+}
+
+void PresetBrowserModel::selectNextFolder()
+{
+        if (getPresetFolder(presetSelectedRaw + 1)) {
+                select(0, presetSelectedRaw + 1);
+        } else {
+                folderNextPage();
+                select(0, 0);
+                select(0, 1);
+        }
+}
+
+void PresetBrowserModel::selectPreviousPreset()
+{
+        if (getPreset(presetSelectedColumn, presetSelectedRaw - 1))
+                select(presetSelectedColumn, presetSelectedRaw - 1);
+        else if (getPreset(presetSelectedColumn - 1, 0))
+                select(presetSelectedColumn - 1, 0);
+        else {
+                previousPresetPage();
+                select(1, 0);
+        }
+}
+
+void PresetBrowserModel::selectNextPreset()
+{
+        if (getPreset(presetSelectedColumn, presetSelectedRaw + 1))
+                select(presetSelectedColumn, presetSelectedRaw + 1);
+        else if (getPreset(presetSelectedColumn + 1, 0))
+                select(presetSelectedColumn + 1, 0);
+        else {
+                nextPresetPage();
+                select(1, 0);
+        }
 }
