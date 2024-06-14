@@ -509,10 +509,6 @@ void RkWidget::RkWidgetImpl::setChildrenVisible(bool b)
                                 continue;
                         RK_IMPL_PTR(widget)->setVisible(b);
                         RK_IMPL_PTR(widget)->setChildrenVisible(b);
-                        if (!RK_IMPL_PTR(widget)->name().empty())
-                                RK_LOG_DEV_DEBUG(" ch: "
-                                                 << RK_IMPL_PTR(widget)->name()
-                                                 << " : visible: " << b);
                 }
         }
 }

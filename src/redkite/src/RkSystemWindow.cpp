@@ -452,7 +452,6 @@ double RkSystemWindow::scaleFactor() const
 
 void RkSystemWindow::setFocusWidget(RkWidget *widget, bool b)
 {
-        RK_LOG_DEV_DEBUG("widget: " << widget);
         if (widget != focusWidget) {
                 if (focusWidget) {
                         auto focusEvent = std::make_unique<RkFocusEvent>(RkEvent::Type::FocusedOut);

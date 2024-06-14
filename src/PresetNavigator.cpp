@@ -129,7 +129,6 @@ PresetNavigator::PresetNavigator(GeonkickWidget *parent,
 
 void PresetNavigator::updateView()
 {
-        GEONKICK_LOG_INFO("---------------------> PresetNavigator::updateView()");
         auto folder = presetsModel->currentSelectedFolder();
         if (folder) {
                 presetFolderName->setText(folder->name());

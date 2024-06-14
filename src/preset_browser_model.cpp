@@ -71,9 +71,11 @@ PresetFolder* PresetBrowserModel::getPresetFolder(int row) const
 
 Preset* PresetBrowserModel::getPreset(int row, int column) const
 {
-        if (column > 0 && selectedFolder) {
-                return selectedFolder->preset(presetPage() * numberOfPresetColumns * rowsPerColumn
-                                              + (column - 1) * rowsPerColumn + row);
+        if (column > 0 && row >=0 && row < static_cast<int>(rowsPerColumn)
+            && selectedFolder) {
+                const auto index = presetPage() * numberOfPresetColumns * rowsPerColumn
+                        + (column - 1) * rowsPerColumn + row;
+                return selectedFolder->preset(index);
         } else {
                 return nullptr;
         }
@@ -268,6 +270,7 @@ GeonkickApi* PresetBrowserModel::getGeonkickApi() const
 
 void PresetBrowserModel::selectPreviousFolder()
 {
+        GEONKICK_LOG_INFO("selectPreviousFolder()");
         if (getPresetFolder(presetSelectedRaw - 1)) {
                 select(0, presetSelectedRaw - 1);
         } else {
@@ -279,6 +282,7 @@ void PresetBrowserModel::selectPreviousFolder()
 
 void PresetBrowserModel::selectNextFolder()
 {
+        GEONKICK_LOG_INFO("selectNextFolder()");
         if (getPresetFolder(presetSelectedRaw + 1)) {
                 select(0, presetSelectedRaw + 1);
         } else {
@@ -290,24 +294,24 @@ void PresetBrowserModel::selectNextFolder()
 
 void PresetBrowserModel::selectPreviousPreset()
 {
-        if (getPreset(presetSelectedColumn, presetSelectedRaw - 1))
-                select(presetSelectedColumn, presetSelectedRaw - 1);
-        else if (getPreset(presetSelectedColumn - 1, 0))
-                select(presetSelectedColumn - 1, 0);
+        if (getPreset(presetSelectedRaw - 1, presetSelectedColumn))
+                select(presetSelectedRaw - 1, presetSelectedColumn);
+        else if (getPreset(rows() - 1, presetSelectedColumn - 1))
+                select(rows() - 1, presetSelectedColumn - 1);
         else {
                 previousPresetPage();
-                select(1, 0);
+                select(rows() - 1, columns() - 1);
         }
 }
 
 void PresetBrowserModel::selectNextPreset()
 {
-        if (getPreset(presetSelectedColumn, presetSelectedRaw + 1))
-                select(presetSelectedColumn, presetSelectedRaw + 1);
-        else if (getPreset(presetSelectedColumn + 1, 0))
-                select(presetSelectedColumn + 1, 0);
-        else {
+        if (getPreset(presetSelectedRaw + 1, presetSelectedColumn)) {
+                select(presetSelectedRaw + 1, presetSelectedColumn);
+        } else if (getPreset(0, presetSelectedColumn + 1)) {
+                select(0, presetSelectedColumn + 1);
+        } else {
                 nextPresetPage();
-                select(1, 0);
+                select(0, 1);
         }
 }

@@ -132,8 +132,6 @@ const std::string& RkWidget::title() const
 
 void RkWidget::show(bool b)
 {
-        if (!name().empty())
-                RK_LOG_DEV_DEBUG("name" << name() << ", show: " << b);
         setVisible(b);
 }
 
@@ -465,7 +463,6 @@ void RkWidget::mouseMoveEvent(RkMouseEvent *event)
 
 void RkWidget::mouseButtonPressEvent(RkMouseEvent *event)
 {
-        RK_LOG_DEV_DEBUG(title() << ": " << event->point().x() << ", y: " << event->point().y());
         RK_UNUSED(event);
 }
 
@@ -625,15 +622,9 @@ RkPoint RkWidget::mapToLocal(const RkPoint& p) const
 
 void RkWidget::setVisible(bool b)
 {
-        if (!name().empty())
-                RK_LOG_DEV_DEBUG(": " << name() << ": called");
-
         impl_ptr->setExplicitHidden(!b);
-        if (b && parentWidget() && !parentWidget()->isVisible()) {
-                if (!name().empty())
-                        RK_LOG_DEV_DEBUG(": " << name() << ": show ignored");
+        if (b && parentWidget() && !parentWidget()->isVisible())
                 return;
-        }
 
         impl_ptr->setVisible(b);
         if (!b) {
@@ -653,8 +644,6 @@ void RkWidget::setVisible(bool b)
         }
 
         RK_IMPL_PTR(this)->setChildrenVisible(b);
-        if (!name().empty())
-                RK_LOG_DEV_DEBUG(": " << name() << ": exit");
 }
 
 bool RkWidget::isVisible() const
