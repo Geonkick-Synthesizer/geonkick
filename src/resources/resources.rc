@@ -53,6 +53,15 @@ topmenu_settings_active.png
 topmenu_settings_hover.png
 topmenu_settings_off.png
 
+# === Preset Navigator ==
+presetnav_bk.png
+presetnav_next.png
+presetnav_previous.png
+presetnav_next_hover.png
+presetnav_previous_hover.png
+presetnav_next_pressed.png
+presetnav_previous_pressed.png
+
 # === Envelopes Menu ===
 
 show_ampl_env_active.png

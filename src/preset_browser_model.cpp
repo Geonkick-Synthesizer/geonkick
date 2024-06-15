@@ -270,26 +270,24 @@ GeonkickApi* PresetBrowserModel::getGeonkickApi() const
 
 void PresetBrowserModel::selectPreviousFolder()
 {
-        GEONKICK_LOG_INFO("selectPreviousFolder()");
-        if (getPresetFolder(presetSelectedRaw - 1)) {
-                select(0, presetSelectedRaw - 1);
+        if (getPresetFolder(folderSelectedRaw - 1)) {
+                select(folderSelectedRaw - 1, 0);
         } else {
                 folderPreviousPage();
                 select(0, 0);
-                select(0, 1);
         }
+        select(0, 1);
 }
 
 void PresetBrowserModel::selectNextFolder()
 {
-        GEONKICK_LOG_INFO("selectNextFolder()");
-        if (getPresetFolder(presetSelectedRaw + 1)) {
-                select(0, presetSelectedRaw + 1);
+        if (getPresetFolder(folderSelectedRaw + 1)) {
+                select(folderSelectedRaw + 1, 0);
         } else {
                 folderNextPage();
                 select(0, 0);
-                select(0, 1);
         }
+        select(0, 1);
 }
 
 void PresetBrowserModel::selectPreviousPreset()

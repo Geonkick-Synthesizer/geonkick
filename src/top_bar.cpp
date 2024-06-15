@@ -115,7 +115,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         logo->setImage(image);
         logo->show();
         mainLayout->addWidget(logo);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         openFileButton = new GeonkickButton(this);
         openFileButton->show();
@@ -130,7 +130,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=,this](){openFileButton->setPressed(false);
                                                               action openFile();});
         mainLayout->addWidget(openFileButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         saveFileButton = new GeonkickButton(this);
         saveFileButton->setSize(23, 10);
@@ -144,7 +144,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=,this](){saveFileButton->setPressed(false);
                                                              action saveFile();});
         mainLayout->addWidget(saveFileButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 #ifndef GEONKICK_OS_WINDOWS
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setSize(29, 10);
@@ -158,7 +158,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=,this](){exportFileButton->setPressed(false);
                                                                action openExport();});
         mainLayout->addWidget(exportFileButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 #endif // GEONKICK_OS_WINDOWS
 
 	auto playButton = new RkButton(this);
@@ -173,10 +173,10 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickModel->api(), playKick());
 	playButton->show();
         mainLayout->addWidget(playButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         createLyersButtons(mainLayout);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         auto resetButton = new RkButton(this);
         resetButton->setSize(33, 18);
@@ -191,7 +191,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
         mainLayout->addWidget(resetButton);
 
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         tuneCheckbox = new GeonkickButton(this);
         tuneCheckbox->setCheckable(true);
