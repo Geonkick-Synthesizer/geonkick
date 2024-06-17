@@ -33,18 +33,13 @@
 class RkEventQueue;
 struct RkCanvasInfo;
 
-constexpr int RK_MAIN_WINDOW_TIMER_ID = 101;
+constexpr int RK_SYSTEM_WINDOW_TIMER_ID = 101;
 
 class RkWindowWin {
  public:
-        explicit RkWindowWin(const RkNativeWindowInfo *parent,
-                           Rk::WindowFlags flags = Rk::WindowFlags::Widget,
-                           bool isTop = false);
-        explicit RkWindowWin(const RkNativeWindowInfo &parent,
-                           Rk::WindowFlags flags = Rk::WindowFlags::Widget,
-                           bool isTop = false);
+        explicit RkWindowWin(const RkNativeWindowInfo *parent);
+        explicit RkWindowWin(const RkNativeWindowInfo &parent);
         ~RkWindowWin();
-		Rk::WindowFlags flags() const;
         RkWindowWin(const RkWindowWin &other) = delete;
         RkWindowWin& operator=(const RkWindowWin &other) = delete;
         RkWindowWin(RkWindowWin &&other) = delete;
@@ -53,10 +48,10 @@ class RkWindowWin {
         void show(bool b = true);
         const RkNativeWindowInfo* nativeWindowInfo();
         void setTitle(const std::string &title);
-        const RkSize& size() const;
-        void setSize(const RkSize &size);
-        RkPoint& position() const;
-        void setPosition(const RkPoint &position);
+        RkSize size() const;
+        void setSize(const RkSize &winSize);
+        RkPoint position() const;
+        void setPosition(const RkPoint &pos);
         RkWindowId id() const;
         void setBorderWidth(int width);
         int borderWidth() const;
@@ -65,12 +60,12 @@ class RkWindowWin {
         void setBackgroundColor(const RkColor &color);
         const RkColor& background() const;
         void resizeCanvas();
-        const RkCanvasInfo* getCanvasInfo();
+        RkCanvasInfo* getCanvasInfo();
         void freeCanvasInfo();
         void update();
         void setFocus(bool b);
         bool hasFocus();
-		bool pointerIsOverWindow() const;
+        bool pointerIsOverWindow() const;
         void setPointerShape(Rk::PointerShape shape);
         void setEventQueue(RkEventQueue* queue);
         void setScaleFactor(double factor);
@@ -85,14 +80,11 @@ class RkWindowWin {
         RkNativeWindowInfo parentWindowInfo;
         std::unique_ptr<RkNativeWindowInfo> windowInfo;
         RkWindowId windowHandle;
-        mutable RkPoint windowPosition;
-        mutable RkSize windowSize;
         int winBorderWidth;
         RkColor winBorderColor;
         RkColor backgroundColor;
         RkEventQueue* eventQueue;
         mutable std::unique_ptr<RkCanvasInfo> canvasInfo;
-        Rk::WindowFlags windowFlags;
         bool isTopWindow;
         double scaleFactor;
 };

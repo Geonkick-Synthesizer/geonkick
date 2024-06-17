@@ -25,30 +25,37 @@
 #include "RkWidget.h"
 #include "RkEvent.h"
 #include "RkWidgetImpl.h"
+#include "RkEventQueueImpl.h"
 #include "RkPlatform.h"
 #include "RkMain.h"
+#include "RkMainImpl.h"
 
-RkWidget::RkWidget(RkMain *mainApp, Rk::WindowFlags flags)
-        : RkObject(nullptr, std::make_unique<RkWidgetImpl>(this, nullptr, flags, true))
+RkWidget::RkWidget(RkMain& mainApp, Rk::WidgetFlags flags)
+        : RkObject(nullptr, std::make_unique<RkWidgetImpl>(this, &mainApp, nullptr, flags))
         , impl_ptr{static_cast<RkWidgetImpl*>(o_ptr.get())}
 {
         RK_LOG_DEBUG("called: " << this);
-        mainApp->setTopLevelWidget(this);
+        RK_IMPL_PTR((&mainApp))->setTopWidget(this, nullptr);
+        update();
 }
 
-RkWidget::RkWidget(RkMain *mainApp, const RkNativeWindowInfo &parent, Rk::WindowFlags flags)
-        : RkObject(nullptr, std::make_unique<RkWidgetImpl>(this, parent, flags, true))
+RkWidget::RkWidget(RkMain& mainApp, const RkNativeWindowInfo &parent, Rk::WidgetFlags flags)
+        : RkObject(nullptr, std::make_unique<RkWidgetImpl>(this, &mainApp, &parent, flags))
         , impl_ptr{static_cast<RkWidgetImpl*>(o_ptr.get())}
 {
         RK_LOG_DEBUG("called: " << this);
-        mainApp->setTopLevelWidget(this);
+        RK_IMPL_PTR((&mainApp))->setTopWidget(this, &parent);
+        update();
 }
 
-RkWidget::RkWidget(RkWidget *parent, Rk::WindowFlags flags)
+RkWidget::RkWidget(RkWidget *parent, Rk::WidgetFlags flags)
         : RkObject(parent, std::make_unique<RkWidgetImpl>(this, parent, flags))
         , impl_ptr{static_cast<RkWidgetImpl*>(o_ptr.get())}
 {
         RK_LOG_DEBUG("called: " << this);
+        if (flags == Rk::WidgetFlags::Popup)
+                RK_IMPL_PTR(eventQueue())->addPopup(this);
+
         if (modality() == Rk::Modality::ModalTopWidget) {
                 auto topWidget = getTopWidget();
                 if (topWidget)
@@ -56,6 +63,7 @@ RkWidget::RkWidget(RkWidget *parent, Rk::WindowFlags flags)
                 else if (parentWidget() && modality() == Rk::Modality::ModalParent)
                         parentWidget()->disableInput();
         }
+        update();
 }
 
 RkWidget::RkWidget(RkWidget *parent, std::unique_ptr<RkWidgetImpl> impl)
@@ -74,6 +82,10 @@ RkWidget::RkWidget(RkWidget *parent, std::unique_ptr<RkWidgetImpl> impl)
 RkWidget::~RkWidget()
 {
         RK_LOG_DEBUG("called: " << this);
+        if (widgetFlags() == Rk::WidgetFlags::Popup)
+                RK_IMPL_PTR(eventQueue())->removePopup(this);
+        if (hasFocus())
+                setFocus(false);
         if (parentWidget()) {
                 if (modality() == Rk::Modality::ModalTopWidget) {
                         if (!parentWidget()->isModal()) {
@@ -88,12 +100,23 @@ RkWidget::~RkWidget()
                 } else if (modality() == Rk::Modality::ModalParent) {
                         parentWidget()->enableInput();
                 }
+                parentWidget()->update();
         }
 }
 
-Rk::WindowFlags RkWidget::windowFlags() const
+RkCanvasInfo* RkWidget::getCanvasInfo() const
 {
-        return impl_ptr->windowFlags();
+        return impl_ptr->getCanvasInfo();
+}
+
+void RkWidget::freeCanvasInfo()
+{
+        impl_ptr->freeCanvasInfo();
+}
+
+Rk::WidgetFlags RkWidget::widgetFlags() const
+{
+        return impl_ptr->getWidgetFlags();
 }
 
 void RkWidget::setTitle(const std::string &title)
@@ -109,27 +132,12 @@ const std::string& RkWidget::title() const
 
 void RkWidget::show(bool b)
 {
-        impl_ptr->show(b);
-}
-
-bool RkWidget::isShown() const
-{
-	return impl_ptr->isShown();
+        setVisible(b);
 }
 
 void RkWidget::hide()
 {
-        impl_ptr->show(false);
-}
-
-const RkNativeWindowInfo* RkWidget::nativeWindowInfo() const
-{
-        return impl_ptr->nativeWindowInfo();
-}
-
-RkWindowId RkWidget::id() const
-{
-        return impl_ptr->id();
+        show(false);
 }
 
 RkWidget* RkWidget::parentWidget() const
@@ -144,97 +152,97 @@ bool RkWidget::isClose() const
 
 void RkWidget::setSize(int w, int h)
 {
-        if (w > maximumWidth())
-                w = maximumWidth();
-        else if (w < minimumWidth())
-                w = minimumWidth();
-
-        if (h > maximumHeight())
-                h = maximumHeight();
-        else if (h < minimumHeight())
-                h = minimumHeight();
-
         impl_ptr->setSize(RkSize(w, h));
 }
 
 void RkWidget::setSize(const RkSize &size)
 {
-        impl_ptr->setSize(size);
+        setSize(size.width(), size.height());
 }
 
-RkSize RkWidget::size() const
+const RkSize& RkWidget::size() const
 {
         return impl_ptr->size();
 }
 
+void RkWidget::setMinimumSize(const RkSize &size)
+{
+        impl_ptr->setMinimumSize(size);
+}
+
+const RkSize& RkWidget::minimumSize() const
+{
+        return impl_ptr->minimumSize();
+}
+
+void RkWidget::setMaximumSize(const RkSize & size)
+{
+        return impl_ptr->setMaximumSize(size);
+}
+
+const RkSize& RkWidget::maximumSize() const
+{
+        return impl_ptr->maximumSize();
+}
+
 void RkWidget::setWidth(int w)
 {
-        if (w > maximumWidth())
-                impl_ptr->setSize(RkSize(maximumWidth(), impl_ptr->size().height()));
-        else if (w < minimumWidth())
-                impl_ptr->setSize(RkSize(minimumWidth(), impl_ptr->size().height()));
-        else
-                impl_ptr->setSize(RkSize(w, impl_ptr->size().height()));
+        setSize(RkSize(w, impl_ptr->size().height()));
 }
 
 int RkWidget::width() const
 {
-        return impl_ptr->size().width();
+        return size().width();
 }
 
 int RkWidget::minimumWidth() const
 {
-        return impl_ptr->minimumWidth();
+        return impl_ptr->minimumSize().width();
 }
 
 int RkWidget::maximumWidth() const
 {
-        return impl_ptr->maximumWidth();
+        return impl_ptr->maximumSize().width();
 }
 
 void RkWidget::setHeight(int h)
 {
-        if (h > maximumHeight())
-                impl_ptr->setSize(RkSize(impl_ptr->size().width(),  maximumHeight()));
-        else if (h < minimumHeight())
-                impl_ptr->setSize(RkSize(impl_ptr->size().width(),  minimumHeight()));
-        else
-                impl_ptr->setSize(RkSize(impl_ptr->size().width(),  h));
+        setSize(RkSize(impl_ptr->size().width(),  h));
 }
 
 int RkWidget::height() const
 {
-        return impl_ptr->size().height();
+        return size().height();
 }
 
 int RkWidget::minimumHeight() const
 {
-        return impl_ptr->minimumHeight();
+        return impl_ptr->minimumSize().height();
 }
 
 int RkWidget::maximumHeight() const
 {
-        return impl_ptr->maximumHeight();
+        return impl_ptr->maximumSize().height();
 }
 
 void RkWidget::setMinimumWidth(int width)
 {
-        impl_ptr->setMinimumWidth(width);
+        impl_ptr->setMinimumSize({width, minimumSize().height()});
 }
 
 void RkWidget::setMinimumHeight(int height)
 {
-        impl_ptr->setMinimumHeight(height);
+        impl_ptr->setMinimumSize({minimumSize().width(), height});
 }
 
 void RkWidget::setMaximumWidth(int width)
 {
-        impl_ptr->setMaximumWidth(width);
+        impl_ptr->setMaximumSize({width, maximumSize().height()});
 }
 
 void RkWidget::setMaximumHeight(int height)
 {
-        impl_ptr->setMaximumHeight(height);
+        impl_ptr->setMaximumSize({ maximumSize().width(), height});
 }
 
 void RkWidget::setFixedWidth(int width)
@@ -295,7 +303,7 @@ void RkWidget::setPosition(const RkPoint &p)
         impl_ptr->setPosition(p);
 }
 
-RkPoint RkWidget::position() const
+const RkPoint& RkWidget::position() const
 {
         return impl_ptr->position();
 }
@@ -312,20 +320,9 @@ int RkWidget::borderWidth() const
 
 void RkWidget::setBorderColor(int red, int green, int blue)
 {
-        if (red > 255)
-                red = 255;
-        if (red < 0)
-                red = 0;
-
-        if (green > 255)
-                green = 255;
-        if (green < 0)
-                green = 0;
-
-        if (blue > 255)
-                blue = 255;
-        if (blue < 0)
-                blue = 0;
+        red   = std::clamp(red, 0, 255);
+        green = std::clamp(green, 0, 255);
+        blue  = std::clamp(blue, 0, 255);
         impl_ptr->setBorderColor(RkColor(red, green, blue));
 }
 
@@ -336,21 +333,9 @@ const RkColor& RkWidget::borderColor() const
 
 void RkWidget::setBackgroundColor(int red, int green, int blue)
 {
-        if (red > 255)
-                red = 255;
-        if (red < 0)
-                red = 0;
-
-        if (green > 255)
-                green = 255;
-        if (green < 0)
-                green = 0;
-
-        if (blue > 255)
-                blue = 255;
-        if (blue < 0)
-                blue = 0;
-
+        red   = std::clamp(red, 0, 255);
+        green = std::clamp(green, 0, 255);
+        blue  = std::clamp(blue, 0, 255);
         impl_ptr->setBackgroundColor(RkColor(red, green, blue));
 }
 
@@ -448,12 +433,6 @@ bool RkWidget::propagateGrabKeyEnabled() const
         return impl_ptr->propagateGrabKeyEnabled();
 }
 
-void RkWidget::event(RkEvent *event)
-{
-        impl_ptr->event(event);
-        RkObject::event(event);
-}
-
 void RkWidget::closeEvent([[maybe_unused]] RkCloseEvent *event)
 {
         if (parentWidget()) {
@@ -548,16 +527,6 @@ void RkWidget::update()
         impl_ptr->update();
 }
 
-const RkCanvasInfo* RkWidget::getCanvasInfo() const
-{
-        return impl_ptr->getCanvasInfo();
-}
-
-void RkWidget::freeCanvasInfo()
-{
-        return impl_ptr->freeCanvasInfo();
-}
-
 RkRect RkWidget::rect() const
 {
         return impl_ptr->rect();
@@ -625,26 +594,6 @@ Rk::PointerShape RkWidget::pointerShape() const
         return impl_ptr->pointerShape();
 }
 
-void RkWidget::setScaleFactor(double factor)
-{
-        impl_ptr->setScaleFactor(factor);
-        for (const auto &ch: children()) {
-                auto widget = dynamic_cast<RkWidget*>(ch);
-                if (widget)
-                        widget->setScaleFactor(factor);
-        }
-
-        if (this == getTopWidget())
-            eventQueue()->setScaleFactor(factor);
-        update();
-}
-
-double RkWidget::scaleFactor() const
-{
-        return impl_ptr->scaleFactor();
-}
-
-
 bool RkWidget::pointerIsOverWindow() const
 {
         return impl_ptr->pointerIsOverWindow();
@@ -657,4 +606,69 @@ bool RkWidget::isChild(RkWidget *widget)
                         return true;
         }
         return false;
+}
+
+RkPoint RkWidget::mapToGlobal(const RkPoint& p) const
+{
+        return impl_ptr->isTopWidget() ? p + position()
+                : p + parentWidget()->mapToGlobal(position());
+}
+
+RkPoint RkWidget::mapToLocal(const RkPoint& p) const
+{
+        return impl_ptr->isTopWidget() ? p - position()
+                : p - parentWidget()->mapToGlobal(position());
+}
+
+void RkWidget::setVisible(bool b)
+{
+        impl_ptr->setExplicitHidden(!b);
+        if (b && parentWidget() && !parentWidget()->isVisible())
+                return;
+
+        impl_ptr->setVisible(b);
+        if (!b) {
+                eventQueue()->postEvent(this,
+                                        std::move(std::make_unique<RkHideEvent>()));
+        } else {
+                eventQueue()->postEvent(this,
+                                std::move(std::make_unique<RkShowEvent>()));
+        }
+
+        if (!b && parentWidget()) {
+                eventQueue()->postEvent(parentWidget(),
+                                        std::move(std::make_unique<RkPaintEvent>()));
+        } else {
+                eventQueue()->postEvent(this,
+                                        std::move(std::make_unique<RkPaintEvent>()));
+        }
+
+        RK_IMPL_PTR(this)->setChildrenVisible(b);
+}
+
+bool RkWidget::isVisible() const
+{
+        return impl_ptr->isVisible();
+}
+
+bool RkWidget::isAncestorOf(RkWidget *child)
+{
+        if (!child)
+                return false;
+
+        if (RK_IMPL_PTR(this)->isTopWidget() || child->parentWidget() == this)
+                return true;
+
+        return isAncestorOf(child->parentWidget());
+}
+
+void RkWidget::setScaleFactor(double factor)
+{
+        RK_IMPL_PTR(this)->setScaleFactor(factor);
+        update();
+}
+
+double RkWidget::scaleFactor() const
+{
+        return RK_IMPL_PTR(this)->scaleFactor();
 }

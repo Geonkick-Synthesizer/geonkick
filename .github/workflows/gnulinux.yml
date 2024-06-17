@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - develop
+      - 'release/*'
     tags:
       - '*'
 
@@ -22,15 +24,15 @@ jobs:
       - name: Set up build environment
         run: |
           sudo apt-get update -qy
-          sudo apt-get install -y git build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev
+          sudo apt-get install -y git build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev texlive-xetex texlive-latex-base pandoc
 
       - name: Build
         run: |
           mkdir -p build/install
-          git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
+          git clone --recursive https://github.com/Geonkick-Synthesizer/vst3sdk.git
           VST3SDKPATH=$(pwd)/vst3sdk
           cd build
-          cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH ..
+          cmake -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=$VST3SDKPATH -DGKICK_DOCUMENTATION=ON ..
           make -j 4
           make install
           tar czf "${{ matrix.ARCHIVE_NAME }}.tar.gz" install

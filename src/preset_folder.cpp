@@ -26,7 +26,19 @@
 
 PresetFolder::PresetFolder(const std::filesystem::path &path)
         : folderPath{path}
+        , isCustomFolder{false}
 {
+        loadPresets();
+}
+
+void PresetFolder::setAsCustom(bool b)
+{
+        isCustomFolder = b;
+}
+
+bool PresetFolder::isCustom() const
+{
+        return isCustomFolder;
 }
 
 std::string PresetFolder::name() const

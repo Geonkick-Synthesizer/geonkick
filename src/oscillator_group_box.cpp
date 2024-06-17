@@ -161,6 +161,8 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
                                                      RK_IMAGE_RC(controls_osc2_hover)),
                                              RkButton::State::PressedHover);
         } else {
+                setFixedSize(224, 276);
+                oscillatorCheckbox->setFixedSize(69, 21);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc3_on)),
                                              RkButton::State::Pressed);
@@ -246,7 +248,6 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
 
         phaseSlider = new GeonkickSlider(waveFunctionHBox);
         phaseSlider->setFixedSize(150, 8);
-        phaseSlider->onSetValue(50);
         phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
         phaseSlider->hide();
         RK_ACT_BIND(phaseSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorPhase(value));
@@ -261,6 +262,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         amplitudeEnvelopeBox->show();
 
         amplitudeKnob = new Knob(amplitudeEnvelopeBox);
+        amplitudeKnob->setDefaultValue(0.26);
         amplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
         amplitudeKnob->setFixedSize(80, 78);
         amplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -374,7 +376,6 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     pitchEnvelopeButton, setPressed(envelope == Envelope::Type::PitchShift
                                                     && static_cast<Oscillator::Type>(category)
                                                     == oscillator->type()));
-
         if (oscillator->function() == Oscillator::FunctionType::Sample) {
                 pitchEnvelopeButton->show();
                 pitchShiftKnob->show();
@@ -465,8 +466,8 @@ void OscillatorGroupBox::updateGui()
                 fmCheckbox->setPressed(oscillator->isFm());
 
         filterBox->enable(oscillator->isFilterEnabled());
-        filterBox->setResonance(oscillator->filterQFactor());
-        filterBox->setCutOff(oscillator->filterFrequency());
+        filterBox->setResonance(oscillator->filterQFactor(), 10);
+        filterBox->setCutOff(oscillator->filterFrequency(), 800);
         filterBox->setType(oscillator->filter());
 }
 

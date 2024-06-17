@@ -30,7 +30,7 @@
 
 class  PainterExample: public RkWidget {
   public:
-        PainterExample(RkMain *app)
+        PainterExample(RkMain &app)
                 : RkWidget(app)
                 , clickPoint(50, 50)
                 , startDraw{true}
@@ -113,7 +113,6 @@ class  PainterExample: public RkWidget {
                         paint.drawImage(image, 0, 0);
 						*/
                 }
-				
 
         void mouseButtonPressEvent(RkMouseEvent *event) override
         {
@@ -134,14 +133,14 @@ class  PainterExample: public RkWidget {
   private:
         RkPoint clickPoint;
         bool startDraw;
-//        RkImage image;
+        //        RkImage image;
 };
 
 int main(int arc, char **argv)
 {
     RkMain app(arc, argv);
 
-    auto widget = new PainterExample(&app);
+    auto widget = new PainterExample(app);
     widget->setTitle("Painter Example");
     widget->setSize(350, 350);
     widget->show();

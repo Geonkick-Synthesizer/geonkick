@@ -26,13 +26,14 @@
 #include "preset_browser_model.h"
 #include "preset_browser_view.h"
 #include "ViewState.h"
+#include "GeonkickModel.h"
 #include "kit_model.h"
 #include "percussion_model.h"
 #include "MidiKeyWidget.h"
+#include "PresetNavigator.h"
 
 #include <RkLabel.h>
 #include <RkButton.h>
-#include <RkTransition.h>
 #include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(separator);
@@ -78,16 +79,19 @@ RK_DECLARE_IMAGE_RC(topmenu_presets_off);
 RK_DECLARE_IMAGE_RC(topmenu_samples_active);
 RK_DECLARE_IMAGE_RC(topmenu_samples_hover);
 RK_DECLARE_IMAGE_RC(topmenu_samples_off);
+RK_DECLARE_IMAGE_RC(topmenu_settings_active);
+RK_DECLARE_IMAGE_RC(topmenu_settings_hover);
+RK_DECLARE_IMAGE_RC(topmenu_settings_off);
 
-TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
+TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         : GeonkickWidget(parent)
-        , kitModel{model}
+        , geonkickModel{model}
         , openFileButton{nullptr}
         , saveFileButton{nullptr}
 #ifndef GEONKICK_OS_WINDOWS
         , exportFileButton{nullptr}
 #endif // GEONKICK_OS_WINDOWS
-        , presetNameLabel{nullptr}
+        , presetNavigator{nullptr}
         , layer1Button{nullptr}
         , layer2Button{nullptr}
         , layer3Button{nullptr}
@@ -106,12 +110,12 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
 
         auto logo = new RkLabel(this);
         logo->setBackgroundColor(background());
-        RkImage image(62, 10, RK_IMAGE_RC(logo));
+        RkImage image(22, 22, RK_IMAGE_RC(logo));
         logo->setSize(image.width(), image.height());
         logo->setImage(image);
         logo->show();
         mainLayout->addWidget(logo);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         openFileButton = new GeonkickButton(this);
         openFileButton->show();
@@ -123,10 +127,10 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                  RkButton::State::UnpressedHover);
         openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
                                  RkButton::State::Pressed);
-        RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=](){openFileButton->setPressed(false);
+        RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=,this](){openFileButton->setPressed(false);
                                                               action openFile();});
         mainLayout->addWidget(openFileButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         saveFileButton = new GeonkickButton(this);
         saveFileButton->setSize(23, 10);
@@ -137,10 +141,10 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                  RkButton::State::UnpressedHover);
         saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
                                  RkButton::State::Pressed);
-        RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=](){saveFileButton->setPressed(false);
+        RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=,this](){saveFileButton->setPressed(false);
                                                              action saveFile();});
         mainLayout->addWidget(saveFileButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 #ifndef GEONKICK_OS_WINDOWS
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setSize(29, 10);
@@ -151,10 +155,10 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                                  RkButton::State::UnpressedHover);
         exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
                                 RkButton::State::Pressed);
-        RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=](){exportFileButton->setPressed(false);
+        RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=,this](){exportFileButton->setPressed(false);
                                                                action openExport();});
         mainLayout->addWidget(exportFileButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 #endif // GEONKICK_OS_WINDOWS
 
 	auto playButton = new RkButton(this);
@@ -166,13 +170,13 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                              RkButton::State::UnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_pressed)),
                              RkButton::State::Pressed);
-        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), kitModel->api(), playKick());
+        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickModel->api(), playKick());
 	playButton->show();
         mainLayout->addWidget(playButton);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         createLyersButtons(mainLayout);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         auto resetButton = new RkButton(this);
         resetButton->setSize(33, 18);
@@ -187,7 +191,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         RK_ACT_BIND(resetButton, pressed, RK_ACT_ARGS(), this, resetToDefault());
         mainLayout->addWidget(resetButton);
 
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout, 5);
 
         tuneCheckbox = new GeonkickButton(this);
         tuneCheckbox->setCheckable(true);
@@ -201,20 +205,13 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
         tuneCheckbox->setImage(RkImage(tuneCheckbox->size(), RK_IMAGE_RC(tune_checkbox_hover)),
                                RkButton::State::UnpressedHover);
         tuneCheckbox->show();
-        RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), kitModel->api(),
-		    tuneAudioOutput(kitModel->api()->currentPercussion(), b));
+        RK_ACT_BIND(tuneCheckbox, toggled, RK_ACT_ARGS(bool b), geonkickModel->api(),
+		    tuneAudioOutput(geonkickModel->api()->currentPercussion(), b));
         mainLayout->addWidget(tuneCheckbox);
-        addSeparator(mainLayout, 10);
+        addSeparator(mainLayout);
 
-        presetNameLabel = new RkLabel(this);
-        presetNameLabel->setBackgroundColor(background());
-        presetNameLabel->setTextColor({210, 226, 226, 140});
-        auto font = presetNameLabel->font();
-        font.setSize(10);
-        presetNameLabel->setFont(font);
-        presetNameLabel->setSize(80, 30);
-        presetNameLabel->show();
-        mainLayout->addWidget(presetNameLabel);
+        presetNavigator = new PresetNavigator(this, geonkickModel->getPresetsModel());
+        mainLayout->addWidget(presetNavigator);
 
         addSeparator(mainLayout);
         midiKeyButton = new GeonkickButton(this);
@@ -272,8 +269,8 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
 #endif // GEONKICK_SINGLE
 
         // Presets button
-        addSeparator(mainLayout);
-        presetsButton = new GeonkickButton(this);
+        /*        addSeparator(mainLayout);
+                  presetsButton = new GeonkickButton(this);
         presetsButton->setPressed(viewState()->getMainView() == ViewState::View::Presets);
         presetsButton->setFixedSize(54, 20);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
@@ -287,7 +284,7 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                     viewState(), setMainView(ViewState::View::Presets));
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     presetsButton, setPressed(view == ViewState::View::Presets));
-        mainLayout->addWidget(presetsButton);
+                    mainLayout->addWidget(presetsButton);*/
 
         // Samples button
         addSeparator(mainLayout);
@@ -307,9 +304,35 @@ TopBar::TopBar(GeonkickWidget *parent, KitModel *model)
                     samplesButton, setPressed(view == ViewState::View::Samples));
         mainLayout->addWidget(samplesButton);
 
-        RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateGui());
-        RK_ACT_BINDL(kitModel, percussionUpdated, RK_ACT_ARGS(PercussionModel* model),
-                     [=](PercussionModel* model) {
+        // Setting button
+        addSeparator(mainLayout);
+        auto settingsButton = new GeonkickButton(this);
+        settingsButton->setPressed(viewState()->getMainView() == ViewState::View::Settings);
+        settingsButton->setFixedSize(54, 20);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_off)),
+                                 RkButton::State::Unpressed);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_active)),
+                                 RkButton::State::Pressed);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_hover)),
+                                 RkButton::State::UnpressedHover);
+        settingsButton->show();
+        RK_ACT_BIND(settingsButton, pressed, RK_ACT_ARGS(),
+                    viewState(), setMainView(ViewState::View::Settings));
+        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
+                    settingsButton, setPressed(view == ViewState::View::Settings));
+        mainLayout->addWidget(settingsButton);
+
+        RK_ACT_BIND(geonkickModel->getKitModel(),
+                    modelUpdated,
+                    RK_ACT_ARGS(),
+                    this, updateGui());
+        RK_ACT_BINDL(geonkickModel->getKitModel(),
+                     percussionUpdated,
+                     RK_ACT_ARGS(PercussionModel* model),
+                     [=, this](PercussionModel* model) {
                              if (model->isSelected())
                                      updateGui();
                      } );
@@ -378,11 +401,11 @@ void TopBar::createLyersButtons(RkContainer *mainLayout)
         mainLayout->addWidget(layer3Button);
 
         RK_ACT_BIND(layer1Button, toggled, RK_ACT_ARGS(bool b),
-                    kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer1, b));
+                    geonkickModel->api(), enbaleLayer(GeonkickApi::Layer::Layer1, b));
         RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b),
-                    kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer3, b));
+                    geonkickModel->api(), enbaleLayer(GeonkickApi::Layer::Layer3, b));
         RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b),
-        kitModel->api(), enbaleLayer(GeonkickApi::Layer::Layer2, b));
+        geonkickModel->api(), enbaleLayer(GeonkickApi::Layer::Layer2, b));
 }
 
 void TopBar::setPresetName(const std::string &name)
@@ -391,27 +414,30 @@ void TopBar::setPresetName(const std::string &name)
                 std::string preset = name;
                 preset.resize(15);
                 preset += "...";
-                presetNameLabel->setText(preset);
+                //                presetNameLabel->setText(preset);
         } else {
-                presetNameLabel->setText(name);
+                //                presetNameLabel->setText(name);
         }
 }
 
 void TopBar::updateGui()
 {
-        auto api = kitModel->api();
+        auto api = geonkickModel->api();
         layer1Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer1));
         layer2Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer2));
         layer3Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer3));
         tuneCheckbox->setPressed(api->isAudioOutputTuned(api->currentPercussion()));
-        setPresetName(kitModel->currentPercussion()->name());
+        setPresetName(geonkickModel->getKitModel()->currentPercussion()->name());
+        auto kitModel = geonkickModel->getKitModel();
         midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(kitModel->currentPercussion()->key()));
 }
 
 void TopBar::showMidiPopup()
 {
+        auto kitModel = geonkickModel->getKitModel();
         auto midiPopup = new MidiKeyWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
                                            kitModel->currentPercussion());
+        GEONKICK_LOG_INFO("MidiKeyWidget: " << midiPopup);
         midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
         RK_ACT_BIND(midiPopup,
                     isAboutToClose,

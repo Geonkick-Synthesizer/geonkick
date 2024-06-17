@@ -1,3 +1,82 @@
+## [3.4.0]
+
+### Features
+
+- UI & DSP: set instrument MIDI channel
+- UI & DSP: Setting to force all instruments to MIDI a channel
+- Presets: new kicks presets by Harald Revery
+- Presets: new kicks presets by Oleh Bardiuk ( @o-bardiuk )
+- UI: Add settings tab
+- UI/File Browser: bookmark folder option
+- UI/Preset Browser: Add custom preset folder
+
+### Fixes
+
+- Code: fix memory corruption when loading presets with samples
+- Code: remove the usage of shared pointers from the Geonkick code
+- DSP/Filter: fix the hardclip for high values ( bug found by @DerozerDSP )
+- Core GUI/redkite: use list container for observers (fix potential crashes espacially for lib++, crash reported by @treapster )
+- Core GUI/redkite: don't access the interface from the ~RkObjectImpl (fixes crashes in libc++ found by @treapster )
+- UI: Fix -inf to int conversion for attack value in the compressor group box ( @treapster )
+- DSP: Fix uninitialized gkick_envelope_apply_type ( @treapster )
+- DSP & UI: Fix nan/inf values for leveler ( @treapster )
+- Build system: use funsafe-math-optimizations -fno-math-errno -fno-trapping-math ( @treapster )
+- Code: error checking on parsing presets (fix potential crashes)
+
+### Improvements
+
+- Presets: update key mapping for kit presets to follow closer the general MIDI percussion key map
+- Code: move to C++20
+
+## [3.3.2]
+
+### Fixes
+
+- Fix high CPU usage by DSP
+- Fix limiter for the audition channel
+	, use a separate audition channel for samples preview
+- Fix instrument leveler value
+
+## [3.3.1]
+
+### Fixes
+
+- Fix out of bound index in KitModel (by @treapster)
+- Fix warning related to clang (by @treapster)
+- Fix not running Geonkick standalone if can't lock memory (warn only)
+
+## [3.3.0]
+
+### Features
+
+- Windows: Use ISS script for installer
+- Windows: Add plugin custom paths for installer
+
+### Improvements
+
+- Core DSP: Mix the playing sounds instead cutting it on note off
+
+## [3.2.0]
+
+### Fixes
+
+- Windows: Fixed installation of presets.
+- Windows: Linked statically all dependencies.
+- Windows: Removed installation of dependencies' DLLs and environment variable path from the installer.
+- Fixed the path to the config folder.
+
+### Features
+
+- Windows: Added scaling for GUI.
+- Windows: Added logical disks for file browser.
+
+## [3.1.1]
+
+### Fixes
+
+- For Windows: Fix GUI getting slow after a time of working (fix release of DC after distroy of the Cairo win32 surface)
+- Fix shading of effects group box by the global and noise group box
+
 ## [3.1.0]
 
 ### Features

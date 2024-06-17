@@ -85,7 +85,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
         auto info = rk_from_native_x11(xDisplay, screenNumber, reinterpret_cast<Window>(parent));
 #endif // GEONKICK_OS_GNU
 
-        mainWindow = new MainWindow(guiApp.get(), geonkickApi, info);
+        mainWindow = new MainWindow(*guiApp.get(), geonkickApi, info);
         mainWindow->show();
         if (!mainWindow->init()) {
                 GEONKICK_LOG_ERROR("can't init main window");
@@ -129,9 +129,9 @@ GKickVstEditor::getSize(ViewRect* newSize)
 		return kResultFalse;
 
         auto winRect = MainWindow::getWindowSize();
-	newSize->left   = winRect.left();
-	newSize->right  = winRect.right();
-	newSize->top    = winRect.top();
-	newSize->bottom = winRect.bottom();
+        newSize->left   = 0;
+	newSize->right  = winRect.width() * geonkickApi->getScaleFactor();
+	newSize->top    = 0;
+	newSize->bottom = winRect.height() * geonkickApi->getScaleFactor();
 	return kResultOk;
 }

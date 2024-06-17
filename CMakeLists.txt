@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 3.1.0)
+project(geonkick VERSION 3.5.0)
 
 math(EXPR GEONKICK_VERSION_HEX "0x${PROJECT_VERSION_MAJOR} * 0x10000 + 0x${PROJECT_VERSION_MINOR} * 0x100 + 0x${PROJECT_VERSION_PATCH}")
 set(GEONKICK_VERSION_STR "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
@@ -19,6 +19,7 @@ if (NOT CMAKE_SYSTEM_NAME MATCHES Windows)
 else()
    option(GKICK_STANDALONE "Disable build for standalone" OFF)
 endif()
+
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 option(GKICK_PRESETS "Enable presets" ON)
 
@@ -28,6 +29,8 @@ if (GKICK_PLUGIN)
     option(GKICK_PLUGIN_VST "Enable build VST plugin" ON)
   endif(VST3_SDK_PATH)
 endif (GKICK_PLUGIN)
+
+option(GKICK_DOCUMENTATION "Enable build documentation" OFF)
 
 if (NOT CMAKE_BUILD_TYPE)
   message(STATUS "no build type selected, set default to Release")
@@ -41,13 +44,13 @@ endif ()
 
 if (GKICK_ARCHITECTURE MATCHES x86_64)
   message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
-  set(GKICK_OPTIMISATION_FLAGS "-O3 -msse -msse2 -mfpmath=sse -ffast-math -fomit-frame-pointer")
+  set(GKICK_OPTIMISATION_FLAGS "-O3 -msse -msse2 -mfpmath=sse -funsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
 else ()
   message(STATUS "set optimisation compiler flags for ${GKICK_ARCHITECTURE}")
-  set(GKICK_OPTIMISATION_FLAGS "-O3 -ffast-math -fomit-frame-pointer")
+  set(GKICK_OPTIMISATION_FLAGS "-O3 -funsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
 endif ()
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
@@ -78,7 +81,16 @@ set(GKICK_COMMON_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GKICK_API_DIR ${GKICK_COMMON_DIR}/dsp)
 set(GKICK_RC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/resources)
 set(GKICK_STANDALONE_DIR ${GKICK_COMMON_DIR}/standalone)
-set(GKICK_REDKITE_DIR ${GKICK_COMMON_DIR}/redkite)
+
+if (REDKITE_PATH)
+  get_filename_component(REDKITE_FOLDER_NAME ${REDKITE_PATH} NAME)
+if(NAME_FROM_PATH STREQUAL "" AND (REDKITE_FOLDER_NAME STREQUAL "." OR REDKITE_FOLDER_NAME STREQUAL ".."))
+  message(FATAL_ERROR "The folder name '${REDKITE_FOLDER_NAME}' of Redkite is invalid or empty.")
+endif()
+  set(GKICK_REDKITE_DIR ${REDKITE_PATH})
+else(REDKITE_PATH)
+  set(GKICK_REDKITE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/redkite)
+endif(REDKITE_PATH)
 
 if (GKICK_PLUGIN)
     if (GKICK_PLUGIN_VST)
@@ -99,6 +111,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/GeonkickConfig.h
   ${GKICK_COMMON_DIR}/UiSettings.h
   ${GKICK_COMMON_DIR}/ViewState.h
+  ${GKICK_COMMON_DIR}/GeonkickModel.h
   ${GKICK_COMMON_DIR}/geonkick_widget.h
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
@@ -141,6 +154,8 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/preset_folder.h
   ${GKICK_COMMON_DIR}/preset_browser_model.h
   ${GKICK_COMMON_DIR}/preset_browser_view.h
+  ${GKICK_COMMON_DIR}/PresetNavigator.h
+  ${GKICK_COMMON_DIR}/SettingsWidget.h
   ${GKICK_COMMON_DIR}/MidiKeyWidget.h
   ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.h
   ${GKICK_COMMON_DIR}/MainWindow.h
@@ -152,6 +167,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
   ${GKICK_COMMON_DIR}/UiSettings.cpp
   ${GKICK_COMMON_DIR}/ViewState.cpp
+  ${GKICK_COMMON_DIR}/GeonkickModel.cpp
   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
@@ -194,8 +210,10 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/preset_folder.cpp
   ${GKICK_COMMON_DIR}/preset_browser_model.cpp
   ${GKICK_COMMON_DIR}/preset_browser_view.cpp
+  ${GKICK_COMMON_DIR}/PresetNavigator.cpp
   ${GKICK_COMMON_DIR}/MidiKeyWidget.cpp
   ${GKICK_COMMON_DIR}/EnvelopePointContextWidget.cpp
+  ${GKICK_COMMON_DIR}/SettingsWidget.cpp
   ${GKICK_COMMON_DIR}/MainWindow.cpp
 )
 
@@ -206,8 +224,10 @@ endif()
 
 if (ENABLE_LOGGING)
   message(STATUS "set debug level")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+#  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+#  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRK_LOG_DEBUG_LEVEL")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DGKICK_LOG_DEBUG_LEVEL")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGKICK_LOG_DEBUG_LEVEL")
   list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
   list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
   list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
@@ -227,11 +247,6 @@ find_package(PkgConfig REQUIRED)
 find_package(RapidJSON REQUIRED)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
    include_directories(${RapidJSON_INCLUDE_DIR})
-endif()
-
-if (CMAKE_SYSTEM_NAME MATCHES Windows)
-   set(THREADS_PREFER_PTHREAD_FLAG ON)
-   find_package(Threads REQUIRED)
 endif()
 
 pkg_check_modules(SNDFILE sndfile)
@@ -273,7 +288,7 @@ link_directories(${GKICK_REDKITE_DIR})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-fPIC)
 add_subdirectory(${GKICK_API_DIR})
-add_subdirectory(${GKICK_REDKITE_DIR})
+add_subdirectory(${GKICK_REDKITE_DIR} redkite)
 include(${GKICK_RC_DIR}/resources.rc)
 
 foreach(pngFile ${gkick_rc_png_files})
@@ -283,7 +298,7 @@ foreach(pngFile ${gkick_rc_png_files})
   string(REPLACE " " "_" filename ${filename})
   add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/resources/${filename}.c
     COMMAND mkdir -p ${CMAKE_BINARY_DIR}/resources
-    && ${CMAKE_BINARY_DIR}/src/redkite/tools/rkpng2c
+    && ${CMAKE_BINARY_DIR}/redkite/tools/rkpng2c
     "${GKICK_RC_DIR}/${pngFile}" "${CMAKE_BINARY_DIR}/resources/${filename}.c" "rk__${filename}")
     set(GKICK_RC_OUTPUT ${GKICK_RC_OUTPUT} ${CMAKE_BINARY_DIR}/resources/${filename}.c)
 endforeach()
@@ -308,7 +323,25 @@ if (GKICK_PLUGIN)
     target_compile_options(geonkick_common_single PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
 endif(GKICK_PLUGIN)
 
-message(STATUS "------------ Summary ---------")
+if (GKICK_STANDALONE)
+   add_subdirectory(${GKICK_STANDALONE_DIR})
+endif (GKICK_STANDALONE)
+
+if (GKICK_PLUGIN)
+   add_subdirectory(${GKICK_COMMON_DIR}/plugin)
+endif (GKICK_PLUGIN)
+
+add_subdirectory(data)
+
+if (GKICK_PRESETS)
+   add_subdirectory(presets)
+ endif (GKICK_PRESETS)
+
+if (GKICK_DOCUMENTATION)
+   add_subdirectory(doc)
+ endif (GKICK_DOCUMENTATION)
+
+ message(STATUS "------------ Summary ---------")
 if (GKICK_STANDALONE)
   message(STATUS "Standalone: yes" )
 else(GKICK_STANDALONE)
@@ -332,10 +365,16 @@ else(GKICK_PLUGIN_VST)
 endif(GKICK_PLUGIN_VST)
 
 if(GKICK_PRESETS)
-  message(STATUS "Geonkick presets: yes" )
+  message(STATUS "Pesets: yes" )
 else(GKICK_PRESETS)
-  message(STATUS "Geonkick presets: no")
+  message(STATUS "Presets: no")
 endif(GKICK_PRESETS)
+
+if (GKICK_DOCUMENTATION)
+  message(STATUS "Documentation: yes" )
+else(GKICK_DOCUMENTATION)
+  message(STATUS "Documentation: no" )
+endif(GKICK_DOCUMENTATION)
 
 if (ENABLE_LOGGING)
   message(STATUS "Debug enabled: yes" )
@@ -344,16 +383,4 @@ else(ENABLE_LOGGING)
 endif(ENABLE_LOGGING)
 message(STATUS "------------------------------")
 
-if (GKICK_STANDALONE)
-   add_subdirectory(${GKICK_STANDALONE_DIR})
-endif (GKICK_STANDALONE)
 
-if (GKICK_PLUGIN)
-   add_subdirectory(${GKICK_COMMON_DIR}/plugin)
-endif (GKICK_PLUGIN)
-
-add_subdirectory(data)
-
-if (GKICK_PRESETS)
-   add_subdirectory(presets)
-endif (GKICK_PRESETS)

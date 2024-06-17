@@ -26,34 +26,33 @@
 
 #include "RkMain.h"
 
+class RkSystemWindow;
 class RkWidget;
 
 #ifdef RK_OS_WIN
 class RkEventQueueWin;
-#elif RK_OS_MAC
-#else
+#else // XLib
 class RkEventQueueX;
-#endif // RK_WIN_OS
+#endif // XLib
 
 class RkMain::RkMainImpl
 {
  public:
 
-        RkMainImpl(RkMain *interface);
-        RkMainImpl(RkMain *interface, int argc, char **argv);
+        RkMainImpl(RkMain *inf);
+        RkMainImpl(RkMain *inf, int argc, char **argv);
 	virtual ~RkMainImpl();
         RkMainImpl(const RkMainImpl &other) = delete;
         RkMainImpl& operator=(const RkMainImpl &other) = delete;
         RkMainImpl(RkMainImpl &&other) = delete;
         RkMainImpl& operator=(RkMainImpl &&other) = delete;
-	bool setTopLevelWidget(RkWidget* widget);
-        RkWidget* topLevelWidget(void);
+        RkSystemWindow* setTopWidget(RkWidget* widget, const RkNativeWindowInfo *parent = nullptr);
+        RkWidget* topWidget() const;
         RkEventQueue* getEventQueue() const;
 	int exec(bool block = true);
 
  private:
         RK_DECALRE_INTERFACE_PTR(RkMain);
-        RkWidget* topWidget;
         std::unique_ptr<RkEventQueue> eventQueue;
 };
 

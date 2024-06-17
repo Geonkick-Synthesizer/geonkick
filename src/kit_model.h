@@ -47,6 +47,9 @@ class KitModel : public RkObject {
         size_t numberOfChannels() const;
         int percussionChannel(PercussionIndex index) const;
         bool setPercussionChannel(PercussionIndex index, int channel);
+        size_t numberOfMidiChannels() const;
+        int percussionMidiChannel(PercussionIndex index) const;
+        bool setPercussionMidiChannel(PercussionIndex index, int channel);
         bool setPercussionKey(PercussionIndex index, KeyIndex key);
         KeyIndex percussionKey(PercussionIndex index) const;
         bool setPercussionName(PercussionIndex index, const std::string &name);
@@ -75,6 +78,8 @@ class KitModel : public RkObject {
         void updatePercussion(PercussionIndex index);
         GeonkickApi* api() const;
         bool doExport(const std::string &file, ExportFormat format);
+        bool enableNoteOff(PercussionIndex index, bool b);
+        bool isNoteOffEnabled(PercussionIndex index) const;
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),

@@ -4,7 +4,7 @@
 
 **License:** This work (including all images it uses) is released under [CC0 1.0 Universal (CC0 1.0) Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/deed.en).
 
-**Version:** 3.1.0
+**Version:** 3.4.0
 
 **Website:** [https://geonkick.org](https://geonkick.org)
 
@@ -42,16 +42,17 @@
    * [Kit Output Channels](#kit-output-channels)
    * [Kit Preset](#kit-preset)
    * [Kit Preset vs Instrument Preset](#kit-preset-vs-instrument-preset)
-   * [Preset Browser](#preset-browser)
-   * [Instrument vs Channel](#instrument-vs-channel)
-   * [Sample Browser](#sample-browser)
+- [Preset Browser](#preset-browser)
+- [Instrument vs Channel](#instrument-vs-channel)
+- [Sample Browser](#sample-browser)
+- [Settings](#settings)
 - [LV2 Plugin](#lv2-plugin)
 - [Standalone](#standalone)
 - [Build & Install](#build-install)
 
 ### Introduction
 
-Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer, currently available only for GNU/Linux. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and blend samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin.
+Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and blend samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin.
 
 ### How it works
 
@@ -63,7 +64,7 @@ Each instrument in the kit list is monophonic. However, the instrument can be di
 
 ### Block diagram
 
-![Screenshot](diagram.png)
+![Diagram](diagram.png)
 
 ### Instrument
 
@@ -96,7 +97,7 @@ The instrument's user interface serves as the primary window of Geonkick, displa
 
 - **Preset label:** Displays the name of the currently selected instrument; by default, shows "Default".
 - **MIDI Key:** Displays the current MIDI input key for the instrument. Pressing on the label opens a popup to select a MIDI key for the instrument.
-- **Submenus:** "Controls", "Kit", "Presets", and "Samples" switch to instrument main controls, kit, presets, and sample browser UI, respectively.
+- **Tabs:** "Controls", "Kit", "Presets", and "Samples", "Settings" switch to instrument main controls, kit, presets, and sample browser UI, settings respectively.
 
 #### Shortcut Keys
 
@@ -285,6 +286,7 @@ The instrument list has a maximum limit of 16 instruments and displays the instr
 - **"Remove" button (icon with a cross):** Removes the instrument.
 - **"Copy" button:** Copies an instrument and adds it to the list.
 - **Buttons at the end of the instrument line:** Popup for selecting the MIDI key.
+- **Spinbox for setting MIDI input channel for an instrument.**
 - **Column labels:** Show the MIDI key the instrument can be mapped to. The "Any" label indicates that the instrument will be played by pressing any key.
 - **Green circle:** Indicates which instrument is mapped to which output channel and can be changed by left-clicking on the grid cell.
 - **Limiter slider:** Controls the limiter for the current instrument.
@@ -315,6 +317,9 @@ The preset browser can be accessed by clicking the "Presets" button on the top b
 
 The first column of the preset browser lists the names of preset folders. Each folder may contain instrument and kit presets. When a folder is selected, the browser displays all the presets within that folder in subsequent columns. Kit presets are marked with the prefix "KIT:".
 
+- "+" / "-" -  to add or remove a custom preset folder (for all instances).
+- ">", "<" - to navigate the preset pages
+
 **Note2:**
 - To add new presets to the browser, users need to save the presets (both kit and instrument types) in one of the following paths, then reopen the program or reload the plugin:
     - /usr/share/geonkick/presets/<PresetFolder>/<Preset>
@@ -333,6 +338,13 @@ In Geonkick's Kit UI, instruments and channels are distinct entities. An instrum
 #### Sample Browser
 
 The sample browser is a file dialog for sample files (WAV, FLAC, OGG). Users can select and load samples into Osc1 or Osc2. The browser includes a preview section where the selected file can be played and previewed. The preview sound is routed through the first stereo channel (which must be connected in the host for plugin usage).
+
+#### Settings
+
+The settings widget gives the user the ability to configure various settings. These settings typically apply to all Geonkick instances.
+
+- **Force all MIDI channels to:** Forces all instrument MIDI input channels to a specific channel (for all instances).
+
 
 ### LV2 Plugin
 

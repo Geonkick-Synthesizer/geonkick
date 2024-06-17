@@ -36,7 +36,8 @@
 #endif 
 
 struct RkCanvasInfo {
-        cairo_surface_t* cairo_surface;
+        cairo_surface_t* cairo_surface = nullptr;
+        cairo_t* cairo_context = nullptr;
 };
 #else
 #error No graphics backend defined

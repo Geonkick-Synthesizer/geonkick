@@ -2,7 +2,7 @@
  * File name: audio_output.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -25,6 +25,7 @@
 #define GKICK_AUDO_OUTPUT_H
 
 #include "geonkick_internal.h"
+#include "ring_buffer.h"
 
 #include <stdatomic.h>
 
@@ -52,35 +53,30 @@ struct gkick_audio_output
 
 	/* Specifies if this audio output is active. */
         _Atomic bool enabled;
-
-        // On this buffer the synthesizer is copying.
-        char* _Atomic updated_buffer;
-        char* _Atomic playing_buffer;
+        struct gkick_buffer *updated_buffer;
+        struct gkick_buffer* playing_buffer;
+        struct ring_buffer* ring_buffer;
         _Atomic bool buffer_updated;
 
         /* Note info is changed only by the audio thread. */
         struct gkick_note_info key;
 
         /* The key number that triggres playing. */
-        _Atomic char playing_key;
+        _Atomic signed char playing_key;
+
+        /* MIDI channel for playing. */
+        _Atomic signed char midi_channel;
 
         /**
          * Specifies if the audio output is in the
          * playing state (the percussion is playing)
          */
-        _Atomic bool is_play;
-
-        /**
-         * Triggers the audio thread to start to play
-         * the percussion with the maximum key velocity.
-         */
         _Atomic bool play;
 
         /**
-         * Specifies if to tune the output in accordance with
-         * the note (central note is A4).
+         * Triggers the play, usualy changed from UI call.
          */
-        _Atomic bool tune;
+        _Atomic bool start_play;
 
         /**
          * decay - note release time measured in number of audio frames.
@@ -89,6 +85,12 @@ struct gkick_audio_output
          *    decay from GEKICK_NOTE_RELEASE_TIME to 0;
          */
         _Atomic int decay;
+
+        /**
+         * Specifies if to tune the output in accordance with
+         * the note (central note is A4).
+         */
+        _Atomic bool tune;
 
         /* Output channel. */
       	atomic_size_t channel;
@@ -101,6 +103,9 @@ struct gkick_audio_output
 
         /* Output audio limiter value. */
         atomic_int limiter;
+
+        /* Enable/disable note off */
+        _Atomic bool note_off;
 
         pthread_mutex_t lock;
 };
@@ -117,15 +122,21 @@ enum geonkick_error
 gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                                struct gkick_note_info *key);
 
+void
+gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output, size_t size);
+
 enum geonkick_error
 gkick_audio_output_play(struct gkick_audio_output *audio_output);
 
+/* This funciton is called from the audio thread. */
+void
+gkick_audio_set_play(struct gkick_audio_output *audio_output);
+
+gkick_real
+gkick_audio_get_decay_val(struct gkick_audio_output *audio_output);
+
 gkick_real
 gkick_audio_output_tune_factor(int note_number);
-
-enum geonkick_error
-gkick_audio_output_get_frame(struct gkick_audio_output *audio_output,
-                             gkick_real *val);
 
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output);
 
@@ -135,6 +146,12 @@ void gkick_audio_output_swap_buffers(struct gkick_audio_output *audio_output);
 
 enum geonkick_error
 gkick_audio_output_set_playing_key(struct gkick_audio_output *audio_output, signed char key);
+
+enum geonkick_error
+gkick_audio_output_set_midi_channel(struct gkick_audio_output *audio_output, signed char channel);
+
+enum geonkick_error
+gkick_audio_output_get_midi_channel(struct gkick_audio_output *audio_output, signed char *channel);
 
 enum geonkick_error
 gkick_audio_output_get_playing_key(struct gkick_audio_output *audio_output, signed char *key);
@@ -150,5 +167,16 @@ gkick_audio_output_set_channel(struct gkick_audio_output *audio_output,
 enum geonkick_error
 gkick_audio_output_get_channel(struct gkick_audio_output *audio_output,
                                size_t *channel);
+
+void gkick_audio_get_data(struct gkick_audio_output *audio_output,
+                          gkick_real **data,
+                          gkick_real *leveler,
+                          size_t size);
+
+void gkick_audio_output_enable_note_off(struct gkick_audio_output *audio_output,
+                                 bool enable);
+
+bool gkick_audio_output_note_off(struct gkick_audio_output *audio_output);
+
 
 #endif // GKICK_AUDO_OUTPUT_H

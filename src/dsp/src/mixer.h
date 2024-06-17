@@ -31,6 +31,7 @@ struct gkick_mixer {
 	size_t connection_matrix[127];
         _Atomic int solo;
 	_Atomic int limiter;
+        _Atomic short forced_midi_channel;
         void (*limiter_callback) (void*, size_t index, gkick_real val);
         void *limiter_callback_arg;
         _Atomic size_t limiter_callback_index;
@@ -54,11 +55,6 @@ gkick_mixer_is_output_tuned(struct gkick_mixer *mixer,
                             bool *tune);
 
 enum geonkick_error
-gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      int channel,
-		      gkick_real *val);
-
-enum geonkick_error
 gkick_mixer_process(struct gkick_mixer *mixer,
                     float** out,
                     size_t offset,
@@ -69,6 +65,10 @@ gkick_mixer_set_leveler(struct gkick_mixer *mixer,
                         size_t index,
                         gkick_real val);
 
+void gkick_mixer_apply_limiter(float *out_left,
+                               float *out_right,
+                               size_t size,
+                               float limiter);
 
 void
 gkick_mixer_free(struct gkick_mixer **mixer);
@@ -99,5 +99,28 @@ enum geonkick_error
 gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
 				 void (*callback)(void*, size_t index, gkick_real val),
 				 void *arg);
+
+enum geonkick_error
+gkick_mixer_mute(struct gkick_mixer *mixer, size_t id, bool b);
+
+enum geonkick_error
+gkick_mixer_force_midi_channel(struct gkick_mixer *mixer,
+                               signed char channel,
+                               bool force);
+
+enum geonkick_error
+gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
+                                    signed char *channel,
+                                    bool *force);
+
+enum geonkick_error
+gkick_mixer_enable_note_off(struct gkick_mixer *mixer,
+                            size_t id,
+                            bool enable);
+
+enum geonkick_error
+gkick_mixer_note_off_enabled(struct gkick_mixer *mixer,
+                             size_t id,
+                             bool *enabled);
 
 #endif // GKICK_MIXER_H

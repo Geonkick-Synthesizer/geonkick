@@ -23,6 +23,7 @@
 
 #include "RkMain.h"
 #include "RkWidget.h"
+#include "RkButton.h"
 #include "RkPainter.h"
 #include "RkPoint.h"
 #include "RkLog.h"
@@ -32,41 +33,16 @@
 #include "RkTimer.h"
 #include "RkProgressBar.h"
 
-class Button: public RkWidget {
-  public:
-        Button(RkWidget *parent = nullptr)
-                : RkWidget(parent)
-                , isToggled{false} {}
-
-        RK_DECL_ACT(toggled, toggled(bool b), RK_ARG_TYPE(bool), RK_ARG_VAL(b));
-
-  protected:
-        void mouseButtonPressEvent(const std::shared_ptr<RkMouseEvent> &event) final
-        {
-                isToggled = !isToggled;
-                // Post action to be executed by the GUI main thread.
-                eventQueue()->postAction([&](){ toggled(isToggled); });
-                // Or just call toggled(isToggled) directly to be
-                // executed by the thread executing this method.
-                // Anyway, mouseButtonPressEvent is executed only by GUI main thread.
-                // eventQueue()->postAction([&](){ toggled(isToggled); });
-                // can be called from a defferent thread than GUI main thread;
-        }
-
-private:
-        bool isToggled;
-};
-
 class  PainterExample: public RkWidget {
   public:
-        PainterExample(RkMain *app)
+        PainterExample(RkMain &app)
                 : RkWidget(app)
                 , startDraw{false}
                 , timerLabel{nullptr}
                 , myTime{0}
         {
                 setSize(350, 350);
-                auto button = new Button(this);
+                auto button = new RkButton(this);
                 button->setPosition(30, 30);
                 button->setSize({30, 30});
                 button->setBackgroundColor(255, 30, 100);
@@ -85,7 +61,7 @@ class  PainterExample: public RkWidget {
                 timerLabel->setPosition(30, 80);
                 timerLabel->show();
 
-                timer = std::make_unique<RkTimer>(1000, eventQueue());
+                timer = std::make_unique<RkTimer>(this, 1000);
                 RK_ACT_BIND(timer.get(), timeout, RK_ACT_ARGS(), this, onShowTime());
                 timer->start();
         }
@@ -93,7 +69,7 @@ class  PainterExample: public RkWidget {
         ~PainterExample() = default;
 
   protected:
-        void paintEvent(const std::shared_ptr<RkPaintEvent> &event) final
+        void paintEvent(RkPaintEvent *event) override
         {
                 RK_UNUSED(event);
                 RkPainter painter(this);
@@ -129,7 +105,7 @@ int main(int arc, char **argv)
 {
     RkMain app(arc, argv);
 
-    auto widget = new PainterExample(&app);
+    auto widget = new PainterExample(app);
     widget->setTitle("Painter Example");
     widget->show();
 

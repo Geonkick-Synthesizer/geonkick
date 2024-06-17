@@ -77,7 +77,6 @@ DistortionGroupBox::DistortionGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         inLimiterSlider = new GeonkickSlider(this);
         inLimiterSlider->setFixedSize(sliderW, sliderH);
         inLimiterSlider->setPosition(width() / 2 + labelD / 2, yoffset + (height() - sliderH) / 3);
-        inLimiterSlider->onSetValue(50);
         RK_ACT_BIND(inLimiterSlider, valueUpdated, RK_ACT_ARGS(int val), this, setInLimiter(val));
         auto inLimiterLabel = new RkLabel(this);
         inLimiterLabel->setBackgroundColor(background());
@@ -178,7 +177,7 @@ void DistortionGroupBox::updateGui()
                 logVal = 20 * log10(limit);
         else
                 logVal = 60;
-        inLimiterSlider->onSetValue(100 * (60 - fabs(logVal)) / 60);
+        inLimiterSlider->onSetValue(100 * (60 - fabs(logVal)) / 60, 100);
 
 
         // Volume
@@ -187,7 +186,7 @@ void DistortionGroupBox::updateGui()
                 logVal = 20 * log10(volume);
         else
                 logVal = 60;
-        volumeSlider->onSetValue(100 * (60 - fabs(logVal)) / 60);
+        volumeSlider->onSetValue(100 * (60 - fabs(logVal)) / 60, 100 * (2.0 / 3));
 
         // Drive
         auto distortion = geonkickApi->getDistortionDrive();
@@ -195,5 +194,5 @@ void DistortionGroupBox::updateGui()
                 distortion = 0;
         else
                 distortion = 20 * log10(distortion);
-        driveSlider->onSetValue(100 * distortion / 36);
+        driveSlider->onSetValue(100 * distortion / 36, 0);
 }

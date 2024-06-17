@@ -106,6 +106,12 @@ void RkPainter::drawPolyline(const std::vector<RkPoint> &points)
                 o_ptr->drawPolyline(points);
 }
 
+void RkPainter::drawPolyline(const std::vector<RkRealPoint> &points)
+{
+        if (points.size() > 1)
+                o_ptr->drawPolyline(points);
+}
+
 void RkPainter::fillRect(const RkRect &rect, const RkColor &color)
 {
         if (rect.area() > 0)
@@ -150,4 +156,9 @@ void RkPainter::rotate(rk_real angle)
 int RkPainter::getTextWidth(const std::string &text) const
 {
         return o_ptr->getTextWidth(text);
+}
+
+void RkPainter::scale(double x, double y)
+{
+        return o_ptr->scale(x, y);
 }

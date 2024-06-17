@@ -57,6 +57,9 @@ class Envelope : public RkObject
         virtual double envelopeLength(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
         RkPoint getOrigin(void) const;
+        void zoomOut();
+        void zoomIn();
+        double getZoom() const;
         void draw(RkPainter &painter, DrawLayer layer);
         void overPoint(const RkPoint &point);
         bool hasSelected() const;
@@ -99,6 +102,12 @@ class Envelope : public RkObject
         std::string getCurrentPointInfo() const;
 	void setApplyType(ApplyType apply);
 	ApplyType getApplyType() const;
+        void setScrollState(bool b);
+        bool isScrollState() const;
+        void setTimeOrigin(double timeOrg);
+        double getTimeOrigin() const;
+        void setValueOrigin(double valueOrg);
+        double getValueOrigin() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -141,6 +150,13 @@ class Envelope : public RkObject
         size_t editedPointIndex;
         bool isEditingPoint;
 	ApplyType applyType;
+        bool scrollState;
+        struct ZoomInfo {
+                double zoomCoefficient;
+                double timeOrigin;
+                double valueOrigin;
+        };
+        std::unordered_map<Type, ZoomInfo> zoomInfoMap;
 };
 
 #endif // GEONKICK_ENVELOPE_H

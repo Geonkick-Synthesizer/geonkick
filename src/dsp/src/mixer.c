@@ -2,7 +2,7 @@
  * File name: mixer.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -22,6 +22,7 @@
  */
 
 #include "mixer.h"
+#include "ring_buffer.h"
 
 enum geonkick_error
 gkick_mixer_create(struct gkick_mixer **mixer)
@@ -43,11 +44,28 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
 	if (note->note_number < 0 || note->note_number > 127)
 		return GEONKICK_ERROR;
 
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 struct gkick_audio_output *output = mixer->audio_outputs[i];
-                if (output->enabled && (output->playing_key == GEONKICK_ANY_KEY
-                    || output->playing_key == note->note_number
-		    || output->tune)) {
+                if (!output->enabled)
+                        continue;
+
+                short forced_midi_channel = mixer->forced_midi_channel;
+                signed char midi_channel;
+                if (forced_midi_channel & 0x0100)
+                        midi_channel = forced_midi_channel & 0x00ff;
+                else
+                        midi_channel = output->midi_channel;
+
+                gkick_log_debug("output: index[%d], forced[%d], midi ch[%d], note_ch[%d]",
+                                i,
+                                (forced_midi_channel & 0x0100) != 0,
+                                midi_channel,
+                                note->channel);
+                if ((midi_channel == GEONKICK_ANY_MIDI_CHANNEL
+                     || midi_channel == note->channel)
+                    && (output->playing_key == GEONKICK_ANY_KEY
+                        || output->playing_key == note->note_number
+                        || output->tune)) {
                         gkick_audio_output_key_pressed(output, note);
                 }
         }
@@ -59,7 +77,7 @@ gkick_mixer_tune_output(struct gkick_mixer *mixer,
                         size_t index,
                         bool tune)
 {
-	if (index < GEONKICK_MAX_PERCUSSIONS)
+	if (index < GEONKICK_MAX_INSTRUMENTS)
 		gkick_audio_output_tune_output(mixer->audio_outputs[index],
                                                tune);
 	return GEONKICK_OK;
@@ -70,29 +88,9 @@ gkick_mixer_is_output_tuned(struct gkick_mixer *mixer,
                             size_t index,
                             bool *tune)
 {
-	if (index < GEONKICK_MAX_PERCUSSIONS)
+	if (index < GEONKICK_MAX_INSTRUMENTS)
 		*tune = gkick_audio_output_is_tune_output(mixer->audio_outputs[index]);
 	return GEONKICK_OK;
-}
-
-enum geonkick_error
-gkick_mixer_get_frame(struct gkick_mixer *mixer,
-		      int channel,
-		      gkick_real *val)
-{
-        *val = 0.0f;
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
-                struct gkick_audio_output *out = mixer->audio_outputs[i];
-                if (out->enabled  && !out->muted && mixer->solo == out->solo && out->channel == channel) {
-                        gkick_real v = 0.0f;
-                        gkick_audio_output_get_frame(out, &v);
-                        if (i == mixer->limiter_callback_index)
-                                gkick_mixer_set_leveler(mixer, i, v);
-                        *val += v;
-                }
-        }
-
-        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -104,35 +102,36 @@ gkick_mixer_process(struct gkick_mixer *mixer,
         if (size < 1)
                 return GEONKICK_OK;
 
-        for (size_t channel = 0; channel < GEONKICK_MAX_CHANNELS; channel++) {
-                size_t left_index  = 2 * channel;
-                size_t right_index = left_index + 1;
-                for (size_t per = 0; per < GEONKICK_MAX_PERCUSSIONS; per++) {
-                        struct gkick_audio_output *output = mixer->audio_outputs[per];
-                        if (output->enabled && !output->muted
-                            && mixer->solo == output->solo
-                            && output->channel == channel) {
-                                for (size_t i = 0; i < size; i++) {
-                                        gkick_real v = 0.0f;
-                                        gkick_audio_output_get_frame(output, &v);
-                                        out[left_index][i + offset]  += v;
-                                        out[right_index][i + offset] += v;
-                                        if (i == 0)
-                                                gkick_mixer_set_leveler(mixer, per, v);
-                                }
-                        }
-                }
-        }
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++) {
+                struct gkick_audio_output *output = mixer->audio_outputs[i];
 
-        struct gkick_audio_output *output = mixer->audio_outputs[GEONKICK_MAX_PERCUSSIONS];
-        for (size_t i = 0; i < size; i++) {
-                gkick_real v = 0.0f;
-                gkick_audio_output_get_frame(output, &v);
-                out[0][i + offset]  += v;
-                out[1][i + offset]  += v;
+                if (output->start_play) {
+                        gkick_audio_set_play(output);
+                        output->start_play = false;
+                }
+
+                if (!output->enabled || output->muted
+                    || mixer->solo != output->solo || !output->play) {
+                        ring_buffer_next(output->ring_buffer, size);
+                        continue;
+                }
+
+                size_t left_index  = 2 * output->channel;
+                size_t right_index = left_index + 1;
+                gkick_real *data[2] = {out[left_index] + offset, out[right_index] + offset};
+                gkick_real leveler = 0.0f;
+                gkick_audio_get_data(output, data, &leveler, size);
+                gkick_mixer_set_leveler(mixer, i, fabsf(leveler));
         }
 
         return GEONKICK_OK;
+}
+
+void gkick_mixer_apply_limiter(float *out_left,
+                               float *out_right,
+                               size_t size,
+                               float limiter)
+{
 }
 
 void
@@ -158,7 +157,7 @@ gkick_mixer_limiter_set(struct gkick_mixer *mixer,
                         size_t index,
                         gkick_real val)
 {
-        if (index <= GEONKICK_MAX_PERCUSSIONS)
+        if (index <= GEONKICK_MAX_INSTRUMENTS)
                 mixer->audio_outputs[index]->limiter = 1000000 * val;
 	return GEONKICK_OK;
 }
@@ -169,7 +168,7 @@ gkick_mixer_limiter_get(struct gkick_mixer *mixer,
                         gkick_real *val)
 {
         *val = 0.0f;
-        if (index <= GEONKICK_MAX_PERCUSSIONS)
+        if (index <= GEONKICK_MAX_INSTRUMENTS)
                 *val = (gkick_real)mixer->audio_outputs[index]->limiter / 1000000;
 	return GEONKICK_OK;
 }
@@ -193,7 +192,7 @@ gkick_mixer_solo(struct gkick_mixer *mixer, size_t id, bool b)
 {
         mixer->audio_outputs[id]->solo = b;
         bool is_solo = false;
-        for (size_t i = 0; i < GEONKICK_MAX_PERCUSSIONS; i++) {
+        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
                 if (mixer->audio_outputs[i]->enabled && mixer->audio_outputs[i]->solo)
                         is_solo = true;
         }
@@ -216,5 +215,52 @@ gkick_mixer_set_limiter_callback(struct gkick_mixer *mixer,
 {
         mixer->limiter_callback = callback;
         mixer->limiter_callback_arg = arg;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_force_midi_channel(struct gkick_mixer *mixer,
+                               signed char channel,
+                               bool force)
+{
+        gkick_log_debug("forced %d midi ch %d", force, channel);
+        short forced_midi = mixer->forced_midi_channel;
+        forced_midi = (channel & 0x01ff) | (force << 8);
+        short forced_midi_channel = mixer->forced_midi_channel;
+        gkick_log_debug("forced [%d] midi ch: %d]",
+                        (forced_midi & 0x0100) != 0,
+                        forced_midi & 0x00ff);
+        mixer->forced_midi_channel = forced_midi;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_get_forced_midi_channel(struct gkick_mixer *mixer,
+                                    signed char *channel,
+                                    bool *force)
+{
+        short forced_midi = mixer->forced_midi_channel;
+        if (channel)
+                *channel = forced_midi & 0x00ff;
+        if (force)
+                *force = forced_midi & 0x0100;
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_enable_note_off(struct gkick_mixer *mixer,
+                            size_t id,
+                            bool enable)
+{
+        gkick_audio_output_enable_note_off(mixer->audio_outputs[id], enable);
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_mixer_note_off_enabled(struct gkick_mixer *mixer,
+                             size_t id,
+                             bool *enabled)
+{
+        *enabled = gkick_audio_output_note_off(mixer->audio_outputs[id]);
         return GEONKICK_OK;
 }

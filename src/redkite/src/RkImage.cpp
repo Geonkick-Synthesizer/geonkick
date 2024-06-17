@@ -29,7 +29,6 @@
 RkImage::RkImage()
         : o_ptr{std::make_unique<RkImageImpl>(this, 0, 0, nullptr)}
 {
-        RK_LOG_DEBUG("called ----------------------------------->");
 }
 
 RkImage::RkImage(int width,
@@ -38,7 +37,6 @@ RkImage::RkImage(int width,
                  Format format)
         : o_ptr{std::make_unique<RkImageImpl>(this, width, height, data, format)}
 {
-        RK_LOG_DEBUG("called ----------------------------------->");
 }
 
 RkImage::RkImage(const RkSize &size,
@@ -46,7 +44,6 @@ RkImage::RkImage(const RkSize &size,
                  Format format)
         : o_ptr{std::make_unique<RkImageImpl>(this, size.width(), size.height(), data, format)}
 {
-        RK_LOG_DEBUG("called ----------------------------------->");
 }
 
 RkImage::RkImage(std::unique_ptr<RkImageImpl> impl)
@@ -73,15 +70,6 @@ RkImage& RkImage::operator=(const RkImage &other)
 void RkImage::fill(const RkColor &color)
 {
         o_ptr->fill(color);
-}
-
-const RkCanvasInfo* RkImage::getCanvasInfo() const
-{
-        return o_ptr->getCanvasInfo();
-}
-
-void RkImage::freeCanvasInfo()
-{
 }
 
 unsigned char* RkImage::data() const
@@ -117,4 +105,9 @@ RkSize RkImage::size() const
 bool RkImage::isNull() const
 {
         return o_ptr->isNull();
+}
+
+RkCanvasInfo* RkImage::getCanvasInfo() const
+{
+        return o_ptr->getCanvasInfo();
 }

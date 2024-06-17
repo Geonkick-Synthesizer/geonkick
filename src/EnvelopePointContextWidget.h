@@ -34,7 +34,7 @@ class EnvelopePointContextWidget: public GeonkickWidget
  public:        
         EnvelopePointContextWidget(Envelope *envelope,
                                    GeonkickWidget *parent,
-                                   Rk::WindowFlags flag = Rk::WindowFlags::Popup);
+                                   Rk::WidgetFlags flag = Rk::WidgetFlags::Popup);
         void setValue(rk_real val);
         RK_DECL_ACT(valueUpdated,
                     valueUpdated(rk_real val),

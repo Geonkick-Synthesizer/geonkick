@@ -12,7 +12,7 @@ claps, hi-hats, shakers, and unique effect sounds.
 
 **Author and maintainer:** Iurie Nistor
 
-**Version:** 3.1.0
+**Version:** 3.5.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
@@ -35,15 +35,14 @@ Source code repository:
 ## Features
 
 * Kit
-   - Supports up to 16 instruments.
+   - 16 instruments
+   - user configurable MIDI key mapping for instruments
    - Save / Load kit in JSON format
    - Export instrument kit to SFZ
-* Multitibral
-   - 16 midi key range
-   - user configurable key mapping
 * Multichannel
    - 16 stereo audio output channels for plugin (1 stereo for standalone)
    - user configurable mapping of kit instrument to output channels
+   - 16 input MIDI channel, user configurable mapping of instruments to MIDI input channels
 * 3 layers
 * Layers Mixer
 * 2 oscillators per layer
@@ -86,11 +85,11 @@ Source code repository:
 * Operating System:
      - GNU/Linux (LV2, VST3, Standalone)
      - Windows (LV2, VST3)
-* Only on GNU/Linux : manually scale the UI by factor (useful for HiDPI cases)
+* Scale the UI by factor (useful for HiDPI cases)
 
 ## Requirements
 
-In order Geonkick to run and operate correctly there is a need:
+In order Geonkick to run and operate correctly there is a need
 
 for standalone:
 
@@ -142,17 +141,9 @@ Get VST3 SDK than build Geonkick VST3 plugin:
 
 ##### Building on Windows
 
-To build on Windows, you need to install MSYS2/UCRT64 and follow the same steps as mentioned above. Alternatively, you can refer to the 'Building' step in the file .github/workflows/windows.yml of Geonkick repository.
-
-## Packages & Binaries
-
-Geonkick can be found in the repositories of Arch Linux, openSUSE, Fedora, Manjaro, FreeBSD, KXStudio, and Ubuntu Studio.
-
-Additionally, binareis/installer are attached as artifacts to the repository release notes or pipelines that generate builds from the main branch. It is recommended to use release tag artifacts only.
-
-##### Packaging
-
-Please use only release versions ([see repository releases](https://gitlab.com/Geonkick-Synthesizer/geonkick/-/releases)).
+To build on Windows, there is a need to install MSYS2/UCRT64 and follow
+the same steps as mentioned above. Alternatively, you can refer to the
+'Building' step in the file .github/workflows/windows.yml of Geonkick repository.
 
 ## Documentation
 

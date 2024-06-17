@@ -80,7 +80,7 @@ gkick_buffer_stretch_get_next(struct gkick_buffer *buffer,
 
 void
 gkick_buffer_set_size(struct gkick_buffer *buffer,
-                           size_t size);
+                      size_t size);
 
 size_t
 gkick_buffer_size(struct gkick_buffer *buffer);

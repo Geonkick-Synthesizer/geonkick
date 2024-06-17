@@ -2,7 +2,7 @@
  * File name: geonkick.h
  * Project: GeonKick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of GeonKick.
  *
@@ -30,7 +30,6 @@ extern "C" {
 
 #include <stdio.h>
 #include <errno.h>
-//#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
@@ -38,6 +37,10 @@ extern "C" {
 #include <inttypes.h>
 #include <float.h>
 #include <stdbool.h>
+
+#ifdef __FAST_MATH__
+#error -ffast-math disables nan detection needed by geonkick
+#endif
 
 #ifdef __STDC_NO_ATOMICS__
 #error atomic operations are not supported
@@ -127,21 +130,17 @@ enum gkick_envelope_apply_type {
 };
 
 #ifdef GEONKICK_SINGLE
-#define GEONKICK_MAX_PERCUSSIONS 1
+#define GEONKICK_MAX_INSTRUMENTS 1
 #else
-#define GEONKICK_MAX_PERCUSSIONS 16
+#define GEONKICK_MAX_INSTRUMENTS 16
 #endif
 
-/**
-* Maximum audio number of output stereo channels.
-*/
-#if defined(GEONKICK_SINGLE)
-#define GEONKICK_MAX_CHANNELS 1
-#else
-#define GEONKICK_MAX_CHANNELS 16
-#endif // if defined(GEONKICK_SINGLE)
+#define GEONKICK_MAX_CHANNELS (GEONKICK_MAX_INSTRUMENTS + 1)
+#define GEONKICK_AUDITION_CHANNEL_INDEX (GEONKICK_MAX_CHANNELS - 1)
 
 #define GEONKICK_ANY_KEY -1
+#define GEONKICK_ANY_MIDI_CHANNEL -1
+#define GEONKICK_MAX_MIDI_CHANNELS 16
 
 struct geonkick;
 
@@ -473,11 +472,6 @@ geonkick_enable_synthesis(struct geonkick *kick,
                           bool enable);
 
 enum geonkick_error
-geonkick_get_audio_frame(struct geonkick *kick,
-                         int channel,
-                         gkick_real *val);
-
-enum geonkick_error
 geonkick_audio_process(struct geonkick *kick,
                        float **out,
                        size_t channel,
@@ -638,9 +632,6 @@ geonkick_is_percussion_enabled(struct geonkick *kick,
                                size_t index,
                                bool *enable);
 
-size_t
-geonkick_percussion_number();
-
 enum geonkick_error
 geonkick_set_playing_key(struct geonkick *kick,
                          size_t id,
@@ -650,6 +641,29 @@ enum geonkick_error
 geonkick_get_playing_key(struct geonkick *kick,
                          size_t id,
                          signed char *key);
+
+enum geonkick_error
+geonkick_set_midi_channel(struct geonkick *kick,
+                          size_t id,
+                          signed char channel);
+
+enum geonkick_error
+geonkick_get_midi_channel(struct geonkick *kick,
+                          size_t id,
+                          signed char *channel);
+
+enum geonkick_error
+geonkick_force_midi_channel(struct geonkick *kick,
+                            signed char channel,
+                            bool force);
+
+enum geonkick_error
+geonkick_ged_forced_midi_channel(struct geonkick *kick,
+                                 signed char *channel,
+                                 bool *force);
+
+size_t
+geonkick_midi_channels_number();
 
 enum geonkick_error
 geonkick_set_percussion_name(struct geonkick *kick,
@@ -662,6 +676,10 @@ geonkick_get_percussion_name(struct geonkick *kick,
                              size_t id,
                              char *name,
                              size_t size);
+
+
+size_t
+geonkick_instruments_number();
 
 size_t
 geonkick_channels_number();
@@ -720,6 +738,16 @@ geonkick_set_sample_preview_limiter(struct geonkick *kick, gkick_real val);
 
 enum geonkick_error
 geonkick_get_sample_preview_limiter(struct geonkick *kick, gkick_real *val);
+
+enum geonkick_error
+geonkick_percussion_enable_note_off(struct geonkick *kick,
+                                    size_t id,
+                                    bool enable);
+
+enum geonkick_error
+geonkick_percussion_note_off_enabled(struct geonkick *kick,
+                                     size_t id,
+                                     bool *enabled);
 
 bool
 geonkick_is_plugin();

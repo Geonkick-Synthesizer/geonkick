@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - develop
+      - 'release/*'
     tags:
       - '*'
 
@@ -27,87 +29,83 @@ jobs:
       - name: Building 
         run: |
           pacman -S --noconfirm git mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-cmake mingw-w64-ucrt-x86_64-libsndfile mingw-w64-ucrt-x86_64-rapidjson mingw-w64-ucrt-x86_64-cairo mingw-w64-ucrt-x86_64-lv2 make
-          git clone https://github.com/Geonkick-Synthesizer/geonkick.git
-          git clone --recursive https://github.com/steinbergmedia/vst3sdk.git
-          mkdir -p /d/a/geonkick/build
-          cd /d/a/geonkick/build
-          cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=./install -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk /d/a/geonkick/geonkick/geonkick
-          sed -i 's/std:://g' /d/a/geonkick/geonkick/vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
+          rm -fr /ucrt64/lib/*thread*.dll.a
+          git clone --recursive https://github.com/Geonkick-Synthesizer/vst3sdk.git
+          pwd
+          ls -l
+          mkdir -p build
+          cd build
+          cmake -G "Unix Makefiles" -DVST3_SDK_PATH=/d/a/geonkick/geonkick/vst3sdk ../
+          sed -i 's/std:://g' ../vst3sdk/public.sdk/source/vst/utility/alignedalloc.h
           make VERBOSE=1
+          cd /d/a/geonkick/geonkick/build
           mkdir -p Geonkick.vst3/Contents/x86_64-win
-          cp -fr /d/a/geonkick/build/src/plugin/vst/Geonkick.dll  /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/Geonkick.vst3
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libcairo-2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libgcc_s_seh-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libstdc++-6.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libfontconfig-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libfreetype-6.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpng16-16.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/zlib1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libwinpthread-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libexpat-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libiconv-2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libintl-8.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbz2-1.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbrotlidec.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libharfbuzz-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libbrotlicommon.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libglib-2.0-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpixman-1-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libgraphite2.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
-          cp -fr /d/a/_temp/msys64/ucrt64/bin/libpcre2-8-0.dll /d/a/geonkick/build/Geonkick.vst3/Contents/x86_64-win/
+          cp -fr src/plugin/vst/Geonkick.dll  Geonkick.vst3/Contents/x86_64-win/Geonkick.vst3
           mkdir geonkick.lv2
-          cp -fr /d/a/geonkick/build/src/plugin/lv2/*.dll /d/a/geonkick/build/geonkick.lv2
-          cp -fr /d/a/geonkick/geonkick/geonkick/src/plugin/lv2/geonkick_win.lv2/* /d/a/geonkick/build/geonkick.lv2
+          cp -fr src/plugin/lv2/*.dll geonkick.lv2
+          cp -fr ../src/plugin/lv2/geonkick_win.lv2/* geonkick.lv2
           mkdir plugins
           cp -fr geonkick.lv2 plugins
           cp -fr Geonkick.vst3 plugins
+          cp ../LICENSE plugins
           mkdir plugins/presets
-          cp -fr /d/a/geonkick/build/presets/AVL-Drumkit plugins/presets
-          cp -fr /d/a/geonkick/build/presets/DigitalSamba plugins/presets
-          cp -fr /d/a/geonkick/build/presets/DSoS plugins/presets
-          cp -fr /d/a/geonkick/build/presets/GeonkickBells plugins/presets
-          cp -fr /d/a/geonkick/build/presets/TimeKit plugins/presets
-          cp -fr /d/a/geonkick/build/presets/UnfaTutorial plugins/presets
+          cp -fr presets/HaraldReveryKicks plugins/presets
+          cp -fr presets/SPKickPresetsVol1 plugins/presets
+          cp -fr presets/AVL-Drumkit plugins/presets
+          cp -fr presets/DigitalSamba plugins/presets
+          cp -fr presets/DSoS plugins/presets
+          cp -fr presets/GeonkickBells plugins/presets
+          cp -fr presets/TimeKit plugins/presets
+          cp -fr presets/UnfaTutorial plugins/presets
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-build
-          path: D:\a\geonkick\build\plugins
+          path: D:\a\geonkick\geonkick\build\plugins
           
-          
-  create-msi:
+  create-ssi:
     needs: build
     runs-on: windows-latest
     defaults:
       run:
         shell: pwsh {0}
-
+  
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
+  
+      - name: Determine Version Info
+        id: version
+        run: |
+            if ($env:GITHUB_REF -like 'refs/tags/*') {
+              $tag = $env:GITHUB_REF -replace 'refs/tags/', ''
+              echo "VERSION_INFO=tag-$tag" >> $GITHUB_ENV
+            } else {
+              echo "VERSION_INFO=commit-" + $env:GITHUB_SHA.Substring(0, 7) >> $GITHUB_ENV
+            }
+            echo "VERSION_INFO = $env:VERSION_INFO"
+        shell: pwsh
+  
       - name: Download Build Artifacts
         uses: actions/download-artifact@v2
         with:
           name: geonkick-build
           path: D:\a\geonkick\build\plugins
-
-      - name: Download and Install WiX Toolset
+  
+      - name: Download and Install Inno Setup
         run: |
-          $url = 'https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311.exe'
-          $output = 'C:\wix311.exe'
-          Invoke-WebRequest -Uri $url -OutFile $output
-          Start-Process -Wait -FilePath $output -ArgumentList '/quiet', '/norestart'
-          Remove-Item -Path $output
-
-      - name: Create MSI Installer
+           Invoke-WebRequest -Uri 'https://jrsoftware.org/download.php/is.exe' -OutFile 'C:\is.exe'
+           Start-Process -Wait -FilePath 'C:\is.exe' -ArgumentList '/VERYSILENT', '/NORESTART'
+           Remove-Item -Path 'C:\is.exe'
+  
+      - name: Compile Inno Setup Script
         run: |
-          & "C:\Program Files (x86)\WiX Toolset v3.11\bin\candle.exe" D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.wxs
-          & "C:\Program Files (x86)\WiX Toolset v3.11\bin\light.exe" -out GeonkickInstaller.msi GeonkickInstall.wixobj
-          
+           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "D:\a\geonkick\geonkick\.github\workflows\GeonkickInstall.iss"
+           & "cp" "D:\a\geonkick\geonkick\.github\workflows\Output\mysetup.exe" "D:\a\geonkick\build\plugins\GeonkickInstaller-v3.5.0-x86_64_develop.exe"
+  
       - name: Upload Installer
         uses: actions/upload-artifact@v2
         with:
           name: geonkick-installer
-          path: GeonkickInstaller.msi
+          path: D:\a\geonkick\build\plugins\GeonkickInstaller-v3.5.0-x86_64_develop.exe

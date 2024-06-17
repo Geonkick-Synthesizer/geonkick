@@ -31,6 +31,7 @@ GeonkickSlider::GeonkickSlider(GeonkickWidget *parent, Orientation orientation)
         , sliderOrientation{orientation}
         , isSelected{false}
         , sliderValue{0}
+        , defaultValue{0}
         , sliderPixels{0}
 {
         setBackgroundColor(100, 100, 100);
@@ -61,11 +62,8 @@ void GeonkickSlider::mouseButtonPressEvent(RkMouseEvent *event)
         if (event->button() == RkMouseEvent::ButtonType::WheelUp
             || event->button() == RkMouseEvent::ButtonType::WheelDown) {
                 sliderValue += event->button() == RkMouseEvent::ButtonType::WheelUp ? 2 : -2;
+                sliderValue = std::clamp(sliderValue, 0, 100);
                 onSetValue(sliderValue);
-                if (sliderValue < 0)
-                        sliderValue = 0;
-                else if (sliderValue > 100)
-                        sliderValue = 100;
                 sliderPixels = pixelsFromValue();
                 action valueUpdated(sliderValue);
                 update();
@@ -78,7 +76,7 @@ void GeonkickSlider::mouseButtonPressEvent(RkMouseEvent *event)
                 isSelected = true;
                 if (value != sliderValue) {
                         sliderValue = value;
-                        valueUpdated(sliderValue);
+                        action valueUpdated(sliderValue);
                         update();
                 }
          }
@@ -89,7 +87,7 @@ void GeonkickSlider::mouseMoveEvent(RkMouseEvent *event)
         if (isSelected) {
                 int value = calculateValue(event->x(), event->y());
                 sliderValue = value;
-                valueUpdated(sliderValue);
+                action valueUpdated(sliderValue);
                 update();
         }
 }
@@ -98,6 +96,12 @@ void GeonkickSlider::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         RK_UNUSED(event);
         isSelected = false;
+}
+
+void GeonkickSlider::mouseDoubleClickEvent([[maybe_unused]] RkMouseEvent *event)
+{
+        onSetValue(defaultValue, defaultValue);
+        action valueUpdated(defaultValue);
 }
 
 int GeonkickSlider::calculateValue(int x, int y)
@@ -140,13 +144,10 @@ int GeonkickSlider::pixelsFromValue() const
         return pixels;
 }
 
-void GeonkickSlider::onSetValue(int value)
+void GeonkickSlider::onSetValue(int value, int defaultVal)
 {
-        if (value > 100)
-                value = 100;
-        else if (value < 0)
-                value = 0;
-
+        defaultValue = std::clamp(defaultVal, 0, 100);
+        value = std::clamp(value, 0, 100);
         if (value != sliderValue) {
                 sliderValue = value;
                 sliderPixels = pixelsFromValue();

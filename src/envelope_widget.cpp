@@ -2,7 +2,7 @@
  * File name: envelope_widget.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -42,12 +42,12 @@ RK_DECLARE_IMAGE_RC(layer3_env_active);
 EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                GeonkickApi *api,
                                const std::vector<std::unique_ptr<Oscillator>> &oscillators)
-          : GeonkickWidget(parent)
-          , drawArea{nullptr}
-          , layer1Button{nullptr}
-          , layer2Button{nullptr}
-          , layer3Button{nullptr}
-          , geonkickApi{api}
+        : GeonkickWidget(parent)
+        , drawArea{nullptr}
+        , layer1Button{nullptr}
+        , layer2Button{nullptr}
+        , layer3Button{nullptr}
+        , geonkickApi{api}
 {
         // Create drawing area.
         drawArea = new EnvelopeWidgetDrawingArea(this, geonkickApi);
@@ -55,32 +55,37 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
 
         // Oscillator1 envelope
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
-        auto envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator1), envelope});
+        auto envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator1);
+        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator1),
+                        std::move(envelope)});
 
         // Oscillator2 envelope
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
-        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator2), envelope});
+        envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator2);
+        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator2),
+                        std::move(envelope)});
 
-        // Oscillator2 envelope
+        // Oscillator3 envelope
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator3)].get();
-        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<OscillatorEnvelope>(oscillator, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator3), envelope});
+        envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator3);
+        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator3),
+                        std::move(envelope)});
 
         // General envelope
-        envelope = std::dynamic_pointer_cast<Envelope>(std::make_shared<GeneralEnvelope>(geonkickApi, rect));
-        envelopes.insert({static_cast<int>(Envelope::Category::General), envelope});
-        envelope->setCategory(Envelope::Category::General);
+        auto generalEnvelope = std::make_unique<GeneralEnvelope>(geonkickApi, rect);
+        generalEnvelope->setCategory(Envelope::Category::General);
+        envelopes.insert({static_cast<int>(Envelope::Category::General),
+                        std::move(generalEnvelope)});
         createButtomMenu();
         showEnvelope(Envelope::Category::General, Envelope::Type::Amplitude);
         RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     this, showEnvelope(category, envelope));
-        
+
+        createZoomInfoLabel();
         createPointInfoLabel();
         drawArea->show();
 }
@@ -114,6 +119,19 @@ void EnvelopeWidget::createPointInfoLabel()
         RK_ACT_BIND(drawArea, isOverPoint,
                     RK_ACT_ARGS(const std::string &info),
                     pointInfoLabel, setText(info));
+}
+
+void EnvelopeWidget::createZoomInfoLabel()
+{
+        auto zoomInfo = "1:" + Geonkick::doubleToStr(drawArea->getEnvelope()->getZoom(), 0);
+        auto zoomInfoLabel = new RkLabel(drawArea, zoomInfo);
+        zoomInfoLabel->setBackgroundColor(drawArea->background());
+        zoomInfoLabel->setTextColor({180, 180, 180});
+        zoomInfoLabel->setFixedSize(30, 16);
+        zoomInfoLabel->setPosition(10, drawArea->height() - zoomInfoLabel->height() - 8);
+        RK_ACT_BIND(drawArea, zoomUpdated,
+                    RK_ACT_ARGS(const std::string &info),
+                    zoomInfoLabel, setText("1:" + info));
 }
 
 void EnvelopeWidget::updateKickGraph(std::shared_ptr<RkImage> graphImage)

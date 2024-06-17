@@ -28,9 +28,9 @@
 #include "RkObject.h"
 #include "RkVariant.h"
 
-class RK_EXPORT RkModel;
+class RkModel;
 
-class RK_EXPORT RkModelItem {
+class RkModelItem {
  public:
         enum class DataType : int {
                 String   = 0,
@@ -55,7 +55,7 @@ class RK_EXPORT RkModelItem {
         size_t itemIndex;
 };
 
-class RK_EXPORT RkModel: public RkObject {
+class RkModel: public RkObject {
   public:
         explicit RkModel(RkObject *parent);
         virtual ~RkModel() = default;
@@ -68,10 +68,10 @@ class RK_EXPORT RkModel: public RkObject {
         bool isItemSelected(size_t index) const;
         bool isValidIndex(size_t index) const;
 
- protected:
-        RK_DELCATE_IMPL_PTR(RkModel);
+protected:
+        RK_DECLARE_IMPL_PTR(RkModel);
 
- private:
+private:
         RK_DISABLE_COPY(RkModel);
         RK_DISABLE_MOVE(RkModel);
 };

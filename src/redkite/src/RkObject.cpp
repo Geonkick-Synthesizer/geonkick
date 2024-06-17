@@ -23,7 +23,7 @@
 
 #include "RkObjectImpl.h"
 #include "RkLog.h"
-#include "RkEventQueue.h"
+#include "RkEventQueueImpl.h"
 
 RkObject::RkObject(RkObject *parent)
         : o_ptr{std::make_unique<RkObjectImpl>(this, parent)}
@@ -45,7 +45,7 @@ RkObject::~RkObject()
 {
         RK_LOG_DEBUG("called: " << this);
         if (eventQueue())
-                eventQueue()->removeObject(this);
+                RK_IMPL_PTR(eventQueue())->removeObject(this);
         o_ptr->removeChildrens();
 }
 
@@ -76,19 +76,18 @@ RkEventQueue* RkObject::eventQueue() const
 
 void RkObject::event(RkEvent *event)
 {
-        RK_UNUSED(event);
 }
 
 void RkObject::addShortcut(Rk::Key key, Rk::KeyModifiers modifier)
 {
         if (eventQueue())
-                eventQueue()->addShortcut(this, key, modifier);
+                RK_IMPL_PTR(eventQueue())->addShortcut(this, key, modifier);
 }
 
 void RkObject::removeShortcut(Rk::Key key, Rk::KeyModifiers modifier)
 {
         if (eventQueue())
-                eventQueue()->removeShortcut(this, key, modifier);
+                RK_IMPL_PTR(eventQueue())->removeShortcut(this, key, modifier);
 }
 
 void RkObject::rk__add_observer(std::unique_ptr<RkObserver> observer)
@@ -96,7 +95,7 @@ void RkObject::rk__add_observer(std::unique_ptr<RkObserver> observer)
         o_ptr->addObserver(std::move(observer));
 }
 
-const std::vector<std::unique_ptr<RkObserver>>& RkObject::rk__observers() const
+const std::list<std::unique_ptr<RkObserver>>& RkObject::rk__observers() const
 {
         return o_ptr->observers();
 }
@@ -128,8 +127,8 @@ void RkObject::removeBoundObject(RkObject *obj)
 
 RkObject* RkObject::findObject(const std::string &name) const
 {
-        if (eventQueue())
-                return eventQueue()->findObjectByName(name);
+        //        if (eventQueue())
+        //        return RK_IMPL_PTR(eventQueue())->findObjectByName(name);
         return nullptr;
 }
 

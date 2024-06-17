@@ -4,6 +4,10 @@ set(gkick_rc_png_files
 app_icon.png
 logo_about.png
 about.png
+add_button_16x16.png
+add_button_16x16_hover.png
+remove_button_16x16.png
+remove_button_16x16_hover.png
 
 # === Top Menu ===
 
@@ -45,6 +49,18 @@ topmenu_presets_off.png
 topmenu_samples_active.png
 topmenu_samples_hover.png
 topmenu_samples_off.png
+topmenu_settings_active.png
+topmenu_settings_hover.png
+topmenu_settings_off.png
+
+# === Preset Navigator ==
+presetnav_bk.png
+presetnav_next.png
+presetnav_previous.png
+presetnav_next_hover.png
+presetnav_previous_hover.png
+presetnav_next_pressed.png
+presetnav_previous_pressed.png
 
 # === Envelopes Menu ===
 
@@ -249,11 +265,18 @@ prev_page_on.png
 env_button.png
 env_button_hover.png
 env_button_on.png
+note_off_unpressed.png
+note_off_hover.png
+note_off_pressed.png
 
 # === File Dialog ===
 
 scrollbar_button_up.png
 scrollbar_button_down.png
+new_directory.png
+bookmark_16x16_hover.png
+bookmark_16x16_pressed.png
+bookmark_16x16_unpressed.png
 
 # === Samples Browser ===
 

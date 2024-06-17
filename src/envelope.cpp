@@ -2,7 +2,7 @@
  * File name: envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -46,6 +46,14 @@ Envelope::Envelope(const RkRect &area)
         , editedPointIndex{0}
         , isEditingPoint{false}
 	, applyType{ApplyType::Linear}
+        , scrollState{false}
+        , zoomInfoMap{{Type::Amplitude, {1.0, 0.0, 0.0}},
+                      {Type::Frequency, {1.0, 0.0, 0.0}},
+                      {Type::FilterCutOff, {1.0, 0.0, 0.0}},
+                      {Type::FilterQFactor, {1.0, 0.0, 0.0}},
+                      {Type::DistortionDrive, {1.0, 0.0, 0.0}},
+                      {Type::DistortionVolume, {1.0, 0.0, 0.0}},
+                      {Type::PitchShift, {1.0, 0.0, 0.0}}}
 {
 }
 
@@ -59,6 +67,49 @@ int Envelope::H(void) const
         return drawingArea.height();
 }
 
+void Envelope::zoomOut()
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+
+        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient / 2, 1.0, 32.0);
+        res->second.timeOrigin = std::clamp(res->second.timeOrigin,
+                                           0.0,
+                                           envelopeLength() - envelopeLength()
+                                           / res->second.zoomCoefficient);
+        res->second.valueOrigin = std::clamp(res->second.valueOrigin,
+                                             0.0,
+                                             envelopeAmplitude() - envelopeAmplitude()
+                                             / res->second.zoomCoefficient);
+}
+
+void Envelope::zoomIn()
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+
+        res->second.zoomCoefficient = std::clamp(res->second.zoomCoefficient * 2, 1.0, 32.0);
+        res->second.timeOrigin = std::clamp(res->second.timeOrigin,
+                                           0.0,
+                                           envelopeLength() - envelopeLength()
+                                           / res->second.zoomCoefficient);
+        res->second.valueOrigin = std::clamp(res->second.valueOrigin,
+                                             0.0,
+                                             envelopeAmplitude() - envelopeAmplitude()
+                                             / res->second.zoomCoefficient);
+}
+
+double Envelope::getZoom() const
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return 1.0;
+
+        return res->second.zoomCoefficient;
+}
+
 RkPoint Envelope::getOrigin(void) const
 {
         return drawingArea.bottomLeft();
@@ -70,8 +121,17 @@ void Envelope::draw(RkPainter &painter, DrawLayer layer)
                 drawAxies(painter);
                 drawScale(painter);
         } else if (layer == DrawLayer::Envelope) {
-                drawPoints(painter);
-                drawLines(painter);
+                RkImage envelopeImg(W() + 2 * getPointRadius() + 10,
+                                    H() + 3 * getPointRadius() + 6);
+                RkPainter imgPainter(&envelopeImg);
+                imgPainter.fillRect(RkRect({0, 0}, envelopeImg.size()), {0, 0, 0, 0});
+                imgPainter.translate({getPointRadius(),
+                                envelopeImg.size().height() - getPointRadius()});
+                drawPoints(imgPainter);
+                drawLines(imgPainter);
+                painter.drawImage(envelopeImg, getOrigin().x() - getPointRadius(),
+                                  getOrigin().y() + getPointRadius()
+                                  - envelopeImg.size().height());
         }
 }
 
@@ -98,7 +158,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
         font.setSize(10);
         painter.setFont(font);
 
-        auto val = envelopeLength() / 10;
+        auto val = (envelopeLength() / getZoom()) / 10;
         int dx = W() / 10;
         RkPoint point = getOrigin();
         int x  = point.x() + dx;
@@ -110,7 +170,7 @@ void Envelope::drawTimeScale(RkPainter &painter)
 
                 RkRect rect(x - 12, point.y() - 12, 25, font.size());
                 painter.setPen(RkColor(110, 110, 110));
-                painter.drawText(rect, std::to_string(std::llround(i * val)));
+                painter.drawText(rect, Geonkick::doubleToStr(getTimeOrigin() + i * val, 3));
                 x += dx;
         }
 
@@ -140,7 +200,7 @@ void Envelope::drawValueScale(RkPainter &painter)
                 break;
 	case Type::FilterQFactor:
                 text = "Resonance";
-                break;	
+                break;
         case Type::PitchShift:
                 text = "Semitones";
                 break;
@@ -238,7 +298,6 @@ void Envelope::drawPoints(RkPainter &painter)
         RkPen pen;
         pen.setWidth(2);
         pen.setColor(RkColor(200, 200, 200, 150));
-        RkPoint origin = getOrigin();
 	for (decltype(envelopePoints.size()) i = 0; i < envelopePoints.size(); i++) {
                 if (pointSelected && i == selectedPointIndex) {
                         RkPen penSeleted;
@@ -254,7 +313,7 @@ void Envelope::drawPoints(RkPainter &painter)
                         painter.setPen(pen);
                 }
                 RkPoint scaledPoint = scaleUp(envelopePoints[i]);
-                scaledPoint = RkPoint(scaledPoint.x() + origin.x(), origin.y() - scaledPoint.y());
+                scaledPoint = RkPoint(scaledPoint.x(), -scaledPoint.y());
 		drawPoint(painter, scaledPoint);
                 scaledPoint = RkPoint(scaledPoint.x(), scaledPoint.y() - 1.4 * getPointRadius());
                 drawPointValue(painter, scaledPoint, envelopePoints[i].y());
@@ -296,7 +355,7 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 						 + std::string("kHz ")
 						 + frequencyToNote(value));
 			}
-                } else {    
+                } else {
 			auto frequency =  pow(10, (log10(envelopeAmplitude()) - log10(20)) * value + log10(20));
 			if (frequency >= 20 && frequency < 1000) {
 				double roundedValue = std::round(frequency * 10.0) / 10.0;
@@ -321,11 +380,9 @@ void Envelope::drawLines(RkPainter &painter)
                 return;
 
         std::vector<RkPoint> points;
-        auto origin = getOrigin();
 	for (const auto& point : envelopePoints) {
                 auto scaledPoint = scaleUp(point);
-	        points.push_back(RkPoint(origin.x() + scaledPoint.x(),
-					 origin.y() - scaledPoint.y()));
+	        points.push_back(RkPoint(scaledPoint.x(), -scaledPoint.y()));
 	}
 
 	auto pen = painter.pen();
@@ -378,7 +435,7 @@ void Envelope::updateSelectedPointValue(double val)
                                   envelopePoints[editedPointIndex].x(),
                                   convertFromHumanValue(val));
                 updatePoints();
-        }        
+        }
 }
 
 void Envelope::setEditCurrentPoint(bool edit)
@@ -573,54 +630,72 @@ void Envelope::updatePoints()
 
 RkRealPoint Envelope::scaleDown(const RkPoint &point)
 {
-	if (applyType == ApplyType::Logarithmic) {
-		return {static_cast<double>(point.x()) / W(),
-			static_cast<double>(point.y()) / H()};
-	}
+        auto calculateX = [&](double x) {
+                return (static_cast<double>(x) / W()) / getZoom()
+                        + getTimeOrigin() / envelopeLength();
+        };
 
-	RkRealPoint scaledPoint;
+        auto calculateY = [&](double y) {
+                if (std::abs(envelopeAmplitude())
+                    < std::numeric_limits<double>::epsilon()) {
+                        return 0.0;
+                }
+                return (static_cast<double>(y) / H()) / getZoom()
+                        + getValueOrigin() / envelopeAmplitude();
+        };
+
+	if (applyType == ApplyType::Logarithmic)
+		return {calculateX(point.x()), calculateY(point.y())};
+
+        double y = 0.0;
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
-                scaledPoint = RkRealPoint(static_cast<double>(point.x()) / W(),
-                                          static_cast<double>(point.y()) / H());
         } else {
-                scaledPoint.setX(static_cast<double>(point.x()) / W());
-                auto k = static_cast<double>(point.y()) / H();
+                /*auto k = static_cast<double>(point.y()) / H();
                 double logVal = k * (log10(envelopeAmplitude()) - log10(20));
                 double val = pow(10, logVal + log10(20));
-                scaledPoint.setY(val / envelopeAmplitude());
+                y = val / envelopeAmplitude();*/
         }
-        return scaledPoint;
+        return {calculateX(point.x()), calculateY(point.y())};
 }
 
 RkPoint Envelope::scaleUp(const RkRealPoint &point)
 {
+        auto calculateX = [&](double x) {
+                return getZoom() * (x - getTimeOrigin() / envelopeLength()) * W();
+        };
+
+        auto calculateY = [&](double y) {
+                if (std::abs(envelopeAmplitude())
+                    < std::numeric_limits<double>::epsilon()) {
+                        return 0.0;
+                }
+                return getZoom() * (y - getValueOrigin() / envelopeAmplitude()) * H();
+        };
+
 	if (getApplyType() == ApplyType::Logarithmic)
-		return RkPoint(point.x() * W(), point.y() * H());
-	
-	int x, y;
+		return RkPoint(calculateX(point.x()),
+                               calculateY(point.y()));
+
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
             || type() == Type::DistortionVolume
             || type() == Type::PitchShift) {
-                x = point.x() * W();
-                y = point.y() * H();
         } else {
-                x = static_cast<int>(point.x() * W());
-                double logRange = log10(envelopeAmplitude()) - log10(20);
+                /*double logRange = log10(envelopeAmplitude()) - log10(20);
                 double k = 0;
                 if (point.y() > 0) {
                         double logValue = log10(envelopeAmplitude() * point.y()) - log10(20);
                         if (logValue > 0)
                                 k = logValue / logRange;
                 }
-                y = k * H();
+                y = k * H();*/
         }
-        return RkPoint(x, y);
+        return RkPoint(calculateX(point.x()), calculateY(point.y()));
 }
 
 bool Envelope::hasPoint(const RkRealPoint &point, const RkPoint &p)
@@ -694,9 +769,9 @@ double Envelope::convertToHumanValue(double val) const
                 val *= envelopeAmplitude();
                 return 2 * val - envelopeAmplitude();
         } else if (type() == Envelope::Type::Frequency || type() == Type::FilterCutOff) {
-                if (getApplyType() == ApplyType::Linear) 
+                if (getApplyType() == ApplyType::Linear)
 			val *= envelopeAmplitude();
-                else 
+                else
 	                return pow(10, (log10(envelopeAmplitude()) - log10(20)) * val + log10(20));
         }
         return val;
@@ -706,7 +781,7 @@ double Envelope::convertFromHumanValue(double val) const
 {
         if ( envelopeAmplitude() == 0.0 )
                 return val;
-        
+
         if (type() == Envelope::Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
@@ -766,3 +841,53 @@ Envelope::ApplyType Envelope::getApplyType() const
 {
 	return applyType;
 }
+
+void Envelope::setScrollState(bool b)
+{
+        scrollState = b;
+}
+
+bool Envelope::isScrollState() const
+{
+        return scrollState;
+}
+
+void Envelope::setTimeOrigin(double timeOrg)
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+
+        res->second.timeOrigin = std::clamp(timeOrg,
+                                            0.0,
+                                            envelopeLength() - envelopeLength()
+                                            / res->second.zoomCoefficient);
+}
+
+double Envelope::getTimeOrigin() const
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return 0.0;
+        return res->second.timeOrigin;
+}
+
+void Envelope::setValueOrigin(double valueOrg)
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return;
+        res->second.valueOrigin = std::clamp(valueOrg,
+                                             0.0,
+                                             envelopeAmplitude() - envelopeAmplitude()
+                                             / res->second.zoomCoefficient);
+}
+
+double Envelope::getValueOrigin() const
+{
+        auto res = zoomInfoMap.find(type());
+        if (res == zoomInfoMap.end())
+                return 0.0;
+        return res->second.valueOrigin;
+}
+

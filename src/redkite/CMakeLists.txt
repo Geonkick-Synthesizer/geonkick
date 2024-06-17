@@ -11,6 +11,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
   message(STATUS "Build Redkite for Windows")
   add_compile_options(-DRK_OS_WIN)
   add_compile_options(-DRK_FOR_SHARED)
+  add_compile_options(-DCAIRO_WIN32_STATIC_BUILD)
 elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
   message(FATAL_ERROR "Redkite is not implemented yet for Mac OS X")
 elseif (CMAKE_SYSTEM_NAME MATCHES Linux)
@@ -32,9 +33,17 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type Release" FORCE)
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-Wall ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
-set(CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS} -fvisibility=hidden")
+if (RK_ARCHITECTURE MATCHES x86_64)
+  message(STATUS "set optimisation compiler flags for ${RK_ARCHITECTURE}")
+  set(RK_OPTIMISATION_FLAGS "-O3 -msse -msse2 -mfpmath=sse -funsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
+else ()
+  message(STATUS "set optimisation compiler flags for ${RK_ARCHITECTURE}")
+  set(RK_OPTIMISATION_FLAGS "-O3 -funsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
+endif ()
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "-Wall ${RK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+set(CMAKE_C_FLAGS "-Wall ${RK_OPTIMISATION_FLAGS} ${CMAKE_C_FLAGS} -fvisibility=hidden")
 
 if (NOT RK_EXPORT_INTERFACE)
   message(STATUS "don't export Redkite interface")
@@ -100,6 +109,7 @@ set(RK_HEADERS
   ${RK_INCLUDE_PATH}/RkWidget.h
   ${RK_INCLUDE_PATH}/RkLabel.h
   ${RK_INCLUDE_PATH}/RkButton.h
+  ${RK_INCLUDE_PATH}/RkSpinBox.h
   ${RK_INCLUDE_PATH}/RkLineEdit.h
   ${RK_INCLUDE_PATH}/RkList.h
   ${RK_INCLUDE_PATH}/RkProgressBar.h
@@ -118,11 +128,13 @@ set(RK_HEADERS_IMPL
   ${RK_INCLUDE_PATH}/impl/RkMainImpl.h
   ${RK_INCLUDE_PATH}/impl/RkShortcut.h
   ${RK_INCLUDE_PATH}/impl/RkEventQueueImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkSystemWindow.h
   ${RK_INCLUDE_PATH}/impl/RkWidgetImpl.h
   ${RK_INCLUDE_PATH}/impl/RkLabelImpl.h
   ${RK_INCLUDE_PATH}/impl/RkListImpl.h
   ${RK_INCLUDE_PATH}/impl/RkModelImpl.h
   ${RK_INCLUDE_PATH}/impl/RkButtonImpl.h
+  ${RK_INCLUDE_PATH}/impl/RkSpinBoxImpl.h
   ${RK_INCLUDE_PATH}/impl/RkLineEditImpl.h
   ${RK_INCLUDE_PATH}/impl/RkProgressBarImpl.h
   ${RK_INCLUDE_PATH}/impl/RkCanvasInfo.h
@@ -155,7 +167,9 @@ endif()
 
 set(RK_SOURCES
   ${RK_SRC_PATH}/RkObject.cpp
+  ${RK_SRC_PATH}/RkCanvas.cpp
   ${RK_SRC_PATH}/RkObjectImpl.cpp
+  ${RK_SRC_PATH}/RkSystemWindow.cpp
   ${RK_SRC_PATH}/RkWidget.cpp
   ${RK_SRC_PATH}/RkWidgetImpl.cpp
   ${RK_SRC_PATH}/RkMain.cpp
@@ -167,6 +181,8 @@ set(RK_SOURCES
   ${RK_SRC_PATH}/RkModelImpl.cpp
   ${RK_SRC_PATH}/RkLabel.cpp
   ${RK_SRC_PATH}/RkLabelImpl.cpp
+  ${RK_SRC_PATH}/RkSpinBox.cpp
+  ${RK_SRC_PATH}/RkSpinBoxImpl.cpp
   ${RK_SRC_PATH}/RkButton.cpp
   ${RK_SRC_PATH}/RkButtonImpl.cpp
   ${RK_SRC_PATH}/RkLineEdit.cpp
@@ -219,15 +235,13 @@ add_library(redkite STATIC
   ${RK_SOURCES}
   ${RK_SOURCES_PLATFORM})
 
-#if (CMAKE_SYSTEM_NAME MATCHES Windows)
-#  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX})
-#  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
-#elseif(CMAKE_SYSTEM_NAME MATCHES Darwin)
-# Not implemented
-#else()
-#  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_LIBDIR})
-#  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
-#endif()
+if (CMAKE_SYSTEM_NAME MATCHES Windows)
+  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX})
+  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+else()
+  install(TARGETS redkite DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+  install(FILES ${RK_HEADERS} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/redkite)
+endif()
 
 if(RK_BUILD_TOOLS)
 	add_subdirectory(tools)

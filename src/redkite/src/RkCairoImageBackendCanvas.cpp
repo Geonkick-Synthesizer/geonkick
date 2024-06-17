@@ -31,8 +31,9 @@ RkCairoImageBackendCanvas::RkCairoImageBackendCanvas(const RkSize &size,
         : canvasInfo{nullptr}
         , imageSize{size}
 {
+        RK_LOG_DEBUG("size w: " << size.width() << ", h: " << size.width());
         auto cairoFormat = toCairoFormat(format);
-        if (cairoFormat != CAIRO_FORMAT_INVALID && imageSize.width() > 0 && imageSize.height() > 0) {
+        if (cairoFormat != CAIRO_FORMAT_INVALID && !imageSize.isEmpty()) {
                 canvasInfo = std::make_unique<RkCanvasInfo>();
                 auto stride = cairo_format_stride_for_width(cairoFormat, imageSize.width());
                 if (data == nullptr)
@@ -44,6 +45,9 @@ RkCairoImageBackendCanvas::RkCairoImageBackendCanvas(const RkSize &size,
                                                                                 imageSize.width(),
                                                                                 imageSize.height(),
                                                                                 stride);
+                if (!canvasInfo->cairo_surface) {
+                        RK_LOG_ERROR("can't create cairo surface");
+                }
         }
 }
 

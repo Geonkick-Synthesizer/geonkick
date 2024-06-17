@@ -78,6 +78,11 @@ void RkPainter::RkPainterImpl::drawPolyline(const std::vector<RkPoint> &points)
         backendGraphics->drawPolyLine(points);
 }
 
+void RkPainter::RkPainterImpl::drawPolyline(const std::vector<RkRealPoint> &points)
+{
+        backendGraphics->drawPolyLine(points);
+}
+
 void RkPainter::RkPainterImpl::fillRect(const RkRect &rect, const RkColor &color)
 {
         backendGraphics->fillRect(rect, color);
@@ -123,4 +128,9 @@ int RkPainter::RkPainterImpl::getTextWidth(const std::string &text) const
 void RkPainter::RkPainterImpl::applyAlpha(int alpha)
 {
         backendGraphics->applyAlpha(alpha);
+}
+
+void RkPainter::RkPainterImpl::scale(double x, double y)
+{
+        backendGraphics->scale(x, y);
 }

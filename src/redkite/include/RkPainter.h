@@ -27,13 +27,14 @@
 #include "Rk.h"
 #include "RkImage.h"
 #include "RkPoint.h"
+#include "RkRealPoint.h"
 #include "RkPen.h"
 #include "RkRect.h"
 #include "RkFont.h"
 
 class RkCanvas;
 
-class RK_EXPORT RkPainter {
+class RkPainter {
  public:
         RkPainter(RkCanvas *canvas);
         ~RkPainter();
@@ -49,6 +50,7 @@ class RK_EXPORT RkPainter {
         void drawLine(const RkPoint &p1, const RkPoint &p2);
         void drawRect(const RkRect &rect);
         void drawPolyline(const std::vector<RkPoint> &points);
+        void drawPolyline(const std::vector<RkRealPoint> &points);
         void fillRect(const RkRect &rect, const RkColor &color);
         void applyAlpha(int alpha);
         const RkPen& pen() const;
@@ -58,11 +60,14 @@ class RK_EXPORT RkPainter {
         void translate(const RkPoint &offset);
         void rotate(rk_real angle);
         int getTextWidth(const std::string &text) const;
+        void scale(double x, double y);
 
- private:
+protected:
+        RK_DECLARE_O_PTR(RkPainter);
+
+private:
         RK_DISABLE_COPY(RkPainter);
         RK_DISABLE_MOVE(RkPainter);
-        RK_DECLARE_IMPL(RkPainter);
 };
 
 #endif // RK_PAINTER_H

@@ -36,13 +36,13 @@ class ViewState;
 class GeonkickWidget: public RkWidget
 {
  public:
-        explicit GeonkickWidget(RkMain *app,
-                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);
-        explicit GeonkickWidget(RkMain *app,
+        explicit GeonkickWidget(RkMain& app,
+                                Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
+        explicit GeonkickWidget(RkMain& app,
                                 const RkNativeWindowInfo &info,
-                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+                                Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
         explicit GeonkickWidget(GeonkickWidget *parent,
-                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+                                Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
         virtual ~GeonkickWidget() = default;
         void setBackgroundImage(const RkImage &img);
         void setBackgroundImage(const std::string &file);

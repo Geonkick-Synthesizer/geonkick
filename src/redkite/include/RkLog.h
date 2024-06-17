@@ -33,7 +33,7 @@ enum class RkLogLevel : int {
         Error
 };
 
-void RK_EXPORT rkLogMessage(RkLogLevel level, const std::string &func_name, const std::string &msg);
+void rkLogMessage(RkLogLevel level, const std::string &func_name, const std::string &msg);
 
 #if defined(__GNUC__) || defined(__MINGW32__)
 #define RK_LOG_FUNC_NAME __PRETTY_FUNCTION__
@@ -42,6 +42,11 @@ void RK_EXPORT rkLogMessage(RkLogLevel level, const std::string &func_name, cons
 #else
 	#define RK_LOG_FUNC_NAME __PRETTY_FUNCTION__
 #endif
+
+#define RK_LOG_DEV_DEBUG(msg) do { \
+        std::ostringstream rk_stream; \
+        rk_stream << msg; \
+        rkLogMessage(RkLogLevel::Debug, RK_LOG_FUNC_NAME, rk_stream.str()); } while(0)
 
 #ifdef RK_LOG_DEBUG_LEVEL
 #define RK_LOG_DEBUG(msg) do { \

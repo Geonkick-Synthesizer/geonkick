@@ -2,7 +2,7 @@
  * File name: preset_browser_view.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -23,6 +23,9 @@
 
 #include "preset_browser_view.h"
 #include "preset_browser_model.h"
+#include "file_dialog.h"
+#include "preset_folder.h"
+#include "geonkick_api.h"
 
 #include <RkPainter.h>
 #include <RkImage.h>
@@ -36,6 +39,10 @@ RK_DECLARE_IMAGE_RC(next_page_on);
 RK_DECLARE_IMAGE_RC(prev_page);
 RK_DECLARE_IMAGE_RC(prev_page_hover);
 RK_DECLARE_IMAGE_RC(prev_page_on);
+RK_DECLARE_IMAGE_RC(add_button_16x16);
+RK_DECLARE_IMAGE_RC(add_button_16x16_hover);
+RK_DECLARE_IMAGE_RC(remove_button_16x16);
+RK_DECLARE_IMAGE_RC(remove_button_16x16_hover);
 
 PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
                                      PresetBrowserModel* model)
@@ -51,11 +58,13 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         , prevPresetPageButton{nullptr}
         , nextFolderPageButton{nullptr}
         , prevFolderPageButton{nullptr}
+        , addFolderButton{nullptr}
+        , removeFolderButton{nullptr}
         , bottomContainer{nullptr}
 {
-        setSize(620, 290);
-        RK_ACT_BIND(browserModel, folderSelected, RK_ACT_ARGS(PresetFolder*), this, update());
-        RK_ACT_BIND(browserModel, presetSelected, RK_ACT_ARGS(Preset*), this, update());
+        setSize(800, 350);
+        RK_ACT_BIND(browserModel, presetFolderAdded, RK_ACT_ARGS(PresetFolder*), this, updatePageButtons());
+        RK_ACT_BIND(browserModel, presetFolderRemoved, RK_ACT_ARGS(), this, updatePageButtons());
         RK_ACT_BIND(browserModel, presetPageChanged, RK_ACT_ARGS(), this, updatePageButtons());
         RK_ACT_BIND(browserModel, folderPageChanged, RK_ACT_ARGS(), this, updatePageButtons());
         RK_ACT_BIND(browserModel, folderSelected, RK_ACT_ARGS(PresetFolder*), this, updatePageButtons());
@@ -66,7 +75,47 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         bottomContainer->setPosition({0, height() - 24  - 5});
         bottomContainer->setHiddenTakesPlace();
 
-        bottomContainer->addSpace((leftPadding + columnWidth) - 2 * 24 - 10);
+        bottomContainer->addSpace(5);
+        addFolderButton = new RkButton(this);
+        addFolderButton->setType(RkButton::ButtonType::ButtonCheckable);
+        addFolderButton->setBackgroundColor(background());
+        addFolderButton->setSize(16, 16);
+        addFolderButton->setImage(RkImage(addFolderButton->size(),
+                                          RK_IMAGE_RC(add_button_16x16)),
+                                  RkButton::State::Unpressed);
+        addFolderButton->setImage(RkImage(addFolderButton->size(),
+                                          RK_IMAGE_RC(add_button_16x16_hover)),
+                                  RkButton::State::UnpressedHover);
+        addFolderButton->setImage(RkImage(addFolderButton->size(),
+                                          RK_IMAGE_RC(add_button_16x16_hover)),
+                                  RkButton::State::PressedHover);
+        addFolderButton->show();
+        bottomContainer->addWidget(addFolderButton);
+        RK_ACT_BIND(addFolderButton, pressed, RK_ACT_ARGS(), this, addCustomFolder());
+
+        bottomContainer->addSpace(5);
+        removeFolderButton = new RkButton(this);
+        removeFolderButton->setType(RkButton::ButtonType::ButtonCheckable);
+        removeFolderButton->setBackgroundColor(background());
+        removeFolderButton->setSize(16, 16);
+        removeFolderButton->setImage(RkImage(removeFolderButton->size(),
+                                          RK_IMAGE_RC(remove_button_16x16)),
+                                  RkButton::State::Unpressed);
+        removeFolderButton->setImage(RkImage(removeFolderButton->size(),
+                                          RK_IMAGE_RC(remove_button_16x16_hover)),
+                                  RkButton::State::UnpressedHover);
+        removeFolderButton->setImage(RkImage(removeFolderButton->size(),
+                                          RK_IMAGE_RC(remove_button_16x16_hover)),
+                                  RkButton::State::PressedHover);
+        removeFolderButton->show();
+        bottomContainer->addWidget(removeFolderButton);
+        RK_ACT_BIND(removeFolderButton, pressed, RK_ACT_ARGS(),
+                    browserModel,
+                    removeSelectedFolder());
+
+        bottomContainer->addSpace((leftPadding + columnWidth) - 2 * 24 - 10
+                                  - addFolderButton->width() - 5
+                                  - removeFolderButton->width() - 5);
         nextFolderPageButton = new RkButton(this);
         nextFolderPageButton->setType(RkButton::ButtonType::ButtonPush);
         nextFolderPageButton->setSize(24, 24);
@@ -88,6 +137,7 @@ PresetBrowserView::PresetBrowserView(GeonkickWidget *parent,
         prevFolderPageButton->setImage(RkImage(prevFolderPageButton->size(), RK_IMAGE_RC(prev_page_on)),
                            RkButton::State::Pressed);
         RK_ACT_BIND(prevFolderPageButton, pressed, RK_ACT_ARGS(), browserModel, folderPreviousPage());
+
         bottomContainer->addWidget(prevFolderPageButton);
         bottomContainer->addSpace(5);
         bottomContainer->addWidget(nextFolderPageButton);
@@ -157,6 +207,11 @@ void PresetBrowserView::paintWidget(RkPaintEvent *event)
                                     && static_cast<decltype(col)>(overColumn) == col) {
                                         painter.setPen(RkColor(255, 255, 255));
                                 }
+                                if (browserModel->isCustomFolder(row, col))
+                                        presetName = "*" + presetName;
+                                constexpr size_t maxChars = 20;
+                                if (col == 0 && presetName.size() > maxChars)
+                                        presetName = presetName.substr(0, maxChars - 3) + "...";
                                 painter.drawText(textRect, presetName, Rk::Alignment::AlignLeft);
                                 yRow += rowHeight;
                         }
@@ -199,7 +254,18 @@ void PresetBrowserView::updatePageButtons()
         nextFolderPageButton->show(browserModel->folderPages() > 1);
         prevPresetPageButton->show(browserModel->presetPages() > 1);
         nextPresetPageButton->show(browserModel->presetPages() > 1);
+        removeFolderButton->show(browserModel->currentSelectedFolder()
+                                 && browserModel->currentSelectedFolder()->isCustom());
         bottomContainer->update();
         update();
 }
 
+void PresetBrowserView::addCustomFolder()
+{
+        auto fileDialog = new FileDialog(dynamic_cast<GeonkickWidget*>(getTopWidget()),
+                                         FileDialog::Type::Open, "Select Folder");
+        fileDialog->setHomeDirectory(browserModel->getGeonkickApi()->getSettings("GEONKICK_CONFIG/HOME_PATH"));
+        RK_ACT_BIND(fileDialog, selectedFile,
+                    RK_ACT_ARGS(const std::string &file), browserModel,
+                    addFolder(fileDialog->currentDirectory(), true));
+}

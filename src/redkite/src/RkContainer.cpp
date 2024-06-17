@@ -2,7 +2,7 @@
  * File name: RkWidgetContainer.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -28,7 +28,7 @@ RkContainer::RkContainer(RkWidget *parent, Rk::Orientation orientation)
 	: RkContainerItem(parent, ItemType::ItemContainer)
 	, containerOrientation{orientation}
 	, itemSpacing{0}
-        , isHiddenTakesPlace{false}
+        , isHiddenTakesPlace{true}
 {
 	setSize(parent->size());
 }

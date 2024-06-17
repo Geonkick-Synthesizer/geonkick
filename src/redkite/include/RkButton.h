@@ -27,8 +27,7 @@
 #include "RkWidget.h"
 #include "RkImage.h"
 
-class RK_EXPORT RkButton: public RkWidget
-{
+class RkButton: public RkWidget {
  public:
         enum class ButtonType: int {
                 ButtonUncheckable = 0,
@@ -68,13 +67,13 @@ class RK_EXPORT RkButton: public RkWidget
                     RK_ARG_VAL());
 
  protected:
-        virtual void mouseButtonPressEvent(RkMouseEvent *event) override;
-        virtual void mouseButtonReleaseEvent(RkMouseEvent *event) override;
-        virtual void hoverEvent(RkHoverEvent *event) override;
-        virtual void paintEvent(RkPaintEvent *event) override;
+        RK_DECLARE_IMPL_PTR(RkButton);
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
+        void mouseButtonReleaseEvent(RkMouseEvent *event) override;
+        void hoverEvent(RkHoverEvent *event) override;
+        void paintEvent(RkPaintEvent *event) override;
 
  private:
-        RK_DELCATE_IMPL_PTR(RkButton);
         RK_DISABLE_COPY(RkButton);
         RK_DISABLE_MOVE(RkButton);
 };

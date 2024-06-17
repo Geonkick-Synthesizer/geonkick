@@ -22,7 +22,7 @@
  */
 
 #include "RkTimer.h"
-#include "RkEventQueue.h"
+#include "RkEventQueueImpl.h"
 
 #include <chrono>
 
@@ -33,13 +33,13 @@ RkTimer::RkTimer(RkObject *parent, long unsigned int interval)
         , lastTime{0}
 {
         if (eventQueue())
-                eventQueue()->subscribeTimer(this);
+                RK_IMPL_PTR(eventQueue())->subscribeTimer(this);
 }
 
 RkTimer::~RkTimer()
 {
         if (eventQueue())
-                eventQueue()->unsubscribeTimer(this);
+                RK_IMPL_PTR(eventQueue())->unsubscribeTimer(this);
 }
 
 void RkTimer::start()

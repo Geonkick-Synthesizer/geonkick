@@ -25,52 +25,27 @@
 #define RK_EVENT_QUEUE_H
 
 #include "Rk.h"
-#include "RkObject.h"
-#include "RkAction.h"
 
+class RkObject;
 class RkEvent;
-class RkTimer;
-class RkWindowId;
-class RkWidget;
+class RkAction;
 
-class RK_EXPORT RkEventQueue {
+class RkEventQueue {
  public:
         RkEventQueue();
         virtual ~RkEventQueue();
-        void addObject(RkObject *obj);
-        void addShortcut(RkObject *obj,
-                         Rk::Key key,
-                         Rk::KeyModifiers modifier = Rk::KeyModifiers::NoModifier);
-        void removeShortcut(RkObject *obj,
-                            Rk::Key key,
-                            Rk::KeyModifiers modifier = Rk::KeyModifiers::NoModifier);
-        void removeObject(RkObject *obj);
         void postEvent(RkObject *obj, std::unique_ptr<RkEvent> event);
-        void postEvent(const RkWindowId &id, std::unique_ptr<RkEvent> event);
         void postAction(std::unique_ptr<RkAction> act);
-        void subscribeTimer(RkTimer *timer);
-        void unsubscribeTimer(RkTimer *timer);
-        void processEvents();
-        void processActions();
-        void processTimers();
         void processQueue();
-        void clearObjectEvents(const RkObject *obj);
-        void clearObjectActions(const RkObject *obj);
-        void clearEvents();
-        void clearActions();
-        void clearQueue();
-        RkObject* findObjectByName(const std::string &name) const;
-        void setScaleFactor(double factor);
-        RkWidget* getWidget(const RkWindowId &id) const;
-        void dispatchEvents();
 
  protected:
-        RK_DECLARE_IMPL(RkEventQueue);
+        RK_DECLARE_O_PTR(RkEventQueue);
         RkEventQueue(std::unique_ptr<RkEventQueueImpl> impl);
 
  private:
         RK_DISABLE_COPY(RkEventQueue);
         RK_DISABLE_MOVE(RkEventQueue);
+        friend class RkObject;
 };
 
 #endif // RK_EVENT_QUEUE_H

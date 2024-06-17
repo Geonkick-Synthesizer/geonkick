@@ -121,18 +121,25 @@ gkick_real
 gkick_buffer_stretch_get_next(struct gkick_buffer *buffer,
                               gkick_real factor)
 {
-        if (buffer->currentIndex < buffer->size - 2) {
-                /* Do linear interpolation. */
-                gkick_real d = buffer->floatIndex - buffer->currentIndex;
-                gkick_real val = buffer->buff[buffer->currentIndex] * (1.0f - d)
-                        + buffer->buff[buffer->currentIndex + 1] * d;
-                buffer->floatIndex += factor;
-                buffer->currentIndex = buffer->floatIndex;
-                return val;
-        } else if (buffer->currentIndex < buffer->size - 1) {
-                return buffer->buff[buffer->currentIndex];
+        if (buffer->size < 1) {
+                return 0.0f;
+        } else if (buffer->size == 1) {
+                return buffer->buff[0];
+        } else if (buffer->size > 1) {
+                if (buffer->currentIndex <= buffer->size - 2) {
+                        /* Do linear interpolation. */
+                        gkick_real d = buffer->floatIndex - buffer->currentIndex;
+                        gkick_real val = buffer->buff[buffer->currentIndex] * (1.0f - d)
+                                + buffer->buff[buffer->currentIndex + 1] * d;
+                        buffer->floatIndex += factor;
+                        buffer->currentIndex = (size_t)buffer->floatIndex;
+                        return val;
+                } else if (buffer->currentIndex == buffer->size - 1) {
+                        float val = buffer->buff[buffer->currentIndex++];
+                        buffer->floatIndex = buffer->currentIndex;
+                        return val;
+                }
         }
-
         return 0.0f;
 }
 

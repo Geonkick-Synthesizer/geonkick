@@ -73,7 +73,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         auto topContainer = new RkContainer(this);
         topContainer->setSpacing(5);
         percussionsContainer->setHiddenTakesPlace();
-        topContainer->setSize({width(), 30});
+        topContainer->setSize({width(), 25});
 
         addButton = new RkButton(this);
         addButton->setBackgroundColor(background());
@@ -81,8 +81,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         addButton->setSize(16, 16);
         addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
         RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), kitModel, addNewPercussion());
-        addButton->show();
         topContainer->addWidget(addButton);
+        addButton->show();
 
         openKitButton = new RkButton(this);
         openKitButton->setBackgroundColor(background());
@@ -120,7 +120,18 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         kitChannelsView->show();
         topContainer->addSpace(100 - 4 * 16 - 3 * 5 - 10);
         topContainer->addWidget(kitChannelsView);
-
+        auto label = new RkLabel(this, "MIDI Ch.");
+        label->setTextColor(textColor());
+        label->setBackgroundColor(background());
+        label->setSize({50, 20});
+        label->show();
+        topContainer->addWidget(label);
+        label = new RkLabel(this, "Key");
+        label->setTextColor(textColor());
+        label->setBackgroundColor(background());
+        label->setSize({30, 20});
+        label->show();
+        topContainer->addWidget(label);
         kitContainer->addContainer(topContainer);
         kitContainer->addContainer(percussionsContainer);
 
@@ -223,8 +234,9 @@ KitChannelsView::KitChannelsView(KitWidget *parent, KitModel *model)
                 : GeonkickWidget(parent)
                 , kitModel{model}
                 , channelWidth{30}
+                , channelHeight{25}
 {
-        setSize(kitModel->numberOfChannels() * channelWidth, channelWidth);
+        setSize(kitModel->numberOfChannels() * channelWidth, channelHeight);
 }
 
 void KitChannelsView::paintWidget(RkPaintEvent *event)

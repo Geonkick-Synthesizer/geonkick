@@ -23,6 +23,10 @@
 
 #include "DesktopPaths.h"
 
+#ifdef GEONKICK_OS_WINDOWS
+#include <windows.h>
+#endif // GEONKICK_OS_WINDS
+
 DesktopPaths::DesktopPaths()
 {
 	loadPaths();
@@ -88,8 +92,23 @@ void DesktopPaths::loadPaths()
 		GEONKICK_LOG_ERROR("Failed to get program data directory path.");
 	}
 	presetsPath = dataPath / std::filesystem::path("presets");
+
+        loadDrivesList();
 }
 
+void DesktopPaths::loadDrivesList()
+{
+        auto drivesBitMask = GetLogicalDrives();
+        for (auto driveLetter = 'A'; driveLetter <= 'Z'; ++driveLetter) {
+                if ((drivesBitMask & 1) != 0) {
+                        auto drivePath = std::filesystem::path(std::string(1, driveLetter) + std::string(":\\"));
+                        auto driveType = GetDriveType(drivePath.string().c_str());
+                        if (driveType == DRIVE_FIXED)
+                                drivesList.push_back(drivePath);
+                }
+                drivesBitMask >>= 1;
+        }
+}
     
 #else // GEONKICK_OS_GNU
 void DesktopPaths::loadPaths()
@@ -121,3 +140,8 @@ void DesktopPaths::loadPaths()
         }
 }
 #endif // GEONKICK_OS_GNU
+
+std::vector<std::filesystem::path> DesktopPaths::getDrivesList() const
+{
+        return drivesList;
+}

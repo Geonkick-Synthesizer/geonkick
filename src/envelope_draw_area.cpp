@@ -28,6 +28,7 @@
 
 #include <RkPainter.h>
 #include <RkEvent.h>
+#include <RkAction.h>
 
 EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, GeonkickApi *api)
           : GeonkickWidget(parent)
@@ -53,6 +54,10 @@ void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
 {
         if (envelope) {
                 currentEnvelope = envelope;
+                if (currentEnvelope) {
+                        kickGraphics->setEnvelope(currentEnvelope);
+                        action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
+                }
                 envelopeUpdated();
         }
 }
@@ -138,6 +143,11 @@ void EnvelopeWidgetDrawingArea::mouseButtonPressEvent(RkMouseEvent *event)
                         currentEnvelope->selectPoint(point);
                         if (currentEnvelope->hasSelected())
                                 envelopeUpdated();
+                        else {
+                                currentEnvelope->setScrollState(true);
+                                mousePoint.setX(event->x());
+                                mousePoint.setY(event->y());
+                        }
                 }
         }
         setFocus(true);
@@ -147,6 +157,11 @@ void EnvelopeWidgetDrawingArea::mouseButtonReleaseEvent(RkMouseEvent *event)
 {
         if (!currentEnvelope)
                 return;
+
+        if (currentEnvelope->isScrollState()) {
+                currentEnvelope->setScrollState(false);
+                return;
+        }
 
         auto toUpdate = false;
         if (currentEnvelope->hasSelected()) {
@@ -192,6 +207,21 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
         if (!currentEnvelope)
                 return;
 
+        if (currentEnvelope->isScrollState()) {
+                auto zoomedLengthX = currentEnvelope->envelopeLength() / currentEnvelope->getZoom();
+                auto zoomedLengthY = currentEnvelope->envelopeAmplitude() / currentEnvelope->getZoom();
+                auto pointDiff = mousePoint - event->point();
+                auto timeOrg = pointDiff.x() * (zoomedLengthX / currentEnvelope->W());
+                auto valueOrg = -pointDiff.y() * (zoomedLengthY / currentEnvelope->H());
+                currentEnvelope->setTimeOrigin(currentEnvelope->getTimeOrigin() + timeOrg);
+                currentEnvelope->setValueOrigin(currentEnvelope->getValueOrigin() + valueOrg);
+                kickGraphics->updateGraph();
+                mousePoint.setX(event->x());
+                mousePoint.setY(event->y());
+                envelopeUpdated();
+                return;
+        }
+
         RkPoint point(event->x() - drawingArea.left(), drawingArea.bottom() - event->y());
         if (currentEnvelope->hasSelected()) {
                 currentEnvelope->moveSelectedPoint(point.x(), point.y());
@@ -205,6 +235,47 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
         currentEnvelope->overPoint(point);
 	if (overPoint != currentEnvelope->hasOverPoint())
                 envelopeUpdated();
+        mousePoint.setX(event->x());
+        mousePoint.setY(event->y());
+}
+
+void EnvelopeWidgetDrawingArea::wheelEvent(RkWheelEvent *event)
+{
+        event->direction() == RkWheelEvent::WheelDirection::DirectionUp ? zoomIn() : zoomOut();
+}
+
+void EnvelopeWidgetDrawingArea::zoomIn()
+{
+        if (currentEnvelope && (static_cast<int>(currentEnvelope->getZoom()) < 32)) {
+                currentEnvelope->zoomIn();
+                auto zoomedLengthX = currentEnvelope->envelopeLength() / currentEnvelope->getZoom();
+                auto zoomedLengthY = currentEnvelope->envelopeAmplitude() / currentEnvelope->getZoom();
+                auto pointDiff = mousePoint - drawingArea.bottomLeft();
+                auto timeOrg = pointDiff.x() * (zoomedLengthX / currentEnvelope->W());
+                auto valueOrg = pointDiff.y() * (zoomedLengthY / currentEnvelope->H());
+                currentEnvelope->setTimeOrigin(currentEnvelope->getTimeOrigin() + timeOrg);
+                currentEnvelope->setValueOrigin(currentEnvelope->getValueOrigin() - valueOrg);
+                kickGraphics->updateGraph();
+                action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
+        }
+        update();
+}
+
+void EnvelopeWidgetDrawingArea::zoomOut()
+{
+        if (currentEnvelope && (static_cast<int>(currentEnvelope->getZoom()) / 2 > 0)) {
+                auto zoomedLengthX = currentEnvelope->envelopeLength() / currentEnvelope->getZoom();
+                auto zoomedLengthY = currentEnvelope->envelopeAmplitude() / currentEnvelope->getZoom();
+                auto pointDiff = mousePoint - drawingArea.bottomLeft();
+                auto timeOrg = pointDiff.x() * (zoomedLengthX / currentEnvelope->W());
+                auto valueOrg = pointDiff.y() * (zoomedLengthY / currentEnvelope->H());
+                currentEnvelope->setTimeOrigin(currentEnvelope->getTimeOrigin() - timeOrg);
+                currentEnvelope->setValueOrigin(currentEnvelope->getValueOrigin() + valueOrg);
+                currentEnvelope->zoomOut();
+                kickGraphics->updateGraph();
+                action zoomUpdated(Geonkick::doubleToStr(currentEnvelope->getZoom(), 0));
+        }
+        update();
 }
 
 void EnvelopeWidgetDrawingArea::envelopeUpdated()

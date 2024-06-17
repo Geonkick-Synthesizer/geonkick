@@ -7,45 +7,38 @@ add_library(geonkick_lv2 SHARED
 
 set_target_properties(geonkick_lv2 PROPERTIES PREFIX "")
 target_link_libraries(geonkick_lv2 PRIVATE  geonkick_common api_plugin redkite)
-target_link_libraries(geonkick_lv2 PRIVATE "-lstdc++fs")
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     target_link_libraries(geonkick_lv2 PRIVATE
-    "-mwindows"
-    # Fix this in order to use static linking
-    "libcairo.dll.a"
-    "libfontconfig.a"
-    "libfreetype.a"
-    "libpixman-1.a"
-    "libpng.a"
-    "libmsimg32.a"
-    "libintl.a"
-    "libiconv.a"
-    "libexpat.a"
-    "libbrotlidec.a"
-    "libharfbuzz.a"
-    "libz.a"
-    "libbz2.a"
-    "libbrotlicommon.a"
-    "libgraphite2.a"
-    "librpcrt4.a"
-    "libsndfile.a"
-    "libvorbis.a"
-    "libvorbisenc.a"
-    "libogg.a"
-    "libFLAC.a"
-    "libmpg123.a"
-    "libmp3lame.a"
-    "libopus.a"
-    "libout123.a"
-    "libmpg123.a"
-    "libshlwapi.a"
-    "-static-libgcc"
-    "-static-libstdc++"
-    "libm.a"
-    Threads::Threads
-    )
+      "libcairo.a"
+      "libfontconfig.a"
+      "libfreetype.a"
+      "libpixman-1.a"
+      "libpng.a"
+      "libintl.a"
+      "libiconv.a"
+      "libexpat.a"
+      "libbrotlidec.a"
+      "libharfbuzz.a"
+      "libbz2.a"
+      "libbrotlicommon.a"
+      "libgraphite2.a"
+      "librpcrt4.a"
+      "libsndfile.a"
+      "libvorbis.a"
+      "libvorbisenc.a"
+      "libogg.a"
+      "libFLAC.a"
+      "libmp3lame.a"
+      "libopus.a"
+      "libmpg123.a"
+      "libshlwapi.a"
+      "libz.a"
+      "libwinpthread.a"
+      "-static-libstdc++"
+      "-static-libgcc")
 else()
+    target_link_libraries(geonkick_lv2 PRIVATE "-lstdc++fs")
     target_link_libraries(geonkick_lv2 PRIVATE "-lX11 -lsndfile -lrt -lm -ldl -lpthread -lcairo")
 endif()
 
@@ -58,45 +51,38 @@ add_library(geonkick_single_lv2 SHARED
     ${GKICK_LV2_SOURCES})
 set_target_properties(geonkick_single_lv2 PROPERTIES PREFIX "")
 target_link_libraries(geonkick_single_lv2 PRIVATE  geonkick_common_single api_plugin_single redkite)
-target_link_libraries(geonkick_single_lv2 PRIVATE "-lstdc++fs")
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     target_link_libraries(geonkick_single_lv2 PRIVATE
-    "-mwindows"
-    # Fix this in order to use static linking
-    "libcairo.dll.a"
-    "libfontconfig.a"
-    "libfreetype.a"
-    "libpixman-1.a"
-    "libpng.a"
-    "libmsimg32.a"
-    "libintl.a"
-    "libiconv.a"
-    "libexpat.a"
-    "libbrotlidec.a"
-    "libharfbuzz.a"
-    "libz.a"
-    "libbz2.a"
-    "libbrotlicommon.a"
-    "libgraphite2.a"
-    "librpcrt4.a"
-    "libsndfile.a"
-    "libvorbis.a"
-    "libvorbisenc.a"
-    "libogg.a"
-    "libFLAC.a"
-    "libmpg123.a"
-    "libmp3lame.a"
-    "libopus.a"
-    "libout123.a"
-    "libmpg123.a"
-    "libshlwapi.a"
-    "-static-libgcc"
-    "-static-libstdc++"
-    "libm.a"
-    Threads::Threads
-    )
+      "libcairo.a"
+      "libfontconfig.a"
+      "libfreetype.a"
+      "libpixman-1.a"
+      "libpng.a"
+      "libintl.a"
+      "libiconv.a"
+      "libexpat.a"
+      "libbrotlidec.a"
+      "libharfbuzz.a"
+      "libbz2.a"
+      "libbrotlicommon.a"
+      "libgraphite2.a"
+      "librpcrt4.a"
+      "libsndfile.a"
+      "libvorbis.a"
+      "libvorbisenc.a"
+      "libogg.a"
+      "libFLAC.a"
+      "libmp3lame.a"
+      "libopus.a"
+      "libmpg123.a"
+      "libshlwapi.a"
+      "libz.a"
+      "libwinpthread.a"
+      "-static-libstdc++"
+      "-static-libgcc")
 else()
+  target_link_libraries(geonkick_single_lv2 PRIVATE "-lstdc++fs")
   target_link_libraries(geonkick_single_lv2 PRIVATE "-lX11 -lsndfile -lrt -lm -ldl -lpthread -lcairo")
 endif()
 

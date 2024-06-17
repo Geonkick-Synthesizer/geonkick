@@ -2,7 +2,7 @@
  * File name: percussion_state.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -38,11 +38,15 @@ class PercussionState
         PercussionState();
         bool loadFile(const std::string &file);
         bool loadData(const std::string &data);
-        void loadObject(const rapidjson::Value &obj);
+        bool loadObject(const rapidjson::Value &obj);
         size_t getId() const;
         void setId(size_t id);
         void setChannel(size_t channel);
         size_t getChannel() const;
+        void setMidiChannel(signed char channel);
+        signed char getMidiChannel() const;
+        void setNoteOffEnabled(bool b = true);
+        bool isNoteOffEnabled() const;
         void setMute(bool b);
         bool isMuted() const;
         void setSolo(bool b);
@@ -199,7 +203,8 @@ private:
                 std::vector<RkRealPoint> pitchShiftEnvelope;
         };
 
-        std::shared_ptr<OscillatorInfo> getOscillator(int index) const;
+        OscillatorInfo* getOscillator(int index);
+        const OscillatorInfo* getConstOscillator(int index) const;
 
         struct Compressor {
                 bool enabled;
@@ -223,10 +228,11 @@ private:
         std::string kickName;
         signed char playingKey;
         size_t outputChannel;
+        signed char outputMidiChannel;
         bool kickEnabled;
         bool percussionMuted;
         bool percussionSolo;
-
+        bool noteOffEnabled;
         double limiterValue;
         double kickLength;
         double kickAmplitude;
@@ -240,7 +246,7 @@ private:
         std::vector<RkRealPoint> kickEnvelopePoints;
 	std::vector<RkRealPoint> kickDistortionDriveEnvelope;
         std::vector<RkRealPoint> kickDistortionVolumeEnvelope;
-        std::unordered_map<int, std::shared_ptr<OscillatorInfo>> oscillators;
+        std::unordered_map<int, OscillatorInfo> oscillators;
         Compressor compressor;
         Distortion distortion;
         std::vector<bool> layers;

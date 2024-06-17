@@ -1,5 +1,5 @@
 /**
- * File name: file_dialog.h
+ * File name: SampleBrowser.h
  * Project: Geonkick (A percussion synthesizer)
  *
  * Copyright (C) 2020 Iurie Nistor 

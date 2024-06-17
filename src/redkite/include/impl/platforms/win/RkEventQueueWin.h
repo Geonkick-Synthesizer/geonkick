@@ -41,9 +41,13 @@ class RkEventQueueWin
         RkEventQueueWin& operator=(RkEventQueueWin &&other) = delete;
         void dispatchEvents();
         void setScaleFactor(double factor);
+        double getScaleFactor() const;
+        void addEvent(std::unique_ptr<RkEvent> event);
+        std::vector<std::unique_ptr<RkEvent>> getEvents();
 		
 private:
         double scaleFactor;
+        std::vector<std::unique_ptr<RkEvent>> eventList;
 };
 
 #endif // RK_EVENT_QUEUE_X_H

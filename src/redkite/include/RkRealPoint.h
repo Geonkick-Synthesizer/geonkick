@@ -26,42 +26,61 @@
 
 #include "RkPoint.h"
 
-class RK_EXPORT RkRealPoint {
- public:
+class RkRealPoint {
+public:
+        constexpr RkRealPoint() : xValue{0.0}, yValue{0.0}
+        {
+        }
 
-       constexpr RkRealPoint() : xValue{0}, yValue{0}
-       {
-       }
+        constexpr RkRealPoint(const RkPoint &p) : xValue(p.x()), yValue(p.y())
+        {
+        }
 
-       constexpr RkRealPoint(const RkPoint &p) : xValue(p.x()), yValue(p.y())
-       {
-       }
+        constexpr RkRealPoint(rk_real x, rk_real y) : xValue{x}, yValue{y}
+        {
+        }
 
-       constexpr RkRealPoint(rk_real x, rk_real y) : xValue{x}, yValue{y}
-       {
-       }
+        friend constexpr bool operator==(const RkRealPoint &p1, const RkRealPoint &p2)
+        {
+                return p1.xValue == p2.xValue && p1.yValue == p2.yValue;
+        }
 
-       constexpr rk_real x() const
-       {
-               return xValue;
-       }
+        friend constexpr bool operator!=(const RkRealPoint &p1, const RkRealPoint &p2)
+        {
+                return p1.xValue != p2.xValue || p1.yValue != p2.yValue;
+        }
 
-       constexpr void setX(rk_real x)
-       {
-               xValue = x;
-       }
+        friend constexpr RkRealPoint operator+(const RkRealPoint &p1, const RkRealPoint &p2)
+        {
+                return RkRealPoint(p1.xValue + p2.xValue, p1.yValue + p2.yValue);
+        }
 
-       constexpr rk_real y() const
-       {
-               return yValue;
-       }
+        friend constexpr RkRealPoint operator-(const RkRealPoint &p1, const RkRealPoint &p2)
+        {
+                return RkRealPoint(p1.xValue - p2.xValue, p1.yValue - p2.yValue);
+        }
 
-       constexpr void setY(rk_real y)
-       {
-               yValue = y;
-       }
+        constexpr rk_real x() const
+        {
+                return xValue;
+        }
 
- private:
+        constexpr void setX(rk_real x)
+        {
+                xValue = x;
+        }
+
+        constexpr rk_real y() const
+        {
+                return yValue;
+        }
+
+        constexpr void setY(rk_real y)
+        {
+                yValue = y;
+        }
+
+private:
         rk_real xValue;
         rk_real yValue;
 };

@@ -43,6 +43,7 @@ class RkPainter::RkPainterImpl {
         void drawLine(const RkPoint &p1, const RkPoint &p2);
         void drawRect(const RkRect &rect);
         void drawPolyline(const std::vector<RkPoint> &points);
+        void drawPolyline(const std::vector<RkRealPoint> &points);
         void fillRect(const RkRect &rect, const RkColor &color);
         void applyAlpha(int alpha);
         const RkPen& pen() const;
@@ -52,6 +53,7 @@ class RkPainter::RkPainterImpl {
         void translate(const RkPoint &offset);
         void rotate(rk_real angle);
         int getTextWidth(const std::string &text) const;
+        void scale(double x, double y);
 
  private:
         RK_DECALRE_INTERFACE_PTR(RkPainter);
