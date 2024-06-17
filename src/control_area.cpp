@@ -2,7 +2,7 @@
  * File name: control_area.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -25,6 +25,9 @@
 #include "controls_widget.h"
 #include "GeonkickModel.h"
 #include "kit_widget.h"
+#ifndef GEONKICK_SINGLE
+#include "KitTabs.h"
+#endif // GEONKICK_SINGLE
 #include "preset_browser_model.h"
 #include "preset_browser_view.h"
 #include "SampleBrowser.h"
@@ -41,16 +44,19 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , controlsWidget{nullptr}
 #ifndef GEONKICK_SINGLE
         , kitWidget{nullptr}
+        , kitTabs{new KitTabs(this, geonkickModel->getKitModel())}
 #endif // GEONKICK_SINGLE
         , presetsWidget{nullptr}
         , samplesWidget{nullptr}
         , settingsWidget{nullptr}
 
 {
-        setName("ControlArea");
         setFixedSize(920, 370);
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
         showWidget(viewState()->getMainView());
+#ifndef GEONKICK_SINGLE
+        kitTabs->setPosition(0, height() - kitTabs->height() - 5);
+#endif // GEONKICK_SINGLE
 }
 
 void ControlArea::showWidget(ViewState::View view)
