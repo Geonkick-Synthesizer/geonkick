@@ -95,6 +95,7 @@ void RkButton::RkButtonImpl::drawButton(RkPainter &painter)
                 auto pen = painter.pen();
                 pen.setColor(textColor());
                 painter.setPen(pen);
+                painter.setFont(inf_ptr->font());
                 painter.drawText(inf_ptr->rect(), buttonText);
         }
 }

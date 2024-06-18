@@ -57,6 +57,9 @@ void KitTabs::updateView()
         for (const auto &per: kitModel->percussionModels()) {
                 GEONKICK_LOG_INFO("per->name():" << per->name());
                 auto tab = new RkButton(this);
+                auto f = tab->font();
+                f.setSize(9);
+                tab->setFont(f);
                 tab->setBackgroundColor({100, 100, 100});
                 tab->setSize(55, mainLayout->height());
                 tab->setText(per->name());
