@@ -34,7 +34,6 @@ RK_DECLARE_IMAGE_RC(hboxbk_ampl_env);
 RK_DECLARE_IMAGE_RC(hboxbk_filter);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
 RK_DECLARE_IMAGE_RC(knob);
-RK_DECLARE_IMAGE_RC(general_groupbox_label);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_off);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_on);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_hover);
@@ -47,12 +46,6 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         , kickLengthKnob{nullptr}
 {
         setFixedSize(224, 276);
-        auto label = new RkLabel(this);
-        label->setBackgroundColor(background());
-        label->setPosition(10, 0);
-        label->setSize(45, 21);
-        label->setImage(RkImage(label->size(), RK_IMAGE_RC(general_groupbox_label)));
-        label->show();
         createAplitudeEnvelopeHBox();
         createFilterHBox();
         updateGui();
