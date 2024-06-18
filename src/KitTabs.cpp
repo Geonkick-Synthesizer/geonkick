@@ -27,16 +27,18 @@
 
 #include <RkContainer.h>
 #include <RkButton.h>
+#include <RkPainter.h>
 
 KitTabs::KitTabs(GeonkickWidget *parent, KitModel *model)
         : GeonkickWidget(parent)
         , kitModel{model}
         , mainLayout{nullptr}
 {
-        setSize(910, 25);
+        setSize(915, 25);
         //        setBackgroundColor({0, 255, 0});
         mainLayout = new RkContainer(this);
-        mainLayout->setSize(size());
+        mainLayout->setSize(size() - RkSize(5, 5));
+        mainLayout->setPosition({3, 3});
         RK_ACT_BIND(kitModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
         updateView();
         show();
@@ -68,5 +70,14 @@ void KitTabs::updateView()
                 mainLayout->addSpace(2);
                 tabsList.push_back(tab);
         }
+}
+
+void KitTabs::paintEvent(RkPaintEvent * event)
+{
+        RkPainter painter(this);
+        auto pen = painter.pen();
+        pen.setColor({55, 54, 54});
+        painter.setPen(pen);
+        painter.drawRect(rect());
 }
 

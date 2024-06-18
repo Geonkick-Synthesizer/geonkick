@@ -53,6 +53,8 @@ class KitTabs: public GeonkickWidget
 
  protected:
         void updateView();
+        void paintEvent(RkPaintEvent * event) override;
+
  private:
         KitModel *kitModel;
         RkContainer* mainLayout;
