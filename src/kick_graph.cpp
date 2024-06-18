@@ -67,19 +67,22 @@ void KickGraph::updateGraph(bool lock)
         if (lock) {
                 std::unique_lock<std::mutex> lock(graphMutex);
                 redrawGraph = true;
+                threadConditionVar.notify_one();
         } else {
                 redrawGraph = true;
         }
-        threadConditionVar.notify_one();
 }
 
 void KickGraph::updateGraphBuffer()
 {
-        std::unique_lock<std::mutex> lock(graphMutex);
-        kickBuffer = geonkickApi->getKickBuffer();
-        if (kickBuffer.empty())
-                geonkickApi->triggerSynthesis();
-        updateGraph(false);
+        {
+                std::unique_lock<std::mutex> lock(graphMutex);
+                kickBuffer = geonkickApi->getKickBuffer();
+                if (kickBuffer.empty())
+                        geonkickApi->triggerSynthesis();
+                updateGraph(false);
+        }
+        threadConditionVar.notify_one();
 }
 
 void KickGraph::drawKickGraph()
@@ -88,8 +91,10 @@ void KickGraph::drawKickGraph()
                 // Ignore too many updates. The last update will be processed.
                 std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
-                if (!redrawGraph)
+                if (!redrawGraph) {
                         threadConditionVar.wait(lock);
+                        redrawGraph = false;
+                }
                 if (!isRunning)
                         break;
                 if (!currentEnvelope || kickBuffer.empty()) {
@@ -106,9 +111,12 @@ void KickGraph::drawKickGraph()
                 painter.setPen(pen);
                 std::vector<RkRealPoint> graphPoints;
                 graphPoints.reserve(kickBuffer.size());
-                const auto buffSize = static_cast<double>(kickBuffer.size()) / zoomFactor;
+                const auto instrumentBuffer = std::move(kickBuffer);
+                const auto buffSize = static_cast<double>(instrumentBuffer.size()) / zoomFactor;
                 const gkick_real k = static_cast<gkick_real>(graphSize.width()) / buffSize;
-                const size_t indexOffset = (kickBuffer.size() / geonkickApi->kickLength()) * timeOrigin;
+                const size_t indexOffset = (instrumentBuffer.size() / geonkickApi->kickLength()) * timeOrigin;
+                const auto instrumentGraphSize = graphSize;
+                lock.unlock();
 
                 /**
                  * In this loop there is an implementation of an
@@ -117,11 +125,11 @@ void KickGraph::drawKickGraph()
                  * reduces and normalizes the size of the buffer.
                  */
                 RkRealPoint prev;
-                painter.translate({0, graphSize.height()});
-                for (decltype(kickBuffer.size()) i = indexOffset; i < kickBuffer.size(); i++) {
+                painter.translate({0, instrumentGraphSize.height()});
+                for (decltype(instrumentBuffer.size()) i = indexOffset; i < instrumentBuffer.size(); i++) {
                         const double x = k * (i - indexOffset);
-                        const double value = -zoomFactor * (graphSize.height() / 2
-                                                      + graphSize.height() * (kickBuffer[i] / 2
+                        const double value = -zoomFactor * (instrumentGraphSize.height() / 2
+                                                      + instrumentGraphSize.height() * (instrumentBuffer[i] / 2
                                                       - valueOrigin));
                         double y = value;
                         RkRealPoint p(k * (i - indexOffset), value);
@@ -134,10 +142,10 @@ void KickGraph::drawKickGraph()
                         const int i0 = i;
                         double ymin, ymax;
                         ymin = ymax = y;
-                        while (++i < kickBuffer.size()) {
+                        while (++i < instrumentBuffer.size()) {
                                 if (x != k * (i - indexOffset))
                                         break;
-                                y = graphSize.height() - value;
+                                y = instrumentGraphSize.height() - value;
                                 ymin = std::min(ymin, y);
                                 ymax = std::min(ymax, y);
                         }
@@ -156,6 +164,5 @@ void KickGraph::drawKickGraph()
                         graphImage.reset();
                         eventQueue()->postAction(std::move(act));
                 }
-                redrawGraph = false;
         }
 }
