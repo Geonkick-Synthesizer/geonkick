@@ -51,13 +51,11 @@ KitModel* KitTabs::getModel() const
 
 void KitTabs::updateView()
 {
-        GEONKICK_LOG_INFO("KitTabs::updateView()");
         mainLayout->clear();
         for (auto &tab: tabsList)
                 delete tab;
         tabsList.clear();
         for (const auto &per: kitModel->percussionModels()) {
-                GEONKICK_LOG_INFO("per->name():" << per->name());
                 auto tab = new RkButton(this);
                 auto f = tab->font();
                 f.setSize(9);
@@ -69,6 +67,7 @@ void KitTabs::updateView()
                 mainLayout->addWidget(tab);
                 mainLayout->addSpace(2);
                 tabsList.push_back(tab);
+                RK_ACT_BIND(tab, pressed, RK_ACT_ARGS(), per, select());
         }
 }
 

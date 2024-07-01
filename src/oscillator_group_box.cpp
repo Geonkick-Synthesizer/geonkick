@@ -101,10 +101,11 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , oscFreqEnvelopeButton{nullptr}
           , pitchEnvelopeButton{nullptr}
 {
-        setFixedSize(224, 380);
+        setFixedSize(224, 276);
         createWaveFunctionGroupBox();
         createEvelopeGroupBox();
         createFilterGroupBox();
+        setBackgroundColor(123, 155, 88);
         updateGui();
 }
 
@@ -161,7 +162,6 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
                                                      RK_IMAGE_RC(controls_osc2_hover)),
                                              RkButton::State::PressedHover);
         } else {
-                setFixedSize(224, 276);
                 oscillatorCheckbox->setFixedSize(69, 21);
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc3_on)),
