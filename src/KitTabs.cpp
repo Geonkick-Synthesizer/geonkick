@@ -28,6 +28,7 @@
 #include <RkContainer.h>
 #include <RkButton.h>
 #include <RkPainter.h>
+#include <RkImage.h>
 
 KitTabs::KitTabs(GeonkickWidget *parent, KitModel *model)
         : GeonkickWidget(parent)
@@ -56,18 +57,69 @@ void KitTabs::updateView()
                 delete tab;
         tabsList.clear();
         for (const auto &per: kitModel->percussionModels()) {
-                auto tab = new RkButton(this);
-                auto f = tab->font();
-                f.setSize(9);
-                tab->setFont(f);
-                tab->setBackgroundColor({100, 100, 100});
-                tab->setSize(55, mainLayout->height());
-                tab->setText(per->name());
-                tab->show();
+                auto tab = createTabButton(per);
                 mainLayout->addWidget(tab);
                 mainLayout->addSpace(2);
                 tabsList.push_back(tab);
-                RK_ACT_BIND(tab, pressed, RK_ACT_ARGS(), per, select());
+                RK_ACT_BIND(tab, pressed, RK_ACT_ARGS(), this, selectCurrentTab(per, tab));
+        }
+}
+
+
+RkButton* KitTabs::createTabButton(PercussionModel *per)
+{
+        auto buttonImg = [per](RkSize size, RkButton::State state)
+        {
+                RkImage img(size);
+                RkColor color;
+                switch (state) {
+                case RkButton::State::Unpressed:
+                        color = RkColor(60, 60, 60);
+                        break;
+                case RkButton::State::UnpressedHover:
+                        color = RkColor(80, 80, 80);
+                        break;
+                case RkButton::State::Pressed:
+                        color = RkColor(100, 100, 100);
+                        break;
+                default:
+                        color = RkColor(60, 60, 60);
+                }
+                RkPainter painter(&img);
+                painter.fillRect(RkRect({0, 0}, img.size()), color);
+                auto f = painter.font();
+                f.setSize(9);
+                f.setWeight(RkFont::Weight::Bold);
+                painter.setFont(f);
+                auto pen = painter.pen();
+                pen.setColor(color + RkColor(100, 100, 100));
+                painter.setPen(pen);
+                painter.drawText({{4, 0}, size - RkSize(4, 0)},
+                                 per->name(),
+                                 Rk::Alignment::AlignLeft);
+                return img;
+        };
+
+        auto tab = new RkButton(this);
+        tab->setSize(55, mainLayout->height());
+        if (per->isSelected())
+                tab->setPressed(true);
+        tab->setImage(buttonImg(tab->size(), RkButton::State::Unpressed),
+                      RkButton::State::Unpressed);
+        tab->setImage(buttonImg(tab->size(), RkButton::State::UnpressedHover),
+                      RkButton::State::UnpressedHover);
+        tab->setImage(buttonImg(tab->size(), RkButton::State::Pressed),
+                      RkButton::State::Pressed);
+        tab->show();
+        return tab;
+}
+
+void KitTabs::selectCurrentTab(PercussionModel *per, RkButton* button)
+{
+        per->select();
+        for (auto &tab: tabsList) {
+                if (tab != button)
+                        tab->setPressed(false);
         }
 }
 
