@@ -26,7 +26,7 @@
 
 GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         : Envelope(area)
-        ,  geonkickApi{api}
+        , geonkickApi{api}
 {
         removeSupportedType(Envelope::Type::Frequency);
         removeSupportedType(Envelope::Type::PitchShift);

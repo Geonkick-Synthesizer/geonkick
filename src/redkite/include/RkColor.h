@@ -26,7 +26,7 @@
 
 #include "Rk.h"
 
-class RK_EXPORT RkColor {
+class RkColor {
  public:
 
         constexpr RkColor()
@@ -53,13 +53,93 @@ class RK_EXPORT RkColor {
                && c1.alphaValue == c2.alphaValue;
        }
 
-       friend  constexpr bool operator!=(const RkColor &c1, const RkColor &c2)
-       {
-               return c1.redValue != c2.redValue
-               || c1.greenValue != c2.greenValue
-               || c1.blueValue != c2.blueValue
-               || c1.alphaValue != c2.alphaValue;
-       }
+        friend constexpr bool operator!=(const RkColor &c1, const RkColor &c2)
+        {
+                return c1.redValue != c2.redValue
+                        || c1.greenValue != c2.greenValue
+                        || c1.blueValue != c2.blueValue
+                        || c1.alphaValue != c2.alphaValue;
+        }
+
+        constexpr RkColor operator+(int value) const
+        {
+                return RkColor(
+                               std::min(255, redValue + value),
+                               std::min(255, greenValue + value),
+                               std::min(255, blueValue + value),
+                               std::min(255, alphaValue + value)
+                               );
+        }
+
+        constexpr RkColor operator-(int value) const
+        {
+                return RkColor(
+                               std::max(0, redValue - value),
+                               std::max(0, greenValue - value),
+                               std::max(0, blueValue - value),
+                               std::max(0, alphaValue - value)
+                               );
+        }
+
+        constexpr RkColor operator*(int value) const
+        {
+                return RkColor(
+                               std::min(255, redValue * value),
+                               std::min(255, greenValue * value),
+                               std::min(255, blueValue * value),
+                               std::min(255, alphaValue * value)
+                               );
+        }
+
+        constexpr RkColor operator/(int value) const
+        {
+                return RkColor(
+                               value != 0 ? redValue / value : 255,
+                               value != 0 ? greenValue / value : 255,
+                               value != 0 ? blueValue / value : 255,
+                               value != 0 ? alphaValue / value : 255
+                               );
+        }
+
+        constexpr RkColor operator+(const RkColor& other) const
+        {
+                return RkColor(
+                               std::min(255, redValue + other.redValue),
+                               std::min(255, greenValue + other.greenValue),
+                               std::min(255, blueValue + other.blueValue),
+                               std::min(255, alphaValue + other.alphaValue)
+                               );
+        }
+
+        constexpr RkColor operator-(const RkColor& other) const
+        {
+                return RkColor(
+                               std::max(0, redValue - other.redValue),
+                               std::max(0, greenValue - other.greenValue),
+                               std::max(0, blueValue - other.blueValue),
+                               std::max(0, alphaValue - other.alphaValue)
+                               );
+        }
+
+        constexpr RkColor operator*(const RkColor& other) const
+        {
+                return RkColor(
+                               std::min(255, redValue * other.redValue / 255),
+                               std::min(255, greenValue * other.greenValue / 255),
+                               std::min(255, blueValue * other.blueValue / 255),
+                               std::min(255, alphaValue * other.alphaValue / 255)
+                               );
+        }
+
+        constexpr RkColor operator/(const RkColor& other) const
+        {
+                return RkColor(
+                               other.redValue != 0 ? std::min(255, redValue / other.redValue * 255) : 255,
+                               other.greenValue != 0 ? std::min(255, greenValue / other.greenValue * 255) : 255,
+                               other.blueValue != 0 ? std::min(255, blueValue / other.blueValue * 255) : 255,
+                               other.alphaValue != 0 ? std::min(255, alphaValue / other.alphaValue * 255) : 255
+                               );
+        }
 
        constexpr int red() const
        {

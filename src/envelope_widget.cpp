@@ -67,11 +67,11 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         envelopes.insert({static_cast<int>(Envelope::Category::Oscillator2),
                         std::move(envelope)});
 
-        // Noise envelope
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
+        // Oscillator3 envelope
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator3)].get();
         envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
-        envelope->setCategory(Envelope::Category::Noise);
-        envelopes.insert({static_cast<int>(Envelope::Category::Noise),
+        envelope->setCategory(Envelope::Category::Oscillator3);
+        envelopes.insert({static_cast<int>(Envelope::Category::Oscillator3),
                         std::move(envelope)});
 
         // General envelope

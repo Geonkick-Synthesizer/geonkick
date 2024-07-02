@@ -46,7 +46,7 @@ class Envelope : public RkObject
         enum class Category:int {
                 Oscillator1 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator1),
                 Oscillator2 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator2),
-                Noise       = static_cast<int>(GeonkickApi::OscillatorType::Noise),
+                Oscillator3 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator3),
                 General
         };
 

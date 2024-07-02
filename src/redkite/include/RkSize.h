@@ -46,6 +46,16 @@ class RkSize {
                return s1.widthValue != s2.widthValue || s1.heightValue != s2.heightValue;
        }
 
+       friend constexpr RkSize operator+(const RkSize &s1, const RkSize &s2)
+       {
+                return RkSize(s1.widthValue + s2.widthValue, s1.heightValue + s2.heightValue);
+       }
+
+       friend constexpr RkSize operator-(const RkSize &s1, const RkSize &s2)
+       {
+                return RkSize(s1.widthValue - s2.widthValue, s1.heightValue - s2.heightValue);
+       }
+
        constexpr int width() const
        {
                return widthValue;

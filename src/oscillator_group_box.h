@@ -48,10 +48,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void createWaveFunctionGroupBox();
         void createEvelopeGroupBox();
         void createFilterGroupBox();
-        void setSineWave(bool pressed);
-        void setSquareWave(bool pressed);
-        void setTriangleWave(bool pressed);
-        void setSawtoothWave(bool pressed);
+        void setWaveFunction(Oscillator::FunctionType type);
         void setOscillatorPhase(int value);
         void setOscillatorSeed(int value);
         void setNoiseWhite(bool pressed);
@@ -70,6 +67,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *squareButton;
         GeonkickButton *triangleButton;
         GeonkickButton *sawtoothButton;
+        GeonkickButton *noiseButton;
         GeonkickButton *sampleButton;
         GeonkickButton *sampleBrowseButton;
         GeonkickSlider *phaseSlider;

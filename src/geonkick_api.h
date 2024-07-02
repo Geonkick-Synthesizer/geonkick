@@ -54,7 +54,7 @@ class GeonkickApi : public RkObject {
   enum class OscillatorType: int {
          Oscillator1 = 0,
          Oscillator2 = 1,
-         Noise       = 2
+         Oscillator3 = 2
   };
 
   enum class FunctionType: int {

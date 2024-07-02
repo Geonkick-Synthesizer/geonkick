@@ -2,7 +2,7 @@
  * File name: controls_widget.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -27,13 +27,18 @@
 #include "general_group_box.h"
 #include "effects_group_box.h"
 #include "geonkick_api.h"
+#ifndef GEONKICK_SINGLE
+#include "KitTabs.h"
+#endif // GEONKICK_SINGLE
+#include "GeonkickModel.h"
 
 ControlsWidget::ControlsWidget(GeonkickWidget *parent,
-                               GeonkickApi* api,
+                               GeonkickModel* model,
                                const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
-        , geonkickApi{api}
+        , geonkickModel{model}
 {
+        setFixedSize({parent->width(), parent->height()});
         auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
         auto widget = new OscillatorGroupBox(this, oscillator);
         widget->setPosition(0, 0);
@@ -42,24 +47,29 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
 
         oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(8 + 224, 0);
+        widget->setPosition(8 + 223, 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
         widget->show();
 
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Noise)].get();
+        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator3)].get();
         widget = new OscillatorGroupBox(this, oscillator);
-        widget->setPosition(2 * (8 + 224), 0);
+        widget->setPosition(2 * (8 + 223), 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
         widget->show();
 
-        auto generalWidget = new GeneralGroupBox(this, geonkickApi);
-        generalWidget->setPosition(3 * (8 + 224), 0);
+        auto generalWidget = new GeneralGroupBox(this, geonkickModel->api());
+        generalWidget->setPosition(3 * (8 + 223), 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), generalWidget, updateGui());
         generalWidget->show();
 
-        effectsWidget = new EffectsGroupBox(geonkickApi, this);
-        effectsWidget->setFixedSize(500, 82);
-        effectsWidget->setPosition(2 * (8 + 224), 283);
+        effectsWidget = new EffectsGroupBox(geonkickModel->api(), this);
+        effectsWidget->setFixedSize(380, 74);
+        effectsWidget->setPosition(3 * (8 + 223), 260);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
         effectsWidget->show();
+
+#ifndef GEONKICK_SINGLE
+        auto kitTabs = new KitTabs(this, geonkickModel->getKitModel());
+        kitTabs->setPosition(0, height() - kitTabs->height() - 5);
+#endif // GEONKICK_SINGLE
 }

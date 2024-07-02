@@ -2,7 +2,7 @@
  * File name: control_area.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -47,7 +47,6 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , settingsWidget{nullptr}
 
 {
-        setName("ControlArea");
         setFixedSize(920, 370);
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
         showWidget(viewState()->getMainView());
@@ -94,14 +93,13 @@ void ControlArea::showControls()
                 if (currentWidget)
                         currentWidget->hide();
                 if (!controlsWidget) {
-                        controlsWidget = new ControlsWidget(this, geonkickModel->api(), oscillators);
+                        controlsWidget = new ControlsWidget(this, geonkickModel, oscillators);
                         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 }
                 currentWidget = controlsWidget;
-                controlsWidget->setSize({width(), height()});
                 currentWidget = controlsWidget;
                 currentWidget->show();
-        }
+              }
 }
 
 #ifndef GEONKICK_SINGLE

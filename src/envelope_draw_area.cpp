@@ -101,8 +101,8 @@ std::string EnvelopeWidgetDrawingArea::getEnvStateText() const
                 str += "OSC1";
         else if (currentEnvelope->category() == Envelope::Category::Oscillator2)
                 str += "OSC2";
-        else if (currentEnvelope->category() == Envelope::Category::Noise)
-                str += "NOISE";
+        else if (currentEnvelope->category() == Envelope::Category::Oscillator3)
+                str += "OSC3";
         else
                 str += "GEN";
 

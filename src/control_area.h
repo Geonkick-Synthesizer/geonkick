@@ -32,6 +32,7 @@ class Oscillator;
 class ControlsWidget;
 #ifndef GEONKICK_SINGLE
 class KitWidget;
+class KitTabs;
 #endif // GEONKICK_SINGLE
 class EnvelopeWidget;
 class PresetBrowserView;
@@ -64,6 +65,7 @@ class ControlArea: public GeonkickWidget
         ControlsWidget *controlsWidget;
 #ifndef GEONKICK_SINGLE
         KitWidget *kitWidget;
+        KitTabs *kitTabs;
 #endif // GEONKICK_SINGLE
         PresetBrowserView *presetsWidget;
         SampleBrowser *samplesWidget;
