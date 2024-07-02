@@ -67,10 +67,10 @@ void KickGraph::updateGraph(bool lock)
         if (lock) {
                 std::unique_lock<std::mutex> lock(graphMutex);
                 redrawGraph = true;
-                threadConditionVar.notify_one();
         } else {
                 redrawGraph = true;
         }
+        threadConditionVar.notify_one();
 }
 
 void KickGraph::updateGraphBuffer()
@@ -91,10 +91,9 @@ void KickGraph::drawKickGraph()
                 // Ignore too many updates. The last update will be processed.
                 std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
-                if (!redrawGraph) {
+                if (!redrawGraph)
                         threadConditionVar.wait(lock);
-                        redrawGraph = false;
-                }
+
                 if (!isRunning)
                         break;
                 if (!currentEnvelope || kickBuffer.empty()) {
@@ -110,12 +109,13 @@ void KickGraph::drawKickGraph()
                 RkPen pen(RkColor(59, 130, 4, 255));
                 painter.setPen(pen);
                 std::vector<RkRealPoint> graphPoints;
-                graphPoints.reserve(kickBuffer.size());
-                const auto instrumentBuffer = std::move(kickBuffer);
+                const auto instrumentBuffer = kickBuffer;
+                graphPoints.reserve(instrumentBuffer.size());
                 const auto buffSize = static_cast<double>(instrumentBuffer.size()) / zoomFactor;
                 const gkick_real k = static_cast<gkick_real>(graphSize.width()) / buffSize;
                 const size_t indexOffset = (instrumentBuffer.size() / geonkickApi->kickLength()) * timeOrigin;
                 const auto instrumentGraphSize = graphSize;
+                redrawGraph = false;
                 lock.unlock();
 
                 /**
