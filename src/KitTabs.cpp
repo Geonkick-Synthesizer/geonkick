@@ -36,7 +36,6 @@ KitTabs::KitTabs(GeonkickWidget *parent, KitModel *model)
         , mainLayout{nullptr}
 {
         setSize(915, 25);
-        //        setBackgroundColor({0, 255, 0});
         mainLayout = new RkContainer(this);
         mainLayout->setSize(size() - RkSize(5, 5));
         mainLayout->setPosition({3, 3});
@@ -131,4 +130,3 @@ void KitTabs::paintEvent(RkPaintEvent * event)
         painter.setPen(pen);
         painter.drawRect(rect());
 }
-

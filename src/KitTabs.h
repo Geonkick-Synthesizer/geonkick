@@ -31,21 +31,6 @@ class RkContainer;
 class RkButton;
 class PercussionModel;
 
-/*class KitChannelsView: public GeonkickWidget
-{
- public:
-        explicit KitChannelsView(KitTabs *parent, KitModel *model);
-
- protected:
-        void paintWidget(RkPaintEvent *event) override;
-
- private:
-        KitModel *kitModel;
-        int channelWidth;
-        int channelHeight;
-        };*/
-
-
 class KitTabs: public GeonkickWidget
 {
  public:
