@@ -30,6 +30,7 @@
 #include "filter.h"
 #include "file_dialog.h"
 #include "ViewState.h"
+#include "OscillatorFunctionView.h"
 
 #include <RkLabel.h>
 
@@ -100,6 +101,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , amplitudeEnvelopeBox{nullptr}
           , oscFreqEnvelopeButton{nullptr}
           , pitchEnvelopeButton{nullptr}
+          , functionView{nullptr}
 {
         setFixedSize(224, 276);
         createWaveFunctionGroupBox();
@@ -134,20 +136,20 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc1_hover)),
                                              RkButton::State::PressedHover);
-                fmCheckbox = new GeonkickButton(this);
-                fmCheckbox->setCheckable(true);
-                fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 5, oscillatorCheckbox->y());
-                fmCheckbox->setFixedSize(76, 21);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_active)),
-                                     RkButton::State::Pressed);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio)),
-                                     RkButton::State::Unpressed);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                                     RkButton::State::UnpressedHover);
-                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                                     RkButton::State::PressedHover);
-                fmCheckbox->hide();
-                RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
+                // fmCheckbox = new GeonkickButton(this);
+                // fmCheckbox->setCheckable(true);
+                // fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 5, oscillatorCheckbox->y());
+                // fmCheckbox->setFixedSize(76, 21);
+                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_active)),
+                //                      RkButton::State::Pressed);
+                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio)),
+                //                      RkButton::State::Unpressed);
+                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
+                //                      RkButton::State::UnpressedHover);
+                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
+                //                      RkButton::State::PressedHover);
+                // fmCheckbox->hide();
+                // RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc2_on)),
@@ -176,9 +178,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
                                                      RK_IMAGE_RC(controls_osc3_hover)),
                                              RkButton::State::PressedHover);
         }
-        RK_ACT_BIND(oscillatorCheckbox, toggled,
-                    RK_ACT_ARGS(bool b), oscillator, enable(b));
-
+        RK_ACT_BIND(oscillatorCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, enable(b));
 
         sineButton = new GeonkickButton(waveFunctionHBox);
         sineButton->setBackgroundColor(waveFunctionHBox->background());
@@ -231,26 +231,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sampleButton->setPressedImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample_active)));
         RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sample));
 
-        /*sampleBrowseButton = new GeonkickButton(waveFunctionHBox);
-        sampleBrowseButton->setCheckable(true);
-        sampleBrowseButton->setBackgroundColor(waveFunctionHBox->background());
-        sampleBrowseButton->setFixedSize(26, 18);
-        sampleBrowseButton->setPosition(triangleButton->x() + 73, sampleButton->y() + sampleButton->height() + 5);
-        sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(), RK_IMAGE_RC(button_browse_sample)));
-        RK_ACT_BIND(sampleBrowseButton, pressed, RK_ACT_ARGS(), this, browseSample());*/
-
-        auto phaseLabel = new RkLabel(waveFunctionHBox);
-        phaseLabel->setFixedSize(30, 8);
-        phaseLabel->setPosition(sineButton->x(), sawtoothButton->y() + sawtoothButton->height() + 8);
-        phaseLabel->setBackgroundColor(waveFunctionHBox->background());
-        phaseLabel->setImage(RkImage(phaseLabel->size(), RK_IMAGE_RC(phase_label)));
-        phaseLabel->hide();
-
-        phaseSlider = new GeonkickSlider(waveFunctionHBox);
-        phaseSlider->setFixedSize(150, 8);
-        phaseSlider->setPosition(phaseLabel->x() + phaseLabel->width() + 5, phaseLabel->y() + 1);
-        phaseSlider->hide();
-        RK_ACT_BIND(phaseSlider, valueUpdated, RK_ACT_ARGS(int value), this, setOscillatorPhase(value));
+        functionView = new OscillatorFunctionView(oscillator);
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()
@@ -410,6 +391,8 @@ void OscillatorGroupBox::setWaveFunction(Oscillator::FunctionType type)
         noiseButton->setPressed(type == Oscillator::FunctionType::NoiseWhite);
         sampleButton->setPressed(type == Oscillator::FunctionType::Sample);
         oscillator->setFunction(type);
+        functionView->setModel(oscillator);
+        updateFunctionView(type)
         updateAmpltudeEnvelopeBox();
 }
 
@@ -469,6 +452,7 @@ void OscillatorGroupBox::updateGui()
         filterBox->setResonance(oscillator->filterQFactor(), 10);
         filterBox->setCutOff(oscillator->filterFrequency(), 800);
         filterBox->setType(oscillator->filter());
+        functionView->setModel(oscillator);
 }
 
 void OscillatorGroupBox::browseSample()

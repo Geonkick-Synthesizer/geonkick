@@ -33,6 +33,7 @@ class GeonkickButton;
 class Knob;
 class GeonkickSlider;
 class Filter;
+class OscillatorFunctionView;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -70,10 +71,6 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *noiseButton;
         GeonkickButton *sampleButton;
         GeonkickButton *sampleBrowseButton;
-        GeonkickSlider *phaseSlider;
-        GeonkickSlider *seedSlider;
-        GeonkickButton *noiseWhiteButton;
-        GeonkickButton *noiseBrownianButton;
         Knob *amplitudeKnob;
         Knob *frequencyKnob;
         Knob *pitchShiftKnob;
@@ -81,6 +78,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickWidget *amplitudeEnvelopeBox;
         GeonkickButton *oscFreqEnvelopeButton;
         GeonkickButton *pitchEnvelopeButton;
+        OscillatorFunctionView *functionView;
 };
 
 #endif // GKICK_OSCILLATOR_GROUP_BOX_H
