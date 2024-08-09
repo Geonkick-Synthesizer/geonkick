@@ -23,16 +23,17 @@
 
 #include "OscillatorFunctionView.h"
 
-OscillatorFunctionView::OscillatorFunctionView(Oscillator* model)
-        : oscillatorModel{model}
+OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model)
+        : GeonkickWidget(parent)
+        , oscillatorModel{model}
 {
-        updateView();
+        //        updateView();
 }
 
 void OscillatorFunctionView::setModel(Oscillator *model)
 {
         oscillatorModel = model;
-        updateView();
+        //        updateView();
 }
 
 

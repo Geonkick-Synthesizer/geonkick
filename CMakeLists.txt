@@ -146,6 +146,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/percussion_state.h
   ${GKICK_COMMON_DIR}/kit_state.h
   ${GKICK_COMMON_DIR}/oscillator_envelope.h
+  ${GKICK_COMMON_DIR}/OscillatorFunctionView.h
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
   ${GKICK_COMMON_DIR}/ExportAbstract.h
   ${GKICK_COMMON_DIR}/ExportSoundData.h
@@ -203,6 +204,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/percussion_state.cpp
   ${GKICK_COMMON_DIR}/kit_state.cpp
   ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
+  ${GKICK_COMMON_DIR}/OscillatorFunctionView.cpp
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
   ${GKICK_COMMON_DIR}/export_widget.cpp
   ${GKICK_COMMON_DIR}/ExportAbstract.cpp

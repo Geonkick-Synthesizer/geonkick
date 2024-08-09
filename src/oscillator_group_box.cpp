@@ -89,11 +89,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , triangleButton{nullptr}
           , sawtoothButton{nullptr}
           , noiseButton{nullptr}
-          , sampleButton{nullptr}
-          , sampleBrowseButton{nullptr}
-          , phaseSlider{nullptr}
-          , noiseWhiteButton{nullptr}
-          , noiseBrownianButton{nullptr}
           , amplitudeKnob{nullptr}
           , frequencyKnob{nullptr}
           , pitchShiftKnob{nullptr}
@@ -231,7 +226,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sampleButton->setPressedImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample_active)));
         RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sample));
 
-        functionView = new OscillatorFunctionView(oscillator);
+        functionView = new OscillatorFunctionView(this, oscillator);
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()
@@ -392,7 +387,6 @@ void OscillatorGroupBox::setWaveFunction(Oscillator::FunctionType type)
         sampleButton->setPressed(type == Oscillator::FunctionType::Sample);
         oscillator->setFunction(type);
         functionView->setModel(oscillator);
-        updateFunctionView(type)
         updateAmpltudeEnvelopeBox();
 }
 
@@ -409,7 +403,7 @@ void OscillatorGroupBox::setOscillatorSeed(int value)
 void OscillatorGroupBox::setNoiseWhite(bool pressed)
 {
         if (pressed) {
-                noiseBrownianButton->setPressed(false);
+                //                noiseBrownianButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::NoiseWhite);
         }
 }
@@ -417,7 +411,7 @@ void OscillatorGroupBox::setNoiseWhite(bool pressed)
 void OscillatorGroupBox::setNoiseBrownian(bool pressed)
 {
         if (pressed) {
-                noiseWhiteButton->setPressed(false);
+                //               noiseWhiteButton->setPressed(false);
                 oscillator->setFunction(Oscillator::FunctionType::NoiseBrownian);
         }
 }
@@ -438,7 +432,7 @@ void OscillatorGroupBox::updateGui()
         sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
         noiseButton->setPressed(oscillator->function() == Oscillator::FunctionType::NoiseWhite);
         sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
-        phaseSlider->onSetValue(oscillator->getPhase());
+        //        phaseSlider->onSetValue(oscillator->getPhase());
         updateAmpltudeEnvelopeBox();
 
         amplitudeKnob->setCurrentValue(oscillator->amplitude());

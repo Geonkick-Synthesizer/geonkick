@@ -24,11 +24,13 @@
 #ifndef OSCILLATOR_FUNCTION_VIEW_H
 #define OSCILLATOR_FUNCTION_VIEW_H
 
+#include "geonkick_widget.h"
+
 class Oscillator;
 
 class OscillatorFunctionView: public GeonkickWidget {
  public:
-        GeonkickWidget(Oscillator* model);
+        OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model);
         void setModel(Oscillator *model);
 
  private:
