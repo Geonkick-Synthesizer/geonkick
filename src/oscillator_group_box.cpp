@@ -226,7 +226,10 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sampleButton->setPressedImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample_active)));
         RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sample));
 
-        functionView = new OscillatorFunctionView(this, oscillator);
+        functionView = new OscillatorFunctionView(waveFunctionHBox, oscillator);
+        functionView->setSize({100, 50});
+        functionView->setPosition(sampleButton->x() + sampleButton->width() + 5,
+                                  sineButton->y() - 5);
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()
@@ -425,13 +428,13 @@ void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 
 void OscillatorGroupBox::updateGui()
 {
-        oscillatorCheckbox->setPressed(oscillator->isEnabled());
-        sineButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sine);
-        squareButton->setPressed(oscillator->function() == Oscillator::FunctionType::Square);
-        triangleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Triangle);
-        sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
-        noiseButton->setPressed(oscillator->function() == Oscillator::FunctionType::NoiseWhite);
-        sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
+        //oscillatorCheckbox->setPressed(oscillator->isEnabled());
+        // sineButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sine);
+        // squareButton->setPressed(oscillator->function() == Oscillator::FunctionType::Square);
+        //triangleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Triangle);
+        //sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
+        //noiseButton->setPressed(oscillator->function() == Oscillator::FunctionType::NoiseWhite);
+        //sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
         //        phaseSlider->onSetValue(oscillator->getPhase());
         updateAmpltudeEnvelopeBox();
 
@@ -439,8 +442,8 @@ void OscillatorGroupBox::updateGui()
         frequencyKnob->setCurrentValue(oscillator->frequency());
         pitchShiftKnob->setCurrentValue(oscillator->pitchShift());
 
-        if (oscillator->type() == Oscillator::Type::Oscillator1)
-                fmCheckbox->setPressed(oscillator->isFm());
+        //        if (oscillator->type() == Oscillator::Type::Oscillator1)
+        //                fmCheckbox->setPressed(oscillator->isFm());
 
         filterBox->enable(oscillator->isFilterEnabled());
         filterBox->setResonance(oscillator->filterQFactor(), 10);
