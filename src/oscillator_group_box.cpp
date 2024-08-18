@@ -227,9 +227,8 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sample));
 
         functionView = new OscillatorFunctionView(waveFunctionHBox, oscillator);
-        functionView->setSize({100, 50});
         functionView->setPosition(sampleButton->x() + sampleButton->width() + 5,
-                                  sineButton->y() - 5);
+                                  sineButton->y() - 10);
 }
 
 void OscillatorGroupBox::createEvelopeGroupBox()

@@ -27,14 +27,20 @@
 #include "geonkick_widget.h"
 
 class Oscillator;
+class Knob;
 
 class OscillatorFunctionView: public GeonkickWidget {
  public:
         OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model);
         void setModel(Oscillator *model);
 
+protected:
+        void updateView();
+        void updatePhaseControl();
+
  private:
         Oscillator *oscillatorModel;
+        Knob *phaseControl;
 };
 
 #endif // OSCILLATOR_FUNCTION_VIEW_H

@@ -22,18 +22,60 @@
  */
 
 #include "OscillatorFunctionView.h"
+#include "oscillator.h"
+#include "knob.h"
+
+#include <numbers>
+
+RK_DECLARE_IMAGE_RC(knob_bk_50x50);
+RK_DECLARE_IMAGE_RC(knob_50x50);
 
 OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
+        , phaseControl{nullptr}
 {
-        //        updateView();
+        setFixedSize({100, 62});
+        updateView();
 }
 
 void OscillatorFunctionView::setModel(Oscillator *model)
 {
         oscillatorModel = model;
-        //        updateView();
+        updateView();
+}
+
+void OscillatorFunctionView::updateView()
+{
+        switch (oscillatorModel->function()) {
+        case Oscillator::FunctionType::Sine:
+        case Oscillator::FunctionType::Square:
+        case Oscillator::FunctionType::Triangle:
+        case Oscillator::FunctionType::Sawtooth:
+        case Oscillator::FunctionType::Sample:
+                updatePhaseControl();
+                break;
+        default:
+                break;
+        }
+}
+
+void OscillatorFunctionView::updatePhaseControl()
+{
+        if (!phaseControl) {
+                phaseControl = new Knob(this);
+                phaseControl->setFixedSize(60, 60);
+                phaseControl->setPosition((width() - phaseControl->width()) / 2, 0);
+                phaseControl->setKnobBackgroundImage(RkImage(60, 60, RK_IMAGE_RC(knob_bk_50x50)));
+                phaseControl->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
+                phaseControl->setRange(0, 2 * std::numbers::pi);
+                RK_ACT_BIND(phaseControl,
+                            valueUpdated,
+                            RK_ACT_ARGS(double val),
+                            oscillatorModel,
+                            setPhase(val));
+        }
+        phaseControl->setCurrentValue(oscillatorModel->getPhase());
 }
 
 
