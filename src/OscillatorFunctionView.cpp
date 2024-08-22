@@ -22,26 +22,111 @@
  */
 
 #include "OscillatorFunctionView.h"
-#include "oscillator.h"
 #include "knob.h"
+#include "geonkick_button.h"
 
 #include <numbers>
 
 RK_DECLARE_IMAGE_RC(knob_bk_50x50);
 RK_DECLARE_IMAGE_RC(knob_50x50);
+RK_DECLARE_IMAGE_RC(noise_type_white);
+RK_DECLARE_IMAGE_RC(noise_type_white_active);
+RK_DECLARE_IMAGE_RC(noise_type_brownian);
+RK_DECLARE_IMAGE_RC(noise_type_brownian_active);
 
 OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
         , phaseControl{nullptr}
+        , whiteNoiseButton{nullptr}
+        , brownianNoiseButton{nullptr}
+
 {
         setFixedSize({100, 62});
-        updateView();
+        createView();
 }
 
 void OscillatorFunctionView::setModel(Oscillator *model)
 {
         oscillatorModel = model;
+        createView();
+        updateView();
+}
+
+void OscillatorFunctionView::clearView()
+{
+        delete phaseControl;
+        delete whiteNoiseButton;
+        delete brownianNoiseButton;
+        phaseControl = nullptr;
+        whiteNoiseButton = nullptr;
+        brownianNoiseButton = nullptr;
+}
+
+void OscillatorFunctionView::createView()
+{
+        clearView();
+        switch (oscillatorModel->function()) {
+        case Oscillator::FunctionType::Sine:
+        case Oscillator::FunctionType::Square:
+        case Oscillator::FunctionType::Triangle:
+        case Oscillator::FunctionType::Sawtooth:
+        case Oscillator::FunctionType::Sample:
+                createPhaseControl();
+                break;
+        case Oscillator::FunctionType::NoiseWhite:
+        case Oscillator::FunctionType::NoisePink:
+        case Oscillator::FunctionType::NoiseBrownian:
+                createNoiseControls();
+                break;
+        default:
+                break;
+        }
+}
+
+void OscillatorFunctionView::createPhaseControl()
+{
+        phaseControl = new Knob(this);
+        phaseControl->setFixedSize(60, 60);
+        phaseControl->setPosition((width() - phaseControl->width()) / 2, 0);
+        phaseControl->setKnobBackgroundImage(RkImage(60, 60, RK_IMAGE_RC(knob_bk_50x50)));
+        phaseControl->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
+        phaseControl->setRange(0, 2 * std::numbers::pi);
+        RK_ACT_BIND(phaseControl,
+                    valueUpdated,
+                    RK_ACT_ARGS(double val),
+                    oscillatorModel,
+                    setPhase(val));
+}
+
+void OscillatorFunctionView::createNoiseControls()
+{
+        whiteNoiseButton = new GeonkickButton(this);
+        whiteNoiseButton->setPosition(30, 10);
+        whiteNoiseButton->setFixedSize(18, 18);
+        whiteNoiseButton->setUnpressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_white)));
+        whiteNoiseButton->setPressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_white_active)));
+        RK_ACT_BIND(whiteNoiseButton,
+                    toggled,
+                    RK_ACT_ARGS(bool b),
+                    this,
+                    setNoiseView(Oscillator::FunctionType::NoiseWhite));
+
+        brownianNoiseButton = new GeonkickButton(this);
+        brownianNoiseButton->setPosition(60, 10);
+        brownianNoiseButton->setFixedSize(18, 18);
+        brownianNoiseButton->setUnpressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_brownian)));
+        brownianNoiseButton->setPressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_brownian_active)));
+        RK_ACT_BIND(brownianNoiseButton,
+                    toggled,
+                    RK_ACT_ARGS(bool val),
+                    this,
+                    setNoiseView(Oscillator::FunctionType::NoiseBrownian));
+}
+
+void OscillatorFunctionView::setNoiseView(Oscillator::FunctionType noiseType)
+{
+        oscillatorModel->setFunction(noiseType);
         updateView();
 }
 
@@ -53,29 +138,20 @@ void OscillatorFunctionView::updateView()
         case Oscillator::FunctionType::Triangle:
         case Oscillator::FunctionType::Sawtooth:
         case Oscillator::FunctionType::Sample:
-                updatePhaseControl();
+                phaseControl->setCurrentValue(oscillatorModel->getPhase());
+                break;
+        case Oscillator::FunctionType::NoiseWhite:
+        case Oscillator::FunctionType::NoisePink:
+        case Oscillator::FunctionType::NoiseBrownian:
+                whiteNoiseButton->setPressed(Oscillator::FunctionType::NoiseWhite
+                                             == oscillatorModel->function());
+                brownianNoiseButton->setPressed(Oscillator::FunctionType::NoiseBrownian
+                                                == oscillatorModel->function());
                 break;
         default:
                 break;
         }
 }
 
-void OscillatorFunctionView::updatePhaseControl()
-{
-        if (!phaseControl) {
-                phaseControl = new Knob(this);
-                phaseControl->setFixedSize(60, 60);
-                phaseControl->setPosition((width() - phaseControl->width()) / 2, 0);
-                phaseControl->setKnobBackgroundImage(RkImage(60, 60, RK_IMAGE_RC(knob_bk_50x50)));
-                phaseControl->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
-                phaseControl->setRange(0, 2 * std::numbers::pi);
-                RK_ACT_BIND(phaseControl,
-                            valueUpdated,
-                            RK_ACT_ARGS(double val),
-                            oscillatorModel,
-                            setPhase(val));
-        }
-        phaseControl->setCurrentValue(oscillatorModel->getPhase());
-}
 
 

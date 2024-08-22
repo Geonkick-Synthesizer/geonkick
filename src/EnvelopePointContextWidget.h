@@ -31,7 +31,7 @@ class RkLineEdit;
 
 class EnvelopePointContextWidget: public GeonkickWidget
 {
- public:        
+ public:
         EnvelopePointContextWidget(Envelope *envelope,
                                    GeonkickWidget *parent,
                                    Rk::WidgetFlags flag = Rk::WidgetFlags::Popup);
