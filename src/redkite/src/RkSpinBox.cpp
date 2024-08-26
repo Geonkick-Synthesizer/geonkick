@@ -2,7 +2,7 @@
  * File name: RkSpinBox.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2024 Iurie Nistor 
+ * Copyright (C) 2024 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -42,11 +42,18 @@ RkSpinBox::RkSpinBox(RkWidget *parent)
                     this, setCurrentIndex(currentIndex() - 1));
 }
 
+void RkSpinBox::setRange(int from, int to)
+{
+        for (auto i = from; i <= to; i++)
+                addItem(std::to_string(i));
+        setCurrentIndex(0);
+}
+
 void RkSpinBox::setCurrentIndex(int index)
 {
         if (index == impl_ptr->currentIndex())
                 return;
-        
+
         impl_ptr->setCurrentIndex(index);
         action currentIndexChanged(impl_ptr->currentIndex());
 }

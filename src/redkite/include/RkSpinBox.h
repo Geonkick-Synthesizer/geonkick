@@ -33,6 +33,7 @@ class RkSpinBox : public RkWidget {
  public:
     RkSpinBox(RkWidget *parent);
     virtual ~RkSpinBox() = default;
+    void setRange(int from, int to);
     void setCurrentIndex(int index);
     int currentIndex() const;
     void addItem(const RkVariant& item);

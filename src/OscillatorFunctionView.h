@@ -29,6 +29,7 @@
 
 class Knob;
 class GeonkickButton;
+class RkSpinBox;
 
 class OscillatorFunctionView: public GeonkickWidget {
  public:
@@ -48,6 +49,7 @@ protected:
         Knob *phaseControl;
         GeonkickButton *whiteNoiseButton;
         GeonkickButton *brownianNoiseButton;
+        RkSpinBox *seedSpinBox;
 };
 
 #endif // OSCILLATOR_FUNCTION_VIEW_H

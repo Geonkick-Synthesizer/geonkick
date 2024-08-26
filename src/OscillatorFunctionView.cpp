@@ -25,6 +25,8 @@
 #include "knob.h"
 #include "geonkick_button.h"
 
+#include <RkSpinBox.h>
+
 #include <numbers>
 
 RK_DECLARE_IMAGE_RC(knob_bk_50x50);
@@ -40,6 +42,7 @@ OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillato
         , phaseControl{nullptr}
         , whiteNoiseButton{nullptr}
         , brownianNoiseButton{nullptr}
+        , seedSpinBox{nullptr}
 
 {
         setFixedSize({100, 62});
@@ -58,9 +61,11 @@ void OscillatorFunctionView::clearView()
         delete phaseControl;
         delete whiteNoiseButton;
         delete brownianNoiseButton;
+        delete seedSpinBox;
         phaseControl = nullptr;
         whiteNoiseButton = nullptr;
         brownianNoiseButton = nullptr;
+        seedSpinBox = nullptr;
 }
 
 void OscillatorFunctionView::createView()
@@ -122,6 +127,25 @@ void OscillatorFunctionView::createNoiseControls()
                     RK_ACT_ARGS(bool val),
                     this,
                     setNoiseView(Oscillator::FunctionType::NoiseBrownian));
+
+        seedSpinBox = new RkSpinBox(this);
+        seedSpinBox->setSize(48, 20);
+        seedSpinBox->setPosition(whiteNoiseButton->x(),
+                                 brownianNoiseButton->y()
+                                 + brownianNoiseButton->height() + 6);
+        seedSpinBox->setRange(0, 100);
+        seedSpinBox->setTextColor({250, 250, 250});
+        seedSpinBox->setBackgroundColor({60, 57, 57});
+        seedSpinBox->upControl()->setBackgroundColor({50, 47, 47});
+        seedSpinBox->upControl()->setTextColor({100, 100, 100});
+        seedSpinBox->downControl()->setBackgroundColor({50, 47, 47});
+        seedSpinBox->downControl()->setTextColor({100, 100, 100});
+        seedSpinBox->show();
+        RK_ACT_BIND(seedSpinBox,
+                    currentIndexChanged,
+                    RK_ACT_ARGS(int index),
+                    oscillatorModel,
+                    setSeed(10 * index));
 }
 
 void OscillatorFunctionView::setNoiseView(Oscillator::FunctionType noiseType)
@@ -146,7 +170,8 @@ void OscillatorFunctionView::updateView()
                 whiteNoiseButton->setPressed(Oscillator::FunctionType::NoiseWhite
                                              == oscillatorModel->function());
                 brownianNoiseButton->setPressed(Oscillator::FunctionType::NoiseBrownian
-                                                == oscillatorModel->function());
+                                             == oscillatorModel->function());
+                seedSpinBox->setCurrentIndex(oscillatorModel->getSeed() / 10);
                 break;
         default:
                 break;

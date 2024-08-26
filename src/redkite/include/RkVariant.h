@@ -2,7 +2,7 @@
  * File name: RkVariant.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -32,6 +32,6 @@
 #include <variant>
 #include <string>
 
-using RkVariant = std::variant<std::string, RkColor, RkSize, RkFont>;
+using RkVariant = std::variant<std::string, RkColor, RkSize, RkFont, int>;
 
 #endif // RK_VARIANT_H
