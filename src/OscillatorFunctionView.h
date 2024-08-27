@@ -30,6 +30,7 @@
 class Knob;
 class GeonkickButton;
 class RkSpinBox;
+class RkLabel;
 
 class OscillatorFunctionView: public GeonkickWidget {
  public:
@@ -50,6 +51,7 @@ protected:
         GeonkickButton *whiteNoiseButton;
         GeonkickButton *brownianNoiseButton;
         RkSpinBox *seedSpinBox;
+        RkLabel *seedLabel;
 };
 
 #endif // OSCILLATOR_FUNCTION_VIEW_H

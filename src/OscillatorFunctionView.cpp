@@ -26,6 +26,7 @@
 #include "geonkick_button.h"
 
 #include <RkSpinBox.h>
+#include <RkLabel.h>
 
 #include <numbers>
 
@@ -43,6 +44,7 @@ OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillato
         , whiteNoiseButton{nullptr}
         , brownianNoiseButton{nullptr}
         , seedSpinBox{nullptr}
+        , seedLabel{nullptr}
 
 {
         setFixedSize({100, 62});
@@ -62,10 +64,12 @@ void OscillatorFunctionView::clearView()
         delete whiteNoiseButton;
         delete brownianNoiseButton;
         delete seedSpinBox;
+        delete seedLabel;
         phaseControl = nullptr;
         whiteNoiseButton = nullptr;
         brownianNoiseButton = nullptr;
         seedSpinBox = nullptr;
+        seedLabel = nullptr;
 }
 
 void OscillatorFunctionView::createView()
@@ -128,9 +132,18 @@ void OscillatorFunctionView::createNoiseControls()
                     this,
                     setNoiseView(Oscillator::FunctionType::NoiseBrownian));
 
+        seedLabel = new RkLabel(this, "Seed");
+        seedLabel->setFixedSize(30, 10);
+        seedLabel->setTextColor({210, 226, 226, 160});
+        seedLabel->setPosition(10,
+                               brownianNoiseButton->y()
+                               + brownianNoiseButton->height() + 10);
+        seedLabel->setBackgroundColor(background());
+        seedLabel->show();
+
         seedSpinBox = new RkSpinBox(this);
         seedSpinBox->setSize(48, 20);
-        seedSpinBox->setPosition(whiteNoiseButton->x(),
+        seedSpinBox->setPosition(seedLabel->x() + seedLabel->width() + 4,
                                  brownianNoiseButton->y()
                                  + brownianNoiseButton->height() + 6);
         seedSpinBox->setRange(0, 100);
