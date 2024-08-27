@@ -30,8 +30,8 @@
 
 #include <numbers>
 
-RK_DECLARE_IMAGE_RC(knob_bk_50x50);
-RK_DECLARE_IMAGE_RC(knob_50x50);
+RK_DECLARE_IMAGE_RC(phase_bk_knob);
+RK_DECLARE_IMAGE_RC(phase_knob);
 RK_DECLARE_IMAGE_RC(noise_type_white);
 RK_DECLARE_IMAGE_RC(noise_type_white_active);
 RK_DECLARE_IMAGE_RC(noise_type_brownian);
@@ -41,6 +41,7 @@ OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillato
         : GeonkickWidget(parent)
         , oscillatorModel{model}
         , phaseControl{nullptr}
+        , phaseLabel{nullptr}
         , whiteNoiseButton{nullptr}
         , brownianNoiseButton{nullptr}
         , seedSpinBox{nullptr}
@@ -61,11 +62,13 @@ void OscillatorFunctionView::setModel(Oscillator *model)
 void OscillatorFunctionView::clearView()
 {
         delete phaseControl;
+        delete phaseLabel;
         delete whiteNoiseButton;
         delete brownianNoiseButton;
         delete seedSpinBox;
         delete seedLabel;
         phaseControl = nullptr;
+        phaseLabel = nullptr;
         whiteNoiseButton = nullptr;
         brownianNoiseButton = nullptr;
         seedSpinBox = nullptr;
@@ -96,16 +99,27 @@ void OscillatorFunctionView::createView()
 void OscillatorFunctionView::createPhaseControl()
 {
         phaseControl = new Knob(this);
-        phaseControl->setFixedSize(60, 60);
+        phaseControl->setFixedSize(48, 48);
         phaseControl->setPosition((width() - phaseControl->width()) / 2, 0);
-        phaseControl->setKnobBackgroundImage(RkImage(60, 60, RK_IMAGE_RC(knob_bk_50x50)));
-        phaseControl->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
+        phaseControl->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(phase_bk_knob)));
+        phaseControl->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(phase_knob)));
         phaseControl->setRange(0, 2 * std::numbers::pi);
         RK_ACT_BIND(phaseControl,
                     valueUpdated,
                     RK_ACT_ARGS(double val),
                     oscillatorModel,
                     setPhase(val));
+        phaseLabel = new RkLabel(this, "Phase");
+        phaseLabel->setFixedSize(30, 10);
+        auto font = phaseLabel->font();
+        font.setSize(9);
+        font.setWeight(RkFont::Weight::Bold);
+        phaseLabel->setFont(font);
+        phaseLabel->setTextColor({210, 226, 226, 160});
+        phaseLabel->setPosition((width() - phaseLabel->width()) / 2,
+                               phaseControl->y() + phaseControl->height());
+        phaseLabel->setBackgroundColor(background());
+        phaseLabel->show();
 }
 
 void OscillatorFunctionView::createNoiseControls()

@@ -34,7 +34,7 @@ RK_DECLARE_IMAGE_RC(hboxbk_filter);
 RK_DECLARE_IMAGE_RC(filter_enabled);
 RK_DECLARE_IMAGE_RC(filter_enabled_hover);
 RK_DECLARE_IMAGE_RC(filter_disabled);
-RK_DECLARE_IMAGE_RC(knob_bk_50x50);
+RK_DECLARE_IMAGE_RC(knob_bk_60x60);
 RK_DECLARE_IMAGE_RC(knob_50x50);
 RK_DECLARE_IMAGE_RC(filter_type_lp);
 RK_DECLARE_IMAGE_RC(filter_type_hp);
@@ -119,7 +119,7 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         int h = 60;
         resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
         resonanceKnob->setFixedSize(w, h);
-        resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_50x50)));
+        resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_60x60)));
         resonanceKnob->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
         resonanceKnob->setRange(0.01, 10);
         RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), this, resonanceChanged(val));

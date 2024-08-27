@@ -48,6 +48,7 @@ protected:
  private:
         Oscillator *oscillatorModel;
         Knob *phaseControl;
+        RkLabel *phaseLabel;
         GeonkickButton *whiteNoiseButton;
         GeonkickButton *brownianNoiseButton;
         RkSpinBox *seedSpinBox;
