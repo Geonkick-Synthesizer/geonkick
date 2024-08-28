@@ -42,8 +42,10 @@ protected:
         void createView();
         void createPhaseControl();
         void createNoiseControls();
+        void createSampleControls();
         void setNoiseView(Oscillator::FunctionType noiseType);
         void updateView();
+        void browseSample();
 
  private:
         Oscillator *oscillatorModel;
@@ -53,6 +55,7 @@ protected:
         GeonkickButton *brownianNoiseButton;
         RkSpinBox *seedSpinBox;
         RkLabel *seedLabel;
+        GeonkickButton *sampleBrowseButton;
 };
 
 #endif // OSCILLATOR_FUNCTION_VIEW_H

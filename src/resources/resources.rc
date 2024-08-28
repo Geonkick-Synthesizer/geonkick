@@ -206,8 +206,10 @@ osc_pitch_button_hover.png
 phase_label.png
 noise_groupbox_label.png
 noise_type_brownian_active.png
+noise_type_brownian_hover.png
 noise_type_brownian.png
 noise_type_white_active.png
+noise_type_white_hover.png
 noise_type_white.png
 cancel.png
 save_active.png
@@ -216,16 +218,22 @@ save_hover.png
 
 wave_button_sine.png
 wave_button_sine_active.png
+wave_button_sine_hover.png
 wave_button_square.png
 wave_button_square_active.png
+wave_button_square_hover.png
 wave_button_triangle.png
 wave_button_triangle_active.png
+wave_button_triangle_hover.png
 wave_button_sawtooth.png
 wave_button_sawtooth_active.png
+wave_button_sawtooth_hover.png
 wave_button_noise.png
 wave_button_noise_active.png
+wave_button_noise_hover.png
 wave_button_sample.png
 wave_button_sample_active.png
+wave_button_sample_hover.png
 button_browse_sample.png
 wf_bk_hbox.png
 layers_mixer.png

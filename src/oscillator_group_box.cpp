@@ -49,16 +49,22 @@ RK_DECLARE_IMAGE_RC(fm_radio_active);
 RK_DECLARE_IMAGE_RC(wf_bk_hbox);
 RK_DECLARE_IMAGE_RC(wave_button_sine);
 RK_DECLARE_IMAGE_RC(wave_button_sine_active);
+RK_DECLARE_IMAGE_RC(wave_button_sine_hover);
 RK_DECLARE_IMAGE_RC(wave_button_square);
 RK_DECLARE_IMAGE_RC(wave_button_square_active);
+RK_DECLARE_IMAGE_RC(wave_button_square_hover);
 RK_DECLARE_IMAGE_RC(wave_button_triangle);
 RK_DECLARE_IMAGE_RC(wave_button_triangle_active);
+RK_DECLARE_IMAGE_RC(wave_button_triangle_hover);
 RK_DECLARE_IMAGE_RC(wave_button_sawtooth);
 RK_DECLARE_IMAGE_RC(wave_button_sawtooth_active);
+RK_DECLARE_IMAGE_RC(wave_button_sawtooth_hover);
 RK_DECLARE_IMAGE_RC(wave_button_noise);
 RK_DECLARE_IMAGE_RC(wave_button_noise_active);
+RK_DECLARE_IMAGE_RC(wave_button_noise_hover);
 RK_DECLARE_IMAGE_RC(wave_button_sample);
 RK_DECLARE_IMAGE_RC(wave_button_sample_active);
+RK_DECLARE_IMAGE_RC(wave_button_sample_hover);
 RK_DECLARE_IMAGE_RC(phase_label);
 RK_DECLARE_IMAGE_RC(hboxbk_noise_env);
 RK_DECLARE_IMAGE_RC(hboxbk_osc_env);
@@ -175,8 +181,9 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sineButton->setBackgroundColor(waveFunctionHBox->background());
         sineButton->setFixedSize(26, 18);
         sineButton->setPosition(20, 32);
-        sineButton->setUnpressedImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine)));
-        sineButton->setPressedImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine_active)));
+        sineButton->setImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine)), RkButton::State::Unpressed);
+        sineButton->setImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine_active)), RkButton::State::Pressed);
+        sineButton->setImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_sine_hover)), RkButton::State::UnpressedHover);
         RK_ACT_BIND(sineButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sine));
         sineButton->show();
 
@@ -186,6 +193,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         squareButton->setPosition(sineButton->x() + sineButton->width() + 5,  sineButton->y());
         squareButton->setUnpressedImage(RkImage(squareButton->size(), RK_IMAGE_RC(wave_button_square)));
         squareButton->setPressedImage(RkImage(squareButton->size(), RK_IMAGE_RC(wave_button_square_active)));
+        squareButton->setImage(RkImage(sineButton->size(), RK_IMAGE_RC(wave_button_square_hover)), RkButton::State::UnpressedHover);
         RK_ACT_BIND(squareButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Square));
         squareButton->show();
 
@@ -195,6 +203,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         triangleButton->setPosition(squareButton->x() + squareButton->width() + 5, squareButton->y());
         triangleButton->setUnpressedImage(RkImage(triangleButton->size(), RK_IMAGE_RC(wave_button_triangle)));
         triangleButton->setPressedImage(RkImage(triangleButton->size(), RK_IMAGE_RC(wave_button_triangle_active)));
+        triangleButton->setImage(RkImage(triangleButton->size(), RK_IMAGE_RC(wave_button_triangle_hover)), RkButton::State::UnpressedHover);
         RK_ACT_BIND(triangleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Triangle));
         triangleButton->show();
 
@@ -204,6 +213,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sawtoothButton->setPosition(sineButton->x(), sineButton->y() + sineButton->height() + 5);
         sawtoothButton->setUnpressedImage(RkImage(sawtoothButton->size(), RK_IMAGE_RC(wave_button_sawtooth)));
         sawtoothButton->setPressedImage(RkImage(sawtoothButton->size(), RK_IMAGE_RC(wave_button_sawtooth_active)));
+        sawtoothButton->setImage(RkImage(sawtoothButton->size(), RK_IMAGE_RC(wave_button_sawtooth_hover)), RkButton::State::UnpressedHover);
         RK_ACT_BIND(sawtoothButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sawtooth));
 
         noiseButton = new GeonkickButton(waveFunctionHBox);
@@ -212,6 +222,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         noiseButton->setPosition(sawtoothButton->x() + sawtoothButton->width() + 5, sawtoothButton->y());
         noiseButton->setUnpressedImage(RkImage(noiseButton->size(), RK_IMAGE_RC(wave_button_noise)));
         noiseButton->setPressedImage(RkImage(noiseButton->size(), RK_IMAGE_RC(wave_button_noise_active)));
+        noiseButton->setImage(RkImage(noiseButton->size(), RK_IMAGE_RC(wave_button_noise_hover)), RkButton::State::UnpressedHover);
         RK_ACT_BIND(noiseButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::NoiseWhite));
 
         sampleButton = new GeonkickButton(waveFunctionHBox);
@@ -220,6 +231,7 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
         sampleButton->setPosition(noiseButton->x() + noiseButton->width() + 5, noiseButton->y());
         sampleButton->setUnpressedImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample)));
         sampleButton->setPressedImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample_active)));
+        sampleButton->setImage(RkImage(sampleButton->size(), RK_IMAGE_RC(wave_button_sample_hover)), RkButton::State::UnpressedHover);
         RK_ACT_BIND(sampleButton, toggled, RK_ACT_ARGS(bool b), this, setWaveFunction(Oscillator::FunctionType::Sample));
 
         functionView = new OscillatorFunctionView(waveFunctionHBox, oscillator);

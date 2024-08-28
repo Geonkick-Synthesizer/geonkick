@@ -24,6 +24,7 @@
 #include "OscillatorFunctionView.h"
 #include "knob.h"
 #include "geonkick_button.h"
+#include "ViewState.h"
 
 #include <RkSpinBox.h>
 #include <RkLabel.h>
@@ -34,8 +35,11 @@ RK_DECLARE_IMAGE_RC(phase_bk_knob);
 RK_DECLARE_IMAGE_RC(phase_knob);
 RK_DECLARE_IMAGE_RC(noise_type_white);
 RK_DECLARE_IMAGE_RC(noise_type_white_active);
+RK_DECLARE_IMAGE_RC(noise_type_white_hover);
 RK_DECLARE_IMAGE_RC(noise_type_brownian);
 RK_DECLARE_IMAGE_RC(noise_type_brownian_active);
+RK_DECLARE_IMAGE_RC(noise_type_brownian_hover);
+RK_DECLARE_IMAGE_RC(button_browse_sample);
 
 OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
@@ -46,6 +50,7 @@ OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillato
         , brownianNoiseButton{nullptr}
         , seedSpinBox{nullptr}
         , seedLabel{nullptr}
+        , sampleBrowseButton{nullptr}
 
 {
         setFixedSize({100, 62});
@@ -63,11 +68,13 @@ void OscillatorFunctionView::clearView()
 {
         delete phaseControl;
         delete phaseLabel;
+        delete sampleBrowseButton;
         delete whiteNoiseButton;
         delete brownianNoiseButton;
         delete seedSpinBox;
         delete seedLabel;
         phaseControl = nullptr;
+        sampleBrowseButton = nullptr;
         phaseLabel = nullptr;
         whiteNoiseButton = nullptr;
         brownianNoiseButton = nullptr;
@@ -83,8 +90,10 @@ void OscillatorFunctionView::createView()
         case Oscillator::FunctionType::Square:
         case Oscillator::FunctionType::Triangle:
         case Oscillator::FunctionType::Sawtooth:
-        case Oscillator::FunctionType::Sample:
                 createPhaseControl();
+                break;
+        case Oscillator::FunctionType::Sample:
+                createSampleControls();
                 break;
         case Oscillator::FunctionType::NoiseWhite:
         case Oscillator::FunctionType::NoisePink:
@@ -128,6 +137,7 @@ void OscillatorFunctionView::createNoiseControls()
         whiteNoiseButton->setPosition(30, 10);
         whiteNoiseButton->setFixedSize(18, 18);
         whiteNoiseButton->setUnpressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_white)));
+        whiteNoiseButton->setImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_white_hover)), RkButton::State::UnpressedHover);
         whiteNoiseButton->setPressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_white_active)));
         RK_ACT_BIND(whiteNoiseButton,
                     toggled,
@@ -139,6 +149,7 @@ void OscillatorFunctionView::createNoiseControls()
         brownianNoiseButton->setPosition(60, 10);
         brownianNoiseButton->setFixedSize(18, 18);
         brownianNoiseButton->setUnpressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_brownian)));
+        brownianNoiseButton->setImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_brownian_hover)), RkButton::State::UnpressedHover);
         brownianNoiseButton->setPressedImage(RkImage(18, 18, RK_IMAGE_RC(noise_type_brownian_active)));
         RK_ACT_BIND(brownianNoiseButton,
                     toggled,
@@ -173,6 +184,29 @@ void OscillatorFunctionView::createNoiseControls()
                     RK_ACT_ARGS(int index),
                     oscillatorModel,
                     setSeed(10 * index));
+}
+
+void OscillatorFunctionView::createSampleControls()
+{
+        createPhaseControl();
+        phaseControl->setX(phaseControl->x() - 10);
+        phaseLabel->setText("Offset");
+        phaseLabel->setX(phaseLabel->x() - 10);
+        sampleBrowseButton = new GeonkickButton(this);
+        sampleBrowseButton->setCheckable(true);
+        sampleBrowseButton->setBackgroundColor(background());
+        sampleBrowseButton->setFixedSize(22, 14);
+        sampleBrowseButton->setPosition(phaseControl->x() + phaseControl->width() + 10,
+                                        phaseControl->y() + phaseControl->height() / 2 - 4);
+        sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(),
+                                                      RK_IMAGE_RC(button_browse_sample)));
+        RK_ACT_BIND(sampleBrowseButton, pressed, RK_ACT_ARGS(), this, browseSample());
+}
+
+void OscillatorFunctionView::browseSample()
+{
+        viewState()->setSamplesBrowserOscillator(static_cast<ViewState::Oscillator>(oscillatorModel->type()));
+        viewState()->setMainView(ViewState::View::Samples);
 }
 
 void OscillatorFunctionView::setNoiseView(Oscillator::FunctionType noiseType)
