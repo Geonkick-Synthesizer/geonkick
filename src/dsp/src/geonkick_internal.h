@@ -84,9 +84,7 @@ geonkick_rand(unsigned int *seed);
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 
-inline gkick_real geonkick_clamp(gkick_real value, gkick_real min_v, gkick_real max_v)
-{
-        return (value < min_v) ? min_v : (value > max_v) ? max_v : value;
-}
+#define GKICK_CLAMP(value, min_v, max_v) \
+    ((value) < (min_v) ? (min_v) : ((value) > (max_v) ? (max_v) : (value)))
 
 #endif // GEONKICK_INTERNAL_H

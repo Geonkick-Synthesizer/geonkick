@@ -2,7 +2,7 @@
  * File name: geonkick_api.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -75,7 +75,8 @@ class GeonkickApi : public RkObject {
 	  FilterQFactor = GEONKICK_FILTER_Q_ENVELOPE,
 	  DistortionDrive = GEONKICK_DISTORTION_DRIVE_ENVELOPE,
           DistortionVolume = GEONKICK_DISTORTION_VOLUME_ENVELOPE,
-          PitchShift = GEONKICK_PITCH_SHIFT_ENVELOPE
+          PitchShift = GEONKICK_PITCH_SHIFT_ENVELOPE,
+          NoiseDensity = GEONKICK_NOISE_DENSITY_ENVELOPE
   };
 
   enum class EnvelopeApplyType: int {
@@ -140,12 +141,16 @@ class GeonkickApi : public RkObject {
                               double frequency);
   bool setOscillatorPitchShift(int oscillatorIndex,
                                double semitones);
+  bool setOscillatorNoiseDensity(int oscillatorIndex,
+                                 double density);
+
 
   void setOscillatorAsFm(int oscillatorIndex, bool b);
   bool isOscillatorAsFm(int oscillatorIndex) const;
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;
   double oscillatorPitchShift(int oscillatorIndex) const;
+  double oscillatorNoiseDensity(int oscillatorIndex) const;
   void addKickEnvelopePoint(EnvelopeType envelope,
                             double x,
                             double y);

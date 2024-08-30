@@ -886,6 +886,24 @@ double GeonkickApi::oscillatorPitchShift(int oscillatorIndex) const
 	return semitones;
 }
 
+bool GeonkickApi::setOscillatorNoiseDensity(int oscillatorIndex, double density)
+{
+	return geonkick_set_osc_noise_density(geonkickApi,
+                                              getOscIndex(oscillatorIndex),
+                                              density) == GEONKICK_OK;
+}
+
+double GeonkickApi::oscillatorNoiseDensity(int oscillatorIndex) const
+{
+	gkick_real density = 0;
+	if (geonkick_get_osc_noise_density(geonkickApi,
+                                           getOscIndex(oscillatorIndex),
+                                           &density) != GEONKICK_OK) {
+                return 0;
+        }
+	return density;
+}
+
 bool GeonkickApi::isOscillatorEnabled(int oscillatorIndex) const
 {
         int enabled = 0;

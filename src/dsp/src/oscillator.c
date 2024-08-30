@@ -2,7 +2,7 @@
  * File name: oscillator.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -39,7 +39,8 @@ struct gkick_oscillator
         osc->amplitude = GKICK_OSC_DEFAULT_AMPLITUDE;
         osc->frequency = GKICK_OSC_DEFAULT_FREQUENCY;
         osc->pitch_shift = 0.0f;
-        osc->env_number = 3;
+        osc->noise_density = 1.0f;
+        osc->env_number = 4;
         osc->brownian = 0;
         osc->is_fm = false;
         osc->fm_input = 0.0f;
@@ -134,6 +135,8 @@ gkick_osc_get_envelope(struct gkick_oscillator *osc,
                 return osc->envelopes[GKICK_OSC_FREQUENCY_ENVELOPE];
         case GEONKICK_PITCH_SHIFT_ENVELOPE:
                 return osc->envelopes[GKICK_OSC_PITCH_SHIFT_ENVELOPE];
+        case GKICK_OSC_NOISE_DENSITY_ENVELOPE:
+                return osc->envelopes[GKICK_OSC_NOISE_DENSITY_ENVELOPE];
         default:
                 return NULL;
         }
@@ -188,13 +191,16 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
                 v = amp * gkick_osc_func_sawtooth(osc->phase);
                 break;
         case GEONKICK_OSC_FUNC_NOISE_WHITE:
-                v = amp * gkick_osc_func_noise_white(&osc->seedp);
+                v = amp * gkick_osc_func_noise_white(&osc->seedp,
+                                                     gkick_osc_get_noise_density(osc, t, kick_len));
                 break;
         case GEONKICK_OSC_FUNC_NOISE_PINK:
                 v = amp * gkick_osc_func_noise_pink();
                 break;
         case GEONKICK_OSC_FUNC_NOISE_BROWNIAN:
-                v = amp * gkick_osc_func_noise_brownian(&(osc)->brownian, &osc->seedp);
+                v = amp * gkick_osc_func_noise_brownian(&(osc)->brownian,
+                                                        &osc->seedp,
+                                                        gkick_osc_get_noise_density(osc, t, kick_len));
                 break;
         case GEONKICK_OSC_FUNC_SAMPLE:
                 if (osc->sample != NULL
@@ -248,9 +254,12 @@ gkick_osc_func_sawtooth(gkick_real phase)
                 return M_1_PI * phase - 2.0f;
 }
 
-gkick_real gkick_osc_func_noise_white(unsigned int *seed)
+gkick_real gkick_osc_func_noise_white(unsigned int *seed, unsigned int density)
 {
-        return 2.0f * ((gkick_real)(geonkick_rand(seed) % RAND_MAX)) / (gkick_real)RAND_MAX - 1.0f;
+        gkick_real result = 0.0f;
+        if (density >=1 && !(geonkick_rand(seed) % (GKICK_MAX_NOISE_DENSITY + 1 - density)))
+                result = 2.0f * ((gkick_real)(geonkick_rand(seed) % RAND_MAX)) / (gkick_real)RAND_MAX - 1.0f;
+        return result;
 }
 
 gkick_real gkick_osc_func_noise_pink(void)
@@ -260,14 +269,18 @@ gkick_real gkick_osc_func_noise_pink(void)
 
 gkick_real
 gkick_osc_func_noise_brownian(gkick_real *previous,
-                              unsigned int *seed)
+                              unsigned int *seed,
+                              unsigned int density)
 {
         gkick_real sign = 1.0f;
         gkick_real walk;
         if (geonkick_rand(seed) % 2)
                 sign = -1.0f;
 
-        walk = sign * 0.1f * (((gkick_real)(geonkick_rand(seed) % RAND_MAX)) / (gkick_real)RAND_MAX);
+        if (density >=1 && !(geonkick_rand(seed) % (GKICK_MAX_NOISE_DENSITY + 1 - density)))
+                walk = sign * 0.1f * (((gkick_real)(geonkick_rand(seed) % RAND_MAX)) / (gkick_real)RAND_MAX);
+        else
+                walk = 0.0f;
         if (*previous + walk > 1.0f || *previous + walk < -1.0f)
                 *previous -= walk;
         else
@@ -314,4 +327,12 @@ int
 gkick_osc_enabled(struct gkick_oscillator *osc)
 {
         return osc != NULL && (osc->state == GEONKICK_OSC_STATE_ENABLED);
+}
+
+unsigned int
+gkick_osc_get_noise_density(struct gkick_oscillator *osc, gkick_real t, gkick_real kick_len)
+{
+        struct gkick_envelope *density_envelope = osc->envelopes[GKICK_OSC_NOISE_DENSITY_ENVELOPE];
+        gkick_real env_val = gkick_envelope_get_value(density_envelope, t / kick_len);
+        return GKICK_MAX_NOISE_DENSITY * (osc->noise_density * env_val);
 }

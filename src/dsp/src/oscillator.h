@@ -28,9 +28,12 @@
 #include "envelope.h"
 #include "filter.h"
 
-#define GKICK_OSC_DEFAULT_AMPLITUDE   1.0f
-#define GKICK_OSC_DEFAULT_FREQUENCY   150.0f
-#define GKICK_OSC_DEFAULT_PITCH       69.0f
+#define GKICK_OSC_DEFAULT_AMPLITUDE     1.0f
+#define GKICK_OSC_DEFAULT_FREQUENCY     150.0f
+#define GKICK_OSC_DEFAULT_PITCH         69.0f
+#define GKICK_MAX_NOISE_DENSITY         400
+#define GKICK_OSC_DEFAULT_NOISE_DENSITY GKICK_MAX_NOISE_DENSITY
+
 
 enum geonkick_osc_state {
         GEONKICK_OSC_STATE_DISABLED = 0,
@@ -38,9 +41,10 @@ enum geonkick_osc_state {
 };
 
 enum gkick_osc_envelope_type {
-        GKICK_OSC_AMPLITUDE_ENVELOPE   = 0,
-        GKICK_OSC_FREQUENCY_ENVELOPE   = 1,
-        GKICK_OSC_PITCH_SHIFT_ENVELOPE = 2
+        GKICK_OSC_AMPLITUDE_ENVELOPE     = 0,
+        GKICK_OSC_FREQUENCY_ENVELOPE     = 1,
+        GKICK_OSC_PITCH_SHIFT_ENVELOPE   = 2,
+        GKICK_OSC_NOISE_DENSITY_ENVELOPE = 3
 };
 
 struct gkick_oscillator {
@@ -58,6 +62,9 @@ struct gkick_oscillator {
 	gkick_real amplitude;
         /* Pitch shift semitones. */
         gkick_real pitch_shift;
+
+        /* Noise density. */
+        gkick_real noise_density;
 
         struct gkick_buffer *sample;
 
@@ -113,14 +120,15 @@ gkick_real
 gkick_osc_func_sawtooth(gkick_real phase);
 
 gkick_real
-gkick_osc_func_noise_white(unsigned int *seed);
+gkick_osc_func_noise_white(unsigned int *seed, unsigned int density);
 
 gkick_real
 gkick_osc_func_noise_pink(void);
 
 gkick_real
 gkick_osc_func_noise_brownian(gkick_real *previous,
-                              unsigned int *seed);
+                              unsigned int *seed,
+                              unsigned int density);
 
 gkick_real
 gkick_osc_func_sample(struct gkick_buffer *sample,
@@ -135,5 +143,9 @@ void gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
                                    size_t env_index,
                                    const gkick_real *buff,
                                    size_t npoints);
+
+unsigned int gkick_osc_get_noise_density(struct gkick_oscillator *osc,
+                                         gkick_real t,
+                                         gkick_real kick_len);
 
 #endif // GKICK_OSCILLATOR_H

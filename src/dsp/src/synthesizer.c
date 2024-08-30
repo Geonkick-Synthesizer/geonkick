@@ -1203,6 +1203,57 @@ gkick_synth_get_osc_pitch_shift(struct gkick_synth *synth,
 }
 
 enum geonkick_error
+gkick_synth_set_osc_noise_density(struct gkick_synth *synth,
+                                size_t osc_index,
+                                gkick_real density)
+{
+        struct gkick_oscillator* osc;
+
+	if (synth == NULL) {
+                gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+	}
+
+	gkick_synth_lock(synth);
+	osc = gkick_synth_get_oscillator(synth, osc_index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		gkick_synth_unlock(synth);
+		return GEONKICK_ERROR;
+	}
+	osc->noise_density = density;
+        if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
+            && osc->state == GEONKICK_OSC_STATE_ENABLED) {
+                synth->buffer_update = true;
+        }
+
+	gkick_synth_unlock(synth);
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
+gkick_synth_get_osc_noise_density(struct gkick_synth *synth,
+                                size_t osc_index,
+                                gkick_real *density)
+{
+	if (synth == NULL || density == NULL) {
+                gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+	}
+
+	gkick_synth_lock(synth);
+	struct gkick_oscillator* osc = gkick_synth_get_oscillator(synth, osc_index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		gkick_synth_unlock(synth);
+		return GEONKICK_ERROR;
+	}
+	*density = osc->noise_density;
+	gkick_synth_unlock(synth);
+	return GEONKICK_OK;
+}
+
+enum geonkick_error
 gkick_synth_set_osc_amplitude(struct gkick_synth *synth,
                               size_t osc_index,
                               gkick_real v)

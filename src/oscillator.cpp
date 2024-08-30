@@ -135,6 +135,12 @@ void Oscillator::setPitchShift(double semitones)
                 action pitchShiftUpdated(semitones);
 }
 
+void Oscillator::setNoiseDensity(double density)
+{
+	if (geonkickApi->setOscillatorNoiseDensity(index(), density))
+                action noiseDensityUpdated(density);
+}
+
 double Oscillator::frequency(void) const
 {
         return geonkickApi->oscillatorFrequency(index());
@@ -143,6 +149,11 @@ double Oscillator::frequency(void) const
 double Oscillator::pitchShift(void) const
 {
         return geonkickApi->oscillatorPitchShift(index());
+}
+
+double Oscillator::noiseDensity(void) const
+{
+        return geonkickApi->oscillatorNoiseDensity(index());
 }
 
 int Oscillator::index() const

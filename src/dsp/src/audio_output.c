@@ -200,7 +200,7 @@ gkick_real
 gkick_audio_output_tune_factor(int note_number)
 {
         gkick_real factor = exp2f((gkick_real)(note_number - 69) / 12.0f);
-        return geonkick_clamp(factor, 0.5f, 2.0f);
+        return GKICK_CLAMP(factor, 0.5f, 2.0f);
 }
 
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output)

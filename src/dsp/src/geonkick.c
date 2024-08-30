@@ -754,6 +754,25 @@ geonkick_set_osc_pitch_shift(struct geonkick *kick,
 }
 
 enum geonkick_error
+geonkick_set_osc_noise_density(struct geonkick *kick,
+                               size_t osc_index,
+                               gkick_real density)
+{
+	if (kick == NULL) {
+		gkick_log_error("wrong arguments");
+		return GEONKICK_ERROR;
+	}
+
+        enum geonkick_error res;
+        res = gkick_synth_set_osc_noise_density(kick->synths[kick->per_index],
+                                                osc_index,
+                                                density);
+        if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
+                geonkick_wakeup(kick);
+        return res;
+}
+
+enum geonkick_error
 geonkick_set_osc_amplitude(struct geonkick *kick,
                            size_t osc_index,
                            gkick_real v)
@@ -806,6 +825,18 @@ geonkick_get_osc_pitch_shift(struct geonkick *kick,
 	return gkick_synth_get_osc_pitch_shift(kick->synths[kick->per_index],
                                                osc_index,
                                                semitones);
+}
+
+enum geonkick_error
+geonkick_get_osc_noise_density(struct geonkick *kick,
+                               size_t osc_index,
+                               gkick_real *density)
+{
+	if (kick == NULL || density == NULL)
+		return GEONKICK_ERROR;
+	return gkick_synth_get_osc_pitch_shift(kick->synths[kick->per_index],
+                                               osc_index,
+                                               density);
 }
 
 enum geonkick_error

@@ -332,6 +332,16 @@ gkick_synth_get_osc_pitch_shift(struct gkick_synth *synth,
                                 gkick_real *semitones);
 
 enum geonkick_error
+gkick_synth_set_osc_noise_density(struct gkick_synth *synth,
+                                size_t osc_index,
+                                gkick_real density);
+
+enum geonkick_error
+gkick_synth_get_osc_noise_density(struct gkick_synth *synth,
+                                size_t osc_index,
+                                gkick_real *density);
+
+enum geonkick_error
 gkick_synth_set_osc_amplitude(struct gkick_synth *synth,
                               size_t osc_index,
                               gkick_real v);

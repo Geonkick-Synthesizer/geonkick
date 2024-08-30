@@ -42,6 +42,7 @@ class Oscillator: public RkObject
   double amplitude(void) const;
   double frequency(void) const;
   double pitchShift(void) const;
+  double noiseDensity(void) const;
   void setType(Type type);
   Oscillator::Type type(void) const;
   bool isFilterEnabled() const;
@@ -62,6 +63,7 @@ class Oscillator: public RkObject
   void setAmplitude(double amp);
   void setFrequency(double freq);
   void setPitchShift(double semitones);
+  void setNoiseDensity(double density);
   void enableFilter(bool b);
   void setFilterType(FilterType filter);
   void setFilterFrequency(double f);
@@ -93,6 +95,10 @@ class Oscillator: public RkObject
               pitchShiftUpdated(double semitones),
               RK_ARG_TYPE(double),
               RK_ARG_VAL(semitones));
+  RK_DECL_ACT(noiseDensityUpdated,
+              noiseDensityUpdated(double density),
+              RK_ARG_TYPE(double),
+              RK_ARG_VAL(density));
   RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double len),
               RK_ARG_TYPE(double),
