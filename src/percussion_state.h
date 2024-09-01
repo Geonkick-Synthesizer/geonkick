@@ -85,6 +85,7 @@ class PercussionState
         void setOscillatorAmplitue(int index, double val);
         void setOscillatorFrequency(int index, double val);
         void setOscillatorPitchShift(int index, double val);
+        void setOscillatorNoiseDensity(int index, double val);
         void setOscillatorFilterEnabled(int index, bool b);
         void setOscillatorFilterType(int index, GeonkickApi::FilterType type);
         void setOscillatorFilterCutOffFreq(int index, double val);
@@ -106,6 +107,7 @@ class PercussionState
         int oscillatorSeed(int index) const;
         double oscillatorFrequency(int index) const;
         double oscillatorPitchShift(int index) const;
+        double oscillatorNoiseDensity(int index) const;
         bool isOscillatorFilterEnabled(int index) const;
         GeonkickApi::FilterType oscillatorFilterType(int index) const;
         double oscillatorFilterCutOffFreq(int index) const;
@@ -174,12 +176,14 @@ private:
                 , amplitude{0.8}
                 , frequency{200}
                 , pitchShift{0}
+                , noiseDensity{1.0}
                 , isFilterEnabled{false}
                 , filterType{GeonkickApi::FilterType::LowPass}
                 , filterFrequency{200}
                 , filterFactor{1.0}
 	        , frequencyEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
-	        , cutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic} {}
+	        , cutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
+                , noiseDensityEnvelope{{0, 1}, {1, 1}} {}
                 GeonkickApi::OscillatorType type;
                 std::vector<float> sample;
                 bool isEnabled;
@@ -190,6 +194,7 @@ private:
                 double amplitude;
                 double frequency;
                 double pitchShift;
+                double noiseDensity;
                 bool isFilterEnabled;
                 GeonkickApi::FilterType filterType;
                 double filterFrequency;
@@ -201,6 +206,7 @@ private:
                 std::vector<RkRealPoint> filterCutOffEnvelope;
 		std::vector<RkRealPoint> filterQFactorEnvelope;
                 std::vector<RkRealPoint> pitchShiftEnvelope;
+                std::vector<RkRealPoint> noiseDensityEnvelope;
         };
 
         OscillatorInfo* getOscillator(int index);

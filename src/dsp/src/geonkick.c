@@ -834,9 +834,9 @@ geonkick_get_osc_noise_density(struct geonkick *kick,
 {
 	if (kick == NULL || density == NULL)
 		return GEONKICK_ERROR;
-	return gkick_synth_get_osc_pitch_shift(kick->synths[kick->per_index],
-                                               osc_index,
-                                               density);
+	return gkick_synth_get_osc_noise_density(kick->synths[kick->per_index],
+                                                 osc_index,
+                                                 density);
 }
 
 enum geonkick_error

@@ -26,7 +26,6 @@
 Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
         : geonkickApi{api}
         , oscillatorType{type}
-        , filterType{FilterType::LowPass}
 {
         RK_ACT_BIND(geonkickApi,
                     kickLengthUpdated,

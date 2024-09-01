@@ -397,6 +397,7 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         state->setOscillatorAmplitue(index, oscillatorAmplitude(index));
         state->setOscillatorFrequency(index, oscillatorFrequency(index));
         state->setOscillatorPitchShift(index, oscillatorPitchShift(index));
+        state->setOscillatorNoiseDensity(index, oscillatorNoiseDensity(index));
         state->setOscillatorFilterEnabled(index, isOscillatorFilterEnabled(index));
         state->setOscillatorFilterType(index, getOscillatorFilterType(index));
         state->setOscillatorFilterCutOffFreq(index, getOscillatorFilterCutOffFreq(index));
@@ -409,6 +410,8 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::Frequency);
         points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::PitchShift);
         state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::PitchShift);
+        points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::NoiseDensity);
+        state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::NoiseDensity);
         applyType = getOscillatorEnvelopeApplyType(index, GeonkickApi::EnvelopeType::FilterCutOff);
         state->setOscillatorEnvelopeApplyType(index, GeonkickApi::EnvelopeType::FilterCutOff, applyType);
         points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::FilterCutOff);
@@ -435,6 +438,7 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         setOscillatorAmplitude(osc, state->oscillatorAmplitue(osc));
         setOscillatorFrequency(osc, state->oscillatorFrequency(osc));
         setOscillatorPitchShift(osc, state->oscillatorPitchShift(osc));
+        setOscillatorNoiseDensity(osc, state->oscillatorNoiseDensity(osc));
         enableOscillatorFilter(osc, state->isOscillatorFilterEnabled(osc));
         setOscillatorFilterType(osc, state->oscillatorFilterType(osc));
         setOscillatorFilterCutOffFreq(osc, state->oscillatorFilterCutOffFreq(osc));
@@ -450,6 +454,9 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         setOscillatorEvelopePoints(osc, EnvelopeType::PitchShift,
                                    state->oscillatorEnvelopePoints(osc,
                                                                    EnvelopeType::PitchShift));
+        setOscillatorEvelopePoints(osc, EnvelopeType::NoiseDensity,
+                                   state->oscillatorEnvelopePoints(osc,
+                                                                   EnvelopeType::NoiseDensity));
 	setOscillatorEnvelopeApplyType(osc, EnvelopeType::FilterCutOff,
 				       state->getOscillatorEnvelopeApplyType(osc,
 									     EnvelopeType::FilterCutOff));

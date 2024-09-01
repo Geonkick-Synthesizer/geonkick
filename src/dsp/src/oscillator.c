@@ -135,7 +135,7 @@ gkick_osc_get_envelope(struct gkick_oscillator *osc,
                 return osc->envelopes[GKICK_OSC_FREQUENCY_ENVELOPE];
         case GEONKICK_PITCH_SHIFT_ENVELOPE:
                 return osc->envelopes[GKICK_OSC_PITCH_SHIFT_ENVELOPE];
-        case GKICK_OSC_NOISE_DENSITY_ENVELOPE:
+        case GEONKICK_NOISE_DENSITY_ENVELOPE:
                 return osc->envelopes[GKICK_OSC_NOISE_DENSITY_ENVELOPE];
         default:
                 return NULL;

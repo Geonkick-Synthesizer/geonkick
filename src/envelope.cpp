@@ -37,6 +37,7 @@ Envelope::Envelope(const RkRect &area)
 			Type::DistortionDrive,
 			Type::DistortionVolume,
 			Type::PitchShift,
+                        Type::NoiseDensity,
 			Type::FilterQFactor})
         , overPointIndex{0}
         , isOverPoint{false}
@@ -53,7 +54,8 @@ Envelope::Envelope(const RkRect &area)
                       {Type::FilterQFactor, {1.0, 0.0, 0.0}},
                       {Type::DistortionDrive, {1.0, 0.0, 0.0}},
                       {Type::DistortionVolume, {1.0, 0.0, 0.0}},
-                      {Type::PitchShift, {1.0, 0.0, 0.0}}}
+                      {Type::PitchShift, {1.0, 0.0, 0.0}},
+                      {Type::NoiseDensity, {1.0, 0.0, 0.0}}}
 {
 }
 
@@ -204,6 +206,9 @@ void Envelope::drawValueScale(RkPainter &painter)
         case Type::PitchShift:
                 text = "Semitones";
                 break;
+        case Type::NoiseDensity:
+                text = "Density";
+                break;
         default:
                 text = "Unknown";
         }
@@ -224,7 +229,8 @@ void Envelope::drawValueScale(RkPainter &painter)
         if (type() == Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::NoiseDensity) {
                 double step = envelopeAmplitude() / 10;
                 double amplitude = envelopeAmplitude();
                 for (int i = 1; i <= 10; i++) {
@@ -331,7 +337,8 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
         if (type() == Envelope::Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::NoiseDensity) {
                 value *= envelopeAmplitude();
 		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
 			value *= pow(10, 36.0 / 20);
@@ -759,7 +766,8 @@ double Envelope::convertToHumanValue(double val) const
         if (type() == Envelope::Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::NoiseDensity) {
                 val *= envelopeAmplitude();
 		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
 			return val * pow(10, 36.0 / 20);
@@ -785,7 +793,8 @@ double Envelope::convertFromHumanValue(double val) const
         if (type() == Envelope::Type::Amplitude
 	    || type() == Type::FilterQFactor
             || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume) {
+            || type() == Type::DistortionVolume
+            || type() == Type::NoiseDensity) {
                 val /= envelopeAmplitude();
 		if (type() == Type::DistortionDrive || type() == Type::DistortionVolume)
 			val /= pow(10, 36.0 / 20);

@@ -109,7 +109,6 @@ class Oscillator: public RkObject
  private:
 	  GeonkickApi *geonkickApi;
           Type oscillatorType;
-          FilterType filterType;
 };
 
 #endif // GEONKICK_OSCILLATOR_H

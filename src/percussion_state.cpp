@@ -418,6 +418,16 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                         }
                 }
 
+                if (m.name == "noise_density_env" && m.value.IsObject()) {
+                        for (const auto &el: m.value.GetObject()) {
+                                if (el.name == "amplitude" && el.value.IsDouble())
+                                        setOscillatorNoiseDensity(index, el.value.GetDouble());
+                                if (el.name == "points" && el.value.IsArray())
+                                        setOscillatorEnvelopePoints(index, parseEnvelopeArray(el.value),
+                                                                    GeonkickApi::EnvelopeType::NoiseDensity);
+                        }
+                }
+
                 if (m.name == "filter" && m.value.IsObject()) {
 			auto applyType = GeonkickApi::EnvelopeApplyType::Linear;
                         for (const auto &el: m.value.GetObject()) {
@@ -658,6 +668,12 @@ void PercussionState::setOscillatorPitchShift(int index, double val)
                 oscillator->pitchShift = val;
 }
 
+void PercussionState::setOscillatorNoiseDensity(int index, double val)
+{
+        if (auto oscillator = getOscillator(index); oscillator)
+                oscillator->noiseDensity = val;
+}
+
 void PercussionState::setOscillatorFilterEnabled(int index, bool b)
 {
         auto oscillator = getOscillator(index);
@@ -701,6 +717,9 @@ void PercussionState::setOscillatorEnvelopePoints(int index,
                         break;
                 case GeonkickApi::EnvelopeType::PitchShift:
                         oscillator->pitchShiftEnvelope = points;
+                        break;
+                case GeonkickApi::EnvelopeType::NoiseDensity:
+                        oscillator->noiseDensityEnvelope = points;
                         break;
                 case GeonkickApi::EnvelopeType::FilterCutOff:
                         oscillator->filterCutOffEnvelope = points;
@@ -824,6 +843,13 @@ double PercussionState::oscillatorPitchShift(int index) const
         return 0;
 }
 
+double PercussionState::oscillatorNoiseDensity(int index) const
+{
+        if (auto oscillator = getConstOscillator(index); oscillator)
+                return oscillator->noiseDensity;
+        return 0;
+}
+
 bool PercussionState::isOscillatorFilterEnabled(int index) const
 {
         if (auto oscillator = getConstOscillator(index); oscillator)
@@ -866,6 +892,8 @@ PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType t
                         return oscillator->frequencyEnvelope;
                 case GeonkickApi::EnvelopeType::PitchShift:
                         return oscillator->pitchShiftEnvelope;
+                case GeonkickApi::EnvelopeType::NoiseDensity:
+                        return oscillator->noiseDensityEnvelope;
                 case GeonkickApi::EnvelopeType::FilterCutOff:
                         return oscillator->filterCutOffEnvelope;
 		case GeonkickApi::EnvelopeType::FilterQFactor:
@@ -1047,6 +1075,11 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                                "pitchshift_env",
                                val.second.pitchShift,
                                val.second.pitchShiftEnvelope);
+                jsonStream << "," << std::endl;
+                envelopeToJson(jsonStream,
+                               "noise_density_env",
+                               val.second.noiseDensity,
+                               val.second.noiseDensityEnvelope);
                 jsonStream << "," << std::endl;
                 jsonStream << "\"filter\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second.isFilterEnabled ? "true" : "false");

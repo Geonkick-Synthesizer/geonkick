@@ -2,7 +2,7 @@
  * File name: synthesizer.c
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of GeonKick.
  *
@@ -494,7 +494,7 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
 }
 
 enum geonkick_error
-synth_osc_env_set_apply_type(struct gkick_synth *synth, 
+synth_osc_env_set_apply_type(struct gkick_synth *synth,
 			     size_t osc_index,
 			     size_t env_index,
 			     enum gkick_envelope_apply_type apply_type)
@@ -1061,7 +1061,7 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
 }
 
 enum geonkick_error
-synth_kick_env_set_apply_type(struct gkick_synth *synth, 
+synth_kick_env_set_apply_type(struct gkick_synth *synth,
 			      enum geonkick_envelope_type env_type,
 			      enum gkick_envelope_apply_type apply_type)
 {
@@ -1079,7 +1079,7 @@ synth_kick_env_set_apply_type(struct gkick_synth *synth,
                 synth->buffer_update = true;
         }
         gkick_synth_unlock(synth);
-        return GEONKICK_OK;	
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
@@ -1097,7 +1097,7 @@ synth_kick_env_get_apply_type(struct gkick_synth *synth,
                 break;
         }
         gkick_synth_unlock(synth);
-        return GEONKICK_OK;	
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
