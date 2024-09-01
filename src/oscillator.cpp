@@ -76,6 +76,7 @@ Oscillator::FunctionType Oscillator::function() const
 std::vector<RkRealPoint>
 Oscillator::envelopePoints(EnvelopeType envelope) const
 {
+        const auto env = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
         return geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
 }
 
