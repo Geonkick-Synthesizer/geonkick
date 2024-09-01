@@ -74,10 +74,12 @@ class OscillatorGroupBox: public GeonkickGroupBox
         Knob *amplitudeKnob;
         Knob *frequencyKnob;
         Knob *pitchShiftKnob;
+        Knob *noiseDensityKnob;
         bool filterTypeIsChecked;
         GeonkickWidget *amplitudeEnvelopeBox;
         GeonkickButton *oscFreqEnvelopeButton;
         GeonkickButton *pitchEnvelopeButton;
+        GeonkickButton *densityEnvelopeButton;
         OscillatorFunctionView *functionView;
 };
 

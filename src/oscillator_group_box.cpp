@@ -79,9 +79,9 @@ RK_DECLARE_IMAGE_RC(osc_freq_button_hover);
 RK_DECLARE_IMAGE_RC(osc_pitch_button_off);
 RK_DECLARE_IMAGE_RC(osc_pitch_button_on);
 RK_DECLARE_IMAGE_RC(osc_pitch_button_hover);
-RK_DECLARE_IMAGE_RC(osc_density_button_off);
-RK_DECLARE_IMAGE_RC(osc_density_button_on);
-RK_DECLARE_IMAGE_RC(osc_density_button_hover);
+RK_DECLARE_IMAGE_RC(density_env_button);
+RK_DECLARE_IMAGE_RC(density_env_button_active);
+RK_DECLARE_IMAGE_RC(density_env_button_hover);
 
 OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           : GeonkickGroupBox{parent}
@@ -309,7 +309,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         noiseDensityKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 1);
         noiseDensityKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         noiseDensityKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-        noiseDensityKnob->setRange(0, 48);
+        noiseDensityKnob->setRange(0, 1.0);
         RK_ACT_BIND(noiseDensityKnob,
                     valueUpdated,
                     RK_ACT_ARGS(double val),
@@ -388,13 +388,13 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         densityEnvelopeButton->setFixedSize(63, 21);
         densityEnvelopeButton->setPosition(frequencyKnob->x() + frequencyKnob->width() / 2 - densityEnvelopeButton->width() / 2,
                                          frequencyKnob->y() + frequencyKnob->height());
-        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(osc_density_button_off)),
+        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(density_env_button)),
                                       RkButton::State::Unpressed);
-        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(osc_density_button_on)),
+        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(density_env_button_active)),
                                       RkButton::State::Pressed);
-        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(osc_density_button_hover)),
+        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(density_env_button_hover)),
                                       RkButton::State::PressedHover);
-        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(osc_density_button_hover)),
+        densityEnvelopeButton->setImage(RkImage(densityEnvelopeButton->size(), RK_IMAGE_RC(density_env_button_hover)),
                                       RkButton::State::UnpressedHover);
         RK_ACT_BIND(densityEnvelopeButton,
                     pressed,
@@ -415,7 +415,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         case Oscillator::FunctionType::NoiseWhite:
         case Oscillator::FunctionType::NoiseBrownian:
                 densityEnvelopeButton->show();
-                noiseDenstiyKnob->show();
+                noiseDensityKnob->show();
                 break;
         default:
                 oscFreqEnvelopeButton->show();
@@ -527,7 +527,7 @@ void OscillatorGroupBox::updateAmpltudeEnvelopeBox()
                                     || oscillator->function() == Oscillator::FunctionType::NoiseBrownian);
         pitchShiftKnob->show(oscillator->function() == Oscillator::FunctionType::Sample);
         pitchEnvelopeButton->show(oscillator->function() == Oscillator::FunctionType::Sample);
-        frequencyKnob->show(!noiseDensityKnob->isShown() && !pitchShiftKnob->isShown());
-        oscFreqEnvelopeButton->show(!noiseDensityKnob->isShown() && !pitchShiftKnob->isShown());
+        frequencyKnob->show(!noiseDensityKnob->isVisible() && !pitchShiftKnob->isVisible());
+        oscFreqEnvelopeButton->show(!noiseDensityKnob->isVisible() && !pitchShiftKnob->isVisible());
         amplitudeEnvelopeBox->update();
 }

@@ -4138,4 +4138,61 @@
        y="62.410461"
        x="345.85538"
        id="tspan8696-6-3-6-0-18">Settings</tspan></text>
+  <rect
+     style="display:inline;fill:#464444;fill-opacity:1;stroke:#373636;stroke-width:0.119205;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+     id="rect5816-2-5-3-6-7-36"
+     width="7.2770996"
+     height="2.3362038"
+     x="184.68639"
+     y="267.65482"
+     rx="0.23545393"
+     ry="0.21775207" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19938px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#a0a0a0;fill-opacity:1;stroke:none;stroke-width:0.0128505"
+     x="186.18404"
+     y="269.26608"
+     id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-0-7"><tspan
+       id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-9-5"
+       x="186.18404"
+       y="269.26608"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19938px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#a0a0a0;fill-opacity:1;stroke-width:0.0128505">Density</tspan></text>
+  <rect
+     style="display:inline;fill:#59595c;fill-opacity:1;stroke:#373636;stroke-width:0.114636;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+     id="rect5816-2-5-3-6-3-36-3"
+     width="7.2770996"
+     height="2.3362038"
+     x="184.68639"
+     y="270.983"
+     rx="0.21775207"
+     ry="0.21775207" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19938px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#c7c7c7;fill-opacity:1;stroke:none;stroke-width:0.0128505"
+     x="186.18404"
+     y="272.59427"
+     id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-5-0-5"><tspan
+       id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-6-626-6"
+       x="186.18404"
+       y="272.59427"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19938px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#c7c7c7;fill-opacity:1;stroke-width:0.0128505">Density</tspan></text>
+  <rect
+     style="display:inline;fill:#6f6f72;fill-opacity:1;stroke:#373636;stroke-width:0.114636;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+     id="rect5816-2-5-3-6-2-1-2"
+     width="7.2770996"
+     height="2.3362038"
+     x="184.68639"
+     y="274.28845"
+     rx="0.21775207"
+     ry="0.21775207" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19938px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0128505"
+     x="186.18404"
+     y="275.89972"
+     id="text9163-2-1-91-4-3-5-0-6-3-0-3-4-8-2-1-7-4-9-6-5-9-7-5-3-8-9"><tspan
+       id="tspan9161-9-3-0-8-0-9-88-3-8-2-2-9-6-0-5-4-94-0-9-1-1-5-6-6-7-1"
+       x="186.18404"
+       y="275.89972"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.19938px;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.0128505">Density</tspan></text>
 </svg>

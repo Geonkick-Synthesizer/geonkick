@@ -202,6 +202,9 @@ osc_freq_button_hover.png
 osc_pitch_button_off.png
 osc_pitch_button_on.png
 osc_pitch_button_hover.png
+density_env_button.png
+density_env_button_hover.png
+density_env_button_active.png
 
 phase_label.png
 noise_groupbox_label.png

@@ -61,7 +61,6 @@ class RkWidget: public RkObject, public RkCanvas {
         void freeCanvasInfo() override;
         Rk::WidgetFlags widgetFlags() const;
         void show(bool b = true);
-        bool isShown() const;
         void hide();
         void setTitle(const std::string &title);
         const std::string& title() const;

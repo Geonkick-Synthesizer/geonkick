@@ -2,7 +2,7 @@
  * File name: general_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -139,4 +139,3 @@ void GeneralGroupBox::updateGui()
         filterBox->setResonance(geonkickApi->kickFilterQFactor(), 10);
         filterBox->setType(geonkickApi->kickFilterType());
 }
-
