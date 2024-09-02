@@ -65,8 +65,6 @@ RK_DECLARE_IMAGE_RC(wave_button_noise_hover);
 RK_DECLARE_IMAGE_RC(wave_button_sample);
 RK_DECLARE_IMAGE_RC(wave_button_sample_active);
 RK_DECLARE_IMAGE_RC(wave_button_sample_hover);
-RK_DECLARE_IMAGE_RC(phase_label);
-RK_DECLARE_IMAGE_RC(hboxbk_noise_env);
 RK_DECLARE_IMAGE_RC(hboxbk_osc_env);
 RK_DECLARE_IMAGE_RC(knob);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
@@ -463,22 +461,6 @@ void OscillatorGroupBox::setOscillatorSeed(int value)
         oscillator->setSeed(10 * value);
 }
 
-void OscillatorGroupBox::setNoiseWhite(bool pressed)
-{
-        if (pressed) {
-                //                noiseBrownianButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::NoiseWhite);
-        }
-}
-
-void OscillatorGroupBox::setNoiseBrownian(bool pressed)
-{
-        if (pressed) {
-                //               noiseWhiteButton->setPressed(false);
-                oscillator->setFunction(Oscillator::FunctionType::NoiseBrownian);
-        }
-}
-
 void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 {
         if (filterTypeIsChecked && state == true)
@@ -489,13 +471,13 @@ void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 void OscillatorGroupBox::updateGui()
 {
         oscillatorCheckbox->setPressed(oscillator->isEnabled());
-        // sineButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sine);
-        // squareButton->setPressed(oscillator->function() == Oscillator::FunctionType::Square);
-        //triangleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Triangle);
-        //sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
-        //noiseButton->setPressed(oscillator->function() == Oscillator::FunctionType::NoiseWhite);
-        //sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
-        //        phaseSlider->onSetValue(oscillator->getPhase());
+        sineButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sine);
+        squareButton->setPressed(oscillator->function() == Oscillator::FunctionType::Square);
+        triangleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Triangle);
+        sawtoothButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sawtooth);
+        noiseButton->setPressed(oscillator->function() == Oscillator::FunctionType::NoiseWhite
+                                || oscillator->function() == Oscillator::FunctionType::NoiseBrownian);
+        sampleButton->setPressed(oscillator->function() == Oscillator::FunctionType::Sample);
         updateAmpltudeEnvelopeBox();
 
         amplitudeKnob->setCurrentValue(oscillator->amplitude());
