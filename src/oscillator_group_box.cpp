@@ -136,20 +136,20 @@ void OscillatorGroupBox::createWaveFunctionGroupBox()
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc1_hover)),
                                              RkButton::State::PressedHover);
-                // fmCheckbox = new GeonkickButton(this);
-                // fmCheckbox->setCheckable(true);
-                // fmCheckbox->setPosition(oscillatorCheckbox->x() + oscillatorCheckbox->width() + 5, oscillatorCheckbox->y());
-                // fmCheckbox->setFixedSize(76, 21);
-                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_active)),
-                //                      RkButton::State::Pressed);
-                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio)),
-                //                      RkButton::State::Unpressed);
-                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                //                      RkButton::State::UnpressedHover);
-                // fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
-                //                      RkButton::State::PressedHover);
-                // fmCheckbox->hide();
-                // RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
+                fmCheckbox = new GeonkickButton(waveFunctionHBox);
+                fmCheckbox->setCheckable(true);
+                fmCheckbox->setPosition(20, 9);
+                fmCheckbox->setFixedSize(26, 18);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_active)),
+                                     RkButton::State::Pressed);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio)),
+                                     RkButton::State::Unpressed);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
+                                     RkButton::State::UnpressedHover);
+                fmCheckbox->setImage(RkImage(fmCheckbox->size(), RK_IMAGE_RC(fm_radio_hover)),
+                                     RkButton::State::PressedHover);
+                fmCheckbox->show();
+                RK_ACT_BIND(fmCheckbox, toggled, RK_ACT_ARGS(bool b), oscillator, setAsFm(b));
         } else if (oscillator->type() == Oscillator::Type::Oscillator2) {
                 oscillatorCheckbox->setImage(RkImage(oscillatorCheckbox->size(),
                                                      RK_IMAGE_RC(controls_osc2_on)),
@@ -485,8 +485,8 @@ void OscillatorGroupBox::updateGui()
         pitchShiftKnob->setCurrentValue(oscillator->pitchShift());
         noiseDensityKnob->setCurrentValue(oscillator->noiseDensity());
 
-        //        if (oscillator->type() == Oscillator::Type::Oscillator1)
-        //                fmCheckbox->setPressed(oscillator->isFm());
+        if (oscillator->type() == Oscillator::Type::Oscillator1)
+                fmCheckbox->setPressed(oscillator->isFm());
 
         filterBox->enable(oscillator->isFilterEnabled());
         filterBox->setResonance(oscillator->filterQFactor(), 10);

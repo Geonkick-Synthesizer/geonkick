@@ -13,6 +13,18 @@
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs8596">
+    <rect
+       x="267.27437"
+       y="401.04661"
+       width="46.621329"
+       height="168.90949"
+       id="rect7384" />
+    <rect
+       x="273.43577"
+       y="402.4132"
+       width="38.088734"
+       height="163.91947"
+       id="rect7378" />
     <linearGradient
        id="linearGradient1159">
       <stop
@@ -1149,5 +1161,147 @@
        style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.448128;stroke-dasharray:none;stroke-opacity:1"
        d="m 106.92211,117.24874 v 1.46764"
        id="path36266-9-9-2-7" />
+  </g>
+  <g
+     id="g12690-3-0-6"
+     transform="matrix(0.02028181,0,0,0.02028181,59.221182,127.34701)"
+     style="fill:none;fill-opacity:1;stroke:#cccccc;stroke-width:30;stroke-dasharray:none;stroke-opacity:1" />
+  <text
+     xml:space="preserve"
+     transform="scale(0.26458333)"
+     id="text7376"
+     style="white-space:pre;shape-inside:url(#rect7378);display:inline;fill:#e5e5e5;stroke:#cccccc;stroke-width:1.95402;stroke-linecap:round" />
+  <text
+     xml:space="preserve"
+     transform="scale(0.26458333)"
+     id="text7382"
+     style="white-space:pre;shape-inside:url(#rect7384);display:inline;fill:#e5e5e5;stroke:#cccccc;stroke-width:1.95402;stroke-linecap:round" />
+  <g
+     id="g9269"
+     transform="matrix(1.0750443,0,0,1.0343971,-7.1223689,-3.7482095)">
+    <rect
+       style="display:inline;fill:#aaaaaa;fill-opacity:1;stroke:none;stroke-width:0.183211;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       id="rect9253-37-8"
+       width="6.4350839"
+       height="4.6751871"
+       x="85.848152"
+       y="125.59314"
+       rx="0.56514996"
+       ry="0.56514996" />
+  </g>
+  <g
+     id="g9117"
+     transform="matrix(1.0005682,0,0,0.96273688,18.101616,8.1785397)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:2.67509px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="73.081566"
+       y="120.30403"
+       id="text8698-1-8-3-5-7"
+       transform="scale(0.95403061,1.0481844)"><tspan
+         id="tspan8696-01-5-8-92-9"
+         x="73.081566"
+         y="120.30403"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">O2</tspan></text>
+    <g
+       id="g9103"
+       transform="matrix(0.76517662,0,0,1,16.789162,-0.02914699)">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.517001;stroke-linecap:round"
+         id="path7609"
+         d="m 66.506431,124.18203 -1.319297,0.7617 -1.319298,0.76169 v -1.52339 -1.52339 l 1.319298,0.76169 z"
+         transform="matrix(0.42085749,0,0,1,40.965843,0.91184961)" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.517001;stroke-linecap:round"
+         id="rect9099"
+         width="1.351487"
+         height="1.232"
+         x="66.636864"
+         y="124.47788" />
+    </g>
+  </g>
+  <rect
+     style="display:inline;fill:#6e6e6e;fill-opacity:1;stroke:none;stroke-width:0.193201;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+     id="rect9253-37-8-7"
+     width="6.9180002"
+     height="4.836"
+     x="85.168198"
+     y="132.53287"
+     rx="0.60756123"
+     ry="0.58458948" />
+  <g
+     id="g9117-5"
+     transform="matrix(1.0005911,0,0,0.9626536,18.100002,14.556853)"
+     style="fill:#b4b4b4;fill-opacity:1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:2.67509px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#b4b4b4;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="73.081566"
+       y="120.30403"
+       id="text8698-1-8-3-5-7-3"
+       transform="scale(0.95403061,1.0481844)"><tspan
+         id="tspan8696-01-5-8-92-9-5"
+         x="73.081566"
+         y="120.30403"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#b4b4b4;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">O2</tspan></text>
+    <g
+       id="g9103-6"
+       transform="matrix(0.76517662,0,0,1,16.789162,-0.02914699)"
+       style="fill:#b4b4b4;fill-opacity:1">
+      <path
+         style="fill:#b4b4b4;fill-opacity:1;stroke:none;stroke-width:0.517001;stroke-linecap:round"
+         id="path7609-2"
+         d="m 66.506431,124.18203 -1.319297,0.7617 -1.319298,0.76169 v -1.52339 -1.52339 l 1.319298,0.76169 z"
+         transform="matrix(0.42085749,0,0,1,40.965843,0.91184961)" />
+      <rect
+         style="fill:#b4b4b4;fill-opacity:1;stroke:none;stroke-width:0.517001;stroke-linecap:round"
+         id="rect9099-9"
+         width="1.351487"
+         height="1.232"
+         x="66.636864"
+         y="124.47788" />
+    </g>
+  </g>
+  <rect
+     style="display:inline;fill:#7c7c79;fill-opacity:1;stroke:none;stroke-width:0.193201;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+     id="rect9253-37-8-1"
+     width="6.9180002"
+     height="4.836"
+     x="85.168198"
+     y="139.16209"
+     rx="0.60756123"
+     ry="0.58458948" />
+  <g
+     id="g9117-2"
+     transform="matrix(1.0005911,0,0,0.9626536,18.100002,21.186079)"
+     style="fill:#cdcfcf;fill-opacity:1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:2.67509px;line-height:1.25;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#cdcfcf;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="73.081566"
+       y="120.30403"
+       id="text8698-1-8-3-5-7-7"
+       transform="scale(0.95403061,1.0481844)"><tspan
+         id="tspan8696-01-5-8-92-9-0"
+         x="73.081566"
+         y="120.30403"
+         style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L Semi-Bold';fill:#cdcfcf;fill-opacity:1;stroke:none;stroke-width:0.103971;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">O2</tspan></text>
+    <g
+       id="g9103-9"
+       transform="matrix(0.76517662,0,0,1,16.789162,-0.02914699)"
+       style="fill:#cdcfcf;fill-opacity:1">
+      <path
+         style="fill:#cdcfcf;fill-opacity:1;stroke:none;stroke-width:0.517001;stroke-linecap:round"
+         id="path7609-3"
+         d="m 66.506431,124.18203 -1.319297,0.7617 -1.319298,0.76169 v -1.52339 -1.52339 l 1.319298,0.76169 z"
+         transform="matrix(0.42085749,0,0,1,40.965843,0.91184961)" />
+      <rect
+         style="fill:#cdcfcf;fill-opacity:1;stroke:none;stroke-width:0.517001;stroke-linecap:round"
+         id="rect9099-6"
+         width="1.351487"
+         height="1.232"
+         x="66.636864"
+         y="124.47788" />
+    </g>
   </g>
 </svg>
