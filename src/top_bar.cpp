@@ -163,7 +163,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
 
 	auto playButton = new RkButton(this);
         playButton->setType(RkButton::ButtonType::ButtonPush);
-        playButton->setSize(43, 18);
+        playButton->setSize(21, 18);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play)),
                              RkButton::State::Unpressed);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_hover)),
@@ -234,7 +234,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         addSeparator(mainLayout);
         controlsButton = new GeonkickButton(this);
         controlsButton->setPressed(viewState()->getMainView() == ViewState::View::Controls);
-        controlsButton->setFixedSize(54, 20);
+        controlsButton->setFixedSize(50, 20);
         controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_off)),
                                RkButton::State::Unpressed);
         controlsButton->setImage(RkImage(controlsButton->size(), RK_IMAGE_RC(topmenu_controls_active)),
@@ -253,7 +253,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         addSeparator(mainLayout);
         kitButton = new GeonkickButton(this);
         kitButton->setPressed(viewState()->getMainView() == ViewState::View::Kit);
-        kitButton->setFixedSize(54, 20);
+        kitButton->setFixedSize(25, 20);
         kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_off)),
                                RkButton::State::Unpressed);
         kitButton->setImage(RkImage(kitButton->size(), RK_IMAGE_RC(topmenu_kit_active)),
@@ -265,14 +265,14 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                     viewState(), setMainView(ViewState::View::Kit));
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     kitButton, setPressed(view == ViewState::View::Kit));
-        mainLayout->addWidget(kitButton);
+                    mainLayout->addWidget(kitButton);
 #endif // GEONKICK_SINGLE
 
         // Presets button
-        /*        addSeparator(mainLayout);
-                  presetsButton = new GeonkickButton(this);
+        addSeparator(mainLayout);
+        presetsButton = new GeonkickButton(this);
         presetsButton->setPressed(viewState()->getMainView() == ViewState::View::Presets);
-        presetsButton->setFixedSize(54, 20);
+        presetsButton->setFixedSize(45, 20);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
                                RkButton::State::Unpressed);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_active)),
@@ -284,7 +284,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                     viewState(), setMainView(ViewState::View::Presets));
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     presetsButton, setPressed(view == ViewState::View::Presets));
-                    mainLayout->addWidget(presetsButton);*/
+        mainLayout->addWidget(presetsButton);
 
         // Samples button
         addSeparator(mainLayout);
@@ -308,7 +308,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         addSeparator(mainLayout);
         auto settingsButton = new GeonkickButton(this);
         settingsButton->setPressed(viewState()->getMainView() == ViewState::View::Settings);
-        settingsButton->setFixedSize(54, 20);
+        settingsButton->setFixedSize(48, 20);
         settingsButton->setImage(RkImage(settingsButton->size(),
                                          RK_IMAGE_RC(topmenu_settings_off)),
                                  RkButton::State::Unpressed);
