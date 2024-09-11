@@ -40,28 +40,22 @@ Source code repository:
    - Save / Load kit in JSON format
    - Export instrument kit to SFZ
 * Multichannel
-   - 16 stereo audio output channels for plugin (1 stereo for standalone)
+   - 16 stereo audio output channels
    - user configurable mapping of kit instrument to output channels
    - 16 input MIDI channel, user configurable mapping of instruments to MIDI input channels
 * 3 layers
 * Layers Mixer
-* 2 oscillators per layer
-     - sine, square, triangle, saw-tooth, sample (wav, ogg, flac)
+* 3 oscillators per layer
+     - sine, square, triangle, saw-tooth, noise(White & Brownian), sample (wav, ogg, flac)
      - initial phase control
-     - amplitude, frequency and sample pitch shift envelope
-     - low, band and high pass filter, cutoff envelope
+     - amplitude, frequency, noise density, and sample pitch shift envelope
+     - low, band and high pass filter, cutoff & resonance envelope
 * FM synthesis
      - OSC1->OSC2
-* One noise generator per layer
-     - white & brownian
-     - random seed
-     - amplitude envelope
-     - low, band and high pass filter, cutoff envelope
 * General
      - amplitude envelope & kick length
-     - low & high pass filter, cutoff envelope
+     - low & high pass filter, cutoff envelope & resonance envelope
      - limiter
-     - compression
      - distortion
      - distortion drive envelope
      - distortion volume envelope
@@ -85,7 +79,7 @@ Source code repository:
 * Operating System:
      - GNU/Linux (LV2, VST3, Standalone)
      - Windows (LV2, VST3)
-* Scale the UI by factor (useful for HiDPI cases)
+* Scale the UI by factor (useful for HiDPI)
 
 ## Requirements
 
@@ -117,7 +111,7 @@ the following development packages:
 On Debian, Ubuntu, Ubuntu Studio install:
 
     apt-get install build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev
-    
+
 ##### Build & install Geonkick
 
 Clone the Geonkick code repository, compile and install.
@@ -142,8 +136,7 @@ Get VST3 SDK than build Geonkick VST3 plugin:
 ##### Building on Windows
 
 To build on Windows, there is a need to install MSYS2/UCRT64 and follow
-the same steps as mentioned above. Alternatively, you can refer to the
-'Building' step in the file .github/workflows/windows.yml of Geonkick repository.
+the same steps as mentioned above.
 
 ## Documentation
 
