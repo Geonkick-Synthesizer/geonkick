@@ -142,7 +142,7 @@ void PercussionState::setId(size_t id)
         kickId = id;
 }
 
-std::string PercussionState::getName() const
+const std::string& PercussionState::getName() const
 {
         return kickName;
 }

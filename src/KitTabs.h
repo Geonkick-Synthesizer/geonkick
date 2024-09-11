@@ -36,9 +36,9 @@ class KitTabs: public GeonkickWidget
  public:
         KitTabs(GeonkickWidget *parent, KitModel *model);
         KitModel* getModel() const;
+        void updateView();
 
  protected:
-        void updateView();
         void paintEvent(RkPaintEvent * event) override;
         void selectCurrentTab(PercussionModel *per, RkButton* button);
         RkButton* createTabButton(PercussionModel *per);

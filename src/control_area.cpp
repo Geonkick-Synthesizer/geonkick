@@ -97,7 +97,6 @@ void ControlArea::showControls()
                         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 }
                 currentWidget = controlsWidget;
-                currentWidget = controlsWidget;
                 currentWidget->show();
               }
 }

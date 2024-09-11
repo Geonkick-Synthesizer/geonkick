@@ -265,6 +265,8 @@ void MainWindow::openPreset(const std::string &fileName)
                              (std::istreambuf_iterator<char>()));
         auto state = geonkickApi->getDefaultPercussionState();
         state->loadData(fileData);
+        if (state->getName().empty() || state->getName() == "Default")
+                state->setName(filePath.stem().string());
         state->setId(geonkickApi->currentPercussion());
         geonkickApi->setPercussionState(state);
         action geonkickApi->percussionUpdated(state->getId());

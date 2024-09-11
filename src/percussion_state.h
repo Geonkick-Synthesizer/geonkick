@@ -51,7 +51,7 @@ class PercussionState
         bool isMuted() const;
         void setSolo(bool b);
         bool isSolo() const;
-        std::string getName() const;
+        const std::string& getName() const;
         void setName(const std::string &name);
         signed char getPlayingKey() const;
         void setPlayingKey(signed char key);

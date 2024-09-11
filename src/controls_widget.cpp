@@ -71,5 +71,6 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
 #ifndef GEONKICK_SINGLE
         auto kitTabs = new KitTabs(this, geonkickModel->getKitModel());
         kitTabs->setPosition(0, height() - kitTabs->height() - 5);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), kitTabs, updateView());
 #endif // GEONKICK_SINGLE
 }
