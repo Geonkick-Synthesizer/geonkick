@@ -106,6 +106,10 @@ class FileDialog: public GeonkickWidget {
         };
 
         explicit FileDialog(GeonkickWidget *parent,
+                            FileDialog::Type type,
+                            Rk::WidgetFlags flags,
+                            const std::string& title);
+        explicit FileDialog(GeonkickWidget *parent,
                             FileDialog::Type type = FileDialog::Type::Open,
                             const std::string& title = std::string());
         RK_DECL_ACT(selectedFile,
@@ -132,6 +136,7 @@ class FileDialog: public GeonkickWidget {
         bool isPathBookmarked(const std::filesystem::path &path) const;
 
  protected:
+        void createUi();
         void createBookmarkDirectoryControls(RkContainer *container);
         void createNewDirectoryControls(RkContainer *container);
         void updateBookmarkButton(const std::filesystem::path &path);

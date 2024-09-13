@@ -60,12 +60,10 @@ FilesView::FilesView(GeonkickWidget *parent)
         , scrollBar{nullptr}
         , isScrollBarVisible{false}
 {
-        setFixedSize(parent->width() - 110, parent->height() - 85);
+        setFixedSize(parent->width() - 108, parent->height() - 85);
         visibleLines = height() / (lineHeight + lineSacing);
-        setPosition(104, 40);
+        setPosition(106, 40);
         setBackgroundColor(50, 50, 50);
-        setBorderColor(40, 40, 40);
-        setBorderWidth(1);
         createScrollBar();
         showScrollBar(false);
         show();
@@ -381,6 +379,26 @@ void FilesView::setFilters(const std::vector<std::string> &filters)
 
 FileDialog::FileDialog(GeonkickWidget *parent,
                        FileDialog::Type type,
+                       Rk::WidgetFlags flags,
+                       const std::string& title)
+        : GeonkickWidget(parent, flags)
+        , dialogType{type}
+        , filesView{nullptr}
+        , status{AcceptStatus::Cancel}
+        , shortcutDirectoriesModel{new PathListModel(this)}
+        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
+        , bookmarkDirectoryButton{nullptr}
+{
+        setTitle(title);
+        setFixedSize(600, 370);
+        setBorderWidth(2);
+        setBorderColor(80, 80, 80);
+        createUi();
+        show();
+}
+
+FileDialog::FileDialog(GeonkickWidget *parent,
+                       FileDialog::Type type,
                        const std::string& title)
         : GeonkickWidget(parent, type == FileDialog::Type::Browse ? Rk::WidgetFlags::Widget : Rk::WidgetFlags::Popup)
         , dialogType{type}
@@ -392,9 +410,14 @@ FileDialog::FileDialog(GeonkickWidget *parent,
 {
         setTitle(title);
         setFixedSize(600, 370);
-        setBorderWidth(1);
-        setBorderColor(40, 40, 40);
+        setBorderWidth(2);
+        setBorderColor(80, 80, 80);
+        createUi();
+        show();
+}
 
+void FileDialog::createUi()
+{
         GeonkickConfig cfg;
         for(const auto &path: cfg.getBookmarkedPaths())
                 shortcutDirectoriesModel->addPath(path);
@@ -419,10 +442,8 @@ FileDialog::FileDialog(GeonkickWidget *parent,
                     filesView,
                     setCurrentPath(std::get<std::string>(item.data(static_cast<int>(PathListModel::PathListDataType::Path)))));
 
-        shortcutDirectoriesView->setBorderColor(40, 40, 40);
-        shortcutDirectoriesView->setBorderWidth(1);
         shortcutDirectoriesView->setBackgroundColor({50, 50, 50});
-        shortcutDirectoriesView->setPosition(0, filesView->y());
+        shortcutDirectoriesView->setPosition(2, filesView->y());
         shortcutDirectoriesView->setSize(100 ,filesView->height());
         shortcutDirectoriesView->show();
 
@@ -462,8 +483,6 @@ FileDialog::FileDialog(GeonkickWidget *parent,
                 RK_ACT_BIND(fileNameEdit, enterPressed, RK_ACT_ARGS(), this, onAccept());
                 buttomContainer->addWidget(fileNameEdit);
         }
-
-        show();
 }
 
 void FileDialog::createBookmarkDirectoryControls(RkContainer *container)

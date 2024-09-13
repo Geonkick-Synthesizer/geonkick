@@ -272,6 +272,15 @@ void RkWidget::RkWidgetImpl::processPaintEvent(RkPaintEvent* event)
         auto globalPosition = inf_ptr->mapToGlobal({0, 0});
         painter.translate(globalPosition);
         painter.fillRect(rect(), background());
+        if (borderWidth() > 0) {
+                auto tempPen = painter.pen();
+                auto pen = painter.pen();
+                pen.setColor(borderColor());
+                pen.setWidth(borderWidth());
+                painter.setPen(pen);
+                painter.drawRect(rect());
+                painter.setPen(tempPen);
+        }
         inf_ptr->paintEvent(event);
         painter.translate({-globalPosition.x(), -globalPosition.y()});
         processChildrenEvents(event);

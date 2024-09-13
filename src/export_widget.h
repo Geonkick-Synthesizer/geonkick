@@ -27,11 +27,8 @@
 #include "geonkick_widget.h"
 
 class GeonkickApi;
-class RkLineEdit;
-class RkLabel;
-class RkProgressBar;
 class GeonkickButton;
-class RkProgressBar;
+class RkContainer;
 
 class ExportWidget: public GeonkickWidget {
         enum class ChannelsType: int {
@@ -55,24 +52,16 @@ class ExportWidget: public GeonkickWidget {
  protected:
         void createFormatButtons();
         void setFormat(ExportFormat format);
-        void createChannelsButtons();
+        void createChannelsButtons(RkContainer *container);
         void setChannels(ChannelsType channels);
         int exportFormat();
         std::string getFilePath();
         std::string fileSuffix();
         bool validateInput();
-        void setLocation(const std::string &location);
-
-        void browse();
         void exportKick();
-        void resetProgressBar();
-        void showError(const std::string &error = std::string());
 
  private:
         GeonkickApi *geonkickApi;
-        RkLineEdit *locationEdit;
-        RkLineEdit *fileNameEdit;
-        GeonkickButton *browseLocation;
         GeonkickButton *flac16Button;
         GeonkickButton *flac24Button;
         GeonkickButton *wav16Button;
@@ -81,10 +70,6 @@ class ExportWidget: public GeonkickWidget {
         GeonkickButton *oggButton;
         GeonkickButton *monoButton;
         GeonkickButton *stereoButton;
-        RkProgressBar  *progressBar;
-        GeonkickButton *exportButton;
-        GeonkickButton *cancelButton;
-        RkLabel *errorLabel;
         ExportFormat selectedFormat;
         ChannelsType channelsType;
 };
