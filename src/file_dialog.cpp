@@ -611,6 +611,7 @@ void FileDialog::onAccept()
 void FileDialog::onCancel()
 {
         status = AcceptStatus::Cancel;
+        action rejected();
         close();
 }
 

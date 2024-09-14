@@ -71,13 +71,16 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         setBorderColor(80, 80, 80);
 
         auto fileDialog = new FileDialog(this, FileDialog::Type::Save,
+                                         Rk::WidgetFlags::Widget,
                                          "Select Path - " + std::string(GEONKICK_NAME));
+        fileDialog->setFilters({".flac", ".wav", ".ogg", ".FLAC", ".WAV", ".OGG"});
         fileDialog->setPosition(0, 40);
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location").string());
-        //RK_ACT_BIND(fileDialog, selectedFile,
-        //            RK_ACT_ARGS(const std::string &file), this,
-        //            setLocation(fileDialog->currentDirectory()));
+        RK_ACT_BIND(fileDialog, selectedFile,
+                    RK_ACT_ARGS(const std::string &file), this,
+                    exportInstrument(file));
+        RK_ACT_BIND(fileDialog, rejected, RK_ACT_ARGS(), this, close());
 
         std::string format = geonkickApi->getSettings("ExportDialog/Format");
         if (!format.empty())
@@ -210,7 +213,7 @@ void ExportWidget::setChannels(ChannelsType channels)
         channelsType = channels;
 }
 
-void ExportWidget::exportKick()
+void ExportWidget::exportInstrument(const std::string &filePath)
 {
         SF_INFO sndinfo;
         memset(&sndinfo, 0, sizeof(sndinfo));
@@ -235,11 +238,11 @@ void ExportWidget::exportKick()
                 kickBuffer = std::move(tempBuffer);
         }
 
-        auto filePath = getFilePath();
-        if (filePath.empty())
+        auto exportedFilePath = getExportedFilePath(filePath);
+        if (exportedFilePath.empty())
                 return;
 
-        auto sndFile = sf_open(filePath.c_str(), SFM_WRITE, &sndinfo);
+        auto sndFile = sf_open(exportedFilePath.string().c_str(), SFM_WRITE, &sndinfo);
         if (!sndFile)
                 return;
 
@@ -250,12 +253,15 @@ void ExportWidget::exportKick()
 #endif
 
         sf_close(sndFile);
-        close();
 
-        //        if (!fileNameEdit->text().empty())
-        //                geonkickApi->setSettings("ExportDialog/FileName", fileNameEdit->text());
+        if (!exportedFilePath.empty()
+            && exportedFilePath.has_parent_path()) {
+                geonkickApi->setCurrentWorkingPath("ExportDialog/Location",
+                                                   exportedFilePath.parent_path().string());
+        }
         geonkickApi->setSettings("ExportDialog/Format", std::to_string(static_cast<int>(selectedFormat)));
         geonkickApi->setSettings("ExportDialog/Channel", std::to_string(static_cast<int>(channelsType)));
+        close();
 }
 
 int ExportWidget::exportFormat()
@@ -279,19 +285,19 @@ int ExportWidget::exportFormat()
         }
 }
 
-std::string ExportWidget::getFilePath()
+std::filesystem::path
+ExportWidget::getExportedFilePath(const std::filesystem::path &file)
 {
-        /*auto path = std::filesystem::path(fileNameEdit->text());
-        std::string ext = path.extension().string();
+        auto filePath = file;
+        std::string ext = file.extension().string();
         if (ext == ".wav" || ext == ".WAV"
             || ext == ".flac" || ext == ".FLAC"
             || ext == ".ogg" || ext == ".OGG") {
-                path.replace_extension("." + fileSuffix());
+                filePath.replace_extension("." + fileSuffix());
         } else {
-                path = std::filesystem::path(path.string() + "." + fileSuffix());
+                filePath = std::filesystem::path(filePath.string() + "." + fileSuffix());
         }
-        */
-        return "";//(std::filesystem::path(locationEdit->text()) / path).string();
+        return filePath;
 }
 
 std::string ExportWidget::fileSuffix()

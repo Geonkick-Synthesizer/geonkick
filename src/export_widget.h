@@ -55,10 +55,10 @@ class ExportWidget: public GeonkickWidget {
         void createChannelsButtons(RkContainer *container);
         void setChannels(ChannelsType channels);
         int exportFormat();
-        std::string getFilePath();
+        std::filesystem::path getExportedFilePath(const std::filesystem::path &file);
         std::string fileSuffix();
         bool validateInput();
-        void exportKick();
+        void exportInstrument(const std::string &filePath);
 
  private:
         GeonkickApi *geonkickApi;
