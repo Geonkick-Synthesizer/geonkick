@@ -83,8 +83,8 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
 
         cutOffKnob = new Knob(this);
         cutOffKnob->setRangeType(Knob::RangeType::Logarithmic);
-        cutOffKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         cutOffKnob->setFixedSize(80, 78);
+        cutOffKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 5);
         cutOffKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         cutOffKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         cutOffKnob->setRange(20, 20000);
@@ -95,7 +95,7 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
                                          && viewState()->getEnvelopeCategory() == envelopeCategory);
         cutoffEnvelopeButton->setFixedSize(63, 21);
         cutoffEnvelopeButton->setPosition(cutOffKnob->x() + cutOffKnob->width() / 2 - cutoffEnvelopeButton->width() / 2,
-                                          cutOffKnob->y() + cutOffKnob->height());
+                                          cutOffKnob->y() + cutOffKnob->height() + 2);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_off)),
                                        RkButton::State::Unpressed);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_on)),

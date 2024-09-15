@@ -45,7 +45,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         , kickAmplitudeKnob{nullptr}
         , kickLengthKnob{nullptr}
 {
-        setFixedSize(224, 276);
+        setFixedSize(224, 250);
         createAplitudeEnvelopeHBox();
         createFilterHBox();
         updateGui();

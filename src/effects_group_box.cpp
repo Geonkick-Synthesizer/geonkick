@@ -34,9 +34,6 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         , geonkickApi(api)
         , distortionGroupBox{nullptr}
 {
-        //auto compressor = new CompressorGroupBox(geonkickApi, this);
-        //RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), compressor, updateGui());
-
         distortionGroupBox = new DistortionGroupBox(geonkickApi, this);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortionGroupBox, updateGui());
 
@@ -50,17 +47,6 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         else if (geonkickApi->getInstanceType() == GeonkickApi::InstanceType::Vst3)
                 geonkickInfo = "VST3";
         geonkickInfo += std::string(" ") + Geonkick::applicationVersionStr;
-        /*auto version = new RkLabel(this, geonkickInfo);
-        version->setSize(120, 14);
-        version->setBackgroundColor(background());
-        version->setTextColor({150, 150, 150});
-        auto f = font();
-        f.setSize(10);
-        f.setWeight(RkFont::Weight::Bold);
-        version->setFont(f);
-        version->setPosition(compressor->x() + (compressor->width() - version->width()) / 2,
-                             compressor->y() + compressor->height() + 5);
-                             version->show();*/
 }
 
 
