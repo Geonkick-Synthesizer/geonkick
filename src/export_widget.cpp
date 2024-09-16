@@ -65,7 +65,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         , selectedFormat{ExportFormat::Wav16}
         , channelsType{ChannelsType::Mono}
 {
-        setFixedSize(600, 370);
+        setFixedSize(600, 410);
         setPosition(30, 40);
         setBorderWidth(2);
         setBorderColor(80, 80, 80);
