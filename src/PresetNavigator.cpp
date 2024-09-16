@@ -27,9 +27,8 @@
 #include "preset.h"
 
 #include "RkContainer.h"
-#include "RkSpinBox.h"
-#include "RkLabel.h"
 #include "RkButton.h"
+#include "RkEvent.h"
 
 RK_DECLARE_IMAGE_RC(presetnav_next);
 RK_DECLARE_IMAGE_RC(presetnav_next_hover);
@@ -38,12 +37,25 @@ RK_DECLARE_IMAGE_RC(presetnav_previous);
 RK_DECLARE_IMAGE_RC(presetnav_previous_hover);
 RK_DECLARE_IMAGE_RC(presetnav_previous_pressed);
 
+PresetNameLabel::PresetNameLabel(RkWidget* parent)
+        : RkLabel(parent)
+{
+}
+
+void PresetNameLabel::wheelEvent(RkWheelEvent *event)
+{
+        if (event->direction() == RkWheelEvent::WheelDirection::DirectionDown)
+                action nextPreset();
+        else
+                action previousPreset();
+}
+
 PresetNavigator::PresetNavigator(GeonkickWidget *parent,
                                  PresetBrowserModel* model)
         : GeonkickWidget(parent)
         , presetsModel{model}
-        , presetFolderName{new RkLabel(this)}
-        , presetName{new RkLabel(this)}
+        , presetFolderName{new PresetNameLabel(this)}
+        , presetName{new PresetNameLabel(this)}
 {
         setFixedSize(232, 23);
         setBackgroundColor({30, 30, 30});
@@ -98,6 +110,15 @@ PresetNavigator::PresetNavigator(GeonkickWidget *parent,
                     RK_ACT_ARGS(),
                     presetsModel,
                     selectPreviousFolder());
+
+        RK_ACT_BIND(presetName, previousPreset,
+                    RK_ACT_ARGS(), presetsModel, selectPreviousPreset());
+        RK_ACT_BIND(presetName, nextPreset,
+                    RK_ACT_ARGS(), presetsModel, selectNextPreset());
+        RK_ACT_BIND(presetFolderName, previousPreset,
+                    RK_ACT_ARGS(), presetsModel, selectPreviousFolder());
+        RK_ACT_BIND(presetFolderName, nextPreset,
+                    RK_ACT_ARGS(), presetsModel, selectNextFolder());
 
         // Preset name
         presetName->setSize(width() / 2 - 13, height() - 2);

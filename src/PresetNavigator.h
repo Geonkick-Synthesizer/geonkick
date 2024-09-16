@@ -26,8 +26,25 @@
 
 #include "geonkick_widget.h"
 
+#include <RkLabel.h>
+
 class PresetBrowserModel;
-class RkLabel;
+
+class PresetNameLabel: public RkLabel
+{
+public:
+        PresetNameLabel(RkWidget* parent);
+        RK_DECL_ACT(previousPreset,
+                    previousPreset(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
+        RK_DECL_ACT(nextPreset,
+                    nextPreset(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
+protected:
+        void wheelEvent(RkWheelEvent *event) override;
+};
 
 class PresetNavigator: public GeonkickWidget
 {
@@ -41,8 +58,8 @@ protected:
 
  private:
         PresetBrowserModel *presetsModel;
-        RkLabel *presetFolderName;
-        RkLabel *presetName;
+        PresetNameLabel *presetFolderName;
+        PresetNameLabel *presetName;
 };
 
 #endif // PRESET_NAVIGATOR_H
