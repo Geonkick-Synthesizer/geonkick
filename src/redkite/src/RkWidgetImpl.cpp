@@ -228,6 +228,10 @@ void RkWidget::RkWidgetImpl::event(RkEvent *event)
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
                         inf_ptr->mouseMoveEvent(static_cast<RkMouseEvent*>(event));
                 break;
+        case RkEvent::Type::Wheel:
+                if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))
+                        inf_ptr->wheelEvent(static_cast<RkWheelEvent*>(event));
+                break;
         case RkEvent::Type::Drop:
                 RK_LOG_DEBUG("RkEvent::Type::Drop:" << title());
                 if (static_cast<int>(widgetAttributes) & static_cast<int>(Rk::WidgetAttribute::MouseInputEnabled))

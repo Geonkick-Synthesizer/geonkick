@@ -2,7 +2,7 @@
  * File name: RkSpinBox.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2024 Iurie Nistor 
+ * Copyright (C) 2024 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -48,6 +48,7 @@ class RkSpinBox : public RkWidget {
 protected:
     RK_DECLARE_IMPL_PTR(RkSpinBox);
     void resizeEvent(RkResizeEvent *event) override;
+    void wheelEvent(RkWheelEvent *event) override;
 
  private:
     RK_DISABLE_COPY(RkSpinBox);

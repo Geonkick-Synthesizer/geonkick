@@ -25,6 +25,7 @@
 #include "RkSpinBoxImpl.h"
 #include "RkButton.h"
 #include "RkLog.h"
+#include "RkEvent.h"
 
 RkSpinBox::RkSpinBox(RkWidget *parent)
         : RkWidget(parent, std::make_unique<RkSpinBox::RkSpinBoxImpl>(this, parent))
@@ -83,7 +84,15 @@ RkButton* RkSpinBox::downControl() const
         return impl_ptr->downControl();
 }
 
-void RkSpinBox::resizeEvent(RkResizeEvent *event)
+void RkSpinBox::resizeEvent([[maybe_unused]]RkResizeEvent *event)
 {
         impl_ptr->updateControls();
+}
+
+void RkSpinBox::wheelEvent(RkWheelEvent *event)
+{
+        if (event->direction() == RkWheelEvent::WheelDirection::DirectionUp)
+                setCurrentIndex(currentIndex() + 1);
+        else
+                setCurrentIndex(currentIndex() - 1);
 }

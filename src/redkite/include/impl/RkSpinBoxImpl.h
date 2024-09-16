@@ -26,9 +26,18 @@
 
 #include "RkWidgetImpl.h"
 #include "RkSpinBox.h"
+#include "RkLabel.h"
 
 class RkButton;
 class RkLabel;
+
+class SpinBoxLabel: public RkLabel
+{
+public:
+        SpinBoxLabel(RkWidget* parent);
+protected:
+        void wheelEvent(RkWheelEvent *event) override;
+};
 
 class RkSpinBox::RkSpinBoxImpl : public RkWidget::RkWidgetImpl {
  public:
@@ -49,7 +58,7 @@ class RkSpinBox::RkSpinBoxImpl : public RkWidget::RkWidgetImpl {
     std::vector<RkVariant> spinBoxItems;
     RkButton *upButton;
     RkButton *downButton;
-    RkLabel *displayLabel;
+    SpinBoxLabel *displayLabel;
 };
 
 #endif // RK_LABEL_IMPL_H

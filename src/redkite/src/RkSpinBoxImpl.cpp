@@ -26,6 +26,19 @@
 #include "RkLabel.h"
 #include "RkImage.h"
 #include "RkPainter.h"
+#include "RkEvent.h"
+
+SpinBoxLabel::SpinBoxLabel(RkWidget* parent)
+        : RkLabel(parent)
+{
+}
+
+void SpinBoxLabel::wheelEvent(RkWheelEvent *event)
+{
+        auto tempEvent = std::make_unique<RkWheelEvent>();
+        *tempEvent = *event;
+        eventQueue()->postEvent(parentWidget(), std::move(tempEvent));
+}
 
 RkSpinBox::RkSpinBoxImpl::RkSpinBoxImpl(RkSpinBox *interface,
                                         RkWidget *parent)
@@ -50,7 +63,7 @@ void RkSpinBox::RkSpinBoxImpl::init()
         downButton = new RkButton(inf_ptr);
         downButton->setType(RkButton::ButtonType::ButtonPush);
         downButton->show();
-        displayLabel = new RkLabel(inf_ptr);
+        displayLabel = new SpinBoxLabel(inf_ptr);
         displayLabel->show();
         updateControls();
 }
