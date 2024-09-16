@@ -391,8 +391,6 @@ FileDialog::FileDialog(GeonkickWidget *parent,
 {
         setTitle(title);
         setFixedSize(600, 370);
-        setBorderWidth(2);
-        setBorderColor(80, 80, 80);
         createUi();
         show();
 }
@@ -410,14 +408,16 @@ FileDialog::FileDialog(GeonkickWidget *parent,
 {
         setTitle(title);
         setFixedSize(600, 370);
-        setBorderWidth(2);
-        setBorderColor(80, 80, 80);
         createUi();
         show();
 }
 
 void FileDialog::createUi()
 {
+        if (widgetFlags() == Rk::WidgetFlags::Popup) {
+                setBorderWidth(2);
+                setBorderColor(80, 80, 80);
+        }
         GeonkickConfig cfg;
         for(const auto &path: cfg.getBookmarkedPaths())
                 shortcutDirectoriesModel->addPath(path);
