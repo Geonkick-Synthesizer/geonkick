@@ -2,7 +2,7 @@
  * File name: RkProgressBarImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -83,12 +83,7 @@ int RkProgressBar::RkProgressBarImpl::value() const
 
 void RkProgressBar::RkProgressBarImpl::setValue(int val)
 {
-        if (val > endVal)
-                currentVal = endVal;
-        else if (val < beginVal)
-                currentVal = beginVal;
-        else
-                currentVal = val;
+        currentVal = std::clamp(val, beginVal, endVal);
 }
 
 void RkProgressBar::RkProgressBarImpl::setProgressColor(const RkColor &color)

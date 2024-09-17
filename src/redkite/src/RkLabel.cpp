@@ -2,7 +2,7 @@
  * File name: RkLabel.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -48,9 +48,8 @@ void RkLabel::setImage(const RkImage &image)
         impl_ptr->setImage(image);
 }
 
-void RkLabel::paintEvent(RkPaintEvent *event)
+void RkLabel::paintEvent([[maybe_unused]]RkPaintEvent *event)
 {
         RK_LOG_DEBUG("called");
-        RK_UNUSED(event);
         impl_ptr->drawLabel();
 }

@@ -1,8 +1,8 @@
 /**
  * File name: RkSystemWindow.h
- * Project: Redkite (A lightweight graphics widget toolkit for embedded GUI)
+ * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2023 Iurie Nistor 
+ * Copyright (C) 2023 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -84,10 +84,6 @@ public:
         bool isClosed() const;
         void setTopWidget(RkWidget *widget);
         RkWidget* getTopWidget() const;
-        void enableGrabKey(bool b);
-        bool grabKeyEnabled() const;
-        void propagateGrabKey(bool b);
-        bool propagateGrabKeyEnabled() const;
         void setFocus(bool b = true);
         bool hasFocus() const;
         void setPointerShape(Rk::PointerShape shape);
@@ -95,24 +91,6 @@ public:
         void setScaleFactor(double factor);
         double scaleFactor() const;
         WidgetEventList processEvent(const RkEvent *event);
-        void event(RkEvent *event);
-        void closeEvent(RkCloseEvent *event);
-        void keyPressEvent(RkKeyEvent *event);
-        void keyReleaseEvent(RkKeyEvent *event);
-        void shortcutEvent(RkKeyEvent *event);
-        void mouseMoveEvent(RkMouseEvent *event);
-        void mouseButtonPressEvent(RkMouseEvent *event);
-        void mouseButtonReleaseEvent(RkMouseEvent *event);
-        void mouseDoubleClickEvent(RkMouseEvent *event);
-        void wheelEvent(RkWheelEvent *event);
-        void dropEvent(RkDropEvent *event);
-        void moveEvent(RkMoveEvent *event);
-        void resizeEvent(RkResizeEvent *event);
-        void paintEvent(RkPaintEvent *event);
-        void showEvent(RkShowEvent *event);
-        void hideEvent(RkHideEvent *event);
-        void focusEvent(RkFocusEvent *event);
-        void hoverEvent(RkHoverEvent *event);
         void setFocusWidget(RkWidget *widget, bool b = true);
         RkWidget* getFocusWidget() const;
 #ifdef RK_OS_WIN
@@ -136,12 +114,6 @@ private:
         std::string windowTitle;
         RkSize windowSize;
         RkColor windowBackground;
-        RkColor windowTextColor;
-        RkColor windowDrawingColor;
-        RkFont windowFont;
-        Rk::PointerShape widgetPointerShape;
-        bool isGrabKeyEnabled;
-        bool isPropagateGrabKey;
         RkImage systemWindowImage;
         RkWidget *hoverWidget;
         RkWidget *mouseCaptureWidget;

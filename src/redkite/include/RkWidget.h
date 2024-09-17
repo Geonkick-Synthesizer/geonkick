@@ -58,7 +58,6 @@ class RkWidget: public RkObject, public RkCanvas {
                           Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
         virtual ~RkWidget();
         RkCanvasInfo* getCanvasInfo() const override;
-        void freeCanvasInfo() override;
         Rk::WidgetFlags widgetFlags() const;
         void show(bool b = true);
         void hide();
@@ -122,15 +121,10 @@ class RkWidget: public RkObject, public RkCanvas {
         bool isInputEnabled() const;
         RkWidget* getTopWidget();
         bool isTopWindow() const;
-        void enableGrabKey(bool b);
-        bool grabKeyEnabled() const;
-        void propagateGrabKey(bool b);
-        bool propagateGrabKeyEnabled() const;
         void setFocus(bool b = true);
         bool hasFocus() const;
         void setPointerShape(Rk::PointerShape shape);
         Rk::PointerShape pointerShape() const;
-        bool pointerIsOverWindow() const;
         bool isChild(RkWidget *widget);
         RkPoint mapToGlobal(const RkPoint& p) const;
         RkPoint mapToLocal(const RkPoint& p) const;

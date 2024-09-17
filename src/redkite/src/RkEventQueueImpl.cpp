@@ -149,12 +149,6 @@ void RkEventQueue::RkEventQueueImpl::postEvent(RkObject *obj, std::unique_ptr<Rk
         }
 }
 
-void RkEventQueue::RkEventQueueImpl::processSystemEvent(std::unique_ptr<RkEvent> event)
-{
-        if (systemWindow)
-                systemWindow->event(event.get());
-}
-
 void RkEventQueue::RkEventQueueImpl::processEvents()
 {
         if (systemWindow) {
@@ -182,10 +176,8 @@ void RkEventQueue::RkEventQueueImpl::processEvents()
 
         bool repaintSystemWindow = false;
         for (const auto &e: queue) {
-                if (!objectExists(e.first)) {
-                        RK_LOG_DEV_DEBUG("OBJECT DO NOT EXIST!");
+                if (!objectExists(e.first))
                         continue;
-                }
 
                 if (e.second->type() == RkEvent::Type::KeyPressed
                     || e.second->type() == RkEvent::Type::KeyReleased) {
@@ -217,7 +209,6 @@ void RkEventQueue::RkEventQueueImpl::processPopups(RkWidget *widget, RkEvent* ev
         for (auto it = popupList.begin(); it != popupList.end();) {
                 auto w = static_cast<RkWidget*>(*it);
                 if (widget != w && !w->isAncestorOf(widget)) {
-                        RK_LOG_DEBUG("w->close()");
                         w->close();
                         it = popupList.erase(it);
                 } else {
@@ -290,7 +281,6 @@ void RkEventQueue::RkEventQueueImpl::processActions()
         }
 
         for (const auto &act: q) {
-                // Do not process actions for objects that were removed from the event queue.
                 if (!act->object() || objectExists(act->object())) {
                         act->call();
                 }
@@ -305,26 +295,14 @@ void RkEventQueue::RkEventQueueImpl::processQueue()
         processEvents();
 }
 
-/*RkObject* RkEventQueue::RkEventQueueImpl::findObjectByName(const std::string &name) const
-{
-        // TODO: use less complexity O(1) with hashtable.
-        for (auto it = objectsList.cbegin(); it != objectsList.cend(); ++it) {
-                if ((*it)->name() == name)
-                        return *it;
-        }
-        return nullptr;
-        }*/
-
 void RkEventQueue::RkEventQueueImpl::addPopup(RkWidget* popup)
 {
-        RK_LOG_DEV_DEBUG("ADD POPUP: " << popup);
         if (std::find(popupList.begin(), popupList.end(), popup) == popupList.end())
                 popupList.push_back(popup);
 }
 
 void RkEventQueue::RkEventQueueImpl::removePopup(RkWidget* popup)
 {
-        RK_LOG_DEV_DEBUG("REMOVE POPUP: " << popup);
         popupList.erase(std::remove(popupList.begin(), popupList.end(), popup), popupList.end());
 }
 

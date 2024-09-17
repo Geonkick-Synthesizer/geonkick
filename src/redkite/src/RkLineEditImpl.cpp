@@ -313,7 +313,9 @@ void RkLineEdit::RkLineEditImpl::paintEvent(RkPaintEvent *event)
                 auto pen = painter.pen();
                 pen.setColor(textColor());
                 painter.setPen(pen);
-                painter.drawText(contentsRect.left() - beginX, contentsRect.top() + (contentsRect.height() - font().size()) / 2 + font().size(), text());
+                painter.drawText(contentsRect.left() - beginX,
+                                 contentsRect.top() + (contentsRect.height()
+                                 - font().size()) / 2 + font().size(), text());
 
                 // Draw cursor.
                 if (!isCursorHidden()) {
@@ -321,8 +323,8 @@ void RkLineEdit::RkLineEditImpl::paintEvent(RkPaintEvent *event)
                         pen.setColor(color());
                         painter.setPen(pen);
                         painter.drawLine(contentsRect.left() + cursorX + 1, contentsRect.top(),
-                                         contentsRect.left() + cursorX + 1, contentsRect.top() + contentsRect.height());
-                        RK_LOG_DEV_DEBUG("called[" << this << "] draw cusor ");
+                                         contentsRect.left() + cursorX + 1,
+                                         contentsRect.top() + contentsRect.height());
                 }
         }
         RkPainter paint(inf_ptr);

@@ -2,7 +2,7 @@
  * File name: RkObjectImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *

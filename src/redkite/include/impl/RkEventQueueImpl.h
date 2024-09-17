@@ -58,7 +58,6 @@ class RkEventQueue::RkEventQueueImpl {
         void removeObject(RkObject *obj);
         void removeObjEvents(RkObject *obj);
         void postEvent(RkObject *obj, std::unique_ptr<RkEvent> event);
-        void processSystemEvent(std::unique_ptr<RkEvent> event);
         void processEvents();
         void postAction(std::unique_ptr<RkAction> act);
         void processActions();
@@ -76,7 +75,7 @@ class RkEventQueue::RkEventQueueImpl {
 #ifdef RK_OS_WIN
         RkEventQueueWin* getPlatformEventQueue() const;
 #endif // RK_OS_WIN
-        
+
 
  protected:
         void processPopups(RkWidget *widget, RkEvent* event);

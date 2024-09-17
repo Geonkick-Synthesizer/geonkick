@@ -2,7 +2,7 @@
  * File name: RkCanvas.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2024 Iurie Nistor 
+ * Copyright (C) 2024 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -30,6 +30,4 @@ RkCanvasInfo* RkCanvas::getCanvasInfo() const
 
 void RkCanvas::freeCanvasInfo()
 {
-        
 }
-

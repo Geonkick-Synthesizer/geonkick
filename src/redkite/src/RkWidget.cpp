@@ -109,11 +109,6 @@ RkCanvasInfo* RkWidget::getCanvasInfo() const
         return impl_ptr->getCanvasInfo();
 }
 
-void RkWidget::freeCanvasInfo()
-{
-        impl_ptr->freeCanvasInfo();
-}
-
 Rk::WidgetFlags RkWidget::widgetFlags() const
 {
         return impl_ptr->getWidgetFlags();
@@ -411,28 +406,6 @@ bool RkWidget::isInputEnabled() const
         return  static_cast<int>(widgetAttributes()) & static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled);
 }
 
-void RkWidget::enableGrabKey(bool b)
-{
-        // For now only for top level window.
-        if (!parentWidget())
-                impl_ptr->enableGrabKey(b);
-}
-
-bool RkWidget::grabKeyEnabled() const
-{
-        return impl_ptr->grabKeyEnabled();
-}
-
-void RkWidget::propagateGrabKey(bool b)
-{
-        impl_ptr->propagateGrabKey(b);
-}
-
-bool RkWidget::propagateGrabKeyEnabled() const
-{
-        return impl_ptr->propagateGrabKeyEnabled();
-}
-
 void RkWidget::closeEvent([[maybe_unused]] RkCloseEvent *event)
 {
         if (parentWidget()) {
@@ -592,11 +565,6 @@ void RkWidget::setPointerShape(Rk::PointerShape shape)
 Rk::PointerShape RkWidget::pointerShape() const
 {
         return impl_ptr->pointerShape();
-}
-
-bool RkWidget::pointerIsOverWindow() const
-{
-        return impl_ptr->pointerIsOverWindow();
 }
 
 bool RkWidget::isChild(RkWidget *widget)

@@ -2,7 +2,7 @@
  * File name: RkButton.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -90,9 +90,8 @@ void RkButton::setType(RkButton::ButtonType type)
         }
 }
 
-void RkButton::mouseButtonPressEvent(RkMouseEvent *event)
+void RkButton::mouseButtonPressEvent([[maybe_unused]]RkMouseEvent *event)
 {
-        RK_UNUSED(event);
         if (type() == ButtonType::ButtonCheckable) {
                 setPressed(!isPressed());
                 action toggled(isPressed());
@@ -119,9 +118,8 @@ void RkButton::hoverEvent(RkHoverEvent *event)
         update();
 }
 
-void RkButton::paintEvent(RkPaintEvent *event)
+void RkButton::paintEvent([[maybe_unused]]RkPaintEvent *event)
 {
-	RK_UNUSED(event);
         RkPainter painter(this);
         painter.fillRect(rect(), background());
         impl_ptr->drawButton(painter);

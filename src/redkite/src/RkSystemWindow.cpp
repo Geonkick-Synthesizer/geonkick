@@ -1,6 +1,6 @@
 /**
  * File name: RkSystemWindow.cpp
- * Project: Redkite (A lightweight graphics widget toolkit for embedded GUI)
+ * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2023 Iurie Nistor
  *
@@ -54,8 +54,6 @@ RkSystemWindow::RkSystemWindow(RkWidget *widget, const RkNativeWindowInfo* paren
 #endif // X11
         , windowSize{platformWindow->size()}
         , windowBackground{platformWindow->background()}
-        , isGrabKeyEnabled{false}
-        , isPropagateGrabKey{true}
         , hoverWidget{nullptr}
         , mouseCaptureWidget{nullptr}
         , focusWidget{nullptr}
@@ -140,24 +138,6 @@ void RkSystemWindow::setBackgroundColor(const RkColor &color)
 const RkColor& RkSystemWindow::background() const
 {
         return platformWindow->background();
-}
-
-void RkSystemWindow::enableGrabKey(bool b)
-{
-}
-
-bool RkSystemWindow::grabKeyEnabled() const
-{
-        return false;
-}
-
-void RkSystemWindow::propagateGrabKey(bool b)
-{
-}
-
-bool RkSystemWindow::propagateGrabKeyEnabled() const
-{
-        return false;
 }
 
 RkSystemWindow::WidgetEventList
@@ -288,115 +268,14 @@ RkWidget* RkSystemWindow::getWidgetByGlobalPoint(RkWidget *widget, const RkPoint
         return widget;
 }
 
-void RkSystemWindow::event(RkEvent *event)
-{
-}
-
-void RkSystemWindow::closeEvent(RkCloseEvent *event)
-{
-        //        isWindowClosed = true;
-        //        topWidget->event(event);
-}
-
-void RkSystemWindow::keyPressEvent(RkKeyEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::keyReleaseEvent(RkKeyEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::shortcutEvent(RkKeyEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::mouseMoveEvent(RkMouseEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::mouseButtonReleaseEvent(RkMouseEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::mouseDoubleClickEvent(RkMouseEvent *event)
-{
-        mouseButtonPressEvent(event);
-}
-
-void RkSystemWindow::wheelEvent(RkWheelEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::dropEvent(RkDropEvent *event)
-{
-        //        if (parentWidget())
-        //                getTopWidget()->dropEvent(event);
-}
-
-void RkSystemWindow::moveEvent(RkMoveEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::resizeEvent(RkResizeEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::paintEvent(RkPaintEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::showEvent(RkShowEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::hideEvent(RkHideEvent *event)
-{
-        RK_UNUSED(event);
-}
-
-void RkSystemWindow::focusEvent([[maybe_unused]] RkFocusEvent *event)
-{
-        update();
-}
-
-void RkSystemWindow::hoverEvent(RkHoverEvent *event)
-{
-        RK_UNUSED(event);
-}
-
 void RkSystemWindow::update()
 {
         platformWindow->update();
 }
 
-//const RkCanvasInfo* RkSystemWindow::getCanvasInfo() const
-//{
-//       return platformWindow->getCanvasInfo();
-//}
-
-//void RkSystemWindow::freeCanvasInfo()
-//{
-//       return platformWindow->freeCanvasInfo();
-//}
-
 RkRect RkSystemWindow::rect() const
 {
-        return RkRect(0, 0, 200, 200);//  return platformWindow->rect();
+        return RkRect(0, 0, 200, 200);
 }
 
 void RkSystemWindow::close()
@@ -421,22 +300,20 @@ RkWidget* RkSystemWindow::getTopWidget() const
 
 void RkSystemWindow::setFocus(bool b)
 {
-        //impl_ptr->setFocus(b);
 }
 
 bool RkSystemWindow::hasFocus() const
 {
-        return true;// return impl_ptr->hasFocus();
+        return true;
 }
 
 void RkSystemWindow::setPointerShape(Rk::PointerShape shape)
 {
-        //impl_ptr->setPointerShape(shape);
 }
 
 Rk::PointerShape RkSystemWindow::pointerShape() const
 {
-        return Rk::PointerShape::NoShape;//impl_ptr->pointerShape();
+        return Rk::PointerShape::NoShape;
 }
 
 void RkSystemWindow::setScaleFactor(double factor)

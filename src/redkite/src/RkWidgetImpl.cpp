@@ -47,8 +47,6 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
         , widgetPointerShape{Rk::PointerShape::Arrow}
         , isWidgetExplicitHidden{false}
         , isWidgetVisible{false}
-        , isGrabKeyEnabled{false}
-        , isPropagateGrabKey{true}
         , widgetHasFocus{false}
 {
         RK_LOG_DEBUG("called");
@@ -72,8 +70,6 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
         , widgetPointerShape{Rk::PointerShape::Arrow}
         , isWidgetExplicitHidden{false}
 	, isWidgetVisible{false}
-        , isGrabKeyEnabled{false}
-        , isPropagateGrabKey{true}
         , widgetHasFocus{false}
 {
         RK_LOG_DEBUG("called");
@@ -102,11 +98,6 @@ RkSystemWindow* RkWidget::RkWidgetImpl::getSystemWindow() const
 RkCanvasInfo* RkWidget::RkWidgetImpl::getCanvasInfo() const
 {
         return systemWindow->getImage().getCanvasInfo();
-}
-
-void RkWidget::RkWidgetImpl::freeCanvasInfo()
-{
-        //        systemWindow->freeCanvasInfo();
 }
 
 void RkWidget::RkWidgetImpl::setEventQueue(RkEventQueue *queue)
@@ -471,32 +462,6 @@ void RkWidget::RkWidgetImpl::setPointerShape(Rk::PointerShape shape)
 Rk::PointerShape RkWidget::RkWidgetImpl::pointerShape() const
 {
         return widgetPointerShape;
-}
-
-void RkWidget::RkWidgetImpl::enableGrabKey(bool b)
-{
-        isGrabKeyEnabled = b;
-}
-
-bool RkWidget::RkWidgetImpl::grabKeyEnabled() const
-{
-        return isGrabKeyEnabled;
-}
-
-void RkWidget::RkWidgetImpl::propagateGrabKey(bool b)
-{
-        isPropagateGrabKey = b;
-}
-
-bool RkWidget::RkWidgetImpl::propagateGrabKeyEnabled() const
-{
-        return isPropagateGrabKey;
-}
-
-bool RkWidget::RkWidgetImpl::pointerIsOverWindow() const
-{
-        // TODO: implement?
-        return false;
 }
 
 void RkWidget::RkWidgetImpl::setExplicitHidden(bool b)

@@ -2,7 +2,7 @@
  * File name: RkImageImpl.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -115,4 +115,3 @@ void RkImage::RkImageImpl::fill(const RkColor &color)
         if (imageBackendCanvas)
                 imageBackendCanvas->fill(color);
 }
-

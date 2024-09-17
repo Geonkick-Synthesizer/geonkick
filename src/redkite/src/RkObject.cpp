@@ -125,13 +125,6 @@ void RkObject::removeBoundObject(RkObject *obj)
         o_ptr->removeBoundObject(obj);
 }
 
-RkObject* RkObject::findObject(const std::string &name) const
-{
-        //        if (eventQueue())
-        //        return RK_IMPL_PTR(eventQueue())->findObjectByName(name);
-        return nullptr;
-}
-
 void RkObject::setName(const std::string &name)
 {
         o_ptr->setName(name);

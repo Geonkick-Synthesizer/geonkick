@@ -62,7 +62,6 @@ cairo_t* RkCairoGraphicsBackend::context() const
 
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
-        //        cairo_destroy(context());
 #ifdef RK_OS_WIN
         canvas->freeCanvasInfo();
 #endif // RK_OS_WIN
@@ -88,13 +87,7 @@ void RkCairoGraphicsBackend::drawImage(const RkImage &image, int x, int y)
         cairo_set_source_surface(context(),
                                  RK_IMPL_PTR((&image))->getCanvasInfo()->cairo_surface,
                                  x, y);
-        if (auto status = cairo_status(context()); status != CAIRO_STATUS_SUCCESS) {
-                RK_LOG_ERROR("cairo_set_source_surface: " << static_cast<int>(status));
-        }
         cairo_paint(context());
-        if (auto status = cairo_status(context()); status != CAIRO_STATUS_SUCCESS) {
-                RK_LOG_ERROR("cairo_paint: " << static_cast<int>(status));
-        }
         cairo_surface_flush(canvas->getCanvasInfo()->cairo_surface);
 }
 
@@ -105,8 +98,7 @@ void RkCairoGraphicsBackend::drawEllipse(const RkPoint& p, int width, int height
                 cairo_arc(context(), p.x(), p.y(), width / 2, 0, 2 * M_PI);
                 cairo_stroke(context());
         } else {
-                // TODO: implemented ellipse.
-                RK_LOG_ERROR("ellipse not implemented yet");
+                RK_LOG_ERROR("ellipse is not implemented yet");
         }
 }
 
@@ -226,9 +218,6 @@ void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkRealPoint> &points
 
 void RkCairoGraphicsBackend::fillRect(const RkRect &rect, const RkColor &color)
 {
-        RK_LOG_DEBUG("x: " << rect.left()
-                     << ", y: " << rect.top() << ", w: " << rect.width()
-                     << ", h: " << rect.height());
         cairo_rectangle(context(), rect.left(), rect.top(), rect.width(), rect.height());
         cairo_set_source_rgba(context(),
                              static_cast<double>(color.red()) / 255,

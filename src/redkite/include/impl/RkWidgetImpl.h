@@ -47,7 +47,6 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         RkWidgetImpl& operator=(RkWidgetImpl &&other) = delete;
         bool isTopWidget() const;
         RkCanvasInfo* getCanvasInfo() const;
-        void freeCanvasInfo();
         void setSystemWindow(RkSystemWindow *window);
         RkSystemWindow* getSystemWindow() const;
         void setEventQueue(RkEventQueue *queue) override;
@@ -93,7 +92,6 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         bool grabKeyEnabled() const;
         void propagateGrabKey(bool b);
         bool propagateGrabKeyEnabled() const;
-        bool pointerIsOverWindow() const;
         void setScaleFactor(double factor);
         double scaleFactor() const;
         void setExplicitHidden(bool b = true);
@@ -126,8 +124,6 @@ protected:
         Rk::PointerShape widgetPointerShape;
         bool isWidgetExplicitHidden;
         bool isWidgetVisible;
-        bool isGrabKeyEnabled;
-        bool isPropagateGrabKey;
         bool widgetHasFocus;
 };
 
