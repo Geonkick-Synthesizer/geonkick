@@ -27,7 +27,6 @@
 #include "geonkick_groupbox.h"
 
 class GeonkickSlider;
-class GeonkickCheckbox;
 class GeonkickApi;
 class GeonkickButton;
 

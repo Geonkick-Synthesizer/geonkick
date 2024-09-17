@@ -2,7 +2,7 @@
  * File name: MidiKeyWidget.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -71,7 +71,7 @@ class MidiKeyWidget: public GeonkickWidget
  public:
         MidiKeyWidget(GeonkickWidget *parent,
                       PercussionModel *model,
-                      Rk::WindowFlags flag = Rk::WindowFlags::Popup);
+                      Rk::WidgetFlags flag = Rk::WidgetFlags::Popup);
         RK_DECL_ACT(keySelected,
                     keySelected(GeonkickTypes::MidiKey key),
                     RK_ARG_TYPE(GeonkickTypes::MidiKey),

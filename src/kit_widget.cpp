@@ -73,7 +73,7 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         auto topContainer = new RkContainer(this);
         topContainer->setSpacing(5);
         percussionsContainer->setHiddenTakesPlace();
-        topContainer->setSize({width(), 30});
+        topContainer->setSize({width(), 25});
 
         addButton = new RkButton(this);
         addButton->setBackgroundColor(background());
@@ -81,8 +81,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         addButton->setSize(16, 16);
         addButton->setImage(RkImage(16, 16, RK_IMAGE_RC(add_per_button)));
         RK_ACT_BIND(addButton, toggled, RK_ACT_ARGS(bool b), kitModel, addNewPercussion());
-        addButton->show();
         topContainer->addWidget(addButton);
+        addButton->show();
 
         openKitButton = new RkButton(this);
         openKitButton->setBackgroundColor(background());
@@ -120,7 +120,18 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         kitChannelsView->show();
         topContainer->addSpace(100 - 4 * 16 - 3 * 5 - 10);
         topContainer->addWidget(kitChannelsView);
-
+        auto label = new RkLabel(this, "MIDI Ch.");
+        label->setTextColor(textColor());
+        label->setBackgroundColor(background());
+        label->setSize({50, 20});
+        label->show();
+        topContainer->addWidget(label);
+        label = new RkLabel(this, "Key");
+        label->setTextColor(textColor());
+        label->setBackgroundColor(background());
+        label->setSize({30, 20});
+        label->show();
+        topContainer->addWidget(label);
         kitContainer->addContainer(topContainer);
         kitContainer->addContainer(percussionsContainer);
 
@@ -179,14 +190,14 @@ void KitWidget::showFileDialog(FileDialog::Type type)
                                          type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".gkit", ".GKIT"});
-        fileDialog->setHomeDirectory(kitModel->getHomePath());
+        fileDialog->setHomeDirectory(kitModel->getHomePath().string());
         if (type == FileDialog::Type::Open) {
-                fileDialog->setCurrentDirectoy(kitModel->workingPath("OpenKit"));
+                fileDialog->setCurrentDirectoy(kitModel->workingPath("OpenKit").string());
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this, openKit(file));
         } else {
-                fileDialog->setCurrentDirectoy(kitModel->workingPath("SaveKit"));
+                fileDialog->setCurrentDirectoy(kitModel->workingPath("SaveKit").string());
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this, saveKit(file));
@@ -223,8 +234,9 @@ KitChannelsView::KitChannelsView(KitWidget *parent, KitModel *model)
                 : GeonkickWidget(parent)
                 , kitModel{model}
                 , channelWidth{30}
+                , channelHeight{25}
 {
-        setSize(kitModel->numberOfChannels() * channelWidth, channelWidth);
+        setSize(kitModel->numberOfChannels() * channelWidth, channelHeight);
 }
 
 void KitChannelsView::paintWidget(RkPaintEvent *event)
@@ -273,8 +285,8 @@ void KitWidget::exportKitDialog()
                                          FileDialog::Type::Save,  "Export kit to sfz");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".sfz", ".sfz"});
-        fileDialog->setHomeDirectory(kitModel->getHomePath());       
-        fileDialog->setCurrentDirectoy(kitModel->workingPath("Export/Kit/Sfz"));
+        fileDialog->setHomeDirectory(kitModel->getHomePath().string());
+        fileDialog->setCurrentDirectoy(kitModel->workingPath("Export/Kit/Sfz").string());
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file),
                     kitModel, doExport(file, KitModel::ExportFormat::Sfz));

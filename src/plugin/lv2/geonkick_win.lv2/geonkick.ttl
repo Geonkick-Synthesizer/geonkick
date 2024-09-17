@@ -1,0 +1,578 @@
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix ls: <http://geonkick.org/geonkick#> .
+@prefix ls: <http://geonkick.org/geonkick/single#> .
+@prefix lv2:   <http://lv2plug.in/ns/lv2core#> .
+@prefix midi:  <http://lv2plug.in/ns/ext/midi#> .
+@prefix atom:  <http://lv2plug.in/ns/ext/atom#> .
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix state: <http://lv2plug.in/ns/ext/state#> .
+@prefix ui:    <http://lv2plug.in/ns/extensions/ui#> .
+@prefix pg: <http://lv2plug.in/ns/ext/port-groups#> .
+@prefix urid: <http://lv2plug.in/ns/ext/urid#> .
+
+<http://geonkick.org/geonkick#author>
+	a foaf:Person ;
+	foaf:name "Iurie Nistor" ;
+	foaf:mbox <mailto:iuriehn@gmail.com> ;
+	foaf:homepage <http://geonkick.org/> .
+
+<http://geonkick.org/geonkick>
+	a doap:Project ;
+	doap:maintainer <http://geonkick.org/geonkick#author> ;
+	doap:name "Geonkick" .
+
+<http://geonkick.org/geonkick>
+    a lv2:Plugin, lv2:InstrumentPlugin;
+    doap:name "Geonkick";
+    lv2:project <http://geonkick.org/geonkick> ;
+    lv2:extensionData state:interface ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:requiredFeature urid:map ;
+    lv2:minorVersion 20 ;
+    lv2:microVersion 0 ;
+    doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
+    ui:ui <http://geonkick.org/geonkick#ui> ;
+       lv2:port [
+             a lv2:InputPort , atom:AtomPort ;
+             atom:bufferType atom:Sequence ;
+             atom:supports midi:MidiEvent ;
+	     lv2:designation lv2:control ;
+	     lv2:index 0 ;
+	     lv2:symbol "midi_in" ;
+             lv2:name "MIDI In" ;
+	] , [
+	     a lv2:OutputPort,  atom:AtomPort ;
+	     atom:bufferType atom:Sequence ;
+	     lv2:index 1 ;
+	     lv2:symbol "notify" ;
+	     lv2:name "Notify";
+       ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 2 ;
+        lv2:symbol "out__1_left" ;
+        lv2:name "Output Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out1
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 3 ;
+        lv2:symbol "out__1_right" ;
+        lv2:name "Output Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out1
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 4 ;
+        lv2:symbol "out__2_left" ;
+        lv2:name "Output 2 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out2
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 5 ;
+        lv2:symbol "out__2_right" ;
+        lv2:name "Output 2 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out2
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 6 ;
+        lv2:symbol "out__3_left" ;
+        lv2:name "Output 3 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out3
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 7 ;
+        lv2:symbol "out__3_right" ;
+        lv2:name "Output 3 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out3
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 8 ;
+        lv2:symbol "out__4_left" ;
+        lv2:name "Output 4 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out4
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 9 ;
+        lv2:symbol "out__4_right" ;
+        lv2:name "Output 4 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out4
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 10 ;
+        lv2:symbol "out__5_left" ;
+        lv2:name "Output 5 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out5
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 11 ;
+        lv2:symbol "out__5_right" ;
+        lv2:name "Output 5 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out5
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 12 ;
+        lv2:symbol "out__6_left" ;
+        lv2:name "Output 6 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out6
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 13 ;
+        lv2:symbol "out__6_right" ;
+        lv2:name "Output 6 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out6
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 14 ;
+        lv2:symbol "out__7_left" ;
+        lv2:name "Output 7 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out7
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 15 ;
+        lv2:symbol "out__7_right" ;
+        lv2:name "Output 7 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out7
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 16 ;
+        lv2:symbol "out__8_left" ;
+        lv2:name "Output 8 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out8
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 17 ;
+        lv2:symbol "out__8_right" ;
+        lv2:name "Output 8 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out8
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 18 ;
+        lv2:symbol "out__9_left" ;
+        lv2:name "Output 9 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out9
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 19 ;
+        lv2:symbol "out__9_right" ;
+        lv2:name "Output 9 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out9
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 20 ;
+        lv2:symbol "out__10_left" ;
+        lv2:name "Output 10 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out10
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 21 ;
+        lv2:symbol "out__10_right" ;
+        lv2:name "Output 10 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out10
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 22 ;
+        lv2:symbol "out__11_left" ;
+        lv2:name "Output 11 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out11
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 23 ;
+        lv2:symbol "out__11_right" ;
+        lv2:name "Output 11 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out11
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 24 ;
+        lv2:symbol "out__12_left" ;
+        lv2:name "Output 12 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out12
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 25 ;
+        lv2:symbol "out__12_right" ;
+        lv2:name "Output 12 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out12
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 26 ;
+        lv2:symbol "out__13_left" ;
+        lv2:name "Output 13 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out13
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 27 ;
+        lv2:symbol "out__13_right" ;
+        lv2:name "Output 13 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out13
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 28 ;
+        lv2:symbol "out__14_left" ;
+        lv2:name "Output 14 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out14
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 29 ;
+        lv2:symbol "out__14_right" ;
+        lv2:name "Output 14 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out14
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 30 ;
+        lv2:symbol "out__15_left" ;
+        lv2:name "Output 15 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out15
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 31 ;
+        lv2:symbol "out__15_right" ;
+        lv2:name "Output 15 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out15
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 32 ;
+        lv2:symbol "out__16_left" ;
+        lv2:name "Output 16 Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out16
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 33 ;
+        lv2:symbol "out__16_right" ;
+        lv2:name "Output 16 Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out16
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 34 ;
+        lv2:symbol "audition_left" ;
+        lv2:name "Audition Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Audition
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 35 ;
+        lv2:symbol "audition_right" ;
+        lv2:name "Audition Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Audition
+    ] .
+
+<http://geonkick.org/geonkick/single#author>
+	a foaf:Person ;
+	foaf:name "Iurie Nistor" ;
+	foaf:mbox <mailto:iuriehn@gmail.com> ;
+	foaf:homepage <http://geonkick.org/> .
+
+<http://geonkick.org/geonkick/single>
+	a doap:Project ;
+	doap:maintainer <http://geonkick.org/geonkick/single#author> ;
+	doap:name "Geonkick Single" .
+
+<http://geonkick.org/geonkick/single>
+	a doap:Project ;
+	doap:maintainer <http://geonkick.org/geonkick/single#author> ;
+	doap:name "Geonkick Single" .
+
+<http://geonkick.org/geonkick/single>
+    a lv2:Plugin, lv2:InstrumentPlugin;
+    doap:name "Geonkick Single";
+    lv2:project <http://geonkick.org/geonkick/single> ;
+    lv2:extensionData state:interface ;
+    lv2:optionalFeature lv2:hardRTCapable ;
+    lv2:requiredFeature urid:map ;
+    lv2:minorVersion 20 ;
+    lv2:microVersion 0 ;
+    doap:license <https://www.gnu.org/licenses/gpl-3.0.en.html> ;
+    ui:ui <http://geonkick.org/geonkick/single#ui> ;
+       lv2:port [
+             a lv2:InputPort , atom:AtomPort ;
+             atom:bufferType atom:Sequence ;
+             atom:supports midi:MidiEvent ;
+	     lv2:designation lv2:control ;
+	     lv2:index 0 ;
+	     lv2:symbol "midi_in" ;
+             lv2:name "MIDI In" ;
+	] , [
+	     a lv2:OutputPort,  atom:AtomPort ;
+	     atom:bufferType atom:Sequence ;
+	     lv2:index 1 ;
+	     lv2:symbol "notify" ;
+	     lv2:name "Notify";
+       ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 2 ;
+        lv2:symbol "out__1_left" ;
+        lv2:name "Output Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Out1
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 3 ;
+        lv2:symbol "out__1_right" ;
+        lv2:name "Output Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Out1
+    ], [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 4 ;
+        lv2:symbol "audition_left" ;
+        lv2:name "Audition Left" ;
+        lv2:designation pg:left ;
+        pg:group ls:Audition
+    ] , [
+        a lv2:AudioPort , lv2:OutputPort ;
+        lv2:index 5 ;
+        lv2:symbol "audition_right" ;
+        lv2:name "Audition Right" ;
+        lv2:designation pg:right ;
+        pg:group ls:Audition
+    ].
+
+ls:Out1
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 1" ;
+    lv2:symbol "out1" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out2
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 2" ;
+    lv2:symbol "out2" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out3
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 3" ;
+    lv2:symbol "out3" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out4
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 4" ;
+    lv2:symbol "out4" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out5
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 5" ;
+    lv2:symbol "out5" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out6
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 6" ;
+    lv2:symbol "out6" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out7
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 7" ;
+    lv2:symbol "out7" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out8
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 8" ;
+    lv2:symbol "out8" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out9
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 9" ;
+    lv2:symbol "out9" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out10
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 10" ;
+    lv2:symbol "out10" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out11
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 11" ;
+    lv2:symbol "out11" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out12
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 12" ;
+    lv2:symbol "out12" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out13
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 13" ;
+    lv2:symbol "out13" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out14
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 14" ;
+    lv2:symbol "out14" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out15
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 15" ;
+    lv2:symbol "out15" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Out16
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Out 16" ;
+    lv2:symbol "out16" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+ls:Audition
+  a pg:OutputGroup, pg:DiscreteGroup;
+    rdfs:label "Audition" ;
+    lv2:symbol "audition" ;
+    pg:element [
+        lv2:index 0 ;
+        lv2:designation pg:left
+    ] , [
+        lv2:index 1 ;
+        lv2:designation pg:right
+    ].
+
+<http://geonkick.org/geonkick#ui>
+    a ui:WindowsUI ;
+    lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
+    lv2:requiredFeature ui:idleInterface, ui:parent, ui:resize;
+    lv2:extensionData ui:idleInterface;
+    ui:binary <geonkick_lv2.dll> .
+
+<http://geonkick.org/geonkick/single#ui>
+    a ui:WindowsUI ;
+    lv2:requiredFeature <http://lv2plug.in/ns/ext/instance-access> ;
+    lv2:requiredFeature ui:idleInterface, ui:parent, ui:resize;
+    lv2:extensionData ui:idleInterface;
+    ui:binary <geonkick_single_lv2.dll> .
+

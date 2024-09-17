@@ -2,7 +2,7 @@
  * File name: percussion_model.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -210,4 +210,31 @@ KitModel* PercussionModel::model() const
 std::vector<float> PercussionModel::data() const
 {
         return kitModel->instrumentData(index());
+}
+
+size_t PercussionModel::numberOfMidiChannels() const
+{
+        return kitModel->numberOfMidiChannels();
+}
+
+int PercussionModel::midiChannel() const
+{
+        return kitModel->percussionMidiChannel(index());
+}
+
+void PercussionModel::setMidiChannel(int index)
+{
+        if (kitModel->setPercussionMidiChannel(percussionId, index))
+                action midiChannelUpdated(index);
+}
+
+void PercussionModel::enableNoteOff(bool b)
+{
+        if (kitModel->enableNoteOff(percussionId, b))
+                action noteOffUpdated(b);
+}
+
+bool PercussionModel::isNoteOffEnabled() const
+{
+        return kitModel->isNoteOffEnabled(percussionId);
 }

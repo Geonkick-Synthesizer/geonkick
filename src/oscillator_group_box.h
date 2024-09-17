@@ -2,7 +2,7 @@
  * File name: oscillator_group_box.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -30,10 +30,10 @@
 class GKickOscillator;
 class GeonkickWidget;
 class GeonkickButton;
-class GeonkickCheckbox;
 class Knob;
 class GeonkickSlider;
 class Filter;
+class OscillatorFunctionView;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -49,10 +49,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void createWaveFunctionGroupBox();
         void createEvelopeGroupBox();
         void createFilterGroupBox();
-        void setSineWave(bool pressed);
-        void setSquareWave(bool pressed);
-        void setTriangleWave(bool pressed);
-        void setSawtoothWave(bool pressed);
+        void setWaveFunction(Oscillator::FunctionType type);
         void setOscillatorPhase(int value);
         void setOscillatorSeed(int value);
         void setNoiseWhite(bool pressed);
@@ -71,19 +68,19 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *squareButton;
         GeonkickButton *triangleButton;
         GeonkickButton *sawtoothButton;
+        GeonkickButton *noiseButton;
         GeonkickButton *sampleButton;
         GeonkickButton *sampleBrowseButton;
-        GeonkickSlider *phaseSlider;
-        GeonkickSlider *seedSlider;
-        GeonkickButton *noiseWhiteButton;
-        GeonkickButton *noiseBrownianButton;
         Knob *amplitudeKnob;
         Knob *frequencyKnob;
         Knob *pitchShiftKnob;
+        Knob *noiseDensityKnob;
         bool filterTypeIsChecked;
         GeonkickWidget *amplitudeEnvelopeBox;
         GeonkickButton *oscFreqEnvelopeButton;
         GeonkickButton *pitchEnvelopeButton;
+        GeonkickButton *densityEnvelopeButton;
+        OscillatorFunctionView *functionView;
 };
 
 #endif // GKICK_OSCILLATOR_GROUP_BOX_H

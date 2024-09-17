@@ -29,8 +29,8 @@
 #include <RkObject.h>
 
 class GeonkickApi;
-class PresetFolder;
 class Preset;
+class PresetFolder;
 
 class PresetBrowserModel : public RkObject {
  public:
@@ -50,7 +50,17 @@ class PresetBrowserModel : public RkObject {
         size_t rows() const;
         void select(size_t row, size_t column);
         bool isSelected(size_t row, size_t column) const;
+        bool isCustomFolder(size_t row, size_t column) const;
         bool isKit(int row, int column) const;
+        bool addFolder(const std::filesystem::path &folder, bool custom = false);
+        bool removeSelectedFolder();
+        PresetFolder* currentSelectedFolder() const;
+        Preset* currentSelectedPreset() const;
+        GeonkickApi* getGeonkickApi() const;
+        void selectPreviousFolder();
+        void selectNextFolder();
+        void selectPreviousPreset();
+        void selectNextPreset();
         RK_DECL_ACT(folderSelected,
                     folderSelected(PresetFolder* folder),
                     RK_ARG_TYPE(PresetFolder*),
@@ -67,6 +77,15 @@ class PresetBrowserModel : public RkObject {
                     presetPageChanged(),
                     RK_ARG_TYPE(),
                     RK_ARG_VAL());
+        RK_DECL_ACT(presetFolderAdded,
+                    presetFolderAdded(PresetFolder* folder),
+                    RK_ARG_TYPE(PresetFolder*),
+                    RK_ARG_VAL(folder));
+        RK_DECL_ACT(presetFolderRemoved,
+                    presetFolderRemoved(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
+
  protected:
         PresetFolder* getPresetFolder(int row) const;
         Preset* getPreset(int row, int column) const;
@@ -79,6 +98,9 @@ class PresetBrowserModel : public RkObject {
         size_t presetPageIndex;
         size_t numberOfPresetColumns;
         size_t rowsPerColumn;
+        int folderSelectedRaw;
+        int presetSelectedRaw;
+        int presetSelectedColumn;
         PresetFolder* selectedFolder;
         Preset* selectedPreset;
 };

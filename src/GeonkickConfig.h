@@ -31,16 +31,33 @@ class GeonkickConfig {
         GeonkickConfig();
         void setScaleFactor(double factor);
         double getScaleFactor() const;
+        void setMidiChannel(int channel);
+        int getMidiChannel() const;
+        bool isMidiChannelForced() const;
+        void setMidiChannelForced(bool b);
         bool open();
         bool save();
+        bool bookmarkPath(const std::filesystem::path &path);
+        bool isPathBookmarked(const std::filesystem::path &path) const;
+        bool removeBookmarkedPath(const std::filesystem::path &path);
+        const std::vector<std::filesystem::path> & getBookmarkedPaths() const;
+        bool addCustomPresetFolder(const std::filesystem::path &folder);
+        bool removeCustomPresetFolder(const std::filesystem::path &folder);
+        const std::vector<std::filesystem::path>& getCustomPresetFolders() const;
 
  protected:
         void loadConfig(const std::string &data);
+        void parseBookmarkedPaths(const auto &value);
+        void parseCustomPresetFolders(const auto &value);
         std::string toJson() const;
 
  private:
         double scaleFactor;
+        int channelNumber;
+        bool midiChannelForced;
         std::filesystem::path configFile;
+        std::vector<std::filesystem::path> bookmarkedPaths;
+        std::vector<std::filesystem::path> customPresetFolders;
 };
 
 #endif // GEONGKICK_CONFIG_H

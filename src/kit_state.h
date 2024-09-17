@@ -34,8 +34,8 @@ class KitState {
         KitState();
         bool open(const std::string &fileName);
         bool save(const std::string &fileName);
-        void fromJson(const std::string &jsonData);
-        void fromJsonObject(const rapidjson::Value &obj);
+        bool fromJson(const std::string &jsonData);
+        bool fromJsonObject(const rapidjson::Value &obj);
         void setName(const std::string &name);
         std::string getName() const;
         void setAuthor(const std::string &author);
@@ -43,15 +43,15 @@ class KitState {
         void setUrl(const std::string &url);
         std::string getUrl() const;
         std::string toJson() const;
-        void addPercussion(const std::shared_ptr<PercussionState> &percussion);
-        std::shared_ptr<PercussionState> getPercussion(size_t id);
-        std::vector<std::shared_ptr<PercussionState>>& percussions();
+        void addPercussion(std::unique_ptr<PercussionState> percussion);
+        const PercussionState* getPercussion(size_t id) const;
+        const std::vector<std::unique_ptr<PercussionState>>& percussions() const;
 
  protected:
-        void parsePercussions(const rapidjson::Value &percussionsArray);
+        bool parsePercussions(const rapidjson::Value &percussionsArray);
 
  private:
-        std::vector<std::shared_ptr<PercussionState>> percussionsList;
+        std::vector<std::unique_ptr<PercussionState>> percussionsList;
         int kitAppVersion;
         std::string kitName;
         std::string kitAuthor;

@@ -26,12 +26,24 @@
 
 PresetFolder::PresetFolder(const std::filesystem::path &path)
         : folderPath{path}
+        , isCustomFolder{false}
 {
+        loadPresets();
+}
+
+void PresetFolder::setAsCustom(bool b)
+{
+        isCustomFolder = b;
+}
+
+bool PresetFolder::isCustom() const
+{
+        return isCustomFolder;
 }
 
 std::string PresetFolder::name() const
 {
-        return folderPath.stem();
+        return folderPath.stem().string();
 }
 
 std::filesystem::path PresetFolder::path() const
@@ -49,9 +61,9 @@ bool PresetFolder::loadPresets()
         try {
                 for (const auto &entry : std::filesystem::directory_iterator(folderPath)) {
                         if (!entry.path().empty() && std::filesystem::is_regular_file(entry.path())
-                            && (entry.path().extension() == ".gkick"
+                            && (entry.path().extension().string() == ".gkick"
 #ifndef GEONKICK_SINGLE
-                                || entry.path().extension() == ".gkit"
+                                || entry.path().extension().string() == ".gkit"
 #endif // GEONKICK_SINGLE
                                 )) {
                                 GEONKICK_LOG_DEBUG("preset: " << entry.path());

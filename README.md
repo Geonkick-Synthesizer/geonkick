@@ -2,26 +2,23 @@
 
 **Geonkick** - a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussion synthesizer.
 
-Home page: https://geonkick.gitlab.io
+**Website:** [https://geonkick.org](https://geonkick.org)
 
-Geonkick is a synthesizer capable of producing various percussion elements.
-The most basic examples are: kicks, snares, hi-hats, shakers, claps.
+Geonkick is a free software synthesizer capable of generating
+a wide range of percussive sounds, including kicks, snares,
+claps, hi-hats, shakers, and unique effect sounds.
 
-The term "Geon" in the name "Geonkick" refers to a hypothetical particle called "geon".
+**License:** GNU General Public License, Version 3
 
-**License:** GPLv3
+**Author and maintainer:** Iurie Nistor
 
-**Version:** 2.10.0
+**Version:** 3.5.0
 
 If you have an idea about a feature or found an issue, please, submit it:
 
-- [on GitLab](https://gitlab.com/geonkick/geonkick/issues)
-- [on Codeberg](https://codeberg.org/geonkick/geonkick/issues)
+- [on GitLab](https://gitlab.com/Geonkick-Synthesizer/geonkick/issues)
+- [on Codeberg](https://codeberg.org/Geonkick-Synthesizer/geonkick/issues)
 - [on GitHub](https://github.com/Geonkick-Synthesizer/geonkick/issues)
-
-If you want your created presets to be added to the list of Geonkick presets, please, create a pull request
-with the preset archive.
-See the folder "presets" for instructions on creating a preset archive.
 
 ![Screenshot](data/screenshot.png)
 
@@ -31,41 +28,34 @@ See the folder "presets" for instructions on creating a preset archive.
 
 Source code repository:
 
-- https://gitlab.com/geonkick/geonkick
-- https://codeberg.org/geonkick/geonkick
-- https://github.com/geonkick-synthesizer/geonkick
+- https://gitlab.com/Geonkick-Synthesizer/geonkick
+- https://codeberg.org/Geonkick-Synthesizer/geonkick
+- https://github.com/Geonkick-Synthesizer/geonkick
 
-#### Features
+## Features
 
 * Kit
-   - Supports up to 16 instruments.
+   - 16 instruments
+   - user configurable MIDI key mapping for instruments
    - Save / Load kit in JSON format
    - Export instrument kit to SFZ
-* Multitibral
-   - 16 midi key range
-   - user configurable key mapping
 * Multichannel
-   - 16 stereo audio output channels for plugin (1 stereo for standalone)
+   - 16 stereo audio output channels
    - user configurable mapping of kit instrument to output channels
+   - 16 input MIDI channel, user configurable mapping of instruments to MIDI input channels
 * 3 layers
 * Layers Mixer
-* 2 oscillators per layer
-     - sine, square, triangle, saw-tooth, sample (wav, ogg, flac)
+* 3 oscillators per layer
+     - sine, square, triangle, saw-tooth, noise(White & Brownian), sample (wav, ogg, flac)
      - initial phase control
-     - amplitude, frequency and sample pitch shift envelope
-     - low, band and high pass filter, cutoff envelope
+     - amplitude, frequency, noise density, and sample pitch shift envelope
+     - low, band and high pass filter, cutoff & resonance envelope
 * FM synthesis
      - OSC1->OSC2
-* One noise generator per layer
-     - white & brownian
-     - random seed
-     - amplitude envelope
-     - low, band and high pass filter, cutoff envelope
 * General
      - amplitude envelope & kick length
-     - low & high pass filter, cutoff envelope
+     - low & high pass filter, cutoff envelope & resonance envelope
      - limiter
-     - compression
      - distortion
      - distortion drive envelope
      - distortion volume envelope
@@ -87,12 +77,13 @@ Source code repository:
      - The default version that supports kits of 16 instruments
        and 16 output stereo channels per instance.
 * Operating System:
-     - GNU/Linux
-* Manually scale the UI by factor of 2 (useful for HiDPI cases)
+     - GNU/Linux (LV2, VST3, Standalone)
+     - Windows (LV2, VST3)
+* Scale the UI by factor (useful for HiDPI)
 
-#### Requirements
+## Requirements
 
-In order Geonkick to run and operate correctly there is a need:
+In order Geonkick to run and operate correctly there is a need
 
 for standalone:
 
@@ -101,10 +92,10 @@ for standalone:
 
 for plugin:
 
- * GNU/Linux operating system.
- * A host that supports LV2 plugin format.
+ * GNU/Linux or Windows operating system.
+ * A host that supports LV2 or VST3 plugin format.
 
-#### Install
+## Build & Install
 
 ##### Install dependencies
 
@@ -112,18 +103,14 @@ In order to build Geonkick there is a need to install
 the following development packages:
 
 * libsndfile
+* OpenSSL
 * RapidJSON
-* JACK Audio Connection Kit (optional if building only plugin)
+* JACK Audio Connection Kit
 * LV2 development library
 
 On Debian, Ubuntu, Ubuntu Studio install:
 
-    apt-get install build-essential
-    apt-get install cmake
-    apt-get install qjackctl libjack-dev libsndfile-dev
-    apt-get install rapidjson-dev
-    apt-get install lv2-dev
-    apt-get install libcairo2-dev
+    apt-get install build-essential cmake libjack-dev libsndfile-dev rapidjson-dev lv2-dev libcairo2-dev
 
 ##### Build & install Geonkick
 
@@ -136,21 +123,21 @@ Clone the Geonkick code repository, compile and install.
         make
         make install
 
-##### VST3
+##### Build Geonkick with VST3 Plugin
 
-To build VST3 plugin pass GKICK_VST3 to cmake
+Get VST3 SDK than build Geonkick VST3 plugin:
 
-    cmake -DGKICK_VST3=ON ../
+        mkdir geonkick/build
+        cd geonkick/build
+        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF ../
+        make
+        make install
 
-#### Packages
+##### Building on Windows
 
-Geonkick can be found in the repository of ArchLinux, OpenSUSE, Fedora
-, Manjaro, FreeBSD, KXStudio and Ubuntu Studio.
+To build on Windows, there is a need to install MSYS2/UCRT64 and follow
+the same steps as mentioned above.
 
-##### Packaging
+## Documentation
 
-Please use only release versions ([see repository releases](https://gitlab.com/geonkick/geonkick/-/releases)).
-
-#### Documentation
-
- [doc/Documentation.md](doc/Documentation.md)
+ [doc/Geonkick_User_Guide.md](doc/Geonkick_User_Guide.md)

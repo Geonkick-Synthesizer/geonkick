@@ -2,7 +2,7 @@
  * File name: gkick_oscillator.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -26,13 +26,14 @@
 
 #include "geonkick_api.h"
 
-class Oscillator//: public RkObject
+class Oscillator: public RkObject
 {
  public:
 
   using Type = GeonkickApi::OscillatorType;
   using FunctionType = GeonkickApi::FunctionType;
   using EnvelopeType = GeonkickApi::EnvelopeType;
+  using EnvelopeApplyType = GeonkickApi::EnvelopeApplyType;
   using FilterType   = GeonkickApi::FilterType;
 
   explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
@@ -41,6 +42,7 @@ class Oscillator//: public RkObject
   double amplitude(void) const;
   double frequency(void) const;
   double pitchShift(void) const;
+  double noiseDensity(void) const;
   void setType(Type type);
   Oscillator::Type type(void) const;
   bool isFilterEnabled() const;
@@ -61,6 +63,7 @@ class Oscillator//: public RkObject
   void setAmplitude(double amp);
   void setFrequency(double freq);
   void setPitchShift(double semitones);
+  void setNoiseDensity(double density);
   void enableFilter(bool b);
   void setFilterType(FilterType filter);
   void setFilterFrequency(double f);
@@ -73,11 +76,14 @@ class Oscillator//: public RkObject
                            int point_index,
                            double x,
                            double y);
+  void setEnvelopeApplyType(EnvelopeType envelope,
+			    EnvelopeApplyType apply);
+  EnvelopeApplyType envelopeApplyType(EnvelopeType envelope) const;
   void setSample(const std::string &file);
   int index() const;
   std::string samplesPath() const;
 
-  /*RK_DECL_ACT(amplitudeUpdated,
+  RK_DECL_ACT(amplitudeUpdated,
               amplitudeUpdated(double v),
               RK_ARG_TYPE(double),
               RK_ARG_VAL(v));
@@ -89,17 +95,20 @@ class Oscillator//: public RkObject
               pitchShiftUpdated(double semitones),
               RK_ARG_TYPE(double),
               RK_ARG_VAL(semitones));
+  RK_DECL_ACT(noiseDensityUpdated,
+              noiseDensityUpdated(double density),
+              RK_ARG_TYPE(double),
+              RK_ARG_VAL(density));
   RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double len),
               RK_ARG_TYPE(double),
-              RK_ARG_VAL(len));*/
+              RK_ARG_VAL(len));
 
  protected:
           int envelopeIndex(EnvelopeType type) const;
  private:
 	  GeonkickApi *geonkickApi;
           Type oscillatorType;
-          FilterType filterType;
 };
 
 #endif // GEONKICK_OSCILLATOR_H

@@ -39,6 +39,8 @@ class PathListModel: public RkModel {
         size_t itemsNumber() const override;
         int itemSpan() const override;
         void addPath(const std::filesystem::path &path);
+        void removePath(const std::filesystem::path &path);
+        const std::vector<std::filesystem::path>& getPaths() const;
 
  private:
         std::vector<std::filesystem::path> pathList;

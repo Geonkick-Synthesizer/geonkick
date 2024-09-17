@@ -34,7 +34,7 @@ RK_DECLARE_IMAGE_RC(hboxbk_filter);
 RK_DECLARE_IMAGE_RC(filter_enabled);
 RK_DECLARE_IMAGE_RC(filter_enabled_hover);
 RK_DECLARE_IMAGE_RC(filter_disabled);
-RK_DECLARE_IMAGE_RC(knob_bk_50x50);
+RK_DECLARE_IMAGE_RC(knob_bk_60x60);
 RK_DECLARE_IMAGE_RC(knob_50x50);
 RK_DECLARE_IMAGE_RC(filter_type_lp);
 RK_DECLARE_IMAGE_RC(filter_type_hp);
@@ -49,6 +49,9 @@ RK_DECLARE_IMAGE_RC(filter_cutoff_button_on);
 RK_DECLARE_IMAGE_RC(fl_cutoff_button_on);
 RK_DECLARE_IMAGE_RC(fl_cutoff_button_hover);
 RK_DECLARE_IMAGE_RC(fl_cutoff_button_off);
+RK_DECLARE_IMAGE_RC(fl_qfactor_button_on);
+RK_DECLARE_IMAGE_RC(fl_qfactor_button_hover);
+RK_DECLARE_IMAGE_RC(fl_qfactor_button_off);
 
 Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         : GeonkickWidget(parent)
@@ -80,8 +83,8 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
 
         cutOffKnob = new Knob(this);
         cutOffKnob->setRangeType(Knob::RangeType::Logarithmic);
-        cutOffKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
-        cutOffKnob->setFixedSize(80, 80);
+        cutOffKnob->setFixedSize(80, 78);
+        cutOffKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 5);
         cutOffKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         cutOffKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         cutOffKnob->setRange(20, 20000);
@@ -92,7 +95,7 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
                                          && viewState()->getEnvelopeCategory() == envelopeCategory);
         cutoffEnvelopeButton->setFixedSize(63, 21);
         cutoffEnvelopeButton->setPosition(cutOffKnob->x() + cutOffKnob->width() / 2 - cutoffEnvelopeButton->width() / 2,
-                                          cutOffKnob->y() + cutOffKnob->height() - 3);
+                                          cutOffKnob->y() + cutOffKnob->height() + 2);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_off)),
                                        RkButton::State::Unpressed);
         cutoffEnvelopeButton->setImage(RkImage(cutoffEnvelopeButton->size(), RK_IMAGE_RC(fl_cutoff_button_on)),
@@ -116,13 +119,36 @@ Filter::Filter(GeonkickWidget *parent, Envelope::Category category)
         int h = 60;
         resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
         resonanceKnob->setFixedSize(w, h);
-        resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_50x50)));
+        resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_60x60)));
         resonanceKnob->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
         resonanceKnob->setRange(0.01, 10);
         RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), this, resonanceChanged(val));
 
+	auto qFactorEnvelopeButton = new GeonkickButton(this);
+        qFactorEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::FilterQFactor
+                                         && viewState()->getEnvelopeCategory() == envelopeCategory);
+        qFactorEnvelopeButton->setFixedSize(22, 18);
+        qFactorEnvelopeButton->setPosition(resonanceKnob->x() + resonanceKnob->width() / 2 - qFactorEnvelopeButton->width() / 2,
+                                          resonanceKnob->y() + resonanceKnob->height());
+        qFactorEnvelopeButton->setImage(RkImage(qFactorEnvelopeButton->size(), RK_IMAGE_RC(fl_qfactor_button_off)),
+                                       RkButton::State::Unpressed);
+        qFactorEnvelopeButton->setImage(RkImage(qFactorEnvelopeButton->size(), RK_IMAGE_RC(fl_qfactor_button_on)),
+                                       RkButton::State::Pressed);
+        qFactorEnvelopeButton->setImage(RkImage(qFactorEnvelopeButton->size(), RK_IMAGE_RC(fl_qfactor_button_hover)),
+                                       RkButton::State::PressedHover);
+        qFactorEnvelopeButton->setImage(RkImage(qFactorEnvelopeButton->size(), RK_IMAGE_RC(fl_qfactor_button_hover)),
+                                       RkButton::State::UnpressedHover);
+        RK_ACT_BIND(qFactorEnvelopeButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    viewState(), setEnvelope(envelopeCategory, Envelope::Type::FilterQFactor));
+        RK_ACT_BIND(viewState(), envelopeChanged,
+                    RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
+                    qFactorEnvelopeButton, setPressed(envelope == Envelope::Type::FilterQFactor
+                                                     && category == envelopeCategory));
+
         int x = resonanceKnob->x() + resonanceKnob->width() / 2 - (3 * 25 + 8) / 2 ;
-        int y = height() - 30;
+        int y = height() - 26;
         lpFilterButton = new GeonkickButton(this);
         lpFilterButton->setBackgroundColor(background());
         lpFilterButton->setFixedSize(25, 18);
@@ -177,8 +203,9 @@ bool Filter::isEnabled() const
         return filterCheckbox->isPressed();
 }
 
-void Filter::setCutOff(double val)
+void Filter::setCutOff(double val, double defaultVal)
 {
+        cutOffKnob->setDefaultValue(defaultVal);
         cutOffKnob->setCurrentValue(val);
 }
 
@@ -187,8 +214,9 @@ double Filter::cutOff() const
         return cutOffKnob->getValue();
 }
 
-void Filter::setResonance(double val)
+void Filter::setResonance(double val, double defaultVal)
 {
+        resonanceKnob->setDefaultValue(defaultVal);
         resonanceKnob->setCurrentValue(val);
 }
 

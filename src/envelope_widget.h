@@ -2,7 +2,7 @@
  * File name: envelope_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -58,10 +58,11 @@ public:
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
      void setLayer(GeonkickApi::Layer layer);
      void createButtomMenu();
+     void createZoomInfoLabel();
      void createPointInfoLabel();
 
  private:
-     std::unordered_map<int, std::shared_ptr<Envelope>> envelopes;
+     std::unordered_map<int, std::unique_ptr<Envelope>> envelopes;
      EnvelopeWidgetDrawingArea *drawArea;
      GeonkickButton *layer1Button;
      GeonkickButton *layer2Button;

@@ -1,0 +1,15 @@
+@prefix lv2:  <http://lv2plug.in/ns/lv2core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ui:   <http://lv2plug.in/ns/extensions/ui#> .
+
+<http://geonkick.org/geonkick>
+  a lv2:Plugin;
+  lv2:binary <geonkick_lv2.so>;
+  rdfs:seeAlso <geonkick.ttl>.
+
+<http://geonkick.org/geonkick/single>
+  a lv2:Plugin;
+  lv2:binary <geonkick_single_lv2.so>;
+  rdfs:seeAlso <geonkick.ttl>.
+
+

@@ -2,7 +2,7 @@
  * File name: percussion_view.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -29,13 +29,6 @@
 
 #include <RkLabel.h>
 
-class RkLineEdit;
-class RkButton;
-class PercussionModel;
-class RkProgressBar;
-class KitWidget;
-class GeonkickButton;
-
 class PercussionLimiter : public GeonkickSlider {
   public:
         PercussionLimiter(GeonkickWidget *parent);
@@ -48,6 +41,14 @@ class PercussionLimiter : public GeonkickSlider {
   private:
         int levelerValue;
 };
+
+class RkLineEdit;
+class RkSpinBox;
+class RkButton;
+class PercussionModel;
+class RkProgressBar;
+class KitWidget;
+class GeonkickButton;
 
 class KitPercussionView: public GeonkickWidget
 {
@@ -79,12 +80,14 @@ class KitPercussionView: public GeonkickWidget
         int nameWidth;
         int channelWidth;
         RkLineEdit *editPercussion;
+        RkSpinBox *midiChannelSpinBox;
         GeonkickButton *keyButton;
         RkButton *copyButton;
         RkButton *removeButton;
         RkButton *playButton;
         RkButton *muteButton;
         RkButton *soloButton;
+        RkButton *noteOffButton;
         PercussionLimiter *percussionLimiter;
 };
 

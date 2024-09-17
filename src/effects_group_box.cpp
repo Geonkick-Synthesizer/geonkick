@@ -2,7 +2,7 @@
  * File name: effects_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -34,16 +34,12 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         , geonkickApi(api)
         , distortionGroupBox{nullptr}
 {
-        auto compressor = new CompressorGroupBox(geonkickApi, this);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), compressor, updateGui());
-
         distortionGroupBox = new DistortionGroupBox(geonkickApi, this);
-        distortionGroupBox->setPosition(compressor->width(), 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortionGroupBox, updateGui());
 
         auto layers = new LayersGroupBox(geonkickApi, this);
         layers->setBackgroundColor({100, 100, 100});
-        layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width() + 4, 4);
+        layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width(), 4);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
         RkString geonkickInfo{"Standalone"};
         if (geonkickApi->getInstanceType() == GeonkickApi::InstanceType::Lv2)
@@ -51,17 +47,6 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         else if (geonkickApi->getInstanceType() == GeonkickApi::InstanceType::Vst3)
                 geonkickInfo = "VST3";
         geonkickInfo += std::string(" ") + Geonkick::applicationVersionStr;
-        auto version = new RkLabel(this, geonkickInfo);
-        version->setSize(120, 14);
-        version->setBackgroundColor(background());
-        version->setTextColor({150, 150, 150});
-        auto f = font();
-        f.setSize(10);
-        f.setWeight(RkFont::Weight::Bold);
-        version->setFont(f);
-        version->setPosition(compressor->x() + (compressor->width() - version->width()) / 2,
-                             compressor->y() + compressor->height() + 5);
-        version->show();
 }
 
 

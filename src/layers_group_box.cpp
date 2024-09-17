@@ -71,6 +71,6 @@ void LayersGroupBox::updateGui()
                         logVal = 20 * log10(amplitude);
                 else
                         logVal = 60;
-                layerSliders[i]->onSetValue(100 * (60 - fabs(logVal)) / 60);
+                layerSliders[i]->onSetValue(100 * (60 - fabs(logVal)) / 60, 100);
         }
 }

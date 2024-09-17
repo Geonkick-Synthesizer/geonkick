@@ -25,7 +25,7 @@
 #define GEONKICK_GLOBALS_H
 
 #include "geonkick.h"
-//#include "RkLog.h"
+#include "RkLog.h"
 
 #include <iostream>
 #include <string>
@@ -44,9 +44,13 @@
 #include <iomanip>
 #include <math.h>
 
-//#include <RkObject.h>
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 
-#ifdef RK_LOG_DEBUG_LEVEL
+#include <RkObject.h>
+
+#ifdef GKICK_LOG_DEBUG_LEVEL
 #define GEONKICK_LOG_INFO(msg) std::cout << "[" << GEONKICK_NAME << "] " \
                                << " [" << std::this_thread::get_id() << "] " \
                                << __PRETTY_FUNCTION__ << "[INFO] " \
@@ -55,7 +59,7 @@
                                 << " [" << std::this_thread::get_id() << "] " \
                                 << __PRETTY_FUNCTION__ << "[ERROR] " \
                                 << msg << std::endl;
-#define GEONKICK_LOG_DEBUG(msg) std::cout << "[" << GEONKICK_NAME << "] " \
+#define GEONKICK_LOG_DEBUG(msg) std::cout << "[" << std::this_thread::get_id() << "][" << GEONKICK_NAME << "] " \
                                 << " [" << std::this_thread::get_id() << "] " \
                                 << __PRETTY_FUNCTION__ << "[DEBUG] " \
                                 << msg << std::endl;
@@ -89,17 +93,17 @@ namespace Geonkick
 
         constexpr double truncateDouble(double val, unsigned int precision)
         {
-            //double n = std::pow(10, precision);
-            return 0;// std::trunc(val * n) / n;
+                double n = std::pow(10, precision);
+                return std::trunc(val * n) / n;
         }
 
         inline std::string doubleToStr(double val, unsigned int precision)
         {
-               // std::stringstream ss;
-               // ss << std::fixed
-               //    << std::setprecision(precision)
-               //    << truncateDouble(val, precision);
-            return "";// ss.str();
+                std::stringstream ss;
+                ss << std::fixed
+                   << std::setprecision(precision)
+                   << truncateDouble(val, precision);
+                return  ss.str();
         }
 
 } // namespace Geonkick
@@ -108,6 +112,7 @@ namespace GeonkickTypes
 {
 using MidiKey = unsigned char;
 constexpr MidiKey geonkickAnyKey = GEONKICK_ANY_KEY;
+constexpr int geonkickAnyMidiChannel = GEONKICK_ANY_MIDI_CHANNEL;
 
 enum class Formats : int {
           Gkick  = 0,

@@ -2,7 +2,7 @@
  * File name: geonkick_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -27,36 +27,36 @@
 #include "globals.h"
 
 #include <RkWidget.h>
-//#include <RkImage.h>
+#include <RkImage.h>
 
-//class RkPaintEvent;
+class RkPaintEvent;
 class RkNativeWindowInfo;
-//class ViewState;
+class ViewState;
 
 class GeonkickWidget: public RkWidget
 {
  public:
-        explicit GeonkickWidget(RkMain *app,
-                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);
-        explicit GeonkickWidget(RkMain *app,
+        explicit GeonkickWidget(RkMain& app,
+                                Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
+        explicit GeonkickWidget(RkMain& app,
                                 const RkNativeWindowInfo &info,
-                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+                                Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
         explicit GeonkickWidget(GeonkickWidget *parent,
-                                Rk::WindowFlags flags = Rk::WindowFlags::Widget);
+                                Rk::WidgetFlags flags = Rk::WidgetFlags::Widget);
         virtual ~GeonkickWidget() = default;
-        //        void setBackgroundImage(const RkImage &img);
-        //        void setBackgroundImage(const std::string &file);
-        //        void setViewState(ViewState *state);
-        //        ViewState* viewState() const;
+        void setBackgroundImage(const RkImage &img);
+        void setBackgroundImage(const std::string &file);
+        void setViewState(ViewState *state);
+        ViewState* viewState() const;
 
  protected:
-        //        void paintEvent(RkPaintEvent *event) final;
-        //        virtual void paintWidget(RkPaintEvent *event);
+        void paintEvent(RkPaintEvent *event) override;
+        virtual void paintWidget(RkPaintEvent *event);
         void mouseButtonPressEvent(RkMouseEvent *event) override;
 
 private:
-        //        RkImage backgroundImage;
-        //        ViewState* viewingState;
+        RkImage backgroundImage;
+        ViewState* viewingState;
 };
 
 #endif // GEONKICK_WIDGET_H
