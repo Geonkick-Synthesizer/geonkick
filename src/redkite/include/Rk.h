@@ -2,7 +2,7 @@
  * File name: Rk.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -24,10 +24,10 @@
 #ifndef RK_GLOBAL_H
 #define RK_GLOBAL_H
 
-#define RK_VERSION 0x010300
-#define RK_MAJOR   0x01
-#define RK_MINOR   0x03
-#define RK_PATCH   0x01
+#define RK_VERSION 0x020000
+#define RK_MAJOR   0x02
+#define RK_MINOR   0x00
+#define RK_PATCH   0x00
 
 #include <utility>
 #include <memory>
