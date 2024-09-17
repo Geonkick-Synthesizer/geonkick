@@ -2,7 +2,7 @@
  * File name: envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -35,6 +35,7 @@
 class Envelope : public RkObject
 {
  public:
+	using ApplyType = GeonkickApi::EnvelopeApplyType;
 
         enum class DrawLayer {
                 Axies,
@@ -45,7 +46,7 @@ class Envelope : public RkObject
         enum class Category:int {
                 Oscillator1 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator1),
                 Oscillator2 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator2),
-                Noise       = static_cast<int>(GeonkickApi::OscillatorType::Noise),
+                Oscillator3 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator3),
                 General
         };
 
@@ -56,6 +57,9 @@ class Envelope : public RkObject
         virtual double envelopeLength(void) const { return 0;}
         virtual double envelopeAmplitude(void) const { return 0;}
         RkPoint getOrigin(void) const;
+        void zoomOut();
+        void zoomIn();
+        double getZoom() const;
         void draw(RkPainter &painter, DrawLayer layer);
         void overPoint(const RkPoint &point);
         bool hasSelected() const;
@@ -81,7 +85,8 @@ class Envelope : public RkObject
         void setPoints(const std::vector<RkRealPoint>  &points);
         void removePoints();
         void setDrawingArea(const RkRect &rect);
-        virtual void updatePoints() {};
+        virtual void updateEnvelope();
+	virtual void updatePoints();
          RK_DECL_ACT(envelopeLengthUpdated,
                      envelopeLengthUpdated(double val),
                      RK_ARG_TYPE(double),
@@ -95,6 +100,14 @@ class Envelope : public RkObject
                      RK_ARG_TYPE(),
                      RK_ARG_VAL());
         std::string getCurrentPointInfo() const;
+	void setApplyType(ApplyType apply);
+	ApplyType getApplyType() const;
+        void setScrollState(bool b);
+        bool isScrollState() const;
+        void setTimeOrigin(double timeOrg);
+        double getTimeOrigin() const;
+        void setValueOrigin(double valueOrg);
+        double getValueOrigin() const;
 
  protected:
         virtual void pointAddedEvent(double x, double y) = 0;
@@ -136,6 +149,14 @@ class Envelope : public RkObject
         Type envelopeType;
         size_t editedPointIndex;
         bool isEditingPoint;
+	ApplyType applyType;
+        bool scrollState;
+        struct ZoomInfo {
+                double zoomCoefficient;
+                double timeOrigin;
+                double valueOrigin;
+        };
+        std::unordered_map<Type, ZoomInfo> zoomInfoMap;
 };
 
 #endif // GEONKICK_ENVELOPE_H

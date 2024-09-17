@@ -2,7 +2,7 @@
  * File name: geonkick_api.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -54,7 +54,7 @@ class GeonkickApi : public RkObject {
   enum class OscillatorType: int {
          Oscillator1 = 0,
          Oscillator2 = 1,
-         Noise       = 2
+         Oscillator3 = 2
   };
 
   enum class FunctionType: int {
@@ -72,9 +72,16 @@ class GeonkickApi : public RkObject {
           Amplitude = GEONKICK_AMPLITUDE_ENVELOPE,
           Frequency = GEONKICK_FREQUENCY_ENVELOPE,
 	  FilterCutOff = GEONKICK_FILTER_CUTOFF_ENVELOPE,
+	  FilterQFactor = GEONKICK_FILTER_Q_ENVELOPE,
 	  DistortionDrive = GEONKICK_DISTORTION_DRIVE_ENVELOPE,
           DistortionVolume = GEONKICK_DISTORTION_VOLUME_ENVELOPE,
-          PitchShift = GEONKICK_PITCH_SHIFT_ENVELOPE
+          PitchShift = GEONKICK_PITCH_SHIFT_ENVELOPE,
+          NoiseDensity = GEONKICK_NOISE_DENSITY_ENVELOPE
+  };
+
+  enum class EnvelopeApplyType: int {
+	  Linear = GEONKICK_ENVELOPE_APPLY_LINEAR,
+	  Logarithmic = GEONKICK_ENVELOPE_APPLY_LOGARITHMIC
   };
 
   enum class FilterType: int {
@@ -84,19 +91,25 @@ class GeonkickApi : public RkObject {
   };
 
         GeonkickApi(int sample_rate = Geonkick::defaultSampleRate,
-                    InstanceType instance = InstanceType::Standalone);
+                    InstanceType instance = InstanceType::Standalone,
+                    geonkick *dsp = nullptr);
   ~GeonkickApi();
   void setInstanceType(InstanceType type);
   InstanceType getInstanceType() const;
   static unsigned int getVersion();
+  size_t static numberOfInstruments();
   size_t static numberOfChannels();
+  size_t static numberOfMidiChannels();
   void setEventQueue(RkEventQueue *queue);
+  bool initDSP();
   bool init();
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
   bool isOscillatorEnabled(int oscillatorIndex) const;
   std::vector<RkRealPoint> oscillatorEvelopePoints(int oscillatorIndex,
                                                    EnvelopeType envelope) const;
+  EnvelopeApplyType getOscillatorEnvelopeApplyType(int index,
+						   EnvelopeType envelope) const;
   void addOscillatorEnvelopePoint(int oscillatorIndex,
                                   EnvelopeType envelope,
                                   const RkRealPoint &point);
@@ -123,16 +136,21 @@ class GeonkickApi : public RkObject {
   double kickFilterQFactor() const;
   FilterType kickFilterType() const;
   std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
+  EnvelopeApplyType getKickEnvelopeApplyType(EnvelopeType envelope) const;
   bool setOscillatorFrequency(int oscillatorIndex,
                               double frequency);
   bool setOscillatorPitchShift(int oscillatorIndex,
                                double semitones);
+  bool setOscillatorNoiseDensity(int oscillatorIndex,
+                                 double density);
+
 
   void setOscillatorAsFm(int oscillatorIndex, bool b);
   bool isOscillatorAsFm(int oscillatorIndex) const;
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;
   double oscillatorPitchShift(int oscillatorIndex) const;
+  double oscillatorNoiseDensity(int oscillatorIndex) const;
   void addKickEnvelopePoint(EnvelopeType envelope,
                             double x,
                             double y);
@@ -145,6 +163,9 @@ class GeonkickApi : public RkObject {
   void setOscillatorEvelopePoints(int index,
                                   EnvelopeType envelope,
                                   const std::vector<RkRealPoint> &points);
+  void setOscillatorEnvelopeApplyType(int index,
+				      EnvelopeType envelope,
+				      EnvelopeApplyType applyType);
   void setOscillatorFunction(int oscillatorIndex,
                              FunctionType function);
   void setOscillatorPhase(int oscillatorIndex,
@@ -170,17 +191,15 @@ class GeonkickApi : public RkObject {
   double limiterValue() const;
   int getSampleRate() const;
   static std::unique_ptr<KitState> getDefaultKitState();
-  static std::shared_ptr<PercussionState> getDefaultPercussionState();
-  // This function is called only from the audio thread.
-  gkick_real getAudioFrame(int channel) const;
+  static std::unique_ptr<PercussionState> getDefaultPercussionState();
   // This function is called only from the audio thread.
   void setKeyPressed(bool b, int note, int velocity);
 
   // This function is called only from the audio thread.
   void process(float** out, size_t channel, size_t size);
 
-  std::shared_ptr<PercussionState> getPercussionState(size_t id) const;
-  std::shared_ptr<PercussionState> getPercussionState() const;
+  std::unique_ptr<PercussionState> getPercussionState(size_t id) const;
+  std::unique_ptr<PercussionState> getPercussionState() const;
   bool isCompressorEnabled() const;
   double getCompressorAttack() const;
   double getCompressorRelease() const;
@@ -203,7 +222,7 @@ class GeonkickApi : public RkObject {
   void enableKickFilter(bool b);
   void setKickFilterType(FilterType type);
   void setPercussionState(const std::string &data);
-  void setPercussionState(const std::shared_ptr<PercussionState> &state);
+  void setPercussionState(const std::unique_ptr<PercussionState> &state);
   std::unique_ptr<KitState> getKitState() const;
   bool setKitState(const std::string &data);
   bool setKitState(const std::unique_ptr<KitState> &state);
@@ -215,6 +234,8 @@ class GeonkickApi : public RkObject {
   std::string getKitUrl() const;
   void setKickEnvelopePoints(EnvelopeType envelope,
                              const std::vector<RkRealPoint> &points);
+  void setKickEnvelopeApplyType(EnvelopeType envelope,
+				EnvelopeApplyType applyType);
   void playKick(int id = -1);
   void enableCompressor(bool enable);
   void setCompressorAttack(double attack);
@@ -243,7 +264,6 @@ class GeonkickApi : public RkObject {
                              const std::filesystem::path &path);
   void tuneAudioOutput(int id, bool tune);
   bool isAudioOutputTuned(int id) const;
-  size_t getPercussionsNumber() const;
   bool setCurrentPercussion(int index);
   size_t currentPercussion() const;
   int getUnusedPercussion() const;
@@ -255,6 +275,10 @@ class GeonkickApi : public RkObject {
   int percussionsReferenceKey() const;
   bool setPercussionChannel(int index, size_t channel);
   int getPercussionChannel(int index) const;
+  bool setPercussionMidiChannel(int index, size_t channel);
+  int getPercussionMidiChannel(int index) const;
+  bool forceMidiChannel(size_t channel, bool force);
+  bool isMidiChannelForced() const;
   bool setPercussionName(int index, const std::string &name);
   bool setPercussionLimiter(size_t id, double val);
   double percussionLimiter(size_t id) const;
@@ -262,10 +286,13 @@ class GeonkickApi : public RkObject {
   bool isPercussionMuted(size_t id) const;
   bool soloPercussion(size_t id, bool b);
   bool isPercussionSolo(size_t id) const;
-
+  bool enableNoteOff(size_t id, bool b = true);
+  bool isNoteOffEnabled(size_t id) const;
   std::string getPercussionName(int index) const;
   void copyToClipboard();
   void pasteFromClipboard();
+  void setScaleFactor(double factor);
+  double getScaleFactor() const;
 
   RK_DECL_ACT(kickLengthUpdated,
               kickLengthUpdated(double val),
@@ -295,7 +322,7 @@ class GeonkickApi : public RkObject {
               kitUpdated(),
               RK_ARG_TYPE(),
               RK_ARG_VAL());
-    RK_DECL_ACT(percussionUpdated,
+  RK_DECL_ACT(percussionUpdated,
               percussionUpdated(int id),
               RK_ARG_TYPE(int),
               RK_ARG_VAL(id));
@@ -313,6 +340,8 @@ class GeonkickApi : public RkObject {
   void clearOrderedPercussionIds();
   bool moveOrdrepedPercussionId(int index, int n);
   PresetFolder* getPresetFolder(size_t index) const;
+  PresetFolder* addPresetFolder(const std::filesystem::path &folder, bool custom = false);
+  bool removePresetFolder(const PresetFolder *folder);
   size_t numberOfPresetFolders() const;
   UiSettings* getUiSettings() const;
   void setState(const std::string &data);
@@ -338,10 +367,10 @@ protected:
   void updateKickBuffer(const std::vector<gkick_real> &&buffer, size_t id);
   void setOscillatorState(Layer layer,
                           OscillatorType oscillator,
-                          const std::shared_ptr<PercussionState> &state);
+                          const std::unique_ptr<PercussionState> &state);
   void getOscillatorState(Layer layer,
                           OscillatorType osc,
-                          const std::shared_ptr<PercussionState> &state) const;
+                          const std::unique_ptr<PercussionState> &state) const;
   void setLimiterLevelerValue(size_t index, double val);
   static std::vector<gkick_real> loadSample(const std::string &file,
                                             double length = 4.0,
@@ -351,7 +380,7 @@ protected:
 private:
   mutable struct geonkick *geonkickApi;
   InstanceType instanceType;
-  std::array<std::atomic<double>, GEONKICK_MAX_PERCUSSIONS> limiterLevelers;
+  std::array<std::atomic<double>, GEONKICK_MAX_INSTRUMENTS> limiterLevelers;
   bool jackEnabled;
   bool standaloneInstance;
   mutable std::mutex apiMutex;
@@ -361,7 +390,7 @@ private:
   std::string kitName;
   std::string kitAuthor;
   std::string kitUrl;
-  std::shared_ptr<PercussionState> clipboardPercussion;
+  std::unique_ptr<PercussionState> clipboardPercussion;
 
   /**
    * Current working paths for entire application.
@@ -374,6 +403,7 @@ private:
   std::vector<std::unique_ptr<PresetFolder>> presetsFoldersList;
   std::unique_ptr<UiSettings> uiSettings;
   int sampleRate;
+  double scaleFactor;
 };
 
 #endif // GEONKICK_API_H

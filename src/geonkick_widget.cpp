@@ -2,7 +2,7 @@
  * File name: geonkick_widget.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -25,11 +25,11 @@
 
 #include <RkPainter.h>
 
-GeonkickWidget::GeonkickWidget(RkMain *app,
+GeonkickWidget::GeonkickWidget(RkMain& app,
                                const RkNativeWindowInfo &info,
-                               Rk::WindowFlags flags)
+                               Rk::WidgetFlags flags)
         : RkWidget(app, info, flags)
-       , viewingState{nullptr}
+        , viewingState{nullptr}
 {
         setBackgroundColor(68, 68, 70);
         setTextColor({210, 226, 226, 140});
@@ -38,7 +38,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app,
         setFont(f);
 }
 
-GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
+GeonkickWidget::GeonkickWidget(RkMain& app, Rk::WidgetFlags flags)
         : RkWidget(app, flags)
         , viewingState{nullptr}
 {
@@ -49,7 +49,7 @@ GeonkickWidget::GeonkickWidget(RkMain *app, Rk::WindowFlags flags)
         setFont(f);
 }
 
-GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WindowFlags flags)
+GeonkickWidget::GeonkickWidget(GeonkickWidget *parent, Rk::WidgetFlags flags)
         : RkWidget(parent, flags)
         , viewingState{parent->viewState()}
 {

@@ -2,7 +2,7 @@
  * File name: kick_graph.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -24,8 +24,10 @@
 #include "kick_graph.h"
 #include "geonkick_api.h"
 #include "globals.h"
+#include "envelope.h"
 
 #include <RkEventQueue.h>
+#include <RkAction.h>
 
 KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
         : RkObject(parent)
@@ -33,34 +35,53 @@ KickGraph::KickGraph(RkObject *parent, GeonkickApi *api, const RkSize &size)
         , graphThread{nullptr}
         , graphSize{size}
         , isRunning{true}
-        , updateGraph{true}
+        , redrawGraph{true}
+        , currentEnvelope{nullptr}
 {
         RK_ACT_BIND(geonkickApi, kickUpdated, RK_ACT_ARGS(), this, updateGraphBuffer());
+        graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
 }
 
 KickGraph::~KickGraph()
 {
-        if (graphThread) {
-                isRunning = false;
-                threadConditionVar.notify_one();
-                graphThread->join();
-        }
+        isRunning = false;
+        threadConditionVar.notify_one();
+        graphThread->join();
 }
 
-void KickGraph::start()
+void KickGraph::setEnvelope(Envelope * envelope)
 {
-       graphThread = std::make_unique<std::thread>(&KickGraph::drawKickGraph, this);
+        std::unique_lock<std::mutex> lock(graphMutex);
+        currentEnvelope = envelope;
+        updateGraph(false);
+}
+
+Envelope* KickGraph::getEnvelope() const
+{
+        std::unique_lock<std::mutex> lock(graphMutex);
+        return currentEnvelope;
+}
+
+void KickGraph::updateGraph(bool lock)
+{
+        if (lock) {
+                std::unique_lock<std::mutex> lock(graphMutex);
+                redrawGraph = true;
+        } else {
+                redrawGraph = true;
+        }
+        threadConditionVar.notify_one();
 }
 
 void KickGraph::updateGraphBuffer()
 {
-        if (!graphThread)
-                start();
-        std::unique_lock<std::mutex> lock(graphMutex);
-        kickBuffer = geonkickApi->getKickBuffer();
-        updateGraph = true;
-        if (kickBuffer.empty())
-                geonkickApi->triggerSynthesis();
+        {
+                std::unique_lock<std::mutex> lock(graphMutex);
+                kickBuffer = geonkickApi->getKickBuffer();
+                if (kickBuffer.empty())
+                        geonkickApi->triggerSynthesis();
+                updateGraph(false);
+        }
         threadConditionVar.notify_one();
 }
 
@@ -70,23 +91,32 @@ void KickGraph::drawKickGraph()
                 // Ignore too many updates. The last update will be processed.
                 std::this_thread::sleep_for(std::chrono::milliseconds(60));
                 std::unique_lock<std::mutex> lock(graphMutex);
-                if (!updateGraph)
+                if (!redrawGraph)
                         threadConditionVar.wait(lock);
+
                 if (!isRunning)
                         break;
-
-                if (kickBuffer.empty()) {
-                        updateGraph = false;
+                if (!currentEnvelope || kickBuffer.empty()) {
+                        redrawGraph = false;
                         continue;
                 }
-
+                const auto zoomFactor = currentEnvelope->getZoom();
+                const auto timeOrigin = currentEnvelope->getTimeOrigin();
+                const auto envelopeAmplitude = currentEnvelope->envelopeAmplitude();
+                const auto valueOrigin = currentEnvelope->getValueOrigin() / envelopeAmplitude;
                 auto graphImage = std::make_shared<RkImage>(graphSize.width(), graphSize.height());
                 RkPainter painter(graphImage.get());
                 RkPen pen(RkColor(59, 130, 4, 255));
                 painter.setPen(pen);
-
-                std::vector<RkPoint> graphPoints(kickBuffer.size());
-                gkick_real k = static_cast<gkick_real>(graphSize.width()) / kickBuffer.size();
+                std::vector<RkRealPoint> graphPoints;
+                const auto instrumentBuffer = kickBuffer;
+                graphPoints.reserve(instrumentBuffer.size());
+                const auto buffSize = static_cast<double>(instrumentBuffer.size()) / zoomFactor;
+                const gkick_real k = static_cast<gkick_real>(graphSize.width()) / buffSize;
+                const size_t indexOffset = (instrumentBuffer.size() / geonkickApi->kickLength()) * timeOrigin;
+                const auto instrumentGraphSize = graphSize;
+                redrawGraph = false;
+                lock.unlock();
 
                 /**
                  * In this loop there is an implementation of an
@@ -94,38 +124,39 @@ void KickGraph::drawKickGraph()
                  * the cases antialiasing, and at the same time
                  * reduces and normalizes the size of the buffer.
                  */
-                int j = 0;
-                RkPoint prev;
-                for (decltype(kickBuffer.size()) i = 0; i < kickBuffer.size(); i++) {
-                        int x = k * i;
-                        int y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
-                        RkPoint p(k * i, graphSize.height() * 0.5 * (1 - kickBuffer[i]));
+                RkRealPoint prev;
+                painter.translate({0, instrumentGraphSize.height()});
+                for (decltype(instrumentBuffer.size()) i = indexOffset; i < instrumentBuffer.size(); i++) {
+                        const double x = k * (i - indexOffset);
+                        const double value = -zoomFactor * (instrumentGraphSize.height() / 2
+                                                      + instrumentGraphSize.height() * (instrumentBuffer[i] / 2
+                                                      - valueOrigin));
+                        double y = value;
+                        RkRealPoint p(k * (i - indexOffset), value);
                         if (p == prev)
                                 continue;
                         else
                                 prev = p;
-                        graphPoints[j++] = p;
+                        graphPoints.push_back(p);
 
-                        int i0 = i;
-                        int ymin, ymax;
+                        const int i0 = i;
+                        double ymin, ymax;
                         ymin = ymax = y;
-                        while (++i < kickBuffer.size()) {
-                                if (x != static_cast<int>(k * i))
+                        while (++i < instrumentBuffer.size()) {
+                                if (x != k * (i - indexOffset))
                                         break;
-                                y = graphSize.height() * 0.5 * (1 - kickBuffer[i]);
-                                if (ymin > y)
-                                        ymin = y;
-                                if (ymax < y)
-                                        ymax = y;
+                                y = instrumentGraphSize.height() - value;
+                                ymin = std::min(ymin, y);
+                                ymax = std::min(ymax, y);
                         }
 
                         if (i - i0 > 4) {
-                                graphPoints[j++] = {x, ymin};
-                                graphPoints[j++] = {x, ymax};
-                                graphPoints[j++] = {x, y};
+                                graphPoints.emplace_back(RkRealPoint(x, ymin));
+                                graphPoints.emplace_back(RkRealPoint(x, ymax));
+                                graphPoints.emplace_back(RkRealPoint(x, y));
                         }
                 }
-                graphPoints.resize(j);
+                graphPoints.shrink_to_fit();
                 painter.drawPolyline(graphPoints);
                 if (eventQueue()) {
                         auto act = std::make_unique<RkAction>(this);
@@ -133,6 +164,5 @@ void KickGraph::drawKickGraph()
                         graphImage.reset();
                         eventQueue()->postAction(std::move(act));
                 }
-                updateGraph = false;
         }
 }

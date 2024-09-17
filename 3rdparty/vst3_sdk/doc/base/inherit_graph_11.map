@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classSteinberg_1_1IPtr.html" title="IPtr &#45; Smart pointer template class." alt="" coords="5,31,68,56"/>
-<area shape="rect" id="node2" href="$classSteinberg_1_1FUnknownPtr.html" title="FUnknownPtr &#45; automatic interface conversion and smart pointer in one." alt="" coords="116,5,235,31"/>
-<area shape="rect" id="node3" href="$classSteinberg_1_1OPtr.html" title="OPtr &#45; &quot;owning&quot; smart pointer used for newly created FObjects." alt="" coords="141,55,210,80"/>
-</map>

@@ -95,7 +95,7 @@ bool ExportToSfz::doExport()
                 sfzFilePath += ".sfz";
         std::ofstream sfzFile (sfzFilePath);
         if (!sfzFile.is_open()) {
-                GEONKICK_LOG_INFO("can't open sfz file " << getExportPath());
+                GEONKICK_LOG_ERROR("can't open sfz file " << getExportPath());
                 return false;
         } else {
                 sfzFile << sfzStream.str();

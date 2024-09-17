@@ -1,0 +1,11 @@
+## Redkite
+
+Status: no release, redefine Redkite system windows to graphics widgets
+
+A lightweight graphics widget toolkit for embedded GUI.
+
+Author: Iurie Nistor
+
+License: GNU General Public License v3.0
+
+Used by Geonkick synthesizer - https://geonkick.org

@@ -2,7 +2,7 @@
  * File name: oscillator_envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -33,15 +33,16 @@ class OscillatorEnvelope: public Envelope
  public:
 
   OscillatorEnvelope(Oscillator* osc, const RkRect &area);
-  double envelopeLength(void) const;
+  double envelopeLength(void) const override;
   Oscillator* getOscillator() const;
 
  protected:
-  void updatePoints() final;
-  void pointAddedEvent(double x, double y) final;
-  void pointUpdatedEvent(unsigned int index, double x, double y) final;
-  void pointRemovedEvent(unsigned int index) final;
-  double envelopeAmplitude() const final;
+  void updateEnvelope() override;
+  void updatePoints() override;
+  void pointAddedEvent(double x, double y) override;
+  void pointUpdatedEvent(unsigned int index, double x, double y) override;
+  void pointRemovedEvent(unsigned int index) override;
+  double envelopeAmplitude() const override;
 
  private:
           Oscillator *oscillator;

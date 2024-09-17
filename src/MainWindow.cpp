@@ -3,7 +3,7 @@
  * File name: MainWindow.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -23,6 +23,7 @@
  */
 
 #include "MainWindow.h"
+#include "GeonkickModel.h"
 #include "oscillator.h"
 #include "envelope_widget.h"
 #include "oscillator_group_box.h"
@@ -35,51 +36,47 @@
 #include "percussion_state.h"
 #include "ViewState.h"
 #include "UiSettings.h"
-#include "GeonkickConfig.h"
 
 #include <RkEvent.h>
 
 constexpr int MAIN_WINDOW_WIDTH  = 940;
 constexpr int MAIN_WINDOW_HEIGHT = 705;
 
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const std::string &preset)
+MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
         , geonkickApi{api}
         , topBar{nullptr}
         , envelopeWidget{nullptr}
         , presetName{preset}
         , limiterWidget{nullptr}
-        , kitModel{new KitModel(this, geonkickApi)}
+        , geonkickModel{new GeonkickModel(this, geonkickApi)}
 {
-        GeonkickConfig config;
-        setScaleFactor(config.getScaleFactor());
-        createViewState();
-        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
-        setTitle(GEONKICK_NAME);
-        geonkickApi->registerCallbacks(true);
-	RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
-        createShortcuts();
-        show();
-}
-
-MainWindow::MainWindow(RkMain *app, GeonkickApi *api, const RkNativeWindowInfo &info)
-        : GeonkickWidget(app, info)
-        , geonkickApi{api}
-        , topBar{nullptr}
-        , envelopeWidget{nullptr}
-        , presetName{std::string()}
-        , limiterWidget{nullptr}
-        , kitModel{new KitModel(this, geonkickApi)}
-{
-        GeonkickConfig config;
-        setScaleFactor(config.getScaleFactor());
+        setName("MainWindow");
+        setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
         createShortcuts();
-        show();
+}
+
+MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const RkNativeWindowInfo &info)
+        : GeonkickWidget(app, info)
+        , geonkickApi{api}
+        , topBar{nullptr}
+        , envelopeWidget{nullptr}
+        , presetName{std::string()}
+        , limiterWidget{nullptr}
+        , geonkickModel{new GeonkickModel(this, geonkickApi)}
+{
+        setScaleFactor(geonkickApi->getScaleFactor());
+        createViewState();
+        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+        setTitle(GEONKICK_NAME);
+        geonkickApi->registerCallbacks(true);
+        RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
+        createShortcuts();
 }
 
 MainWindow::~MainWindow()
@@ -164,7 +161,7 @@ bool MainWindow::init(void)
                                   << "There is a need for jack server running "
                                   << "in order to have audio output.");
         }
-        topBar = new TopBar(this, kitModel);
+        topBar = new TopBar(this, geonkickModel);
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
@@ -174,8 +171,10 @@ bool MainWindow::init(void)
                     this, openFileDialog(FileDialog::Type::Save));
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
+#ifndef GEONKICK_OS_WINDOWS
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
                     this, openExportDialog());
+#endif // GEONKICK_OS_WINDOWS
         RK_ACT_BIND(topBar, layerSelected,
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
                     geonkickApi, enbaleLayer(layer, b));
@@ -186,6 +185,7 @@ bool MainWindow::init(void)
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 305);
         envelopeWidget->show();
+
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), envelopeWidget, updateGui());
         RK_ACT_BIND(envelopeWidget, requestUpdateGui, RK_ACT_ARGS(), this, updateGui());
         limiterWidget = new Limiter(geonkickApi, this);
@@ -193,33 +193,36 @@ bool MainWindow::init(void)
                                    envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
-        controlAreaWidget = new ControlArea(this, kitModel, oscillators);
+        controlAreaWidget = new ControlArea(this, geonkickModel, oscillators);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
 
-        kitModel = controlAreaWidget->getKitModel();
-        RK_ACT_BIND(kitModel,
+        RK_ACT_BIND(geonkickModel->getKitModel(),
                     limiterUpdated,
                     RK_ACT_ARGS(KitModel::PercussionIndex index),
                     this,
                     updateLimiter(index));
         RK_ACT_BIND(limiterWidget, limiterUpdated, RK_ACT_ARGS(int val),
-                    kitModel, updatePercussion(kitModel->selectedPercussion()));
+                    geonkickModel->getKitModel(),
+                    updatePercussion(geonkickModel->getKitModel()->selectedPercussion()));
 
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
         topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
         updateGui();
+        show();
         return true;
 }
 
+#ifndef GEONKICK_OS_WINDOWS
 void MainWindow::openExportDialog()
 {
         auto w = new ExportWidget(this, geonkickApi);
         w->setPosition(30, 40);
 }
+#endif // GEONKICK_OS_WINDOWS
 
 void MainWindow::savePreset(const std::string &fileName)
 {
@@ -262,12 +265,14 @@ void MainWindow::openPreset(const std::string &fileName)
                              (std::istreambuf_iterator<char>()));
         auto state = geonkickApi->getDefaultPercussionState();
         state->loadData(fileData);
+        if (state->getName().empty() || state->getName() == "Default")
+                state->setName(filePath.stem().string());
         state->setId(geonkickApi->currentPercussion());
         geonkickApi->setPercussionState(state);
         action geonkickApi->percussionUpdated(state->getId());
         file.close();
         geonkickApi->setCurrentWorkingPath("OpenPreset",
-                                           filePath.has_parent_path() ? filePath.parent_path() : filePath);
+                                           filePath.has_parent_path() ? filePath.parent_path().string() : filePath.string());
         updateGui();
 }
 
@@ -278,14 +283,14 @@ void MainWindow::openFileDialog(FileDialog::Type type)
         fileDialog->setFilters({".gkick", ".GKICK"});
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         if (type == FileDialog::Type::Open) {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset"));
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset").string());
                 RK_ACT_BIND(fileDialog,
                             selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this,
                             openPreset(file));
         } else {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset"));
+                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset").string());
                 RK_ACT_BIND(fileDialog,
                             selectedFile,
                             RK_ACT_ARGS(const std::string &file),
@@ -311,7 +316,9 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         openFileDialog(FileDialog::Type::Save);
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
+#ifndef GEONKICK_OS_WINDOWS
                         openExportDialog();
+#endif // GEONKICK_OS_WINDOWS
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
                         geonkickApi->copyToClipboard();
@@ -322,13 +329,11 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         updateGui();
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_F || event->key() == Rk::Key::Key_f)) {
-                        setScaleFactor((scaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
+                        geonkickApi->setScaleFactor((geonkickApi->getScaleFactor() + 0.5 > 2.1) ? 1 : scaleFactor() + 0.5);
+                        setScaleFactor(geonkickApi->getScaleFactor());
                         setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
                         updateGui();
-                        GeonkickConfig config;
-                        config.setScaleFactor(scaleFactor());
-                        config.save();
-                        action onScaleFactor(scaleFactor());
+                        action onScaleFactor(geonkickApi->getScaleFactor());
                 }
 
                 if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control_Left))
@@ -365,7 +370,7 @@ void MainWindow::dropEvent(RkDropEvent *event)
         std::string fileExtention;
         try {
                 std::filesystem::path path(event->getFilePath());
-                fileExtention = path.extension();
+                fileExtention = path.extension().string();
         } catch (const std::exception& e) {
                 GEONKICK_LOG_ERROR("can't create path " << e.what());
                 return;
@@ -373,7 +378,7 @@ void MainWindow::dropEvent(RkDropEvent *event)
 
         std::string file = event->getFilePath();
         if (fileExtention == ".gkit" || fileExtention == ".GKIT") {
-                kitModel->open(file);
+                geonkickModel->getKitModel()->open(file);
         } else if  (fileExtention == ".gkick" || fileExtention == ".GKICK") {
                 openPreset(file);
         } else if (fileExtention == ".wav"
@@ -399,6 +404,11 @@ void MainWindow::setSample(const std::string &file)
 
 void MainWindow::updateLimiter(KitModel::PercussionIndex index)
 {
-        if (kitModel->isPercussionSelected(index))
+        if (geonkickModel->getKitModel()->isPercussionSelected(index))
                 limiterWidget->onUpdateLimiter();
+}
+
+RkSize MainWindow::getWindowSize()
+{
+        return RkSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
 }

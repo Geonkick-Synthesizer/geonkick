@@ -77,7 +77,6 @@ CompressorGroupBox::CompressorGroupBox(GeonkickApi *api, GeonkickWidget *parent)
         hContainer->addWidget(attackLabel);
         attackSlider = new GeonkickSlider(this);
         attackSlider->setFixedSize(sliderW, 12);
-        attackSlider->onSetValue(50);
         RK_ACT_BIND(attackSlider, valueUpdated, RK_ACT_ARGS(int val), this, setAttack(val));
         hContainer->addSpace(3);
         hContainer->addWidget(attackSlider);
@@ -156,7 +155,9 @@ void CompressorGroupBox::updateGui()
         compressorCheckbox->setPressed(geonkickApi->isCompressorEnabled());
 
         // Attack
-        attackSlider->onSetValue(100 * (log10(1000 * geonkickApi->getCompressorAttack()) / log10(2000)));
+        double attack = 100 * (log10(1000 * geonkickApi->getCompressorAttack()) / log10(2000));
+        double defaultAttack = 100 * (log10(1000 * 0.01) / log10(2000));
+        attackSlider->onSetValue(static_cast<int>(std::max(attack, 0.0)), defaultAttack);
 
         // Threshold
         auto threshold = geonkickApi->getCompressorThreshold();
@@ -165,7 +166,7 @@ void CompressorGroupBox::updateGui()
                 db = -60;
         else
                 db = 20.0 * log10(threshold);
-        thresholdSlider->onSetValue(100 - 100 * (db / -60));
+        thresholdSlider->onSetValue(100 - 100 * (db / -60), 0);
 
         // Ratio
         double ratio = geonkickApi->getCompressorRatio();
@@ -173,12 +174,12 @@ void CompressorGroupBox::updateGui()
                 ratio = 0;
         else
                 ratio = log2(ratio);
-        ratioSlider->onSetValue(100 * ratio / log2(19));
+        ratioSlider->onSetValue(100 * ratio / log2(19), 0);
 
         // Makeup
         double makeup = geonkickApi->getCompressorMakeup();
         if (makeup < 1.0)
                 makeup = 1.0;
         db = 20 * log10(makeup);
-        makeupSlider->onSetValue(100 * (db / 36));
+        makeupSlider->onSetValue(100 * (db / 36), 0);
 }

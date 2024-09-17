@@ -2,7 +2,7 @@
  * File name: oscillator_envelope.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor <(http://iuriepage.wordpress.com>
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -30,8 +30,6 @@ OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
 {
 	removeSupportedType(Envelope::Type::DistortionDrive);
         removeSupportedType(Envelope::Type::DistortionVolume);
-        if (oscillator->type() == Oscillator::Type::Noise)
-                removeSupportedType(Envelope::Type::Frequency);
         setType(Envelope::Type::Amplitude);
         setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
 }
@@ -39,6 +37,13 @@ OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
 void OscillatorEnvelope::updatePoints()
 {
         setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
+}
+
+void OscillatorEnvelope::updateEnvelope()
+{
+	auto applyType = oscillator->envelopeApplyType(static_cast<Oscillator::EnvelopeType>(type()));
+	setApplyType(applyType);
+	updatePoints();
 }
 
 void OscillatorEnvelope::pointAddedEvent(double x, double y)
@@ -54,7 +59,6 @@ void OscillatorEnvelope::pointUpdatedEvent(unsigned int index, double x, double 
 void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
 {
         oscillator->removeEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), index);
-
 }
 
 double OscillatorEnvelope::envelopeLength(void) const
@@ -71,8 +75,12 @@ double OscillatorEnvelope::envelopeAmplitude() const
                 return oscillator->frequency();
         case Type::PitchShift:
                 return oscillator->pitchShift();
+        case Type::NoiseDensity:
+                return oscillator->noiseDensity();
         case Type::FilterCutOff:
                 return oscillator->filterFrequency();
+	case Type::FilterQFactor:
+                return oscillator->filterQFactor();
         default:
                 return 0;
         }

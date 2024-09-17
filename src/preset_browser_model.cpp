@@ -2,7 +2,7 @@
  * File name: preset_browser_model.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -27,6 +27,7 @@
 #include "geonkick_api.h"
 #include "percussion_state.h"
 #include "kit_state.h"
+#include "GeonkickConfig.h"
 
 PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
         : RkObject(parent)
@@ -35,6 +36,9 @@ PresetBrowserModel::PresetBrowserModel(RkObject *parent, GeonkickApi *api)
         , presetPageIndex{0}
         , numberOfPresetColumns{3}
         , rowsPerColumn{12}
+        , folderSelectedRaw{0}
+        , presetSelectedRaw{0}
+        , presetSelectedColumn{0}
         , selectedFolder{geonkickApi->getPresetFolder(0)}
         , selectedPreset{nullptr}
 {
@@ -67,9 +71,11 @@ PresetFolder* PresetBrowserModel::getPresetFolder(int row) const
 
 Preset* PresetBrowserModel::getPreset(int row, int column) const
 {
-        if (column > 0 && selectedFolder) {
-                return selectedFolder->preset(presetPage() * numberOfPresetColumns * rowsPerColumn
-                                              + (column - 1) * rowsPerColumn + row);
+        if (column > 0 && row >=0 && row < static_cast<int>(rowsPerColumn)
+            && selectedFolder) {
+                const auto index = presetPage() * numberOfPresetColumns * rowsPerColumn
+                        + (column - 1) * rowsPerColumn + row;
+                return selectedFolder->preset(index);
         } else {
                 return nullptr;
         }
@@ -160,12 +166,19 @@ void PresetBrowserModel::select(size_t row, size_t column)
                         selectedFolder = getPresetFolder(row);
                         selectedPreset = nullptr;
                         presetPageIndex = 0;
-                        if (selectedFolder)
+                        if (selectedFolder) {
+                                folderSelectedRaw    = row;
+                                presetSelectedRaw    = 0;
+                                presetSelectedColumn = 0;
                                 action folderSelected(selectedFolder);
+                        }
                 } if (column > 0 && selectedFolder) {
                         selectedPreset = getPreset(row, column);
-                        if (selectedPreset && setPreset(selectedPreset))
+                        if (selectedPreset && setPreset(selectedPreset)) {
+                                presetSelectedRaw     = row;
+                                presetSelectedColumn  = column;
                                 action presetSelected(selectedPreset);
+                        }
                 }
         }
 }
@@ -180,12 +193,21 @@ bool PresetBrowserModel::isSelected(size_t row, size_t column) const
                 return false;
 }
 
+bool PresetBrowserModel::isCustomFolder(size_t row, size_t column) const
+{
+        if (column == 0) {
+                auto presetFolder = getPresetFolder(row);
+                return presetFolder && presetFolder->isCustom();
+        }
+        return false;
+}
+
 bool PresetBrowserModel::setPreset(Preset* preset)
 {
         if (preset->type() == Preset::PresetType::Percussion) {
                 GEONKICK_LOG_DEBUG("path:" << preset->path());
                 auto state = geonkickApi->getDefaultPercussionState();
-                if (!state->loadFile(preset->path())) {
+                if (!state->loadFile(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open preset");
                         return false;
                 } else {
@@ -197,7 +219,7 @@ bool PresetBrowserModel::setPreset(Preset* preset)
                 }
         } else if (preset->type() == Preset::PresetType::PercussionKit) {
                 auto kit = std::make_unique<KitState>();
-                if (kit->open(preset->path())) {
+                if (!kit->open(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open kit");
                         return false;
                 } else if (geonkickApi->setKitState(kit)) {
@@ -207,4 +229,87 @@ bool PresetBrowserModel::setPreset(Preset* preset)
                 }
         }
         return false;
+}
+
+bool PresetBrowserModel::addFolder(const std::filesystem::path &folder, bool custom)
+{
+        auto presetFolder = geonkickApi->addPresetFolder(folder, custom);
+        if (presetFolder) {
+                action presetFolderAdded(presetFolder);
+                return true;
+        }
+        return false;
+}
+
+PresetFolder* PresetBrowserModel::currentSelectedFolder() const
+{
+        return selectedFolder;
+}
+
+Preset* PresetBrowserModel::currentSelectedPreset() const
+{
+        return selectedPreset;
+}
+
+bool PresetBrowserModel::removeSelectedFolder()
+{
+        if (selectedFolder && geonkickApi->removePresetFolder(selectedFolder)) {
+                selectedFolder = geonkickApi->getPresetFolder(0);
+                folderPageIndex = 0;
+                presetPageIndex = 0;
+                action presetFolderRemoved();
+                return true;
+        }
+        return false;
+}
+
+GeonkickApi* PresetBrowserModel::getGeonkickApi() const
+{
+        return geonkickApi;
+}
+
+void PresetBrowserModel::selectPreviousFolder()
+{
+        if (getPresetFolder(folderSelectedRaw - 1)) {
+                select(folderSelectedRaw - 1, 0);
+        } else {
+                folderPreviousPage();
+                select(0, 0);
+        }
+        select(0, 1);
+}
+
+void PresetBrowserModel::selectNextFolder()
+{
+        if (getPresetFolder(folderSelectedRaw + 1)) {
+                select(folderSelectedRaw + 1, 0);
+        } else {
+                folderNextPage();
+                select(0, 0);
+        }
+        select(0, 1);
+}
+
+void PresetBrowserModel::selectPreviousPreset()
+{
+        if (getPreset(presetSelectedRaw - 1, presetSelectedColumn))
+                select(presetSelectedRaw - 1, presetSelectedColumn);
+        else if (getPreset(rows() - 1, presetSelectedColumn - 1))
+                select(rows() - 1, presetSelectedColumn - 1);
+        else {
+                previousPresetPage();
+                select(rows() - 1, columns() - 1);
+        }
+}
+
+void PresetBrowserModel::selectNextPreset()
+{
+        if (getPreset(presetSelectedRaw + 1, presetSelectedColumn)) {
+                select(presetSelectedRaw + 1, presetSelectedColumn);
+        } else if (getPreset(0, presetSelectedColumn + 1)) {
+                select(0, presetSelectedColumn + 1);
+        } else {
+                nextPresetPage();
+                select(0, 1);
+        }
 }

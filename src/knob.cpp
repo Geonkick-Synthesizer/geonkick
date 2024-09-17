@@ -37,6 +37,7 @@ Knob::Knob(GeonkickWidget *parent)
           , rangeTo{0}
           , rangeType{RangeType::Linear}
           , isSelected{false}
+          , defaultValue{0.0}
 {
         show();
 }
@@ -128,6 +129,27 @@ void Knob::mouseMoveEvent(RkMouseEvent *event)
         }
 }
 
+void Knob::mouseDoubleClickEvent(RkMouseEvent *event)
+{
+        setCurrentValue(defaultValue);
+        action valueUpdated(defaultValue);
+}
+
+double Knob::valueToDegree(double val)
+{
+        val = std::clamp(val, rangeFrom, rangeTo);
+        double k = 0.0;
+        if (std::fabs(rangeTo - rangeFrom) < std::numeric_limits<double>::epsilon()) {
+                return GEONKICK_KNOB_MIN_DEGREE;
+        } else {
+                if (getRangeType() == RangeType::Logarithmic)
+                        k = (log10(val) - log10(rangeFrom)) / (log10(rangeTo) - log10(rangeFrom));
+                else
+                        k = (val - rangeFrom) / (rangeTo - rangeFrom);
+        }
+        return GEONKICK_KNOB_MIN_DEGREE + k * GEONKICK_KNOB_RANGE_DEGREE;
+}
+
 double Knob::getValue(void) const
 {
         double k = (knobValueDegree - GEONKICK_KNOB_MIN_DEGREE) / GEONKICK_KNOB_RANGE_DEGREE;
@@ -158,22 +180,14 @@ Knob::RangeType Knob::getRangeType() const
         return rangeType;
 }
 
+void Knob::setDefaultValue(double val)
+{
+        defaultValue = val;
+        setCurrentValue(defaultValue);
+}
+
 void Knob::setCurrentValue(double val)
 {
-        if (val > rangeTo)
-                val = rangeTo;
-        else if (val < rangeFrom)
-                val = rangeFrom;
-
-        double k = 0;
-        if (fabs(rangeTo - rangeFrom) < std::numeric_limits<double>::epsilon()) {
-                knobValueDegree = GEONKICK_KNOB_MIN_DEGREE;
-        } else {
-                if (getRangeType() == RangeType::Logarithmic)
-                        k = (log10(val) - log10(rangeFrom)) / (log10(rangeTo) - log10(rangeFrom));
-                else
-                        k = (val - rangeFrom) / (rangeTo - rangeFrom);
-        }
-        knobValueDegree = GEONKICK_KNOB_MIN_DEGREE + k * GEONKICK_KNOB_RANGE_DEGREE;
+        knobValueDegree = valueToDegree(val);
         update();
 }

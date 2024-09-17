@@ -2,7 +2,7 @@
  * File name: general_group_box.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -34,7 +34,6 @@ RK_DECLARE_IMAGE_RC(hboxbk_ampl_env);
 RK_DECLARE_IMAGE_RC(hboxbk_filter);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
 RK_DECLARE_IMAGE_RC(knob);
-RK_DECLARE_IMAGE_RC(general_groupbox_label);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_off);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_on);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_hover);
@@ -46,13 +45,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
         , kickAmplitudeKnob{nullptr}
         , kickLengthKnob{nullptr}
 {
-        setFixedSize(224, 380);
-        auto label = new RkLabel(this);
-        label->setBackgroundColor(background());
-        label->setPosition(10, 0);
-        label->setSize(45, 21);
-        label->setImage(RkImage(label->size(), RK_IMAGE_RC(general_groupbox_label)));
-        label->show();
+        setFixedSize(224, 250);
         createAplitudeEnvelopeHBox();
         createFilterHBox();
         updateGui();
@@ -61,13 +54,14 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
 void GeneralGroupBox::createAplitudeEnvelopeHBox()
 {
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
-        amplitudeEnvelopeBox->setPosition(0, 25);
+        amplitudeEnvelopeBox->setPosition(0, 0);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
         amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_ampl_env)));
         amplitudeEnvelopeBox->show();
 
         kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-        kickAmplitudeKnob->setFixedSize(80, 80);
+        kickAmplitudeKnob->setDefaultValue(0.8);
+        kickAmplitudeKnob->setFixedSize(80, 78);
         kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
         kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         kickAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
@@ -85,7 +79,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplEnvelopeButton->setFixedSize(63, 21);
         amplEnvelopeButton->setPosition(kickAmplitudeKnob->x() + kickAmplitudeKnob->width() / 2
                                         - amplEnvelopeButton->width() / 2,
-                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height() - 3);
+                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height());
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
                                         RkButton::State::Unpressed);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),
@@ -105,6 +99,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
                                                    && category == Envelope::Category::General));
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
+        kickLengthKnob->setDefaultValue(300);
         kickLengthKnob->setFixedSize(80, 80);
         kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2);
         kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -123,7 +118,7 @@ void GeneralGroupBox::createFilterHBox()
         filterBox = new Filter(this, Envelope::Category::General);
         filterBox->setCutOffRange(20, 20000);
         filterBox->setResonanceRange(1, 1000);
-        filterBox->setPosition(0, 150);
+        filterBox->setPosition(0, 125);
         RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b),
                     geonkickApi, enableKickFilter(b));
         RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val),
@@ -140,8 +135,7 @@ void GeneralGroupBox::updateGui()
         kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
         kickLengthKnob->setCurrentValue(geonkickApi->kickLength());
         filterBox->enable(geonkickApi->isKickFilterEnabled());
-        filterBox->setCutOff(geonkickApi->kickFilterFrequency());
-        filterBox->setResonance(geonkickApi->kickFilterQFactor());
+        filterBox->setCutOff(geonkickApi->kickFilterFrequency(), 800);
+        filterBox->setResonance(geonkickApi->kickFilterQFactor(), 10);
         filterBox->setType(geonkickApi->kickFilterType());
 }
-

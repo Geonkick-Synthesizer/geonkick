@@ -29,7 +29,6 @@
 
 class Oscillator;
 class GeonkickApi;
-class GeonkickCheckbox;
 class Knob;
 class GeonkickButton;
 class Filter;

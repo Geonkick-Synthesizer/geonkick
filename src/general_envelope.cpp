@@ -26,7 +26,7 @@
 
 GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         : Envelope(area)
-        ,  geonkickApi{api}
+        , geonkickApi{api}
 {
         removeSupportedType(Envelope::Type::Frequency);
         removeSupportedType(Envelope::Type::PitchShift);
@@ -67,12 +67,21 @@ double GeneralEnvelope::envelopeAmplitude(void) const
                 return geonkickApi->kickAmplitude();
         else if (type() == Envelope::Type::FilterCutOff)
                 return geonkickApi->kickFilterFrequency();
+	else if (type() == Envelope::Type::FilterQFactor)
+                return geonkickApi->kickFilterQFactor();
 	else if (type() == Envelope::Type::DistortionDrive)
 		return geonkickApi->getDistortionDrive() / (pow(10, 36.0 / 20));
         else if (type() == Envelope::Type::DistortionVolume)
 		return geonkickApi->getDistortionVolume();
 
         return 0;
+}
+
+void GeneralEnvelope::updateEnvelope()
+{
+	auto applyType = geonkickApi->getKickEnvelopeApplyType(type());
+	setApplyType(applyType);
+	updatePoints();
 }
 
 void GeneralEnvelope::updatePoints()

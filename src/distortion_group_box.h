@@ -2,7 +2,7 @@
  * File name: distortion_group_box.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -28,7 +28,6 @@
 #include "envelope.h"
 
 class GeonkickSlider;
-class GeonkickCheckbox;
 class GeonkickApi;
 class GeonkickButton;
 class EnvelopeWidget;

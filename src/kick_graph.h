@@ -31,6 +31,7 @@
 #include <condition_variable>
 
 class RkEventQueue;
+class Envelope;
 
 class KickGraph : public RkObject {
 
@@ -43,6 +44,10 @@ public:
                  graphUpdated(std::shared_ptr<RkImage> graphImage),
                  RK_ARG_TYPE(std::shared_ptr<RkImage>),
                  RK_ARG_VAL(graphImage));
+     void setGraphLegnth(double val);
+     void setEnvelope(Envelope * envelope);
+     Envelope* getEnvelope() const;
+     void updateGraph(bool lock = true);
      void updateGraphBuffer();
 
 protected:
@@ -51,12 +56,13 @@ protected:
 private:
      GeonkickApi *geonkickApi;
      std::unique_ptr<std::thread> graphThread;
-     std::mutex  graphMutex;
+     mutable std::mutex  graphMutex;
      std::condition_variable threadConditionVar;
      std::vector<gkick_real> kickBuffer;
      RkSize graphSize;
      std::atomic<bool> isRunning;
-     std::atomic<bool> updateGraph;
+     bool redrawGraph;
+     Envelope *currentEnvelope;
 };
 
 #endif // GEONKICK_GRAPH

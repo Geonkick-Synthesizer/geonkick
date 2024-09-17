@@ -1,8 +1,8 @@
 /**
- * File name: mainwindow.h
+ * File name: MainWindow.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -34,18 +34,20 @@ class TopBar;
 class EnvelopeWidget;
 class ControlArea;
 class Limiter;
+class GeonkickModel;
 
 class MainWindow : public GeonkickWidget
 {
  public:
-      explicit MainWindow(RkMain* app,
+      explicit MainWindow(RkMain& app,
                           GeonkickApi *api,
                           const std::string &preset = std::string());
-      explicit MainWindow(RkMain* app,
+      explicit MainWindow(RkMain& app,
                           GeonkickApi *api,
                           const RkNativeWindowInfo &info);
       ~MainWindow();
       bool init(void);
+      static RkSize getWindowSize();
       RK_DECL_ACT(onScaleFactor, onScaleFactor(double factor), RK_ARG_TYPE(double), RK_ARG_VAL(factor));
 
  protected:
@@ -55,7 +57,9 @@ class MainWindow : public GeonkickWidget
       void openPreset(const std::string &fileName);
       void savePreset(const std::string &fileName);
       void setPreset(const std::string &fileName);
+#ifndef  GEONKICK_OS_WINDOWS
       void openExportDialog();
+#endif // GEONKICK_OS_WINDOWS
       void openPreset();
       void resetToDefault();
       void updateLimiter(KitModel::PercussionIndex index);
@@ -73,7 +77,7 @@ class MainWindow : public GeonkickWidget
       std::string presetName;
       std::string currentWorkingPath;
       Limiter *limiterWidget;
-      KitModel *kitModel;
+      GeonkickModel *geonkickModel;
 };
 
 #endif // GEONKICK_MAINWINDOW_H

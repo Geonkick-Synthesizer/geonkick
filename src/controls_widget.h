@@ -2,7 +2,7 @@
  * File name: controls_widget.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -30,18 +30,19 @@ class GeonkickApi;
 class Oscillator;
 class EnvelopeWidget;
 class EffectsGroupBox;
+class GeonkickModel;
 
 class ControlsWidget: public GeonkickWidget
 {
  public:
         ControlsWidget(GeonkickWidget *parent,
-                       GeonkickApi* api,
+                       GeonkickModel* model,
                        const std::vector<std::unique_ptr<Oscillator>> &oscillators);
         ~ControlsWidget() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:
-	GeonkickApi* geonkickApi;
+        GeonkickModel *geonkickModel;
         EffectsGroupBox *effectsWidget;
 };
 

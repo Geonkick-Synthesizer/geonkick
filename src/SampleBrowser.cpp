@@ -2,7 +2,7 @@
  * File name: SampleBrowser.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -42,6 +42,12 @@ RK_DECLARE_IMAGE_RC(osc1_preview_sample_pressed);
 RK_DECLARE_IMAGE_RC(osc2_preview_sample);
 RK_DECLARE_IMAGE_RC(osc2_preview_sample_hover);
 RK_DECLARE_IMAGE_RC(osc2_preview_sample_pressed);
+RK_DECLARE_IMAGE_RC(osc1_preview_sample);
+RK_DECLARE_IMAGE_RC(osc1_preview_sample_hover);
+RK_DECLARE_IMAGE_RC(osc1_preview_sample_pressed);
+RK_DECLARE_IMAGE_RC(osc3_preview_sample);
+RK_DECLARE_IMAGE_RC(osc3_preview_sample_hover);
+RK_DECLARE_IMAGE_RC(osc3_preview_sample_pressed);
 
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
@@ -52,6 +58,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         , loadButton{nullptr}
         , osc1Button{nullptr}
         , osc2Button{nullptr}
+        , osc3Button{nullptr}
         , previewLimiter{nullptr}
 
 {
@@ -178,12 +185,27 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
                     RK_ACT_ARGS(), this,
                     setOscillator(GeonkickApi::OscillatorType::Oscillator2));
         container->addWidget(osc2Button);
+        container->addSpace(3);
+
+        osc3Button = new GeonkickButton(this);
+        osc3Button->setSize(33, 18);
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample)),
+                             RkButton::State::Unpressed);
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample_hover)),
+                             RkButton::State::UnpressedHover);
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample_pressed)),
+                             RkButton::State::Pressed);
+        RK_ACT_BIND(osc3Button, pressed,
+                    RK_ACT_ARGS(), this,
+                    setOscillator(GeonkickApi::OscillatorType::Oscillator3));
+        container->addWidget(osc3Button);
 }
 
 void SampleBrowser::setOscillator(GeonkickApi::OscillatorType osc)
 {
         osc1Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator1);
         osc2Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator2);
+        osc3Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator3);
 }
 
 void SampleBrowser::loadSample()
@@ -193,10 +215,19 @@ void SampleBrowser::loadSample()
                                                  static_cast<int>(GeonkickApi::OscillatorType::Oscillator1));
                 geonkickApi->setOscillatorFunction(static_cast<int>(GeonkickApi::OscillatorType::Oscillator1),
                                                    GeonkickApi::FunctionType::Sample);
-        } else if (osc2Button->isPressed()) {
+        }
+
+        if (osc2Button->isPressed()) {
                 geonkickApi->setOscillatorSample(samplePreviewWidget->getData(),
                                                  static_cast<int>(GeonkickApi::OscillatorType::Oscillator2));
                 geonkickApi->setOscillatorFunction(static_cast<int>(GeonkickApi::OscillatorType::Oscillator2),
+                                                   GeonkickApi::FunctionType::Sample);
+        }
+
+        if (osc3Button->isPressed()) {
+                geonkickApi->setOscillatorSample(samplePreviewWidget->getData(),
+                                                 static_cast<int>(GeonkickApi::OscillatorType::Oscillator3));
+                geonkickApi->setOscillatorFunction(static_cast<int>(GeonkickApi::OscillatorType::Oscillator3),
                                                    GeonkickApi::FunctionType::Sample);
         }
 }

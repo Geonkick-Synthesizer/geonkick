@@ -2,7 +2,7 @@
  * File name: general_envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor (http://iuriepage.wordpress.com)
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -34,15 +34,16 @@ class GeneralEnvelope: public Envelope
  public:
 
   GeneralEnvelope(GeonkickApi *api, const RkRect &area);
-  double envelopeLength(void) const final;
-  void setEnvelopeLengh(double len) final;
-  void updatePoints() final;
+  double envelopeLength(void) const override;
+  void setEnvelopeLengh(double len) override;
+  void updateEnvelope() override;
+  void updatePoints() override;
 
  protected:
-  void pointAddedEvent(double x, double y) final;
-  void pointUpdatedEvent(unsigned int index, double x, double y) final;
-  void pointRemovedEvent(unsigned int index) final;
-  double envelopeAmplitude(void) const final;
+  void pointAddedEvent(double x, double y) override;
+  void pointUpdatedEvent(unsigned int index, double x, double y) override;
+  void pointRemovedEvent(unsigned int index) override;
+  double envelopeAmplitude(void) const override;
 
  private:
           GeonkickApi *geonkickApi;

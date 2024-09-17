@@ -2,7 +2,7 @@
  * File name: oscillator.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -26,7 +26,6 @@
 Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
         : geonkickApi{api}
         , oscillatorType{type}
-        , filterType{FilterType::LowPass}
 {
         RK_ACT_BIND(geonkickApi,
                     kickLengthUpdated,
@@ -77,6 +76,7 @@ Oscillator::FunctionType Oscillator::function() const
 std::vector<RkRealPoint>
 Oscillator::envelopePoints(EnvelopeType envelope) const
 {
+        const auto env = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
         return geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
 }
 
@@ -115,7 +115,7 @@ Oscillator::Type Oscillator::type() const
 void Oscillator::setAmplitude(double amp)
 {
         if (geonkickApi->setOscillatorAmplitude(index(), amp))
-                amplitudeUpdated(amp);
+                action amplitudeUpdated(amp);
 }
 
 double Oscillator::amplitude(void) const
@@ -126,13 +126,19 @@ double Oscillator::amplitude(void) const
 void Oscillator::setFrequency(double freq)
 {
 	if (geonkickApi->setOscillatorFrequency(index(), freq))
-                frequencyUpdated(freq);
+                action frequencyUpdated(freq);
 }
 
 void Oscillator::setPitchShift(double semitones)
 {
 	if (geonkickApi->setOscillatorPitchShift(index(), semitones))
-                pitchShiftUpdated(semitones);
+                action pitchShiftUpdated(semitones);
+}
+
+void Oscillator::setNoiseDensity(double density)
+{
+	if (geonkickApi->setOscillatorNoiseDensity(index(), density))
+                action noiseDensityUpdated(density);
 }
 
 double Oscillator::frequency(void) const
@@ -143,6 +149,11 @@ double Oscillator::frequency(void) const
 double Oscillator::pitchShift(void) const
 {
         return geonkickApi->oscillatorPitchShift(index());
+}
+
+double Oscillator::noiseDensity(void) const
+{
+        return geonkickApi->oscillatorNoiseDensity(index());
 }
 
 int Oscillator::index() const
@@ -182,7 +193,7 @@ double Oscillator::filterFrequency(void) const
 
 void Oscillator::setFilterQFactor(double factor)
 {
-        return geonkickApi->setOscillatorFilterFactor(index(), factor);
+	return geonkickApi->setOscillatorFilterFactor(index(), factor);
 }
 
 double Oscillator::filterQFactor() const
@@ -209,10 +220,22 @@ void Oscillator::setSample(const std::string &file)
 {
         geonkickApi->setOscillatorSample(file, index());
         auto path = std::filesystem::path(file);
-        geonkickApi->setCurrentWorkingPath("Samples", path.has_parent_path() ? path.parent_path() : path);
+        geonkickApi->setCurrentWorkingPath("Samples", path.has_parent_path() ? path.parent_path().string() : path.string());
 }
 
 std::string Oscillator::samplesPath() const
 {
-        return geonkickApi->currentWorkingPath("Samples");
+        return geonkickApi->currentWorkingPath("Samples").string();
+}
+
+void Oscillator::setEnvelopeApplyType(Oscillator::EnvelopeType envelope,
+				      Oscillator::EnvelopeApplyType apply)
+{
+	geonkickApi->setOscillatorEnvelopeApplyType(index(), envelope, apply);
+}
+
+Oscillator::EnvelopeApplyType
+Oscillator::envelopeApplyType(Oscillator::EnvelopeType envelope) const
+{
+	return geonkickApi->getOscillatorEnvelopeApplyType(index(), envelope);
 }

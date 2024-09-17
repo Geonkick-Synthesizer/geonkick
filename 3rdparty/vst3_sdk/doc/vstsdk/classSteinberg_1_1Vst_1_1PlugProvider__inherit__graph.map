@@ -1,7 +1,0 @@
-<map id="PlugProvider" name="PlugProvider">
-<area shape="rect" id="node1" title="Helper for creating and initializing component." alt="" coords="14,449,183,776"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,328,69,401"/>
-<area shape="rect" id="node3" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1ITestPlugProvider2.html" title=" " alt="" coords="94,328,226,401"/>
-<area shape="rect" id="node4" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/vstinterfaces/vstinterfaces.tag$classSteinberg_1_1Vst_1_1ITestPlugProvider.html" title=" " alt="" coords="89,153,231,280"/>
-<area shape="rect" id="node5" href="/Users/buildserver/Builddata/re/295942927/b/VST_SDK/vst3sdk/vst3_doc/base/base.tag$classSteinberg_1_1FUnknown.html" title=" " alt="" coords="101,5,219,105"/>
-</map>
