@@ -109,7 +109,6 @@ In order to build Geonkick there is a need to install
 the following development packages:
 
 * libsndfile
-* OpenSSL
 * RapidJSON
 * JACK Audio Connection Kit
 * LV2 development library
