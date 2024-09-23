@@ -655,18 +655,6 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
 	if (applyType == ApplyType::Logarithmic)
 		return {calculateX(point.x()), calculateY(point.y())};
 
-        double y = 0.0;
-        if (type() == Type::Amplitude
-	    || type() == Type::FilterQFactor
-            || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume
-            || type() == Type::PitchShift) {
-        } else {
-                /*auto k = static_cast<double>(point.y()) / H();
-                double logVal = k * (log10(envelopeAmplitude()) - log10(20));
-                double val = pow(10, logVal + log10(20));
-                y = val / envelopeAmplitude();*/
-        }
         return {calculateX(point.x()), calculateY(point.y())};
 }
 
@@ -681,7 +669,7 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                     < std::numeric_limits<double>::epsilon()) {
                         return 0.0;
                 }
-                //                return getZoom() * (y - getValueOrigin() / envelopeAmplitude()) * H();
+                // return getZoom() * (y - getValueOrigin() / envelopeAmplitude()) * H();
                 return y * H();
         };
 
