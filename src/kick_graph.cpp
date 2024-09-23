@@ -102,8 +102,8 @@ void KickGraph::drawKickGraph()
                 }
                 const auto zoomFactor = currentEnvelope->getZoom();
                 const auto timeOrigin = currentEnvelope->getTimeOrigin();
-                const auto envelopeAmplitude = currentEnvelope->envelopeAmplitude();
-                const auto valueOrigin = currentEnvelope->getValueOrigin() / envelopeAmplitude;
+                // const auto envelopeAmplitude = currentEnvelope->envelopeAmplitude();
+                // const auto valueOrigin = currentEnvelope->getValueOrigin() / envelopeAmplitude;
                 auto graphImage = std::make_shared<RkImage>(graphSize.width(), graphSize.height());
                 RkPainter painter(graphImage.get());
                 RkPen pen(RkColor(59, 130, 4, 255));
@@ -128,9 +128,12 @@ void KickGraph::drawKickGraph()
                 painter.translate({0, instrumentGraphSize.height()});
                 for (decltype(instrumentBuffer.size()) i = indexOffset; i < instrumentBuffer.size(); i++) {
                         const double x = k * (i - indexOffset);
-                        const double value = -zoomFactor * (instrumentGraphSize.height() / 2
-                                                      + instrumentGraphSize.height() * (instrumentBuffer[i] / 2
-                                                      - valueOrigin));
+                        // TODO:
+                        // const double value = -zoomFactor * (instrumentGraphSize.height() / 2
+                        //                               + instrumentGraphSize.height() * (instrumentBuffer[i] / 2
+                        //                               - valueOrigin));
+                        const double value = -(instrumentGraphSize.height() / 2
+                                               + instrumentGraphSize.height() * (instrumentBuffer[i] / 2));
                         double y = value;
                         RkRealPoint p(k * (i - indexOffset), value);
                         if (p == prev)
