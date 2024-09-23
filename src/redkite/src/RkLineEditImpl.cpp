@@ -268,7 +268,6 @@ void RkLineEdit::RkLineEditImpl::deleteSelection()
 void RkLineEdit::RkLineEditImpl::paintEvent(RkPaintEvent *event)
 {
         RK_UNUSED(event);
-        RK_LOG_DEV_DEBUG("called[" << this << "] ");
         if (contentsRect.height() * contentsRect.width() == 0)
                 updateSize();
 
