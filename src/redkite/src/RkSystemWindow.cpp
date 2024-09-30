@@ -300,11 +300,12 @@ RkWidget* RkSystemWindow::getTopWidget() const
 
 void RkSystemWindow::setFocus(bool b)
 {
+        platformWindow->setFocus(b);
 }
 
 bool RkSystemWindow::hasFocus() const
 {
-        return true;
+        return platformWindow->hasFocus();
 }
 
 void RkSystemWindow::setPointerShape(Rk::PointerShape shape)

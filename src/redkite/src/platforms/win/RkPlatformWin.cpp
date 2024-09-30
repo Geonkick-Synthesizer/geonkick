@@ -75,8 +75,10 @@ static void processSystemEvent(auto& eventQueue, std::unique_ptr<RkEvent> event)
 
 static Rk::Key convertToRkKey(unsigned int winKey)
 {
-        if (winKey >= 0x30 && winKey <= 0x39)
-                return static_cast<Rk::Key>(winKey);
+        if (winKey >= 0x30 && winKey <= 0x39) {
+	        RK_LOG_DEBUG("MYKEY: " << winKey);
+		return static_cast<Rk::Key>(winKey);
+	}
 
         if (winKey >= 0x41 && winKey <= 0x5A) {
                 if (!(GetKeyState(VK_SHIFT) & 0x8000))
@@ -236,6 +238,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
                 event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
                 if (msg == WM_LBUTTONDOWN) {
+		        SetFocus(hWnd);
                         RK_LOG_DEBUG("WM_LBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Left);
                 } else if (msg == WM_RBUTTONDOWN) {
@@ -349,6 +352,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_KEYDOWN:
         {
+                RK_LOG_DEBUG("WM_KEYDOWN");
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyPressed);
                 event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
@@ -361,6 +365,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 
         case WM_KEYUP:
         {
+                RK_LOG_DEBUG("WM_KEYUP");
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyReleased);
                 event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
