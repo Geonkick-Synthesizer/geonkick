@@ -75,6 +75,7 @@ class RkEventQueue::RkEventQueueImpl {
 #ifdef RK_OS_WIN
         RkEventQueueWin* getPlatformEventQueue() const;
 #endif // RK_OS_WIN
+        void dispatchEvents();
 
 
  protected:

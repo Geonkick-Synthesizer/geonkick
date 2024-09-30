@@ -82,6 +82,7 @@ int RkMain::RkMainImpl::exec(bool block)
                 eventQueue->processQueue();
         } else {
                 for (; block ;) {
+		        RK_IMPL_PTR(eventQueue)->dispatchEvents();
                         eventQueue->processQueue();
                         if (RK_IMPL_PTR(eventQueue)->getSystemWindow()->isClosed()) {
                                 RK_LOG_DEBUG("exit");

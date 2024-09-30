@@ -222,23 +222,21 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_TIMER:
         {
-                if (wParam == RK_SYSTEM_WINDOW_TIMER_ID) {
-		        eventQueue->processTimers();
-                        eventQueue->processActions();
-                }
+                if (wParam == RK_SYSTEM_WINDOW_TIMER_ID)
+                        eventQueue->processQueue();
                 return 0;
         }
         case WM_LBUTTONDOWN:
         case WM_RBUTTONDOWN:
         case WM_MBUTTONDOWN:
 	{
+                SetFocus(hWnd);
                 auto event = std::make_unique<RkMouseEvent>();
                 auto x = static_cast<short int>(LOWORD(lParam));
                 auto y = static_cast<short int>(HIWORD(lParam));
                 event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
                 event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
                 if (msg == WM_LBUTTONDOWN) {
-		        SetFocus(hWnd);
                         RK_LOG_DEBUG("WM_LBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Left);
                 } else if (msg == WM_RBUTTONDOWN) {
@@ -294,6 +292,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_LBUTTONDBLCLK:
         {
+                SetFocus(hWnd);
                 RK_LOG_DEBUG("WM_LBUTTONDBLCLK");
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseDoubleClick);
@@ -308,6 +307,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 
         case WM_RBUTTONDBLCLK:
         {
+                SetFocus(hWnd);
                 RK_LOG_DEBUG("WM_RBUTTONDBLCLK");
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseDoubleClick);
@@ -335,6 +335,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         }
         case WM_MOUSEWHEEL:
         {
+                SetFocus(hWnd);
                 int delta = GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA;
                 auto event = std::make_unique<RkMouseEvent>();
                 auto buttonType = (delta > 0) ? RkMouseEvent::ButtonType::WheelUp : RkMouseEvent::ButtonType::WheelDown;
