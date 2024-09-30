@@ -75,10 +75,8 @@ static void processSystemEvent(auto& eventQueue, std::unique_ptr<RkEvent> event)
 
 static Rk::Key convertToRkKey(unsigned int winKey)
 {
-        if (winKey >= 0x30 && winKey <= 0x39) {
-	        RK_LOG_DEBUG("MYKEY: " << winKey);
-		return static_cast<Rk::Key>(winKey);
-	}
+        if (winKey >= 0x30 && winKey <= 0x39)
+                return static_cast<Rk::Key>(winKey);
 
         if (winKey >= 0x41 && winKey <= 0x5A) {
                 if (!(GetKeyState(VK_SHIFT) & 0x8000))
