@@ -212,12 +212,12 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 
         switch(msg)
         {
-        case WM_DESTROY:
-        {
-                KillTimer(hWnd, RK_SYSTEM_WINDOW_TIMER_ID);
-		processSystemEvent(eventQueue, std::make_unique<RkCloseEvent>());
-                return 0;
-        }
+	  // TODO (for ambedded windows this is not necessary):
+	  //case WM_DESTROY:
+	  // {
+	  //		processSystemEvent(eventQueue, std::make_unique<RkCloseEvent>());
+	  //       return 0;
+	  //}
         case WM_TIMER:
         {
                 if (wParam == RK_SYSTEM_WINDOW_TIMER_ID)

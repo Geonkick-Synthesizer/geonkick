@@ -64,6 +64,7 @@ RkSystemWindow::RkSystemWindow(RkWidget *widget, const RkNativeWindowInfo* paren
 RkSystemWindow::~RkSystemWindow()
 {
         delete topWidget;
+        RK_LOG_DEBUG("called: " << this);
 }
 
 void RkSystemWindow::setTitle(const std::string &title)
