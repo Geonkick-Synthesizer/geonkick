@@ -57,6 +57,7 @@ RkWindowWin::~RkWindowWin()
         if (windowHandle.id) {
 	        RK_LOG_DEBUG("called[1]: " << this);
 		KillTimer(windowHandle.id, RK_SYSTEM_WINDOW_TIMER_ID);
+		SetWindowLongPtr(windowHandle.id, GWLP_USERDATA, 0);
 		DestroyWindow(windowHandle.id);
 	}
 }
