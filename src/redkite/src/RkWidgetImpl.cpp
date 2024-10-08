@@ -296,7 +296,7 @@ void RkWidget::RkWidgetImpl::setSize(const RkSize &size)
         widgetSize = size;
         if (isTopWidget())
                 systemWindow->setSize(widgetSize);
-        RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::move(std::make_unique<RkResizeEvent>()));
+        RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::make_unique<RkResizeEvent>());
 }
 
 const RkSize& RkWidget::RkWidgetImpl::size() const
@@ -378,7 +378,7 @@ void RkWidget::RkWidgetImpl::update(bool updateChildren)
         if (!isVisible())
                 return;
 
-        RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::move(std::make_unique<RkPaintEvent>()));
+        RK_IMPL_PTR(getEventQueue())->postEvent(inf_ptr, std::make_unique<RkPaintEvent>());
         if (updateChildren) {
                 for (auto &ch: inf_ptr->children()) {
                         auto widget = dynamic_cast<RkWidget*>(ch);

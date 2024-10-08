@@ -47,7 +47,6 @@ RkLineEdit::RkLineEditImpl::RkLineEditImpl(RkLineEdit *interface,
 
 RkLineEdit::RkLineEditImpl::~RkLineEditImpl()
 {
-        cursorTimer->stop();
 }
 
 void RkLineEdit::RkLineEditImpl::init()
@@ -56,6 +55,11 @@ void RkLineEdit::RkLineEditImpl::init()
         cursorTimer->setName("RkLineEdit");
         hasFocus() ? showCursor(true) : showCursor(false);
         RK_ACT_BIND(cursorTimer, timeout, RK_ACT_ARGS(), this, onCursorTimeout());
+}
+
+void RkLineEdit::RkLineEditImpl::uninit()
+{
+        cursorTimer->stop();
 }
 
 void RkLineEdit::RkLineEditImpl::setText(const std::string &text)

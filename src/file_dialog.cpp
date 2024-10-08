@@ -535,7 +535,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
         RK_ACT_BINDL(createDirectoryButton,
                      pressed,
                      RK_ACT_ARGS(),
-                     [=,this](){
+                     [=, this](){
                              createDirectoryButton->hide();
                              editDirectoryName->show();
                              container->update();
@@ -545,7 +545,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
         RK_ACT_BINDL(editDirectoryName,
                      escapePressed,
                      RK_ACT_ARGS(),
-                     [=,this](){
+                     [=, this](){
                              editDirectoryName->hide();
                              createDirectoryButton->show();
                              editDirectoryName->setText("");
@@ -555,7 +555,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
         RK_ACT_BINDL(editDirectoryName,
                      enterPressed,
                      RK_ACT_ARGS(),
-                     [=,this](){
+                     [=, this](){
                              editDirectoryName->hide();
                              createDirectoryButton->show();
                              createDirectory(editDirectoryName->text());
@@ -566,7 +566,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
         RK_ACT_BINDL(editDirectoryName,
                      editingFinished,
                      RK_ACT_ARGS(),
-                     [=,this](){
+                     [=, this](){
                              editDirectoryName->hide();
                              createDirectoryButton->show();
                              editDirectoryName->setText("");
