@@ -68,12 +68,6 @@ gkick_synth_new(struct gkick_synth **synth, int sample_rate)
                 return GEONKICK_ERROR;
         }
 
-        if (gkick_filter_new(&(*synth)->filter, (*synth)->sample_rate) != GEONKICK_OK) {
-                gkick_log_error("can't create filter");
-                gkick_synth_free(synth);
-		return GEONKICK_ERROR;
-        }
-
         (*synth)->envelope = gkick_envelope_create();
         if ((*synth)->envelope == NULL) {
                 gkick_log_error("can't create envelope");
