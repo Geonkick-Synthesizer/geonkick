@@ -43,9 +43,7 @@ class TopBar : public GeonkickWidget
         RK_DECL_ACT(openFile, openFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openAbout, openAbout(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(resetToDefault, resetToDefault(), RK_ARG_TYPE(), RK_ARG_VAL());
-#ifndef GEONKICK_OS_WINDOWS
         RK_DECL_ACT(openExport, openExport(), RK_ARG_TYPE(), RK_ARG_VAL());
-#endif // GEONKICK_OS_WINDOWS
         RK_DECL_ACT(layerSelected,
                     layerSelected(GeonkickApi::Layer layer, bool b),
                     RK_ARG_TYPE(GeonkickApi::Layer, bool),
@@ -61,9 +59,7 @@ class TopBar : public GeonkickWidget
         GeonkickModel *geonkickModel;
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
-#ifndef GEONKICK_OS_WINDOWS
         GeonkickButton *exportFileButton;
-#endif // GEONKICK_OS_WINDOWS
         PresetNavigator* presetNavigator;
         GeonkickButton *layer1Button;
         GeonkickButton *layer2Button;

@@ -88,9 +88,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         , geonkickModel{model}
         , openFileButton{nullptr}
         , saveFileButton{nullptr}
-#ifndef GEONKICK_OS_WINDOWS
         , exportFileButton{nullptr}
-#endif // GEONKICK_OS_WINDOWS
         , presetNavigator{nullptr}
         , layer1Button{nullptr}
         , layer2Button{nullptr}
@@ -145,7 +143,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                                                              action saveFile();});
         mainLayout->addWidget(saveFileButton);
         addSeparator(mainLayout, 5);
-#ifndef GEONKICK_OS_WINDOWS
         exportFileButton = new GeonkickButton(this);
         exportFileButton->setSize(29, 10);
         saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
@@ -159,7 +156,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                                                                action openExport();});
         mainLayout->addWidget(exportFileButton);
         addSeparator(mainLayout, 5);
-#endif // GEONKICK_OS_WINDOWS
 
 	auto playButton = new RkButton(this);
         playButton->setType(RkButton::ButtonType::ButtonPush);
