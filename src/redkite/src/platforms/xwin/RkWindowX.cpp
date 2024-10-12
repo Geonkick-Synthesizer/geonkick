@@ -316,8 +316,11 @@ RkCanvasInfo* RkWindowX::getCanvasInfo() const
 
 void RkWindowX::freeCanvasInfo()
 {
-        if (canvasInfo)
+        if (canvasInfo) {
+                if (canvasInfo->cairo_context)
+                        cairo_destroy(canvasInfo->cairo_context);
                 cairo_surface_destroy(canvasInfo->cairo_surface);
+        }
 }
 
 #else
