@@ -98,6 +98,11 @@ void RkSystemWindow::freeCanvasInfo()
         platformWindow->freeCanvasInfo();
 }
 
+bool RkSystemWindow::isSystemWindowCanvas() const
+{
+	  return true;
+}
+
 RkImage& RkSystemWindow::getImage()
 {
         return systemWindowImage;

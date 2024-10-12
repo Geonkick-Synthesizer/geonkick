@@ -62,6 +62,8 @@ cairo_t* RkCairoGraphicsBackend::context() const
 
 RkCairoGraphicsBackend::~RkCairoGraphicsBackend()
 {
+        if (canvas->isSystemWindowCanvas()) 
+                cairo_destroy(context());
 #ifdef RK_OS_WIN
         canvas->freeCanvasInfo();
 #endif // RK_OS_WIN
