@@ -30,7 +30,7 @@
 
 #include <RkLabel.h>
 
-RK_DECLARE_IMAGE_RC(hboxbk_ampl_env);
+RK_DECLARE_IMAGE_RC(global_hboxbk_ampl_env);
 RK_DECLARE_IMAGE_RC(hboxbk_filter);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
 RK_DECLARE_IMAGE_RC(knob);
@@ -56,13 +56,14 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         auto amplitudeEnvelopeBox = new GeonkickWidget(this);
         amplitudeEnvelopeBox->setPosition(0, 0);
         amplitudeEnvelopeBox->setFixedSize(224, 125);
-        amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_ampl_env)));
+        amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(global_hboxbk_ampl_env)));
         amplitudeEnvelopeBox->show();
 
         kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
         kickAmplitudeKnob->setDefaultValue(0.8);
         kickAmplitudeKnob->setFixedSize(80, 78);
-        kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2);
+        kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 4);
+        kickAmplitudeKnob->setBackgroundColor({0, 255, 0});
         kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         kickAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         kickAmplitudeKnob->setRange(0, 1.0);
@@ -79,7 +80,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplEnvelopeButton->setFixedSize(63, 21);
         amplEnvelopeButton->setPosition(kickAmplitudeKnob->x() + kickAmplitudeKnob->width() / 2
                                         - amplEnvelopeButton->width() / 2,
-                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height());
+                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height() + 2);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
                                         RkButton::State::Unpressed);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),
@@ -101,7 +102,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
         kickLengthKnob->setDefaultValue(300);
         kickLengthKnob->setFixedSize(80, 80);
-        kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2);
+        kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 4);
         kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         kickLengthKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         kickLengthKnob->setRange(50, geonkickApi->kickMaxLength());
