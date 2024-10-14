@@ -88,7 +88,6 @@ class RkEventQueue::RkEventQueueImpl {
         RK_DECALRE_INTERFACE_PTR(RkEventQueue);
         RK_DISABLE_COPY(RkEventQueueImpl);
         RK_DISABLE_MOVE(RkEventQueueImpl);
-        std::unique_ptr<RkSystemWindow> systemWindow;
         std::unordered_set<RkObject*> objectsList;
         std::vector<RkWidget*> popupList;
         std::unordered_map<int, std::unique_ptr<RkShortcut>> shortcutsList;
@@ -97,6 +96,7 @@ class RkEventQueue::RkEventQueueImpl {
         std::mutex actionsQueueMutex;
         std::vector<std::unique_ptr<RkAction>> actionsQueue;
         std::unordered_set<RkTimer*> timersList;
+        std::unique_ptr<RkSystemWindow> systemWindow;
 
 #ifdef RK_OS_WIN
         std::unique_ptr<RkEventQueueWin> platformEventQueue;
