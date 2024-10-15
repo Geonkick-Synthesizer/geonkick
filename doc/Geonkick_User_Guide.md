@@ -60,7 +60,7 @@ Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) pe
 Geonkick will not magically improve your percussion sounds. Like with any other synthesizer,
 the most important thing is the sound designer's craft and years of experience. Geonkick only
 provides the tools necessary to design the sound. Even I, as a developer, could not design
-a good kick. Harald Revery, with his experience in designing percussive sounds, shows how
+a good kick. For example, [Harald Revery](https://haraldrevery.bio.link/), with his experience in designing percussive sounds, [shows](https://www.youtube.com/watch?v=WnxUgDoOriQ) how
 you can actually design a high-quality kick with Geonkick. You can try Harald Revery's kick
 presets that were included in the Geonkick project.
 
