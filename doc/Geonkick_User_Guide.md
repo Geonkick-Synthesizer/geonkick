@@ -4,7 +4,7 @@
 
 **License:** This work (including all images it uses) is released under [CC0 1.0 Universal (CC0 1.0) Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/deed.en).
 
-**Version:** 3.4.0
+**Version:** 3.5.0
 
 **Website:** [https://geonkick.org](https://geonkick.org)
 
@@ -16,7 +16,7 @@
 - [Block diagram](#block-diagram)
 - [Instrument](#instrument)
    * [Instrument Layers](#instrument-layers)
-   * [Playing Instrument](#playing-instrument)
+   * [Playing Instrument and Note Off](#playing-instrument-and-note-off)
    * [Instrument UI](#instrument-ui)
    * [Top Bar](#top-bar)
    * [Shortcut Keys](#shortcut-keys)
@@ -84,13 +84,19 @@ Geonkick can handle up to 16 instruments in parallel, making it a multi-timbral 
 
 #### Instrument Layers
 
-An instrument consists of three layers that can be turned on/off using the buttons "L1," "L2," and "L3" in the top bar menu. Each layer contains two oscillators and a noise generator. The sum of these layers is passed to the "General" controls. The contribution of each layer to the output can be controlled using the "Layers Mixer." Although only one layer is controllable through the UI, the user can switch between layers by pressing the buttons "L1," "L2," or "L3" in the envelope area.
+An instrument consists of three layers that can be turned on/off using the buttons "L1," "L2," and "L3" in the top bar menu. Each layer contains three oscillators. The sum of these layers is passed to the global controls. The contribution of each layer to the output can be controlled using the "Layers Mixer". Although only one layer is controllable through the UI, the user can switch between layers by pressing the buttons "L1," "L2," or "L3" in the envelope area.
 
-#### Playing Instrument
+#### Playing Instrument and Note off
 
-Every time the user presses the key associated with the instrument, Geonkick will play the instrument until the end or until the key is released. If the key is released before the sound ends, Geonkick will apply a 30 ms linear decay to the sound.
+Every time the user presses the key associated with the instrument, Geonkick will play the instrument until the end or until the key is released. If the key is released before the sound ends, Geonkick will apply a 30 ms linear decay to the sound if the "noff" button is enabled.
 
-If there are changes in controls during the instrument play, the changes will only be applied at the next key press. However, the instrument graph will display the changes instantly.
+If the "noff" button is disabled, Geonkick will mix the current sound with the next one pressed. This is often useful for playing instruments like crash cymbals.
+
+By default, the "noff" button is disabled. In future releases, this may change.
+
+**Important:** When "noff" is disabled, sounds will accumulate, and if the sound is played repeatedly and very quickly, it may introduce distortion. In such cases, it is better to enable the "noff" button.
+
+If there are changes to controls during instrument playback, the changes will only be applied on the next key press. However, the instrument graph will display the changes instantly.
 
 #### Instrument UI
 
