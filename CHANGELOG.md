@@ -1,3 +1,19 @@
+## [3.5.0]
+
+### Features
+
+	- Zoom along time axis
+	- Option to not ignore the note OFF
+
+### Fixes
+
+- Fixed shortucts
+
+### Improvements
+
+- Moved to GUI graphics widgets (updated Redkite GUI toolkit)
+
+
 ## [3.4.0]
 
 ### Features
