@@ -57,7 +57,6 @@ class ExportWidget: public GeonkickWidget {
         int exportFormat();
         std::filesystem::path getExportedFilePath(const std::filesystem::path &file);
         std::string fileSuffix();
-        bool validateInput();
         void exportInstrument(const std::string &filePath);
 
  private:
