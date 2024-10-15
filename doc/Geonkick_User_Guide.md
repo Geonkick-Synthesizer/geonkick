@@ -11,6 +11,7 @@
 ### Table of Contents
 
 - [Introduction](#introduction)
+- [The Sound Designer Craft](#the-sound-designer-craft)
 - [How it works](#how-it-works)
 - [Block diagram](#block-diagram)
 - [Instrument](#instrument)
@@ -53,6 +54,15 @@
 ### Introduction
 
 Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and blend samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin.
+
+### The Sound Designer Craft
+
+Geonkick will not magically improve your percussion sounds. Like with any other synthesizer,
+the most important thing is the sound designer's craft and years of experience. Geonkick only
+provides the tools necessary to design the sound. Even I, as a developer, could not design
+a good kick. Harald Revery, with his experience in designing percussive sounds, shows how
+you can actually design a high-quality kick with Geonkick. You can try Harald Revery's kick
+presets that were included in the Geonkick project.
 
 ### How it works
 
