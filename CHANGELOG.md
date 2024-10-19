@@ -1,3 +1,32 @@
+## [3.5.0]
+
+### Features
+
+- Zoom along the time axis
+- New oscillator UI: 3 oscillators with wave functions: sine, square, triangle, sawtooth, noise (white & brownian), and sample
+- Preset navigator
+- Noise density control
+- Instruments tabs in the main UI
+- Option to not ignore the NOTE OFF
+- Add restore control to default value on double click
+- Create new folder with file browser
+- Add scroll to spinboxes
+
+### Fixes
+
+- Fixed shortcuts
+- Fixed the name of the preset when saved and loaded
+- Fixed some memory leaks in DSP
+- Fixed some potential crashes on closing the UI
+
+### Improvements
+
+- Restore export button for Windows
+- Moved to GUI graphics widgets (updated Redkite GUI toolkit)
+- Improved the drawing of percussive sound waveform
+- Better movement of envelope points for longer sounds
+- Better UI performance due to moving to graphics widgets
+
 ## [3.4.0]
 
 ### Features

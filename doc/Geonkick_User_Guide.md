@@ -4,18 +4,19 @@
 
 **License:** This work (including all images it uses) is released under [CC0 1.0 Universal (CC0 1.0) Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/deed.en).
 
-**Version:** 3.4.0
+**Version:** 3.5.0
 
 **Website:** [https://geonkick.org](https://geonkick.org)
 
 ### Table of Contents
 
 - [Introduction](#introduction)
+- [The Sound Designer Craft](#the-sound-designer-craft)
 - [How it works](#how-it-works)
 - [Block diagram](#block-diagram)
 - [Instrument](#instrument)
    * [Instrument Layers](#instrument-layers)
-   * [Playing Instrument](#playing-instrument)
+   * [Playing Instrument and Note Off](#playing-instrument-and-note-off)
    * [Instrument UI](#instrument-ui)
    * [Top Bar](#top-bar)
    * [Shortcut Keys](#shortcut-keys)
@@ -24,7 +25,7 @@
    * [Envelope Point Label](#envelope-point-label)
    * [Manually Input Envelope Point Value](#manually-input-envelope-point-value)
    * [Display Current Selected Coordinates of Envelope Point](#display-current-selected-coordinates-of-envelope-point)
-   * [Instrument Graph](#instrument-graph)
+   * [Instrument Wave Form](#instrument-wave-form)
    * [Instrument Preset](#instrument-preset)
    * [Oscillator](#oscillator)
    * [Noise Generator](#noise-generator)
@@ -54,6 +55,15 @@
 
 Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and blend samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin.
 
+### The Sound Designer Craft
+
+Geonkick will not magically improve your percussion sounds. Like with any other synthesizer,
+the most important thing is the sound designer's craft and years of experience. Geonkick only
+provides the tools necessary to design the sound. Even I, as a developer, could not design
+a good kick. For example, [Harald Revery](https://haraldrevery.bio.link/), with his experience in designing percussive sounds, [shows](https://www.youtube.com/watch?v=WnxUgDoOriQ) how
+you can actually design a high-quality kick with Geonkick. You can try Harald Revery's kick
+presets that were included in the Geonkick project.
+
 ### How it works
 
 Geonkick synthesizes the full instrument length sound into a buffer in the memory whenever the user modifies the controls or the envelopes. The resulting instrument sound is then transferred to a module responsible for playing the instrument. There is no synthesis occurring when the user presses a key; in other words, if no controls are altered, Geonkick functions like a sampler. However, this behavior results in the same real-time synthesis experience for the user as common synthesizers.
@@ -74,13 +84,19 @@ Geonkick can handle up to 16 instruments in parallel, making it a multi-timbral 
 
 #### Instrument Layers
 
-An instrument consists of three layers that can be turned on/off using the buttons "L1," "L2," and "L3" in the top bar menu. Each layer contains two oscillators and a noise generator. The sum of these layers is passed to the "General" controls. The contribution of each layer to the output can be controlled using the "Layers Mixer." Although only one layer is controllable through the UI, the user can switch between layers by pressing the buttons "L1," "L2," or "L3" in the envelope area.
+An instrument consists of three layers that can be turned on/off using the buttons "L1," "L2," and "L3" in the top bar menu. Each layer contains three oscillators. The sum of these layers is passed to the global controls. The contribution of each layer to the output can be controlled using the "Layers Mixer". Although only one layer is controllable through the UI, the user can switch between layers by pressing the buttons "L1," "L2," or "L3" in the envelope area.
 
-#### Playing Instrument
+#### Playing Instrument and Note off
 
-Every time the user presses the key associated with the instrument, Geonkick will play the instrument until the end or until the key is released. If the key is released before the sound ends, Geonkick will apply a 30 ms linear decay to the sound.
+Every time the user presses the key associated with the instrument, Geonkick will play the instrument until the end or until the key is released. If the key is released before the sound ends, Geonkick will apply a 30 ms linear decay to the sound if the "noff" button is enabled.
 
-If there are changes in controls during the instrument play, the changes will only be applied at the next key press. However, the instrument graph will display the changes instantly.
+If the "noff" button is disabled, Geonkick will mix the current sound with the next one pressed. This is often useful for playing instruments like crash cymbals.
+
+By default, the "noff" button is disabled. In future releases, this may change.
+
+**Important:** When "noff" is disabled, sounds will accumulate, and if the sound is played repeatedly and very quickly, it may introduce distortion. In such cases, it is better to enable the "noff" button.
+
+If there are changes to controls during instrument playback, the changes will only be applied on the next key press. However, the instrument graph will display the changes instantly.
 
 #### Instrument UI
 
@@ -95,7 +111,7 @@ The instrument's user interface serves as the primary window of Geonkick, displa
 - **"Reset" button:** Resets the current instrument to default settings.
 - **"Tune" checkbox:** Toggles the tuning of the current instrument. The output instrument sound will be tuned according to the pressed MIDI key.
 
-- **Preset label:** Displays the name of the currently selected instrument; by default, shows "Default".
+- **Preset navigator:** The navigator to select preset folders and presets & kit presets.
 - **MIDI Key:** Displays the current MIDI input key for the instrument. Pressing on the label opens a popup to select a MIDI key for the instrument.
 - **Tabs:** "Controls", "Kit", "Presets", and "Samples", "Settings" switch to instrument main controls, kit, presets, and sample browser UI, settings respectively.
 
@@ -121,12 +137,14 @@ The instrument's user interface serves as the primary window of Geonkick, displa
 
 The instrument envelope area displays:
 
-- **Instrument graph:** Shows the real-time synthesized instrument sound graph.
+- **Instrument graph:** Shows the real-time synthesized instrument sound wave form.
 - **Envelopes:** Various types of envelopes displayed on top of the instrument sound graph.
 - **Envelope points:** Can be added, removed, and moved by the user. Display the values of the envelopes points and also have a context input for the value (Ctrl + left mouse double-click on the point).
 - **Envelope Path Label:** Shows the current selected envelope type and category. For example, "L1/OSC1/AMPL" means the amplitude envelope of Layer 1 of Oscillator 1.
 - **Buttons "L1", "L2", "L3":** Set the envelope area to display only the envelopes for Layer 1, 2, or 3.
 - When hovering over/selecting an envelope point, it displays the point's coordinates (value, time) in the bottom right corner area.
+- Scroll up/down to zoom in/out the envelope area along the time axis. Also, drag left/right to move the zoomed area.
+- A label "1:x" that shows the zoom factor.
 
 #### Envelope Points
 
@@ -156,9 +174,9 @@ Users can set the value of an envelope point manually with a maximum precision o
 
 A more exact values of the coordinates of the currently hovered or selected envelope point are shown in the bottom-right area, displaying both value and time in milliseconds.
 
-#### Instrument Graph
+#### Instrument Wave Form
 
-The instrument graph shows the real-time synthesized instrument sound. Whenever the user changes instrument controls, Geonkick generates a new graph and updates it.
+The instrument wave from shows the real-time synthesized instrument sound. Whenever the user changes instrument controls, Geonkick generates a new graph and updates it.
 
 If the sound exceeds the range of -1.0 to 1.0, the sound is hard-limited to these values, visible in the instrument graph.
 
@@ -170,46 +188,39 @@ The instrument preset is in JSON format and uses the file extension "*.gkick". I
 
 #### Oscillator
 
-Each layer consists of two oscillators, the outputs of which are mixed with a noise generator to produce the layer's output. Controls related to oscillators are grouped and arranged vertically.
+Each layer consists of three oscillators, the outputs of which are mixed with a noise generator to produce the layer's output. Controls related to oscillators are grouped and arranged vertically.
 
-- **"Oscillator1" and "Oscillator 2":** Checkboxes to toggle the oscillators on/off.
-- **"Osc1->Osc2":** Checkbox that allows Oscillator1 to FM modulate Oscillator2.
-- **Waveform Types:** "Sine," "Square," "Triangle," "Sawtooth" - options for periodic wave functions of the oscillator.
+- **"OSC1", "OSC2", and "OSC3":** Checkboxes to toggle the oscillators on/off.
+- **"OSC1->OSC2":** Checkbox that allows Oscillator 1 to FM modulate Oscillator 2.
+- **Waveform Types:** "Sine," "Square," "Triangle," "Sawtooth," "Noise," "Sample" – options for wave functions of the oscillator.
+- **Noise:** The oscillator will generate noise ("w" – white, "b" – brownian). Also, there is a "seed" spinbox to set the noise seed.
 - **"Sample":** Represents a sampler with a maximum length of 4 seconds.
 - **"...":** Button to browse and load a sample (WAV, FLAC, or OGG).
-- **"Phase":** Adjusts the initial phase of the oscillator. For samples, this moves the start of the sample up to 1/2 of the instrument sound length.
+- **"Phase":** Adjusts the initial phase of the oscillator. For samples, this moves the start of the sample up to 1/2 of the instrument's sound length.
 - **Amplitude Knob:** Sets the maximum current amplitude of the oscillator.
 - **Frequency Knob:** Sets the maximum current frequency of the oscillator.
 - **Pitch Knob:** Sets the pitch shift range when the waveform is set as a sample.
-- **Pitch Buttons:** Show the envelopes for the pitch shift.
+- **Density Knob:** When the noise wave function is selected, this knob controls the density of the noise.
+- **Pitch Button:** Shows the envelopes for the pitch shift.
+- **Density Button:** Shows the envelope of the noise density.
 - **"Filter" Button:** Enables/Disables the filter for the oscillator.
 - **Envelopes Buttons:** "Amplitude," "Frequency," "Pitch," and "Cutoff" to access envelopes for amplitude, frequency, pitch shift, and filter cutoff, respectively.
 
-#### Noise Generator
+**Note:** Loading/saving presets preserves the noise pattern, seed, and density patern.
 
-The noise generator creates white and brownian noise.
+#### Global Controls
 
-- **"Amplitude":** Sets the maximum noise amplitude and the amplitude envelope.
-- **"White" and "Brownian":** Select the noise type.
-- **"Seed":** Slider to set different seeds for the noise generator.
-- **Filter:** Similar controls to oscillators.
-
-Loading/saving presets preserves the noise pattern and seed.
-
-#### General Controls
-
-General controls are applied after the layers mixer. Arranged vertically and applied from top to bottom. The compressor is applied last.
+Global controls are applied after the layers mixer. Arranged vertically and applied from top to bottom.
 
 - **Amplitude Knob:** Controls the maximum amplitude after the layers mixer.
 - **"Amplitude" Button:** Shows the general amplitude envelope.
 - **"Length":** Sets the maximum sound length of the instrument.
 - **Filter Controls:** Similar to oscillator controls.
 - **Distortion:** Drive and volume envelopes can be accessed with "Drive" and "Volume" buttons.
-- **Compressor**
 
 #### Limiter
 
-The limiter control is applied to the audio output of the instrument, controlling only the currently selected instrument. 
+The limiter control is applied to the audio output of the instrument, controlling only the currently selected instrument.
 
 *Issues:* When playing the instrument and simultaneously changing the limiter quickly, sound artifacts may occur due to abrupt changes in sound. To adjust the total output amplitude, it's better to use the "General" controls for amplitude.
 
@@ -238,16 +249,7 @@ The distortion effect is applied after the general filter and has the following 
 - **Drive:** Controls the amount of distortion.
 - **Drive Envelope:** Accessed with the "Drive" button.
 
-#### Compressor
-
-The compressor is applied after distortion and has the following controls:
-
-- **"Attack"**
-- **"Threshold"**
-- **"Ratio"**
-- **"Drive"**
-
-*Note:* The compressor is not a standard compressor; it only compresses signal aplitude with a zero release time. It is more useful for creating distortion effects. For standard sound compression, it is recommended to use a dedicated compressor.
+*Note:* The compressor is not a standard compressor; it only compresses signal amplitude with a zero release time. It is more useful for creating distortion effects. For standard sound compression, it is recommended to use a dedicated compressor.
 
 #### Tune
 
@@ -257,11 +259,9 @@ In the top bar, the "Tune" checkbox toggles tuning for the currently selected in
 
 #### Export
 
-The Export dialog can be accessed by clicking the "Export" button in the top bar. It includes the following inputs:
+The Export dialog can be accessed by clicking the "Export" button in the top bar.
 
 - **File format:** "FLAC16", "FLAC24", "WAV16", "WAV24", "WAV32", "Ogg"
-- **"Path":** Specifies the export file path.
-- **"File name"**
 - **"Stereo" or "Mono":** Exports into a file with one or two identical channels.
 
 Geonkick will export only the currently selected instrument.
@@ -288,6 +288,7 @@ The instrument list has a maximum limit of 16 instruments and displays the instr
 - **Buttons at the end of the instrument line:** Popup for selecting the MIDI key.
 - **Spinbox for setting MIDI input channel for an instrument.**
 - **Column labels:** Show the MIDI key the instrument can be mapped to. The "Any" label indicates that the instrument will be played by pressing any key.
+- **noff:** Turns off/on to ignore the NOTE OFF when the MIDI key is released.
 - **Green circle:** Indicates which instrument is mapped to which output channel and can be changed by left-clicking on the grid cell.
 - **Limiter slider:** Controls the limiter for the current instrument.
 - **"M" button:** Mutes the current instrument.
@@ -363,5 +364,3 @@ The standalone version of Geonkick offers the same features as the LV2 or VST3 p
 ### Build & Install
 
 For instructions on building and installing Geonkick, please refer to the README file.
-
-

@@ -29,7 +29,7 @@
 class RkLineEdit : public RkWidget {
  public:
     RkLineEdit(RkWidget *parent, const std::string &text = std::string());
-    virtual ~RkLineEdit() = default;
+    virtual ~RkLineEdit();
     void setText(const std::string &text);
     std::string text() const;
     void showCursor();

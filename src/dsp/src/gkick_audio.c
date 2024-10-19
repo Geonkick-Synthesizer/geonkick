@@ -97,7 +97,7 @@ void gkick_audio_free(struct gkick_audio** audio)
                 gkick_jack_free(&(*audio)->jack);
 #endif // GEONKICK_AUDIO_JACK
 		gkick_mixer_free(&(*audio)->mixer);
-                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++)
+                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS + 1; i++)
                         gkick_audio_output_free(&(*audio)->audio_outputs[i]);
                 free(*audio);
                 *audio = NULL;

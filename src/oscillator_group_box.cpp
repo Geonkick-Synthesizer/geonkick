@@ -290,6 +290,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                                                       && static_cast<Oscillator::Type>(category)
                                                       == oscillator->type()));
         pitchShiftKnob = new Knob(amplitudeEnvelopeBox);
+        pitchShiftKnob->setDefaultValue(12);
         pitchShiftKnob->setSize(80, 78);
         pitchShiftKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 2);
         pitchShiftKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -302,6 +303,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     setPitchShift(val));
 
         noiseDensityKnob = new Knob(amplitudeEnvelopeBox);
+        noiseDensityKnob->setDefaultValue(1.0);
         noiseDensityKnob->setSize(80, 78);
         noiseDensityKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 2);
         noiseDensityKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
@@ -314,6 +316,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
                     setNoiseDensity(val));
 
         frequencyKnob = new Knob(amplitudeEnvelopeBox);
+        frequencyKnob->setDefaultValue(800);
         frequencyKnob->setRangeType(Knob::RangeType::Logarithmic);
         frequencyKnob->setSize(80, 78);
         frequencyKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 2);

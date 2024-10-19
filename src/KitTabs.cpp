@@ -73,7 +73,7 @@ RkButton* KitTabs::createTabButton(PercussionModel *per)
                 RkColor color;
                 switch (state) {
                 case RkButton::State::Unpressed:
-                        color = RkColor(60, 60, 60);
+                        color = RkColor(50, 50, 50);
                         break;
                 case RkButton::State::UnpressedHover:
                         color = RkColor(80, 80, 80);

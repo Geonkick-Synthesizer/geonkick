@@ -102,6 +102,7 @@ protected:
         RkWidget* getWidgetByGlobalPoint(RkWidget *widget, const RkPoint &globalPoint);
         bool containsGlobalPoint(RkWidget* widget, const RkPoint &globalPoint) const;
         bool widgetExists(RkWidget *widget) const;
+        bool isSystemWindowCanvas() const override;
 
 private:
         bool isWindowClosed;

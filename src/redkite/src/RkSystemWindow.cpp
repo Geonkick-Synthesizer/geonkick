@@ -64,6 +64,7 @@ RkSystemWindow::RkSystemWindow(RkWidget *widget, const RkNativeWindowInfo* paren
 RkSystemWindow::~RkSystemWindow()
 {
         delete topWidget;
+        RK_LOG_DEBUG("called: " << this);
 }
 
 void RkSystemWindow::setTitle(const std::string &title)
@@ -95,6 +96,11 @@ RkCanvasInfo* RkSystemWindow::getCanvasInfo() const
 void RkSystemWindow::freeCanvasInfo()
 {
         platformWindow->freeCanvasInfo();
+}
+
+bool RkSystemWindow::isSystemWindowCanvas() const
+{
+	  return true;
 }
 
 RkImage& RkSystemWindow::getImage()
@@ -300,11 +306,12 @@ RkWidget* RkSystemWindow::getTopWidget() const
 
 void RkSystemWindow::setFocus(bool b)
 {
+        platformWindow->setFocus(b);
 }
 
 bool RkSystemWindow::hasFocus() const
 {
-        return true;
+        return platformWindow->hasFocus();
 }
 
 void RkSystemWindow::setPointerShape(Rk::PointerShape shape)

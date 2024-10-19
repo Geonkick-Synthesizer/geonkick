@@ -52,6 +52,7 @@ RkWidget::RkWidget(RkWidget *parent, Rk::WidgetFlags flags)
         : RkObject(parent, std::make_unique<RkWidgetImpl>(this, parent, flags))
         , impl_ptr{static_cast<RkWidgetImpl*>(o_ptr.get())}
 {
+        setBackgroundColor(parent->background());
         RK_LOG_DEBUG("called: " << this);
         if (flags == Rk::WidgetFlags::Popup)
                 RK_IMPL_PTR(eventQueue())->addPopup(this);
@@ -595,21 +596,15 @@ void RkWidget::setVisible(bool b)
                 return;
 
         impl_ptr->setVisible(b);
-        if (!b) {
-                eventQueue()->postEvent(this,
-                                        std::move(std::make_unique<RkHideEvent>()));
-        } else {
-                eventQueue()->postEvent(this,
-                                std::move(std::make_unique<RkShowEvent>()));
-        }
+        if (!b)
+                eventQueue()->postEvent(this, std::make_unique<RkHideEvent>());
+        else
+                eventQueue()->postEvent(this, std::make_unique<RkShowEvent>());
 
-        if (!b && parentWidget()) {
-                eventQueue()->postEvent(parentWidget(),
-                                        std::move(std::make_unique<RkPaintEvent>()));
-        } else {
-                eventQueue()->postEvent(this,
-                                        std::move(std::make_unique<RkPaintEvent>()));
-        }
+        if (!b && parentWidget())
+                eventQueue()->postEvent(parentWidget(), std::make_unique<RkPaintEvent>());
+        else
+                eventQueue()->postEvent(this, std::make_unique<RkPaintEvent>());
 
         RK_IMPL_PTR(this)->setChildrenVisible(b);
 }

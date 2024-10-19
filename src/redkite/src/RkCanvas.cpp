@@ -31,3 +31,9 @@ RkCanvasInfo* RkCanvas::getCanvasInfo() const
 void RkCanvas::freeCanvasInfo()
 {
 }
+
+bool RkCanvas::isSystemWindowCanvas() const
+{
+        return false;
+}
+

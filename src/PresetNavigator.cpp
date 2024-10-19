@@ -184,14 +184,17 @@ PresetNavigator::PresetNavigator(GeonkickWidget *parent,
 void PresetNavigator::updateView()
 {
         auto folder = presetsModel->currentSelectedFolder();
-        if (folder) {
-                presetFolderName->setText(folder->name());
-                auto preset = presetsModel->currentSelectedPreset();
-                if (!preset)
-                        preset = folder->preset(0);
-                if (preset)
-                        presetName->setText(preset->name());
-        }
+        if (!folder)
+                return;
+
+        presetFolderName->setText(folder->name());
+        auto preset = presetsModel->currentSelectedPreset();
+        if (!preset)
+                preset = folder->preset(0);
+        if (!preset)
+                return;
+        auto namePrefix = preset->type() == Preset::PresetType::PercussionKit ? "Kit: " : "";
+        presetName->setText(namePrefix + preset->name());
 }
 
 

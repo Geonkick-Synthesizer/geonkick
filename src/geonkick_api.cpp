@@ -478,8 +478,8 @@ std::unique_ptr<KitState> GeonkickApi::getKitState() const
         for (const auto &id : ordredPercussionIds()) {
                 auto state = getPercussionState(id);
                 state->setId(i);
+		GEONKICK_LOG_DEBUG("PER: " << state->getName() << ": id = " << state->getId());
                 kit->addPercussion(std::move(state));
-                GEONKICK_LOG_DEBUG("PER: " << state->getName() << ": id = " << state->getId());
                 i++;
         }
         return kit;

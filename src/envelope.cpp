@@ -80,10 +80,10 @@ void Envelope::zoomOut()
                                            0.0,
                                            envelopeLength() - envelopeLength()
                                            / res->second.zoomCoefficient);
-        res->second.valueOrigin = std::clamp(res->second.valueOrigin,
-                                             0.0,
-                                             envelopeAmplitude() - envelopeAmplitude()
-                                             / res->second.zoomCoefficient);
+        // res->second.valueOrigin = std::clamp(res->second.valueOrigin,
+        //                                      0.0,
+        //                                      envelopeAmplitude() - envelopeAmplitude()
+        //                                      / res->second.zoomCoefficient);
 }
 
 void Envelope::zoomIn()
@@ -97,10 +97,10 @@ void Envelope::zoomIn()
                                            0.0,
                                            envelopeLength() - envelopeLength()
                                            / res->second.zoomCoefficient);
-        res->second.valueOrigin = std::clamp(res->second.valueOrigin,
-                                             0.0,
-                                             envelopeAmplitude() - envelopeAmplitude()
-                                             / res->second.zoomCoefficient);
+        // res->second.valueOrigin = std::clamp(res->second.valueOrigin,
+        //                                      0.0,
+        //                                      envelopeAmplitude() - envelopeAmplitude()
+        //                                      / res->second.zoomCoefficient);
 }
 
 double Envelope::getZoom() const
@@ -647,25 +647,14 @@ RkRealPoint Envelope::scaleDown(const RkPoint &point)
                     < std::numeric_limits<double>::epsilon()) {
                         return 0.0;
                 }
-                return (static_cast<double>(y) / H()) / getZoom()
-                        + getValueOrigin() / envelopeAmplitude();
+                // return (static_cast<double>(y) / H()) / getZoom()
+                //         + getValueOrigin() / envelopeAmplitude();
+                return static_cast<double>(y) / H();
         };
 
 	if (applyType == ApplyType::Logarithmic)
 		return {calculateX(point.x()), calculateY(point.y())};
 
-        double y = 0.0;
-        if (type() == Type::Amplitude
-	    || type() == Type::FilterQFactor
-            || type() == Type::DistortionDrive
-            || type() == Type::DistortionVolume
-            || type() == Type::PitchShift) {
-        } else {
-                /*auto k = static_cast<double>(point.y()) / H();
-                double logVal = k * (log10(envelopeAmplitude()) - log10(20));
-                double val = pow(10, logVal + log10(20));
-                y = val / envelopeAmplitude();*/
-        }
         return {calculateX(point.x()), calculateY(point.y())};
 }
 
@@ -680,7 +669,8 @@ RkPoint Envelope::scaleUp(const RkRealPoint &point)
                     < std::numeric_limits<double>::epsilon()) {
                         return 0.0;
                 }
-                return getZoom() * (y - getValueOrigin() / envelopeAmplitude()) * H();
+                // return getZoom() * (y - getValueOrigin() / envelopeAmplitude()) * H();
+                return y * H();
         };
 
 	if (getApplyType() == ApplyType::Logarithmic)
@@ -886,10 +876,11 @@ void Envelope::setValueOrigin(double valueOrg)
         auto res = zoomInfoMap.find(type());
         if (res == zoomInfoMap.end())
                 return;
-        res->second.valueOrigin = std::clamp(valueOrg,
-                                             0.0,
-                                             envelopeAmplitude() - envelopeAmplitude()
-                                             / res->second.zoomCoefficient);
+        // TODO:
+        //        res->second.valueOrigin = std::clamp(valueOrg,
+        //                                     0.0,
+        //                                     envelopeAmplitude() - envelopeAmplitude()
+        //                                     / res->second.zoomCoefficient);
 }
 
 double Envelope::getValueOrigin() const

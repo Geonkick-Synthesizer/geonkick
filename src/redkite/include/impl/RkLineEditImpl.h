@@ -36,6 +36,7 @@ class RkLineEdit::RkLineEditImpl : public RkWidget::RkWidgetImpl, public RkObjec
                        const std::string &text = std::string());
         virtual ~RkLineEditImpl();
         void init();
+        void uninit();
         void setText(const std::string &text);
         void addText(const std::string& text);
         void removeText(int n, bool after);

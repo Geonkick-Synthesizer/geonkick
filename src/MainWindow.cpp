@@ -40,7 +40,11 @@
 #include <RkEvent.h>
 
 constexpr int MAIN_WINDOW_WIDTH  = 940;
-constexpr int MAIN_WINDOW_HEIGHT = 705;
+#ifdef GEONKICK_SINGLE
+constexpr int MAIN_WINDOW_HEIGHT = 750;
+#else
+constexpr int MAIN_WINDOW_HEIGHT = 724;
+#endif // GEONKICK_SINGLE
 
 MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         : GeonkickWidget(app)
@@ -153,6 +157,9 @@ void MainWindow::createShortcuts()
         addShortcut(Rk::Key::Key_Control_Left, Rk::KeyModifiers::Control_Left);
 }
 
+#include <RkLabel.h>
+#include <RkContainer.h>
+
 bool MainWindow::init(void)
 {
         oscillators = geonkickApi->oscillators();
@@ -171,10 +178,8 @@ bool MainWindow::init(void)
                     this, openFileDialog(FileDialog::Type::Save));
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
-#ifndef GEONKICK_OS_WINDOWS
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
                     this, openExportDialog());
-#endif // GEONKICK_OS_WINDOWS
         RK_ACT_BIND(topBar, layerSelected,
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
                     geonkickApi, enbaleLayer(layer, b));
@@ -211,18 +216,32 @@ bool MainWindow::init(void)
         if (geonkickApi->isStandalone() && !presetName.empty())
                 openPreset(presetName);
         topBar->setPresetName(geonkickApi->getPercussionName(geonkickApi->currentPercussion()));
+        auto statusBar = new RkWidget(this);
+        //statusBar->setBorderWidth(1);
+        //statusBar->setBorderColor(55, 54, 54);
+        statusBar->setBackgroundColor(55, 55, 55);
+        statusBar->setSize(915, 18);
+        statusBar->setPosition(10, height() - statusBar->height() - 6);
+        statusBar->show();
+        auto statusBarContainer = new RkContainer(statusBar);
+        statusBarContainer->setSize(statusBar->size());
+        auto versionLabel = new RkLabel(statusBar, "3.5.0 / VST3");
+        versionLabel->setTextColor({150, 150, 150});
+        versionLabel->setBackgroundColor(statusBar->background());
+        versionLabel->setSize(100, statusBar->height());
+        versionLabel->setText("3.5.0 / VST3");
+        versionLabel->show();
+        statusBarContainer->addWidget(versionLabel);
         updateGui();
         show();
         return true;
 }
 
-#ifndef GEONKICK_OS_WINDOWS
 void MainWindow::openExportDialog()
 {
         auto w = new ExportWidget(this, geonkickApi);
         w->setPosition(30, 40);
 }
-#endif // GEONKICK_OS_WINDOWS
 
 void MainWindow::savePreset(const std::string &fileName)
 {
@@ -316,9 +335,7 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         openFileDialog(FileDialog::Type::Save);
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
-#ifndef GEONKICK_OS_WINDOWS
                         openExportDialog();
-#endif // GEONKICK_OS_WINDOWS
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
                         geonkickApi->copyToClipboard();

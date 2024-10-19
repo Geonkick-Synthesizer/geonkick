@@ -327,3 +327,12 @@ RkEventQueueWin* RkEventQueue::RkEventQueueImpl::getPlatformEventQueue() const
   return platformEventQueue.get();
 }
 #endif // RK_OS_WIN
+
+void RkEventQueue::RkEventQueueImpl::dispatchEvents()
+{
+#ifdef RK_OS_WIN
+        platformEventQueue->dispatchEvents();
+#elif RK_OS_MAC
+#else
+#endif
+}

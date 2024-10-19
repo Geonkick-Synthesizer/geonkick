@@ -176,6 +176,9 @@ fl_qfactor_button_on.png
 fl_qfactor_button_hover.png
 fl_qfactor_button_off.png
 
+# ==== Global section ====
+
+global_hboxbk_ampl_env.png
 general_groupbox_label.png
 
 # ==== OSC section ====

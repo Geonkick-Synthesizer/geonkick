@@ -35,6 +35,11 @@ RkLineEdit::RkLineEdit(RkWidget *parent, const std::string &text)
         impl_ptr->init();
 }
 
+RkLineEdit::~RkLineEdit()
+{
+        impl_ptr->uninit();
+}
+
 void RkLineEdit::setText(const std::string &text)
 {
      impl_ptr->setText(text);
@@ -75,7 +80,6 @@ void RkLineEdit::paintEvent(RkPaintEvent *event)
  */
 void RkLineEdit::keyPressEvent(RkKeyEvent *event)
 {
-        RK_LOG_DEV_DEBUG("called[" << this << "] " << (int)event->key());
         if (!hasFocus())
                 return;
 

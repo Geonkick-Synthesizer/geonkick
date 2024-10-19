@@ -34,6 +34,7 @@ class RkCanvas {
         virtual ~RkCanvas() = default;
         virtual RkCanvasInfo* getCanvasInfo() const = 0;
         virtual void freeCanvasInfo();
+        virtual bool isSystemWindowCanvas() const;
 };
 
 #endif // RK_CANVAS_H
