@@ -106,10 +106,22 @@ void RkPainter::drawPolyline(const std::vector<RkPoint> &points)
                 o_ptr->drawPolyline(points);
 }
 
+void RkPainter::drawCurve(const std::vector<RkPoint> &points)
+{
+        if (points.size() > 1)
+                o_ptr->drawCurve(points);
+}
+
 void RkPainter::drawPolyline(const std::vector<RkRealPoint> &points)
 {
         if (points.size() > 1)
                 o_ptr->drawPolyline(points);
+}
+
+void RkPainter::drawCurve(const std::vector<RkRealPoint> &points)
+{
+        if (points.size() > 1)
+                o_ptr->drawCurve(points);
 }
 
 void RkPainter::fillRect(const RkRect &rect, const RkColor &color)

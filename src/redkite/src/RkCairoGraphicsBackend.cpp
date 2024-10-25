@@ -203,6 +203,42 @@ void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkPoint> &points)
         cairo_stroke(context());
 }
 
+void RkCairoGraphicsBackend::drawCurve(const std::vector<RkPoint> &points)
+{
+    if (points.size() < 2)
+        return;
+
+    auto ctx = context();
+    cairo_move_to(ctx, points[0].x() + 0.5, points[0].y() + 0.5);
+    if (points.size() == 2) {
+            cairo_curve_to(ctx,
+                           points[0].x() + 0.5, points[0].y() + 0.5,
+                           points[1].x() + 0.5, points[1].y() + 0.5,
+                           points[1].x() + 0.5, points[1].y() + 0.5);
+    } else if (points.size() % 2) {
+            for (size_t i = 0; i < points.size() - 1; i += 2) {
+                    cairo_curve_to(ctx,
+                                   points[i].x() + 0.5, points[i].y() + 0.5,
+                                   points[i + 1].x() + 0.5, points[i + 1].y() + 0.5,
+                                   points[i + 2].x() + 0.5, points[i + 2].y() + 0.5);
+            }
+    } else {
+            size_t i = 0;
+            for (; i < points.size() - 2; i += 2) {
+                    cairo_curve_to(ctx,
+                                   points[i].x() + 0.5, points[i].y() + 0.5,
+                                   points[i + 1].x() + 0.5, points[i + 1].y() + 0.5,
+                                   points[i + 2].x() + 0.5, points[i + 2].y() + 0.5);
+            }
+
+            cairo_curve_to(ctx,
+                           points[i].x() + 0.5, points[i].y() + 0.5,
+                           points[i + 1].x() + 0.5, points[i + 1].y() + 0.5,
+                           points[i + 1].x() + 0.5, points[i + 1].y() + 0.5);
+    }
+    cairo_stroke(ctx);
+}
+
 void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkRealPoint> &points)
 {
         if (points.empty())
@@ -215,6 +251,32 @@ void RkCairoGraphicsBackend::drawPolyLine(const std::vector<RkRealPoint> &points
                 if (points[i - 1] != point)
                         cairo_line_to(ctx, point.x() + 0.5, point.y() + 0.5);
         }
+        cairo_stroke(ctx);
+}
+
+void RkCairoGraphicsBackend::drawCurve(const std::vector<RkRealPoint> &points)
+{
+        if (points.size() < 2)
+                return;
+
+        // Implementation of Catmull-Rom Splines.
+        auto ctx = context();
+        cairo_move_to(ctx, points[0].x() + 0.5, points[0].y() + 0.5);
+        for (size_t i = 0; i < points.size() - 1; ++i) {
+                RkRealPoint p0 = (i == 0) ? points[i] : points[i - 1];
+                RkRealPoint p1 = points[i];
+                RkRealPoint p2 = points[i + 1];
+                RkRealPoint p3 = (i + 2 < points.size()) ? points[i + 2] : points[i + 1];
+                RkRealPoint rp1(p1.x() + (p2.x() - p0.x()) / 6.0,
+                                p1.y() + (p2.y() - p0.y()) / 6.0);
+                RkRealPoint rp2(p2.x() - (p3.x() - p1.x()) / 6.0,
+                                p2.y() - (p3.y() - p1.y()) / 6.0);
+                cairo_curve_to(ctx,
+                               rp1.x() + 0.5, rp1.y() + 0.5,
+                               rp2.x() + 0.5, rp2.y() + 0.5,
+                               p2.x() + 0.5, p2.y() + 0.5);
+        }
+
         cairo_stroke(ctx);
 }
 

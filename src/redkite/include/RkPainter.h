@@ -50,7 +50,9 @@ class RkPainter {
         void drawLine(const RkPoint &p1, const RkPoint &p2);
         void drawRect(const RkRect &rect);
         void drawPolyline(const std::vector<RkPoint> &points);
+        void drawCurve(const std::vector<RkPoint> &points);
         void drawPolyline(const std::vector<RkRealPoint> &points);
+        void drawCurve(const std::vector<RkRealPoint> &points);
         void fillRect(const RkRect &rect, const RkColor &color);
         void applyAlpha(int alpha);
         const RkPen& pen() const;

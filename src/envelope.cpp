@@ -396,7 +396,8 @@ void Envelope::drawLines(RkPainter &painter)
 	pen.setWidth(2);
         pen.setColor(RkColor(200, 200, 200, 150));
 	painter.setPen(pen);
-	painter.drawPolyline(points);
+	//painter.drawPolyline(points);
+        painter.drawCurve(points);
 }
 
 void Envelope::overPoint(const RkPoint &point)

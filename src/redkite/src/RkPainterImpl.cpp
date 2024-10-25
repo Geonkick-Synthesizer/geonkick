@@ -78,9 +78,19 @@ void RkPainter::RkPainterImpl::drawPolyline(const std::vector<RkPoint> &points)
         backendGraphics->drawPolyLine(points);
 }
 
+void RkPainter::RkPainterImpl::drawCurve(const std::vector<RkPoint> &points)
+{
+        backendGraphics->drawCurve(points);
+}
+
 void RkPainter::RkPainterImpl::drawPolyline(const std::vector<RkRealPoint> &points)
 {
         backendGraphics->drawPolyLine(points);
+}
+
+void RkPainter::RkPainterImpl::drawCurve(const std::vector<RkRealPoint> &points)
+{
+        backendGraphics->drawCurve(points);
 }
 
 void RkPainter::RkPainterImpl::fillRect(const RkRect &rect, const RkColor &color)

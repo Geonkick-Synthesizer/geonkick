@@ -47,7 +47,9 @@ class RkCairoGraphicsBackend {
         void drawLine(const RkPoint &p1, const RkPoint &p2);
         void drawRect(const RkRect &rect);
         void drawPolyLine(const std::vector<RkPoint> &points);
+        void drawCurve(const std::vector<RkPoint> &points);
         void drawPolyLine(const std::vector<RkRealPoint> &points);
+        void drawCurve(const std::vector<RkRealPoint> &points);
         void fillRect(const RkRect &rect, const RkColor &color);
         void applyAlpha(int alpha);
         void setPen(const RkPen &pen);
