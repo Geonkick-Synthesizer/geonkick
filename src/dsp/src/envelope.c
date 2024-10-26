@@ -44,61 +44,106 @@ gkick_envelope_get_apply_type(const struct gkick_envelope* envelope)
         return envelope->apply_type;
 }
 
-gkick_real
-gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm)
+static gkick_real linear_interpolate(gkick_real x0,
+                                     gkick_real y0,
+                                     gkick_real x1,
+                                     gkick_real y1,
+                                     gkick_real x)
 {
-	gkick_real x1;
-        gkick_real y1 = 0.0f;
-        gkick_real x2;
-        gkick_real y2 = 0.0f;
-        gkick_real ym;
+    return y0 + (y1 - y0) * ((x - x0) / (x1 - x0));
+}
 
-	struct gkick_envelope_point *p;
-	if (envelope == NULL ||
-	    (envelope->first == NULL
-	     || envelope->last == NULL)) {
-		return 0.0f;
-	}
+static gkick_real bezier_x(gkick_real t,
+                           gkick_real x0,
+                           gkick_real x1,
+                           gkick_real x2,
+                           gkick_real x3)
+{
+        const gkick_real one_minus_t = 1.0f - t;
+        return pow(one_minus_t, 3.0f) * x0
+                + 3.0f * pow(one_minus_t, 2.0f) * t * x1
+                + 3.0f * one_minus_t * pow(t, 2.0f) * x2
+                + pow(t, 3.0f) * x3;
+}
 
-	if (xm < envelope->first->x || xm > envelope->last->x) {
-		return 0.0f;
-	} else if (fabsl(xm - envelope->first->x) < DBL_EPSILON) {
-                return envelope->first->y;
-        } else if (fabsl(envelope->last->x - xm) < DBL_EPSILON) {
-                return envelope->last->y;
+static gkick_real bezier_y(gkick_real t,
+                           gkick_real y0,
+                           gkick_real y1,
+                           gkick_real y2,
+                           gkick_real y3)
+{
+        const gkick_real one_minus_t = 1.0f - t;
+        return pow(one_minus_t, 3.0f) * y0
+                + 3.0f * pow(one_minus_t, 2.0f) * t * y1
+                + 3.0f * one_minus_t * pow(t, 2.0f) * y2
+                + pow(t, 3.0f) * y3;
+}
+
+gkick_real find_t(const struct gkick_envelope_point *p1,
+                  const struct gkick_envelope_point *p2,
+                  const struct gkick_envelope_point *p3,
+                  gkick_real xm)
+{
+        gkick_real t0 = 0.0f;
+        gkick_real t1 = 1.0f;
+        gkick_real t;
+        const gkick_real p1_x = p1->x;
+        const gkick_real p2_x = p2->x;
+        const gkick_real p3_x = p3->x;
+        // Binary search to find t corresponding to xm.
+        while (t1 - t0 > 1e-6) {
+                t = (t0 + t1) * 0.5f;
+                gkick_real x_t = bezier_x(t, p1_x, p1_x, p2_x, p3_x);
+                if (x_t < xm)
+                        t0 = t;
+                else
+                        t1 = t;
         }
+        return t;
+}
 
-        x2 = x1 = xm;
-	p = envelope->first;
-	while (p) {
-                if (fabs(xm - p->x) < DBL_EPSILON) {
-                        return p->y;
-                } else if (xm < p->x) {
-			x2 = p->x;
-			y2 = p->y;
-			break;
-		}
-		p = p->next;
-	}
+gkick_real gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm)
+{
+    if (envelope == NULL
+        || envelope->npoints < 2
+        || envelope->first == NULL
+        || envelope->last == NULL)
+        return 0.0f;
 
-	p = envelope->last;
-	while (p) {
-                if (fabs(xm - p->x) < DBL_EPSILON) {
-                        return p->y;
-                } else if (p->x < xm) {
-			x1 = p->x;
-			y1 = p->y;
-			break;
-		}
-		p = p->prev;
-	}
+    struct gkick_envelope_point *p = envelope->first;
+    if (xm < p->x || xm > envelope->last->x)
+            return 0.0f;
+    else if (fabsl(xm - p->x) < DBL_EPSILON)
+            return p->y;
+    else if (fabsl(envelope->last->x - xm) < DBL_EPSILON)
+            return envelope->last->y;
 
-	if (fabsl(x2 - x1) < DBL_EPSILON)
-	        ym = y1;
-	else
-	        ym = (y1 * (x2 - xm) + y2 * (xm - x1)) / (x2 - x1);
+    if (envelope->npoints == 2)
+        return linear_interpolate(envelope->first->x, envelope->first->y,
+                                  envelope->last->x, envelope->last->y, xm);
 
-	return ym;
+    struct gkick_envelope_point *p1 = NULL, *p2 = NULL, *p3 = NULL;
+    while (p) {
+        p1 = p;
+        p2 = p->next;
+        p3 = p2 ? p2->next : NULL;
+
+        if (p2 == NULL)
+                return 0.0f;
+
+        if (p3 == NULL && xm >= p1->x && xm <= p2->x )
+                return linear_interpolate(p1->x, p1->y, p2->x, p2->y, xm);
+
+        if (xm >= p1->x && xm <= p3->x)
+                break;
+        p = p3;
+    }
+
+    if (fabsl(p3->x - p1->x) < DBL_EPSILON)
+        return p1->y;
+
+    gkick_real t = find_t(p1, p2, p3, xm);
+    return bezier_y(t, p1->y, p1->y, p2->y, p3->y);
 }
 
 struct gkick_envelope_point*

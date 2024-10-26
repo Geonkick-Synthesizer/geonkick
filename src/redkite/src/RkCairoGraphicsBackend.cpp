@@ -213,7 +213,7 @@ void RkCairoGraphicsBackend::drawCurve(const std::vector<RkPoint> &points)
     if (points.size() == 2) {
             cairo_curve_to(ctx,
                            points[0].x() + 0.5, points[0].y() + 0.5,
-                           points[1].x() + 0.5, points[1].y() + 0.5,
+                           points[0].x() + 0.5, points[0].y() + 0.5,
                            points[1].x() + 0.5, points[1].y() + 0.5);
     } else if (points.size() % 2) {
             for (size_t i = 0; i < points.size() - 1; i += 2) {
