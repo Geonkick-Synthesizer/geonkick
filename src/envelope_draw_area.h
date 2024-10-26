@@ -2,7 +2,7 @@
  * File name: envelope_draw_area.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -67,6 +67,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    void mouseButtonReleaseEvent(RkMouseEvent *event) override;
    void mouseDoubleClickEvent(RkMouseEvent *event) override;
    void wheelEvent(RkWheelEvent *event) override;
+   void shortcutEvent(RkKeyEvent *event) override;
    std::string getEnvStateText() const;
 
  private:
@@ -79,6 +80,7 @@ class EnvelopeWidgetDrawingArea : public GeonkickWidget
    RkImage envelopeImage;
    KickGraph *kickGraphics;
    bool pointEditingMode;
+   bool addAsControlPoint;
 };
 
 #endif // ENVELOPE_DRAW_AREA_H

@@ -130,6 +130,11 @@ enum gkick_envelope_apply_type {
 	GEONKICK_ENVELOPE_APPLY_LOGARITHMIC  = 1
 };
 
+enum gkick_envelope_curve_type {
+	GEONKICK_ENVELOPE_CURVE_LINEAR  = 0,
+	GEONKICK_ENVELOPE_CURVE_BEZIER  = 1
+};
+
 #ifdef GEONKICK_SINGLE
 #define GEONKICK_MAX_INSTRUMENTS 1
 #else

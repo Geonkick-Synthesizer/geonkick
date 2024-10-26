@@ -383,21 +383,45 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 
 void Envelope::drawLines(RkPainter &painter)
 {
-        if (envelopePoints.size() < 2)
+        if (envelopePoints.size() < 2)  // Ensure there are at least two points
                 return;
 
-        std::vector<RkPoint> points;
-	for (const auto& point : envelopePoints) {
-                auto scaledPoint = scaleUp(point);
-	        points.push_back(RkPoint(scaledPoint.x(), -scaledPoint.y()));
-	}
-
-	auto pen = painter.pen();
-	pen.setWidth(2);
+        auto pen = painter.pen();
+        pen.setWidth(2);
         pen.setColor(RkColor(200, 200, 200, 150));
-	painter.setPen(pen);
-	//painter.drawPolyline(points);
-        painter.drawCurve(points);
+        painter.setPen(pen);
+
+        size_t i = 0;
+        while (i < envelopePoints.size() - 1) {
+                if (i + 1 < envelopePoints.size() && !envelopePoints[i + 1].isControlPoint()) {
+                        // Create a vector for two points and draw a polyline
+                        std::vector<RkPoint> points;
+                        auto scaledPoint1 = scaleUp(envelopePoints[i]);
+                        points.push_back(RkPoint(scaledPoint1.x(), -scaledPoint1.y()));
+
+                        auto scaledPoint2 = scaleUp(envelopePoints[i + 1]);
+                        points.push_back(RkPoint(scaledPoint2.x(), -scaledPoint2.y()));
+
+                        painter.drawPolyline(points);
+                        i += 1;  // Move to the next point
+                } else if (i + 2 < envelopePoints.size()) {
+                        // Create a vector for three points and draw a curve
+                        std::vector<RkPoint> points;
+                        auto scaledPoint1 = scaleUp(envelopePoints[i]);
+                        points.push_back(RkPoint(scaledPoint1.x(), -scaledPoint1.y()));
+
+                        auto scaledPoint2 = scaleUp(envelopePoints[i + 1]);
+                        points.push_back(RkPoint(scaledPoint2.x(), -scaledPoint2.y()));
+
+                        auto scaledPoint3 = scaleUp(envelopePoints[i + 2]);
+                        points.push_back(RkPoint(scaledPoint3.x(), -scaledPoint3.y()));
+
+                        painter.drawCurve(points);
+                        i += 2;  // Skip two points as we processed three in the curve
+                } else {
+                        break;  // Exit if there aren't enough points left for a curve
+                }
+        }
 }
 
 void Envelope::overPoint(const RkPoint &point)
@@ -527,9 +551,10 @@ void Envelope::setPoints(const std::vector<RkRealPoint> &points)
                 envelopePoints.push_back(point);
 }
 
-void Envelope::addPoint(const RkPoint &point)
+void Envelope::addPoint(const RkPoint &point, bool isControlPoint)
 {
-        auto scaledPoint = scaleDown(point);
+        EnvelopePoint scaledPoint = scaleDown(point);
+        scaledPoint.setAsControlPoint(isControlPoint);
         if (scaledPoint.y() < 0)
                 scaledPoint.setY(0);
         else if (scaledPoint.y() > 1)

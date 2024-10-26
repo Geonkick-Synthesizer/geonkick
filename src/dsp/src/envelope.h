@@ -35,6 +35,7 @@ struct gkick_envelope_point {
 
 struct gkick_envelope {
         enum gkick_envelope_apply_type apply_type;
+        enum gkick_envelope_curve_type curve_type;
 	size_t npoints;
 	struct gkick_envelope_point *first;
 	struct gkick_envelope_point *last;
@@ -48,6 +49,12 @@ void gkick_envelope_set_apply_type(struct gkick_envelope* envelope,
 
 enum gkick_envelope_apply_type
 gkick_envelope_get_apply_type(const struct gkick_envelope* envelope);
+
+void gkick_envelope_set_curve_type(struct gkick_envelope* envelope,
+				   enum gkick_envelope_curve_type type);
+
+enum gkick_envelope_curve_type
+gkick_envelope_get_curve_type(struct gkick_envelope* envelope);
 
 gkick_real
 gkick_envelope_get_value(const struct gkick_envelope* envelope,

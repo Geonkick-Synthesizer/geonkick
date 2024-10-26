@@ -38,6 +38,7 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
           , kickGraphImage{nullptr}
           , kickGraphics{nullptr}
           , pointEditingMode{false}
+          , addAsControlPoint{false}
 {
         setFixedSize(850, 300);
         int padding = 50;
@@ -48,6 +49,7 @@ EnvelopeWidgetDrawingArea::EnvelopeWidgetDrawingArea(GeonkickWidget *parent, Geo
                     graphUpdated,
                     RK_ACT_ARGS(std::shared_ptr<RkImage> graphImage),
                     this, updateKickGraph(graphImage));
+        addShortcut(Rk::Key::Key_Control_Left, Rk::KeyModifiers::Control_Left);
 }
 
 void EnvelopeWidgetDrawingArea::setEnvelope(Envelope* envelope)
@@ -195,7 +197,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
                         });
                         eventQueue()->postAction(std::move(act));
                 } else {
-                        currentEnvelope->addPoint(point);
+                        currentEnvelope->addPoint(point, addAsControlPoint);
                         currentEnvelope->selectPoint(point);
                         envelopeUpdated();
                 }
@@ -237,6 +239,14 @@ void EnvelopeWidgetDrawingArea::mouseMoveEvent(RkMouseEvent *event)
                 envelopeUpdated();
         mousePoint.setX(event->x());
         mousePoint.setY(event->y());
+}
+
+void EnvelopeWidgetDrawingArea::shortcutEvent(RkKeyEvent *event)
+{
+        if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
+                addAsControlPoint = true;
+        else
+                addAsControlPoint = false;
 }
 
 void EnvelopeWidgetDrawingArea::wheelEvent(RkWheelEvent *event)

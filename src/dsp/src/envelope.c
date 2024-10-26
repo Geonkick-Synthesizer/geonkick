@@ -29,6 +29,7 @@ gkick_envelope_create(void)
 	struct gkick_envelope *envelope;
 	envelope = (struct gkick_envelope*)calloc(1, sizeof(struct gkick_envelope));
 	envelope->apply_type = GEONKICK_ENVELOPE_APPLY_LINEAR;
+        envelope->curve_type = GEONKICK_ENVELOPE_CURVE_LINEAR;
 	return envelope;
 }
 
@@ -42,6 +43,18 @@ enum gkick_envelope_apply_type
 gkick_envelope_get_apply_type(const struct gkick_envelope* envelope)
 {
         return envelope->apply_type;
+}
+
+void gkick_envelope_set_curve_type(struct gkick_envelope* envelope,
+				   enum gkick_envelope_curve_type type)
+{
+        envelope->curve_type = type;
+}
+
+enum gkick_envelope_curve_type
+gkick_envelope_get_curve_type(struct gkick_envelope* envelope)
+{
+        return envelope->curve_type;
 }
 
 static gkick_real linear_interpolate(gkick_real x0,
@@ -141,6 +154,11 @@ gkick_real gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick
 
     if (fabsl(p3->x - p1->x) < DBL_EPSILON)
         return p1->y;
+
+    //    if (p2->is_control) {
+    //        if (x <= p1->x)
+    //                return linear_interpolate(p1->x, p1->y, p2->x, p2->y, xm)
+    //}
 
     gkick_real t = find_t(p1, p2, p3, xm);
     return bezier_y(t, p1->y, p1->y, p2->y, p3->y);

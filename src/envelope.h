@@ -32,6 +32,18 @@
 #include <memory>
 #include <unordered_set>
 
+class EnvelopePoint: public RkRealPoint {
+public:
+        EnvelopePoint(const RkRealPoint &point)
+                : RkRealPoint(point)
+        {}
+        void setAsControlPoint(bool b) { controlPoint = b; }
+        bool isControlPoint() const { return controlPoint; }
+private:
+        bool controlPoint = false;
+};
+
+
 class Envelope : public RkObject
 {
  public:
@@ -71,7 +83,7 @@ class Envelope : public RkObject
         void setEditCurrentPoint(bool edit = true);
         void unselectPoint(void);
         void moveSelectedPoint(int x, int y);
-        void addPoint(const RkPoint &point);
+        void addPoint(const RkPoint &point, bool isControlPoint = false);
         void removePoint(const RkPoint &point);
         Category category() const;
         Type type() const;
@@ -137,7 +149,7 @@ class Envelope : public RkObject
 
  private:
         RkRect drawingArea;
-        std::vector<RkRealPoint> envelopePoints;
+        std::vector<EnvelopePoint> envelopePoints;
         int pointRadius;
         int dotRadius;
         std::vector<RkRealPoint>::size_type selectedPointIndex;
