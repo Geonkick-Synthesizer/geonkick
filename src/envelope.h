@@ -25,24 +25,13 @@
 #define GEONKICK_ENVELOPE_H
 
 #include "geonkick_api.h"
+#include "EnvelopePoint.h"
 
 #include <RkPainter.h>
 #include <RkRealPoint.h>
 
 #include <memory>
 #include <unordered_set>
-
-class EnvelopePoint: public RkRealPoint {
-public:
-        EnvelopePoint(const RkRealPoint &point)
-                : RkRealPoint(point)
-        {}
-        void setAsControlPoint(bool b) { controlPoint = b; }
-        bool isControlPoint() const { return controlPoint; }
-private:
-        bool controlPoint = false;
-};
-
 
 class Envelope : public RkObject
 {
@@ -78,7 +67,7 @@ class Envelope : public RkObject
         bool hasOverPoint() const;
         void selectPoint(const RkPoint &point);
         double getSelectedPointValue() const;
-        RkRealPoint getSelectedPoint() const;
+        EnvelopePoint getSelectedPoint() const;
         void updateSelectedPointValue(double val);
         void setEditCurrentPoint(bool edit = true);
         void unselectPoint(void);
@@ -94,7 +83,7 @@ class Envelope : public RkObject
         void setType(Type type);
         void addSupportedType(Type type);
         void removeSupportedType(Type type);
-        void setPoints(const std::vector<RkRealPoint>  &points);
+        void setPoints(const std::vector<EnvelopePoint>  &points);
         void removePoints();
         void setDrawingArea(const RkRect &rect);
         virtual void updateEnvelope();
@@ -122,9 +111,9 @@ class Envelope : public RkObject
         double getValueOrigin() const;
 
  protected:
-        virtual void pointAddedEvent(double x, double y) = 0;
-        virtual void pointUpdatedEvent(unsigned int index, double x, double y) = 0;
-        virtual void pointRemovedEvent(unsigned int index)  = 0;
+        virtual void pointAddedEvent(const EnvelopePoint &point) = 0;
+        virtual void pointUpdatedEvent(unsigned int index, const EnvelopePoint &point) = 0;
+        virtual void pointRemovedEvent(unsigned int index) = 0;
         void drawAxies(RkPainter &painter);
         void drawScale(RkPainter &painter);
         void drawTimeScale(RkPainter &painter);
@@ -152,9 +141,9 @@ class Envelope : public RkObject
         std::vector<EnvelopePoint> envelopePoints;
         int pointRadius;
         int dotRadius;
-        std::vector<RkRealPoint>::size_type selectedPointIndex;
+        std::vector<EnvelopePoint>::size_type selectedPointIndex;
         std::unordered_set<Type> supportedTypes;
-        std::vector<RkRealPoint>::size_type overPointIndex;
+        std::vector<EnvelopePoint>::size_type overPointIndex;
         bool isOverPoint;
         bool pointSelected;
         Category envelopeCategory;

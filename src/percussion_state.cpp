@@ -457,12 +457,12 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
         }
 }
 
-std::vector<RkRealPoint> PercussionState::parseEnvelopeArray(const rapidjson::Value &envelopeArray)
+std::vector<EnvelopePoint> PercussionState::parseEnvelopeArray(const rapidjson::Value &envelopeArray)
 {
-        std::vector<RkRealPoint> points;
+        std::vector<EnvelopePoint> points;
         for (const auto &el: envelopeArray.GetArray())
                 if (el.IsArray() && el.GetArray().Size() == 2)
-                        points.emplace_back(RkRealPoint(el.GetArray()[0].GetDouble(),
+                        points.emplace_back(EnvelopePoint(el.GetArray()[0].GetDouble(),
                                                         el.GetArray()[1].GetDouble()));
 
         return points;
@@ -504,7 +504,7 @@ void PercussionState::setKickFilterType(GeonkickApi::FilterType type)
 }
 
 void PercussionState::setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope,
-                                            const std::vector<RkRealPoint> &points)
+                                            const std::vector<EnvelopePoint> &points)
 {
 	switch(envelope) {
 	case GeonkickApi::EnvelopeType::Amplitude:
@@ -579,7 +579,7 @@ GeonkickApi::FilterType PercussionState::getKickFilterType() const
         return kickFilterType;
 }
 
-std::vector<RkRealPoint>
+std::vector<EnvelopePoint>
 PercussionState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
 {
 	switch(envelope) {
@@ -703,7 +703,7 @@ void PercussionState::setOscillatorFilterFactor(int index, double val)
 }
 
 void PercussionState::setOscillatorEnvelopePoints(int index,
-                                                const std::vector<RkRealPoint> &points,
+                                                const std::vector<EnvelopePoint> &points,
                                                 GeonkickApi::EnvelopeType envelope)
 {
         auto oscillator = getOscillator(index);
@@ -881,7 +881,7 @@ double PercussionState::oscillatorFilterFactor(int index) const
         return 0;
 }
 
-std::vector<RkRealPoint>
+std::vector<EnvelopePoint>
 PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const
 {
         if (auto oscillator = getConstOscillator(index); oscillator) {
@@ -1029,7 +1029,7 @@ std::string PercussionState::toJson() const
 void PercussionState::envelopeToJson(std::ostringstream &jsonStream,
                                      const std::string &envName,
                                      double amplitude,
-                                     const std::vector<RkRealPoint> &envelope,
+                                     const std::vector<EnvelopePoint> &envelope,
  				     GeonkickApi::EnvelopeApplyType applyType)
 {
         jsonStream << "\"" << envName << "\": {" << std::endl;

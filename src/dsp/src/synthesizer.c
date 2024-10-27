@@ -75,8 +75,10 @@ gkick_synth_new(struct gkick_synth **synth, int sample_rate)
                 return GEONKICK_ERROR;
         } else {
                 /* Add two default points. */
-                gkick_envelope_add_point((*synth)->envelope, 0.0f, 1.0f);
-                gkick_envelope_add_point((*synth)->envelope, 1.0f, 1.0f);
+                struct gkick_envelope_point_info info = {0.0f, 1.0f, false};
+                gkick_envelope_add_point((*synth)->envelope, &info);
+                info.x = 1.0f;
+                gkick_envelope_add_point((*synth)->envelope, &info);
         }
 
         /* Create synthesizer kick buffer. */
@@ -322,7 +324,7 @@ enum geonkick_error
 gkick_synth_osc_envelope_points(struct gkick_synth *synth,
                                 int osc_index,
                                 int env_index,
-                                gkick_real **buf,
+                                struct gkick_envelope_point_info **buf,
                                 size_t *npoints)
 {
         if (synth == NULL || buf == NULL || npoints == NULL) {
@@ -350,7 +352,7 @@ enum geonkick_error
 gkick_synth_osc_envelope_set_points(struct gkick_synth *synth,
                                     int osc_index,
                                     int env_index,
-                                    const gkick_real *buf,
+                                    const struct gkick_envelope_point_info *buf,
                                     size_t npoints)
 {
         if (synth == NULL || buf == NULL || npoints == 0) {
@@ -379,8 +381,7 @@ enum geonkick_error
 gkick_synth_osc_env_add_point(struct gkick_synth *synth,
                               int osc_index,
                               int env_index,
-                              gkick_real x,
-                              gkick_real y)
+                              struct gkick_envelope_point_info *point_info)
 {
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
@@ -400,7 +401,7 @@ gkick_synth_osc_env_add_point(struct gkick_synth *synth,
                 gkick_log_error("can't get envelope");
                 return GEONKICK_ERROR;
         }
-        if (gkick_envelope_add_point(env, x, y) == NULL) {
+        if (gkick_envelope_add_point(env, point_info) == NULL) {
                 gkick_log_error("can't add envelope point");
                 gkick_synth_unlock(synth);
                 return GEONKICK_ERROR;
@@ -454,8 +455,7 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
                                  int osc_index,
                                  int env_index,
                                  int index,
-                                 gkick_real x,
-                                 gkick_real y)
+                                 struct gkick_envelope_point_info *point_info)
 {
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
@@ -477,7 +477,7 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
                 return GEONKICK_ERROR;
         }
 
-        gkick_envelope_update_point(env, index, x, y);
+        gkick_envelope_update_point(env, index, point_info);
         if (synth->osc_groups[osc_index / GKICK_OSC_GROUP_SIZE]
             && osc->state == GEONKICK_OSC_STATE_ENABLED) {
                 synth->buffer_update = true;
@@ -921,7 +921,7 @@ synth_get_kick_envelope(struct gkick_synth *synth,
 enum geonkick_error
 gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
                                      enum geonkick_envelope_type env_type,
-                                     gkick_real **buf,
+                                     struct gkick_envelope_point_info **buf,
                                      size_t *npoints)
 {
         if (synth == NULL || buf == NULL) {
@@ -942,7 +942,7 @@ gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
 enum geonkick_error
 gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
                                      enum geonkick_envelope_type env_type,
-                                     const gkick_real *buf,
+                                     const struct gkick_envelope_point_info *buf,
                                      size_t npoints)
 {
         if (synth == NULL || buf == NULL) {
@@ -971,8 +971,7 @@ gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
 enum geonkick_error
 gkick_synth_kick_add_env_point(struct gkick_synth *synth,
                                enum geonkick_envelope_type env_type,
-                               gkick_real x,
-                               gkick_real y)
+                               const struct gkick_envelope_point_info *point_info)
 {
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
@@ -982,7 +981,7 @@ gkick_synth_kick_add_env_point(struct gkick_synth *synth,
         gkick_synth_lock(synth);
 	struct gkick_envelope *env = synth_get_kick_envelope(synth, env_type);
 	if (env != NULL)
-		gkick_envelope_add_point(env, x, y);
+		gkick_envelope_add_point(env, point_info);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || ((env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE
@@ -1028,8 +1027,7 @@ enum geonkick_error
 gkick_synth_kick_update_env_point(struct gkick_synth *synth,
                                   enum geonkick_envelope_type env_type,
                                   size_t index,
-                                  gkick_real x,
-                                  gkick_real y)
+                                  const struct gkick_envelope_point_info *point_info)
 {
         if (synth == NULL) {
                 gkick_log_error("wrong arguments");
@@ -1039,7 +1037,7 @@ gkick_synth_kick_update_env_point(struct gkick_synth *synth,
         gkick_synth_lock(synth);
 	struct gkick_envelope *env = synth_get_kick_envelope(synth, env_type);
 	if (env != NULL)
-		gkick_envelope_update_point(env, index, x, y);
+		gkick_envelope_update_point(env, index, point_info);
 
         if (env_type == GEONKICK_AMPLITUDE_ENVELOPE
             || ((env_type == GEONKICK_FILTER_CUTOFF_ENVELOPE

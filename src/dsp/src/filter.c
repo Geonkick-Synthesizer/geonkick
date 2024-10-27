@@ -46,8 +46,11 @@ gkick_filter_new(struct gkick_filter **filter, int sample_rate)
                 gkick_filter_free(filter);
                 return GEONKICK_ERROR;
         } else {
-                gkick_envelope_add_point((*filter)->cutoff_env, 0.0f, 1.0f);
-                gkick_envelope_add_point((*filter)->cutoff_env, 1.0f, 1.0f);
+                struct gkick_envelope_point_info info = {.x = 0.0f,
+                                .y = 1.0f, .control_point = false};
+                gkick_envelope_add_point((*filter)->cutoff_env, &info);
+                info.x = 1.0f;
+                gkick_envelope_add_point((*filter)->cutoff_env, &info);
         }
 
 	(*filter)->q_env = gkick_envelope_create();
@@ -56,8 +59,11 @@ gkick_filter_new(struct gkick_filter **filter, int sample_rate)
                 gkick_filter_free(filter);
                 return GEONKICK_ERROR;
         } else {
-                gkick_envelope_add_point((*filter)->q_env, 0.0f, 1.0f);
-                gkick_envelope_add_point((*filter)->q_env, 1.0f, 1.0f);
+                struct gkick_envelope_point_info info = {.x = 0.0f,
+                                                         .y = 1.0f, .control_point = false};
+                gkick_envelope_add_point((*filter)->q_env, &info);
+                info.x = 1.0f;
+                gkick_envelope_add_point((*filter)->q_env, &info);
         }
 
         if (pthread_mutex_init(&(*filter)->lock, NULL) != 0) {

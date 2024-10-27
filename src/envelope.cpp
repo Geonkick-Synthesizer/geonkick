@@ -463,9 +463,9 @@ void Envelope::selectPoint(const RkPoint &point)
 void Envelope::updateSelectedPointValue(double val)
 {
         if (hasEditingPoint() && editedPointIndex < envelopePoints.size()) {
-                pointUpdatedEvent(editedPointIndex,
-                                  envelopePoints[editedPointIndex].x(),
-                                  convertFromHumanValue(val));
+                EnvelopePoint p = envelopePoints[editedPointIndex];
+                p.setX(convertFromHumanValue(val));
+                pointUpdatedEvent(editedPointIndex, p);
                 updatePoints();
         }
 }
@@ -486,7 +486,7 @@ double Envelope::getSelectedPointValue() const
         return convertToHumanValue(getSelectedPoint().y());
 }
 
-RkRealPoint Envelope::getSelectedPoint() const
+EnvelopePoint Envelope::getSelectedPoint() const
 {
         if (hasSelected()) {
                 if (overPointIndex < envelopePoints.size())
@@ -541,10 +541,10 @@ void Envelope::moveSelectedPoint(int x, int y)
 	else
                 selectedPoint.setX(scaledPoint.x());
 	selectedPoint.setY(scaledPoint.y());
-        pointUpdatedEvent(selectedPointIndex, selectedPoint.x(), selectedPoint.y());
+        pointUpdatedEvent(selectedPointIndex, selectedPoint);
 }
 
-void Envelope::setPoints(const std::vector<RkRealPoint> &points)
+void Envelope::setPoints(const std::vector<EnvelopePoint> &points)
 {
         removePoints();
         for (const auto &point : points)
@@ -580,7 +580,7 @@ void Envelope::addPoint(const RkPoint &point, bool isControlPoint)
 			}
 		}
 	}
-        pointAddedEvent(scaledPoint.x(), scaledPoint.y());
+        pointAddedEvent(scaledPoint);
 }
 
 void Envelope::removePoint(const RkPoint &point)

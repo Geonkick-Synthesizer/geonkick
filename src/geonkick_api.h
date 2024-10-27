@@ -25,8 +25,7 @@
 #define GEONKICK_API_H
 
 #include "globals.h"
-
-#include <RkRealPoint.h>
+#include "EnvelopePoint.h"
 
 class Oscillator;
 class PercussionState;
@@ -106,20 +105,20 @@ class GeonkickApi : public RkObject {
   void registerCallbacks(bool b);
   std::vector<std::unique_ptr<Oscillator>> oscillators(void);
   bool isOscillatorEnabled(int oscillatorIndex) const;
-  std::vector<RkRealPoint> oscillatorEvelopePoints(int oscillatorIndex,
-                                                   EnvelopeType envelope) const;
+  std::vector<EnvelopePoint> oscillatorEvelopePoints(int oscillatorIndex,
+                                                     EnvelopeType envelope) const;
   EnvelopeApplyType getOscillatorEnvelopeApplyType(int index,
 						   EnvelopeType envelope) const;
   void addOscillatorEnvelopePoint(int oscillatorIndex,
                                   EnvelopeType envelope,
-                                  const RkRealPoint &point);
+                                  const EnvelopePoint &point);
   void removeOscillatorEvelopePoint(int oscillatorIndex,
                                     EnvelopeType envelope,
                                     int pointIndex);
   void updateOscillatorEvelopePoint(int oscillatorIndex,
                                     EnvelopeType envelope,
                                     int pointIndex,
-                                    const RkRealPoint &point);
+                                    const EnvelopePoint &point);
   FunctionType oscillatorFunction(int oscillatorIndex) const;
   gkick_real oscillatorPhase(int oscillatorIndex) const;
   int oscillatorSeed(int oscillatorIndex) const;
@@ -135,7 +134,7 @@ class GeonkickApi : public RkObject {
   double kickFilterFrequency(void) const;
   double kickFilterQFactor() const;
   FilterType kickFilterType() const;
-  std::vector<RkRealPoint> getKickEnvelopePoints(EnvelopeType envelope) const;
+  std::vector<EnvelopePoint> getKickEnvelopePoints(EnvelopeType envelope) const;
   EnvelopeApplyType getKickEnvelopeApplyType(EnvelopeType envelope) const;
   bool setOscillatorFrequency(int oscillatorIndex,
                               double frequency);
@@ -151,18 +150,15 @@ class GeonkickApi : public RkObject {
   double oscillatorFrequency(int oscillatorIndex) const;
   double oscillatorPitchShift(int oscillatorIndex) const;
   double oscillatorNoiseDensity(int oscillatorIndex) const;
-  void addKickEnvelopePoint(EnvelopeType envelope,
-                            double x,
-                            double y);
+  void addKickEnvelopePoint(EnvelopeType envelope, const EnvelopePoint &point);
   void removeKickEnvelopePoint(EnvelopeType envelope,
                                int pointIndex);
   void updateKickEnvelopePoint(EnvelopeType envelope,
                                int index,
-                               double x,
-                               double y);
+                               const EnvelopePoint &point);
   void setOscillatorEvelopePoints(int index,
                                   EnvelopeType envelope,
-                                  const std::vector<RkRealPoint> &points);
+                                  const std::vector<EnvelopePoint> &points);
   void setOscillatorEnvelopeApplyType(int index,
 				      EnvelopeType envelope,
 				      EnvelopeApplyType applyType);
@@ -233,7 +229,7 @@ class GeonkickApi : public RkObject {
   void setKitUrl(const std::string &url);
   std::string getKitUrl() const;
   void setKickEnvelopePoints(EnvelopeType envelope,
-                             const std::vector<RkRealPoint> &points);
+                             const std::vector<EnvelopePoint> &points);
   void setKickEnvelopeApplyType(EnvelopeType envelope,
 				EnvelopeApplyType applyType);
   void playKick(int id = -1);

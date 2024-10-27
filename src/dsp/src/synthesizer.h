@@ -2,7 +2,7 @@
  * File name: synthesizer.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -146,22 +146,21 @@ enum geonkick_error
 gkick_synth_osc_envelope_points(struct gkick_synth *synth,
                                 int osc_index,
                                 int env_index,
-                                gkick_real **buf,
+                                struct gkick_envelope_point_info **buf,
                                 size_t *npoints);
 
 enum geonkick_error
 gkick_synth_osc_envelope_set_points(struct gkick_synth *synth,
                                     int osc_index,
                                     int env_index,
-                                    const gkick_real *buf,
+                                    const struct gkick_envelope_point_info *buf,
                                     size_t npoints);
 
 enum geonkick_error
 gkick_synth_osc_env_add_point(struct gkick_synth *synth,
                               int osc_index,
                               int env_index,
-                              gkick_real x,
-                              gkick_real y);
+                              struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
 gkick_synth_osc_env_remove_point(struct gkick_synth *synth,
@@ -174,8 +173,7 @@ gkick_synth_osc_env_update_point(struct gkick_synth *synth,
                                  int osc_index,
                                  int env_index,
                                  int index,
-                                 gkick_real x,
-                                 gkick_real y);
+                                 struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
 synth_osc_env_set_apply_type(struct gkick_synth *synth,
@@ -274,20 +272,19 @@ synth_get_kick_envelope(struct gkick_synth *synth,
 enum geonkick_error
 gkick_synth_kick_envelope_get_points(struct gkick_synth *synth,
                                      enum geonkick_envelope_type env_type,
-                                     gkick_real **buf,
+                                     struct gkick_envelope_point_info **buf,
                                      size_t *npoints);
 
 enum geonkick_error
 gkick_synth_kick_envelope_set_points(struct gkick_synth *synth,
                                      enum geonkick_envelope_type env_type,
-                                     const gkick_real *buf,
+                                     const struct gkick_envelope_point_info *buf,
                                      size_t npoints);
 
 enum geonkick_error
 gkick_synth_kick_add_env_point(struct gkick_synth *synth,
                                enum geonkick_envelope_type env_type,
-                               gkick_real x,
-                               gkick_real y);
+                               const struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
 gkick_synth_kick_remove_env_point(struct gkick_synth *synth,
@@ -298,8 +295,7 @@ enum geonkick_error
 gkick_synth_kick_update_env_point(struct gkick_synth *synth,
                                   enum geonkick_envelope_type env_type,
                                   size_t index,
-                                  gkick_real x,
-                                  gkick_real y);
+                                  const struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
 synth_kick_env_set_apply_type(struct gkick_synth *synth,

@@ -65,7 +65,7 @@ class PercussionState
         void setKickFilterQFactor(double val);
         void setKickFilterType(GeonkickApi::FilterType type);
         void setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope,
-                                   const std::vector<RkRealPoint> &points);
+                                   const std::vector<EnvelopePoint> &points);
 	void setKickEnvelopeApplyType(GeonkickApi::EnvelopeType envelope,
 				      GeonkickApi::EnvelopeApplyType applyType);
 
@@ -76,7 +76,7 @@ class PercussionState
         double getKickFilterFrequency() const;
         double getKickFilterQFactor() const;
         GeonkickApi::FilterType getKickFilterType() const;
-        std::vector<RkRealPoint> getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const;
+        std::vector<EnvelopePoint> getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const;
 	GeonkickApi::EnvelopeApplyType getKickEnvelopeApplyType(GeonkickApi::EnvelopeType envelope) const;
         void setOscillatorEnabled(int index, bool b);
         void setOscillatorFunction(int index, GeonkickApi::FunctionType type);
@@ -96,7 +96,7 @@ class PercussionState
 	GeonkickApi::EnvelopeApplyType getOscillatorEnvelopeApplyType(int index,
 								      GeonkickApi::EnvelopeType envelope) const;
         void setOscillatorEnvelopePoints(int index,
-                                         const std::vector<RkRealPoint> &points,
+                                         const std::vector<EnvelopePoint> &points,
                                          GeonkickApi::EnvelopeType envelope);
         bool isOscillatorAsFm(int index) const;
         void setOscillatorAsFm(int index, bool b);
@@ -112,7 +112,7 @@ class PercussionState
         GeonkickApi::FilterType oscillatorFilterType(int index) const;
         double oscillatorFilterCutOffFreq(int index) const;
         double oscillatorFilterFactor(int index) const;
-        std::vector<RkRealPoint> oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
+        std::vector<EnvelopePoint> oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType type) const;
         void setOscillatorSample(int oscillatorIndex,
                                  const std::vector<float> &sample);
         std::vector<float> getOscillatorSample(int oscillatorIndex) const;
@@ -153,11 +153,11 @@ class PercussionState
  protected:
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(int index,  const rapidjson::Value &osc);
-        static std::vector<RkRealPoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
+        static std::vector<EnvelopePoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
         static void envelopeToJson(std::ostringstream &jsonStream,
                                    const std::string &envName,
                                    double amplitude,
-                                   const std::vector<RkRealPoint> &envelope,
+                                   const std::vector<EnvelopePoint> &envelope,
 				   GeonkickApi::EnvelopeApplyType applyType = GeonkickApi::EnvelopeApplyType::Linear);
         void oscJson(std::ostringstream &jsonStream) const;
         void kickJson(std::ostringstream &jsonStream) const;
@@ -199,14 +199,14 @@ private:
                 GeonkickApi::FilterType filterType;
                 double filterFrequency;
                 double filterFactor;
-                std::vector<RkRealPoint> amplitudeEnvelope;
+                std::vector<EnvelopePoint> amplitudeEnvelope;
 		GeonkickApi::EnvelopeApplyType frequencyEnvelopeApplyType;
-                std::vector<RkRealPoint> frequencyEnvelope;
+                std::vector<EnvelopePoint> frequencyEnvelope;
 		GeonkickApi::EnvelopeApplyType cutOffEnvelopeApplyType;
-                std::vector<RkRealPoint> filterCutOffEnvelope;
-		std::vector<RkRealPoint> filterQFactorEnvelope;
-                std::vector<RkRealPoint> pitchShiftEnvelope;
-                std::vector<RkRealPoint> noiseDensityEnvelope;
+                std::vector<EnvelopePoint> filterCutOffEnvelope;
+		std::vector<EnvelopePoint> filterQFactorEnvelope;
+                std::vector<EnvelopePoint> pitchShiftEnvelope;
+                std::vector<EnvelopePoint> noiseDensityEnvelope;
         };
 
         OscillatorInfo* getOscillator(int index);
@@ -247,11 +247,11 @@ private:
         double kickFilterQFactor;
         GeonkickApi::FilterType kickFilterType;
 	GeonkickApi::EnvelopeApplyType kickCutOffEnvelopeApplyType;
-        std::vector<RkRealPoint> kickFilterCutOffEnvelope;
-	std::vector<RkRealPoint> kickFilterQFactorEnvelope;
-        std::vector<RkRealPoint> kickEnvelopePoints;
-	std::vector<RkRealPoint> kickDistortionDriveEnvelope;
-        std::vector<RkRealPoint> kickDistortionVolumeEnvelope;
+        std::vector<EnvelopePoint> kickFilterCutOffEnvelope;
+	std::vector<EnvelopePoint> kickFilterQFactorEnvelope;
+        std::vector<EnvelopePoint> kickEnvelopePoints;
+	std::vector<EnvelopePoint> kickDistortionDriveEnvelope;
+        std::vector<EnvelopePoint> kickDistortionVolumeEnvelope;
         std::unordered_map<int, OscillatorInfo> oscillators;
         Compressor compressor;
         Distortion distortion;

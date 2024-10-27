@@ -150,6 +150,12 @@ enum gkick_envelope_curve_type {
 
 struct geonkick;
 
+struct gkick_envelope_point_info {
+        gkick_real x;
+        gkick_real y;
+        bool control_point;
+};
+
 enum geonkick_error
 geonkick_create(struct geonkick **kick, int sample_rate);
 
@@ -185,22 +191,21 @@ enum geonkick_error
 geonkick_osc_envelope_get_points(struct geonkick *kick,
 				 size_t osc_index,
 				 size_t env_index,
-				 gkick_real **buf,
+				 struct gkick_envelope_point_info **buf,
 				 size_t *npoints);
 
 enum geonkick_error
 geonkick_osc_envelope_set_points(struct geonkick *kick,
                                  size_t osc_index,
                                  size_t env_index,
-                                 const gkick_real *buff,
+                                 const struct gkick_envelope_point_info *buff,
                                  size_t npoints);
 
 enum geonkick_error
 geonkick_osc_envelope_add_point(struct geonkick *kick,
 				size_t osc_index,
 				size_t env_index,
-				gkick_real x,
-				gkick_real y);
+                                struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
 geonkick_osc_envelope_remove_point(struct geonkick *kick,
@@ -212,11 +217,10 @@ geonkick_osc_envelope_update_point(struct geonkick *kick,
 				   size_t osc_index,
 				   size_t env_index,
   				   size_t index,
-				   gkick_real x,
-				   gkick_real y);
+                                   struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
-geonkick_osc_envelope_set_apply_type(struct geonkick *kick, 
+geonkick_osc_envelope_set_apply_type(struct geonkick *kick,
 				     size_t osc_index,
 				     size_t env_index,
 				     enum gkick_envelope_apply_type apply_type);
@@ -322,19 +326,19 @@ geonkick_get_kick_filter_type(struct geonkick *kick,
 enum geonkick_error
 geonkick_kick_envelope_get_points(struct geonkick *kick,
                                   enum geonkick_envelope_type env_type,
-                                  gkick_real **buf,
+                                  struct gkick_envelope_point_info **buf,
                                   size_t *npoints);
 
 enum geonkick_error
 geonkick_kick_envelope_set_points(struct geonkick *kick,
                                   enum geonkick_envelope_type env_type,
-                                  const gkick_real *buff,
+                                  const struct gkick_envelope_point_info *buff,
                                   size_t npoints);
 
 enum geonkick_error
 geonkick_kick_add_env_point(struct geonkick *kick,
                             enum geonkick_envelope_type env_type,
-                            gkick_real x, gkick_real y);
+                            const struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
 geonkick_kick_remove_env_point(struct geonkick *kick,
@@ -345,11 +349,10 @@ enum geonkick_error
 geonkick_kick_update_env_point(struct geonkick *kick,
                                enum geonkick_envelope_type env_type,
                                size_t index,
-                               gkick_real x,
-                               gkick_real y);
+                               const struct gkick_envelope_point_info *point_info);
 
 enum geonkick_error
-geonkick_kick_env_set_apply_type(struct geonkick *kick, 
+geonkick_kick_env_set_apply_type(struct geonkick *kick,
 				 enum geonkick_envelope_type env_type,
 				 enum gkick_envelope_apply_type apply_type);
 

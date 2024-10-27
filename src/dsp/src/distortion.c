@@ -49,8 +49,11 @@ gkick_distortion_new(struct gkick_distortion **distortion, int sample_rate)
 		return GEONKICK_ERROR;
 	} else {
 		/* Add two default points. */
-		gkick_envelope_add_point(env, 0.0f, 1.0f);
-		gkick_envelope_add_point(env, 1.0f, 1.0f);
+                struct gkick_envelope_point_info info = {.x = 0.0f,
+                                .y = 1.0f, .control_point = false};
+		gkick_envelope_add_point(env, &info);
+                info.x = 1.0f;
+		gkick_envelope_add_point(env, &info);
 		(*distortion)->drive_env = env;
 	}
 
@@ -61,8 +64,11 @@ gkick_distortion_new(struct gkick_distortion **distortion, int sample_rate)
 		return GEONKICK_ERROR;
 	} else {
 		/* Add two default points. */
-		gkick_envelope_add_point(env, 0.0f, 1.0f);
-		gkick_envelope_add_point(env, 1.0f, 1.0f);
+                struct gkick_envelope_point_info info = {.x = 0.0f,
+                                .y = 1.0f, .control_point = false};
+		gkick_envelope_add_point(env, &info);
+                info.x = 1.0f;
+		gkick_envelope_add_point(env, &info);
 		(*distortion)->volume_env = env;
 	}
 

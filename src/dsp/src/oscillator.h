@@ -136,12 +136,12 @@ gkick_osc_func_sample(struct gkick_buffer *sample,
 
 void gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
                                    size_t env_index,
-                                   gkick_real **buff,
+                                   struct gkick_envelope_point_info **buff,
                                    size_t *npoints);
 
 void gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
                                    size_t env_index,
-                                   const gkick_real *buff,
+                                   const struct gkick_envelope_point_info *buff,
                                    size_t npoints);
 
 unsigned int gkick_osc_get_noise_density(struct gkick_oscillator *osc,

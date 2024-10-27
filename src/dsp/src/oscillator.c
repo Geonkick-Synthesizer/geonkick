@@ -104,11 +104,15 @@ gkick_osc_create_envelopes(struct gkick_oscillator *osc)
                 } else {
                         /* Add two default points. */
                         if (i == GKICK_OSC_PITCH_SHIFT_ENVELOPE) {
-                                gkick_envelope_add_point(env, 0.0f, 0.5f);
-                                gkick_envelope_add_point(env, 1.0f, 0.5f);
+                                struct gkick_envelope_point_info info = {0.0f, 0.5f, false};
+                                gkick_envelope_add_point(env, &info);
+                                info.x = 1.0f;
+                                gkick_envelope_add_point(env, &info);
                         } else {
-                                gkick_envelope_add_point(env, 0.0f, 1.0f);
-                                gkick_envelope_add_point(env, 1.0f, 1.0f);
+                                struct gkick_envelope_point_info info = {0.0f, 1.0f, false};
+                                gkick_envelope_add_point(env, &info);
+                                info.x = 1.0f;
+                                gkick_envelope_add_point(env, &info);
                         }
                         osc->envelopes[i] = env;
                 }
@@ -299,7 +303,7 @@ gkick_osc_func_sample(struct gkick_buffer *sample,
 void
 gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,
-			      gkick_real **buff,
+			      struct gkick_envelope_point_info **buff,
 			      size_t *npoints)
 {
         if (buff != NULL)
@@ -312,7 +316,7 @@ gkick_osc_get_envelope_points(struct gkick_oscillator *osc,
 void
 gkick_osc_set_envelope_points(struct gkick_oscillator *osc,
 			      size_t env_index,
-			      const gkick_real *buff,
+			      const struct gkick_envelope_point_info *buff,
 			      size_t npoints)
 {
         if (buff == NULL)

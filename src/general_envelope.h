@@ -40,8 +40,8 @@ class GeneralEnvelope: public Envelope
   void updatePoints() override;
 
  protected:
-  void pointAddedEvent(double x, double y) override;
-  void pointUpdatedEvent(unsigned int index, double x, double y) override;
+  void pointAddedEvent(const EnvelopePoint &point) override;
+  void pointUpdatedEvent(unsigned int index, const EnvelopePoint &point) override;
   void pointRemovedEvent(unsigned int index) override;
   double envelopeAmplitude(void) const override;
 

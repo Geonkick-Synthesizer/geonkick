@@ -39,8 +39,8 @@ class OscillatorEnvelope: public Envelope
  protected:
   void updateEnvelope() override;
   void updatePoints() override;
-  void pointAddedEvent(double x, double y) override;
-  void pointUpdatedEvent(unsigned int index, double x, double y) override;
+  void pointAddedEvent(const EnvelopePoint &point) override;
+  void pointUpdatedEvent(unsigned int index, const EnvelopePoint &point) override;
   void pointRemovedEvent(unsigned int index) override;
   double envelopeAmplitude() const override;
 

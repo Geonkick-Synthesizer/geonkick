@@ -38,7 +38,7 @@ class Oscillator: public RkObject
 
   explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
   Oscillator::FunctionType function() const;
-  std::vector<RkRealPoint> envelopePoints(EnvelopeType envelope) const;
+  std::vector<EnvelopePoint> envelopePoints(EnvelopeType envelope) const;
   double amplitude(void) const;
   double frequency(void) const;
   double pitchShift(void) const;
@@ -69,13 +69,12 @@ class Oscillator: public RkObject
   void setFilterFrequency(double f);
   void setFilterQFactor(double factor);
   void addEnvelopePoint(EnvelopeType envelope,
-                        double x, double y);
+                        const EnvelopePoint &point);
   void removeEnvelopePoint(EnvelopeType envelope,
                            int point_index);
   void updateEnvelopePoint(EnvelopeType envelope,
                            int point_index,
-                           double x,
-                           double y);
+                           const EnvelopePoint &point);
   void setEnvelopeApplyType(EnvelopeType envelope,
 			    EnvelopeApplyType apply);
   EnvelopeApplyType envelopeApplyType(EnvelopeType envelope) const;

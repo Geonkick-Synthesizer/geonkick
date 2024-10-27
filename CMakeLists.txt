@@ -136,6 +136,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/distortion_group_box.h
   ${GKICK_COMMON_DIR}/layers_group_box.h
   ${GKICK_COMMON_DIR}/general_group_box.h
+  ${GKICK_COMMON_DIR}/EnvelopePoint.h
   ${GKICK_COMMON_DIR}/envelope.h
   ${GKICK_COMMON_DIR}/BufferView.h
   ${GKICK_COMMON_DIR}/kick_graph.h
@@ -194,6 +195,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/distortion_group_box.cpp
   ${GKICK_COMMON_DIR}/layers_group_box.cpp
   ${GKICK_COMMON_DIR}/general_group_box.cpp
+  ${GKICK_COMMON_DIR}/EnvelopePoint.cpp
   ${GKICK_COMMON_DIR}/envelope.cpp
   ${GKICK_COMMON_DIR}/BufferView.cpp
   ${GKICK_COMMON_DIR}/kick_graph.cpp

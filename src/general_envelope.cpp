@@ -36,14 +36,14 @@ GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         setPoints(geonkickApi->getKickEnvelopePoints(type()));
 }
 
-void GeneralEnvelope::pointAddedEvent(double x, double y)
+void GeneralEnvelope::pointAddedEvent(const EnvelopePoint &point)
 {
-        geonkickApi->addKickEnvelopePoint(type(), x, y);
+        geonkickApi->addKickEnvelopePoint(type(), point);
 }
 
-void GeneralEnvelope::pointUpdatedEvent(unsigned int index, double x, double y)
+void GeneralEnvelope::pointUpdatedEvent(unsigned int index, const EnvelopePoint &point)
 {
-        geonkickApi->updateKickEnvelopePoint(type(), index, x, y);
+        geonkickApi->updateKickEnvelopePoint(type(), index, point);
 }
 
 void GeneralEnvelope::pointRemovedEvent(unsigned int index)
