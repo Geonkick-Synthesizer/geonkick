@@ -461,9 +461,12 @@ std::vector<EnvelopePoint> PercussionState::parseEnvelopeArray(const rapidjson::
 {
         std::vector<EnvelopePoint> points;
         for (const auto &el: envelopeArray.GetArray())
-                if (el.IsArray() && el.GetArray().Size() == 2)
-                        points.emplace_back(EnvelopePoint(el.GetArray()[0].GetDouble(),
-                                                        el.GetArray()[1].GetDouble()));
+                if (el.IsArray() && el.GetArray().Size() >= 2) {
+                        EnvelopePoint point(el.GetArray()[0].GetDouble(), el.GetArray()[1].GetDouble());
+                        if (el.GetArray().Size() > 2)
+                                point.setAsControlPoint(el.GetArray()[2].GetBool());
+                        points.emplace_back(std::move(point));
+                }
 
         return points;
 }
@@ -1041,7 +1044,8 @@ void PercussionState::envelopeToJson(std::ostringstream &jsonStream,
                 if (!first)
                         jsonStream << ", ";
                 jsonStream << "[ "  << point.x()
-                           << " , "  << point.y() << "]";
+                           << " , "  << point.y() << ", "
+                           << (point.isControlPoint() ? "true" : "false") << "]";
                 first = false;
         }
         jsonStream << "]" << std::endl;
@@ -1097,7 +1101,8 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                         else
                                 jsonStream << ", ";
                         jsonStream << "[ "  << point.x()
-                                   << " , "  << point.y() << "]";
+                                   << " , "  << point.y() << ", "
+                                   << (point.isControlPoint() ? "true" : "false") << "]";
                 }
                 jsonStream << "], " << std::endl;
                 jsonStream << "\"factor\": "
@@ -1110,7 +1115,8 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                         else
                                 jsonStream << ", ";
                         jsonStream << "[ "  << point.x()
-                                   << " , "  << point.y() << "]";
+                                   << " , "  << point.y() << ", "
+                                   << (point.isControlPoint() ? "true" : "false") << "]";
                 }
 		jsonStream << "] " << std::endl;
                 jsonStream << "}" << std::endl;  // filter;
@@ -1169,7 +1175,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                 else
                         jsonStream << ", ";
                 jsonStream << "[ "  << point.x()
-                           << " , "  << point.y() << "]";
+                           << " , "  << point.y()
+                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
         }
 
         jsonStream << "]}, " << std::endl;
@@ -1193,7 +1200,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                 else
                         jsonStream << ", ";
                 jsonStream << "[ "  << point.x()
-                           << " , "  << point.y() << "]";
+                           << " , "  << point.y()
+                           << "," << (point.isControlPoint() ? "true" : "false") << "]";
         }
         jsonStream << "]," << std::endl; // points
 	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor);
@@ -1205,7 +1213,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                 else
                         jsonStream << ", ";
                 jsonStream << "[ "  << point.x()
-                           << " , "  << point.y() << "]";
+                           << " , "  << point.y()
+                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
         }
         jsonStream << "]" << std::endl; // points
         jsonStream << "}, " << std::endl;  // filter;
@@ -1242,7 +1251,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                 else
                         jsonStream << ", ";
                 jsonStream << "[ "  << point.x()
-                           << " , "  << point.y() << "]";
+                           << " , "  << point.y()
+                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
         }
         jsonStream << "], " << std::endl;
         jsonStream << "\"volume_env\": [" << std::endl;
@@ -1254,7 +1264,8 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
                 else
                         jsonStream << ", ";
                 jsonStream << "[ "  << point.x()
-                           << " , " << point.y() << "]";
+                           << " , " << point.y()
+                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
         }
 	jsonStream << "]" << std::endl;
         jsonStream << "}" << std::endl; // distortion
