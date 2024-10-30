@@ -92,10 +92,10 @@ static gkick_real bezier_y(gkick_real t,
                 + pow(t, 3.0f) * y3;
 }
 
-gkick_real find_t(const struct gkick_envelope_point *p1,
-                  const struct gkick_envelope_point *p2,
-                  const struct gkick_envelope_point *p3,
-                  gkick_real xm)
+static gkick_real find_t(const struct gkick_envelope_point *p1,
+                         const struct gkick_envelope_point *p2,
+                         const struct gkick_envelope_point *p3,
+                         gkick_real xm)
 {
         gkick_real t0 = 0.0f;
         gkick_real t1 = 1.0f;
@@ -115,7 +115,9 @@ gkick_real find_t(const struct gkick_envelope_point *p1,
         return t;
 }
 
-gkick_real gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick_real xm)
+gkick_real
+gkick_envelope_get_value(const struct gkick_envelope* envelope,
+                         gkick_real xm)
 {
     if (envelope == NULL
         || envelope->npoints < 2
@@ -152,13 +154,15 @@ gkick_real gkick_envelope_get_value(const struct gkick_envelope* envelope, gkick
         p = p3;
     }
 
-    if (fabsl(p3->x - p1->x) < DBL_EPSILON)
-        return p1->y;
+    if (!p2->is_control) {
+            if (xm <= p2->x)
+                    return linear_interpolate(p1->x, p1->y, p2->x, p2->y, xm);
+            else
+                    return linear_interpolate(p2->x, p2->y, p3->x, p3->y, xm);
+    }
 
-    //    if (p2->is_control) {
-    //        if (x <= p1->x)
-    //                return linear_interpolate(p1->x, p1->y, p2->x, p2->y, xm)
-    //}
+    if (fabsl(p3->x - p1->x) < DBL_EPSILON)
+            return p1->y;
 
     gkick_real t = find_t(p1, p2, p3, xm);
     return bezier_y(t, p1->y, p1->y, p2->y, p3->y);
@@ -248,7 +252,7 @@ gkick_envelope_get_points(struct gkick_envelope *env,
         if (env->npoints < 1)
                 return;
 
-        points_info = (struct gkick_envelope_point_info*)calloc(1, sizeof(gkick_real) * env->npoints);
+        points_info = (struct gkick_envelope_point_info*)calloc(1, sizeof(struct gkick_envelope_point_info) * env->npoints);
         p = env->first;
         i = 0;
         while (p) {
