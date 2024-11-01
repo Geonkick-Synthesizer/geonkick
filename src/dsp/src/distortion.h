@@ -2,7 +2,7 @@
  * File name: distortion.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -29,9 +29,9 @@
 #include <pthread.h>
 
 struct gkick_distortion {
-        int enabled;
+        bool enabled;
         int sample_rate;
-	/* Input limiter for distortion. */
+        enum gkick_distortion_type type;
 	gkick_real in_limiter;
         gkick_real volume;
         gkick_real drive;
@@ -43,8 +43,7 @@ struct gkick_distortion {
 enum geonkick_error
 gkick_distortion_new(struct gkick_distortion **distortion, int sample_rate);
 
-void
-gkick_distortion_free(struct gkick_distortion **distortion);
+void gkick_distortion_free(struct gkick_distortion **distortion);
 
 void gkick_distortion_lock(struct gkick_distortion *distortion);
 
@@ -55,6 +54,14 @@ gkick_distortion_enable(struct gkick_distortion *distortion, int enable);
 
 enum geonkick_error
 gkick_distortion_is_enabled(struct gkick_distortion *distortion, int *enabled);
+
+enum geonkick_error
+gkick_distortion_set_type(struct gkick_distortion *distortion,
+                          enum gkick_distortion_type type);
+
+enum geonkick_error
+gkick_distortion_get_type(struct gkick_distortion *distortion,
+                          enum gkick_distortion_type *type);
 
 enum geonkick_error
 gkick_distortion_val(struct gkick_distortion *distortion,

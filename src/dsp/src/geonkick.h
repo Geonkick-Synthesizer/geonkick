@@ -57,6 +57,9 @@ typedef float gkick_real;
 #define GEONKICK_UNUSED(expr) (void)expr
 
 #define GEONKICK_VERSION GEONKICK_VERSION_HEX
+#define GEONKICK_VERSION_MAJOR ((GEONKICK_VERSION_HEX >> 16) & 0xFF)
+#define GEONKICK_VERSION_MINOR ((GEONKICK_VERSION_HEX >> 8) & 0xFF)
+#define GEONKICK_VERSION_PATCH (GEONKICK_VERSION_HEX & 0xFF)
 #define GEONKICK_NAME "Geonkick"
 #define GEONKICK_APP_NAME "geonkick"
 #define GEOKICK_VERSION_STRING GEONKICK_VERSION_STR
@@ -133,6 +136,24 @@ enum gkick_envelope_apply_type {
 enum gkick_envelope_curve_type {
 	GEONKICK_ENVELOPE_CURVE_LINEAR  = 0,
 	GEONKICK_ENVELOPE_CURVE_BEZIER  = 1
+};
+
+enum gkick_distortion_type {
+        GEONKICK_DISTORTION_HARD_CLIPPING,
+        GEONKICK_DISTORTION_SOFT_CLIPPING_TANH,
+        GEONKICK_DISTORTION_ARCTAN,
+        GEONKICK_DISTORTION_EXPONENTIAL,
+        GEONKICK_DISTORTION_POLYNOMIAL,
+        GEONKICK_DISTORTION_LOGARITHMIC,
+        GEONKICK_DISTORTION_FOLDBACK,
+        GEONKICK_DISTORTION_HALF_WAVE_RECT,
+        GEONKICK_DISTORTION_FULL_WAVE_RECT,
+        /* Backward compatible with old presets.
+           In the next major release this to be removed. */
+#if (GEONKICK_VERSION_MAJOR > 3)
+#warning Remove backward compatibility.
+#endif // GEONKICK_VERSION_MAJOR
+        GEONKICK_DISTORTION_BACKWARD_COMPATIBLE
 };
 
 #ifdef GEONKICK_SINGLE
