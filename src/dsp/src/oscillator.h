@@ -76,8 +76,10 @@ struct gkick_oscillator {
 
 	size_t env_number;
 	struct gkick_envelope **envelopes;
+        bool filter_enabled;
         struct gkick_filter *filter;
-        int filter_enabled;
+        bool distortion_enabled;
+        struct gkick_distortion *distortion;
 	pthread_mutex_t lock;
 };
 

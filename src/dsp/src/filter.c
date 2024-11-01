@@ -267,7 +267,7 @@ gkick_filter_val(struct gkick_filter *filter,
 	} else {
 		Q = 10.0f;
 	}
-	
+
         size_t n = 1;
         if (filter->queue_empty) {
                 l[n - 1] = l[n] = 0;

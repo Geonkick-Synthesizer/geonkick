@@ -52,12 +52,19 @@ struct gkick_oscillator
                 return NULL;
         }
 
+        if (gkick_distortion_new(&osc->distortion, osc->sample_rate) != GEONKICK_OK) {
+                gkick_log_error("can't create distortion effect");
+                gkick_osc_free(&osc);
+		return NULL;
+        }
+        osc->distortion_enabled = false;
+
         if (gkick_filter_new(&osc->filter, osc->sample_rate) != GEONKICK_OK) {
                 gkick_log_error("can't create filter");
                 gkick_osc_free(&osc);
 		return NULL;
         }
-        osc->filter_enabled = 0;
+        osc->filter_enabled = false;
         return osc;
 }
 
@@ -68,10 +75,10 @@ gkick_osc_free(struct gkick_oscillator **osc)
                 return;
 
         if ((*osc)->envelopes != NULL) {
-                size_t i;
-                for (i = 0; i < (*osc)->env_number; i++)
+                for (size_t i = 0; i < (*osc)->env_number; i++)
                         gkick_envelope_destroy((*osc)->envelopes[i]);
                 free((*osc)->envelopes);
+                gkick_distortion_free(&(*osc)->distortion);
                 gkick_filter_free(&(*osc)->filter);
                 gkick_buffer_free(&(*osc)->sample);
         }
@@ -218,6 +225,9 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
         default:
                 v = amp * gkick_osc_func_sine(osc->phase);
         };
+
+        if (osc->distortion_enabled)
+                gkick_distortion_val(osc->distortion, v, &v, env_x);
 
         if (osc->filter_enabled)
                 gkick_filter_val(osc->filter, v, &v, env_x);
