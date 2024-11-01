@@ -83,9 +83,11 @@ void EnvelopeWidgetDrawingArea::paintWidget([[maybe_unused]] RkPaintEvent *event
         if (currentEnvelope && !isHideEnvelope())
                 currentEnvelope->draw(painter, Envelope::DrawLayer::Envelope);
 
-        painter.drawText(150, height() - 12, getEnvStateText());
         auto pen = painter.pen();
+        pen.setColor({180, 180, 180, 200});
         pen.setWidth(1);
+        painter.setPen(pen);
+        painter.drawText(150, height() - 12, getEnvStateText());
         pen.setColor({20, 20, 20, 255});
         painter.setPen(pen);
         painter.drawRect({0, 0, width() - 1, height() - 1});
