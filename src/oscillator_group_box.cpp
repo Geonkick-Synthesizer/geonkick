@@ -106,7 +106,7 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         setFixedSize(224, 335);
         createWaveFunctionGroupBox();
         createEvelopeGroupBox();
-        createFilterGroupBox();
+        createOscEffects();
         updateGui();
 }
 
@@ -424,20 +424,10 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         }
 }
 
-void OscillatorGroupBox::createFilterGroupBox()
+void OscillatorGroupBox::createEffectsView()
 {
-        filterBox = new Filter(this, static_cast<Envelope::Category>(oscillator->type()));
-        filterBox->setPosition(0, 210);
-        filterBox->setCutOffRange(20, 20000);
-        filterBox->setResonanceRange(1, 1000);
-        RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b),
-                    oscillator, enableFilter(b));
-        RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val),
-                    oscillator, setFilterFrequency(val));
-        RK_ACT_BIND(filterBox, resonanceChanged, RK_ACT_ARGS(double val),
-                    oscillator, setFilterQFactor(val));
-        RK_ACT_BIND(filterBox, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type),
-                    oscillator, setFilterType(type));
+        auto effectView = new OscillatorEffectsView(this, oscillator);
+        effectView->setPosition(0, 210);
 }
 
 void OscillatorGroupBox::setWaveFunction(Oscillator::FunctionType type)
@@ -494,6 +484,7 @@ void OscillatorGroupBox::updateGui()
         filterBox->setResonance(oscillator->filterQFactor(), 10);
         filterBox->setCutOff(oscillator->filterFrequency(), 800);
         filterBox->setType(oscillator->filter());
+        effectsView->setModel(oscillator);
         functionView->setModel(oscillator);
 }
 
