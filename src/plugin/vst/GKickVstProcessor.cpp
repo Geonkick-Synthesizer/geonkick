@@ -106,6 +106,9 @@ GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
 
         if (!geonkickApi || sampleRate != setup.sampleRate) {
                 sampleRate = setup.sampleRate;
+                std::unique_ptr<KitState> tempState;
+                if (geonkickApi)
+		        tempState = geonkickApi->getKitState();
                 geonkickApi = std::make_unique<GeonkickApi>(sampleRate,
                                                             GeonkickApi::InstanceType::Vst3);
                 if (!geonkickApi->init()) {
@@ -113,6 +116,9 @@ GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
                         GEONKICK_LOG_ERROR("can't init Geonkick API");
                         return kResultFalse;
                 }
+
+                if (tempState)
+                        geonkickApi->setKitState(tempState);
         }
         return kResultTrue;
 }
