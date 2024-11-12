@@ -27,10 +27,10 @@
 #include "geonkick_button.h"
 #include "knob.h"
 #include "geonkick_slider.h"
-#include "filter.h"
 #include "file_dialog.h"
 #include "ViewState.h"
 #include "OscillatorFunctionView.h"
+#include "OscillatorEffects.h"
 
 #include <RkLabel.h>
 
@@ -86,7 +86,6 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , oscillator{osc}
           , oscillatorCheckbox{nullptr}
           , fmCheckbox{nullptr}
-          , filterBox{nullptr}
           , sineButton{nullptr}
           , squareButton{nullptr}
           , triangleButton{nullptr}
@@ -96,17 +95,17 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , frequencyKnob{nullptr}
           , pitchShiftKnob{nullptr}
           , noiseDensityKnob{nullptr}
-          , filterTypeIsChecked{false}
           , amplitudeEnvelopeBox{nullptr}
           , oscFreqEnvelopeButton{nullptr}
           , pitchEnvelopeButton{nullptr}
           , densityEnvelopeButton{nullptr}
           , functionView{nullptr}
+          , oscillatorEffects{nullptr}
 {
         setFixedSize(224, 335);
         createWaveFunctionGroupBox();
         createEvelopeGroupBox();
-        createOscEffects();
+        createEffects();
         updateGui();
 }
 
@@ -424,10 +423,10 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         }
 }
 
-void OscillatorGroupBox::createEffectsView()
+void OscillatorGroupBox::createEffects()
 {
-        auto effectView = new OscillatorEffectsView(this, oscillator);
-        effectView->setPosition(0, 210);
+        oscillatorEffects = new OscillatorEffects(this, oscillator);
+        oscillatorEffects->setPosition(0, 210);
 }
 
 void OscillatorGroupBox::setWaveFunction(Oscillator::FunctionType type)
@@ -455,8 +454,6 @@ void OscillatorGroupBox::setOscillatorSeed(int value)
 
 void OscillatorGroupBox::groupBoxLabelUpdated(bool state)
 {
-        if (filterTypeIsChecked && state == true)
-                filterBox->enable(true);
         oscillator->enable(state);
 }
 
@@ -480,11 +477,7 @@ void OscillatorGroupBox::updateGui()
         if (oscillator->type() == Oscillator::Type::Oscillator1)
                 fmCheckbox->setPressed(oscillator->isFm());
 
-        filterBox->enable(oscillator->isFilterEnabled());
-        filterBox->setResonance(oscillator->filterQFactor(), 10);
-        filterBox->setCutOff(oscillator->filterFrequency(), 800);
-        filterBox->setType(oscillator->filter());
-        effectsView->setModel(oscillator);
+        oscillatorEffects->setModel(oscillator);
         functionView->setModel(oscillator);
 }
 

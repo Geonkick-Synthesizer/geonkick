@@ -33,6 +33,7 @@ class GeonkickButton;
 class Knob;
 class GeonkickSlider;
 class OscillatorFunctionView;
+class OscillatorEffects;
 
 class OscillatorGroupBox: public GeonkickGroupBox
 {
@@ -47,7 +48,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
  protected:
         void createWaveFunctionGroupBox();
         void createEvelopeGroupBox();
-        void createEffectsView();
+        void createEffects();
         void setWaveFunction(Oscillator::FunctionType type);
         void setOscillatorPhase(int value);
         void setOscillatorSeed(int value);
@@ -79,7 +80,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *pitchEnvelopeButton;
         GeonkickButton *densityEnvelopeButton;
         OscillatorFunctionView *functionView;
-        OscillatorEffectView *oscEffectView;
+        OscillatorEffects *oscillatorEffects;
 };
 
 #endif // GKICK_OSCILLATOR_GROUP_BOX_H

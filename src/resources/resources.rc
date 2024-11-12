@@ -83,15 +83,15 @@ show_general_envelopes_button_active.png
 show_general_envelopes_button.png
 show_noise_envelopes_button_active.png
 show_noise_envelopes_button.png
-show_osc1_envelopes_button_active.png
-show_osc1_envelopes_button.png
-show_osc2_envelopes_button_active.png
-show_osc2_envelopes_button.png
 
 # === Controls Area ===
 
 # === Oscillator ===
 
+show_osc1_envelopes_button_active.png
+show_osc1_envelopes_button.png
+show_osc2_envelopes_button_active.png
+show_osc2_envelopes_button.png
 controls_osc1_on.png
 controls_osc1_hover.png
 controls_osc1_off.png
@@ -104,6 +104,7 @@ controls_osc3_off.png
 fm_radio.png
 fm_radio_hover.png
 fm_radio_active.png
+osc_effects_bk.png
 
 compressor_enable.png
 compressor_enable_hover.png
