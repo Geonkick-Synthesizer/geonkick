@@ -26,7 +26,7 @@
 
 #include <RkWidget.h>
 
-class RK_EXPORT RkContainerItem: public RkObject {
+class RkContainerItem: public RkObject {
  public:
         enum class ItemType : int {
                 ItemContainer = 0,

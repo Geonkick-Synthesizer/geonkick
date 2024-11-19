@@ -27,7 +27,7 @@
 #include "RkWidget.h"
 #include "RkContainerItem.h"
 
-class RK_EXPORT RkContainer: public RkContainerItem {
+class RkContainer: public RkContainerItem {
  public:
         RkContainer(RkWidget *parent  = nullptr, Rk::Orientation orientation = Rk::Orientation::Horizontal);
         virtual ~RkContainer() = default;

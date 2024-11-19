@@ -1,5 +1,5 @@
 /**
- * File name: OscillatorEffects.h
+ * File name: EffectsTabView.h
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -27,21 +27,27 @@
 #include "geonkick_widget.h"
 
 class Oscillator;
-class FilterView;
-class DistortionView;
+class EffectView;
+class EffectsListModel;
 
-class OscillatorEffects: public GeonkickWidget {
+class EffectTabButton: public GeonkickWidget {
+}
+
+class EffectsTabView: public GeonkickWidget {
  public:
-        OscillatorEffects(GeonkickWidget *parent, Oscillator* model);
-        void setModel(Oscillator *model);
-        Oscillator* getModel(Oscillator *model) const;
+        EffectsTabView(GeonkickWidget *parent, EffectsListModel* model);
+        void setModel(EffectsListModel* model);
+        EffectsListModel* getModel(Oscillator *model) const;
+        void updateView();
 
 protected:
 
  private:
         Oscillator *oscillatorModel;
-        FilterView *filterView;
-        DistortionView *fistortionView;
+        RkContianer *tabButtonsLayout;
+        RkContianer *effectTabViewLayout;
+        std::vector<EffectTabButton*> effectViewButtons;
+        std::vector<EffectView*> effectViews;
 };
 
 #endif // OSCILLATOR_EFFECTS

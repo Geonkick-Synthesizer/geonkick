@@ -1,5 +1,5 @@
 /**
- * File name: OscillatorEffects.cpp
+ * File name: EffectsTabView.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,26 +21,59 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "OscillatorEffects.h"
+#include "EffectsTabView.h"
 #include "oscillator.h"
+
+#include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(osc_effects_bk);
 
-OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
+EffectsTabView::EffectsTabView(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
+        , tabButtonsLayout{new RkContainer(this)}
+        , effectTabViewLayout{new RkContainer(this)}
 {
         setSize(224, 125);
         setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(osc_effects_bk)));
+        auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
+        mainLayout->setSize(size());
+
+        tabButtonsLayout->setSize({mainLayout->size().width(), 20});
+        effectTabViewLayout->setSize(width(), tabButtonsLayout->height());
+        mainLayout->addLayout(tabButtonsLayout);
+        mainLayout->addLayout(effectTabViewLayout);
+        updateView();
         show();
 }
 
-void OscillatorEffects::setModel(Oscillator *model)
+void EffectsTabView::setModel(Oscillator *model)
 {
         oscillatorModel = model;
+        updateView();
 }
 
-Oscillator* OscillatorEffects::getModel(Oscillator *model) const
+Oscillator* EffectsTabView::getModel(Oscillator *model) const
 {
         return oscillatorModel;
+}
+
+void EffectsTabView::updateView()
+{
+        tabButtonsLayout->clear();
+        effectTabViewLayout->clear();
+        for (auto &button: effectViewButtons)
+                delete button;
+        effectViewButtons.erase();
+        for (auto &view: effectViews)
+                delete view;
+        effectViews.erase();
+        for (auto &effect: effectsListModel) {
+                auto button = new EffectTabButton(effect);
+                tabButtonsLayout->addWidget(button);
+                effectViewButtons->bush_back(button);
+                auto view = new EffectView(effect);
+                effectTabViewLayout->addWidget(tab);
+                effectViews->push_back(view);
+        }
 }
