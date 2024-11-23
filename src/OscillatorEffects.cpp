@@ -28,6 +28,33 @@
 
 RK_DECLARE_IMAGE_RC(osc_effects_bk);
 
+EffectTabButton::EffectTabButton(GeonkickWidget *parent, EffectModel *model)
+        : GeonkickWidget(parent)
+{
+        setSize(20, 40);
+        auto mainLayout = new RkContainer(this);
+        mainLayout->setSize(size());
+        auto enableButton = new GeonkickButton(this);
+        enableButton->setCheckable(true);
+        enableButton->setSize(20, 20);
+        enableButton->setImage(RkImage(oscillatorCheckbox->size(),
+                                       RK_IMAGE_RC(controls_osc1_on)),
+                               RkButton::State::Pressed);
+        enableButton->setImage(RkImage(oscillatorCheckbox->size(),
+                                       RK_IMAGE_RC(controls_osc1_off)),
+                               RkButton::State::Unpressed);
+        enableButton->setImage(RkImage(oscillatorCheckbox->size(),
+                                       RK_IMAGE_RC(controls_osc1_hover)),
+                               RkButton::State::UnpressedHover);
+        enableButton->setImage(RkImage(oscillatorCheckbox->size(),
+                                       RK_IMAGE_RC(controls_osc1_hover)),
+                               RkButton::State::PressedHover);
+        mainLayout->addWidget(enableButton);
+        auto label = new RkLabel(this);
+        label->setImage(model->getIcon());
+        mainLayout->addWidget(label);
+}
+
 EffectsTabView::EffectsTabView(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
@@ -38,7 +65,6 @@ EffectsTabView::EffectsTabView(GeonkickWidget *parent, Oscillator* model)
         setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(osc_effects_bk)));
         auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
         mainLayout->setSize(size());
-
         tabButtonsLayout->setSize({mainLayout->size().width(), 20});
         effectTabViewLayout->setSize(width(), tabButtonsLayout->height());
         mainLayout->addLayout(tabButtonsLayout);
@@ -69,10 +95,10 @@ void EffectsTabView::updateView()
                 delete view;
         effectViews.erase();
         for (auto &effect: effectsListModel) {
-                auto button = new EffectTabButton(effect);
+                auto button = new EffectTabButton(this, effect);
                 tabButtonsLayout->addWidget(button);
                 effectViewButtons->bush_back(button);
-                auto view = new EffectView(effect);
+                auto view = new EffectView(this, effect);
                 effectTabViewLayout->addWidget(tab);
                 effectViews->push_back(view);
         }

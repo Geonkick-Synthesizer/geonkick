@@ -31,13 +31,14 @@ class EffectView;
 class EffectsListModel;
 
 class EffectTabButton: public GeonkickWidget {
-}
+        EffectTabButton(GeonkickWidget *parent);
+};
 
 class EffectsTabView: public GeonkickWidget {
  public:
         EffectsTabView(GeonkickWidget *parent, EffectsListModel* model);
         void setModel(EffectsListModel* model);
-        EffectsListModel* getModel(Oscillator *model) const;
+        EffectsListModel* getModel() const;
         void updateView();
 
 protected:
