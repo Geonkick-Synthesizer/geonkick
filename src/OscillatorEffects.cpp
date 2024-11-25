@@ -29,18 +29,51 @@ RK_DECLARE_IMAGE_RC(osc_effects_bk);
 OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
+        , mainLayout{new RkContainer(this)}
+        , filterTabButton{nullptr}
+        , distortionTabButton{nullptr}
 {
         setSize(224, 125);
+        mainLayout->setSize(size());
         setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(osc_effects_bk)));
+        createView();
         show();
 }
 
 void OscillatorEffects::setModel(Oscillator *model)
 {
         oscillatorModel = model;
+        updateView();
+
 }
 
 Oscillator* OscillatorEffects::getModel(Oscillator *model) const
 {
         return oscillatorModel;
+}
+
+void OscillatorEffects::createView(Oscillator *model)
+{
+        auto tabButtonsLayout = new RkContainer(this);
+        tabButtonsLayout->setSize(width(), 20);
+        filterTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_filter)));
+        tabButtonsLayout->addWidget(filterTabButton);
+        RK_ACT_BIND(filterTabButton, stateChanged, RK_ACT_ARGS(), this, updateGui());
+        filterTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_distortion)));
+        tabButtonsLayout->addWidget(filterTabButton);
+        mainLayout->addContainer(tabButtonsLayout);
+
+        auto effectTabLayout = new RkContainer(this);
+        effectTabLayout->setSize(width(), height() - tabButtonsLayout->height());
+        filterTab = new Filter(this, static_cast<Envelope::Category>(oscillatorModel->type()));
+        effectTabLayout->addWidget(filterTab);
+        distortionTab = new Distortion(this, static_cast<Envelope::Category>(oscillatorModel->type()));
+        effectTabLayout->addWidget(filterDistortion);
+        mainLayout->addContainer(effectTabLayout);
+        updateView();
+}
+
+void OscillatorEffects::updateView()
+{
+        
 }
