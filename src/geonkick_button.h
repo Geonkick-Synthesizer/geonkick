@@ -36,12 +36,9 @@ class GeonkickButton: public RkButton
         virtual ~GeonkickButton() = default;
         void setPressedImage(const RkImage &img);
         void setUnpressedImage(const RkImage &img);
-        virtual void mouseButtonPressEvent(RkMouseEvent *event) override
-        {
-                RK_UNUSED(event);
-                setFocus(true);
-                RkButton::mouseButtonPressEvent(event);
-        }
+
+protected:
+        void mouseButtonPressEvent(RkMouseEvent *event) override
 };
 
 #endif // GEONKICK_BUTTON_H

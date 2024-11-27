@@ -27,6 +27,7 @@
 #include "geonkick_widget.h"
 
 class Oscillator;
+class EffectTabButton;
 class FilterView;
 class DistortionView;
 
@@ -35,13 +36,16 @@ class OscillatorEffects: public GeonkickWidget {
         OscillatorEffects(GeonkickWidget *parent, Oscillator* model);
         void setModel(Oscillator *model);
         Oscillator* getModel(Oscillator *model) const;
-
-protected:
+        void createView();
+        void updateView();
 
  private:
         Oscillator *oscillatorModel;
-        FilterView *filterView;
-        DistortionView *fistortionView;
+        EffectTabButton *filterTabButton;
+        EffectTabButton *distortionTabButton;
+        FilterView *filterTab;
+        DistortionView *distortionTab;
+        bool showFilterTab;
 };
 
 #endif // OSCILLATOR_EFFECTS

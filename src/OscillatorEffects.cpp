@@ -32,6 +32,9 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
         , mainLayout{new RkContainer(this)}
         , filterTabButton{nullptr}
         , distortionTabButton{nullptr}
+        , filterTab{nullptr}
+        , distortionTab{nullptr}
+        , showFilterTab{true}
 {
         setSize(224, 125);
         mainLayout->setSize(size());
@@ -58,10 +61,18 @@ void OscillatorEffects::createView(Oscillator *model)
         tabButtonsLayout->setSize(width(), 20);
         filterTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_filter)));
         tabButtonsLayout->addWidget(filterTabButton);
-        RK_ACT_BIND(filterTabButton, stateChanged, RK_ACT_ARGS(), this, updateGui());
-        filterTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_distortion)));
-        tabButtonsLayout->addWidget(filterTabButton);
-        mainLayout->addContainer(tabButtonsLayout);
+        RK_ACT_BIND(filterTabButton, enabled,
+                    RK_ACT_ARGS(bool b),
+                    oscillator,
+                    enableFilter(b));
+
+        distortionTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_distortion)));
+        tabButtonsLayout->addWidget(distortionTabButton);
+        mainLayout->addContainer(tabButtonsLayou);
+        RK_ACT_BIND(distorionTabButton, enabled,
+                    RK_ACT_ARGS(bool b),
+                    oscillator,
+                    enableDistortion(b));
 
         auto effectTabLayout = new RkContainer(this);
         effectTabLayout->setSize(width(), height() - tabButtonsLayout->height());
@@ -75,5 +86,19 @@ void OscillatorEffects::createView(Oscillator *model)
 
 void OscillatorEffects::updateView()
 {
-        
+        filterTabButton->enable(oscillatorModel->isFilterEnabled());
+        distortionTabButton->enable(oscillatorModel->isDistortionEnabled());
+        if (showFilterTab) {
+                if (!filterTab->isVisible()) {
+                        filterTab->show();
+                        mainLayout->update();
+                }
+                filterTab->updateView();
+        } else {
+                if (!distortionTab->isVisible()) {
+                        filterTab->show();
+                        mainLayout->update();
+                }
+                distortionTab->updateView();
+        }
 }

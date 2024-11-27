@@ -1,8 +1,8 @@
 /**
- * File name: geonkick_button.cpp
- * Project: Geonkick (A kick synthesizer)
+ * File name: EffectTabButton.cpp
+ * Project: Geonkick (A percussive synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor
+ * Copyright (C) 2024 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -21,27 +21,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "geonkick_button.h"
+#include "EffectTabButton.h"
 
-GeonkickButton::GeonkickButton(GeonkickWidget *parent)
-        : RkButton(parent)
+EffectTabButton::EffectTabButton(GeonkickWidget* parent)
+        : GeonkickButton(parent)
+        , enableButton{new GeonkickButton(this)}
 {
-        setName("GeonkickButton");
-        show();
+        setSize(30, 20);
+        enableButton->setSize(16, 16);
+        enableButton->setCheckable(true);
+        enableButton->setPosition(3, (height() - enableButton->height()) / 2);
+        RK_ACT_BIND(enableButton,
+                    toggled,
+                    RK_ACT_ARGS(bool pressed),
+                    this,
+                    enabled(pressed));
 }
 
-void GeonkickButton::setPressedImage(const RkImage &img)
+void EffectTabButton::enable(bool b)
 {
-        setImage(img, RkButton::State::Pressed);
-}
-
-void GeonkickButton::setUnpressedImage(const RkImage &img)
-{
-        setImage(img, RkButton::State::Unpressed);
-}
-
-void GeonkickButton::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        setFocus(true);
-        RkButton::mouseButtonPressEvent(event);
+        enableButton->setPressed(b);
 }
