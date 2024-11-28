@@ -46,16 +46,17 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
 void OscillatorEffects::setModel(Oscillator *model)
 {
         oscillatorModel = model;
+        filterTab->setModel(model);
+        distortionTab->setModel(model);
         updateView();
-
 }
 
-Oscillator* OscillatorEffects::getModel(Oscillator *model) const
+Oscillator* OscillatorEffects::getModel() const
 {
         return oscillatorModel;
 }
 
-void OscillatorEffects::createView(Oscillator *model)
+void OscillatorEffects::createView()
 {
         auto tabButtonsLayout = new RkContainer(this);
         tabButtonsLayout->setSize(width(), 20);
@@ -71,14 +72,26 @@ void OscillatorEffects::createView(Oscillator *model)
         mainLayout->addContainer(tabButtonsLayou);
         RK_ACT_BIND(distorionTabButton, enabled,
                     RK_ACT_ARGS(bool b),
-                    oscillator,
+                    oscillatorModel,
                     enableDistortion(b));
 
         auto effectTabLayout = new RkContainer(this);
         effectTabLayout->setSize(width(), height() - tabButtonsLayout->height());
-        filterTab = new Filter(this, static_cast<Envelope::Category>(oscillatorModel->type()));
+        filterTab = new Filter(this, Envelope::Category::General);
+        filterTab->setCutOffRange(20, 20000);
+        filterTab->setResonanceRange(1, 1000);
+        filterTab->setPosition(0, 125);
+        RK_ACT_BIND(filterTab, enabled, RK_ACT_ARGS(bool b),
+                    oscillatorModel, enableFilter(b));
+        RK_ACT_BIND(filterTab, cutOffChanged, RK_ACT_ARGS(double val),
+                    oscillatorModel, setFilterFrequency(val));
+        RK_ACT_BIND(filterTab, resonanceChanged, RK_ACT_ARGS(double val),
+                    oscillatorModel, setFilterQFactor(val));
+        RK_ACT_BIND(filterTab, typeChanged,
+                    RK_ACT_ARGS(GeonkickApi::FilterType type),
+                    oscillatorModel, setFilterType(type));
         effectTabLayout->addWidget(filterTab);
-        distortionTab = new Distortion(this, static_cast<Envelope::Category>(oscillatorModel->type()));
+        distortionTab = new Distortion(this, oscillatorModel->getDistortion());
         effectTabLayout->addWidget(filterDistortion);
         mainLayout->addContainer(effectTabLayout);
         updateView();

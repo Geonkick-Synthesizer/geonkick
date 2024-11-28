@@ -148,6 +148,8 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/kit_state.h
   ${GKICK_COMMON_DIR}/oscillator_envelope.h
   ${GKICK_COMMON_DIR}/OscillatorFunctionView.h
+  ${GKICK_COMMON_DIR}/DistortionModel.h
+  ${GKICK_COMMON_DIR}/OscillatorDistortionModel.h
   ${GKICK_COMMON_DIR}/EffectTabButton.h
   ${GKICK_COMMON_DIR}/OscillatorEffects.h
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
@@ -209,6 +211,8 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/kit_state.cpp
   ${GKICK_COMMON_DIR}/oscillator_envelope.cpp
   ${GKICK_COMMON_DIR}/OscillatorFunctionView.cpp
+  ${GKICK_COMMON_DIR}/DistortionModel.cpp
+  ${GKICK_COMMON_DIR}/OscillatorDistortionModel.cpp
   ${GKICK_COMMON_DIR}/EffectTabButton.cpp
   ${GKICK_COMMON_DIR}/OscillatorEffects.cpp
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp

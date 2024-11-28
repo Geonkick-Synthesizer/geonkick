@@ -23,14 +23,21 @@
 
 #include "oscillator.h"
 
+#include "DistortionModel.h"
+
 Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
         : geonkickApi{api}
         , oscillatorType{type}
+        , distortionModel{new OscillatorDistortionModel(this)}
 {
         RK_ACT_BIND(geonkickApi,
                     kickLengthUpdated,
                     RK_ACT_ARGS(double val),
                     this, kickLengthUpdated(val));
+        RK_ACT_BIND(distortionModel,
+                    enabled,
+                    RK_ACT_ARGS(bool b),
+                    this, distortionEnabled(b));
 }
 
 void Oscillator::setAsFm(bool b)
@@ -240,4 +247,14 @@ Oscillator::EnvelopeApplyType
 Oscillator::envelopeApplyType(Oscillator::EnvelopeType envelope) const
 {
 	return geonkickApi->getOscillatorEnvelopeApplyType(index(), envelope);
+}
+
+DistortionModel* Oscillator::getDistortion() const
+{
+        return distortionModel;
+}
+
+void Oscillator::enableDistorion(bool b)
+{
+        distortionModel->enable(b);
 }

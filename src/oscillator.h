@@ -26,6 +26,8 @@
 
 #include "geonkick_api.h"
 
+class DistortionModel;
+
 class Oscillator: public RkObject
 {
  public:
@@ -51,7 +53,6 @@ class Oscillator: public RkObject
   double filterQFactor() const;
   bool isEnabled() const;
   double envelopeLength() const;
-
   void enable(bool b);
   void setAsFm(bool b);
   bool isFm() const;
@@ -81,6 +82,7 @@ class Oscillator: public RkObject
   void setSample(const std::string &file);
   int index() const;
   std::string samplesPath() const;
+  DistortionModel* getDistortion() const;
 
   RK_DECL_ACT(amplitudeUpdated,
               amplitudeUpdated(double v),
@@ -108,6 +110,7 @@ class Oscillator: public RkObject
  private:
 	  GeonkickApi *geonkickApi;
           Type oscillatorType;
+          DistortionModel* distortionModel;
 };
 
 #endif // GEONKICK_OSCILLATOR_H
