@@ -22,7 +22,8 @@
  */
 
 #include "OscillatorEffects.h"
-#include "oscillator.h"
+#include "oscillator.h
+#include "Distortion.h"
 
 RK_DECLARE_IMAGE_RC(osc_effects_bk);
 
