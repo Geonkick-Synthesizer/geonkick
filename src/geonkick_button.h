@@ -2,7 +2,7 @@
  * File name: geonkick_button.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -38,7 +38,7 @@ class GeonkickButton: public RkButton
         void setUnpressedImage(const RkImage &img);
 
 protected:
-        void mouseButtonPressEvent(RkMouseEvent *event) override
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
 };
 
 #endif // GEONKICK_BUTTON_H

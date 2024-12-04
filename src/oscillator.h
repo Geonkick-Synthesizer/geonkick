@@ -83,6 +83,7 @@ class Oscillator: public RkObject
   int index() const;
   std::string samplesPath() const;
   DistortionModel* getDistortion() const;
+  GeonkickApi* api() const;
 
   RK_DECL_ACT(amplitudeUpdated,
               amplitudeUpdated(double v),

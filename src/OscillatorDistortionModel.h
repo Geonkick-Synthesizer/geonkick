@@ -31,11 +31,11 @@ class Oscillator;
 class OscillatorDistortionModel: public DistortionModel
 {
  public:
-        OscillatorDistortionModel DistortionModel(Oscillator *parent);
+        OscillatorDistortionModel(Oscillator *parent);
         void enable(bool b) override;
         bool isEnabled() const override;
-        void setDistortionType(enum DistortionType type) override;
-        enum DistortionType getDistortionType() const override;
+        void setDistortionType(DistortionType type) override;
+        DistortionType getDistortionType() const override;
         void setInLimiter(double value) override;
         double getInLimiter() const override;
         void setOutLimiter(double value) override;

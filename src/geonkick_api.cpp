@@ -1008,6 +1008,56 @@ double GeonkickApi::getOscillatorFilterFactor(int oscillatorIndex) const
         return factor;
 }
 
+bool GeonkickApi::isOscDistortionEnabled(int oscillatorIndex) const
+{
+        return true;
+}
+
+bool GeonkickApi::oscEnableDistortion(int oscillatorIndex, bool b)
+{
+        return true;
+}
+
+GeonkickApi::DistortionType GeonkickApi::getOscDistortionType(int oscillatorIndex) const
+{
+        return DistortionType::SoftClippingTan;
+}
+
+bool GeonkickApi::setOscDistortionType(int oscillatorIndex, DistortionType type)
+{
+        return true;
+}
+
+double GeonkickApi::getOscDistortionInLimiter(int oscillatorIndex) const
+{
+        return 0;
+}
+
+bool GeonkickApi::setOscDistortionInLimiter(int oscillatorIndex, double val)
+{
+        return true;
+}
+
+double GeonkickApi::getOscDistortionOutLimiter(int oscillatorIndex) const
+{
+        return 0;
+}
+
+bool GeonkickApi::setOscDistortionOutLimiter(int oscillatorIndex, double val)
+{
+        return true;
+}
+
+double GeonkickApi::getOscDistortionDrive(int oscillatorIndex) const
+{
+        return 0;
+}
+
+bool GeonkickApi::setOscDistortionDrive(int oscillatorIndex, double val)
+{
+        return true;
+}
+
 double GeonkickApi::limiterValue() const
 {
         gkick_real val = 0;

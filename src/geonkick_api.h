@@ -89,6 +89,18 @@ class GeonkickApi : public RkObject {
           BandPass = GEONKICK_FILTER_BAND_PASS
   };
 
+  enum class DistortionType: int {
+          HardClipping    = GEONKICK_DISTORTION_HARD_CLIPPING,
+          SoftClippingTan = GEONKICK_DISTORTION_SOFT_CLIPPING_TANH,
+          Arctan          = GEONKICK_DISTORTION_ARCTAN,
+          Expoinetial     = GEONKICK_DISTORTION_EXPONENTIAL,
+          Polynomial      = GEONKICK_DISTORTION_POLYNOMIAL,
+          Logarinthmic    = GEONKICK_DISTORTION_LOGARITHMIC,
+          Foldback        = GEONKICK_DISTORTION_FOLDBACK,
+          HalfWaveRect    = GEONKICK_DISTORTION_HALF_WAVE_RECT,
+          FullWaveRect    = GEONKICK_DISTORTION_FULL_WAVE_RECT,
+  };
+
         GeonkickApi(int sample_rate = Geonkick::defaultSampleRate,
                     InstanceType instance = InstanceType::Standalone,
                     geonkick *dsp = nullptr);
@@ -182,8 +194,17 @@ class GeonkickApi : public RkObject {
   void setOscillatorFilterFactor(int oscillatorIndex,
                                  double factor);
   double getOscillatorFilterFactor(int oscillatorIndex) const;
-  bool setOscillatorAmplitude(int oscillatorIndex,
-                              double amplitude);
+  bool isOscDistortionEnabled(int oscillatorIndex) const;
+  bool oscEnableDistortion(int oscillatorIndex, bool b = true);
+  DistortionType getOscDistortionType(int oscillatorIndex) const;
+  bool setOscDistortionType(int oscillatorIndex, DistortionType type);
+  double getOscDistortionInLimiter(int oscillatorIndex) const;
+  bool setOscDistortionInLimiter(int oscillatorIndex, double val);
+  double getOscDistortionOutLimiter(int oscillatorIndex) const;
+  bool setOscDistortionOutLimiter(int oscillatorIndex, double val);
+  double getOscDistortionDrive(int oscillatorIndex) const;
+  bool setOscDistortionDrive(int oscillatorIndex, double val);
+  bool setOscillatorAmplitude(int oscillatorIndex, double amplitude);
   double limiterValue() const;
   int getSampleRate() const;
   static std::unique_ptr<KitState> getDefaultKitState();

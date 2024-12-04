@@ -21,12 +21,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef OSCILLATOR_DISTORTION_MODEL_H
-#define OSCILLATOR_DISTORTION_MODEL_H
-
 #include "OscillatorDistortionModel.h"
+#include "oscillator.h"
 
-OscillatorDistortionModel::DistortionModel(Oscillator *parent)
+OscillatorDistortionModel::OscillatorDistortionModel(Oscillator *parent)
         : DistortionModel(parent)
         , oscillatorModel{parent}
 {
@@ -34,35 +32,36 @@ OscillatorDistortionModel::DistortionModel(Oscillator *parent)
 
 void OscillatorDistortionModel::enable(bool b)
 {
-        if (oscillatorModel->api()->enabledOscDistortion(oscillatorModel->index(), b))
+        if (oscillatorModel->api()->oscEnableDistortion(oscillatorModel->index(), b))
                 action enabled(b);
 }
 
-void OscillatorDistortionModel::isEnabled() const
+bool OscillatorDistortionModel::isEnabled() const
 {
         return oscillatorModel->api()->isOscDistortionEnabled(oscillatorModel->index());
 }
 
-void OscillatorDistortionModel::setDistortionType(enum DistortionType type)
+void OscillatorDistortionModel::setDistortionType(DistortionType type)
 {
         if (oscillatorModel->api()->setOscDistortionType(oscillatorModel->index(), type))
                 action distortionTypeChanged(type);
 }
 
-enum DistortionType OscillatorDistortionModel::getDistortionType() const
+DistortionModel::DistortionType
+OscillatorDistortionModel::getDistortionType() const
 {
-        return  oscillatorModel->api()->oscDistortionType(oscillatorModel->index());
+        return  oscillatorModel->api()->getOscDistortionType(oscillatorModel->index());
 }
 
 void OscillatorDistortionModel::setInLimiter(double value)
 {
         if (oscillatorModel->api()->setOscDistortionInLimiter(oscillatorModel->index(), value))
-                action inLimiterChanged(type);
+                action inLimiterChanged(value);
 }
 
 double OscillatorDistortionModel::getInLimiter() const
 {
-        return  oscillatorModel->api()->oscDistortionInLimiter(oscillatorModel->index());
+        return  oscillatorModel->api()->getOscDistortionInLimiter(oscillatorModel->index());
 }
 
 void OscillatorDistortionModel::setOutLimiter(double value)
@@ -73,16 +72,16 @@ void OscillatorDistortionModel::setOutLimiter(double value)
 
 double OscillatorDistortionModel::getOutLimiter() const
 {
-        return  oscillatorModel->api()->oscDistortionOutLimiter(oscillatorModel->index());
+        return  oscillatorModel->api()->getOscDistortionOutLimiter(oscillatorModel->index());
 }
 
 void OscillatorDistortionModel::setDrive(double drive)
 {
-                if (oscillatorModel->api()->setOscDistortionDrive(oscillatorModel->index(), value))
-                action driveChanged(value);
+                if (oscillatorModel->api()->setOscDistortionDrive(oscillatorModel->index(), drive))
+                action driveChanged(drive);
 }
 
 double OscillatorDistortionModel::getDrive() const
 {
-        return  oscillatorModel->api()->oscDistortionDrive(oscillatorModel->index());
+        return  oscillatorModel->api()->getOscDistortionDrive(oscillatorModel->index());
 }

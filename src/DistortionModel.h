@@ -25,15 +25,17 @@
 #define DISTORTION_MODEL_H
 
 #include "globals.h"
+#include "geonkick_api.h"
 
 class DistortionModel: public RkObject
 {
  public:
+        using DistortionType = GeonkickApi::DistortionType;
         explicit DistortionModel(RkObject *parent);
         virtual void enable(bool b) = 0;
         virtual bool isEnabled() const = 0;
-        virtual void setDistortionType(enum DistortionType type) = 0;
-        virtual enum DistortionType getDistortionType() const = 0;
+        virtual void setDistortionType(DistortionType type) = 0;
+        virtual DistortionType getDistortionType() const = 0;
         virtual void setInLimiter(double value) = 0;
         virtual double getInLimiter() const = 0;
         virtual void setOutLimiter(double value) = 0;
@@ -46,15 +48,15 @@ class DistortionModel: public RkObject
                     RK_ARG_TYPE(bool),
                     RK_ARG_VAL(b));
         RK_DECL_ACT(distortionTypeChanged,
-                    outLimiter(enum DistortionType type),
-                    RK_ARG_TYPE(enum DistortionType),
+                    distortionTypeChanged(DistortionType type),
+                    RK_ARG_TYPE(DistortionType),
                     RK_ARG_VAL(type));
         RK_DECL_ACT(inLimiterChanged,
-                    inLimiter(double val),
+                    inLimiterChanged(double val),
                     RK_ARG_TYPE(double),
                     RK_ARG_VAL(val));
         RK_DECL_ACT(outLimiterChanged,
-                    outLimiter(double val),
+                    outLimiterChanged(double val),
                     RK_ARG_TYPE(double),
                     RK_ARG_VAL(val));
         RK_DECL_ACT(driveChanged,
