@@ -2,7 +2,7 @@
  * File name: main.cpp
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -83,6 +83,6 @@ int main(int argc, char *argv[])
 #ifdef GEONKICK_OS_GNU
         munlockall();
 #endif // GEONKICK_OS_GNU
-	
+
         return res;
 }

@@ -55,6 +55,7 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         , limiterWidget{nullptr}
         , geonkickModel{new GeonkickModel(this, geonkickApi)}
 {
+        setTitle(Geonkick::appName);
         setName("MainWindow");
         setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
