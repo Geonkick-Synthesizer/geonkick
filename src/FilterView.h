@@ -1,8 +1,8 @@
 /**
- * File name: DistortionView.h
+ * File name: FilterView.h
  * Project: Geonkick (A percussive synthesizer)
  *
- * Copyright (C) 2024 Iurie Nistor
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -21,23 +21,42 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef DISTORTION_VIEW_H
-#define DISTORTION_VIEW_H
+#ifndef GEONKICK_FILTER_VIEW_H
+#define GEONKICK_FILTER_VIEW_H
 
 #include "AbstractView.h"
+#include "FilerModel.h"
+#include "geonkick_api.h"
+#include "envelope.h"
 
-class DistortionModel;
+class GeonkickButton;
+class Knob;
 
-class DistortionView: public AbstractView
+class FilterView: public AbstractView
 {
+        using FilterType = FilterModel::FilterType;
  public:
-        explicit DistortionView(GeonkickWidget* parent, DistortionModel *model);
+        explicit Filter(GeonkickWidget *parent, FilerModel* model);
         void createView() override;
         void updateView() override;
 
-protected:
+ protected:
         void bindModel() override;
         void unbindModel() override;
+        void onEnabled(bool b);
+        void onCutOffChanged(double val);
+        void onResonanceChanged(double val);
+        void onTypeChanged(FilterType type);
+        void mouseButtonPressEvent(RkMouseEvent *event) override;
+
+ private:
+        GeonkickButton *filterCheckbox;
+        Knob *cutOffKnob;
+        Knob *resonanceKnob;
+        GeonkickButton *lpFilterButton;
+        GeonkickButton *hpFilterButton;
+        GeonkickButton *bpFilterButton;
+        Envelope::Category envelopeCategory;
 };
 
-#endif // DISTORTION_VEW_H
+#endif // GEONKICK_FILTER_VIEW_H

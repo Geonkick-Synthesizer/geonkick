@@ -1,5 +1,5 @@
 /**
- * File name: EffectTabButton.cpp
+ * File name: DistortionModel.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,26 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "EffectTabButton.h"
+#include "DistortionModel.h"
 
-#include <RkButton.h>
-
-EffectTabButton::EffectTabButton(GeonkickWidget* parent)
-        : GeonkickButton(parent)
-        , enableButton{new RkButton(this)}
-{
-        setSize(30, 20);
-        enableButton->setSize(16, 16);
-        enableButton->setCheckable(true);
-        enableButton->setPosition(3, (height() - enableButton->height()) / 2);
-        RK_ACT_BIND(enableButton,
-                    toggled,
-                    RK_ACT_ARGS(bool pressed),
-                    this,
-                    enabled(pressed));
-}
-
-void EffectTabButton::enable(bool b)
-{
-        enableButton->setPressed(b);
+DistortionModel::DistortionModel(RkObject *parent)
+        : RkObject(parent){
 }

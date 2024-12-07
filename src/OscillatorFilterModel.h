@@ -1,5 +1,5 @@
 /**
- * File name: DistortionView.h
+ * File name: OscillatorDistortionModel.h
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,23 +21,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef DISTORTION_VIEW_H
-#define DISTORTION_VIEW_H
+#ifndef OSCILLATOR_DISTORTION_MODEL_H
+#define OSCILLATOR_DISTORTION_MODEL_H
 
-#include "AbstractView.h"
+#include "DistortionModel.h"
 
-class DistortionModel;
+class Oscillator;
 
-class DistortionView: public AbstractView
+class OscillatorDistortionModel: public DistortionModel
 {
  public:
-        explicit DistortionView(GeonkickWidget* parent, DistortionModel *model);
-        void createView() override;
-        void updateView() override;
+        OscillatorDistortionModel(Oscillator *parent);
+        void enable(bool b) override;
+        bool isEnabled() const override;
+        void setDistortionType(DistortionType type) override;
+        DistortionType getDistortionType() const override;
+        void setInLimiter(double value) override;
+        double getInLimiter() const override;
+        void setOutLimiter(double value) override;
+        double getOutLimiter() const override;
+        void setDrive(double drive) override;
+        double getDrive() const override;
 
-protected:
-        void bindModel() override;
-        void unbindModel() override;
+ private:
+        Oscillator *oscillatorModel;
 };
 
-#endif // DISTORTION_VEW_H
+#endif // OSCILLATOR_DISTORTION_MODEL_H

@@ -23,24 +23,16 @@
 
 #include "Distortion.h"
 
-Distortion::Distortion(GeonkickWidget* parent, DistortionModel *model)
-        : GeonkickWidget(parent)
-        , distortionModel{model}
+DistortionView::DistortionView(GeonkickWidget* parent, DistortionModel *model)
+        : AbstractView(parent, model)
 {
         createView();
         bindModel();
 }
 
-void Distortion::setdModel(DistortionModel *model)
-{
-        unbindObject(distortionModel);
-        distortionModel = model;
-        bindModel();
-        updateView();
-}
-
 void Distortion::binModel()
 {
+        auto distortionModel = static_cast<DistortionModel*>(getModel());
         RK_ACT_BIND(distortionModel,
                     distortionTypeChanged,
                     RK_ACT_ARGS(enum DistortionType type),
@@ -63,9 +55,13 @@ void Distortion::binModel()
                     setDrive(value));
 }
 
+void Distortion::unbindModel()
+{
+        unbindObject(getModel());
+}
+
 void Distortion::createView()
 {
-        updateView();
 }
 
 void Distortion::updateView()

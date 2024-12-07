@@ -26,8 +26,6 @@
 
 #include "geonkick_button.h"
 
-class Oscillator;
-
 class EffectTabButton: public GeonkickButton {
  public:
         explicit EffectTabButton(GeonkickWidget* parent);
@@ -38,7 +36,7 @@ class EffectTabButton: public GeonkickButton {
                     RK_ARG_VAL(b));
 
  private:
-        GeonkickButton *enableButton;
-}
+        RkButton *enableButton;
+};
 
 #endif // EFFECT_TAB_BUTTON_H

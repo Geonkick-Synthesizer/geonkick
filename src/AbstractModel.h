@@ -1,5 +1,5 @@
 /**
- * File name: EffectTabButton.cpp
+ * File name: AbstractModel.h
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,26 +21,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "EffectTabButton.h"
+#ifndef ABSTRACT_MODEL_H
+#define ABSTRACT_MODEL_H
 
-#include <RkButton.h>
+#include <RkObject.h>
 
-EffectTabButton::EffectTabButton(GeonkickWidget* parent)
-        : GeonkickButton(parent)
-        , enableButton{new RkButton(this)}
+class AbstractModel: public RkObject
 {
-        setSize(30, 20);
-        enableButton->setSize(16, 16);
-        enableButton->setCheckable(true);
-        enableButton->setPosition(3, (height() - enableButton->height()) / 2);
-        RK_ACT_BIND(enableButton,
-                    toggled,
-                    RK_ACT_ARGS(bool pressed),
-                    this,
-                    enabled(pressed));
-}
+ public:
+        explicit AbstractModel(RkObject *parent);
+        virtual ~AbstractModel() = default;
+        RK_DECL_ACT(modelUpdated,
+                    modelUpdated(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
+};
 
-void EffectTabButton::enable(bool b)
-{
-        enableButton->setPressed(b);
-}
+#endif // ABSTRACT_MODEL_H

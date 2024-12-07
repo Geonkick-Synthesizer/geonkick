@@ -106,6 +106,8 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
+  ${GKICK_COMMON_DIR}/AbstractModel.h
+  ${GKICK_COMMON_DIR}/AbstractView.h
   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
   ${GKICK_COMMON_DIR}/DesktopPaths.h
   ${GKICK_COMMON_DIR}/GeonkickConfig.h
@@ -118,7 +120,6 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/PathListModel.h
   ${GKICK_COMMON_DIR}/file_dialog.h
   ${GKICK_COMMON_DIR}/SampleBrowser.h
-  ${GKICK_COMMON_DIR}/filter.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/top_bar.h
   ${GKICK_COMMON_DIR}/control_area.h
@@ -150,6 +151,10 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/OscillatorFunctionView.h
   ${GKICK_COMMON_DIR}/DistortionModel.h
   ${GKICK_COMMON_DIR}/OscillatorDistortionModel.h
+  ${GKICK_COMMON_DIR}/DistortionView.h
+  ${GKICK_COMMON_DIR}/FilterModel.h
+  ${GKICK_COMMON_DIR}/OscillatorFilterModel.h
+  ${GKICK_COMMON_DIR}/FilterView.h
   ${GKICK_COMMON_DIR}/EffectTabButton.h
   ${GKICK_COMMON_DIR}/OscillatorEffects.h
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
@@ -169,6 +174,8 @@ set(GKICK_COMMON_HEADERS
 )
 
 set(GKICK_COMMON_SOURCES
+  ${GKICK_COMMON_DIR}/AbstractModel.cpp
+  ${GKICK_COMMON_DIR}/AbstractView.cpp
   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.cpp
   ${GKICK_COMMON_DIR}/DesktopPaths.cpp
   ${GKICK_COMMON_DIR}/GeonkickConfig.cpp
@@ -181,7 +188,6 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/PathListModel.cpp
   ${GKICK_COMMON_DIR}/file_dialog.cpp
   ${GKICK_COMMON_DIR}/SampleBrowser.cpp
-  ${GKICK_COMMON_DIR}/filter.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/top_bar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
@@ -213,6 +219,10 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/OscillatorFunctionView.cpp
   ${GKICK_COMMON_DIR}/DistortionModel.cpp
   ${GKICK_COMMON_DIR}/OscillatorDistortionModel.cpp
+  ${GKICK_COMMON_DIR}/DistortionView.cpp
+  ${GKICK_COMMON_DIR}/FilterModel.cpp
+  ${GKICK_COMMON_DIR}/OscillatorFilterModel.cpp
+  ${GKICK_COMMON_DIR}/FilterView.cpp
   ${GKICK_COMMON_DIR}/EffectTabButton.cpp
   ${GKICK_COMMON_DIR}/OscillatorEffects.cpp
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
