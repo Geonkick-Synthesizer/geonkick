@@ -20,7 +20,7 @@ else()
    option(GKICK_STANDALONE "Disable build for standalone" OFF)
 endif()
 
-option(GEONKICK_LIMITED_VERSION "Enable geonkick limited version" ON)
+option(GEONKICK_LIMITED_VERSION "Enable geonkick limited version" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 option(GKICK_PRESETS "Enable presets" ON)
 
