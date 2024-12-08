@@ -44,9 +44,11 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
                                const std::vector<std::unique_ptr<Oscillator>> &oscillators)
         : GeonkickWidget(parent)
         , drawArea{nullptr}
+#ifndef GEONKICK_LIMITED_VERSION
         , layer1Button{nullptr}
         , layer2Button{nullptr}
         , layer3Button{nullptr}
+#endif // GEONKICK_LIMITED_VERSION
         , geonkickApi{api}
 {
         // Create drawing area.
@@ -79,7 +81,9 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         generalEnvelope->setCategory(Envelope::Category::General);
         envelopes.insert({static_cast<int>(Envelope::Category::General),
                         std::move(generalEnvelope)});
+#ifndef GEONKICK_LIMITED_VERSION
         createButtomMenu();
+#endif // GEONKICK_LIMITED_VERSION
         showEnvelope(Envelope::Category::General, Envelope::Type::Amplitude);
         RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
@@ -90,6 +94,7 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         drawArea->show();
 }
 
+#ifndef GEONKICK_LIMITED_VERSION
 void EnvelopeWidget::createButtomMenu()
 {
         auto buttomAreaWidget = new GeonkickWidget(drawArea);
@@ -98,15 +103,16 @@ void EnvelopeWidget::createButtomMenu()
         buttomAreaWidget->setPosition(55 + drawArea->x(),
                                       drawArea->y() + drawArea->height() - buttomAreaWidget->height() - 6);
 
+        auto menuContainer = new RkContainer(buttomAreaWidget);
         createLayersButtons(buttomAreaWidget);
-	menuContainer = new RkContainer(buttomAreaWidget);
-	menuContainer->addWidget(layer1Button);
+        menuContainer->addWidget(layer1Button);
         menuContainer->addSpace(5);
         menuContainer->addWidget(layer2Button);
         menuContainer->addSpace(5);
         menuContainer->addWidget(layer3Button);
         buttomAreaWidget->show();
 }
+#endif // GEONKICK_LIMITED_VERSION
 
 void EnvelopeWidget::createPointInfoLabel()
 {
@@ -160,6 +166,7 @@ void EnvelopeWidget::hideEnvelope(bool b)
         drawArea->setHideEnvelope(b);
 }
 
+#ifndef GEONKICK_LIMITED_VERSION
 void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
 {
         layer1Button = new GeonkickButton(buttomAreaWidget);
@@ -202,12 +209,15 @@ void EnvelopeWidget::createLayersButtons(GeonkickWidget *buttomAreaWidget)
         RK_ACT_BIND(layer3Button, toggled, RK_ACT_ARGS(bool b),
                     this, setLayer(GeonkickApi::Layer::Layer3));
 }
+#endif // GEONKICK_LIMITED_VERSION
 
 void EnvelopeWidget::setLayer(GeonkickApi::Layer layer)
 {
+#ifndef GEONKICK_LIMITED_VERSION
         layer1Button->setPressed(GeonkickApi::Layer::Layer1 == layer);
         layer2Button->setPressed(GeonkickApi::Layer::Layer2 == layer);
         layer3Button->setPressed(GeonkickApi::Layer::Layer3 == layer);
+#endif // GEONKICK_LIMITED_VERSION
         geonkickApi->setLayer(layer);
         action requestUpdateGui();
 }

@@ -1,5 +1,5 @@
 /**
- * File name: top_bar.cpp
+ * File name: TopBar.cpp
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2018 Iurie Nistor
@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "top_bar.h"
+#include "TopBar.h"
 #include "geonkick_button.h"
 #include "preset_browser_model.h"
 #include "preset_browser_view.h"
@@ -35,6 +35,7 @@
 #include <RkLabel.h>
 #include <RkButton.h>
 #include <RkContainer.h>
+#include <RkSpinBox.h>
 
 RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(logo);
@@ -50,6 +51,7 @@ RK_DECLARE_IMAGE_RC(reset_active);
 RK_DECLARE_IMAGE_RC(play);
 RK_DECLARE_IMAGE_RC(play_pressed);
 RK_DECLARE_IMAGE_RC(play_hover);
+#ifndef GEONKICK_LIMITED_VERSION
 RK_DECLARE_IMAGE_RC(layer1);
 RK_DECLARE_IMAGE_RC(layer2);
 RK_DECLARE_IMAGE_RC(layer3);
@@ -59,6 +61,7 @@ RK_DECLARE_IMAGE_RC(layer3_disabled);
 RK_DECLARE_IMAGE_RC(layer1_hover);
 RK_DECLARE_IMAGE_RC(layer2_hover);
 RK_DECLARE_IMAGE_RC(layer3_hover);
+#endif // GEONKICK_LIMITED_VERSION
 RK_DECLARE_IMAGE_RC(tune_checkbox_on);
 RK_DECLARE_IMAGE_RC(tune_checkbox_off);
 RK_DECLARE_IMAGE_RC(tune_checkbox_hover);
@@ -68,7 +71,11 @@ RK_DECLARE_IMAGE_RC(topmenu_controls_off);
 RK_DECLARE_IMAGE_RC(topmenu_midi_off);
 RK_DECLARE_IMAGE_RC(topmenu_midi_active);
 RK_DECLARE_IMAGE_RC(topmenu_midi_hover);
-#ifndef GEONKICK_SINGLE
+#ifdef GEONKICK_SINGLE
+RK_DECLARE_IMAGE_RC(note_off_unpressed);
+RK_DECLARE_IMAGE_RC(note_off_hover);
+RK_DECLARE_IMAGE_RC(note_off_pressed);
+#else
 RK_DECLARE_IMAGE_RC(topmenu_kit_active);
 RK_DECLARE_IMAGE_RC(topmenu_kit_hover);
 RK_DECLARE_IMAGE_RC(topmenu_kit_off);
@@ -90,12 +97,17 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         , saveFileButton{nullptr}
         , exportFileButton{nullptr}
         , presetNavigator{nullptr}
+#ifndef GEONKICK_LIMITED_VERSION
         , layer1Button{nullptr}
         , layer2Button{nullptr}
         , layer3Button{nullptr}
+#endif // GEONKICK_LIMITED_VERSION
         , controlsButton{nullptr}
         , midiKeyButton{nullptr}
-#ifndef GEONKICK_SINGLE
+#ifdef GEONKICK_SINGLE
+        , midiChannelSpinBox{nullptr}
+        , noteOffButton{nullptr}
+#else
         , kitButton{nullptr}
 #endif // GEONKICK_SINGLE
         , presetsButton{nullptr}
@@ -171,8 +183,10 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         mainLayout->addWidget(playButton);
         addSeparator(mainLayout, 5);
 
+#ifndef GEONKICK_LIMITED_VERSION
         createLyersButtons(mainLayout);
         addSeparator(mainLayout, 5);
+#endif // GEONKICK_LIMITED_VERSION
 
         auto resetButton = new RkButton(this);
         resetButton->setSize(33, 18);
@@ -225,6 +239,48 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                     this,
                     showMidiPopup());
         mainLayout->addWidget(midiKeyButton);
+
+#ifdef GEONKICK_SINGLE
+        // Midi channel
+        addSeparator(mainLayout);
+        midiChannelSpinBox = new RkSpinBox(this);
+        midiChannelSpinBox->setTextColor({250, 250, 250});
+        midiChannelSpinBox->setBackgroundColor({60, 57, 57});
+        midiChannelSpinBox->upControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->upControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->downControl()->setBackgroundColor({50, 47, 47});
+        midiChannelSpinBox->downControl()->setTextColor({100, 100, 100});
+        midiChannelSpinBox->setSize(50, 20);
+        midiChannelSpinBox->show();
+        mainLayout->addWidget(midiChannelSpinBox);
+        RK_ACT_BINDL(midiChannelSpinBox,
+                    currentIndexChanged,
+                    RK_ACT_ARGS(int index),
+                     [=, this](int index) {
+                             geonkickModel->getKitModel()->currentPercussion()->setMidiChannel(index - 1);
+                     });
+
+        // Note off button
+        addSeparator(mainLayout);
+        noteOffButton = new GeonkickButton(this);
+        noteOffButton->setType(RkButton::ButtonType::ButtonCheckable);
+        noteOffButton->setSize(23, 16);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_unpressed)),
+                                RkButton::State::Unpressed);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_hover)),
+                                RkButton::State::UnpressedHover);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_pressed)),
+                                RkButton::State::Pressed);
+        noteOffButton->setImage(RkImage(noteOffButton->size(), RK_IMAGE_RC(note_off_hover)),
+                                RkButton::State::PressedHover);
+        mainLayout->addWidget(noteOffButton);
+        RK_ACT_BINDL(noteOffButton,
+                     toggled,
+                     RK_ACT_ARGS(bool toggled),
+                     [=, this](bool toggled) {
+                             geonkickModel->getKitModel()->currentPercussion()->enableNoteOff(toggled);
+                     } );
+#endif // GEONKICK_SINGLE
 
         // Controls button
         addSeparator(mainLayout);
@@ -347,6 +403,7 @@ void TopBar::addSeparator(RkContainer *mainLayout, int width)
         mainLayout->addSpace(width);
 }
 
+#ifndef GEONKICK_LIMITED_VERSION
 void TopBar::createLyersButtons(RkContainer *mainLayout)
 {
         layer1Button = new GeonkickButton(this);
@@ -403,6 +460,7 @@ void TopBar::createLyersButtons(RkContainer *mainLayout)
         RK_ACT_BIND(layer2Button, toggled, RK_ACT_ARGS(bool b),
         geonkickModel->api(), enbaleLayer(GeonkickApi::Layer::Layer2, b));
 }
+#endif // GEONKICK_LIMITED_VERSION
 
 void TopBar::setPresetName(const std::string &name)
 {
@@ -419,13 +477,25 @@ void TopBar::setPresetName(const std::string &name)
 void TopBar::updateGui()
 {
         auto api = geonkickModel->api();
+#ifndef GEONKICK_LIMITED_VERSION
         layer1Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer1));
         layer2Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer2));
         layer3Button->setPressed(api->isLayerEnabled(GeonkickApi::Layer::Layer3));
+#endif // GEONKICK_LIMITED_VERSION
         tuneCheckbox->setPressed(api->isAudioOutputTuned(api->currentPercussion()));
         setPresetName(geonkickModel->getKitModel()->currentPercussion()->name());
         auto kitModel = geonkickModel->getKitModel();
         midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(kitModel->currentPercussion()->key()));
+#ifdef GEONKICK_SINGLE
+        auto percussionModel = geonkickModel->getKitModel()->currentPercussion();
+        auto nMidiChannels = percussionModel->numberOfMidiChannels();
+        midiChannelSpinBox->clear();
+        midiChannelSpinBox->addItem("Any");
+        for (size_t i = 0; i < nMidiChannels; i++)
+                midiChannelSpinBox->addItem(std::to_string(i + 1));
+        midiChannelSpinBox->setCurrentIndex(percussionModel->midiChannel() + 1);
+        noteOffButton->setPressed(percussionModel->isNoteOffEnabled());
+#endif // GEONKICK_SINGLE
 }
 
 void TopBar::showMidiPopup()

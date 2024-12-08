@@ -69,6 +69,11 @@ void RkSpinBox::addItem(const RkVariant& item)
         return impl_ptr->addItem(item);
 }
 
+void RkSpinBox::clear()
+{
+        return impl_ptr->clear();
+}
+
 RkVariant RkSpinBox::currentItem() const
 {
         return impl_ptr->currentItem();

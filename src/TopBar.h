@@ -33,6 +33,7 @@ class RkContainer;
 class ViewState;
 class GeonkickModel;
 class PresetNavigator;
+class RkSpinBox;
 
 class TopBar : public GeonkickWidget
 {
@@ -54,20 +55,27 @@ class TopBar : public GeonkickWidget
         void showMidiPopup();
 
  private:
+#ifndef GEONKICK_LIMITED_VERSION
         void createLyersButtons(RkContainer *mainLayout);
+#endif // GEONKICK_LIMITED_VERSION
         void addSeparator(RkContainer *mainLayout, int width = 5);
         GeonkickModel *geonkickModel;
         GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
         GeonkickButton *exportFileButton;
         PresetNavigator* presetNavigator;
+#ifndef GEONKICK_LIMITED_VERSION
         GeonkickButton *layer1Button;
         GeonkickButton *layer2Button;
         GeonkickButton *layer3Button;
+#endif // GEONKICK_LIMITED_VERSION
         GeonkickButton *tuneCheckbox;
         GeonkickButton *controlsButton;
         GeonkickButton *midiKeyButton;
-#ifndef GEONKICK_SINGLE
+#ifdef GEONKICK_SINGLE
+        RkSpinBox *midiChannelSpinBox;
+        GeonkickButton *noteOffButton;
+#else
         GeonkickButton *kitButton;
 #endif // GEONKICK_SINGLE
         GeonkickButton *presetsButton;

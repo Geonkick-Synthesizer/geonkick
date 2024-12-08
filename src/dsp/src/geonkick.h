@@ -57,9 +57,17 @@ typedef float gkick_real;
 #define GEONKICK_UNUSED(expr) (void)expr
 
 #define GEONKICK_VERSION GEONKICK_VERSION_HEX
+#ifdef GEONKICK_LIMITED_VERSION
+#define GEONKICK_NAME "Geonkick (limited)"
+#else
 #define GEONKICK_NAME "Geonkick"
+#endif // GEONKICK_LIMITED_VERSION
 #define GEONKICK_APP_NAME "geonkick"
 #define GEOKICK_VERSION_STRING GEONKICK_VERSION_STR
+
+#if defined(GEONKICK_LIMITED_VERSION) && !defined(GEONKICK_SINGLE)
+#define GEONKICK_SINGLE
+#endif // GEONKICK_LIMITED_VERSION
 
 #ifdef GEONKICK_AUDIO_JACK
 #define GKICK_IS_STANDALONE (1)
@@ -115,7 +123,11 @@ enum GEONKICK_MODULE {
         GEONKICK_MODULE_JACK    = 1
 };
 
+#ifdef GEONKICK_LIMITED_VERSION
+#define GKICK_OSC_GROUPS_NUMBER 1
+#else
 #define GKICK_OSC_GROUPS_NUMBER 3
+#endif // GEONKICK_LIMITED_VERSION
 #define GKICK_OSC_GROUP_SIZE 3
 
 enum geonkick_channel_type {
