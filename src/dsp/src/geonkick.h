@@ -57,11 +57,7 @@ typedef float gkick_real;
 #define GEONKICK_UNUSED(expr) (void)expr
 
 #define GEONKICK_VERSION GEONKICK_VERSION_HEX
-#ifdef GEONKICK_LIMITED_VERSION
-#define GEONKICK_NAME "Geonkick (limited)"
-#else
 #define GEONKICK_NAME "Geonkick"
-#endif // GEONKICK_LIMITED_VERSION
 #define GEONKICK_APP_NAME "geonkick"
 #define GEOKICK_VERSION_STRING GEONKICK_VERSION_STR
 
