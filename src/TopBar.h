@@ -33,6 +33,7 @@ class RkContainer;
 class ViewState;
 class GeonkickModel;
 class PresetNavigator;
+class RkSpinBox;
 
 class TopBar : public GeonkickWidget
 {
@@ -71,7 +72,10 @@ class TopBar : public GeonkickWidget
         GeonkickButton *tuneCheckbox;
         GeonkickButton *controlsButton;
         GeonkickButton *midiKeyButton;
-#ifndef GEONKICK_SINGLE
+#ifdef GEONKICK_SINGLE
+        RkSpinBox *midiChannelSpinBox;
+        GeonkickButton *noteOffButton;
+#else
         GeonkickButton *kitButton;
 #endif // GEONKICK_SINGLE
         GeonkickButton *presetsButton;

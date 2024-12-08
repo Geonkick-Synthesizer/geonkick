@@ -65,6 +65,10 @@ typedef float gkick_real;
 #define GEONKICK_APP_NAME "geonkick"
 #define GEOKICK_VERSION_STRING GEONKICK_VERSION_STR
 
+#if defined(GEONKICK_LIMITED_VERSION) && !defined(GEONKICK_SINGLE)
+#define GEONKICK_SINGLE
+#endif // GEONKICK_LIMITED_VERSION
+
 #ifdef GEONKICK_AUDIO_JACK
 #define GKICK_IS_STANDALONE (1)
 #else

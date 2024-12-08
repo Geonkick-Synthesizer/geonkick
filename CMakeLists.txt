@@ -20,6 +20,7 @@ else()
    option(GKICK_STANDALONE "Disable build for standalone" OFF)
 endif()
 
+option(GEONKICK_LIMITED_VERSION "Enable geonkick limited version" ON)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 option(GKICK_PRESETS "Enable presets" ON)
 
@@ -125,7 +126,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/SampleBrowser.h
   ${GKICK_COMMON_DIR}/filter.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
-  ${GKICK_COMMON_DIR}/top_bar.h
+  ${GKICK_COMMON_DIR}/TopBar.h
   ${GKICK_COMMON_DIR}/control_area.h
   ${GKICK_COMMON_DIR}/controls_widget.h
   ${GKICK_COMMON_DIR}/percussion_model.h
@@ -183,7 +184,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/SampleBrowser.cpp
   ${GKICK_COMMON_DIR}/filter.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
-  ${GKICK_COMMON_DIR}/top_bar.cpp
+  ${GKICK_COMMON_DIR}/TopBar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
   ${GKICK_COMMON_DIR}/controls_widget.cpp
   ${GKICK_COMMON_DIR}/percussion_model.cpp

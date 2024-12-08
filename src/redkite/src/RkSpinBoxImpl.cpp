@@ -180,6 +180,11 @@ void RkSpinBox::RkSpinBoxImpl::addItem(const RkVariant& item)
         spinBoxItems.push_back(item);
 }
 
+void RkSpinBox::RkSpinBoxImpl::clear()
+{
+        spinBoxItems.clear();
+}
+
 RkVariant RkSpinBox::RkSpinBoxImpl::currentItem() const
 {
         if (!spinBoxItems.empty()

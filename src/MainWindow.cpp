@@ -29,7 +29,7 @@
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"
-#include "top_bar.h"
+#include "TopBar.h"
 #include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
