@@ -45,7 +45,6 @@ PercussionState::PercussionState()
         , kickFilterQFactor{1.0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
 	, kickCutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
-        , compressor{false, 0, 0, 0, 0, 0, 0}
         , distortion{false, 1.0, 1.0, 1.0}
         , layers{false, false, false}
         , layersAmplitude{1.0, 1.0, 1.0}
@@ -320,26 +319,6 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                 }
                         }
 			setKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff, applyType);
-                }
-
-                if (m.name == "compressor" && m.value.IsObject()) {
-                        for (const auto &el: m.value.GetObject()) {
-                                if (el.name == "enabled" && el.value.IsBool())
-                                        enableCompressor(el.value.GetBool());
-                                if (el.name == "attack" && el.value.IsDouble())
-                                        setCompressorAttack(el.value.GetDouble());
-                                if (el.name == "release" && el.value.IsDouble())
-                                        setCompressorRelease(el.value.GetDouble());
-                                if (el.name == "threshold" && el.value.IsDouble())
-                                        setCompressorThreshold(el.value.GetDouble());
-                                if (el.name == "ratio" && el.value.IsDouble())
-                                        setCompressorRatio(el.value.GetDouble());
-                                if (el.name == "knee" && el.value.IsDouble())
-                                        setCompressorKnee(el.value.GetDouble());
-                                if (el.name == "makeup" && el.value.IsDouble())
-                                        setCompressorMakeup(el.value.GetDouble());
-
-                        }
                 }
 
                 if (m.name == "distortion" && m.value.IsObject()) {
@@ -905,76 +884,6 @@ PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType t
         return {};
 }
 
-void PercussionState::enableCompressor(bool enable)
-{
-        compressor.enabled = enable;
-}
-
-bool PercussionState::isCompressorEnabled() const
-{
-        return compressor.enabled;
-}
-
-void PercussionState::setCompressorAttack(double attack)
-{
-        compressor.attack = attack;
-}
-
-void PercussionState::setCompressorRelease(double release)
-{
-        compressor.release = release;
-}
-
-void PercussionState::setCompressorThreshold(double threshold)
-{
-        compressor.threshold = threshold;
-}
-
-void PercussionState::setCompressorRatio(double ratio)
-{
-        compressor.ratio = ratio;
-}
-
-void PercussionState::setCompressorKnee(double knee)
-{
-        compressor.knee = knee;
-}
-
-void PercussionState::setCompressorMakeup(double makeup)
-{
-        compressor.makeup = makeup;
-}
-
-double PercussionState::getCompressorAttack() const
-{
-        return compressor.attack;
-}
-
-double PercussionState::getCompressorRelease() const
-{
-        return compressor.release;
-}
-
-double PercussionState::getCompressorThreshold() const
-{
-        return compressor.threshold;
-}
-
-double PercussionState::getCompressorRatio() const
-{
-        return compressor.ratio;
-}
-
-double PercussionState::getCompressorKnee() const
-{
-        return compressor.knee;
-}
-
-double PercussionState::getCompressorMakeup() const
-{
-        return compressor.makeup;
-}
-
 void PercussionState::enableDistortion(bool enable)
 {
         distortion.enabled = enable;
@@ -1209,22 +1118,6 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         }
         jsonStream << "]" << std::endl; // points
         jsonStream << "}, " << std::endl;  // filter;
-        jsonStream << "\"compressor\": {" << std::endl;
-        jsonStream << "\"enabled\": " << (isCompressorEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"attack\": "
-                   << getCompressorAttack() << ", " << std::endl;
-        jsonStream << "\"release\": "
-                   << getCompressorRelease() << ", " << std::endl;
-        jsonStream << "\"threshold\": "
-                   << getCompressorThreshold() << ", " << std::endl;
-        jsonStream << "\"ratio\": "
-                   << getCompressorRatio() << ", " << std::endl;
-        jsonStream << "\"knee\": "
-                   << getCompressorKnee() << ", " << std::endl;
-        jsonStream << "\"makeup\": "
-                   << getCompressorMakeup() << std::endl;
-        jsonStream << "}, " << std::endl;
-
         jsonStream << "\"distortion\": {" << std::endl;
         jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
         jsonStream << "\"in_limiter\": "

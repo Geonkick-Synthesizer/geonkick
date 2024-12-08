@@ -116,20 +116,6 @@ class PercussionState
         void setOscillatorSample(int oscillatorIndex,
                                  const std::vector<float> &sample);
         std::vector<float> getOscillatorSample(int oscillatorIndex) const;
-        void enableCompressor(bool enable);
-        bool isCompressorEnabled() const;
-        void setCompressorAttack(double attack);
-        void setCompressorRelease(double release);
-        void setCompressorThreshold(double threshold);
-        void setCompressorRatio(double ratio);
-        void setCompressorKnee(double knee);
-        void setCompressorMakeup(double makeup);
-        double getCompressorAttack() const;
-        double getCompressorRelease() const;
-        double getCompressorThreshold() const;
-        double getCompressorRatio() const;
-        double getCompressorKnee() const;
-        double getCompressorMakeup() const;
         void enableDistortion(bool enable);
         bool isDistortionEnabled() const;
         void setDistortionVolume(double volume);
@@ -212,16 +198,6 @@ private:
         OscillatorInfo* getOscillator(int index);
         const OscillatorInfo* getConstOscillator(int index) const;
 
-        struct Compressor {
-                bool enabled;
-                double attack;
-                double release;
-                double threshold;
-                double ratio;
-                double knee;
-                double makeup;
-        };
-
         struct Distortion {
                 bool enabled;
                 double in_limiter;
@@ -253,7 +229,6 @@ private:
 	std::vector<RkRealPoint> kickDistortionDriveEnvelope;
         std::vector<RkRealPoint> kickDistortionVolumeEnvelope;
         std::unordered_map<int, OscillatorInfo> oscillators;
-        Compressor compressor;
         Distortion distortion;
         std::vector<bool> layers;
         std::vector<double> layersAmplitude;

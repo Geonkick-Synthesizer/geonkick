@@ -22,7 +22,6 @@
  */
 
 #include "effects_group_box.h"
-#include "compressor_group_box.h"
 #include "distortion_group_box.h"
 #include "layers_group_box.h"
 #include "geonkick_api.h"

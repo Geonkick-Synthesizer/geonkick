@@ -200,13 +200,6 @@ class GeonkickApi : public RkObject {
 
   std::unique_ptr<PercussionState> getPercussionState(size_t id) const;
   std::unique_ptr<PercussionState> getPercussionState() const;
-  bool isCompressorEnabled() const;
-  double getCompressorAttack() const;
-  double getCompressorRelease() const;
-  double getCompressorThreshold() const;
-  double getCompressorRatio() const;
-  double getCompressorKnee() const;
-  double getCompressorMakeup() const;
   bool isDistortionEnabled() const;
   double getDistortionInLimiter() const;
   double getDistortionVolume() const;
@@ -237,13 +230,6 @@ class GeonkickApi : public RkObject {
   void setKickEnvelopeApplyType(EnvelopeType envelope,
 				EnvelopeApplyType applyType);
   void playKick(int id = -1);
-  void enableCompressor(bool enable);
-  void setCompressorAttack(double attack);
-  void setCompressorRelease(double release);
-  void setCompressorThreshold(double threshold);
-  void setCompressorRatio(double ratio);
-  void setCompressorKnee(double knee);
-  void setCompressorMakeup(double makeup);
   void enableDistortion(bool enable);
   void setDistortionVolume(double volume);
   void setDistortionInLimiter(double limit);

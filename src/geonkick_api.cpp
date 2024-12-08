@@ -174,13 +174,6 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::FilterQFactor, envelope);
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive, envelope);
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume, envelope);
-        state->enableCompressor(false);
-        state->setCompressorAttack(0.01);
-        state->setCompressorRelease(0.01);
-        state->setCompressorThreshold(0);
-        state->setCompressorRatio(1);
-        state->setCompressorKnee(0);
-        state->setCompressorMakeup(1);
         state->enableDistortion(false);
         state->setDistortionVolume(0.1);
         state->setDistortionInLimiter(1.0);
@@ -284,13 +277,6 @@ void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &sta
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator2, state);
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator3, state);
         }
-        enableCompressor(state->isCompressorEnabled());
-        setCompressorAttack(state->getCompressorAttack());
-        setCompressorRelease(state->getCompressorRelease());
-        setCompressorThreshold(state->getCompressorThreshold());
-        setCompressorRatio(state->getCompressorRatio());
-        setCompressorKnee(state->getCompressorKnee());
-        setCompressorMakeup(state->getCompressorMakeup());
         enableDistortion(state->isDistortionEnabled());
         setDistortionInLimiter(state->getDistortionInLimiter());
         setDistortionVolume(state->getDistortionVolume());
@@ -366,13 +352,6 @@ std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
                 getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator2, state);
                 getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator3, state);
         }
-        state->enableCompressor(isCompressorEnabled());
-        state->setCompressorAttack(getCompressorAttack());
-        state->setCompressorRelease(getCompressorRelease());
-        state->setCompressorThreshold(getCompressorThreshold());
-        state->setCompressorRatio(getCompressorRatio());
-        state->setCompressorKnee(getCompressorKnee());
-        state->setCompressorMakeup(getCompressorMakeup());
         state->enableDistortion(isDistortionEnabled());
         state->setDistortionInLimiter(getDistortionInLimiter());
         state->setDistortionVolume(getDistortionVolume());
@@ -1101,90 +1080,6 @@ void GeonkickApi::playSamplePreview()
 void GeonkickApi::process(float** out, size_t offset, size_t size)
 {
         geonkick_audio_process(geonkickApi, out, offset, size);
-}
-
-void GeonkickApi::enableCompressor(bool enable)
-{
-        geonkick_compressor_enable(geonkickApi, enable);
-}
-
-bool GeonkickApi::isCompressorEnabled() const
-{
-        int enabled = false;
-        geonkick_compressor_is_enabled(geonkickApi, &enabled);
-        return enabled;
-}
-
-void GeonkickApi::setCompressorAttack(double attack)
-{
-        geonkick_compressor_set_attack(geonkickApi, attack);
-}
-
-void GeonkickApi::setCompressorRelease(double release)
-{
-        geonkick_compressor_set_release(geonkickApi, release);
-}
-
-void GeonkickApi::setCompressorThreshold(double threshold)
-{
-        geonkick_compressor_set_threshold(geonkickApi, threshold);
-}
-
-void GeonkickApi::setCompressorRatio(double ratio)
-{
-        geonkick_compressor_set_ratio(geonkickApi, ratio);
-}
-
-void GeonkickApi::setCompressorKnee(double knee)
-{
-        geonkick_compressor_set_knee(geonkickApi, knee);
-}
-
-void GeonkickApi::setCompressorMakeup(double makeup)
-{
-        geonkick_compressor_set_makeup(geonkickApi, makeup);
-}
-
-double GeonkickApi::getCompressorAttack() const
-{
-        gkick_real val = 0;
-        geonkick_compressor_get_attack(geonkickApi, &val);
-        return val;
-}
-
-double GeonkickApi::getCompressorRelease() const
-{
-        gkick_real val = 0;
-        geonkick_compressor_get_release(geonkickApi, &val);
-        return val;
-}
-
-double GeonkickApi::getCompressorThreshold() const
-{
-        gkick_real val = 0;
-        geonkick_compressor_get_threshold(geonkickApi, &val);
-        return val;
-}
-
-double GeonkickApi::getCompressorRatio() const
-{
-        gkick_real val = 0;
-        geonkick_compressor_get_ratio(geonkickApi, &val);
-        return val;
-}
-
-double GeonkickApi::getCompressorKnee() const
-{
-        gkick_real val = 0;
-        geonkick_compressor_get_knee(geonkickApi, &val);
-        return val;
-}
-
-double GeonkickApi::getCompressorMakeup() const
-{
-        gkick_real val = 1.0;
-        geonkick_compressor_get_makeup(geonkickApi, &val);
-        return val;
 }
 
 void GeonkickApi::enableDistortion(bool enable)

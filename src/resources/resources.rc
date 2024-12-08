@@ -105,17 +105,6 @@ fm_radio.png
 fm_radio_hover.png
 fm_radio_active.png
 
-compressor_enable.png
-compressor_enable_hover.png
-compressor_enable_active.png
-compressor_attack_label.png
-compressor_goupbox_bk.png
-compressor_groupbox_label.png
-compressor_knee_label.png
-compressor_makeup_label.png
-compressor_ratio_label.png
-compressor_release_label.png
-compressor_threshold_label.png
 distortion_enable.png
 distortion_enable_hover.png
 distortion_enable_active.png
@@ -184,7 +173,6 @@ general_groupbox_label.png
 # ==== OSC section ====
 
 hboxbk_ampl_env.png
-hboxbk_compressor.png
 hboxbk_filter.png
 hboxbk_noise_env.png
 hboxbk_osc_env.png

@@ -1,6 +1,5 @@
 set(GKICK_API_HEADERS
 	${GKICK_API_DIR}/src/audio_output.h
-	${GKICK_API_DIR}/src/compressor.h
 	${GKICK_API_DIR}/src/distortion.h
 	${GKICK_API_DIR}/src/envelope.h
 	${GKICK_API_DIR}/src/filter.h
@@ -25,7 +24,6 @@ endif(GKICK_STANDALONE)
 
 set(GKICK_API_SOURCES
 	${GKICK_API_DIR}/src/audio_output.c
-	${GKICK_API_DIR}/src/compressor.c
 	${GKICK_API_DIR}/src/distortion.c
 	${GKICK_API_DIR}/src/envelope.c
 	${GKICK_API_DIR}/src/filter.c
