@@ -166,14 +166,18 @@ void PercussionState::setChannel(size_t channel)
 {
         outputChannel = std::clamp(channel,
                                    static_cast<size_t>(0),
-                                   GeonkickApi::numberOfChannels() - 1);
+                                   GeonkickApi::numberOfChannels() - 2);
 }
 
 void PercussionState::setMidiChannel(signed char channel)
 {
-        outputMidiChannel = std::clamp(channel,
-                                       static_cast<size_t>(0),
-                                       GeonkickApi::numberOfMidiChannels() - 1);
+        if (GeonkickTypes::geonkickAnyMidiChannel == static_cast<int>(channel)) {
+                outputMidiChannel = channel;
+        } else {
+                outputMidiChannel = std::clamp(channel,
+                                               static_cast<decltype(channel)>(0),
+                                               static_cast<decltype(channel)>(GeonkickApi::numberOfMidiChannels() - 1));
+        }
 }
 
 void PercussionState::setMute(bool b)
