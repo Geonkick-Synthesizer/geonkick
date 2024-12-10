@@ -144,6 +144,11 @@ size_t GeonkickApi::numberOfMidiChannels()
         return geonkick_midi_channels_number();
 }
 
+size_t GeonkickApi::numberOfLayers()
+{
+        return geonkick_layers_number();
+}
+
 std::unique_ptr<KitState> GeonkickApi::getDefaultKitState()
 {
         return std::make_unique<KitState>();
@@ -185,13 +190,9 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                 GeonkickApi::OscillatorType::Oscillator3
         };
 
-        std::vector<GeonkickApi::Layer> layers = {
-                GeonkickApi::Layer::Layer1,
-                GeonkickApi::Layer::Layer2,
-                GeonkickApi::Layer::Layer3
-        };
-
-        for (auto layer: layers) {
+        auto nLayers = numberOfLayers();
+        for (size_t l = 0; l < nLayers; l++) {
+                auto layer = static_cast<Layer>(l);
                 state->setLayerEnabled(layer, layer == Layer::Layer1);
                 state->setLayerAmplitude(layer, 1.0);
                 for (auto const &osc: oscillators) {
@@ -247,7 +248,8 @@ void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &sta
         enableNoteOff(state->getId(), state->isNoteOffEnabled());
         mutePercussion(state->getId(), state->isMuted());
         soloPercussion(state->getId(), state->isSolo());
-        for (auto i = 0; i < 3; i++) {
+        auto nLayers = numberOfLayers();
+        for (size_t i = 0; i < nLayers; i++) {
                 enbaleLayer(static_cast<Layer>(i), state->isLayerEnabled(static_cast<Layer>(i)));
                 setLayerAmplitude(static_cast<Layer>(i), state->getLayerAmplitude(static_cast<Layer>(i)));
         }
@@ -272,7 +274,7 @@ void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &sta
         setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume,
                               state->getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume));
 
-        for (auto i = 0; i < 3; i++) {
+        for (size_t i = 0; i < nLayers; i++) {
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator1, state);
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator2, state);
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator3, state);
@@ -323,7 +325,8 @@ std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
         state->setNoteOffEnabled(isNoteOffEnabled(state->getId()));
         state->setMute(isPercussionMuted(state->getId()));
         state->setSolo(isPercussionSolo(state->getId()));
-        for (int i = 0; i < 3; i++) {
+        auto nLayers = numberOfLayers();
+        for (size_t i = 0; i < nLayers; i++) {
                 state->setLayerEnabled(static_cast<Layer>(i), isLayerEnabled(static_cast<Layer>(i)));
                 state->setLayerAmplitude(static_cast<Layer>(i), getLayerAmplitude(static_cast<Layer>(i)));
         }
@@ -347,7 +350,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
                                      getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume));
 
 
-        for (int i = 0; i < 3; i++) {
+        for (size_t i = 0; i < nLayers; i++) {
                 getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator1, state);
                 getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator2, state);
                 getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator3, state);

@@ -712,6 +712,13 @@ geonkick_percussion_note_off_enabled(struct geonkick *kick,
                                      size_t id,
                                      bool *enabled);
 
+enum geonkick_error
+geonkick_note_off_enabled(struct geonkick *kick,
+                          size_t id,
+                          bool *enabled);
+
+size_t geonkick_layers_number(void);
+
 bool
 geonkick_is_plugin();
 

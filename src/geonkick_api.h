@@ -100,6 +100,7 @@ class GeonkickApi : public RkObject {
   size_t static numberOfInstruments();
   size_t static numberOfChannels();
   size_t static numberOfMidiChannels();
+  size_t static numberOfLayers();
   void setEventQueue(RkEventQueue *queue);
   bool initDSP();
   bool init();

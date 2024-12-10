@@ -1817,3 +1817,7 @@ int geonkick_rand(unsigned int *seed)
 #endif // GEONKICK_OS_GNU
 }
 
+size_t geonkick_layers_number(void)
+{
+        return GKICK_OSC_GROUPS_NUMBER;
+}

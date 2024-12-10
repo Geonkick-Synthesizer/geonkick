@@ -25,6 +25,7 @@
 #include "Base64EncoderDecoder.h"
 
 #include <iomanip>
+#include <algorithm>
 
 PercussionState::PercussionState()
         : appVersion{GEONKICK_VERSION}
@@ -46,7 +47,7 @@ PercussionState::PercussionState()
         , kickFilterType{GeonkickApi::FilterType::LowPass}
 	, kickCutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
         , distortion{false, 1.0, 1.0, 1.0}
-        , layers{false, false, false}
+        , layers(GeonkickApi::numberOfLayers(), false)
         , layersAmplitude{1.0, 1.0, 1.0}
         , currentLayer{GeonkickApi::Layer::Layer1}
         , tunedOutput{false}
@@ -163,7 +164,9 @@ void PercussionState::setPlayingKey(signed char key)
 
 void PercussionState::setChannel(size_t channel)
 {
-        outputChannel = channel;
+        outputChannel = std::clamp(channel,
+                                   static_cast<size_t>(0),
+                                   GeonkickApi::numberOfChannels() - 1);
 }
 
 void PercussionState::setMidiChannel(signed char channel)
@@ -267,7 +270,7 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                         tuneOutput(m.value.GetBool());
 
                 if (m.name == "layers" && m.value.IsArray()) {
-                        layers = {false, false, false};
+                        layers = std::vector<bool>(GeonkickApi::numberOfLayers(), false);
                         for (const auto &el: m.value.GetArray())
                                 if (el.IsInt())
                                         setLayerEnabled(static_cast<GeonkickApi::Layer>(el.GetInt()), true);
