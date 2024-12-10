@@ -171,7 +171,9 @@ void PercussionState::setChannel(size_t channel)
 
 void PercussionState::setMidiChannel(signed char channel)
 {
-        outputMidiChannel = channel;
+        outputMidiChannel = std::clamp(channel,
+                                       static_cast<size_t>(0),
+                                       GeonkickApi::numberOfMidiChannels() - 1);
 }
 
 void PercussionState::setMute(bool b)
