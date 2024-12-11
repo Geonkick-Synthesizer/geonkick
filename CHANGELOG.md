@@ -4,7 +4,7 @@
 
 - Fix showing the current envelope path
 - Clear the midi channel spinbox when updating the GUI
-- Add MIDI channel spinbox and note off button for a single version insrument in the top bar
+- Add MIDI channel spinbox and note off button for a single version instrument in the top bar
 
 ## [3.5.0]
 
