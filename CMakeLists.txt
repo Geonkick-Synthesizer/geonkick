@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 3.5.0)
+project(geonkick VERSION 3.5.1)
 
 math(EXPR GEONKICK_VERSION_HEX "0x${PROJECT_VERSION_MAJOR} * 0x10000 + 0x${PROJECT_VERSION_MINOR} * 0x100 + 0x${PROJECT_VERSION_PATCH}")
 set(GEONKICK_VERSION_STR "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
@@ -20,7 +20,7 @@ else()
    option(GKICK_STANDALONE "Disable build for standalone" OFF)
 endif()
 
-option(GEONKICK_LIMITED_VERSION "Enable geonkick limited version" ON)
+option(GEONKICK_LIMITED_VERSION "Enable geonkick limited version" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 option(GKICK_PRESETS "Enable presets" ON)
 
@@ -58,7 +58,7 @@ set(CMAKE_CXX_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisi
 set(CMAKE_C_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_C_FLAGS} -fvisibility=hidden")
 
 if (GEONKICK_LIMITED_VERSION)
-   set(CMAKE_C_FLAGS "${GKICK_OPTIMISATION_FLAGS} -DGEONKICK_LIMITED_VERSION")
+   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DGEONKICK_LIMITED_VERSION")
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGEONKICK_LIMITED_VERSION")
 endif(GEONKICK_LIMITED_VERSION)
 
@@ -138,7 +138,6 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/limiter.h
   ${GKICK_COMMON_DIR}/general_envelope.h
   ${GKICK_COMMON_DIR}/effects_group_box.h
-  ${GKICK_COMMON_DIR}/compressor_group_box.h
   ${GKICK_COMMON_DIR}/distortion_group_box.h
   ${GKICK_COMMON_DIR}/layers_group_box.h
   ${GKICK_COMMON_DIR}/general_group_box.h
@@ -197,7 +196,6 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/limiter.cpp
   ${GKICK_COMMON_DIR}/general_envelope.cpp
   ${GKICK_COMMON_DIR}/effects_group_box.cpp
-  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
   ${GKICK_COMMON_DIR}/distortion_group_box.cpp
   ${GKICK_COMMON_DIR}/layers_group_box.cpp
   ${GKICK_COMMON_DIR}/general_group_box.cpp
@@ -233,6 +231,15 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
     option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 endif()
+
+if (GEONKICK_LIMITED_VERSION)
+  list(APPEND GKICK_API_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGEONKICK_LIMITED_VERSION")
+endif (GEONKICK_LIMITED_VERSION)
 
 if (ENABLE_LOGGING)
   message(STATUS "set debug level")

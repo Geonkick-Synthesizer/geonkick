@@ -57,11 +57,7 @@ typedef float gkick_real;
 #define GEONKICK_UNUSED(expr) (void)expr
 
 #define GEONKICK_VERSION GEONKICK_VERSION_HEX
-#ifdef GEONKICK_LIMITED_VERSION
-#define GEONKICK_NAME "Geonkick (limited)"
-#else
 #define GEONKICK_NAME "Geonkick"
-#endif // GEONKICK_LIMITED_VERSION
 #define GEONKICK_APP_NAME "geonkick"
 #define GEOKICK_VERSION_STRING GEONKICK_VERSION_STR
 
@@ -509,62 +505,6 @@ geonkick_audio_process(struct geonkick *kick,
                        size_t size);
 
 enum geonkick_error
-geonkick_compressor_enable(struct geonkick *kick,
-                           int enable);
-
-enum geonkick_error
-geonkick_compressor_is_enabled(struct geonkick *kick,
-                               int *enabled);
-
-enum geonkick_error
-geonkick_compressor_set_attack(struct geonkick *kick,
-                               gkick_real attack);
-
-enum geonkick_error
-geonkick_compressor_get_attack(struct geonkick *kick,
-                               gkick_real *attack);
-
-enum geonkick_error
-geonkick_compressor_set_release(struct geonkick *kick,
-                                gkick_real release);
-
-enum geonkick_error
-geonkick_compressor_get_release(struct geonkick *kick,
-                                gkick_real *release);
-
-enum geonkick_error
-geonkick_compressor_set_threshold(struct geonkick *kick,
-                                  gkick_real threshold);
-
-enum geonkick_error
-geonkick_compressor_get_threshold(struct geonkick *kick,
-                                  gkick_real *threshold);
-
-enum geonkick_error
-geonkick_compressor_set_ratio(struct geonkick *kick,
-                              gkick_real ratio);
-
-enum geonkick_error
-geonkick_compressor_get_ratio(struct geonkick *kick,
-                              gkick_real *ratio);
-
-enum geonkick_error
-geonkick_compressor_set_knee(struct geonkick *kick,
-                             gkick_real knee);
-
-enum geonkick_error
-geonkick_compressor_get_knee(struct geonkick *kick,
-                             gkick_real *knee);
-
-enum geonkick_error
-geonkick_compressor_set_makeup(struct geonkick *kick,
-                               gkick_real makeup);
-
-enum geonkick_error
-geonkick_compressor_get_makeup(struct geonkick *kick,
-                               gkick_real *makeup);
-
-enum geonkick_error
 geonkick_distortion_enable(struct geonkick *kick,
                            int enable);
 
@@ -779,6 +719,13 @@ enum geonkick_error
 geonkick_percussion_note_off_enabled(struct geonkick *kick,
                                      size_t id,
                                      bool *enabled);
+
+enum geonkick_error
+geonkick_note_off_enabled(struct geonkick *kick,
+                          size_t id,
+                          bool *enabled);
+
+size_t geonkick_layers_number(void);
 
 bool
 geonkick_is_plugin();
