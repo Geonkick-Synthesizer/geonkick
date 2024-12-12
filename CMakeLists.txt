@@ -156,9 +156,11 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/OscillatorFunctionView.h
   ${GKICK_COMMON_DIR}/DistortionModel.h
   ${GKICK_COMMON_DIR}/OscillatorDistortionModel.h
+  ${GKICK_COMMON_DIR}/InstrumentDistortionModel.h
   ${GKICK_COMMON_DIR}/DistortionView.h
   ${GKICK_COMMON_DIR}/FilterModel.h
   ${GKICK_COMMON_DIR}/OscillatorFilterModel.h
+  ${GKICK_COMMON_DIR}/InstrumentFilterModel.h
   ${GKICK_COMMON_DIR}/FilterView.h
   ${GKICK_COMMON_DIR}/EffectTabButton.h
   ${GKICK_COMMON_DIR}/OscillatorEffects.h
@@ -223,9 +225,11 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/OscillatorFunctionView.cpp
   ${GKICK_COMMON_DIR}/DistortionModel.cpp
   ${GKICK_COMMON_DIR}/OscillatorDistortionModel.cpp
+  ${GKICK_COMMON_DIR}/InstrumentDistorionModel.cpp
   ${GKICK_COMMON_DIR}/DistortionView.cpp
   ${GKICK_COMMON_DIR}/FilterModel.cpp
   ${GKICK_COMMON_DIR}/OscillatorFilterModel.cpp
+  ${GKICK_COMMON_DIR}/InstrumentFilterModel.cpp
   ${GKICK_COMMON_DIR}/FilterView.cpp
   ${GKICK_COMMON_DIR}/EffectTabButton.cpp
   ${GKICK_COMMON_DIR}/OscillatorEffects.cpp

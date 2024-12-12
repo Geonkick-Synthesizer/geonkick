@@ -23,6 +23,8 @@
 
 #include "percussion_model.h"
 #include "kit_model.h"
+#include "InstrumentFilterModel.h"
+#include "InstrumentDistortioModel.h"
 
 #include <RkAction.h>
 #include <RkEventQueue.h>
@@ -31,6 +33,8 @@ PercussionModel::PercussionModel(KitModel* parent, int id)
         : AbstractModel(parent)
         , kitModel{parent}
         , percussionId{id}
+        , filterModel{new InstrumentFilterModel(this)}
+        , distortionModel{new InstrumentDistortionModel(this)}
 {
         RK_ACT_BIND(kitModel,
                     percussionSelected,
@@ -48,6 +52,17 @@ void PercussionModel::setId(int id)
 PercussionModel::PercussionIndex PercussionModel::index() const
 {
         return kitModel->getIndex(percussionId);
+}
+
+void PercussionModel::enable(bool b = true)
+{
+        if (kitModel->enableInstrument(index(), b))
+                action enabled(b);
+}
+
+bool PercussionModel::isEnabled() const
+{
+        return kitModel->isInstrumentEnabled(index());
 }
 
 void PercussionModel::select()
@@ -237,4 +252,14 @@ void PercussionModel::enableNoteOff(bool b)
 bool PercussionModel::isNoteOffEnabled() const
 {
         return kitModel->isNoteOffEnabled(percussionId);
+}
+
+FilterModel* PercussionModel::getFilter() const
+{
+        return filterModel;
+}
+
+DistortionModel* PercussionModel::getDistortion() const
+{
+        return distortionModel;
 }

@@ -30,6 +30,8 @@
 class GeonkickApi;
 class GeonkickState;
 class KitModel;
+class FilterModel;
+class DistortionModel;
 
 class PercussionModel : public AbstractModel {
  public:
@@ -39,6 +41,8 @@ class PercussionModel : public AbstractModel {
         virtual ~PercussionModel() = default;
         void setId(int id);
         PercussionIndex index() const;
+        void enable(bool b = true);
+        bool isEnabled() const;
         void select();
         bool isSelected() const;
         void increasePercussionChannel();
@@ -63,7 +67,7 @@ class PercussionModel : public AbstractModel {
         bool isSolo() const;
         void remove();
         void copy();
-        KitModel* model() const;
+        KitModel* parentModel() const;
         std::vector<float> data() const;
         size_t numberOfMidiChannels() const;
         int midiChannel() const;
@@ -72,7 +76,13 @@ class PercussionModel : public AbstractModel {
         bool isNoteOffEnabled() const;
         void setAmplitude();
         double getAmplitude() const;
+        FilterModel* getFilter() const;
+        DistortionModel* getDistortion() const;
 
+        RK_DECL_ACT(enabled,
+                    enabled(bool b),
+                    RK_ARG_TYPE(bool),
+                    RK_ARG_VAL(b));
         RK_DECL_ACT(selected,
                     selected(),
                     RK_ARG_TYPE(),
@@ -125,6 +135,8 @@ class PercussionModel : public AbstractModel {
  private:
         KitModel* kitModel;
         int percussionId;
+        FilterModel *filerModel;
+        DistotionModel *distortionModel;
 };
 
 #endif // PERCUSSION_MODEL_H
