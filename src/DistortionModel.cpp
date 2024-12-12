@@ -24,5 +24,6 @@
 #include "DistortionModel.h"
 
 DistortionModel::DistortionModel(RkObject *parent)
-        : RkObject(parent){
+        : AbstractModel(parent)
+{
 }

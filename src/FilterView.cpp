@@ -206,7 +206,6 @@ void FilterView::bindModel()
         RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), filterModel, setType(GeonkickApi::FilterType::LowPass));
         RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), filterModel, setType(GeonkickApi::FilterType::BandPass));
         RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), filterModel, setType(GeonkickApi::FilterType::HighPass));
-
         RK_ACT_BIND(filterModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
         RK_ACT_BIND(filterModel, enabled, toggled, RK_ACT_ARGS(bool b), this, enable(b));
         RK_ACT_BIND(filterModel, cutOffChanged, RK_ACT_ARGS(double val), this, setCutOff(val));
@@ -216,13 +215,13 @@ void FilterView::bindModel()
 
 void FilterView::unbindModel()
 {
-        unbindObject(filterModel);
+        /*        unbindObject(filterModel);
         filterCheckbox->unbindObject(filterModel);
         cutOffKnob->unbindObject(filterModel);
         resonanceKnob->unbindObject(filterModel);
         lpFilterButton->unbindObject(filterModel);
         bpFilterButton->unbindObject(filterModel);
-        hpFilterButton->unbindObject(filterModel);
+        hpFilterButton->unbindObject(filterModel);*/
 }
 
 void FilterView::enable(bool b)

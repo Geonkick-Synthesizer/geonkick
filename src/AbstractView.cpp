@@ -21,20 +21,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "AnstractView.h"
+#include "AbstractView.h"
 
-AbstractView::AbstractViewView(GeonkickWidget* parent, AbstractModel *model)
+AbstractView::AbstractView(GeonkickWidget* parent, AbstractModel *model)
         : GeonkickWidget(parent)
         , viewModel{model}
 {
         show();
 }
 
-AbstractView::setModel(AbstractModel *model)
+void AbstractView::setModel(AbstractModel *model)
 {
-        unbindModel(viewModel);
+        unbindModel();
         viewModel = model;
-        bindModel(viewModel);
+        bindModel();
         updateView();
 }
 

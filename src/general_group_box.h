@@ -24,28 +24,27 @@
 #ifndef GKICK_GENERAL_GROUP_BOX_H
 #define GKICK_GENERAL_GROUP_BOX_H
 
-#include "oscillator.h"
-#include "geonkick_groupbox.h"
+#include "AbstractView.h"
 
-class Oscillator;
-class GeonkickApi;
 class Knob;
 class GeonkickButton;
-class Filter;
+class PercussionModel;
 
-class GeneralGroupBox: public GeonkickGroupBox
+class GeneralGroupBox: public AbstractView
 {
  public:
-        GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api);
-        void updateGui();
+        GeneralGroupBox(GeonkickWidget *parent, PercussionModel *model);
+        void createView() override;
+        void updateView() override;
 
  protected:
+        void bindModel() override;
+        void unbindModel() override;
         void createAplitudeEnvelopeHBox();
-        void createFilterHBox();
+        void createEffects();
 
  private:
-        GeonkickApi* geonkickApi;
-        Filter *filterBox;
+        PercussionModel* geonkickApi;
         Knob *kickAmplitudeKnob;
         Knob *kickLengthKnob;
 };

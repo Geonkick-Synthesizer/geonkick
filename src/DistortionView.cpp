@@ -21,7 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "Distortion.h"
+#include "DistortionView.h"
+#include "DistortionModel.h"
 
 DistortionView::DistortionView(GeonkickWidget* parent, DistortionModel *model)
         : AbstractView(parent, model)
@@ -30,9 +31,9 @@ DistortionView::DistortionView(GeonkickWidget* parent, DistortionModel *model)
         bindModel();
 }
 
-void Distortion::binModel()
+void DistortionView::bindModel()
 {
-        auto distortionModel = static_cast<DistortionModel*>(getModel());
+        /*        auto distortionModel = static_cast<DistortionModel*>(getModel());
         RK_ACT_BIND(distortionModel,
                     distortionTypeChanged,
                     RK_ACT_ARGS(enum DistortionType type),
@@ -52,19 +53,19 @@ void Distortion::binModel()
                     driveChanged,
                     RK_ACT_ARGS(double value),
                     this
-                    setDrive(value));
+                    setDrive(value));*/
 }
 
-void Distortion::unbindModel()
+void DistortionView::unbindModel()
 {
-        unbindObject(getModel());
+        //        unbindObject(getModel());
 }
 
-void Distortion::createView()
+void DistortionView::createView()
 {
 }
 
-void Distortion::updateView()
+void DistortionView::updateView()
 {
 }
 

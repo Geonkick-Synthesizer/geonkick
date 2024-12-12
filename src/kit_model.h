@@ -94,9 +94,9 @@ class KitModel : public RkObject {
                     RK_ARG_TYPE(PercussionIndex),
                     RK_ARG_VAL(index));
         RK_DECL_ACT(percussionSelected,
-                    percussionSelected(),
-                    RK_ARG_TYPE(),
-                    RK_ARG_VAL());
+                    percussionSelected(PercussionModel* model),
+                    RK_ARG_TYPE(PercussionModel*),
+                    RK_ARG_VAL(model));
         RK_DECL_ACT(limiterUpdated,
                     limiterUpdated(PercussionIndex index),
                     RK_ARG_TYPE(PercussionIndex),

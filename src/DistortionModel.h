@@ -32,6 +32,7 @@ class DistortionModel: public AbstractModel
  public:
         using DistortionType = GeonkickApi::DistortionType;
         explicit DistortionModel(RkObject *parent);
+        virtual ~DistortionModel() = default;
         virtual void enable(bool b) = 0;
         virtual bool isEnabled() const = 0;
         virtual void setDistortionType(DistortionType type) = 0;

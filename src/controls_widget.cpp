@@ -31,6 +31,8 @@
 #include "KitTabs.h"
 #endif // GEONKICK_SINGLE
 #include "GeonkickModel.h"
+#include "kit_model.h"
+#include "percussion_model.h"
 
 ControlsWidget::ControlsWidget(GeonkickWidget *parent,
                                GeonkickModel* model,
@@ -57,10 +59,20 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
         widget->show();
 
-        auto generalWidget = new GeneralGroupBox(this, geonkickModel->api());
-        generalWidget->setPosition(3 * (8 + 223), 0);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), generalWidget, updateGui());
-        generalWidget->show();
+        auto kitModel = geonkickModel->getKitModel();
+        auto globalWidget = new GeneralGroupBox(this, kitModel->currentPercussion());
+        globalWidget->setPosition(3 * (8 + 223), 0);
+        RK_ACT_BIND(kitModel,
+                    percussionSelected,
+                    RK_ACT_ARGS(PercussionModel *model),
+                    globalWidget,
+                    setModel(model));
+        RK_ACT_BIND(kitModel,
+                    modelUpdated,
+                    RK_ACT_ARGS(),
+                    globalWidget,
+                    setModel(kitModel->currentPercussion()));
+        globalWidget->show();
 
         effectsWidget = new EffectsGroupBox(geonkickModel->api(), this);
         effectsWidget->setFixedSize(380, 74);

@@ -26,7 +26,6 @@
 
 OscillatorDistortionModel::OscillatorDistortionModel(Oscillator *parent)
         : DistortionModel(parent)
-        , oscillatorModel{parent}
 {
 }
 

@@ -25,7 +25,7 @@
 #define GEONKICK_FILTER_VIEW_H
 
 #include "AbstractView.h"
-#include "FilerModel.h"
+#include "FilterModel.h"
 #include "geonkick_api.h"
 #include "envelope.h"
 
@@ -36,7 +36,7 @@ class FilterView: public AbstractView
 {
         using FilterType = FilterModel::FilterType;
  public:
-        explicit Filter(GeonkickWidget *parent, FilerModel* model);
+        explicit FilterView(GeonkickWidget *parent, FilterModel* model);
         void createView() override;
         void updateView() override;
 

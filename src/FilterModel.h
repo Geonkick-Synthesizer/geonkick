@@ -21,48 +21,47 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef DISTORTION_MODEL_H
-#define DISTORTION_MODEL_H
+#ifndef FILTER_MODEL_H
+#define FILTER_MODEL_H
 
 #include "AbstractModel.h"
 #include "geonkick_api.h"
 
-class DistortionModel: public AbstractModel
+class FilterModel: public AbstractModel
 {
  public:
-        using DistortionType = GeonkickApi::DistortionType;
-        explicit DistortionModel(RkObject *parent);
+        using FilterType = GeonkickApi::FilterType;
+        explicit FilterModel(RkObject *parent);
+        virtual ~FilterModel();
         virtual void enable(bool b) = 0;
         virtual bool isEnabled() const = 0;
-        virtual void setDistortionType(DistortionType type) = 0;
-        virtual DistortionType getDistortionType() const = 0;
-        virtual void setInLimiter(double value) = 0;
-        virtual double getInLimiter() const = 0;
-        virtual void setOutLimiter(double value) = 0;
-        virtual double getOutLimiter() const = 0;
-        virtual void setDrive(double drive) = 0;
-        virtual double getDrive() const = 0;
+        virtual void setCutOff(double val) = 0;
+        virtual double cutOff() const;
+        virtual void setResonance(double val, double defaultValue = 0) = 0;
+        virtual double resonance() const = 0;
+        virtual void setType(FilterType type) = 0;
+        virtual FilterType type() const = 0;
+        virtual void setCutOffRange(const std::pair<double, double>& range) = 0;
+        virtual std::pair<double, double> cutOffRange() const = 0;
+        virtual void setResonanceRange(const std::pair<double, double>& range) = 0;
+        virtual std::pair<double, double>& resonanceRange() = 0;
 
-        RK_DECL_ACT(enabled,
-                    enabled(bool b),
-                    RK_ARG_TYPE(bool),
-                    RK_ARG_VAL(b));
-        RK_DECL_ACT(distortionTypeChanged,
-                    distortionTypeChanged(DistortionType type),
-                    RK_ARG_TYPE(DistortionType),
+        RK_DECL_ACT(enabled, enabled(bool b), RK_ARG_TYPE(bool), RK_ARG_VAL(b));
+        RK_DECL_ACT(cutOffChanged, cutOffChanged(double val),
+                    RK_ARG_TYPE(double), RK_ARG_VAL(val));
+        RK_DECL_ACT(resonanceChanged, resonanceChanged(double val),
+                    RK_ARG_TYPE(double), RK_ARG_VAL(val));
+        RK_DECL_ACT(resonanceRangeChanged,
+                    resonanceRangeChanged(const std::pair<double, double>& range),
+                    RK_ARG_TYPE(const std::pair<double, double>&),
+                    RK_ARG_VAL(range));
+        RK_DECL_ACT(cutOffRangeChanged,
+                    cutOffRangeChanged(const std::pair<double, double>& range),
+                    RK_ARG_TYPE(const std::pair<double, double>&),
+                    RK_ARG_VAL(range));
+        RK_DECL_ACT(typeChanged, typeChanged(FilterType type),
+                    RK_ARG_TYPE(FilterType),
                     RK_ARG_VAL(type));
-        RK_DECL_ACT(inLimiterChanged,
-                    inLimiterChanged(double val),
-                    RK_ARG_TYPE(double),
-                    RK_ARG_VAL(val));
-        RK_DECL_ACT(outLimiterChanged,
-                    outLimiterChanged(double val),
-                    RK_ARG_TYPE(double),
-                    RK_ARG_VAL(val));
-        RK_DECL_ACT(driveChanged,
-                    driveChanged(double val),
-                    RK_ARG_TYPE(double),
-                    RK_ARG_VAL(val));
 };
 
-#endif // DISTORTION_MODEL_H
+#endif // FILTER_MODEL_H

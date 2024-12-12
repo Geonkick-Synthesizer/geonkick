@@ -59,7 +59,7 @@ void KitModel::selectPercussion(PercussionIndex index)
 {
         if (isValidIndex(index) && geonkickApi->setCurrentPercussion(percussionId(index))) {
                 geonkickApi->notifyUpdateGui();
-                action percussionSelected();
+                action percussionSelected(percussionsList[getIndex(index)]);
         }
 }
 

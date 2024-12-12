@@ -38,7 +38,7 @@ class AbstractView: public GeonkickWidget
         virtual void updateView() = 0;
 
  private:
-        virtaul void bindModel() = 0;
+        virtual void bindModel() = 0;
         virtual void unbindModel() = 0;
 
  private:

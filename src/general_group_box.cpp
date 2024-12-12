@@ -21,11 +21,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "geonkick_api.h"
+
 #include "general_group_box.h"
+#include "percussion_model.h"
 #include "knob.h"
 #include "geonkick_button.h"
-#include "filter.h"
+#include "FilterView.h"
 #include "ViewState.h"
 
 #include <RkLabel.h>
@@ -38,17 +39,24 @@ RK_DECLARE_IMAGE_RC(osc_ampl_button_off);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_on);
 RK_DECLARE_IMAGE_RC(osc_ampl_button_hover);
 
-GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, GeonkickApi *api)
-        : GeonkickGroupBox(parent)
-        , geonkickApi{api}
-        , filterBox{nullptr}
+GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, PercussionModel *model)
+        : AbstractView(parent, model)
         , kickAmplitudeKnob{nullptr}
         , kickLengthKnob{nullptr}
 {
         setFixedSize(224, 250);
-        createAplitudeEnvelopeHBox();
-        createFilterHBox();
-        updateGui();
+        createView();
+        bindModel();
+}
+
+void GeneralGroupBox::createView()
+{
+        //createAplitudeEnvelopeHBox();
+        //createEffects();
+}
+
+void GeneralGroupBox::updateView()
+{
 }
 
 void GeneralGroupBox::createAplitudeEnvelopeHBox()
@@ -68,11 +76,6 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         kickAmplitudeKnob->setRange(0, 1.0);
         kickAmplitudeKnob->show();
-        RK_ACT_BIND(kickAmplitudeKnob,
-                    valueUpdated,
-                    RK_ACT_ARGS(double val),
-                    geonkickApi,
-                    setKickAmplitude(val));
 
         auto amplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
         amplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
@@ -105,38 +108,22 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 4);
         kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         kickLengthKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-        kickLengthKnob->setRange(50, geonkickApi->kickMaxLength());
+        //        kickLengthKnob->setRange(50, geonkickApi->kickMaxLength());
         kickLengthKnob->show();
-        RK_ACT_BIND(kickLengthKnob,
-                    valueUpdated,
-                    RK_ACT_ARGS(double val),
-                    geonkickApi,
-                    setKickLength(val));
 }
 
-void GeneralGroupBox::createFilterHBox()
+void GeneralGroupBox::createEffects()
 {
-        filterBox = new Filter(this, Envelope::Category::General);
-        filterBox->setCutOffRange(20, 20000);
-        filterBox->setResonanceRange(1, 1000);
-        filterBox->setPosition(0, 125);
-        RK_ACT_BIND(filterBox, enabled, RK_ACT_ARGS(bool b),
-                    geonkickApi, enableKickFilter(b));
-        RK_ACT_BIND(filterBox, cutOffChanged, RK_ACT_ARGS(double val),
-                    geonkickApi, setKickFilterFrequency(val));
-        RK_ACT_BIND(filterBox, resonanceChanged, RK_ACT_ARGS(double val),
-                    geonkickApi, setKickFilterQFactor(val));
-        RK_ACT_BIND(filterBox, typeChanged,
-                    RK_ACT_ARGS(GeonkickApi::FilterType type),
-                    geonkickApi, setKickFilterType(type));
+        //globalEffects = new InstrumentGlobalEffects(this, );
+        //globalEffects->setPosition(0, 210);
 }
 
-void GeneralGroupBox::updateGui()
+void GeneralGroupBox::bindModel()
 {
-        kickAmplitudeKnob->setCurrentValue(geonkickApi->kickAmplitude());
-        kickLengthKnob->setCurrentValue(geonkickApi->kickLength());
-        filterBox->enable(geonkickApi->isKickFilterEnabled());
-        filterBox->setCutOff(geonkickApi->kickFilterFrequency(), 800);
-        filterBox->setResonance(geonkickApi->kickFilterQFactor(), 10);
-        filterBox->setType(geonkickApi->kickFilterType());
+        //auto instrumentModel = static_cast<InstrumentModel*>(getModel());
+}
+
+void GeneralGroupBox::unbindModel()
+{
+        //        unbindObject(getModel());
 }

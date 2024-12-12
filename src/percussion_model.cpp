@@ -28,13 +28,13 @@
 #include <RkEventQueue.h>
 
 PercussionModel::PercussionModel(KitModel* parent, int id)
-        : RkObject(parent)
+        : AbstractModel(parent)
         , kitModel{parent}
         , percussionId{id}
 {
         RK_ACT_BIND(kitModel,
                     percussionSelected,
-                    RK_ACT_ARGS(),
+                    RK_ACT_ARGS(PercussionModel* model),
                     this,
                     onPercussionSelected());
 }

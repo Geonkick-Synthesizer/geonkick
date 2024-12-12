@@ -25,12 +25,13 @@
 #define PERCUSSION_MODEL_H
 
 #include "globals.h"
+#include "AbstractModel.h"
 
 class GeonkickApi;
 class GeonkickState;
 class KitModel;
 
-class PercussionModel : public RkObject {
+class PercussionModel : public AbstractModel {
  public:
         using PercussionIndex = int;
         using KeyIndex = GeonkickTypes::MidiKey;
@@ -69,11 +70,9 @@ class PercussionModel : public RkObject {
         void setMidiChannel(int index);
         void enableNoteOff(bool b);
         bool isNoteOffEnabled() const;
+        void setAmplitude();
+        double getAmplitude() const;
 
-        RK_DECL_ACT(modelUpdated,
-                    modelUpdated(),
-                    RK_ARG_TYPE(),
-                    RK_ARG_VAL());
         RK_DECL_ACT(selected,
                     selected(),
                     RK_ARG_TYPE(),
@@ -114,6 +113,11 @@ class PercussionModel : public RkObject {
                     noteOffUpdated(bool b),
                     RK_ARG_TYPE(bool),
                     RK_ARG_VAL(b));
+        RK_DECL_ACT(amplitudeUpdated,
+                    amplitudeUpdated(double val),
+                    RK_ARG_TYPE(double),
+                    RK_ARG_VAL(val));
+
 
  protected:
         void onPercussionSelected();

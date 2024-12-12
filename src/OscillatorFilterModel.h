@@ -1,5 +1,5 @@
 /**
- * File name: OscillatorDistortionModel.h
+ * File name: OscillatorFilterModel.h
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,27 +21,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef OSCILLATOR_DISTORTION_MODEL_H
-#define OSCILLATOR_DISTORTION_MODEL_H
+#ifndef OSCILLATOR_FILTER_MODEL_H
+#define OSCILLATOR_FILTER_MODEL_H
 
-#include "DistortionModel.h"
+#include "FilterModel.h"
 
 class Oscillator;
 
-class OscillatorDistortionModel: public DistortionModel
+class OscillatorFilterModel: public FilterModel
 {
  public:
-        OscillatorDistortionModel(Oscillator *parent);
+        OscillatorFilterModel(Oscillator *parent);
         void enable(bool b) override;
         bool isEnabled() const override;
-        void setDistortionType(DistortionType type) override;
-        DistortionType getDistortionType() const override;
-        void setInLimiter(double value) override;
-        double getInLimiter() const override;
-        void setOutLimiter(double value) override;
-        double getOutLimiter() const override;
-        void setDrive(double drive) override;
-        double getDrive() const override;
+        void setCutOff(double val) override;
+        double cutOff() const;
+        void setResonance(double val) override;
+        double resonance() const override;
+        void setType(GeonkickApi::FilterType type) override;
+        void setCutOffRange(const std::pair<double, double>& range) override;
+        std::pair<double, double> getCutOffRange() const override;
+        void setResonanceRange(const std::pair<double, double>& range) override;
+        std::pair<double, double> getResonanceRange() const override;
 
  private:
         Oscillator *oscillatorModel;

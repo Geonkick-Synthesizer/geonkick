@@ -1,5 +1,5 @@
 /**
- * File name: OscillatorDistortionModel.cpp
+ * File name: OscillatorFilterModel.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,67 +21,72 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "OscillatorDistortionModel.h"
+#include "OscillatorFilterModel.h"
 #include "oscillator.h"
 
-OscillatorDistortionModel::OscillatorDistortionModel(Oscillator *parent)
-        : DistortionModel(parent)
+OscillatorFilterModel::OscillatorFilterModel(Oscillator *parent)
+        : FilterModel(parent)
         , oscillatorModel{parent}
 {
 }
 
-void OscillatorDistortionModel::enable(bool b)
+void OscillatorFilterModel::enable(bool b)
 {
-        if (oscillatorModel->api()->oscEnableDistortion(oscillatorModel->index(), b))
+        if (oscillatorModel->api()->enableOscillatorFilter(oscillatorModel->index(), b))
                 action enabled(b);
 }
 
-bool OscillatorDistortionModel::isEnabled() const
+bool OscillatorFilterModel::isEnabled() const
 {
-        return oscillatorModel->api()->isOscDistortionEnabled(oscillatorModel->index());
+        return oscillatorModel->api()->isOscillatorFilterEnabled(oscillatorModel->index());
 }
 
-void OscillatorDistortionModel::setDistortionType(DistortionType type)
+void OscillatorFilterModel::setCutOff(double val)
 {
-        if (oscillatorModel->api()->setOscDistortionType(oscillatorModel->index(), type))
-                action distortionTypeChanged(type);
+        if (oscillatorModel->api()->setOscillatorFilterCutOff(oscillatorModel->index(), val))
+                action cutOffChanged(val);
 }
 
-DistortionModel::DistortionType
-OscillatorDistortionModel::getDistortionType() const
+double OscillatorFilterModel::cutOff() const
 {
-        return  oscillatorModel->api()->getOscDistortionType(oscillatorModel->index());
 }
 
-void OscillatorDistortionModel::setInLimiter(double value)
+void OscillatorFilterModel::setResonance(double val)
 {
-        if (oscillatorModel->api()->setOscDistortionInLimiter(oscillatorModel->index(), value))
-                action inLimiterChanged(value);
+        if (oscillatorModel->api()->setOscillatorFilterResonance(oscillatorModel->index(), val))
+                action resonanceChanged(val);
 }
 
-double OscillatorDistortionModel::getInLimiter() const
+double OscillatorFilterModel::resonance() const
 {
-        return  oscillatorModel->api()->getOscDistortionInLimiter(oscillatorModel->index());
+        return oscillatorModel->api()->setOscillatorFilterResonance(oscillatorModel->index());
 }
 
-void OscillatorDistortionModel::setOutLimiter(double value)
+void OscillatorFilterModel::setType(FilterModel::FilterType type)
 {
-        if (oscillatorModel->api()->setOscDistortionOutLimiter(oscillatorModel->index(), value))
-                action outLimiterChanged(value);
+        if (oscillatorModel->api()->setOscillatorFilterType(oscillatorModel->index(), type))
+                action typeChanged(type);
 }
 
-double OscillatorDistortionModel::getOutLimiter() const
+void OscillatorFilterModel::type() const
 {
-        return  oscillatorModel->api()->getOscDistortionOutLimiter(oscillatorModel->index());
+        return oscillatorModel->api()->getOscillatorFilterType(oscillatorModel->index());
 }
 
-void OscillatorDistortionModel::setDrive(double drive)
+void OscillatorFilterModel::setCutOffRange(const std::pair<double, double>& range)
 {
-                if (oscillatorModel->api()->setOscDistortionDrive(oscillatorModel->index(), drive))
-                action driveChanged(drive);
 }
 
-double OscillatorDistortionModel::getDrive() const
+std::pair<double, double> OscillatorFilterModel::getCutOffRange() const
 {
-        return  oscillatorModel->api()->getOscDistortionDrive(oscillatorModel->index());
+        return {};
+}
+
+void OscillatorFilterModel::setResonanceRange(const std::pair<double, double>& range)
+{
+}
+
+std::pair<double, double> OscillatorFilterModel::getResonanceRange() const
+{
+        return {};
 }
