@@ -88,7 +88,6 @@ endif()
 
 add_dependencies(geonkick_single_lv2 api_plugin_single)
 target_compile_options(geonkick_single_lv2 PRIVATE PUBLIC ${GKICK_API_PLUGIN_SINGLE_FLAGS})
- 
 install(TARGETS geonkick_single_lv2 DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/lv2/geonkick.lv2)
 install(TARGETS geonkick_lv2 DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/lv2/geonkick.lv2)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)

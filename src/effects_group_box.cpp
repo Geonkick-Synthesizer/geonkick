@@ -22,7 +22,6 @@
  */
 
 #include "effects_group_box.h"
-#include "compressor_group_box.h"
 #include "distortion_group_box.h"
 #include "layers_group_box.h"
 #include "geonkick_api.h"
@@ -36,11 +35,12 @@ EffectsGroupBox::EffectsGroupBox(GeonkickApi *api, GeonkickWidget *parent)
 {
         distortionGroupBox = new DistortionGroupBox(geonkickApi, this);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), distortionGroupBox, updateGui());
-
+#ifndef GEONKICK_LIMITED_VERSION
         auto layers = new LayersGroupBox(geonkickApi, this);
         layers->setBackgroundColor({100, 100, 100});
         layers->setPosition(distortionGroupBox->x() + distortionGroupBox->width(), 4);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layers, updateGui());
+#endif // GEONKICK_LIMITED_VERSION
         RkString geonkickInfo{"Standalone"};
         if (geonkickApi->getInstanceType() == GeonkickApi::InstanceType::Lv2)
                 geonkickInfo = "LV2";

@@ -285,6 +285,7 @@ void KitPercussionView::updateView()
         soloButton->setPressed(percussionModel->isSolo());
         noteOffButton->setPressed(percussionModel->isNoteOffEnabled());
         size_t nMidiChannels = percussionModel->numberOfMidiChannels();
+        midiChannelSpinBox->clear();
         midiChannelSpinBox->addItem("Any");
         for (size_t i = 0; i < nMidiChannels; i++)
                 midiChannelSpinBox->addItem(std::to_string(i + 1));

@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 
-project(geonkick VERSION 3.5.0)
+project(geonkick VERSION 3.5.1)
 
 math(EXPR GEONKICK_VERSION_HEX "0x${PROJECT_VERSION_MAJOR} * 0x10000 + 0x${PROJECT_VERSION_MINOR} * 0x100 + 0x${PROJECT_VERSION_PATCH}")
 set(GEONKICK_VERSION_STR "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
@@ -20,6 +20,7 @@ else()
    option(GKICK_STANDALONE "Disable build for standalone" OFF)
 endif()
 
+option(GEONKICK_LIMITED_VERSION "Enable geonkick limited version" OFF)
 option(GKICK_PLUGIN "Enable build for plugin" ON)
 option(GKICK_PRESETS "Enable presets" ON)
 
@@ -55,6 +56,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 set(CMAKE_C_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_C_FLAGS} -fvisibility=hidden")
+
+if (GEONKICK_LIMITED_VERSION)
+   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DGEONKICK_LIMITED_VERSION")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGEONKICK_LIMITED_VERSION")
+endif(GEONKICK_LIMITED_VERSION)
 
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGEONKICK_OS_WINDOWS")
@@ -121,7 +127,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/file_dialog.h
   ${GKICK_COMMON_DIR}/SampleBrowser.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
-  ${GKICK_COMMON_DIR}/top_bar.h
+  ${GKICK_COMMON_DIR}/TopBar.h
   ${GKICK_COMMON_DIR}/control_area.h
   ${GKICK_COMMON_DIR}/controls_widget.h
   ${GKICK_COMMON_DIR}/percussion_model.h
@@ -133,7 +139,6 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/limiter.h
   ${GKICK_COMMON_DIR}/general_envelope.h
   ${GKICK_COMMON_DIR}/effects_group_box.h
-  ${GKICK_COMMON_DIR}/compressor_group_box.h
   ${GKICK_COMMON_DIR}/distortion_group_box.h
   ${GKICK_COMMON_DIR}/layers_group_box.h
   ${GKICK_COMMON_DIR}/general_group_box.h
@@ -189,7 +194,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/file_dialog.cpp
   ${GKICK_COMMON_DIR}/SampleBrowser.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
-  ${GKICK_COMMON_DIR}/top_bar.cpp
+  ${GKICK_COMMON_DIR}/TopBar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
   ${GKICK_COMMON_DIR}/controls_widget.cpp
   ${GKICK_COMMON_DIR}/percussion_model.cpp
@@ -201,7 +206,6 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/limiter.cpp
   ${GKICK_COMMON_DIR}/general_envelope.cpp
   ${GKICK_COMMON_DIR}/effects_group_box.cpp
-  ${GKICK_COMMON_DIR}/compressor_group_box.cpp
   ${GKICK_COMMON_DIR}/distortion_group_box.cpp
   ${GKICK_COMMON_DIR}/layers_group_box.cpp
   ${GKICK_COMMON_DIR}/general_group_box.cpp
@@ -245,6 +249,15 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     message(STATUS "Enable application logging")
     option(ENABLE_LOGGING    "Enable logging for API and GUI" ON)
 endif()
+
+if (GEONKICK_LIMITED_VERSION)
+  list(APPEND GKICK_API_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGEONKICK_LIMITED_VERSION")
+  list(APPEND GKICK_API_PLUGIN_SINGLE_FLAGS "-DGEONKICK_LIMITED_VERSION")
+endif (GEONKICK_LIMITED_VERSION)
 
 if (ENABLE_LOGGING)
   message(STATUS "set debug level")
@@ -363,7 +376,12 @@ if (GKICK_DOCUMENTATION)
    add_subdirectory(doc)
  endif (GKICK_DOCUMENTATION)
 
- message(STATUS "------------ Summary ---------")
+message(STATUS "------------ Summary ---------")
+
+if (GEONKICK_LIMITED_VERSION)
+  message(STATUS "Geonkick limited version: yes" )
+endif(GEONKICK_LIMITED_VERSION)
+
 if (GKICK_STANDALONE)
   message(STATUS "Standalone: yes" )
 else(GKICK_STANDALONE)

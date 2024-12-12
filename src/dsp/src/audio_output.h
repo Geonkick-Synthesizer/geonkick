@@ -27,6 +27,7 @@
 #include "geonkick_internal.h"
 #include "ring_buffer.h"
 
+#include <pthread.h>
 #include <stdatomic.h>
 
 /**

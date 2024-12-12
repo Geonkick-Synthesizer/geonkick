@@ -29,7 +29,7 @@
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"
-#include "top_bar.h"
+#include "TopBar.h"
 #include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
@@ -55,6 +55,7 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         , limiterWidget{nullptr}
         , geonkickModel{new GeonkickModel(this, geonkickApi)}
 {
+        setTitle(Geonkick::appName);
         setName("MainWindow");
         setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();

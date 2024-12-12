@@ -25,7 +25,6 @@
 #define GKICK_SYNTHESIZER_H
 
 #include "geonkick_internal.h"
-#include "compressor.h"
 #include "distortion.h"
 #include "audio_output.h"
 
@@ -60,9 +59,6 @@ struct gkick_synth {
         /* Kick general filter */
         struct gkick_filter *filter;
         int filter_enabled;
-
-        /* Kick compressor */
-        struct gkick_compressor *compressor;
 
         /* Kick distortion */
         struct gkick_distortion *distortion;
@@ -411,62 +407,6 @@ enum geonkick_error
 gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
                                   size_t osc_index,
                                   int *enabled);
-
-enum geonkick_error
-gkick_synth_compressor_enable(struct gkick_synth *synth,
-			      int enable);
-
-enum geonkick_error
-gkick_synth_compressor_is_enabled(struct gkick_synth *synth,
-				  int *enabled);
-
-enum geonkick_error
-gkick_synth_compressor_set_attack(struct gkick_synth *synth,
-				  gkick_real attack);
-
-enum geonkick_error
-gkick_synth_compressor_get_attack(struct gkick_synth *synth,
-				  gkick_real *attack);
-
-enum geonkick_error
-gkick_synth_compressor_set_release(struct gkick_synth *synth,
-				   gkick_real release);
-
-enum geonkick_error
-gkick_synth_compressor_get_release(struct gkick_synth *synth,
-				   gkick_real *release);
-
-enum geonkick_error
-gkick_synth_compressor_set_threshold(struct gkick_synth *synth,
-				     gkick_real threshold);
-
-enum geonkick_error
-gkick_synth_compressor_get_threshold(struct gkick_synth *synth,
-				     gkick_real *threshold);
-
-enum geonkick_error
-gkick_synth_compressor_set_ratio(struct gkick_synth *synth,
-				 gkick_real ratio);
-
-enum geonkick_error
-gkick_synth_compressor_get_ratio(struct gkick_synth *synth,
-				 gkick_real *ratio);
-
-enum geonkick_error
-gkick_synth_compressor_set_knee(struct gkick_synth *synth,
-				gkick_real knee);
-
-enum geonkick_error
-gkick_synth_compressor_get_knee(struct gkick_synth *synth,
-				gkick_real *knee);
-
-enum geonkick_error
-gkick_synth_compressor_set_makeup(struct gkick_synth *synth,
-				  gkick_real makeup);
-
-enum geonkick_error
-gkick_synth_compressor_get_makeup(struct gkick_synth *synth,
-				  gkick_real *makeup);
 
 enum geonkick_error
 gkick_synth_distortion_enable(struct gkick_synth *synth,

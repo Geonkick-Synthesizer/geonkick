@@ -55,20 +55,25 @@ public:
  protected:
      Envelope* getEnvelope(Envelope::Category category);
      void updateKickGraph(std::shared_ptr<RkImage> graphImage);
+#ifndef GEONKICK_LIMITED_VERSION
      void createLayersButtons(GeonkickWidget *buttomAreaWidget);
+#endif // GEONKICK_LIMITED_VERSION
      void setLayer(GeonkickApi::Layer layer);
+#ifndef GEONKICK_LIMITED_VERSION
      void createButtomMenu();
+#endif // GEONKICK_LIMITED_VERSION
      void createZoomInfoLabel();
      void createPointInfoLabel();
 
  private:
      std::unordered_map<int, std::unique_ptr<Envelope>> envelopes;
      EnvelopeWidgetDrawingArea *drawArea;
+#ifndef GEONKICK_LIMITED_VERSION
      GeonkickButton *layer1Button;
      GeonkickButton *layer2Button;
      GeonkickButton *layer3Button;
+#endif // GEONKICK_LIMITED_VERSION
      GeonkickApi *geonkickApi;
-     RkContainer *menuContainer;
 };
 
 #endif
