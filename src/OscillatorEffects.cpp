@@ -23,8 +23,8 @@
 
 #include "OscillatorEffects.h"
 #include "oscillator.h"
-#include "filter.h"
-#include "Distortion.h"
+#include "FilterView.h"
+#include "DistortionView.h"
 
 #include <RkContainer.h>
 
@@ -50,19 +50,19 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
 void OscillatorEffects::setModel(Oscillator *model)
 {
         oscillatorModel = model;
-        filterTab->setModel(model);
-        distortionTab->setModel(model);
+        //        filterTab->setModel(model);
+        //        distortionTab->setModel(model);
         updateView();
 }
 
-Oscillator* OscillatorEffects::getModel() const
+/*Oscillator* OscillatorEffects::getModel() const
 {
         return oscillatorModel;
-}
+        }*/
 
 void OscillatorEffects::createView()
 {
-        auto tabButtonsLayout = new RkContainer(this);
+        /*        auto tabButtonsLayout = new RkContainer(this);
         tabButtonsLayout->setSize(width(), 20);
         filterTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_filter)));
         tabButtonsLayout->addWidget(filterTabButton);
@@ -81,7 +81,7 @@ void OscillatorEffects::createView()
 
         auto effectTabLayout = new RkContainer(this);
         effectTabLayout->setSize(width(), height() - tabButtonsLayout->height());
-        filterTab = new Filter(this, Envelope::Category::General);
+        filterTab = new FilterFiew(this, Envelope::Category::General);
         filterTab->setCutOffRange(20, 20000);
         filterTab->setResonanceRange(1, 1000);
         filterTab->setPosition(0, 125);
@@ -95,15 +95,15 @@ void OscillatorEffects::createView()
                     RK_ACT_ARGS(GeonkickApi::FilterType type),
                     oscillatorModel, setFilterType(type));
         effectTabLayout->addWidget(filterTab);
-        distortionTab = new Distortion(this, oscillatorModel->getDistortion());
+        distortionTab = new DistortionView(this, oscillatorModel->getDistortion());
         effectTabLayout->addWidget(filterDistortion);
         mainLayout->addContainer(effectTabLayout);
-        updateView();
+        updateView();*/
 }
 
 void OscillatorEffects::updateView()
 {
-        filterTabButton->enable(oscillatorModel->isFilterEnabled());
+        /*        filterTabButton->enable(oscillatorModel->isFilterEnabled());
         distortionTabButton->enable(oscillatorModel->isDistortionEnabled());
         if (showFilterTab) {
                 if (!filterTab->isVisible()) {
@@ -117,5 +117,5 @@ void OscillatorEffects::updateView()
                         mainLayout->update();
                 }
                 distortionTab->updateView();
-        }
+                }*/
 }

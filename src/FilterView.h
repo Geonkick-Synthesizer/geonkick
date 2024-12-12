@@ -47,7 +47,6 @@ class FilterView: public AbstractView
         void onCutOffChanged(double val);
         void onResonanceChanged(double val);
         void onTypeChanged(FilterType type);
-        void mouseButtonPressEvent(RkMouseEvent *event) override;
 
  private:
         GeonkickButton *filterCheckbox;

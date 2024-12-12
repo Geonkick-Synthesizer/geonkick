@@ -36,15 +36,15 @@ class FilterModel: public AbstractModel
         virtual void enable(bool b) = 0;
         virtual bool isEnabled() const = 0;
         virtual void setCutOff(double val) = 0;
-        virtual double cutOff() const;
-        virtual void setResonance(double val, double defaultValue = 0) = 0;
+        virtual double cutOff() const = 0;
+        virtual void setResonance(double val) = 0;
         virtual double resonance() const = 0;
         virtual void setType(FilterType type) = 0;
         virtual FilterType type() const = 0;
         virtual void setCutOffRange(const std::pair<double, double>& range) = 0;
         virtual std::pair<double, double> cutOffRange() const = 0;
         virtual void setResonanceRange(const std::pair<double, double>& range) = 0;
-        virtual std::pair<double, double>& resonanceRange() = 0;
+        virtual std::pair<double, double> resonanceRange() const = 0;
 
         RK_DECL_ACT(enabled, enabled(bool b), RK_ARG_TYPE(bool), RK_ARG_VAL(b));
         RK_DECL_ACT(cutOffChanged, cutOffChanged(double val),

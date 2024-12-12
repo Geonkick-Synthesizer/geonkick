@@ -35,14 +35,15 @@ class OscillatorFilterModel: public FilterModel
         void enable(bool b) override;
         bool isEnabled() const override;
         void setCutOff(double val) override;
-        double cutOff() const;
+        double cutOff() const override;
         void setResonance(double val) override;
         double resonance() const override;
-        void setType(GeonkickApi::FilterType type) override;
+        void setType(FilterType type) override;
+        FilterType type() const override;
         void setCutOffRange(const std::pair<double, double>& range) override;
-        std::pair<double, double> getCutOffRange() const override;
+        std::pair<double, double> cutOffRange() const override;
         void setResonanceRange(const std::pair<double, double>& range) override;
-        std::pair<double, double> getResonanceRange() const override;
+        std::pair<double, double> resonanceRange() const override;
 
  private:
         Oscillator *oscillatorModel;

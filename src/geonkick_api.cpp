@@ -732,9 +732,10 @@ void GeonkickApi::setKickEnvelopeApplyType(EnvelopeType envelope, EnvelopeApplyT
 					 static_cast<enum gkick_envelope_apply_type>(applyType));
 }
 
-void GeonkickApi::enableKickFilter(bool b)
+bool GeonkickApi::enableKickFilter(bool b)
 {
-        geonkick_kick_filter_enable(geonkickApi, b);
+        auto res = geonkick_kick_filter_enable(geonkickApi, b);
+        return res == GEONKICK_OK;
 }
 
 bool GeonkickApi::isKickFilterEnabled() const
@@ -744,10 +745,11 @@ bool GeonkickApi::isKickFilterEnabled() const
         return enabled;
 }
 
-void GeonkickApi::setKickFilterType(FilterType type)
+bool GeonkickApi::setKickFilterType(FilterType type)
 {
-        geonkick_set_kick_filter_type(geonkickApi,
-                                      static_cast<enum gkick_filter_type>(type));
+        auto res = geonkick_set_kick_filter_type(geonkickApi,
+                                                 static_cast<enum gkick_filter_type>(type));
+        return res == GEONKICK_OK;
 }
 
 GeonkickApi::FilterType GeonkickApi::kickFilterType() const
@@ -757,9 +759,10 @@ GeonkickApi::FilterType GeonkickApi::kickFilterType() const
         return static_cast<FilterType>(type);
 }
 
-void GeonkickApi::setKickFilterFrequency(double frequency)
+bool GeonkickApi::setKickFilterFrequency(double frequency)
 {
-        geonkick_kick_set_filter_frequency(geonkickApi, frequency);
+        auto res = geonkick_kick_set_filter_frequency(geonkickApi, frequency);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::kickFilterFrequency(void) const
@@ -769,9 +772,10 @@ double GeonkickApi::kickFilterFrequency(void) const
         return static_cast<double>(frequency);
 }
 
-void GeonkickApi::setKickFilterQFactor(double factor)
+bool GeonkickApi::setKickFilterQFactor(double factor)
 {
-        geonkick_kick_set_filter_factor(geonkickApi, factor);
+        auto res = geonkick_kick_set_filter_factor(geonkickApi, factor);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::kickFilterQFactor() const
@@ -926,11 +930,12 @@ double GeonkickApi::kickMaxLength(void) const
         return len * 1000;
 }
 
-void GeonkickApi::enableOscillatorFilter(int oscillatorIndex, bool enable)
+bool GeonkickApi::enableOscillatorFilter(int oscillatorIndex, bool enable)
 {
-        geonkick_enbale_osc_filter(geonkickApi,
-                                   getOscIndex(oscillatorIndex),
-                                   enable);
+        auto res = geonkick_enbale_osc_filter(geonkickApi,
+                                              getOscIndex(oscillatorIndex),
+                                              enable);
+        return res == GEONKICK_OK;
 }
 
 bool GeonkickApi::isOscillatorFilterEnabled(int oscillatorIndex) const
@@ -942,11 +947,12 @@ bool GeonkickApi::isOscillatorFilterEnabled(int oscillatorIndex) const
         return enabled;
 }
 
-void GeonkickApi::setOscillatorFilterType(int oscillatorIndex, FilterType filter)
+bool GeonkickApi::setOscillatorFilterType(int oscillatorIndex, FilterType filter)
 {
-        geonkick_set_osc_filter_type(geonkickApi,
-                                     getOscIndex(oscillatorIndex),
-                                     static_cast<enum gkick_filter_type>(filter));
+        auto res = geonkick_set_osc_filter_type(geonkickApi,
+                                                getOscIndex(oscillatorIndex),
+                                                static_cast<enum gkick_filter_type>(filter));
+        return res == GEONKICK_OK;
 }
 
 GeonkickApi::FilterType GeonkickApi::getOscillatorFilterType(int oscillatorIndex) const
@@ -958,11 +964,12 @@ GeonkickApi::FilterType GeonkickApi::getOscillatorFilterType(int oscillatorIndex
         return static_cast<FilterType>(type);
 }
 
-void GeonkickApi::setOscillatorFilterCutOffFreq(int oscillatorIndex, double frequency)
+bool GeonkickApi::setOscillatorFilterCutOffFreq(int oscillatorIndex, double frequency)
 {
-        geonkick_set_osc_filter_cutoff_freq(geonkickApi,
-                                            getOscIndex(oscillatorIndex),
-                                            frequency);
+        auto res = geonkick_set_osc_filter_cutoff_freq(geonkickApi,
+                                                       getOscIndex(oscillatorIndex),
+                                                       frequency);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getOscillatorFilterCutOffFreq(int oscillatorIndex) const
@@ -974,11 +981,12 @@ double GeonkickApi::getOscillatorFilterCutOffFreq(int oscillatorIndex) const
         return frequency;
 }
 
-void GeonkickApi::setOscillatorFilterFactor(int oscillatorIndex, double factor)
+bool GeonkickApi::setOscillatorFilterFactor(int oscillatorIndex, double factor)
 {
-        geonkick_set_osc_filter_factor(geonkickApi,
-                                       getOscIndex(oscillatorIndex),
-                                       factor);
+        auto res = geonkick_set_osc_filter_factor(geonkickApi,
+                                                  getOscIndex(oscillatorIndex),
+                                                  factor);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getOscillatorFilterFactor(int oscillatorIndex) const

@@ -43,23 +43,24 @@ bool OscillatorFilterModel::isEnabled() const
 
 void OscillatorFilterModel::setCutOff(double val)
 {
-        if (oscillatorModel->api()->setOscillatorFilterCutOff(oscillatorModel->index(), val))
+        if (oscillatorModel->api()->setOscillatorFilterCutOffFreq(oscillatorModel->index(), val))
                 action cutOffChanged(val);
 }
 
 double OscillatorFilterModel::cutOff() const
 {
+        return oscillatorModel->api()->getOscillatorFilterCutOffFreq(oscillatorModel->index());
 }
 
 void OscillatorFilterModel::setResonance(double val)
 {
-        if (oscillatorModel->api()->setOscillatorFilterResonance(oscillatorModel->index(), val))
+        if (oscillatorModel->api()->setOscillatorFilterFactor(oscillatorModel->index(), val))
                 action resonanceChanged(val);
 }
 
 double OscillatorFilterModel::resonance() const
 {
-        return oscillatorModel->api()->setOscillatorFilterResonance(oscillatorModel->index());
+        return oscillatorModel->api()->getOscillatorFilterFactor(oscillatorModel->index());
 }
 
 void OscillatorFilterModel::setType(FilterModel::FilterType type)
@@ -68,7 +69,7 @@ void OscillatorFilterModel::setType(FilterModel::FilterType type)
                 action typeChanged(type);
 }
 
-void OscillatorFilterModel::type() const
+FilterModel::FilterType OscillatorFilterModel::type() const
 {
         return oscillatorModel->api()->getOscillatorFilterType(oscillatorModel->index());
 }
@@ -77,7 +78,7 @@ void OscillatorFilterModel::setCutOffRange(const std::pair<double, double>& rang
 {
 }
 
-std::pair<double, double> OscillatorFilterModel::getCutOffRange() const
+std::pair<double, double> OscillatorFilterModel::cutOffRange() const
 {
         return {};
 }
@@ -86,7 +87,7 @@ void OscillatorFilterModel::setResonanceRange(const std::pair<double, double>& r
 {
 }
 
-std::pair<double, double> OscillatorFilterModel::getResonanceRange() const
+std::pair<double, double> OscillatorFilterModel::resonanceRange() const
 {
         return {};
 }

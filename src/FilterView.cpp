@@ -61,7 +61,6 @@ FilterView::FilterView(GeonkickWidget *parent, FilterModel *model)
         , lpFilterButton{nullptr}
         , hpFilterButton{nullptr}
         , bpFilterButton{nullptr}
-        , envelopeCategory{category}
 {
         setFixedSize(224, 125);
         setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_filter)));
@@ -71,7 +70,7 @@ FilterView::FilterView(GeonkickWidget *parent, FilterModel *model)
 
 void FilterView::createView()
 {
-        filterCheckbox = new GeonkickButton(this);
+        /*        filterCheckbox = new GeonkickButton(this);
         filterCheckbox->setCheckable(true);
         filterCheckbox->setBackgroundColor(68, 68, 70);
         filterCheckbox->setSize(32, 21);
@@ -191,6 +190,7 @@ void FilterView::createView()
                                  RkButton::State::UnpressedHover);
         RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
                     setFilterType(GeonkickApi::FilterType::HighPass, b));
+        */
 }
 
 void FilterView::updateView()
@@ -199,7 +199,7 @@ void FilterView::updateView()
 
 void FilterView::bindModel()
 {
-        auto filterModel = static_cast<FilterModel*>(getModel());
+        /*        auto filterModel = static_cast<FilterModel*>(getModel());
         RK_ACT_BIND(filterCheckbox, toggled, RK_ACT_ARGS(bool b), filterModel, enable(b));
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), filterModel, setCutOff(val));
         RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), filterModel, setResonance(val));
@@ -210,7 +210,7 @@ void FilterView::bindModel()
         RK_ACT_BIND(filterModel, enabled, toggled, RK_ACT_ARGS(bool b), this, enable(b));
         RK_ACT_BIND(filterModel, cutOffChanged, RK_ACT_ARGS(double val), this, setCutOff(val));
         RK_ACT_BIND(filterModel, resonanceChanged, RK_ACT_ARGS(double val), this, setResonance(val));
-        RK_ACT_BIND(filterModel, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type), this, setType(type));
+        RK_ACT_BIND(filterModel, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type), this, setType(type));*/
 }
 
 void FilterView::unbindModel()
@@ -224,79 +224,24 @@ void FilterView::unbindModel()
         hpFilterButton->unbindObject(filterModel);*/
 }
 
-void FilterView::enable(bool b)
+void FilterView::onEnabled(bool b)
 {
         filterCheckbox->setPressed(b);
 }
 
-bool FilterView::isEnabled() const
+void FilterView::onCutOffChanged(double val)
 {
-        return filterCheckbox->isPressed();
-}
-
-void FilterView::setCutOff(double val, double defaultVal)
-{
-        cutOffKnob->setDefaultValue(defaultVal);
         cutOffKnob->setCurrentValue(val);
 }
 
-double FilterView::cutOff() const
+void FilterView::onResonanceChanged(double val)
 {
-        return cutOffKnob->getValue();
-}
-
-void FilterView::setResonance(double val, double defaultVal)
-{
-        resonanceKnob->setDefaultValue(defaultVal);
         resonanceKnob->setCurrentValue(val);
 }
 
-double FilterView::resonance() const
-{
-        return resonanceKnob->getValue();
-}
-
-void FilterView::setType(GeonkickApi::FilterType type)
+void FilterView::onTypeChanged(GeonkickApi::FilterType type)
 {
         lpFilterButton->setPressed(type == GeonkickApi::FilterType::LowPass);
         hpFilterButton->setPressed(type == GeonkickApi::FilterType::HighPass);
         bpFilterButton->setPressed(type == GeonkickApi::FilterType::BandPass);
-}
-
-void FilterView::setFilterType(GeonkickApi::FilterType type, bool b)
-{
-        if (b) {
-                setType(type);
-                typeChanged(type);
-        }
-}
-
-GeonkickApi::FilterType FilterView::type() const
-{
-        if (lpFilterButton->isPressed())
-                return GeonkickApi::FilterType::LowPass;
-        else if (hpFilterButton->isPressed())
-                return GeonkickApi::FilterType::HighPass;
-        else
-                return GeonkickApi::FilterType::BandPass;
-}
-
-void FilterView::setCutOffRange(double from, double to)
-{
-        cutOffKnob->setRange(from, to);
-}
-
-void FilterView::setResonanceRange(double from, double to)
-{
-        resonanceKnob->setRange(from, to);
-}
-
-void FilterView::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        if (event->button() == RkMouseEvent::ButtonType::Right
-            || event->button() == RkMouseEvent::ButtonType::Left) {
-                bool b = !isEnabled();
-                enable(b);
-                enabled(b);
-        }
 }

@@ -197,7 +197,7 @@ double Oscillator::filterFrequency(void) const
 
 void Oscillator::setFilterQFactor(double factor)
 {
-	return geonkickApi->setOscillatorFilterFactor(index(), factor);
+	geonkickApi->setOscillatorFilterFactor(index(), factor);
 }
 
 double Oscillator::filterQFactor() const

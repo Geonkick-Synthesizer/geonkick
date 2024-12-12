@@ -183,16 +183,15 @@ class GeonkickApi : public RkObject {
                          int seed);
   void enableOscillator(int oscillatorIndex,
                         bool enable);
-  void enableOscillatorFilter(int oscillatorIndex,
-                              bool enable);
+  bool enableOscillatorFilter(int oscillatorIndex, bool enable);
   bool isOscillatorFilterEnabled(int oscillatorIndex) const;
-  void setOscillatorFilterType(int oscillatorIndex,
+  bool setOscillatorFilterType(int oscillatorIndex,
                                FilterType filter);
   FilterType getOscillatorFilterType(int oscillatorIndex) const;
-  void setOscillatorFilterCutOffFreq(int oscillatorIndex,
+  bool setOscillatorFilterCutOffFreq(int oscillatorIndex,
                                      double frequency);
   double getOscillatorFilterCutOffFreq(int oscillatorIndex) const;
-  void setOscillatorFilterFactor(int oscillatorIndex,
+  bool setOscillatorFilterFactor(int oscillatorIndex,
                                  double factor);
   double getOscillatorFilterFactor(int oscillatorIndex) const;
   bool isOscDistortionEnabled(int oscillatorIndex) const;
@@ -228,10 +227,10 @@ class GeonkickApi : public RkObject {
   void setKickAmplitude(double amplitude);
   void setKickLength(double length);
   void setLimiterValue(double value);
-  void setKickFilterFrequency(double frequency);
-  void setKickFilterQFactor(double factor);
-  void enableKickFilter(bool b);
-  void setKickFilterType(FilterType type);
+  bool setKickFilterFrequency(double frequency);
+  bool setKickFilterQFactor(double factor);
+  bool enableKickFilter(bool b);
+  bool setKickFilterType(FilterType type);
   void setPercussionState(const std::string &data);
   void setPercussionState(const std::unique_ptr<PercussionState> &state);
   std::unique_ptr<KitState> getKitState() const;
