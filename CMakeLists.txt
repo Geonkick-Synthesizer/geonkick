@@ -225,7 +225,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/OscillatorFunctionView.cpp
   ${GKICK_COMMON_DIR}/DistortionModel.cpp
   ${GKICK_COMMON_DIR}/OscillatorDistortionModel.cpp
-  ${GKICK_COMMON_DIR}/InstrumentDistorionModel.cpp
+  ${GKICK_COMMON_DIR}/InstrumentDistortionModel.cpp
   ${GKICK_COMMON_DIR}/DistortionView.cpp
   ${GKICK_COMMON_DIR}/FilterModel.cpp
   ${GKICK_COMMON_DIR}/OscillatorFilterModel.cpp
