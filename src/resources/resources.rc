@@ -119,7 +119,6 @@ distortion_in_limiter.png
 distortion_volume_env.png
 distortion_volume_env_active.png
 distortion_volume_env_hover.png
-effects_groupbox_label.png
 export_button.png
 export_browse.png
 export_cancel.png
@@ -147,9 +146,6 @@ stereo_radio_button_active.png
 meter_scale.png
 
 # ==== Filter ====
-filter_enabled.png
-filter_disabled.png
-filter_enabled_hover.png
 filter_type_hp.png
 filter_type_lp.png
 filter_type_bp.png
@@ -175,7 +171,6 @@ general_groupbox_label.png
 
 hboxbk_ampl_env.png
 hboxbk_filter.png
-hboxbk_noise_env.png
 hboxbk_osc_env.png
 knob_50x50.png
 knob_bk_60x60.png
@@ -232,7 +227,6 @@ wave_button_sample_hover.png
 button_browse_sample.png
 wf_bk_hbox.png
 layers_mixer.png
-controls_button.png
 
 #----- Kit -----
 
