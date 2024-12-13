@@ -28,20 +28,22 @@
 
 class PercussionModel;
 
-class InstrumentFilterModel: public DistortionModel
+class InstrumentFilterModel: public FilterModel
 {
  public:
         InstrumentFilterModel(PercussionModel *parent);
-        void enable(bool b) override;
-        bool isEnabled() const override;
-        void setDistortionType(DistortionType type) override;
-        DistortionType getDistortionType() const override;
-        void setInLimiter(double value) override;
-        double getInLimiter() const override;
-        void setOutLimiter(double value) override;
-        double getOutLimiter() const override;
-        void setDrive(double drive) override;
-        double getDrive() const override;
+         void enable(bool b);
+         bool isEnabled() const;
+         void setCutOff(double val);
+         double cutOff() const;
+         void setResonance(double val);
+         double resonance() const;
+         void setType(FilterType type);
+         FilterType type() const;
+         void setCutOffRange(const std::pair<double, double>& range);
+         std::pair<double, double> cutOffRange() const;
+         void setResonanceRange(const std::pair<double, double>& range);
+         std::pair<double, double> resonanceRange() const;
 
  private:
         PercussionModel *instrumentModel;

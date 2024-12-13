@@ -55,14 +55,13 @@ RK_DECLARE_IMAGE_RC(fl_qfactor_button_off);
 
 FilterView::FilterView(GeonkickWidget *parent, FilterModel *model)
         : AbstractView(parent, model)
-        , filterCheckbox{nullptr}
         , cutOffKnob{nullptr}
         , resonanceKnob{nullptr}
         , lpFilterButton{nullptr}
         , hpFilterButton{nullptr}
         , bpFilterButton{nullptr}
 {
-        setFixedSize(224, 125);
+        setFixedSize(224, 105);
         setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_filter)));
         createView();
         bindModel();
@@ -70,20 +69,6 @@ FilterView::FilterView(GeonkickWidget *parent, FilterModel *model)
 
 void FilterView::createView()
 {
-        /*        filterCheckbox = new GeonkickButton(this);
-        filterCheckbox->setCheckable(true);
-        filterCheckbox->setBackgroundColor(68, 68, 70);
-        filterCheckbox->setSize(32, 21);
-        filterCheckbox->setPosition(width() / 2 - filterCheckbox->width() / 2, 10);
-        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled)),
-                                       RkButton::State::Pressed);
-        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_disabled)),
-                                       RkButton::State::Unpressed);
-        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled_hover)),
-                                       RkButton::State::PressedHover);
-        filterCheckbox->setImage(RkImage(filterCheckbox->size(), RK_IMAGE_RC(filter_enabled_hover)),
-                                       RkButton::State::UnpressedHover);
-
         cutOffKnob = new Knob(this);
         cutOffKnob->setRangeType(Knob::RangeType::Logarithmic);
         cutOffKnob->setFixedSize(80, 78);
@@ -123,7 +108,7 @@ void FilterView::createView()
         resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_60x60)));
         resonanceKnob->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
         resonanceKnob->setRange(0.01, 10);
-        RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), this, resonanceChanged(val));
+        //        RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), this, resonanceChanged(val));
 
 	auto qFactorEnvelopeButton = new GeonkickButton(this);
         qFactorEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::FilterQFactor
@@ -149,7 +134,7 @@ void FilterView::createView()
                                                      && category == envelopeCategory));
 
         int x = resonanceKnob->x() + resonanceKnob->width() / 2 - (3 * 25 + 8) / 2 ;
-        int y = height() - 26;
+        int y = qFactorEnvelopeButton->y() + qFactorEnvelopeButton->height() + 6;
         lpFilterButton = new GeonkickButton(this);
         lpFilterButton->setBackgroundColor(background());
         lpFilterButton->setFixedSize(25, 18);
@@ -160,8 +145,8 @@ void FilterView::createView()
                                  RkButton::State::Pressed);
         lpFilterButton->setImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_lp_hover)),
                                  RkButton::State::UnpressedHover);
-        RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
-                    setFilterType(GeonkickApi::FilterType::LowPass, b));
+        //        RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
+        //                    setFilterType(GeonkickApi::FilterType::LowPass, b));
 
         bpFilterButton = new GeonkickButton(this);
         bpFilterButton->setBackgroundColor(background());
@@ -174,8 +159,8 @@ void FilterView::createView()
                                  RkButton::State::Pressed);
         bpFilterButton->setImage(RkImage(bpFilterButton->size(), RK_IMAGE_RC(filter_type_bp_hover)),
                                  RkButton::State::UnpressedHover);
-        RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
-                    setFilterType(GeonkickApi::FilterType::BandPass, b));
+        //        RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
+        //                    setFilterType(GeonkickApi::FilterType::BandPass, b));
 
         hpFilterButton = new GeonkickButton(this);
         hpFilterButton->setBackgroundColor(background());
@@ -188,9 +173,8 @@ void FilterView::createView()
                                  RkButton::State::Pressed);
         hpFilterButton->setImage(RkImage(hpFilterButton->size(), RK_IMAGE_RC(filter_type_hp_hover)),
                                  RkButton::State::UnpressedHover);
-        RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
-                    setFilterType(GeonkickApi::FilterType::HighPass, b));
-        */
+        //        RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
+        //                    setFilterType(GeonkickApi::FilterType::HighPass, b));
 }
 
 void FilterView::updateView()
@@ -222,11 +206,6 @@ void FilterView::unbindModel()
         lpFilterButton->unbindObject(filterModel);
         bpFilterButton->unbindObject(filterModel);
         hpFilterButton->unbindObject(filterModel);*/
-}
-
-void FilterView::onEnabled(bool b)
-{
-        filterCheckbox->setPressed(b);
 }
 
 void FilterView::onCutOffChanged(double val)

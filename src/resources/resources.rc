@@ -300,4 +300,15 @@ osc2_preview_sample_pressed.png
 osc3_preview_sample.png
 osc3_preview_sample_hover.png
 osc3_preview_sample_pressed.png
+
+# ==== Effects Tab ====
+effects_tab_filter_button.png
+effects_tab_filter_button_active.png
+effects_tab_filter_button_hover.png
+effects_tab_distortion_button.png
+effects_tab_distortion_button_active.png
+effects_tab_distortion_button_hover.png
+effects_tab_enable_button.png
+effects_tab_enable_button_active.png
+effects_tab_enable_button_hover.png
 )

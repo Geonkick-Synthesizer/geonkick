@@ -135,8 +135,8 @@ class PercussionModel : public AbstractModel {
  private:
         KitModel* kitModel;
         int percussionId;
-        FilterModel *filerModel;
-        DistotionModel *distortionModel;
+        FilterModel *filterModel;
+        DistortionModel *distortionModel;
 };
 
 #endif // PERCUSSION_MODEL_H

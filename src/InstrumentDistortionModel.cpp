@@ -22,66 +22,66 @@
  */
 
 #include "InstrumentDistortionModel.h"
-#include "PercussionModel.h"
+#include "percussion_model.h"
 
 InstrumentDistortionModel::InstrumentDistortionModel(PercussionModel *parent)
 : DistortionModel(parent)
-,  percussionModel{parent}
+,  instrumentModel{parent}
 {
 }
 
 void InstrumentDistortionModel::enable(bool b)
 {
-        if (percussionModel->parentModel()->enableDistortion(percussionModel->index(), b))
-                action enabled(b);
+        //        if (instrumentModel->parentModel()->enableDistortion(instrumentModel->index(), b))
+        //                action enabled(b);
 }
 
 bool InstrumentDistortionModel::isEnabled() const
 {
-        return percussionModel->isOscDistortionEnabled(percussionModel->index());
+        return false;//instrumentModel->isOscDistortionEnabled(instrumentModel->index());
 }
 
 void InstrumentDistortionModel::setDistortionType(DistortionType type)
 {
-        if (percussionModel->api()->setOscDistortionType(percussionModel->index(), type))
-                action distortionTypeChanged(type);
+        //if (instrumentModel->api()->setOscDistortionType(instrumentModel->index(), type))
+        //        action distortionTypeChanged(type);
 }
 
 DistortionModel::DistortionType
 InstrumentDistortionModel::getDistortionType() const
 {
-        return  percussionModel->api()->getOscDistortionType(percussionModel->index());
+        return (DistortionModel::DistortionType)(0);// instrumentModel->api()->getOscDistortionType(instrumentModel->index());
 }
 
 void InstrumentDistortionModel::setInLimiter(double value)
 {
-        if (percussionModel->api()->setOscDistortionInLimiter(percussionModel->index(), value))
-                action inLimiterChanged(value);
+        //        if (instrumentModel->api()->setOscDistortionInLimiter(instrumentModel->index(), value))
+        //                action inLimiterChanged(value);
 }
 
 double InstrumentDistortionModel::getInLimiter() const
 {
-        return  percussionModel->api()->getOscDistortionInLimiter(percussionModel->index());
+        return 0;// instrumentModel->api()->getOscDistortionInLimiter(instrumentModel->index());
 }
 
 void InstrumentDistortionModel::setOutLimiter(double value)
 {
-        if (percussionModel->api()->setOscDistortionOutLimiter(percussionModel->index(), value))
-                action outLimiterChanged(value);
+        //        if (instrumentModel->api()->setOscDistortionOutLimiter(instrumentModel->index(), value))
+        //       action outLimiterChanged(value);
 }
 
 double InstrumentDistortionModel::getOutLimiter() const
 {
-        return  percussionModel->api()->getOscDistortionOutLimiter(percussionModel->index());
+        return 0;// instrumentModel->api()->getOscDistortionOutLimiter(instrumentModel->index());
 }
 
 void InstrumentDistortionModel::setDrive(double drive)
 {
-                if (percussionModel->api()->setOscDistortionDrive(percussionModel->index(), drive))
-                action driveChanged(drive);
+                // if (instrumentModel->api()->setOscDistortionDrive(instrumentModel->index(), drive))
+                // action driveChanged(drive);
 }
 
 double InstrumentDistortionModel::getDrive() const
 {
-        return  percussionModel->api()->getOscDistortionDrive(percussionModel->index());
+        return 0;// instrumentModel->api()->getOscDistortionDrive(instrumentModel->index());
 }

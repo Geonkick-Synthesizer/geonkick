@@ -37,6 +37,8 @@ class KitModel : public RkObject {
         using PercussionIndex = int;
         using KeyIndex = int;
         explicit KitModel(RkObject* parent, GeonkickApi *api);
+        bool enableInstrument(PercussionIndex index, bool b = true);
+        bool isInstrumentEnabled(PercussionIndex index) const;
         bool isValidIndex(PercussionIndex index);
         bool open(const std::string &file);
         bool save(const std::string &file);
@@ -103,6 +105,10 @@ class KitModel : public RkObject {
                     RK_ARG_VAL(index));
         RK_DECL_ACT(percussionUpdated,
                     percussionUpdated(PercussionModel* model),
+                    RK_ARG_TYPE(PercussionModel*),
+                    RK_ARG_VAL(model));
+        RK_DECL_ACT(instrumentEnabled,
+                    instrumentEnabled(PercussionModel* model),
                     RK_ARG_TYPE(PercussionModel*),
                     RK_ARG_VAL(model));
         RkString name() const;

@@ -43,13 +43,11 @@ class FilterView: public AbstractView
  protected:
         void bindModel() override;
         void unbindModel() override;
-        void onEnabled(bool b);
         void onCutOffChanged(double val);
         void onResonanceChanged(double val);
         void onTypeChanged(FilterType type);
 
  private:
-        GeonkickButton *filterCheckbox;
         Knob *cutOffKnob;
         Knob *resonanceKnob;
         GeonkickButton *lpFilterButton;

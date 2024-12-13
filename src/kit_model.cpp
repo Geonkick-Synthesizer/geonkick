@@ -55,6 +55,20 @@ bool KitModel::isValidIndex(PercussionIndex index)
         return index > -1 && static_cast<size_t>(index) < percussionsList.size();
 }
 
+bool KitModel::enableInstrument(PercussionIndex index, bool b)
+{
+        if (isValidIndex(index) && geonkickApi->enablePercussion(percussionId(index))) {
+                action instrumentEnabled(percussionsList[getIndex(index)]);
+                return true;
+        }
+        return false;
+}
+
+bool KitModel::isInstrumentEnabled(PercussionIndex index) const
+{
+        return geonkickApi->isPercussionEnabled(percussionId(index));
+}
+
 void KitModel::selectPercussion(PercussionIndex index)
 {
         if (isValidIndex(index) && geonkickApi->setCurrentPercussion(percussionId(index))) {

@@ -24,7 +24,7 @@
 #include "percussion_model.h"
 #include "kit_model.h"
 #include "InstrumentFilterModel.h"
-#include "InstrumentDistortioModel.h"
+#include "InstrumentDistortionModel.h"
 
 #include <RkAction.h>
 #include <RkEventQueue.h>
@@ -54,7 +54,7 @@ PercussionModel::PercussionIndex PercussionModel::index() const
         return kitModel->getIndex(percussionId);
 }
 
-void PercussionModel::enable(bool b = true)
+void PercussionModel::enable(bool b)
 {
         if (kitModel->enableInstrument(index(), b))
                 action enabled(b);
@@ -217,7 +217,7 @@ void PercussionModel::copy()
         kitModel->copyPercussion(index());
 }
 
-KitModel* PercussionModel::model() const
+KitModel* PercussionModel::parentModel() const
 {
         return kitModel;
 }

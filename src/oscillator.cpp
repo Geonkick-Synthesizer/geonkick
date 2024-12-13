@@ -23,10 +23,12 @@
 
 #include "oscillator.h"
 #include "OscillatorDistortionModel.h"
+#include "OscillatorFilterModel.h"
 
 Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
         : geonkickApi{api}
         , oscillatorType{type}
+        , filterModel{new OscillatorFilterModel(this)}
         , distortionModel{new OscillatorDistortionModel(this)}
 {
         RK_ACT_BIND(geonkickApi,
@@ -165,46 +167,6 @@ int Oscillator::index() const
         return static_cast<int>(oscillatorType);
 }
 
-Oscillator::FilterType Oscillator::filter() const
-{
-        return static_cast<FilterType>(geonkickApi->getOscillatorFilterType(index()));
-}
-
-void Oscillator::setFilterType(FilterType filter)
-{
-        geonkickApi->setOscillatorFilterType(index(), static_cast<GeonkickApi::FilterType>(filter));
-}
-
-void Oscillator::enableFilter(bool b)
-{
-        geonkickApi->enableOscillatorFilter(index(), b);
-}
-
-bool Oscillator::isFilterEnabled() const
-{
-        return geonkickApi->isOscillatorFilterEnabled(index());
-}
-
-void Oscillator::setFilterFrequency(double f)
-{
-        geonkickApi->setOscillatorFilterCutOffFreq(index(), f);
-}
-
-double Oscillator::filterFrequency(void) const
-{
-        return geonkickApi->getOscillatorFilterCutOffFreq(index());
-}
-
-void Oscillator::setFilterQFactor(double factor)
-{
-	geonkickApi->setOscillatorFilterFactor(index(), factor);
-}
-
-double Oscillator::filterQFactor() const
-{
-        return geonkickApi->getOscillatorFilterFactor(index());
-}
-
 void Oscillator::enable(bool b)
 {
         geonkickApi->enableOscillator(index(), b);
@@ -242,6 +204,11 @@ Oscillator::EnvelopeApplyType
 Oscillator::envelopeApplyType(Oscillator::EnvelopeType envelope) const
 {
 	return geonkickApi->getOscillatorEnvelopeApplyType(index(), envelope);
+}
+
+FilterModel* Oscillator::getFilter() const
+{
+        return filterModel;
 }
 
 DistortionModel* Oscillator::getDistortion() const

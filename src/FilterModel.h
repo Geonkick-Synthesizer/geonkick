@@ -32,7 +32,7 @@ class FilterModel: public AbstractModel
  public:
         using FilterType = GeonkickApi::FilterType;
         explicit FilterModel(RkObject *parent);
-        virtual ~FilterModel();
+        virtual ~FilterModel() = default;
         virtual void enable(bool b) = 0;
         virtual bool isEnabled() const = 0;
         virtual void setCutOff(double val) = 0;

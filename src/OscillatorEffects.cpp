@@ -23,17 +23,27 @@
 
 #include "OscillatorEffects.h"
 #include "oscillator.h"
+#include "FilterModel.h"
 #include "FilterView.h"
+#include "DistortionModel.h"
 #include "DistortionView.h"
+#include "EffectTabButton.h"
 
 #include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(osc_effects_bk);
+RK_DECLARE_IMAGE_RC(effects_tab_filter_button);
+RK_DECLARE_IMAGE_RC(effects_tab_filter_button_active);
+RK_DECLARE_IMAGE_RC(effects_tab_filter_button_hover);
+RK_DECLARE_IMAGE_RC(effects_tab_distortion_button);
+RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_active);
+RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_hover);
+
 
 OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
-        , mainLayout{new RkContainer(this)}
+        , mainLayout{new RkContainer(this, Rk::Orientation::Vertical)}
         , filterTabButton{nullptr}
         , distortionTabButton{nullptr}
         , filterTab{nullptr}
@@ -42,7 +52,9 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
 {
         setSize(224, 125);
         mainLayout->setSize(size());
+        mainLayout->addSpace(4);
         setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(osc_effects_bk)));
+        //        setBackgroundColor({0xff, 0xff, 0xff});
         createView();
         show();
 }
@@ -50,8 +62,8 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
 void OscillatorEffects::setModel(Oscillator *model)
 {
         oscillatorModel = model;
-        //        filterTab->setModel(model);
-        //        distortionTab->setModel(model);
+        filterTab->setModel(model->getFilter());
+        //        distortionTab->setModel(model->getDistortion());
         updateView();
 }
 
@@ -62,60 +74,77 @@ void OscillatorEffects::setModel(Oscillator *model)
 
 void OscillatorEffects::createView()
 {
-        /*        auto tabButtonsLayout = new RkContainer(this);
-        tabButtonsLayout->setSize(width(), 20);
-        filterTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_filter)));
+        auto tabButtonsLayout = new RkContainer(this);
+        tabButtonsLayout->setSize({width(), 16});
+        tabButtonsLayout->addSpace(4);
+        filterTabButton = new EffectTabButton(this);
+        filterTabButton->setPressed(true);
+        filterTabButton->setImage(RkImage(filterTabButton->size(), RK_IMAGE_RC(effects_tab_filter_button)),
+                                  RkButton::State::Unpressed);
+        filterTabButton->setImage(RkImage(filterTabButton->size(), RK_IMAGE_RC(effects_tab_filter_button_active)),
+                                  RkButton::State::Pressed);
+        filterTabButton->setImage(RkImage(filterTabButton->size(), RK_IMAGE_RC(effects_tab_filter_button_hover)),
+                                  RkButton::State::UnpressedHover);
+        filterTabButton->setImage(RkImage(filterTabButton->size(), RK_IMAGE_RC(effects_tab_filter_button_hover)),
+                                  RkButton::State::PressedHover);
         tabButtonsLayout->addWidget(filterTabButton);
-        RK_ACT_BIND(filterTabButton, enabled,
+        RK_ACT_BINDL(filterTabButton,
+                     enabled,
                     RK_ACT_ARGS(bool b),
-                    oscillator,
-                    enableFilter(b));
+                     [=,this](bool b){oscillatorModel->getFilter()->enable(b);});
 
-        distortionTabButton = new EffectTabButton(this, RkImage(30, 20, RK_IMAGE_RC(osc_effects_tab_distortion)));
+        tabButtonsLayout->addSpace(2);
+        distortionTabButton = new EffectTabButton(this);
+        distortionTabButton->setImage(RkImage(distortionTabButton->size(), RK_IMAGE_RC(effects_tab_distortion_button)),
+                                  RkButton::State::Unpressed);
+        distortionTabButton->setImage(RkImage(distortionTabButton->size(), RK_IMAGE_RC(effects_tab_distortion_button_active)),
+                                  RkButton::State::Pressed);
+        distortionTabButton->setImage(RkImage(distortionTabButton->size(), RK_IMAGE_RC(effects_tab_distortion_button_hover)),
+                                  RkButton::State::UnpressedHover);
+        distortionTabButton->setImage(RkImage(distortionTabButton->size(), RK_IMAGE_RC(effects_tab_distortion_button_hover)),
+                                  RkButton::State::PressedHover);
+
         tabButtonsLayout->addWidget(distortionTabButton);
-        mainLayout->addContainer(tabButtonsLayou);
-        RK_ACT_BIND(distorionTabButton, enabled,
+        mainLayout->addContainer(tabButtonsLayout);
+        RK_ACT_BINDL(distortionTabButton,
+                    enabled,
                     RK_ACT_ARGS(bool b),
-                    oscillatorModel,
-                    enableDistortion(b));
+                    [=,this](bool b){oscillatorModel->getDistortion()->enable(b);});
+
+        RK_ACT_BINDL(filterTabButton,
+                     pressed,
+                     RK_ACT_ARGS(),
+                     [=,this](){distortionTabButton->setPressed(false);
+                             updateView();});
+        RK_ACT_BINDL(distortionTabButton,
+                     pressed,
+                     RK_ACT_ARGS(),
+                     [=,this](){filterTabButton->setPressed(false);
+                             updateView();});
 
         auto effectTabLayout = new RkContainer(this);
-        effectTabLayout->setSize(width(), height() - tabButtonsLayout->height());
-        filterTab = new FilterFiew(this, Envelope::Category::General);
-        filterTab->setCutOffRange(20, 20000);
-        filterTab->setResonanceRange(1, 1000);
-        filterTab->setPosition(0, 125);
-        RK_ACT_BIND(filterTab, enabled, RK_ACT_ARGS(bool b),
-                    oscillatorModel, enableFilter(b));
-        RK_ACT_BIND(filterTab, cutOffChanged, RK_ACT_ARGS(double val),
-                    oscillatorModel, setFilterFrequency(val));
-        RK_ACT_BIND(filterTab, resonanceChanged, RK_ACT_ARGS(double val),
-                    oscillatorModel, setFilterQFactor(val));
-        RK_ACT_BIND(filterTab, typeChanged,
-                    RK_ACT_ARGS(GeonkickApi::FilterType type),
-                    oscillatorModel, setFilterType(type));
+        effectTabLayout->setSize({width(), height() - tabButtonsLayout->height()});
+        filterTab = new FilterView(this, oscillatorModel->getFilter());
         effectTabLayout->addWidget(filterTab);
         distortionTab = new DistortionView(this, oscillatorModel->getDistortion());
-        effectTabLayout->addWidget(filterDistortion);
+        effectTabLayout->addWidget(distortionTab);
         mainLayout->addContainer(effectTabLayout);
-        updateView();*/
+        updateView();
 }
 
 void OscillatorEffects::updateView()
 {
-        /*        filterTabButton->enable(oscillatorModel->isFilterEnabled());
-        distortionTabButton->enable(oscillatorModel->isDistortionEnabled());
-        if (showFilterTab) {
-                if (!filterTab->isVisible()) {
-                        filterTab->show();
-                        mainLayout->update();
-                }
+        filterTabButton->enable(oscillatorModel->getFilter()->isEnabled());
+        //        filterTabButton->enable(oscillatorModel->getDistortion()->isEnabled());
+        if (filterTabButton->isPressed()) {
+                distortionTab->hide();
+                filterTab->show();
                 filterTab->updateView();
+                mainLayout->update();
         } else {
-                if (!distortionTab->isVisible()) {
-                        filterTab->show();
-                        mainLayout->update();
-                }
+                filterTab->hide();
+                distortionTab->show();
                 distortionTab->updateView();
-                }*/
+                mainLayout->update();
+        }
 }

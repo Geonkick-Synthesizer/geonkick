@@ -25,14 +25,27 @@
 
 #include <RkButton.h>
 
+RK_DECLARE_IMAGE_RC(effects_tab_enable_button);
+RK_DECLARE_IMAGE_RC(effects_tab_enable_button_active);
+RK_DECLARE_IMAGE_RC(effects_tab_enable_button_hover);
+
 EffectTabButton::EffectTabButton(GeonkickWidget* parent)
         : GeonkickButton(parent)
         , enableButton{new RkButton(this)}
 {
-        setSize(30, 20);
-        enableButton->setSize(16, 16);
+        setSize(46, 16);
+        enableButton->setSize(10, 10);
         enableButton->setCheckable(true);
-        enableButton->setPosition(3, (height() - enableButton->height()) / 2);
+        enableButton->setPosition(4, (height() - enableButton->height()) / 2);
+        enableButton->setImage(RkImage(enableButton->size(), RK_IMAGE_RC(effects_tab_enable_button)),
+                                  RkButton::State::Unpressed);
+        enableButton->setImage(RkImage(enableButton->size(), RK_IMAGE_RC(effects_tab_enable_button_active)),
+                                  RkButton::State::Pressed);
+        enableButton->setImage(RkImage(enableButton->size(), RK_IMAGE_RC(effects_tab_enable_button_hover)),
+                                  RkButton::State::UnpressedHover);
+        enableButton->setImage(RkImage(enableButton->size(), RK_IMAGE_RC(effects_tab_enable_button_hover)),
+                                  RkButton::State::PressedHover);
+
         RK_ACT_BIND(enableButton,
                     toggled,
                     RK_ACT_ARGS(bool pressed),

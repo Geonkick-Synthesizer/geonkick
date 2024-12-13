@@ -27,6 +27,7 @@
 #include "geonkick_api.h"
 
 class DistortionModel;
+class FilterModel;
 
 class Oscillator: public RkObject
 {
@@ -65,10 +66,6 @@ class Oscillator: public RkObject
   void setFrequency(double freq);
   void setPitchShift(double semitones);
   void setNoiseDensity(double density);
-  void enableFilter(bool b);
-  void setFilterType(FilterType filter);
-  void setFilterFrequency(double f);
-  void setFilterQFactor(double factor);
   void addEnvelopePoint(EnvelopeType envelope,
                         const EnvelopePoint &point);
   void removeEnvelopePoint(EnvelopeType envelope,
@@ -82,6 +79,7 @@ class Oscillator: public RkObject
   void setSample(const std::string &file);
   int index() const;
   std::string samplesPath() const;
+  FilterModel* getFilter() const;
   DistortionModel* getDistortion() const;
   GeonkickApi* api() const;
 
@@ -111,6 +109,7 @@ class Oscillator: public RkObject
  private:
 	  GeonkickApi *geonkickApi;
           Type oscillatorType;
+          FilterModel* filterModel;
           DistortionModel* distortionModel;
 };
 
