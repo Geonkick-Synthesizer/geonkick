@@ -43,16 +43,11 @@ RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_hover);
 OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
-        , mainLayout{new RkContainer(this, Rk::Orientation::Vertical)}
         , filterTabButton{nullptr}
         , distortionTabButton{nullptr}
-        , filterTab{nullptr}
-        , distortionTab{nullptr}
-        , showFilterTab{true}
+        , currentTabView{nullptr}
 {
         setSize(224, 131);
-        mainLayout->setSize(size());
-        mainLayout->addSpace(4);
         setBackgroundImage(RkImage(224, 115, RK_IMAGE_RC(osc_effects_bk)));
         createView();
         show();
@@ -61,8 +56,12 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
 void OscillatorEffects::setModel(Oscillator *model)
 {
         oscillatorModel = model;
-        filterTab->setModel(model->getFilter());
-        //        distortionTab->setModel(model->getDistortion());
+        if (currentTabView) {
+                if (dynamic_cast<FilterView*>(currentTabView))
+                        currentTabView->setModel(model->getFilter());
+                else
+                        currentTabView->setModel(model->getDistortion());
+        }
         updateView();
 }
 
@@ -104,47 +103,47 @@ void OscillatorEffects::createView()
                                   RkButton::State::PressedHover);
 
         tabButtonsLayout->addWidget(distortionTabButton);
-        mainLayout->addContainer(tabButtonsLayout);
         RK_ACT_BINDL(distortionTabButton,
                     enabled,
                     RK_ACT_ARGS(bool b),
                     [=,this](bool b){oscillatorModel->getDistortion()->enable(b);});
 
-        RK_ACT_BINDL(filterTabButton,
+        RK_ACT_BIND(filterTabButton,
                      pressed,
                      RK_ACT_ARGS(),
-                     [=,this](){distortionTabButton->setPressed(false);
-                             updateView();});
-        RK_ACT_BINDL(distortionTabButton,
+                     this,
+                     showFilter());
+        RK_ACT_BIND(distortionTabButton,
                      pressed,
                      RK_ACT_ARGS(),
-                     [=,this](){filterTabButton->setPressed(false);
-                             updateView();});
-
-        auto effectTabLayout = new RkContainer(this);
-        effectTabLayout->setSize({width(), height() - tabButtonsLayout->height()});
-        filterTab = new FilterView(this, oscillatorModel->getFilter());
-        effectTabLayout->addWidget(filterTab);
-        distortionTab = new DistortionView(this, oscillatorModel->getDistortion());
-        effectTabLayout->addWidget(distortionTab);
-        mainLayout->addContainer(effectTabLayout);
+                     this,
+                     showDistortion());
+        if (filterTabButton->isPressed())
+                showFilter();
+        else
+                showDistortion();
         updateView();
+}
+
+void OscillatorEffects::showFilter()
+{
+        if (currentTabView)
+                delete currentTabView;
+        currentTabView = new FilterView(this, oscillatorModel->getFilter());
+        currentTabView->setPosition(0, 22);
+}
+
+void OscillatorEffects::showDistortion()
+{
+        if (currentTabView)
+                delete currentTabView;
+        currentTabView = new DistortionView(this, oscillatorModel->getDistortion());
+        currentTabView->setPosition(0, 22);
 }
 
 void OscillatorEffects::updateView()
 {
         filterTabButton->enable(oscillatorModel->getFilter()->isEnabled());
-        //        filterTabButton->enable(oscillatorModel->getDistortion()->isEnabled());
-        if (filterTabButton->isPressed()) {
-                distortionTab->hide();
-                filterTab->show();
-                filterTab->updateView();
-                mainLayout->update();
-        } else {
-                filterTab->hide();
-                distortionTab->show();
-                distortionTab->updateView();
-                mainLayout->update();
-        }
-        //        filterTab->hide();
+        distortionTabButton->enable(oscillatorModel->getDistortion()->isEnabled());
+        currentTabView->updateView();
 }

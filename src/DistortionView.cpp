@@ -24,9 +24,17 @@
 #include "DistortionView.h"
 #include "DistortionModel.h"
 
+#include "knob.h"
+
+RK_DECLARE_IMAGE_RC(effect_view_bk);
+RK_DECLARE_IMAGE_RC(knob);
+RK_DECLARE_IMAGE_RC(knob_bk_image);
+
 DistortionView::DistortionView(GeonkickWidget* parent, DistortionModel *model)
         : AbstractView(parent, model)
 {
+        setFixedSize(224, 115);
+        setBackgroundImage(RkImage(224, 115, RK_IMAGE_RC(effect_view_bk)));
         createView();
         bindModel();
 }
@@ -63,6 +71,13 @@ void DistortionView::unbindModel()
 
 void DistortionView::createView()
 {
+        auto driveKnob = new Knob(this);
+        driveKnob->setRangeType(Knob::RangeType::Logarithmic);
+        driveKnob->setFixedSize(80, 78);
+        driveKnob->setPosition((224 / 2 - 80) / 2, 10);
+        driveKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+        driveKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
+        driveKnob->setRange(1.0, 63);
 }
 
 void DistortionView::updateView()

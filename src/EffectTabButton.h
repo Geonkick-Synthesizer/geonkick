@@ -34,7 +34,6 @@ class EffectTabButton: public GeonkickButton {
                     enabled(bool b),
                     RK_ARG_TYPE(bool),
                     RK_ARG_VAL(b));
-
  private:
         RkButton *enableButton;
 };

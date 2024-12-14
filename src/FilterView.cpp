@@ -179,6 +179,8 @@ void FilterView::createView()
 
 void FilterView::updateView()
 {
+        auto filterModel = static_cast<FilterModel*>(getModel());
+        cutOffKnob->setCurrentValue(filterModel->cutOff());
 }
 
 void FilterView::bindModel()

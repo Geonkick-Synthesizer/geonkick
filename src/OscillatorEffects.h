@@ -29,8 +29,7 @@
 class Oscillator;
 class RkContainer;
 class EffectTabButton;
-class FilterView;
-class DistortionView;
+class AbstractView;
 
 class OscillatorEffects: public GeonkickWidget {
  public:
@@ -40,13 +39,15 @@ class OscillatorEffects: public GeonkickWidget {
         void createView();
         void updateView();
 
+protected:
+        void showFilter();
+        void showDistortion();
+
  private:
         Oscillator *oscillatorModel;
-        RkContainer* mainLayout;
         EffectTabButton *filterTabButton;
         EffectTabButton *distortionTabButton;
-        FilterView *filterTab;
-        DistortionView *distortionTab;
+        AbstractView *currentTabView;
         bool showFilterTab;
 };
 
