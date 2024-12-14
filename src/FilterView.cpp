@@ -30,7 +30,7 @@
 
 RK_DECLARE_IMAGE_RC(knob);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
-RK_DECLARE_IMAGE_RC(hboxbk_filter);
+RK_DECLARE_IMAGE_RC(effect_view_bk);
 RK_DECLARE_IMAGE_RC(filter_enabled);
 RK_DECLARE_IMAGE_RC(filter_enabled_hover);
 RK_DECLARE_IMAGE_RC(filter_disabled);
@@ -61,8 +61,8 @@ FilterView::FilterView(GeonkickWidget *parent, FilterModel *model)
         , hpFilterButton{nullptr}
         , bpFilterButton{nullptr}
 {
-        setFixedSize(224, 105);
-        setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(hboxbk_filter)));
+        setFixedSize(224, 115);
+        setBackgroundImage(RkImage(224, 115, RK_IMAGE_RC(effect_view_bk)));
         createView();
         bindModel();
 }
@@ -72,7 +72,7 @@ void FilterView::createView()
         cutOffKnob = new Knob(this);
         cutOffKnob->setRangeType(Knob::RangeType::Logarithmic);
         cutOffKnob->setFixedSize(80, 78);
-        cutOffKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 5);
+        cutOffKnob->setPosition((224 / 2 - 80) / 2, 10);
         cutOffKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         cutOffKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
         cutOffKnob->setRange(20, 20000);
@@ -103,7 +103,7 @@ void FilterView::createView()
 	resonanceKnob->setRangeType(Knob::RangeType::Logarithmic);
         int w = 60;
         int h = 60;
-        resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, (125 - h) / 4 - 2);
+        resonanceKnob->setPosition(224 / 2  + (224 / 2 - w) / 2, 7);
         resonanceKnob->setFixedSize(w, h);
         resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_60x60)));
         resonanceKnob->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));

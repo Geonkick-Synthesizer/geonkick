@@ -47,7 +47,7 @@ ControlArea::ControlArea(GeonkickWidget *parent,
         , settingsWidget{nullptr}
 
 {
-        setFixedSize(920, 370);
+        setFixedSize(920, 375);
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
         showWidget(viewState()->getMainView());
 }

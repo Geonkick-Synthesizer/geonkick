@@ -41,9 +41,9 @@
 
 constexpr int MAIN_WINDOW_WIDTH  = 940;
 #ifdef GEONKICK_SINGLE
-constexpr int MAIN_WINDOW_HEIGHT = 680;
+constexpr int MAIN_WINDOW_HEIGHT = 690;
 #else
-constexpr int MAIN_WINDOW_HEIGHT = 705;
+constexpr int MAIN_WINDOW_HEIGHT = 715;
 #endif // GEONKICK_SINGLE
 
 MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)

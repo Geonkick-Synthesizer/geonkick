@@ -50,11 +50,10 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
         , distortionTab{nullptr}
         , showFilterTab{true}
 {
-        setSize(224, 125);
+        setSize(224, 131);
         mainLayout->setSize(size());
         mainLayout->addSpace(4);
-        setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(osc_effects_bk)));
-        //        setBackgroundColor({0xff, 0xff, 0xff});
+        setBackgroundImage(RkImage(224, 115, RK_IMAGE_RC(osc_effects_bk)));
         createView();
         show();
 }
@@ -147,4 +146,5 @@ void OscillatorEffects::updateView()
                 distortionTab->updateView();
                 mainLayout->update();
         }
+        //        filterTab->hide();
 }

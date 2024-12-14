@@ -102,7 +102,8 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
           , functionView{nullptr}
           , oscillatorEffects{nullptr}
 {
-        setFixedSize(224, 335);
+        setFixedSize(224, 345);
+        setBackgroundColor({0, 0 , 200});
         createWaveFunctionGroupBox();
         createEvelopeGroupBox();
         createEffects();

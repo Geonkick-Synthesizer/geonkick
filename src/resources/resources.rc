@@ -170,7 +170,6 @@ general_groupbox_label.png
 # ==== OSC section ====
 
 hboxbk_ampl_env.png
-hboxbk_filter.png
 hboxbk_osc_env.png
 knob_50x50.png
 knob_bk_60x60.png
@@ -305,4 +304,5 @@ effects_tab_distortion_button_hover.png
 effects_tab_enable_button.png
 effects_tab_enable_button_active.png
 effects_tab_enable_button_hover.png
+effect_view_bk.png
 )
