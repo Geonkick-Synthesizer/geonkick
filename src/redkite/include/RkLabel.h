@@ -29,7 +29,8 @@
 
 class RkLabel : public RkWidget {
  public:
-    RkLabel(RkWidget *parent, const std::string &text = std::string());
+    explicit RkLabel(RkWidget *parent, const std::string &text = std::string());
+    explicit RkLabel(RkWidget *parent, const RkImage &image);
     virtual ~RkLabel() = default;
     void setText(const std::string &text);
     std::string text() const;

@@ -73,6 +73,7 @@ void OscillatorEffects::setModel(Oscillator *model)
 void OscillatorEffects::createView()
 {
         auto tabButtonsLayout = new RkContainer(this);
+        tabButtonsLayout->setPosition({0, 4});
         tabButtonsLayout->setSize({width(), 16});
         tabButtonsLayout->addSpace(4);
         filterTabButton = new EffectTabButton(this);

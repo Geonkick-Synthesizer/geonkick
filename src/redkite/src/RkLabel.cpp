@@ -32,6 +32,14 @@ RkLabel::RkLabel(RkWidget *parent, const std::string &text)
         RK_LOG_DEBUG("called");
 }
 
+RkLabel::RkLabel(RkWidget *parent, const RkImage &image)
+        : RkWidget(parent, std::make_unique<RkLabel::RkLabelImpl>(this, std::string(), parent))
+        , impl_ptr{static_cast<RkLabel::RkLabelImpl*>(o_ptr.get())}
+{
+        setSize(image.size());
+        setImage(image);
+}
+
 void RkLabel::setText(const std::string &text)
 {
         impl_ptr->setText(text);
