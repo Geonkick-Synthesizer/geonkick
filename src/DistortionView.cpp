@@ -31,8 +31,8 @@
 RK_DECLARE_IMAGE_RC(effect_view_bk);
 RK_DECLARE_IMAGE_RC(knob);
 RK_DECLARE_IMAGE_RC(knob_bk_image);
-RK_DECLARE_IMAGE_RC(phase_bk_knob);
-RK_DECLARE_IMAGE_RC(phase_knob);
+RK_DECLARE_IMAGE_RC(bk_knob_48x48);
+RK_DECLARE_IMAGE_RC(knob_40x40);
 RK_DECLARE_IMAGE_RC(distortion_drive_env);
 RK_DECLARE_IMAGE_RC(distortion_drive_env_active);
 RK_DECLARE_IMAGE_RC(distortion_drive_env_hover);
@@ -102,8 +102,8 @@ void DistortionView::createView()
         auto inLimiter = new Knob(this);
         inLimiter->setFixedSize(48, 48);
         inLimiter->setPosition(width() / 2, 2);
-        inLimiter->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(phase_bk_knob)));
-        inLimiter->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(phase_knob)));
+        inLimiter->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(bk_knob_48x48)));
+        inLimiter->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(knob_40x40)));
         inLimiter->setRange(0.01, 1);
 
         auto inLimiterLabel = new RkLabel(this,  "Input");
@@ -123,8 +123,8 @@ void DistortionView::createView()
         auto outLimiter = new Knob(this);
         outLimiter->setFixedSize(48, 48);
         outLimiter->setPosition(width() / 2 + inLimiter->width() + 6, 2);
-        outLimiter->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(phase_bk_knob)));
-        outLimiter->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(phase_knob)));
+        outLimiter->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(bk_knob_48x48)));
+        outLimiter->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(knob_40x40)));
         outLimiter->setRange(0.01, 1);
 
         auto outLimiterLabel = new RkLabel(this,  "Output");

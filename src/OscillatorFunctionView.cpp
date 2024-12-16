@@ -31,8 +31,8 @@
 
 #include <numbers>
 
-RK_DECLARE_IMAGE_RC(phase_bk_knob);
-RK_DECLARE_IMAGE_RC(phase_knob);
+RK_DECLARE_IMAGE_RC(bk_knob_48x48);
+RK_DECLARE_IMAGE_RC(knob_40x40);
 RK_DECLARE_IMAGE_RC(noise_type_white);
 RK_DECLARE_IMAGE_RC(noise_type_white_active);
 RK_DECLARE_IMAGE_RC(noise_type_white_hover);
@@ -110,8 +110,8 @@ void OscillatorFunctionView::createPhaseControl()
         phaseControl = new Knob(this);
         phaseControl->setFixedSize(48, 48);
         phaseControl->setPosition((width() - phaseControl->width()) / 2, 0);
-        phaseControl->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(phase_bk_knob)));
-        phaseControl->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(phase_knob)));
+        phaseControl->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(bk_knob_48x48)));
+        phaseControl->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(knob_40x40)));
         phaseControl->setRange(0, 2 * std::numbers::pi);
         RK_ACT_BIND(phaseControl,
                     valueUpdated,
