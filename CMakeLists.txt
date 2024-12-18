@@ -138,7 +138,6 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/envelope_draw_area.h
   ${GKICK_COMMON_DIR}/limiter.h
   ${GKICK_COMMON_DIR}/general_envelope.h
-  ${GKICK_COMMON_DIR}/effects_group_box.h
   ${GKICK_COMMON_DIR}/distortion_group_box.h
   ${GKICK_COMMON_DIR}/layers_group_box.h
   ${GKICK_COMMON_DIR}/general_group_box.h
@@ -163,6 +162,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/InstrumentFilterModel.h
   ${GKICK_COMMON_DIR}/FilterView.h
   ${GKICK_COMMON_DIR}/EffectTabButton.h
+  ${GKICK_COMMON_DIR}/InstrumentGlobalEffects.h
   ${GKICK_COMMON_DIR}/OscillatorEffects.h
   ${GKICK_COMMON_DIR}/oscillator_group_box.h
   ${GKICK_COMMON_DIR}/ExportAbstract.h
@@ -207,7 +207,6 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/envelope_draw_area.cpp
   ${GKICK_COMMON_DIR}/limiter.cpp
   ${GKICK_COMMON_DIR}/general_envelope.cpp
-  ${GKICK_COMMON_DIR}/effects_group_box.cpp
   ${GKICK_COMMON_DIR}/distortion_group_box.cpp
   ${GKICK_COMMON_DIR}/layers_group_box.cpp
   ${GKICK_COMMON_DIR}/general_group_box.cpp
@@ -232,6 +231,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/InstrumentFilterModel.cpp
   ${GKICK_COMMON_DIR}/FilterView.cpp
   ${GKICK_COMMON_DIR}/EffectTabButton.cpp
+  ${GKICK_COMMON_DIR}/InstrumentGlobalEffects.cpp
   ${GKICK_COMMON_DIR}/OscillatorEffects.cpp
   ${GKICK_COMMON_DIR}/oscillator_group_box.cpp
   ${GKICK_COMMON_DIR}/export_widget.cpp

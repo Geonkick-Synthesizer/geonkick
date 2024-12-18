@@ -25,7 +25,7 @@
 #include "oscillator.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
-#include "effects_group_box.h"
+#include "layers_group_box.h"
 #include "geonkick_api.h"
 #ifndef GEONKICK_SINGLE
 #include "KitTabs.h"
@@ -74,11 +74,10 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
                     setModel(kitModel->currentPercussion()));
         globalWidget->show();
 
-        effectsWidget = new EffectsGroupBox(geonkickModel->api(), this);
-        effectsWidget->setFixedSize(380, 74);
-        effectsWidget->setPosition(3 * (8 + 223), 260);
-        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), effectsWidget, updateGui());
-        effectsWidget->show();
+        auto layersWidget = new LayersGroupBox(geonkickModel->api(), this);
+        layersWidget->setPosition(3 * (8 + 223), 270);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layersWidget, updateGui());
+        layersWidget->show();
 
 #ifndef GEONKICK_SINGLE
         auto kitTabs = new KitTabs(this, geonkickModel->getKitModel());

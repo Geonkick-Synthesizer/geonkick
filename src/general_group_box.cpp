@@ -28,6 +28,7 @@
 #include "geonkick_button.h"
 #include "FilterView.h"
 #include "ViewState.h"
+#include "InstrumentGlobalEffects.h"
 
 #include <RkLabel.h>
 
@@ -43,16 +44,18 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, PercussionModel *model)
         : AbstractView(parent, model)
         , kickAmplitudeKnob{nullptr}
         , kickLengthKnob{nullptr}
+        , globalEffects{nullptr}
 {
-        setFixedSize(224, 250);
+        setBackgroundColor({0xff, 0xff, 0xff});
+        setFixedSize(224, 262);
         createView();
         bindModel();
 }
 
 void GeneralGroupBox::createView()
 {
-        //createAplitudeEnvelopeHBox();
-        //createEffects();
+        createAplitudeEnvelopeHBox();
+        createEffects();
 }
 
 void GeneralGroupBox::updateView()
@@ -114,8 +117,8 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 
 void GeneralGroupBox::createEffects()
 {
-        //globalEffects = new InstrumentGlobalEffects(this, );
-        //globalEffects->setPosition(0, 210);
+        globalEffects = new InstrumentGlobalEffects(this, static_cast<PercussionModel*>(getModel()));
+        globalEffects->setPosition(0, 125);
 }
 
 void GeneralGroupBox::bindModel()

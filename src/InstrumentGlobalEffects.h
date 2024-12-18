@@ -1,5 +1,5 @@
 /**
- * File name: OscillatorEffects.h
+ * File name: InstrumentGlobalEffects.h
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,20 +21,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef OSCILLATOR_EFFECTS_H
-#define OSCILLATOR_EFFECTS_H
+#ifndef INSTRUMENT_GLOBAL_EFFECTS
+#define INSTRUMENT_GLOBAL_EFFECTS
 
 #include "geonkick_widget.h"
 
-class Oscillator;
+class PercussionModel;
 class EffectTabButton;
 class AbstractView;
 
-class OscillatorEffects: public GeonkickWidget {
+class InstrumentGlobalEffects: public GeonkickWidget {
  public:
-        OscillatorEffects(GeonkickWidget *parent, Oscillator* model);
-        void setModel(Oscillator *model);
-        Oscillator* getModel() const;
+        InstrumentGlobalEffects(GeonkickWidget *parent, PercussionModel* model);
+        void setModel(PercussionModel *model);
+        PercussionModel* getModel() const;
         void createView();
         void updateView();
 
@@ -43,10 +43,10 @@ protected:
         void showDistortion();
 
  private:
-        Oscillator *oscillatorModel;
+        PercussionModel *instrumentModel;
         EffectTabButton *filterTabButton;
         EffectTabButton *distortionTabButton;
         AbstractView *currentTabView;
 };
 
-#endif // OSCILLATOR_EFFECTS
+#endif // INSTRUMENT_GLOBAL_EFFECTS

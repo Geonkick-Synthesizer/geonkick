@@ -1,5 +1,5 @@
 /**
- * File name: OscillatorEffects.cpp
+ * File name: InstrumentGlobalEffects.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2024 Iurie Nistor
@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "OscillatorEffects.h"
-#include "oscillator.h"
+#include "InstrumentGlobalEffects.h"
+#include "percussion_model.h"
 #include "FilterModel.h"
 #include "FilterView.h"
 #include "DistortionModel.h"
@@ -40,9 +40,9 @@ RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_active);
 RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_hover);
 
 
-OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
+InstrumentGlobalEffects::InstrumentGlobalEffects(GeonkickWidget *parent, PercussionModel* model)
         : GeonkickWidget(parent)
-        , oscillatorModel{model}
+        , instrumentModel{model}
         , filterTabButton{nullptr}
         , distortionTabButton{nullptr}
         , currentTabView{nullptr}
@@ -53,9 +53,9 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
         show();
 }
 
-void OscillatorEffects::setModel(Oscillator *model)
+void InstrumentGlobalEffects::setModel(PercussionModel *model)
 {
-        oscillatorModel = model;
+        instrumentModel = model;
         if (currentTabView) {
                 if (dynamic_cast<FilterView*>(currentTabView))
                         currentTabView->setModel(model->getFilter());
@@ -65,12 +65,12 @@ void OscillatorEffects::setModel(Oscillator *model)
         updateView();
 }
 
-Oscillator* OscillatorEffects::getModel() const
+PercussionModel* InstrumentGlobalEffects::getModel() const
 {
-        return oscillatorModel;
+        return instrumentModel;
 }
 
-void OscillatorEffects::createView()
+void InstrumentGlobalEffects::createView()
 {
         auto tabButtonsLayout = new RkContainer(this);
         tabButtonsLayout->setPosition({0, 4});
@@ -90,7 +90,7 @@ void OscillatorEffects::createView()
         RK_ACT_BINDL(filterTabButton,
                      enabled,
                     RK_ACT_ARGS(bool b),
-                     [=,this](bool b){oscillatorModel->getFilter()->enable(b);});
+                     [=,this](bool b){instrumentModel->getFilter()->enable(b);});
 
         tabButtonsLayout->addSpace(2);
         distortionTabButton = new EffectTabButton(this);
@@ -107,7 +107,7 @@ void OscillatorEffects::createView()
         RK_ACT_BINDL(distortionTabButton,
                     enabled,
                     RK_ACT_ARGS(bool b),
-                    [=,this](bool b){oscillatorModel->getDistortion()->enable(b);});
+                    [=,this](bool b){instrumentModel->getDistortion()->enable(b);});
 
         RK_ACT_BIND(filterTabButton,
                      pressed,
@@ -126,25 +126,25 @@ void OscillatorEffects::createView()
         updateView();
 }
 
-void OscillatorEffects::showFilter()
+void InstrumentGlobalEffects::showFilter()
 {
         if (currentTabView)
                 delete currentTabView;
-        currentTabView = new FilterView(this, oscillatorModel->getFilter());
+        currentTabView = new FilterView(this, instrumentModel->getFilter());
         currentTabView->setPosition(0, 22);
 }
 
-void OscillatorEffects::showDistortion()
+void InstrumentGlobalEffects::showDistortion()
 {
         if (currentTabView)
                 delete currentTabView;
-        currentTabView = new DistortionView(this, oscillatorModel->getDistortion());
+        currentTabView = new DistortionView(this, instrumentModel->getDistortion());
         currentTabView->setPosition(0, 22);
 }
 
-void OscillatorEffects::updateView()
+void InstrumentGlobalEffects::updateView()
 {
-        filterTabButton->enable(oscillatorModel->getFilter()->isEnabled());
-        distortionTabButton->enable(oscillatorModel->getDistortion()->isEnabled());
+        filterTabButton->enable(instrumentModel->getFilter()->isEnabled());
+        distortionTabButton->enable(instrumentModel->getDistortion()->isEnabled());
         currentTabView->updateView();
 }

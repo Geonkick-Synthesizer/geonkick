@@ -29,6 +29,7 @@
 class Knob;
 class GeonkickButton;
 class PercussionModel;
+class InstrumentGlobalEffects;
 
 class GeneralGroupBox: public AbstractView
 {
@@ -44,9 +45,9 @@ class GeneralGroupBox: public AbstractView
         void createEffects();
 
  private:
-        PercussionModel* geonkickApi;
         Knob *kickAmplitudeKnob;
         Knob *kickLengthKnob;
+        InstrumentGlobalEffects *globalEffects;
 };
 
 #endif //GKICK_GENERAL_GROUP_BOX_H

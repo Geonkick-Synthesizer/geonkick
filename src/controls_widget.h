@@ -29,7 +29,6 @@
 class GeonkickApi;
 class Oscillator;
 class EnvelopeWidget;
-class EffectsGroupBox;
 class GeonkickModel;
 
 class ControlsWidget: public GeonkickWidget
@@ -43,7 +42,6 @@ class ControlsWidget: public GeonkickWidget
 
  private:
         GeonkickModel *geonkickModel;
-        EffectsGroupBox *effectsWidget;
 };
 
 #endif // CONTROLS_WIDGET_H
