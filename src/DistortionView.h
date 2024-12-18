@@ -25,12 +25,15 @@
 #define DISTORTION_VIEW_H
 
 #include "AbstractView.h"
+#include "DistortionModel.h"
 
-class DistortionModel;
+class Knob;
+class GeonkickButton;
 
 class DistortionView: public AbstractView
 {
  public:
+        using DistortionType = DistortionModel::DistortionType;
         explicit DistortionView(GeonkickWidget* parent, DistortionModel *model);
         void createView() override;
         void updateView() override;
@@ -38,6 +41,21 @@ class DistortionView: public AbstractView
 protected:
         void bindModel() override;
         void unbindModel() override;
+        void onSetDistortionType(DistortionView::DistortionType type);
+        void onSetInElimiter(double value);
+        void onSetOutElimiter(double value);
+        void onSetDrive(double value);
+
+private:
+        Knob* inLimiter;
+        Knob* outLimiter;
+        Knob* driveKnob;
+        GeonkickButton* hcDistortionButton;
+        GeonkickButton* thDistortionButton;
+        GeonkickButton* athDistortionButton;
+        GeonkickButton* expDistortionButton;
+        GeonkickButton* logDistortionButton;
+        GeonkickButton* plDistortionButton;
 };
 
 #endif // DISTORTION_VEW_H

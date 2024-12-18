@@ -96,7 +96,6 @@ public:
 #ifdef RK_OS_WIN
         void setEventQueue(RkEventQueue *eventQueue);
 #endif
-  
 
 protected:
         WidgetEventList processMouseEvent(const RkMouseEvent* event);

@@ -557,6 +557,46 @@ enum geonkick_error
 geonkick_distortion_get_drive(struct geonkick *kick,
                               gkick_real *drive);
 
+enum geonkick_error
+geonkick_osc_distortion_enable(struct geonkick *kick,
+                               size_t index,
+                           int enable);
+
+enum geonkick_error
+geonkick_osc_distortion_is_enabled(struct geonkick *kick,
+                                   size_t index,
+                               int *enabled);
+
+enum geonkick_error
+geonkick_osc_distortion_set_in_limiter(struct geonkick *kick,
+                                       size_t index,
+                                       gkick_real limit);
+
+enum geonkick_error
+geonkick_osc_distortion_get_in_limiter(struct geonkick *kick,
+                                       size_t index,
+                                       gkick_real *limit);
+
+enum geonkick_error
+geonkick_osc_distortion_set_volume(struct geonkick *kick,
+                                   size_t index,
+                                   gkick_real volume);
+
+enum geonkick_error
+geonkick_osc_distortion_get_volume(struct geonkick *kick,
+                                   size_t index,
+                                   gkick_real *volume);
+
+enum geonkick_error
+geonkick_osc_distortion_set_drive(struct geonkick *kick,
+                                  size_t index,
+                                  gkick_real drive);
+
+enum geonkick_error
+geonkick_osc_distortion_get_drive(struct geonkick *kick,
+                                  size_t index,
+                                  gkick_real *drive);
+
 int geonkick_is_module_enabed(struct geonkick *kick,
                               enum GEONKICK_MODULE module);
 

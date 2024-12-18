@@ -22,7 +22,6 @@
  */
 
 #include "DistortionView.h"
-#include "DistortionModel.h"
 
 #include "knob.h"
 #include "geonkick_button.h"
@@ -59,47 +58,117 @@ RK_DECLARE_IMAGE_RC(distortion_out_label);
 
 DistortionView::DistortionView(GeonkickWidget* parent, DistortionModel *model)
         : AbstractView(parent, model)
+        , inLimiter{nullptr}
+        , outLimiter{nullptr}
+        , driveKnob{nullptr}
+        , hcDistortionButton{nullptr}
+        , thDistortionButton{nullptr}
+        , athDistortionButton{nullptr}
+        , expDistortionButton{nullptr}
+        , logDistortionButton{nullptr}
+        , plDistortionButton{nullptr}
 {
         setFixedSize(224, 115);
         setBackgroundImage(RkImage(224, 115, RK_IMAGE_RC(effect_view_bk)));
-        //setBackgroundColor(0, 255, 0);
         createView();
         bindModel();
 }
 
 void DistortionView::bindModel()
 {
-        /*        auto distortionModel = static_cast<DistortionModel*>(getModel());
+        auto distortionModel = static_cast<DistortionModel*>(getModel());
         RK_ACT_BIND(distortionModel,
                     distortionTypeChanged,
-                    RK_ACT_ARGS(enum DistortionType type),
+                    RK_ACT_ARGS(DistortionType type),
                     this,
-                    setDistortionType(type));
+                    onSetDistortionType(type));
         RK_ACT_BIND(distortionModel,
                     inLimiterChanged,
                     RK_ACT_ARGS(double value),
-                    this
-                    setInElimiter(value));
+                    this,
+                    onSetInElimiter(value));
         RK_ACT_BIND(distortionModel,
                     outLimiterChanged,
                     RK_ACT_ARGS(double value),
-                    this
-                    setOutElimiter(value));
+                    this,
+                    onSetOutElimiter(value));
         RK_ACT_BIND(distortionModel,
                     driveChanged,
                     RK_ACT_ARGS(double value),
-                    this
-                    setDrive(value));*/
+                    this,
+                    onSetDrive(value));
+                RK_ACT_BIND(distortionModel,
+                    distortionTypeChanged,
+                    RK_ACT_ARGS(DistortionType type),
+                    this,
+                    onSetDistortionType(type));
+
+        RK_ACT_BIND(inLimiter,
+                    valueUpdated,
+                    RK_ACT_ARGS(double value),
+                    distortionModel,
+                    setInLimiter(value));
+        RK_ACT_BIND(outLimiter,
+                    valueUpdated,
+                    RK_ACT_ARGS(double value),
+                    distortionModel,
+                    setOutLimiter(value));
+        RK_ACT_BIND(driveKnob,
+                    valueUpdated,
+                    RK_ACT_ARGS(double value),
+                    distortionModel,
+                    setDrive(value));
+        RK_ACT_BINDL(hcDistortionButton,
+                     toggled,
+                     RK_ACT_ARGS(bool b),
+                     [=,this](bool b) {
+                             if (b)
+                                     distortionModel->setDistortionType(DistortionType::HardClipping);
+                     });
+        RK_ACT_BINDL(thDistortionButton,
+                     toggled,
+                     RK_ACT_ARGS(bool b),
+                     [=,this](bool b) {
+                             if (b)
+                                     distortionModel->setDistortionType(DistortionType::SoftClippingTan);
+                     });
+        RK_ACT_BINDL(athDistortionButton,
+                     toggled,
+                     RK_ACT_ARGS(bool b),
+                     [=,this](bool b) {
+                             if (b)
+                                     distortionModel->setDistortionType(DistortionType::Arctan);
+                     });
+        RK_ACT_BINDL(expDistortionButton,
+                     toggled,
+                     RK_ACT_ARGS(bool b),
+                     [=,this](bool b) {
+                             if (b)
+                                     distortionModel->setDistortionType(DistortionType::Exponential);
+                     });
+        RK_ACT_BINDL(logDistortionButton,
+                     toggled,
+                     RK_ACT_ARGS(bool b),
+                     [=,this](bool b) {
+                             if (b)
+                                     distortionModel->setDistortionType(DistortionType::Logarithmic);
+                     });
+        RK_ACT_BINDL(plDistortionButton,
+                     toggled,
+                     RK_ACT_ARGS(bool b),
+                     [=,this](bool b) {
+                             if (b)
+                                     distortionModel->setDistortionType(DistortionType::Polynomial);
+                     });
 }
 
 void DistortionView::unbindModel()
 {
-        //        unbindObject(getModel());
 }
 
 void DistortionView::createView()
 {
-        auto inLimiter = new Knob(this);
+        inLimiter = new Knob(this);
         inLimiter->setFixedSize(48, 48);
         inLimiter->setPosition(width() / 2, 2);
         inLimiter->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(bk_knob_48x48)));
@@ -120,7 +189,7 @@ void DistortionView::createView()
                                     inLimiter->y() + inLimiter->height());
         inLimiterLabel->show();
 
-        auto outLimiter = new Knob(this);
+        outLimiter = new Knob(this);
         outLimiter->setFixedSize(48, 48);
         outLimiter->setPosition(width() / 2 + inLimiter->width() + 6, 2);
         outLimiter->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(bk_knob_48x48)));
@@ -141,28 +210,28 @@ void DistortionView::createView()
                                     outLimiter->y() + outLimiter->height());
         outLimiterLabel->show();
 
-        auto hcDistotionButton = new GeonkickButton(this);
-        hcDistotionButton->setBackgroundColor(background());
-        hcDistotionButton->setFixedSize(25, 18);
-        hcDistotionButton->setPosition(width() / 2 + 10,  69);
-        hcDistotionButton->setImage(RkImage(hcDistotionButton->size(), RK_IMAGE_RC(distortion_hc_button)),
+        hcDistortionButton = new GeonkickButton(this);
+        hcDistortionButton->setBackgroundColor(background());
+        hcDistortionButton->setFixedSize(25, 18);
+        hcDistortionButton->setPosition(width() / 2 + 10,  69);
+        hcDistortionButton->setImage(RkImage(hcDistortionButton->size(), RK_IMAGE_RC(distortion_hc_button)),
                                  RkButton::State::Unpressed);
-        hcDistotionButton->setImage(RkImage(hcDistotionButton->size(), RK_IMAGE_RC(distortion_hc_button_active)),
+        hcDistortionButton->setImage(RkImage(hcDistortionButton->size(), RK_IMAGE_RC(distortion_hc_button_active)),
                                  RkButton::State::Pressed);
-        hcDistotionButton->setImage(RkImage(hcDistotionButton->size(), RK_IMAGE_RC(distortion_hc_button_hover)),
+        hcDistortionButton->setImage(RkImage(hcDistortionButton->size(), RK_IMAGE_RC(distortion_hc_button_hover)),
                                  RkButton::State::UnpressedHover);
-        auto thDistortionButton = new GeonkickButton(this);
+        thDistortionButton = new GeonkickButton(this);
         thDistortionButton->setBackgroundColor(background());
         thDistortionButton->setFixedSize(25, 18);
-        thDistortionButton->setPosition(hcDistotionButton->x() + hcDistotionButton->width() + 4,
-                                    hcDistotionButton->y());
+        thDistortionButton->setPosition(hcDistortionButton->x() + hcDistortionButton->width() + 4,
+                                    hcDistortionButton->y());
         thDistortionButton->setImage(RkImage(thDistortionButton->size(), RK_IMAGE_RC(distortion_th_button)),
                                  RkButton::State::Unpressed);
         thDistortionButton->setImage(RkImage(thDistortionButton->size(), RK_IMAGE_RC(distortion_th_button_active)),
                                  RkButton::State::Pressed);
         thDistortionButton->setImage(RkImage(thDistortionButton->size(), RK_IMAGE_RC(distortion_th_button)),
                                  RkButton::State::UnpressedHover);
-        auto athDistortionButton = new GeonkickButton(this);
+        athDistortionButton = new GeonkickButton(this);
         athDistortionButton->setBackgroundColor(background());
         athDistortionButton->setFixedSize(25, 18);
         athDistortionButton->setPosition(thDistortionButton->x() + thDistortionButton->width() + 4,
@@ -174,7 +243,7 @@ void DistortionView::createView()
         athDistortionButton->setImage(RkImage(athDistortionButton->size(), RK_IMAGE_RC(distortion_ath_button_hover)),
                                  RkButton::State::UnpressedHover);
 
-        auto expDistortionButton = new GeonkickButton(this);
+        expDistortionButton = new GeonkickButton(this);
         expDistortionButton->setBackgroundColor(background());
         expDistortionButton->setFixedSize(25, 18);
         expDistortionButton->setPosition(width() / 2 + 10, 70 + 21);
@@ -184,7 +253,7 @@ void DistortionView::createView()
                                  RkButton::State::Pressed);
         expDistortionButton->setImage(RkImage(expDistortionButton->size(), RK_IMAGE_RC(distortion_exp_button_hover)),
                                  RkButton::State::UnpressedHover);
-        auto logDistortionButton = new GeonkickButton(this);
+        logDistortionButton = new GeonkickButton(this);
         logDistortionButton->setBackgroundColor(background());
         logDistortionButton->setFixedSize(25, 18);
         logDistortionButton->setPosition(expDistortionButton->x() + expDistortionButton->width() + 4,
@@ -195,7 +264,7 @@ void DistortionView::createView()
                                  RkButton::State::Pressed);
         logDistortionButton->setImage(RkImage(logDistortionButton->size(), RK_IMAGE_RC(distortion_log_button_hover)),
                                  RkButton::State::UnpressedHover);
-        auto plDistortionButton = new GeonkickButton(this);
+        plDistortionButton = new GeonkickButton(this);
         plDistortionButton->setBackgroundColor(background());
         plDistortionButton->setFixedSize(25, 18);
         plDistortionButton->setPosition(logDistortionButton->x() + logDistortionButton->width() + 4,
@@ -207,7 +276,7 @@ void DistortionView::createView()
         plDistortionButton->setImage(RkImage(plDistortionButton->size(), RK_IMAGE_RC(distortion_pl_button_hover)),
                                  RkButton::State::UnpressedHover);
 
-        auto driveKnob = new Knob(this);
+        driveKnob = new Knob(this);
         driveKnob->setRangeType(Knob::RangeType::Logarithmic);
         driveKnob->setFixedSize(80, 78);
         driveKnob->setPosition(16, 10);
@@ -227,9 +296,40 @@ void DistortionView::createView()
                                         RkButton::State::PressedHover);
         driveEnvelopeButton->setImage(RkImage(driveEnvelopeButton->size(), RK_IMAGE_RC(distortion_drive_env_hover)),
         RkButton::State::UnpressedHover);
+        updateView();
 }
 
 void DistortionView::updateView()
 {
+        auto distortionModel = static_cast<DistortionModel*>(getModel());
+        GEONKICK_LOG_INFO("distortionModel->getInLimiter(): " << distortionModel->getInLimiter());
+        onSetDistortionType(distortionModel->getDistortionType());
+        inLimiter->setCurrentValue(distortionModel->getInLimiter());
+        outLimiter->setCurrentValue(distortionModel->getOutLimiter());
+        driveKnob->setCurrentValue(distortionModel->getDrive());
 }
 
+void DistortionView::onSetDistortionType(DistortionView::DistortionType type)
+{
+        hcDistortionButton->setPressed(type == DistortionType::HardClipping);
+        thDistortionButton->setPressed(type == DistortionType::SoftClippingTan);
+        athDistortionButton->setPressed(type == DistortionType::Arctan);
+        expDistortionButton->setPressed(type == DistortionType::Exponential);
+        logDistortionButton->setPressed(type == DistortionType::Logarithmic);
+        plDistortionButton->setPressed(type == DistortionType::Polynomial);
+}
+
+void DistortionView::onSetInElimiter(double value)
+{
+        inLimiter->setCurrentValue(value);
+}
+
+void DistortionView::onSetOutElimiter(double value)
+{
+        outLimiter->setCurrentValue(value);
+}
+
+void DistortionView::onSetDrive(double value)
+{
+        driveKnob->setCurrentValue(value);
+}
