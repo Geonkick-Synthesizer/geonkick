@@ -90,6 +90,14 @@ void RkObject::removeShortcut(Rk::Key key, Rk::KeyModifiers modifier)
                 RK_IMPL_PTR(eventQueue())->removeShortcut(this, key, modifier);
 }
 
+void RkObject::unbindObject(RkObject* obj)
+{
+        removeObservers(obj);
+        obj->removeObservers(this);
+        removeBoundObject(obj);
+        obj->removeBoundObject(this);
+}
+
 void RkObject::rk__add_observer(std::unique_ptr<RkObserver> observer)
 {
         o_ptr->addObserver(std::move(observer));

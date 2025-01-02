@@ -107,8 +107,7 @@ void FilterView::createView()
         resonanceKnob->setFixedSize(w, h);
         resonanceKnob->setKnobBackgroundImage(RkImage(w, h, RK_IMAGE_RC(knob_bk_60x60)));
         resonanceKnob->setKnobImage(RkImage(50, 50, RK_IMAGE_RC(knob_50x50)));
-        resonanceKnob->setRange(0.01, 10);
-        //        RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), this, resonanceChanged(val));
+        resonanceKnob->setRange(1, 1000);
 
 	auto qFactorEnvelopeButton = new GeonkickButton(this);
         qFactorEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::FilterQFactor
@@ -181,48 +180,42 @@ void FilterView::updateView()
 {
         auto filterModel = static_cast<FilterModel*>(getModel());
         cutOffKnob->setCurrentValue(filterModel->cutOff());
+        resonanceKnob->setCurrentValue(filterModel->resonance());
+        updateTypeButtons();
+}
+
+void FilterView::updateTypeButtons()
+{
+        auto filterModel = static_cast<FilterModel*>(getModel());
+        lpFilterButton->setPressed(filterModel->type() == GeonkickApi::FilterType::LowPass);
+        hpFilterButton->setPressed(filterModel->type() == GeonkickApi::FilterType::HighPass);
+        bpFilterButton->setPressed(filterModel->type() == GeonkickApi::FilterType::BandPass);
 }
 
 void FilterView::bindModel()
 {
-        /*        auto filterModel = static_cast<FilterModel*>(getModel());
-        RK_ACT_BIND(filterCheckbox, toggled, RK_ACT_ARGS(bool b), filterModel, enable(b));
+        auto filterModel = static_cast<FilterModel*>(getModel());
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), filterModel, setCutOff(val));
         RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), filterModel, setResonance(val));
-        RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), filterModel, setType(GeonkickApi::FilterType::LowPass));
-        RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), filterModel, setType(GeonkickApi::FilterType::BandPass));
-        RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), filterModel, setType(GeonkickApi::FilterType::HighPass));
+        RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), this, onTypeChanged(GeonkickApi::FilterType::LowPass));
+        RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), this, onTypeChanged(GeonkickApi::FilterType::BandPass));
+        RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), this, onTypeChanged(GeonkickApi::FilterType::HighPass));
         RK_ACT_BIND(filterModel, modelUpdated, RK_ACT_ARGS(), this, updateView());
-        RK_ACT_BIND(filterModel, enabled, toggled, RK_ACT_ARGS(bool b), this, enable(b));
-        RK_ACT_BIND(filterModel, cutOffChanged, RK_ACT_ARGS(double val), this, setCutOff(val));
-        RK_ACT_BIND(filterModel, resonanceChanged, RK_ACT_ARGS(double val), this, setResonance(val));
-        RK_ACT_BIND(filterModel, typeChanged, RK_ACT_ARGS(GeonkickApi::FilterType type), this, setType(type));*/
 }
 
 void FilterView::unbindModel()
 {
-        /*        unbindObject(filterModel);
-        filterCheckbox->unbindObject(filterModel);
-        cutOffKnob->unbindObject(filterModel);
-        resonanceKnob->unbindObject(filterModel);
-        lpFilterButton->unbindObject(filterModel);
-        bpFilterButton->unbindObject(filterModel);
-        hpFilterButton->unbindObject(filterModel);*/
-}
-
-void FilterView::onCutOffChanged(double val)
-{
-        cutOffKnob->setCurrentValue(val);
-}
-
-void FilterView::onResonanceChanged(double val)
-{
-        resonanceKnob->setCurrentValue(val);
+        unbindObject(getModel());
+        cutOffKnob->unbindObject(getModel());
+        resonanceKnob->unbindObject(getModel());
+        lpFilterButton->unbindObject(getModel());
+        bpFilterButton->unbindObject(getModel());
+        hpFilterButton->unbindObject(getModel());
 }
 
 void FilterView::onTypeChanged(GeonkickApi::FilterType type)
 {
-        lpFilterButton->setPressed(type == GeonkickApi::FilterType::LowPass);
-        hpFilterButton->setPressed(type == GeonkickApi::FilterType::HighPass);
-        bpFilterButton->setPressed(type == GeonkickApi::FilterType::BandPass);
+        auto filterModel = static_cast<FilterModel*>(getModel());
+        filterModel->setType(type);
+        updateTypeButtons();
 }

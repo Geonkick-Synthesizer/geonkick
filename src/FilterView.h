@@ -43,9 +43,8 @@ class FilterView: public AbstractView
  protected:
         void bindModel() override;
         void unbindModel() override;
-        void onCutOffChanged(double val);
-        void onResonanceChanged(double val);
         void onTypeChanged(FilterType type);
+        void updateTypeButtons();
 
  private:
         Knob *cutOffKnob;

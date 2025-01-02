@@ -45,6 +45,7 @@ class RkObject {
         void setName(const std::string &name);
         std::string name() const;
         void rk__add_bound_object(RkObject* obj);
+        void unbindObject(RkObject* obj);
 
  protected:
         RK_DECLARE_O_PTR(RkObject);
