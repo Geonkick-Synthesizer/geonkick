@@ -180,7 +180,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive, envelope);
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume, envelope);
         state->enableDistortion(false);
-        state->setDistortionVolume(0.1);
+        state->setDistortionOutLimiter(0.1);
         state->setDistortionInLimiter(1.0);
         state->setDistortionDrive(1.0);
 
@@ -281,7 +281,7 @@ void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &sta
         }
         enableDistortion(state->isDistortionEnabled());
         setDistortionInLimiter(state->getDistortionInLimiter());
-        setDistortionVolume(state->getDistortionVolume());
+        setDistortionOutLimiter(state->getDistortionOutLimiter());
         setDistortionDrive(state->getDistortionDrive());
 
         geonkick_set_current_percussion(geonkickApi, currentId);
@@ -357,7 +357,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
         }
         state->enableDistortion(isDistortionEnabled());
         state->setDistortionInLimiter(getDistortionInLimiter());
-        state->setDistortionVolume(getDistortionVolume());
+        state->setDistortionOutLimiter(getDistortionOutLimiter());
         state->setDistortionDrive(getDistortionDrive());
 
         return state;
@@ -1017,46 +1017,70 @@ bool GeonkickApi::oscEnableDistortion(int oscillatorIndex, bool b)
 
 GeonkickApi::DistortionType GeonkickApi::getOscDistortionType(int oscillatorIndex) const
 {
-        
-        auto res = geonkick_osc_distortion_enable(geonkickApi,
-                                                  getOscIndex(oscillatorIndex),
-                                                  distortionType);
-        return DistortionType::SoftClippingTan;
+        enum gkick_distortion_type distortionType = GEONKICK_DISTORTION_SOFT_CLIPPING_TANH;
+        geonkick_osc_distortion_get_type(geonkickApi,
+                                         getOscIndex(oscillatorIndex),
+                                         &distortionType);
+        return static_cast<GeonkickApi::DistortionType>(distortionType);
 }
 
 bool GeonkickApi::setOscDistortionType(int oscillatorIndex, DistortionType type)
 {
-        return true;
+        auto res = geonkick_osc_distortion_set_type(geonkickApi,
+                                                    getOscIndex(oscillatorIndex),
+                                                    static_cast<enum gkick_distortion_type>(type));
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getOscDistortionInLimiter(int oscillatorIndex) const
 {
-        return 0;
+        float value = 0.0f;
+        geonkick_osc_distortion_get_in_limiter(geonkickApi,
+                                               getOscIndex(oscillatorIndex),
+                                               &value);
+        return value;
 }
 
 bool GeonkickApi::setOscDistortionInLimiter(int oscillatorIndex, double val)
 {
-        return true;
+        auto res = geonkick_osc_distortion_set_in_limiter(geonkickApi,
+                                                          getOscIndex(oscillatorIndex),
+                                                          val);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getOscDistortionOutLimiter(int oscillatorIndex) const
 {
-        return 0;
+        float value = 0.0f;
+        geonkick_osc_distortion_get_out_limiter(geonkickApi,
+                                                getOscIndex(oscillatorIndex),
+                                                &value);
+        return value;
 }
 
 bool GeonkickApi::setOscDistortionOutLimiter(int oscillatorIndex, double val)
 {
-        return true;
+        auto res = geonkick_osc_distortion_set_out_limiter(geonkickApi,
+                                                           getOscIndex(oscillatorIndex),
+                                                           val);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getOscDistortionDrive(int oscillatorIndex) const
 {
-        return 0;
+        float value = 0.0;
+        geonkick_osc_distortion_get_drive(geonkickApi,
+                                          getOscIndex(oscillatorIndex),
+                                          &value);
+        return value;
 }
 
 bool GeonkickApi::setOscDistortionDrive(int oscillatorIndex, double val)
 {
-        return true;
+        auto res = geonkick_osc_distortion_set_drive(geonkickApi,
+                                                     getOscIndex(oscillatorIndex),
+                                                     val);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::limiterValue() const
@@ -1183,33 +1207,49 @@ bool GeonkickApi::isDistortionEnabled() const
         return enabled;
 }
 
-void GeonkickApi::setDistortionInLimiter(double limit)
+bool GeonkickApi::setDistortionType(GeonkickApi::DistortionType type)
 {
-        geonkick_distortion_set_in_limiter(geonkickApi, limit);
+        auto res = geonkick_distortion_set_type(geonkickApi, static_cast<enum gkick_distortion_type>(type));
+        return res == GEONKICK_OK;
+}
+
+GeonkickApi::DistortionType GeonkickApi::getDistortionType() const
+{
+        enum gkick_distortion_type type = GEONKICK_DISTORTION_SOFT_CLIPPING_TANH;
+        geonkick_distortion_get_type(geonkickApi, &type);
+        return static_cast<GeonkickApi::DistortionType>(type);
+}
+
+bool GeonkickApi::setDistortionInLimiter(double value)
+{
+        auto res = geonkick_distortion_set_in_limiter(geonkickApi, value);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getDistortionInLimiter() const
 {
-        gkick_real limit = 0.0f;
-        geonkick_distortion_get_in_limiter(geonkickApi, &limit);
-        return limit;
+        float value = 0.0f;
+        geonkick_distortion_get_in_limiter(geonkickApi, &value);
+        return value;
 }
 
-void GeonkickApi::setDistortionVolume(double volume)
+bool GeonkickApi::setDistortionOutLimiter(double value)
 {
-        geonkick_distortion_set_volume(geonkickApi, volume);
+        auto res = geonkick_distortion_set_volume(geonkickApi, value);
+        return res == GEONKICK_OK;
 }
 
-double GeonkickApi::getDistortionVolume(void) const
+double GeonkickApi::getDistortionOutLimiter(void) const
 {
-        gkick_real volume = 0;
-        geonkick_distortion_get_volume(geonkickApi, &volume);
-        return volume;
+        gkick_real value = 0;
+        geonkick_distortion_get_volume(geonkickApi, &value);
+        return value;
 }
 
-void GeonkickApi::setDistortionDrive(double drive)
+bool GeonkickApi::setDistortionDrive(double drive)
 {
-        geonkick_distortion_set_drive(geonkickApi, drive);
+        auto res = geonkick_distortion_set_drive(geonkickApi, drive);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getDistortionDrive(void) const

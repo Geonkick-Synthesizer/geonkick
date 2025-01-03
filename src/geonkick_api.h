@@ -218,8 +218,10 @@ class GeonkickApi : public RkObject {
   std::unique_ptr<PercussionState> getPercussionState(size_t id) const;
   std::unique_ptr<PercussionState> getPercussionState() const;
   bool isDistortionEnabled() const;
+  bool setDistortionType(DistortionType type);
+  DistortionType getDistortionType() const;
   double getDistortionInLimiter() const;
-  double getDistortionVolume() const;
+  double getDistortionOutLimiter() const;
   double getDistortionDrive() const;
   bool isJackEnabled() const;
   void setStandalone(bool b);
@@ -248,9 +250,9 @@ class GeonkickApi : public RkObject {
 				EnvelopeApplyType applyType);
   void playKick(int id = -1);
   void enableDistortion(bool enable);
-  void setDistortionVolume(double volume);
-  void setDistortionInLimiter(double limit);
-  void setDistortionDrive(double drive);
+  bool setDistortionOutLimiter(double value);
+  bool setDistortionInLimiter(double value);
+  bool setDistortionDrive(double drive);
   std::vector<gkick_real> getKickBuffer() const;
   std::vector<gkick_real> getInstrumentBuffer(int id) const;
   void triggerSynthesis();

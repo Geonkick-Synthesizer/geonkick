@@ -337,7 +337,7 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                                 if (el.name == "in_limiter" && el.value.IsDouble())
                                         setDistortionInLimiter(el.value.GetDouble());
                                 if (el.name == "volume" && el.value.IsDouble())
-                                        setDistortionVolume(el.value.GetDouble());
+                                        setDistortionOutLimiter(el.value.GetDouble());
                                 if (el.name == "drive" && el.value.IsDouble())
                                         setDistortionDrive(el.value.GetDouble());
 				if (el.name == "drive_env" && el.value.IsArray())
@@ -911,7 +911,7 @@ void PercussionState::setDistortionInLimiter(double limit)
         distortion.in_limiter = limit;
 }
 
-void PercussionState::setDistortionVolume(double volume)
+void PercussionState::setDistortionOutLimiter(double volume)
 {
         distortion.volume = volume;
 }
@@ -926,7 +926,7 @@ double PercussionState::getDistortionInLimiter() const
         return distortion.in_limiter;
 }
 
-double PercussionState::getDistortionVolume() const
+double PercussionState::getDistortionOutLimiter() const
 {
         return distortion.volume;
 }
@@ -1141,7 +1141,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         jsonStream << "\"in_limiter\": "
                    << getDistortionInLimiter()  << ", " << std::endl;
         jsonStream << "\"volume\": "
-                   << getDistortionVolume()  << ", " << std::endl;
+                   << getDistortionOutLimiter()  << ", " << std::endl;
         jsonStream << "\"drive\": "
                    << getDistortionDrive() << ", " << std::endl;
 	jsonStream << "\"drive_env\": [" << std::endl;

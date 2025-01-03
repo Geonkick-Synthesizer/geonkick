@@ -527,11 +527,19 @@ geonkick_audio_process(struct geonkick *kick,
 
 enum geonkick_error
 geonkick_distortion_enable(struct geonkick *kick,
-                           int enable);
+                           bool enable);
 
 enum geonkick_error
 geonkick_distortion_is_enabled(struct geonkick *kick,
-                               int *enabled);
+                               bool *enabled);
+
+enum geonkick_error
+geonkick_distortion_set_type(struct geonkick *kick,
+                             enum gkick_distortion_type type);
+
+enum geonkick_error
+geonkick_distortion_get_type(struct geonkick *kick,
+                             enum gkick_distortion_type *type);
 
 enum geonkick_error
 geonkick_distortion_set_in_limiter(struct geonkick *kick,
@@ -568,24 +576,34 @@ geonkick_osc_distortion_is_enabled(struct geonkick *kick,
                                    bool *enabled);
 
 enum geonkick_error
+geonkick_osc_distortion_set_type(struct geonkick *kick,
+                                 size_t index,
+                                 enum gkick_distortion_type type);
+
+enum geonkick_error
+geonkick_osc_distortion_get_type(struct geonkick *kick,
+                                 size_t index,
+                                 enum gkick_distortion_type *type);
+
+enum geonkick_error
 geonkick_osc_distortion_set_in_limiter(struct geonkick *kick,
                                        size_t index,
-                                       gkick_real limit);
+                                       gkick_real value);
 
 enum geonkick_error
 geonkick_osc_distortion_get_in_limiter(struct geonkick *kick,
                                        size_t index,
-                                       gkick_real *limit);
+                                       gkick_real *value);
 
 enum geonkick_error
-geonkick_osc_distortion_set_volume(struct geonkick *kick,
-                                   size_t index,
-                                   gkick_real volume);
+geonkick_osc_distortion_set_out_limiter(struct geonkick *kick,
+                                        size_t index,
+                                        gkick_real value);
 
 enum geonkick_error
-geonkick_osc_distortion_get_volume(struct geonkick *kick,
-                                   size_t index,
-                                   gkick_real *volume);
+geonkick_osc_distortion_get_out_limiter(struct geonkick *kick,
+                                        size_t index,
+                                        gkick_real *value);
 
 enum geonkick_error
 geonkick_osc_distortion_set_drive(struct geonkick *kick,

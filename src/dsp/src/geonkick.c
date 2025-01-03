@@ -1133,7 +1133,7 @@ geonkick_audio_process(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_distortion_enable(struct geonkick *kick, int enable)
+geonkick_distortion_enable(struct geonkick *kick, bool enable)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arguments");
@@ -1149,7 +1149,7 @@ geonkick_distortion_enable(struct geonkick *kick, int enable)
 
 enum geonkick_error
 geonkick_distortion_is_enabled(struct geonkick *kick,
-                               int *enabled)
+                               bool *enabled)
 {
         if (kick == NULL || enabled == NULL) {
                 gkick_log_error("wrong arguments");
@@ -1157,6 +1157,34 @@ geonkick_distortion_is_enabled(struct geonkick *kick,
         }
         return gkick_synth_distortion_is_enabled(kick->synths[kick->per_index],
                                                  enabled);
+}
+
+enum geonkick_error
+geonkick_distortion_set_type(struct geonkick *kick,
+                             gkick_distortion_type type)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        enum geonkick_error res;
+        res = gkick_synth_distortion_set_type(kick->synths[kick->per_index],
+                                              type);
+        if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
+                geonkick_wakeup(kick);
+        return res;
+}
+
+enum geonkick_error
+geonkick_distortion_get_type(struct geonkick *kick,
+                             gkick_distortion_type *type)
+{
+        if (kick == NULL || type == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+        return gkick_synth_distortion_get_type(kick->synths[kick->per_index],
+                                               type);
 }
 
 enum geonkick_error
@@ -1274,6 +1302,39 @@ geonkick_osc_distortion_is_enabled(struct geonkick *kick,
 }
 
 enum geonkick_error
+geonkick_osc_distortion_get_type(struct geonkick *kick,
+                                 size_t index,
+                                 enum gkick_distortion_type *type)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        return gkick_distortion_get_type(osc->distortion, type);
+}
+
+enum geonkick_error
+geonkick_osc_distortion_set_type(struct geonkick *kick,
+                                 size_t index,
+                                 gkick_distortion_type type)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        enum geonkick_error res;
+        res = gkick_distortion_set_type(osc->distortion, type);
+        if (res != GEONKICK_OK)
+                return res;
+        bool enabled = gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled) {
+                kick->synths[kick->per_index]->buffer_update = true;
+                geonkick_wakeup(kick);
+        }
+        return res;
+}
+
+enum geonkick_error
 geonkick_osc_distortion_set_in_limiter(struct geonkick *kick,
                                        size_t index,
                                        gkick_real value)
@@ -1293,18 +1354,6 @@ geonkick_osc_distortion_set_in_limiter(struct geonkick *kick,
                 geonkick_wakeup(kick);
         }
         return res;
-}
-
-enum geonkick_error
-geonkick_osc_distortion_get_type(struct geonkick *kick,
-                                 size_t index,
-                                 enum gkick_distortion_type *type)
-{
-        struct gkick_oscillator* osc;
-        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
-        if (!osc)
-                return GEONKICK_ERROR;
-        return gkick_distortion_get_type(osc->distortion, type);
 }
 
 enum geonkick_error

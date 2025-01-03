@@ -118,11 +118,11 @@ class PercussionState
         std::vector<float> getOscillatorSample(int oscillatorIndex) const;
         void enableDistortion(bool enable);
         bool isDistortionEnabled() const;
-        void setDistortionVolume(double volume);
+        void setDistortionOutLimiter(double volume);
         void setDistortionInLimiter(double limit);
         void setDistortionDrive(double drive);
         double getDistortionInLimiter() const;
-        double getDistortionVolume() const;
+        double getDistortionOutLimiter() const;
         double getDistortionDrive() const;
         std::string toJson() const;
         void setLayerEnabled(GeonkickApi::Layer layer, bool b);
