@@ -144,9 +144,6 @@ void FilterView::createView()
                                  RkButton::State::Pressed);
         lpFilterButton->setImage(RkImage(lpFilterButton->size(), RK_IMAGE_RC(filter_type_lp_hover)),
                                  RkButton::State::UnpressedHover);
-        //        RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
-        //                    setFilterType(GeonkickApi::FilterType::LowPass, b));
-
         bpFilterButton = new GeonkickButton(this);
         bpFilterButton->setBackgroundColor(background());
         bpFilterButton->setFixedSize(25, 18);
@@ -158,9 +155,6 @@ void FilterView::createView()
                                  RkButton::State::Pressed);
         bpFilterButton->setImage(RkImage(bpFilterButton->size(), RK_IMAGE_RC(filter_type_bp_hover)),
                                  RkButton::State::UnpressedHover);
-        //        RK_ACT_BIND(bpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
-        //                    setFilterType(GeonkickApi::FilterType::BandPass, b));
-
         hpFilterButton = new GeonkickButton(this);
         hpFilterButton->setBackgroundColor(background());
         hpFilterButton->setFixedSize(25, 18);
@@ -172,8 +166,6 @@ void FilterView::createView()
                                  RkButton::State::Pressed);
         hpFilterButton->setImage(RkImage(hpFilterButton->size(), RK_IMAGE_RC(filter_type_hp_hover)),
                                  RkButton::State::UnpressedHover);
-        //        RK_ACT_BIND(hpFilterButton, toggled, RK_ACT_ARGS(bool b), this,
-        //                    setFilterType(GeonkickApi::FilterType::HighPass, b));
 }
 
 void FilterView::updateView()

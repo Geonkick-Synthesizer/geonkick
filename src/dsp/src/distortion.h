@@ -33,7 +33,7 @@ struct gkick_distortion {
         int sample_rate;
         enum gkick_distortion_type type;
 	gkick_real in_limiter;
-        gkick_real volume;
+        gkick_real out_limiter;
         gkick_real drive;
 	struct gkick_envelope *drive_env;
         struct gkick_envelope *volume_env;
@@ -50,10 +50,10 @@ void gkick_distortion_lock(struct gkick_distortion *distortion);
 void gkick_distortion_unlock(struct gkick_distortion *distortion);
 
 enum geonkick_error
-gkick_distortion_enable(struct gkick_distortion *distortion, int enable);
+gkick_distortion_enable(struct gkick_distortion *distortion, bool enable);
 
 enum geonkick_error
-gkick_distortion_is_enabled(struct gkick_distortion *distortion, int *enabled);
+gkick_distortion_is_enabled(struct gkick_distortion *distortion, bool *enabled);
 
 enum geonkick_error
 gkick_distortion_set_type(struct gkick_distortion *distortion,
@@ -70,20 +70,20 @@ gkick_distortion_val(struct gkick_distortion *distortion,
 		     gkick_real env_x);
 
 enum geonkick_error
-gkick_distortion_set_volume(struct gkick_distortion *distortion,
-                            gkick_real volume);
+gkick_distortion_set_out_limiter(struct gkick_distortion *distortion,
+                                 gkick_real value);
 
 enum geonkick_error
-gkick_distortion_get_volume(struct gkick_distortion *distortion,
-                            gkick_real *volume);
+gkick_distortion_get_out_limiter(struct gkick_distortion *distortion,
+                                 gkick_real *value);
 
 enum geonkick_error
 gkick_distortion_set_in_limiter(struct gkick_distortion *distortion,
-                                gkick_real limit);
+                                gkick_real value);
 
 enum geonkick_error
 gkick_distortion_get_in_limiter(struct gkick_distortion *distortion,
-                                gkick_real *limit);
+                                gkick_real *value);
 
 enum geonkick_error
 gkick_distortion_set_drive(struct gkick_distortion *distortion,

@@ -91,7 +91,6 @@ void OscillatorEffects::createView()
                      enabled,
                     RK_ACT_ARGS(bool b),
                      [=,this](bool b){oscillatorModel->getFilter()->enable(b);});
-
         tabButtonsLayout->addSpace(2);
         distortionTabButton = new EffectTabButton(this);
         distortionTabButton->setImage(RkImage(distortionTabButton->size(), RK_IMAGE_RC(effects_tab_distortion_button)),
@@ -130,6 +129,7 @@ void OscillatorEffects::showFilter()
 {
         if (currentTabView)
                 delete currentTabView;
+        distortionTabButton->setPressed(false);
         currentTabView = new FilterView(this, oscillatorModel->getFilter());
         currentTabView->setPosition(0, 22);
 }
@@ -138,6 +138,7 @@ void OscillatorEffects::showDistortion()
 {
         if (currentTabView)
                 delete currentTabView;
+        filterTabButton->setPressed(false);
         currentTabView = new DistortionView(this, oscillatorModel->getDistortion());
         currentTabView->setPosition(0, 22);
 }

@@ -1189,8 +1189,8 @@ geonkick_distortion_get_in_limiter(struct geonkick *kick,
 }
 
 enum geonkick_error
-geonkick_distortion_set_volume(struct geonkick *kick,
-                               gkick_real volume)
+geonkick_distortion_set_out_limiter(struct geonkick *kick,
+                                    gkick_real value)
 {
         if (kick == NULL) {
                 gkick_log_error("wrong arguments");
@@ -1198,21 +1198,21 @@ geonkick_distortion_set_volume(struct geonkick *kick,
         }
         enum geonkick_error res;
         res = gkick_synth_distortion_set_volume(kick->synths[kick->per_index],
-                                                volume);
+                                                value
         if (res == GEONKICK_OK && kick->synths[kick->per_index]->buffer_update)
                 geonkick_wakeup(kick);
         return res;
 }
 
 enum geonkick_error
-geonkick_distortion_get_volume(struct geonkick *kick, gkick_real *volume)
+geonkick_distortion_get_out_limiter(struct geonkick *kick, gkick_real *value)
 {
         if (kick == NULL || volume == NULL) {
                 gkick_log_error("wrong arguments");
                 return GEONKICK_ERROR;
         }
         return gkick_synth_distortion_get_volume(kick->synths[kick->per_index],
-                                                 volume);
+                                                 value);
 }
 
 enum geonkick_error
@@ -1241,6 +1241,172 @@ geonkick_distortion_get_drive(struct geonkick *kick,
         }
         return gkick_synth_distortion_get_drive(kick->synths[kick->per_index],
                                                 drive);
+}
+
+enum geonkick_error
+geonkick_osc_distortion_enable(struct geonkick *kick,
+                               size_t index,
+                               bool enable)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        enum geonkick_error res;
+        res = gkick_distortion_enable(osc->distortion, enable);
+        if (res == GEONKICK_OK) {
+                kick->synths[kick->per_index]->buffer_update = true;
+                geonkick_wakeup(kick);
+        }
+        return res;
+}
+
+enum geonkick_error
+geonkick_osc_distortion_is_enabled(struct geonkick *kick,
+                                   size_t index,
+                                   bool *enabled)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        return gkick_distortion_is_enabled(osc->distortion, enable);
+}
+
+enum geonkick_error
+geonkick_osc_distortion_set_in_limiter(struct geonkick *kick,
+                                       size_t index,
+                                       gkick_real value)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        enum geonkick_error res;
+        res = gkick_distortion_set_in_limiter(osc->distortion, value);
+        if (res != GEONKICK_OK)
+                return res;
+        bool enabled = false;
+        gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled) {
+                kick->synths[kick->per_index]->buffer_update = true;
+                geonkick_wakeup(kick);
+        }
+        return res;
+}
+
+enum geonkick_error
+geonkick_osc_distortion_get_type(struct geonkick *kick,
+                                 size_t index,
+                                 enum gkick_distortion_type *type)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        return gkick_distortion_get_type(osc->distortion, type);
+}
+
+enum geonkick_error
+geonkick_osc_distortion_set_out_limiter(struct geonkick *kick,
+                                        size_t index,
+                                        enum gkick_distortion_type type)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        enum geonkick_error res;
+        res = gkick_distortion_set_type(osc->distortion, type);
+        if (res != GEONKICK_OK)
+                return res;
+        bool enabled = false;
+        gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled) {
+                kick->synths[kick->per_index]->buffer_update = true;
+                geonkick_wakeup(kick);
+        }
+        return res;
+}
+
+enum geonkick_error
+geonkick_osc_distortion_get_in_limiter(struct geonkick *kick,
+                                       size_t index,
+                                       gkick_real *value)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        return gkick_distortion_get_in_limiter(osc->distortion, value);
+}
+
+enum geonkick_error
+geonkick_osc_distortion_set_out_limiter(struct geonkick *kick,
+                                        size_t index,
+                                        gkick_real value)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        enum geonkick_error res;
+        res = gkick_distortion_set_out_limiter(osc->distortion, value);
+        if (res != GEONKICK_OK)
+                return res;
+        bool enabled = false;
+        gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled) {
+                kick->synths[kick->per_index]->buffer_update = true;
+                geonkick_wakeup(kick);
+        }
+        return res;
+}
+
+enum geonkick_error
+geonkick_osc_distortion_get_out_limiter(struct geonkick *kick,
+                                        size_t index,
+                                        gkick_real *value)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        return gkick_distortion_get_in_limiter(osc->distortion, value);
+}
+
+enum geonkick_error
+geonkick_osc_distortion_set_drive(struct geonkick *kick,
+                                  size_t index,
+                                  gkick_real drive)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        enum geonkick_error res;
+        res = gkick_distortion_set_drive(osc->distortion, drive);
+        if (res != GEONKICK_OK)
+                return res;
+        bool enabled = false;
+        gkick_distortion_is_enabled(synth->distortion, &enabled);
+        if (enabled) {
+                kick->synths[kick->per_index]->buffer_update = true;
+                geonkick_wakeup(kick);
+        }
+        return res;
+}
+
+enum geonkick_error
+geonkick_osc_distortion_get_drive(struct geonkick *kick,
+                                  size_t index,
+                                  gkick_real *drive)
+{
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
+        if (!osc)
+                return GEONKICK_ERROR;
+        return gkick_distortion_get_drive(osc->distortion, drive);
 }
 
 int geonkick_is_module_enabed(struct geonkick *kick,

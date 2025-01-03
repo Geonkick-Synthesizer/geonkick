@@ -410,26 +410,34 @@ gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
 
 enum geonkick_error
 gkick_synth_distortion_enable(struct gkick_synth *synth,
-			      int enable);
+			      bool enable);
 
 enum geonkick_error
 gkick_synth_distortion_is_enabled(struct gkick_synth *synth,
-				  int *enabled);
+				  bool *enabled);
+
+enum geonkick_error
+gkick_synth_distortion_set_type(struct gkick_synth *synth,
+                                enum gkick_distortion_type type);
+
+enum geonkick_error
+gkick_synth_distortion_get_type(struct gkick_synth *synth,
+                                enum gkick_distortion_type type);
 
 enum geonkick_error
 gkick_synth_distortion_get_in_limiter(struct gkick_synth *synth,
-                                      gkick_real *limit);
+                                      gkick_real *value);
 
 enum geonkick_error
 gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth,
-                                      gkick_real limit);
+                                      gkick_real value);
 
 enum geonkick_error
-gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume);
+gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth, gkick_real value);
 
 enum geonkick_error
-gkick_synth_distortion_get_volume(struct gkick_synth *synth,
-				  gkick_real *volume);
+gkick_synth_distortion_get_out_limiter(struct gkick_synth *synth,
+                                       gkick_real *value);
 
 enum geonkick_error
 gkick_synth_distortion_set_drive(struct gkick_synth *synth,

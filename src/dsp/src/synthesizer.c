@@ -1443,7 +1443,7 @@ gkick_synth_get_value(struct gkick_synth *synth,
         if (synth->filter_enabled)
                 gkick_filter_val(synth->filter, val, &val, env_x);
 
-        int enabled = 0;
+        bool enabled = false;
         gkick_distortion_is_enabled(synth->distortion, &enabled);
         if (enabled)
                 gkick_distortion_val(synth->distortion, val, &val, env_x);
@@ -1699,7 +1699,7 @@ gkick_synth_osc_is_enabled_filter(struct gkick_synth *synth,
 
 enum geonkick_error
 gkick_synth_distortion_enable(struct gkick_synth *synth,
-                              int enable)
+                              bool enable)
 {
 	synth->buffer_update = true;
         return gkick_distortion_enable(synth->distortion,
@@ -1708,40 +1708,63 @@ gkick_synth_distortion_enable(struct gkick_synth *synth,
 
 enum geonkick_error
 gkick_synth_distortion_is_enabled(struct gkick_synth *synth,
-                                  int *enabled)
+                                  bool *enabled)
 {
         return gkick_distortion_is_enabled(synth->distortion,
                                            enabled);
 }
 
 enum geonkick_error
-gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth,
-                                      gkick_real limit)
+gkick_synth_distortion_set_type(struct gkick_synth *synth,
+                                enum gkick_distortion_type type)
 {
+        enum geonkick_error res;
+        gkick_distortion_set_type(synth->distortion, type);
+	bool enabled = false;
+        auto res = gkick_distortion_is_enabled(synth->distortion,
+                                               &enabled);
+        if (res == GEONKICK_OK && enabled)
+                synth->buffer_update = true;
+        return res;
+}
+
+enum geonkick_error
+gkick_synth_distortion_get_type(struct gkick_synth *synth,
+                                enum gkick_distortion_type type);
+{
+        return gkick_distortion_get_type(synth->distortion,
+                                         type);
+}
+
+enum geonkick_error
+gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth,
+                                      gkick_real value)
+{
+        enum geonkick_error res;
         gkick_distortion_set_in_limiter(synth->distortion,
                                               limit);
-	int enabled = 0;
-        gkick_distortion_is_enabled(synth->distortion,
-                                          &enabled);
-        if (enabled)
+	bool enabled = false;
+        auto res = gkick_distortion_is_enabled(synth->distortion,
+                                               &enabled);
+        if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
-        return GEONKICK_OK;
+        return res;
 }
 
 enum geonkick_error
 gkick_synth_distortion_get_in_limiter(struct gkick_synth *synth,
-                                      gkick_real *limit)
+                                      gkick_real *value)
 {
 	return gkick_distortion_get_in_limiter(synth->distortion,
-                                               limit);
+                                               value);
 }
 
 enum geonkick_error
-gkick_synth_distortion_set_volume(struct gkick_synth *synth, gkick_real volume)
+gkick_synth_distortion_set_out_limiter(struct gkick_synth *synth, gkick_real value)
 {
         enum geonkick_error res;
-        int enabled;
-        res = gkick_distortion_set_volume(synth->distortion, volume);
+        bool enabled = false;
+        res = gkick_distortion_set_volume(synth->distortion, value);
         gkick_distortion_is_enabled(synth->distortion, &enabled);
         if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
@@ -1761,7 +1784,7 @@ gkick_synth_distortion_set_drive(struct gkick_synth *synth,
                                  gkick_real drive)
 {
         enum geonkick_error res;
-        int enabled;
+        bool enabled = false;
         res = gkick_distortion_set_drive(synth->distortion, drive);
         gkick_distortion_is_enabled(synth->distortion, &enabled);
         if (res == GEONKICK_OK && enabled)

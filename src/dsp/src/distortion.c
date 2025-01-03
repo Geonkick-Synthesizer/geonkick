@@ -40,6 +40,8 @@ gkick_distortion_new(struct gkick_distortion **distortion, int sample_rate)
 	(*distortion)->drive_env   = NULL;
         (*distortion)->volume_env  = NULL;
 	(*distortion)->drive       = 1.0f;
+        (*distortion)->in_limiter  = 1.0f;
+        (*distortion)->out_limiter = 1.0f;
         (*distortion)->sample_rate = sample_rate;
 #if (GEONKICK_VERSION_MAJOR > 3)
 #warning Remove backward compatibility.
@@ -109,7 +111,7 @@ void gkick_distortion_unlock(struct gkick_distortion *distortion)
 }
 
 enum geonkick_error
-gkick_distortion_enable(struct gkick_distortion *distortion, int enable)
+gkick_distortion_enable(struct gkick_distortion *distortion, bool enable)
 {
         gkick_distortion_lock(distortion);
         distortion->enabled = enable;
@@ -118,7 +120,7 @@ gkick_distortion_enable(struct gkick_distortion *distortion, int enable)
 }
 
 enum geonkick_error
-gkick_distortion_is_enabled(struct gkick_distortion *distortion, int *enabled)
+gkick_distortion_is_enabled(struct gkick_distortion *distortion, bool *enabled)
 {
         gkick_distortion_lock(distortion);
         *enabled = distortion->enabled;
@@ -160,7 +162,7 @@ static void distortion_backward_compatible(struct gkick_distortion *distortion,
 
         x = GKICK_CLAMP(x, -1.0f, 1.0f);
         *out_val= (x < 0.0f ? -1.0f : 1.0f) * (1.0f - exp(-4.0f * log(10.0f) * fabs(x)));
-        *out_val *= distortion->volume * gkick_envelope_get_value(distortion->volume_env, env_x);
+        *out_val *= distortion->out_limiter * gkick_envelope_get_value(distortion->volume_env, env_x);
 }
 
 enum geonkick_error
@@ -222,47 +224,47 @@ gkick_distortion_val(struct gkick_distortion *distortion,
             break;
     }
 
-    *out_val *= distortion->volume * gkick_envelope_get_value(distortion->volume_env, env_x);
+    *out_val *= distortion->out_limiter * gkick_envelope_get_value(distortion->volume_env, env_x);
     gkick_distortion_unlock(distortion);
     return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_distortion_set_volume(struct gkick_distortion *distortion,
-                            gkick_real volume)
+gkick_distortion_set_out_limiter(struct gkick_distortion *distortion,
+                                 gkick_real value)
 {
         gkick_distortion_lock(distortion);
-        distortion->volume = volume;
+        distortion->out_limiter = value;
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }
 
 enum geonkick_error
-gkick_distortion_get_volume(struct gkick_distortion *distortion,
-                            gkick_real *volume)
+gkick_distortion_get_out_limiter(struct gkick_distortion *distortion,
+                            gkick_real *value)
 {
         gkick_distortion_lock(distortion);
-        *volume = distortion->volume;
+        *value = distortion->out_limiter;
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }
 
 enum geonkick_error
 gkick_distortion_set_in_limiter(struct gkick_distortion *distortion,
-                                gkick_real limit)
+                                gkick_real value)
 {
 	gkick_distortion_lock(distortion);
-        distortion->in_limiter = limit;
+        distortion->in_limiter = value;
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }
 
 enum geonkick_error
 gkick_distortion_get_in_limiter(struct gkick_distortion *distortion,
-                                gkick_real *limit)
+                                gkick_real *value)
 {
 	gkick_distortion_lock(distortion);
-        *limit = distortion->in_limiter;
+        *value = distortion->in_limiter;
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }

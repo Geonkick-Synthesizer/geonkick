@@ -1000,16 +1000,27 @@ double GeonkickApi::getOscillatorFilterFactor(int oscillatorIndex) const
 
 bool GeonkickApi::isOscDistortionEnabled(int oscillatorIndex) const
 {
-        return true;
+        bool enabled = false;
+        geonkick_osc_distortion_is_enabled(geonkickApi,
+                                           getOscIndex(oscillatorIndex),
+                                           &enabled);
+        return enabled;
 }
 
 bool GeonkickApi::oscEnableDistortion(int oscillatorIndex, bool b)
 {
-        return true;
+        auto res = geonkick_osc_distortion_enable(geonkickApi,
+                                                  getOscIndex(oscillatorIndex),
+                                                  b);
+        return res == GEONKICK_OK;
 }
 
 GeonkickApi::DistortionType GeonkickApi::getOscDistortionType(int oscillatorIndex) const
 {
+        
+        auto res = geonkick_osc_distortion_enable(geonkickApi,
+                                                  getOscIndex(oscillatorIndex),
+                                                  distortionType);
         return DistortionType::SoftClippingTan;
 }
 
@@ -1167,7 +1178,7 @@ void GeonkickApi::enableDistortion(bool enable)
 
 bool GeonkickApi::isDistortionEnabled() const
 {
-        int enabled = false;
+        bool enabled = false;
         geonkick_distortion_is_enabled(geonkickApi, &enabled);
         return enabled;
 }

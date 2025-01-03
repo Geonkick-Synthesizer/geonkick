@@ -560,12 +560,12 @@ geonkick_distortion_get_drive(struct geonkick *kick,
 enum geonkick_error
 geonkick_osc_distortion_enable(struct geonkick *kick,
                                size_t index,
-                           int enable);
+                               bool enable);
 
 enum geonkick_error
 geonkick_osc_distortion_is_enabled(struct geonkick *kick,
                                    size_t index,
-                               int *enabled);
+                                   bool *enabled);
 
 enum geonkick_error
 geonkick_osc_distortion_set_in_limiter(struct geonkick *kick,

@@ -164,6 +164,10 @@ void DistortionView::bindModel()
 
 void DistortionView::unbindModel()
 {
+        unbindObject(getModel());
+        inLimiter->unbindObject(getModel());
+        outLimiter->unbindObject(getModel());
+        driveKnob->unbindObject(getModel());
 }
 
 void DistortionView::createView()
