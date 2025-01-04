@@ -249,7 +249,7 @@ class GeonkickApi : public RkObject {
   void setKickEnvelopeApplyType(EnvelopeType envelope,
 				EnvelopeApplyType applyType);
   void playKick(int id = -1);
-  void enableDistortion(bool enable);
+  bool enableDistortion(bool enable);
   bool setDistortionOutLimiter(double value);
   bool setDistortionInLimiter(double value);
   bool setDistortionDrive(double drive);

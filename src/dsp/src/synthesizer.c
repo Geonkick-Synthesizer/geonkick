@@ -1721,7 +1721,7 @@ gkick_synth_distortion_set_type(struct gkick_synth *synth,
         enum geonkick_error res;
         gkick_distortion_set_type(synth->distortion, type);
 	bool enabled = false;
-        auto res = gkick_distortion_is_enabled(synth->distortion,
+        res = gkick_distortion_is_enabled(synth->distortion,
                                                &enabled);
         if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
@@ -1730,7 +1730,7 @@ gkick_synth_distortion_set_type(struct gkick_synth *synth,
 
 enum geonkick_error
 gkick_synth_distortion_get_type(struct gkick_synth *synth,
-                                enum gkick_distortion_type type);
+                                enum gkick_distortion_type *type)
 {
         return gkick_distortion_get_type(synth->distortion,
                                          type);
@@ -1742,10 +1742,10 @@ gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth,
 {
         enum geonkick_error res;
         gkick_distortion_set_in_limiter(synth->distortion,
-                                              limit);
+                                        value);
 	bool enabled = false;
-        auto res = gkick_distortion_is_enabled(synth->distortion,
-                                               &enabled);
+        res = gkick_distortion_is_enabled(synth->distortion,
+                                          &enabled);
         if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
         return res;
@@ -1764,7 +1764,7 @@ gkick_synth_distortion_set_out_limiter(struct gkick_synth *synth, gkick_real val
 {
         enum geonkick_error res;
         bool enabled = false;
-        res = gkick_distortion_set_volume(synth->distortion, value);
+        res = gkick_distortion_set_out_limiter(synth->distortion, value);
         gkick_distortion_is_enabled(synth->distortion, &enabled);
         if (res == GEONKICK_OK && enabled)
                 synth->buffer_update = true;
@@ -1772,11 +1772,11 @@ gkick_synth_distortion_set_out_limiter(struct gkick_synth *synth, gkick_real val
 }
 
 enum geonkick_error
-gkick_synth_distortion_get_volume(struct gkick_synth *synth,
-                                  gkick_real *volume)
+gkick_synth_distortion_get_out_limiter(struct gkick_synth *synth,
+                                       gkick_real *value)
 {
-        return gkick_distortion_get_volume(synth->distortion,
-                                           volume);
+        return gkick_distortion_get_out_limiter(synth->distortion,
+                                                value);
 }
 
 enum geonkick_error

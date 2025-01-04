@@ -198,7 +198,7 @@ void DistortionView::createView()
         outLimiter->setPosition(width() / 2 + inLimiter->width() + 6, 2);
         outLimiter->setKnobBackgroundImage(RkImage(48, 48, RK_IMAGE_RC(bk_knob_48x48)));
         outLimiter->setKnobImage(RkImage(40, 40, RK_IMAGE_RC(knob_40x40)));
-        outLimiter->setRange(0.01, 1);
+        outLimiter->setRange(0.01, 10);
 
         auto outLimiterLabel = new RkLabel(this,  "Output");
         outLimiterLabel->setFixedSize(30, 10);
@@ -306,7 +306,6 @@ void DistortionView::createView()
 void DistortionView::updateView()
 {
         auto distortionModel = static_cast<DistortionModel*>(getModel());
-        GEONKICK_LOG_INFO("distortionModel->getInLimiter(): " << distortionModel->getInLimiter());
         onSetDistortionType(distortionModel->getDistortionType());
         inLimiter->setCurrentValue(distortionModel->getInLimiter());
         outLimiter->setCurrentValue(distortionModel->getOutLimiter());

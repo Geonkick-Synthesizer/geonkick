@@ -422,7 +422,7 @@ gkick_synth_distortion_set_type(struct gkick_synth *synth,
 
 enum geonkick_error
 gkick_synth_distortion_get_type(struct gkick_synth *synth,
-                                enum gkick_distortion_type type);
+                                enum gkick_distortion_type *type);
 
 enum geonkick_error
 gkick_synth_distortion_get_in_limiter(struct gkick_synth *synth,
@@ -433,7 +433,8 @@ gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth,
                                       gkick_real value);
 
 enum geonkick_error
-gkick_synth_distortion_set_in_limiter(struct gkick_synth *synth, gkick_real value);
+gkick_synth_distortion_set_out_limiter(struct gkick_synth *synth,
+                                       gkick_real value);
 
 enum geonkick_error
 gkick_synth_distortion_get_out_limiter(struct gkick_synth *synth,

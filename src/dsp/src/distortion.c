@@ -46,7 +46,7 @@ gkick_distortion_new(struct gkick_distortion **distortion, int sample_rate)
 #if (GEONKICK_VERSION_MAJOR > 3)
 #warning Remove backward compatibility.
 #endif // GEONKICK_VERSION_MAJOR
-        (*distortion)->type        = GEONKICK_DISTORTION_BACKWARD_COMPATIBLE;
+        (*distortion)->type        = GEONKICK_DISTORTION_SOFT_CLIPPING_TANH;
 
 	struct gkick_envelope *env = gkick_envelope_create();
 	if (env == NULL) {
@@ -134,6 +134,7 @@ gkick_distortion_set_type(struct gkick_distortion *distortion,
 {
         gkick_distortion_lock(distortion);
         distortion->type = type;
+        printf("\ndistortion->type: %d\n", type);
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }
@@ -175,7 +176,7 @@ gkick_distortion_val(struct gkick_distortion *distortion,
 #if (GEONKICK_VERSION_MAJOR > 3)
 #warning Remove backward compatibility.
 #endif // GEONKICK_VERSION_MAJOR
-    if (distortion->type) {
+    if (distortion->type == GEONKICK_DISTORTION_BACKWARD_COMPATIBLE) {
             distortion_backward_compatible(distortion,
                                            in_val,
                                            out_val,
@@ -188,9 +189,10 @@ gkick_distortion_val(struct gkick_distortion *distortion,
     gkick_real drive_env_val = gkick_envelope_get_value(distortion->drive_env, env_x);
     gkick_real drive = distortion->drive * gkick_envelope_get_value(distortion->drive_env, env_x);
 
+    printf("\nDDDDDD->type: %d, %f\n", distortion->type, distortion->drive);
     switch (distortion->type) {
         case GEONKICK_DISTORTION_HARD_CLIPPING:
-            *out_val = GKICK_CLAMP(x, -1.0f, 1.0f);
+            *out_val = GKICK_CLAMP(x, -1.0f / drive, 1.0f / drive);
             break;
         case GEONKICK_DISTORTION_SOFT_CLIPPING_TANH:
             *out_val = tanh(drive * x);

@@ -147,21 +147,21 @@ enum gkick_envelope_curve_type {
 };
 
 enum gkick_distortion_type {
-        GEONKICK_DISTORTION_HARD_CLIPPING,
-        GEONKICK_DISTORTION_SOFT_CLIPPING_TANH,
-        GEONKICK_DISTORTION_ARCTAN,
-        GEONKICK_DISTORTION_EXPONENTIAL,
-        GEONKICK_DISTORTION_POLYNOMIAL,
-        GEONKICK_DISTORTION_LOGARITHMIC,
-        GEONKICK_DISTORTION_FOLDBACK,
-        GEONKICK_DISTORTION_HALF_WAVE_RECT,
-        GEONKICK_DISTORTION_FULL_WAVE_RECT,
+        GEONKICK_DISTORTION_HARD_CLIPPING       = 0,
+        GEONKICK_DISTORTION_SOFT_CLIPPING_TANH  = 1,
+        GEONKICK_DISTORTION_ARCTAN              = 2,
+        GEONKICK_DISTORTION_EXPONENTIAL         = 3,
+        GEONKICK_DISTORTION_POLYNOMIAL          = 4,
+        GEONKICK_DISTORTION_LOGARITHMIC         = 5,
+        GEONKICK_DISTORTION_FOLDBACK            = 6,
+        GEONKICK_DISTORTION_HALF_WAVE_RECT      = 7,
+        GEONKICK_DISTORTION_FULL_WAVE_RECT      = 8,
         /* Backward compatible with old presets.
            In the next major release this to be removed. */
 #if (GEONKICK_VERSION_MAJOR > 3)
 #warning Remove backward compatibility.
 #endif // GEONKICK_VERSION_MAJOR
-        GEONKICK_DISTORTION_BACKWARD_COMPATIBLE
+        GEONKICK_DISTORTION_BACKWARD_COMPATIBLE = 9
 };
 
 #ifdef GEONKICK_SINGLE
@@ -550,12 +550,12 @@ geonkick_distortion_get_in_limiter(struct geonkick *kick,
                                    gkick_real *limit);
 
 enum geonkick_error
-geonkick_distortion_set_volume(struct geonkick *kick,
-                               gkick_real volume);
+geonkick_distortion_set_out_limiter(struct geonkick *kick,
+                                    gkick_real value);
 
 enum geonkick_error
-geonkick_distortion_get_volume(struct geonkick *kick,
-                               gkick_real *volume);
+geonkick_distortion_get_out_limiter(struct geonkick *kick,
+                                    gkick_real *volume);
 
 enum geonkick_error
 geonkick_distortion_set_drive(struct geonkick *kick,

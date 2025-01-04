@@ -27,6 +27,7 @@
 #include "DistortionModel.h"
 
 class PercussionModel;
+class GeonkickApi;
 
 class InstrumentDistortionModel: public DistortionModel
 {
@@ -45,6 +46,7 @@ class InstrumentDistortionModel: public DistortionModel
 
  private:
         PercussionModel *instrumentModel;
+        GeonkickApi *geonkickApi;
 };
 
 #endif // INSTRUEMNT_DISTORTION_MODEL_H

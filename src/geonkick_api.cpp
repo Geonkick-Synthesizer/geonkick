@@ -1026,6 +1026,8 @@ GeonkickApi::DistortionType GeonkickApi::getOscDistortionType(int oscillatorInde
 
 bool GeonkickApi::setOscDistortionType(int oscillatorIndex, DistortionType type)
 {
+        auto t = static_cast<enum gkick_distortion_type>(type);
+        GEONKICK_LOG_INFO("type: " << static_cast<int>(type) << "| " << static_cast<int>(t));
         auto res = geonkick_osc_distortion_set_type(geonkickApi,
                                                     getOscIndex(oscillatorIndex),
                                                     static_cast<enum gkick_distortion_type>(type));
@@ -1077,6 +1079,7 @@ double GeonkickApi::getOscDistortionDrive(int oscillatorIndex) const
 
 bool GeonkickApi::setOscDistortionDrive(int oscillatorIndex, double val)
 {
+        GEONKICK_LOG_INFO("oscillatorIndex: " << oscillatorIndex << ", val = " << val);
         auto res = geonkick_osc_distortion_set_drive(geonkickApi,
                                                      getOscIndex(oscillatorIndex),
                                                      val);
@@ -1195,9 +1198,10 @@ void GeonkickApi::process(float** out, size_t offset, size_t size)
         geonkick_audio_process(geonkickApi, out, offset, size);
 }
 
-void GeonkickApi::enableDistortion(bool enable)
+bool GeonkickApi::enableDistortion(bool enable)
 {
-        geonkick_distortion_enable(geonkickApi, enable);
+        auto res = geonkick_distortion_enable(geonkickApi, enable);
+        return res == GEONKICK_OK;
 }
 
 bool GeonkickApi::isDistortionEnabled() const
@@ -1235,14 +1239,14 @@ double GeonkickApi::getDistortionInLimiter() const
 
 bool GeonkickApi::setDistortionOutLimiter(double value)
 {
-        auto res = geonkick_distortion_set_volume(geonkickApi, value);
+        auto res = geonkick_distortion_set_out_limiter(geonkickApi, value);
         return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getDistortionOutLimiter(void) const
 {
         gkick_real value = 0;
-        geonkick_distortion_get_volume(geonkickApi, &value);
+        geonkick_distortion_get_out_limiter(geonkickApi, &value);
         return value;
 }
 

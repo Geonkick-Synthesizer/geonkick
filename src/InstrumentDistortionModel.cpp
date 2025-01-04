@@ -23,65 +23,68 @@
 
 #include "InstrumentDistortionModel.h"
 #include "percussion_model.h"
+#include "kit_model.h"
+#include "geonkick_api.h"
 
 InstrumentDistortionModel::InstrumentDistortionModel(PercussionModel *parent)
-: DistortionModel(parent)
-,  instrumentModel{parent}
+        : DistortionModel(parent)
+        , instrumentModel{parent}
+        , geonkickApi{instrumentModel->parentModel()->api()}
 {
 }
 
 void InstrumentDistortionModel::enable(bool b)
 {
-        //        if (instrumentModel->parentModel()->enableDistortion(instrumentModel->index(), b))
-        //                action enabled(b);
+        if (geonkickApi->enableDistortion(b))
+                action enabled(b);
 }
 
 bool InstrumentDistortionModel::isEnabled() const
 {
-        return false;//instrumentModel->isOscDistortionEnabled(instrumentModel->index());
+        return geonkickApi->isDistortionEnabled();
 }
 
 void InstrumentDistortionModel::setDistortionType(DistortionType type)
 {
-        //if (instrumentModel->api()->setOscDistortionType(instrumentModel->index(), type))
-        //        action distortionTypeChanged(type);
+        if (geonkickApi->setDistortionType(type))
+                action distortionTypeChanged(type);
 }
 
 DistortionModel::DistortionType
 InstrumentDistortionModel::getDistortionType() const
 {
-        return (DistortionModel::DistortionType)(0);// instrumentModel->api()->getOscDistortionType(instrumentModel->index());
+        return geonkickApi->getDistortionType();
 }
 
 void InstrumentDistortionModel::setInLimiter(double value)
 {
-        //        if (instrumentModel->api()->setOscDistortionInLimiter(instrumentModel->index(), value))
-        //                action inLimiterChanged(value);
+        if (geonkickApi->setDistortionInLimiter(value))
+                action inLimiterChanged(value);
 }
 
 double InstrumentDistortionModel::getInLimiter() const
 {
-        return 0;// instrumentModel->api()->getOscDistortionInLimiter(instrumentModel->index());
+        return geonkickApi->getDistortionInLimiter();
 }
 
 void InstrumentDistortionModel::setOutLimiter(double value)
 {
-        //        if (instrumentModel->api()->setOscDistortionOutLimiter(instrumentModel->index(), value))
-        //       action outLimiterChanged(value);
+        if (geonkickApi->setDistortionOutLimiter(value))
+                action outLimiterChanged(value);
 }
 
 double InstrumentDistortionModel::getOutLimiter() const
 {
-        return 0;// instrumentModel->api()->getOscDistortionOutLimiter(instrumentModel->index());
+        return geonkickApi->getDistortionOutLimiter();
 }
 
 void InstrumentDistortionModel::setDrive(double drive)
 {
-                // if (instrumentModel->api()->setOscDistortionDrive(instrumentModel->index(), drive))
-                // action driveChanged(drive);
+        if (geonkickApi->setDistortionDrive(drive))
+                action driveChanged(drive);
 }
 
 double InstrumentDistortionModel::getDrive() const
 {
-        return 0;// instrumentModel->api()->getOscDistortionDrive(instrumentModel->index());
+        return geonkickApi->getDistortionDrive();
 }

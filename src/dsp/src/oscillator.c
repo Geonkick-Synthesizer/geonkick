@@ -226,7 +226,7 @@ gkick_real gkick_osc_value(struct gkick_oscillator *osc,
                 v = amp * gkick_osc_func_sine(osc->phase);
         };
 
-        if (osc->distortion_enabled)
+        if (osc->distortion->enabled)
                 gkick_distortion_val(osc->distortion, v, &v, env_x);
 
         if (osc->filter_enabled)

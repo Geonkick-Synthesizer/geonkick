@@ -115,9 +115,9 @@ class KitModel : public RkObject {
         RkString author() const;
         RkString license() const;
         std::vector<float> instrumentData(PercussionIndex index) const;
+        int percussionId(int index) const;
 
  protected:
-        int percussionId(int index) const;
         void loadModelData();
 
  private:
