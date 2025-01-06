@@ -32,18 +32,19 @@ class InstrumentFilterModel: public FilterModel
 {
  public:
         InstrumentFilterModel(PercussionModel *parent);
-         void enable(bool b);
-         bool isEnabled() const;
-         void setCutOff(double val);
-         double cutOff() const;
-         void setResonance(double val);
-         double resonance() const;
-         void setType(FilterType type);
-         FilterType type() const;
-         void setCutOffRange(const std::pair<double, double>& range);
-         std::pair<double, double> cutOffRange() const;
-         void setResonanceRange(const std::pair<double, double>& range);
-         std::pair<double, double> resonanceRange() const;
+         void enable(bool b) override;
+         bool isEnabled() const override;
+         void setCutOff(double val) override;
+         double cutOff() const override;
+         void setResonance(double val) override;
+         double resonance() const override;
+         void setType(FilterType type) override;
+         FilterType type() const override;
+         void setCutOffRange(const std::pair<double, double>& range) override;
+         std::pair<double, double> cutOffRange() const override;
+         void setResonanceRange(const std::pair<double, double>& range) override;
+         std::pair<double, double> resonanceRange() const override;
+        Envelope::Category envelopeCategory() const override;
 
  private:
         PercussionModel *instrumentModel;

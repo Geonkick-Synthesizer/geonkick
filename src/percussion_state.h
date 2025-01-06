@@ -151,6 +151,15 @@ class PercussionState
 
 private:
         void initOscillators();
+        struct Distortion {
+                bool enabled = false;
+                double in_limiter = 1.0;
+                double drive = 1.0;
+                std::vector<EnvelopePoint> driveEnvelope = {{0, 1}, {1, 1}};
+                double out_limiter = 1.0;
+                std::vector<EnvelopePoint> outLimiterEnvelope = {{0, 1}, {1, 1}};
+        };
+
         struct OscillatorInfo {
               OscillatorInfo()
               : type{GeonkickApi::OscillatorType::Oscillator1}
@@ -185,6 +194,7 @@ private:
                 GeonkickApi::FilterType filterType;
                 double filterFrequency;
                 double filterFactor;
+                Distortion distortion;
                 std::vector<EnvelopePoint> amplitudeEnvelope;
 		GeonkickApi::EnvelopeApplyType frequencyEnvelopeApplyType;
                 std::vector<EnvelopePoint> frequencyEnvelope;
@@ -197,13 +207,6 @@ private:
 
         OscillatorInfo* getOscillator(int index);
         const OscillatorInfo* getConstOscillator(int index) const;
-
-        struct Distortion {
-                bool enabled;
-                double in_limiter;
-                double volume;
-                double drive;
-        };
 
         int appVersion;
         size_t kickId;
@@ -226,8 +229,6 @@ private:
         std::vector<EnvelopePoint> kickFilterCutOffEnvelope;
 	std::vector<EnvelopePoint> kickFilterQFactorEnvelope;
         std::vector<EnvelopePoint> kickEnvelopePoints;
-	std::vector<EnvelopePoint> kickDistortionDriveEnvelope;
-        std::vector<EnvelopePoint> kickDistortionVolumeEnvelope;
         std::unordered_map<int, OscillatorInfo> oscillators;
         Distortion distortion;
         std::vector<bool> layers;

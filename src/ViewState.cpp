@@ -2,7 +2,7 @@
  * File name: ViewState.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -31,7 +31,7 @@ ViewState::ViewState(RkObject *parent)
         , mainView{ViewState::View::Controls}
         , samplesBrowser{"", "", ViewState::Oscillator::Oscillator1}
         , envelopeType{Envelope::Type::Amplitude}
-        , envelopeCategory{Envelope::Category::General}
+        , envelopeCategory{Envelope::Category::InstrumentGlobal}
 {
 }
 
@@ -128,4 +128,3 @@ Envelope::Category ViewState::getEnvelopeCategory() const
 {
         return envelopeCategory;
 }
-

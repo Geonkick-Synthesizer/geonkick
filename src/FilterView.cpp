@@ -55,6 +55,7 @@ RK_DECLARE_IMAGE_RC(fl_qfactor_button_off);
 
 FilterView::FilterView(GeonkickWidget *parent, FilterModel *model)
         : AbstractView(parent, model)
+        , filterModel{static_cast<FilterModel*>(model)}
         , cutOffKnob{nullptr}
         , resonanceKnob{nullptr}
         , lpFilterButton{nullptr}
@@ -79,7 +80,7 @@ void FilterView::createView()
 
         auto cutoffEnvelopeButton = new GeonkickButton(this);
         cutoffEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::FilterCutOff
-                                         && viewState()->getEnvelopeCategory() == envelopeCategory);
+                                         && viewState()->getEnvelopeCategory() == filterModel->envelopeCategory());
         cutoffEnvelopeButton->setFixedSize(63, 21);
         cutoffEnvelopeButton->setPosition(cutOffKnob->x() + cutOffKnob->width() / 2 - cutoffEnvelopeButton->width() / 2,
                                           cutOffKnob->y() + cutOffKnob->height() + 2);
@@ -94,11 +95,11 @@ void FilterView::createView()
         RK_ACT_BIND(cutoffEnvelopeButton,
                     pressed,
                     RK_ACT_ARGS(),
-                    viewState(), setEnvelope(envelopeCategory, Envelope::Type::FilterCutOff));
+                    viewState(), setEnvelope(filterModel->envelopeCategory(), Envelope::Type::FilterCutOff));
         RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     cutoffEnvelopeButton, setPressed(envelope == Envelope::Type::FilterCutOff
-                                                     && category == envelopeCategory));
+                                                     && category == filterModel->envelopeCategory()));
         resonanceKnob = new Knob(this);
 	resonanceKnob->setRangeType(Knob::RangeType::Logarithmic);
         int w = 60;
@@ -111,7 +112,7 @@ void FilterView::createView()
 
 	auto qFactorEnvelopeButton = new GeonkickButton(this);
         qFactorEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::FilterQFactor
-                                         && viewState()->getEnvelopeCategory() == envelopeCategory);
+                                          && viewState()->getEnvelopeCategory() == filterModel->envelopeCategory());
         qFactorEnvelopeButton->setFixedSize(22, 18);
         qFactorEnvelopeButton->setPosition(resonanceKnob->x() + resonanceKnob->width() / 2 - qFactorEnvelopeButton->width() / 2,
                                           resonanceKnob->y() + resonanceKnob->height());
@@ -126,11 +127,11 @@ void FilterView::createView()
         RK_ACT_BIND(qFactorEnvelopeButton,
                     pressed,
                     RK_ACT_ARGS(),
-                    viewState(), setEnvelope(envelopeCategory, Envelope::Type::FilterQFactor));
+                    viewState(), setEnvelope(filterModel->envelopeCategory(), Envelope::Type::FilterQFactor));
         RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     qFactorEnvelopeButton, setPressed(envelope == Envelope::Type::FilterQFactor
-                                                     && category == envelopeCategory));
+                                                     && category == filterModel->envelopeCategory()));
 
         int x = resonanceKnob->x() + resonanceKnob->width() / 2 - (3 * 25 + 8) / 2 ;
         int y = qFactorEnvelopeButton->y() + qFactorEnvelopeButton->height() + 6;
@@ -170,7 +171,6 @@ void FilterView::createView()
 
 void FilterView::updateView()
 {
-        auto filterModel = static_cast<FilterModel*>(getModel());
         cutOffKnob->setCurrentValue(filterModel->cutOff());
         resonanceKnob->setCurrentValue(filterModel->resonance());
         updateTypeButtons();
@@ -178,7 +178,6 @@ void FilterView::updateView()
 
 void FilterView::updateTypeButtons()
 {
-        auto filterModel = static_cast<FilterModel*>(getModel());
         lpFilterButton->setPressed(filterModel->type() == GeonkickApi::FilterType::LowPass);
         hpFilterButton->setPressed(filterModel->type() == GeonkickApi::FilterType::HighPass);
         bpFilterButton->setPressed(filterModel->type() == GeonkickApi::FilterType::BandPass);
@@ -186,7 +185,7 @@ void FilterView::updateTypeButtons()
 
 void FilterView::bindModel()
 {
-        auto filterModel = static_cast<FilterModel*>(getModel());
+        filterModel = static_cast<FilterModel*>(getModel());
         RK_ACT_BIND(cutOffKnob, valueUpdated, RK_ACT_ARGS(double val), filterModel, setCutOff(val));
         RK_ACT_BIND(resonanceKnob, valueUpdated, RK_ACT_ARGS(double val), filterModel, setResonance(val));
         RK_ACT_BIND(lpFilterButton, toggled, RK_ACT_ARGS(bool b), this, onTypeChanged(GeonkickApi::FilterType::LowPass));
@@ -207,7 +206,6 @@ void FilterView::unbindModel()
 
 void FilterView::onTypeChanged(GeonkickApi::FilterType type)
 {
-        auto filterModel = static_cast<FilterModel*>(getModel());
         filterModel->setType(type);
         updateTypeButtons();
 }

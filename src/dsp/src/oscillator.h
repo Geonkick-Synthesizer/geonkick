@@ -41,10 +41,11 @@ enum geonkick_osc_state {
 };
 
 enum gkick_osc_envelope_type {
-        GKICK_OSC_AMPLITUDE_ENVELOPE     = 0,
-        GKICK_OSC_FREQUENCY_ENVELOPE     = 1,
-        GKICK_OSC_PITCH_SHIFT_ENVELOPE   = 2,
-        GKICK_OSC_NOISE_DENSITY_ENVELOPE = 3
+        GKICK_OSC_AMPLITUDE_ENVELOPE        = 0,
+        GKICK_OSC_FREQUENCY_ENVELOPE        = 1,
+        GKICK_OSC_PITCH_SHIFT_ENVELOPE      = 2,
+        GKICK_OSC_NOISE_DENSITY_ENVELOPE    = 3,
+        GKICK_OSC_DISTORTION_DRIVE_ENVELOPE = 4
 };
 
 struct gkick_oscillator {

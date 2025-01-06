@@ -88,3 +88,8 @@ double InstrumentDistortionModel::getDrive() const
 {
         return geonkickApi->getDistortionDrive();
 }
+
+Envelope::Category InstrumentDistortionModel::envelopeCategory() const
+{
+        return Envelope::Category::InstrumentGlobal;
+}

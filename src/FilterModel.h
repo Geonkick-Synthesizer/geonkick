@@ -26,6 +26,7 @@
 
 #include "AbstractModel.h"
 #include "geonkick_api.h"
+#include "envelope.h"
 
 class FilterModel: public AbstractModel
 {
@@ -45,6 +46,7 @@ class FilterModel: public AbstractModel
         virtual std::pair<double, double> cutOffRange() const = 0;
         virtual void setResonanceRange(const std::pair<double, double>& range) = 0;
         virtual std::pair<double, double> resonanceRange() const = 0;
+        virtual Envelope::Category envelopeCategory() const = 0;
 
         RK_DECL_ACT(enabled, enabled(bool b), RK_ARG_TYPE(bool), RK_ARG_VAL(b));
         RK_DECL_ACT(cutOffChanged, cutOffChanged(double val),

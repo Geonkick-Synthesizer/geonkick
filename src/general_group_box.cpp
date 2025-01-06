@@ -82,7 +82,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
 
         auto amplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
         amplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
-                                       && Envelope::Category::General == viewState()->getEnvelopeCategory());
+                                       && Envelope::Category::InstrumentGlobal == viewState()->getEnvelopeCategory());
         amplEnvelopeButton->setFixedSize(63, 21);
         amplEnvelopeButton->setPosition(kickAmplitudeKnob->x() + kickAmplitudeKnob->width() / 2
                                         - amplEnvelopeButton->width() / 2,
@@ -99,11 +99,11 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         RK_ACT_BIND(amplEnvelopeButton,
                     pressed,
                     RK_ACT_ARGS(),
-                    viewState(), setEnvelope(Envelope::Category::General, Envelope::Type::Amplitude));
+                    viewState(), setEnvelope(Envelope::Category::InstrumentGlobal, Envelope::Type::Amplitude));
         RK_ACT_BIND(amplitudeEnvelopeBox->viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     amplEnvelopeButton, setPressed(envelope == Envelope::Type::Amplitude
-                                                   && category == Envelope::Category::General));
+                                                   && category == Envelope::Category::InstrumentGlobal));
 
         kickLengthKnob = new Knob(amplitudeEnvelopeBox);
         kickLengthKnob->setDefaultValue(300);

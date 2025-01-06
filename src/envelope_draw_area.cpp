@@ -108,28 +108,47 @@ std::string EnvelopeWidgetDrawingArea::getEnvStateText() const
 #ifndef GEONKICK_LIMITED_VERSION
         str = "L" + std::to_string(static_cast<int>(geonkickApi->layer()) + 1) + " / ";
 #endif // GEONKICK_SINGLE_VERSION
-        if (currentEnvelope->category() == Envelope::Category::Oscillator1)
+        switch(currentEnvelope->category()) {
+        case Envelope::Category::Oscillator1:
                 str += "OSC1";
-        else if (currentEnvelope->category() == Envelope::Category::Oscillator2)
+                break;
+        case Envelope::Category::Oscillator2:
                 str += "OSC2";
-        else if (currentEnvelope->category() == Envelope::Category::Oscillator3)
+                break;
+        case Envelope::Category::Oscillator3:
                 str += "OSC3";
-        else
+                break;
+        case Envelope::Category::InstrumentGlobal:
                 str += "GEN";
+                break;
+        default:
+                break;
+        }
 
         str += " / ";
-        if (currentEnvelope->type() == Envelope::Type::Amplitude)
+
+        switch (currentEnvelope->type()) {
+        case Envelope::Type::Amplitude:
                 str += "AENV";
-        else if (currentEnvelope->type() == Envelope::Type::Frequency)
+                break;
+        case Envelope::Type::Frequency:
                 str += "FENV";
-        else if (currentEnvelope->type() == Envelope::Type::DistortionDrive)
+                break;
+        case Envelope::Type::DistortionDrive:
                 str += "DIST / DRIVE";
-        else if (currentEnvelope->type() == Envelope::Type::DistortionVolume)
+                break;
+        case Envelope::Type::DistortionVolume:
                 str += "DIST / VOL";
-        else if (currentEnvelope->type() == Envelope::Type::FilterCutOff)
-		str += "CFENV";
-	else if (currentEnvelope->type() == Envelope::Type::FilterQFactor)
-		str += "QENV";
+                break;
+        case Envelope::Type::FilterCutOff:
+                str += "CFENV";
+                break;
+        case Envelope::Type::FilterQFactor:
+                str += "QENV";
+                break;
+        default:
+                break;
+        }
 
         return str;
 }

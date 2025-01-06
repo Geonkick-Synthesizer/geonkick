@@ -91,3 +91,20 @@ std::pair<double, double> OscillatorFilterModel::resonanceRange() const
 {
         return {};
 }
+
+Envelope::Category OscillatorFilterModel::envelopeCategory() const
+{
+        switch(oscillatorModel->type()) {
+        case Oscillator::Type::Oscillator1:
+                return Envelope::Category::Oscillator1;
+                break;
+        case Oscillator::Type::Oscillator2:
+                return Envelope::Category::Oscillator2;
+                break;
+        case Oscillator::Type::Oscillator3:
+                return Envelope::Category::Oscillator3;
+                break;
+        default:
+                return Envelope::Category::Oscillator1;
+        }
+}

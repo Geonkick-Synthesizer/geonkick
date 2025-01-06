@@ -26,6 +26,7 @@
 
 #include "AbstractModel.h"
 #include "geonkick_api.h"
+#include "envelope.h"
 
 class DistortionModel: public AbstractModel
 {
@@ -43,6 +44,7 @@ class DistortionModel: public AbstractModel
         virtual double getOutLimiter() const = 0;
         virtual void setDrive(double drive) = 0;
         virtual double getDrive() const = 0;
+        virtual Envelope::Category envelopeCategory() const = 0;
 
         RK_DECL_ACT(enabled,
                     enabled(bool b),

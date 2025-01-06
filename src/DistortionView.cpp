@@ -26,6 +26,7 @@
 #include "knob.h"
 #include "geonkick_button.h"
 #include "RkLabel.h"
+#include "ViewState.h"
 
 RK_DECLARE_IMAGE_RC(effect_view_bk);
 RK_DECLARE_IMAGE_RC(knob);
@@ -58,6 +59,7 @@ RK_DECLARE_IMAGE_RC(distortion_out_label);
 
 DistortionView::DistortionView(GeonkickWidget* parent, DistortionModel *model)
         : AbstractView(parent, model)
+        , distortionModel{static_cast<DistortionModel*>(model)}
         , inLimiter{nullptr}
         , outLimiter{nullptr}
         , driveKnob{nullptr}
@@ -76,7 +78,7 @@ DistortionView::DistortionView(GeonkickWidget* parent, DistortionModel *model)
 
 void DistortionView::bindModel()
 {
-        auto distortionModel = static_cast<DistortionModel*>(getModel());
+        distortionModel = static_cast<DistortionModel*>(getModel());
         RK_ACT_BIND(distortionModel,
                     distortionTypeChanged,
                     RK_ACT_ARGS(DistortionType type),
@@ -300,12 +302,21 @@ void DistortionView::createView()
                                         RkButton::State::PressedHover);
         driveEnvelopeButton->setImage(RkImage(driveEnvelopeButton->size(), RK_IMAGE_RC(distortion_drive_env_hover)),
         RkButton::State::UnpressedHover);
+
+        RK_ACT_BIND(driveEnvelopeButton,
+                    pressed,
+                    RK_ACT_ARGS(),
+                    viewState(), setEnvelope(distortionModel->envelopeCategory(), Envelope::Type::DistortionDrive));
+        RK_ACT_BIND(viewState(), envelopeChanged,
+                    RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
+                    driveEnvelopeButton, setPressed(envelope == Envelope::Type::DistortionDrive
+                                                    && category == distortionModel->envelopeCategory()));
+
         updateView();
 }
 
 void DistortionView::updateView()
 {
-        auto distortionModel = static_cast<DistortionModel*>(getModel());
         onSetDistortionType(distortionModel->getDistortionType());
         inLimiter->setCurrentValue(distortionModel->getInLimiter());
         outLimiter->setCurrentValue(distortionModel->getOutLimiter());

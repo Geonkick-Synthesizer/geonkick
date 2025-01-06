@@ -25,6 +25,7 @@
 #define OSCILLATOR_DISTORTION_MODEL_H
 
 #include "DistortionModel.h"
+#include "envelope.h"
 
 class Oscillator;
 
@@ -42,6 +43,7 @@ class OscillatorDistortionModel: public DistortionModel
         double getOutLimiter() const override;
         void setDrive(double drive) override;
         double getDrive() const override;
+        Envelope::Category envelopeCategory() const override;
 
  private:
         Oscillator *oscillatorModel;

@@ -29,8 +29,6 @@ OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
         : Envelope(area)
         , oscillator{osc}
 {
-	removeSupportedType(Envelope::Type::DistortionDrive);
-        removeSupportedType(Envelope::Type::DistortionVolume);
         setType(Envelope::Type::Amplitude);
         setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
 }

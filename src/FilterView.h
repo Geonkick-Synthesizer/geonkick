@@ -47,12 +47,12 @@ class FilterView: public AbstractView
         void updateTypeButtons();
 
  private:
+        FilterModel *filterModel;
         Knob *cutOffKnob;
         Knob *resonanceKnob;
         GeonkickButton *lpFilterButton;
         GeonkickButton *hpFilterButton;
         GeonkickButton *bpFilterButton;
-        Envelope::Category envelopeCategory;
 };
 
 #endif // GEONKICK_FILTER_VIEW_H

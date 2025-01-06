@@ -46,7 +46,6 @@ PercussionState::PercussionState()
         , kickFilterQFactor{1.0}
         , kickFilterType{GeonkickApi::FilterType::LowPass}
 	, kickCutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
-        , distortion{false, 1.0, 1.0, 1.0}
         , layers(GeonkickApi::numberOfLayers(), false)
         , layersAmplitude{1.0, 1.0, 1.0}
         , currentLayer{GeonkickApi::Layer::Layer1}
@@ -581,9 +580,9 @@ PercussionState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
 	case GeonkickApi::EnvelopeType::FilterQFactor:
 		return kickFilterQFactorEnvelope;
 	case GeonkickApi::EnvelopeType::DistortionDrive:
-		return kickDistortionDriveEnvelope;
+		return distortion->driveEnvelope;
 	case GeonkickApi::EnvelopeType::DistortionVolume:
-		return kickDistortionVolumeEnvelope;
+		return distortion->outLimiterEnvelope;
 	default:
 		return {};
 	}
@@ -717,6 +716,9 @@ void PercussionState::setOscillatorEnvelopePoints(int index,
                         break;
 		case GeonkickApi::EnvelopeType::FilterQFactor:
                         oscillator->filterQFactorEnvelope = points;
+                        break;
+                case GeonkickApi::EnvelopeType::DistortionDrive:
+                        oscillator->distortionDriveEnvelope = points;
                         break;
                 default:
                         return;
@@ -889,6 +891,8 @@ PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType t
                         return oscillator->filterCutOffEnvelope;
 		case GeonkickApi::EnvelopeType::FilterQFactor:
                         return oscillator->filterQFactorEnvelope;
+                case GeonkickApi::EnvelopeType::FilterQFactor:
+                        return oscillator->distoritonDriveEnvelope;
                 default:
                         return {};
                 }
@@ -913,7 +917,7 @@ void PercussionState::setDistortionInLimiter(double limit)
 
 void PercussionState::setDistortionOutLimiter(double volume)
 {
-        distortion.volume = volume;
+        distortion.out_limiter = volume;
 }
 
 void PercussionState::setDistortionDrive(double drive)
@@ -928,7 +932,7 @@ double PercussionState::getDistortionInLimiter() const
 
 double PercussionState::getDistortionOutLimiter() const
 {
-        return distortion.volume;
+        return distortion.out_limiter;
 }
 
 double PercussionState::getDistortionDrive() const
@@ -1002,6 +1006,13 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                                "noise_density_env",
                                val.second.noiseDensity,
                                val.second.noiseDensityEnvelope);
+                jsonStream << "," << std::endl;
+                jsonStream << "\"distortion\": {" << std::endl;
+                jsonStream << "\"enabled\": " (val.second. ? "true" : "false");
+                envelopeToJson(jsonStream, "drive_env",
+                               val.second.distortion.drive,
+                               val.second.distortion.driveEnvelope);
+                jsonStream << "}" << std::endl;  // distortion;
                 jsonStream << "," << std::endl;
                 jsonStream << "\"filter\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second.isFilterEnabled ? "true" : "false");

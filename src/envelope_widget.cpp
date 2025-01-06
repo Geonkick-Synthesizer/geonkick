@@ -78,13 +78,13 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
 
         // General envelope
         auto generalEnvelope = std::make_unique<GeneralEnvelope>(geonkickApi, rect);
-        generalEnvelope->setCategory(Envelope::Category::General);
-        envelopes.insert({static_cast<int>(Envelope::Category::General),
+        generalEnvelope->setCategory(Envelope::Category::InstrumentGlobal);
+        envelopes.insert({static_cast<int>(Envelope::Category::InstrumentGlobal),
                         std::move(generalEnvelope)});
 #ifndef GEONKICK_LIMITED_VERSION
         createButtomMenu();
 #endif // GEONKICK_LIMITED_VERSION
-        showEnvelope(Envelope::Category::General, Envelope::Type::Amplitude);
+        showEnvelope(Envelope::Category::InstrumentGlobal, Envelope::Type::Amplitude);
         RK_ACT_BIND(viewState(), envelopeChanged,
                     RK_ACT_ARGS(Envelope::Category category, Envelope::Type envelope),
                     this, showEnvelope(category, envelope));

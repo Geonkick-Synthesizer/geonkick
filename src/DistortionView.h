@@ -47,6 +47,7 @@ protected:
         void onSetDrive(double value);
 
 private:
+        DistortionModel* distortionModel;
         Knob* inLimiter;
         Knob* outLimiter;
         Knob* driveKnob;

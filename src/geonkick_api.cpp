@@ -213,6 +213,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                                                               GeonkickApi::EnvelopeApplyType::Logarithmic);
                         state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::Frequency);
                         state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::PitchShift);
+                        state->setOscillatorEnvelopePoints(index, envelope, GeonkickApi::EnvelopeType::DistortionDrive);
                         std::vector<EnvelopePoint> env = envelope;
                         env[0].setY(0.5);
                         env[1].setY(0.5);
@@ -446,6 +447,8 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
                                    state->oscillatorEnvelopePoints(osc, EnvelopeType::FilterCutOff));
 	setOscillatorEvelopePoints(osc, EnvelopeType::FilterQFactor,
                                    state->oscillatorEnvelopePoints(osc, EnvelopeType::FilterQFactor));
+        setOscillatorEvelopePoints(osc, EnvelopeType::DistortionDrive,
+                                   state->oscillatorEnvelopePoints(osc, EnvelopeType::DistortionDrive));
         setOscillatorAsFm(osc, state->isOscillatorAsFm(osc));
         currentLayer = temp;
 }

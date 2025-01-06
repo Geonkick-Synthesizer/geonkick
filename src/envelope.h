@@ -48,7 +48,7 @@ class Envelope : public RkObject
                 Oscillator1 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator1),
                 Oscillator2 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator2),
                 Oscillator3 = static_cast<int>(GeonkickApi::OscillatorType::Oscillator3),
-                General
+                InstrumentGlobal
         };
 
         explicit Envelope(const RkRect &area = RkRect());

@@ -44,6 +44,7 @@ class OscillatorFilterModel: public FilterModel
         std::pair<double, double> cutOffRange() const override;
         void setResonanceRange(const std::pair<double, double>& range) override;
         std::pair<double, double> resonanceRange() const override;
+        Envelope::Category envelopeCategory() const override;
 
  private:
         Oscillator *oscillatorModel;

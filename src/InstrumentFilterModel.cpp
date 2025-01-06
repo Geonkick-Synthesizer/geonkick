@@ -95,3 +95,8 @@ std::pair<double, double> InstrumentFilterModel::resonanceRange() const
 {
         return {};
 }
+
+Envelope::Category InstrumentFilterModel::envelopeCategory() const
+{
+        return Envelope::Category::InstrumentGlobal;
+}

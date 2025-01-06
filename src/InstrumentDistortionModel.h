@@ -43,6 +43,7 @@ class InstrumentDistortionModel: public DistortionModel
         double getOutLimiter() const override;
         void setDrive(double drive) override;
         double getDrive() const override;
+        Envelope::Category envelopeCategory() const;
 
  private:
         PercussionModel *instrumentModel;
