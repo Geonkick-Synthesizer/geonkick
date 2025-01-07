@@ -84,8 +84,6 @@ void GeonkickApi::setEventQueue(RkEventQueue *queue)
 {
         std::lock_guard<std::mutex> lock(apiMutex);
         eventQueue = queue;
-        //        if (eventQueue)
-        //                eventQueue->setScaleFactor(getScaleFactor());
 }
 
 bool GeonkickApi::initDSP()
@@ -180,6 +178,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 	state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive, envelope);
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume, envelope);
         state->enableDistortion(false);
+        state->setDistortionType(DistortionType::SoftClippingTan);
         state->setDistortionOutLimiter(0.1);
         state->setDistortionInLimiter(1.0);
         state->setDistortionDrive(1.0);
@@ -227,6 +226,12 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
 			state->setOscillatorEnvelopeApplyType(index,
 							      GeonkickApi::EnvelopeType::FilterCutOff,
 							      GeonkickApi::EnvelopeApplyType::Logarithmic);
+                        state->setOscillatorEnvelopePoints(index, envelope, EnvelopeType::DistortionDrive);
+                        state->setOscDistortionEnabled(index, false);
+                        state->setOscDistortionType(index, DistortionType::SoftClippingTan);
+                        state->setOscDistortionOutLimiter(index, 1.0);
+                        state->setOscDistortionInLimiter(index, 1.0);
+                        state->setOscDistortionDrive(index, 1.0);
                 }
         }
 
@@ -281,6 +286,7 @@ void GeonkickApi::setPercussionState(const std::unique_ptr<PercussionState> &sta
                 setOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator3, state);
         }
         enableDistortion(state->isDistortionEnabled());
+        setDistortionType(state->getDistortionType());
         setDistortionInLimiter(state->getDistortionInLimiter());
         setDistortionOutLimiter(state->getDistortionOutLimiter());
         setDistortionDrive(state->getDistortionDrive());
@@ -402,6 +408,15 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
 	points = oscillatorEvelopePoints(index, GeonkickApi::EnvelopeType::FilterQFactor);
         state->setOscillatorEnvelopePoints(index, points, GeonkickApi::EnvelopeType::FilterQFactor);
         state->setOscillatorAsFm(index, isOscillatorAsFm(index));
+
+        // Distortion
+        points = oscillatorEvelopePoints(index, EnvelopeType::DistortionDrive);
+        state->setOscillatorEnvelopePoints(index, points, EnvelopeType::DistortionDrive);
+        state->setOscDistortionEnabled(index, isOscDistortionEnabled(index));
+        state->setOscDistortionOutLimiter(index, getOscDistortionOutLimiter(index));
+        state->setOscDistortionInLimiter(index, getOscDistortionInLimiter(index));
+        state->setOscDistortionDrive(index, getOscDistortionDrive(index));
+
         currentLayer = temp;
 }
 
@@ -449,6 +464,11 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
                                    state->oscillatorEnvelopePoints(osc, EnvelopeType::FilterQFactor));
         setOscillatorEvelopePoints(osc, EnvelopeType::DistortionDrive,
                                    state->oscillatorEnvelopePoints(osc, EnvelopeType::DistortionDrive));
+        oscEnableDistortion(osc, state->isOscDistortionEnabled(osc));
+        setOscDistortionType(osc, state->getOscDistortionType(osc));
+        setOscDistortionInLimiter(osc, state->getOscDistortionInLimiter(osc));
+        setOscDistortionOutLimiter(osc, state->getOscDistortionOutLimiter(osc));
+        setOscDistortionDrive(osc, state->getOscDistortionDrive(osc));
         setOscillatorAsFm(osc, state->isOscillatorAsFm(osc));
         currentLayer = temp;
 }
@@ -1029,8 +1049,6 @@ GeonkickApi::DistortionType GeonkickApi::getOscDistortionType(int oscillatorInde
 
 bool GeonkickApi::setOscDistortionType(int oscillatorIndex, DistortionType type)
 {
-        auto t = static_cast<enum gkick_distortion_type>(type);
-        GEONKICK_LOG_INFO("type: " << static_cast<int>(type) << "| " << static_cast<int>(t));
         auto res = geonkick_osc_distortion_set_type(geonkickApi,
                                                     getOscIndex(oscillatorIndex),
                                                     static_cast<enum gkick_distortion_type>(type));

@@ -32,9 +32,68 @@
 
 #include <unordered_map>
 
+struct DistortionInfo {
+        using DistortionType = GeonkickApi::DistortionType;
+        bool toJson(std::ostringstream &jsonStream) const;
+        bool fromObject(const auto& obj);
+        bool enabled = false;
+        DistortionType type = DistortionType::SoftClippingTan;
+        double in_limiter = 1.0;
+        double drive = 1.0;
+        std::vector<EnvelopePoint> driveEnvelope = {{0, 1}, {1, 1}};
+        double out_limiter = 1.0;
+        std::vector<EnvelopePoint> outLimiterEnvelope = {{0, 1}, {1, 1}};
+};
+
+struct OscillatorInfo {
+        OscillatorInfo()
+                : type{GeonkickApi::OscillatorType::Oscillator1}
+                , isEnabled{false}
+                , isFm{false}
+                , function{GeonkickApi::FunctionType::Sine}
+                , phase{0}
+                , seed{0}
+                , amplitude{0.8}
+                , frequency{200}
+                , pitchShift{0}
+                , noiseDensity{1.0}
+                , isFilterEnabled{false}
+                , filterType{GeonkickApi::FilterType::LowPass}
+                , filterFrequency{200}
+                , filterFactor{1.0}
+	        , frequencyEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
+	        , cutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
+                , noiseDensityEnvelope{{0, 1}, {1, 1}} {}
+        GeonkickApi::OscillatorType type;
+        std::vector<float> sample;
+        bool isEnabled;
+        bool isFm;
+        GeonkickApi::FunctionType function;
+        double phase;
+        int seed;
+        double amplitude;
+        double frequency;
+        double pitchShift;
+        double noiseDensity;
+        bool isFilterEnabled;
+        GeonkickApi::FilterType filterType;
+        double filterFrequency;
+        double filterFactor;
+        DistortionInfo distortion;
+        std::vector<EnvelopePoint> amplitudeEnvelope;
+        GeonkickApi::EnvelopeApplyType frequencyEnvelopeApplyType;
+        std::vector<EnvelopePoint> frequencyEnvelope;
+        GeonkickApi::EnvelopeApplyType cutOffEnvelopeApplyType;
+        std::vector<EnvelopePoint> filterCutOffEnvelope;
+        std::vector<EnvelopePoint> filterQFactorEnvelope;
+        std::vector<EnvelopePoint> pitchShiftEnvelope;
+        std::vector<EnvelopePoint> noiseDensityEnvelope;
+};
+
 class PercussionState
 {
  public:
+        using DistortionType = DistortionInfo::DistortionType;
         PercussionState();
         bool loadFile(const std::string &file);
         bool loadData(const std::string &data);
@@ -116,8 +175,20 @@ class PercussionState
         void setOscillatorSample(int oscillatorIndex,
                                  const std::vector<float> &sample);
         std::vector<float> getOscillatorSample(int oscillatorIndex) const;
+        void setOscDistortionEnabled(int index, bool b = true);
+        void setOscDistortionType(int index, DistortionType type);
+        void setOscDistortionInLimiter(int index, double val);
+        void setOscDistortionOutLimiter(int index, double val);
+        void setOscDistortionDrive(int index, double val);
+        bool isOscDistortionEnabled(int index) const;
+        DistortionType getOscDistortionType(int index) const;
+        double getOscDistortionInLimiter(int index) const;
+        double getOscDistortionOutLimiter(int index) const;
+        double getOscDistortionDrive(int index) const;
         void enableDistortion(bool enable);
         bool isDistortionEnabled() const;
+        void setDistortionType(DistortionType type);
+        DistortionType getDistortionType() const;
         void setDistortionOutLimiter(double volume);
         void setDistortionInLimiter(double limit);
         void setDistortionDrive(double drive);
@@ -135,11 +206,11 @@ class PercussionState
         static std::vector<float> fromBase64F(const std::string &str);
         static std::string toBase64F(const std::vector<float> &data);
         bool save(const std::string &fileName);
+        static std::vector<EnvelopePoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
 
  protected:
         void parseKickObject(const rapidjson::Value &kick);
         void parseOscillatorObject(int index,  const rapidjson::Value &osc);
-        static std::vector<EnvelopePoint> parseEnvelopeArray(const rapidjson::Value &envelopeArray);
         static void envelopeToJson(std::ostringstream &jsonStream,
                                    const std::string &envName,
                                    double amplitude,
@@ -151,60 +222,6 @@ class PercussionState
 
 private:
         void initOscillators();
-        struct Distortion {
-                bool enabled = false;
-                double in_limiter = 1.0;
-                double drive = 1.0;
-                std::vector<EnvelopePoint> driveEnvelope = {{0, 1}, {1, 1}};
-                double out_limiter = 1.0;
-                std::vector<EnvelopePoint> outLimiterEnvelope = {{0, 1}, {1, 1}};
-        };
-
-        struct OscillatorInfo {
-              OscillatorInfo()
-              : type{GeonkickApi::OscillatorType::Oscillator1}
-                , isEnabled{false}
-                , isFm{false}
-                , function{GeonkickApi::FunctionType::Sine}
-                , phase{0}
-                , seed{0}
-                , amplitude{0.8}
-                , frequency{200}
-                , pitchShift{0}
-                , noiseDensity{1.0}
-                , isFilterEnabled{false}
-                , filterType{GeonkickApi::FilterType::LowPass}
-                , filterFrequency{200}
-                , filterFactor{1.0}
-	        , frequencyEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
-	        , cutOffEnvelopeApplyType{GeonkickApi::EnvelopeApplyType::Logarithmic}
-                , noiseDensityEnvelope{{0, 1}, {1, 1}} {}
-                GeonkickApi::OscillatorType type;
-                std::vector<float> sample;
-                bool isEnabled;
-                bool isFm;
-                GeonkickApi::FunctionType function;
-                double phase;
-                int seed;
-                double amplitude;
-                double frequency;
-                double pitchShift;
-                double noiseDensity;
-                bool isFilterEnabled;
-                GeonkickApi::FilterType filterType;
-                double filterFrequency;
-                double filterFactor;
-                Distortion distortion;
-                std::vector<EnvelopePoint> amplitudeEnvelope;
-		GeonkickApi::EnvelopeApplyType frequencyEnvelopeApplyType;
-                std::vector<EnvelopePoint> frequencyEnvelope;
-		GeonkickApi::EnvelopeApplyType cutOffEnvelopeApplyType;
-                std::vector<EnvelopePoint> filterCutOffEnvelope;
-		std::vector<EnvelopePoint> filterQFactorEnvelope;
-                std::vector<EnvelopePoint> pitchShiftEnvelope;
-                std::vector<EnvelopePoint> noiseDensityEnvelope;
-        };
-
         OscillatorInfo* getOscillator(int index);
         const OscillatorInfo* getConstOscillator(int index) const;
 
@@ -230,7 +247,7 @@ private:
 	std::vector<EnvelopePoint> kickFilterQFactorEnvelope;
         std::vector<EnvelopePoint> kickEnvelopePoints;
         std::unordered_map<int, OscillatorInfo> oscillators;
-        Distortion distortion;
+        DistortionInfo instrumentDistortion;
         std::vector<bool> layers;
         std::vector<double> layersAmplitude;
         GeonkickApi::Layer currentLayer;

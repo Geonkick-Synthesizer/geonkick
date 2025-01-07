@@ -27,6 +27,69 @@
 #include <iomanip>
 #include <algorithm>
 
+bool DistortionInfo::toJson(std::ostringstream &jsonStream) const
+{
+        jsonStream << "\"distortion\": {" << std::endl;
+        jsonStream << "\"enabled\": " << (enabled ? "true" : "false") << ", " << std::endl;
+        jsonStream << "\"type\": " << static_cast<int>(type) << ", " << std::endl;
+        jsonStream << "\"in_limiter\": "
+                   << in_limiter  << ", " << std::endl;
+        jsonStream << "\"volume\": "
+                   << out_limiter  << ", " << std::endl;
+        jsonStream << "\"drive\": "
+                   << drive << ", " << std::endl;
+	jsonStream << "\"drive_env\": [" << std::endl;
+        bool first = true;
+        for (const auto &point: driveEnvelope) {
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ "  << point.x()
+                           << " , "  << point.y()
+                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
+        }
+        jsonStream << "], " << std::endl;
+        jsonStream << "\"volume_env\": [" << std::endl;
+        first = true;
+        for (const auto &point: outLimiterEnvelope) {
+                if (first)
+                        first = false;
+                else
+                        jsonStream << ", ";
+                jsonStream << "[ "  << point.x()
+                           << " , " << point.y()
+                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
+        }
+	jsonStream << "]" << std::endl;
+        jsonStream << "}" << std::endl;
+        return true;
+}
+
+bool DistortionInfo::fromObject(const auto& obj)
+{
+        if (obj.name != "distortion" || !obj.value.IsObject() )
+                return false;
+        for (const auto &el: obj.value.GetObject()) {
+                if (el.name == "enabled" && el.value.IsBool())
+                        enabled = el.value.GetBool();
+                if (el.name == "type" && el.value.IsInt())
+                        type = static_cast<DistortionInfo::DistortionType>(el.value.GetInt());
+                if (el.name == "in_limiter" && el.value.IsDouble())
+                        in_limiter = el.value.GetDouble();
+                if (el.name == "volume" && el.value.IsDouble())
+                        out_limiter = el.value.GetDouble();
+                if (el.name == "drive" && el.value.IsDouble())
+                        drive = el.value.GetDouble();
+                if (el.name == "drive_env" && el.value.IsArray())
+                        driveEnvelope = PercussionState::parseEnvelopeArray(el.value);
+                if (el.name == "volume_env" && el.value.IsArray())
+                        outLimiterEnvelope = PercussionState::parseEnvelopeArray(el.value);
+
+        }
+        return true;
+}
+
 PercussionState::PercussionState()
         : appVersion{GEONKICK_VERSION}
         , kickId{0}
@@ -328,32 +391,17 @@ void PercussionState::parseKickObject(const rapidjson::Value &kick)
                         }
 			setKickEnvelopeApplyType(GeonkickApi::EnvelopeType::FilterCutOff, applyType);
                 }
-
-                if (m.name == "distortion" && m.value.IsObject()) {
-                        for (const auto &el: m.value.GetObject()) {
-                                if (el.name == "enabled" && el.value.IsBool())
-                                        enableDistortion(el.value.GetBool());
-                                if (el.name == "in_limiter" && el.value.IsDouble())
-                                        setDistortionInLimiter(el.value.GetDouble());
-                                if (el.name == "volume" && el.value.IsDouble())
-                                        setDistortionOutLimiter(el.value.GetDouble());
-                                if (el.name == "drive" && el.value.IsDouble())
-                                        setDistortionDrive(el.value.GetDouble());
-				if (el.name == "drive_env" && el.value.IsArray())
-					setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive,
-							      parseEnvelopeArray(el.value));
-                                if (el.name == "volume_env" && el.value.IsArray())
-					setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume,
-							      parseEnvelopeArray(el.value));
-
-                        }
-                }
+                instrumentDistortion.fromObject(m);
         }
 }
 
 void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &osc)
 {
         if (osc.IsNull() || !osc.IsObject())
+                return;
+
+        auto instrumentOsc = getOscillator(index);
+        if (!instrumentOsc)
                 return;
 
         for (const auto &m: osc.GetObject()) {
@@ -441,6 +489,7 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
 						       GeonkickApi::EnvelopeType::FilterCutOff,
 						       applyType);
                 }
+                instrumentOsc->distortion.fromObject(m);
         }
 }
 
@@ -507,10 +556,10 @@ void PercussionState::setKickEnvelopePoints(GeonkickApi::EnvelopeType envelope,
                 kickFilterQFactorEnvelope = points;
 		break;
 	case GeonkickApi::EnvelopeType::DistortionDrive:
-		kickDistortionDriveEnvelope = points;
+		instrumentDistortion.driveEnvelope = points;
 		break;
 	case GeonkickApi::EnvelopeType::DistortionVolume:
-		kickDistortionVolumeEnvelope = points;
+		instrumentDistortion.outLimiterEnvelope = points;
 		break;
 	default:
 		break;
@@ -580,15 +629,15 @@ PercussionState::getKickEnvelopePoints(GeonkickApi::EnvelopeType envelope) const
 	case GeonkickApi::EnvelopeType::FilterQFactor:
 		return kickFilterQFactorEnvelope;
 	case GeonkickApi::EnvelopeType::DistortionDrive:
-		return distortion->driveEnvelope;
+		return instrumentDistortion.driveEnvelope;
 	case GeonkickApi::EnvelopeType::DistortionVolume:
-		return distortion->outLimiterEnvelope;
+		return instrumentDistortion.outLimiterEnvelope;
 	default:
 		return {};
 	}
 }
 
-PercussionState::OscillatorInfo*
+OscillatorInfo*
 PercussionState::getOscillator(int index)
 {
         index += GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);
@@ -599,7 +648,7 @@ PercussionState::getOscillator(int index)
         return nullptr;
 }
 
-const PercussionState::OscillatorInfo*
+const OscillatorInfo*
 PercussionState::getConstOscillator(int index) const
 {
         index += GKICK_OSC_GROUP_SIZE * static_cast<int>(currentLayer);
@@ -718,7 +767,7 @@ void PercussionState::setOscillatorEnvelopePoints(int index,
                         oscillator->filterQFactorEnvelope = points;
                         break;
                 case GeonkickApi::EnvelopeType::DistortionDrive:
-                        oscillator->distortionDriveEnvelope = points;
+                        oscillator->distortion.driveEnvelope = points;
                         break;
                 default:
                         return;
@@ -891,8 +940,8 @@ PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType t
                         return oscillator->filterCutOffEnvelope;
 		case GeonkickApi::EnvelopeType::FilterQFactor:
                         return oscillator->filterQFactorEnvelope;
-                case GeonkickApi::EnvelopeType::FilterQFactor:
-                        return oscillator->distoritonDriveEnvelope;
+                case GeonkickApi::EnvelopeType::DistortionDrive:
+                        return oscillator->distortion.driveEnvelope;
                 default:
                         return {};
                 }
@@ -900,44 +949,131 @@ PercussionState::oscillatorEnvelopePoints(int index, GeonkickApi::EnvelopeType t
         return {};
 }
 
+void PercussionState::setOscDistortionEnabled(int index, bool b)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->distortion.enabled = b;
+}
+
+void PercussionState::setOscDistortionInLimiter(int index, double val)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->distortion.in_limiter = val;
+}
+
+void PercussionState::setOscDistortionOutLimiter(int index, double val)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->distortion.out_limiter = val;
+}
+
+void PercussionState::setOscDistortionDrive(int index, double val)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->distortion.drive = val;
+}
+
+bool PercussionState::isOscDistortionEnabled(int index) const
+{
+        const auto oscillator = getConstOscillator(index);
+        if (oscillator)
+                return oscillator->distortion.enabled;
+        return false;
+}
+
+void PercussionState::setOscDistortionType(int index, DistortionType type)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->distortion.type = type;
+}
+
+PercussionState::DistortionType
+PercussionState::getOscDistortionType(int index) const
+{
+        const auto oscillator = getConstOscillator(index);
+        if (oscillator)
+                return oscillator->distortion.type;
+        return DistortionType::SoftClippingTan;
+}
+
+double PercussionState::getOscDistortionInLimiter(int index) const
+{
+        const auto oscillator = getConstOscillator(index);
+        if (oscillator)
+                return oscillator->distortion.in_limiter;
+        return 0.0;
+}
+
+double PercussionState::getOscDistortionOutLimiter(int index) const
+{
+        const auto oscillator = getConstOscillator(index);
+        if (oscillator)
+                return oscillator->distortion.out_limiter;
+        return 0.0;
+}
+
+double PercussionState::getOscDistortionDrive(int index) const
+{
+        const auto oscillator = getConstOscillator(index);
+        if (oscillator)
+                return oscillator->distortion.drive;
+        return 0.0;
+}
+
 void PercussionState::enableDistortion(bool enable)
 {
-        distortion.enabled = enable;
+        instrumentDistortion.enabled = enable;
 }
 
 bool PercussionState::isDistortionEnabled() const
 {
-        return distortion.enabled;
+        return instrumentDistortion.enabled;
+}
+
+void PercussionState::setDistortionType(DistortionType type)
+{
+        instrumentDistortion.type = type;
+}
+
+PercussionState::DistortionType
+PercussionState::getDistortionType() const
+{
+        return instrumentDistortion.type;
 }
 
 void PercussionState::setDistortionInLimiter(double limit)
 {
-        distortion.in_limiter = limit;
+        instrumentDistortion.in_limiter = limit;
 }
 
 void PercussionState::setDistortionOutLimiter(double volume)
 {
-        distortion.out_limiter = volume;
+        instrumentDistortion.out_limiter = volume;
 }
 
 void PercussionState::setDistortionDrive(double drive)
 {
-        distortion.drive = drive;
+        instrumentDistortion.drive = drive;
 }
 
 double PercussionState::getDistortionInLimiter() const
 {
-        return distortion.in_limiter;
+        return instrumentDistortion.in_limiter;
 }
 
 double PercussionState::getDistortionOutLimiter() const
 {
-        return distortion.out_limiter;
+        return instrumentDistortion.out_limiter;
 }
 
 double PercussionState::getDistortionDrive() const
 {
-        return distortion.drive;
+        return instrumentDistortion.drive;
 }
 
 std::string PercussionState::toJson() const
@@ -1007,12 +1143,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                                val.second.noiseDensity,
                                val.second.noiseDensityEnvelope);
                 jsonStream << "," << std::endl;
-                jsonStream << "\"distortion\": {" << std::endl;
-                jsonStream << "\"enabled\": " (val.second. ? "true" : "false");
-                envelopeToJson(jsonStream, "drive_env",
-                               val.second.distortion.drive,
-                               val.second.distortion.driveEnvelope);
-                jsonStream << "}" << std::endl;  // distortion;
+                val.second.distortion.toJson(jsonStream);
                 jsonStream << "," << std::endl;
                 jsonStream << "\"filter\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second.isFilterEnabled ? "true" : "false");
@@ -1147,41 +1278,7 @@ void PercussionState::kickJson(std::ostringstream &jsonStream) const
         }
         jsonStream << "]" << std::endl; // points
         jsonStream << "}, " << std::endl;  // filter;
-        jsonStream << "\"distortion\": {" << std::endl;
-        jsonStream << "\"enabled\": " << (isDistortionEnabled() ? "true" : "false") << ", " << std::endl;
-        jsonStream << "\"in_limiter\": "
-                   << getDistortionInLimiter()  << ", " << std::endl;
-        jsonStream << "\"volume\": "
-                   << getDistortionOutLimiter()  << ", " << std::endl;
-        jsonStream << "\"drive\": "
-                   << getDistortionDrive() << ", " << std::endl;
-	jsonStream << "\"drive_env\": [" << std::endl;
-	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionDrive);
-        first = true;
-        for (const auto &point: points) {
-                if (first)
-                        first = false;
-                else
-                        jsonStream << ", ";
-                jsonStream << "[ "  << point.x()
-                           << " , "  << point.y()
-                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
-        }
-        jsonStream << "], " << std::endl;
-        jsonStream << "\"volume_env\": [" << std::endl;
-	points = getKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume);
-        first = true;
-        for (const auto &point: points) {
-                if (first)
-                        first = false;
-                else
-                        jsonStream << ", ";
-                jsonStream << "[ "  << point.x()
-                           << " , " << point.y()
-                           << ", " << (point.isControlPoint() ? "true" : "false") << "]";
-        }
-	jsonStream << "]" << std::endl;
-        jsonStream << "}" << std::endl; // distortion
+        instrumentDistortion.toJson(jsonStream);
         jsonStream << "}" << std::endl; // kick
 }
 
