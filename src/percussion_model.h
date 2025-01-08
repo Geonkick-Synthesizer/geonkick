@@ -58,6 +58,11 @@ class PercussionModel : public AbstractModel {
         bool canCopy() const;
         bool canRemove() const;
         void play();
+        double getMaxLength() const;
+        void setLength(double val);
+        double getLength() const;
+        void setAmplitude(double val);
+        double getAmplitude() const;
         void setLimiter(int value);
         int limiter() const;
         int leveler() const;
@@ -74,8 +79,6 @@ class PercussionModel : public AbstractModel {
         void setMidiChannel(int index);
         void enableNoteOff(bool b);
         bool isNoteOffEnabled() const;
-        void setAmplitude();
-        double getAmplitude() const;
         FilterModel* getFilter() const;
         DistortionModel* getDistortion() const;
 
@@ -127,7 +130,10 @@ class PercussionModel : public AbstractModel {
                     amplitudeUpdated(double val),
                     RK_ARG_TYPE(double),
                     RK_ARG_VAL(val));
-
+        RK_DECL_ACT(lengthUpdated,
+                    lengthUpdated(double val),
+                    RK_ARG_TYPE(double),
+                    RK_ARG_VAL(val));
 
  protected:
         void onPercussionSelected();

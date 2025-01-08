@@ -62,6 +62,7 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
         auto kitModel = geonkickModel->getKitModel();
         auto globalWidget = new GeneralGroupBox(this, kitModel->currentPercussion());
         globalWidget->setPosition(3 * (8 + 223), 0);
+        RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), globalWidget, updateView());
         RK_ACT_BIND(kitModel,
                     percussionSelected,
                     RK_ACT_ARGS(PercussionModel *model),

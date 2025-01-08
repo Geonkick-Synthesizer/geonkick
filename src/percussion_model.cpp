@@ -160,6 +160,33 @@ void PercussionModel::play()
         kitModel->playPercussion(index());
 }
 
+double PercussionModel::getMaxLength() const
+{
+        return kitModel->getInstrumentMaxLength(index());
+}
+
+void PercussionModel::setLength(double val)
+{
+        if (kitModel->setInstrumentLength(index(), val))
+                action lengthUpdated(val);
+}
+
+double PercussionModel::getLength() const
+{
+        return kitModel->getInstrumentLength(index());
+}
+
+void PercussionModel::setAmplitude(double val)
+{
+        if (kitModel->setInstrumentAmplitude(index(), val))
+                action amplitudeUpdated(val);
+}
+
+double PercussionModel::getAmplitude() const
+{
+        return kitModel->getInstrumentAmplitude(index());
+}
+
 void PercussionModel::setLimiter(int value)
 {
         if (kitModel->setPercussionLimiter(index(), value))

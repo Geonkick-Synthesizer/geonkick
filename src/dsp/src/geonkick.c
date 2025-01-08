@@ -1325,7 +1325,6 @@ geonkick_osc_distortion_set_type(struct geonkick *kick,
         if (!osc)
                 return GEONKICK_ERROR;
         enum geonkick_error res;
-        printf("TYPEEEEEEE: %d", type);
         res = gkick_distortion_set_type(osc->distortion, type);
         if (res != GEONKICK_OK)
                 return res;

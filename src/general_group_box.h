@@ -45,8 +45,8 @@ class GeneralGroupBox: public AbstractView
         void createEffects();
 
  private:
-        Knob *kickAmplitudeKnob;
-        Knob *kickLengthKnob;
+        Knob *instrumentAmplitudeKnob;
+        Knob *instrumentLengthKnob;
         InstrumentGlobalEffects *globalEffects;
 };
 

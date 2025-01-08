@@ -677,9 +677,10 @@ GeonkickApi::FunctionType GeonkickApi::oscillatorFunction(int oscillatorIndex) c
         return static_cast<FunctionType>(function);
 }
 
-void GeonkickApi::setKickLength(double length)
+bool GeonkickApi::setKickLength(double length)
 {
-        geonkick_set_length(geonkickApi, length / 1000);
+        auto res = geonkick_set_length(geonkickApi, length / 1000);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::kickLength(void) const
@@ -689,9 +690,10 @@ double GeonkickApi::kickLength(void) const
         return 1000 * length;
 }
 
-void GeonkickApi::setKickAmplitude(double amplitude)
+bool GeonkickApi::setKickAmplitude(double amplitude)
 {
-        geonkick_kick_set_amplitude(geonkickApi, amplitude);
+        auto res = geonkick_kick_set_amplitude(geonkickApi, amplitude);
+        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::kickAmplitude() const
@@ -1100,7 +1102,6 @@ double GeonkickApi::getOscDistortionDrive(int oscillatorIndex) const
 
 bool GeonkickApi::setOscDistortionDrive(int oscillatorIndex, double val)
 {
-        GEONKICK_LOG_INFO("oscillatorIndex: " << oscillatorIndex << ", val = " << val);
         auto res = geonkick_osc_distortion_set_drive(geonkickApi,
                                                      getOscIndex(oscillatorIndex),
                                                      val);

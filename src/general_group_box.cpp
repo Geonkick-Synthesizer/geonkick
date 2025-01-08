@@ -42,8 +42,8 @@ RK_DECLARE_IMAGE_RC(osc_ampl_button_hover);
 
 GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, PercussionModel *model)
         : AbstractView(parent, model)
-        , kickAmplitudeKnob{nullptr}
-        , kickLengthKnob{nullptr}
+        , instrumentAmplitudeKnob{nullptr}
+        , instrumentLengthKnob{nullptr}
         , globalEffects{nullptr}
 {
         setBackgroundColor({0xff, 0xff, 0xff});
@@ -60,6 +60,9 @@ void GeneralGroupBox::createView()
 
 void GeneralGroupBox::updateView()
 {
+        auto model = static_cast<PercussionModel*>(getModel());
+        instrumentAmplitudeKnob->setCurrentValue(model->getAmplitude());
+        instrumentLengthKnob->setCurrentValue(model->getLength());
 }
 
 void GeneralGroupBox::createAplitudeEnvelopeHBox()
@@ -70,23 +73,25 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         amplitudeEnvelopeBox->setBackgroundImage(RkImage(224, 125, RK_IMAGE_RC(global_hboxbk_ampl_env)));
         amplitudeEnvelopeBox->show();
 
-        kickAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
-        kickAmplitudeKnob->setDefaultValue(0.8);
-        kickAmplitudeKnob->setFixedSize(80, 78);
-        kickAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 4);
-        kickAmplitudeKnob->setBackgroundColor({0, 255, 0});
-        kickAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
-        kickAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-        kickAmplitudeKnob->setRange(0, 1.0);
-        kickAmplitudeKnob->show();
+        instrumentAmplitudeKnob = new Knob(amplitudeEnvelopeBox);
+        instrumentAmplitudeKnob->setDefaultValue(0.8);
+        instrumentAmplitudeKnob->setFixedSize(80, 78);
+        instrumentAmplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 4);
+        instrumentAmplitudeKnob->setBackgroundColor({0, 255, 0});
+        instrumentAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+        instrumentAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
+        instrumentAmplitudeKnob->setRange(0, 1.0);
+        instrumentAmplitudeKnob->show();
 
         auto amplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);
         amplEnvelopeButton->setPressed(viewState()->getEnvelopeType() == Envelope::Type::Amplitude
                                        && Envelope::Category::InstrumentGlobal == viewState()->getEnvelopeCategory());
         amplEnvelopeButton->setFixedSize(63, 21);
-        amplEnvelopeButton->setPosition(kickAmplitudeKnob->x() + kickAmplitudeKnob->width() / 2
+        amplEnvelopeButton->setPosition(instrumentAmplitudeKnob->x()
+                                        + instrumentAmplitudeKnob->width() / 2
                                         - amplEnvelopeButton->width() / 2,
-                                        kickAmplitudeKnob->y() + kickAmplitudeKnob->height() + 2);
+                                        instrumentAmplitudeKnob->y()
+                                        + instrumentAmplitudeKnob->height() + 2);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_off)),
                                         RkButton::State::Unpressed);
         amplEnvelopeButton->setImage(RkImage(amplEnvelopeButton->size(), RK_IMAGE_RC(osc_ampl_button_on)),
@@ -105,14 +110,14 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
                     amplEnvelopeButton, setPressed(envelope == Envelope::Type::Amplitude
                                                    && category == Envelope::Category::InstrumentGlobal));
 
-        kickLengthKnob = new Knob(amplitudeEnvelopeBox);
-        kickLengthKnob->setDefaultValue(300);
-        kickLengthKnob->setFixedSize(80, 80);
-        kickLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 4);
-        kickLengthKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
-        kickLengthKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-        //        kickLengthKnob->setRange(50, geonkickApi->kickMaxLength());
-        kickLengthKnob->show();
+        instrumentLengthKnob = new Knob(amplitudeEnvelopeBox);
+        instrumentLengthKnob->setDefaultValue(300);
+        instrumentLengthKnob->setFixedSize(80, 80);
+        instrumentLengthKnob->setPosition(224 / 2 + (224 / 2 - 80) / 2, (125 - 80) / 2 - 4);
+        instrumentLengthKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
+        instrumentLengthKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
+        instrumentLengthKnob->setRange(50, static_cast<PercussionModel*>(getModel())->getMaxLength());
+        instrumentLengthKnob->show();
 }
 
 void GeneralGroupBox::createEffects()
@@ -123,10 +128,24 @@ void GeneralGroupBox::createEffects()
 
 void GeneralGroupBox::bindModel()
 {
-        //auto instrumentModel = static_cast<InstrumentModel*>(getModel());
+        GEONKICK_LOG_INFO("GeneralGroupBox::bindModel(): " << getModel());
+        auto model = static_cast<PercussionModel*>(getModel());
+        RK_ACT_BIND(instrumentLengthKnob,
+                    valueUpdated,
+                    RK_ACT_ARGS(double val),
+                    model,
+                    setLength(val));
+        RK_ACT_BIND(instrumentAmplitudeKnob,
+                    valueUpdated,
+                    RK_ACT_ARGS(double val),
+                    model,
+                    setAmplitude(val));
+        globalEffects->setModel(model);
 }
 
 void GeneralGroupBox::unbindModel()
 {
-        //        unbindObject(getModel());
+        GEONKICK_LOG_INFO("void GeneralGroupBox::unbindModel(): " << getModel());
+        instrumentLengthKnob->unbindObject(getModel());
+        instrumentAmplitudeKnob->unbindObject(getModel());
 }

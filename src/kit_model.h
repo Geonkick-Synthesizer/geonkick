@@ -65,6 +65,11 @@ class KitModel : public RkObject {
         std::string keyName(KeyIndex index) const;
         size_t percussionNumber() const;
         size_t maxPercussionNumber() const;
+        double getInstrumentMaxLength(PercussionIndex index) const;
+        bool setInstrumentLength(PercussionIndex index, double val);
+        double getInstrumentLength(PercussionIndex index) const;
+        bool setInstrumentAmplitude(PercussionIndex index, double val);
+        double getInstrumentAmplitude(PercussionIndex index) const;
         void playPercussion(PercussionIndex index);
         std::filesystem::path workingPath(const std::string &key) const;
         std::filesystem::path getHomePath() const;

@@ -164,6 +164,31 @@ KitModel::KeyIndex KitModel::percussionKey(PercussionIndex index) const
         return geonkickApi->getPercussionPlayingKey(percussionId(index));
 }
 
+double KitModel::getInstrumentMaxLength([[maybe_unused]] PercussionIndex index) const
+{
+        return geonkickApi->kickMaxLength();
+}
+
+bool KitModel::setInstrumentLength([[maybe_unused]] PercussionIndex index, double val)
+{
+        return geonkickApi->setKickLength(val);
+}
+
+double KitModel::getInstrumentLength([[maybe_unused]] PercussionIndex index) const
+{
+        return geonkickApi->kickLength();
+}
+
+bool KitModel::setInstrumentAmplitude([[maybe_unused]] PercussionIndex index, double val)
+{
+        return geonkickApi->setKickAmplitude(val);
+}
+
+double KitModel::getInstrumentAmplitude([[maybe_unused]] PercussionIndex index) const
+{
+        return geonkickApi->kickAmplitude();
+}
+
 void KitModel::playPercussion(PercussionIndex index)
 {
         geonkickApi->playKick(percussionId(index));

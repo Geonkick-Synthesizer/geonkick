@@ -134,7 +134,6 @@ gkick_distortion_set_type(struct gkick_distortion *distortion,
 {
         gkick_distortion_lock(distortion);
         distortion->type = type;
-        printf("\ndistortion->type: %d\n", type);
         gkick_distortion_unlock(distortion);
         return GEONKICK_OK;
 }
@@ -188,8 +187,6 @@ gkick_distortion_val(struct gkick_distortion *distortion,
     gkick_real x = distortion->in_limiter * in_val;
     gkick_real drive_env_val = gkick_envelope_get_value(distortion->drive_env, env_x);
     gkick_real drive = distortion->drive * gkick_envelope_get_value(distortion->drive_env, env_x);
-
-    printf("\nDDDDDD->type: %d, %f\n", distortion->type, distortion->drive);
     switch (distortion->type) {
         case GEONKICK_DISTORTION_HARD_CLIPPING:
             *out_val = GKICK_CLAMP(x, -1.0f / drive, 1.0f / drive);

@@ -226,8 +226,8 @@ class GeonkickApi : public RkObject {
   bool isJackEnabled() const;
   void setStandalone(bool b);
   bool isStandalone() const;
-  void setKickAmplitude(double amplitude);
-  void setKickLength(double length);
+  bool setKickAmplitude(double amplitude);
+  bool setKickLength(double length);
   void setLimiterValue(double value);
   bool setKickFilterFrequency(double frequency);
   bool setKickFilterQFactor(double factor);
