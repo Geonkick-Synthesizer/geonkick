@@ -70,7 +70,7 @@ double GeneralEnvelope::envelopeAmplitude(void) const
 	else if (type() == Envelope::Type::FilterQFactor)
                 return geonkickApi->kickFilterQFactor();
 	else if (type() == Envelope::Type::DistortionDrive)
-		return geonkickApi->getDistortionDrive() / (pow(10, 36.0 / 20));
+		return geonkickApi->getDistortionDrive() / pow(10, 36.0 / 20);
         else if (type() == Envelope::Type::DistortionVolume)
 		return geonkickApi->getDistortionOutLimiter();
 

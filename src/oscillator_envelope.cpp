@@ -24,6 +24,7 @@
 #include "oscillator_envelope.h"
 #include "oscillator.h"
 #include "FilterModel.h"
+#include "DistortionModel.h"
 
 OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
         : Envelope(area)
@@ -80,6 +81,8 @@ double OscillatorEnvelope::envelopeAmplitude() const
                 return oscillator->getFilter()->cutOff();
 	case Type::FilterQFactor:
                 return oscillator->getFilter()->resonance();
+        case Type::DistortionDrive:
+                return oscillator->getDistortion()->getDrive() / pow(10, 36.0 / 20);
         default:
                 return 0;
         }
