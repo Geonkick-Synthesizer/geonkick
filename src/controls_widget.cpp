@@ -69,6 +69,11 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
                     globalWidget,
                     setModel(model));
         RK_ACT_BIND(kitModel,
+                    percussionUpdated,
+                    RK_ACT_ARGS(PercussionModel *model),
+                    globalWidget,
+                    setModel(model));
+        RK_ACT_BIND(kitModel,
                     modelUpdated,
                     RK_ACT_ARGS(),
                     globalWidget,

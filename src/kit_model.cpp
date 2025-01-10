@@ -46,8 +46,10 @@ KitModel::KitModel(RkObject *parent, GeonkickApi *api)
 
 void KitModel::updatePercussion(PercussionIndex index)
 {
-        if (isValidIndex(index))
+        if (isValidIndex(index)) {
+                action percussionUpdated(percussionsList[index]);
                 action percussionsList[index]->modelUpdated();
+        }
 }
 
 bool KitModel::isValidIndex(PercussionIndex index)
@@ -246,6 +248,7 @@ bool KitModel::isPercussionSolo(PercussionIndex index) const
 
 void KitModel::loadModelData()
 {
+        GEONKICK_LOG_INFO("percussionsList: " << percussionsList.size())
         for (auto &per: percussionsList)
                 delete per;
         percussionsList.clear();

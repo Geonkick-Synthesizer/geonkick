@@ -46,6 +46,7 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, PercussionModel *model)
         , instrumentLengthKnob{nullptr}
         , globalEffects{nullptr}
 {
+        setName("GeneralGroupBox");
         setBackgroundColor({0xff, 0xff, 0xff});
         setFixedSize(224, 262);
         createView();
@@ -61,6 +62,8 @@ void GeneralGroupBox::createView()
 void GeneralGroupBox::updateView()
 {
         auto model = static_cast<PercussionModel*>(getModel());
+        if (!model)
+                return;
         instrumentAmplitudeKnob->setCurrentValue(model->getAmplitude());
         instrumentLengthKnob->setCurrentValue(model->getLength());
 }
@@ -128,8 +131,9 @@ void GeneralGroupBox::createEffects()
 
 void GeneralGroupBox::bindModel()
 {
-        GEONKICK_LOG_INFO("GeneralGroupBox::bindModel(): " << getModel());
         auto model = static_cast<PercussionModel*>(getModel());
+        if (!model)
+                return;
         RK_ACT_BIND(instrumentLengthKnob,
                     valueUpdated,
                     RK_ACT_ARGS(double val),
@@ -145,7 +149,6 @@ void GeneralGroupBox::bindModel()
 
 void GeneralGroupBox::unbindModel()
 {
-        GEONKICK_LOG_INFO("void GeneralGroupBox::unbindModel(): " << getModel());
         instrumentLengthKnob->unbindObject(getModel());
         instrumentAmplitudeKnob->unbindObject(getModel());
 }

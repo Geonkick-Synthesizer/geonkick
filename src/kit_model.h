@@ -104,14 +104,14 @@ class KitModel : public RkObject {
                     percussionSelected(PercussionModel* model),
                     RK_ARG_TYPE(PercussionModel*),
                     RK_ARG_VAL(model));
-        RK_DECL_ACT(limiterUpdated,
-                    limiterUpdated(PercussionIndex index),
-                    RK_ARG_TYPE(PercussionIndex),
-                    RK_ARG_VAL(index));
         RK_DECL_ACT(percussionUpdated,
                     percussionUpdated(PercussionModel* model),
                     RK_ARG_TYPE(PercussionModel*),
                     RK_ARG_VAL(model));
+        RK_DECL_ACT(limiterUpdated,
+                    limiterUpdated(PercussionIndex index),
+                    RK_ARG_TYPE(PercussionIndex),
+                    RK_ARG_VAL(index));
         RK_DECL_ACT(instrumentEnabled,
                     instrumentEnabled(PercussionModel* model),
                     RK_ARG_TYPE(PercussionModel*),

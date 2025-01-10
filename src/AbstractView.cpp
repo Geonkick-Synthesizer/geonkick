@@ -22,11 +22,16 @@
  */
 
 #include "AbstractView.h"
+#include "AbstractModel.h"
 
 AbstractView::AbstractView(GeonkickWidget* parent, AbstractModel *model)
         : GeonkickWidget(parent)
         , viewModel{model}
 {
+        RK_ACT_BINDL(viewModel, aboutToBeDeleted, RK_ACT_ARGS(RkObject *),
+                     [=, this](RkObject *obj) {
+                             viewModel = nullptr;
+                     });
         show();
 }
 
@@ -34,6 +39,10 @@ void AbstractView::setModel(AbstractModel *model)
 {
         unbindModel();
         viewModel = model;
+        RK_ACT_BINDL(viewModel, aboutToBeDeleted, RK_ACT_ARGS(RkObject *),
+                     [=, this](RkObject *obj) {
+                             viewModel = nullptr;
+                     });
         bindModel();
         updateView();
 }

@@ -43,6 +43,10 @@ PercussionModel::PercussionModel(KitModel* parent, int id)
                     onPercussionSelected());
 }
 
+PercussionModel::~PercussionModel()
+{
+}
+
 void PercussionModel::setId(int id)
 {
         percussionId = id;

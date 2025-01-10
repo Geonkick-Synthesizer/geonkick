@@ -34,6 +34,9 @@ class RkObject {
  public:
         explicit RkObject(RkObject *parent = nullptr);
         virtual ~RkObject();
+        RK_DECL_ACT(aboutToBeDeleted,
+                    aboutToBeDeleted(RkObject *obj),
+                    RK_ARG_TYPE(RkObject*), RK_ARG_VAL(obj));
         Rk::ObjectType type() const;
         RkObject* parent() const;
         const std::unordered_set<RkObject*>& children() const;

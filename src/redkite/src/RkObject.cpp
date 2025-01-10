@@ -44,6 +44,7 @@ RkObject::RkObject(RkObject *parent, std::unique_ptr<RkObjectImpl> impl)
 RkObject::~RkObject()
 {
         RK_LOG_DEBUG("called: " << this);
+        action aboutToBeDeleted(this);
         if (eventQueue())
                 RK_IMPL_PTR(eventQueue())->removeObject(this);
         o_ptr->removeChildrens();
@@ -92,6 +93,8 @@ void RkObject::removeShortcut(Rk::Key key, Rk::KeyModifiers modifier)
 
 void RkObject::unbindObject(RkObject* obj)
 {
+        if (!obj)
+                return;
         removeObservers(obj);
         obj->removeObservers(this);
         removeBoundObject(obj);
@@ -125,7 +128,8 @@ void RkObject::removeChild(RkObject *child)
 
 void RkObject::removeObservers(RkObject *obj)
 {
-        o_ptr->removeObservers(obj);
+        if (obj)
+                o_ptr->removeObservers(obj);
 }
 
 void RkObject::removeBoundObject(RkObject *obj)

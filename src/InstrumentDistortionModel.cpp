@@ -28,8 +28,7 @@
 
 InstrumentDistortionModel::InstrumentDistortionModel(PercussionModel *parent)
         : DistortionModel(parent)
-        , instrumentModel{parent}
-        , geonkickApi{instrumentModel->parentModel()->api()}
+        , geonkickApi{parent->parentModel()->api()}
 {
 }
 

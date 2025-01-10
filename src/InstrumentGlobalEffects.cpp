@@ -41,33 +41,34 @@ RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_hover);
 
 
 InstrumentGlobalEffects::InstrumentGlobalEffects(GeonkickWidget *parent, PercussionModel* model)
-        : GeonkickWidget(parent)
+        : AbstractView(parent, model)
         , instrumentModel{model}
         , filterTabButton{nullptr}
         , distortionTabButton{nullptr}
         , currentTabView{nullptr}
 {
+        setName("InstrumentGlobalEffects");
         setSize(224, 131);
         setBackgroundImage(RkImage(224, 115, RK_IMAGE_RC(osc_effects_bk)));
         createView();
         show();
 }
 
-void InstrumentGlobalEffects::setModel(PercussionModel *model)
+void InstrumentGlobalEffects::bindModel()
 {
-        instrumentModel = model;
+        instrumentModel = static_cast<PercussionModel*>(getModel());
+        if (!instrumentModel)
+                return;
         if (currentTabView) {
                 if (dynamic_cast<FilterView*>(currentTabView))
-                        currentTabView->setModel(model->getFilter());
+                        currentTabView->setModel(instrumentModel->getFilter());
                 else
-                        currentTabView->setModel(model->getDistortion());
+                        currentTabView->setModel(instrumentModel->getDistortion());
         }
-        updateView();
 }
 
-PercussionModel* InstrumentGlobalEffects::getModel() const
+void InstrumentGlobalEffects::unbindModel()
 {
-        return instrumentModel;
 }
 
 void InstrumentGlobalEffects::createView()
@@ -107,7 +108,10 @@ void InstrumentGlobalEffects::createView()
         RK_ACT_BINDL(distortionTabButton,
                     enabled,
                     RK_ACT_ARGS(bool b),
-                    [=,this](bool b){instrumentModel->getDistortion()->enable(b);});
+                     [=,this](bool b){
+                             if (instrumentModel)
+                                     instrumentModel->getDistortion()->enable(b);
+                     });
 
         RK_ACT_BIND(filterTabButton,
                      pressed,
@@ -130,6 +134,7 @@ void InstrumentGlobalEffects::showFilter()
 {
         if (currentTabView)
                 delete currentTabView;
+        distortionTabButton->setPressed(false);
         currentTabView = new FilterView(this, instrumentModel->getFilter());
         currentTabView->setPosition(0, 22);
 }
@@ -138,12 +143,15 @@ void InstrumentGlobalEffects::showDistortion()
 {
         if (currentTabView)
                 delete currentTabView;
+        filterTabButton->setPressed(false);
         currentTabView = new DistortionView(this, instrumentModel->getDistortion());
         currentTabView->setPosition(0, 22);
 }
 
 void InstrumentGlobalEffects::updateView()
 {
+        if (!getModel())
+                return;
         filterTabButton->enable(instrumentModel->getFilter()->isEnabled());
         distortionTabButton->enable(instrumentModel->getDistortion()->isEnabled());
         currentTabView->updateView();

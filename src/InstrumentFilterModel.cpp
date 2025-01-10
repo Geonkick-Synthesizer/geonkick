@@ -23,59 +23,57 @@
 
 #include "InstrumentFilterModel.h"
 #include "percussion_model.h"
+#include "geonkick_api.h"
+#include "kit_model.h"
 
 InstrumentFilterModel::InstrumentFilterModel(PercussionModel *parent)
         : FilterModel(parent)
-        , instrumentModel{parent}
+        , geonkickApi{parent->parentModel()->api()}
 {
 }
 
 void InstrumentFilterModel::enable(bool b)
 {
-        //        if (oscillatorModel->api()->enableOscillatorFilter(oscillatorModel->index(), b))
-        //                action enabled(b);
+        if (geonkickApi->enableKickFilter(b))
+                action enabled(b);
 }
 
 bool InstrumentFilterModel::isEnabled() const
 {
-        //        return oscillatorModel->api()->isOscillatorFilterEnabled(oscillatorModel->index());
-        return false;
+        return geonkickApi->isKickFilterEnabled();
 }
 
 void InstrumentFilterModel::setCutOff(double val)
 {
-        //        if (oscillatorModel->api()->setOscillatorFilterCutOffFreq(oscillatorModel->index(), val))
-        //                action cutOffChanged(val);
+        if (geonkickApi->setKickFilterFrequency(val))
+                action cutOffChanged(val);
 }
 
 double InstrumentFilterModel::cutOff() const
 {
-        return 0;
-        // return oscillatorModel->api()->getOscillatorFilterCutOffFreq(oscillatorModel->index());
+        return geonkickApi->kickFilterFrequency();
 }
 
 void InstrumentFilterModel::setResonance(double val)
 {
-        // if (oscillatorModel->api()->setOscillatorFilterFactor(oscillatorModel->index(), val))
-        //         action resonanceChanged(val);
+         if (geonkickApi->setKickFilterQFactor(val))
+                 action resonanceChanged(val);
 }
 
 double InstrumentFilterModel::resonance() const
 {
-        return 0;
-        //        return oscillatorModel->api()->getOscillatorFilterFactor(oscillatorModel->index());
+        return geonkickApi->kickFilterQFactor();
 }
 
 void InstrumentFilterModel::setType(FilterModel::FilterType type)
 {
-        // if (oscillatorModel->api()->setOscillatorFilterType(oscillatorModel->index(), type))
-        //         action typeChanged(type);
+         if (geonkickApi->setKickFilterType(type))
+                 action typeChanged(type);
 }
 
 FilterModel::FilterType InstrumentFilterModel::type() const
 {
-        return FilterModel::FilterType::LowPass;
-        // return oscillatorModel->api()->getOscillatorFilterType(oscillatorModel->index());
+        return geonkickApi->kickFilterType();
 }
 
 void InstrumentFilterModel::setCutOffRange(const std::pair<double, double>& range)

@@ -25,20 +25,20 @@
 #define INSTRUMENT_GLOBAL_EFFECTS
 
 #include "geonkick_widget.h"
+#include "AbstractView.h"
 
 class PercussionModel;
 class EffectTabButton;
-class AbstractView;
 
-class InstrumentGlobalEffects: public GeonkickWidget {
+class InstrumentGlobalEffects: public AbstractView {
  public:
         InstrumentGlobalEffects(GeonkickWidget *parent, PercussionModel* model);
-        void setModel(PercussionModel *model);
-        PercussionModel* getModel() const;
-        void createView();
-        void updateView();
+        void createView() override;
+        void updateView() override;
 
 protected:
+        void bindModel() override;
+        void unbindModel() override;
         void showFilter();
         void showDistortion();
 

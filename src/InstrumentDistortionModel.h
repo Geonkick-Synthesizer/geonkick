@@ -46,7 +46,6 @@ class InstrumentDistortionModel: public DistortionModel
         Envelope::Category envelopeCategory() const;
 
  private:
-        PercussionModel *instrumentModel;
         GeonkickApi *geonkickApi;
 };
 

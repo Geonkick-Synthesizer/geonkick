@@ -38,7 +38,7 @@ class PercussionModel : public AbstractModel {
         using PercussionIndex = int;
         using KeyIndex = GeonkickTypes::MidiKey;
         explicit PercussionModel(KitModel* parent, int id = -1);
-        virtual ~PercussionModel() = default;
+        virtual ~PercussionModel();
         void setId(int id);
         PercussionIndex index() const;
         void enable(bool b = true);
