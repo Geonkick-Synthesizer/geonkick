@@ -158,6 +158,7 @@ class GeonkickApi : public RkObject {
 
 
   void setOscillatorAsFm(int oscillatorIndex, bool b);
+  void setOscillatorFmK(int oscillatorIndex, double k);
   bool isOscillatorAsFm(int oscillatorIndex) const;
   double oscillatorAmplitude(int oscillatorIndex) const;
   double oscillatorFrequency(int oscillatorIndex) const;

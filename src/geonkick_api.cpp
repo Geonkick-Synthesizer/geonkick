@@ -470,6 +470,8 @@ void GeonkickApi::setOscillatorState(GeonkickApi::Layer layer,
         setOscDistortionOutLimiter(osc, state->getOscDistortionOutLimiter(osc));
         setOscDistortionDrive(osc, state->getOscDistortionDrive(osc));
         setOscillatorAsFm(osc, state->isOscillatorAsFm(osc));
+        setOscillatorAsFm(osc, state->isOscillatorAsFm(osc));
+        setOscillatorFmK(osc, state->getOscillatorFmK(osc));
         currentLayer = temp;
 }
 
@@ -856,6 +858,13 @@ void GeonkickApi::setOscillatorAsFm(int oscillatorIndex, bool b)
         geonkick_osc_set_fm(geonkickApi,
                             getOscIndex(oscillatorIndex),
                             b);
+}
+
+void GeonkickApi::setOscillatorFmK(int oscillatorIndex, double k)
+{
+        geonkick_osc_set_fm_k(geonkickApi,
+                              getOscIndex(oscillatorIndex),
+                              k);
 }
 
 bool GeonkickApi::isOscillatorAsFm(int oscillatorIndex) const

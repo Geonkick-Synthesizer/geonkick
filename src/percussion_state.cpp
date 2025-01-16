@@ -404,11 +404,14 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
         if (!instrumentOsc)
                 return;
 
+        bool isFmK = false;
         for (const auto &m: osc.GetObject()) {
                 if (m.name == "enabled" && m.value.IsBool())
                         setOscillatorEnabled(index, m.value.GetBool());
                 if (m.name == "is_fm" && m.value.IsBool())
                         setOscillatorAsFm(index, m.value.GetBool());
+                if (m.name == "fm_k")
+                        isFmK = true;
                 if (m.name == "sample" && m.value.IsString())
                         setOscillatorSample(index, fromBase64F(std::string(m.value.GetString())));
                 if (m.name == "function" && m.value.IsInt())
@@ -491,6 +494,8 @@ void PercussionState::parseOscillatorObject(int index,  const rapidjson::Value &
                 }
                 instrumentOsc->distortion.fromObject(m);
         }
+        if (!isFmK)
+                setOscillatorFmK(index, 1.0);
 }
 
 std::vector<EnvelopePoint> PercussionState::parseEnvelopeArray(const rapidjson::Value &envelopeArray)
@@ -828,6 +833,22 @@ void PercussionState::setOscillatorAsFm(int index, bool b)
                oscillator->isFm = b;
 }
 
+double PercussionState::getOscillatorFmK(int index) const
+{
+        auto oscillator = getConstOscillator(index);
+        if (oscillator)
+                return oscillator->fmK;
+
+        return 10.0;
+}
+
+void PercussionState::setOscillatorFmK(int index, double k)
+{
+        auto oscillator = getOscillator(index);
+        if (oscillator)
+                oscillator->fmK = k;
+}
+
 bool PercussionState::isOscillatorEnabled(int index) const
 {
         auto oscillator = getConstOscillator(index);
@@ -1116,6 +1137,7 @@ void PercussionState::oscJson(std::ostringstream &jsonStream) const
                 jsonStream << "\"osc" << val.first << "\": {" << std::endl;
                 jsonStream << "\"enabled\": " << (val.second.isEnabled ? "true" : "false") << ", " << std::endl;
                 jsonStream << "\"is_fm\": " << (val.second.isFm ? "true" : "false") << ", " << std::endl;
+                jsonStream << "\"fm_k\": " << 10.0 << ", " << std::endl;
                 if (val.second.function == GeonkickApi::FunctionType::Sample && !val.second.sample.empty())
                         jsonStream <<  "\"sample\": \"" << toBase64F(val.second.sample) << "\"," << std::endl;
                 jsonStream <<  "\"function\": " << static_cast<int>(val.second.function) << "," << std::endl;

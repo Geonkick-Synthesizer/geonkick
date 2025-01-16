@@ -330,6 +330,30 @@ geonkick_osc_is_fm(struct geonkick *kick, size_t index, bool *is_fm)
 }
 
 enum geonkick_error
+geonkick_osc_set_fm_k(struct geonkick *kick, size_t index, gkick_real k)
+{
+        if (kick == NULL) {
+                gkick_log_error("wrong arguments");
+                return GEONKICK_ERROR;
+        }
+
+        struct gkick_synth *synth = kick->synths[kick->per_index];
+        gkick_synth_lock(synth);
+        struct gkick_oscillator* osc;
+        osc = gkick_synth_get_oscillator(synth, index);
+	if (osc == NULL) {
+		gkick_log_error("can't get oscillator");
+		gkick_synth_unlock(synth);
+		return GEONKICK_ERROR;
+	}
+
+        osc->fm_k = k;
+	gkick_synth_unlock(synth);
+
+        return GEONKICK_OK;
+}
+
+enum geonkick_error
 geonkick_set_osc_function(struct geonkick *kick,
 			  size_t osc_index,
 			  enum geonkick_osc_func_type type)

@@ -50,6 +50,7 @@ struct OscillatorInfo {
                 : type{GeonkickApi::OscillatorType::Oscillator1}
                 , isEnabled{false}
                 , isFm{false}
+                , fmK{10.0}
                 , function{GeonkickApi::FunctionType::Sine}
                 , phase{0}
                 , seed{0}
@@ -68,6 +69,7 @@ struct OscillatorInfo {
         std::vector<float> sample;
         bool isEnabled;
         bool isFm;
+        double fmK;
         GeonkickApi::FunctionType function;
         double phase;
         int seed;
@@ -159,6 +161,7 @@ class PercussionState
                                          GeonkickApi::EnvelopeType envelope);
         bool isOscillatorAsFm(int index) const;
         void setOscillatorAsFm(int index, bool b);
+        double getOscillatorFmK(int index) const;
         bool isOscillatorEnabled(int index) const;
         GeonkickApi::FunctionType oscillatorFunction(int index) const;
         double oscillatorAmplitue(int index) const;
@@ -219,6 +222,7 @@ class PercussionState
         void oscJson(std::ostringstream &jsonStream) const;
         void kickJson(std::ostringstream &jsonStream) const;
 	GeonkickApi::EnvelopeApplyType getApplyTypeFromObj(const rapidjson::Value &obj) const;
+        void setOscillatorFmK(int index, double k);
 
 private:
         void initOscillators();

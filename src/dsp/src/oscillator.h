@@ -71,6 +71,8 @@ struct gkick_oscillator {
 
         /* FM input value for this OSC. */
         gkick_real fm_input;
+        /* FM input coefficient. Used for compatibity of presets. */
+        gkick_real fm_k;
 
         /* Specifies if this OSC is a FM source to other oscillator. */
         bool is_fm;

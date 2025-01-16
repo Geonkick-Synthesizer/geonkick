@@ -44,6 +44,7 @@ struct gkick_oscillator
         osc->brownian = 0;
         osc->is_fm = false;
         osc->fm_input = 0.0f;
+        osc->fm_k = 1.0f;
         osc->seed = 100;
         osc->seedp = osc->seed;
 
@@ -167,7 +168,7 @@ void gkick_osc_increment_phase(struct gkick_oscillator *osc,
 		f = pow(10, (log10(osc->frequency) - GKICK_LOG20) * env_val + GKICK_LOG20);
 	else
 		f = osc->frequency * env_val;
-        f += f * osc->fm_input;
+        f += f * osc->fm_k * osc->fm_input;
         osc->phase += (GKICK_2PI * f) / (osc->sample_rate);
         if (osc->phase > GKICK_2PI)
 	          osc->phase -= GKICK_2PI;

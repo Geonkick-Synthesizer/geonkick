@@ -265,6 +265,11 @@ geonkick_osc_set_fm(struct geonkick *kick,
                     size_t index,
                     bool is_fm);
 
+/* Used only for compatibility of older presets. */
+enum geonkick_error
+geonkick_osc_set_fm_k(struct geonkick *kick, size_t index,
+                      gkick_real k);
+
 enum geonkick_error
 geonkick_osc_is_fm(struct geonkick *kick,
                    size_t index,
