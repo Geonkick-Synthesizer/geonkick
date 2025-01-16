@@ -1,3 +1,5 @@
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+
 set(GKICK_API_HEADERS
 	${GKICK_API_DIR}/src/audio_output.h
 	${GKICK_API_DIR}/src/distortion.h
@@ -62,6 +64,6 @@ if (GKICK_PLUGIN)
    	add_library(api_plugin STATIC
 		${GKICK_API_HEADERS}
 		${GKICK_API_SOURCES})
-	target_compile_options(api_plugin PUBLIC ${GKICK_API_PLUGIN_FLAGS})
+	target_compile_options(api_plugin PRIVATE ${GKICK_API_PLUGIN_FLAGS})
 endif (GKICK_PLUGIN)
 
