@@ -1,3 +1,18 @@
+## [3.6.0]
+
+### Features
+
+- Bézier curve for envelopes
+- Oscillator distortion effect
+
+### Improvements
+
+- Increase FM modulation coefficient
+
+### Fixes
+
+- Fix exporting unnecessary symbols
+
 ## [3.5.1]
 
 ### Fixes
