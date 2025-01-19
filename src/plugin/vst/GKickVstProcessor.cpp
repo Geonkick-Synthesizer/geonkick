@@ -113,6 +113,9 @@ GKickVstProcessor::setupProcessing(Vst::ProcessSetup& setup)
                         GEONKICK_LOG_ERROR("can't init Geonkick API");
                         return kResultFalse;
                 }
+
+		if (!stateData.empty())
+		  geonkickApi->setKitState(stateData);
         }
         return kResultTrue;
 }
@@ -185,7 +188,7 @@ GKickVstProcessor::process(Vst::ProcessData& data)
 tresult PLUGIN_API
 GKickVstProcessor::setState(IBStream* state)
 {
-        if (state == nullptr || geonkickApi == nullptr)
+        if (state == nullptr)
                 return kResultTrue;
 
         if (state->seek(0, IBStream::kIBSeekEnd, 0) == kResultFalse) {
@@ -218,9 +221,14 @@ GKickVstProcessor::setState(IBStream* state)
                 GEONKICK_LOG_ERROR("error on reading the state");
                 return kResultFalse;
         }
-        geonkickApi->setKitState(data);
-        geonkickApi->notifyUpdateGui();
-        geonkickApi->notifyKitUpdated();
+
+	if (!geonkickApi) {
+	  stateData = std::move(data);
+	} else {
+	  geonkickApi->setKitState(data);
+	  geonkickApi->notifyUpdateGui();
+	  geonkickApi->notifyKitUpdated();
+	}
         return kResultOk;
 }
 
