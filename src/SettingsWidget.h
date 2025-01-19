@@ -2,7 +2,7 @@
  * File name: SettingsWidget.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -25,9 +25,15 @@
 #define GEONKICK_SETTINGS_WIDGET_H
 
 #include "geonkick_widget.h"
+#include "geonkick_button.h"
 
 class GeonkickApi;
 class RkContainer;
+
+class SettingsCheckBox: public GeonkickButton {
+public:
+        explicit SettingsCheckBox(GeonkickWidget *parent, const RkSize &size);
+};
 
 class SettingsWidget: public GeonkickWidget {
  public:
@@ -35,6 +41,7 @@ class SettingsWidget: public GeonkickWidget {
 
  protected:
         void createMidiChannelSettings(RkContainer *container);
+        void createScaleGUISettings(RkContainer *container);
 
  private:
         GeonkickApi *geonkickApi;

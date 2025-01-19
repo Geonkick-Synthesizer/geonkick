@@ -28,26 +28,68 @@
 #include "RkContainer.h"
 #include "RkLabel.h"
 #include "RkSpinBox.h"
-#include "geonkick_button.h"
 #include "RkImage.h"
 #include "RkPainter.h"
+
+SettingsCheckBox::SettingsCheckBox(GeonkickWidget *parent, const RkSize &size)
+        : GeonkickButton(parent)
+{
+        setSize(size);
+        setBorderWidth(1);
+        setBorderColor(55, 55, 55);
+        setBackgroundColor({255, 255, 255});
+        setCheckable(true);
+        RkImage img(size);
+        RkPainter painter(&img);
+        painter.fillRect(RkRect(0, 0, img.width(), img.height()), {100, 100, 100});
+        setImage(img, RkButton::State::Unpressed);
+        painter.fillRect(RkRect(3, 3, img.width() - 6, img.height() - 6), {55, 55, 55});
+        setImage(img, RkButton::State::Pressed);
+        painter.fillRect(RkRect(0, 0, img.width(), img.height()), {100, 100, 100});
+        painter.fillRect(RkRect(3, 3, img.width() - 6, img.height() - 6), {65, 65, 65});
+        setImage(img, RkButton::State::PressedHover);
+        painter.fillRect(RkRect(0, 0, img.width(), img.height()), {90, 90, 90});
+        setImage(img, RkButton::State::UnpressedHover);
+        show();
+}
 
 SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
 {
         setFixedSize(parent->size());
-        auto mainContianer = new RkContainer(this);
-        mainContianer->setSize({width(), 30});
+        auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
+        mainContainer->setSize(size());
 
-        createMidiChannelSettings(mainContianer);
+        createMidiChannelSettings(mainContainer);
+        mainContainer->addSpace(5);
+        createScaleGUISettings(mainContainer);
+}
+
+void SettingsWidget::createMidiChannelSettings(RkContainer *container)
+{
+        auto horizontalContainer = new RkContainer(this);
+        horizontalContainer->setSize({container->size().width(), 30});
+        auto forceMidiCheckBox = new SettingsCheckBox(this, {16, 16});
+        forceMidiCheckBox->setPressed(GeonkickConfig().isMidiChannelForced());
+        RK_ACT_BINDL(forceMidiCheckBox,
+                     toggled,
+                     RK_ACT_ARGS(bool b),
+                     [=, this](bool b){
+                             GeonkickConfig cfg;
+                             cfg.setMidiChannelForced(b);
+                             geonkickApi->forceMidiChannel(cfg.getMidiChannel(),
+                                                           cfg.isMidiChannelForced());
+                             cfg.save();});
+        horizontalContainer->addWidget(forceMidiCheckBox);
+        horizontalContainer->addSpace(3);
 
         auto label = new RkLabel(this, "Force all midi channels to ");
         label->setSize({130, 20});
         label->setTextColor({255, 255, 255});
         label->setBackgroundColor(background());
         label->show();
-        mainContianer->addWidget(label);
+        horizontalContainer->addWidget(label);
 
         // MIDI channels spin box.
         auto midiChannelSpinBox = new RkSpinBox(this);
@@ -72,40 +114,82 @@ SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
                                                            cfg.isMidiChannelForced());
                              cfg.save(); });
         midiChannelSpinBox->show();
-        mainContianer->addSpace(5);
-        mainContianer->addWidget(midiChannelSpinBox);
+        horizontalContainer->addSpace(3);
+        horizontalContainer->addWidget(midiChannelSpinBox);
+        container->addContainer(horizontalContainer);
 }
 
-void SettingsWidget::createMidiChannelSettings(RkContainer *container)
+void SettingsWidget::createScaleGUISettings(RkContainer *container)
 {
-        auto forceMidiCheckBox = new GeonkickButton(this);
-        forceMidiCheckBox->setBorderWidth(1);
-        forceMidiCheckBox->setPressed(GeonkickConfig().isMidiChannelForced());
-        forceMidiCheckBox->setBorderColor(55, 55, 55);
-        forceMidiCheckBox->setBackgroundColor({255, 255, 255});
-        forceMidiCheckBox->setCheckable(true);
-        forceMidiCheckBox->setFixedSize(16, 16);
-        RkImage img(forceMidiCheckBox->size());
-        RkPainter painter(&img);
-        painter.fillRect(RkRect(0, 0, img.width(), img.height()), {100, 100, 100});
-        forceMidiCheckBox->setImage(img, RkButton::State::Unpressed);
-        painter.fillRect(RkRect(3, 3, img.width() - 6, img.height() - 6), {55, 55, 55});
-        forceMidiCheckBox->setImage(img, RkButton::State::Pressed);
-        painter.fillRect(RkRect(0, 0, img.width(), img.height()), {100, 100, 100});
-        painter.fillRect(RkRect(3, 3, img.width() - 6, img.height() - 6), {65, 65, 65});
-        forceMidiCheckBox->setImage(img, RkButton::State::PressedHover);
-        painter.fillRect(RkRect(0, 0, img.width(), img.height()), {90, 90, 90});
-        forceMidiCheckBox->setImage(img, RkButton::State::UnpressedHover);
-        forceMidiCheckBox->show();
-        RK_ACT_BINDL(forceMidiCheckBox,
-                     toggled,
-                     RK_ACT_ARGS(bool b),
+        GeonkickConfig config;
+        auto buttonsContainer = new RkContainer(this);
+        buttonsContainer->setSize({container->size().width(), 16});
+        auto label = new RkLabel(this, "Scale UI: ");
+        label->setSize(50, 16);
+        label->setTextColor({255, 255, 255});
+        label->setBackgroundColor(background());
+        label->show();
+        buttonsContainer->addWidget(label);
+
+        buttonsContainer->addSpace(3);
+        auto noScaleCheckBox = new SettingsCheckBox(this, {16, 16});
+        noScaleCheckBox->setPressed(config.getScaleFactor() == 1.0);
+        buttonsContainer->addWidget(noScaleCheckBox);
+        buttonsContainer->addSpace(2);
+        auto xNoScale = new RkLabel(this, "x1");
+        xNoScale->setTextColor({255, 255, 255});
+        xNoScale->setBackgroundColor(background());
+        xNoScale->setSize(16, 16);
+        buttonsContainer->addWidget(xNoScale);
+
+        buttonsContainer->addSpace(7);
+        auto oneHalfCheckBox = new SettingsCheckBox(this, {16, 16});
+        oneHalfCheckBox->setPressed(config.getScaleFactor() == 1.5);
+        buttonsContainer->addWidget(oneHalfCheckBox);
+        buttonsContainer->addSpace(2);
+        auto xOneHalfScale = new RkLabel(this, "x1.5");
+        xOneHalfScale->setTextColor({255, 255, 255});
+        xOneHalfScale->setBackgroundColor(background());
+        xOneHalfScale->setSize(22, 16);
+        buttonsContainer->addWidget(xOneHalfScale);
+
+        buttonsContainer->addSpace(7);
+        auto doubleScaleCheckBox = new SettingsCheckBox(this, {16, 16});
+        doubleScaleCheckBox->setPressed(config.getScaleFactor() == 2.0);
+        buttonsContainer->addWidget(doubleScaleCheckBox);
+        buttonsContainer->addSpace(2);
+        auto xDoubleScale = new RkLabel(this, "x2");
+        xDoubleScale->setTextColor({255, 255, 255});
+        xDoubleScale->setBackgroundColor(background());
+        xDoubleScale->setText("x2");
+        xDoubleScale->setSize(16, 16);
+        buttonsContainer->addWidget(xDoubleScale);
+
+        RK_ACT_BINDL(noScaleCheckBox, toggled,  RK_ACT_ARGS(bool b),
                      [=, this](bool b){
+                             oneHalfCheckBox->setPressed(false);
+                             doubleScaleCheckBox->setPressed(false);
                              GeonkickConfig cfg;
-                             cfg.setMidiChannelForced(b);
-                             geonkickApi->forceMidiChannel(cfg.getMidiChannel(),
-                                                           cfg.isMidiChannelForced());
-                             cfg.save();});
-        container->addWidget(forceMidiCheckBox);
-        container->addSpace(3);
+                             cfg.setScaleFactor(1.0);
+                             cfg.save();
+                     });
+        RK_ACT_BINDL(oneHalfCheckBox, toggled,  RK_ACT_ARGS(bool b),
+                     [=, this](bool b){
+                             noScaleCheckBox->setPressed(false);
+                             doubleScaleCheckBox->setPressed(false);
+                             GeonkickConfig cfg;
+                             cfg.setScaleFactor(1.5);
+                             cfg.save();
+                     });
+        RK_ACT_BINDL(doubleScaleCheckBox, toggled,  RK_ACT_ARGS(bool b),
+                     [=, this](bool b){
+                             noScaleCheckBox->setPressed(false);
+                             oneHalfCheckBox->setPressed(false);
+                             GeonkickConfig cfg;
+                             cfg.setScaleFactor(2.0);
+                             cfg.save();
+                     });
+
+        container->addContainer(buttonsContainer);
 }
+

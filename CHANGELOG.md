@@ -4,6 +4,7 @@
 
 - Bézier curve for envelopes
 - Oscillator distortion effect
+- Add UI scale setting in "Settings" tab
 
 ### Improvements
 
@@ -12,6 +13,7 @@
 ### Fixes
 
 - Fix exporting unnecessary symbols
+- Fix "force midi channel" checkbox for settings
 
 ## [3.5.1]
 
