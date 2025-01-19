@@ -64,6 +64,7 @@ class GKickVstProcessor : public Vst::SingleComponentEffect {
         tresult PLUGIN_API setComponentState(IBStream* state) SMTG_OVERRIDE;
 
   protected:
+        std::string stateData;
         std::unique_ptr<GeonkickApi> geonkickApi;
         std::vector<float*> channelsBuffers;
         int sampleRate;
