@@ -65,7 +65,7 @@ gkick_mixer_key_pressed(struct gkick_mixer *mixer,
                      || midi_channel == note->channel)
                     && (output->playing_key == GEONKICK_ANY_KEY
                         || output->playing_key == note->note_number
-                        || output->tune)) {
+                        || output->tune || note->state == GKICK_KEY_STATE_RELEASED)) {
                         gkick_audio_output_key_pressed(output, note);
                 }
         }
@@ -113,6 +113,7 @@ gkick_mixer_process(struct gkick_mixer *mixer,
                 if (!output->enabled || output->muted
                     || mixer->solo != output->solo || !output->play) {
                         ring_buffer_next(output->ring_buffer, size);
+                        gkick_mixer_set_leveler(mixer, i, 0);
                         continue;
                 }
 

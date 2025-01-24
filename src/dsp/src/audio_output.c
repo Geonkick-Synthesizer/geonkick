@@ -115,10 +115,10 @@ gkick_audio_output_key_pressed(struct gkick_audio_output *audio_output,
                 audio_output->decay = -1;
                 gkick_audio_output_swap_buffers(audio_output);
                 if (!gkick_audio_output_note_off(audio_output)) {
-                        size_t size = gkick_buffer_size(audio_output->playing_buffer);
-                        gkick_audio_add_playing_buffer_to_ring(audio_output, size);
+                        // Add all the buffer.
+                        gkick_audio_add_playing_buffer_to_ring(audio_output, SIZE_MAX);
                 }
-        } else {
+        } else if (key->state == GKICK_KEY_STATE_RELEASED) {
                 audio_output->key.state = key->state;
                 audio_output->decay     = GEKICK_KEY_RELESE_DECAY_TIME;
         }
@@ -170,10 +170,15 @@ gkick_audio_add_playing_buffer_to_ring(struct gkick_audio_output *audio_output,
         size_t i = 0;
         gkick_real factor = gkick_audio_output_tune_factor(audio_output->key.note_number);
         while (i < size) {
-                if (gkick_buffer_is_end(audio_output->playing_buffer)) {
-                        audio_output->play = false;
+                /**
+                 * When NOTE OFF is ignored, the entire buffer needs to be added.
+                 * Therefore, the loop will terminate because `size` is set to `SIZE_MAX`.
+                 * When tuning is enabled, and the buffer is stretched, and its final
+                 * actual size is bigger than the original and we need to count only on
+                 * gkick_buffer_is_end.
+                 */
+                if (gkick_buffer_is_end(audio_output->playing_buffer))
                         break;
-                }
 
                 gkick_real val;
                 if (audio_output->tune) {
@@ -200,7 +205,7 @@ gkick_real
 gkick_audio_output_tune_factor(int note_number)
 {
         gkick_real factor = exp2f((gkick_real)(note_number - 69) / 12.0f);
-        return GKICK_CLAMP(factor, 0.5f, 2.0f);
+        return GKICK_CLAMP(factor, 0.25f, 3.0f);
 }
 
 void gkick_audio_output_lock(struct gkick_audio_output *audio_output)
