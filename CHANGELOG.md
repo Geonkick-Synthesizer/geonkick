@@ -1,3 +1,15 @@
+## [3.5.2]
+
+### Fixes
+
+- Fix crash when deleting an instrument from the kit
+- Fix saving the plugin state in Cubase (reported by o-bardiuk )
+- Donot export symbols from DSP and Redkite resources (reported by David Runge)
+
+### Other
+
+- Remove a C++ files that were mistakenly added to the DSP folder
+
 ## [3.5.1]
 
 ### Fixes
