@@ -268,21 +268,21 @@ int PercussionModel::midiChannel() const
         return kitModel->percussionMidiChannel(index());
 }
 
-void PercussionModel::setMidiChannel(int index)
+void PercussionModel::setMidiChannel(int chIndex)
 {
-        if (kitModel->setPercussionMidiChannel(percussionId, index))
-                action midiChannelUpdated(index);
+        if (kitModel->setPercussionMidiChannel(index(), chIndex))
+                action midiChannelUpdated(chIndex);
 }
 
 void PercussionModel::enableNoteOff(bool b)
 {
-        if (kitModel->enableNoteOff(percussionId, b))
+        if (kitModel->enableNoteOff(index(), b))
                 action noteOffUpdated(b);
 }
 
 bool PercussionModel::isNoteOffEnabled() const
 {
-        return kitModel->isNoteOffEnabled(percussionId);
+        return kitModel->isNoteOffEnabled(index());
 }
 
 FilterModel* PercussionModel::getFilter() const

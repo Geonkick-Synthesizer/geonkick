@@ -76,7 +76,7 @@ class PercussionModel : public AbstractModel {
         std::vector<float> data() const;
         size_t numberOfMidiChannels() const;
         int midiChannel() const;
-        void setMidiChannel(int index);
+        void setMidiChannel(int chIndex);
         void enableNoteOff(bool b);
         bool isNoteOffEnabled() const;
         FilterModel* getFilter() const;
