@@ -2,7 +2,7 @@
  * File name: percussion_model.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -66,7 +66,7 @@ class PercussionModel : public RkObject {
         std::vector<float> data() const;
         size_t numberOfMidiChannels() const;
         int midiChannel() const;
-        void setMidiChannel(int index);
+        void setMidiChannel(int chIndex);
         void enableNoteOff(bool b);
         bool isNoteOffEnabled() const;
 
