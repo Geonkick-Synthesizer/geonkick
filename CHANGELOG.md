@@ -5,6 +5,7 @@
 - Fix crash when deleting an instrument from the kit
 - Fix saving the plugin state in Cubase (reported by o-bardiuk )
 - Donot export symbols from DSP and Redkite resources (reported by David Runge)
+- Fix the artifact at the end of sound when tuning to a MIDI key.
 
 ### Other
 
