@@ -148,10 +148,6 @@ gkick_buffer_stretch_get_next(struct gkick_buffer *buffer,
                         + buffer->buff[buffer->currentIndex];
                 buffer->floatIndex += factor;
                 buffer->currentIndex = (size_t)buffer->floatIndex;
-                //if (buffer->currentIndex >= buffer->size - 1) {
-                //        buffer->currentIndex = buffer->size - 1;
-                //        buffer->floatIndex = buffer->currentIndex;
-                // }
                 return val;
         } else if (buffer->currentIndex == buffer->size - 1) {
                 float val = buffer->buff[buffer->currentIndex++];
