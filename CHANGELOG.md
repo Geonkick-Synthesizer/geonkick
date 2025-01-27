@@ -12,8 +12,8 @@
 
 ### Fixes
 
-- Fix exporting unnecessary symbols
 - Fix "force midi channel" checkbox for settings
+
 
 ## [3.5.2]
 
@@ -27,7 +27,6 @@
 ### Other
 
 - Remove a C++ files that were mistakenly added to the DSP folder
->>>>>>> main
 
 ## [3.5.1]
 
