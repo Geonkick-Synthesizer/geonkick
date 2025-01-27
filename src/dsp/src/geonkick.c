@@ -1570,7 +1570,7 @@ geonkick_ged_forced_midi_channel(struct geonkick *kick,
 }
 
 size_t
-geonkick_midi_channels_number(struct geonkick *kick)
+geonkick_midi_channels_number(void)
 {
         return GEONKICK_MAX_MIDI_CHANNELS;
 }
