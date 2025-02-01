@@ -36,6 +36,7 @@
 #include "percussion_state.h"
 #include "ViewState.h"
 #include "UiSettings.h"
+#include "GeonkickConfig.h"
 
 #include <RkEvent.h>
 
@@ -59,7 +60,8 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         setName("MainWindow");
         setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
-        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+        setFixedSize(MAIN_WINDOW_WIDTH + (GeonkickConfig().isShowSidebar() ? 313 : 0),
+                     MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -77,7 +79,8 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const RkNativeWindowInfo &
 {
         setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
-        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+        setFixedSize(MAIN_WINDOW_WIDTH + (GeonkickConfig().isShowSidebar() ? 313 : 0),
+                     MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());

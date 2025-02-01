@@ -44,6 +44,8 @@ class GeonkickConfig {
         bool addCustomPresetFolder(const std::filesystem::path &folder);
         bool removeCustomPresetFolder(const std::filesystem::path &folder);
         const std::vector<std::filesystem::path>& getCustomPresetFolders() const;
+        void setShowSidebar(bool b = true);
+        bool isShowSidebar() const;
 
  protected:
         void loadConfig(const std::string &data);
@@ -58,6 +60,7 @@ class GeonkickConfig {
         std::filesystem::path configFile;
         std::vector<std::filesystem::path> bookmarkedPaths;
         std::vector<std::filesystem::path> customPresetFolders;
+        bool showSideBar;
 };
 
 #endif // GEONGKICK_CONFIG_H
