@@ -37,7 +37,6 @@ class ViewState: public RkObject {
                 Kit      = 1,
                 Presets  = 2,
                 Samples  = 3,
-                Settings = 4
         };
 
         using Oscillator = GeonkickApi::OscillatorType;

@@ -31,6 +31,7 @@
 #include "percussion_model.h"
 #include "MidiKeyWidget.h"
 #include "PresetNavigator.h"
+#include "SettingsWidget.h"
 
 #include <RkLabel.h>
 #include <RkButton.h>
@@ -112,6 +113,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
 #endif // GEONKICK_SINGLE
         , presetsButton{nullptr}
         , samplesButton{nullptr}
+        , settingsButton{nullptr}
 {
         setName("TopBar");
         setFixedSize({parent->width(), 30});
@@ -125,8 +127,27 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         logo->setImage(image);
         logo->show();
         mainLayout->addWidget(logo);
-        addSeparator(mainLayout, 5);
 
+        // Setting button
+        addSeparator(mainLayout);
+        settingsButton = new GeonkickButton(this);
+        settingsButton->setType(RkButton::ButtonType::ButtonUncheckable);
+        settingsButton->setFixedSize(16, 16);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_off)),
+                                 RkButton::State::Unpressed);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_active)),
+                                 RkButton::State::Pressed);
+        settingsButton->setImage(RkImage(settingsButton->size(),
+                                         RK_IMAGE_RC(topmenu_settings_hover)),
+                                 RkButton::State::UnpressedHover);
+        settingsButton->show();
+        RK_ACT_BIND(settingsButton, pressed, RK_ACT_ARGS(), this, showSettings());
+        mainLayout->addWidget(settingsButton);
+
+        // Open preset
+        addSeparator(mainLayout, 5);
         openFileButton = new GeonkickButton(this);
         openFileButton->show();
         openFileButton->setSize(26, 10);
@@ -355,28 +376,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
                     samplesButton, setPressed(view == ViewState::View::Samples));
         mainLayout->addWidget(samplesButton);
-
-        // Setting button
-        addSeparator(mainLayout);
-        auto settingsButton = new GeonkickButton(this);
-        settingsButton->setPressed(viewState()->getMainView() == ViewState::View::Settings);
-        settingsButton->setFixedSize(48, 20);
-        settingsButton->setImage(RkImage(settingsButton->size(),
-                                         RK_IMAGE_RC(topmenu_settings_off)),
-                                 RkButton::State::Unpressed);
-        settingsButton->setImage(RkImage(settingsButton->size(),
-                                         RK_IMAGE_RC(topmenu_settings_active)),
-                                 RkButton::State::Pressed);
-        settingsButton->setImage(RkImage(settingsButton->size(),
-                                         RK_IMAGE_RC(topmenu_settings_hover)),
-                                 RkButton::State::UnpressedHover);
-        settingsButton->show();
-        RK_ACT_BIND(settingsButton, pressed, RK_ACT_ARGS(),
-                    viewState(), setMainView(ViewState::View::Settings));
-        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
-                    settingsButton, setPressed(view == ViewState::View::Settings));
-        mainLayout->addWidget(settingsButton);
-
         RK_ACT_BIND(geonkickModel->getKitModel(),
                     modelUpdated,
                     RK_ACT_ARGS(),
@@ -510,4 +509,14 @@ void TopBar::showMidiPopup()
                     midiKeyButton,
                     setPressed(false));
         midiPopup->show();
+}
+
+void TopBar::showSettings()
+{
+        settingsButton->setPressed(false);
+        auto settingsPopup = new SettingsWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
+                                                geonkickModel->api());
+        settingsPopup->setPosition((getTopWidget()->width() - settingsPopup->width()) / 2,
+                                   50);
+        settingsPopup->show();
 }
