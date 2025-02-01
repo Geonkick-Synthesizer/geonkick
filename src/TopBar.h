@@ -53,6 +53,7 @@ class TopBar : public GeonkickWidget
 
  protected:
         void showMidiPopup();
+        void showSettings();
 
  private:
 #ifndef GEONKICK_LIMITED_VERSION
@@ -80,6 +81,7 @@ class TopBar : public GeonkickWidget
 #endif // GEONKICK_SINGLE
         GeonkickButton *presetsButton;
         GeonkickButton *samplesButton;
+        GeonkickButton *settingsButton;
 };
 
 #endif // GEONKICK_TOP_BAR_H

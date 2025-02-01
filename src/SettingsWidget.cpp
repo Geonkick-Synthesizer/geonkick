@@ -31,6 +31,9 @@
 #include "RkImage.h"
 #include "RkPainter.h"
 
+RK_DECLARE_IMAGE_RC(close_button);
+RK_DECLARE_IMAGE_RC(close_button_hover);
+
 SettingsCheckBox::SettingsCheckBox(GeonkickWidget *parent, const RkSize &size)
         : GeonkickButton(parent)
 {
@@ -54,12 +57,41 @@ SettingsCheckBox::SettingsCheckBox(GeonkickWidget *parent, const RkSize &size)
 }
 
 SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
-        : GeonkickWidget(parent)
+        : GeonkickWidget(parent, Rk::WidgetFlags::Popup)
         , geonkickApi{api}
 {
-        setFixedSize(parent->size());
+        setFixedSize({450, 250});
+        setBackgroundColor({68, 68, 70});
+        setBorderWidth(2);
+        setBorderColor(80, 80, 80);
+
+        auto closeButton = new GeonkickButton(this);
+        closeButton->setSize({16, 16});
+        closeButton->setPosition(width() - 5 - closeButton->width(), 5);
+        closeButton->setImage(RkImage(closeButton->size(), RK_IMAGE_RC(close_button)),
+                               RkButton::State::Unpressed);
+        closeButton->setImage(RkImage(closeButton->size(), RK_IMAGE_RC(close_button_hover)),
+                               RkButton::State::UnpressedHover);
+        closeButton->setImage(RkImage(closeButton->size(), RK_IMAGE_RC(close_button)),
+                               RkButton::State::Pressed);
+        RK_ACT_BINDL(closeButton, pressed, RK_ACT_ARGS(), [=, this]() { close(); });
+
         auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
-        mainContainer->setSize(size());
+        mainContainer->setPosition({10, 10});
+        mainContainer->setSize(size() - RkSize(20, 20));
+
+        auto titleLabel = new RkLabel(this, "Settings");
+        titleLabel->setSize({100, 20});
+        titleLabel->setBackgroundColor(background());
+        titleLabel->setTextColor({200, 200, 200});
+
+        RkFont font;
+        font.setSize(12);
+        font.setWeight(RkFont::Weight::Bold);
+        titleLabel->setFont(font);
+        titleLabel->show();
+        mainContainer->addWidget(titleLabel);
+        mainContainer->addSpace(10);
 
         createMidiChannelSettings(mainContainer);
         mainContainer->addSpace(5);
