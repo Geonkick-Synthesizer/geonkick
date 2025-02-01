@@ -83,7 +83,7 @@ void GeneralGroupBox::createAplitudeEnvelopeHBox()
         instrumentAmplitudeKnob->setBackgroundColor({0, 255, 0});
         instrumentAmplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         instrumentAmplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-        instrumentAmplitudeKnob->setRange(0, 1.0);
+        instrumentAmplitudeKnob->setRange(0, 4.0);
         instrumentAmplitudeKnob->show();
 
         auto amplEnvelopeButton = new GeonkickButton(amplitudeEnvelopeBox);

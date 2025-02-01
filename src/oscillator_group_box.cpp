@@ -255,7 +255,7 @@ void OscillatorGroupBox::createEvelopeGroupBox()
         amplitudeKnob->setPosition((224 / 2 - 80) / 2, (125 - 80) / 2 - 2);
         amplitudeKnob->setKnobBackgroundImage(RkImage(80, 80, RK_IMAGE_RC(knob_bk_image)));
         amplitudeKnob->setKnobImage(RkImage(70, 70, RK_IMAGE_RC(knob)));
-        amplitudeKnob->setRange(0, 1.0);
+        amplitudeKnob->setRange(0, 4);
         amplitudeKnob->show();
         RK_ACT_BIND(amplitudeKnob,
                     valueUpdated,
