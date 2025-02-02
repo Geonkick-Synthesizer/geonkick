@@ -47,7 +47,6 @@ GeneralGroupBox::GeneralGroupBox(GeonkickWidget *parent, PercussionModel *model)
         , globalEffects{nullptr}
 {
         setName("GeneralGroupBox");
-        setBackgroundColor({0xff, 0xff, 0xff});
         setFixedSize(224, 262);
         createView();
         bindModel();

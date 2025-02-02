@@ -30,6 +30,7 @@
 #include "general_group_box.h"
 #include "control_area.h"
 #include "TopBar.h"
+#include "Sidebar.h"
 #include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
@@ -184,6 +185,12 @@ bool MainWindow::init(void)
         RK_ACT_BIND(topBar, layerSelected,
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
                     geonkickApi, enbaleLayer(layer, b));
+
+        // Create Sidebar
+        if (GeonkickConfig().isShowSidebar()) {
+                auto sidebar = new Sidebar(this);
+                sidebar->setPosition({MAIN_WINDOW_WIDTH, 4});
+        }
 
         // Create envelope widget.
         envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
