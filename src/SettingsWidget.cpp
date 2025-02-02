@@ -229,75 +229,27 @@ void SettingsWidget::createScaleGUISettings(RkContainer *container)
 
 void SettingsWidget::createShowSidebarSettings(RkContainer *container)
 {
+        container->addSpace(5);
         GeonkickConfig config;
         auto hoziontalContainer = new RkContainer(this);
         hoziontalContainer->setSize({container->size().width(), 16});
         auto label = new RkLabel(this, "Show browser: ");
-        label->setSize(50, 16);
+        label->setSize(70, 16);
         label->setTextColor({255, 255, 255});
         label->setBackgroundColor(background());
         label->show();
-        hoziontalContainer->addWidget(label);
+        hoziontalContainer->addWidget(label, Rk::Alignment::AlignLeft);
 
         hoziontalContainer->addSpace(3);
-        auto noScaleCheckBox = new SettingsCheckBox(this, {16, 16});
-        noScaleCheckBox->setPressed(config.getScaleFactor() == 1.0);
-        hoziontalContainer->addWidget(noScaleCheckBox);
-        hoziontalContainer->addSpace(2);
-        auto xNoScale = new RkLabel(this, "x1");
-        xNoScale->setTextColor({255, 255, 255});
-        xNoScale->setBackgroundColor(background());
-        xNoScale->setSize(16, 16);
-        hoziontalContainer->addWidget(xNoScale);
-
-        hoziontalContainer->addSpace(7);
-        auto oneHalfCheckBox = new SettingsCheckBox(this, {16, 16});
-        oneHalfCheckBox->setPressed(config.getScaleFactor() == 1.5);
-        hoziontalContainer->addWidget(oneHalfCheckBox);
-        hoziontalContainer->addSpace(2);
-        auto xOneHalfScale = new RkLabel(this, "x1.5");
-        xOneHalfScale->setTextColor({255, 255, 255});
-        xOneHalfScale->setBackgroundColor(background());
-        xOneHalfScale->setSize(22, 16);
-        hoziontalContainer->addWidget(xOneHalfScale);
-
-        hoziontalContainer->addSpace(7);
-        auto doubleScaleCheckBox = new SettingsCheckBox(this, {16, 16});
-        doubleScaleCheckBox->setPressed(config.getScaleFactor() == 2.0);
-        hoziontalContainer->addWidget(doubleScaleCheckBox);
-        hoziontalContainer->addSpace(2);
-        auto xDoubleScale = new RkLabel(this, "x2");
-        xDoubleScale->setTextColor({255, 255, 255});
-        xDoubleScale->setBackgroundColor(background());
-        xDoubleScale->setText("x2");
-        xDoubleScale->setSize(16, 16);
-        hoziontalContainer->addWidget(xDoubleScale);
-
-        RK_ACT_BINDL(noScaleCheckBox, toggled,  RK_ACT_ARGS(bool b),
+        auto showSidebar = new SettingsCheckBox(this, {16, 16});
+        showSidebar->setPressed(config.isShowSidebar());
+        hoziontalContainer->addWidget(showSidebar, Rk::Alignment::AlignLeft);
+        RK_ACT_BINDL(showSidebar, toggled,  RK_ACT_ARGS(bool b),
                      [=, this](bool b){
-                             oneHalfCheckBox->setPressed(false);
-                             doubleScaleCheckBox->setPressed(false);
                              GeonkickConfig cfg;
-                             cfg.setScaleFactor(1.0);
+                             cfg.setShowSidebar(b);
                              cfg.save();
                      });
-        RK_ACT_BINDL(oneHalfCheckBox, toggled,  RK_ACT_ARGS(bool b),
-                     [=, this](bool b){
-                             noScaleCheckBox->setPressed(false);
-                             doubleScaleCheckBox->setPressed(false);
-                             GeonkickConfig cfg;
-                             cfg.setScaleFactor(1.5);
-                             cfg.save();
-                     });
-        RK_ACT_BINDL(doubleScaleCheckBox, toggled,  RK_ACT_ARGS(bool b),
-                     [=, this](bool b){
-                             noScaleCheckBox->setPressed(false);
-                             oneHalfCheckBox->setPressed(false);
-                             GeonkickConfig cfg;
-                             cfg.setScaleFactor(2.0);
-                             cfg.save();
-                     });
-
         container->addContainer(hoziontalContainer);
 }
 

@@ -42,6 +42,7 @@ class SettingsWidget: public GeonkickWidget {
  protected:
         void createMidiChannelSettings(RkContainer *container);
         void createScaleGUISettings(RkContainer *container);
+        void createShowSidebarSettings(RkContainer *container);
 
  private:
         GeonkickApi *geonkickApi;
