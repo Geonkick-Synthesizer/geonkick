@@ -81,12 +81,6 @@ RK_DECLARE_IMAGE_RC(topmenu_kit_active);
 RK_DECLARE_IMAGE_RC(topmenu_kit_hover);
 RK_DECLARE_IMAGE_RC(topmenu_kit_off);
 #endif // GEONKICK_SINGLE
-RK_DECLARE_IMAGE_RC(topmenu_presets_active);
-RK_DECLARE_IMAGE_RC(topmenu_presets_hover);
-RK_DECLARE_IMAGE_RC(topmenu_presets_off);
-RK_DECLARE_IMAGE_RC(topmenu_samples_active);
-RK_DECLARE_IMAGE_RC(topmenu_samples_hover);
-RK_DECLARE_IMAGE_RC(topmenu_samples_off);
 RK_DECLARE_IMAGE_RC(topmenu_settings_active);
 RK_DECLARE_IMAGE_RC(topmenu_settings_hover);
 RK_DECLARE_IMAGE_RC(topmenu_settings_off);
@@ -341,41 +335,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                     mainLayout->addWidget(kitButton);
 #endif // GEONKICK_SINGLE
 
-        // Presets button
-        addSeparator(mainLayout);
-        presetsButton = new GeonkickButton(this);
-        presetsButton->setPressed(viewState()->getMainView() == ViewState::View::Presets);
-        presetsButton->setFixedSize(45, 20);
-        presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
-                               RkButton::State::Unpressed);
-        presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_active)),
-                               RkButton::State::Pressed);
-        presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_hover)),
-                               RkButton::State::UnpressedHover);
-        presetsButton->show();
-        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(),
-                    viewState(), setMainView(ViewState::View::Presets));
-        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
-                    presetsButton, setPressed(view == ViewState::View::Presets));
-        mainLayout->addWidget(presetsButton);
-
-        // Samples button
-        addSeparator(mainLayout);
-        samplesButton = new GeonkickButton(this);
-        samplesButton->setPressed(viewState()->getMainView() == ViewState::View::Samples);
-        samplesButton->setFixedSize(54, 20);
-        samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_off)),
-                                RkButton::State::Unpressed);
-        samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_active)),
-                                RkButton::State::Pressed);
-        samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_hover)),
-                                RkButton::State::UnpressedHover);
-        samplesButton->show();
-        RK_ACT_BIND(samplesButton, pressed, RK_ACT_ARGS(),
-                    viewState(), setMainView(ViewState::View::Samples));
-        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
-                    samplesButton, setPressed(view == ViewState::View::Samples));
-        mainLayout->addWidget(samplesButton);
         RK_ACT_BIND(geonkickModel->getKitModel(),
                     modelUpdated,
                     RK_ACT_ARGS(),

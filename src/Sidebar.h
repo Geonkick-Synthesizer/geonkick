@@ -27,12 +27,14 @@
 #include "geonkick_widget.h"
 
 class RkPaintEvent;
+class RkContainer;
 
 class Sidebar: public GeonkickWidget {
  public:
         Sidebar(GeonkickWidget *parent);
  protected:
         void paintWidget([[maybe_unused]]RkPaintEvent *event) override;
+        void createTabButtons(RkContainer *mainLayout);
  private:
 };
 
