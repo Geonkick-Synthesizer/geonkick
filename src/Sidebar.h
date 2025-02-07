@@ -28,14 +28,24 @@
 
 class RkPaintEvent;
 class RkContainer;
+class GeonkickButton;
+class GeonkickModel;
 
 class Sidebar: public GeonkickWidget {
  public:
-        Sidebar(GeonkickWidget *parent);
+        Sidebar(GeonkickWidget *parent, GeonkickModel *model);
  protected:
         void paintWidget([[maybe_unused]]RkPaintEvent *event) override;
         void createTabButtons(RkContainer *mainLayout);
+        void showSidebarWidget();
+
  private:
+
+        GeonkickModel *geonkickModel;
+        RkContainer *mainLayout;
+        GeonkickWidget* currentWidget;
+        GeonkickButton* presetsButton;
+        GeonkickButton* samplesButton;
 };
 
 #endif // GEONKICK_SIDEBAR_H

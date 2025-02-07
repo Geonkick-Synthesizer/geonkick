@@ -22,12 +22,16 @@
  */
 
 #include "Sidebar.h"
+#include "GeonkickModel.h"
 #include "geonkick_button.h"
+#include "SampleBrowser.h"
 
 #include <RkEvent.h>
 #include <RkPainter.h>
 #include <RkContainer.h>
+#include <RkLabel.h>
 
+RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(topmenu_presets_active);
 RK_DECLARE_IMAGE_RC(topmenu_presets_hover);
 RK_DECLARE_IMAGE_RC(topmenu_presets_off);
@@ -35,21 +39,20 @@ RK_DECLARE_IMAGE_RC(topmenu_samples_active);
 RK_DECLARE_IMAGE_RC(topmenu_samples_hover);
 RK_DECLARE_IMAGE_RC(topmenu_samples_off);
 
-Sidebar::Sidebar(GeonkickWidget *parent)
+Sidebar::Sidebar(GeonkickWidget *parent, GeonkickModel *model)
         : GeonkickWidget(parent)
+        , geonkickModel{model}
+        , mainLayout{new RkContainer(this, Rk::Orientation::Vertical)}
+        , currentWidget{nullptr}
 {
-        setSize(309, parent->height() - 8);
-        setBackgroundColor(70, 70, 70);
-        auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
-        mainLayout->setSize(size() - RkSize(8, 8));
-        mainLayout->setPosition({8, 8});
+        setSize(310, parent->height() - 8);
+        mainLayout->setSize(size());
+
+        mainLayout->addSpace(4);
         createTabButtons(mainLayout);
 
         mainLayout->addSpace(4);
-        auto widget = new GeonkickWidget(this);
-        widget->setSize(mainLayout->size() - RkSize(4, 4));
-        widget->setBackgroundColor({55, 55, 55});
-        mainLayout->addWidget(widget, Rk::Alignment::AlignLeft);
+        showSidebarWidget();
 }
 
 void Sidebar::paintWidget([[maybe_unused]] RkPaintEvent *event)
@@ -59,17 +62,17 @@ void Sidebar::paintWidget([[maybe_unused]] RkPaintEvent *event)
         pen.setColor({55, 55, 55});
         pen.setWidth(1);
         painter.setPen(pen);
-        painter.drawRect(RkRect({0, 0}, RkSize(width(), height())));
+        painter.drawRect(RkRect({0, 0}, RkSize(width() - 1, height() - 1)));
 }
 
 void Sidebar::createTabButtons(RkContainer *mainLayout)
 {
         auto buttonsLayout = new RkContainer(this, Rk::Orientation::Horizontal);
         buttonsLayout->setSize({mainLayout->size().width(), 20});
+        buttonsLayout->addSpace(4);
 
         // Presets button
-        auto presetsButton = new GeonkickButton(this);
-        //        presetsButton->setPressed(viewState()->getMainView() == ViewState::View::Presets);
+        presetsButton = new GeonkickButton(this);
         presetsButton->setFixedSize(45, 20);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
                                RkButton::State::Unpressed);
@@ -78,16 +81,19 @@ void Sidebar::createTabButtons(RkContainer *mainLayout)
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_hover)),
                                RkButton::State::UnpressedHover);
         presetsButton->show();
-        /*        RK_ACT_BIND(presetsButton, pressed, RK_ACT_ARGS(),
-                    viewState(), setMainView(ViewState::View::Presets));
-        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
-        presetsButton, setPressed(view == ViewState::View::Presets));*/
         buttonsLayout->addWidget(presetsButton);
+
+        auto separator = new RkLabel(this);
+        separator->setSize(2, 21);
+        separator->setBackgroundColor(68, 68, 70);
+        separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
+        separator->show();
+        buttonsLayout->addWidget(separator);
 
         // Samples button
         buttonsLayout->addSpace(5);
-        auto samplesButton = new GeonkickButton(this);
-        //        samplesButton->setPressed(viewState()->getMainView() == ViewState::View::Samples);
+        samplesButton = new GeonkickButton(this);
+        samplesButton->setPressed(true);
         samplesButton->setFixedSize(54, 20);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_off)),
                                 RkButton::State::Unpressed);
@@ -96,11 +102,35 @@ void Sidebar::createTabButtons(RkContainer *mainLayout)
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_hover)),
                                 RkButton::State::UnpressedHover);
         samplesButton->show();
-        /*        RK_ACT_BIND(samplesButton, pressed, RK_ACT_ARGS(),
-                    viewState(), setMainView(ViewState::View::Samples));
-        RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view),
-        samplesButton, setPressed(view == ViewState::View::Samples));*/
-        buttonsLayout->addWidget(samplesButton);
 
+        RK_ACT_BINDL(presetsButton, pressed, RK_ACT_ARGS(),
+                     [=,this]() {
+                             samplesButton->setPressed(false);
+                             showSidebarWidget(); });
+        RK_ACT_BINDL(samplesButton, pressed, RK_ACT_ARGS(),
+                     [=,this]() {
+                             presetsButton->setPressed(false);
+                             showSidebarWidget(); });
+
+        buttonsLayout->addWidget(samplesButton);
         mainLayout->addContainer(buttonsLayout);
+}
+
+void Sidebar::showSidebarWidget()
+{
+        GEONKICK_LOG_INFO("void Sidebar::showSidebarWidget(): " << currentWidget);
+        if (currentWidget) {
+                mainLayout->removeWidget(currentWidget);
+                delete currentWidget;
+        }
+
+        if (presetsButton->isPressed())
+                currentWidget = nullptr;//new PresetsBrowser(this);
+        else
+                currentWidget = new SampleBrowser(this, geonkickModel->api());
+
+        if (currentWidget) {
+                mainLayout->addWidget(currentWidget);
+                //mainLayout->update();
+        }
 }

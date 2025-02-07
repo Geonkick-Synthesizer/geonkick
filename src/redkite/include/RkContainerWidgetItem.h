@@ -30,7 +30,7 @@ class RkWidget;
 
 class RK_EXPORT RkContainerWidgetItem: public RkContainerItem {
  public:
-       RkContainerWidgetItem(RkWidget *parent,
+        RkContainerWidgetItem(RkWidget *parent,
                             Rk::Alignment align = Rk::Alignment::AlignLeft)
                  : RkContainerItem(parent, ItemType::ItemContainer, align)
                    , itemWidget{parent} {}

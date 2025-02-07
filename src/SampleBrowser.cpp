@@ -62,7 +62,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         , previewLimiter{nullptr}
 
 {
-        setFixedSize(parent->size());
+        setFixedSize(306, 100);
         fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
         fileBrowser->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         fileBrowser->setCurrentDirectoy(viewState()->samplesBrowserPath());

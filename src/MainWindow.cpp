@@ -188,7 +188,7 @@ bool MainWindow::init(void)
 
         // Create Sidebar
         if (GeonkickConfig().isShowSidebar()) {
-                auto sidebar = new Sidebar(this);
+                auto sidebar = new Sidebar(this, geonkickModel);
                 sidebar->setPosition({MAIN_WINDOW_WIDTH, 4});
         }
 

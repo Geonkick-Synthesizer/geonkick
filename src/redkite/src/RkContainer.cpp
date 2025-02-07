@@ -49,6 +49,9 @@ void RkContainer::addWidget(RkWidget *widget, Rk::Alignment align)
 
 void RkContainer::removeWidget(RkWidget *widget)
 {
+        std::erase_if(containerItems, [widget](const auto *i) {
+                return i->type() == RkContainerItem::ItemType::ItemWidget
+                        && dynamic_cast<const RkContainerWidgetItem*>(i)->widget() == widget; });
 }
 
 void RkContainer::addSpace(int space, Rk::Alignment align)
