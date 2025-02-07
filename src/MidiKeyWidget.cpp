@@ -30,7 +30,7 @@ MidiKeyWidget::MidiKeyWidget(GeonkickWidget *parent,
                              Rk::WidgetFlags flag)
         : GeonkickWidget(parent, flag)
         , percussionModel{model}
-        , cellSize{32, 32}
+        , cellSize{51, 32}
         , widgetPadding{8}
         , midiRows{8}
         , midiColumns{12}
@@ -90,7 +90,7 @@ void MidiKeyWidget::drawCell(RkPainter &painter,
         }
         painter.setPen(pen);
         painter.setFont(font);
-        painter.drawText(cellRect, midiKeyToNote(key));
+        painter.drawText(cellRect, midiKeyToNote(key) + midiKeyToString(key));
         painter.setPen(penBk);
 }
 
@@ -116,7 +116,9 @@ void MidiKeyWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
                 pen.setColor({230, 230, 230});
                 painter.setPen(pen);
                 painter.setFont(font);
-                painter.drawText(hoverCell.rect(), midiKeyToNote(hoverCell.key()));
+                painter.drawText(hoverCell.rect(),
+                                 midiKeyToNote(hoverCell.key())
+                                 + midiKeyToString(hoverCell.key()));
         }
 
         if (selectedCell.isValid()) {
@@ -134,12 +136,14 @@ void MidiKeyWidget::paintWidget([[maybe_unused]] RkPaintEvent *event)
                 if (selectedCell.column() == 0 || selectedCell.row() == 0)
                         font.setWeight(RkFont::Weight::Bold);
                 else
-                        font.setWeight(RkFont::Weight::Normal);              
+                        font.setWeight(RkFont::Weight::Normal);
                 auto pen = painter.pen();
                 pen.setColor({230, 230, 230});
                 painter.setPen(pen);
                 painter.setFont(font);
-                painter.drawText(selectedCell.rect(), midiKeyToNote(selectedCell.key()));
+                painter.drawText(selectedCell.rect(),
+                                 midiKeyToNote(selectedCell.key())
+                                 + midiKeyToString(selectedCell.key()));
         }
 }
 
@@ -208,6 +212,14 @@ void MidiKeyWidget::mouseMoveEvent(RkMouseEvent *event)
                 hoverCell = cell;
 		update();
         }
+}
+
+std::string MidiKeyWidget::midiKeyToString(GeonkickTypes::MidiKey key)
+{
+        if (key < 21 || key > 108)
+                return {};
+
+        return " (" + std::to_string(key) + ")";
 }
 
 RkString MidiKeyWidget::midiKeyToNote(GeonkickTypes::MidiKey key)

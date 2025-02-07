@@ -93,6 +93,7 @@ class MidiKeyWidget: public GeonkickWidget
         void onUpdateKey(PercussionModel::KeyIndex key);
         void closeEvent(RkCloseEvent *event) override;
         void hoverEvent(RkHoverEvent *event) override;
+        std::string midiKeyToString(GeonkickTypes::MidiKey key);
 
  private:
         PercussionModel *percussionModel;

@@ -502,7 +502,7 @@ void TopBar::showMidiPopup()
         auto kitModel = geonkickModel->getKitModel();
         auto midiPopup = new MidiKeyWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
                                            kitModel->currentPercussion());
-        midiPopup->setPosition(midiKeyButton->x() - 170, y() + 35);
+        midiPopup->setPosition(150, y() + 35);
         RK_ACT_BIND(midiPopup,
                     isAboutToClose,
                     RK_ACT_ARGS(),
