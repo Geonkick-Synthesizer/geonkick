@@ -1,8 +1,8 @@
 /**
- * File name: file_dialog.h
+ * File name: FileBrowser.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -21,8 +21,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_FILE_DIALOG_H
-#define GEONKICK_FILE_DIALOG_H
+#ifndef GEONKICK_FILE_BROWSER_H
+#define GEONKICK_FILE_BROWSER_H
 
 #include "geonkick_widget.h"
 
@@ -92,7 +92,7 @@ class FilesView: public GeonkickWidget {
         std::vector<std::string> fileFilters;
 };
 
-class FileDialog: public GeonkickWidget {
+class FileBrowser: public GeonkickWidget {
  public:
         enum class Type: int {
                 Save,
@@ -105,13 +105,13 @@ class FileDialog: public GeonkickWidget {
                 Accept
         };
 
-        explicit FileDialog(GeonkickWidget *parent,
-                            FileDialog::Type type,
-                            Rk::WidgetFlags flags,
-                            const std::string& title);
-        explicit FileDialog(GeonkickWidget *parent,
-                            FileDialog::Type type = FileDialog::Type::Open,
-                            const std::string& title = std::string());
+        explicit FileBrowser(GeonkickWidget *parent,
+                              FileBrowser::Type type,
+                              Rk::WidgetFlags flags,
+                              const std::string& title);
+        explicit FileBrowser(GeonkickWidget *parent,
+                             FileBrowser::Type type = FileBrowser::Type::Open,
+                             const std::string& title = std::string());
         RK_DECL_ACT(selectedFile,
                     selectedFile(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
@@ -159,4 +159,4 @@ class FileDialog: public GeonkickWidget {
         GeonkickButton *bookmarkDirectoryButton;
 };
 
-#endif // GEONKICK_FILE_DIALOG_H
+#endif // GEONKICK_FILE_BROWSER_H

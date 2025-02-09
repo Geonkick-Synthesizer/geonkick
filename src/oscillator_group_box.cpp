@@ -27,7 +27,6 @@
 #include "geonkick_button.h"
 #include "knob.h"
 #include "geonkick_slider.h"
-#include "file_dialog.h"
 #include "ViewState.h"
 #include "OscillatorFunctionView.h"
 #include "OscillatorEffects.h"

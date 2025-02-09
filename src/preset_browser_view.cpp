@@ -23,7 +23,7 @@
 
 #include "preset_browser_view.h"
 #include "preset_browser_model.h"
-#include "file_dialog.h"
+#include "FileBrowser.h"
 #include "preset_folder.h"
 #include "geonkick_api.h"
 
@@ -262,8 +262,8 @@ void PresetBrowserView::updatePageButtons()
 
 void PresetBrowserView::addCustomFolder()
 {
-        auto fileDialog = new FileDialog(dynamic_cast<GeonkickWidget*>(getTopWidget()),
-                                         FileDialog::Type::Open, "Select Folder");
+        auto fileDialog = new FileBrowser(dynamic_cast<GeonkickWidget*>(getTopWidget()),
+                                         FileBrowser::Type::Open, "Select Folder");
         fileDialog->setHomeDirectory(browserModel->getGeonkickApi()->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file), browserModel,

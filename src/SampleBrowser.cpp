@@ -22,7 +22,7 @@
  */
 
 #include "SampleBrowser.h"
-#include "file_dialog.h"
+#include "FileBrowser.h"
 #include "ViewState.h"
 #include "BufferView.h"
 #include "geonkick_button.h"
@@ -52,7 +52,7 @@ RK_DECLARE_IMAGE_RC(osc3_preview_sample_pressed);
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
-        , fileBrowser{new FileDialog(this, FileDialog::Type::Browse, std::string())}
+        , fileBrowser{new FileBrowser(this, FileBrowser::Type::Browse, std::string())}
         , samplePreviewWidget{new BufferView(this)}
         , playButton{nullptr}
         , loadButton{nullptr}

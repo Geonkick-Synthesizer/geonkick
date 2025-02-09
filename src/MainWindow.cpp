@@ -175,9 +175,9 @@ bool MainWindow::init(void)
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
         RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
-                    this, openFileDialog(FileDialog::Type::Open));
+                    this, openFileBrowser(FileBrowser::Type::Open));
         RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
-                    this, openFileDialog(FileDialog::Type::Save));
+                    this, openFileBrowser(FileBrowser::Type::Save));
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
@@ -287,13 +287,13 @@ void MainWindow::openPreset(const std::string &fileName)
         updateGui();
 }
 
-void MainWindow::openFileDialog(FileDialog::Type type)
+void MainWindow::openFileBrowser(FileBrowser::Type type)
 {
-        auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Preset" : "Save Preset");
+        auto fileDialog = new FileBrowser(this, type, type == FileBrowser::Type::Open ? "Open Preset" : "Save Preset");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".gkick", ".GKICK"});
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
-        if (type == FileDialog::Type::Open) {
+        if (type == FileBrowser::Type::Open) {
                 fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset").string());
                 RK_ACT_BIND(fileDialog,
                             selectedFile,
@@ -321,10 +321,10 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         resetToDefault();
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
-                        openFileDialog(FileDialog::Type::Open);
+                        openFileBrowser(FileBrowser::Type::Open);
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
-                        openFileDialog(FileDialog::Type::Save);
+                        openFileBrowser(FileBrowser::Type::Save);
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
                         openExportDialog();

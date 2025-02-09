@@ -1,5 +1,5 @@
 /**
- * File name: file_dialog.cpp
+ * File name: FileBrowser.cpp
  * Project: Geonkick (A kick synthesizer)
  *
  * Copyright (C) 2019 Iurie Nistor
@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "file_dialog.h"
+#include "FileBrowser.h"
 #include "geonkick_button.h"
 #include "geonkick_slider.h"
 #include "PathListModel.h"
@@ -377,8 +377,8 @@ void FilesView::setFilters(const std::vector<std::string> &filters)
         fileFilters = filters;
 }
 
-FileDialog::FileDialog(GeonkickWidget *parent,
-                       FileDialog::Type type,
+FileBrowser::FileBrowser(GeonkickWidget *parent,
+                       FileBrowser::Type type,
                        Rk::WidgetFlags flags,
                        const std::string& title)
         : GeonkickWidget(parent, flags)
@@ -395,10 +395,10 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         show();
 }
 
-FileDialog::FileDialog(GeonkickWidget *parent,
-                       FileDialog::Type type,
+FileBrowser::FileBrowser(GeonkickWidget *parent,
+                       FileBrowser::Type type,
                        const std::string& title)
-        : GeonkickWidget(parent, type == FileDialog::Type::Browse ? Rk::WidgetFlags::Widget : Rk::WidgetFlags::Popup)
+        : GeonkickWidget(parent, type == FileBrowser::Type::Browse ? Rk::WidgetFlags::Widget : Rk::WidgetFlags::Popup)
         , dialogType{type}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
@@ -412,7 +412,7 @@ FileDialog::FileDialog(GeonkickWidget *parent,
         show();
 }
 
-void FileDialog::createUi()
+void FileBrowser::createUi()
 {
         if (widgetFlags() == Rk::WidgetFlags::Popup) {
                 setBorderWidth(2);
@@ -485,7 +485,7 @@ void FileDialog::createUi()
         }
 }
 
-void FileDialog::createBookmarkDirectoryControls(RkContainer *container)
+void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
 {
         container->addSpace(10);
         bookmarkDirectoryButton = new GeonkickButton(this);
@@ -515,7 +515,7 @@ void FileDialog::createBookmarkDirectoryControls(RkContainer *container)
                     this, updateBookmarkButton(std::filesystem::path(pathName)));
 }
 
-void FileDialog::createNewDirectoryControls(RkContainer *container)
+void FileBrowser::createNewDirectoryControls(RkContainer *container)
 {
         container->addSpace(5);
         // Create directory button
@@ -574,7 +574,7 @@ void FileDialog::createNewDirectoryControls(RkContainer *container)
                      });
 }
 
-void FileDialog::onAccept()
+void FileBrowser::onAccept()
 {
         status = AcceptStatus::Accept;
         switch (dialogType) {
@@ -608,50 +608,50 @@ void FileDialog::onAccept()
         }
 }
 
-void FileDialog::onCancel()
+void FileBrowser::onCancel()
 {
         status = AcceptStatus::Cancel;
         action rejected();
         close();
 }
 
-void FileDialog::closeEvent(RkCloseEvent *event)
+void FileBrowser::closeEvent(RkCloseEvent *event)
 {
         status = AcceptStatus::Cancel;
         RkWidget::closeEvent(event);
 }
 
-std::string FileDialog::currentDirectory() const
+std::string FileBrowser::currentDirectory() const
 {
         return filesView->getCurrentPath();
 }
 
-void FileDialog::setCurrentDirectoy(const std::string &path)
+void FileBrowser::setCurrentDirectoy(const std::string &path)
 {
         filesView->setCurrentPath(path);
 }
 
-std::string FileDialog::filePath() const
+std::string FileBrowser::filePath() const
 {
         return pathSelected;
 }
 
-FileDialog::AcceptStatus FileDialog::acceptStatus() const
+FileBrowser::AcceptStatus FileBrowser::acceptStatus() const
 {
         return status;
 }
 
-void FileDialog::setFilters(const std::vector<std::string> &filters)
+void FileBrowser::setFilters(const std::vector<std::string> &filters)
 {
         filesView->setFilters(filters);
 }
 
-void FileDialog::setHomeDirectory(const std::string &path)
+void FileBrowser::setHomeDirectory(const std::string &path)
 {
         shortcutDirectoriesModel->setHomeDirectory(path);
 }
 
-bool FileDialog::createDirectory(const std::filesystem::path &dir)
+bool FileBrowser::createDirectory(const std::filesystem::path &dir)
 {
         auto newPath = std::filesystem::path(currentDirectory()) / dir;
         try {
@@ -668,7 +668,7 @@ bool FileDialog::createDirectory(const std::filesystem::path &dir)
         return true;
 }
 
-void FileDialog::bookmarkDirectory(const std::filesystem::path &dir, bool bookmark)
+void FileBrowser::bookmarkDirectory(const std::filesystem::path &dir, bool bookmark)
 {
         if (bookmark) {
                 if (!isPathBookmarked(dir)) {
@@ -692,14 +692,14 @@ void FileDialog::bookmarkDirectory(const std::filesystem::path &dir, bool bookma
         updateBookmarkButton(dir);
 }
 
-bool FileDialog::isPathBookmarked(const std::filesystem::path &path) const
+bool FileBrowser::isPathBookmarked(const std::filesystem::path &path) const
 {
         const auto &paths = shortcutDirectoriesModel->getPaths();
         auto it = std::find(paths.begin(), paths.end(), path);
         return it != paths.end();
 }
 
-void FileDialog::updateBookmarkButton(const std::filesystem::path &path)
+void FileBrowser::updateBookmarkButton(const std::filesystem::path &path)
 {
         bookmarkDirectoryButton->setPressed(isPathBookmarked(path));
 }

@@ -24,7 +24,7 @@
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "geonkick_button.h"
-#include "file_dialog.h"
+#include "FileBrowser.h"
 
 #include <RkLabel.h>
 #include <RkContainer.h>
@@ -70,7 +70,7 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         setBorderWidth(2);
         setBorderColor(80, 80, 80);
 
-        auto fileDialog = new FileDialog(this, FileDialog::Type::Save,
+        auto fileDialog = new FileBrowser(this, FileBrowser::Type::Save,
                                          Rk::WidgetFlags::Widget,
                                          "Select Path - " + std::string(GEONKICK_NAME));
         fileDialog->setFilters({".flac", ".wav", ".ogg", ".FLAC", ".WAV", ".OGG"});

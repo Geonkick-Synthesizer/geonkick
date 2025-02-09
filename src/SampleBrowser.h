@@ -27,7 +27,7 @@
 #include "geonkick_widget.h"
 #include "geonkick_api.h"
 
-class FileDialog;
+class FileBrowser;
 class BufferView;
 class GeonkickButton;
 class RkContainer;
@@ -45,7 +45,7 @@ class SampleBrowser: public GeonkickWidget {
  private:
         void createPreviewMenu(RkContainer* container);
         GeonkickApi *geonkickApi;
-        FileDialog *fileBrowser;
+        FileBrowser *fileBrowser;
         BufferView *samplePreviewWidget;
         GeonkickButton *playButton;
         GeonkickButton *loadButton;
