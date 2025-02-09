@@ -1,8 +1,8 @@
 /**
- * File name: AbstractView.h
+ * File name: BreadcrumbBar.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
- * Copyright (C) 2024 Iurie Nistor
+ * Copyright (C) 2025 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -21,27 +21,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef ABSTRACT_VIEW_H
-#define ABSTRACT_VIEW_H
+#include "BreadcrumbBar.h"
 
-#include "geonkick_widget.h"
-
-class AbstractModel;
-
-class AbstractView: public GeonkickWidget {
- public:
-        explicit AbstractView(GeonkickWidget* parent, AbstractModel *model);
-        void setModel(AbstractModel *model);
-        AbstractModel* getModel() const;
-        virtual void createView() = 0;
-        virtual void updateView() = 0;
-
- protected:
-        virtual void bindModel() = 0;
-        virtual void unbindModel() = 0;
-
- private:
-        AbstractModel* viewModel;
-};
-
-#endif // ABSTRACT_VIEW_H
+BreadcrumbBar::BreadcrumbBar(GeonkickWidget* parent)
+        : GeonkickWidget(parent)
+{
+}
