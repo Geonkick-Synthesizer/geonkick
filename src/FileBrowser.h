@@ -26,71 +26,16 @@
 
 #include "geonkick_widget.h"
 
+class FilesView;
 class RkLineEdit;
 class RkPaintEvent;
 class RkMouseEvent;
 class RkCloseEvent;
 class GeonkickButton;
-class GeonkickSlider;
 class PathListModel;
 class RkList;
 class RkContainer;
 class GeonkickButton;
-
-class FilesView: public GeonkickWidget {
- public:
-        explicit FilesView(GeonkickWidget *parent);
-        std::string selectedFile() const;
-        std::string getCurrentPath() const;
-        void setCurrentPath(const std::string &path);
-        RK_DECL_ACT(openFile, openFile(const std::string &fileName),
-                    RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
-        RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &pathName),
-                    RK_ARG_TYPE(const std::string &), RK_ARG_VAL(pathName));
-        RK_DECL_ACT(fileSelected,
-                    fileSelected(const std::string &file),
-                    RK_ARG_TYPE(const std::string&),
-                    RK_ARG_VAL(file));
-        RK_DECL_ACT(currentFileChanged,
-                    currentFileChanged(const std::string &file),
-                    RK_ARG_TYPE(const std::string&),
-                    RK_ARG_VAL(file));
-
-        void setFilters(const std::vector<std::string> &filters);
-
- protected:
-        void createScrollBar();
-        void showScrollBar(bool b);
-        void paintWidget(RkPaintEvent *event) override;
-        void mouseButtonPressEvent(RkMouseEvent *event) override;
-        void mouseDoubleClickEvent(RkMouseEvent *event) override;
-        void mouseMoveEvent(RkMouseEvent *event) override;
-        void keyPressEvent(RkKeyEvent *event) override;
-        void loadCurrentDirectory();
-        int getLine(int x, int y) const;
-        void onLineUp();
-        void onLineDown();
-        void openSelectedFile();
-        void scrollBarChanged(int val);
-        void updateScrollBar();
-        std::string getSelectedFile() const;
-
- private:
-        std::vector<std::filesystem::path> filesList;
-        int selectedFileIndex;
-        int hightlightLine;
-        int offsetIndex;
-        std::filesystem::path currentPath;
-        int lineHeight;
-        int lineSacing;
-        decltype(filesList.size()) visibleLines;
-        GeonkickButton *topScrollBarButton;
-        GeonkickButton *bottomScrollBarButton;
-        int scrollBarWidth;
-        GeonkickSlider *scrollBar;
-        bool isScrollBarVisible;
-        std::vector<std::string> fileFilters;
-};
 
 class FileBrowser: public GeonkickWidget {
  public:
@@ -112,6 +57,7 @@ class FileBrowser: public GeonkickWidget {
         explicit FileBrowser(GeonkickWidget *parent,
                              FileBrowser::Type type = FileBrowser::Type::Open,
                              const std::string& title = std::string());
+        void setSize(const RkSize &size);
         RK_DECL_ACT(selectedFile,
                     selectedFile(const std::string &file),
                     RK_ARG_TYPE(const std::string&),

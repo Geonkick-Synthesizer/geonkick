@@ -38,7 +38,7 @@ class SampleBrowser: public GeonkickWidget {
         SampleBrowser(GeonkickWidget *parent, GeonkickApi* api);
 
   protected:
-        void setPreviewSample(const std::string &file);
+        //        void setPreviewSample(const std::string &file);
         void setOscillator(GeonkickApi::OscillatorType osc);
         void loadSample();
 

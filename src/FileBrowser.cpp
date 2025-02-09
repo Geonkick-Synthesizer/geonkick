@@ -22,8 +22,8 @@
  */
 
 #include "FileBrowser.h"
+#include "FilesView.h"
 #include "geonkick_button.h"
-#include "geonkick_slider.h"
 #include "PathListModel.h"
 #include "GeonkickConfig.h"
 
@@ -37,345 +37,10 @@
 RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(cancel);
-RK_DECLARE_IMAGE_RC(scrollbar_button_up);
-RK_DECLARE_IMAGE_RC(scrollbar_button_down);
 RK_DECLARE_IMAGE_RC(add_button_16x16);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
-
-
-FilesView::FilesView(GeonkickWidget *parent)
-        : GeonkickWidget(parent)
-        , selectedFileIndex{-1}
-        , hightlightLine{-1}
-        , offsetIndex{-1}
-        , currentPath{std::filesystem::current_path()}
-        , lineHeight{15}
-        , lineSacing{lineHeight / 2}
-        , visibleLines{0}
-        , topScrollBarButton{nullptr}
-        , bottomScrollBarButton{nullptr}
-        , scrollBarWidth{12}
-        , scrollBar{nullptr}
-        , isScrollBarVisible{false}
-{
-        setFixedSize(parent->width() - 108, parent->height() - 85);
-        visibleLines = height() / (lineHeight + lineSacing);
-        setPosition(106, 40);
-        setBackgroundColor(50, 50, 50);
-        createScrollBar();
-        showScrollBar(false);
-        show();
-}
-
-std::string FilesView::getCurrentPath() const
-{
-        return currentPath.string();
-}
-
-void FilesView::setCurrentPath(const std::string &path)
-{
-        currentPath = path;
-        selectedFileIndex = -1;
-        loadCurrentDirectory();
-        update();
-}
-
-void FilesView::createScrollBar()
-{
-        topScrollBarButton = new GeonkickButton(this);
-        topScrollBarButton->setUnpressedImage(RkImage(12, 17, RK_IMAGE_RC(scrollbar_button_up)));
-        topScrollBarButton->setSize(scrollBarWidth, (static_cast<double>(3) / 2) * scrollBarWidth);
-        topScrollBarButton->setPosition(width() - scrollBarWidth, 0);
-        topScrollBarButton->setCheckable(true);
-        RK_ACT_BIND(topScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineUp());
-
-        bottomScrollBarButton = new GeonkickButton(this);
-        bottomScrollBarButton->setUnpressedImage(RkImage(12, 17, RK_IMAGE_RC(scrollbar_button_down)));
-        bottomScrollBarButton->setSize(scrollBarWidth, (static_cast<double>(3) / 2) * scrollBarWidth);
-        bottomScrollBarButton->setPosition(width() - scrollBarWidth, height() -  bottomScrollBarButton->height());
-        bottomScrollBarButton->setCheckable(true);
-        RK_ACT_BIND(bottomScrollBarButton, toggled, RK_ACT_ARGS(bool b), this, onLineDown());
-
-        scrollBar = new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical);
-        scrollBar->setSize(scrollBarWidth, bottomScrollBarButton->y() - topScrollBarButton->y() - topScrollBarButton->height());
-        scrollBar->setPosition(topScrollBarButton->x(), topScrollBarButton->y() + topScrollBarButton->height());
-        RK_ACT_BIND(scrollBar, valueUpdated, RK_ACT_ARGS(int val), this, scrollBarChanged(val));
-}
-
-void FilesView::showScrollBar(bool b)
-{
-        isScrollBarVisible = b;
-        if (isScrollBarVisible) {
-                topScrollBarButton->show();
-                bottomScrollBarButton->show();
-                scrollBar->show();
-                scrollBar->onSetValue(0);
-                updateScrollBar();
-        } else {
-                topScrollBarButton->hide();
-                bottomScrollBarButton->hide();
-                scrollBar->hide();
-        }
-}
-
-void FilesView::updateScrollBar()
-{
-        if (isScrollBarVisible) {
-                if (filesList.empty() || offsetIndex < 0)
-                        scrollBar->onSetValue(100);
-                else
-                        scrollBar->onSetValue(100 - (double)(offsetIndex) / (filesList.size() - visibleLines) * 100);
-        }
-}
-
-void FilesView::scrollBarChanged(int val)
-{
-        val = 100 - val;
-        if (filesList.size() > visibleLines) {
-                offsetIndex = ((double)val / 100) * (filesList.size() - visibleLines);
-                update();
-        }
-}
-
-void FilesView::loadCurrentDirectory()
-{
-        if (selectedFileIndex > -1)
-                currentPath = filesList[selectedFileIndex];
-
-        if (!std::filesystem::is_directory(currentPath))
-                return;
-
-        decltype(filesList) files;
-        decltype(filesList) dirs;
-        try {
-                for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
-			if (entry.path().empty())
-				continue;
-                        if (std::filesystem::is_directory(entry.path())) {
-                                dirs.emplace_back(entry.path());
-                        } else if (std::find(fileFilters.begin(), fileFilters.end(), entry.path().extension())
-                                   != fileFilters.end()) {
-                                files.emplace_back(entry.path());
-                        }
-                }
-                filesList = files;
-        } catch(...) {
-                GEONKICK_LOG_ERROR("error on reading directory");
-                files.clear();
-        }
-
-        if (!files.empty()) {
-                std::sort(files.begin(), files.end(),
-                          [] (decltype(files)::value_type &a, decltype(files)::value_type &b) -> bool
-                        {
-                                        return a < b;
-                        });
-        }
-
-        if (!dirs.empty()) {
-                std::sort(dirs.begin(), dirs.end(),
-                          [] (decltype(dirs)::value_type &a, decltype(dirs)::value_type &b) -> bool
-                        {
-                                        return a < b;
-                        });
-        }
-
-        filesList = std::move(dirs);
-        filesList.insert(filesList.end(), files.begin(), files.end());
-        if (currentPath.parent_path() != currentPath.root_path()
-	    && !currentPath.parent_path().empty())
-                filesList.insert(filesList.begin(), currentPath.parent_path());
-        else if (!currentPath.root_path().empty())
-                filesList.insert(filesList.begin(), currentPath.root_path());
-
-        offsetIndex = 0;
-        selectedFileIndex = 0;
-        showScrollBar(filesList.size() > visibleLines);
-        action currentPathChanged(currentPath.string());
-}
-
-void FilesView::paintWidget(RkPaintEvent *event)
-{
-        RkImage img(width(), height());
-        RkPainter painter(&img);
-        painter.fillRect(rect(), background());
-        RkPen normalPen = painter.pen();
-        auto hightlightPen = normalPen;
-        hightlightPen.setColor({200, 200, 200});
-        normalPen.setColor({150, 150, 150});
-        painter.setPen(normalPen);
-        RkPen selectedPen = normalPen;
-        selectedPen.setColor({255, 255, 255});
-        auto font = painter.font();
-        font.setSize(lineHeight);
-        painter.setFont(font);
-
-        int lineYPos = 0;
-        auto index = offsetIndex;
-        int line = 0;
-        while(index >= 0 && (static_cast<decltype(filesList.size())>(index) < filesList.size())
-              && (static_cast<decltype(visibleLines)>(index - offsetIndex) < visibleLines)) {
-                auto fileName = filesList[index].filename().string();
-                auto font = painter.font();
-                if (std::filesystem::is_directory(filesList[index]))
-                        font.setWeight(RkFont::Weight::Bold);
-                else
-                        font.setWeight(RkFont::Weight::Normal);
-                painter.setFont(font);
-
-                if (selectedFileIndex == index)
-                        painter.setPen(selectedPen);
-                else if (hightlightLine == line)
-                        painter.setPen(hightlightPen);
-                else
-                        painter.setPen(normalPen);
-
-                if (index == 0)
-                        fileName = "[ " + fileName + ".. ]";
-                painter.drawText(RkRect(10, lineYPos, width() - 5, lineHeight), fileName, Rk::Alignment::AlignLeft);
-                lineYPos += lineHeight + lineSacing;
-                index++;
-                line++;
-        }
-        RkPainter paint(this);
-        paint.drawImage(img, 0, 0);
-}
-
-void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
-{
-        if (event->button() == RkMouseEvent::ButtonType::WheelUp) {
-                onLineUp();
-                return;
-        } else if (event->button() == RkMouseEvent::ButtonType::WheelDown) {
-                onLineDown();
-                return;
-        }
-
-        auto line = getLine(event->x(), event->y());
-        if (line > -1) {
-                selectedFileIndex = offsetIndex + line;
-                std::string file = getSelectedFile();
-                if (!std::filesystem::is_directory(file))
-                        action currentFileChanged(file);
-                update();
-        }
-}
-
-void FilesView::mouseDoubleClickEvent(RkMouseEvent *event)
-{
-        if (event->button() == RkMouseEvent::ButtonType::WheelUp) {
-                onLineUp();
-                return;
-        } else if(event->button() == RkMouseEvent::ButtonType::WheelDown) {
-                onLineDown();
-                return;
-        }
-
-        auto line = getLine(event->x(), event->y());
-        if (line > -1) {
-                selectedFileIndex = offsetIndex + line;
-                openSelectedFile();
-        }
-}
-
-void FilesView::mouseMoveEvent(RkMouseEvent *event)
-{
-        if (event->x() > width() - scrollBarWidth) {
-                hightlightLine = -1;
-                update();
-                return;
-        }
-
-        auto line = hightlightLine;
-        hightlightLine = getLine(event->x(), event->y());
-        if (hightlightLine != line)
-                update();
-}
-
-void FilesView::keyPressEvent(RkKeyEvent *event)
-{
-        if (!filesList.empty() && (event->key() == Rk::Key::Key_Down || event->key() == Rk::Key::Key_Up)) {
-                event->key() == Rk::Key::Key_Down ? selectedFileIndex++ : selectedFileIndex--;
-                if (selectedFileIndex > -1 && static_cast<decltype(filesList.size())>(selectedFileIndex) > filesList.size() - 1)
-                        selectedFileIndex = filesList.size() - 1;
-                else if (selectedFileIndex < 0)
-                        selectedFileIndex = 0;
-                if (selectedFileIndex < offsetIndex
-                    || static_cast<decltype(filesList.size())>(selectedFileIndex) > offsetIndex + visibleLines - 1) {
-                        offsetIndex = selectedFileIndex;
-                }
-                update();
-                updateScrollBar();
-                return;
-        }
-
-        if (event->key() == Rk::Key::Key_Return)
-                openSelectedFile();
-}
-
-std::string FilesView::getSelectedFile() const
-{
-        if (!filesList.empty() && selectedFileIndex > -1
-            && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()
-	    && !filesList[selectedFileIndex].empty()) {
-                return filesList[selectedFileIndex].string();
-        }
-        return "";
-}
-
-void FilesView::openSelectedFile()
-{
-        std::string file = getSelectedFile();
-        if (!file.empty()) {
-                if (!std::filesystem::is_directory(file))
-                        action openFile(filesList[selectedFileIndex].string());
-                else
-                        loadCurrentDirectory();
-                update();
-        }
-}
-
-int FilesView::getLine(int x, int y) const
-{
-        if (x > 0 && x < width() - scrollBarWidth && y > 0 && y < height()) {
-                decltype(filesList.size()) line = y / (lineHeight + lineSacing);
-                if (line <= filesList.size() - static_cast<decltype(filesList.size())>(offsetIndex + 1))
-                        return line;
-        }
-
-        return -1;
-}
-
-std::string FilesView::selectedFile() const
-{
-        if (selectedFileIndex > -1)
-                return filesList[selectedFileIndex].string();
-        return std::string();
-}
-
-void FilesView::onLineUp()
-{
-        offsetIndex--;
-        if (offsetIndex < 0)
-                offsetIndex = 0;
-        updateScrollBar();
-        update();
-}
-
-void FilesView::onLineDown()
-{
-        if (offsetIndex + visibleLines < filesList.size())
-                offsetIndex++;
-        updateScrollBar();
-        update();
-}
-
-void FilesView::setFilters(const std::vector<std::string> &filters)
-{
-        fileFilters = filters;
-}
 
 FileBrowser::FileBrowser(GeonkickWidget *parent,
                        FileBrowser::Type type,
@@ -386,11 +51,12 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
-        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
+          //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
         , bookmarkDirectoryButton{nullptr}
 {
         setTitle(title);
-        setFixedSize(600, 370);
+        setSize({100, 200});
+        setBackgroundColor(88, 0, 0);
         createUi();
         show();
 }
@@ -403,35 +69,43 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
-        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
+        //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
         , bookmarkDirectoryButton{nullptr}
 {
         setTitle(title);
-        setFixedSize(600, 370);
+        setSize({100, 200});
+        setBackgroundColor(88, 0, 0);
         createUi();
         show();
 }
 
+void FileBrowser::setSize(const RkSize &size)
+{
+        GeonkickWidget::setSize(size);
+        if (filesView)
+                filesView->setSize(size);
+}
+
 void FileBrowser::createUi()
 {
-        if (widgetFlags() == Rk::WidgetFlags::Popup) {
+        /*if (widgetFlags() == Rk::WidgetFlags::Popup) {
                 setBorderWidth(2);
                 setBorderColor(80, 80, 80);
         }
         GeonkickConfig cfg;
         for(const auto &path: cfg.getBookmarkedPaths())
-                shortcutDirectoriesModel->addPath(path);
+        shortcutDirectoriesModel->addPath(path);*/
 
-        auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
-        mainContainer->addSpace(8);
-        mainContainer->setSize(size());
+        //auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
+        //mainContainer->addSpace(8);
+        //mainContainer->setSize(size());
 
-        auto topContainer = new RkContainer(this);
+        /*auto topContainer = new RkContainer(this);
         topContainer->setSize({mainContainer->width(), 20});
-        mainContainer->addContainer(topContainer);
+        mainContainer->addContainer(topContainer);*/
 
         filesView = new FilesView(this);
-        RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
+        /*RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
                     this, currentFileChanged(file));
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
@@ -440,14 +114,14 @@ void FileBrowser::createUi()
                     itemSelected,
                     RK_ACT_ARGS(RkModelItem item),
                     filesView,
-                    setCurrentPath(std::get<std::string>(item.data(static_cast<int>(PathListModel::PathListDataType::Path)))));
+                    setCurrentPath(std::get<std::string>(item.data(static_cast<int>(PathListModel::PathListDataType::Path)))));*/
 
-        shortcutDirectoriesView->setBackgroundColor({50, 50, 50});
+        /*        shortcutDirectoriesView->setBackgroundColor({50, 50, 50});
         shortcutDirectoriesView->setPosition(2, filesView->y());
         shortcutDirectoriesView->setSize(100 ,filesView->height());
-        shortcutDirectoriesView->show();
+        shortcutDirectoriesView->show();*/
 
-        createBookmarkDirectoryControls(topContainer);
+        /*        createBookmarkDirectoryControls(topContainer);
         createNewDirectoryControls(topContainer);
 
         auto buttomContainer = new RkContainer(this);
@@ -482,12 +156,12 @@ void FileBrowser::createUi()
                 fileNameEdit->show();
                 RK_ACT_BIND(fileNameEdit, enterPressed, RK_ACT_ARGS(), this, onAccept());
                 buttomContainer->addWidget(fileNameEdit);
-        }
+                }*/
 }
 
 void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
 {
-        container->addSpace(10);
+        /*        container->addSpace(10);
         bookmarkDirectoryButton = new GeonkickButton(this);
         bookmarkDirectoryButton->setCheckable(true);
         bookmarkDirectoryButton->setSize(16, 16);
@@ -512,12 +186,12 @@ void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
                     bookmarkDirectory(currentDirectory(), b));
 
         RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
-                    this, updateBookmarkButton(std::filesystem::path(pathName)));
+        this, updateBookmarkButton(std::filesystem::path(pathName)));*/
 }
 
 void FileBrowser::createNewDirectoryControls(RkContainer *container)
 {
-        container->addSpace(5);
+        /*        container->addSpace(5);
         // Create directory button
         auto createDirectoryButton = new GeonkickButton(this);
         createDirectoryButton->setSize(16, 16);
@@ -571,7 +245,7 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
                              createDirectoryButton->show();
                              editDirectoryName->setText("");
                              container->update();
-                     });
+                             });*/
 }
 
 void FileBrowser::onAccept()
@@ -670,7 +344,7 @@ bool FileBrowser::createDirectory(const std::filesystem::path &dir)
 
 void FileBrowser::bookmarkDirectory(const std::filesystem::path &dir, bool bookmark)
 {
-        if (bookmark) {
+        /*        if (bookmark) {
                 if (!isPathBookmarked(dir)) {
                         GeonkickConfig cfg;
                         auto res = cfg.bookmarkPath(dir);
@@ -689,7 +363,7 @@ void FileBrowser::bookmarkDirectory(const std::filesystem::path &dir, bool bookm
                                 shortcutDirectoriesModel->removePath(dir);
                 }
         }
-        updateBookmarkButton(dir);
+        updateBookmarkButton(dir);*/
 }
 
 bool FileBrowser::isPathBookmarked(const std::filesystem::path &path) const
@@ -701,5 +375,5 @@ bool FileBrowser::isPathBookmarked(const std::filesystem::path &path) const
 
 void FileBrowser::updateBookmarkButton(const std::filesystem::path &path)
 {
-        bookmarkDirectoryButton->setPressed(isPathBookmarked(path));
+        //       bookmarkDirectoryButton->setPressed(isPathBookmarked(path));
 }

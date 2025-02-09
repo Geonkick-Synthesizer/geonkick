@@ -53,7 +53,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
         , fileBrowser{new FileBrowser(this, FileBrowser::Type::Browse, std::string())}
-        , samplePreviewWidget{new BufferView(this)}
+          //        , samplePreviewWidget{new BufferView(this)}
         , playButton{nullptr}
         , loadButton{nullptr}
         , osc1Button{nullptr}
@@ -62,21 +62,22 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         , previewLimiter{nullptr}
 
 {
-        setFixedSize(306, 100);
+        setSize(306, parent->height() - 30);
+        fileBrowser->setSize(size());
         fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
         fileBrowser->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         fileBrowser->setCurrentDirectoy(viewState()->samplesBrowserPath());
-        setPreviewSample(viewState()->samplesBrowserPreviewFile());
+        //        setPreviewSample(viewState()->samplesBrowserPreviewFile());
         RK_ACT_BIND(fileBrowser,
                     directoryChanged,
                     RK_ACT_ARGS(const std::string &path),
                     viewState(),
                     setSamplesBrowserPath(path));
-        RK_ACT_BIND(fileBrowser,
-                    currentFileChanged,
-                    RK_ACT_ARGS(const std::string &file),
-                    this,
-                    setPreviewSample(file));
+        //        RK_ACT_BIND(fileBrowser,
+        //                    currentFileChanged,
+        //                    RK_ACT_ARGS(const std::string &file),
+        //                    this,
+        //                    setPreviewSample(file));
         RK_ACT_BIND(fileBrowser,
                     currentFileChanged,
                     RK_ACT_ARGS(const std::string &file),
@@ -90,24 +91,24 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
                              loadSample();
                     });
 
-        samplePreviewWidget->setSize(250, 260);
+        /*        samplePreviewWidget->setSize(250, 260);
         samplePreviewWidget->show();
-        RK_ACT_BIND(samplePreviewWidget, graphPressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
+        RK_ACT_BIND(samplePreviewWidget, graphPressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());*/
 
-        previewLimiter = new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical);
+        /*previewLimiter = new GeonkickSlider(this, GeonkickSlider::Orientation::Vertical);
         previewLimiter->onSetValue(Geonkick::toDecibel(geonkickApi->samplePreviewLimiter()) + 80);
         RK_ACT_BIND(previewLimiter,
                     valueUpdated, RK_ACT_ARGS(int val),
                     geonkickApi,
                     setSamplePreviewLimiter(Geonkick::fromDecibel(val - 80)));
 
-        previewLimiter->setSize(16, samplePreviewWidget->height());
+                    previewLimiter->setSize(16, samplePreviewWidget->height());*/
 
-        auto mainLayout = new RkContainer(this);
-        mainLayout->setSize(parent->size());
+        auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
+        mainLayout->setSize(size());
         mainLayout->addWidget(fileBrowser);
 
-        auto previewWidgetContainer = new RkContainer(this, Rk::Orientation::Horizontal);
+        /*auto previewWidgetContainer = new RkContainer(this, Rk::Orientation::Horizontal);
         previewWidgetContainer->setSize({samplePreviewWidget->width() + 10 + previewLimiter->width(),
                                          samplePreviewWidget->height()});
         previewWidgetContainer->addWidget(samplePreviewWidget);
@@ -127,12 +128,13 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         mainLayout->addSpace(5);
         mainLayout->addContainer(previewContainer);
         setOscillator(viewState()->samplesBrowserOscillator());
+        */
         show();
 }
 
 void SampleBrowser::createPreviewMenu(RkContainer* container)
 {
-        playButton = new GeonkickButton(this);
+        /*playButton = new GeonkickButton(this);
         playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(33, 18);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample)),
@@ -198,19 +200,19 @@ void SampleBrowser::createPreviewMenu(RkContainer* container)
         RK_ACT_BIND(osc3Button, pressed,
                     RK_ACT_ARGS(), this,
                     setOscillator(GeonkickApi::OscillatorType::Oscillator3));
-        container->addWidget(osc3Button);
+                    container->addWidget(osc3Button);*/
 }
 
 void SampleBrowser::setOscillator(GeonkickApi::OscillatorType osc)
 {
-        osc1Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator1);
-        osc2Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator2);
-        osc3Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator3);
+        //        osc1Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator1);
+        //        osc2Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator2);
+        //        osc3Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator3);
 }
 
 void SampleBrowser::loadSample()
 {
-        if (osc1Button->isPressed()) {
+        /*if (osc1Button->isPressed()) {
                 geonkickApi->setOscillatorSample(samplePreviewWidget->getData(),
                                                  static_cast<int>(GeonkickApi::OscillatorType::Oscillator1));
                 geonkickApi->setOscillatorFunction(static_cast<int>(GeonkickApi::OscillatorType::Oscillator1),
@@ -243,5 +245,5 @@ void SampleBrowser::setPreviewSample(const std::string &file)
                         }
                 }
         }  catch (...) {
-        }
+        }*/
 }
