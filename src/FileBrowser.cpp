@@ -22,6 +22,7 @@
  */
 
 #include "FileBrowser.h"
+#include "BreadcrumbBar.h"
 #include "FilesView.h"
 #include "geonkick_button.h"
 #include "PathListModel.h"
@@ -54,9 +55,8 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
           //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
         , bookmarkDirectoryButton{nullptr}
 {
+        setSize(parent->size());
         setTitle(title);
-        setSize({100, 200});
-        setBackgroundColor(88, 0, 0);
         createUi();
         show();
 }
@@ -72,9 +72,9 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
         , bookmarkDirectoryButton{nullptr}
 {
+        setSize(parent->size());
         setTitle(title);
-        setSize({100, 200});
-        setBackgroundColor(88, 0, 0);
+        setBackgroundColor(88, 0, 0xff);
         createUi();
         show();
 }
@@ -96,15 +96,24 @@ void FileBrowser::createUi()
         for(const auto &path: cfg.getBookmarkedPaths())
         shortcutDirectoriesModel->addPath(path);*/
 
-        //auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
-        //mainContainer->addSpace(8);
-        //mainContainer->setSize(size());
+        auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
+        mainContainer->setSize(size());
+        mainContainer->addSpace(8);
 
         /*auto topContainer = new RkContainer(this);
         topContainer->setSize({mainContainer->width(), 20});
         mainContainer->addContainer(topContainer);*/
 
-        filesView = new FilesView(this);
+        // Create breadcrumb bar.
+        auto breadcrumbBar = new BreadcrumbBar(this);
+        breadcrumbBar->setPath(fs::path("/home/iurie/proj/geonkick/f1/ffff2/folder30/someting/else/and/other/folders"));
+        mainContainer->addWidget(breadcrumbBar);
+
+        // Create files view.
+        //mainContainer->addSpace(5);
+        //filesView = new FilesView(this);
+        //mainContainer->addWidget(filesView);
+
         /*RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
                     this, currentFileChanged(file));
@@ -297,12 +306,12 @@ void FileBrowser::closeEvent(RkCloseEvent *event)
 
 std::string FileBrowser::currentDirectory() const
 {
-        return filesView->getCurrentPath();
+        return "";//filesView->getCurrentPath();
 }
 
 void FileBrowser::setCurrentDirectoy(const std::string &path)
 {
-        filesView->setCurrentPath(path);
+        //filesView->setCurrentPath(path);
 }
 
 std::string FileBrowser::filePath() const
@@ -317,7 +326,7 @@ FileBrowser::AcceptStatus FileBrowser::acceptStatus() const
 
 void FileBrowser::setFilters(const std::vector<std::string> &filters)
 {
-        filesView->setFilters(filters);
+        //        filesView->setFilters(filters);
 }
 
 void FileBrowser::setHomeDirectory(const std::string &path)

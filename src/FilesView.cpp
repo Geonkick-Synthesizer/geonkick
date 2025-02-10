@@ -46,7 +46,7 @@ FilesView::FilesView(GeonkickWidget *parent)
         , scrollBarWidth{12}
         , isScrollBarVisible{false}
 {
-        setSize(parent->size());
+        setSize(parent->size() - RkSize{0, 100});
         setBackgroundColor(50, 50, 50);
         createScrollBar();
         showScrollBar(false);
@@ -55,7 +55,7 @@ FilesView::FilesView(GeonkickWidget *parent)
 
 void FilesView::setSize(const RkSize &size)
 {
-        GeonkickWidget::setSize(size);
+        GeonkickWidget::setSize(size - RkSize{0, 100});
         visibleLines = height() / (lineHeight + lineSacing);
         updateScrollBarView();
 }

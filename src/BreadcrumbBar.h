@@ -25,42 +25,15 @@
 #define BREADCRUMB_BAR_H
 
 #include "geonkick_widget.h"
+#include "geonkick_button.h"
 
-class BreadcrumbBar : public GeonkickButton {
+class BreadcrumbBarButton : public GeonkickButton {
  public:
- BreadcrumbBar(GeonkickWidget *parent, const fs::path& path)
-         : GeonkickWidget(parent)
-         , buttonPath{path}
-        {
-                setSize(getButtonSize());
-        }
-
-        const std::string& setPath(const fs::path &path)
-        {
-                buttonPath = path;
-                setSize(getButtonSize());
-        }
-
-        const fs::path& getPath() const
-        {
-                return buttonPath;
-        }
-
- protected:
-        RkSize getButtonSize() const
-        {
-                RkPainter painter(this);
-                return {getTextWidth(getPath().filename().string()), height()};
-        }
+        BreadcrumbBarButton(GeonkickWidget *parent, const fs::path& path);
+        const fs::path& getPath() const;
 
  private:
         fs::path buttonPath;
-};
-
-struct ButtonComparator {
-        bool operator()(const Button& first, const Button& second) const
-                return first.getPath() < first.getPath();
-        }
 };
 
 class BreadcrumbBar: public GeonkickWidget
@@ -68,9 +41,17 @@ class BreadcrumbBar: public GeonkickWidget
  public:
         explicit BreadcrumbBar(GeonkickWidget* parent);
         void setPath(const fs::path &path);
+        RK_DECL_ACT(onPathPressed,
+                    onPathPressed(const fs::path &path),
+                    RK_ARG_TYPE(const fs::path),
+                    RK_ARG_VAL(path));
+
+ protected:
+        void updateButtonView();
+        void pathPressed(size_t index);
 
  private:
-        std::set<BreadcrumbBarButton, ButtonComparator> pathList;
+        std::vector<BreadcrumbBarButton*> pathButtons;
 };
 
 #endif // BREADCRUMB_BAR_H

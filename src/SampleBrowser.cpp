@@ -52,7 +52,7 @@ RK_DECLARE_IMAGE_RC(osc3_preview_sample_pressed);
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
-        , fileBrowser{new FileBrowser(this, FileBrowser::Type::Browse, std::string())}
+        , fileBrowser{nullptr}
           //        , samplePreviewWidget{new BufferView(this)}
         , playButton{nullptr}
         , loadButton{nullptr}
@@ -63,6 +63,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
 
 {
         setSize(306, parent->height() - 30);
+        fileBrowser = new FileBrowser(this, FileBrowser::Type::Browse, std::string());
         fileBrowser->setSize(size());
         fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
         fileBrowser->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));

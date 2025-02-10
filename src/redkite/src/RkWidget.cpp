@@ -147,12 +147,14 @@ bool RkWidget::isClose() const
 
 void RkWidget::setSize(int w, int h)
 {
-        impl_ptr->setSize(RkSize(w, h));
+        setSize(RkSize(w, h));
 }
 
 void RkWidget::setSize(const RkSize &size)
 {
-        setSize(size.width(), size.height());
+        impl_ptr->setSize({size.width(), size.height()});
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 const RkSize& RkWidget::size() const
@@ -182,7 +184,7 @@ const RkSize& RkWidget::maximumSize() const
 
 void RkWidget::setWidth(int w)
 {
-        setSize(RkSize(w, impl_ptr->size().height()));
+        setSize(w, impl_ptr->size().height());
 }
 
 int RkWidget::width() const
@@ -202,7 +204,7 @@ int RkWidget::maximumWidth() const
 
 void RkWidget::setHeight(int h)
 {
-        setSize(RkSize(impl_ptr->size().width(),  h));
+        setSize(impl_ptr->size().width(),  h);
 }
 
 int RkWidget::height() const
@@ -276,6 +278,8 @@ int RkWidget::x() const
 void RkWidget::setX(int x)
 {
         impl_ptr->setPosition(RkPoint(x, impl_ptr->position().y()));
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 int RkWidget::y() const
@@ -285,17 +289,23 @@ int RkWidget::y() const
 
 void RkWidget::setY(int y)
 {
-        return impl_ptr->setPosition(RkPoint(impl_ptr->position().x(), y));
+        impl_ptr->setPosition(RkPoint(impl_ptr->position().x(), y));
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 void RkWidget::setPosition(int x, int y)
 {
         impl_ptr->setPosition(RkPoint(x, y));
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 void RkWidget::setPosition(const RkPoint &p)
 {
         impl_ptr->setPosition(p);
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 const RkPoint& RkWidget::position() const
