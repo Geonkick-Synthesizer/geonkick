@@ -65,9 +65,12 @@ void BreadcrumbBar::setPath(const fs::path &path)
                 pathButtons.emplace_back(button);
                 i++;
         }
-        pathButtons.back()->setPressed(true);
+
+        if (!pathButtons.empty())
+                pathButtons.back()->setPressed(true);
 
         updateButtonView();
+        onPathSelected(path);
 }
 
 void BreadcrumbBar::pathPressed(size_t index)
@@ -80,7 +83,7 @@ void BreadcrumbBar::pathPressed(size_t index)
         pathButtons.erase(pathButtons.begin() + index + 1, pathButtons.end());
         updateButtonView();
 
-        action onPathPressed(pathButtons.back()->getPath());
+        action onPathSelected(pathButtons.back()->getPath());
 }
 
 void BreadcrumbBar::updateButtonView()

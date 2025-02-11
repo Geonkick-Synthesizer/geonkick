@@ -48,7 +48,10 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
                        Rk::WidgetFlags flags,
                        const std::string& title)
         : GeonkickWidget(parent, flags)
+        , mainContainer{nullptr}
         , dialogType{type}
+        , fileNameEdit{nullptr}
+        , breadcrumbBar{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
@@ -65,7 +68,9 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
                        FileBrowser::Type type,
                        const std::string& title)
         : GeonkickWidget(parent, type == FileBrowser::Type::Browse ? Rk::WidgetFlags::Widget : Rk::WidgetFlags::Popup)
+        , mainContainer{nullptr}
         , dialogType{type}
+        , fileNameEdit{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
@@ -96,7 +101,7 @@ void FileBrowser::createUi()
         for(const auto &path: cfg.getBookmarkedPaths())
         shortcutDirectoriesModel->addPath(path);*/
 
-        auto mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
+        mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
         mainContainer->setSize(size());
         mainContainer->addSpace(8);
 
@@ -105,14 +110,18 @@ void FileBrowser::createUi()
         mainContainer->addContainer(topContainer);*/
 
         // Create breadcrumb bar.
-        auto breadcrumbBar = new BreadcrumbBar(this);
-        breadcrumbBar->setPath(fs::path("/home/iurie/proj/geonkick/f1/ffff2/folder30/someting/else/and/other/folders"));
+        breadcrumbBar = new BreadcrumbBar(this);
         mainContainer->addWidget(breadcrumbBar);
+        RK_ACT_BIND(breadcrumbBar,
+                    onPathSelected,
+                    RK_ACT_ARGS(const fs::path &path),
+                    this,
+                    updateView());
 
         // Create files view.
-        //mainContainer->addSpace(5);
-        //filesView = new FilesView(this);
-        //mainContainer->addWidget(filesView);
+        mainContainer->addSpace(5);
+        filesView = new FilesView(this);
+        mainContainer->addWidget(filesView);
 
         /*RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
@@ -166,6 +175,7 @@ void FileBrowser::createUi()
                 RK_ACT_BIND(fileNameEdit, enterPressed, RK_ACT_ARGS(), this, onAccept());
                 buttomContainer->addWidget(fileNameEdit);
                 }*/
+        updateView();
 }
 
 void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
@@ -255,6 +265,12 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
                              editDirectoryName->setText("");
                              container->update();
                              });*/
+}
+
+void FileBrowser::updateView()
+{
+        filesView->setHeight(parentWidget() - 100 - breadcrumbBar->height() - 5);
+        mainContainer->update();
 }
 
 void FileBrowser::onAccept()

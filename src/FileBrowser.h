@@ -36,6 +36,8 @@ class PathListModel;
 class RkList;
 class RkContainer;
 class GeonkickButton;
+class RkContainer;
+class BreadcrumbBar;
 
 class FileBrowser: public GeonkickWidget {
  public:
@@ -87,6 +89,7 @@ class FileBrowser: public GeonkickWidget {
 
  protected:
         void createUi();
+        void updateView();
         void createBookmarkDirectoryControls(RkContainer *container);
         void createNewDirectoryControls(RkContainer *container);
         void updateBookmarkButton(const std::filesystem::path &path);
@@ -95,8 +98,9 @@ class FileBrowser: public GeonkickWidget {
         void closeEvent(RkCloseEvent *event) final;
 
  private:
-        RkLineEdit *fileNameEdit;
+        RkContainer *mainContainer;
         Type dialogType;
+        RkLineEdit *fileNameEdit;
         FilesView *filesView;
         std::string pathSelected;
         AcceptStatus status;

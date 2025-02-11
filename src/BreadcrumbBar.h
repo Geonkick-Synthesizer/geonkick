@@ -41,8 +41,8 @@ class BreadcrumbBar: public GeonkickWidget
  public:
         explicit BreadcrumbBar(GeonkickWidget* parent);
         void setPath(const fs::path &path);
-        RK_DECL_ACT(onPathPressed,
-                    onPathPressed(const fs::path &path),
+        RK_DECL_ACT(onPathSelected,
+                    onPathSelected(const fs::path &path),
                     RK_ARG_TYPE(const fs::path),
                     RK_ARG_VAL(path));
 
