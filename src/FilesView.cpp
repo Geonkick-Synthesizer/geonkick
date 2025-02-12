@@ -67,6 +67,9 @@ std::string FilesView::getCurrentPath() const
 
 void FilesView::setCurrentPath(const std::string &path)
 {
+        if (currentPath == path)
+                return;
+
         currentPath = path;
         selectedFileIndex = -1;
         loadCurrentDirectory();

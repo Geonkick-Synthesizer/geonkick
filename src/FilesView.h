@@ -39,8 +39,8 @@ class FilesView: public GeonkickWidget {
         void setFilters(const std::vector<std::string> &filters);
         RK_DECL_ACT(openFile, openFile(const std::string &fileName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
-        RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &pathName),
-                    RK_ARG_TYPE(const std::string &), RK_ARG_VAL(pathName));
+        RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &path),
+                    RK_ARG_TYPE(const std::string&), RK_ARG_VAL(path));
         RK_DECL_ACT(fileSelected,
                     fileSelected(const std::string &file),
                     RK_ARG_TYPE(const std::string&),

@@ -70,7 +70,7 @@ class FileBrowser: public GeonkickWidget {
                     RK_ARG_VAL(file));
         RK_DECL_ACT(directoryChanged,
                     directoryChanged(const std::string &path),
-                    RK_ARG_TYPE(const std::string&),
+                    RK_ARG_TYPE(const std::string &path),
                     RK_ARG_VAL(path));
         RK_DECL_ACT(rejected,
                     rejected(),
@@ -101,6 +101,7 @@ class FileBrowser: public GeonkickWidget {
         RkContainer *mainContainer;
         Type dialogType;
         RkLineEdit *fileNameEdit;
+        BreadcrumbBar *breadcrumbBar;
         FilesView *filesView;
         std::string pathSelected;
         AcceptStatus status;

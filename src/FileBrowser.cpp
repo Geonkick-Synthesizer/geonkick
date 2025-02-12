@@ -79,7 +79,7 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
 {
         setSize(parent->size());
         setTitle(title);
-        setBackgroundColor(88, 0, 0xff);
+        //        setBackgroundColor(88, 0, 0xff);
         createUi();
         show();
 }
@@ -113,14 +113,24 @@ void FileBrowser::createUi()
         breadcrumbBar = new BreadcrumbBar(this);
         mainContainer->addWidget(breadcrumbBar);
         RK_ACT_BIND(breadcrumbBar,
-                    onPathSelected,
-                    RK_ACT_ARGS(const fs::path &path),
+                    sizeUpdated,
+                    RK_ACT_ARGS(),
                     this,
                     updateView());
 
         // Create files view.
         mainContainer->addSpace(5);
         filesView = new FilesView(this);
+        RK_ACT_BIND(breadcrumbBar,
+                    pathChanged,
+                    RK_ACT_ARGS(const fs::path &path),
+                    filesView,
+                    setCurrentPath(path));
+        RK_ACT_BIND(filesView,
+                    currentPathChanged,
+                    RK_ACT_ARGS(const std::string &path),
+                    breadcrumbBar,
+                    setPath(path));
         mainContainer->addWidget(filesView);
 
         /*RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
@@ -269,7 +279,7 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
 
 void FileBrowser::updateView()
 {
-        filesView->setHeight(parentWidget() - 100 - breadcrumbBar->height() - 5);
+        filesView->setHeight(parentWidget()->height() - 8 - breadcrumbBar->height() - 5);
         mainContainer->update();
 }
 
@@ -322,12 +332,13 @@ void FileBrowser::closeEvent(RkCloseEvent *event)
 
 std::string FileBrowser::currentDirectory() const
 {
-        return "";//filesView->getCurrentPath();
+        return filesView->getCurrentPath();
 }
 
 void FileBrowser::setCurrentDirectoy(const std::string &path)
 {
-        //filesView->setCurrentPath(path);
+        filesView->setCurrentPath(path);
+        breadcrumbBar->setPath(path);
 }
 
 std::string FileBrowser::filePath() const
@@ -342,7 +353,7 @@ FileBrowser::AcceptStatus FileBrowser::acceptStatus() const
 
 void FileBrowser::setFilters(const std::vector<std::string> &filters)
 {
-        //        filesView->setFilters(filters);
+        filesView->setFilters(filters);
 }
 
 void FileBrowser::setHomeDirectory(const std::string &path)

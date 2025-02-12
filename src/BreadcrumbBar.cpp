@@ -46,31 +46,35 @@ BreadcrumbBar::BreadcrumbBar(GeonkickWidget* parent)
         : GeonkickWidget(parent)
 {
         setSize(parent->width() - 4, 20);
-        setBackgroundColor(0xff, 0, 0);
+        //        setBackgroundColor(0xff, 0, 0);
 }
 
 void BreadcrumbBar::setPath(const fs::path &path)
 {
+        if (path == currentPath)
+                return;
+
         for (auto button: pathButtons)
                 delete button;
         pathButtons.clear();
 
-        fs::path currentPath;
+        fs::path tempCurrentPath;
         std::vector<std::string> folders;
         size_t i = 0;
         for (const auto& part : path) {
-                currentPath /= part;
-                auto button = new BreadcrumbBarButton(this, currentPath);
+                tempCurrentPath /= part;
+                auto button = new BreadcrumbBarButton(this, tempCurrentPath);
                 RK_ACT_BIND(button, pressed, RK_ACT_ARGS(), this, pathPressed(i));
                 pathButtons.emplace_back(button);
                 i++;
         }
 
-        if (!pathButtons.empty())
+        if (!pathButtons.empty()) {
                 pathButtons.back()->setPressed(true);
+                currentPath = pathButtons.back()->getPath();
+        }
 
         updateButtonView();
-        onPathSelected(path);
 }
 
 void BreadcrumbBar::pathPressed(size_t index)
@@ -83,7 +87,10 @@ void BreadcrumbBar::pathPressed(size_t index)
         pathButtons.erase(pathButtons.begin() + index + 1, pathButtons.end());
         updateButtonView();
 
-        action onPathSelected(pathButtons.back()->getPath());
+        if (currentPath != pathButtons.back()->getPath()) {
+                currentPath = pathButtons.back()->getPath();
+                action pathChanged(pathButtons.back()->getPath());
+        }
 }
 
 void BreadcrumbBar::updateButtonView()
@@ -107,5 +114,10 @@ void BreadcrumbBar::updateButtonView()
                 button->setPosition(x, y);
                 x += button->width() + padding;
         }
-        setSize(width(), y + maxButtonHeight);
+
+        auto newSize = RkSize{width(), y + maxButtonHeight};
+        if (newSize != size()) {
+                setSize(newSize);
+                action sizeUpdated();
+        }
 }
