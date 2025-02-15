@@ -27,6 +27,7 @@
 #include "geonkick_button.h"
 #include "PathListModel.h"
 #include "GeonkickConfig.h"
+#include "PathHistory.h"
 
 #include <RkLabel.h>
 #include <RkLineEdit.h>
@@ -35,6 +36,13 @@
 #include <RkList.h>
 #include <RkContainer.h>
 
+RK_DECLARE_IMAGE_RC(file_browser_back);
+RK_DECLARE_IMAGE_RC(file_browser_back_pressed);
+RK_DECLARE_IMAGE_RC(file_browser_back_hover);
+RK_DECLARE_IMAGE_RC(file_browser_forward);
+RK_DECLARE_IMAGE_RC(file_browser_forward_pressed);
+RK_DECLARE_IMAGE_RC(file_browser_forward_hover);
+RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(cancel);
@@ -51,11 +59,14 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , mainContainer{nullptr}
         , dialogType{type}
         , fileNameEdit{nullptr}
+        , pathHistory{new PathHistory(this)}
         , breadcrumbBar{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
           //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
+        , backButton{nullptr}
+        , forwardButton{nullptr}
         , bookmarkDirectoryButton{nullptr}
 {
         setSize(parent->size());
@@ -71,6 +82,8 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , mainContainer{nullptr}
         , dialogType{type}
         , fileNameEdit{nullptr}
+        , pathHistory{new PathHistory(this)}
+        , breadcrumbBar{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , shortcutDirectoriesModel{new PathListModel(this)}
@@ -105,9 +118,12 @@ void FileBrowser::createUi()
         mainContainer->setSize(size());
         mainContainer->addSpace(8);
 
-        /*auto topContainer = new RkContainer(this);
+        auto topContainer = new RkContainer(this);
         topContainer->setSize({mainContainer->width(), 20});
-        mainContainer->addContainer(topContainer);*/
+        mainContainer->addContainer(topContainer);
+
+        // Create top menu.
+        createTopMenu(topContainer);
 
         // Create breadcrumb bar.
         breadcrumbBar = new BreadcrumbBar(this);
@@ -121,6 +137,16 @@ void FileBrowser::createUi()
         // Create files view.
         mainContainer->addSpace(5);
         filesView = new FilesView(this);
+        RK_ACT_BIND(fileHistory,
+                    pathChanged,
+                    RK_ACT_ARGS(const fs::path &path),
+                    fileView,
+                    setCurrentPath(path));
+        RK_ACT_BIND(filesView,
+                    currentPathChanged,
+                    RK_ACT_ARGS(const std::string &path),
+                    pathHistory,
+                    goTo(path));
         RK_ACT_BIND(breadcrumbBar,
                     pathChanged,
                     RK_ACT_ARGS(const fs::path &path),
@@ -132,6 +158,8 @@ void FileBrowser::createUi()
                     breadcrumbBar,
                     setPath(path));
         mainContainer->addWidget(filesView);
+
+        pathHistory->gotTo(filesView->getCurrentPath());
 
         /*RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
@@ -186,6 +214,53 @@ void FileBrowser::createUi()
                 buttomContainer->addWidget(fileNameEdit);
                 }*/
         updateView();
+}
+
+void FileBrowser::createTopMenu(RkContainer *container)
+{
+        // Backward button.
+        auto backwardButton = new GeonkickButton(this);
+        backwardButton->setSize(48, 20);
+        backwardButton->setImage(RkImage(backwardButton->size(),
+                         RK_IMAGE_RC(file_browser_back)),
+                         RkButton::State::Unpressed);
+        backwardButton->setImage(RkImage(bookmarkDirectoryBackButton->size(),
+                         RK_IMAGE_RC(file_browser_back_pressed)),
+                         RkButton::State::Pressed);
+        backwardButton->setImage(RkImage(bookmarkDirectoryBackButton->size(),
+                         RK_IMAGE_RC(file_browser_back_hover)),
+                         RkButton::State::PressedHover);
+        backwardButton->setImage(RkImage(bookmarkDirectoryBackButton->size(),
+                         RK_IMAGE_RC(file_browser_back_hover)),
+                         RkButton::State::UnpressedHover);
+        RK_ACT_BIND(backwardButton, pressed, RK_ACT_ARGS(), pathHistory, goBack());
+        RK_ACT_BIND(pathHistory,
+                    backwardHistoryUpdated,
+                    RK_ACT_ARGS(bool hasHistory),
+                    backwardButton, backwardButton->setEnabled(hasHIstory));
+        container->addWidget(backwardButton);
+
+        // Forward button.
+        auto forwardButton = new GeonkickForwardButton(this);
+        forwardButton->setSize(48, 20);
+        forwardButton->setImage(RkImage(forwardButton->size(),
+                         RK_IMAGE_RC(file_browser_)),
+                         RkButton::State::Unpressed);
+        forwardButton->setImage(RkImage(bookmarkDirectoryForwardButton->size(),
+                         RK_IMAGE_RC(file_browser_forward_pressed)),
+                         RkButton::State::Pressed);
+        forwardButton->setImage(RkImage(bookmarkDirectoryForwardButton->size(),
+                         RK_IMAGE_RC(file_browser_forward_hover)),
+                         RkButton::State::PressedHover);
+        forwardButton->setImage(RkImage(bookmarkDirectoryForwardButton->size(),
+                         RK_IMAGE_RC(file_browser_forward_hover)),
+                         RkButton::State::UnpressedHover);
+        RK_ACT_BIND(forwardButton, pressed, RK_ACT_ARGS(), pathHistory, goForward());
+        RK_ACT_BIND(pathHistory,
+                    forwardHistoryUpdated,
+                    RK_ACT_ARGS(bool hasHistory),
+                    forwardButton, backButton->setEnabled(hasHIstory));
+        container->addWidget(forwardButton);
 }
 
 void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
@@ -281,6 +356,14 @@ void FileBrowser::updateView()
 {
         filesView->setHeight(parentWidget()->height() - 8 - breadcrumbBar->height() - 5);
         mainContainer->update();
+}
+
+void FileBrowser::goBack()
+{
+}
+
+void FileBrowser::goForward()
+{
 }
 
 void FileBrowser::onAccept()

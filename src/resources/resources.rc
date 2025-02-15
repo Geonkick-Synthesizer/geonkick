@@ -329,4 +329,13 @@ distortion_log_button_active.png
 distortion_pl_button.png
 distortion_pl_button_hover.png
 distortion_pl_button_active.png
+
+#====== File browser ===
+
+file_browser_back.png
+file_browser_back_pressed.png
+file_browser_back_hover.png
+file_browser_forward.png
+file_browser_forward_pressed.png
+file_browser_forward_hover.png
 )
