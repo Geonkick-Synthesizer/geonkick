@@ -75,6 +75,11 @@ RkButton::ButtonType RkButton::RkButtonImpl::type(void) const
 
 void RkButton::RkButtonImpl::drawButton(RkPainter &painter)
 {
+        if (!isEnabled()) {
+                painter.drawImage(buttonImages[static_cast<size_t>(RkButton::State::Disabled)], 0, 0);
+                return;
+        }
+
         if (isPressed()) {
                 if (!buttonImages[static_cast<size_t>(buttonState)].isNull())
                         painter.drawImage(buttonImages[static_cast<size_t>(buttonState)], 0, 0);
@@ -119,4 +124,14 @@ void RkButton::RkButtonImpl::updateButtonState()
                 else
                         buttonState = RkButton::State::Unpressed;
         }
+}
+
+void RkButton::RkButtonImpl::setButtonState(RkButton::State state)
+{
+        buttonState = state;
+}
+
+RkButton::State RkButton::RkButtonImpl::getButtonState() const
+{
+        return buttonState;
 }

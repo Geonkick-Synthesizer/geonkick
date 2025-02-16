@@ -222,6 +222,7 @@ void FileBrowser::createTopMenu(RkContainer *container)
         // Backward button.
         container->addSpace(4);
         auto backwardButton = new GeonkickButton(this);
+        backwardButton->setType(GeonkickButton::ButtonType::ButtonPush);
         backwardButton->setSize(RK_IMAGE_SIZE_RC(file_history_button_back));
         backwardButton->setImage(RkImage(backwardButton->size(),
                          RK_IMAGE_RC(file_history_button_back)),
@@ -249,6 +250,7 @@ void FileBrowser::createTopMenu(RkContainer *container)
         // Forward button.
         container->addSpace(2);
         auto forwardButton = new GeonkickButton(this);
+        forwardButton->setType(GeonkickButton::ButtonType::ButtonPush);
         forwardButton->setSize(RK_IMAGE_SIZE_RC(file_history_button_forward));
         forwardButton->setImage(RkImage(forwardButton->size(),
                          RK_IMAGE_RC(file_history_button_forward)),

@@ -34,6 +34,12 @@ RkButton::RkButton(RkWidget *parent)
                 setBackgroundColor(parent->background());
 }
 
+void RkButton::setEnabled(bool b)
+{
+        impl_ptr->setButtonState(b ? State::Unpressed : State::Disabled);
+        RkWidget::setEnabled(b);
+}
+
 void RkButton::setText(const std::string &text)
 {
         impl_ptr->setText(text);

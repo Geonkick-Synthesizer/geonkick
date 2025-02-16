@@ -391,6 +391,7 @@ void RkWidget::setEnabled(bool b)
         else
                 disableInput();
         impl_ptr->setEnabled(b);
+        update();
 }
 
 void RkWidget::setDisabled(bool b)

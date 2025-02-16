@@ -42,6 +42,8 @@ class RkButton::RkButtonImpl : public RkWidget::RkWidgetImpl {
         void setType(ButtonType type);
 	void drawButton(RkPainter &painter);
         void setEmphasize(bool b);
+        void setButtonState(RkButton::State state);
+        RkButton::State getButtonState() const;
 
  protected:
         void applyEffect(RkImage &img);

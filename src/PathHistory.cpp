@@ -31,17 +31,20 @@ PathHistory::PathHistory(RkObject *parent)
 
 void PathHistory::goTo(const fs::path& newPath)
 {
-        if (!pathHistory.empty() && pathHistory.back() == newPath)
+        if (!pathHistory.empty()
+            && (pathHistory.back() == newPath
+            || (currentIndex < pathHistory.size()
+            && pathHistory[currentIndex] == newPath)))
                 return;
 
         if (currentIndex + 1 < pathHistory.size()) {
+                // Clear forward history.
                 pathHistory.erase(pathHistory.begin() + currentIndex + 1,
                                   pathHistory.end());
         }
 
         pathHistory.push_back(newPath);
         currentIndex = pathHistory.size() - 1;
-        GEONKICK_LOG_INFO("H ADDED: " << newPath);
         action pathChanged(newPath);
         action backwardHistoryUpdated(hasBackwardHistory());
         action forwardHistoryUpdated(hasForwardHistory());
@@ -49,10 +52,8 @@ void PathHistory::goTo(const fs::path& newPath)
 
 void PathHistory::goBack()
 {
-        GEONKICK_LOG_INFO("go back: " << currentIndex);
         if (hasBackwardHistory()) {
                 action pathChanged(pathHistory[--currentIndex]);
-                GEONKICK_LOG_INFO(pathHistory[currentIndex]);
         }
 
         action backwardHistoryUpdated(hasBackwardHistory());
@@ -61,8 +62,9 @@ void PathHistory::goBack()
 
 void PathHistory::goForward()
 {
-        if (hasForwardHistory())
+        if (hasForwardHistory()) {
                 action pathChanged(pathHistory[++currentIndex]);
+        }
 
         action backwardHistoryUpdated(hasBackwardHistory());
         action forwardHistoryUpdated(hasForwardHistory());

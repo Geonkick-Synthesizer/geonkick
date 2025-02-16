@@ -54,6 +54,7 @@ class RkButton: public RkWidget {
         void setCheckable(bool b);
         bool isCheckable() const;
         void setType(ButtonType type);
+        void setEnabled(bool b = true);
         RK_DECL_ACT(toggled,
                     toggled(bool pressed),
                     RK_ARG_TYPE(bool),
