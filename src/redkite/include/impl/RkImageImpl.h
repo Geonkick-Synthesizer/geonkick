@@ -50,6 +50,7 @@ class RkImage::RkImageImpl {
                          RkImage::Format format,
                          const unsigned char *data);
         void fill(const RkColor &color);
+        void grayscaleImage(double fadeFactor);
 
  private:
         RK_DECALRE_INTERFACE_PTR(RkImage);

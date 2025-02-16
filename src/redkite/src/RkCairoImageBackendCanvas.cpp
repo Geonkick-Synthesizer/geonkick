@@ -112,3 +112,17 @@ void RkCairoImageBackendCanvas::fill(const RkColor &color)
                 *(data + i + 3) = color.alpha();
         }
 }
+
+void RkCairoImageBackendCanvas::grayscaleImage(double fadeFactor)
+{
+    unsigned char *data = imageData.data();
+    for (decltype(imageData.size()) i = 0; i < imageData.size(); i += 4) {
+        auto r = *(data + i);
+        auto g = *(data + i + 1);
+        auto b = *(data + i + 2);
+        auto a = *(data + i + 3);
+        auto gray = static_cast<unsigned char>(0.299 * r + 0.587 * g + 0.114 * b);
+        *(data + i) = *(data + i + 1) = *(data + i + 2) = gray;
+        *(data + i + 3) = std::clamp(fadeFactor, 0.0, 1.0) * a;
+    }
+}

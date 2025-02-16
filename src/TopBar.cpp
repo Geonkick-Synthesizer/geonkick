@@ -117,6 +117,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         auto logo = new RkLabel(this);
         logo->setBackgroundColor(background());
         RkImage image(22, 22, RK_IMAGE_RC(logo));
+        image.grayscaleImage();
         logo->setSize(image.width(), image.height());
         logo->setImage(image);
         logo->show();

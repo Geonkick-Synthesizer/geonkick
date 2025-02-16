@@ -40,6 +40,7 @@ class RkCairoImageBackendCanvas {
         std::vector<unsigned char> dataCopy() const;
         RkCanvasInfo *getCanvasInfo() const;
         void fill(const RkColor &color);
+        void grayscaleImage(double fadeFactor);
 
  protected:
         cairo_format_t toCairoFormat(RkImage::Format format) const;

@@ -384,6 +384,20 @@ void RkWidget::setFont(const RkFont &font)
         impl_ptr->setFont(font);
 }
 
+void RkWidget::setDisabled(bool b)
+{
+        if (b)
+                enableInput();
+        else
+                disableInput();
+        impl_ptr->setDisabled(b);
+}
+
+bool RkWidget::isDisabled() const
+{
+        return impl_ptr->isDisabled();
+}
+
 void RkWidget::enableInput()
 {
         setWidgetAttribute(static_cast<Rk::WidgetAttribute>(static_cast<int>(Rk::WidgetAttribute::KeyInputEnabled)

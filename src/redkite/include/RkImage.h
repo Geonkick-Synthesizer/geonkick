@@ -67,6 +67,7 @@ class RkImage : public RkCanvas {
 
          }
         void fill(const RkColor &color);
+        void grayscaleImage(double fadeFactor = 0.5);
         unsigned char* data() const;
         std::vector<unsigned char> dataCopy() const;
         Format format() const;
