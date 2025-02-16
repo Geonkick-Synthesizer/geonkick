@@ -37,7 +37,7 @@ FilesView::FilesView(GeonkickWidget *parent)
         , hightlightLine{-1}
         , offsetIndex{-1}
         , currentPath{std::filesystem::current_path()}
-        , lineHeight{15}
+        , lineHeight{13}
         , lineSacing{lineHeight / 2}
         , visibleLines{0}
         , topScrollBarButton{nullptr}
