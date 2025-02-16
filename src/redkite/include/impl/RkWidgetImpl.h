@@ -97,8 +97,8 @@ class RkWidget::RkWidgetImpl : public RkObject::RkObjectImpl {
         void setExplicitHidden(bool b = true);
         bool isExplicitHidden() const;
         void setChildrenVisible(bool b);
-        void setDisabled(bool b = true);
-        bool isDisabled() const;
+        void setEnabled(bool b = true);
+        bool isEnabled() const;
 
 protected:
         void processPaintEvent(RkPaintEvent* event);
@@ -127,7 +127,7 @@ protected:
         bool isWidgetExplicitHidden;
         bool isWidgetVisible;
         bool widgetHasFocus;
-        bool isWidgetDisabled;
+        bool isWidgetEnabled;
 };
 
 #endif // RK_WIDGET_IMPL_H

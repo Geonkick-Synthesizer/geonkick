@@ -30,16 +30,17 @@
 class RkButton: public RkWidget {
  public:
         enum class ButtonType: int {
-                ButtonUncheckable = 0,
-                ButtonCheckable   = 1,
-                ButtonPush        = 3
+                ButtonUncheckable,
+                ButtonCheckable,
+                ButtonPush
         };
 
         enum class State: int {
-                Unpressed      = 0,
-                UnpressedHover = 1,
-                Pressed        = 2,
-                PressedHover   = 3
+                Unpressed,
+                UnpressedHover,
+                Pressed,
+                PressedHover,
+                Disabled
         };
 
         explicit RkButton(RkWidget *parent);

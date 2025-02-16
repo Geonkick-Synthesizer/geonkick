@@ -48,7 +48,7 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
         , isWidgetExplicitHidden{false}
         , isWidgetVisible{false}
         , widgetHasFocus{false}
-        , isWidgetDisabled{false}
+        , isWidgetEnabled{true}
 {
         RK_LOG_DEBUG("called");
 }
@@ -72,7 +72,7 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
         , isWidgetExplicitHidden{false}
 	, isWidgetVisible{false}
         , widgetHasFocus{false}
-        , isWidgetDisabled{false}
+        , isWidgetEnabled{true}
 {
         RK_LOG_DEBUG("called");
 }
@@ -506,12 +506,12 @@ double RkWidget::RkWidgetImpl::scaleFactor() const
         return 1.0;
 }
 
-void RkWidget::RkWidgetImpl::setDisabled(bool b)
+void RkWidget::RkWidgetImpl::setEnabled(bool b)
 {
-        isWidgetDisabled = b;
+        isWidgetEnabled = b;
 }
 
-bool RkWidget::RkWidgetImpl::isDisabled() const
+bool RkWidget::RkWidgetImpl::isEnabled() const
 {
-        return isWidgetDisabled;
+        return isWidgetEnabled;
 }

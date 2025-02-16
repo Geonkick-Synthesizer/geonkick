@@ -384,18 +384,23 @@ void RkWidget::setFont(const RkFont &font)
         impl_ptr->setFont(font);
 }
 
-void RkWidget::setDisabled(bool b)
+void RkWidget::setEnabled(bool b)
 {
         if (b)
                 enableInput();
         else
                 disableInput();
-        impl_ptr->setDisabled(b);
+        impl_ptr->setEnabled(b);
 }
 
-bool RkWidget::isDisabled() const
+void RkWidget::setDisabled(bool b)
 {
-        return impl_ptr->isDisabled();
+        setEnabled(!b);
+}
+
+bool RkWidget::isEnabled() const
+{
+        return impl_ptr->isEnabled();
 }
 
 void RkWidget::enableInput()

@@ -25,20 +25,23 @@
 
 PathHistory::PathHistory(RkObject *parent)
         : RkObject(parent)
-        , currentIndex{std::numeric_limits<std::size_t>::max()}
+        , currentIndex(-1)
 {
 }
 
 void PathHistory::goTo(const fs::path& newPath)
 {
-        if (history.back() == newPath)
+        if (!pathHistory.empty() && pathHistory.back() == newPath)
                 return;
 
-        if (currentIndex + 1 < history.size())
-                history.erase(history.begin() + currentIndex + 1, history.end());
+        if (currentIndex + 1 < pathHistory.size()) {
+                pathHistory.erase(pathHistory.begin() + currentIndex + 1,
+                                  pathHistory.end());
+        }
 
-        history.push_back(newPath);
-        currentIndex = history.size() - 1;
+        pathHistory.push_back(newPath);
+        currentIndex = pathHistory.size() - 1;
+        GEONKICK_LOG_INFO("H ADDED: " << newPath);
         action pathChanged(newPath);
         action backwardHistoryUpdated(hasBackwardHistory());
         action forwardHistoryUpdated(hasForwardHistory());
@@ -46,8 +49,11 @@ void PathHistory::goTo(const fs::path& newPath)
 
 void PathHistory::goBack()
 {
-        if (hasBackwardHistory())
-                action pathChanged(history[--currentIndex]);
+        GEONKICK_LOG_INFO("go back: " << currentIndex);
+        if (hasBackwardHistory()) {
+                action pathChanged(pathHistory[--currentIndex]);
+                GEONKICK_LOG_INFO(pathHistory[currentIndex]);
+        }
 
         action backwardHistoryUpdated(hasBackwardHistory());
         action forwardHistoryUpdated(hasForwardHistory());
@@ -56,7 +62,7 @@ void PathHistory::goBack()
 void PathHistory::goForward()
 {
         if (hasForwardHistory())
-                action pathChanged(history[++currentIndex]);
+                action pathChanged(pathHistory[++currentIndex]);
 
         action backwardHistoryUpdated(hasBackwardHistory());
         action forwardHistoryUpdated(hasForwardHistory());
@@ -64,17 +70,17 @@ void PathHistory::goForward()
 
 bool PathHistory::hasBackwardHistory() const
 {
-        return currentIndex > 0;
+        return !pathHistory.empty() && currentIndex > 0;
 }
 
 bool PathHistory::hasForwardHistory() const
 {
-        return currentIndex + 1 < history.size();
+        return currentIndex + 1 < pathHistory.size();
 }
 
 std::optional<fs::path> PathHistory::getCurrentPath() const
 {
-        if (!history.empty() && currentIndex < history.size())
-                return history[currentIndex];
+        if (!pathHistory.empty() && currentIndex < pathHistory.size())
+                return pathHistory[currentIndex];
         return std::nullopt;
 }

@@ -34,8 +34,8 @@ class PathHistory: public RkObject {
         void goTo(const fs::path& newPath);
         void goBack();
         void goForward();
-        bool hasBackwardHistory() const;
-        bool hasForwardHistory() const;
+        [[nodiscard]] bool hasBackwardHistory() const;
+        [[nodiscard]] bool hasForwardHistory() const;
         [[nodiscard]] std::optional<fs::path> getCurrentPath() const;
         RK_DECL_ACT(pathChanged,
                     pathChanged(const fs::path& path),
@@ -51,7 +51,7 @@ class PathHistory: public RkObject {
                     RK_ARG_VAL(hasHistory));
 
  private:
-        std::vector<std::filesystem::path> history;
+        std::vector<std::filesystem::path> pathHistory;
         std::size_t currentIndex;
 };
 

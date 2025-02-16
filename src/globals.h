@@ -43,6 +43,7 @@
 #include <thread>
 #include <iomanip>
 #include <math.h>
+#include <optional>
 
 namespace fs = std::filesystem;
 

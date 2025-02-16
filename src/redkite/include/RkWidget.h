@@ -116,8 +116,9 @@ class RkWidget: public RkObject, public RkCanvas {
         void setWidgetAttribute(Rk::WidgetAttribute attribute);
         void clearWidgetAttribute(Rk::WidgetAttribute attribute);
         Rk::WidgetAttribute widgetAttributes() const;
+        void setEnabled(bool b = true);
         void setDisabled(bool b = true);
-        bool isDisabled() const;
+        bool isEnabled() const;
         void enableInput();
         void disableInput();
         bool isInputEnabled() const;

@@ -486,8 +486,11 @@ namespace Rk {
 
 #define action
 
-#define RK_DECLARE_IMAGE_RC(name) RK_NO_EXPORT extern const unsigned char rk__ ## name ## _png[]
+#define RK_DECLARE_IMAGE_RC(name) RK_NO_EXPORT extern const int rk__ ## name ## _png_w; \
+                                  RK_NO_EXPORT extern const int rk__ ## name ## _png_h; \
+                                  RK_NO_EXPORT extern const unsigned char rk__ ## name ## _png[]
 #define RK_IMAGE_RC(name) rk__ ## name ## _png
+#define RK_IMAGE_SIZE_RC(name) RkSize(rk__ ## name ## _png_w, rk__ ## name ## _png_h)
 
 using RkString = std::string;
 

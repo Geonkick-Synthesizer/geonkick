@@ -51,7 +51,7 @@ class RkButton::RkButtonImpl : public RkWidget::RkWidgetImpl {
         RK_DECALRE_INTERFACE_PTR(RkButton);
         ButtonType buttonType;
         bool is_pressed;
-        std::array<RkImage, 4> buttonImages;
+        std::array<RkImage,5> buttonImages;
         RkButton::State buttonState;
         bool isEmphasizeEnabled;
         RkString buttonText;
