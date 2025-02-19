@@ -28,6 +28,7 @@
 
 class GeonkickButton;
 class GeonkickSlider;
+class RkPainter;
 
 class FilesView: public GeonkickWidget {
  public:
@@ -49,13 +50,27 @@ class FilesView: public GeonkickWidget {
                     currentFileChanged(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
                     RK_ARG_VAL(file));
+        RK_DECL_ACT(pathBookmarked,
+                    pathBookmarked(const fs::path& path),
+                    RK_ARG_TYPE(const fs::path& path),
+                    RK_ARG_VAL(path));
+        RK_DECL_ACT(pathUnbookmarked,
+                    pathUnbookmarked(const fs::path& path),
+                    RK_ARG_TYPE(const fs::path& path),
+                    RK_ARG_VAL(path));
 
  protected:
         void createScrollBar();
         void updateScrollBarView();
         void showScrollBar(bool b);
+        void drawBookmarkIcon(RkPainter &painter, int line, int yPos);
+        std::string truncateFileName(RkPainter &painter,
+                                     const std::string& text,
+                                     int maxWidth);
         void paintWidget(RkPaintEvent *event) override;
         void mouseButtonPressEvent(RkMouseEvent *event) override;
+        bool isBookmarkArea(RkMouseEvent *event, int bookmarkWidth) const;
+        void toggleBookmark(const std::string& path);
         void mouseDoubleClickEvent(RkMouseEvent *event) override;
         void mouseMoveEvent(RkMouseEvent *event) override;
         void keyPressEvent(RkKeyEvent *event) override;
@@ -72,6 +87,7 @@ class FilesView: public GeonkickWidget {
         std::vector<std::filesystem::path> filesList;
         int selectedFileIndex;
         int hightlightLine;
+        bool hightlightBookmarkIcon;
         int offsetIndex;
         std::filesystem::path currentPath;
         int lineHeight;
@@ -83,6 +99,7 @@ class FilesView: public GeonkickWidget {
         int scrollBarWidth;
         bool isScrollBarVisible;
         std::vector<std::string> fileFilters;
+        std::unordered_set<fs::path> bookmarkedPaths;
 };
 
 #endif // GEONKICK_FILES_VIEW_H

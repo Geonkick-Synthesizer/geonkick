@@ -49,9 +49,6 @@ RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(cancel);
 RK_DECLARE_IMAGE_RC(add_button_16x16);
-RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
-RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
-RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
 
 FileBrowser::FileBrowser(GeonkickWidget *parent,
                        FileBrowser::Type type,

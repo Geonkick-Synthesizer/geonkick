@@ -30,14 +30,18 @@
 
 RK_DECLARE_IMAGE_RC(scrollbar_button_up);
 RK_DECLARE_IMAGE_RC(scrollbar_button_down);
+RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
+RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
+RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
 
 FilesView::FilesView(GeonkickWidget *parent)
         : GeonkickWidget(parent)
         , selectedFileIndex{-1}
         , hightlightLine{-1}
+        , hightlightBookmarkIcon{false}
         , offsetIndex{-1}
         , currentPath{std::filesystem::current_path()}
-        , lineHeight{13}
+        , lineHeight{14}
         , lineSacing{lineHeight / 2}
         , visibleLines{0}
         , topScrollBarButton{nullptr}
@@ -147,8 +151,10 @@ void FilesView::scrollBarChanged(int val)
 
 void FilesView::loadCurrentDirectory()
 {
-        if (selectedFileIndex > -1)
+        if (selectedFileIndex > -1
+            && static_cast<size_t>(selectedFileIndex) < filesList.size()) {
                 currentPath = filesList[selectedFileIndex];
+        }
 
         if (!std::filesystem::is_directory(currentPath))
                 return;
@@ -190,16 +196,43 @@ void FilesView::loadCurrentDirectory()
 
         filesList = std::move(dirs);
         filesList.insert(filesList.end(), files.begin(), files.end());
-        if (currentPath.parent_path() != currentPath.root_path()
-	    && !currentPath.parent_path().empty())
-                filesList.insert(filesList.begin(), currentPath.parent_path());
-        else if (!currentPath.root_path().empty())
-                filesList.insert(filesList.begin(), currentPath.root_path());
 
         offsetIndex = 0;
         selectedFileIndex = 0;
         showScrollBar(filesList.size() > visibleLines);
         action currentPathChanged(currentPath.string());
+}
+
+void FilesView::drawBookmarkIcon(RkPainter& painter, int line, int yPos)
+{
+        auto index = offsetIndex + line;
+        if ( index < 0 || static_cast<size_t>(index + 1) > filesList.size()
+             || !fs::is_directory(filesList[index]))
+                return;
+
+        RkImage bookmarkIcon;
+        if (bookmarkedPaths.find(filesList[index]) != bookmarkedPaths.end())
+                bookmarkIcon = RK_RC_IMAGE(bookmark_16x16_pressed);
+        else if (hightlightBookmarkIcon && line == hightlightLine)
+                bookmarkIcon = RK_RC_IMAGE(bookmark_16x16_hover);
+        else
+                bookmarkIcon = RK_RC_IMAGE(bookmark_16x16_unpressed);
+        painter.drawImage(bookmarkIcon, width() - 40, yPos);
+}
+
+std::string FilesView::truncateFileName(RkPainter &painter,
+                                        const std::string& text,
+                                        int maxWidth)
+{
+    const std::string ellipsis = "...";
+    if (painter.getTextWidth(text) <= maxWidth)
+        return text;
+
+    std::string truncatedText = text;
+    while (!truncatedText.empty() && painter.getTextWidth(ellipsis + truncatedText) > maxWidth)
+        truncatedText.erase(0, 1);
+
+    return ellipsis + truncatedText;
 }
 
 void FilesView::paintWidget(RkPaintEvent *event)
@@ -238,9 +271,12 @@ void FilesView::paintWidget(RkPaintEvent *event)
                 else
                         painter.setPen(normalPen);
 
-                if (index == 0)
-                        fileName = "[ " + fileName + ".. ]";
-                painter.drawText(RkRect(10, lineYPos, width() - 5, lineHeight), fileName, Rk::Alignment::AlignLeft);
+                RkRect textRect(10, lineYPos, width() - 40, lineHeight);
+                fileName = truncateFileName(painter,
+                                            fileName,
+                                            textRect.width() - 25);
+                painter.drawText(textRect, fileName, Rk::Alignment::AlignLeft);
+                drawBookmarkIcon(painter, line, lineYPos);
                 lineYPos += lineHeight + lineSacing;
                 index++;
                 line++;
@@ -260,12 +296,36 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
         }
 
         auto line = getLine(event->x(), event->y());
-        if (line > -1) {
-                selectedFileIndex = offsetIndex + line;
-                std::string file = getSelectedFile();
-                if (!std::filesystem::is_directory(file))
-                        action currentFileChanged(file);
-                update();
+        if (line < 0)
+                return;
+
+        selectedFileIndex = offsetIndex + line;
+        std::string path = getSelectedFile();
+        auto bookmarkWidth = RK_RC_IMAGE(bookmark_16x16_hover).width();
+        if (isBookmarkArea(event, bookmarkWidth)
+            && std::filesystem::is_directory(path)) {
+                toggleBookmark(path);
+        } else if (!std::filesystem::is_directory(path)) {
+                action currentFileChanged(path);
+        }
+
+        update();
+}
+
+bool FilesView::isBookmarkArea(RkMouseEvent *event, int bookmarkWidth) const
+{
+        return (event->x() >= width() - 40)
+                && event->x() < (width() - 40 + bookmarkWidth);
+}
+
+void FilesView::toggleBookmark(const std::string& path)
+{
+        if (bookmarkedPaths.find(path) == bookmarkedPaths.end()) {
+                bookmarkedPaths.insert(path);
+                action pathBookmarked(path);
+        } else {
+                bookmarkedPaths.erase(path);
+                action pathUnbookmarked(path);
         }
 }
 
@@ -294,9 +354,16 @@ void FilesView::mouseMoveEvent(RkMouseEvent *event)
                 return;
         }
 
-        auto line = hightlightLine;
+        auto lineTemp = hightlightLine;
         hightlightLine = getLine(event->x(), event->y());
-        if (hightlightLine != line)
+        auto bookmarkWidth = RK_RC_IMAGE(bookmark_16x16_unpressed).width();
+        auto bookmarkTemp = hightlightBookmarkIcon;
+        if (isBookmarkArea(event, bookmarkWidth))
+                hightlightBookmarkIcon = true;
+        else
+                hightlightBookmarkIcon = false;
+
+        if (hightlightLine != lineTemp || bookmarkTemp != hightlightBookmarkIcon)
                 update();
 }
 
