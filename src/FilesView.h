@@ -29,6 +29,7 @@
 class GeonkickButton;
 class GeonkickSlider;
 class RkPainter;
+class PathBookmarksModel;
 
 class FilesView: public GeonkickWidget {
  public:
@@ -38,6 +39,8 @@ class FilesView: public GeonkickWidget {
         void setCurrentPath(const std::string &path);
         std::string getCurrentPath() const;
         void setFilters(const std::vector<std::string> &filters);
+        void setBookmarksModel(PathBookmarksModel *model);
+        PathBookmarksModel* getBookmarksModel() const;
         RK_DECL_ACT(openFile, openFile(const std::string &fileName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
         RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &path),
@@ -99,7 +102,6 @@ class FilesView: public GeonkickWidget {
         int scrollBarWidth;
         bool isScrollBarVisible;
         std::vector<std::string> fileFilters;
-        std::unordered_set<fs::path> bookmarkedPaths;
 };
 
 #endif // GEONKICK_FILES_VIEW_H

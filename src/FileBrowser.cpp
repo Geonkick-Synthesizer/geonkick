@@ -25,7 +25,7 @@
 #include "BreadcrumbBar.h"
 #include "FilesView.h"
 #include "geonkick_button.h"
-#include "PathListModel.h"
+#include "PathBookmarksModel.h"
 #include "GeonkickConfig.h"
 #include "PathHistory.h"
 
@@ -62,9 +62,6 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , breadcrumbBar{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
-        , shortcutDirectoriesModel{new PathListModel(this)}
-          //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
-        , bookmarkDirectoryButton{nullptr}
 {
         setSize(parent->size());
         setTitle(title);
@@ -83,7 +80,7 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , breadcrumbBar{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
-        , shortcutDirectoriesModel{new PathListModel(this)}
+        , pathBookmarksModel{new PathBookmarksModel(this)}
         //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
         , bookmarkDirectoryButton{nullptr}
 {
@@ -135,6 +132,7 @@ void FileBrowser::createUi()
         // Create files view.
         mainContainer->addSpace(5);
         filesView = new FilesView(this);
+        filesView->setBookmarksModel(pathBookmarksModel);
         RK_ACT_BIND(pathHistory,
                     pathChanged,
                     RK_ACT_ARGS(const fs::path &path),

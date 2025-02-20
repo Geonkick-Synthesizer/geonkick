@@ -2,7 +2,7 @@
  * File name: PathListModel.cpp
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -34,7 +34,7 @@ PathListModel::PathListModel(RkObject *parent)
         auto drives = desktopPaths.getDrivesList();
         for (auto d: drives)
                 pathList.emplace_back(d);
-    
+
         stringFont.setWeight(RkFont::Weight::Bold);
         stringFont.setSize(12);
 }
@@ -58,7 +58,7 @@ RkVariant PathListModel::itemData(size_t index, int dataType) const
                         return "Home";
                 else if (pathList[index].has_filename())
                         return pathList[index].filename().string();
-                else                     
+                else
                         return pathList[index].root_name().string();
         } else if (static_cast<RkModelItem::DataType>(dataType) == RkModelItem::DataType::Size) {
                 return RkSize(0, 18);

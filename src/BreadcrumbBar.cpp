@@ -46,7 +46,6 @@ BreadcrumbBar::BreadcrumbBar(GeonkickWidget* parent)
         : GeonkickWidget(parent)
 {
         setSize(parent->width() - 4, 20);
-        //        setBackgroundColor(0xff, 0, 0);
 }
 
 void BreadcrumbBar::setPath(const fs::path &path)

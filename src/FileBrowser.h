@@ -32,11 +32,11 @@ class RkPaintEvent;
 class RkMouseEvent;
 class RkCloseEvent;
 class GeonkickButton;
-class PathListModel;
 class RkList;
 class RkContainer;
 class GeonkickButton;
 class RkContainer;
+class PathBookmarksModel;
 class BreadcrumbBar;
 class PathHistory;
 
@@ -110,7 +110,7 @@ class FileBrowser: public GeonkickWidget {
         FilesView *filesView;
         std::string pathSelected;
         AcceptStatus status;
-        PathListModel* shortcutDirectoriesModel;
+        PathBookmarksModel* pathBookmarksModel;
         RkList *shortcutDirectoriesView;
         GeonkickButton *bookmarkDirectoryButton;
 };

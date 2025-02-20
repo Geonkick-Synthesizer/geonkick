@@ -24,6 +24,7 @@
 #include "FilesView.h"
 #include "geonkick_button.h"
 #include "geonkick_slider.h"
+#include "PathBookmarksModel.h"
 
 #include <RkEvent.h>
 #include <RkPainter.h>
@@ -49,6 +50,7 @@ FilesView::FilesView(GeonkickWidget *parent)
         , scrollBar{nullptr}
         , scrollBarWidth{12}
         , isScrollBarVisible{false}
+        , bookmarksModel{nullptr}
 {
         setSize(parent->size() - RkSize{0, 100});
         setBackgroundColor(50, 50, 50);
@@ -206,12 +208,12 @@ void FilesView::loadCurrentDirectory()
 void FilesView::drawBookmarkIcon(RkPainter& painter, int line, int yPos)
 {
         auto index = offsetIndex + line;
-        if ( index < 0 || static_cast<size_t>(index + 1) > filesList.size()
+        if (!bookmarksModel || index < 0 || static_cast<size_t>(index + 1) > filesList.size()
              || !fs::is_directory(filesList[index]))
                 return;
 
         RkImage bookmarkIcon;
-        if (bookmarkedPaths.find(filesList[index]) != bookmarkedPaths.end())
+        if (bookmarksModel->containsPath(filesList[index]))
                 bookmarkIcon = RK_RC_IMAGE(bookmark_16x16_pressed);
         else if (hightlightBookmarkIcon && line == hightlightLine)
                 bookmarkIcon = RK_RC_IMAGE(bookmark_16x16_hover);
@@ -302,31 +304,20 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
         selectedFileIndex = offsetIndex + line;
         std::string path = getSelectedFile();
         auto bookmarkWidth = RK_RC_IMAGE(bookmark_16x16_hover).width();
-        if (isBookmarkArea(event, bookmarkWidth)
+        if (bookmarksModel
+            && isBookmarkArea(event, bookmarkWidth)
             && std::filesystem::is_directory(path)) {
-                toggleBookmark(path);
+                bookmarksModel.addPath(path);
         } else if (!std::filesystem::is_directory(path)) {
                 action currentFileChanged(path);
+                update();
         }
-
-        update();
 }
 
 bool FilesView::isBookmarkArea(RkMouseEvent *event, int bookmarkWidth) const
 {
         return (event->x() >= width() - 40)
                 && event->x() < (width() - 40 + bookmarkWidth);
-}
-
-void FilesView::toggleBookmark(const std::string& path)
-{
-        if (bookmarkedPaths.find(path) == bookmarkedPaths.end()) {
-                bookmarkedPaths.insert(path);
-                action pathBookmarked(path);
-        } else {
-                bookmarkedPaths.erase(path);
-                action pathUnbookmarked(path);
-        }
 }
 
 void FilesView::mouseDoubleClickEvent(RkMouseEvent *event)
@@ -448,4 +439,17 @@ void FilesView::onLineDown()
 void FilesView::setFilters(const std::vector<std::string> &filters)
 {
         fileFilters = filters;
+}
+
+void FilesView::setBookmarksModel(PathBookmarksModel *model)
+{
+        if (bookmarksModel)
+                unbindObject(bookmarksModel);
+        bookmarksModel = model;
+        RK_ACT_BIND(bookmarksModel, modelChanged, RK_ACT_ARGS(), this, update());
+}
+
+PathBookmarksModel* FilesView::getBookmarksModel() const
+{
+        return bookmarksModel;
 }

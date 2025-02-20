@@ -1,8 +1,8 @@
 /**
- * File name: PathListModel.h
+ * File name: PathBookmarksModel.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -21,30 +21,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef GEONKICK_PATH_LIST_MODEL_H
-#define GEONKICK_PATH_LIST_MODEL_H
+#ifndef PATH_BOOKMARKS_MODEL_H
+#define PATH_BOOKMARKS_MODEL_H
 
 #include "globals.h"
+#include "ItemList.h"
 
-#include <RkModel.h>
-
-class PathListModel: public RkModel {
+class PathBookmarksModel: public RkObject {
   public:
-        enum class PathListDataType : int {
-                Path = static_cast<int>(RkModelItem::DataType::UserType)
-        };
-        explicit PathListModel(RkObject *parent);
+        explicit PathBookmarksModel(RkObject *parent);
         void setHomeDirectory(const std::string &path);
-        RkVariant itemData(size_t index, int dataType = static_cast<int>(RkModelItem::DataType::String)) const override;
-        size_t itemsNumber() const override;
-        int itemSpan() const override;
         void addPath(const std::filesystem::path &path);
         void removePath(const std::filesystem::path &path);
-        const std::vector<std::filesystem::path>& getPaths() const;
+        const std::unordered_set<std::filesystem::path>& getPaths() const;
 
  private:
-        std::vector<std::filesystem::path> pathList;
-        RkFont stringFont;
+        ItemList<std::filesystem::path> pathList;
 };
 
-#endif // GEONKICK_PATH_LIST_MODEL_H
+#endif // PATH_BOOKMARKS_MODEL_H
