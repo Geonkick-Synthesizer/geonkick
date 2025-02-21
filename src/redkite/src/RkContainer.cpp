@@ -80,6 +80,11 @@ RkContainerItem* RkContainer::at(size_t index) const
 
 void RkContainer::update()
 {
+        layout();
+}
+
+void RkContainer::layout()
+{
 	int posLeft = initPosition(Rk::Alignment::AlignLeft);
 	int posRight = initPosition(Rk::Alignment::AlignRight);
 	for (const auto &item: containerItems) {
@@ -128,6 +133,7 @@ void RkContainer::clear()
                         delete item;
         }
         containerItems.clear();
+        update();
 }
 
 Rk::Orientation RkContainer::orientation() const
@@ -137,44 +143,64 @@ Rk::Orientation RkContainer::orientation() const
 
 void RkContainer::setSize(const RkSize &size)
 {
+        if (size == size())
+                return;
+
         RkContainerItem::setSize(size);
 	update();
+        action sizeChanged(size);
 }
 
 void RkContainer::setWidth(int width)
 {
+        if (width == width())
+                return;
+
 	RkContainerItem::setWidth(width);
 	update();
+        action sizeChanged(size());
 }
 
 void RkContainer::setHeight(int height)
 {
+        if (height == height())
+                return;
+
 	RkContainerItem::setHeight(height);
 	update();
+        action sizeChanged(size());
 }
 
 void RkContainer::setPosition(const RkPoint &position)
 {
-        RkContainerItem::setPosition(position);
-	update();
+        if (position != position()) {
+                RkContainerItem::setPosition(position);
+                update();
+        }
 }
 
 void RkContainer::setX(int val)
 {
-        RkContainerItem::setX(val);
-        update();
+        if (val != x()) {
+                RkContainerItem::setX(val);
+                update();
+        }
 }
 
 void RkContainer::setY(int val)
 {
-        RkContainerItem::setY(val);
-        update();
+        if (val != y()) {
+                RkContainerItem::setY(val);
+                update();
+        }
 }
 
 void RkContainer::setSpacing(size_t space)
 {
-	itemSpacing = space;
-	update();
+        if (itemSpacing != space) {
+                itemSpacing = space;
+                update();
+        }
 }
 
 size_t RkContainer::spacing() const
@@ -184,8 +210,10 @@ size_t RkContainer::spacing() const
 
 void RkContainer::setHiddenTakesPlace(bool b)
 {
-        isHiddenTakesPlace = b;
-        update();
+        if (isHiddenTakesPlace != b) {
+                isHiddenTakesPlace = b;
+                update();
+        }
 }
 
 bool RkContainer::hiddenTakesPlace() const

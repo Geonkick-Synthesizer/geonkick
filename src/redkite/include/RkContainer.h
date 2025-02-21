@@ -2,7 +2,7 @@
  * File name: RkWidgetContainer.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -27,9 +27,10 @@
 #include "RkWidget.h"
 #include "RkContainerItem.h"
 
-class RK_EXPORT RkContainer: public RkContainerItem {
+class RkContainer: public RkContainerItem {
  public:
-        RkContainer(RkWidget *parent  = nullptr, Rk::Orientation orientation = Rk::Orientation::Horizontal);
+        explicit RkContainer(RkWidget *parent,
+                             Rk::Orientation orientation = Rk::Orientation::Horizontal);
         virtual ~RkContainer() = default;
         void addContainer(RkContainer *contaier, Rk::Alignment align = Rk::Alignment::AlignLeft);
 	void addWidget(RkWidget *widget, Rk::Alignment align = Rk::Alignment::AlignLeft);
@@ -52,8 +53,10 @@ class RK_EXPORT RkContainer: public RkContainerItem {
 	size_t spacing() const;
         void setHiddenTakesPlace(bool b = true);
         bool hiddenTakesPlace() const;
+        RK_DECL_ACT(sizeUpdated, sizeUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  protected:
+        void layout() virtual;
 	int initPosition(Rk::Alignment alignment);
 
  private:

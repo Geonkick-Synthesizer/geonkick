@@ -2,7 +2,7 @@
  * File name: RkContainerItem.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -26,7 +26,7 @@
 
 #include <RkWidget.h>
 
-class RK_EXPORT RkContainerItem: public RkObject {
+class RkContainerItem: public RkObject {
  public:
         enum class ItemType : int {
                 ItemContainer = 0,

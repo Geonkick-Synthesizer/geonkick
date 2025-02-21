@@ -117,8 +117,9 @@ namespace Rk {
         };
 
         enum class Orientation : int {
-                Horizontal = 0,
-                Vertical = 1
+                Horizontal,
+                Vertical,
+                Flow,
         };
 
         enum class WidgetFlags: int {

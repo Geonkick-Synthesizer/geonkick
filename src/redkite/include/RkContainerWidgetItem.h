@@ -28,7 +28,7 @@
 
 class RkWidget;
 
-class RK_EXPORT RkContainerWidgetItem: public RkContainerItem {
+class RkContainerWidgetItem: public RkContainerItem {
  public:
         RkContainerWidgetItem(RkWidget *parent,
                             Rk::Alignment align = Rk::Alignment::AlignLeft)

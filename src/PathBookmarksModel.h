@@ -25,15 +25,23 @@
 #define PATH_BOOKMARKS_MODEL_H
 
 #include "globals.h"
+#include "AbstractModel.h"
 #include "ItemList.h"
 
-class PathBookmarksModel: public RkObject {
+class PathBookmarksModel: public AbstractModel {
   public:
         explicit PathBookmarksModel(RkObject *parent);
-        void setHomeDirectory(const std::string &path);
-        void addPath(const std::filesystem::path &path);
-        void removePath(const std::filesystem::path &path);
-        const std::unordered_set<std::filesystem::path>& getPaths() const;
+        bool addPath(const std::filesystem::path &path);
+        bool removePath(const std::filesystem::path &path);
+        const std::vector<std::filesystem::path>& getPaths() const;
+        RK_DECL_ACT(pathAdded,
+                    pathAdded(const std::filesystem::path& path),
+                    RK_ARG_TYPE(const std::filesystem::path&),
+                    RK_ARG_VAL(path));
+        RK_DECL_ACT(pathRemoved,
+                    pathAdded(const std::filesystem::path& path),
+                    RK_ARG_TYPE(const std::filesystem::path&),
+                    RK_ARG_VAL(path));
 
  private:
         ItemList<std::filesystem::path> pathList;

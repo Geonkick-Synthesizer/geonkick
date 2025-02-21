@@ -123,7 +123,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/geonkick_widget.h
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
-  ${GKICK_COMMON_DIR}/PathListModel.h
+  ${GKICK_COMMON_DIR}/PathBookmarksModel.h
   ${GKICK_COMMON_DIR}/FilesView.h
   ${GKICK_COMMON_DIR}/BreadcrumbBar.h
   ${GKICK_COMMON_DIR}/PathHistory.h
@@ -195,7 +195,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
-  ${GKICK_COMMON_DIR}/PathListModel.cpp
+  ${GKICK_COMMON_DIR}/PathBookmarksModel.cpp
   ${GKICK_COMMON_DIR}/FilesView.cpp
   ${GKICK_COMMON_DIR}/BreadcrumbBar.cpp
   ${GKICK_COMMON_DIR}/PathHistory.cpp
