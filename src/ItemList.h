@@ -36,14 +36,11 @@ class ItemList {
 public:
     virtual ~ItemList() = default;
     void addItem(const T& item);
-    void removeItem(const T& item);
+    bool removeItem(const T& item);
     const std::vector<T>& getItems() const;
     bool hasItem(const T& item) const;
-    void sortItems();
     size_t size() const;
-    T& at(size_t index);
     const T& at(size_t index) const;
-    T& operator[](size_t index);
     const T& operator[](size_t index) const;
 
 private:
@@ -54,20 +51,18 @@ private:
 template <typename T>
 void ItemList<T>::addItem(const T& item)
 {
-        if (itemSet.find(item) == itemSet.end()) {
-                itemList.push_back(item);
-                itemSet.insert(item);
-        }
+        itemSet.insert(item);
+        itemList.push_back(item);
 }
 
 template <typename T>
-void ItemList<T>::removeItem(const T& item)
+bool ItemList<T>::removeItem(const T& item)
 {
-        if (itemSet.erase(item)) {
-                auto it = std::find(itemList.begin(), itemList.end(), item);
-                if (it != itemList.end())
-                        itemList.erase(it);
+        if (itemSet.erase(item) > 0) {
+                std::erase(itemList, item);
+                return true;
         }
+        return false;
 }
 
 template <typename T>
@@ -79,13 +74,7 @@ const std::vector<T>& ItemList<T>::getItems() const
 template <typename T>
 bool ItemList<T>::hasItem(const T& item) const
 {
-        return itemSet.find(std::cref(item)) != itemSet.end();
-}
-
-template <typename T>
-void ItemList<T>::sortItems()
-{
-        std::ranges::sort(itemList);
+        return itemSet.find(item) != itemSet.end();
 }
 
 template <typename T>
@@ -95,23 +84,7 @@ std::size_t ItemList<T>::size() const
 }
 
 template <typename T>
-T& ItemList<T>::at(std::size_t index)
-{
-        if (index >= itemList.size())
-                return std::nullopt;
-        return itemList[index];
-}
-
-template <typename T>
 const T& ItemList<T>::at(std::size_t index) const
-{
-        if (index >= itemList.size())
-                return std::nullopt;
-        return itemList[index];
-}
-
-template <typename T>
-T& ItemList<T>::operator[](std::size_t index)
 {
         return itemList[index];
 }

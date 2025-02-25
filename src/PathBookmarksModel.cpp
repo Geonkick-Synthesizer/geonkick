@@ -50,8 +50,7 @@ bool PathBookmarksModel::addPath(const std::filesystem::path &path)
 
 bool PathBookmarksModel::removePath(const std::filesystem::path &path)
 {
-        if (!pathList.hasItem(path)) {
-                pathList.removeItem(path);
+        if (pathList.removeItem(path)) {
                 action pathRemoved(path);
                 action modelUpdated();
                 return true;

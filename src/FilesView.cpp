@@ -304,10 +304,12 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
         selectedFileIndex = offsetIndex + line;
         std::string path = getSelectedFile();
         auto bookmarkWidth = RK_RC_IMAGE(bookmark_16x16_hover).width();
-        if (bookmarksModel
-            && isBookmarkArea(event, bookmarkWidth)
+        if (bookmarksModel && isBookmarkArea(event, bookmarkWidth)
             && std::filesystem::is_directory(path)) {
-                bookmarksModel->addPath(path);
+                if (bookmarksModel->containsPath(path))
+                        bookmarksModel->removePath(path);
+                else
+                        bookmarksModel->addPath(path);
         } else if (!std::filesystem::is_directory(path)) {
                 action currentFileChanged(path);
                 update();
