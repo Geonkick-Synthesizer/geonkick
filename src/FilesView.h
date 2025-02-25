@@ -102,6 +102,7 @@ class FilesView: public GeonkickWidget {
         int scrollBarWidth;
         bool isScrollBarVisible;
         std::vector<std::string> fileFilters;
+        PathBookmarksModel *bookmarksModel;
 };
 
 #endif // GEONKICK_FILES_VIEW_H

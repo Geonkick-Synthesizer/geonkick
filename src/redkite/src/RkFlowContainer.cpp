@@ -32,19 +32,19 @@ void RkFlowContainer::layout()
 {
         int maxItemHeight = 0;
         for (const auto& item : getItems())
-                maxButtonHeight = std::max(maxButtonHeight, item->height());
+                maxItemHeight = std::max(maxItemHeight, item->height());
 
         int x = spacing();
         int y = spacing();
-        maxButtonHeight += spacing();
+        maxItemHeight += spacing();
         for (auto& item : getItems()) {
                 if (x + item->width() > width()) {
                         x = spacing();
-                        y += spacing() + maxButtonHeight;
+                        y += spacing() + maxItemHeight;
                 }
-                item->setPosition(x, y);
+                item->setPosition({x, y});
                 x += item->width() + spacing();
         }
 
-        setSize(RkSize{width(), y + maxButtonHeight});
+        setSize(RkSize{width(), y + maxItemHeight});
 }

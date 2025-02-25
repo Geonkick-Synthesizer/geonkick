@@ -448,7 +448,7 @@ void FileBrowser::setFilters(const std::vector<std::string> &filters)
 
 void FileBrowser::setHomeDirectory(const std::string &path)
 {
-        shortcutDirectoriesModel->setHomeDirectory(path);
+        //        shortcutDirectoriesModel->setHomeDirectory(path);
 }
 
 bool FileBrowser::createDirectory(const std::filesystem::path &dir)
@@ -494,9 +494,9 @@ void FileBrowser::bookmarkDirectory(const std::filesystem::path &dir, bool bookm
 
 bool FileBrowser::isPathBookmarked(const std::filesystem::path &path) const
 {
-        const auto &paths = shortcutDirectoriesModel->getPaths();
-        auto it = std::find(paths.begin(), paths.end(), path);
-        return it != paths.end();
+        /* const auto &paths = shortcutDirectoriesModel->getPaths();
+           auto it = std::find(paths.begin(), paths.end(), path);*/
+        return false;//it != paths.end();
 }
 
 void FileBrowser::updateBookmarkButton(const std::filesystem::path &path)

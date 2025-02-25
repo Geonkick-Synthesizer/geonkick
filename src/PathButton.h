@@ -1,12 +1,12 @@
 /**
- * File name: RkFlowContainer.h
- * Project: Redkite (A small GUI toolkit)
+ * File name: PathButton.h
+ * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2025 Iurie Nistor
  *
- * This file is part of Redkite.
+ * This file is part of Geonkick.
  *
- * Redkite is free software; you can redistribute it and/or modify
+ * GeonKick is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
@@ -21,23 +21,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef RK_FLOW_CONTAINER_H
-#define RK_FLOW_CONTAINER_H
+#ifndef PATH_BUTTON_H
+#define PATH_BUTTON_H
 
-#include "RkContainer.h"
-#include "RkWidget.h"
+#include "geonkick_button.h"
 
-class RkFlowContainer : public RkContainer {
+class PathButton : public GeonkickButton {
  public:
-        explicit RkFlowContainer(RkWidget *parent);
-        virtual ~RkFlowContainer() = default;
-
- protected:
-        void layout() override;
+        PathButton(GeonkickWidget *parent, const fs::path& path);
+        const fs::path& getPath() const;
 
  private:
-        RK_DISABLE_COPY(RkFlowContainer);
-        RK_DISABLE_MOVE(RkFlowContainer);
+        fs::path buttonPath;
 };
 
-#endif // RK_FLOW_CONTAINER_H
+#endif // PATH_BUTTON_H

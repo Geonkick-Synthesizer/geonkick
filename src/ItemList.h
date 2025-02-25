@@ -34,7 +34,8 @@
 template <typename T>
 class ItemList {
 public:
-    void addItem(T& item);
+    virtual ~ItemList() = default;
+    void addItem(const T& item);
     void removeItem(const T& item);
     const std::vector<T>& getItems() const;
     bool hasItem(const T& item) const;
@@ -46,8 +47,79 @@ public:
     const T& operator[](size_t index) const;
 
 private:
-    std::unordered_set<std::reference_wrapper<T>> itemSet;
     std::vector<T> itemList;
+    std::unordered_set<T> itemSet;
 };
+
+template <typename T>
+void ItemList<T>::addItem(const T& item)
+{
+        if (itemSet.find(item) == itemSet.end()) {
+                itemList.push_back(item);
+                itemSet.insert(item);
+        }
+}
+
+template <typename T>
+void ItemList<T>::removeItem(const T& item)
+{
+        if (itemSet.erase(item)) {
+                auto it = std::find(itemList.begin(), itemList.end(), item);
+                if (it != itemList.end())
+                        itemList.erase(it);
+        }
+}
+
+template <typename T>
+const std::vector<T>& ItemList<T>::getItems() const
+{
+        return itemList;
+}
+
+template <typename T>
+bool ItemList<T>::hasItem(const T& item) const
+{
+        return itemSet.find(std::cref(item)) != itemSet.end();
+}
+
+template <typename T>
+void ItemList<T>::sortItems()
+{
+        std::ranges::sort(itemList);
+}
+
+template <typename T>
+std::size_t ItemList<T>::size() const
+{
+        return itemList.size();
+}
+
+template <typename T>
+T& ItemList<T>::at(std::size_t index)
+{
+        if (index >= itemList.size())
+                return std::nullopt;
+        return itemList[index];
+}
+
+template <typename T>
+const T& ItemList<T>::at(std::size_t index) const
+{
+        if (index >= itemList.size())
+                return std::nullopt;
+        return itemList[index];
+}
+
+template <typename T>
+T& ItemList<T>::operator[](std::size_t index)
+{
+        return itemList[index];
+}
+
+template <typename T>
+const T& ItemList<T>::operator[](std::size_t index) const
+{
+        return itemList[index];
+}
 
 #endif // ITEMLIST_H

@@ -112,6 +112,7 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
+  ${GKICK_COMMON_DIR}/ItemList.h
   ${GKICK_COMMON_DIR}/AbstractModel.h
   ${GKICK_COMMON_DIR}/AbstractView.h
   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
@@ -124,7 +125,9 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
   ${GKICK_COMMON_DIR}/PathBookmarksModel.h
+  ${GKICK_COMMON_DIR}/PathBookmarksView.h
   ${GKICK_COMMON_DIR}/FilesView.h
+  ${GKICK_COMMON_DIR}/PathButton.h
   ${GKICK_COMMON_DIR}/BreadcrumbBar.h
   ${GKICK_COMMON_DIR}/PathHistory.h
   ${GKICK_COMMON_DIR}/FileBrowser.h
@@ -196,7 +199,9 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
   ${GKICK_COMMON_DIR}/PathBookmarksModel.cpp
+  ${GKICK_COMMON_DIR}/PathBookmarksView.cpp
   ${GKICK_COMMON_DIR}/FilesView.cpp
+  ${GKICK_COMMON_DIR}/PathButton.cpp
   ${GKICK_COMMON_DIR}/BreadcrumbBar.cpp
   ${GKICK_COMMON_DIR}/PathHistory.cpp
   ${GKICK_COMMON_DIR}/FileBrowser.cpp

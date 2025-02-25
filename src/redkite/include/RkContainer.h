@@ -43,20 +43,24 @@ class RkContainer: public RkContainerItem {
 	Rk::Orientation orientation() const;
 	Rk::Alignment alignment(RkWidget *widget) const;
 	Rk::Alignment alignment(size_t index) const;
-	void setSize(const RkSize &size) override;
-	void setWidth(int width) override;
-	void setHeight(int height) override;
-	void setPosition(const RkPoint &position) override;
+	void setSize(const RkSize &s) override;
+	void setWidth(int w) override;
+	void setHeight(int h) override;
+	void setPosition(const RkPoint &pos) override;
         void setX(int val) override;
         void setY(int val) override;
 	void setSpacing(size_t space);
 	size_t spacing() const;
         void setHiddenTakesPlace(bool b = true);
         bool hiddenTakesPlace() const;
-        RK_DECL_ACT(sizeUpdated, sizeUpdated(), RK_ARG_TYPE(), RK_ARG_VAL());
+        const std::vector<RkContainerItem*>& getItems() const;
+        RK_DECL_ACT(sizeChanged,
+                    sizeChanged(const RkSize& s),
+                    RK_ARG_TYPE(const RkSize&),
+                    RK_ARG_VAL(s));
 
  protected:
-        void layout() virtual;
+        virtual void layout();
 	int initPosition(Rk::Alignment alignment);
 
  private:

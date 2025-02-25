@@ -141,40 +141,40 @@ Rk::Orientation RkContainer::orientation() const
 	return containerOrientation;
 }
 
-void RkContainer::setSize(const RkSize &size)
+void RkContainer::setSize(const RkSize &s)
 {
-        if (size == size())
+        if (s == size())
                 return;
 
-        RkContainerItem::setSize(size);
+        RkContainerItem::setSize(s);
 	update();
-        action sizeChanged(size);
+        action sizeChanged(s);
 }
 
-void RkContainer::setWidth(int width)
+void RkContainer::setWidth(int w)
 {
-        if (width == width())
+        if (w == width())
                 return;
 
-	RkContainerItem::setWidth(width);
-	update();
-        action sizeChanged(size());
-}
-
-void RkContainer::setHeight(int height)
-{
-        if (height == height())
-                return;
-
-	RkContainerItem::setHeight(height);
+	RkContainerItem::setWidth(w);
 	update();
         action sizeChanged(size());
 }
 
-void RkContainer::setPosition(const RkPoint &position)
+void RkContainer::setHeight(int h)
 {
-        if (position != position()) {
-                RkContainerItem::setPosition(position);
+        if (h == height())
+                return;
+
+	RkContainerItem::setHeight(h);
+	update();
+        action sizeChanged(size());
+}
+
+void RkContainer::setPosition(const RkPoint &pos)
+{
+        if (pos != position()) {
+                RkContainerItem::setPosition(pos);
                 update();
         }
 }
@@ -219,4 +219,9 @@ void RkContainer::setHiddenTakesPlace(bool b)
 bool RkContainer::hiddenTakesPlace() const
 {
         return isHiddenTakesPlace;
+}
+
+const std::vector<RkContainerItem*>& RkContainer::getItems() const
+{
+        return containerItems;
 }

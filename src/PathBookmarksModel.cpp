@@ -1,5 +1,5 @@
 /**
- * File name: PathListModel.cpp
+ * File name: PathBookmarksModel.cpp
  * Project: Redkite (A small GUI toolkit)
  *
  * Copyright (C) 2020 Iurie Nistor
@@ -21,25 +21,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "PathListModel.h"
+#include "PathBookmarksModel.h"
 #include "DesktopPaths.h"
 
-PathListModel::PathListModel(RkObject *parent)
+PathBookmarksModel::PathBookmarksModel(RkObject *parent)
         : AbstractModel(parent)
 {
         DesktopPaths desktopPaths;
-        pathList.addPath(desktopPaths.getHomePath());
-        pathList.addPath(desktopPaths.getDesktopPath());
-        pathList.addPath(desktopPaths.getDownloadsPath());
+        pathList.addItem(desktopPaths.getHomePath());
+        pathList.addItem(desktopPaths.getDesktopPath());
+        pathList.addItem(desktopPaths.getDownloadsPath());
         auto drives = desktopPaths.getDrivesList();
         for (auto& d: drives)
-                pathList.addPath(std::move(d));
+                pathList.addItem(std::move(d));
 }
 
-bool PathListModel::addPath(const std::filesystem::path &path)
+bool PathBookmarksModel::addPath(const std::filesystem::path &path)
 {
-        if (!pathList.hashPath(path)) {
-                pathList.addPath(path);
+        if (!pathList.hasItem(path)) {
+                pathList.addItem(path);
                 action pathAdded(path);
                 action modelUpdated();
                 return true;
@@ -48,10 +48,10 @@ bool PathListModel::addPath(const std::filesystem::path &path)
         return false;
 }
 
-bool PathListModel::removePath(const std::filesystem::path &path)
+bool PathBookmarksModel::removePath(const std::filesystem::path &path)
 {
-        if (!pathList.hashPath(path)) {
-                pathList.removePath(path);
+        if (!pathList.hasItem(path)) {
+                pathList.removeItem(path);
                 action pathRemoved(path);
                 action modelUpdated();
                 return true;
@@ -59,7 +59,12 @@ bool PathListModel::removePath(const std::filesystem::path &path)
         return false;
 }
 
-const std::vector<std::filesystem::path>& PathListModel::getPaths() const
+const std::vector<std::filesystem::path>& PathBookmarksModel::getPaths() const
 {
         return pathList.getItems();
+}
+
+bool PathBookmarksModel::containsPath(const std::filesystem::path &path) const
+{
+        return pathList.hasItem(path);
 }

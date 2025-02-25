@@ -1,5 +1,5 @@
 /**
- * File name: BreadcrumbBar.h
+ * File name: PathBookmarksView.h
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2025 Iurie Nistor
@@ -21,22 +21,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef BREADCRUMB_BAR_H
-#define BREADCRUMB_BAR_H
+#ifndef PATH_BOOKMARKS_VIEW_H
+#define PATH_BOOKMARKS_VIEW_H
 
-#include "geonkick_widget.h"
-#include "geonkick_button.h"
+#include "AbstractView.h"
 
+class RkFlowContainer;
 class PathButton;
 
-class BreadcrumbBar: public GeonkickWidget
+class PathBookmarksModel;
+
+class PathBookmarksView: public AbstractView
 {
  public:
-        explicit BreadcrumbBar(GeonkickWidget* parent);
-        void setPath(const fs::path &path);
-        RK_DECL_ACT(pathChanged,
-                    pathChanged(const fs::path &path),
-                    RK_ARG_TYPE(const fs::path),
+        explicit PathBookmarksView(GeonkickWidget *parent,
+                                   PathBookmarksModel* model = nullptr);
+        void createView() override;
+        void updateView() override;
+        RK_DECL_ACT(pathSelected,
+                    pathSelected(const fs::path& path),
+                    RK_ARG_TYPE(const fs::path&),
                     RK_ARG_VAL(path));
         RK_DECL_ACT(sizeUpdated,
                     sizeUpdated(),
@@ -44,12 +48,12 @@ class BreadcrumbBar: public GeonkickWidget
                     RK_ARG_VAL());
 
  protected:
-        void updateButtonView();
-        void pathPressed(size_t index);
+        void bindModel() override;
+        void unbindModel() override;
 
  private:
-        fs::path currentPath;
+        RkFlowContainer *flowContainer;
         std::vector<PathButton*> pathButtons;
 };
 
-#endif // BREADCRUMB_BAR_H
+#endif // PATH_BOOKMARKS_VIEW_H

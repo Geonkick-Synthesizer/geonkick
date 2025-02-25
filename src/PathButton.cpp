@@ -1,5 +1,5 @@
 /**
- * File name: PathBookmarksView.h
+ * File name: PathButton.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
  * Copyright (C) 2025 Iurie Nistor
@@ -21,28 +21,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef PATH_BOOKMARKS_VIEW_H
-#define PATH_BOOKMARKS_VIEW_H
+#include "PathButton.h"
 
-#include "AbstractView.h"
+#include <RkPainter.h>
 
-class RkFlowContainer;
-
-class PathBookmarksView: public AbstractView
+PathButton::PathButton(GeonkickWidget *parent, const fs::path& path)
+        : GeonkickButton(parent)
+        , buttonPath{path}
 {
- public:
-        explicit PathBookmarksView(GeonkickWidget *parent,
-                                   PathBookmarksModel* model = nullptr);
-        void createView() override;
-        void updateView() override;
+        auto pathStr = path.filename().string();
+        RkPainter painter(this);
+        setSize(painter.getTextWidth(pathStr) + 6,
+                painter.font().size() + 7);
+        setBackgroundColor({88, 88, 88});
+        setText(pathStr);
+}
 
- protected:
-        void bindModel() override;
-        void unbindModel() override;
-
- private:
-        PathBookmarksModel *viewModel;
-        RkFlowContainer *flowContainer;
-};
-
-#endif // PATH_BOOKMARKS_VIEW_H
+const fs::path& PathButton::getPath() const
+{
+        return buttonPath;
+}

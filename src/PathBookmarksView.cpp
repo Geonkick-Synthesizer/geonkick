@@ -21,15 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef PATH_BOOKMARKS_VIEW_H
-#define PATH_BOOKMARKS_VIEW_H
-
-#include "AbstractView.h"
+#include "PathBookmarksView.h"
+#include "PathBookmarksModel.h"
 #include "RkFlowContainer.h"
+#include "PathButton.h"
 
 PathBookmarksView::PathBookmarksView(GeonkickWidget* parent, PathBookmarksModel* model)
         : AbstractView(parent, model)
-        , viewModel{model}
         , flowContainer{new RkFlowContainer(this)}
 {
 }
@@ -40,50 +38,35 @@ void PathBookmarksView::createView()
 
 void PathBookmarksView::updateView()
 {
-        for (auto &button: buttonsList)
+        flowContainer->clear();
+        for (auto &button: pathButtons)
                 delete button;
-        buttonsList.clear();
+        pathButtons.clear();
 
-        auto pathList = static_cast<PathBookmarksModel*>(getModel());
-        int maxButtonHeight = 0;
+        auto model = static_cast<PathBookmarksModel*>(getModel());
         for (const auto &path: model->getPaths()) {
-                auto button = new BookmarkButton(this, path);
+                auto button = new PathButton(this, path);
+                flowContainer->addWidget(button);
                 RK_ACT_BIND(button,
                             pressed,
                             RK_ACT_ARGS(),
                             this,
                             pathSelected(button->getPath()));
-                buttonsList.push_back(button);
-                maxButtonHeight = std::max(maxButtonHeight, button->height());
+                pathButtons.push_back(button);
         }
 
-        int padding = 2;
-        int x = padding;
-        int y = padding;
-        maxButtonHeight += padding;
-        for (auto button : pathButtons) {
-                if (x + button->width() > width()) {
-                        x = padding;
-                        y += padding + maxButtonHeight;
-                }
-                button->setPosition(x, y);
-                x += button->width() + padding;
-        }
-
-        auto newSize = RkSize{width(), y + maxButtonHeight};
-        if (newSize != size()) {
-                setSize(newSize);
+        if (flowContainer->size() != size()) {
+                setSize(flowContainer->size());
                 action sizeUpdated();
         }
 }
 
 void PathBookmarksView::bindModel()
 {
-        auto model = static_cast<PathBookmarksModel*>(getModel());
-        RK_ACT_BIND(model, modelUpdated, RK_ACT_ARGS(), this, updateView());
+        RK_ACT_BIND(getModel(), modelUpdated, RK_ACT_ARGS(), this, updateView());
 }
 
-PathBookmarksView::unbindModel()
+void PathBookmarksView::unbindModel()
 {
         unbindObject(getModel());
 }

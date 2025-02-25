@@ -34,12 +34,13 @@ class PathBookmarksModel: public AbstractModel {
         bool addPath(const std::filesystem::path &path);
         bool removePath(const std::filesystem::path &path);
         const std::vector<std::filesystem::path>& getPaths() const;
+        bool containsPath(const std::filesystem::path &path) const;
         RK_DECL_ACT(pathAdded,
                     pathAdded(const std::filesystem::path& path),
                     RK_ARG_TYPE(const std::filesystem::path&),
                     RK_ARG_VAL(path));
         RK_DECL_ACT(pathRemoved,
-                    pathAdded(const std::filesystem::path& path),
+                    pathRemoved(const std::filesystem::path& path),
                     RK_ARG_TYPE(const std::filesystem::path&),
                     RK_ARG_VAL(path));
 

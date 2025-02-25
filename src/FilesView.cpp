@@ -307,7 +307,7 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
         if (bookmarksModel
             && isBookmarkArea(event, bookmarkWidth)
             && std::filesystem::is_directory(path)) {
-                bookmarksModel.addPath(path);
+                bookmarksModel->addPath(path);
         } else if (!std::filesystem::is_directory(path)) {
                 action currentFileChanged(path);
                 update();
@@ -446,7 +446,7 @@ void FilesView::setBookmarksModel(PathBookmarksModel *model)
         if (bookmarksModel)
                 unbindObject(bookmarksModel);
         bookmarksModel = model;
-        RK_ACT_BIND(bookmarksModel, modelChanged, RK_ACT_ARGS(), this, update());
+        RK_ACT_BIND(bookmarksModel, modelUpdated, RK_ACT_ARGS(), this, update());
 }
 
 PathBookmarksModel* FilesView::getBookmarksModel() const

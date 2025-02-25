@@ -22,25 +22,7 @@
  */
 
 #include "BreadcrumbBar.h"
-
-#include <RkPainter.h>
-
-BreadcrumbBarButton::BreadcrumbBarButton(GeonkickWidget *parent, const fs::path& path)
-        : GeonkickButton(parent)
-        , buttonPath{path}
-{
-        auto pathStr = path.filename().string();
-        RkPainter painter(this);
-        setSize(painter.getTextWidth(pathStr) + 6,
-                painter.font().size() + 7);
-        setBackgroundColor({88, 88, 88});
-        setText(pathStr);
-}
-
-const fs::path& BreadcrumbBarButton::getPath() const
-{
-        return buttonPath;
-}
+#include "PathButton.h"
 
 BreadcrumbBar::BreadcrumbBar(GeonkickWidget* parent)
         : GeonkickWidget(parent)
@@ -62,7 +44,7 @@ void BreadcrumbBar::setPath(const fs::path &path)
         size_t i = 0;
         for (const auto& part : path) {
                 tempCurrentPath /= part;
-                auto button = new BreadcrumbBarButton(this, tempCurrentPath);
+                auto button = new PathButton(this, tempCurrentPath);
                 RK_ACT_BIND(button, pressed, RK_ACT_ARGS(), this, pathPressed(i));
                 pathButtons.emplace_back(button);
                 i++;
