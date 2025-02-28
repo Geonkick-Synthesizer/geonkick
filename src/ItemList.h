@@ -35,7 +35,7 @@ template <typename T>
 class ItemList {
 public:
     virtual ~ItemList() = default;
-    void addItem(const T& item);
+    bool addItem(const T& item);
     bool removeItem(const T& item);
     const std::vector<T>& getItems() const;
     bool hasItem(const T& item) const;
@@ -49,10 +49,14 @@ private:
 };
 
 template <typename T>
-void ItemList<T>::addItem(const T& item)
+bool ItemList<T>::addItem(const T& item)
 {
+        if (hasItem(item))
+                return false;
+
         itemSet.insert(item);
         itemList.push_back(item);
+        return true;
 }
 
 template <typename T>

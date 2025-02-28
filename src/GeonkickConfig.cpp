@@ -25,20 +25,27 @@
 #include "DesktopPaths.h"
 
 #include <rapidjson/document.h>
-#include "rapidjson/writer.h"
+#include <rapidjson/prettywriter.h>
 #include "rapidjson/stringbuffer.h"
 
 #include <iomanip>
 #include <ranges>
 
-GeonkickConfig::GeonkickConfig()
-        : scaleFactor{1.0}
+GeonkickConfig::GeonkickConfig(bool autosave)
+        : autoSave{autosave}
+        , scaleFactor{1.0}
         , channelNumber{GeonkickTypes::geonkickAnyMidiChannel}
         , midiChannelForced{false}
 	, configFile{DesktopPaths().getConfigPath() / "config.json"}
         , showSideBar{false}
 {
         open();
+}
+
+GeonkickConfig::~GeonkickConfig()
+{
+        if (autoSave)
+                save();
 }
 
 void GeonkickConfig::setMidiChannel(int channel)
@@ -235,7 +242,7 @@ bool GeonkickConfig::isShowSidebar() const
 std::string GeonkickConfig::toJson() const
 {
         rapidjson::StringBuffer s;
-        rapidjson::Writer<decltype(s)> writer(s);
+        rapidjson::PrettyWriter<decltype(s)> writer(s);
         writer.StartObject();
         writer.Key("scaleFactor");
         writer.Double(scaleFactor);

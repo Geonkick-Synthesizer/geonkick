@@ -2,7 +2,7 @@
  * File name: GeonkickConfig.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -28,7 +28,8 @@
 
 class GeonkickConfig {
  public:
-        GeonkickConfig();
+        explicit GeonkickConfig(bool autosave = false);
+        ~GeonkickConfig();
         void setScaleFactor(double factor);
         double getScaleFactor() const;
         void setMidiChannel(int channel);
@@ -54,6 +55,7 @@ class GeonkickConfig {
         std::string toJson() const;
 
  private:
+        bool autoSave;
         double scaleFactor;
         int channelNumber;
         bool midiChannelForced;

@@ -23,6 +23,7 @@
 
 #include "PathBookmarksModel.h"
 #include "DesktopPaths.h"
+#include "GeonkickConfig.h"
 
 PathBookmarksModel::PathBookmarksModel(RkObject *parent)
         : AbstractModel(parent)
@@ -34,12 +35,17 @@ PathBookmarksModel::PathBookmarksModel(RkObject *parent)
         auto drives = desktopPaths.getDrivesList();
         for (auto& d: drives)
                 pathList.addItem(std::move(d));
+
+        GeonkickConfig config(true);
+        for (const auto &path:  config.getBookmarkedPaths())
+                pathList.addItem(path);
 }
 
 bool PathBookmarksModel::addPath(const std::filesystem::path &path)
 {
         if (!pathList.hasItem(path)) {
                 pathList.addItem(path);
+                GeonkickConfig(true).bookmarkPath(path);
                 action pathAdded(path);
                 action modelUpdated();
                 return true;
@@ -51,6 +57,7 @@ bool PathBookmarksModel::addPath(const std::filesystem::path &path)
 bool PathBookmarksModel::removePath(const std::filesystem::path &path)
 {
         if (pathList.removeItem(path)) {
+                GeonkickConfig(true).removeBookmarkedPath(path);
                 action pathRemoved(path);
                 action modelUpdated();
                 return true;
