@@ -30,6 +30,7 @@ class GeonkickButton;
 class GeonkickSlider;
 class RkPainter;
 class PathBookmarksModel;
+class RkLineEdit;
 
 class FilesView: public GeonkickWidget {
  public:
@@ -86,6 +87,7 @@ class FilesView: public GeonkickWidget {
         void scrollBarChanged(int val);
         void updateScrollBar();
         std::string getSelectedFile() const;
+        bool createPath(const fs::path &path);
 
  private:
         std::vector<std::filesystem::path> filesList;
@@ -104,6 +106,7 @@ class FilesView: public GeonkickWidget {
         bool isScrollBarVisible;
         std::vector<std::string> fileFilters;
         PathBookmarksModel *bookmarksModel;
+        RkLineEdit *newPathEdit;
 };
 
 #endif // GEONKICK_FILES_VIEW_H

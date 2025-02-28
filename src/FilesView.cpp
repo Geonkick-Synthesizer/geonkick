@@ -52,6 +52,7 @@ FilesView::FilesView(GeonkickWidget *parent)
         , scrollBarWidth{12}
         , isScrollBarVisible{false}
         , bookmarksModel{nullptr}
+        , newPathEdit{nullptr}
 {
         setSize(parent->size() - RkSize{0, 21});
         setBackgroundColor(40, 40, 40);
@@ -264,26 +265,28 @@ void FilesView::paintWidget(RkPaintEvent *event)
         while(index >= 0 && (static_cast<decltype(filesList.size())>(index) < filesList.size())
               && (static_cast<decltype(visibleLines)>(index - offsetIndex) < visibleLines)) {
                 auto fileName = filesList[index].filename().string();
-                auto font = painter.font();
-                if (std::filesystem::is_directory(filesList[index]))
-                        font.setWeight(RkFont::Weight::Bold);
-                else
-                        font.setWeight(RkFont::Weight::Normal);
-                painter.setFont(font);
+                if (!fileName.empty()) {
+                        auto font = painter.font();
+                        if (std::filesystem::is_directory(filesList[index]))
+                                font.setWeight(RkFont::Weight::Bold);
+                        else
+                                font.setWeight(RkFont::Weight::Normal);
+                        painter.setFont(font);
 
-                if (selectedFileIndex == index)
-                        painter.setPen(selectedPen);
-                else if (hightlightLine == line)
-                        painter.setPen(hightlightPen);
-                else
-                        painter.setPen(normalPen);
+                        if (selectedFileIndex == index)
+                                painter.setPen(selectedPen);
+                        else if (hightlightLine == line)
+                                painter.setPen(hightlightPen);
+                        else
+                                painter.setPen(normalPen);
 
-                RkRect textRect(10, lineYPos, width() - 40, lineHeight);
-                fileName = truncateFileName(painter,
-                                            fileName,
-                                            textRect.width() - 25);
-                painter.drawText(textRect, fileName, Rk::Alignment::AlignLeft);
-                drawBookmarkIcon(painter, line, lineYPos);
+                        RkRect textRect(10, lineYPos, width() - 40, lineHeight);
+                        fileName = truncateFileName(painter,
+                                                    fileName,
+                                                    textRect.width() - 25);
+                        painter.drawText(textRect, fileName, Rk::Alignment::AlignLeft);
+                        drawBookmarkIcon(painter, line, lineYPos);
+                }
                 lineYPos += lineHeight + lineSacing;
                 index++;
                 line++;
@@ -317,8 +320,8 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
                         bookmarksModel->addPath(path);
         } else if (!std::filesystem::is_directory(path)) {
                 action currentFileChanged(path);
-                update();
         }
+        update();
 }
 
 bool FilesView::isBookmarkArea(RkMouseEvent *event, int bookmarkWidth) const
@@ -463,8 +466,64 @@ PathBookmarksModel* FilesView::getBookmarksModel() const
 
 void FilesView::addNewPath()
 {
-        auto newPathEdit = new RkLineEdit(this);
-        newPathEdit->setPosition(4, 4);
-        newPathEdit->setSize(width() - 20, 20);
+        newPathEdit = new RkLineEdit(this);
+        newPathEdit->setFont(const RkFont &font);
+        newPathEdit->setTextSize();
+        newPathEdit->setPosition(4, 2);
+        newPathEdit->setSize(width() - 40, 20);
         newPathEdit->show();
+        newPathEdit->setFocus();
+        auto processEditEvent = [=,this]() -> void {
+                if (newPathEdit->text().empty()) {
+                        filesList.erase(filesList.begin());
+                        newPathEdit->close();
+                        newPathEdit = nullptr;
+                        return;
+                }
+
+                auto newPath = getCurrentPath() / fs::path(newPathEdit->text());
+                if (!createPath(newPath)) {
+                        filesList.erase(filesList.begin());
+                        newPathEdit->close();
+                        newPathEdit = nullptr;
+                        return;
+                }
+
+                filesList[0] = newPath;
+                newPathEdit->close();
+                newPathEdit = nullptr;
+        };
+
+        RK_ACT_BINDL(newPathEdit,
+                     escapePressed,
+                     RK_ACT_ARGS(),
+                     [=,this](){
+                             newPathEdit->close();
+                             newPathEdit = nullptr;
+                             filesList.erase(filesList.begin());
+                     });
+
+        RK_ACT_BINDL(newPathEdit,
+                     editingFinished,
+                     RK_ACT_ARGS(),
+                     processEditEvent);
+
+        filesList.insert(filesList.begin(), fs::path());
+        selectedFileIndex = 0;
+        update();
+}
+
+bool FilesView::createPath(const fs::path &path)
+{
+        try {
+                if (fs::exists(path))
+                        return true;
+
+                if (fs::create_directory(path))
+                        return true;
+        } catch (const fs::filesystem_error& e) {
+                return false;
+        }
+
+        return false;
 }
