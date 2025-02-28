@@ -380,9 +380,10 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
 
 void FileBrowser::updateView()
 {
-        filesView->setHeight(parentWidget()->height() - 8
-                             - breadcrumbBar->height() - 5
-                             - bookmarksView->height() - 5);
+        filesView->setSize({filesView->size().width(),
+                        parentWidget()->height() - 8
+                        - breadcrumbBar->height() - 5
+                        - bookmarksView->height() - 5});
         mainContainer->update();
 }
 

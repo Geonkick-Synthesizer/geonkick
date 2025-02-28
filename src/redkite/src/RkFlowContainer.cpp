@@ -34,17 +34,17 @@ void RkFlowContainer::layout()
         for (const auto& item : getItems())
                 maxItemHeight = std::max(maxItemHeight, item->height());
 
-        int x = spacing();
-        int y = spacing();
+        int x = spacing() + padding();
+        int y = spacing() + padding();
         maxItemHeight += spacing();
         for (auto& item : getItems()) {
-                if (x + item->width() > width()) {
-                        x = spacing();
+                if (x + item->width() > width() - padding()) {
+                        x = spacing() + padding();
                         y += maxItemHeight;
                 }
                 item->setPosition({x, y});
                 x += item->width() + spacing();
         }
 
-        setSize(RkSize{width(), y + maxItemHeight});
+        setSize(RkSize{width(), y + maxItemHeight + padding()});
 }

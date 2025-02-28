@@ -49,6 +49,8 @@ class RkContainer: public RkContainerItem {
 	void setPosition(const RkPoint &pos) override;
         void setX(int val) override;
         void setY(int val) override;
+        void setPadding(int pad);
+	int padding() const;
 	void setSpacing(size_t space);
 	size_t spacing() const;
         void setHiddenTakesPlace(bool b = true);
@@ -68,6 +70,7 @@ class RkContainer: public RkContainerItem {
         RK_DISABLE_MOVE(RkContainer);
         std::vector<RkContainerItem*> containerItems;
 	Rk::Orientation containerOrientation;
+        int containerPadding;
 	size_t itemSpacing;
         bool isHiddenTakesPlace;
 };

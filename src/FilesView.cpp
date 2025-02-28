@@ -52,8 +52,8 @@ FilesView::FilesView(GeonkickWidget *parent)
         , isScrollBarVisible{false}
         , bookmarksModel{nullptr}
 {
-        setSize(parent->size() - RkSize{0, 100});
-        setBackgroundColor(50, 50, 50);
+        setSize(parent->size() - RkSize{0, 21});
+        setBackgroundColor(40, 40, 40);
         createScrollBar();
         showScrollBar(false);
         show();
@@ -61,8 +61,9 @@ FilesView::FilesView(GeonkickWidget *parent)
 
 void FilesView::setSize(const RkSize &size)
 {
-        GeonkickWidget::setSize(size - RkSize{0, 100});
+        GeonkickWidget::setSize(size - RkSize{0, 21});
         visibleLines = height() / (lineHeight + lineSacing);
+        showScrollBar(filesList.size() > visibleLines);
         updateScrollBarView();
 }
 
@@ -117,6 +118,9 @@ void FilesView::updateScrollBarView()
 
 void FilesView::showScrollBar(bool b)
 {
+        if (!scrollBar)
+                return;
+
         isScrollBarVisible = b;
         if (isScrollBarVisible) {
                 topScrollBarButton->show();

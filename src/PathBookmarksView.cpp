@@ -31,10 +31,14 @@ PathBookmarksView::PathBookmarksView(GeonkickWidget* parent, PathBookmarksModel*
         , flowContainer{new RkFlowContainer(this)}
 {
         setSize(parent->width() - 4, 20);
+        setBackgroundColor({40, 40, 40});
+
         flowContainer->setSize(size());
         flowContainer->setSpacing(2);
+
         createView();
         bindModel();
+
         show();
 }
 

@@ -27,6 +27,7 @@
 BreadcrumbBar::BreadcrumbBar(GeonkickWidget* parent)
         : GeonkickWidget(parent)
 {
+        setBackgroundColor({40, 40, 40});
         setSize(parent->width() - 4, 20);
 }
 
@@ -44,7 +45,9 @@ void BreadcrumbBar::setPath(const fs::path &path)
         size_t i = 0;
         for (const auto& part : path) {
                 tempCurrentPath /= part;
-                auto button = new PathButton(this, tempCurrentPath);
+                auto fileName = tempCurrentPath.filename().string();
+                auto buttonText = tempCurrentPath != path ? fileName + " >" : "";
+                auto button = new PathButton(this, tempCurrentPath, buttonText);
                 RK_ACT_BIND(button, pressed, RK_ACT_ARGS(), this, pathPressed(i));
                 pathButtons.emplace_back(button);
                 i++;

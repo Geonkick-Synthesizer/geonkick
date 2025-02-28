@@ -25,11 +25,13 @@
 
 #include <RkPainter.h>
 
-PathButton::PathButton(GeonkickWidget *parent, const fs::path& path)
+PathButton::PathButton(GeonkickWidget *parent,
+                       const fs::path& path,
+                       const std::string &text)
         : GeonkickButton(parent)
         , buttonPath{path}
 {
-        auto pathStr = path.filename().string();
+        auto pathStr = text.empty() ? path.filename().string() : text;
         RkPainter painter(this);
         setSize(painter.getTextWidth(pathStr) + 6,
                 painter.font().size() + 7);

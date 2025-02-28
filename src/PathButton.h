@@ -28,7 +28,9 @@
 
 class PathButton : public GeonkickButton {
  public:
-        PathButton(GeonkickWidget *parent, const fs::path& path);
+        PathButton(GeonkickWidget *parent,
+                   const fs::path& path,
+                   const std::string &text = std::string());
         const fs::path& getPath() const;
 
  private:

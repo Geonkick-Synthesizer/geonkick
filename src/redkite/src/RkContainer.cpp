@@ -27,6 +27,7 @@
 RkContainer::RkContainer(RkWidget *parent, Rk::Orientation orientation)
 	: RkContainerItem(parent, ItemType::ItemContainer)
 	, containerOrientation{orientation}
+        , containerPadding{0}
 	, itemSpacing{0}
         , isHiddenTakesPlace{true}
 {
@@ -193,6 +194,16 @@ void RkContainer::setY(int val)
                 RkContainerItem::setY(val);
                 update();
         }
+}
+
+void RkContainer::setPadding(int pad)
+{
+        containerPadding = pad;
+}
+
+int RkContainer::padding() const
+{
+        return containerPadding;
 }
 
 void RkContainer::setSpacing(size_t space)
