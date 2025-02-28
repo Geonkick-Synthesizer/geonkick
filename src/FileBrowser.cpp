@@ -31,7 +31,6 @@
 #include "PathBookmarksView.h"
 
 #include <RkLabel.h>
-#include <RkLineEdit.h>
 #include <RkEvent.h>
 #include <RkPainter.h>
 #include <RkList.h>
@@ -50,6 +49,9 @@ RK_DECLARE_IMAGE_RC(open_active);
 RK_DECLARE_IMAGE_RC(save_active);
 RK_DECLARE_IMAGE_RC(cancel);
 RK_DECLARE_IMAGE_RC(add_button_16x16);
+RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
+RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
+RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
 
 FileBrowser::FileBrowser(GeonkickWidget *parent,
                        FileBrowser::Type type,
@@ -176,6 +178,9 @@ void FileBrowser::createUi()
 
         pathHistory->goTo(filesView->getCurrentPath());
 
+        createNewDirectoryControls(topContainer);
+        createBookmarkDirectoryControls(topContainer);
+
         /*RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
         RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
                     this, currentFileChanged(file));
@@ -291,10 +296,10 @@ void FileBrowser::createTopMenu(RkContainer *container)
 
 void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
 {
-        /*        container->addSpace(10);
-        bookmarkDirectoryButton = new GeonkickButton(this);
+        container->addSpace(5);
+        auto bookmarkDirectoryButton = new GeonkickButton(this);
         bookmarkDirectoryButton->setCheckable(true);
-        bookmarkDirectoryButton->setSize(16, 16);
+        bookmarkDirectoryButton->setSize(14, 13);
         bookmarkDirectoryButton->setImage(RkImage(bookmarkDirectoryButton->size(),
                                                   RK_IMAGE_RC(bookmark_16x16_unpressed)),
                                           RkButton::State::Unpressed);
@@ -309,7 +314,7 @@ void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
                                           RkButton::State::UnpressedHover);
         bookmarkDirectoryButton->show();
         container->addWidget(bookmarkDirectoryButton);
-        RK_ACT_BIND(bookmarkDirectoryButton,
+        /*        RK_ACT_BIND(bookmarkDirectoryButton,
                     toggled,
                     RK_ACT_ARGS(bool b),
                     this,
@@ -321,8 +326,7 @@ void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
 
 void FileBrowser::createNewDirectoryControls(RkContainer *container)
 {
-        /*        container->addSpace(5);
-        // Create directory button
+        container->addSpace(5);
         auto createDirectoryButton = new GeonkickButton(this);
         createDirectoryButton->setSize(16, 16);
         createDirectoryButton->setImage(RkImage(createDirectoryButton->size(),
@@ -330,52 +334,7 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
                                         RkButton::State::Unpressed);
         createDirectoryButton->show();
         container->addWidget(createDirectoryButton);
-
-        auto editDirectoryName = new RkLineEdit(this);
-        editDirectoryName->setSize(80, 16);
-        container->addWidget(editDirectoryName);
-        editDirectoryName->hide();
-
-        RK_ACT_BINDL(createDirectoryButton,
-                     pressed,
-                     RK_ACT_ARGS(),
-                     [=, this](){
-                             createDirectoryButton->hide();
-                             editDirectoryName->show();
-                             container->update();
-                             editDirectoryName->setFocus();
-                     });
-
-        RK_ACT_BINDL(editDirectoryName,
-                     escapePressed,
-                     RK_ACT_ARGS(),
-                     [=, this](){
-                             editDirectoryName->hide();
-                             createDirectoryButton->show();
-                             editDirectoryName->setText("");
-                             container->update();
-                     });
-
-        RK_ACT_BINDL(editDirectoryName,
-                     enterPressed,
-                     RK_ACT_ARGS(),
-                     [=, this](){
-                             editDirectoryName->hide();
-                             createDirectoryButton->show();
-                             createDirectory(editDirectoryName->text());
-                             editDirectoryName->setText("");
-                             container->update();
-                     });
-
-        RK_ACT_BINDL(editDirectoryName,
-                     editingFinished,
-                     RK_ACT_ARGS(),
-                     [=, this](){
-                             editDirectoryName->hide();
-                             createDirectoryButton->show();
-                             editDirectoryName->setText("");
-                             container->update();
-                             });*/
+        RK_ACT_BIND(createDirectoryButton, pressed, RK_ACT_ARGS(), filesView, addNewPath());
 }
 
 void FileBrowser::updateView()
@@ -407,11 +366,7 @@ void FileBrowser::onAccept()
                 }
                 break;
         case Type::Save:
-                if (!fileNameEdit->text().empty()) {
-                        pathSelected = (filesView->getCurrentPath() / std::filesystem::path(fileNameEdit->text())).string();
-                        action selectedFile(pathSelected);
-                        close();
-                } else if (!filesView->selectedFile().empty()
+                if (!filesView->selectedFile().empty()
                            && !std::filesystem::is_directory(filesView->selectedFile())) {
                         pathSelected = filesView->selectedFile();
                         action selectedFile(pathSelected);

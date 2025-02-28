@@ -26,6 +26,7 @@
 #include "geonkick_slider.h"
 #include "PathBookmarksModel.h"
 
+#include <RkLineEdit.h>
 #include <RkEvent.h>
 #include <RkPainter.h>
 
@@ -458,4 +459,12 @@ void FilesView::setBookmarksModel(PathBookmarksModel *model)
 PathBookmarksModel* FilesView::getBookmarksModel() const
 {
         return bookmarksModel;
+}
+
+void FilesView::addNewPath()
+{
+        auto newPathEdit = new RkLineEdit(this);
+        newPathEdit->setPosition(4, 4);
+        newPathEdit->setSize(width() - 20, 20);
+        newPathEdit->show();
 }

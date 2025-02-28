@@ -41,6 +41,7 @@ class FilesView: public GeonkickWidget {
         void setFilters(const std::vector<std::string> &filters);
         void setBookmarksModel(PathBookmarksModel *model);
         PathBookmarksModel* getBookmarksModel() const;
+        void addNewPath();
         RK_DECL_ACT(openFile, openFile(const std::string &fileName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
         RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &path),
