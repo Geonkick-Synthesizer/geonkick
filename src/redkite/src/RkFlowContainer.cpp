@@ -40,7 +40,7 @@ void RkFlowContainer::layout()
         for (auto& item : getItems()) {
                 if (x + item->width() > width()) {
                         x = spacing();
-                        y += spacing() + maxItemHeight;
+                        y += maxItemHeight;
                 }
                 item->setPosition({x, y});
                 x += item->width() + spacing();

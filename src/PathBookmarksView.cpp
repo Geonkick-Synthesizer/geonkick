@@ -30,10 +30,17 @@ PathBookmarksView::PathBookmarksView(GeonkickWidget* parent, PathBookmarksModel*
         : AbstractView(parent, model)
         , flowContainer{new RkFlowContainer(this)}
 {
+        setSize(parent->width() - 4, 20);
+        flowContainer->setSize(size());
+        flowContainer->setSpacing(2);
+        createView();
+        bindModel();
+        show();
 }
 
 void PathBookmarksView::createView()
 {
+        updateView();
 }
 
 void PathBookmarksView::updateView()
@@ -57,6 +64,7 @@ void PathBookmarksView::updateView()
 
         if (flowContainer->size() != size()) {
                 setSize(flowContainer->size());
+                flowContainer->update();
                 action sizeUpdated();
         }
 }

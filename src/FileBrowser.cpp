@@ -28,6 +28,7 @@
 #include "PathBookmarksModel.h"
 #include "GeonkickConfig.h"
 #include "PathHistory.h"
+#include "PathBookmarksView.h"
 
 #include <RkLabel.h>
 #include <RkLineEdit.h>
@@ -59,9 +60,11 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , dialogType{type}
         , fileNameEdit{nullptr}
         , pathHistory{new PathHistory(this)}
+        , bookmarksView{nullptr}
         , breadcrumbBar{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
+        , pathBookmarksModel{new PathBookmarksModel(this)}
 {
         setSize(parent->size());
         setTitle(title);
@@ -77,6 +80,7 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , dialogType{type}
         , fileNameEdit{nullptr}
         , pathHistory{new PathHistory(this)}
+        , bookmarksView{nullptr}
         , breadcrumbBar{nullptr}
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
@@ -120,7 +124,17 @@ void FileBrowser::createUi()
         // Create top menu.
         createTopMenu(topContainer);
 
+        // Create bookmarsk bar.
+        bookmarksView = new PathBookmarksView(this, pathBookmarksModel);
+        mainContainer->addWidget(bookmarksView);
+        RK_ACT_BIND(bookmarksView,
+                    sizeUpdated,
+                    RK_ACT_ARGS(),
+                    this,
+                    updateView());
+
         // Create breadcrumb bar.
+        mainContainer->addSpace(5);
         breadcrumbBar = new BreadcrumbBar(this);
         mainContainer->addWidget(breadcrumbBar);
         RK_ACT_BIND(breadcrumbBar,
@@ -143,6 +157,11 @@ void FileBrowser::createUi()
                     RK_ACT_ARGS(const std::string &path),
                     pathHistory,
                     goTo(path));
+        RK_ACT_BIND(bookmarksView,
+                    pathSelected,
+                    RK_ACT_ARGS(const fs::path &path),
+                    filesView,
+                    setCurrentPath(path));
         RK_ACT_BIND(breadcrumbBar,
                     pathChanged,
                     RK_ACT_ARGS(const fs::path &path),
@@ -361,7 +380,9 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
 
 void FileBrowser::updateView()
 {
-        filesView->setHeight(parentWidget()->height() - 8 - breadcrumbBar->height() - 5);
+        filesView->setHeight(parentWidget()->height() - 8
+                             - breadcrumbBar->height() - 5
+                             - bookmarksView->height() - 5);
         mainContainer->update();
 }
 

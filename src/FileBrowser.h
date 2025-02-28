@@ -39,6 +39,7 @@ class RkContainer;
 class PathBookmarksModel;
 class BreadcrumbBar;
 class PathHistory;
+class PathBookmarksView;
 
 class FileBrowser: public GeonkickWidget {
  public:
@@ -106,6 +107,7 @@ class FileBrowser: public GeonkickWidget {
         Type dialogType;
         RkLineEdit *fileNameEdit;
         PathHistory* pathHistory;
+        PathBookmarksView* bookmarksView;
         BreadcrumbBar *breadcrumbBar;
         FilesView *filesView;
         std::string pathSelected;
