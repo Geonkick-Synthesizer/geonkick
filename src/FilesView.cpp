@@ -467,8 +467,6 @@ PathBookmarksModel* FilesView::getBookmarksModel() const
 void FilesView::addNewPath()
 {
         newPathEdit = new RkLineEdit(this);
-        newPathEdit->setFont(const RkFont &font);
-        newPathEdit->setTextSize();
         newPathEdit->setPosition(4, 2);
         newPathEdit->setSize(width() - 40, 20);
         newPathEdit->show();
