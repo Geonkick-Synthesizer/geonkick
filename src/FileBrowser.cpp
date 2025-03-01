@@ -67,6 +67,7 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , pathBookmarksModel{new PathBookmarksModel(this)}
+        , bookmarkDirectoryButton{nullptr}
 {
         setSize(parent->size());
         setTitle(title);
@@ -87,12 +88,10 @@ FileBrowser::FileBrowser(GeonkickWidget *parent,
         , filesView{nullptr}
         , status{AcceptStatus::Cancel}
         , pathBookmarksModel{new PathBookmarksModel(this)}
-        //        , shortcutDirectoriesView{new RkList(this, shortcutDirectoriesModel)}
         , bookmarkDirectoryButton{nullptr}
 {
         setSize(parent->size());
         setTitle(title);
-        //        setBackgroundColor(88, 0, 0xff);
         createUi();
         show();
 }
@@ -106,14 +105,6 @@ void FileBrowser::setSize(const RkSize &size)
 
 void FileBrowser::createUi()
 {
-        /*if (widgetFlags() == Rk::WidgetFlags::Popup) {
-                setBorderWidth(2);
-                setBorderColor(80, 80, 80);
-        }
-        GeonkickConfig cfg;
-        for(const auto &path: cfg.getBookmarkedPaths())
-        shortcutDirectoriesModel->addPath(path);*/
-
         mainContainer = new RkContainer(this, Rk::Orientation::Vertical);
         mainContainer->setSize(size());
         mainContainer->addSpace(8);
@@ -181,58 +172,7 @@ void FileBrowser::createUi()
         createNewDirectoryControls(topContainer);
         createBookmarkDirectoryControls(topContainer);
 
-        /*RK_ACT_BIND(filesView, openFile, RK_ACT_ARGS(const std::string &), this, onAccept());
-        RK_ACT_BIND(filesView, currentFileChanged, RK_ACT_ARGS(const std::string &file),
-                    this, currentFileChanged(file));
-        RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
-                    this, directoryChanged(pathName));
-        RK_ACT_BIND(shortcutDirectoriesModel,
-                    itemSelected,
-                    RK_ACT_ARGS(RkModelItem item),
-                    filesView,
-                    setCurrentPath(std::get<std::string>(item.data(static_cast<int>(PathListModel::PathListDataType::Path)))));*/
-
-        /*        shortcutDirectoriesView->setBackgroundColor({50, 50, 50});
-        shortcutDirectoriesView->setPosition(2, filesView->y());
-        shortcutDirectoriesView->setSize(100 ,filesView->height());
-        shortcutDirectoriesView->show();*/
-
-        /*        createBookmarkDirectoryControls(topContainer);
-        createNewDirectoryControls(topContainer);
-
-        auto buttomContainer = new RkContainer(this);
-        buttomContainer->setSize({mainContainer->width(), 30});
-        mainContainer->addSpace(5, Rk::Alignment::AlignBottom);
-        mainContainer->addContainer(buttomContainer, Rk::Alignment::AlignBottom);
-
-        if (dialogType != Type::Browse) {
-                auto acceptButton = new GeonkickButton(this);
-                acceptButton->setFixedSize(90, 30);
-                if (dialogType == Type::Save)
-                        acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(save_active)));
-                else
-                        acceptButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(open_active)));
-                RK_ACT_BIND(acceptButton, toggled, RK_ACT_ARGS(bool pressed), this, onAccept());
-                acceptButton->show();
-                buttomContainer->addSpace(10, Rk::Alignment::AlignRight);
-                buttomContainer->addWidget(acceptButton, Rk::Alignment::AlignRight);
-                auto cancelButton = new GeonkickButton(this);
-                cancelButton->setFixedSize(90, 30);
-                cancelButton->setUnpressedImage(RkImage(90, 30, RK_IMAGE_RC(cancel)));
-                RK_ACT_BIND(cancelButton, toggled, RK_ACT_ARGS(bool pressed), this, onCancel());
-                cancelButton->show();
-                buttomContainer->addSpace(5);
-                buttomContainer->addWidget(cancelButton, Rk::Alignment::AlignRight);
-        }
-
-        if (dialogType == Type::Save) {
-                fileNameEdit = new RkLineEdit(this);
-                fileNameEdit->setFont(font());
-                fileNameEdit->setSize(width() - 200, 20);
-                fileNameEdit->show();
-                RK_ACT_BIND(fileNameEdit, enterPressed, RK_ACT_ARGS(), this, onAccept());
-                buttomContainer->addWidget(fileNameEdit);
-                }*/
+        updateBookmarkButton(filesView->getCurrentPath());
         updateView();
 }
 
@@ -297,7 +237,7 @@ void FileBrowser::createTopMenu(RkContainer *container)
 void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
 {
         container->addSpace(5);
-        auto bookmarkDirectoryButton = new GeonkickButton(this);
+        bookmarkDirectoryButton = new GeonkickButton(this);
         bookmarkDirectoryButton->setCheckable(true);
         bookmarkDirectoryButton->setSize(14, 13);
         bookmarkDirectoryButton->setImage(RkImage(bookmarkDirectoryButton->size(),
@@ -314,14 +254,20 @@ void FileBrowser::createBookmarkDirectoryControls(RkContainer *container)
                                           RkButton::State::UnpressedHover);
         bookmarkDirectoryButton->show();
         container->addWidget(bookmarkDirectoryButton);
-        /*        RK_ACT_BIND(bookmarkDirectoryButton,
+        RK_ACT_BINDL(bookmarkDirectoryButton,
                     toggled,
                     RK_ACT_ARGS(bool b),
+                    [=,this](bool b){
+                            if (b)
+                                    pathBookmarksModel->addPath(currentDirectory());
+                            else
+                                    pathBookmarksModel->removePath(currentDirectory());
+                     } );
+        RK_ACT_BIND(filesView,
+                    currentPathChanged,
+                    RK_ACT_ARGS(const fs::path &path),
                     this,
-                    bookmarkDirectory(currentDirectory(), b));
-
-        RK_ACT_BIND(filesView, currentPathChanged, RK_ACT_ARGS(const std::string &pathName),
-        this, updateBookmarkButton(std::filesystem::path(pathName)));*/
+                    updateBookmarkButton(path));
 }
 
 void FileBrowser::createNewDirectoryControls(RkContainer *container)
@@ -425,58 +371,18 @@ void FileBrowser::setFilters(const std::vector<std::string> &filters)
 
 void FileBrowser::setHomeDirectory(const std::string &path)
 {
-        //        shortcutDirectoriesModel->setHomeDirectory(path);
+        if (filesView)
+                filesView->setCurrentPath(path);
 }
 
 bool FileBrowser::createDirectory(const std::filesystem::path &dir)
 {
-        auto newPath = std::filesystem::path(currentDirectory()) / dir;
-        try {
-                if (!std::filesystem::create_directory(newPath)) {
-                        GEONKICK_LOG_ERROR("Failed to create directory: " << newPath);
-                        return false;
-                }
-        } catch (...) {
-                GEONKICK_LOG_ERROR("Failed to create directory: " << newPath);
-                return false;
-        }
-
-        setCurrentDirectoy(newPath.string());
-        return true;
-}
-
-void FileBrowser::bookmarkDirectory(const std::filesystem::path &dir, bool bookmark)
-{
-        /*        if (bookmark) {
-                if (!isPathBookmarked(dir)) {
-                        GeonkickConfig cfg;
-                        auto res = cfg.bookmarkPath(dir);
-                        if (res)
-                                res = cfg.save();
-                        if (res)
-                                shortcutDirectoriesModel->addPath(dir);
-                }
-        } else {
-                if (isPathBookmarked(dir)) {
-                        GeonkickConfig cfg;
-                        auto res = cfg.removeBookmarkedPath(dir);
-                        if (res)
-                                res = cfg.save();
-                        if (res)
-                                shortcutDirectoriesModel->removePath(dir);
-                }
-        }
-        updateBookmarkButton(dir);*/
-}
-
-bool FileBrowser::isPathBookmarked(const std::filesystem::path &path) const
-{
-        /* const auto &paths = shortcutDirectoriesModel->getPaths();
-           auto it = std::find(paths.begin(), paths.end(), path);*/
-        return false;//it != paths.end();
+        if (filesView)
+                return filesView->createPath(dir);
+        return false;
 }
 
 void FileBrowser::updateBookmarkButton(const std::filesystem::path &path)
 {
-        //       bookmarkDirectoryButton->setPressed(isPathBookmarked(path));
+        bookmarkDirectoryButton->setPressed(pathBookmarksModel->containsPath(path));
 }

@@ -85,8 +85,6 @@ class FileBrowser: public GeonkickWidget {
         void setFilters(const std::vector<std::string> &filters);
         void setHomeDirectory(const std::string &path);
         bool createDirectory(const std::filesystem::path &dir);
-        void bookmarkDirectory(const std::filesystem::path &dir, bool bookmark = true);
-        bool isPathBookmarked(const std::filesystem::path &path) const;
 
  protected:
         void createUi();

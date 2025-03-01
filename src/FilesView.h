@@ -43,10 +43,13 @@ class FilesView: public GeonkickWidget {
         void setBookmarksModel(PathBookmarksModel *model);
         PathBookmarksModel* getBookmarksModel() const;
         void addNewPath();
+        bool createPath(const fs::path &path);
         RK_DECL_ACT(openFile, openFile(const std::string &fileName),
                     RK_ARG_TYPE(const std::string &), RK_ARG_VAL(fileName));
-        RK_DECL_ACT(currentPathChanged, currentPathChanged(const std::string &path),
-                    RK_ARG_TYPE(const std::string&), RK_ARG_VAL(path));
+        RK_DECL_ACT(currentPathChanged,
+                    currentPathChanged(const fs::path &path),
+                    RK_ARG_TYPE(const fs::path &path),
+                    RK_ARG_VAL(path));
         RK_DECL_ACT(fileSelected,
                     fileSelected(const std::string &file),
                     RK_ARG_TYPE(const std::string&),
@@ -87,7 +90,6 @@ class FilesView: public GeonkickWidget {
         void scrollBarChanged(int val);
         void updateScrollBar();
         std::string getSelectedFile() const;
-        bool createPath(const fs::path &path);
 
  private:
         std::vector<std::filesystem::path> filesList;
