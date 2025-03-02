@@ -1,6 +1,6 @@
 /**
  * File name: FilesView.cpp
- * Project: Geonkick (A kick synthesizer)
+ * Project: Geonkick (A precussive synthesizer)
  *
  * Copyright (C) 2019 Iurie Nistor
  *
@@ -69,12 +69,7 @@ void FilesView::setSize(const RkSize &size)
         updateScrollBarView();
 }
 
-std::string FilesView::getCurrentPath() const
-{
-        return currentPath.string();
-}
-
-void FilesView::setCurrentPath(const std::string &path)
+void FilesView::setCurrentPath(const fs::path &path)
 {
         if (currentPath == path)
                 return;
@@ -83,6 +78,11 @@ void FilesView::setCurrentPath(const std::string &path)
         selectedFileIndex = -1;
         loadCurrentDirectory();
         update();
+}
+
+const fs::path& FilesView::getCurrentPath() const
+{
+        return currentPath;
 }
 
 void FilesView::createScrollBar()
@@ -159,7 +159,7 @@ void FilesView::scrollBarChanged(int val)
 
 void FilesView::loadCurrentDirectory()
 {
-        if (selectedFileIndex > -1
+        if (selectedFileIndex >= 0
             && static_cast<size_t>(selectedFileIndex) < filesList.size()) {
                 currentPath = filesList[selectedFileIndex];
         }
@@ -186,21 +186,15 @@ void FilesView::loadCurrentDirectory()
                 files.clear();
         }
 
-        if (!files.empty()) {
-                std::sort(files.begin(), files.end(),
-                          [] (decltype(files)::value_type &a, decltype(files)::value_type &b) -> bool
-                        {
-                                        return a < b;
-                        });
-        }
+        std::sort(files.begin(), files.end(),
+                  [] (auto &a, auto &b) -> bool {
+                          return a < b;
+                  });
 
-        if (!dirs.empty()) {
-                std::sort(dirs.begin(), dirs.end(),
-                          [] (decltype(dirs)::value_type &a, decltype(dirs)::value_type &b) -> bool
-                        {
-                                        return a < b;
-                        });
-        }
+        std::sort(dirs.begin(), dirs.end(),
+                  [] (auto &a, auto &b) -> bool {
+                          return a < b;
+                  });
 
         filesList = std::move(dirs);
         filesList.insert(filesList.end(), files.begin(), files.end());
@@ -208,7 +202,7 @@ void FilesView::loadCurrentDirectory()
         offsetIndex = 0;
         selectedFileIndex = 0;
         showScrollBar(filesList.size() > visibleLines);
-        action currentPathChanged(currentPath.string());
+        action currentPathChanged(currentPath);
 }
 
 void FilesView::drawBookmarkIcon(RkPainter& painter, int line, int yPos)
@@ -310,16 +304,16 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
                 return;
 
         selectedFileIndex = offsetIndex + line;
-        std::string path = getSelectedFile();
+        auto filePath = selectedFile();
         auto bookmarkWidth = RK_RC_IMAGE(bookmark_16x16_hover).width();
         if (bookmarksModel && isBookmarkArea(event, bookmarkWidth)
-            && std::filesystem::is_directory(path)) {
-                if (bookmarksModel->containsPath(path))
-                        bookmarksModel->removePath(path);
+            && std::filesystem::is_directory(filePath)) {
+                if (bookmarksModel->containsPath(filePath))
+                        bookmarksModel->removePath(filePath);
                 else
-                        bookmarksModel->addPath(path);
-        } else if (!std::filesystem::is_directory(path)) {
-                action currentFileChanged(path);
+                        bookmarksModel->addPath(filePath);
+        } else if (!std::filesystem::is_directory(filePath)) {
+                action fileSelected(filePath);
         }
         update();
 }
@@ -343,7 +337,7 @@ void FilesView::mouseDoubleClickEvent(RkMouseEvent *event)
         auto line = getLine(event->x(), event->y());
         if (line > -1) {
                 selectedFileIndex = offsetIndex + line;
-                openSelectedFile();
+                activateSelectedFile();
         }
 }
 
@@ -386,25 +380,27 @@ void FilesView::keyPressEvent(RkKeyEvent *event)
         }
 
         if (event->key() == Rk::Key::Key_Return)
-                openSelectedFile();
+                activateSelectedFile();
 }
 
-std::string FilesView::getSelectedFile() const
+fs::path FilesView::selectedFile() const
 {
-        if (!filesList.empty() && selectedFileIndex > -1
-            && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()
-	    && !filesList[selectedFileIndex].empty()) {
-                return filesList[selectedFileIndex].string();
+        if (filesList.empty())
+                return {};
+
+        if (selectedFileIndex >= 0
+            && static_cast<decltype(filesList.size())>(selectedFileIndex) < filesList.size()) {
+                return filesList[selectedFileIndex];
         }
-        return "";
+        return {};
 }
 
-void FilesView::openSelectedFile()
+void FilesView::activateSelectedFile()
 {
-        std::string file = getSelectedFile();
+        auto file = selectedFile();
         if (!file.empty()) {
                 if (!std::filesystem::is_directory(file))
-                        action openFile(filesList[selectedFileIndex].string());
+                        action fileActivated(file);
                 else
                         loadCurrentDirectory();
                 update();
@@ -420,13 +416,6 @@ int FilesView::getLine(int x, int y) const
         }
 
         return -1;
-}
-
-std::string FilesView::selectedFile() const
-{
-        if (selectedFileIndex > -1)
-                return filesList[selectedFileIndex].string();
-        return std::string();
 }
 
 void FilesView::onLineUp()

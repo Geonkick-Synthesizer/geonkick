@@ -53,45 +53,17 @@ RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
 
-FileBrowser::FileBrowser(GeonkickWidget *parent,
-                       FileBrowser::Type type,
-                       Rk::WidgetFlags flags,
-                       const std::string& title)
-        : GeonkickWidget(parent, flags)
+FileBrowser::FileBrowser(GeonkickWidget *parent)
+        : GeonkickWidget(parent)
         , mainContainer{nullptr}
-        , dialogType{type}
-        , fileNameEdit{nullptr}
+        , bookmarkDirectoryButton{nullptr}
         , pathHistory{new PathHistory(this)}
+        , pathBookmarksModel{new PathBookmarksModel(this)}
         , bookmarksView{nullptr}
         , breadcrumbBar{nullptr}
         , filesView{nullptr}
-        , status{AcceptStatus::Cancel}
-        , pathBookmarksModel{new PathBookmarksModel(this)}
-        , bookmarkDirectoryButton{nullptr}
 {
         setSize(parent->size());
-        setTitle(title);
-        createUi();
-        show();
-}
-
-FileBrowser::FileBrowser(GeonkickWidget *parent,
-                       FileBrowser::Type type,
-                       const std::string& title)
-        : GeonkickWidget(parent, type == FileBrowser::Type::Browse ? Rk::WidgetFlags::Widget : Rk::WidgetFlags::Popup)
-        , mainContainer{nullptr}
-        , dialogType{type}
-        , fileNameEdit{nullptr}
-        , pathHistory{new PathHistory(this)}
-        , bookmarksView{nullptr}
-        , breadcrumbBar{nullptr}
-        , filesView{nullptr}
-        , status{AcceptStatus::Cancel}
-        , pathBookmarksModel{new PathBookmarksModel(this)}
-        , bookmarkDirectoryButton{nullptr}
-{
-        setSize(parent->size());
-        setTitle(title);
         createUi();
         show();
 }
@@ -143,7 +115,7 @@ void FileBrowser::createUi()
         RK_ACT_BIND(pathHistory,
                     pathChanged,
                     RK_ACT_ARGS(const fs::path &path),
-                    this,
+                    filesView,
                     setCurrentPath(path));
         RK_ACT_BIND(filesView,
                     currentPathChanged,
@@ -151,11 +123,15 @@ void FileBrowser::createUi()
                     pathHistory,
                     goTo(path));
         RK_ACT_BIND(filesView,
-                    currentFileChanged,
-                    currentFileChanged(const fs::path& &file),
-                    RK_ACT_ARGS(const fs::path&),
+                    fileActivated,
+                    RK_ACT_ARGS(const fs::path& path),
                     this,
-                    currentFileChanged(path));
+                    fileActivated(path));
+        RK_ACT_BIND(filesView,
+                    fileSelected,
+                    RK_ACT_ARGS(const fs::path& path),
+                    this,
+                    fileSelected(path));
         RK_ACT_BIND(bookmarksView,
                     pathSelected,
                     RK_ACT_ARGS(const fs::path &path),
@@ -298,76 +274,19 @@ void FileBrowser::updateView()
         mainContainer->update();
 }
 
-void FileBrowser::goBack()
-{
-}
-
-void FileBrowser::goForward()
-{
-}
-
-void FileBrowser::onAccept()
-{
-        status = AcceptStatus::Accept;
-        switch (dialogType) {
-        case Type::Open:
-                if (!filesView->selectedFile().empty()) {
-                        pathSelected = filesView->selectedFile();
-                        action selectedFile(pathSelected);
-                        close();
-                }
-                break;
-        case Type::Save:
-                if (!filesView->selectedFile().empty()
-                           && !std::filesystem::is_directory(filesView->selectedFile())) {
-                        pathSelected = filesView->selectedFile();
-                        action selectedFile(pathSelected);
-                        close();
-                }
-                break;
-        case Type::Browse:
-                if (!filesView->selectedFile().empty()) {
-                        pathSelected = filesView->selectedFile();
-                        action selectedFile(pathSelected);
-                }
-                break;
-        default:
-                return;
-        }
-}
-
-void FileBrowser::onCancel()
-{
-        status = AcceptStatus::Cancel;
-        action rejected();
-        close();
-}
-
-void FileBrowser::closeEvent(RkCloseEvent *event)
-{
-        status = AcceptStatus::Cancel;
-        RkWidget::closeEvent(event);
-}
-
-std::string FileBrowser::currentDirectory() const
+fs::path FileBrowser::currentDirectory() const
 {
         return filesView->getCurrentPath();
 }
 
-void FileBrowser::setCurrentDirectoy(const std::string &path)
+fs::path FileBrowser::currentFile() const
+{
+        return filesView->selectedFile();
+}
+
+void FileBrowser::setCurrentDirectoy(const fs::path &path)
 {
         filesView->setCurrentPath(path);
-        breadcrumbBar->setPath(path);
-}
-
-std::string FileBrowser::filePath() const
-{
-        return pathSelected;
-}
-
-FileBrowser::AcceptStatus FileBrowser::acceptStatus() const
-{
-        return status;
 }
 
 void FileBrowser::setFilters(const std::vector<std::string> &filters)
@@ -375,20 +294,19 @@ void FileBrowser::setFilters(const std::vector<std::string> &filters)
         filesView->setFilters(filters);
 }
 
-void FileBrowser::setHomeDirectory(const std::string &path)
+void FileBrowser::setHomeDirectory(const fs::path &path)
 {
-        if (filesView)
-                filesView->setCurrentPath(path);
+        filesView->setCurrentPath(path);
 }
 
-bool FileBrowser::createDirectory(const std::filesystem::path &dir)
+bool FileBrowser::createDirectory(const fs::path &dir)
 {
         if (filesView)
                 return filesView->createPath(dir);
         return false;
 }
 
-void FileBrowser::updateBookmarkButton(const std::filesystem::path &path)
+void FileBrowser::updateBookmarkButton(const fs::path &path)
 {
         bookmarkDirectoryButton->setPressed(pathBookmarksModel->containsPath(path));
 }

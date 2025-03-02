@@ -70,17 +70,17 @@ ExportWidget::ExportWidget(GeonkickWidget *parent, GeonkickApi *api)
         setBorderWidth(2);
         setBorderColor(80, 80, 80);
 
-        auto fileDialog = new FileBrowser(this, FileBrowser::Type::Save,
-                                         Rk::WidgetFlags::Widget,
-                                         "Select Path - " + std::string(GEONKICK_NAME));
-        fileDialog->setFilters({".flac", ".wav", ".ogg", ".FLAC", ".WAV", ".OGG"});
+        //auto fileDialog = new FileBrowser(this);//, FileBrowser::Type::Save,
+        //Rk::WidgetFlags::Widget,
+        //                                         "Select Path - " + std::string(GEONKICK_NAME));
+        /*fileDialog->setFilters({".flac", ".wav", ".ogg", ".FLAC", ".WAV", ".OGG"});
         fileDialog->setPosition(0, 40);
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
         fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("ExportDialog/Location").string());
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file), this,
                     exportInstrument(file));
-        RK_ACT_BIND(fileDialog, rejected, RK_ACT_ARGS(), this, close());
+                    RK_ACT_BIND(fileDialog, rejected, RK_ACT_ARGS(), this, close());*/
 
         std::string format = geonkickApi->getSettings("ExportDialog/Format");
         if (!format.empty())

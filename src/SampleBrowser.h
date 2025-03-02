@@ -38,21 +38,12 @@ class SampleBrowser: public GeonkickWidget {
         SampleBrowser(GeonkickWidget *parent, GeonkickApi* api);
 
   protected:
-        //        void setPreviewSample(const std::string &file);
         void setOscillator(GeonkickApi::OscillatorType osc);
-        void loadSample();
+        void loadSample(const fs::path &file);
 
  private:
-        void createPreviewMenu(RkContainer* container);
         GeonkickApi *geonkickApi;
         FileBrowser *fileBrowser;
-        BufferView *samplePreviewWidget;
-        GeonkickButton *playButton;
-        GeonkickButton *loadButton;
-        GeonkickButton *osc1Button;
-        GeonkickButton *osc2Button;
-        GeonkickButton *osc3Button;
-        GeonkickSlider *previewLimiter;
 };
 
 #endif // GEONKICK_SAMPLE_BROWSER_H

@@ -174,10 +174,10 @@ bool MainWindow::init(void)
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
-        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
-                    this, openFileBrowser(FileBrowser::Type::Open));
-        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
-                    this, openFileBrowser(FileBrowser::Type::Save));
+        //        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
+        //                    this, openFileBrowser(FileBrowser::Type::Open));
+        //        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
+        //                    this, openFileBrowser(FileBrowser::Type::Save));
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
@@ -287,9 +287,9 @@ void MainWindow::openPreset(const std::string &fileName)
         updateGui();
 }
 
-void MainWindow::openFileBrowser(FileBrowser::Type type)
+void MainWindow::openFileBrowser(/*FileBrowser::Type type*/)
 {
-        auto fileDialog = new FileBrowser(this, type, type == FileBrowser::Type::Open ? "Open Preset" : "Save Preset");
+        /*auto fileDialog = new FileBrowser(this, type, type == FileBrowser::Type::Open ? "Open Preset" : "Save Preset");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".gkick", ".GKICK"});
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
@@ -307,12 +307,12 @@ void MainWindow::openFileBrowser(FileBrowser::Type type)
                             RK_ACT_ARGS(const std::string &file),
                             this,
                             savePreset(file));
-        }
+                            }*/
 }
 
 void MainWindow::shortcutEvent(RkKeyEvent *event)
 {
-        if (event->type() == RkEvent::Type::KeyPressed) {
+        /*if (event->type() == RkEvent::Type::KeyPressed) {
                 if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                     && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
                         geonkickApi->playKick();
@@ -358,7 +358,7 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                 if (!(event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                       || (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H))
                         envelopeWidget->hideEnvelope(false);
-        }
+                        }*/
 }
 
 void MainWindow::resetToDefault()

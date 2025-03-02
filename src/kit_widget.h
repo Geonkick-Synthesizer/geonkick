@@ -50,7 +50,7 @@ class KitWidget: public GeonkickWidget
         void updatePercussion(PercussionIndex index, PercussionModel *model);
         void removePercussion(PercussionIndex index);
         void copyPercussion(int index);
-        void showFileBrowser(FileBrowser::Type type);
+        void showFileBrowser();
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
         void keyPressEvent(RkKeyEvent *event) override;

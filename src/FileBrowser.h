@@ -42,49 +42,31 @@ class PathBookmarksView;
 
 class FileBrowser: public GeonkickWidget {
  public:
-        enum class Type: int {
-                Save,
-                Open,
-                Browse
-        };
-
-        enum class AcceptStatus: int {
-                Cancel,
-                Accept
-        };
-
-        explicit FileBrowser(GeonkickWidget *parent,
-                              FileBrowser::Type type,
-                              Rk::WidgetFlags flags,
-                              const std::string& title);
-        explicit FileBrowser(GeonkickWidget *parent,
-                             FileBrowser::Type type = FileBrowser::Type::Open,
-                             const std::string& title = std::string());
+        explicit FileBrowser(GeonkickWidget *parent);
         void setSize(const RkSize &size);
-        RK_DECL_ACT(selectedFile,
-                    selectedFile(const fs::path& file),
-                    RK_ARG_TYPE(const fs::path& file),
-                    RK_ARG_VAL(file));
-        RK_DECL_ACT(currentFileChanged,
-                    currentFileChanged(const std::string &file),
-                    RK_ARG_TYPE(const std::string&),
-                    RK_ARG_VAL(file));
-        RK_DECL_ACT(directoryChanged,
-                    directoryChanged(const std::string &path),
-                    RK_ARG_TYPE(const std::string &path),
-                    RK_ARG_VAL(path));
-        RK_DECL_ACT(rejected,
-                    rejected(),
-                    RK_ARG_TYPE(),
-                    RK_ARG_VAL());
-
-        std::string currentDirectory() const;
-        void setCurrentDirectoy(const std::string &path);
-        std::string filePath() const;
-        AcceptStatus acceptStatus() const;
+        fs::path currentDirectory() const;
+        void setCurrentDirectoy(const fs::path &path);
+        fs::path currentFile() const;
         void setFilters(const std::vector<std::string> &filters);
-        void setHomeDirectory(const std::string &path);
-        bool createDirectory(const std::filesystem::path &dir);
+        void setHomeDirectory(const fs::path &path);
+        bool createDirectory(const fs::path &dir);
+
+        RK_DECL_ACT(currentPathChanged,
+                    currentPathChanged(const fs::path &path),
+                    RK_ARG_TYPE(const fs::path &path),
+                    RK_ARG_VAL(path));
+        RK_DECL_ACT(fileActivated,
+                    fileActivated(const fs::path& file),
+                    RK_ARG_TYPE(const fs::path&),
+                    RK_ARG_VAL(file));
+        RK_DECL_ACT(fileSelected,
+                    fileSelected(const fs::path& file),
+                    RK_ARG_TYPE(const fs::path&),
+                    RK_ARG_VAL(file));
+        RK_DECL_ACT(pathBookmarked,
+                    pathBookmarked(const fs::path& path),
+                    RK_ARG_TYPE(const fs::path&),
+                    RK_ARG_VAL(path));
 
  protected:
         void createUi();
@@ -93,24 +75,15 @@ class FileBrowser: public GeonkickWidget {
         void createNewDirectoryControls(RkContainer *container);
         void updateBookmarkButton(const std::filesystem::path &path);
         void updateView();
-        void goBack();
-        void goForward();
-        void onAccept();
-        void onCancel();
-        void closeEvent(RkCloseEvent *event) override;
 
  private:
         RkContainer *mainContainer;
-        Type dialogType;
-        RkLineEdit *fileNameEdit;
+        GeonkickButton *bookmarkDirectoryButton;
         PathHistory* pathHistory;
+        PathBookmarksModel* pathBookmarksModel;
         PathBookmarksView* bookmarksView;
         BreadcrumbBar *breadcrumbBar;
         FilesView *filesView;
-        std::string pathSelected;
-        AcceptStatus status;
-        PathBookmarksModel* pathBookmarksModel;
-        GeonkickButton *bookmarkDirectoryButton;
 };
 
 #endif // GEONKICK_FILE_BROWSER_H

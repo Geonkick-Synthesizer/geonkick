@@ -148,39 +148,48 @@ GKickVstProcessor::process(Vst::ProcessData& data)
         auto res = events->getEvent(eventIndex, event);
         size_t offset = 0;
         size_t currentFrame = 0;
+        bool bbb = true;
         while (res == kResultOk && eventIndex < nEvents) {
-                size_t eventFrame = event.sampleOffset;
+                if (bbb) {
+                        GEONKICK_LOG_INFO("----------------");
+                        bbb = false;
+                }
+                        
+                GEONKICK_LOG_INFO("event.sampleOffset: " << event.sampleOffset);
+                /*                size_t eventFrame = event.sampleOffset;
                 size_t size = eventFrame - currentFrame;
 
                 if (size > 0) {
                         geonkickApi->process(channelsBuffers.data(), offset, size);
                         offset += size;
                 }
-
+                */
                 switch (event.type) {
                 case Vst::Event::kNoteOnEvent:
-                        geonkickApi->setKeyPressed(true,
+                        /*geonkickApi->setKeyPressed(true,
                                                    event.noteOn.pitch,
-                                                   127 * event.noteOn.velocity);
+                                                   127 * event.noteOn.velocity);*/
+                        GEONKICK_LOG_INFO("keyON: " << event.noteOn.pitch);
                         break;
 
                 case Vst::Event::kNoteOffEvent:
-                        geonkickApi->setKeyPressed(false,
-                                                   event.noteOff.pitch,
-                                                   127 * event.noteOff.velocity);
+                        GEONKICK_LOG_INFO("keyOFF: " << event.noteOff.pitch);
+                        //                        geonkickApi->setKeyPressed(false,
+                        //                           event.noteOff.pitch,
+                        //                           127 * event.noteOff.velocity);
                         break;
                 default:
                         break;
                 }
 
-                currentFrame = eventFrame;
+                //currentFrame = eventFrame;
                 eventIndex++;
                 if (eventIndex < nEvents)
                         res = events->getEvent(eventIndex, event);
         }
 
-        if (static_cast<decltype(data.numSamples)>(currentFrame) < data.numSamples)
-                geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
+        //if (static_cast<decltype(data.numSamples)>(currentFrame) < data.numSamples)
+        //        geonkickApi->process(channelsBuffers.data(), offset, data.numSamples - currentFrame);
 
         return kResultOk;
 }
