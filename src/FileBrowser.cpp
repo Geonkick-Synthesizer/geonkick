@@ -143,13 +143,19 @@ void FileBrowser::createUi()
         RK_ACT_BIND(pathHistory,
                     pathChanged,
                     RK_ACT_ARGS(const fs::path &path),
-                    filesView,
+                    this,
                     setCurrentPath(path));
         RK_ACT_BIND(filesView,
                     currentPathChanged,
                     RK_ACT_ARGS(const std::string &path),
                     pathHistory,
                     goTo(path));
+        RK_ACT_BIND(filesView,
+                    currentFileChanged,
+                    currentFileChanged(const fs::path& &file),
+                    RK_ACT_ARGS(const fs::path&),
+                    this,
+                    currentFileChanged(path));
         RK_ACT_BIND(bookmarksView,
                     pathSelected,
                     RK_ACT_ARGS(const fs::path &path),

@@ -62,8 +62,8 @@ class FileBrowser: public GeonkickWidget {
                              const std::string& title = std::string());
         void setSize(const RkSize &size);
         RK_DECL_ACT(selectedFile,
-                    selectedFile(const std::string &file),
-                    RK_ARG_TYPE(const std::string&),
+                    selectedFile(const fs::path& file),
+                    RK_ARG_TYPE(const fs::path& file),
                     RK_ARG_VAL(file));
         RK_DECL_ACT(currentFileChanged,
                     currentFileChanged(const std::string &file),

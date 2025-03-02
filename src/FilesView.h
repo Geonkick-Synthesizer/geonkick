@@ -51,12 +51,12 @@ class FilesView: public GeonkickWidget {
                     RK_ARG_TYPE(const fs::path &path),
                     RK_ARG_VAL(path));
         RK_DECL_ACT(fileSelected,
-                    fileSelected(const std::string &file),
-                    RK_ARG_TYPE(const std::string&),
+                    fileSelected(const fs::path& file),
+                    RK_ARG_TYPE(const fs::path&),
                     RK_ARG_VAL(file));
         RK_DECL_ACT(currentFileChanged,
-                    currentFileChanged(const std::string &file),
-                    RK_ARG_TYPE(const std::string&),
+                    currentFileChanged(const fs::path& file),
+                    RK_ARG_TYPE(const fs::path&),
                     RK_ARG_VAL(file));
         RK_DECL_ACT(pathBookmarked,
                     pathBookmarked(const fs::path& path),

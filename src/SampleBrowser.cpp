@@ -74,16 +74,16 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
                     RK_ACT_ARGS(const std::string &path),
                     viewState(),
                     setSamplesBrowserPath(path));
-        //        RK_ACT_BIND(fileBrowser,
-        //                    currentFileChanged,
-        //                    RK_ACT_ARGS(const std::string &file),
+        //RK_ACT_BIND(fileBrowser,
+        //currentFileChanged,
+                    //                    RK_ACT_ARGS(const std::string &file),
         //                    this,
         //                    setPreviewSample(file));
-        RK_ACT_BIND(fileBrowser,
+        /*RK_ACT_BIND(fileBrowser,
                     currentFileChanged,
                     RK_ACT_ARGS(const std::string &file),
                     viewState(),
-                    setSamplesBrowserPreviewFile(file));
+                    setSamplesBrowserPreviewFile(file));*/
         RK_ACT_BINDL(fileBrowser,
                     selectedFile,
                     RK_ACT_ARGS(const std::string &file),
@@ -213,14 +213,14 @@ void SampleBrowser::setOscillator(GeonkickApi::OscillatorType osc)
 
 void SampleBrowser::loadSample()
 {
-        /*if (osc1Button->isPressed()) {
+        //if (osc1Button->isPressed()) {
                 geonkickApi->setOscillatorSample(samplePreviewWidget->getData(),
                                                  static_cast<int>(GeonkickApi::OscillatorType::Oscillator1));
                 geonkickApi->setOscillatorFunction(static_cast<int>(GeonkickApi::OscillatorType::Oscillator1),
                                                    GeonkickApi::FunctionType::Sample);
-        }
+                //}
 
-        if (osc2Button->isPressed()) {
+        /*       if (osc2Button->isPressed()) {
                 geonkickApi->setOscillatorSample(samplePreviewWidget->getData(),
                                                  static_cast<int>(GeonkickApi::OscillatorType::Oscillator2));
                 geonkickApi->setOscillatorFunction(static_cast<int>(GeonkickApi::OscillatorType::Oscillator2),
@@ -232,10 +232,10 @@ void SampleBrowser::loadSample()
                                                  static_cast<int>(GeonkickApi::OscillatorType::Oscillator3));
                 geonkickApi->setOscillatorFunction(static_cast<int>(GeonkickApi::OscillatorType::Oscillator3),
                                                    GeonkickApi::FunctionType::Sample);
-        }
+                                                   }*/
 }
 
-void SampleBrowser::setPreviewSample(const std::string &file)
+/*void SampleBrowser::setPreviewSample(const std::string &file)
 {
         try {
                 if (std::filesystem::exists(file) && !std::filesystem::is_directory(file)) {
@@ -246,5 +246,5 @@ void SampleBrowser::setPreviewSample(const std::string &file)
                         }
                 }
         }  catch (...) {
+        }
         }*/
-}
