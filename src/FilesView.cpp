@@ -54,19 +54,21 @@ FilesView::FilesView(GeonkickWidget *parent)
         , bookmarksModel{nullptr}
         , newPathEdit{nullptr}
 {
-        setSize(parent->size() - RkSize{0, 21});
+        setSize(parent->size());
         setBackgroundColor(40, 40, 40);
         createScrollBar();
         showScrollBar(false);
         show();
 }
 
-void FilesView::setSize(const RkSize &size)
+void FilesView::setSize(const RkSize &s)
 {
-        GeonkickWidget::setSize(size - RkSize{0, 21});
+        GeonkickWidget::setSize(s - RkSize{0, 21});
         visibleLines = height() / (lineHeight + lineSacing);
         showScrollBar(filesList.size() > visibleLines);
         updateScrollBarView();
+                if (size().isEmpty())
+                        std::abort();
 }
 
 void FilesView::setCurrentPath(const fs::path &path)
@@ -167,37 +169,49 @@ void FilesView::loadCurrentDirectory()
         if (!std::filesystem::is_directory(currentPath))
                 return;
 
-        decltype(filesList) files;
-        decltype(filesList) dirs;
         try {
-                for (const auto &entry : std::filesystem::directory_iterator(currentPath)) {
-			if (entry.path().empty())
-				continue;
-                        if (std::filesystem::is_directory(entry.path())) {
-                                dirs.emplace_back(entry.path());
-                        } else if (std::find(fileFilters.begin(), fileFilters.end(), entry.path().extension())
-                                   != fileFilters.end()) {
-                                files.emplace_back(entry.path());
-                        }
-                }
-                filesList = files;
+                auto pathEntries = fs::directory_iterator(currentPath);
+                auto isDir = [](const auto& entry) { return entry.is_directory(); };
+                auto isFile = [](const auto& entry) { return entry.is_regular_file(); };
+                auto isFilteredFile = [&](const auto& entry) {
+                        auto ext = entry.path().extension().string();
+                        std::transform(ext.begin(), ext.end(), ext.begin(), [](auto c) {
+                                return std::tolower(c);
+                        });
+                        return std::ranges::any_of(fileFilters, [&](const auto& filter) {
+                                return std::equal(ext.begin(),
+                                                  ext.end(),
+                                                  filter.begin(),
+                                                  filter.end(),
+                                                  [](auto a, auto b) {
+                                                          return std::tolower(a) == std::tolower(b);
+                                                  });
+                        });
+                };
+
+                auto dirs = pathEntries | std::views::filter(isDir)
+                        | std::views::transform(&fs::directory_entry::path);
+                // TODO: use std::ranges::to C++23
+                std::vector<fs::path> sortedDirs;
+                for (const auto& path : dirs)
+                        sortedDirs.push_back(path);
+
+                pathEntries = fs::directory_iterator(currentPath);
+                auto files = pathEntries | std::views::filter(isFile)
+                        | std::views::filter(isFilteredFile)
+                        | std::views::transform(&fs::directory_entry::path);
+                std::vector<fs::path> sortedFiles;
+                for (const auto& path : files)
+                        sortedFiles.push_back(path);
+
+                std::sort(sortedDirs.begin(), sortedDirs.end());
+                std::sort(sortedFiles.begin(), sortedFiles.end());
+                filesList = std::move(sortedDirs);
+                filesList.insert(filesList.end(), sortedFiles.begin(), sortedFiles.end());
         } catch(...) {
                 GEONKICK_LOG_ERROR("error on reading directory");
-                files.clear();
+                filesList.clear();
         }
-
-        std::sort(files.begin(), files.end(),
-                  [] (auto &a, auto &b) -> bool {
-                          return a < b;
-                  });
-
-        std::sort(dirs.begin(), dirs.end(),
-                  [] (auto &a, auto &b) -> bool {
-                          return a < b;
-                  });
-
-        filesList = std::move(dirs);
-        filesList.insert(filesList.end(), files.begin(), files.end());
 
         offsetIndex = 0;
         selectedFileIndex = 0;

@@ -54,8 +54,8 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         setSize(306, parent->height() - 30);
 
         fileBrowser = new FileBrowser(this);
-        fileBrowser->setSize(size());
-        fileBrowser->setFilters({".wav", ".WAV", ".flac", ".FLAC", ".ogg", ".OGG"});
+        fileBrowser->setSize({width(), height() - 20});
+        fileBrowser->setFilters({".wav", ".flac", ".ogg"});
         fileBrowser->setCurrentDirectoy(viewState()->samplesBrowserPath());
         RK_ACT_BIND(fileBrowser,
                     currentPathChanged,

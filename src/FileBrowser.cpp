@@ -73,6 +73,8 @@ void FileBrowser::setSize(const RkSize &size)
         GeonkickWidget::setSize(size);
         if (filesView)
                 filesView->setSize(size);
+        if (mainContainer)
+                mainContainer->setSize(size);
 }
 
 void FileBrowser::createUi()
@@ -267,8 +269,11 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
 
 void FileBrowser::updateView()
 {
+        if (breadcrumbBar->size().isEmpty() || bookmarksView->size().isEmpty())
+                return;
+
         filesView->setSize({filesView->size().width(),
-                        parentWidget()->height() - 8
+                        height() - 8
                         - breadcrumbBar->height() - 5
                         - bookmarksView->height() - 5});
         mainContainer->update();

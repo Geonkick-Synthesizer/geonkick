@@ -152,6 +152,9 @@ void RkWidget::setSize(int w, int h)
 
 void RkWidget::setSize(const RkSize &size)
 {
+        if (size.isEmpty())
+                return;
+
         impl_ptr->setSize({size.width(), size.height()});
         if (parentWidget())
                 parentWidget()->update();
@@ -224,21 +227,29 @@ int RkWidget::maximumHeight() const
 
 void RkWidget::setMinimumWidth(int width)
 {
+        if (width < 1)
+                return;
         impl_ptr->setMinimumSize({width, minimumSize().height()});
 }
 
 void RkWidget::setMinimumHeight(int height)
 {
+        if (height < 1)
+                return;
         impl_ptr->setMinimumSize({minimumSize().width(), height});
 }
 
 void RkWidget::setMaximumWidth(int width)
 {
+        if (width < 1)
+                return;
         impl_ptr->setMaximumSize({width, maximumSize().height()});
 }
 
 void RkWidget::setMaximumHeight(int height)
 {
+        if (height < 1)
+                return;
         impl_ptr->setMaximumSize({ maximumSize().width(), height});
 }
 

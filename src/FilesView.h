@@ -35,7 +35,7 @@ class RkLineEdit;
 class FilesView: public GeonkickWidget {
  public:
         explicit FilesView(GeonkickWidget *parent);
-        void setSize(const RkSize &size);
+        void setSize(const RkSize &s);
         fs::path selectedFile() const;
         void setCurrentPath(const fs::path &path);
         const fs::path& getCurrentPath() const;
