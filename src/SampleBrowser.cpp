@@ -24,8 +24,9 @@
 #include "SampleBrowser.h"
 #include "FileBrowser.h"
 #include "ViewState.h"
+#include "geonkick_button.h"
 
-#include "RkContainer.h"
+#include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(play_preview_sample);
 RK_DECLARE_IMAGE_RC(play_preview_sample_hover);
@@ -50,11 +51,16 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         : GeonkickWidget(parent)
         , geonkickApi{api}
         , fileBrowser{nullptr}
+        , playButton{nullptr}
+        , loadButton{nullptr}
+        , osc1Button{nullptr}
+        , osc2Button{nullptr}
+        , osc3Button{nullptr}
 {
         setSize(306, parent->height() - 30);
 
         fileBrowser = new FileBrowser(this);
-        fileBrowser->setSize({width(), height() - 20});
+        fileBrowser->setSize({width(), height() - 25});
         fileBrowser->setFilters({".wav", ".flac", ".ogg"});
         fileBrowser->setCurrentDirectoy(viewState()->samplesBrowserPath());
         RK_ACT_BIND(fileBrowser,
@@ -76,7 +82,80 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
         auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
         mainLayout->setSize(size());
         mainLayout->addWidget(fileBrowser);
+        auto previewMenu = createPreviewMenu();
+        mainLayout->addSpace(3);
+        mainLayout->addContainer(previewMenu);
         show();
+}
+
+RkContainer* SampleBrowser::createPreviewMenu()
+{
+        auto container = new RkContainer(this);
+        container->setSize({width(), 20});
+        playButton = new GeonkickButton(this);
+        playButton->setType(RkButton::ButtonType::ButtonPush);
+        playButton->setSize(33, 18);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample)),
+                             RkButton::State::Unpressed);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_hover)),
+                             RkButton::State::UnpressedHover);
+        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_pressed)),
+                             RkButton::State::Pressed);
+        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
+        container->addSpace(5);
+        container->addWidget(playButton);
+        container->addSpace(3);
+
+        osc1Button = new GeonkickButton(this);
+        osc1Button->setPressed(true);
+        osc1Button->setSize(33, 18);
+        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample)),
+                             RkButton::State::Unpressed);
+        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample_hover)),
+                             RkButton::State::UnpressedHover);
+        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample_pressed)),
+                             RkButton::State::Pressed);
+        RK_ACT_BIND(osc1Button, pressed,
+                    RK_ACT_ARGS(), this,
+                    setOscillator(GeonkickApi::OscillatorType::Oscillator1));
+        container->addWidget(osc1Button);
+        container->addSpace(3);
+
+        osc2Button = new GeonkickButton(this);
+        osc2Button->setSize(33, 18);
+        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample)),
+                             RkButton::State::Unpressed);
+        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample_hover)),
+                             RkButton::State::UnpressedHover);
+        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample_pressed)),
+                             RkButton::State::Pressed);
+        RK_ACT_BIND(osc2Button, pressed,
+                    RK_ACT_ARGS(), this,
+                    setOscillator(GeonkickApi::OscillatorType::Oscillator2));
+        container->addWidget(osc2Button);
+        container->addSpace(3);
+
+        osc3Button = new GeonkickButton(this);
+        osc3Button->setSize(33, 18);
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample)),
+                             RkButton::State::Unpressed);
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample_hover)),
+                             RkButton::State::UnpressedHover);
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample_pressed)),
+                             RkButton::State::Pressed);
+        RK_ACT_BIND(osc3Button, pressed,
+                    RK_ACT_ARGS(), this,
+                    setOscillator(GeonkickApi::OscillatorType::Oscillator3));
+        container->addWidget(osc3Button);
+
+        return container;
+}
+
+void SampleBrowser::setOscillator(GeonkickApi::OscillatorType osc)
+{
+        osc1Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator1);
+        osc2Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator2);
+        osc3Button->setPressed(osc == GeonkickApi::OscillatorType::Oscillator3);
 }
 
 void SampleBrowser::loadSample(const fs::path &file)
@@ -85,13 +164,12 @@ void SampleBrowser::loadSample(const fs::path &file)
                 if (!std::filesystem::exists(file) || std::filesystem::is_directory(file))
                         return;
 
-                auto data = geonkickApi->setPreviewSample(file);
-                if (data.empty())
-                        return;
-
                 auto oscIndex = static_cast<int>(GeonkickApi::OscillatorType::Oscillator1);
-                geonkickApi->setOscillatorSample(data, oscIndex);
+                if (osc2Button->isPressed())
+                        oscIndex = static_cast<int>(GeonkickApi::OscillatorType::Oscillator2);
+                else if (osc3Button->isPressed())
+                        oscIndex = static_cast<int>(GeonkickApi::OscillatorType::Oscillator3);
+                geonkickApi->setOscillatorSample(file, oscIndex);
         }  catch (...) {
-                return;
         }
 }

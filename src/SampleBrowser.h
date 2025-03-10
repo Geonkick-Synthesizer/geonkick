@@ -38,12 +38,18 @@ class SampleBrowser: public GeonkickWidget {
         SampleBrowser(GeonkickWidget *parent, GeonkickApi* api);
 
   protected:
+        RkContainer* createPreviewMenu();
         void setOscillator(GeonkickApi::OscillatorType osc);
         void loadSample(const fs::path &file);
 
  private:
         GeonkickApi *geonkickApi;
         FileBrowser *fileBrowser;
+        GeonkickButton *playButton;
+        GeonkickButton *loadButton;
+        GeonkickButton *osc1Button;
+        GeonkickButton *osc2Button;
+        GeonkickButton *osc3Button;
 };
 
 #endif // GEONKICK_SAMPLE_BROWSER_H
