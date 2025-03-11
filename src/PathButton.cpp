@@ -31,12 +31,36 @@ PathButton::PathButton(GeonkickWidget *parent,
         : GeonkickButton(parent)
         , buttonPath{path}
 {
-        auto pathStr = text.empty() ? path.filename().string() : text;
+        auto pathString = text.empty() ? path.filename().string() : text;
+
         RkPainter painter(this);
-        setSize(painter.getTextWidth(pathStr) + 6,
+        setSize(painter.getTextWidth(pathString) + 6,
                 painter.font().size() + 7);
-        setBackgroundColor({88, 88, 88});
-        setText(pathStr);
+
+        RkImage buttonImage(size());
+        RkPainter imagePainter(&buttonImage);
+        auto pen = imagePainter.pen();
+
+        // Unpressed image
+        imagePainter.fillRect(rect(), {88, 88, 88});
+        pen.setColor({10, 10, 10});
+        imagePainter.setPen(pen);
+        imagePainter.drawText(rect(), pathString);
+        setImage(buttonImage, RkButton::State::Unpressed);
+
+        // Hover image
+        imagePainter.fillRect(rect(), {108, 108, 108});
+        pen.setColor({200, 200, 200});
+        imagePainter.setPen(pen);
+        imagePainter.drawText(rect(), pathString);
+        setImage(buttonImage, RkButton::State::UnpressedHover);
+
+        // Pressed image
+        imagePainter.fillRect(rect(), {150, 150, 150});
+        pen.setColor({255, 255, 255});
+        imagePainter.setPen(pen);
+        imagePainter.drawText(rect(), pathString);
+        setImage(buttonImage, RkButton::State::Pressed);
 }
 
 const fs::path& PathButton::getPath() const

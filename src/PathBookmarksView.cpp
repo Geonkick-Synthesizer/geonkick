@@ -57,6 +57,7 @@ void PathBookmarksView::updateView()
         auto model = static_cast<PathBookmarksModel*>(getModel());
         for (const auto &path: model->getPaths()) {
                 auto button = new PathButton(this, path);
+                button->setType(RkButton::ButtonType::ButtonPush);
                 flowContainer->addWidget(button);
                 RK_ACT_BIND(button,
                             pressed,
