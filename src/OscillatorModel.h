@@ -28,8 +28,9 @@
 
 class DistortionModel;
 class FilterModel;
+class GeonkickModel;
 
-class Oscillator: public RkObject
+class OscillatorModel: public RkObject
 {
  public:
 
@@ -39,17 +40,17 @@ class Oscillator: public RkObject
   using EnvelopeApplyType = GeonkickApi::EnvelopeApplyType;
   using FilterType   = GeonkickApi::FilterType;
 
-  explicit Oscillator(GeonkickApi *api, Oscillator::Type type);
-  Oscillator::FunctionType function() const;
+  explicit OscillatorModel(GeonkickModel *model, OscillatorModel::Type type);
+  OscillatorModel::FunctionType function() const;
   std::vector<EnvelopePoint> envelopePoints(EnvelopeType envelope) const;
   double amplitude(void) const;
   double frequency(void) const;
   double pitchShift(void) const;
   double noiseDensity(void) const;
   void setType(Type type);
-  Oscillator::Type type(void) const;
+  OscillatorModel::Type type(void) const;
   bool isFilterEnabled() const;
-  Oscillator::FilterType filter() const;
+  OscillatorModel::FilterType filter() const;
   double filterFrequency(void) const;
   double filterQFactor() const;
   bool isEnabled() const;
@@ -57,7 +58,7 @@ class Oscillator: public RkObject
   void enable(bool b);
   void setAsFm(bool b);
   bool isFm() const;
-  void setFunction(FunctionType func);
+  bool setFunction(FunctionType func);
   void setPhase(gkick_real phase);
   gkick_real getPhase() const;
   void setSeed(int seed);
@@ -76,13 +77,17 @@ class Oscillator: public RkObject
   void setEnvelopeApplyType(EnvelopeType envelope,
 			    EnvelopeApplyType apply);
   EnvelopeApplyType envelopeApplyType(EnvelopeType envelope) const;
-  void setSample(const std::string &file);
+  bool setSample(const std::string &file);
   int index() const;
   std::string samplesPath() const;
   FilterModel* getFilter() const;
   DistortionModel* getDistortion() const;
   GeonkickApi* api() const;
 
+  RK_DECL_ACT(functionUpdated,
+              functionUpdated(FunctionType func),
+              RK_ARG_TYPE(FunctionType func),
+              RK_ARG_VAL(func));
   RK_DECL_ACT(amplitudeUpdated,
               amplitudeUpdated(double v),
               RK_ARG_TYPE(double),

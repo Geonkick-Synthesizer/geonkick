@@ -24,7 +24,6 @@
 #ifndef GEONKICK_ENVELOPE_WIDGET_H
 #define GEONKICK_ENVELOPE_WIDGET_H
 
-#include "oscillator.h"
 #include "geonkick_widget.h"
 #include "geonkick_api.h"
 #include "envelope.h"
@@ -32,48 +31,49 @@
 class RkContainer;
 class EnvelopeWidgetDrawingArea;
 class GeonkickButton;
+class GeonkickModel;
+class OscillatorModel;
 
 class EnvelopeWidget : public GeonkickWidget
 {
 public:
+        explicit EnvelopeWidget(GeonkickWidget *parent, GeonkickModel *model);
+        void hideEnvelope(bool b);
+        void showEnvelope(Envelope::Category category = Envelope::Category::InstrumentGlobal,
+                          Envelope::Type type = Envelope::Type::Amplitude);
+        void updateGui();
+        RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
+        RK_DECL_ACT(envelopeTypeSelected,
+                    envelopeTypeSelected(Envelope::Type type),
+                    RK_ARG_TYPE(Envelope::Type),
+                    RK_ARG_VAL(type));
+        OscillatorModel* getCurrentOscillator() const;
+        void setPointEditingMode(bool b = true);
 
-     explicit EnvelopeWidget(GeonkickWidget *parent,
-                             GeonkickApi *api,
-                             const std::vector<std::unique_ptr<Oscillator>> &oscillators);
-     void hideEnvelope(bool b);
-     void showEnvelope(Envelope::Category category = Envelope::Category::InstrumentGlobal,
-                       Envelope::Type type = Envelope::Type::Amplitude);
-     void updateGui();
-     RK_DECL_ACT(requestUpdateGui, requestUpdateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
-     RK_DECL_ACT(envelopeTypeSelected,
-                 envelopeTypeSelected(Envelope::Type type),
-                 RK_ARG_TYPE(Envelope::Type),
-                 RK_ARG_VAL(type));
-     Oscillator* getCurrentOscillator() const;
-     void setPointEditingMode(bool b = true);
+protected:
+        Envelope* getEnvelope(Envelope::Category category);
+        void updateKickGraph(std::shared_ptr<RkImage> graphImage);
+#ifndef GEONKICK_LIMITED_VERSION
+        void createLayersButtons(GeonkickWidget *buttomAreaWidget);
+#endif // GEONKICK_LIMITED_VERSION
+        void setLayer(GeonkickApi::Layer layer);
+#ifndef GEONKICK_LIMITED_VERSION
+        void createButtomMenu();
+#endif // GEONKICK_LIMITED_VERSION
+        void createZoomInfoLabel();
+        void createPointInfoLabel();
 
- protected:
-     Envelope* getEnvelope(Envelope::Category category);
-     void updateKickGraph(std::shared_ptr<RkImage> graphImage);
+private:
+        std::unordered_map<int, std::unique_ptr<Envelope>> envelopes;
+        EnvelopeWidgetDrawingArea *drawArea;
 #ifndef GEONKICK_LIMITED_VERSION
-     void createLayersButtons(GeonkickWidget *buttomAreaWidget);
+        GeonkickButton *layer1Button;
+        GeonkickButton *layer2Button;
+        GeonkickButton *layer3Button;
 #endif // GEONKICK_LIMITED_VERSION
-     void setLayer(GeonkickApi::Layer layer);
-#ifndef GEONKICK_LIMITED_VERSION
-     void createButtomMenu();
-#endif // GEONKICK_LIMITED_VERSION
-     void createZoomInfoLabel();
-     void createPointInfoLabel();
-
- private:
-     std::unordered_map<int, std::unique_ptr<Envelope>> envelopes;
-     EnvelopeWidgetDrawingArea *drawArea;
-#ifndef GEONKICK_LIMITED_VERSION
-     GeonkickButton *layer1Button;
-     GeonkickButton *layer2Button;
-     GeonkickButton *layer3Button;
-#endif // GEONKICK_LIMITED_VERSION
-     GeonkickApi *geonkickApi;
+        GeonkickModel *geonkickModel;
+        GeonkickApi *geonkickApi;
+        const std::vector<OscillatorModel*>& oscillators;
 };
 
 #endif

@@ -27,12 +27,12 @@
 #include "DistortionModel.h"
 #include "envelope.h"
 
-class Oscillator;
+class OscillatorModel;
 
 class OscillatorDistortionModel: public DistortionModel
 {
  public:
-        OscillatorDistortionModel(Oscillator *parent);
+        OscillatorDistortionModel(OscillatorModel *parent);
         void enable(bool b) override;
         bool isEnabled() const override;
         void setDistortionType(DistortionType type) override;
@@ -46,7 +46,7 @@ class OscillatorDistortionModel: public DistortionModel
         Envelope::Category envelopeCategory() const override;
 
  private:
-        Oscillator *oscillatorModel;
+        OscillatorModel *oscillatorModel;
 };
 
 #endif // OSCILLATOR_DISTORTION_MODEL_H

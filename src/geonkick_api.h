@@ -27,7 +27,7 @@
 #include "globals.h"
 #include "EnvelopePoint.h"
 
-class Oscillator;
+class OscillatorModel;
 class PercussionState;
 class KitState;
 class RkEventQueue;
@@ -116,7 +116,7 @@ class GeonkickApi : public RkObject {
   bool initDSP();
   bool init();
   void registerCallbacks(bool b);
-  std::vector<std::unique_ptr<Oscillator>> oscillators(void);
+  size_t oscillatorsPerLayer(void) const;
   bool isOscillatorEnabled(int oscillatorIndex) const;
   std::vector<EnvelopePoint> oscillatorEvelopePoints(int oscillatorIndex,
                                                      EnvelopeType envelope) const;
@@ -135,7 +135,7 @@ class GeonkickApi : public RkObject {
   FunctionType oscillatorFunction(int oscillatorIndex) const;
   gkick_real oscillatorPhase(int oscillatorIndex) const;
   int oscillatorSeed(int oscillatorIndex) const;
-  void setOscillatorSample(const std::string &file,
+  bool setOscillatorSample(const std::string &file,
                            int oscillatorIndex);
   void setOscillatorSample(const std::vector<float> &sample,
                            int oscillatorIndex);

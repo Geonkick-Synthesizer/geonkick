@@ -22,43 +22,43 @@
  */
 
 #include "oscillator_envelope.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "FilterModel.h"
 #include "DistortionModel.h"
 
-OscillatorEnvelope::OscillatorEnvelope(Oscillator* osc, const RkRect &area)
+OscillatorEnvelope::OscillatorEnvelope(OscillatorModel* osc, const RkRect &area)
         : Envelope(area)
         , oscillator{osc}
 {
         setType(Envelope::Type::Amplitude);
-        setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
+        setPoints(oscillator->envelopePoints(static_cast<OscillatorModel::EnvelopeType>(type())));
 }
 
 void OscillatorEnvelope::updatePoints()
 {
-        setPoints(oscillator->envelopePoints(static_cast<Oscillator::EnvelopeType>(type())));
+        setPoints(oscillator->envelopePoints(static_cast<OscillatorModel::EnvelopeType>(type())));
 }
 
 void OscillatorEnvelope::updateEnvelope()
 {
-	auto applyType = oscillator->envelopeApplyType(static_cast<Oscillator::EnvelopeType>(type()));
+	auto applyType = oscillator->envelopeApplyType(static_cast<OscillatorModel::EnvelopeType>(type()));
 	setApplyType(applyType);
 	updatePoints();
 }
 
 void OscillatorEnvelope::pointAddedEvent(const EnvelopePoint &point)
 {
-        oscillator->addEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), point);
+        oscillator->addEnvelopePoint(static_cast<OscillatorModel::EnvelopeType>(type()), point);
 }
 
 void OscillatorEnvelope::pointUpdatedEvent(unsigned int index, const EnvelopePoint &point)
 {
-        oscillator->updateEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), index, point);
+        oscillator->updateEnvelopePoint(static_cast<OscillatorModel::EnvelopeType>(type()), index, point);
 }
 
 void OscillatorEnvelope::pointRemovedEvent(unsigned int index)
 {
-        oscillator->removeEnvelopePoint(static_cast<Oscillator::EnvelopeType>(type()), index);
+        oscillator->removeEnvelopePoint(static_cast<OscillatorModel::EnvelopeType>(type()), index);
 }
 
 double OscillatorEnvelope::envelopeLength(void) const
@@ -88,7 +88,7 @@ double OscillatorEnvelope::envelopeAmplitude() const
         }
 }
 
-Oscillator* OscillatorEnvelope::getOscillator() const
+OscillatorModel* OscillatorEnvelope::getOscillator() const
 {
         return oscillator;
 }

@@ -27,13 +27,15 @@
 #include "percussion_model.h"
 #include "kit_state.h"
 #include "ExportToSfz.h"
+#include "GeonkickModel.h"
 
 #include <RkAction.h>
 #include <RkEventQueue.h>
 
-KitModel::KitModel(RkObject *parent, GeonkickApi *api)
+KitModel::KitModel(GeonkickModel *parent)
         : RkObject(parent)
-        , geonkickApi{api}
+        , geonkickModel{parent}
+        , geonkickApi{geonkickModel->api()}
         , midiKeys {"A4", "A#4", "B4", "C5",
                    "C#5", "D5", "D#5", "E5",
                    "F5", "F#5", "G5", "G#5",
@@ -459,4 +461,9 @@ bool KitModel::enableNoteOff(PercussionIndex index, bool b)
 bool KitModel::isNoteOffEnabled(PercussionIndex index) const
 {
         return geonkickApi->isNoteOffEnabled(percussionId(index));
+}
+
+OscillatorModel* KitModel::getCurrentLayerOscillator(OscillatorModel::Type type) const
+{
+        return geonkickModel->getOscillatorModels()[static_cast<int>(type)];
 }

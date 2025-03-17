@@ -27,6 +27,8 @@
 #include "envelope_draw_area.h"
 #include "geonkick_button.h"
 #include "ViewState.h"
+#include "GeonkickModel.h"
+#include "OscillatorModel.h"
 
 #include <RkContainer.h>
 #include <RkLabel.h>
@@ -39,9 +41,7 @@ RK_DECLARE_IMAGE_RC(layer2_env_active);
 RK_DECLARE_IMAGE_RC(layer3_env);
 RK_DECLARE_IMAGE_RC(layer3_env_active);
 
-EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
-                               GeonkickApi *api,
-                               const std::vector<std::unique_ptr<Oscillator>> &oscillators)
+EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent, GeonkickModel *model)
         : GeonkickWidget(parent)
         , drawArea{nullptr}
 #ifndef GEONKICK_LIMITED_VERSION
@@ -49,28 +49,30 @@ EnvelopeWidget::EnvelopeWidget(GeonkickWidget *parent,
         , layer2Button{nullptr}
         , layer3Button{nullptr}
 #endif // GEONKICK_LIMITED_VERSION
-        , geonkickApi{api}
+        , geonkickModel{model}
+        , geonkickApi{geonkickModel->api()}
+        , oscillators{geonkickModel->getOscillatorModels()}
 {
         // Create drawing area.
         drawArea = new EnvelopeWidgetDrawingArea(this, geonkickApi);
         auto rect = drawArea->getDrawingArea();
 
         // Oscillator1 envelope
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
+        auto oscillator = oscillators[static_cast<int>(OscillatorModel::Type::Oscillator1)];
         auto envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator1);
         envelopes.insert({static_cast<int>(Envelope::Category::Oscillator1),
                         std::move(envelope)});
 
         // Oscillator2 envelope
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
+        oscillator = oscillators[static_cast<int>(OscillatorModel::Type::Oscillator2)];
         envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator2);
         envelopes.insert({static_cast<int>(Envelope::Category::Oscillator2),
                         std::move(envelope)});
 
         // Oscillator3 envelope
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator3)].get();
+        oscillator = oscillators[static_cast<int>(OscillatorModel::Type::Oscillator3)];
         envelope = std::make_unique<OscillatorEnvelope>(oscillator, rect);
         envelope->setCategory(Envelope::Category::Oscillator3);
         envelopes.insert({static_cast<int>(Envelope::Category::Oscillator3),
@@ -229,7 +231,7 @@ void EnvelopeWidget::updateGui()
         drawArea->update();
 }
 
-Oscillator* EnvelopeWidget::getCurrentOscillator() const
+OscillatorModel* EnvelopeWidget::getCurrentOscillator() const
 {
         if (auto envelope = drawArea->getEnvelope(); envelope)
                 return static_cast<OscillatorEnvelope*>(envelope)->getOscillator();

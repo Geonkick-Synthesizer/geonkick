@@ -285,6 +285,11 @@ bool PercussionModel::isNoteOffEnabled() const
         return kitModel->isNoteOffEnabled(index());
 }
 
+OscillatorModel* PercussionModel::getCurrentLayerOscillator(OscillatorModel::Type type) const
+{
+        return kitModel->getCurrentLayerOscillator(type);
+}
+
 FilterModel* PercussionModel::getFilter() const
 {
         return filterModel;

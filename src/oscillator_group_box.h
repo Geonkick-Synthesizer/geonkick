@@ -24,7 +24,7 @@
 #ifndef GKICK_OSCILLATOR_GROUP_BOX_H
 #define GKICK_OSCILLATOR_GROUP_BOX_H
 
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "geonkick_groupbox.h"
 
 class GKickOscillator;
@@ -38,7 +38,7 @@ class OscillatorEffects;
 class OscillatorGroupBox: public GeonkickGroupBox
 {
  public:
-        OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc);
+        OscillatorGroupBox(GeonkickWidget *parent, OscillatorModel *osc);
         void updateGui();
         RK_DECL_ACT(oscillatorFunctionChanged,
                     oscillatorFunctionChanged(int index),
@@ -49,7 +49,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void createWaveFunctionGroupBox();
         void createEvelopeGroupBox();
         void createEffects();
-        void setWaveFunction(Oscillator::FunctionType type);
+        void setWaveFunction(OscillatorModel::FunctionType type);
         void setOscillatorPhase(int value);
         void setOscillatorSeed(int value);
         void setNoiseWhite(bool pressed);
@@ -60,7 +60,7 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void updateAmpltudeEnvelopeBox();
 
  private:
-        Oscillator *oscillator;
+        OscillatorModel *oscillator;
         GeonkickButton *oscillatorCheckbox;
         GeonkickButton *fmCheckbox;
         GeonkickButton *sineButton;

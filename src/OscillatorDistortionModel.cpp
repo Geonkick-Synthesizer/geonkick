@@ -22,7 +22,7 @@
  */
 
 #include "OscillatorDistortionModel.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 
 OscillatorDistortionModel::OscillatorDistortionModel(Oscillator *parent)
         : DistortionModel(parent)

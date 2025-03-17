@@ -25,25 +25,16 @@
 #include "controls_widget.h"
 #include "GeonkickModel.h"
 #include "kit_widget.h"
-#include "preset_browser_model.h"
-#include "preset_browser_view.h"
-#include "SampleBrowser.h"
 
-ControlArea::ControlArea(GeonkickWidget *parent,
-                         GeonkickModel* model,
-                         const std::vector<std::unique_ptr<Oscillator>> &oscillators)
+ControlArea::ControlArea(GeonkickWidget *parent, GeonkickModel* model)
         : GeonkickWidget(parent)
         , geonkickModel{model}
-        , oscillators{oscillators}
-        , presetsModel{geonkickModel->getPresetsModel()}
+        , oscillators{model->getOscillatorModels()}
         , currentWidget{nullptr}
         , controlsWidget{nullptr}
 #ifndef GEONKICK_SINGLE
         , kitWidget{nullptr}
 #endif // GEONKICK_SINGLE
-        , presetsWidget{nullptr}
-        , samplesWidget{nullptr}
-
 {
         setFixedSize(920, 375);
         RK_ACT_BIND(viewState(), mainViewChanged, RK_ACT_ARGS(ViewState::View view), this, showWidget(view));
@@ -61,17 +52,6 @@ void ControlArea::showWidget(ViewState::View view)
                 showKit();
                 break;
 #endif // GEONKICK_SINGLE
-        case ViewState::View::Presets:
-                showPresets();
-                break;
-        case ViewState::View::Samples:
-                if (currentWidget)
-                        currentWidget->hide();
-                if (!samplesWidget)
-                        samplesWidget = new SampleBrowser(this, geonkickModel->api());
-                currentWidget = samplesWidget;
-                currentWidget->show();
-                break;
         default:
                 showControls();
         }
@@ -83,7 +63,7 @@ void ControlArea::showControls()
                 if (currentWidget)
                         currentWidget->hide();
                 if (!controlsWidget) {
-                        controlsWidget = new ControlsWidget(this, geonkickModel, oscillators);
+                        controlsWidget = new ControlsWidget(this, geonkickModel);
                         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlsWidget, updateGui());
                 }
                 currentWidget = controlsWidget;
@@ -104,15 +84,3 @@ void ControlArea::showKit()
         }
 }
 #endif // GEONKICK_SINGLE
-
-void ControlArea::showPresets()
-{
-        if (!dynamic_cast<PresetBrowserView*>(currentWidget)) {
-                if (currentWidget)
-                        currentWidget->hide();
-                if (!presetsWidget)
-                        presetsWidget = new PresetBrowserView(this, presetsModel);
-                currentWidget = presetsWidget;
-                currentWidget->show();
-        }
-}

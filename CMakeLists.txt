@@ -153,7 +153,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/kick_graph.h
   ${GKICK_COMMON_DIR}/envelope_widget.h
   ${GKICK_COMMON_DIR}/knob.h
-  ${GKICK_COMMON_DIR}/oscillator.h
+  ${GKICK_COMMON_DIR}/OscillatorModel.h
   ${GKICK_COMMON_DIR}/geonkick_api.h
   ${GKICK_COMMON_DIR}/percussion_state.h
   ${GKICK_COMMON_DIR}/kit_state.h
@@ -227,7 +227,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/kick_graph.cpp
   ${GKICK_COMMON_DIR}/envelope_widget.cpp
   ${GKICK_COMMON_DIR}/knob.cpp
-  ${GKICK_COMMON_DIR}/oscillator.cpp
+  ${GKICK_COMMON_DIR}/OscillatorModel.cpp
   ${GKICK_COMMON_DIR}/geonkick_api.cpp
   ${GKICK_COMMON_DIR}/percussion_state.cpp
   ${GKICK_COMMON_DIR}/kit_state.cpp

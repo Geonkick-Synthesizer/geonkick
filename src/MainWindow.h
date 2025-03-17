@@ -68,7 +68,6 @@ class MainWindow : public GeonkickWidget
       void createViewState();
       void createShortcuts();
       GeonkickApi *geonkickApi;
-      std::vector<std::unique_ptr<Oscillator>> oscillators;
       TopBar *topBar;
       EnvelopeWidget* envelopeWidget;
       ControlArea* controlAreaWidget;

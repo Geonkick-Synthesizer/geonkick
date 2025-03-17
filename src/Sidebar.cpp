@@ -127,7 +127,7 @@ void Sidebar::showSidebarWidget()
         if (presetsButton->isPressed())
                 currentWidget = nullptr;//new PresetsBrowser(this);
         else
-                currentWidget = new SampleBrowser(this, geonkickModel->api());
+                currentWidget = new SampleBrowser(this, geonkickModel->getKitModel());
 
         if (currentWidget) {
                 mainLayout->addWidget(currentWidget);

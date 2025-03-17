@@ -23,7 +23,7 @@
 
 #include "geonkick_api.h"
 #include "DesktopPaths.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "globals.h"
 #include "percussion_state.h"
 #include "kit_state.h"
@@ -521,14 +521,9 @@ bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         return true;
 }
 
-std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
+size_t GeonkickApi::oscillatorsPerLayer(void) const
 {
-        std::vector<std::unique_ptr<Oscillator>> oscillators;
-        size_t n = 0;
-        geonkick_get_oscillators_number(geonkickApi, &n);
-        for (decltype(n) i = 0; i < n; i++)
-                oscillators.push_back(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i % GKICK_OSC_GROUP_SIZE)));
-        return oscillators;
+        return GKICK_OSC_GROUP_SIZE;
 }
 
 std::vector<EnvelopePoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeType envelope) const
@@ -1607,17 +1602,20 @@ size_t GeonkickApi::currentPercussion() const
         return index;
 }
 
-void GeonkickApi::setOscillatorSample(const std::string &file,
+bool GeonkickApi::setOscillatorSample(const std::string &file,
                                       int oscillatorIndex)
 {
         int sRate = Geonkick::defaultSampleRate;
         geonkick_get_sample_rate(geonkickApi, &sRate);
-        std::vector<gkick_real> sampleData = loadSample(file,
-                                                        kickMaxLength() / 1000,
-                                                        sRate,
-                                                        1);
-        if (!sampleData.empty())
+        auto sampleData = loadSample(file,
+                                     kickMaxLength() / 1000,
+                                     sRate,
+                                     1);
+        if (!sampleData.empty()) {
                 setOscillatorSample(sampleData, oscillatorIndex);
+                return true;
+        }
+        return false;
 }
 
 void GeonkickApi::setOscillatorSample(const std::vector<float> &sample,

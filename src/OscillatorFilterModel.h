@@ -26,12 +26,12 @@
 
 #include "FilterModel.h"
 
-class Oscillator;
+class OscillatorModel;
 
 class OscillatorFilterModel: public FilterModel
 {
  public:
-        OscillatorFilterModel(Oscillator *parent);
+        OscillatorFilterModel(OscillatorModel *parent);
         void enable(bool b) override;
         bool isEnabled() const override;
         void setCutOff(double val) override;
@@ -47,7 +47,7 @@ class OscillatorFilterModel: public FilterModel
         Envelope::Category envelopeCategory() const override;
 
  private:
-        Oscillator *oscillatorModel;
+        OscillatorModel *oscillatorModel;
 };
 
 #endif // OSCILLATOR_DISTORTION_MODEL_H

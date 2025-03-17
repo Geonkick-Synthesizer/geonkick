@@ -25,6 +25,8 @@
 #include "FileBrowser.h"
 #include "ViewState.h"
 #include "geonkick_button.h"
+#include "kit_model.h"
+#include "percussion_model.h"
 
 #include <RkContainer.h>
 
@@ -47,9 +49,9 @@ RK_DECLARE_IMAGE_RC(osc3_preview_sample);
 RK_DECLARE_IMAGE_RC(osc3_preview_sample_hover);
 RK_DECLARE_IMAGE_RC(osc3_preview_sample_pressed);
 
-SampleBrowser::SampleBrowser(GeonkickWidget *parent, GeonkickApi* api)
+SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
-        , geonkickApi{api}
+        , kitModel{model}
         , fileBrowser{nullptr}
         , playButton{nullptr}
         , loadButton{nullptr}
@@ -101,7 +103,7 @@ RkContainer* SampleBrowser::createPreviewMenu()
                              RkButton::State::UnpressedHover);
         playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_pressed)),
                              RkButton::State::Pressed);
-        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), geonkickApi, playSamplePreview());
+        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), kitModel->api(), playSamplePreview());
         container->addSpace(5);
         container->addWidget(playButton);
         container->addSpace(3);
@@ -164,12 +166,16 @@ void SampleBrowser::loadSample(const fs::path &file)
                 if (!std::filesystem::exists(file) || std::filesystem::is_directory(file))
                         return;
 
-                auto oscIndex = static_cast<int>(GeonkickApi::OscillatorType::Oscillator1);
+                auto oscType = OscillatorModel::Type::Oscillator1;
                 if (osc2Button->isPressed())
-                        oscIndex = static_cast<int>(GeonkickApi::OscillatorType::Oscillator2);
+                        oscType = OscillatorModel::Type::Oscillator2;
                 else if (osc3Button->isPressed())
-                        oscIndex = static_cast<int>(GeonkickApi::OscillatorType::Oscillator3);
-                geonkickApi->setOscillatorSample(file, oscIndex);
+                        oscType = OscillatorModel::Type::Oscillator3;
+
+                auto currentInstrument = kitModel->currentPercussion();
+                auto oscillator = currentInstrument->getCurrentLayerOscillator(oscType);
+                oscillator->setSample(file);
+                oscillator->setFunction(OscillatorModel::FunctionType::Sample);
         }  catch (...) {
         }
 }

@@ -32,10 +32,11 @@ class BufferView;
 class GeonkickButton;
 class RkContainer;
 class GeonkickSlider;
+class KitModel;
 
 class SampleBrowser: public GeonkickWidget {
  public:
-        SampleBrowser(GeonkickWidget *parent, GeonkickApi* api);
+        SampleBrowser(GeonkickWidget *parent, KitModel* model);
 
   protected:
         RkContainer* createPreviewMenu();
@@ -43,7 +44,7 @@ class SampleBrowser: public GeonkickWidget {
         void loadSample(const fs::path &file);
 
  private:
-        GeonkickApi *geonkickApi;
+        KitModel *kitModel;
         FileBrowser *fileBrowser;
         GeonkickButton *playButton;
         GeonkickButton *loadButton;

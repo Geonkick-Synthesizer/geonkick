@@ -164,7 +164,7 @@ void MainWindow::createShortcuts()
 
 bool MainWindow::init(void)
 {
-        oscillators = geonkickApi->oscillators();
+        oscillators = geonkickModel->oscillators();
         if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled()) {
                 GEONKICK_LOG_INFO("Jack is not installed or not running. "
                                   << "There is a need for jack server running "

@@ -26,26 +26,26 @@
 
 #include "envelope.h"
 
-class Oscillator;
+class OscillatorModel;
 
 class OscillatorEnvelope: public Envelope
 {
- public:
+public:
 
-  OscillatorEnvelope(Oscillator* osc, const RkRect &area);
-  double envelopeLength(void) const override;
-  Oscillator* getOscillator() const;
+        OscillatorEnvelope(OscillatorModel* osc, const RkRect &area);
+        double envelopeLength(void) const override;
+        OscillatorModel* getOscillator() const;
 
- protected:
-  void updateEnvelope() override;
-  void updatePoints() override;
-  void pointAddedEvent(const EnvelopePoint &point) override;
-  void pointUpdatedEvent(unsigned int index, const EnvelopePoint &point) override;
-  void pointRemovedEvent(unsigned int index) override;
-  double envelopeAmplitude() const override;
+protected:
+        void updateEnvelope() override;
+        void updatePoints() override;
+        void pointAddedEvent(const EnvelopePoint &point) override;
+        void pointUpdatedEvent(unsigned int index, const EnvelopePoint &point) override;
+        void pointRemovedEvent(unsigned int index) override;
+        double envelopeAmplitude() const override;
 
- private:
-          Oscillator *oscillator;
+private:
+        OscillatorModel *oscillator;
 };
 
 #endif

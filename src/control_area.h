@@ -35,39 +35,31 @@ class KitWidget;
 class KitTabs;
 #endif // GEONKICK_SINGLE
 class EnvelopeWidget;
-class PresetBrowserView;
-class PresetBrowserModel;
-class SampleBrowser;
 class GeonkickModel;
+class OscillatorModel;
 
 class ControlArea: public GeonkickWidget
 {
  public:
-        ControlArea(GeonkickWidget *parent,
-                    GeonkickModel* model,
-                    const std::vector<std::unique_ptr<Oscillator>> &oscillators);
+        explicit ControlArea(GeonkickWidget *parent, GeonkickModel* model);
         ~ControlArea() = default;
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
         void showControls();
 #ifndef GEONKICK_SINGLE
         void showKit();
 #endif // GEONKICK_SINGLE
-        void showPresets();
  private:
         void showWidget(ViewState::View view);
 
  private:
         GeonkickModel *geonkickModel;
-        const std::vector<std::unique_ptr<Oscillator>> &oscillators;
-        PresetBrowserModel *presetsModel;
+        const std::vector<OscillatorModel*> &oscillators;
         RkWidget* currentWidget;
         ControlsWidget *controlsWidget;
 #ifndef GEONKICK_SINGLE
         KitWidget *kitWidget;
         KitTabs *kitTabs;
 #endif // GEONKICK_SINGLE
-        PresetBrowserView *presetsWidget;
-        SampleBrowser *samplesWidget;
 };
 
 #endif // GKICK_CONTROL_AREA_H

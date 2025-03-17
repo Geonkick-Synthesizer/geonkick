@@ -26,6 +26,7 @@
 
 #include "globals.h"
 #include "AbstractModel.h"
+#include "OscillatorModel.h"
 
 class GeonkickApi;
 class GeonkickState;
@@ -79,6 +80,7 @@ class PercussionModel : public AbstractModel {
         void setMidiChannel(int chIndex);
         void enableNoteOff(bool b);
         bool isNoteOffEnabled() const;
+        OscillatorModel* getCurrentLayerOscillator(OscillatorModel::Type type) const;
         FilterModel* getFilter() const;
         DistortionModel* getDistortion() const;
 

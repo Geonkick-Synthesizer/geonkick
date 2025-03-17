@@ -22,9 +22,9 @@
  */
 
 #include "OscillatorFilterModel.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 
-OscillatorFilterModel::OscillatorFilterModel(Oscillator *parent)
+OscillatorFilterModel::OscillatorFilterModel(OscillatorModel *parent)
         : FilterModel(parent)
         , oscillatorModel{parent}
 {
@@ -95,13 +95,13 @@ std::pair<double, double> OscillatorFilterModel::resonanceRange() const
 Envelope::Category OscillatorFilterModel::envelopeCategory() const
 {
         switch(oscillatorModel->type()) {
-        case Oscillator::Type::Oscillator1:
+        case OscillatorModel::Type::Oscillator1:
                 return Envelope::Category::Oscillator1;
                 break;
-        case Oscillator::Type::Oscillator2:
+        case OscillatorModel::Type::Oscillator2:
                 return Envelope::Category::Oscillator2;
                 break;
-        case Oscillator::Type::Oscillator3:
+        case OscillatorModel::Type::Oscillator3:
                 return Envelope::Category::Oscillator3;
                 break;
         default:
