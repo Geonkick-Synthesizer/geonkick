@@ -56,7 +56,6 @@ class OscillatorGroupBox: public GeonkickGroupBox
         void setNoiseBrownian(bool pressed);
         void setSampleFunction(bool pressed);
         void groupBoxLabelUpdated(bool state);
-        void browseSample();
         void updateAmpltudeEnvelopeBox();
 
  private:
@@ -69,7 +68,6 @@ class OscillatorGroupBox: public GeonkickGroupBox
         GeonkickButton *sawtoothButton;
         GeonkickButton *noiseButton;
         GeonkickButton *sampleButton;
-        GeonkickButton *sampleBrowseButton;
         Knob *amplitudeKnob;
         Knob *frequencyKnob;
         Knob *pitchShiftKnob;

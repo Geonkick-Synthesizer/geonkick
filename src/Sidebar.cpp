@@ -118,7 +118,6 @@ void Sidebar::createTabButtons(RkContainer *mainLayout)
 
 void Sidebar::showSidebarWidget()
 {
-        GEONKICK_LOG_INFO("void Sidebar::showSidebarWidget(): " << currentWidget);
         if (currentWidget) {
                 mainLayout->removeWidget(currentWidget);
                 delete currentWidget;

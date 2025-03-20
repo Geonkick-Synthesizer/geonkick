@@ -33,8 +33,8 @@ class AbstractView;
 class OscillatorEffects: public GeonkickWidget {
  public:
         OscillatorEffects(GeonkickWidget *parent, OscillatorModel* model);
-        void setModel(Oscillator *model);
-        Oscillator* getModel() const;
+        void setModel(OscillatorModel *model);
+        OscillatorModel* getModel() const;
         void createView();
         void updateView();
 

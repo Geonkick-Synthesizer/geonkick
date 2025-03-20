@@ -24,7 +24,7 @@
 
 #include "MainWindow.h"
 #include "GeonkickModel.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "envelope_widget.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
@@ -164,7 +164,6 @@ void MainWindow::createShortcuts()
 
 bool MainWindow::init(void)
 {
-        oscillators = geonkickModel->oscillators();
         if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled()) {
                 GEONKICK_LOG_INFO("Jack is not installed or not running. "
                                   << "There is a need for jack server running "
@@ -193,7 +192,7 @@ bool MainWindow::init(void)
         }
 
         // Create envelope widget.
-        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
+        envelopeWidget = new EnvelopeWidget(this, geonkickModel);
         envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 305);
@@ -206,7 +205,7 @@ bool MainWindow::init(void)
                                    envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
-        controlAreaWidget = new ControlArea(this, geonkickModel, oscillators);
+        controlAreaWidget = new ControlArea(this, geonkickModel);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
@@ -404,7 +403,7 @@ void MainWindow::setSample(const std::string &file)
 {
         auto osc = envelopeWidget->getCurrentOscillator();
         if (osc) {
-                osc->setFunction(Oscillator::FunctionType::Sample);
+                osc->setFunction(OscillatorModel::FunctionType::Sample);
                 geonkickApi->setOscillatorSample(file, osc->index());
                 geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
                 updateGui();

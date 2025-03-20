@@ -53,7 +53,7 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, OscillatorModel* mo
         show();
 }
 
-void OscillatorEffects::setModel(Oscillator *model)
+void OscillatorEffects::setModel(OscillatorModel *model)
 {
         oscillatorModel = model;
         if (currentTabView) {
@@ -65,7 +65,7 @@ void OscillatorEffects::setModel(Oscillator *model)
         updateView();
 }
 
-Oscillator* OscillatorEffects::getModel() const
+OscillatorModel* OscillatorEffects::getModel() const
 {
         return oscillatorModel;
 }

@@ -22,7 +22,7 @@
  */
 
 #include "oscillator_group_box.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "geonkick_widget.h"
 #include "geonkick_button.h"
 #include "knob.h"
@@ -80,7 +80,7 @@ RK_DECLARE_IMAGE_RC(density_env_button);
 RK_DECLARE_IMAGE_RC(density_env_button_active);
 RK_DECLARE_IMAGE_RC(density_env_button_hover);
 
-OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
+OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, OscillatorModel *osc)
           : GeonkickGroupBox{parent}
           , oscillator{osc}
           , oscillatorCheckbox{nullptr}
@@ -106,6 +106,15 @@ OscillatorGroupBox::OscillatorGroupBox(GeonkickWidget *parent, Oscillator *osc)
         createWaveFunctionGroupBox();
         createEvelopeGroupBox();
         createEffects();
+
+        RK_ACT_BINDL(oscillator,
+                     functionUpdated,
+                     RK_ACT_ARGS(OscillatorModel::FunctionType func),
+                     [=,this](OscillatorModel::FunctionType func) {
+                             if (func == OscillatorModel::FunctionType::Sample)
+                                     setWaveFunction(OscillatorModel::FunctionType::Sample);
+                             ;});
+
         updateGui();
 }
 
@@ -479,12 +488,6 @@ void OscillatorGroupBox::updateGui()
 
         oscillatorEffects->setModel(oscillator);
         functionView->setModel(oscillator);
-}
-
-void OscillatorGroupBox::browseSample()
-{
-        viewState()->setSamplesBrowserOscillator(static_cast<ViewState::Oscillator>(oscillator->type()));
-        viewState()->setMainView(ViewState::View::Samples);
 }
 
 void OscillatorGroupBox::updateAmpltudeEnvelopeBox()

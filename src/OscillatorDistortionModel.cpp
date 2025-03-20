@@ -24,7 +24,7 @@
 #include "OscillatorDistortionModel.h"
 #include "OscillatorModel.h"
 
-OscillatorDistortionModel::OscillatorDistortionModel(Oscillator *parent)
+OscillatorDistortionModel::OscillatorDistortionModel(OscillatorModel *parent)
         : DistortionModel(parent)
         , oscillatorModel{parent}
 {
@@ -89,13 +89,13 @@ double OscillatorDistortionModel::getDrive() const
 Envelope::Category OscillatorDistortionModel::envelopeCategory() const
 {
         switch(oscillatorModel->type()) {
-        case Oscillator::Type::Oscillator1:
+        case OscillatorModel::Type::Oscillator1:
                 return Envelope::Category::Oscillator1;
                 break;
-        case Oscillator::Type::Oscillator2:
+        case OscillatorModel::Type::Oscillator2:
                 return Envelope::Category::Oscillator2;
                 break;
-        case Oscillator::Type::Oscillator3:
+        case OscillatorModel::Type::Oscillator3:
                 return Envelope::Category::Oscillator3;
                 break;
         default:

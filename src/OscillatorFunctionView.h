@@ -25,8 +25,8 @@
 #define OSCILLATOR_FUNCTION_VIEW_H
 
 #include "geonkick_widget.h"
+#include "OscillatorModel.h"
 
-class OscillatorModel;
 class Knob;
 class GeonkickButton;
 class RkSpinBox;
@@ -55,7 +55,6 @@ protected:
         GeonkickButton *brownianNoiseButton;
         RkSpinBox *seedSpinBox;
         RkLabel *seedLabel;
-        GeonkickButton *sampleBrowseButton;
 };
 
 #endif // OSCILLATOR_FUNCTION_VIEW_H
