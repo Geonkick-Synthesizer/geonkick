@@ -28,6 +28,7 @@
 #include "kit_state.h"
 #include "ExportToSfz.h"
 #include "GeonkickModel.h"
+#include "preset.h"
 
 #include <RkAction.h>
 #include <RkEventQueue.h>
@@ -465,4 +466,30 @@ bool KitModel::isNoteOffEnabled(PercussionIndex index) const
 OscillatorModel* KitModel::getCurrentLayerOscillator(OscillatorModel::Type type) const
 {
         return geonkickModel->getOscillatorModels()[static_cast<int>(type)];
+}
+
+bool KitModel::loadPreset(const Preset &preset, PercussionIndex index)
+{
+        if (!isValidIndex(index))
+                return false;
+
+        auto state = geonkickApi->getDefaultPercussionState();
+        if (!state->loadFile(preset.path().string())) {
+                GEONKICK_LOG_ERROR("can't open preset");
+                return false;
+        } else {
+                state->setId(geonkickApi->currentPercussion());
+                geonkickApi->setPercussionState(state);
+                geonkickApi->notifyUpdateGui();
+                geonkickApi->notifyPercussionUpdated(state->getId());
+                return true;
+        }
+}
+
+bool KitModel::loadPreset(const Preset &preset)
+{
+        if (preset.type() == Preset::PresetType::Instrument)
+                return currentPercussion()->loadPreset(preset);
+        else
+                return open(preset.path());
 }

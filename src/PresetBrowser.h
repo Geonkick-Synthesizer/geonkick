@@ -1,8 +1,8 @@
 /**
- * File name: preset.h
+ * File name: PresetBrowser.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -21,28 +21,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#ifndef PRESET_H
-#define PRESET_H
+#ifndef GEONKICK_PRESET_BROWSER_H
+#define GEONKICK_PRESET_BROWSER_H
 
-#include "globals.h"
+#include "geonkick_widget.h"
+#include "geonkick_api.h"
 
-class Preset {
+class FileBrowser;
+class RkContainer;
+class KitModel;
+
+class PresetBrowser: public GeonkickWidget {
  public:
-        enum class PresetType: int {
-                Instrument,
-                PercussionKit,
-        };
-
-        Preset(const std::filesystem::path& path);
-        PresetType type() const;
-        std::string name() const;
-        void setName(const std::string &name);
-        std::filesystem::path path() const;
-        void setPath(const std::filesystem::path& path);
+        PresetBrowser(GeonkickWidget *parent, KitModel* model);
 
  private:
-        std::string presetName;
-        std::filesystem::path presetPath;
+        KitModel *kitModel;
+        FileBrowser *fileBrowser;
 };
 
-#endif // PRESET_H
+#endif // GEONKICK_PRESET_BROWSER_H

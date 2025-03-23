@@ -25,9 +25,10 @@
 #include "DesktopPaths.h"
 #include "GeonkickConfig.h"
 
-PathBookmarksModel::PathBookmarksModel(RkObject *parent)
+PathBookmarksModel::PathBookmarksModel(RkObject *parent, const std::string &name)
         : AbstractModel(parent)
 {
+        setName(name);
         DesktopPaths desktopPaths;
         pathList.addItem(desktopPaths.getHomePath());
         pathList.addItem(desktopPaths.getDesktopPath());
@@ -37,7 +38,7 @@ PathBookmarksModel::PathBookmarksModel(RkObject *parent)
                 pathList.addItem(std::move(d));
 
         GeonkickConfig config(true);
-        for (const auto &path:  config.getBookmarkedPaths())
+        for (const auto &path:  config.getBookmarkedPaths(name))
                 pathList.addItem(path);
 }
 
@@ -45,7 +46,7 @@ bool PathBookmarksModel::addPath(const std::filesystem::path &path)
 {
         if (!pathList.hasItem(path)) {
                 pathList.addItem(path);
-                GeonkickConfig(true).bookmarkPath(path);
+                GeonkickConfig(true).bookmarkPath(path, name());
                 action pathAdded(path);
                 action modelUpdated();
                 return true;
@@ -57,7 +58,7 @@ bool PathBookmarksModel::addPath(const std::filesystem::path &path)
 bool PathBookmarksModel::removePath(const std::filesystem::path &path)
 {
         if (pathList.removeItem(path)) {
-                GeonkickConfig(true).removeBookmarkedPath(path);
+                GeonkickConfig(true).removeBookmarkedPath(path, name());
                 action pathRemoved(path);
                 action modelUpdated();
                 return true;

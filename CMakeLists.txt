@@ -131,6 +131,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/BreadcrumbBar.h
   ${GKICK_COMMON_DIR}/PathHistory.h
   ${GKICK_COMMON_DIR}/FileBrowser.h
+  ${GKICK_COMMON_DIR}/PresetBrowser.h
   ${GKICK_COMMON_DIR}/SampleBrowser.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/TopBar.h
@@ -205,6 +206,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/BreadcrumbBar.cpp
   ${GKICK_COMMON_DIR}/PathHistory.cpp
   ${GKICK_COMMON_DIR}/FileBrowser.cpp
+  ${GKICK_COMMON_DIR}/PresetBrowser.cpp
   ${GKICK_COMMON_DIR}/SampleBrowser.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/TopBar.cpp

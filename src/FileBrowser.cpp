@@ -53,12 +53,12 @@ RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
 
-FileBrowser::FileBrowser(GeonkickWidget *parent)
+FileBrowser::FileBrowser(GeonkickWidget *parent, const std::string &name)
         : GeonkickWidget(parent)
         , mainContainer{nullptr}
         , bookmarkDirectoryButton{nullptr}
         , pathHistory{new PathHistory(this)}
-        , pathBookmarksModel{new PathBookmarksModel(this)}
+        , pathBookmarksModel{new PathBookmarksModel(this, name)}
         , bookmarksView{nullptr}
         , breadcrumbBar{nullptr}
         , filesView{nullptr}

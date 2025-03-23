@@ -204,8 +204,7 @@ bool PresetBrowserModel::isCustomFolder(size_t row, size_t column) const
 
 bool PresetBrowserModel::setPreset(Preset* preset)
 {
-        if (preset->type() == Preset::PresetType::Percussion) {
-                GEONKICK_LOG_DEBUG("path:" << preset->path());
+        if (preset->type() == Preset::PresetType::Instrument) {
                 auto state = geonkickApi->getDefaultPercussionState();
                 if (!state->loadFile(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open preset");

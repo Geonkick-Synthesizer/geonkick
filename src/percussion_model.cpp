@@ -25,6 +25,7 @@
 #include "kit_model.h"
 #include "InstrumentFilterModel.h"
 #include "InstrumentDistortionModel.h"
+#include "preset.h"
 
 #include <RkAction.h>
 #include <RkEventQueue.h>
@@ -298,4 +299,9 @@ FilterModel* PercussionModel::getFilter() const
 DistortionModel* PercussionModel::getDistortion() const
 {
         return distortionModel;
+}
+
+bool PercussionModel::loadPreset(const Preset &preset)
+{
+        return kitModel->loadPreset(preset, index());
 }

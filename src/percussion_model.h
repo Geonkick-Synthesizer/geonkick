@@ -33,6 +33,7 @@ class GeonkickState;
 class KitModel;
 class FilterModel;
 class DistortionModel;
+class Preset;
 
 class PercussionModel : public AbstractModel {
  public:
@@ -83,6 +84,7 @@ class PercussionModel : public AbstractModel {
         OscillatorModel* getCurrentLayerOscillator(OscillatorModel::Type type) const;
         FilterModel* getFilter() const;
         DistortionModel* getDistortion() const;
+        bool loadPreset(const Preset &preset);
 
         RK_DECL_ACT(enabled,
                     enabled(bool b),

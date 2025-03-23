@@ -24,6 +24,7 @@
 #include "Sidebar.h"
 #include "GeonkickModel.h"
 #include "geonkick_button.h"
+#include "PresetBrowser.h"
 #include "SampleBrowser.h"
 
 #include <RkEvent.h>
@@ -124,12 +125,9 @@ void Sidebar::showSidebarWidget()
         }
 
         if (presetsButton->isPressed())
-                currentWidget = nullptr;//new PresetsBrowser(this);
+                currentWidget = new PresetBrowser(this, geonkickModel->getKitModel());
         else
                 currentWidget = new SampleBrowser(this, geonkickModel->getKitModel());
 
-        if (currentWidget) {
-                mainLayout->addWidget(currentWidget);
-                //mainLayout->update();
-        }
+        mainLayout->addWidget(currentWidget);
 }

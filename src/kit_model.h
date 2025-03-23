@@ -32,6 +32,7 @@ class GeonkickApi;
 class GeonkickState;
 class PercussionModel;
 class GeonkickModel;
+class Preset;
 
 class KitModel : public RkObject {
  public:
@@ -90,6 +91,8 @@ class KitModel : public RkObject {
         bool enableNoteOff(PercussionIndex index, bool b);
         bool isNoteOffEnabled(PercussionIndex index) const;
         OscillatorModel* getCurrentLayerOscillator(OscillatorModel::Type type) const;
+        bool loadPreset(const Preset &preset, PercussionIndex index);
+        bool loadPreset(const Preset &preset);
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),
