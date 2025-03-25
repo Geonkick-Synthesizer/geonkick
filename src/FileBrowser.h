@@ -42,7 +42,8 @@ class PathBookmarksView;
 
 class FileBrowser: public GeonkickWidget {
  public:
-        explicit FileBrowser(GeonkickWidget *parent, const std::string &name = {});
+        explicit FileBrowser(GeonkickWidget *parent,
+                             const std::string &name = "FileBrowser");
         void setSize(const RkSize &size);
         fs::path currentDirectory() const;
         void setCurrentDirectoy(const fs::path &path);

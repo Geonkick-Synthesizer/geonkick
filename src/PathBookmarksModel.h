@@ -30,7 +30,7 @@
 
 class PathBookmarksModel: public AbstractModel {
   public:
-        explicit PathBookmarksModel(RkObject *parent);
+        explicit PathBookmarksModel(RkObject *parent, const std::string &name);
         bool addPath(const std::filesystem::path &path);
         bool removePath(const std::filesystem::path &path);
         const std::vector<std::filesystem::path>& getPaths() const;

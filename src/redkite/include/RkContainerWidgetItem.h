@@ -32,7 +32,7 @@ class RkContainerWidgetItem: public RkContainerItem {
  public:
         RkContainerWidgetItem(RkWidget *parent,
                             Rk::Alignment align = Rk::Alignment::AlignLeft)
-                 : RkContainerItem(parent, ItemType::ItemContainer, align)
+                 : RkContainerItem(parent, ItemType::ItemWidget, align)
                    , itemWidget{parent} {}
         virtual ~RkContainerWidgetItem() = default;
         void setPosition(const RkPoint &point) override { itemWidget->setPosition(point); }

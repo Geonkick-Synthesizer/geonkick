@@ -150,7 +150,7 @@ void GeonkickConfig::parseBookmarkedPaths(const auto &value)
                                 if (m.name == "paths" && m.value.IsArray())
                                         entry.second = parsePathsArray(m.value);
                         }
-                        if (!entry.first.empty() && entry.second.empty())
+                        if (!entry.first.empty() && !entry.second.empty())
                                 bookmarkedPaths.emplace(std::move(entry));
                 }
         }
@@ -199,7 +199,7 @@ bool GeonkickConfig::bookmarkPath(const std::filesystem::path &path,
         if (!isPathBookmarked(path, name)) {
                 auto res = bookmarkedPaths.find(name);
                 if (res == bookmarkedPaths.end())
-                        bookmarkedPaths[name] = {path};
+                        bookmarkedPaths.insert({name, {path}});
                 else
                         res->second.push_back(path);
                 return true;
@@ -278,13 +278,13 @@ void GeonkickConfig::writeBookmarkedPathsToJson(auto& writer) const
 {
         writer.Key("bookmarkedPaths");
         writer.StartArray();
-        for (const auto& [name, paths] : bookmarkedPaths) {
+        for (const auto& el : bookmarkedPaths) {
                 writer.StartObject();
                 writer.Key("name");
-                writer.String(name.c_str());
+                writer.String(el.first.c_str());
                 writer.Key("paths");
                 writer.StartArray();
-                for (const auto& path : paths)
+                for (const auto& path : el.second)
                         writer.String(path.string().c_str());
                 writer.EndArray();
                 writer.EndObject();
