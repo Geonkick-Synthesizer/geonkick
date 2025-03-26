@@ -22,6 +22,7 @@
  */
 
 #include "PresetBrowser.h"
+#include "GeonkickConfig.h"
 #include "FileBrowser.h"
 #include "kit_model.h"
 #include "percussion_model.h"
@@ -39,7 +40,7 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         fileBrowser = new FileBrowser(this, "Presets");
         fileBrowser->setSize({width(), height() - 25});
         fileBrowser->setFilters({".gkick", ".gkit"});
-        //        fileBrowser->setCurrentDirectoy(viewState()->samplesBrowserPath());
+        fileBrowser->setCurrentDirectoy(GeonkickConfig().getPresetCurrentPath());
         /*        RK_ACT_BIND(fileBrowser,
                     currentPathChanged,
                     RK_ACT_ARGS(const std::string &path),

@@ -52,8 +52,6 @@ class PresetBrowserModel : public RkObject {
         bool isSelected(size_t row, size_t column) const;
         bool isCustomFolder(size_t row, size_t column) const;
         bool isKit(int row, int column) const;
-        bool addFolder(const std::filesystem::path &folder, bool custom = false);
-        bool removeSelectedFolder();
         PresetFolder* currentSelectedFolder() const;
         Preset* currentSelectedPreset() const;
         GeonkickApi* getGeonkickApi() const;

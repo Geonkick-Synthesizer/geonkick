@@ -40,7 +40,6 @@ class PresetBrowserView: public GeonkickWidget {
         void mouseMoveEvent(RkMouseEvent *event) override;
         void paintWidget(RkPaintEvent *event) override;
         void updatePageButtons();
-        void addCustomFolder();
 
  private:
         PresetBrowserModel *browserModel;
@@ -54,8 +53,6 @@ class PresetBrowserView: public GeonkickWidget {
         RkButton* prevPresetPageButton;
         RkButton* nextFolderPageButton;
         RkButton* prevFolderPageButton;
-        RkButton* addFolderButton;
-        RkButton* removeFolderButton;
         RkContainer *bottomContainer;
 };
 
