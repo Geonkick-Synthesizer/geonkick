@@ -45,17 +45,17 @@ class GeonkickConfig {
         bool removeBookmarkedPath(const std::filesystem::path &path,
                                   const std::string& name);
         std::vector<std::filesystem::path> getBookmarkedPaths(const std::string& name) const;
-        bool addCustomPresetFolder(const std::filesystem::path &folder);
-        bool removeCustomPresetFolder(const std::filesystem::path &folder);
-        const std::vector<std::filesystem::path>& getCustomPresetFolders() const;
         void setShowSidebar(bool b = true);
         bool isShowSidebar() const;
+        bool setSampleCurrentPath(const fs::path &path);
+        const fs::path& getSampleCurrentPath() const;
+        bool setPresetCurrentPath(const fs::path &path);
+        const fs::path& getPresetCurrentPath() const;
 
  protected:
         void loadConfig(const std::string &data);
         std::vector<std::filesystem::path> parsePathsArray(const auto &value) const;
         void parseBookmarkedPaths(const auto &value);
-        void parseCustomPresetFolders(const auto &value);
         void writeBookmarkedPathsToJson(auto& writer) const;
         std::string toJson() const;
 
@@ -66,7 +66,8 @@ class GeonkickConfig {
         bool midiChannelForced;
         std::filesystem::path configFile;
         std::unordered_map<std::string, std::vector<std::filesystem::path>> bookmarkedPaths;
-        std::vector<std::filesystem::path> customPresetFolders;
+        fs::path presetCurrentPath;
+        fs::path sampleCurrentPath;
         bool showSideBar;
 };
 

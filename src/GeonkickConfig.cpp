@@ -37,6 +37,8 @@ GeonkickConfig::GeonkickConfig(bool autosave)
         , channelNumber{GeonkickTypes::geonkickAnyMidiChannel}
         , midiChannelForced{false}
 	, configFile{DesktopPaths().getConfigPath() / "config.json"}
+        , presetCurrentPath{DesktopPaths().getPresetsPath()}
+        , sampleCurrentPath{DesktopPaths().getDataPath()}
         , showSideBar{false}
 {
         open();
@@ -120,8 +122,10 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         showSideBar = m.value.GetBool();
                 if (m.name == "bookmarkedPaths" && m.value.IsArray())
                         parseBookmarkedPaths(m.value);
-                if (m.name == "customPresetFolders" && m.value.IsArray())
-                        parseCustomPresetFolders(m.value);
+                if (m.name == "presetCurrentPath" && m.value.IsString())
+                        presetCurrentPath = m.value.GetString();
+                if (m.name == "sampleCurrentPath" && m.value.IsString())
+                        sampleCurrentPath = m.value.GetString();
         }
 }
 
@@ -154,18 +158,6 @@ void GeonkickConfig::parseBookmarkedPaths(const auto &value)
                                 bookmarkedPaths.emplace(std::move(entry));
                 }
         }
-}
-
-void GeonkickConfig::parseCustomPresetFolders(const auto &value)
-{
-        if (!value.IsArray())
-                return;
-
-        for (const auto &el: value.GetArray()) {
-                if (el.IsString())
-                        customPresetFolders.push_back(el.GetString());
-        }
-
 }
 
 bool GeonkickConfig::save()
@@ -242,28 +234,6 @@ std::vector<std::filesystem::path> GeonkickConfig::getBookmarkedPaths(const std:
         return {};
 }
 
-bool GeonkickConfig::addCustomPresetFolder(const std::filesystem::path &folder)
-{
-        customPresetFolders.push_back(folder);
-        return true;
-}
-
-bool GeonkickConfig::removeCustomPresetFolder(const std::filesystem::path &folder)
-{
-        auto it = customPresetFolders.erase(std::remove_if(customPresetFolders.begin(),
-                                                           customPresetFolders.end(),
-                                                           [&folder](const auto &p)
-                                                           { return p == folder; }),
-                                            customPresetFolders.end());
-        return it != customPresetFolders.end();
-}
-
-const std::vector<std::filesystem::path>&
-GeonkickConfig::getCustomPresetFolders() const
-{
-        return customPresetFolders;
-}
-
 void GeonkickConfig::setShowSidebar(bool b)
 {
         showSideBar = b;
@@ -272,6 +242,28 @@ void GeonkickConfig::setShowSidebar(bool b)
 bool GeonkickConfig::isShowSidebar() const
 {
         return showSideBar;
+}
+
+bool GeonkickConfig::setSampleCurrentPath(const fs::path &path)
+{
+        sampleCurrentPath = path;
+        return true;
+}
+
+const fs::path& GeonkickConfig::getSampleCurrentPath() const
+{
+        return sampleCurrentPath;
+}
+
+bool GeonkickConfig::setPresetCurrentPath(const fs::path &path)
+{
+        presetCurrentPath = path;
+        return true;
+}
+
+const fs::path& GeonkickConfig::getPresetCurrentPath() const
+{
+        return presetCurrentPath;
 }
 
 void GeonkickConfig::writeBookmarkedPathsToJson(auto& writer) const
@@ -308,11 +300,10 @@ std::string GeonkickConfig::toJson() const
 
         writeBookmarkedPathsToJson(writer);
 
-        writer.Key("customPresetFolders");
-        writer.StartArray();
-        for (const auto &path : customPresetFolders)
-                writer.String(path.string().c_str());
-        writer.EndArray();
+        writer.Key("presetCurrentPath");
+        writer.String(presetCurrentPath.string().c_str());
+        writer.Key("sampleCurrentPath");
+        writer.String(sampleCurrentPath.string().c_str());
         writer.EndObject();
         return s.GetString();
 }
