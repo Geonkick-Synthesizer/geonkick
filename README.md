@@ -14,12 +14,6 @@ claps, hi-hats, shakers, and unique effect sounds.
 
 **Version:** 3.6.0
 
-If you have an idea about a feature or found an issue, please, submit it:
-
-- [on GitLab](https://gitlab.com/Geonkick-Synthesizer/geonkick/issues)
-- [on Codeberg](https://codeberg.org/Geonkick-Synthesizer/geonkick/issues)
-- [on GitHub](https://github.com/Geonkick-Synthesizer/geonkick/issues)
-
 ![Screenshot](data/screenshot.png)
 
 ![Screenshot](data/screenshot_kit.png)
@@ -30,7 +24,6 @@ Source code repository:
 
 - https://gitlab.com/Geonkick-Synthesizer/geonkick
 - https://codeberg.org/Geonkick-Synthesizer/geonkick
-- https://github.com/Geonkick-Synthesizer/geonkick
 
 ## Features
 

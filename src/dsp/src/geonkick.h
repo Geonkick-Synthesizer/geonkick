@@ -718,7 +718,7 @@ geonkick_ged_forced_midi_channel(struct geonkick *kick,
                                  bool *force);
 
 size_t
-geonkick_midi_channels_number();
+geonkick_midi_channels_number(void);
 
 enum geonkick_error
 geonkick_set_percussion_name(struct geonkick *kick,
