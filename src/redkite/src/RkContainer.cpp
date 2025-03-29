@@ -27,6 +27,7 @@
 RkContainer::RkContainer(RkWidget *parent, Rk::Orientation orientation)
 	: RkContainerItem(parent, ItemType::ItemContainer)
 	, containerOrientation{orientation}
+        , containerPadding{0}
 	, itemSpacing{0}
         , isHiddenTakesPlace{true}
 {
@@ -49,6 +50,10 @@ void RkContainer::addWidget(RkWidget *widget, Rk::Alignment align)
 
 void RkContainer::removeWidget(RkWidget *widget)
 {
+        std::erase_if(containerItems, [widget](const auto *i) {
+                return i->type() == RkContainerItem::ItemType::ItemWidget
+                        && dynamic_cast<const RkContainerWidgetItem*>(i)->widget() == widget; });
+        update();
 }
 
 void RkContainer::addSpace(int space, Rk::Alignment align)
@@ -76,6 +81,11 @@ RkContainerItem* RkContainer::at(size_t index) const
 }
 
 void RkContainer::update()
+{
+        layout();
+}
+
+void RkContainer::layout()
 {
 	int posLeft = initPosition(Rk::Alignment::AlignLeft);
 	int posRight = initPosition(Rk::Alignment::AlignRight);
@@ -125,6 +135,7 @@ void RkContainer::clear()
                         delete item;
         }
         containerItems.clear();
+        update();
 }
 
 Rk::Orientation RkContainer::orientation() const
@@ -132,46 +143,76 @@ Rk::Orientation RkContainer::orientation() const
 	return containerOrientation;
 }
 
-void RkContainer::setSize(const RkSize &size)
+void RkContainer::setSize(const RkSize &s)
 {
-        RkContainerItem::setSize(size);
+        if (s == size())
+                return;
+
+        RkContainerItem::setSize(s);
 	update();
+        action sizeChanged(s);
 }
 
-void RkContainer::setWidth(int width)
+void RkContainer::setWidth(int w)
 {
-	RkContainerItem::setWidth(width);
+        if (w == width())
+                return;
+
+	RkContainerItem::setWidth(w);
 	update();
+        action sizeChanged(size());
 }
 
-void RkContainer::setHeight(int height)
+void RkContainer::setHeight(int h)
 {
-	RkContainerItem::setHeight(height);
+        if (h == height())
+                return;
+
+	RkContainerItem::setHeight(h);
 	update();
+        action sizeChanged(size());
 }
 
-void RkContainer::setPosition(const RkPoint &position)
+void RkContainer::setPosition(const RkPoint &pos)
 {
-        RkContainerItem::setPosition(position);
-	update();
+        if (pos != position()) {
+                RkContainerItem::setPosition(pos);
+                update();
+        }
 }
 
 void RkContainer::setX(int val)
 {
-        RkContainerItem::setX(val);
-        update();
+        if (val != x()) {
+                RkContainerItem::setX(val);
+                update();
+        }
 }
 
 void RkContainer::setY(int val)
 {
-        RkContainerItem::setY(val);
-        update();
+        if (val != y()) {
+                RkContainerItem::setY(val);
+                update();
+        }
+}
+
+void RkContainer::setPadding(int pad)
+{
+        containerPadding = pad;
+}
+
+int RkContainer::padding() const
+{
+        return containerPadding;
 }
 
 void RkContainer::setSpacing(size_t space)
 {
-	itemSpacing = space;
-	update();
+        if (itemSpacing != space) {
+                itemSpacing = space;
+                update();
+        }
 }
 
 size_t RkContainer::spacing() const
@@ -181,11 +222,18 @@ size_t RkContainer::spacing() const
 
 void RkContainer::setHiddenTakesPlace(bool b)
 {
-        isHiddenTakesPlace = b;
-        update();
+        if (isHiddenTakesPlace != b) {
+                isHiddenTakesPlace = b;
+                update();
+        }
 }
 
 bool RkContainer::hiddenTakesPlace() const
 {
         return isHiddenTakesPlace;
+}
+
+const std::vector<RkContainerItem*>& RkContainer::getItems() const
+{
+        return containerItems;
 }

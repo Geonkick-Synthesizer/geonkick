@@ -2,7 +2,7 @@
  * File name: RkWidgetContainer.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -27,9 +27,10 @@
 #include "RkWidget.h"
 #include "RkContainerItem.h"
 
-class RK_EXPORT RkContainer: public RkContainerItem {
+class RkContainer: public RkContainerItem {
  public:
-        RkContainer(RkWidget *parent  = nullptr, Rk::Orientation orientation = Rk::Orientation::Horizontal);
+        explicit RkContainer(RkWidget *parent,
+                             Rk::Orientation orientation = Rk::Orientation::Horizontal);
         virtual ~RkContainer() = default;
         void addContainer(RkContainer *contaier, Rk::Alignment align = Rk::Alignment::AlignLeft);
 	void addWidget(RkWidget *widget, Rk::Alignment align = Rk::Alignment::AlignLeft);
@@ -42,18 +43,26 @@ class RK_EXPORT RkContainer: public RkContainerItem {
 	Rk::Orientation orientation() const;
 	Rk::Alignment alignment(RkWidget *widget) const;
 	Rk::Alignment alignment(size_t index) const;
-	void setSize(const RkSize &size) override;
-	void setWidth(int width) override;
-	void setHeight(int height) override;
-	void setPosition(const RkPoint &position) override;
+	void setSize(const RkSize &s) override;
+	void setWidth(int w) override;
+	void setHeight(int h) override;
+	void setPosition(const RkPoint &pos) override;
         void setX(int val) override;
         void setY(int val) override;
+        void setPadding(int pad);
+	int padding() const;
 	void setSpacing(size_t space);
 	size_t spacing() const;
         void setHiddenTakesPlace(bool b = true);
         bool hiddenTakesPlace() const;
+        const std::vector<RkContainerItem*>& getItems() const;
+        RK_DECL_ACT(sizeChanged,
+                    sizeChanged(const RkSize& s),
+                    RK_ARG_TYPE(const RkSize&),
+                    RK_ARG_VAL(s));
 
  protected:
+        virtual void layout();
 	int initPosition(Rk::Alignment alignment);
 
  private:
@@ -61,6 +70,7 @@ class RK_EXPORT RkContainer: public RkContainerItem {
         RK_DISABLE_MOVE(RkContainer);
         std::vector<RkContainerItem*> containerItems;
 	Rk::Orientation containerOrientation;
+        int containerPadding;
 	size_t itemSpacing;
         bool isHiddenTakesPlace;
 };

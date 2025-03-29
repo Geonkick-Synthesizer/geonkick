@@ -204,8 +204,7 @@ bool PresetBrowserModel::isCustomFolder(size_t row, size_t column) const
 
 bool PresetBrowserModel::setPreset(Preset* preset)
 {
-        if (preset->type() == Preset::PresetType::Percussion) {
-                GEONKICK_LOG_DEBUG("path:" << preset->path());
+        if (preset->type() == Preset::PresetType::Instrument) {
                 auto state = geonkickApi->getDefaultPercussionState();
                 if (!state->loadFile(preset->path().string())) {
                         GEONKICK_LOG_ERROR("can't open preset");
@@ -231,16 +230,6 @@ bool PresetBrowserModel::setPreset(Preset* preset)
         return false;
 }
 
-bool PresetBrowserModel::addFolder(const std::filesystem::path &folder, bool custom)
-{
-        auto presetFolder = geonkickApi->addPresetFolder(folder, custom);
-        if (presetFolder) {
-                action presetFolderAdded(presetFolder);
-                return true;
-        }
-        return false;
-}
-
 PresetFolder* PresetBrowserModel::currentSelectedFolder() const
 {
         return selectedFolder;
@@ -249,18 +238,6 @@ PresetFolder* PresetBrowserModel::currentSelectedFolder() const
 Preset* PresetBrowserModel::currentSelectedPreset() const
 {
         return selectedPreset;
-}
-
-bool PresetBrowserModel::removeSelectedFolder()
-{
-        if (selectedFolder && geonkickApi->removePresetFolder(selectedFolder)) {
-                selectedFolder = geonkickApi->getPresetFolder(0);
-                folderPageIndex = 0;
-                presetPageIndex = 0;
-                action presetFolderRemoved();
-                return true;
-        }
-        return false;
 }
 
 GeonkickApi* PresetBrowserModel::getGeonkickApi() const

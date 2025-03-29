@@ -25,19 +25,29 @@
 #include "DesktopPaths.h"
 
 #include <rapidjson/document.h>
-#include "rapidjson/writer.h"
+#include <rapidjson/prettywriter.h>
 #include "rapidjson/stringbuffer.h"
 
 #include <iomanip>
 #include <ranges>
 
-GeonkickConfig::GeonkickConfig()
-        : scaleFactor{1.0}
+GeonkickConfig::GeonkickConfig(bool autosave)
+        : autoSave{autosave}
+        , scaleFactor{1.0}
         , channelNumber{GeonkickTypes::geonkickAnyMidiChannel}
         , midiChannelForced{false}
 	, configFile{DesktopPaths().getConfigPath() / "config.json"}
+        , presetCurrentPath{DesktopPaths().getPresetsPath()}
+        , sampleCurrentPath{DesktopPaths().getDataPath()}
+        , showSideBar{false}
 {
         open();
+}
+
+GeonkickConfig::~GeonkickConfig()
+{
+        if (autoSave)
+                save();
 }
 
 void GeonkickConfig::setMidiChannel(int channel)
@@ -108,35 +118,46 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         channelNumber = m.value.GetInt();
                 if (m.name == "midiChannelForced" && m.value.IsBool())
                         midiChannelForced = m.value.GetBool();
+                if (m.name == "showSideBar" && m.value.IsBool())
+                        showSideBar = m.value.GetBool();
                 if (m.name == "bookmarkedPaths" && m.value.IsArray())
                         parseBookmarkedPaths(m.value);
-                if (m.name == "customPresetFolders" && m.value.IsArray())
-                        parseCustomPresetFolders(m.value);
+                //                if (m.name == "presetCurrentPath" && m.value.IsString())
+                //                        presetCurrentPath = m.value.GetString();
+                if (m.name == "sampleCurrentPath" && m.value.IsString())
+                        sampleCurrentPath = m.value.GetString();
         }
+}
+
+std::vector<std::filesystem::path> GeonkickConfig::parsePathsArray(const auto &value) const
+{
+    std::vector<std::filesystem::path> paths;
+    for (const auto &el : value.GetArray()) {
+            if (el.IsString())
+                paths.emplace_back(el.GetString());
+    }
+
+    return paths;
 }
 
 void GeonkickConfig::parseBookmarkedPaths(const auto &value)
 {
         if (!value.IsArray())
                 return;
- 
-        for (const auto &el: value.GetArray()) {
-                if (el.IsString())
-                        bookmarkedPaths.push_back(el.GetString());
-        }
-
-}
-
-void GeonkickConfig::parseCustomPresetFolders(const auto &value)
-{
-        if (!value.IsArray())
-                return;
 
         for (const auto &el: value.GetArray()) {
-                if (el.IsString())
-                        customPresetFolders.push_back(el.GetString());
+                if (el.IsObject()) {
+                        std::pair<std::string, std::vector<std::filesystem::path>> entry;
+                        for (const auto &m: el.GetObject()) {
+                                if (m.name == "name" && m.value.IsString())
+                                        entry.first = std::string(m.value.GetString());
+                                if (m.name == "paths" && m.value.IsArray())
+                                        entry.second = parsePathsArray(m.value);
+                        }
+                        if (!entry.first.empty() && !entry.second.empty())
+                                bookmarkedPaths.emplace(std::move(entry));
+                }
         }
-
 }
 
 bool GeonkickConfig::save()
@@ -164,65 +185,109 @@ bool GeonkickConfig::save()
         return true;
 }
 
-bool GeonkickConfig::bookmarkPath(const std::filesystem::path &path)
+bool GeonkickConfig::bookmarkPath(const std::filesystem::path &path,
+                                  const std::string& name)
 {
-        if (!isPathBookmarked(path)) {
-                bookmarkedPaths.push_back(path);
+        if (!isPathBookmarked(path, name)) {
+                auto res = bookmarkedPaths.find(name);
+                if (res == bookmarkedPaths.end())
+                        bookmarkedPaths.insert({name, {path}});
+                else
+                        res->second.push_back(path);
                 return true;
         }
         return false;
 }
 
-bool GeonkickConfig::isPathBookmarked(const std::filesystem::path &path) const
+bool GeonkickConfig::isPathBookmarked(const std::filesystem::path &path,
+                                      const std::string& name) const
 {
-        auto it = std::find(bookmarkedPaths.begin(), bookmarkedPaths.end(), path);
-        return it != bookmarkedPaths.end();
-}
-
-bool GeonkickConfig::removeBookmarkedPath(const std::filesystem::path &path)
-{
-        if (isPathBookmarked(path)) {
-                bookmarkedPaths.erase(std::remove_if(bookmarkedPaths.begin(),
-                                                     bookmarkedPaths.end(),
-                                                     [&path](const auto & p)
-                                                     { return p == path; }),
-                                      bookmarkedPaths.end());
-                return true;
+        auto it = bookmarkedPaths.find(name);
+        if (it != bookmarkedPaths.end()) {
+                const auto& paths = it->second;
+                return std::find(paths.begin(), paths.end(), path) != paths.end();
         }
         return false;
 }
 
-const std::vector<std::filesystem::path>& GeonkickConfig::getBookmarkedPaths() const
+bool GeonkickConfig::removeBookmarkedPath(const std::filesystem::path &path,
+                                          const std::string& name)
 {
-        return bookmarkedPaths;
+        auto res = bookmarkedPaths.find(name);
+        if (res != bookmarkedPaths.end()) {
+                auto& paths = res->second;
+                auto it = std::find(paths.begin(), paths.end(), path);
+                if (it != paths.end()) {
+                        paths.erase(it);
+                        if (paths.empty())
+                                bookmarkedPaths.erase(res);
+                        return true;
+                }
+        }
+        return false;
 }
 
-bool GeonkickConfig::addCustomPresetFolder(const std::filesystem::path &folder)
+std::vector<std::filesystem::path> GeonkickConfig::getBookmarkedPaths(const std::string& name) const
 {
-        customPresetFolders.push_back(folder);
+        if (auto res = bookmarkedPaths.find(name); res != bookmarkedPaths.end())
+                return res->second;
+        return {};
+}
+
+void GeonkickConfig::setShowSidebar(bool b)
+{
+        showSideBar = b;
+}
+
+bool GeonkickConfig::isShowSidebar() const
+{
+        return showSideBar;
+}
+
+bool GeonkickConfig::setSampleCurrentPath(const fs::path &path)
+{
+        sampleCurrentPath = path;
         return true;
 }
 
-bool GeonkickConfig::removeCustomPresetFolder(const std::filesystem::path &folder)
+const fs::path& GeonkickConfig::getSampleCurrentPath() const
 {
-        auto it = customPresetFolders.erase(std::remove_if(customPresetFolders.begin(),
-                                                           customPresetFolders.end(),
-                                                           [&folder](const auto &p)
-                                                           { return p == folder; }),
-                                            customPresetFolders.end());
-        return it != customPresetFolders.end();
+        return sampleCurrentPath;
 }
 
-const std::vector<std::filesystem::path>&
-GeonkickConfig::getCustomPresetFolders() const
+bool GeonkickConfig::setPresetCurrentPath(const fs::path &path)
 {
-        return customPresetFolders;
+        presetCurrentPath = path;
+        return true;
+}
+
+const fs::path& GeonkickConfig::getPresetCurrentPath() const
+{
+        return presetCurrentPath;
+}
+
+void GeonkickConfig::writeBookmarkedPathsToJson(auto& writer) const
+{
+        writer.Key("bookmarkedPaths");
+        writer.StartArray();
+        for (const auto& el : bookmarkedPaths) {
+                writer.StartObject();
+                writer.Key("name");
+                writer.String(el.first.c_str());
+                writer.Key("paths");
+                writer.StartArray();
+                for (const auto& path : el.second)
+                        writer.String(path.string().c_str());
+                writer.EndArray();
+                writer.EndObject();
+        }
+        writer.EndArray();
 }
 
 std::string GeonkickConfig::toJson() const
 {
         rapidjson::StringBuffer s;
-        rapidjson::Writer<decltype(s)> writer(s);
+        rapidjson::PrettyWriter<decltype(s)> writer(s);
         writer.StartObject();
         writer.Key("scaleFactor");
         writer.Double(scaleFactor);
@@ -230,18 +295,15 @@ std::string GeonkickConfig::toJson() const
         writer.Int(channelNumber);
         writer.Key("midiChannelForced");
         writer.Bool(midiChannelForced);
+        writer.Key("showSideBar");
+        writer.Bool(showSideBar);
 
-        writer.Key("bookmarkedPaths");
-        writer.StartArray();
-        for (const auto &path : bookmarkedPaths)
-                writer.String(path.string().c_str());
-        writer.EndArray();
+        writeBookmarkedPathsToJson(writer);
 
-        writer.Key("customPresetFolders");
-        writer.StartArray();
-        for (const auto &path : customPresetFolders)
-                writer.String(path.string().c_str());
-        writer.EndArray();
+        writer.Key("presetCurrentPath");
+        writer.String(presetCurrentPath.string().c_str());
+        writer.Key("sampleCurrentPath");
+        writer.String(sampleCurrentPath.string().c_str());
         writer.EndObject();
         return s.GetString();
 }

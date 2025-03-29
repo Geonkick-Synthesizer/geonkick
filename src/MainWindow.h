@@ -25,7 +25,7 @@
 #define GEONGKICK_MAINWINDOW_H
 
 #include "geonkick_widget.h"
-#include "file_dialog.h"
+#include "FileBrowser.h"
 #include "kit_model.h"
 
 class Oscillator;
@@ -53,7 +53,7 @@ class MainWindow : public GeonkickWidget
  protected:
       void shortcutEvent(RkKeyEvent *event) override;
       void dropEvent(RkDropEvent *event) override;
-      void openFileDialog(FileDialog::Type type);
+        void openFileBrowser(/*FileBrowser::Type type*/);
       void openPreset(const std::string &fileName);
       void savePreset(const std::string &fileName);
       void setPreset(const std::string &fileName);
@@ -68,7 +68,6 @@ class MainWindow : public GeonkickWidget
       void createViewState();
       void createShortcuts();
       GeonkickApi *geonkickApi;
-      std::vector<std::unique_ptr<Oscillator>> oscillators;
       TopBar *topBar;
       EnvelopeWidget* envelopeWidget;
       ControlArea* controlAreaWidget;

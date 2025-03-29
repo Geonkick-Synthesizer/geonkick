@@ -34,10 +34,7 @@ class GeonkickModel;
 class ControlsWidget: public GeonkickWidget
 {
  public:
-        ControlsWidget(GeonkickWidget *parent,
-                       GeonkickModel* model,
-                       const std::vector<std::unique_ptr<Oscillator>> &oscillators);
-        ~ControlsWidget() = default;
+        ControlsWidget(GeonkickWidget *parent, GeonkickModel* model);
         RK_DECL_ACT(updateGui, updateGui(), RK_ARG_TYPE(), RK_ARG_VAL());
 
  private:

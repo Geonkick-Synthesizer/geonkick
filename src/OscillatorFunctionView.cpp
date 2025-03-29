@@ -39,9 +39,8 @@ RK_DECLARE_IMAGE_RC(noise_type_white_hover);
 RK_DECLARE_IMAGE_RC(noise_type_brownian);
 RK_DECLARE_IMAGE_RC(noise_type_brownian_active);
 RK_DECLARE_IMAGE_RC(noise_type_brownian_hover);
-RK_DECLARE_IMAGE_RC(button_browse_sample);
 
-OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model)
+OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, OscillatorModel* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
         , phaseControl{nullptr}
@@ -50,15 +49,22 @@ OscillatorFunctionView::OscillatorFunctionView(GeonkickWidget *parent, Oscillato
         , brownianNoiseButton{nullptr}
         , seedSpinBox{nullptr}
         , seedLabel{nullptr}
-        , sampleBrowseButton{nullptr}
-
 {
         setFixedSize({100, 62});
+
+        RK_ACT_BIND(oscillatorModel,
+                    functionUpdated,
+                    RK_ACT_ARGS(OscillatorModel::FunctionType func),
+                    this,
+                    updateView());
+
         createView();
 }
 
-void OscillatorFunctionView::setModel(Oscillator *model)
+void OscillatorFunctionView::setModel(OscillatorModel *model)
 {
+        if (oscillatorModel)
+                unbindObject(oscillatorModel);
         oscillatorModel = model;
         createView();
         updateView();
@@ -68,13 +74,11 @@ void OscillatorFunctionView::clearView()
 {
         delete phaseControl;
         delete phaseLabel;
-        delete sampleBrowseButton;
         delete whiteNoiseButton;
         delete brownianNoiseButton;
         delete seedSpinBox;
         delete seedLabel;
         phaseControl = nullptr;
-        sampleBrowseButton = nullptr;
         phaseLabel = nullptr;
         whiteNoiseButton = nullptr;
         brownianNoiseButton = nullptr;
@@ -86,18 +90,18 @@ void OscillatorFunctionView::createView()
 {
         clearView();
         switch (oscillatorModel->function()) {
-        case Oscillator::FunctionType::Sine:
-        case Oscillator::FunctionType::Square:
-        case Oscillator::FunctionType::Triangle:
-        case Oscillator::FunctionType::Sawtooth:
+        case OscillatorModel::FunctionType::Sine:
+        case OscillatorModel::FunctionType::Square:
+        case OscillatorModel::FunctionType::Triangle:
+        case OscillatorModel::FunctionType::Sawtooth:
                 createPhaseControl();
                 break;
-        case Oscillator::FunctionType::Sample:
+        case OscillatorModel::FunctionType::Sample:
                 createSampleControls();
                 break;
-        case Oscillator::FunctionType::NoiseWhite:
-        case Oscillator::FunctionType::NoisePink:
-        case Oscillator::FunctionType::NoiseBrownian:
+        case OscillatorModel::FunctionType::NoiseWhite:
+        case OscillatorModel::FunctionType::NoisePink:
+        case OscillatorModel::FunctionType::NoiseBrownian:
                 createNoiseControls();
                 break;
         default:
@@ -143,7 +147,7 @@ void OscillatorFunctionView::createNoiseControls()
                     toggled,
                     RK_ACT_ARGS(bool b),
                     this,
-                    setNoiseView(Oscillator::FunctionType::NoiseWhite));
+                    setNoiseView(OscillatorModel::FunctionType::NoiseWhite));
 
         brownianNoiseButton = new GeonkickButton(this);
         brownianNoiseButton->setPosition(60, 10);
@@ -155,7 +159,7 @@ void OscillatorFunctionView::createNoiseControls()
                     toggled,
                     RK_ACT_ARGS(bool val),
                     this,
-                    setNoiseView(Oscillator::FunctionType::NoiseBrownian));
+                    setNoiseView(OscillatorModel::FunctionType::NoiseBrownian));
 
         seedLabel = new RkLabel(this, "Seed");
         seedLabel->setFixedSize(30, 10);
@@ -189,27 +193,10 @@ void OscillatorFunctionView::createNoiseControls()
 void OscillatorFunctionView::createSampleControls()
 {
         createPhaseControl();
-        phaseControl->setX(phaseControl->x() - 10);
         phaseLabel->setText("Offset");
-        phaseLabel->setX(phaseLabel->x() - 10);
-        sampleBrowseButton = new GeonkickButton(this);
-        sampleBrowseButton->setCheckable(true);
-        sampleBrowseButton->setBackgroundColor(background());
-        sampleBrowseButton->setFixedSize(22, 14);
-        sampleBrowseButton->setPosition(phaseControl->x() + phaseControl->width() + 10,
-                                        phaseControl->y() + phaseControl->height() / 2 - 4);
-        sampleBrowseButton->setUnpressedImage(RkImage(sampleBrowseButton->size(),
-                                                      RK_IMAGE_RC(button_browse_sample)));
-        RK_ACT_BIND(sampleBrowseButton, pressed, RK_ACT_ARGS(), this, browseSample());
 }
 
-void OscillatorFunctionView::browseSample()
-{
-        viewState()->setSamplesBrowserOscillator(static_cast<ViewState::Oscillator>(oscillatorModel->type()));
-        viewState()->setMainView(ViewState::View::Samples);
-}
-
-void OscillatorFunctionView::setNoiseView(Oscillator::FunctionType noiseType)
+void OscillatorFunctionView::setNoiseView(OscillatorModel::FunctionType noiseType)
 {
         oscillatorModel->setFunction(noiseType);
         updateView();
@@ -218,19 +205,19 @@ void OscillatorFunctionView::setNoiseView(Oscillator::FunctionType noiseType)
 void OscillatorFunctionView::updateView()
 {
         switch (oscillatorModel->function()) {
-        case Oscillator::FunctionType::Sine:
-        case Oscillator::FunctionType::Square:
-        case Oscillator::FunctionType::Triangle:
-        case Oscillator::FunctionType::Sawtooth:
-        case Oscillator::FunctionType::Sample:
+        case OscillatorModel::FunctionType::Sine:
+        case OscillatorModel::FunctionType::Square:
+        case OscillatorModel::FunctionType::Triangle:
+        case OscillatorModel::FunctionType::Sawtooth:
+        case OscillatorModel::FunctionType::Sample:
                 phaseControl->setCurrentValue(oscillatorModel->getPhase());
                 break;
-        case Oscillator::FunctionType::NoiseWhite:
-        case Oscillator::FunctionType::NoisePink:
-        case Oscillator::FunctionType::NoiseBrownian:
-                whiteNoiseButton->setPressed(Oscillator::FunctionType::NoiseWhite
+        case OscillatorModel::FunctionType::NoiseWhite:
+        case OscillatorModel::FunctionType::NoisePink:
+        case OscillatorModel::FunctionType::NoiseBrownian:
+                whiteNoiseButton->setPressed(OscillatorModel::FunctionType::NoiseWhite
                                              == oscillatorModel->function());
-                brownianNoiseButton->setPressed(Oscillator::FunctionType::NoiseBrownian
+                brownianNoiseButton->setPressed(OscillatorModel::FunctionType::NoiseBrownian
                                              == oscillatorModel->function());
                 seedSpinBox->setCurrentIndex(oscillatorModel->getSeed() / 10);
                 break;

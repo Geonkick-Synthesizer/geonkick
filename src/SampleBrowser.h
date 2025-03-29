@@ -27,32 +27,30 @@
 #include "geonkick_widget.h"
 #include "geonkick_api.h"
 
-class FileDialog;
+class FileBrowser;
 class BufferView;
 class GeonkickButton;
 class RkContainer;
 class GeonkickSlider;
+class KitModel;
 
 class SampleBrowser: public GeonkickWidget {
  public:
-        SampleBrowser(GeonkickWidget *parent, GeonkickApi* api);
+        SampleBrowser(GeonkickWidget *parent, KitModel* model);
 
   protected:
-        void setPreviewSample(const std::string &file);
+        RkContainer* createPreviewMenu();
         void setOscillator(GeonkickApi::OscillatorType osc);
-        void loadSample();
+        void loadSample(const fs::path &file);
 
  private:
-        void createPreviewMenu(RkContainer* container);
-        GeonkickApi *geonkickApi;
-        FileDialog *fileBrowser;
-        BufferView *samplePreviewWidget;
+        KitModel *kitModel;
+        FileBrowser *fileBrowser;
         GeonkickButton *playButton;
         GeonkickButton *loadButton;
         GeonkickButton *osc1Button;
         GeonkickButton *osc2Button;
         GeonkickButton *osc3Button;
-        GeonkickSlider *previewLimiter;
 };
 
 #endif // GEONKICK_SAMPLE_BROWSER_H

@@ -25,7 +25,7 @@
 #define KIT_WIDGET_H
 
 #include "geonkick_widget.h"
-#include "file_dialog.h"
+#include "FileBrowser.h"
 
 #include "RkPainter.h"
 
@@ -50,7 +50,7 @@ class KitWidget: public GeonkickWidget
         void updatePercussion(PercussionIndex index, PercussionModel *model);
         void removePercussion(PercussionIndex index);
         void copyPercussion(int index);
-        void showFileDialog(FileDialog::Type type);
+        void showFileBrowser();
         void openKit(const std::string &file);
         void saveKit(const std::string &file);
         void keyPressEvent(RkKeyEvent *event) override;

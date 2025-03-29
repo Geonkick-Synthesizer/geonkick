@@ -51,6 +51,7 @@ class UiSettings {
         UiSettings::Oscillator samplesBrowserOscillator() const;
         void setSettings(const std::string &key, const std::string &value);
         std::string getSettings(const std::string &key) const;
+        bool showSidebar() const;
 
  protected:
         void parserSamplesBrowser(const rapidjson::Value &obj);

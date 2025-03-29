@@ -25,19 +25,29 @@
 #include "geonkick_api.h"
 #include "kit_model.h"
 #include "preset_browser_model.h"
+#include "OscillatorModel.h"
 
 GeonkickModel::GeonkickModel(RkObject* parent, GeonkickApi *api)
         : RkObject(parent)
         , geonkickApi{api}
-        , kitModel{new KitModel(this, geonkickApi)}
+        , kitModel{new KitModel(this)}
         , presetModel{new PresetBrowserModel(this, geonkickApi)}
 {
+        auto n = geonkickApi->oscillatorsPerLayer();
+        for (decltype(n) i = 0; i < n; i++)
+                oscillatorModels.emplace_back(new OscillatorModel(this, static_cast<OscillatorModel::Type>(i)));
 }
 
 GeonkickApi* GeonkickModel::api() const
 {
         return geonkickApi;
 }
+
+const std::vector<OscillatorModel*>& GeonkickModel::getOscillatorModels() const
+{
+        return oscillatorModels;
+}
+
 
 KitModel* GeonkickModel::getKitModel() const
 {

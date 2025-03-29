@@ -26,11 +26,12 @@
 
 #include "globals.h"
 
-#include "RkObject.h"
+#include <RkObject.h>
 
 class GeonkickApi;
 class KitModel;
 class PresetBrowserModel;
+class OscillatorModel;
 
 class GeonkickModel : public RkObject {
  public:
@@ -38,9 +39,11 @@ class GeonkickModel : public RkObject {
         GeonkickApi* api() const;
         KitModel* getKitModel() const;
         PresetBrowserModel* getPresetsModel() const;
+        const std::vector<OscillatorModel*>& getOscillatorModels() const;
 
  private:
         GeonkickApi *geonkickApi;
+        std::vector<OscillatorModel*> oscillatorModels;
         KitModel *kitModel;
         PresetBrowserModel* presetModel;
 };

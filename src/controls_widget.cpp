@@ -22,7 +22,7 @@
  */
 
 #include "controls_widget.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "layers_group_box.h"
@@ -35,25 +35,25 @@
 #include "percussion_model.h"
 
 ControlsWidget::ControlsWidget(GeonkickWidget *parent,
-                               GeonkickModel* model,
-                               const std::vector<std::unique_ptr<Oscillator>> &oscillators)
+                               GeonkickModel* model)
         : GeonkickWidget(parent)
         , geonkickModel{model}
 {
+        const auto& oscillators = geonkickModel->getOscillatorModels();
         setFixedSize({parent->width(), parent->height()});
-        auto oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator1)].get();
+        auto oscillator = oscillators[static_cast<int>(OscillatorModel::Type::Oscillator1)];
         auto widget = new OscillatorGroupBox(this, oscillator);
         widget->setPosition(0, 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
         widget->show();
 
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator2)].get();
+        oscillator = oscillators[static_cast<int>(OscillatorModel::Type::Oscillator2)];
         widget = new OscillatorGroupBox(this, oscillator);
         widget->setPosition(8 + 223, 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());
         widget->show();
 
-        oscillator = oscillators[static_cast<int>(Oscillator::Type::Oscillator3)].get();
+        oscillator = oscillators[static_cast<int>(OscillatorModel::Type::Oscillator3)];
         widget = new OscillatorGroupBox(this, oscillator);
         widget->setPosition(2 * (8 + 223), 0);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), widget, updateGui());

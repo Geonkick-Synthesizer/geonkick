@@ -26,12 +26,14 @@
 
 #include "globals.h"
 #include "AbstractModel.h"
+#include "OscillatorModel.h"
 
 class GeonkickApi;
 class GeonkickState;
 class KitModel;
 class FilterModel;
 class DistortionModel;
+class Preset;
 
 class PercussionModel : public AbstractModel {
  public:
@@ -79,8 +81,10 @@ class PercussionModel : public AbstractModel {
         void setMidiChannel(int chIndex);
         void enableNoteOff(bool b);
         bool isNoteOffEnabled() const;
+        OscillatorModel* getCurrentLayerOscillator(OscillatorModel::Type type) const;
         FilterModel* getFilter() const;
         DistortionModel* getDistortion() const;
+        bool loadPreset(const Preset &preset);
 
         RK_DECL_ACT(enabled,
                     enabled(bool b),

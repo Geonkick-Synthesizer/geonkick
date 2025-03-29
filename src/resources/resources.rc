@@ -329,4 +329,16 @@ distortion_log_button_active.png
 distortion_pl_button.png
 distortion_pl_button_hover.png
 distortion_pl_button_active.png
+
+#====== File browser ===
+
+file_history_button_back.png
+file_history_button_back_pressed.png
+file_history_button_back_hover.png
+file_history_button_back_disabled.png
+file_history_button_forward.png
+file_history_button_forward_pressed.png
+file_history_button_forward_hover.png
+file_history_button_forward_disabled.png
+
 )

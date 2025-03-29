@@ -2,7 +2,7 @@
  * File name: rkpng2c.c
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -26,7 +26,7 @@
  * It converts a PNG image to C array encoded in ARGB32 format.
  */
 
-#define RK_VERSION_STR "1.0.0"
+#define RK_VERSION_STR "1.1.0"
 
 #include <stdio.h>
 #include <libgen.h>
@@ -63,7 +63,15 @@ int main(int argc , char **argv)
                       " * Image size: %dx%d\n"
                       " */\n"
                       "\n"
-                "const unsigned char %s[] = {\n", RK_VERSION_STR, basename(argv[1]), w, h, basename(argv[3]));
+                      "const int %s_w = %d;\n"
+                      "const int %s_h = %d;\n"
+                      "const unsigned char %s[] = {\n",
+                      RK_VERSION_STR,
+                      basename(argv[1]),
+                      w, h,
+                      basename(argv[3]), w,
+                      basename(argv[3]), h,
+                      basename(argv[3]));
         for (int i = 0; i < w * h * 4; i++) {
                 if ((i + 1) == 12 || (i + 1) % 12 == 0)
                         fprintf(fptr, "0x%02x,\n", buff[i]);

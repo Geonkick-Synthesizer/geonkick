@@ -89,8 +89,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         openKitButton->setCheckable(true);
         openKitButton->setSize(16, 16);
         openKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(open_kit_button)));
-        RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
-                    this, showFileDialog(FileDialog::Type::Open));
+        //        RK_ACT_BIND(openKitButton, toggled, RK_ACT_ARGS(bool b),
+        //                    this, showFileBrowser(FileBrowser::Type::Open));
         openKitButton->show();
         topContainer->addWidget(openKitButton);
 
@@ -99,8 +99,8 @@ KitWidget::KitWidget(GeonkickWidget *parent, KitModel *model)
         saveKitButton->setCheckable(true);
         saveKitButton->setSize(16, 16);
         saveKitButton->setImage(RkImage(16, 16, RK_IMAGE_RC(save_kit_button)));
-        RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
-                    this, showFileDialog(FileDialog::Type::Save));
+        //        RK_ACT_BIND(saveKitButton, toggled, RK_ACT_ARGS(bool b),
+        //                    this, showFileBrowser(FileBrowser::Type::Save));
         saveKitButton->show();
         topContainer->addWidget(saveKitButton);
 
@@ -184,14 +184,14 @@ void KitWidget::copyPercussion(int index)
         kitModel->copyPercussion(index);
 }
 
-void KitWidget::showFileDialog(FileDialog::Type type)
+void KitWidget::showFileBrowser()
 {
-        auto fileDialog = new FileDialog(static_cast<GeonkickWidget*>(getTopWidget()),
-                                         type, type == FileDialog::Type::Open ? "Open Kit" : "Save Kit");
+        /*auto fileDialog = new FileBrowser(static_cast<GeonkickWidget*>(getTopWidget()),
+                                         type, type == FileBrowser::Type::Open ? "Open Kit" : "Save Kit");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".gkit", ".GKIT"});
         fileDialog->setHomeDirectory(kitModel->getHomePath().string());
-        if (type == FileDialog::Type::Open) {
+        if (type == FileBrowser::Type::Open) {
                 fileDialog->setCurrentDirectoy(kitModel->workingPath("OpenKit").string());
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
@@ -201,7 +201,7 @@ void KitWidget::showFileDialog(FileDialog::Type type)
                 RK_ACT_BIND(fileDialog, selectedFile,
                             RK_ACT_ARGS(const std::string &file),
                             this, saveKit(file));
-        }
+                            }*/
 }
 
 void KitWidget::openKit(const std::string &file)
@@ -281,14 +281,14 @@ void KitWidget::onUpdateLevelers()
 
 void KitWidget::exportKitDialog()
 {
-        auto fileDialog = new FileDialog(static_cast<GeonkickWidget*>(getTopWidget()),
-                                         FileDialog::Type::Save,  "Export kit to sfz");
+        /*auto fileDialog = new FileBrowser(static_cast<GeonkickWidget*>(getTopWidget()),
+          FileBrowser::Type::Save,  "Export kit to sfz");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".sfz", ".sfz"});
         fileDialog->setHomeDirectory(kitModel->getHomePath().string());
         fileDialog->setCurrentDirectoy(kitModel->workingPath("Export/Kit/Sfz").string());
         RK_ACT_BIND(fileDialog, selectedFile,
                     RK_ACT_ARGS(const std::string &file),
-                    kitModel, doExport(file, KitModel::ExportFormat::Sfz));
+                    kitModel, doExport(file, KitModel::ExportFormat::Sfz));*/
 }
 

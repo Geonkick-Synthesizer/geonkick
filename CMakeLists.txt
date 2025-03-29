@@ -51,7 +51,7 @@ else ()
   set(GKICK_OPTIMISATION_FLAGS "-O3 -funsafe-math-optimizations -fno-math-errno -fno-trapping-math -fomit-frame-pointer")
 endif ()
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-Wall ${GKICK_OPTIMISATION_FLAGS} ${CMAKE_CXX_FLAGS} -fvisibility=hidden")
@@ -112,6 +112,7 @@ set(GKICK_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR}/data)
 set(GKICK_PRESETS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/presets)
 
 set(GKICK_COMMON_HEADERS
+  ${GKICK_COMMON_DIR}/ItemList.h
   ${GKICK_COMMON_DIR}/AbstractModel.h
   ${GKICK_COMMON_DIR}/AbstractView.h
   ${GKICK_COMMON_DIR}/Base64EncoderDecoder.h
@@ -123,11 +124,18 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/geonkick_widget.h
   ${GKICK_COMMON_DIR}/geonkick_slider.h
   ${GKICK_COMMON_DIR}/geonkick_button.h
-  ${GKICK_COMMON_DIR}/PathListModel.h
-  ${GKICK_COMMON_DIR}/file_dialog.h
+  ${GKICK_COMMON_DIR}/PathBookmarksModel.h
+  ${GKICK_COMMON_DIR}/PathBookmarksView.h
+  ${GKICK_COMMON_DIR}/FilesView.h
+  ${GKICK_COMMON_DIR}/PathButton.h
+  ${GKICK_COMMON_DIR}/BreadcrumbBar.h
+  ${GKICK_COMMON_DIR}/PathHistory.h
+  ${GKICK_COMMON_DIR}/FileBrowser.h
+  ${GKICK_COMMON_DIR}/PresetBrowser.h
   ${GKICK_COMMON_DIR}/SampleBrowser.h
   ${GKICK_COMMON_DIR}/geonkick_groupbox.h
   ${GKICK_COMMON_DIR}/TopBar.h
+  ${GKICK_COMMON_DIR}/Sidebar.h
   ${GKICK_COMMON_DIR}/control_area.h
   ${GKICK_COMMON_DIR}/controls_widget.h
   ${GKICK_COMMON_DIR}/percussion_model.h
@@ -146,7 +154,7 @@ set(GKICK_COMMON_HEADERS
   ${GKICK_COMMON_DIR}/kick_graph.h
   ${GKICK_COMMON_DIR}/envelope_widget.h
   ${GKICK_COMMON_DIR}/knob.h
-  ${GKICK_COMMON_DIR}/oscillator.h
+  ${GKICK_COMMON_DIR}/OscillatorModel.h
   ${GKICK_COMMON_DIR}/geonkick_api.h
   ${GKICK_COMMON_DIR}/percussion_state.h
   ${GKICK_COMMON_DIR}/kit_state.h
@@ -191,11 +199,18 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/geonkick_widget.cpp
   ${GKICK_COMMON_DIR}/geonkick_slider.cpp
   ${GKICK_COMMON_DIR}/geonkick_button.cpp
-  ${GKICK_COMMON_DIR}/PathListModel.cpp
-  ${GKICK_COMMON_DIR}/file_dialog.cpp
+  ${GKICK_COMMON_DIR}/PathBookmarksModel.cpp
+  ${GKICK_COMMON_DIR}/PathBookmarksView.cpp
+  ${GKICK_COMMON_DIR}/FilesView.cpp
+  ${GKICK_COMMON_DIR}/PathButton.cpp
+  ${GKICK_COMMON_DIR}/BreadcrumbBar.cpp
+  ${GKICK_COMMON_DIR}/PathHistory.cpp
+  ${GKICK_COMMON_DIR}/FileBrowser.cpp
+  ${GKICK_COMMON_DIR}/PresetBrowser.cpp
   ${GKICK_COMMON_DIR}/SampleBrowser.cpp
   ${GKICK_COMMON_DIR}/geonkick_groupbox.cpp
   ${GKICK_COMMON_DIR}/TopBar.cpp
+  ${GKICK_COMMON_DIR}/Sidebar.cpp
   ${GKICK_COMMON_DIR}/control_area.cpp
   ${GKICK_COMMON_DIR}/controls_widget.cpp
   ${GKICK_COMMON_DIR}/percussion_model.cpp
@@ -214,7 +229,7 @@ set(GKICK_COMMON_SOURCES
   ${GKICK_COMMON_DIR}/kick_graph.cpp
   ${GKICK_COMMON_DIR}/envelope_widget.cpp
   ${GKICK_COMMON_DIR}/knob.cpp
-  ${GKICK_COMMON_DIR}/oscillator.cpp
+  ${GKICK_COMMON_DIR}/OscillatorModel.cpp
   ${GKICK_COMMON_DIR}/geonkick_api.cpp
   ${GKICK_COMMON_DIR}/percussion_state.cpp
   ${GKICK_COMMON_DIR}/kit_state.cpp
@@ -263,8 +278,10 @@ endif (GEONKICK_LIMITED_VERSION)
 
 if (ENABLE_LOGGING)
   message(STATUS "set debug level")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fsanitize=leak -DGKICK_LOG_DEBUG_LEVEL")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -fsanitize=leak -DGKICK_LOG_DEBUG_LEVEL")
+  #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fsanitize=undefined -fsanitize=leak -DGKICK_LOG_DEBUG_LEVEL")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DGKICK_LOG_DEBUG_LEVEL")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -fsanitize=leak -DGKICK_LOG_DEBUG_LEVEL")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGKICK_LOG_DEBUG_LEVEL")
   list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")
   list(APPEND GKICK_API_FLAGS "-DGKICK_LIB_LOG_FUNCTION")
   list(APPEND GKICK_API_PLUGIN_FLAGS "-DGKICK_LIB_LOG_LEVEL_DEBUG")

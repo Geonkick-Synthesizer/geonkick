@@ -24,18 +24,20 @@
 
 #include "MainWindow.h"
 #include "GeonkickModel.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "envelope_widget.h"
 #include "oscillator_group_box.h"
 #include "general_group_box.h"
 #include "control_area.h"
 #include "TopBar.h"
+#include "Sidebar.h"
 #include "limiter.h"
 #include "export_widget.h"
 #include "geonkick_api.h"
 #include "percussion_state.h"
 #include "ViewState.h"
 #include "UiSettings.h"
+#include "GeonkickConfig.h"
 
 #include <RkEvent.h>
 
@@ -59,7 +61,8 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const std::string &preset)
         setName("MainWindow");
         setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
-        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+        setFixedSize(MAIN_WINDOW_WIDTH + (GeonkickConfig().isShowSidebar() ? 313 : 0),
+                     MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -77,7 +80,8 @@ MainWindow::MainWindow(RkMain& app, GeonkickApi *api, const RkNativeWindowInfo &
 {
         setScaleFactor(geonkickApi->getScaleFactor());
         createViewState();
-        setFixedSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+        setFixedSize(MAIN_WINDOW_WIDTH + (GeonkickConfig().isShowSidebar() ? 313 : 0),
+                     MAIN_WINDOW_HEIGHT);
         setTitle(GEONKICK_NAME);
         geonkickApi->registerCallbacks(true);
         RK_ACT_BIND(geonkickApi, stateChanged, RK_ACT_ARGS(), this, updateGui());
@@ -160,7 +164,6 @@ void MainWindow::createShortcuts()
 
 bool MainWindow::init(void)
 {
-        oscillators = geonkickApi->oscillators();
         if (geonkickApi->isStandalone() && !geonkickApi->isJackEnabled()) {
                 GEONKICK_LOG_INFO("Jack is not installed or not running. "
                                   << "There is a need for jack server running "
@@ -170,10 +173,10 @@ bool MainWindow::init(void)
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
-        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
-                    this, openFileDialog(FileDialog::Type::Open));
-        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
-                    this, openFileDialog(FileDialog::Type::Save));
+        //        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
+        //                    this, openFileBrowser(FileBrowser::Type::Open));
+        //        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
+        //                    this, openFileBrowser(FileBrowser::Type::Save));
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
@@ -182,8 +185,14 @@ bool MainWindow::init(void)
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
                     geonkickApi, enbaleLayer(layer, b));
 
+        // Create Sidebar
+        if (GeonkickConfig().isShowSidebar()) {
+                auto sidebar = new Sidebar(this, geonkickModel);
+                sidebar->setPosition({MAIN_WINDOW_WIDTH, 4});
+        }
+
         // Create envelope widget.
-        envelopeWidget = new EnvelopeWidget(this, geonkickApi, oscillators);
+        envelopeWidget = new EnvelopeWidget(this, geonkickModel);
         envelopeWidget->setX(10);
         envelopeWidget->setY(topBar->y() + topBar->height());
         envelopeWidget->setFixedSize(850, 305);
@@ -196,7 +205,7 @@ bool MainWindow::init(void)
                                    envelopeWidget->y());
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), limiterWidget, onUpdateLimiter());
         limiterWidget->show();
-        controlAreaWidget = new ControlArea(this, geonkickModel, oscillators);
+        controlAreaWidget = new ControlArea(this, geonkickModel);
         controlAreaWidget->setPosition(10, envelopeWidget->y() + envelopeWidget->height());
         controlAreaWidget->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), controlAreaWidget, updateGui());
@@ -277,13 +286,13 @@ void MainWindow::openPreset(const std::string &fileName)
         updateGui();
 }
 
-void MainWindow::openFileDialog(FileDialog::Type type)
+void MainWindow::openFileBrowser(/*FileBrowser::Type type*/)
 {
-        auto fileDialog = new FileDialog(this, type, type == FileDialog::Type::Open ? "Open Preset" : "Save Preset");
+        /*auto fileDialog = new FileBrowser(this, type, type == FileBrowser::Type::Open ? "Open Preset" : "Save Preset");
         fileDialog->setPosition(30, 40);
         fileDialog->setFilters({".gkick", ".GKICK"});
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
-        if (type == FileDialog::Type::Open) {
+        if (type == FileBrowser::Type::Open) {
                 fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset").string());
                 RK_ACT_BIND(fileDialog,
                             selectedFile,
@@ -297,12 +306,12 @@ void MainWindow::openFileDialog(FileDialog::Type type)
                             RK_ACT_ARGS(const std::string &file),
                             this,
                             savePreset(file));
-        }
+                            }*/
 }
 
 void MainWindow::shortcutEvent(RkKeyEvent *event)
 {
-        if (event->type() == RkEvent::Type::KeyPressed) {
+        /*if (event->type() == RkEvent::Type::KeyPressed) {
                 if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                     && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
                         geonkickApi->playKick();
@@ -311,10 +320,10 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         resetToDefault();
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
-                        openFileDialog(FileDialog::Type::Open);
+                        openFileBrowser(FileBrowser::Type::Open);
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
-                        openFileDialog(FileDialog::Type::Save);
+                        openFileBrowser(FileBrowser::Type::Save);
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
                         openExportDialog();
@@ -348,7 +357,7 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                 if (!(event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                       || (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H))
                         envelopeWidget->hideEnvelope(false);
-        }
+                        }*/
 }
 
 void MainWindow::resetToDefault()
@@ -394,7 +403,7 @@ void MainWindow::setSample(const std::string &file)
 {
         auto osc = envelopeWidget->getCurrentOscillator();
         if (osc) {
-                osc->setFunction(Oscillator::FunctionType::Sample);
+                osc->setFunction(OscillatorModel::FunctionType::Sample);
                 geonkickApi->setOscillatorSample(file, osc->index());
                 geonkickApi->notifyPercussionUpdated(geonkickApi->currentPercussion());
                 updateGui();

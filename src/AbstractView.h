@@ -28,8 +28,7 @@
 
 class AbstractModel;
 
-class AbstractView: public GeonkickWidget
-{
+class AbstractView: public GeonkickWidget {
  public:
         explicit AbstractView(GeonkickWidget* parent, AbstractModel *model);
         void setModel(AbstractModel *model);
@@ -37,7 +36,7 @@ class AbstractView: public GeonkickWidget
         virtual void createView() = 0;
         virtual void updateView() = 0;
 
- private:
+ protected:
         virtual void bindModel() = 0;
         virtual void unbindModel() = 0;
 

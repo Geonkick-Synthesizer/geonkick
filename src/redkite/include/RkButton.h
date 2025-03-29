@@ -2,7 +2,7 @@
  * File name: RkButton.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -30,16 +30,17 @@
 class RkButton: public RkWidget {
  public:
         enum class ButtonType: int {
-                ButtonUncheckable = 0,
-                ButtonCheckable   = 1,
-                ButtonPush        = 3
+                ButtonUncheckable,
+                ButtonCheckable,
+                ButtonPush
         };
 
         enum class State: int {
-                Unpressed      = 0,
-                UnpressedHover = 1,
-                Pressed        = 2,
-                PressedHover   = 3
+                Unpressed,
+                UnpressedHover,
+                Pressed,
+                PressedHover,
+                Disabled
         };
 
         explicit RkButton(RkWidget *parent);
@@ -53,6 +54,7 @@ class RkButton: public RkWidget {
         void setCheckable(bool b);
         bool isCheckable() const;
         void setType(ButtonType type);
+        void setEnabled(bool b = true);
         RK_DECL_ACT(toggled,
                     toggled(bool pressed),
                     RK_ARG_TYPE(bool),

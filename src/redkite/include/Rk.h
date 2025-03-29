@@ -117,8 +117,9 @@ namespace Rk {
         };
 
         enum class Orientation : int {
-                Horizontal = 0,
-                Vertical = 1
+                Horizontal,
+                Vertical,
+                Flow,
         };
 
         enum class WidgetFlags: int {
@@ -486,8 +487,12 @@ namespace Rk {
 
 #define action
 
-#define RK_DECLARE_IMAGE_RC(name) RK_NO_EXPORT extern const unsigned char rk__ ## name ## _png[]
+#define RK_DECLARE_IMAGE_RC(name) RK_NO_EXPORT extern const int rk__ ## name ## _png_w; \
+                                  RK_NO_EXPORT extern const int rk__ ## name ## _png_h; \
+                                  RK_NO_EXPORT extern const unsigned char rk__ ## name ## _png[]
 #define RK_IMAGE_RC(name) rk__ ## name ## _png
+#define RK_IMAGE_SIZE_RC(name) RkSize(rk__ ## name ## _png_w, rk__ ## name ## _png_h)
+#define RK_RC_IMAGE(name) RkImage({rk__ ## name ## _png_w, rk__ ## name ## _png_h}, rk__ ## name ## _png)
 
 using RkString = std::string;
 

@@ -2,7 +2,7 @@
  * File name: GeonkickConfig.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -28,7 +28,8 @@
 
 class GeonkickConfig {
  public:
-        GeonkickConfig();
+        explicit GeonkickConfig(bool autosave = false);
+        ~GeonkickConfig();
         void setScaleFactor(double factor);
         double getScaleFactor() const;
         void setMidiChannel(int channel);
@@ -37,27 +38,37 @@ class GeonkickConfig {
         void setMidiChannelForced(bool b);
         bool open();
         bool save();
-        bool bookmarkPath(const std::filesystem::path &path);
-        bool isPathBookmarked(const std::filesystem::path &path) const;
-        bool removeBookmarkedPath(const std::filesystem::path &path);
-        const std::vector<std::filesystem::path> & getBookmarkedPaths() const;
-        bool addCustomPresetFolder(const std::filesystem::path &folder);
-        bool removeCustomPresetFolder(const std::filesystem::path &folder);
-        const std::vector<std::filesystem::path>& getCustomPresetFolders() const;
+        bool bookmarkPath(const std::filesystem::path &path,
+                          const std::string& name);
+        bool isPathBookmarked(const std::filesystem::path &path,
+                              const std::string& name) const;
+        bool removeBookmarkedPath(const std::filesystem::path &path,
+                                  const std::string& name);
+        std::vector<std::filesystem::path> getBookmarkedPaths(const std::string& name) const;
+        void setShowSidebar(bool b = true);
+        bool isShowSidebar() const;
+        bool setSampleCurrentPath(const fs::path &path);
+        const fs::path& getSampleCurrentPath() const;
+        bool setPresetCurrentPath(const fs::path &path);
+        const fs::path& getPresetCurrentPath() const;
 
  protected:
         void loadConfig(const std::string &data);
+        std::vector<std::filesystem::path> parsePathsArray(const auto &value) const;
         void parseBookmarkedPaths(const auto &value);
-        void parseCustomPresetFolders(const auto &value);
+        void writeBookmarkedPathsToJson(auto& writer) const;
         std::string toJson() const;
 
  private:
+        bool autoSave;
         double scaleFactor;
         int channelNumber;
         bool midiChannelForced;
         std::filesystem::path configFile;
-        std::vector<std::filesystem::path> bookmarkedPaths;
-        std::vector<std::filesystem::path> customPresetFolders;
+        std::unordered_map<std::string, std::vector<std::filesystem::path>> bookmarkedPaths;
+        fs::path presetCurrentPath;
+        fs::path sampleCurrentPath;
+        bool showSideBar;
 };
 
 #endif // GEONGKICK_CONFIG_H

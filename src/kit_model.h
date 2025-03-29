@@ -2,7 +2,7 @@
  * File name: kit_model.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -26,17 +26,20 @@
 
 #include "globals.h"
 #include "ExportAbstract.h"
+#include "OscillatorModel.h"
 
 class GeonkickApi;
 class GeonkickState;
 class PercussionModel;
+class GeonkickModel;
+class Preset;
 
 class KitModel : public RkObject {
  public:
         using ExportFormat = ExportAbstract::ExportFormat;
         using PercussionIndex = int;
         using KeyIndex = int;
-        explicit KitModel(RkObject* parent, GeonkickApi *api);
+        explicit KitModel(GeonkickModel* parent);
         bool enableInstrument(PercussionIndex index, bool b = true);
         bool isInstrumentEnabled(PercussionIndex index) const;
         bool isValidIndex(PercussionIndex index);
@@ -87,6 +90,9 @@ class KitModel : public RkObject {
         bool doExport(const std::string &file, ExportFormat format);
         bool enableNoteOff(PercussionIndex index, bool b);
         bool isNoteOffEnabled(PercussionIndex index) const;
+        OscillatorModel* getCurrentLayerOscillator(OscillatorModel::Type type) const;
+        bool loadPreset(const Preset &preset, PercussionIndex index);
+        bool loadPreset(const Preset &preset);
 
         RK_DECL_ACT(modelUpdated,
                     modelUpdated(),
@@ -126,6 +132,7 @@ class KitModel : public RkObject {
         void loadModelData();
 
  private:
+        GeonkickModel *geonkickModel;
         GeonkickApi *geonkickApi;
         std::vector<PercussionModel*> percussionsList;
         std::vector<std::string> midiKeys;

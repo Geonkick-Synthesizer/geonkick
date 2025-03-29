@@ -115,3 +115,8 @@ void RkImage::RkImageImpl::fill(const RkColor &color)
         if (imageBackendCanvas)
                 imageBackendCanvas->fill(color);
 }
+
+void RkImage::RkImageImpl::grayscaleImage(double fadeFactor)
+{
+        imageBackendCanvas->grayscaleImage(fadeFactor);
+}

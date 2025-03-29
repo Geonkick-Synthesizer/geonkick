@@ -22,7 +22,7 @@
  */
 
 #include "OscillatorEffects.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "FilterModel.h"
 #include "FilterView.h"
 #include "DistortionModel.h"
@@ -40,7 +40,7 @@ RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_active);
 RK_DECLARE_IMAGE_RC(effects_tab_distortion_button_hover);
 
 
-OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
+OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, OscillatorModel* model)
         : GeonkickWidget(parent)
         , oscillatorModel{model}
         , filterTabButton{nullptr}
@@ -53,7 +53,7 @@ OscillatorEffects::OscillatorEffects(GeonkickWidget *parent, Oscillator* model)
         show();
 }
 
-void OscillatorEffects::setModel(Oscillator *model)
+void OscillatorEffects::setModel(OscillatorModel *model)
 {
         oscillatorModel = model;
         if (currentTabView) {
@@ -65,7 +65,7 @@ void OscillatorEffects::setModel(Oscillator *model)
         updateView();
 }
 
-Oscillator* OscillatorEffects::getModel() const
+OscillatorModel* OscillatorEffects::getModel() const
 {
         return oscillatorModel;
 }

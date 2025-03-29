@@ -147,12 +147,17 @@ bool RkWidget::isClose() const
 
 void RkWidget::setSize(int w, int h)
 {
-        impl_ptr->setSize(RkSize(w, h));
+        setSize(RkSize(w, h));
 }
 
 void RkWidget::setSize(const RkSize &size)
 {
-        setSize(size.width(), size.height());
+        if (size.isEmpty())
+                return;
+
+        impl_ptr->setSize({size.width(), size.height()});
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 const RkSize& RkWidget::size() const
@@ -182,7 +187,7 @@ const RkSize& RkWidget::maximumSize() const
 
 void RkWidget::setWidth(int w)
 {
-        setSize(RkSize(w, impl_ptr->size().height()));
+        setSize(w, impl_ptr->size().height());
 }
 
 int RkWidget::width() const
@@ -202,7 +207,7 @@ int RkWidget::maximumWidth() const
 
 void RkWidget::setHeight(int h)
 {
-        setSize(RkSize(impl_ptr->size().width(),  h));
+        setSize(impl_ptr->size().width(),  h);
 }
 
 int RkWidget::height() const
@@ -222,21 +227,29 @@ int RkWidget::maximumHeight() const
 
 void RkWidget::setMinimumWidth(int width)
 {
+        if (width < 1)
+                return;
         impl_ptr->setMinimumSize({width, minimumSize().height()});
 }
 
 void RkWidget::setMinimumHeight(int height)
 {
+        if (height < 1)
+                return;
         impl_ptr->setMinimumSize({minimumSize().width(), height});
 }
 
 void RkWidget::setMaximumWidth(int width)
 {
+        if (width < 1)
+                return;
         impl_ptr->setMaximumSize({width, maximumSize().height()});
 }
 
 void RkWidget::setMaximumHeight(int height)
 {
+        if (height < 1)
+                return;
         impl_ptr->setMaximumSize({ maximumSize().width(), height});
 }
 
@@ -276,6 +289,8 @@ int RkWidget::x() const
 void RkWidget::setX(int x)
 {
         impl_ptr->setPosition(RkPoint(x, impl_ptr->position().y()));
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 int RkWidget::y() const
@@ -285,17 +300,23 @@ int RkWidget::y() const
 
 void RkWidget::setY(int y)
 {
-        return impl_ptr->setPosition(RkPoint(impl_ptr->position().x(), y));
+        impl_ptr->setPosition(RkPoint(impl_ptr->position().x(), y));
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 void RkWidget::setPosition(int x, int y)
 {
         impl_ptr->setPosition(RkPoint(x, y));
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 void RkWidget::setPosition(const RkPoint &p)
 {
         impl_ptr->setPosition(p);
+        if (parentWidget())
+                parentWidget()->update();
 }
 
 const RkPoint& RkWidget::position() const
@@ -372,6 +393,26 @@ const RkFont& RkWidget::font() const
 void RkWidget::setFont(const RkFont &font)
 {
         impl_ptr->setFont(font);
+}
+
+void RkWidget::setEnabled(bool b)
+{
+        if (b)
+                enableInput();
+        else
+                disableInput();
+        impl_ptr->setEnabled(b);
+        update();
+}
+
+void RkWidget::setDisabled(bool b)
+{
+        setEnabled(!b);
+}
+
+bool RkWidget::isEnabled() const
+{
+        return impl_ptr->isEnabled();
 }
 
 void RkWidget::enableInput()

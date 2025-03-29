@@ -72,6 +72,11 @@ void RkImage::fill(const RkColor &color)
         o_ptr->fill(color);
 }
 
+void RkImage::grayscaleImage(double fadeFactor)
+{
+        return o_ptr->grayscaleImage(fadeFactor);
+}
+
 unsigned char* RkImage::data() const
 {
         return o_ptr->data();

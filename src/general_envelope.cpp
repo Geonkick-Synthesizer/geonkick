@@ -2,7 +2,7 @@
  * File name: general_envelope.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2017 Iurie Nistor 
+ * Copyright (C) 2017 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -22,7 +22,6 @@
  */
 
 #include "general_envelope.h"
-#include "oscillator.h"
 
 GeneralEnvelope::GeneralEnvelope(GeonkickApi *api, const RkRect &area)
         : Envelope(area)

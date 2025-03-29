@@ -96,6 +96,8 @@ SettingsWidget::SettingsWidget(GeonkickWidget *parent, GeonkickApi* api)
         createMidiChannelSettings(mainContainer);
         mainContainer->addSpace(5);
         createScaleGUISettings(mainContainer);
+        mainContainer->addSpace(5);
+        createShowSidebarSettings(mainContainer);
 }
 
 void SettingsWidget::createMidiChannelSettings(RkContainer *container)
@@ -224,4 +226,31 @@ void SettingsWidget::createScaleGUISettings(RkContainer *container)
 
         container->addContainer(buttonsContainer);
 }
+
+void SettingsWidget::createShowSidebarSettings(RkContainer *container)
+{
+        container->addSpace(5);
+        GeonkickConfig config;
+        auto hoziontalContainer = new RkContainer(this);
+        hoziontalContainer->setSize({container->size().width(), 16});
+        auto label = new RkLabel(this, "Show browser: ");
+        label->setSize(70, 16);
+        label->setTextColor({255, 255, 255});
+        label->setBackgroundColor(background());
+        label->show();
+        hoziontalContainer->addWidget(label, Rk::Alignment::AlignLeft);
+
+        hoziontalContainer->addSpace(3);
+        auto showSidebar = new SettingsCheckBox(this, {16, 16});
+        showSidebar->setPressed(config.isShowSidebar());
+        hoziontalContainer->addWidget(showSidebar, Rk::Alignment::AlignLeft);
+        RK_ACT_BINDL(showSidebar, toggled,  RK_ACT_ARGS(bool b),
+                     [=, this](bool b){
+                             GeonkickConfig cfg;
+                             cfg.setShowSidebar(b);
+                             cfg.save();
+                     });
+        container->addContainer(hoziontalContainer);
+}
+
 

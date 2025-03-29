@@ -23,7 +23,7 @@
 
 #include "geonkick_api.h"
 #include "DesktopPaths.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "globals.h"
 #include "percussion_state.h"
 #include "kit_state.h"
@@ -521,14 +521,9 @@ bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         return true;
 }
 
-std::vector<std::unique_ptr<Oscillator>> GeonkickApi::oscillators(void)
+size_t GeonkickApi::oscillatorsPerLayer(void) const
 {
-        std::vector<std::unique_ptr<Oscillator>> oscillators;
-        size_t n = 0;
-        geonkick_get_oscillators_number(geonkickApi, &n);
-        for (decltype(n) i = 0; i < n; i++)
-                oscillators.push_back(std::make_unique<Oscillator>(this, static_cast<Oscillator::Type>(i % GKICK_OSC_GROUP_SIZE)));
-        return oscillators;
+        return GKICK_OSC_GROUP_SIZE;
 }
 
 std::vector<EnvelopePoint> GeonkickApi::oscillatorEvelopePoints(int oscillatorIndex,  EnvelopeType envelope) const
@@ -1607,16 +1602,20 @@ size_t GeonkickApi::currentPercussion() const
         return index;
 }
 
-void GeonkickApi::setOscillatorSample(const std::string &file,
+bool GeonkickApi::setOscillatorSample(const std::string &file,
                                       int oscillatorIndex)
 {
         int sRate = Geonkick::defaultSampleRate;
         geonkick_get_sample_rate(geonkickApi, &sRate);
-        std::vector<gkick_real> sampleData = loadSample(file,
-                                                        kickMaxLength() / 1000,
-                                                        sRate,
-                                                        1);
-        setOscillatorSample(sampleData, oscillatorIndex);
+        auto sampleData = loadSample(file,
+                                     kickMaxLength() / 1000,
+                                     sRate,
+                                     1);
+        if (!sampleData.empty()) {
+                setOscillatorSample(sampleData, oscillatorIndex);
+                return true;
+        }
+        return false;
 }
 
 void GeonkickApi::setOscillatorSample(const std::vector<float> &sample,
@@ -1891,14 +1890,6 @@ void GeonkickApi::loadPresets()
                         GEONKICK_LOG_ERROR("error on reading path: " << path << ": " << e.what());
                 }
         }
-
-        // Load custom preset folders.
-        GeonkickConfig cfg;
-        for (const auto &folder: cfg.getCustomPresetFolders()) {
-                auto presetFolder = std::make_unique<PresetFolder>(folder);
-                presetFolder->setAsCustom();
-                presetsFoldersList.emplace_back(std::move(presetFolder));
-        }
 }
 
 void GeonkickApi::loadPresetsFolders(const std::filesystem::path &path)
@@ -1947,39 +1938,6 @@ PresetFolder* GeonkickApi::getPresetFolder(size_t index) const
         if (index < presetsFoldersList.size())
                 return presetsFoldersList[index].get();
         return nullptr;
-}
-
-PresetFolder* GeonkickApi::addPresetFolder(const std::filesystem::path &folder, bool custom)
-{
-        auto it = std::find_if(presetsFoldersList.cbegin(),
-                               presetsFoldersList.cend(), [&folder](const auto &e)
-                               {
-                                       return e->path() == folder;
-                               });
-        if (it == presetsFoldersList.cend()) {
-                auto presetFolder = std::make_unique<PresetFolder>(folder);
-                presetFolder->setAsCustom(custom);
-                GeonkickConfig cfg;
-                cfg.addCustomPresetFolder(presetFolder->path());
-                cfg.save();
-                return presetsFoldersList.emplace_back(std::move(presetFolder)).get();
-        }
-        return nullptr;
-}
-
-bool GeonkickApi::removePresetFolder(const PresetFolder *folder)
-{
-        auto folderPath = folder->path();
-        presetsFoldersList.erase(std::remove_if(presetsFoldersList.begin(),
-                                                presetsFoldersList.end(),
-                                                [&folder](const auto &p)
-                                                { return p->path() == folder->path(); }),
-                                 presetsFoldersList.end());
-
-        GeonkickConfig cfg;
-        cfg.removeCustomPresetFolder(folderPath);
-        cfg.save();
-        return true;
 }
 
 size_t GeonkickApi::numberOfPresetFolders() const

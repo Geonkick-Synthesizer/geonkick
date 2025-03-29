@@ -21,12 +21,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#include "oscillator.h"
+#include "OscillatorModel.h"
 #include "OscillatorDistortionModel.h"
 #include "OscillatorFilterModel.h"
+#include "GeonkickModel.h"
 
-Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
-        : geonkickApi{api}
+OscillatorModel::OscillatorModel(GeonkickModel *model, OscillatorModel::Type type)
+        : geonkickApi{model->api()}
         , oscillatorType{type}
         , filterModel{new OscillatorFilterModel(this)}
         , distortionModel{new OscillatorDistortionModel(this)}
@@ -37,68 +38,74 @@ Oscillator::Oscillator(GeonkickApi *api, Oscillator::Type type)
                     this, kickLengthUpdated(val));
 }
 
-void Oscillator::setAsFm(bool b)
+void OscillatorModel::setAsFm(bool b)
 {
         geonkickApi->setOscillatorAsFm(index(), b);
 }
 
-bool Oscillator::isFm() const
+bool OscillatorModel::isFm() const
 {
         return geonkickApi->isOscillatorAsFm(index());
 }
 
-void Oscillator::setFunction(FunctionType func)
+bool OscillatorModel::setFunction(FunctionType func)
 {
-        geonkickApi->setOscillatorFunction(index(), static_cast<GeonkickApi::FunctionType>(func));
+        auto functionType = static_cast<GeonkickApi::FunctionType>(func);
+        if (functionType == geonkickApi->oscillatorFunction(index()))
+                return false;
+
+        geonkickApi->setOscillatorFunction(index(), functionType);
+        action functionUpdated(func);
+        return true;
 }
 
-void Oscillator::setPhase(gkick_real phase)
+void OscillatorModel::setPhase(gkick_real phase)
 {
         geonkickApi->setOscillatorPhase(index(), phase);
 }
 
-gkick_real Oscillator::getPhase() const
+gkick_real OscillatorModel::getPhase() const
 {
         return geonkickApi->oscillatorPhase(index());
 }
 
-void Oscillator::setSeed(int seed)
+void OscillatorModel::setSeed(int seed)
 {
         geonkickApi->setOscillatorSeed(index(), seed);
 }
 
-int Oscillator::getSeed() const
+int OscillatorModel::getSeed() const
 {
         return geonkickApi->oscillatorSeed(index());
 }
 
-Oscillator::FunctionType Oscillator::function() const
+OscillatorModel::FunctionType OscillatorModel::function() const
 {
         return static_cast<FunctionType>(geonkickApi->oscillatorFunction(index()));
 }
 
 std::vector<EnvelopePoint>
-Oscillator::envelopePoints(EnvelopeType envelope) const
+OscillatorModel::envelopePoints(EnvelopeType envelope) const
 {
         const auto env = geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
         return geonkickApi->oscillatorEvelopePoints(index(), static_cast<GeonkickApi::EnvelopeType>(envelope));
 }
 
-void Oscillator::addEnvelopePoint(EnvelopeType envelope, const EnvelopePoint &point)
+void OscillatorModel::addEnvelopePoint(EnvelopeType envelope, const EnvelopePoint &point)
 {
         geonkickApi->addOscillatorEnvelopePoint(index(),
                                                 static_cast<GeonkickApi::EnvelopeType>(envelope),
                                                 point);
 }
 
-void Oscillator::removeEnvelopePoint(EnvelopeType envelope, int point_index)
+void OscillatorModel::removeEnvelopePoint(EnvelopeType envelope, int point_index)
 {
         geonkickApi->removeOscillatorEvelopePoint(index(),
                                                   static_cast<GeonkickApi::EnvelopeType>(envelope),
                                                   point_index);
 }
 
-void Oscillator::updateEnvelopePoint(EnvelopeType envelope,
+void OscillatorModel::updateEnvelopePoint(EnvelopeType envelope,
                                      int point_index,
                                      const EnvelopePoint &point)
 {
@@ -108,115 +115,117 @@ void Oscillator::updateEnvelopePoint(EnvelopeType envelope,
                                                   point);
 }
 
-void Oscillator::setType(Oscillator::Type type)
+void OscillatorModel::setType(OscillatorModel::Type type)
 {
         oscillatorType = type;
 }
 
-Oscillator::Type Oscillator::type() const
+OscillatorModel::Type OscillatorModel::type() const
 {
         return oscillatorType;
 }
 
-void Oscillator::setAmplitude(double amp)
+void OscillatorModel::setAmplitude(double amp)
 {
         if (geonkickApi->setOscillatorAmplitude(index(), amp))
                 action amplitudeUpdated(amp);
 }
 
-double Oscillator::amplitude(void) const
+double OscillatorModel::amplitude(void) const
 {
 	return geonkickApi->oscillatorAmplitude(index());
 }
 
-void Oscillator::setFrequency(double freq)
+void OscillatorModel::setFrequency(double freq)
 {
 	if (geonkickApi->setOscillatorFrequency(index(), freq))
                 action frequencyUpdated(freq);
 }
 
-void Oscillator::setPitchShift(double semitones)
+void OscillatorModel::setPitchShift(double semitones)
 {
 	if (geonkickApi->setOscillatorPitchShift(index(), semitones))
                 action pitchShiftUpdated(semitones);
 }
 
-void Oscillator::setNoiseDensity(double density)
+void OscillatorModel::setNoiseDensity(double density)
 {
 	if (geonkickApi->setOscillatorNoiseDensity(index(), density))
                 action noiseDensityUpdated(density);
 }
 
-double Oscillator::frequency(void) const
+double OscillatorModel::frequency(void) const
 {
         return geonkickApi->oscillatorFrequency(index());
 }
 
-double Oscillator::pitchShift(void) const
+double OscillatorModel::pitchShift(void) const
 {
         return geonkickApi->oscillatorPitchShift(index());
 }
 
-double Oscillator::noiseDensity(void) const
+double OscillatorModel::noiseDensity(void) const
 {
         return geonkickApi->oscillatorNoiseDensity(index());
 }
 
-int Oscillator::index() const
+int OscillatorModel::index() const
 {
         return static_cast<int>(oscillatorType);
 }
 
-void Oscillator::enable(bool b)
+void OscillatorModel::enable(bool b)
 {
         geonkickApi->enableOscillator(index(), b);
 }
 
-bool Oscillator::isEnabled() const
+bool OscillatorModel::isEnabled() const
 {
         return geonkickApi->isOscillatorEnabled(index());
 }
 
-double Oscillator::envelopeLength() const
+double OscillatorModel::envelopeLength() const
 {
         return geonkickApi->kickLength();
 }
 
-void Oscillator::setSample(const std::string &file)
+bool OscillatorModel::setSample(const std::string &file)
 {
-        geonkickApi->setOscillatorSample(file, index());
+        if (auto res = geonkickApi->setOscillatorSample(file, index()); !res)
+                return false;
         auto path = std::filesystem::path(file);
         geonkickApi->setCurrentWorkingPath("Samples", path.has_parent_path() ? path.parent_path().string() : path.string());
+        return true;
 }
 
-std::string Oscillator::samplesPath() const
+std::string OscillatorModel::samplesPath() const
 {
         return geonkickApi->currentWorkingPath("Samples").string();
 }
 
-void Oscillator::setEnvelopeApplyType(Oscillator::EnvelopeType envelope,
-				      Oscillator::EnvelopeApplyType apply)
+void OscillatorModel::setEnvelopeApplyType(OscillatorModel::EnvelopeType envelope,
+				      OscillatorModel::EnvelopeApplyType apply)
 {
 	geonkickApi->setOscillatorEnvelopeApplyType(index(), envelope, apply);
 }
 
-Oscillator::EnvelopeApplyType
-Oscillator::envelopeApplyType(Oscillator::EnvelopeType envelope) const
+OscillatorModel::EnvelopeApplyType
+OscillatorModel::envelopeApplyType(OscillatorModel::EnvelopeType envelope) const
 {
 	return geonkickApi->getOscillatorEnvelopeApplyType(index(), envelope);
 }
 
-FilterModel* Oscillator::getFilter() const
+FilterModel* OscillatorModel::getFilter() const
 {
         return filterModel;
 }
 
-DistortionModel* Oscillator::getDistortion() const
+DistortionModel* OscillatorModel::getDistortion() const
 {
         return distortionModel;
 }
 
-GeonkickApi* Oscillator::api() const
+GeonkickApi* OscillatorModel::api() const
 {
         return geonkickApi;
 }

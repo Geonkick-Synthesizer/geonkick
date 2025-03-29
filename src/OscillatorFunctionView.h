@@ -25,7 +25,7 @@
 #define OSCILLATOR_FUNCTION_VIEW_H
 
 #include "geonkick_widget.h"
-#include "oscillator.h"
+#include "OscillatorModel.h"
 
 class Knob;
 class GeonkickButton;
@@ -34,8 +34,8 @@ class RkLabel;
 
 class OscillatorFunctionView: public GeonkickWidget {
  public:
-        OscillatorFunctionView(GeonkickWidget *parent, Oscillator* model);
-        void setModel(Oscillator *model);
+        OscillatorFunctionView(GeonkickWidget *parent, OscillatorModel* model);
+        void setModel(OscillatorModel *model);
 
 protected:
         void clearView();
@@ -43,19 +43,18 @@ protected:
         void createPhaseControl();
         void createNoiseControls();
         void createSampleControls();
-        void setNoiseView(Oscillator::FunctionType noiseType);
+        void setNoiseView(OscillatorModel::FunctionType noiseType);
         void updateView();
         void browseSample();
 
  private:
-        Oscillator *oscillatorModel;
+        OscillatorModel *oscillatorModel;
         Knob *phaseControl;
         RkLabel *phaseLabel;
         GeonkickButton *whiteNoiseButton;
         GeonkickButton *brownianNoiseButton;
         RkSpinBox *seedSpinBox;
         RkLabel *seedLabel;
-        GeonkickButton *sampleBrowseButton;
 };
 
 #endif // OSCILLATOR_FUNCTION_VIEW_H

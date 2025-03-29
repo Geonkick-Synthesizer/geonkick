@@ -48,6 +48,7 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
         , isWidgetExplicitHidden{false}
         , isWidgetVisible{false}
         , widgetHasFocus{false}
+        , isWidgetEnabled{true}
 {
         RK_LOG_DEBUG("called");
 }
@@ -71,6 +72,7 @@ RkWidget::RkWidgetImpl::RkWidgetImpl(RkWidget* inf,
         , isWidgetExplicitHidden{false}
 	, isWidgetVisible{false}
         , widgetHasFocus{false}
+        , isWidgetEnabled{true}
 {
         RK_LOG_DEBUG("called");
 }
@@ -502,4 +504,14 @@ double RkWidget::RkWidgetImpl::scaleFactor() const
         if (systemWindow)
                 return systemWindow->scaleFactor();
         return 1.0;
+}
+
+void RkWidget::RkWidgetImpl::setEnabled(bool b)
+{
+        isWidgetEnabled = b;
+}
+
+bool RkWidget::RkWidgetImpl::isEnabled() const
+{
+        return isWidgetEnabled;
 }

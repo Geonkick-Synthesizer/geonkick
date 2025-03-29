@@ -33,7 +33,7 @@ Preset::PresetType Preset::type() const
 {
         if (path().extension().string() == ".gkit")
                 return PresetType::PercussionKit;
-        return PresetType::Percussion;
+        return PresetType::Instrument;
 }
 
 std::string Preset::name() const
