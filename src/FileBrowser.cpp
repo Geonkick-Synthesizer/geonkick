@@ -125,6 +125,11 @@ void FileBrowser::createUi()
                     pathHistory,
                     goTo(path));
         RK_ACT_BIND(filesView,
+                    currentPathChanged,
+                    RK_ACT_ARGS(const fs::path& path),
+                    this,
+                    currentPathChanged(path));
+        RK_ACT_BIND(filesView,
                     fileActivated,
                     RK_ACT_ARGS(const fs::path& path),
                     this,

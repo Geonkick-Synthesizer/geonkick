@@ -122,8 +122,8 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         showSideBar = m.value.GetBool();
                 if (m.name == "bookmarkedPaths" && m.value.IsArray())
                         parseBookmarkedPaths(m.value);
-                //                if (m.name == "presetCurrentPath" && m.value.IsString())
-                //                        presetCurrentPath = m.value.GetString();
+                if (m.name == "presetCurrentPath" && m.value.IsString())
+                        presetCurrentPath = m.value.GetString();
                 if (m.name == "sampleCurrentPath" && m.value.IsString())
                         sampleCurrentPath = m.value.GetString();
         }

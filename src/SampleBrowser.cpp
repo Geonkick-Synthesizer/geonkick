@@ -23,10 +23,10 @@
 
 #include "SampleBrowser.h"
 #include "FileBrowser.h"
-#include "ViewState.h"
 #include "geonkick_button.h"
 #include "kit_model.h"
 #include "percussion_model.h"
+#include "GeonkickConfig.h"
 
 #include <RkContainer.h>
 
@@ -52,6 +52,7 @@ RK_DECLARE_IMAGE_RC(osc3_preview_sample_pressed);
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
         , kitModel{model}
+        , geonkickConfig{std::make_unique<GeonkickConfig>(true)}
         , fileBrowser{nullptr}
         , playButton{nullptr}
         , loadButton{nullptr}
@@ -64,12 +65,13 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         fileBrowser = new FileBrowser(this, "Samples");
         fileBrowser->setSize({width(), height() - 25});
         fileBrowser->setFilters({".wav", ".flac", ".ogg"});
-        fileBrowser->setCurrentDirectoy(viewState()->samplesBrowserPath());
-        RK_ACT_BIND(fileBrowser,
-                    currentPathChanged,
-                    RK_ACT_ARGS(const std::string &path),
-                    viewState(),
-                    setSamplesBrowserPath(path));
+        fileBrowser->setCurrentDirectoy(geonkickConfig->getSampleCurrentPath());
+         RK_ACT_BINDL(fileBrowser,
+                      currentPathChanged,
+                      RK_ACT_ARGS(const std::string &path),
+                      [=,this](const std::string &path) {
+                              geonkickConfig->setSampleCurrentPath(path);
+                      });
         RK_ACT_BIND(fileBrowser,
                     fileSelected,
                     RK_ACT_ARGS(const fs::path &file),

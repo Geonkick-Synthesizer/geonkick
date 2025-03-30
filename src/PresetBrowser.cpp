@@ -33,6 +33,7 @@
 PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
         , kitModel{model}
+        , geonkickConfig{std::make_unique<GeonkickConfig>(true)}
         , fileBrowser{nullptr}
 {
         setSize(306, parent->height() - 30);
@@ -40,17 +41,13 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         fileBrowser = new FileBrowser(this, "Presets");
         fileBrowser->setSize({width(), height() - 25});
         fileBrowser->setFilters({".gkick", ".gkit"});
-        fileBrowser->setCurrentDirectoy(GeonkickConfig().getPresetCurrentPath());
-        /*        RK_ACT_BIND(fileBrowser,
-                    currentPathChanged,
-                    RK_ACT_ARGS(const std::string &path),
-                    viewState(),
-                    setSamplesBrowserPath(path));*/
-        /*RK_ACT_BIND(fileBrowser,
-                    fileSelected,
-                    RK_ACT_ARGS(const fs::path &file),
-                    this,
-                    loadSample(file));*/
+        fileBrowser->setCurrentDirectoy(geonkickConfig->getPresetCurrentPath());
+         RK_ACT_BINDL(fileBrowser,
+                      currentPathChanged,
+                      RK_ACT_ARGS(const std::string &path),
+                      [=,this](const std::string &path) {
+                              geonkickConfig->setPresetCurrentPath(path);
+                      });
         RK_ACT_BIND(fileBrowser,
                     fileActivated,
                     RK_ACT_ARGS(const fs::path &file),

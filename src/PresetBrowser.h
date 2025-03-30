@@ -30,6 +30,7 @@
 class FileBrowser;
 class RkContainer;
 class KitModel;
+class GeonkickConfig;
 
 class PresetBrowser: public GeonkickWidget {
  public:
@@ -37,6 +38,7 @@ class PresetBrowser: public GeonkickWidget {
 
  private:
         KitModel *kitModel;
+        std::unique_ptr<GeonkickConfig> geonkickConfig;
         FileBrowser *fileBrowser;
 };
 
