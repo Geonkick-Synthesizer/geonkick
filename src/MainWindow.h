@@ -53,7 +53,7 @@ class MainWindow : public GeonkickWidget
  protected:
       void shortcutEvent(RkKeyEvent *event) override;
       void dropEvent(RkDropEvent *event) override;
-        void openFileBrowser(/*FileBrowser::Type type*/);
+      void showFileBrowser();
       void openPreset(const std::string &fileName);
       void savePreset(const std::string &fileName);
       void setPreset(const std::string &fileName);

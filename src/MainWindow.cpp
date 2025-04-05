@@ -173,10 +173,8 @@ bool MainWindow::init(void)
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
-        //        RK_ACT_BIND(topBar, openFile, RK_ACT_ARGS(),
-        //                    this, openFileBrowser(FileBrowser::Type::Open));
-        //        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
-        //                    this, openFileBrowser(FileBrowser::Type::Save));
+        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
+                    this, showFileBrowser());
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
         RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
@@ -286,27 +284,18 @@ void MainWindow::openPreset(const std::string &fileName)
         updateGui();
 }
 
-void MainWindow::openFileBrowser(/*FileBrowser::Type type*/)
+void MainWindow::showFileBrowser()
 {
-        /*auto fileDialog = new FileBrowser(this, type, type == FileBrowser::Type::Open ? "Open Preset" : "Save Preset");
+        auto fileDialog = new FileBrowser(this, "Save Preset");
         fileDialog->setPosition(30, 40);
-        fileDialog->setFilters({".gkick", ".GKICK"});
+        fileDialog->setFilters({".gkick"});
         fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
-        if (type == FileBrowser::Type::Open) {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("OpenPreset").string());
-                RK_ACT_BIND(fileDialog,
-                            selectedFile,
-                            RK_ACT_ARGS(const std::string &file),
-                            this,
-                            openPreset(file));
-        } else {
-                fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset").string());
-                RK_ACT_BIND(fileDialog,
-                            selectedFile,
-                            RK_ACT_ARGS(const std::string &file),
-                            this,
-                            savePreset(file));
-                            }*/
+        fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset").string());
+        /*                RK_ACT_BIND(fileDialog,
+                selectedFile,
+                RK_ACT_ARGS(const std::string &file),
+                this,
+                savePreset(file));*/
 }
 
 void MainWindow::shortcutEvent(RkKeyEvent *event)
@@ -319,11 +308,8 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                            && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
                         resetToDefault();
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                           && (event->key() == Rk::Key::Key_o || event->key() == Rk::Key::Key_O)) {
-                        openFileBrowser(FileBrowser::Type::Open);
-                } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
-                        openFileBrowser(FileBrowser::Type::Save);
+                        showFileBrowser();
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
                         openExportDialog();
@@ -378,23 +364,20 @@ void MainWindow::dropEvent(RkDropEvent *event)
         std::string fileExtention;
         try {
                 std::filesystem::path path(event->getFilePath());
-                fileExtention = path.extension().string();
+                fileExtention = Geonkick::toLower(path.extension().string());
         } catch (const std::exception& e) {
                 GEONKICK_LOG_ERROR("can't create path " << e.what());
                 return;
         }
 
         std::string file = event->getFilePath();
-        if (fileExtention == ".gkit" || fileExtention == ".GKIT") {
+        if (fileExtention == ".gkit") {
                 geonkickModel->getKitModel()->open(file);
-        } else if  (fileExtention == ".gkick" || fileExtention == ".GKICK") {
+        } else if  (fileExtention == ".gkick") {
                 openPreset(file);
         } else if (fileExtention == ".wav"
-                 || fileExtention == ".WAV"
                  || fileExtention == ".flac"
-                 || fileExtention == ".FLAC"
-                 || fileExtention == ".ogg"
-                 || fileExtention == ".OGG") {
+                 || fileExtention == ".ogg") {
                 setSample(file);
         }
 }

@@ -41,7 +41,6 @@ class TopBar : public GeonkickWidget
         TopBar(GeonkickWidget *parent, GeonkickModel *model);
         void setPresetName(const std::string &name);
         RK_DECL_ACT(saveFile, saveFile(), RK_ARG_TYPE(), RK_ARG_VAL());
-        RK_DECL_ACT(openFile, openFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openAbout, openAbout(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(resetToDefault, resetToDefault(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openExport, openExport(), RK_ARG_TYPE(), RK_ARG_VAL());
@@ -61,7 +60,6 @@ class TopBar : public GeonkickWidget
 #endif // GEONKICK_LIMITED_VERSION
         void addSeparator(RkContainer *mainLayout, int width = 5);
         GeonkickModel *geonkickModel;
-        GeonkickButton *openFileButton;
         GeonkickButton *saveFileButton;
         GeonkickButton *exportFileButton;
         PresetNavigator* presetNavigator;

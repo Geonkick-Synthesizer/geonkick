@@ -40,8 +40,6 @@
 
 RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(logo);
-RK_DECLARE_IMAGE_RC(open);
-RK_DECLARE_IMAGE_RC(open_hover);
 RK_DECLARE_IMAGE_RC(save);
 RK_DECLARE_IMAGE_RC(save_hover);
 RK_DECLARE_IMAGE_RC(export);
@@ -88,7 +86,6 @@ RK_DECLARE_IMAGE_RC(topmenu_settings_off);
 TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         : GeonkickWidget(parent)
         , geonkickModel{model}
-        , openFileButton{nullptr}
         , saveFileButton{nullptr}
         , exportFileButton{nullptr}
         , presetNavigator{nullptr}
@@ -141,23 +138,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         RK_ACT_BIND(settingsButton, pressed, RK_ACT_ARGS(), this, showSettings());
         mainLayout->addWidget(settingsButton);
 
-        // Open preset
         addSeparator(mainLayout, 5);
-        openFileButton = new GeonkickButton(this);
-        openFileButton->show();
-        openFileButton->setSize(26, 10);
-        openFileButton->setType(RkButton::ButtonType::ButtonCheckable);
-        openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open)),
-                                 RkButton::State::Unpressed);
-        openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
-                                 RkButton::State::UnpressedHover);
-        openFileButton->setImage(RkImage(openFileButton->size(), RK_IMAGE_RC(open_hover)),
-                                 RkButton::State::Pressed);
-        RK_ACT_BINDL(openFileButton, pressed, RK_ACT_ARGS(), [=,this](){openFileButton->setPressed(false);
-                                                              action openFile();});
-        mainLayout->addWidget(openFileButton);
-        addSeparator(mainLayout, 5);
-
         saveFileButton = new GeonkickButton(this);
         saveFileButton->setSize(23, 10);
         saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
