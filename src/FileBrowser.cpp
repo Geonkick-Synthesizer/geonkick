@@ -44,10 +44,9 @@ RK_DECLARE_IMAGE_RC(file_history_button_forward);
 RK_DECLARE_IMAGE_RC(file_history_button_forward_pressed);
 RK_DECLARE_IMAGE_RC(file_history_button_forward_hover);
 RK_DECLARE_IMAGE_RC(file_history_button_forward_disabled);
-RK_DECLARE_IMAGE_RC(save_active);
-RK_DECLARE_IMAGE_RC(open_active);
-RK_DECLARE_IMAGE_RC(save_active);
-RK_DECLARE_IMAGE_RC(cancel);
+RK_DECLARE_IMAGE_RC(save_button_16x16);
+RK_DECLARE_IMAGE_RC(save_button_hover_16x16);
+RK_DECLARE_IMAGE_RC(save_button_active_16x16);
 RK_DECLARE_IMAGE_RC(add_button_16x16);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
@@ -160,6 +159,7 @@ void FileBrowser::createUi()
 
         createNewDirectoryControls(topContainer);
         createBookmarkDirectoryControls(topContainer);
+        createSaveControls(topContainer);
 
         updateBookmarkButton(filesView->getCurrentPath());
         updateView();
@@ -270,6 +270,25 @@ void FileBrowser::createNewDirectoryControls(RkContainer *container)
         createDirectoryButton->show();
         container->addWidget(createDirectoryButton);
         RK_ACT_BIND(createDirectoryButton, pressed, RK_ACT_ARGS(), filesView, addNewPath());
+}
+
+void FileBrowser::createSaveControls(RkContainer *container)
+{
+        container->addSpace(5);
+        auto saveButton = new GeonkickButton(this);
+        saveButton->setType(RkButton::ButtonType::ButtonPush);
+        saveButton->setSize(16, 16);
+        saveButton->setImage(RK_RC_IMAGE(save_button_16x16),
+                             RkButton::State::Unpressed);
+        saveButton->setImage(RK_RC_IMAGE(save_button_hover_16x16),
+                             RkButton::State::UnpressedHover);
+        saveButton->setImage(RK_RC_IMAGE(save_button_hover_16x16),
+                             RkButton::State::PressedHover);
+        saveButton->setImage(RK_RC_IMAGE(save_button_active_16x16),
+                             RkButton::State::Pressed);
+        saveButton->show();
+        container->addWidget(saveButton);
+        RK_ACT_BIND(saveButton, pressed, RK_ACT_ARGS(), filesView, saveFile());
 }
 
 void FileBrowser::updateView()

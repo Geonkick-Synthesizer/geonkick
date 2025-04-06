@@ -74,6 +74,7 @@ class FileBrowser: public GeonkickWidget {
         void createTopMenu(RkContainer *container);
         void createBookmarkDirectoryControls(RkContainer *container);
         void createNewDirectoryControls(RkContainer *container);
+        void createSaveControls(RkContainer *container);
         void updateBookmarkButton(const std::filesystem::path &path);
         void updateView();
 

@@ -514,6 +514,10 @@ void FilesView::addNewPath()
         update();
 }
 
+void FilesView::saveFile()
+{
+}
+
 bool FilesView::createPath(const fs::path &path)
 {
         try {

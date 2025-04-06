@@ -43,6 +43,7 @@ class FilesView: public GeonkickWidget {
         void setBookmarksModel(PathBookmarksModel *model);
         PathBookmarksModel* getBookmarksModel() const;
         void addNewPath();
+        void saveFile();
         bool createPath(const fs::path &path);
         RK_DECL_ACT(currentPathChanged,
                     currentPathChanged(const fs::path &path),
