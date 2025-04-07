@@ -288,7 +288,12 @@ void FileBrowser::createSaveControls(RkContainer *container)
                              RkButton::State::Pressed);
         saveButton->show();
         container->addWidget(saveButton);
-        RK_ACT_BIND(saveButton, pressed, RK_ACT_ARGS(), filesView, saveFile());
+        RK_ACT_BIND(saveButton, pressed, RK_ACT_ARGS(), filesView, createFile());
+        RK_ACT_BIND(filesView,
+                    onCreateFile,
+                    RK_ACT_ARGS(const fs::path &filePath),
+                    this,
+                    onCreateFile(filePath));
 }
 
 void FileBrowser::updateView()

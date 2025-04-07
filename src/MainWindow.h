@@ -55,9 +55,7 @@ class MainWindow : public GeonkickWidget
       void dropEvent(RkDropEvent *event) override;
       void showFileBrowser();
       void openPreset(const std::string &fileName);
-      void savePreset(const std::string &fileName);
       void setPreset(const std::string &fileName);
-      void openExportDialog();
       void openPreset();
       void resetToDefault();
       void updateLimiter(KitModel::PercussionIndex index);

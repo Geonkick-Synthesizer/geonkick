@@ -68,6 +68,10 @@ class FileBrowser: public GeonkickWidget {
                     pathBookmarked(const fs::path& path),
                     RK_ARG_TYPE(const fs::path&),
                     RK_ARG_VAL(path));
+        RK_DECL_ACT(onCreateFile,
+                    onCreateFile(const fs::path& filePath),
+                    RK_ARG_TYPE(const fs::path& filePath),
+                    RK_ARG_VAL(filePath));
 
  protected:
         void createUi();

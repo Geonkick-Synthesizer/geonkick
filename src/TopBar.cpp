@@ -40,8 +40,6 @@
 
 RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(logo);
-RK_DECLARE_IMAGE_RC(save);
-RK_DECLARE_IMAGE_RC(save_hover);
 RK_DECLARE_IMAGE_RC(export);
 RK_DECLARE_IMAGE_RC(export_hover);
 RK_DECLARE_IMAGE_RC(reset);
@@ -86,7 +84,6 @@ RK_DECLARE_IMAGE_RC(topmenu_settings_off);
 TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         : GeonkickWidget(parent)
         , geonkickModel{model}
-        , saveFileButton{nullptr}
         , exportFileButton{nullptr}
         , presetNavigator{nullptr}
 #ifndef GEONKICK_LIMITED_VERSION
@@ -139,33 +136,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         mainLayout->addWidget(settingsButton);
 
         addSeparator(mainLayout, 5);
-        saveFileButton = new GeonkickButton(this);
-        saveFileButton->setSize(23, 10);
-        saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
-        saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save)),
-                                 RkButton::State::Unpressed);
-        saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
-                                 RkButton::State::UnpressedHover);
-        saveFileButton->setImage(RkImage(saveFileButton->size(), RK_IMAGE_RC(save_hover)),
-                                 RkButton::State::Pressed);
-        RK_ACT_BINDL(saveFileButton, pressed, RK_ACT_ARGS(), [=,this](){saveFileButton->setPressed(false);
-                                                             action saveFile();});
-        mainLayout->addWidget(saveFileButton);
-        addSeparator(mainLayout, 5);
-        exportFileButton = new GeonkickButton(this);
-        exportFileButton->setSize(29, 10);
-        saveFileButton->setType(RkButton::ButtonType::ButtonCheckable);
-        exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export)),
-                                 RkButton::State::Unpressed);
-        exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
-                                 RkButton::State::UnpressedHover);
-        exportFileButton->setImage(RkImage(exportFileButton->size(), RK_IMAGE_RC(export_hover)),
-                                RkButton::State::Pressed);
-        RK_ACT_BINDL(exportFileButton, pressed, RK_ACT_ARGS(), [=,this](){exportFileButton->setPressed(false);
-                                                               action openExport();});
-        mainLayout->addWidget(exportFileButton);
-        addSeparator(mainLayout, 5);
-
 	auto playButton = new RkButton(this);
         playButton->setType(RkButton::ButtonType::ButtonPush);
         playButton->setSize(21, 18);

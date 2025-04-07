@@ -40,10 +40,8 @@ class TopBar : public GeonkickWidget
  public:
         TopBar(GeonkickWidget *parent, GeonkickModel *model);
         void setPresetName(const std::string &name);
-        RK_DECL_ACT(saveFile, saveFile(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(openAbout, openAbout(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(resetToDefault, resetToDefault(), RK_ARG_TYPE(), RK_ARG_VAL());
-        RK_DECL_ACT(openExport, openExport(), RK_ARG_TYPE(), RK_ARG_VAL());
         RK_DECL_ACT(layerSelected,
                     layerSelected(GeonkickApi::Layer layer, bool b),
                     RK_ARG_TYPE(GeonkickApi::Layer, bool),

@@ -452,6 +452,18 @@ void FilesView::onLineDown()
 void FilesView::setFilters(const std::vector<std::string> &filters)
 {
         fileFilters = filters;
+        if (!fileFilters.empty())
+                setCurrentFileExtension(fileFilters.front());
+}
+
+void FilesView::setCurrentFileExtension(const fs::path &ext)
+{
+        currentFileExtension = ext;
+}
+
+const fs::path& FilesView::getCurrentFileExtension() const
+{
+        return currentFileExtension;
 }
 
 void FilesView::setBookmarksModel(PathBookmarksModel *model)
@@ -469,12 +481,41 @@ PathBookmarksModel* FilesView::getBookmarksModel() const
 
 void FilesView::addNewPath()
 {
+        createEditPathControl(FileActions::CreateDirectory);
+}
+
+void FilesView::createFile()
+{
+        createEditPathControl(FileActions::CreateFile);
+}
+
+bool FilesView::createPath(const fs::path &path)
+{
+        try {
+                if (fs::exists(path))
+                        return true;
+
+                if (fs::create_directory(path))
+                        return true;
+        } catch (const fs::filesystem_error& e) {
+                return false;
+        }
+
+        return false;
+}
+
+void FilesView::createEditPathControl(FilesView::FileActions act)
+{
+        if (newPathEdit)
+                newPathEdit->close();
+
         newPathEdit = new RkLineEdit(this);
         newPathEdit->setPosition(4, 2);
         newPathEdit->setSize(width() - 40, 20);
         newPathEdit->show();
         newPathEdit->setFocus();
-        auto processEditEvent = [=,this]() -> void {
+
+        auto processEditEvent = [act, this]() -> void {
                 if (newPathEdit->text().empty()) {
                         filesList.erase(filesList.begin());
                         newPathEdit->close();
@@ -483,16 +524,18 @@ void FilesView::addNewPath()
                 }
 
                 auto newPath = getCurrentPath() / fs::path(newPathEdit->text());
-                if (!createPath(newPath)) {
-                        filesList.erase(filesList.begin());
-                        newPathEdit->close();
-                        newPathEdit = nullptr;
-                        return;
-                }
+                if (act == FileActions::CreateFile && !hasValidExtension(newPath))
+                        newPath += getCurrentFileExtension();
 
-                filesList[0] = newPath;
+                if (act == FilesView::FileActions::CreateFile)
+                        action onCreateFile(newPath);
+                else
+                        createPath(newPath);
+
                 newPathEdit->close();
                 newPathEdit = nullptr;
+                selectedFileIndex = -1;
+                loadCurrentDirectory();
         };
 
         RK_ACT_BINDL(newPathEdit,
@@ -514,21 +557,12 @@ void FilesView::addNewPath()
         update();
 }
 
-void FilesView::saveFile()
+bool FilesView::hasValidExtension(const fs::path file) const
 {
+        auto ext = file.extension().string();
+        return !ext.empty() &&
+                std::ranges::any_of(fileFilters, [&](const std::string& validExt) {
+                        return ext == validExt;
+                });
 }
 
-bool FilesView::createPath(const fs::path &path)
-{
-        try {
-                if (fs::exists(path))
-                        return true;
-
-                if (fs::create_directory(path))
-                        return true;
-        } catch (const fs::filesystem_error& e) {
-                return false;
-        }
-
-        return false;
-}

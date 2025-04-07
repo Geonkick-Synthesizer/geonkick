@@ -173,12 +173,8 @@ bool MainWindow::init(void)
         topBar->setX(10);
         topBar->show();
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), topBar, updateGui());
-        RK_ACT_BIND(topBar, saveFile, RK_ACT_ARGS(),
-                    this, showFileBrowser());
         RK_ACT_BIND(topBar, resetToDefault, RK_ACT_ARGS(),
                     this, resetToDefault());
-        RK_ACT_BIND(topBar, openExport, RK_ACT_ARGS(),
-                    this, openExportDialog());
         RK_ACT_BIND(topBar, layerSelected,
                     RK_ACT_ARGS(GeonkickApi::Layer layer, bool b),
                     geonkickApi, enbaleLayer(layer, b));
@@ -226,23 +222,6 @@ bool MainWindow::init(void)
         return true;
 }
 
-void MainWindow::openExportDialog()
-{
-        auto w = new ExportWidget(this, geonkickApi);
-        w->setPosition(30, 40);
-}
-
-void MainWindow::savePreset(const std::string &fileName)
-{
-        auto state = geonkickApi->getPercussionState();
-        if (state->save(fileName)) {
-                std::filesystem::path filePath(fileName);
-                topBar->setPresetName(state->getName());
-                geonkickApi->setCurrentWorkingPath("SavePreset",
-                                                   filePath.has_parent_path() ? filePath.parent_path() : filePath);
-        }
-}
-
 void MainWindow::openPreset(const std::string &fileName)
 {
         if (fileName.size() < 7) {
@@ -282,20 +261,6 @@ void MainWindow::openPreset(const std::string &fileName)
         geonkickApi->setCurrentWorkingPath("OpenPreset",
                                            filePath.has_parent_path() ? filePath.parent_path().string() : filePath.string());
         updateGui();
-}
-
-void MainWindow::showFileBrowser()
-{
-        auto fileDialog = new FileBrowser(this, "Save Preset");
-        fileDialog->setPosition(30, 40);
-        fileDialog->setFilters({".gkick"});
-        fileDialog->setHomeDirectory(geonkickApi->getSettings("GEONKICK_CONFIG/HOME_PATH"));
-        fileDialog->setCurrentDirectoy(geonkickApi->currentWorkingPath("SavePreset").string());
-        /*                RK_ACT_BIND(fileDialog,
-                selectedFile,
-                RK_ACT_ARGS(const std::string &file),
-                this,
-                savePreset(file));*/
 }
 
 void MainWindow::shortcutEvent(RkKeyEvent *event)

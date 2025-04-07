@@ -33,6 +33,12 @@ class PathBookmarksModel;
 class RkLineEdit;
 
 class FilesView: public GeonkickWidget {
+
+        enum class FileActions: int {
+                CreateDirectory,
+                CreateFile
+        };
+
  public:
         explicit FilesView(GeonkickWidget *parent);
         void setSize(const RkSize &s);
@@ -40,10 +46,12 @@ class FilesView: public GeonkickWidget {
         void setCurrentPath(const fs::path &path);
         const fs::path& getCurrentPath() const;
         void setFilters(const std::vector<std::string> &filters);
+        void setCurrentFileExtension(const fs::path &ext);
+        const fs::path& getCurrentFileExtension() const;
         void setBookmarksModel(PathBookmarksModel *model);
         PathBookmarksModel* getBookmarksModel() const;
         void addNewPath();
-        void saveFile();
+        void createFile();
         bool createPath(const fs::path &path);
         RK_DECL_ACT(currentPathChanged,
                     currentPathChanged(const fs::path &path),
@@ -65,6 +73,10 @@ class FilesView: public GeonkickWidget {
                     pathUnbookmarked(const fs::path& path),
                     RK_ARG_TYPE(const fs::path& path),
                     RK_ARG_VAL(path));
+        RK_DECL_ACT(onCreateFile,
+                    onCreateFile(const fs::path& filePath),
+                    RK_ARG_TYPE(const fs::path& filePath),
+                    RK_ARG_VAL(filePath));
 
  protected:
         void createScrollBar();
@@ -88,6 +100,8 @@ class FilesView: public GeonkickWidget {
         void activateSelectedFile();
         void scrollBarChanged(int val);
         void updateScrollBar();
+        void createEditPathControl(FileActions act);
+        bool hasValidExtension(const fs::path file) const;
 
  private:
         std::vector<std::filesystem::path> filesList;
@@ -105,6 +119,7 @@ class FilesView: public GeonkickWidget {
         int scrollBarWidth;
         bool isScrollBarVisible;
         std::vector<std::string> fileFilters;
+        fs::path currentFileExtension;
         PathBookmarksModel *bookmarksModel;
         RkLineEdit *newPathEdit;
 };
