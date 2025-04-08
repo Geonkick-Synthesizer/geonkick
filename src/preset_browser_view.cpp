@@ -141,8 +141,6 @@ void PresetBrowserView::paintWidget(RkPaintEvent *event)
                 for (size_t col = 0; col < browserModel->columns(); col++) {
                         for (size_t row = 0; row < browserModel->rows(); row++) {
                                 auto presetName = browserModel->presetName(row, col);
-                                if (browserModel->isKit(row, col))
-                                        presetName = "KIT: " + presetName;
                                 auto font = painter.font();
                                 RkRect textRect(xColumn + 15, yRow, columnWidth, rowHeight);
                                 painter.setPen(RkColor(60, 60, 60));
@@ -160,8 +158,6 @@ void PresetBrowserView::paintWidget(RkPaintEvent *event)
                                     && static_cast<decltype(col)>(overColumn) == col) {
                                         painter.setPen(RkColor(255, 255, 255));
                                 }
-                                if (browserModel->isCustomFolder(row, col))
-                                        presetName = "*" + presetName;
                                 constexpr size_t maxChars = 20;
                                 if (col == 0 && presetName.size() > maxChars)
                                         presetName = presetName.substr(0, maxChars - 3) + "...";

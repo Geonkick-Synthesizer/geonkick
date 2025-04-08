@@ -2,7 +2,7 @@
  * File name: preset_browser_model.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -50,8 +50,6 @@ class PresetBrowserModel : public RkObject {
         size_t rows() const;
         void select(size_t row, size_t column);
         bool isSelected(size_t row, size_t column) const;
-        bool isCustomFolder(size_t row, size_t column) const;
-        bool isKit(int row, int column) const;
         PresetFolder* currentSelectedFolder() const;
         Preset* currentSelectedPreset() const;
         GeonkickApi* getGeonkickApi() const;

@@ -34,8 +34,8 @@ class KitState {
         KitState();
         bool open(const std::string &fileName);
         bool save(const std::string &fileName);
-        bool fromJson(const std::string &jsonData);
-        bool fromJsonObject(const rapidjson::Value &obj);
+        bool fromJson(const std::string &jsonData, bool oldPreset = false);
+        bool fromJsonObject(const rapidjson::Value &obj, bool oldPreset = false);
         void setName(const std::string &name);
         std::string getName() const;
         void setAuthor(const std::string &author);

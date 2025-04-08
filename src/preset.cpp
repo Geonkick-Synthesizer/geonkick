@@ -2,7 +2,7 @@
  * File name: preset.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -29,24 +29,17 @@ Preset::Preset(const std::filesystem::path& path)
 {
 }
 
-Preset::PresetType Preset::type() const
-{
-        if (path().extension().string() == ".gkit")
-                return PresetType::PercussionKit;
-        return PresetType::Instrument;
-}
-
-std::string Preset::name() const
+const std::string& Preset::name() const
 {
         return presetName;
 }
 
-void Preset::setName(const std::string &name)
+void Preset::setName(const std::string_view &name)
 {
         presetName = name;
 }
 
-std::filesystem::path Preset::path() const
+const std::filesystem::path& Preset::path() const
 {
         return presetPath;
 }

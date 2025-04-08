@@ -2,7 +2,7 @@
  * File name: preset.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -28,16 +28,10 @@
 
 class Preset {
  public:
-        enum class PresetType: int {
-                Instrument,
-                PercussionKit,
-        };
-
-        Preset(const std::filesystem::path& path);
-        PresetType type() const;
-        std::string name() const;
-        void setName(const std::string &name);
-        std::filesystem::path path() const;
+        Preset(const std::filesystem::path& path = {});
+        const std::string& name() const;
+        void setName(const std::string_view &name);
+        const std::filesystem::path& path() const;
         void setPath(const std::filesystem::path& path);
 
  private:

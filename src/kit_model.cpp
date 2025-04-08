@@ -263,6 +263,7 @@ void KitModel::loadModelData()
 
 bool KitModel::open(const std::string &file)
 {
+        GEONKICK_LOG_INFO("OPEN: " << file);
         auto kit = std::make_unique<KitState>();
         if (!kit->open(file)) {
                 GEONKICK_LOG_ERROR("can't open kit, the preset might be wrong or corrupted");
@@ -488,8 +489,5 @@ bool KitModel::loadPreset(const Preset &preset, PercussionIndex index)
 
 bool KitModel::loadPreset(const Preset &preset)
 {
-        if (preset.type() == Preset::PresetType::Instrument)
-                return currentPercussion()->loadPreset(preset);
-        else
-                return open(preset.path());
+        return open(preset.path());
 }

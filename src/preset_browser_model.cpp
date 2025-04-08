@@ -58,12 +58,6 @@ std::string PresetBrowserModel::presetName(int row, int column) const
         return std::string();
 }
 
-bool PresetBrowserModel::isKit(int row, int column) const
-{
-        auto preset = getPreset(row, column);
-        return preset && preset->type() == Preset::PresetType::PercussionKit;
-}
-
 PresetFolder* PresetBrowserModel::getPresetFolder(int row) const
 {
         return geonkickApi->getPresetFolder(folderPage() * rowsPerColumn + row);
@@ -193,39 +187,18 @@ bool PresetBrowserModel::isSelected(size_t row, size_t column) const
                 return false;
 }
 
-bool PresetBrowserModel::isCustomFolder(size_t row, size_t column) const
-{
-        if (column == 0) {
-                auto presetFolder = getPresetFolder(row);
-                return presetFolder && presetFolder->isCustom();
-        }
-        return false;
-}
-
 bool PresetBrowserModel::setPreset(Preset* preset)
 {
-        if (preset->type() == Preset::PresetType::Instrument) {
-                auto state = geonkickApi->getDefaultPercussionState();
-                if (!state->loadFile(preset->path().string())) {
-                        GEONKICK_LOG_ERROR("can't open preset");
-                        return false;
-                } else {
-                        state->setId(geonkickApi->currentPercussion());
-                        geonkickApi->setPercussionState(state);
-                        geonkickApi->notifyUpdateGui();
-                        geonkickApi->notifyPercussionUpdated(state->getId());
-                        return true;
-                }
-        } else if (preset->type() == Preset::PresetType::PercussionKit) {
-                auto kit = std::make_unique<KitState>();
-                if (!kit->open(preset->path().string())) {
-                        GEONKICK_LOG_ERROR("can't open kit");
-                        return false;
-                } else if (geonkickApi->setKitState(kit)) {
-                        geonkickApi->notifyKitUpdated();
-                        geonkickApi->notifyUpdateGui();
-                        return true;
-                }
+        auto kit = std::make_unique<KitState>();
+        if (!kit->open(preset->path().string())) {
+                GEONKICK_LOG_ERROR("can't open kit: " << preset->path().string());
+                return false;
+        }
+
+        if (geonkickApi->setKitState(kit)) {
+                geonkickApi->notifyKitUpdated();
+                geonkickApi->notifyUpdateGui();
+                return true;
         }
         return false;
 }

@@ -40,7 +40,7 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
 
         fileBrowser = new FileBrowser(this, "Presets");
         fileBrowser->setSize({width(), height() - 25});
-        fileBrowser->setFilters({".gkit"});
+        fileBrowser->setFilters({".gkit", /* for backward compatibility */ ".gkick"});
         fileBrowser->setCurrentDirectoy(geonkickConfig->getPresetCurrentPath());
         RK_ACT_BINDL(fileBrowser,
                      currentPathChanged,

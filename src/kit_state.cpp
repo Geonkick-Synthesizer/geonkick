@@ -40,9 +40,8 @@ bool KitState::open(const std::string &fileName)
         }
 
         std::filesystem::path filePath(fileName);
-        if (filePath.extension().empty()
-            || (filePath.extension() != ".gkit"
-            && filePath.extension() != ".GKIT")) {
+        auto fileExt = Geonkick::toLower(filePath.extension());
+        if (filePath.extension().empty() || (fileExt != ".gkit" && fileExt != ".gkick")) {
                 GEONKICK_LOG_ERROR("can't open kit. Wrong file format.");
                 return false;
         }
@@ -58,7 +57,7 @@ bool KitState::open(const std::string &fileName)
                              (std::istreambuf_iterator<char>()));
 
         sfile.close();
-        return fromJson(fileData);
+        return fromJson(fileData, fileExt == ".gkick");
 }
 
 bool KitState::save(const std::string &fileName)
@@ -70,8 +69,7 @@ bool KitState::save(const std::string &fileName)
 
         std::filesystem::path filePath(fileName);
         if (filePath.extension().empty()
-            || (filePath.extension() != ".gkit"
-             && filePath.extension() != ".GKIT")) {
+            || Geonkick::toLower(filePath.extension()) != ".gkit") {
                 filePath.replace_extension(".gkit");
         }
 
@@ -122,18 +120,27 @@ const std::vector<std::unique_ptr<PercussionState>>& KitState::percussions() con
         return percussionsList;
 }
 
-bool KitState::fromJson(const std::string &jsonData)
+ bool KitState::fromJson(const std::string &jsonData, bool oldPreset)
 {
         rapidjson::Document document;
         document.Parse(jsonData.c_str());
         if (!document.IsObject())
                 return false;
-        return fromJsonObject(document);
+        return fromJsonObject(document, oldPreset);
 }
 
-bool KitState::fromJsonObject(const rapidjson::Value &obj)
+ bool KitState::fromJsonObject(const rapidjson::Value &obj, bool oldPreset)
 {
-        bool isOk = true;
+        // For backward compatibility
+        if (oldPreset) {
+                auto state = std::make_unique<PercussionState>();
+                if (!state->loadObject(obj))
+                        return false;
+                addPercussion(std::move(state));
+                return true;
+        }
+
+        bool isOk = false;
         for (const auto &m: obj.GetObject()) {
                 if (m.name == "KitAppVersion" && m.value.IsInt())
                         kitAppVersion = m.value.GetInt();
@@ -143,9 +150,12 @@ bool KitState::fromJsonObject(const rapidjson::Value &obj)
                         setAuthor(m.value.GetString());
                 if (m.name == "url" && m.value.IsString())
                         setUrl(m.value.GetString());
-                if (m.name == "percussions" && m.value.IsArray())
+                if ((m.name == "percussions" // For backward compatibility
+                     || m.name == "instruments") && m.value.IsArray()) {
                         isOk = parsePercussions(m.value);
+                }
         }
+
         return isOk;
 }
 
@@ -173,7 +183,7 @@ std::string KitState::toJson() const
         jsonStream << "\"name\": \"" << getName() << "\"," << std::endl;
         jsonStream << "\"author\": \"" << getAuthor() << "\"," << std::endl;
         jsonStream << "\"url\": \"" << getUrl() << "\"," << std::endl;
-        jsonStream <<  "\"percussions\": [" << std::endl;
+        jsonStream <<  "\"instruments\": [" << std::endl;
 
         size_t i = 0;
         for (const auto &per: percussionsList) {

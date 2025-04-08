@@ -501,6 +501,11 @@ bool GeonkickApi::setKitState(const std::string &data)
 
 bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
 {
+        if (state->percussions().empty()) {
+                GEONKICK_LOG_ERROR("wrong kit state");
+                return false;
+        }
+
         auto n = numberOfInstruments();
         for (decltype(n) i = 0; i < n; i++)
                 enablePercussion(i, false);
@@ -509,7 +514,6 @@ bool GeonkickApi::setKitState(const std::unique_ptr<KitState> &state)
         setKitUrl(state->getUrl());
         clearOrderedPercussionIds();
         for (const auto &per: state->percussions()) {
-                GEONKICK_LOG_DEBUG("PER: " << per->getName() << ": id = " << per->getId());
                 setPercussionState(per);
                 addOrderedPercussionId(per->getId());
         }

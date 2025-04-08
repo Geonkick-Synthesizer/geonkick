@@ -193,8 +193,7 @@ void PresetNavigator::updateView()
                 preset = folder->preset(0);
         if (!preset)
                 return;
-        auto namePrefix = preset->type() == Preset::PresetType::PercussionKit ? "Kit: " : "";
-        presetName->setText(namePrefix + preset->name());
+        presetName->setText(preset->name());
 }
 
 
