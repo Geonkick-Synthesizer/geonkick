@@ -50,18 +50,12 @@ class KitWidget: public GeonkickWidget
         void updatePercussion(PercussionIndex index, PercussionModel *model);
         void removePercussion(PercussionIndex index);
         void copyPercussion(int index);
-        void showFileBrowser();
-        void openKit(const std::string &file);
-        void saveKit(const std::string &file);
         void keyPressEvent(RkKeyEvent *event) override;
         void onUpdateLevelers();
-        void exportKitDialog();
 
  private:
         KitModel *kitModel;
         RkButton *addButton;
-        RkButton *openKitButton;
-        RkButton *saveKitButton;
         RkContainer *percussionsContainer;
         std::vector<KitPercussionView*> percussionViewList;
         RkTimer *levelersTimer;

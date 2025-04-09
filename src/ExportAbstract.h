@@ -26,9 +26,7 @@
 
 #include "globals.h"
 
-#include <RkObject.h>
-
-class ExportAbstract: public RkObject {
+class ExportAbstract {
  public:
         enum class ExportFormat : int {
                 Flac = static_cast<int>(GeonkickTypes::Formats::Flac),
@@ -37,40 +35,28 @@ class ExportAbstract: public RkObject {
                 Sfz  = static_cast<int>(GeonkickTypes::Formats::Sfz)
         };
 
-        RK_DECL_ACT(exportFinished,
-                    exportFinished(),
-                    RK_ARG_TYPE(),
-                    RK_ARG_VAL());
-        RK_DECL_ACT(onError,
-                    onError(std::string error),
-                    RK_ARG_TYPE(std::string),
-                    RK_ARG_VAL(error));
-        RK_DECL_ACT(currentProgress,
-                    currentProgress(int progress),
-                    RK_ARG_TYPE(int progress),
-                    RK_ARG_VAL(progress));
+        struct ExportInfo {
+                ExportFormat format;
+                size_t channels;
+        };
 
-        ExportAbstract(RkObject *parent,
-                       const std::filesystem::path &path = std::filesystem::path(),
-                       ExportFormat expFormat = ExportFormat::Flac);
+        ExportAbstract(const std::filesystem::path &path = std::filesystem::path(),
+                       const ExportFormat format = ExportFormat::Flac);
         virtual ~ExportAbstract() = default;
         virtual bool doExport() = 0;
-        ExportFormat format() const;
-        void setFormat(ExportFormat exFormat);
-        std::string errorString() const;
+        const ExportFormat& format() const;
+        void setFormat(const ExportFormat format);
+        void setError(const std::string_view &error);
+        const std::string& getError() const;
         bool isError() const;
-        int progress() const;
 
  protected:
-        void setError(const std::string &error);
-        void setProgress(const int val);
         std::filesystem::path getExportPath() const;
-        
+
  private:
+        std::string errorMessage;
         ExportFormat exportFormat;
         std::filesystem::path exportPath;
-        std::string exportError;
-        int exportProgress;
 };
 
 #endif // GEONGKICK_EXPORT_ABSTRACT_H

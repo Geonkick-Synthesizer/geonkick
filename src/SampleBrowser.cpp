@@ -82,6 +82,11 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
                     RK_ACT_ARGS(const fs::path &file),
                     this,
                     loadSample(file));
+        RK_ACT_BIND(fileBrowser,
+                    onCreateFile,
+                    RK_ACT_ARGS(const fs::path &filePath),
+                    this,
+                    doExport(filePath));
 
         auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
         mainLayout->setSize(size());
@@ -180,4 +185,10 @@ void SampleBrowser::loadSample(const fs::path &file)
                 oscillator->setFunction(OscillatorModel::FunctionType::Sample);
         }  catch (...) {
         }
+}
+
+void SampleBrowser::doExport(const fs::path &path) const
+{
+        KitModel::ExportInfo exportInfo{/*getExportFormat(), getNumberOfChannels()*/};
+        kitModel->doExport(path, exportInfo);
 }

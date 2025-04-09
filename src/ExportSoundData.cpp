@@ -2,7 +2,7 @@
  * File name: ExportSoundData.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -25,11 +25,10 @@
 
 #include <sndfile.h>
 
-ExportSoundData::ExportSoundData(RkObject *parent,
-                                 const std::filesystem::path &file,
+ExportSoundData::ExportSoundData(const std::filesystem::path &file,
                                  const std::vector<float> &data,
                                  ExportFormat exportFormat)
-        : ExportAbstract(parent, file, exportFormat)
+        : ExportAbstract(file, exportFormat)
         , soundData{data}
         , exportSubformat{getDefaultSubformat()}
         , sampleRate{Geonkick::defaultSampleRate}
@@ -123,7 +122,7 @@ void ExportSoundData::setNumberOfChannels(int channels)
         nChannels = channels;
 }
 
-bool ExportSoundData::validateSubformat(Subformat subFormat)
+bool ExportSoundData::validateSubformat(Subformat subFormat) const
 {
         switch (format()) {
         case ExportFormat::Flac:

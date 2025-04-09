@@ -43,6 +43,7 @@ class SampleBrowser: public GeonkickWidget {
         RkContainer* createPreviewMenu();
         void setOscillator(GeonkickApi::OscillatorType osc);
         void loadSample(const fs::path &file);
+        void doExport(const fs::path &filePath) const;
 
  private:
         KitModel *kitModel;

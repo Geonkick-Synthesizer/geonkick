@@ -32,7 +32,6 @@ class ExportToSfz : public ExportAbstract {
  public:
         ExportToSfz(KitModel *model, const std::filesystem::path &file);
         bool doExport() override;
-        
 protected:
         std::filesystem::path dataPath() const;
         static std::string cleanName(const std::string &name);

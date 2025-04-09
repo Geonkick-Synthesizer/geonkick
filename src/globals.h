@@ -132,6 +132,7 @@ enum class Formats : int {
           Ogg    = 7,
           Sfz    = 8
 };
+
 } // namespace GeonkickTypes
 
 #endif // GEONKICK_GLOBALS_H

@@ -36,7 +36,7 @@ class Preset;
 
 class KitModel : public RkObject {
  public:
-        using ExportFormat = ExportAbstract::ExportFormat;
+        using ExportInfo = ExportAbstract::ExportInfo;
         using PercussionIndex = int;
         using KeyIndex = int;
         explicit KitModel(GeonkickModel* parent);
@@ -87,7 +87,7 @@ class KitModel : public RkObject {
         bool isPercussionSolo(PercussionIndex index) const;
         void updatePercussion(PercussionIndex index);
         GeonkickApi* api() const;
-        bool doExport(const std::string &file, ExportFormat format);
+        bool doExport(const std::string &file, const ExportInfo &info) const;
         bool enableNoteOff(PercussionIndex index, bool b);
         bool isNoteOffEnabled(PercussionIndex index) const;
         OscillatorModel* getCurrentLayerOscillator(OscillatorModel::Type type) const;

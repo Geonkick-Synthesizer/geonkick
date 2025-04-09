@@ -421,17 +421,22 @@ GeonkickApi* KitModel::api() const
         return geonkickApi;
 }
 
-bool KitModel::doExport(const std::string &file, KitModel::ExportFormat format)
+bool KitModel::doExport(const std::string &file, const ExportInfo &info) const
 {
-        switch (format) {
+        /*using ExportFormat = ExportInfo::ExportFormat;
+        switch (info.format) {
         case ExportFormat::Sfz:
          {
                  ExportToSfz toSfz(this, file);
                  return toSfz.doExport();
          }
+        case ExportFormat::ExportFormat::Flac:
+        case ExportFormat::Wav:
+        case ExportFormat::Ogg:
         default:
                 return false;
-        }
+                }*/
+        return false;
 }
 
 RkString KitModel::name() const

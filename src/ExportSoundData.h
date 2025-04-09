@@ -2,7 +2,7 @@
  * File name: ExportSoundData.h
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -37,8 +37,7 @@ class ExportSoundData : public ExportAbstract {
                 Ogg    = 5
         };
 
-        ExportSoundData(RkObject *parent,
-                        const std::filesystem::path &file,
+        ExportSoundData(const std::filesystem::path &file,
                         const std::vector<float> &data,
                         ExportFormat exportFormat = ExportFormat::Flac);
         bool doExport() override;
@@ -51,7 +50,7 @@ class ExportSoundData : public ExportAbstract {
 
  protected:
         Subformat getDefaultSubformat() const;
-        bool validateSubformat(Subformat subFormat);
+        bool validateSubformat(Subformat subFormat) const;
         int sfExportFormat() const;
 
  private:

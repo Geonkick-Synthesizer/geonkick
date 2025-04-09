@@ -2,7 +2,7 @@
  * File name: ExportAbstract.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -23,13 +23,10 @@
 
 #include "ExportAbstract.h"
 
-ExportAbstract::ExportAbstract([[maybe_unused]] RkObject *parent,
-                               const std::filesystem::path &path,
-                               ExportFormat expFormat)
-        : RkObject(nullptr)
-        , exportFormat{expFormat}
+ExportAbstract::ExportAbstract(const std::filesystem::path &path,
+                               ExportFormat format)
+        : exportFormat{format}
         , exportPath{path}
-        , exportProgress{0}
 {
 }
 
@@ -37,33 +34,24 @@ std::filesystem::path ExportAbstract::getExportPath() const
 {
         return exportPath;
 }
-                
-bool ExportAbstract::isError() const
-{
-        return exportError.empty();
-}
 
-std::string ExportAbstract::errorString() const
-{
-        return exportError;
-}
-
-ExportAbstract::ExportFormat ExportAbstract::format() const
+const ExportAbstract::ExportFormat& ExportAbstract::format() const
 {
         return exportFormat;
 }
 
-int ExportAbstract::progress() const
+void ExportAbstract::setError(const std::string_view &error)
 {
-        return exportProgress;
+        errorMessage = error;
 }
 
-void ExportAbstract::setProgress(const int val)
+const std::string& ExportAbstract::getError() const
 {
-        exportProgress = val;
+        return errorMessage;
 }
 
-void ExportAbstract::setError(const std::string &error)
+
+bool ExportAbstract::isError() const
 {
-        exportError = error;
+        return !errorMessage.empty();
 }

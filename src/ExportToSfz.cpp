@@ -27,7 +27,7 @@
 #include "percussion_model.h"
 
 ExportToSfz::ExportToSfz(KitModel *model, const std::filesystem::path &file)
-        : ExportAbstract(model, file, ExportFormat::Sfz)
+        : ExportAbstract(file, ExportFormat::Sfz)
         , kitModel{model}
 {
 }
@@ -79,19 +79,15 @@ bool ExportToSfz::doExport()
                 sfzStream << "hivel=127" << std::endl;
                 sfzStream << "volume=15" << std::endl;
 		sfzStream << std::endl;
-                ExportSoundData exportToWav(this,
-                                            wavFile,
+                ExportSoundData exportToWav(wavFile,
                                             instrument->data(),
                                             ExportSoundData::ExportFormat::Wav);
                 exportToWav.setSubformat(ExportSoundData::Subformat::Wav32);
                 exportToWav.doExport();
-                if (exportToWav.isError())
-                        setError(exportToWav.errorString());
         }
 
         auto sfzFilePath = getExportPath();
-        if (!sfzFilePath.has_extension() && sfzFilePath.extension() != ".sfz"
-            && sfzFilePath.extension() != ".SFZ")
+        if (!sfzFilePath.has_extension() && Geonkick::toLower(sfzFilePath.extension()) != ".sfz")
                 sfzFilePath += ".sfz";
         std::ofstream sfzFile (sfzFilePath);
         if (!sfzFile.is_open()) {
