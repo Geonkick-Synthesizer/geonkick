@@ -53,6 +53,9 @@ class RkSpinBox::RkSpinBoxImpl : public RkWidget::RkWidgetImpl {
     RkButton* downControl() const;
     void updateControls();
 
+protected:
+        void updateTextLabel();
+
  private:
     RK_DECALRE_INTERFACE_PTR(RkSpinBox);
     int currentItemIndex;

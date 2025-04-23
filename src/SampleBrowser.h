@@ -40,7 +40,7 @@ class SampleBrowser: public GeonkickWidget {
         SampleBrowser(GeonkickWidget *parent, KitModel* model);
 
   protected:
-        RkContainer* createPreviewMenu();
+        void createOscillatorsMenu(RkContainer* container);
         void setOscillator(GeonkickApi::OscillatorType osc);
         void loadSample(const fs::path &file);
         void doExport(const fs::path &filePath) const;
@@ -49,8 +49,6 @@ class SampleBrowser: public GeonkickWidget {
         KitModel *kitModel;
         std::unique_ptr<GeonkickConfig> geonkickConfig;
         FileBrowser *fileBrowser;
-        GeonkickButton *playButton;
-        GeonkickButton *loadButton;
         GeonkickButton *osc1Button;
         GeonkickButton *osc2Button;
         GeonkickButton *osc3Button;

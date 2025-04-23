@@ -27,35 +27,28 @@
 #include "kit_model.h"
 #include "percussion_model.h"
 #include "GeonkickConfig.h"
+#include "RkSpinBox.h"
 
 #include <RkContainer.h>
 
-RK_DECLARE_IMAGE_RC(play_preview_sample);
-RK_DECLARE_IMAGE_RC(play_preview_sample_hover);
-RK_DECLARE_IMAGE_RC(play_preview_sample_pressed);
-RK_DECLARE_IMAGE_RC(load_preview_sample);
-RK_DECLARE_IMAGE_RC(load_preview_sample_hover);
-RK_DECLARE_IMAGE_RC(load_preview_sample_pressed);
-RK_DECLARE_IMAGE_RC(osc1_preview_sample);
-RK_DECLARE_IMAGE_RC(osc1_preview_sample_hover);
-RK_DECLARE_IMAGE_RC(osc1_preview_sample_pressed);
-RK_DECLARE_IMAGE_RC(osc2_preview_sample);
-RK_DECLARE_IMAGE_RC(osc2_preview_sample_hover);
-RK_DECLARE_IMAGE_RC(osc2_preview_sample_pressed);
-RK_DECLARE_IMAGE_RC(osc1_preview_sample);
-RK_DECLARE_IMAGE_RC(osc1_preview_sample_hover);
-RK_DECLARE_IMAGE_RC(osc1_preview_sample_pressed);
-RK_DECLARE_IMAGE_RC(osc3_preview_sample);
-RK_DECLARE_IMAGE_RC(osc3_preview_sample_hover);
-RK_DECLARE_IMAGE_RC(osc3_preview_sample_pressed);
+RK_DECLARE_IMAGE_RC(osc1_load_sample);
+RK_DECLARE_IMAGE_RC(osc1_load_sample_hover);
+RK_DECLARE_IMAGE_RC(osc1_load_sample_pressed);
+RK_DECLARE_IMAGE_RC(osc2_load_sample);
+RK_DECLARE_IMAGE_RC(osc2_load_sample_hover);
+RK_DECLARE_IMAGE_RC(osc2_load_sample_pressed);
+RK_DECLARE_IMAGE_RC(osc1_load_sample);
+RK_DECLARE_IMAGE_RC(osc1_load_sample_hover);
+RK_DECLARE_IMAGE_RC(osc1_load_sample_pressed);
+RK_DECLARE_IMAGE_RC(osc3_load_sample);
+RK_DECLARE_IMAGE_RC(osc3_load_sample_hover);
+RK_DECLARE_IMAGE_RC(osc3_load_sample_pressed);
 
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
         , kitModel{model}
         , geonkickConfig{std::make_unique<GeonkickConfig>(true)}
         , fileBrowser{nullptr}
-        , playButton{nullptr}
-        , loadButton{nullptr}
         , osc1Button{nullptr}
         , osc2Button{nullptr}
         , osc3Button{nullptr}
@@ -91,52 +84,43 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
         mainLayout->setSize(size());
         mainLayout->addWidget(fileBrowser);
-        auto previewMenu = createPreviewMenu();
+
+        auto bottomMenu = new RkContainer(this);
+        bottomMenu->setSize({width(), 20});
+
+        createOscillatorsMenu(bottomMenu);
+        //        createExportFormatMenu(bottomMenu);
+
         mainLayout->addSpace(3);
-        mainLayout->addContainer(previewMenu);
+        mainLayout->addContainer(bottomMenu);
         show();
 }
 
-RkContainer* SampleBrowser::createPreviewMenu()
+void SampleBrowser::createOscillatorsMenu(RkContainer* container)
 {
-        auto container = new RkContainer(this);
-        container->setSize({width(), 20});
-        playButton = new GeonkickButton(this);
-        playButton->setType(RkButton::ButtonType::ButtonPush);
-        playButton->setSize(33, 18);
-        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample)),
-                             RkButton::State::Unpressed);
-        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_hover)),
-                             RkButton::State::UnpressedHover);
-        playButton->setImage(RkImage(playButton->size(), RK_IMAGE_RC(play_preview_sample_pressed)),
-                             RkButton::State::Pressed);
-        RK_ACT_BIND(playButton, pressed, RK_ACT_ARGS(), kitModel->api(), playSamplePreview());
-        container->addSpace(5);
-        container->addWidget(playButton);
         container->addSpace(3);
-
         osc1Button = new GeonkickButton(this);
         osc1Button->setPressed(true);
-        osc1Button->setSize(33, 18);
-        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample)),
+        osc1Button->setSize(26, 18);
+        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_load_sample)),
                              RkButton::State::Unpressed);
-        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample_hover)),
+        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_load_sample_hover)),
                              RkButton::State::UnpressedHover);
-        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_preview_sample_pressed)),
+        osc1Button->setImage(RkImage(osc1Button->size(), RK_IMAGE_RC(osc1_load_sample_pressed)),
                              RkButton::State::Pressed);
         RK_ACT_BIND(osc1Button, pressed,
                     RK_ACT_ARGS(), this,
                     setOscillator(GeonkickApi::OscillatorType::Oscillator1));
         container->addWidget(osc1Button);
-        container->addSpace(3);
 
+        container->addSpace(3);
         osc2Button = new GeonkickButton(this);
-        osc2Button->setSize(33, 18);
-        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample)),
+        osc2Button->setSize(26, 18);
+        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_load_sample)),
                              RkButton::State::Unpressed);
-        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample_hover)),
+        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_load_sample_hover)),
                              RkButton::State::UnpressedHover);
-        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_preview_sample_pressed)),
+        osc2Button->setImage(RkImage(osc2Button->size(), RK_IMAGE_RC(osc2_load_sample_pressed)),
                              RkButton::State::Pressed);
         RK_ACT_BIND(osc2Button, pressed,
                     RK_ACT_ARGS(), this,
@@ -145,19 +129,37 @@ RkContainer* SampleBrowser::createPreviewMenu()
         container->addSpace(3);
 
         osc3Button = new GeonkickButton(this);
-        osc3Button->setSize(33, 18);
-        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample)),
+        osc3Button->setSize(26, 18);
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_load_sample)),
                              RkButton::State::Unpressed);
-        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample_hover)),
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_load_sample_hover)),
                              RkButton::State::UnpressedHover);
-        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_preview_sample_pressed)),
+        osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_load_sample_pressed)),
                              RkButton::State::Pressed);
         RK_ACT_BIND(osc3Button, pressed,
                     RK_ACT_ARGS(), this,
                     setOscillator(GeonkickApi::OscillatorType::Oscillator3));
         container->addWidget(osc3Button);
 
-        return container;
+        auto exportFormatSpinBox = new RkSpinBox(this);
+        exportFormatSpinBox->setSize(52, 18);
+        exportFormatSpinBox->setTextColor({250, 250, 250});
+        exportFormatSpinBox->setBackgroundColor({60, 57, 57});
+        exportFormatSpinBox->upControl()->setBackgroundColor({50, 47, 47});
+        exportFormatSpinBox->upControl()->setTextColor({100, 100, 100});
+        exportFormatSpinBox->downControl()->setBackgroundColor({50, 47, 47});
+        exportFormatSpinBox->downControl()->setTextColor({100, 100, 100});
+        exportFormatSpinBox->addItem("Flac16");
+        exportFormatSpinBox->addItem("Flac24");
+        exportFormatSpinBox->addItem("Wav16");
+        exportFormatSpinBox->addItem("Wav24");
+        exportFormatSpinBox->addItem("Wav32");
+        exportFormatSpinBox->addItem("Ogg");
+        exportFormatSpinBox->addItem("Sfz");
+        exportFormatSpinBox->setCurrentIndex(0);
+        exportFormatSpinBox->show();
+        container->addSpace(6);
+        container->addWidget(exportFormatSpinBox);
 }
 
 void SampleBrowser::setOscillator(GeonkickApi::OscillatorType osc)
@@ -189,6 +191,6 @@ void SampleBrowser::loadSample(const fs::path &file)
 
 void SampleBrowser::doExport(const fs::path &path) const
 {
-        KitModel::ExportInfo exportInfo{/*getExportFormat(), getNumberOfChannels()*/};
+        KitModel::ExportInfo exportInfo;//{getExportFormat(), getNumberOfChannels()};
         kitModel->doExport(path, exportInfo);
 }
