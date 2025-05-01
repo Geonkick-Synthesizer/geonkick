@@ -79,6 +79,11 @@ RkVariant RkSpinBox::currentItem() const
         return impl_ptr->currentItem();
 }
 
+void RkSpinBox::setCurrentItem(const RkVariant& item)
+{
+        return impl_ptr->setCurrentItem(item);
+}
+
 RkButton* RkSpinBox::upControl() const
 {
         return impl_ptr->upControl();

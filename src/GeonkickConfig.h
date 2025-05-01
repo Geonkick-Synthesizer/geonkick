@@ -51,6 +51,8 @@ class GeonkickConfig {
         const fs::path& getSampleCurrentPath() const;
         bool setPresetCurrentPath(const fs::path &path);
         const fs::path& getPresetCurrentPath() const;
+        void setExportFormat(const std::string_view &format);
+        const std::string& getExportFormat() const;
 
  protected:
         void loadConfig(const std::string &data);
@@ -69,6 +71,7 @@ class GeonkickConfig {
         fs::path presetCurrentPath;
         fs::path sampleCurrentPath;
         bool showSideBar;
+        std::string exportFormat;
 };
 
 #endif // GEONGKICK_CONFIG_H

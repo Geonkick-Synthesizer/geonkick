@@ -38,6 +38,7 @@ class RkSpinBox : public RkWidget {
     int currentIndex() const;
     void addItem(const RkVariant& item);
     void clear();
+    void setCurrentItem(const RkVariant& item);
     RkVariant currentItem() const;
     RkButton* upControl() const;
     RkButton* downControl() const;

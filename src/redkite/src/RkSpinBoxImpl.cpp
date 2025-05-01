@@ -196,6 +196,16 @@ RkVariant RkSpinBox::RkSpinBoxImpl::currentItem() const
         return {};
 }
 
+void RkSpinBox::RkSpinBoxImpl::setCurrentItem(const RkVariant& item)
+{
+        auto it = std::find(spinBoxItems.begin(), spinBoxItems.end(), item);
+        if (it != spinBoxItems.end())
+                currentItemIndex = static_cast<int>(std::distance(spinBoxItems.begin(), it));
+        else
+                currentItemIndex = 0;
+        updateTextLabel();
+}
+
 RkButton* RkSpinBox::RkSpinBoxImpl::upControl() const
 {
         return upButton;

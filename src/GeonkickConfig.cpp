@@ -40,6 +40,7 @@ GeonkickConfig::GeonkickConfig(bool autosave)
         , presetCurrentPath{DesktopPaths().getPresetsPath()}
         , sampleCurrentPath{DesktopPaths().getDataPath()}
         , showSideBar{false}
+        , exportFormat{Geonkick::defaultExportFormat}
 {
         open();
 }
@@ -126,6 +127,8 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         presetCurrentPath = m.value.GetString();
                 if (m.name == "sampleCurrentPath" && m.value.IsString())
                         sampleCurrentPath = m.value.GetString();
+                if (m.name == "exportFormat" && m.value.IsString())
+                        exportFormat = m.value.GetString();
         }
 }
 
@@ -266,6 +269,16 @@ const fs::path& GeonkickConfig::getPresetCurrentPath() const
         return presetCurrentPath;
 }
 
+void GeonkickConfig::setExportFormat(const std::string_view &format)
+{
+        exportFormat = format;
+}
+
+const std::string& GeonkickConfig::getExportFormat() const
+{
+        return exportFormat;
+}
+
 void GeonkickConfig::writeBookmarkedPathsToJson(auto& writer) const
 {
         writer.Key("bookmarkedPaths");
@@ -304,6 +317,11 @@ std::string GeonkickConfig::toJson() const
         writer.String(presetCurrentPath.string().c_str());
         writer.Key("sampleCurrentPath");
         writer.String(sampleCurrentPath.string().c_str());
+
+        if (!exportFormat.empty()) {
+                writer.Key("exportFormat");
+                writer.String(exportFormat.c_str());
+        }
         writer.EndObject();
         return s.GetString();
 }

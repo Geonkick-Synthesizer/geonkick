@@ -27,8 +27,9 @@
 #include "kit_model.h"
 #include "percussion_model.h"
 #include "GeonkickConfig.h"
-#include "RkSpinBox.h"
 
+#include <RkSpinBox.h>
+#include <RkLabel.h>
 #include <RkContainer.h>
 
 RK_DECLARE_IMAGE_RC(osc1_load_sample);
@@ -52,6 +53,7 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         , osc1Button{nullptr}
         , osc2Button{nullptr}
         , osc3Button{nullptr}
+        , exportFormatSpinBox{nullptr}
 {
         setSize(306, parent->height() - 30);
 
@@ -98,7 +100,14 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
 
 void SampleBrowser::createOscillatorsMenu(RkContainer* container)
 {
-        container->addSpace(3);
+        // Load to oscillator label
+        auto loadLabel = new RkLabel(this, "Load to:");
+        loadLabel->setBackgroundColor(background());
+        loadLabel->setTextColor({170, 170, 170});
+        loadLabel->setSize(45, 18);
+        container->addWidget(loadLabel);
+
+        // Load to osc1
         osc1Button = new GeonkickButton(this);
         osc1Button->setPressed(true);
         osc1Button->setSize(26, 18);
@@ -113,6 +122,7 @@ void SampleBrowser::createOscillatorsMenu(RkContainer* container)
                     setOscillator(GeonkickApi::OscillatorType::Oscillator1));
         container->addWidget(osc1Button);
 
+        // Load to osc2
         container->addSpace(3);
         osc2Button = new GeonkickButton(this);
         osc2Button->setSize(26, 18);
@@ -128,6 +138,7 @@ void SampleBrowser::createOscillatorsMenu(RkContainer* container)
         container->addWidget(osc2Button);
         container->addSpace(3);
 
+        // Load to osc3
         osc3Button = new GeonkickButton(this);
         osc3Button->setSize(26, 18);
         osc3Button->setImage(RkImage(osc3Button->size(), RK_IMAGE_RC(osc3_load_sample)),
@@ -141,25 +152,41 @@ void SampleBrowser::createOscillatorsMenu(RkContainer* container)
                     setOscillator(GeonkickApi::OscillatorType::Oscillator3));
         container->addWidget(osc3Button);
 
-        auto exportFormatSpinBox = new RkSpinBox(this);
+        // Export label
+        auto exportLabel = new RkLabel(this, "Export as:");
+        exportLabel->setBackgroundColor(background());
+        exportLabel->setTextColor({170, 170, 170});
+        exportLabel->setSize(52, 18);
+        container->addSpace(8);
+        container->addWidget(exportLabel);
+
+        // Export format spin box.
+        exportFormatSpinBox = new RkSpinBox(this);
         exportFormatSpinBox->setSize(52, 18);
-        exportFormatSpinBox->setTextColor({250, 250, 250});
+        exportFormatSpinBox->setTextColor({170, 170, 170});
         exportFormatSpinBox->setBackgroundColor({60, 57, 57});
         exportFormatSpinBox->upControl()->setBackgroundColor({50, 47, 47});
         exportFormatSpinBox->upControl()->setTextColor({100, 100, 100});
         exportFormatSpinBox->downControl()->setBackgroundColor({50, 47, 47});
         exportFormatSpinBox->downControl()->setTextColor({100, 100, 100});
-        exportFormatSpinBox->addItem("Flac16");
-        exportFormatSpinBox->addItem("Flac24");
-        exportFormatSpinBox->addItem("Wav16");
-        exportFormatSpinBox->addItem("Wav24");
-        exportFormatSpinBox->addItem("Wav32");
-        exportFormatSpinBox->addItem("Ogg");
-        exportFormatSpinBox->addItem("Sfz");
-        exportFormatSpinBox->setCurrentIndex(0);
+        exportFormatSpinBox->addItem("flac16");
+        exportFormatSpinBox->addItem("flac24");
+        exportFormatSpinBox->addItem("wav16");
+        exportFormatSpinBox->addItem("wav24");
+        exportFormatSpinBox->addItem("wav32");
+        exportFormatSpinBox->addItem("ogg");
+        exportFormatSpinBox->addItem("sfz");
+        exportFormatSpinBox->setCurrentItem(geonkickConfig->getExportFormat());
         exportFormatSpinBox->show();
-        container->addSpace(6);
         container->addWidget(exportFormatSpinBox);
+        RK_ACT_BINDL(exportFormatSpinBox,
+                     currentIndexChanged,
+                     RK_ACT_ARGS(int index),
+                     [=, this]([[maybe_unused]] int index){
+                             auto item = exportFormatSpinBox->currentItem();
+                             geonkickConfig->setExportFormat(std::get<std::string>(item));
+                     });
+
 }
 
 void SampleBrowser::setOscillator(GeonkickApi::OscillatorType osc)
@@ -191,6 +218,7 @@ void SampleBrowser::loadSample(const fs::path &file)
 
 void SampleBrowser::doExport(const fs::path &path) const
 {
+        
         KitModel::ExportInfo exportInfo;//{getExportFormat(), getNumberOfChannels()};
         kitModel->doExport(path, exportInfo);
 }

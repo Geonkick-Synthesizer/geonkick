@@ -84,15 +84,17 @@ void Sidebar::createTabButtons(RkContainer *mainLayout)
         presetsButton->show();
         buttonsLayout->addWidget(presetsButton);
 
+        // Separator
+        buttonsLayout->addSpace(3);
         auto separator = new RkLabel(this);
         separator->setSize(2, 21);
         separator->setBackgroundColor(68, 68, 70);
         separator->setImage(RkImage(separator->size(), RK_IMAGE_RC(separator)));
         separator->show();
         buttonsLayout->addWidget(separator);
+        buttonsLayout->addSpace(3);
 
         // Samples button
-        buttonsLayout->addSpace(5);
         samplesButton = new GeonkickButton(this);
         samplesButton->setPressed(true);
         samplesButton->setFixedSize(54, 20);

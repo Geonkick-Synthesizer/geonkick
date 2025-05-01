@@ -34,6 +34,7 @@ class RkContainer;
 class GeonkickSlider;
 class KitModel;
 class GeonkickConfig;
+class RkSpinBox;
 
 class SampleBrowser: public GeonkickWidget {
  public:
@@ -52,6 +53,7 @@ class SampleBrowser: public GeonkickWidget {
         GeonkickButton *osc1Button;
         GeonkickButton *osc2Button;
         GeonkickButton *osc3Button;
+        RkSpinBox *exportFormatSpinBox;
 };
 
 #endif // GEONKICK_SAMPLE_BROWSER_H

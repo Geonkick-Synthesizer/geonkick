@@ -35,11 +35,6 @@ class ExportAbstract {
                 Sfz  = static_cast<int>(GeonkickTypes::Formats::Sfz)
         };
 
-        struct ExportInfo {
-                ExportFormat format;
-                size_t channels;
-        };
-
         ExportAbstract(const std::filesystem::path &path = std::filesystem::path(),
                        const ExportFormat format = ExportFormat::Flac);
         virtual ~ExportAbstract() = default;
@@ -49,9 +44,7 @@ class ExportAbstract {
         void setError(const std::string_view &error);
         const std::string& getError() const;
         bool isError() const;
-
- protected:
-        std::filesystem::path getExportPath() const;
+        const std::filesystem::path& getExportPath() const;
 
  private:
         std::string errorMessage;

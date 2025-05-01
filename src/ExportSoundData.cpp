@@ -30,7 +30,7 @@ ExportSoundData::ExportSoundData(const std::filesystem::path &file,
                                  ExportFormat exportFormat)
         : ExportAbstract(file, exportFormat)
         , soundData{data}
-        , exportSubformat{getDefaultSubformat()}
+        , bitDepth{getDefaultBitDepth()}
         , sampleRate{Geonkick::defaultSampleRate}
         , nChannels{2}
 {
@@ -86,19 +86,19 @@ bool ExportSoundData::doExport()
         return true;
 }
 
-ExportSoundData::Subformat ExportSoundData::subformat() const
+int ExportSoundData::getBitDepth() const
 {
-        return exportSubformat;
+        return bitDepth;
 }
 
-void ExportSoundData::setSubformat(ExportSoundData::Subformat subFormat)
+void ExportSoundData::setBitDepth(int depth)
 {
-        if (!validateSubformat(subFormat)) {
-                GEONKICK_LOG_ERROR("wrong subformat " << static_cast<int>(subFormat)
+        if (!validateBitDepth(depth)) {
+                GEONKICK_LOG_ERROR("wrong bit depth " << bitDepth
                                    << " for format "
                                    << static_cast<int>(format()));
         } else {
-                exportSubformat = subFormat;
+                bitDepth = depth;
         }
 }
 
@@ -122,55 +122,38 @@ void ExportSoundData::setNumberOfChannels(int channels)
         nChannels = channels;
 }
 
-bool ExportSoundData::validateSubformat(Subformat subFormat) const
+bool ExportSoundData::validateBitDepth(int depth) const
 {
         switch (format()) {
         case ExportFormat::Flac:
-                return subFormat == Subformat::Flac16 || subFormat == Subformat::Flac24;
+                return depth == 16 || depth == 24;
         case ExportFormat::Wav:
-                return subFormat == Subformat::Wav16
-                        || subFormat == Subformat::Wav24
-                        || subFormat == Subformat::Wav32;
+                return depth == 16 || depth == 24 || depth == 32;
         case ExportFormat::Ogg:
-                return subFormat == Subformat::Ogg;
+                return true;
         default:
                 return false;
         }
 }
 
-ExportSoundData::Subformat
-ExportSoundData::getDefaultSubformat() const
-{
-        switch (format()) {
-        case ExportFormat::Wav:
-                return Subformat::Wav16;
-        case ExportFormat::Ogg:
-                return Subformat::Ogg;
-        case ExportFormat::Flac:
-        default:
-                return Subformat::Flac16;
-        }
-}
-
 int ExportSoundData::sfExportFormat() const
 {
-        switch (subformat())
-        {
-        case Subformat::Flac16:
-                return SF_FORMAT_FLAC | SF_FORMAT_PCM_16;
-        case Subformat::Flac24:
-                return SF_FORMAT_FLAC | SF_FORMAT_PCM_24;
-        case Subformat::Wav16:
-                return SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-        case Subformat::Wav24:
-                return SF_FORMAT_WAV | SF_FORMAT_PCM_24;
-        case Subformat::Wav32:
-                return SF_FORMAT_WAV | SF_FORMAT_PCM_32;
-        case Subformat::Ogg:
+        switch (format()) {
+        case ExportFormat::Flac:
+                if (bitDepth == 16)
+                        return SF_FORMAT_FLAC | SF_FORMAT_PCM_16;
+                else
+                        return SF_FORMAT_FLAC | SF_FORMAT_PCM_24;
+        case ExportFormat::Wav:
+                if (bitDepth == 16)
+                        return SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+                else if (bitDepth == 32)
+                        return SF_FORMAT_WAV | SF_FORMAT_PCM_32;
+                else
+                        return SF_FORMAT_WAV | SF_FORMAT_PCM_24;
+        case ExportFormat::Ogg:
                 return SF_FORMAT_OGG | SF_FORMAT_VORBIS;
         default:
                 return SF_FORMAT_WAV | SF_FORMAT_PCM_24;
         }
 }
-
-

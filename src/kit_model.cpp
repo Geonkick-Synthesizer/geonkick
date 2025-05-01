@@ -423,7 +423,7 @@ GeonkickApi* KitModel::api() const
 
 bool KitModel::doExport(const std::string &file, const ExportInfo &info) const
 {
-        /*using ExportFormat = ExportInfo::ExportFormat;
+        using ExportFormat = ExportInfo::ExportFormat;
         switch (info.format) {
         case ExportFormat::Sfz:
          {
@@ -433,6 +433,11 @@ bool KitModel::doExport(const std::string &file, const ExportInfo &info) const
         case ExportFormat::ExportFormat::Flac:
         case ExportFormat::Wav:
         case ExportFormat::Ogg:
+        {
+                ExportSoundData exportToAudioFile(file, info.format);
+                exportToAudioFile.setBitDepth(info.bitDepth);
+                exportToAudioFile.setNumberOfChannels(info.channels);
+        }
         default:
                 return false;
                 }*/

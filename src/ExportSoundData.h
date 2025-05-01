@@ -28,34 +28,24 @@
 
 class ExportSoundData : public ExportAbstract {
  public:
-        enum class Subformat : int {
-                Flac16 = 0,
-                Flac24 = 1,
-                Wav16  = 2,
-                Wav24  = 3,
-                Wav32  = 4,
-                Ogg    = 5
-        };
-
         ExportSoundData(const std::filesystem::path &file,
                         const std::vector<float> &data,
                         ExportFormat exportFormat = ExportFormat::Flac);
         bool doExport() override;
-        Subformat subformat() const;
-        void setSubformat(Subformat format);
+        void setBitDepth(int depth);
+        int getBitDepth() const;
         int getSampleRate() const;
         void setSmapleRate(int srate);
         int numberOfChannels() const;
         void setNumberOfChannels(int channels);
 
  protected:
-        Subformat getDefaultSubformat() const;
-        bool validateSubformat(Subformat subFormat) const;
+        bool validateBitDepth(int depth) const;
         int sfExportFormat() const;
 
  private:
         std::vector<float> soundData;
-        Subformat exportSubformat;
+        Subformat bitDepth;
         int sampleRate;
         int nChannels;
 };

@@ -30,7 +30,7 @@ ExportAbstract::ExportAbstract(const std::filesystem::path &path,
 {
 }
 
-std::filesystem::path ExportAbstract::getExportPath() const
+const std::filesystem::path& ExportAbstract::getExportPath() const
 {
         return exportPath;
 }
