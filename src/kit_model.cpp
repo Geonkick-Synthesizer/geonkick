@@ -27,6 +27,7 @@
 #include "percussion_model.h"
 #include "kit_state.h"
 #include "ExportToSfz.h"
+#include "ExportSoundData.h"
 #include "GeonkickModel.h"
 #include "preset.h"
 
@@ -423,25 +424,29 @@ GeonkickApi* KitModel::api() const
 
 bool KitModel::doExport(const std::string &file, const ExportInfo &info) const
 {
-        using ExportFormat = ExportInfo::ExportFormat;
+        using ExportFormat = ExportAbstract::ExportFormat;
         switch (info.format) {
         case ExportFormat::Sfz:
-         {
+        {
                  ExportToSfz toSfz(this, file);
                  return toSfz.doExport();
-         }
-        case ExportFormat::ExportFormat::Flac:
+        }
+        case ExportFormat::Flac:
         case ExportFormat::Wav:
         case ExportFormat::Ogg:
         {
-                ExportSoundData exportToAudioFile(file, info.format);
+                auto currentIndex = getIndex(geonkickApi->currentPercussion());
+                ExportSoundData exportToAudioFile(file,
+                                                  instrumentData(currentIndex),
+                                                  info.format);
                 exportToAudioFile.setBitDepth(info.bitDepth);
                 exportToAudioFile.setNumberOfChannels(info.channels);
+                exportToAudioFile.setSampleRate(api()->getSampleRate());
+                return exportToAudioFile.doExport();
         }
         default:
                 return false;
-                }*/
-        return false;
+        }
 }
 
 RkString KitModel::name() const

@@ -35,7 +35,7 @@ class ExportSoundData : public ExportAbstract {
         void setBitDepth(int depth);
         int getBitDepth() const;
         int getSampleRate() const;
-        void setSmapleRate(int srate);
+        void setSampleRate(int srate);
         int numberOfChannels() const;
         void setNumberOfChannels(int channels);
 
@@ -45,7 +45,7 @@ class ExportSoundData : public ExportAbstract {
 
  private:
         std::vector<float> soundData;
-        Subformat bitDepth;
+        int bitDepth;
         int sampleRate;
         int nChannels;
 };

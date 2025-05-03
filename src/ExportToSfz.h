@@ -30,7 +30,7 @@ class KitModel;
 
 class ExportToSfz : public ExportAbstract {
  public:
-        ExportToSfz(KitModel *model, const std::filesystem::path &file);
+        ExportToSfz(const KitModel *model, const std::filesystem::path &file);
         bool doExport() override;
 protected:
         std::filesystem::path dataPath() const;
@@ -38,7 +38,7 @@ protected:
 
  private:
         std::string sfzFileName;
-        KitModel *kitModel;
+        const KitModel *kitModel;
 };
 
 #endif // GEONGKICK_EXPORT_TO_SFZ_H

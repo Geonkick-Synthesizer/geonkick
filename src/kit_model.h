@@ -36,7 +36,12 @@ class Preset;
 
 class KitModel : public RkObject {
  public:
-        using ExportInfo = ExportAbstract::ExportInfo;
+        struct ExportInfo {
+                ExportAbstract::ExportFormat format;
+                int bitDepth;
+                int channels;
+        };
+
         using PercussionIndex = int;
         using KeyIndex = int;
         explicit KitModel(GeonkickModel* parent);

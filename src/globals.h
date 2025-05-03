@@ -81,6 +81,7 @@ namespace Geonkick
         constexpr char applicationName[] = GEONKICK_APP_NAME;
         constexpr char applicationVersionStr[] = GEOKICK_VERSION_STRING;
         constexpr std::string_view defaultExportFormat = "flac24";
+        constexpr int defaultBitDepth = 16;
         constexpr double toDecibel(double val)
         {
                 if (val < std::numeric_limits<double>::min())

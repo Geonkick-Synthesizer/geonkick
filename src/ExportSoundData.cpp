@@ -30,7 +30,7 @@ ExportSoundData::ExportSoundData(const std::filesystem::path &file,
                                  ExportFormat exportFormat)
         : ExportAbstract(file, exportFormat)
         , soundData{data}
-        , bitDepth{getDefaultBitDepth()}
+        , bitDepth{Geonkick::defaultBitDepth}
         , sampleRate{Geonkick::defaultSampleRate}
         , nChannels{2}
 {
@@ -107,7 +107,7 @@ int ExportSoundData::getSampleRate() const
         return sampleRate;
 }
 
-void ExportSoundData::setSmapleRate(int srate)
+void ExportSoundData::setSampleRate(int srate)
 {
         sampleRate = srate;
 }

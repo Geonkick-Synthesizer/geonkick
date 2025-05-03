@@ -2,7 +2,7 @@
  * File name: ExportToSfz.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
- * Copyright (C) 2020 Iurie Nistor 
+ * Copyright (C) 2020 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -26,7 +26,7 @@
 #include "kit_model.h"
 #include "percussion_model.h"
 
-ExportToSfz::ExportToSfz(KitModel *model, const std::filesystem::path &file)
+ExportToSfz::ExportToSfz(const KitModel *model, const std::filesystem::path &file)
         : ExportAbstract(file, ExportFormat::Sfz)
         , kitModel{model}
 {
@@ -82,7 +82,8 @@ bool ExportToSfz::doExport()
                 ExportSoundData exportToWav(wavFile,
                                             instrument->data(),
                                             ExportSoundData::ExportFormat::Wav);
-                exportToWav.setSubformat(ExportSoundData::Subformat::Wav32);
+                exportToWav.setBitDepth(32);
+                exportToWav.setSampleRate(kitModel->api()->getSampleRate());
                 exportToWav.doExport();
         }
 

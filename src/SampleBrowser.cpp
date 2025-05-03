@@ -218,7 +218,26 @@ void SampleBrowser::loadSample(const fs::path &file)
 
 void SampleBrowser::doExport(const fs::path &path) const
 {
-        
-        KitModel::ExportInfo exportInfo;//{getExportFormat(), getNumberOfChannels()};
-        kitModel->doExport(path, exportInfo);
+    KitModel::ExportInfo exportInfo{};
+    auto formatStr = std::get<std::string>(exportFormatSpinBox->currentItem());
+
+    fs::path adjustedPath = path;
+    if (formatStr == "flac16" || formatStr == "flac24") {
+        exportInfo.format = ExportAbstract::ExportFormat::Flac;
+        exportInfo.bitDepth = formatStr == "flac16" ? 16 : 24;
+        adjustedPath.replace_extension(".flac");
+    } else if (formatStr == "wav16" || formatStr == "wav24" || formatStr == "wav32") {
+        exportInfo.format = ExportAbstract::ExportFormat::Wav;
+        exportInfo.bitDepth = formatStr == "wav16" ? 16 : (formatStr == "wav24" ? 24 : 32);
+        adjustedPath.replace_extension(".wav");
+    } else if (formatStr == "ogg") {
+        exportInfo.format = ExportAbstract::ExportFormat::Ogg;
+        adjustedPath.replace_extension(".ogg");
+    } else if (formatStr == "sfz") {
+        exportInfo.format = ExportAbstract::ExportFormat::Sfz;
+        adjustedPath.replace_extension(".sfz");
+    }
+
+    exportInfo.channels = 2;
+    kitModel->doExport(adjustedPath, exportInfo);
 }
