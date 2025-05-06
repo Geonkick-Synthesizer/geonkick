@@ -43,7 +43,8 @@ class PathBookmarksView;
 class FileBrowser: public GeonkickWidget {
  public:
         explicit FileBrowser(GeonkickWidget *parent,
-                             const std::string &name = "FileBrowser");
+                             const std::string &name = "FileBrowser",
+                             bool saveAction = false);
         void setSize(const RkSize &size);
         fs::path currentDirectory() const;
         void setCurrentDirectoy(const fs::path &path);
@@ -77,6 +78,10 @@ class FileBrowser: public GeonkickWidget {
                     onCreateFile(const fs::path& filePath),
                     RK_ARG_TYPE(const fs::path& filePath),
                     RK_ARG_VAL(filePath));
+        RK_DECL_ACT(createFile,
+                    createFile(),
+                    RK_ARG_TYPE(),
+                    RK_ARG_VAL());
 
  protected:
         void createUi();
@@ -95,6 +100,7 @@ class FileBrowser: public GeonkickWidget {
         PathBookmarksView* bookmarksView;
         BreadcrumbBar *breadcrumbBar;
         FilesView *filesView;
+        bool saveButtonAction;
 };
 
 #endif // GEONKICK_FILE_BROWSER_H

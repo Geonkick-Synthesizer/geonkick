@@ -52,7 +52,9 @@ RK_DECLARE_IMAGE_RC(bookmark_16x16_unpressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_pressed);
 RK_DECLARE_IMAGE_RC(bookmark_16x16_hover);
 
-FileBrowser::FileBrowser(GeonkickWidget *parent, const std::string &name)
+FileBrowser::FileBrowser(GeonkickWidget *parent,
+                         const std::string &name,
+                         bool saveAction)
         : GeonkickWidget(parent)
         , mainContainer{nullptr}
         , bookmarkDirectoryButton{nullptr}
@@ -61,6 +63,7 @@ FileBrowser::FileBrowser(GeonkickWidget *parent, const std::string &name)
         , bookmarksView{nullptr}
         , breadcrumbBar{nullptr}
         , filesView{nullptr}
+        , saveButtonAction{saveAction}
 {
         setSize(parent->size());
         createUi();
@@ -293,12 +296,16 @@ void FileBrowser::createSaveControls(RkContainer *container)
                              RkButton::State::Pressed);
         saveButton->show();
         container->addWidget(saveButton);
-        RK_ACT_BIND(saveButton, pressed, RK_ACT_ARGS(), filesView, createFile());
-        RK_ACT_BIND(filesView,
-                    onCreateFile,
-                    RK_ACT_ARGS(const fs::path &filePath),
-                    this,
-                    onCreateFile(filePath));
+        if (saveButtonAction) {
+                RK_ACT_BIND(saveButton, pressed, RK_ACT_ARGS(), this, createFile());
+        } else {
+                RK_ACT_BIND(saveButton, pressed, RK_ACT_ARGS(), filesView, createFile());
+                RK_ACT_BIND(filesView,
+                            onCreateFile,
+                            RK_ACT_ARGS(const fs::path &filePath),
+                            this,
+                            onCreateFile(filePath));
+        }
 }
 
 void FileBrowser::updateView()

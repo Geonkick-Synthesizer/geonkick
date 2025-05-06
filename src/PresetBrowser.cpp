@@ -42,7 +42,7 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         setSize(306, parent->height() - 30);
 
         // Preset Folders
-        fileBrowser = new FileBrowser(this, "Presets Folders");
+        fileBrowser = new FileBrowser(this, "Presets Folders", true);
         fileBrowser->setSize({width(), height() / 2});
         fileBrowser->setCurrentDirectoy(geonkickConfig->getPresetCurrentPath());
         fileBrowser->getBookmarks()->addPath(DesktopPaths().getPresetsPath());
@@ -52,16 +52,6 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
                      [=,this](const std::string &path) {
                              geonkickConfig->setPresetCurrentPath(path);
                      });
-        RK_ACT_BIND(fileBrowser,
-                    fileActivated,
-                    RK_ACT_ARGS(const fs::path &file),
-                    kitModel,
-                    loadPreset(file));
-        RK_ACT_BIND(fileBrowser,
-                    onCreateFile,
-                    RK_ACT_ARGS(const fs::path &filePath),
-                    kitModel,
-                    save(filePath));
 
         auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
         mainLayout->setSize(size());
@@ -84,6 +74,21 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
                     RK_ACT_ARGS(const fs::path &path),
                     filesView,
                     setCurrentPath(path));
+        RK_ACT_BIND(filesView,
+                    fileActivated,
+                    RK_ACT_ARGS(const fs::path &file),
+                    kitModel,
+                    loadPreset(file));
+        RK_ACT_BIND(filesView,
+                    onCreateFile,
+                    RK_ACT_ARGS(const fs::path &filePath),
+                    kitModel,
+                    save(filePath));
+        RK_ACT_BIND(fileBrowser,
+                    createFile,
+                    RK_ACT_ARGS(),
+                    filesView,
+                    createFile());
         filesView->show();
         mainLayout->addWidget(filesView);
         show();
