@@ -53,6 +53,7 @@ FilesView::FilesView(GeonkickWidget *parent)
         , isScrollBarVisible{false}
         , bookmarksModel{nullptr}
         , newPathEdit{nullptr}
+        , isShowFolders{true}
 {
         setSize(parent->size());
         setBackgroundColor(40, 40, 40);
@@ -189,12 +190,17 @@ void FilesView::loadCurrentDirectory()
                         });
                 };
 
-                auto dirs = pathEntries | std::views::filter(isDir)
-                        | std::views::transform(&fs::directory_entry::path);
-                // TODO: use std::ranges::to C++23
-                std::vector<fs::path> sortedDirs;
-                for (const auto& path : dirs)
-                        sortedDirs.push_back(path);
+                filesList.clear();
+                if (getIsShowFolders()) {
+                        auto dirs = pathEntries | std::views::filter(isDir)
+                                | std::views::transform(&fs::directory_entry::path);
+                        // TODO: use std::ranges::to C++23
+                        std::vector<fs::path> sortedDirs;
+                        for (const auto& path : dirs)
+                                sortedDirs.push_back(path);
+                        std::sort(sortedDirs.begin(), sortedDirs.end());
+                        filesList = std::move(sortedDirs);
+                }
 
                 pathEntries = fs::directory_iterator(currentPath);
                 auto files = pathEntries | std::views::filter(isFile)
@@ -203,10 +209,7 @@ void FilesView::loadCurrentDirectory()
                 std::vector<fs::path> sortedFiles;
                 for (const auto& path : files)
                         sortedFiles.push_back(path);
-
-                std::sort(sortedDirs.begin(), sortedDirs.end());
                 std::sort(sortedFiles.begin(), sortedFiles.end());
-                filesList = std::move(sortedDirs);
                 filesList.insert(filesList.end(), sortedFiles.begin(), sortedFiles.end());
         } catch(...) {
                 GEONKICK_LOG_ERROR("error on reading directory");
@@ -328,6 +331,8 @@ void FilesView::mouseButtonPressEvent(RkMouseEvent *event)
                         bookmarksModel->addPath(filePath);
         } else if (!std::filesystem::is_directory(filePath)) {
                 action fileSelected(filePath);
+        } if (std::filesystem::is_directory(filePath)) {
+                action folderSelected(filePath);
         }
         update();
 }
@@ -454,6 +459,16 @@ void FilesView::setFilters(const std::vector<std::string> &filters)
         fileFilters = filters;
         if (!fileFilters.empty())
                 setCurrentFileExtension(fileFilters.front());
+}
+
+void FilesView::showFolders(bool b)
+{
+        isShowFolders = b;
+}
+
+bool FilesView::getIsShowFolders() const
+{
+        return isShowFolders;
 }
 
 void FilesView::setCurrentFileExtension(const fs::path &ext)

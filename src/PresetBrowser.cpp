@@ -27,6 +27,9 @@
 #include "kit_model.h"
 #include "percussion_model.h"
 #include "preset.h"
+#include "DesktopPaths.h"
+#include "PathBookmarksModel.h"
+#include "FilesView.h"
 
 #include <RkContainer.h>
 
@@ -38,10 +41,11 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
 {
         setSize(306, parent->height() - 30);
 
-        fileBrowser = new FileBrowser(this, "Presets");
-        fileBrowser->setSize({width(), height()});
-        fileBrowser->setFilters({".gkit", /* for backward compatibility */ ".gkick"});
+        // Preset Folders
+        fileBrowser = new FileBrowser(this, "Presets Folders");
+        fileBrowser->setSize({width(), height() / 2});
         fileBrowser->setCurrentDirectoy(geonkickConfig->getPresetCurrentPath());
+        fileBrowser->getBookmarks()->addPath(DesktopPaths().getPresetsPath());
         RK_ACT_BINDL(fileBrowser,
                      currentPathChanged,
                      RK_ACT_ARGS(const std::string &path),
@@ -62,5 +66,25 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
         mainLayout->setSize(size());
         mainLayout->addWidget(fileBrowser);
+
+        // Presets
+        mainLayout->addSpace(5);
+        auto filesView = new FilesView(this);
+        filesView->showFolders(false);
+        filesView->setSize({width(), height() / 2});
+        filesView->setFilters({".gkit", /* for backward compatibility */ ".gkick"});
+        filesView->setCurrentPath(geonkickConfig->getPresetCurrentPath());
+        RK_ACT_BIND(fileBrowser,
+                    currentPathChanged,
+                    RK_ACT_ARGS(const fs::path &path),
+                    filesView,
+                    setCurrentPath(path));
+        RK_ACT_BIND(fileBrowser,
+                    folderSelected,
+                    RK_ACT_ARGS(const fs::path &path),
+                    filesView,
+                    setCurrentPath(path));
+        filesView->show();
+        mainLayout->addWidget(filesView);
         show();
 }

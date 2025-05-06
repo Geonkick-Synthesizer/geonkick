@@ -109,7 +109,6 @@ void DesktopPaths::loadDrivesList()
                 drivesBitMask >>= 1;
         }
 }
-    
 #else // GEONKICK_OS_GNU
 void DesktopPaths::loadPaths()
 {

@@ -51,6 +51,7 @@ class FileBrowser: public GeonkickWidget {
         void setFilters(const std::vector<std::string> &filters);
         void setHomeDirectory(const fs::path &path);
         bool createDirectory(const fs::path &dir);
+        PathBookmarksModel* getBookmarks() const;
 
         RK_DECL_ACT(currentPathChanged,
                     currentPathChanged(const fs::path &path),
@@ -60,6 +61,10 @@ class FileBrowser: public GeonkickWidget {
                     fileActivated(const fs::path& file),
                     RK_ARG_TYPE(const fs::path&),
                     RK_ARG_VAL(file));
+        RK_DECL_ACT(folderSelected,
+                    folderSelected(const fs::path& path),
+                    RK_ARG_TYPE(const fs::path&),
+                    RK_ARG_VAL(path));
         RK_DECL_ACT(fileSelected,
                     fileSelected(const fs::path& file),
                     RK_ARG_TYPE(const fs::path&),

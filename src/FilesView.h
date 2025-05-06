@@ -46,6 +46,8 @@ class FilesView: public GeonkickWidget {
         void setCurrentPath(const fs::path &path);
         const fs::path& getCurrentPath() const;
         void setFilters(const std::vector<std::string> &filters);
+        void showFolders(bool b = true);
+        bool getIsShowFolders() const;
         void setCurrentFileExtension(const fs::path &ext);
         const fs::path& getCurrentFileExtension() const;
         void setBookmarksModel(PathBookmarksModel *model);
@@ -56,6 +58,10 @@ class FilesView: public GeonkickWidget {
         RK_DECL_ACT(currentPathChanged,
                     currentPathChanged(const fs::path &path),
                     RK_ARG_TYPE(const fs::path &path),
+                    RK_ARG_VAL(path));
+        RK_DECL_ACT(folderSelected,
+                    folderSelected(const fs::path& path),
+                    RK_ARG_TYPE(const fs::path&),
                     RK_ARG_VAL(path));
         RK_DECL_ACT(fileSelected,
                     fileSelected(const fs::path& file),
@@ -122,6 +128,7 @@ class FilesView: public GeonkickWidget {
         fs::path currentFileExtension;
         PathBookmarksModel *bookmarksModel;
         RkLineEdit *newPathEdit;
+        bool isShowFolders;
 };
 
 #endif // GEONKICK_FILES_VIEW_H

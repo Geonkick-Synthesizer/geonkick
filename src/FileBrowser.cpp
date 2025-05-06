@@ -134,6 +134,11 @@ void FileBrowser::createUi()
                     this,
                     fileActivated(path));
         RK_ACT_BIND(filesView,
+                    folderSelected,
+                    RK_ACT_ARGS(const fs::path& path),
+                    this,
+                    folderSelected(path));
+        RK_ACT_BIND(filesView,
                     fileSelected,
                     RK_ACT_ARGS(const fs::path& path),
                     this,
@@ -338,6 +343,11 @@ bool FileBrowser::createDirectory(const fs::path &dir)
         if (filesView)
                 return filesView->createPath(dir);
         return false;
+}
+
+PathBookmarksModel* FileBrowser::getBookmarks() const
+{
+        return pathBookmarksModel;
 }
 
 void FileBrowser::updateBookmarkButton(const fs::path &path)
