@@ -39,7 +39,7 @@ GeonkickConfig::GeonkickConfig(bool autosave)
 	, configFile{DesktopPaths().getConfigPath() / "config.json"}
         , presetCurrentPath{DesktopPaths().getPresetsPath()}
         , sampleCurrentPath{DesktopPaths().getDataPath()}
-        , showSideBar{false}
+        , showSidebar{false}
         , exportFormat{Geonkick::defaultExportFormat}
 {
         open();
@@ -119,8 +119,8 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         channelNumber = m.value.GetInt();
                 if (m.name == "midiChannelForced" && m.value.IsBool())
                         midiChannelForced = m.value.GetBool();
-                if (m.name == "showSideBar" && m.value.IsBool())
-                        showSideBar = m.value.GetBool();
+                if (m.name == "showSidebar" && m.value.IsBool())
+                        showSidebar = m.value.GetBool();
                 if (m.name == "bookmarkedPaths" && m.value.IsArray())
                         parseBookmarkedPaths(m.value);
                 if (m.name == "presetCurrentPath" && m.value.IsString())
@@ -239,12 +239,12 @@ std::vector<std::filesystem::path> GeonkickConfig::getBookmarkedPaths(const std:
 
 void GeonkickConfig::setShowSidebar(bool b)
 {
-        showSideBar = b;
+        showSidebar = b;
 }
 
 bool GeonkickConfig::isShowSidebar() const
 {
-        return showSideBar;
+        return showSidebar;
 }
 
 bool GeonkickConfig::setSampleCurrentPath(const fs::path &path)
@@ -308,8 +308,8 @@ std::string GeonkickConfig::toJson() const
         writer.Int(channelNumber);
         writer.Key("midiChannelForced");
         writer.Bool(midiChannelForced);
-        writer.Key("showSideBar");
-        writer.Bool(showSideBar);
+        writer.Key("showSidebar");
+        writer.Bool(showSidebar);
 
         writeBookmarkedPathsToJson(writer);
 

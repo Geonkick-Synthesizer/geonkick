@@ -48,7 +48,6 @@ RK_DECLARE_IMAGE_RC(osc3_load_sample_pressed);
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
         , kitModel{model}
-        , geonkickConfig{std::make_unique<GeonkickConfig>(true)}
         , fileBrowser{nullptr}
         , osc1Button{nullptr}
         , osc2Button{nullptr}
@@ -60,12 +59,12 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         fileBrowser = new FileBrowser(this, "Samples");
         fileBrowser->setSize({width(), height() - 25});
         fileBrowser->setFilters({".wav", ".flac", ".ogg"});
-        fileBrowser->setCurrentDirectoy(geonkickConfig->getSampleCurrentPath());
+        fileBrowser->setCurrentDirectoy(GeonkickConfig().getSampleCurrentPath());
          RK_ACT_BINDL(fileBrowser,
                       currentPathChanged,
                       RK_ACT_ARGS(const std::string &path),
                       [=,this](const std::string &path) {
-                              geonkickConfig->setSampleCurrentPath(path);
+                              GeonkickConfig().setSampleCurrentPath(path);
                       });
         RK_ACT_BIND(fileBrowser,
                     fileSelected,
@@ -176,7 +175,7 @@ void SampleBrowser::createOscillatorsMenu(RkContainer* container)
         exportFormatSpinBox->addItem("wav32");
         exportFormatSpinBox->addItem("ogg");
         exportFormatSpinBox->addItem("sfz");
-        exportFormatSpinBox->setCurrentItem(geonkickConfig->getExportFormat());
+        exportFormatSpinBox->setCurrentItem(GeonkickConfig().getExportFormat());
         exportFormatSpinBox->show();
         container->addWidget(exportFormatSpinBox);
         RK_ACT_BINDL(exportFormatSpinBox,
@@ -184,7 +183,7 @@ void SampleBrowser::createOscillatorsMenu(RkContainer* container)
                      RK_ACT_ARGS(int index),
                      [=, this]([[maybe_unused]] int index){
                              auto item = exportFormatSpinBox->currentItem();
-                             geonkickConfig->setExportFormat(std::get<std::string>(item));
+                             GeonkickConfig().setExportFormat(std::get<std::string>(item));
                      });
 
 }

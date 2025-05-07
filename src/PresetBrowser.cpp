@@ -36,21 +36,20 @@
 PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
         , kitModel{model}
-        , geonkickConfig{std::make_unique<GeonkickConfig>(true)}
         , fileBrowser{nullptr}
 {
         setSize(306, parent->height() - 30);
 
         // Preset Folders
         fileBrowser = new FileBrowser(this, "Presets Folders", true);
-        fileBrowser->setSize({width(), height() / 2});
-        fileBrowser->setCurrentDirectoy(geonkickConfig->getPresetCurrentPath());
+        fileBrowser->setSize({width(), height() / 2 + 17});
+        fileBrowser->setCurrentDirectoy(GeonkickConfig().getPresetCurrentPath());
         fileBrowser->getBookmarks()->addPath(DesktopPaths().getPresetsPath());
         RK_ACT_BINDL(fileBrowser,
                      currentPathChanged,
                      RK_ACT_ARGS(const std::string &path),
                      [=,this](const std::string &path) {
-                             geonkickConfig->setPresetCurrentPath(path);
+                             GeonkickConfig().setPresetCurrentPath(path);
                      });
 
         auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
@@ -63,7 +62,7 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         filesView->showFolders(false);
         filesView->setSize({width(), height() / 2});
         filesView->setFilters({".gkit", /* for backward compatibility */ ".gkick"});
-        filesView->setCurrentPath(geonkickConfig->getPresetCurrentPath());
+        filesView->setCurrentPath(GeonkickConfig().getPresetCurrentPath());
         RK_ACT_BIND(fileBrowser,
                     currentPathChanged,
                     RK_ACT_ARGS(const fs::path &path),
@@ -76,6 +75,11 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
                     setCurrentPath(path));
         RK_ACT_BIND(filesView,
                     fileActivated,
+                    RK_ACT_ARGS(const fs::path &file),
+                    kitModel,
+                    loadPreset(file));
+        RK_ACT_BIND(filesView,
+                    fileSelected,
                     RK_ACT_ARGS(const fs::path &file),
                     kitModel,
                     loadPreset(file));

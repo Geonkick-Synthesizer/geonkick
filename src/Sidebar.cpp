@@ -74,6 +74,7 @@ void Sidebar::createTabButtons(RkContainer *mainLayout)
 
         // Presets button
         presetsButton = new GeonkickButton(this);
+        presetsButton->setPressed(true);
         presetsButton->setFixedSize(45, 20);
         presetsButton->setImage(RkImage(presetsButton->size(), RK_IMAGE_RC(topmenu_presets_off)),
                                RkButton::State::Unpressed);
@@ -96,7 +97,6 @@ void Sidebar::createTabButtons(RkContainer *mainLayout)
 
         // Samples button
         samplesButton = new GeonkickButton(this);
-        samplesButton->setPressed(true);
         samplesButton->setFixedSize(54, 20);
         samplesButton->setImage(RkImage(samplesButton->size(), RK_IMAGE_RC(topmenu_samples_off)),
                                 RkButton::State::Unpressed);

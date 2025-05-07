@@ -28,7 +28,7 @@
 
 class GeonkickConfig {
  public:
-        explicit GeonkickConfig(bool autosave = false);
+        explicit GeonkickConfig(bool autosave = true);
         ~GeonkickConfig();
         void setScaleFactor(double factor);
         double getScaleFactor() const;
@@ -70,7 +70,7 @@ class GeonkickConfig {
         std::unordered_map<std::string, std::vector<std::filesystem::path>> bookmarkedPaths;
         fs::path presetCurrentPath;
         fs::path sampleCurrentPath;
-        bool showSideBar;
+        bool showSidebar;
         std::string exportFormat;
 };
 

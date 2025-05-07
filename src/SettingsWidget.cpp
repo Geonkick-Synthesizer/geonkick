@@ -233,7 +233,7 @@ void SettingsWidget::createShowSidebarSettings(RkContainer *container)
         GeonkickConfig config;
         auto hoziontalContainer = new RkContainer(this);
         hoziontalContainer->setSize({container->size().width(), 16});
-        auto label = new RkLabel(this, "Show browser: ");
+        auto label = new RkLabel(this, "Show sidebar: ");
         label->setSize(70, 16);
         label->setTextColor({255, 255, 255});
         label->setBackgroundColor(background());

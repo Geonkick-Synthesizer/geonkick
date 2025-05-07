@@ -383,18 +383,22 @@ void FilesView::mouseMoveEvent(RkMouseEvent *event)
 
 void FilesView::keyPressEvent(RkKeyEvent *event)
 {
-        if (!filesList.empty() && (event->key() == Rk::Key::Key_Down || event->key() == Rk::Key::Key_Up)) {
+        if (filesList.empty())
+                return;
+
+        if (event->key() == Rk::Key::Key_Down || event->key() == Rk::Key::Key_Up) {
                 event->key() == Rk::Key::Key_Down ? selectedFileIndex++ : selectedFileIndex--;
-                if (selectedFileIndex > -1 && static_cast<decltype(filesList.size())>(selectedFileIndex) > filesList.size() - 1)
+                if (selectedFileIndex < 0)
                         selectedFileIndex = filesList.size() - 1;
-                else if (selectedFileIndex < 0)
+                else if (static_cast<size_t>(selectedFileIndex) > filesList.size() - 1)
                         selectedFileIndex = 0;
                 if (selectedFileIndex < offsetIndex
-                    || static_cast<decltype(filesList.size())>(selectedFileIndex) > offsetIndex + visibleLines - 1) {
+                    || static_cast<size_t>(selectedFileIndex) > offsetIndex + visibleLines - 1) {
                         offsetIndex = selectedFileIndex;
                 }
                 update();
                 updateScrollBar();
+                action fileSelected(selectedFile());
                 return;
         }
 

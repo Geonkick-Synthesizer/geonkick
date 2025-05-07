@@ -33,7 +33,6 @@ class GeonkickButton;
 class RkContainer;
 class GeonkickSlider;
 class KitModel;
-class GeonkickConfig;
 class RkSpinBox;
 
 class SampleBrowser: public GeonkickWidget {
@@ -48,7 +47,6 @@ class SampleBrowser: public GeonkickWidget {
 
  private:
         KitModel *kitModel;
-        std::unique_ptr<GeonkickConfig> geonkickConfig;
         FileBrowser *fileBrowser;
         GeonkickButton *osc1Button;
         GeonkickButton *osc2Button;
