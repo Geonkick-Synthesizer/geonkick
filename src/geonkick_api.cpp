@@ -1915,7 +1915,7 @@ void GeonkickApi::setupPaths()
 {
 	DesktopPaths desktopPaths;
 	setSettings("GEONKICK_CONFIG/HOME_PATH", desktopPaths.getHomePath().string());
-	setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", desktopPaths.getPresetsPath().string());
+	setSettings("GEONKICK_CONFIG/USER_PRESETS_PATH", desktopPaths.getUserPresetsPath().string());
 	setSettings("GEONKICK_CONFIG/USER_DATA_PATH", desktopPaths.getDataPath().string());
 
 	try {
@@ -1926,9 +1926,9 @@ void GeonkickApi::setupPaths()
                         }
                 }
 
-                if (!std::filesystem::exists(desktopPaths.getPresetsPath())) {
-                        if (!std::filesystem::create_directories(desktopPaths.getPresetsPath())) {
-                                GEONKICK_LOG_ERROR("can't create path " << desktopPaths.getPresetsPath());
+                if (!std::filesystem::exists(desktopPaths.getUserPresetsPath())) {
+                        if (!std::filesystem::create_directories(desktopPaths.getUserPresetsPath())) {
+                                GEONKICK_LOG_ERROR("can't create path " << desktopPaths.getUserPresetsPath());
                                 return;
                         }
                 }

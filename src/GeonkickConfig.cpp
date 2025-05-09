@@ -37,7 +37,7 @@ GeonkickConfig::GeonkickConfig(bool autosave)
         , channelNumber{GeonkickTypes::geonkickAnyMidiChannel}
         , midiChannelForced{false}
 	, configFile{DesktopPaths().getConfigPath() / "config.json"}
-        , presetCurrentPath{DesktopPaths().getPresetsPath()}
+        , presetCurrentPath{DesktopPaths().getUserPresetsPath()}
         , sampleCurrentPath{DesktopPaths().getDataPath()}
         , showSidebar{false}
         , exportFormat{Geonkick::defaultExportFormat}

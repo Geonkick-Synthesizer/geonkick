@@ -27,7 +27,6 @@
 #include "geonkick_widget.h"
 #include "geonkick_api.h"
 
-class FileBrowser;
 class RkContainer;
 class KitModel;
 class GeonkickConfig;
@@ -38,7 +37,6 @@ class PresetBrowser: public GeonkickWidget {
 
  private:
         KitModel *kitModel;
-        FileBrowser *fileBrowser;
 };
 
 #endif // GEONKICK_PRESET_BROWSER_H

@@ -36,33 +36,36 @@
 PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
         , kitModel{model}
-        , fileBrowser{nullptr}
 {
         setSize(306, parent->height() - 30);
 
+        auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
+        mainLayout->setSize(size());
+
         // Preset Folders
-        fileBrowser = new FileBrowser(this, "Presets Folders", true);
+        auto fileBrowser = new FileBrowser(this, "Presets Folders", true);
         fileBrowser->setSize({width(), height() / 2 + 17});
         fileBrowser->setCurrentDirectoy(GeonkickConfig().getPresetCurrentPath());
-        fileBrowser->getBookmarks()->addPath(DesktopPaths().getPresetsPath());
+        fileBrowser->getBookmarks()->addPath(DesktopPaths().getFactoryPresetsPath());
+        fileBrowser->getBookmarks()->addPath(DesktopPaths().getUserPresetsPath());
+        mainLayout->addWidget(fileBrowser);
+        mainLayout->addSpace(5);
+
+        // Presets
+        auto filesView = new FilesView(this);
+        filesView->showFolders(false);
+        filesView->setSize({width(), height() / 2});
+        filesView->setFilters({".gkit", /* for backward compatibility */ ".gkick"});
+        filesView->setCurrentPath(GeonkickConfig().getPresetCurrentPath());
+        filesView->show();
+        mainLayout->addWidget(filesView);
+
         RK_ACT_BINDL(fileBrowser,
                      currentPathChanged,
                      RK_ACT_ARGS(const std::string &path),
                      [=,this](const std::string &path) {
                              GeonkickConfig().setPresetCurrentPath(path);
                      });
-
-        auto mainLayout = new RkContainer(this, Rk::Orientation::Vertical);
-        mainLayout->setSize(size());
-        mainLayout->addWidget(fileBrowser);
-
-        // Presets
-        mainLayout->addSpace(5);
-        auto filesView = new FilesView(this);
-        filesView->showFolders(false);
-        filesView->setSize({width(), height() / 2});
-        filesView->setFilters({".gkit", /* for backward compatibility */ ".gkick"});
-        filesView->setCurrentPath(GeonkickConfig().getPresetCurrentPath());
         RK_ACT_BIND(fileBrowser,
                     currentPathChanged,
                     RK_ACT_ARGS(const fs::path &path),
@@ -73,6 +76,17 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
                     RK_ACT_ARGS(const fs::path &path),
                     filesView,
                     setCurrentPath(path));
+        RK_ACT_BIND(fileBrowser,
+                    fileSelected,
+                    RK_ACT_ARGS(const fs::path &path),
+                    filesView,
+                    setCurrentPath(path));
+        RK_ACT_BIND(fileBrowser,
+                    createFile,
+                    RK_ACT_ARGS(),
+                    filesView,
+                    createFile());
+
         RK_ACT_BIND(filesView,
                     fileActivated,
                     RK_ACT_ARGS(const fs::path &file),
@@ -88,12 +102,6 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
                     RK_ACT_ARGS(const fs::path &filePath),
                     kitModel,
                     save(filePath));
-        RK_ACT_BIND(fileBrowser,
-                    createFile,
-                    RK_ACT_ARGS(),
-                    filesView,
-                    createFile());
-        filesView->show();
-        mainLayout->addWidget(filesView);
+
         show();
 }

@@ -22,6 +22,7 @@
  */
 
 #include "PathButton.h"
+#include "DesktopPaths.h"
 
 #include <RkPainter.h>
 
@@ -31,7 +32,14 @@ PathButton::PathButton(GeonkickWidget *parent,
         : GeonkickButton(parent)
         , buttonPath{path}
 {
-        auto pathString = text.empty() ? path.filename().string() : text;
+        std::string pathString;
+        DesktopPaths desktopPaths;
+        if (path == desktopPaths.getFactoryPresetsPath())
+                pathString = "Factory Presets";
+        else if (path == desktopPaths.getUserPresetsPath())
+                pathString = "User Presets";
+        else
+                pathString = text.empty() ? path.filename().string() : text;
 
         RkPainter painter(this);
         setSize(painter.getTextWidth(pathString) + 6,

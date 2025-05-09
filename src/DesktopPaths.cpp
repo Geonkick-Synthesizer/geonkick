@@ -2,7 +2,7 @@
  * File name: DesktopPaths.cpp
  * Project: Geonkick (A percussive synthesizer)
  *
- * Copyright (C) 2023 Iurie Nistor 
+ * Copyright (C) 2023 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -57,9 +57,14 @@ std::filesystem::path DesktopPaths::getDataPath() const
 	return dataPath;
 }
 
-std::filesystem::path DesktopPaths::getPresetsPath() const
+std::filesystem::path DesktopPaths::getFactoryPresetsPath() const
 {
-	return presetsPath;
+	return factoryPresetsPath;
+}
+
+std::filesystem::path DesktopPaths::getUserPresetsPath() const
+{
+	return userPresetsPath;
 }
 
 #ifdef GEONKICK_OS_WINDOWS
@@ -91,7 +96,8 @@ void DesktopPaths::loadPaths()
 	} else {
 		GEONKICK_LOG_ERROR("Failed to get program data directory path.");
 	}
-	presetsPath = dataPath / std::filesystem::path("presets");
+	userPresetPath = dataPath / std::filesystem::path("presets");
+        factoryPresetPath = userPresetPath;
 
         loadDrivesList();
 }
@@ -110,17 +116,58 @@ void DesktopPaths::loadDrivesList()
         }
 }
 #else // GEONKICK_OS_GNU
+std::filesystem::path DesktopPaths::findFactoryPresetsPath(const fs::path &presetsPath) const
+{
+        const fs::path factoryFileName = "factory.txt";
+        const fs::path presetsPathSuffix = "presets";
+        if (std::filesystem::exists(presetsPath / factoryFileName))
+                return presetsPath;
+
+        // Compile-time GEONKICK_DATA_DIR
+#ifdef GEONKICK_DATA_DIR
+        auto compileTimePath = std::filesystem::path(GEONKICK_DATA_DIR)
+                               / std::filesystem::path(GEONKICK_APP_NAME)
+                               / presetsPathSuffix;
+        if (std::filesystem::exists(compileTimePath / factoryFileName))
+                return compileTimePath;
+#endif
+
+        // XDG_DATA_DIRS or fallback to /usr/local/share and /usr/share
+        const char *dataDirs = std::getenv("XDG_DATA_DIRS");
+        std::vector<std::filesystem::path> searchPaths;
+
+        if (dataDirs && *dataDirs) {
+                std::stringstream ss(dataDirs);
+                std::string path;
+                while (std::getline(ss, path, ':')) {
+                        searchPaths.emplace_back(std::filesystem::path(path));
+                }
+        } else {
+                searchPaths = {
+                        "/usr/local/share",
+                        "/usr/share"
+                };
+        }
+
+        for (const auto &dir : searchPaths) {
+                auto path = dir / std::filesystem::path(GEONKICK_APP_NAME)
+                            / presetsPathSuffix;
+                if (std::filesystem::exists(path / factoryFileName))
+                        return path;
+        }
+
+        return userPresetsPath;
+}
+
 void DesktopPaths::loadPaths()
 {
-        const char *dataHome = std::getenv("XDG_DATA_HOME");
+        const auto *dataHome = std::getenv("XDG_DATA_HOME");
         if (dataHome == nullptr || *dataHome == '\0') {
-                const char *homeDir = std::getenv("HOME");
-                if (homeDir == nullptr || *homeDir == '\0') {
-                        GEONKICK_LOG_ERROR("can't get home directory");
+                const auto *homeDir = std::getenv("HOME");
+                if (homeDir == nullptr || *homeDir == '\0')
 			homeDir = ".";
-                }
                 dataPath = homeDir / std::filesystem::path(".local/share")
-                        / std::filesystem::path(GEONKICK_APP_NAME);
+                           / std::filesystem::path(GEONKICK_APP_NAME);
                 homePath = homeDir;
         } else {
                 dataPath = dataHome / std::filesystem::path(GEONKICK_APP_NAME);
@@ -128,12 +175,13 @@ void DesktopPaths::loadPaths()
         }
 	desktopPath = homePath / std::filesystem::path("Desktop");
 	downloadsPath = homePath / std::filesystem::path("Downloads");
-	presetsPath = dataPath / std::filesystem::path("presets");
+	userPresetsPath = dataPath / std::filesystem::path("presets");
+        factoryPresetsPath = findFactoryPresetsPath(userPresetsPath);
 
-        const char *configHome = std::getenv("XDG_CONFIG_HOME");
+        const auto *configHome = std::getenv("XDG_CONFIG_HOME");
         if (configHome == nullptr || *configHome == '\0') {
 		configPath = homePath / std::filesystem::path(".config")
-			/ std::filesystem::path(GEONKICK_APP_NAME);
+			     / std::filesystem::path(GEONKICK_APP_NAME);
         } else {
                 configPath = configHome / std::filesystem::path(GEONKICK_APP_NAME);
         }
