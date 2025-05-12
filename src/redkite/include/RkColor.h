@@ -28,7 +28,6 @@
 
 class RkColor {
  public:
-
         constexpr RkColor()
                 : redValue{255}
                 , greenValue{255}

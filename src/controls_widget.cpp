@@ -33,6 +33,7 @@
 #include "GeonkickModel.h"
 #include "kit_model.h"
 #include "percussion_model.h"
+#include "AppInfoWidget.h"
 
 ControlsWidget::ControlsWidget(GeonkickWidget *parent,
                                GeonkickModel* model)
@@ -84,6 +85,10 @@ ControlsWidget::ControlsWidget(GeonkickWidget *parent,
         layersWidget->setPosition(3 * (8 + 223), 270);
         RK_ACT_BIND(this, updateGui, RK_ACT_ARGS(), layersWidget, updateGui());
         layersWidget->show();
+
+        auto appInfoWidget = new AppInfoWidget(this, geonkickModel);
+        appInfoWidget->setPosition(layersWidget->x() + layersWidget->width(),
+                                   layersWidget->y());
 
 #ifndef GEONKICK_SINGLE
         auto kitTabs = new KitTabs(this, geonkickModel->getKitModel());

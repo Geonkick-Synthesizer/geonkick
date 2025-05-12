@@ -25,21 +25,29 @@
 #define GEONKICK_MODEL_H
 
 #include "globals.h"
+#include "geonkick_api.h"
 
 #include <RkObject.h>
 
-class GeonkickApi;
 class KitModel;
 class PresetBrowserModel;
 class OscillatorModel;
 
 class GeonkickModel : public RkObject {
  public:
+        enum class KitType: int {
+                SingleInstrument,
+                MultiInstrument,
+        };
+        using InstanceType = GeonkickApi::InstanceType;
         explicit GeonkickModel(RkObject* parent, GeonkickApi *api);
         GeonkickApi* api() const;
         KitModel* getKitModel() const;
         PresetBrowserModel* getPresetsModel() const;
         const std::vector<OscillatorModel*>& getOscillatorModels() const;
+        InstanceType instanceType() const;
+        KitType kitType() const;
+        bool isBasic() const;
 
  private:
         GeonkickApi *geonkickApi;

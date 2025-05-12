@@ -59,4 +59,25 @@ PresetBrowserModel* GeonkickModel::getPresetsModel() const
         return presetModel;
 }
 
+GeonkickModel::InstanceType GeonkickModel::instanceType() const
+{
+        return geonkickApi->getInstanceType();
+}
 
+GeonkickModel::KitType GeonkickModel::kitType() const
+{
+#if defined(GEONKICK_SINGLE)
+        return KitType::SingleInstrument;
+#else
+        return KitType::MultiInstrument;
+#endif // GEONKICK_SINGLE
+}
+
+bool GeonkickModel::isBasic() const
+{
+#if defined(GEONKICK_LIMITED_VERSION)
+        return true;
+#else
+        return false;
+#endif // GEONKICK_LIMITED_VERSION
+}
