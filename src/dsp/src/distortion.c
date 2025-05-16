@@ -198,10 +198,10 @@ gkick_distortion_val(struct gkick_distortion *distortion,
             *out_val = atan(drive * x);
             break;
         case GEONKICK_DISTORTION_EXPONENTIAL:
-            *out_val = (x < 0.0f ? -1.0f : 1.0f) * (1.0f - exp(drive * fabs(x)));
+            *out_val = (x < 0.0f ? -1.0f : 1.0f) * (1.0f - exp(-drive * fabs(x)));
             break;
         case GEONKICK_DISTORTION_POLYNOMIAL:
-            *out_val = x - (x * x * x) / 3.0f;
+                *out_val = x - (0.1f * drive * x * x * x) / 3.0f;
             break;
         case GEONKICK_DISTORTION_LOGARITHMIC:
             *out_val = log(1.0f + drive * fabs(x)) * (x < 0.0f ? -1.0f : 1.0f);
