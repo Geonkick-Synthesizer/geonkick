@@ -2,13 +2,20 @@
 
 ### Features
 
-- Bézier curve for envelopes
+- Sidebar browser for presets and samples
 - Oscillator distortion effect
+- Add 6 distortion types for distortion effect: hard clip, tan, atan, exp, log, polyomial
+- Bézier curve for envelopes
 - Add UI scale setting in "Settings" tab
+- Add midi key numbers in midi key popup
 
 ### Improvements
 
 - Increase FM modulation coefficient
+- Add gain to oscillator and instrument amplitude control
+- Use a single preset format (now all presets are *.gkit)
+- Setting as popup instead of tab widget
+- Some improvements to UI (icons etc.)
 
 ### Fixes
 

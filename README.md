@@ -20,8 +20,9 @@ claps, hi-hats, shakers, and unique effect sounds.
 
 Source code repository:
 
-- https://gitlab.com/Geonkick-Synthesizer/geonkick
 - https://codeberg.org/Geonkick-Synthesizer/geonkick
+- https://gitlab.com/Geonkick-Synthesizer/geonkick
+- https://github.com/Geonkick-Synthesizer/geonkick
 
 ## Features
 
