@@ -171,61 +171,61 @@ gkick_distortion_val(struct gkick_distortion *distortion,
                      gkick_real *out_val,
                      gkick_real env_x)
 {
-    gkick_distortion_lock(distortion);
+        gkick_distortion_lock(distortion);
 #if (GEONKICK_VERSION_MAJOR > 3)
 #warning Remove backward compatibility.
 #endif // GEONKICK_VERSION_MAJOR
-    if (distortion->type == GEONKICK_DISTORTION_BACKWARD_COMPATIBLE) {
-            distortion_backward_compatible(distortion,
-                                           in_val,
-                                           out_val,
-                                           env_x);
-             gkick_distortion_unlock(distortion);
-             return GEONKICK_OK;
-    }
+        if (distortion->type == GEONKICK_DISTORTION_BACKWARD_COMPATIBLE) {
+                distortion_backward_compatible(distortion,
+                                               in_val,
+                                               out_val,
+                                               env_x);
+                gkick_distortion_unlock(distortion);
+                return GEONKICK_OK;
+        }
 
-    gkick_real x = distortion->in_limiter * in_val;
-    gkick_real drive_env_val = gkick_envelope_get_value(distortion->drive_env, env_x);
-    gkick_real drive = distortion->drive * gkick_envelope_get_value(distortion->drive_env, env_x);
-    switch (distortion->type) {
+        gkick_real x = distortion->in_limiter * in_val;
+        gkick_real drive_env_val = gkick_envelope_get_value(distortion->drive_env, env_x);
+        gkick_real drive = distortion->drive * gkick_envelope_get_value(distortion->drive_env, env_x);
+        switch (distortion->type) {
         case GEONKICK_DISTORTION_HARD_CLIPPING:
-            *out_val = GKICK_CLAMP(x, -1.0f / drive, 1.0f / drive);
-            break;
+                *out_val = GKICK_CLAMP(x, -1.0f / drive, 1.0f / drive);
+                break;
         case GEONKICK_DISTORTION_SOFT_CLIPPING_TANH:
-            *out_val = tanh(drive * x);
-            break;
+                *out_val = tanh(drive * x);
+                break;
         case GEONKICK_DISTORTION_ARCTAN:
-            *out_val = atan(drive * x);
-            break;
+                *out_val = atan(drive * x);
+                break;
         case GEONKICK_DISTORTION_EXPONENTIAL:
-            *out_val = (x < 0.0f ? -1.0f : 1.0f) * (1.0f - exp(-drive * fabs(x)));
-            break;
+                *out_val = (x < 0.0f ? -1.0f : 1.0f) * (1.0f - exp(-drive * fabs(x)));
+                break;
         case GEONKICK_DISTORTION_POLYNOMIAL:
                 *out_val = x - (0.1f * drive * x * x * x) / 3.0f;
-            break;
+                break;
         case GEONKICK_DISTORTION_LOGARITHMIC:
-            *out_val = log(1.0f + drive * fabs(x)) * (x < 0.0f ? -1.0f : 1.0f);
-            break;
+                *out_val = log(1.0f + drive * fabs(x)) * (x < 0.0f ? -1.0f : 1.0f);
+                break;
         case GEONKICK_DISTORTION_FOLDBACK:
-            {
-                gkick_real threshold = 1.0f;
-                *out_val = fabs(fmod(x + threshold, 2.0f * threshold) - threshold) - threshold;
-            }
-            break;
+                {
+                        gkick_real threshold = 1.0f;
+                        *out_val = fabs(fmod(x + threshold, 2.0f * threshold) - threshold) - threshold;
+                }
+                break;
         case GEONKICK_DISTORTION_HALF_WAVE_RECT:
-            *out_val = x > 0.0f ? x : 0.0f;
-            break;
+                *out_val = x > 0.0f ? x : 0.0f;
+                break;
         case GEONKICK_DISTORTION_FULL_WAVE_RECT:
-            *out_val = fabs(x);
-            break;
+                *out_val = fabs(x);
+                break;
         default:
-            *out_val = x;
-            break;
-    }
+                *out_val = x;
+                break;
+        }
 
-    *out_val *= distortion->out_limiter * gkick_envelope_get_value(distortion->volume_env, env_x);
-    gkick_distortion_unlock(distortion);
-    return GEONKICK_OK;
+        *out_val *= distortion->out_limiter * gkick_envelope_get_value(distortion->volume_env, env_x);
+        gkick_distortion_unlock(distortion);
+        return GEONKICK_OK;
 }
 
 enum geonkick_error
