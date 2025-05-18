@@ -34,6 +34,8 @@ bool DistortionInfo::toJson(std::ostringstream &jsonStream) const
         jsonStream << "\"type\": " << static_cast<int>(type) << ", " << std::endl;
         jsonStream << "\"in_limiter\": "
                    << in_limiter  << ", " << std::endl;
+        jsonStream << "\"out_limiter\": "
+                   << out_limiter  << ", " << std::endl;
         jsonStream << "\"volume\": "
                    << out_limiter  << ", " << std::endl;
         jsonStream << "\"drive\": "
@@ -77,6 +79,8 @@ bool DistortionInfo::fromObject(const auto& obj)
                         type = static_cast<DistortionInfo::DistortionType>(el.value.GetInt());
                 if (el.name == "in_limiter" && el.value.IsDouble())
                         in_limiter = el.value.GetDouble();
+                if (el.name == "out_limiter" && el.value.IsDouble())
+                        out_limiter = el.value.GetDouble();
                 if (el.name == "volume" && el.value.IsDouble())
                         out_limiter = el.value.GetDouble();
                 if (el.name == "drive" && el.value.IsDouble())

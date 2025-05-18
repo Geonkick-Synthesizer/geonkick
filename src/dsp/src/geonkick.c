@@ -1428,7 +1428,7 @@ geonkick_osc_distortion_get_out_limiter(struct geonkick *kick,
         osc = gkick_synth_get_oscillator(kick->synths[kick->per_index], index);
         if (!osc)
                 return GEONKICK_ERROR;
-        return gkick_distortion_get_in_limiter(osc->distortion, value);
+        return gkick_distortion_get_out_limiter(osc->distortion, value);
 }
 
 enum geonkick_error

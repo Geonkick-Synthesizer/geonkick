@@ -179,8 +179,8 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
         state->setKickEnvelopePoints(GeonkickApi::EnvelopeType::DistortionVolume, envelope);
         state->enableDistortion(false);
         state->setDistortionType(DistortionType::SoftClippingTan);
-        state->setDistortionOutLimiter(0.1);
         state->setDistortionInLimiter(1.0);
+        state->setDistortionOutLimiter(0.1);
         state->setDistortionDrive(1.0);
 
         std::vector<GeonkickApi::OscillatorType> oscillators = {
@@ -229,8 +229,8 @@ std::unique_ptr<PercussionState> GeonkickApi::getDefaultPercussionState()
                         state->setOscillatorEnvelopePoints(index, envelope, EnvelopeType::DistortionDrive);
                         state->setOscDistortionEnabled(index, false);
                         state->setOscDistortionType(index, DistortionType::SoftClippingTan);
-                        state->setOscDistortionOutLimiter(index, 1.0);
                         state->setOscDistortionInLimiter(index, 1.0);
+                        state->setOscDistortionOutLimiter(index, 1.0);
                         state->setOscDistortionDrive(index, 1.0);
                 }
         }
@@ -363,6 +363,7 @@ std::unique_ptr<PercussionState> GeonkickApi::getPercussionState() const
                 getOscillatorState(static_cast<Layer>(i), OscillatorType::Oscillator3, state);
         }
         state->enableDistortion(isDistortionEnabled());
+        state->setDistortionType(getDistortionType());
         state->setDistortionInLimiter(getDistortionInLimiter());
         state->setDistortionOutLimiter(getDistortionOutLimiter());
         state->setDistortionDrive(getDistortionDrive());
@@ -412,9 +413,10 @@ void GeonkickApi::getOscillatorState(GeonkickApi::Layer layer,
         // Distortion
         points = oscillatorEvelopePoints(index, EnvelopeType::DistortionDrive);
         state->setOscillatorEnvelopePoints(index, points, EnvelopeType::DistortionDrive);
+        state->setOscDistortionType(index, getOscDistortionType(index));
         state->setOscDistortionEnabled(index, isOscDistortionEnabled(index));
-        state->setOscDistortionOutLimiter(index, getOscDistortionOutLimiter(index));
         state->setOscDistortionInLimiter(index, getOscDistortionInLimiter(index));
+        state->setOscDistortionOutLimiter(index, getOscDistortionOutLimiter(index));
         state->setOscDistortionDrive(index, getOscDistortionDrive(index));
 
         currentLayer = temp;
@@ -1065,6 +1067,14 @@ bool GeonkickApi::setOscDistortionType(int oscillatorIndex, DistortionType type)
         return res == GEONKICK_OK;
 }
 
+bool GeonkickApi::setOscDistortionInLimiter(int oscillatorIndex, double val)
+{
+        auto res = geonkick_osc_distortion_set_in_limiter(geonkickApi,
+                                                          getOscIndex(oscillatorIndex),
+                                                          val);
+        return res == GEONKICK_OK;
+}
+
 double GeonkickApi::getOscDistortionInLimiter(int oscillatorIndex) const
 {
         float value = 0.0f;
@@ -1074,11 +1084,11 @@ double GeonkickApi::getOscDistortionInLimiter(int oscillatorIndex) const
         return value;
 }
 
-bool GeonkickApi::setOscDistortionInLimiter(int oscillatorIndex, double val)
+bool GeonkickApi::setOscDistortionOutLimiter(int oscillatorIndex, double val)
 {
-        auto res = geonkick_osc_distortion_set_in_limiter(geonkickApi,
-                                                          getOscIndex(oscillatorIndex),
-                                                          val);
+        auto res = geonkick_osc_distortion_set_out_limiter(geonkickApi,
+                                                           getOscIndex(oscillatorIndex),
+                                                           val);
         return res == GEONKICK_OK;
 }
 
@@ -1089,14 +1099,6 @@ double GeonkickApi::getOscDistortionOutLimiter(int oscillatorIndex) const
                                                 getOscIndex(oscillatorIndex),
                                                 &value);
         return value;
-}
-
-bool GeonkickApi::setOscDistortionOutLimiter(int oscillatorIndex, double val)
-{
-        auto res = geonkick_osc_distortion_set_out_limiter(geonkickApi,
-                                                           getOscIndex(oscillatorIndex),
-                                                           val);
-        return res == GEONKICK_OK;
 }
 
 double GeonkickApi::getOscDistortionDrive(int oscillatorIndex) const

@@ -39,9 +39,9 @@ struct DistortionInfo {
         bool enabled = false;
         DistortionType type = DistortionType::SoftClippingTan;
         double in_limiter = 1.0;
+        double out_limiter = 1.0;
         double drive = 1.0;
         std::vector<EnvelopePoint> driveEnvelope = {{0, 1}, {1, 1}};
-        double out_limiter = 1.0;
         std::vector<EnvelopePoint> outLimiterEnvelope = {{0, 1}, {1, 1}};
 };
 
