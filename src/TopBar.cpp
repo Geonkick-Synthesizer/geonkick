@@ -427,7 +427,8 @@ void TopBar::showSettings()
         settingsButton->setPressed(false);
         auto settingsPopup = new SettingsWidget(dynamic_cast<GeonkickWidget*>(getTopWidget()),
                                                 geonkickModel->api());
-        settingsPopup->setPosition((getTopWidget()->width() - settingsPopup->width()) / 2,
+        settingsPopup->setPosition((getTopWidget()->width()
+                                    - settingsPopup->width()) / 2 - 120,
                                    50);
         settingsPopup->show();
 }
