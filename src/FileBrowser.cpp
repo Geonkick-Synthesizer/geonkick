@@ -123,7 +123,7 @@ void FileBrowser::createUi()
                     setCurrentPath(path));
         RK_ACT_BIND(filesView,
                     currentPathChanged,
-                    RK_ACT_ARGS(const std::string &path),
+                    RK_ACT_ARGS(const fs::path &path),
                     pathHistory,
                     goTo(path));
         RK_ACT_BIND(filesView,
@@ -158,7 +158,7 @@ void FileBrowser::createUi()
                     setCurrentPath(path));
         RK_ACT_BIND(filesView,
                     currentPathChanged,
-                    RK_ACT_ARGS(const std::string &path),
+                    RK_ACT_ARGS(const fs::path &path),
                     breadcrumbBar,
                     setPath(path));
         mainContainer->addWidget(filesView);

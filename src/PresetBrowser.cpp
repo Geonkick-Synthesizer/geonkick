@@ -62,8 +62,8 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
 
         RK_ACT_BINDL(fileBrowser,
                      currentPathChanged,
-                     RK_ACT_ARGS(const std::string &path),
-                     [=,this](const std::string &path) {
+                     RK_ACT_ARGS(const fs::path &path),
+                     [=,this](const fs::path &path) {
                              GeonkickConfig().setPresetCurrentPath(path);
                      });
         RK_ACT_BIND(fileBrowser,
@@ -101,7 +101,7 @@ PresetBrowser::PresetBrowser(GeonkickWidget *parent, KitModel* model)
                     onCreateFile,
                     RK_ACT_ARGS(const fs::path &filePath),
                     kitModel,
-                    save(filePath));
+                    save(filePath.string()));
 
         show();
 }

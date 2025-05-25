@@ -88,7 +88,7 @@ bool ExportToSfz::doExport()
         }
 
         auto sfzFilePath = getExportPath();
-        if (!sfzFilePath.has_extension() && Geonkick::toLower(sfzFilePath.extension()) != ".sfz")
+        if (!sfzFilePath.has_extension() && Geonkick::toLower(sfzFilePath.extension().string()) != ".sfz")
                 sfzFilePath += ".sfz";
         std::ofstream sfzFile (sfzFilePath);
         if (!sfzFile.is_open()) {

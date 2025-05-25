@@ -503,5 +503,5 @@ bool KitModel::loadPreset(const Preset &preset, PercussionIndex index)
 
 bool KitModel::loadPreset(const Preset &preset)
 {
-        return open(preset.path());
+        return open(preset.path().string());
 }

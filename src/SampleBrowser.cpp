@@ -1,4 +1,4 @@
-/**
+ /**
  * File name: SampleBrowser.cpp
  * Project: Geonkick (A percussion synthesizer)
  *
@@ -62,8 +62,8 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         fileBrowser->setCurrentDirectoy(GeonkickConfig().getSampleCurrentPath());
          RK_ACT_BINDL(fileBrowser,
                       currentPathChanged,
-                      RK_ACT_ARGS(const std::string &path),
-                      [=,this](const std::string &path) {
+                      RK_ACT_ARGS(const fs::string &path),
+                      [=,this](const fs::path &path) {
                               GeonkickConfig().setSampleCurrentPath(path);
                       });
         RK_ACT_BIND(fileBrowser,
@@ -209,7 +209,7 @@ void SampleBrowser::loadSample(const fs::path &file)
 
                 auto currentInstrument = kitModel->currentPercussion();
                 auto oscillator = currentInstrument->getCurrentLayerOscillator(oscType);
-                oscillator->setSample(file);
+                oscillator->setSample(file.string());
                 oscillator->setFunction(OscillatorModel::FunctionType::Sample);
         }  catch (...) {
         }
@@ -238,5 +238,5 @@ void SampleBrowser::doExport(const fs::path &path) const
     }
 
     exportInfo.channels = 2;
-    kitModel->doExport(adjustedPath, exportInfo);
+    kitModel->doExport(adjustedPath.string(), exportInfo);
 }

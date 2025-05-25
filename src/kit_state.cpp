@@ -40,7 +40,7 @@ bool KitState::open(const std::string &fileName)
         }
 
         std::filesystem::path filePath(fileName);
-        auto fileExt = Geonkick::toLower(filePath.extension());
+        auto fileExt = Geonkick::toLower(filePath.extension().string());
         if (filePath.extension().empty() || (fileExt != ".gkit" && fileExt != ".gkick")) {
                 GEONKICK_LOG_ERROR("can't open kit. Wrong file format.");
                 return false;
@@ -69,7 +69,7 @@ bool KitState::save(const std::string &fileName)
 
         std::filesystem::path filePath(fileName);
         if (filePath.extension().empty()
-            || Geonkick::toLower(filePath.extension()) != ".gkit") {
+            || Geonkick::toLower(filePath.extension().string()) != ".gkit") {
                 filePath.replace_extension(".gkit");
         }
 
