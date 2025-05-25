@@ -366,5 +366,6 @@ void MainWindow::updateLimiter(KitModel::PercussionIndex index)
 
 RkSize MainWindow::getWindowSize()
 {
-        return RkSize(MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+        return {MAIN_WINDOW_WIDTH + (GeonkickConfig().isShowSidebar() ? 313 : 0)
+                MAIN_WINDOW_HEIGHT};
 }

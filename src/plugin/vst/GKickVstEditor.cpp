@@ -68,7 +68,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
 #ifdef GEONKICK_OS_GNU
         loopTimer = std::make_unique<GKickVstTimer>(guiApp.get());
 #endif // GEONKICK_OS_GNU
-        
+
         geonkickApi->setEventQueue(guiApp->eventQueue());
 
 #ifdef GEONKICK_OS_WINDOWS
@@ -107,7 +107,7 @@ GKickVstEditor::attached(void* parent, FIDString type)
 tresult PLUGIN_API
 GKickVstEditor::removed()
 {
-#ifdef GEONKICK_OS_GNU        
+#ifdef GEONKICK_OS_GNU
         IRunLoop* loop = nullptr;
         if (plugFrame->queryInterface(IRunLoop::iid, (void**)&loop) == Steinberg::kResultOk) {
                 loop->unregisterTimer(loopTimer.get());
@@ -116,7 +116,7 @@ GKickVstEditor::removed()
                 return kResultFalse;
         }
 #endif // GEONKICK_OS_GNU
-        
+
         if (guiApp)
                 guiApp = nullptr;
         return kResultOk;
