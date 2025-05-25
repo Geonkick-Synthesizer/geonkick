@@ -96,8 +96,8 @@ void DesktopPaths::loadPaths()
 	} else {
 		GEONKICK_LOG_ERROR("Failed to get program data directory path.");
 	}
-	userPresetPath = dataPath / std::filesystem::path("presets");
-        factoryPresetPath = userPresetPath;
+	userPresetsPath = dataPath / std::filesystem::path("presets");
+        factoryPresetPath = userPresetsPath;
 
         loadDrivesList();
 }
