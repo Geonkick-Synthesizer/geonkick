@@ -11,6 +11,7 @@ target_link_libraries(geonkick_lv2 PRIVATE  geonkick_common api_plugin redkite)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     target_link_libraries(geonkick_lv2 PRIVATE
       "libcairo.a"
+      "libmsimg32.a"
       "libfontconfig.a"
       "libfreetype.a"
       "libpixman-1.a"
@@ -55,6 +56,7 @@ target_link_libraries(geonkick_single_lv2 PRIVATE  geonkick_common_single api_pl
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
     target_link_libraries(geonkick_single_lv2 PRIVATE
       "libcairo.a"
+      "libmsimg32.a"
       "libfontconfig.a"
       "libfreetype.a"
       "libpixman-1.a"

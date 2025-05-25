@@ -52,6 +52,7 @@ target_link_libraries(${target} PRIVATE geonkick_common api_plugin redkite)
 if (CMAKE_SYSTEM_NAME MATCHES Windows)
 target_link_libraries(${target} PRIVATE
       "libcairo.a"
+      "libmsimg32.a"
       "libfontconfig.a"
       "libfreetype.a"
       "libpixman-1.a"
