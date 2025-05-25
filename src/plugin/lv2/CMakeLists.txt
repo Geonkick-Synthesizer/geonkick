@@ -36,6 +36,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
       "libshlwapi.a"
       "libz.a"
       "libwinpthread.a"
+      "libdwrite.a"
       "-static-libstdc++"
       "-static-libgcc")
 else()
@@ -81,6 +82,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Windows)
       "libshlwapi.a"
       "libz.a"
       "libwinpthread.a"
+      "libdwrite.a"
       "-static-libstdc++"
       "-static-libgcc")
 else()

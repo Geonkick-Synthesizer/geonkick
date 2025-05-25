@@ -77,6 +77,7 @@ target_link_libraries(${target} PRIVATE
       "libshlwapi.a"
       "libz.a"
       "libwinpthread.a"
+      "libdwrite.a"
       "-static-libstdc++"
       "-static-libgcc"
       )
