@@ -264,7 +264,6 @@ void KitModel::loadModelData()
 
 bool KitModel::open(const std::string &file)
 {
-        GEONKICK_LOG_INFO("OPEN: " << file);
         auto kit = std::make_unique<KitState>();
         if (!kit->open(file)) {
                 GEONKICK_LOG_ERROR("can't open kit, the preset might be wrong or corrupted");
