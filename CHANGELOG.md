@@ -8,6 +8,8 @@
 - Bézier curve for envelopes
 - Add UI scale setting in "Settings" tab
 - Add midi key numbers in midi key popup
+- Edit instrument name in the TopBar
+- Add instrument midi channel and note off constrols to TopBar
 
 ### Improvements
 
