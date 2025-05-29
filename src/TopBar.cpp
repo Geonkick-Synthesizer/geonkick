@@ -104,7 +104,7 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         , settingsButton{nullptr}
 {
         setName("TopBar");
-        setFixedSize({parent->width() - 313 - 10, 30});
+        setFixedSize({940 - 10, 30});
         auto mainLayout = new RkContainer(this);
         mainLayout->setSize(size());
 
