@@ -2,7 +2,7 @@
  * File name: top_bar.h
  * Project: Geonkick (A kick synthesizer)
  *
- * Copyright (C) 2018 Iurie Nistor 
+ * Copyright (C) 2018 Iurie Nistor
  *
  * This file is part of Geonkick.
  *
@@ -34,6 +34,7 @@ class ViewState;
 class GeonkickModel;
 class PresetNavigator;
 class RkSpinBox;
+class RkLineEdit;
 
 class TopBar : public GeonkickWidget
 {
@@ -49,6 +50,7 @@ class TopBar : public GeonkickWidget
         void updateGui();
 
  protected:
+        RkWidget* createInstrumentNameLabel();
         void showMidiPopup();
         void showSettings();
 
@@ -67,12 +69,12 @@ class TopBar : public GeonkickWidget
         GeonkickButton *layer3Button;
 #endif // GEONKICK_LIMITED_VERSION
         GeonkickButton *tuneCheckbox;
+        RkLineEdit *instrumentName;
         GeonkickButton *controlsButton;
         GeonkickButton *midiKeyButton;
-#ifdef GEONKICK_SINGLE
         RkSpinBox *midiChannelSpinBox;
         GeonkickButton *noteOffButton;
-#else
+#ifndef GEONKICK_SINGLE
         GeonkickButton *kitButton;
 #endif // GEONKICK_SINGLE
         GeonkickButton *presetsButton;

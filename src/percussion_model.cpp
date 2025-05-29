@@ -128,10 +128,13 @@ PercussionModel::KeyIndex PercussionModel::key() const
         return kitModel->percussionKey(index());
 }
 
-void PercussionModel::setName(const std::string &name)
+bool PercussionModel::setName(const std::string &name)
 {
-        if (kitModel->setPercussionName(index(), name))
+        if (kitModel->setPercussionName(index(), name)) {
                 action nameUpdated(name);
+                return true;
+        }
+        return false;
 }
 
 std::string PercussionModel::name() const

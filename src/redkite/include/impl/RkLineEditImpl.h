@@ -28,6 +28,7 @@
 #include "RkWidgetImpl.h"
 
 class RkTimer;
+class RkColor;
 
 class RkLineEdit::RkLineEditImpl : public RkWidget::RkWidgetImpl, public RkObject {
  public:
@@ -61,6 +62,8 @@ class RkLineEdit::RkLineEditImpl : public RkWidget::RkWidgetImpl, public RkObjec
         void paintEvent(RkPaintEvent *event);
         void updateSize();
 	bool hasEditFocus() const;
+        void setCursorColor(const RkColor &color);
+        const RkColor& getCursorColor() const;
 
  protected:
         void onCursorTimeout();
@@ -69,6 +72,7 @@ class RkLineEdit::RkLineEditImpl : public RkWidget::RkWidgetImpl, public RkObjec
     RK_DECALRE_INTERFACE_PTR(RkLineEdit);
     std::string editedText;
     int cursorIndex;
+    RkColor cursorColor;
     int selectionIndex;
     bool isSelectionMode;
     RkTimer *cursorTimer;

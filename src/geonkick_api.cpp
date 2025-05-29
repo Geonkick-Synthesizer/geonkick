@@ -1548,6 +1548,9 @@ bool GeonkickApi::isMidiChannelForced() const
 
 bool GeonkickApi::setPercussionName(int index, const std::string &name)
 {
+        if (name.empty())
+                return false;
+
         auto res = geonkick_set_percussion_name(geonkickApi,
                                                 index,
                                                 name.c_str(),

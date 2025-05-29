@@ -37,6 +37,7 @@
 #include <RkButton.h>
 #include <RkContainer.h>
 #include <RkSpinBox.h>
+#include <RkLineEdit.h>
 
 RK_DECLARE_IMAGE_RC(separator);
 RK_DECLARE_IMAGE_RC(logo);
@@ -68,11 +69,10 @@ RK_DECLARE_IMAGE_RC(topmenu_controls_off);
 RK_DECLARE_IMAGE_RC(topmenu_midi_off);
 RK_DECLARE_IMAGE_RC(topmenu_midi_active);
 RK_DECLARE_IMAGE_RC(topmenu_midi_hover);
-#ifdef GEONKICK_SINGLE
 RK_DECLARE_IMAGE_RC(note_off_unpressed);
 RK_DECLARE_IMAGE_RC(note_off_hover);
 RK_DECLARE_IMAGE_RC(note_off_pressed);
-#else
+#ifndef GEONKICK_SINGLE
 RK_DECLARE_IMAGE_RC(topmenu_kit_active);
 RK_DECLARE_IMAGE_RC(topmenu_kit_hover);
 RK_DECLARE_IMAGE_RC(topmenu_kit_off);
@@ -91,12 +91,12 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         , layer2Button{nullptr}
         , layer3Button{nullptr}
 #endif // GEONKICK_LIMITED_VERSION
+        , instrumentName {nullptr}
         , controlsButton{nullptr}
         , midiKeyButton{nullptr}
-#ifdef GEONKICK_SINGLE
         , midiChannelSpinBox{nullptr}
         , noteOffButton{nullptr}
-#else
+#ifndef GEONKICK_SINGLE
         , kitButton{nullptr}
 #endif // GEONKICK_SINGLE
         , presetsButton{nullptr}
@@ -190,7 +190,11 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
         presetNavigator = new PresetNavigator(this, geonkickModel->getPresetsModel());
         mainLayout->addWidget(presetNavigator);
 
+        // Instrument name
         addSeparator(mainLayout);
+        mainLayout->addWidget(createInstrumentNameLabel());
+        addSeparator(mainLayout);
+
         midiKeyButton = new GeonkickButton(this);
         midiKeyButton->setTextColor({200, 200, 200});
         midiKeyButton->setType(RkButton::ButtonType::ButtonUncheckable);
@@ -207,7 +211,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                     showMidiPopup());
         mainLayout->addWidget(midiKeyButton);
 
-#ifdef GEONKICK_SINGLE
         // Midi channel
         addSeparator(mainLayout);
         midiChannelSpinBox = new RkSpinBox(this);
@@ -247,7 +250,6 @@ TopBar::TopBar(GeonkickWidget *parent, GeonkickModel *model)
                      [=, this](bool toggled) {
                              geonkickModel->getKitModel()->currentPercussion()->enableNoteOff(toggled);
                      } );
-#endif // GEONKICK_SINGLE
 
         // Controls button
         addSeparator(mainLayout);
@@ -372,16 +374,40 @@ void TopBar::createLyersButtons(RkContainer *mainLayout)
 }
 #endif // GEONKICK_LIMITED_VERSION
 
+RkWidget* TopBar::createInstrumentNameLabel()
+{
+        instrumentName = new RkLineEdit(this);
+        instrumentName->setBackgroundColor({44, 44, 44});
+        instrumentName->setTextColor({180, 180, 180});
+        instrumentName->setCursorColor({180, 180, 180});
+        instrumentName->setSize(100, 20);
+        instrumentName->show();
+        RK_ACT_BINDL(instrumentName, editingFinished, RK_ACT_ARGS(),
+                     [=, this]() {
+                             auto currentInstrument = geonkickModel->getKitModel()->currentPercussion();
+                             if (!currentInstrument->setName(instrumentName->text()))
+                                     instrumentName->setText(currentInstrument->name());
+                     });
+        RK_ACT_BINDL(instrumentName, escapePressed, RK_ACT_ARGS(),
+                     [=, this]() {
+                             auto currentInstrument = geonkickModel->getKitModel()->currentPercussion();
+                             instrumentName->setText(currentInstrument->name());
+                     });
+
+        return instrumentName;
+}
+
 void TopBar::setPresetName(const std::string &name)
 {
         if (name.size() > 20) {
                 std::string preset = name;
                 preset.resize(15);
                 preset += "...";
-                //                presetNameLabel->setText(preset);
+                instrumentName->setText(preset);
         } else {
-                //                presetNameLabel->setText(name);
+                instrumentName->setText(name);
         }
+        instrumentName->moveCursorToEnd();
 }
 
 void TopBar::updateGui()
@@ -396,7 +422,6 @@ void TopBar::updateGui()
         setPresetName(geonkickModel->getKitModel()->currentPercussion()->name());
         auto kitModel = geonkickModel->getKitModel();
         midiKeyButton->setText(MidiKeyWidget::midiKeyToNote(kitModel->currentPercussion()->key()));
-#ifdef GEONKICK_SINGLE
         auto percussionModel = geonkickModel->getKitModel()->currentPercussion();
         auto nMidiChannels = percussionModel->numberOfMidiChannels();
         midiChannelSpinBox->clear();
@@ -405,7 +430,6 @@ void TopBar::updateGui()
                 midiChannelSpinBox->addItem(std::to_string(i + 1));
         midiChannelSpinBox->setCurrentIndex(percussionModel->midiChannel() + 1);
         noteOffButton->setPressed(percussionModel->isNoteOffEnabled());
-#endif // GEONKICK_SINGLE
 }
 
 void TopBar::showMidiPopup()

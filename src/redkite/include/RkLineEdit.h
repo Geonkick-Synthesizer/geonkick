@@ -2,7 +2,7 @@
  * File name: RkLineEdit.h
  * Project: Redkite (A small GUI toolkit)
  *
- * Copyright (C) 2019 Iurie Nistor 
+ * Copyright (C) 2019 Iurie Nistor
  *
  * This file is part of Redkite.
  *
@@ -32,6 +32,8 @@ class RkLineEdit : public RkWidget {
     virtual ~RkLineEdit();
     void setText(const std::string &text);
     std::string text() const;
+    void setCursorColor(const RkColor &color);
+    const RkColor& cursorColor() const;
     void showCursor();
     void hideCursor();
     void moveCursorToFront();

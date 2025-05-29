@@ -34,6 +34,7 @@ RkLineEdit::RkLineEditImpl::RkLineEditImpl(RkLineEdit *interface,
     , inf_ptr{interface}
     , editedText{text}
     , cursorIndex{0}
+    , cursorColor{parent->textColor()}
     , selectionIndex{0}
     , isSelectionMode{false}
     , cursorTimer{nullptr}
@@ -323,7 +324,7 @@ void RkLineEdit::RkLineEditImpl::paintEvent(RkPaintEvent *event)
                 // Draw cursor.
                 if (!isCursorHidden()) {
                         pen = painter.pen();
-                        pen.setColor(color());
+                        pen.setColor(cursorColor);
                         painter.setPen(pen);
                         painter.drawLine(contentsRect.left() + cursorX + 1, contentsRect.top(),
                                          contentsRect.left() + cursorX + 1,
@@ -344,4 +345,14 @@ void RkLineEdit::RkLineEditImpl::updateSize()
 bool RkLineEdit::RkLineEditImpl::hasEditFocus() const
 {
 	return cursorTimer->started();
+}
+
+void RkLineEdit::RkLineEditImpl::setCursorColor(const RkColor &color)
+{
+        cursorColor = color;
+}
+
+const RkColor& RkLineEdit::RkLineEditImpl::getCursorColor() const
+{
+        return cursorColor;
 }

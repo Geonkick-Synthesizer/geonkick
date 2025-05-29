@@ -51,6 +51,16 @@ std::string RkLineEdit::text() const
      return impl_ptr->text();
 }
 
+void RkLineEdit::setCursorColor(const RkColor &color)
+{
+        return impl_ptr->setCursorColor(color);
+}
+
+const RkColor& RkLineEdit::cursorColor() const
+{
+        return impl_ptr->getCursorColor();
+}
+
 void RkLineEdit::paintEvent(RkPaintEvent *event)
 {
         impl_ptr->paintEvent(event);
