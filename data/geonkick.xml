@@ -3,6 +3,7 @@
   <mime-type type="application/x-geonkick-preset">
     <sub-class-of type="application/json"/>
     <comment>Geonkick preset</comment>
+    <glob pattern="*.gkit"/>
     <glob pattern="*.gkick"/>
   </mime-type>
 </mime-info>
