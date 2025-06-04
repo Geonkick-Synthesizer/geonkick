@@ -115,6 +115,18 @@ static gkick_real find_t(const struct gkick_envelope_point *p1,
         return t;
 }
 
+static gkick_real bezier(struct gkick_envelope_point *p1,
+                         struct gkick_envelope_point *p2,
+                         struct gkick_envelope_point *p3,
+                         float xm)
+{
+    if (fabsl(p3->x - p1->x) < DBL_EPSILON)
+            return p1->y;
+
+    gkick_real t = find_t(p1, p2, p3, xm);
+    return bezier_y(t, p1->y, p1->y, p2->y, p3->y);
+}
+
 gkick_real
 gkick_envelope_get_value(const struct gkick_envelope* envelope,
                          gkick_real xm)
@@ -137,35 +149,25 @@ gkick_envelope_get_value(const struct gkick_envelope* envelope,
         return linear_interpolate(envelope->first->x, envelope->first->y,
                                   envelope->last->x, envelope->last->y, xm);
 
-    struct gkick_envelope_point *p1 = NULL, *p2 = NULL, *p3 = NULL;
+    struct gkick_envelope_point *p1 = NULL, *p2 = NULL;
     while (p) {
-        p1 = p;
-        p2 = p->next;
-        p3 = p2 ? p2->next : NULL;
-
-        if (p2 == NULL)
-                return 0.0f;
-
-        if (p3 == NULL && xm >= p1->x && xm <= p2->x )
-                return linear_interpolate(p1->x, p1->y, p2->x, p2->y, xm);
-
-        if (xm >= p1->x && xm <= p3->x)
-                break;
-        p = p3;
+            p1 = p;
+            p2 = p->next;
+            if (p2 && p1->x <= xm && xm <= p2->x)
+                    break;
+            p = p->next;
     }
 
-    if (!p2->is_control) {
-            if (xm <= p2->x)
-                    return linear_interpolate(p1->x, p1->y, p2->x, p2->y, xm);
-            else
-                    return linear_interpolate(p2->x, p2->y, p3->x, p3->y, xm);
-    }
+    if (!p1 || !p2)
+            return 0.0f;
 
-    if (fabsl(p3->x - p1->x) < DBL_EPSILON)
-            return p1->y;
+    if (p1->is_control && p1->prev)
+            return bezier(p1->prev, p1, p2, xm);
 
-    gkick_real t = find_t(p1, p2, p3, xm);
-    return bezier_y(t, p1->y, p1->y, p2->y, p3->y);
+    if (p2->is_control && p2->next)
+            return bezier(p1, p2, p2->next, xm);
+
+    return linear_interpolate(p1->x, p1->y, p2->x, p2->y, xm);
 }
 
 static void gkick_envelope_add_sorted(struct gkick_envelope *envelope,
