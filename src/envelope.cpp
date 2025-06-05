@@ -383,7 +383,7 @@ void Envelope::drawPointValue(RkPainter &painter, const RkPoint &point, double v
 
 void Envelope::drawLines(RkPainter &painter)
 {
-        if (envelopePoints.size() < 2)  // Ensure there are at least two points
+        if (envelopePoints.size() < 2)
                 return;
 
         auto pen = painter.pen();
@@ -394,7 +394,6 @@ void Envelope::drawLines(RkPainter &painter)
         size_t i = 0;
         while (i < envelopePoints.size() - 1) {
                 if (i + 1 < envelopePoints.size() && !envelopePoints[i + 1].isControlPoint()) {
-                        // Create a vector for two points and draw a polyline
                         std::vector<RkPoint> points;
                         auto scaledPoint1 = scaleUp(envelopePoints[i]);
                         points.push_back(RkPoint(scaledPoint1.x(), -scaledPoint1.y()));
@@ -403,9 +402,8 @@ void Envelope::drawLines(RkPainter &painter)
                         points.push_back(RkPoint(scaledPoint2.x(), -scaledPoint2.y()));
 
                         painter.drawPolyline(points);
-                        i += 1;  // Move to the next point
+                        i += 1;
                 } else if (i + 2 < envelopePoints.size()) {
-                        // Create a vector for three points and draw a curve
                         std::vector<RkPoint> points;
                         auto scaledPoint1 = scaleUp(envelopePoints[i]);
                         points.push_back(RkPoint(scaledPoint1.x(), -scaledPoint1.y()));
@@ -417,9 +415,9 @@ void Envelope::drawLines(RkPainter &painter)
                         points.push_back(RkPoint(scaledPoint3.x(), -scaledPoint3.y()));
 
                         painter.drawCurve(points);
-                        i += 2;  // Skip two points as we processed three in the curve
+                        i += 2;
                 } else {
-                        break;  // Exit if there aren't enough points left for a curve
+                        break;
                 }
         }
 }
@@ -566,14 +564,10 @@ void Envelope::addPoint(const RkPoint &point, bool isControlPoint)
                                    });
 
         if (isControlPoint) {
-                // Do not allow inserting control point at beginning or end
                 if (it == envelopePoints.begin() || it == envelopePoints.end())
                         return;
-
                 auto prev = std::prev(it);
                 auto next = it;
-
-                // Only insert control point if both adjacent points are NOT control points
                 if (prev->isControlPoint() || next->isControlPoint())
                         return;
         }
@@ -589,30 +583,25 @@ void Envelope::removePoint(const RkPoint &point)
                                        return hasPoint(ep, point);
                                });
 
-        if (it == envelopePoints.end())
-                return;
-
-        if (it == envelopePoints.begin() || it == envelopePoints.end() - 1)
+        if (it == envelopePoints.end()
+            || it == envelopePoints.begin()
+            || it == envelopePoints.end() - 1)
                 return;
 
         auto index = std::distance(envelopePoints.begin(), it);
-
         it = envelopePoints.erase(it);
         pointRemovedEvent(index);
 
         if (it != envelopePoints.begin() && it != envelopePoints.end() - 1) {
                 auto prev = std::prev(it);
                 auto next = it;
-
                 if (prev->isControlPoint() && next->isControlPoint()) {
                         size_t nextIndex = std::distance(envelopePoints.begin(), next);
                         size_t prevIndex = nextIndex - 1;
 
-                        // Remove next control point first
                         envelopePoints.erase(next);
                         pointRemovedEvent(nextIndex);
 
-                        // Then remove previous control point
                         envelopePoints.erase(prev);
                         pointRemovedEvent(prevIndex);
                 }
