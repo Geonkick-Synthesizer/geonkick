@@ -192,3 +192,8 @@ std::vector<std::filesystem::path> DesktopPaths::getDrivesList() const
 {
         return drivesList;
 }
+
+bool DesktopPaths::isRootPath(const fs::path &path)
+{
+        return path.has_root_directory() && path.filename().empty();
+}

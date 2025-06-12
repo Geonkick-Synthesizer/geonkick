@@ -30,11 +30,14 @@ class PathButton : public GeonkickButton {
  public:
         PathButton(GeonkickWidget *parent,
                    const fs::path& path,
-                   const std::string &text = std::string());
+                   const std::string &suffix = std::string());
         const fs::path& getPath() const;
+        void setSuffix(const std::string_view& suffix);
+        const std::string& getSuffix() const;
 
  private:
         fs::path buttonPath;
+        std::string pathSuffix;
 };
 
 #endif // PATH_BUTTON_H

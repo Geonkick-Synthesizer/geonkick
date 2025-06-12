@@ -23,6 +23,7 @@
 
 #include "BreadcrumbBar.h"
 #include "PathButton.h"
+#include "DesktopPaths.h"
 
 BreadcrumbBar::BreadcrumbBar(GeonkickWidget* parent)
         : GeonkickWidget(parent)
@@ -40,14 +41,14 @@ void BreadcrumbBar::setPath(const fs::path &path)
                 delete button;
         pathButtons.clear();
 
-        fs::path tempCurrentPath;
-        std::vector<std::string> folders;
+        size_t partsCount = std::distance(path.begin(), path.end());
         size_t i = 0;
+        fs::path tempCurrentPath;
         for (const auto& part : path) {
                 tempCurrentPath /= part;
-                auto fileName = tempCurrentPath.filename().string();
-                auto buttonText = tempCurrentPath != path ? fileName + " >" : "";
-                auto button = new PathButton(this, tempCurrentPath, buttonText);
+                auto button = new PathButton(this,
+                                             tempCurrentPath,
+                                             (i < partsCount - 1) ? " > " : "");
                 RK_ACT_BIND(button, pressed, RK_ACT_ARGS(), this, pathPressed(i));
                 pathButtons.emplace_back(button);
                 i++;

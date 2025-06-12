@@ -28,18 +28,22 @@
 
 PathButton::PathButton(GeonkickWidget *parent,
                        const fs::path& path,
-                       const std::string &text)
+                       const std::string &suffix)
         : GeonkickButton(parent)
         , buttonPath{path}
+        , pathSuffix {suffix}
 {
         std::string pathString;
         DesktopPaths desktopPaths;
-        if (path == desktopPaths.getFactoryPresetsPath())
+        if (desktopPaths.isRootPath(path))
+                pathString = path.string();
+        else if (path == desktopPaths.getFactoryPresetsPath())
                 pathString = "Factory Presets";
         else if (path == desktopPaths.getUserPresetsPath())
                 pathString = "User Presets";
         else
-                pathString = text.empty() ? path.filename().string() : text;
+                pathString = path.filename().string();
+        pathString += getSuffix();
 
         RkPainter painter(this);
         setSize(painter.getTextWidth(pathString) + 6,
@@ -74,4 +78,14 @@ PathButton::PathButton(GeonkickWidget *parent,
 const fs::path& PathButton::getPath() const
 {
         return buttonPath;
+}
+
+void PathButton::setSuffix(const std::string_view& suffix)
+{
+        pathSuffix = suffix;
+}
+
+const std::string& PathButton::getSuffix() const
+{
+        return pathSuffix;
 }

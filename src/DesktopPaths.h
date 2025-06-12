@@ -37,6 +37,7 @@ class DesktopPaths {
 	std::filesystem::path getUserPresetsPath() const;
         std::filesystem::path getFactoryPresetsPath() const;
         std::vector<std::filesystem::path> getDrivesList() const;
+        static bool isRootPath(const fs::path &path);
 
  protected:
         std::filesystem::path findFactoryPresetsPath(const fs::path &presetsPath) const;
