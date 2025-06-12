@@ -35,14 +35,16 @@ PathButton::PathButton(GeonkickWidget *parent,
 {
         std::string pathString;
         DesktopPaths desktopPaths;
-        if (desktopPaths.isRootPath(path))
-	        pathString = path.root_name().string();
-        else if (path == desktopPaths.getFactoryPresetsPath())
+        if (desktopPaths.isRootPath(path)) {
+	        pathString = path.root_name().empty() ?
+                             path.string() : path.root_name().string();
+        } else if (path == desktopPaths.getFactoryPresetsPath()) {
                 pathString = "Factory Presets";
-        else if (path == desktopPaths.getUserPresetsPath())
+        } else if (path == desktopPaths.getUserPresetsPath()) {
                 pathString = "User Presets";
-        else
+        } else {
                 pathString = path.filename().string();
+        }
         pathString += getSuffix();
 
         RkPainter painter(this);

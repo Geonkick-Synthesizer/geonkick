@@ -44,27 +44,27 @@ void BreadcrumbBar::setPath(const fs::path &path)
 	std::vector<fs::path> cumulativePaths;
         auto it = path.begin();
         fs::path tempCurrentPath;
-    
 	if (path.has_root_name() && path.has_root_directory()) {
-	  tempCurrentPath = path.root_name() / path.root_directory();
-	  GEONKICK_LOG_INFO("tempCurrentPath[1]: " << tempCurrentPath.string());
-	  cumulativePaths.push_back(tempCurrentPath);
-	  ++it; // skip root_name()
-	  ++it; // skip root_directory()
+                tempCurrentPath = path.root_name() / path.root_directory();
+                GEONKICK_LOG_INFO("tempCurrentPath[1]: " << tempCurrentPath.string());
+                cumulativePaths.push_back(tempCurrentPath);
+                ++it; // skip root_name()
+                ++it; // skip root_directory()
 	} else if (path.has_root_directory()) {
-          GEONKICK_LOG_INFO("tempCurrentPath[2]: " << tempCurrentPath.string());
-	  tempCurrentPath = path.root_directory();
-	  cumulativePaths.push_back(tempCurrentPath);
-	  ++it; // skip root_directory()
+                GEONKICK_LOG_INFO("tempCurrentPath[2]: " << tempCurrentPath.string());
+                tempCurrentPath = path.root_directory();
+                cumulativePaths.push_back(tempCurrentPath);
+                ++it; // skip root_directory()
 	}
 
 	// Append remaining parts
 	for (; it != path.end(); ++it) {
-	  tempCurrentPath /= *it;
-	  cumulativePaths.push_back(tempCurrentPath);
+                tempCurrentPath /= *it;
+                cumulativePaths.push_back(tempCurrentPath);
 	}
 
         for (size_t i = 0; i < cumulativePaths.size(); i++) {
+                GEONKICK_LOG_INFO("part: " << cumulativePaths[i].string());
                 auto button = new PathButton(this,
                                              cumulativePaths[i],
                                              (i < cumulativePaths.size() - 1) ? " > " : "");

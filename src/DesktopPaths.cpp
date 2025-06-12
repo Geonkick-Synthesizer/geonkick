@@ -195,19 +195,14 @@ std::vector<std::filesystem::path> DesktopPaths::getDrivesList() const
 
 bool DesktopPaths::isRootPath(const fs::path &path)
 {
-    if (!path.has_root_directory())
+        if (!path.has_root_directory())
+                return false;
+
+        if (path.has_root_directory() && path.filename().empty())
+                return true;
+
+        if (path.root_name() / path.root_directory() == path)
+                return true;
+
         return false;
-
-    // Compose root (root_name + root_directory)
-    fs::path root = path.root_name() / path.root_directory();
-
-    // Check if the path is exactly the root (e.g. "C:\" or "/")
-    if (path == root)
-        return true;
-
-    // On Linux root_name is empty, so root == "/" and path.filename() should be empty
-    if (path.root_name().empty() && path.filename().empty())
-        return true;
-
-    return false;
 }
