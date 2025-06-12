@@ -41,17 +41,35 @@ void BreadcrumbBar::setPath(const fs::path &path)
                 delete button;
         pathButtons.clear();
 
-        size_t partsCount = std::distance(path.begin(), path.end());
-        size_t i = 0;
+	std::vector<fs::path> cumulativePaths;
+        auto it = path.begin();
         fs::path tempCurrentPath;
-        for (const auto& part : path) {
-                tempCurrentPath /= part;
+    
+	if (path.has_root_name() && path.has_root_directory()) {
+	  tempCurrentPath = path.root_name() / path.root_directory();
+	  GEONKICK_LOG_INFO("tempCurrentPath[1]: " << tempCurrentPath.string());
+	  cumulativePaths.push_back(tempCurrentPath);
+	  ++it; // skip root_name()
+	  ++it; // skip root_directory()
+	} else if (path.has_root_directory()) {
+          GEONKICK_LOG_INFO("tempCurrentPath[2]: " << tempCurrentPath.string());
+	  tempCurrentPath = path.root_directory();
+	  cumulativePaths.push_back(tempCurrentPath);
+	  ++it; // skip root_directory()
+	}
+
+	// Append remaining parts
+	for (; it != path.end(); ++it) {
+	  tempCurrentPath /= *it;
+	  cumulativePaths.push_back(tempCurrentPath);
+	}
+
+        for (size_t i = 0; i < cumulativePaths.size(); i++) {
                 auto button = new PathButton(this,
-                                             tempCurrentPath,
-                                             (i < partsCount - 1) ? " > " : "");
+                                             cumulativePaths[i],
+                                             (i < cumulativePaths.size() - 1) ? " > " : "");
                 RK_ACT_BIND(button, pressed, RK_ACT_ARGS(), this, pathPressed(i));
                 pathButtons.emplace_back(button);
-                i++;
         }
 
         if (!pathButtons.empty()) {

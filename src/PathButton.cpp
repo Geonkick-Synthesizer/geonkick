@@ -36,7 +36,7 @@ PathButton::PathButton(GeonkickWidget *parent,
         std::string pathString;
         DesktopPaths desktopPaths;
         if (desktopPaths.isRootPath(path))
-                pathString = path.string();
+	        pathString = path.root_name().string();
         else if (path == desktopPaths.getFactoryPresetsPath())
                 pathString = "Factory Presets";
         else if (path == desktopPaths.getUserPresetsPath())
