@@ -27,6 +27,8 @@
 #include "public.sdk/source/vst/vsteditcontroller.h"
 #include "pluginterfaces/gui/iplugview.h"
 
+#include <RkEvent.h>
+
 #include <memory>
 
 using namespace Steinberg;
@@ -65,6 +67,11 @@ class GKickVstEditor : public Vst::EditorView {
         tresult PLUGIN_API attached(void* parent, FIDString type) override;
         tresult PLUGIN_API removed() override;
         tresult PLUGIN_API getSize(ViewRect* newSize) override;
+
+ protected:
+        tresult processKey(RkEvent::Type keyType, char16 key);
+        tresult onKeyDown(char16 key, int16 keyCode, int16 modifiers) override;
+        tresult onKeyUp(char16 key, int16 keyCode, int16 modifiers) override;
 
  private:
         std::unique_ptr<RkMain> guiApp;

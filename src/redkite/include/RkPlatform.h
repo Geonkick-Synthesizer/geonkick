@@ -26,6 +26,7 @@
 
 #include "Rk.h"
 #include "RkLog.h"
+#include "RkEvent.h"
 
 #ifdef RK_OS_WIN
 #include <windows.h>
@@ -53,6 +54,12 @@ HINSTANCE rk_win_api_instance();
 LPCSTR rk_win_api_class_name();
 RkNativeWindowInfo rk_from_native_win(HWND window, HINSTANCE instance, LPCSTR className);
 RkWindowId rk_id_from_win(HWND window);
+Rk::Key rk_convertKey(unsigned int winKey);
+void rk_updateKeyModifiers(Rk::Key key, RkEvent::Type type);
+int rk_getKeyModifiers();
+class RkEventQueue;
+class RkEvent;
+void rk_processSystemEvent(RkEventQueue *eventQueue, std::unique_ptr<RkEvent> event);
 
 #define RK_WIN_MESSAGE_PAINT (WM_USER + 0x0001)
 

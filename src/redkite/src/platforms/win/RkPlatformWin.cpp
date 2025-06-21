@@ -67,23 +67,18 @@ RkWindowId rk_id_from_win(HWND window)
 
 #include <Windows.h>
 
-static void processSystemEvent(auto& eventQueue, std::unique_ptr<RkEvent> event)
+void rk_processSystemEvent(RkEventQueue *eventQueue, std::unique_ptr<RkEvent> event)
 {
-    eventQueue->getPlatformEventQueue()->addEvent(std::move(event));
-    eventQueue->processEvents();
+    RK_IMPL_PTR(eventQueue)->getPlatformEventQueue()->addEvent(std::move(event));
+    RK_IMPL_PTR(eventQueue)->processEvents();
 }
 
 static Rk::Key convertToRkKey(unsigned int winKey)
 {
-        if (winKey >= 0x30 && winKey <= 0x39)
+        if (winKey >= 0x21 && winKey <= 0x7e)
                 return static_cast<Rk::Key>(winKey);
 
-        if (winKey >= 0x41 && winKey <= 0x5A) {
-                if (!(GetKeyState(VK_SHIFT) & 0x8000))
-                        return static_cast<Rk::Key>(tolower(winKey));
-                return static_cast<Rk::Key>(winKey);
-        }
-
+        RK_LOG_DEV_DEBUG("Rk::Key:: " << std::hex << winKey);
         Rk::Key rkKey;
         switch(winKey) {
         case VK_BACK:
@@ -122,9 +117,11 @@ static Rk::Key convertToRkKey(unsigned int winKey)
                 break;
         case VK_CONTROL:
         case VK_LCONTROL:
+                RK_LOG_DEV_DEBUG("Rk::Key::Key_Control_Left");
                 rkKey = Rk::Key::Key_Control_Left;
                 break;
         case VK_RCONTROL:
+                RK_LOG_DEV_DEBUG("Rk::Key::Key_Control_Right");
                 rkKey = Rk::Key::Key_Control_Right;
                 break;
         case VK_MENU:
@@ -182,9 +179,14 @@ static Rk::Key convertToRkKey(unsigned int winKey)
         return rkKey;
 }
 
+Rk::Key rk_convertKey(unsigned int winKey)
+{
+        return convertToRkKey(winKey);
+}
+
 int rkKeyModifiers = 0;
 
-static void rkUpdateModifiers(Rk::Key key, RkEvent::Type type)
+void rk_updateKeyModifiers(Rk::Key key, RkEvent::Type type)
 {
         if (key == Rk::Key::Key_Shift_Left
             || key == Rk::Key::Key_Shift_Right
@@ -198,6 +200,11 @@ static void rkUpdateModifiers(Rk::Key key, RkEvent::Type type)
         }
 }
 
+int rk_getKeyModifiers()
+{
+        return rkKeyModifiers;
+}
+
 HWND rkCurrnetWind{};
 
 static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -206,8 +213,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         if (!userDataPtr)
               return DefWindowProc(hWnd, msg, wParam, lParam);
 
-        auto eventQueue = RK_IMPL_PTR(reinterpret_cast<RkEventQueue*>(userDataPtr));
-        if (!eventQueue)
+        auto eventQueue = reinterpret_cast<RkEventQueue*>(userDataPtr);
+        auto eventQueueImpl = RK_IMPL_PTR(eventQueue);
+        if (!eventQueueImpl)
                 return DefWindowProc(hWnd, msg, wParam, lParam);
 
         switch(msg)
@@ -215,7 +223,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         case WM_TIMER:
         {
                 if (wParam == RK_SYSTEM_WINDOW_TIMER_ID)
-                        eventQueue->processQueue();
+                        eventQueueImpl->processQueue();
                 return 0;
         }
         case WM_LBUTTONDOWN:
@@ -226,8 +234,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkMouseEvent>();
                 auto x = static_cast<short int>(LOWORD(lParam));
                 auto y = static_cast<short int>(HIWORD(lParam));
-                event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
+                event->setX(static_cast<double>(x) / eventQueueImpl->scaleFactor());
+                event->setY(static_cast<double>(y) / eventQueueImpl->scaleFactor());
                 if (msg == WM_LBUTTONDOWN) {
                         RK_LOG_DEBUG("WM_LBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Left);
@@ -238,7 +246,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                         RK_LOG_DEBUG("WM_MBUTTONDOWN");
                         event->setButton(RkMouseEvent::ButtonType::Middle);
                 }
-		processSystemEvent(eventQueue, std::move(event));
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
         case WM_LBUTTONUP:
@@ -249,8 +257,8 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setType(RkEvent::Type::MouseButtonRelease);
                 auto x = static_cast<short int>(LOWORD(lParam));
                 auto y = static_cast<short int>(HIWORD(lParam));
-		event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
+		event->setX(static_cast<double>(x) / eventQueueImpl->scaleFactor());
+                event->setY(static_cast<double>(y) / eventQueueImpl->scaleFactor());
                 if (msg == WM_LBUTTONUP) {
                         RK_LOG_DEBUG("WM_LBUTTONUP");
                         event->setButton(RkMouseEvent::ButtonType::Left);
@@ -261,7 +269,7 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                         RK_LOG_DEBUG("WM_MBUTTONUP");
                         event->setButton(RkMouseEvent::ButtonType::Middle);
                 }
-		processSystemEvent(eventQueue, std::move(event));
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
         case WM_MOUSEMOVE:
@@ -272,14 +280,13 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 tme.hwndTrack = hWnd;
                 tme.dwHoverTime = HOVER_DEFAULT;
                 TrackMouseEvent(&tme);
-                
                 auto event = std::make_unique<RkMouseEvent>();
                 event->setType(RkEvent::Type::MouseMove);
                 auto x = static_cast<short int>(LOWORD(lParam));
                 auto y = static_cast<short int>(HIWORD(lParam));
-		event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
-                processSystemEvent(eventQueue, std::move(event));
+		event->setX(static_cast<double>(x) / eventQueueImpl->scaleFactor());
+                event->setY(static_cast<double>(y) / eventQueueImpl->scaleFactor());
+                rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
         case WM_LBUTTONDBLCLK:
@@ -291,9 +298,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setButton(RkMouseEvent::ButtonType::Left);
                 auto x = static_cast<short int>(LOWORD(lParam));
                 auto y = static_cast<short int>(HIWORD(lParam));
-		event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
-		processSystemEvent(eventQueue, std::move(event));
+		event->setX(static_cast<double>(x) / eventQueueImpl->scaleFactor());
+                event->setY(static_cast<double>(y) / eventQueueImpl->scaleFactor());
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
 
@@ -306,9 +313,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setButton(RkMouseEvent::ButtonType::Right);
                 auto x = static_cast<short int>(LOWORD(lParam));
                 auto y = static_cast<short int>(HIWORD(lParam));
-		event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
-		processSystemEvent(eventQueue, std::move(event));
+		event->setX(static_cast<double>(x) / eventQueueImpl->scaleFactor());
+                event->setY(static_cast<double>(y) / eventQueueImpl->scaleFactor());
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
 
@@ -320,9 +327,9 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 event->setButton(RkMouseEvent::ButtonType::Middle);
                 auto x = static_cast<short int>(LOWORD(lParam));
                 auto y = static_cast<short int>(HIWORD(lParam));
-		event->setX(static_cast<double>(x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(y) / eventQueue->scaleFactor());
-		processSystemEvent(eventQueue, std::move(event));
+		event->setX(static_cast<double>(x) / eventQueueImpl->scaleFactor());
+                event->setY(static_cast<double>(y) / eventQueueImpl->scaleFactor());
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
         case WM_MOUSEWHEEL:
@@ -337,10 +344,10 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 screenPoint.x = screenX;
                 screenPoint.y = screenY;
 		ScreenToClient(hWnd, &screenPoint);
-		event->setX(static_cast<double>(screenPoint.x) / eventQueue->scaleFactor());
-                event->setY(static_cast<double>(screenPoint.y) / eventQueue->scaleFactor());
+		event->setX(static_cast<double>(screenPoint.x) / eventQueueImpl->scaleFactor());
+                event->setY(static_cast<double>(screenPoint.y) / eventQueueImpl->scaleFactor());
 		event->setButton(buttonType);
-		processSystemEvent(eventQueue, std::move(event));
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
         case WM_KEYDOWN:
@@ -349,10 +356,10 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyPressed);
                 event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
-                rkUpdateModifiers(event->key(), event->type());
-                if (rkKeyModifiers != static_cast<int>(Rk::KeyModifiers::NoModifier))
-                        event->setModifiers(rkKeyModifiers);
-		processSystemEvent(eventQueue, std::move(event));
+                rk_updateKeyModifiers(event->key(), event->type());
+                if (rk_getKeyModifiers() != static_cast<int>(Rk::KeyModifiers::NoModifier))
+                        event->setModifiers(rk_getKeyModifiers());
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
 
@@ -362,22 +369,22 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
                 auto event = std::make_unique<RkKeyEvent>();
                 event->setType(RkEvent::Type::KeyReleased);
                 event->setKey(convertToRkKey(static_cast<unsigned int>(wParam)));
-                rkUpdateModifiers(event->key(), event->type());
-                if (rkKeyModifiers != static_cast<int>(Rk::KeyModifiers::NoModifier))
-                        event->setModifiers(rkKeyModifiers);
-		processSystemEvent(eventQueue, std::move(event));
+                rk_updateKeyModifiers(event->key(), event->type());
+                if (rk_getKeyModifiers() != static_cast<int>(Rk::KeyModifiers::NoModifier))
+                        event->setModifiers(rk_getKeyModifiers());
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
         case WM_SIZE:
 	{
-                processSystemEvent(eventQueue, std::make_unique<RkResizeEvent>());
+                rk_processSystemEvent(eventQueue, std::make_unique<RkResizeEvent>());
                 return 0;
         }
         case WM_PAINT:
         {
                 PAINTSTRUCT ps;
                 BeginPaint(hWnd, &ps);
-		processSystemEvent(eventQueue, std::make_unique<RkPaintEvent>());
+		rk_processSystemEvent(eventQueue, std::make_unique<RkPaintEvent>());
                 EndPaint(hWnd, &ps);
                 return 0;
         }
@@ -385,20 +392,19 @@ static LRESULT CALLBACK RkWindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
         {
                 auto event = std::make_unique<RkFocusEvent>();
                 event->setType(RkEvent::Type::FocusedIn);
-		processSystemEvent(eventQueue, std::move(event));
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
         case WM_KILLFOCUS:
         {
                 auto event = std::make_unique<RkFocusEvent>();
                 event->setType(RkEvent::Type::FocusedOut);
-		processSystemEvent(eventQueue, std::move(event));
+		rk_processSystemEvent(eventQueue, std::move(event));
                 return 0;
         }
-        
         case WM_ERASEBKGND:
 	{
-                auto color = eventQueue->getSystemWindow()->background();
+                auto color = eventQueueImpl->getSystemWindow()->background();
                 auto background = CreateSolidBrush(static_cast<COLORREF>((color.blue() << 16 )
                                                                          | (color.green() << 8 )
                                                                          | (color.red())));
