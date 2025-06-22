@@ -121,25 +121,10 @@ void MainWindow::createShortcuts()
         addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_k, Rk::KeyModifiers::Control_Right);
 
-        addShortcut(Rk::Key::Key_O, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_O, Rk::KeyModifiers::Control_Right);
-        addShortcut(Rk::Key::Key_o, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_o, Rk::KeyModifiers::Control_Right);
-
-        addShortcut(Rk::Key::Key_S, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_S, Rk::KeyModifiers::Control_Right);
-        addShortcut(Rk::Key::Key_s, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_s, Rk::KeyModifiers::Control_Right);
-
         addShortcut(Rk::Key::Key_H, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_H, Rk::KeyModifiers::Control_Right);
         addShortcut(Rk::Key::Key_h, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_h, Rk::KeyModifiers::Control_Right);
-
-        addShortcut(Rk::Key::Key_E, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_E, Rk::KeyModifiers::Control_Right);
-        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Left);
-        addShortcut(Rk::Key::Key_e, Rk::KeyModifiers::Control_Right);
 
         addShortcut(Rk::Key::Key_C, Rk::KeyModifiers::Control_Left);
         addShortcut(Rk::Key::Key_C, Rk::KeyModifiers::Control_Right);
@@ -265,19 +250,13 @@ void MainWindow::openPreset(const std::string &fileName)
 
 void MainWindow::shortcutEvent(RkKeyEvent *event)
 {
-        /*if (event->type() == RkEvent::Type::KeyPressed) {
+        if (event->type() == RkEvent::Type::KeyPressed) {
                 if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                     && (event->key() == Rk::Key::Key_k || event->key() == Rk::Key::Key_K)) {
                         geonkickApi->playKick();
                 } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
                            && (event->key() == Rk::Key::Key_r || event->key() == Rk::Key::Key_R)) {
                         resetToDefault();
-                } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                           && (event->key() == Rk::Key::Key_s || event->key() == Rk::Key::Key_S)) {
-                        showFileBrowser();
-                } else if (event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control)
-                           && (event->key() == Rk::Key::Key_e || event->key() == Rk::Key::Key_E)) {
-                        openExportDialog();
                 } else if ((event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
                            && (event->key() == Rk::Key::Key_c || event->key() == Rk::Key::Key_C)) {
                         geonkickApi->copyToClipboard();
@@ -306,9 +285,9 @@ void MainWindow::shortcutEvent(RkKeyEvent *event)
                         envelopeWidget->setPointEditingMode(false);
 
                 if (!(event->modifiers() & static_cast<int>(Rk::KeyModifiers::Control))
-                      || (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H))
+                    || (event->key() == Rk::Key::Key_h || event->key() == Rk::Key::Key_H))
                         envelopeWidget->hideEnvelope(false);
-                        }*/
+        }
 }
 
 void MainWindow::resetToDefault()
