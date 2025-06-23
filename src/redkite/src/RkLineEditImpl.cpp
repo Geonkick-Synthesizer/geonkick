@@ -34,7 +34,7 @@ RkLineEdit::RkLineEditImpl::RkLineEditImpl(RkLineEdit *interface,
     , inf_ptr{interface}
     , editedText{text}
     , cursorIndex{0}
-    , cursorColor{parent->textColor()}
+    , cursorColor{0, 0, 0}
     , selectionIndex{0}
     , isSelectionMode{false}
     , cursorTimer{nullptr}

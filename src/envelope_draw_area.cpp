@@ -221,6 +221,7 @@ void EnvelopeWidgetDrawingArea::mouseDoubleClickEvent(RkMouseEvent *event)
                                 auto widget = new EnvelopePointContextWidget(currentEnvelope,
                                                                              topWidget);
                                 widget->setPosition({x, y + 40});
+                                widget->setFocus();
                                 widget->show();
                         });
                         eventQueue()->postAction(std::move(act));
