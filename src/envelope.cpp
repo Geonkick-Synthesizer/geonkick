@@ -462,7 +462,7 @@ void Envelope::updateSelectedPointValue(double val)
 {
         if (hasEditingPoint() && editedPointIndex < envelopePoints.size()) {
                 EnvelopePoint p = envelopePoints[editedPointIndex];
-                p.setX(convertFromHumanValue(val));
+                p.setY(convertFromHumanValue(val));
                 pointUpdatedEvent(editedPointIndex, p);
                 updatePoints();
         }
