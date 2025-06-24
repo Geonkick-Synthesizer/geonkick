@@ -35,7 +35,7 @@ PathBookmarksModel::PathBookmarksModel(RkObject *parent, const std::string &name
         pathList.addItem(desktopPaths.getDownloadsPath());
         auto drives = desktopPaths.getDrivesList();
         for (auto& d: drives)
-                pathList.addItem(std::move(d));
+                pathList.addItem(d);
 
         GeonkickConfig config(true);
         for (const auto &path:  config.getBookmarkedPaths(name))
