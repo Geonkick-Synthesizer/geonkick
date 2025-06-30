@@ -4,7 +4,7 @@
 
 **License:** This work (including all images it uses) is released under [CC0 1.0 Universal (CC0 1.0) Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/deed.en).
 
-**Version:** 3.5.0
+**Version:** 3.6.0
 
 **Website:** [https://geonkick.org](https://geonkick.org)
 
@@ -104,25 +104,22 @@ The instrument's user interface serves as the primary window of Geonkick, displa
 
 #### Top Bar
 
-- **"Open" and "Save" buttons:** Opens a dialog for opening or saving the instrument preset.
-- **"Export" button:** Displays a dialog for exporting the current instrument to an audio file format.
 - **Play button:** Triggers Geonkick to play the current instrument.
 - **"L1", "L2", and "L3" buttons:** Turn on/off layers 1, 2, and 3.
 - **"Reset" button:** Resets the current instrument to default settings.
 - **"Tune" checkbox:** Toggles the tuning of the current instrument. The output instrument sound will be tuned according to the pressed MIDI key.
 
-- **Preset navigator:** The navigator to select preset folders and presets & kit presets.
+- **Preset navigator:** The navigator to select factory presetes.
 - **MIDI Key:** Displays the current MIDI input key for the instrument. Pressing on the label opens a popup to select a MIDI key for the instrument.
-- **Tabs:** "Controls", "Kit", "Presets", and "Samples", "Settings" switch to instrument main controls, kit, presets, and sample browser UI, settings respectively.
+- **MIDI channel:** Spinbox for selecting the current instrument's MIDI channel
+- **noff:** Turns off/on for the current instrument to ignore the NOTE OFF when the MIDI key is released.
+- **Tabs:** "Controls", "Kit", switch to instrument main controls or kit UI.
 
 #### Shortcut Keys
 
 - **'Ctrl + k':** Plays the instrument sound.
 - **'Ctrl + r':** Resets the current instrument to default.
 - **'Ctrl + h':** Hides the envelope, showing only the graph.
-- **'Ctrl + o':** Opens the file browser dialog.
-- **'Ctrl + s':** Opens the save dialog.
-- **'Ctrl + e':** Opens the export dialog.
 - **'Ctrl + c':** Copies the currently selected instrument.
 - **'Ctrl + v':** Pastes the copied instrument into the currently selected instrument.
 - **'Left Ctrl + f':** Scales up the UI by a factor of x1.5, 2x, or restores the original size.
@@ -137,7 +134,7 @@ The instrument's user interface serves as the primary window of Geonkick, displa
 
 The instrument envelope area displays:
 
-- **Instrument graph:** Shows the real-time synthesized instrument sound wave form.
+- **Instrument sound waveform:** Shows the real-time synthesized instrument sound wave form.
 - **Envelopes:** Various types of envelopes displayed on top of the instrument sound graph.
 - **Envelope points:** Can be added, removed, and moved by the user. Display the values of the envelopes points and also have a context input for the value (Ctrl + left mouse double-click on the point).
 - **Envelope Path Label:** Shows the current selected envelope type and category. For example, "L1/OSC1/AMPL" means the amplitude envelope of Layer 1 of Oscillator 1.
@@ -184,7 +181,7 @@ If the sound exceeds the range of -1.0 to 1.0, the sound is hard-limited to thes
 
 #### Instrument Preset
 
-The instrument preset is in JSON format and uses the file extension "*.gkick". It can be opened and saved through the instrument UI using the "Open" and "Save" buttons in the top bar.
+The instrument preset is in JSON format and uses the file extension "*.gkit".
 
 #### Oscillator
 
