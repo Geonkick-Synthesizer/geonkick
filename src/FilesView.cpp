@@ -536,12 +536,12 @@ void FilesView::createEditPathControl(FilesView::FileActions act)
 
         auto processEditEvent = [act, this]() -> void {
                 if (newPathEdit->text().empty()) {
-                        filesList.erase(filesList.begin());
+                        if (!filesList.empty())
+                                filesList.erase(filesList.begin());
                         newPathEdit->close();
                         newPathEdit = nullptr;
                         return;
                 }
-
                 auto newPath = getCurrentPath() / fs::path(newPathEdit->text());
                 if (act == FileActions::CreateFile && !hasValidExtension(newPath))
                         newPath += getCurrentFileExtension();
@@ -563,7 +563,8 @@ void FilesView::createEditPathControl(FilesView::FileActions act)
                      [=,this](){
                              newPathEdit->close();
                              newPathEdit = nullptr;
-                             filesList.erase(filesList.begin());
+                             if (!filesList.empty())
+                                     filesList.erase(filesList.begin());
                      });
 
         RK_ACT_BINDL(newPathEdit,
