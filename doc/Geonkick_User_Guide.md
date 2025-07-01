@@ -41,11 +41,14 @@
    * [Kit UI](#kit-ui)
    * [Current Instrument](#current-instrument)
    * [Kit Output Channels](#kit-output-channels)
-   * [Kit Preset](#kit-preset)
    * [Kit Preset vs Instrument Preset](#kit-preset-vs-instrument-preset)
+- [Geonkick Preset](#geonkick-preset)
 - [Preset Browser](#preset-browser)
 - [Instrument vs Channel](#instrument-vs-channel)
-- [Sample Browser](#sample-browser)
+- [Sidebar](#sidebar)
+   * [Preset Browser](#preset-browser)
+   * [Sample Browser](#sample-browser)
+   * [Export](#export)
 - [Settings](#settings)
 - [LV2 Plugin](#lv2-plugin)
 - [Standalone](#standalone)
@@ -254,18 +257,10 @@ In the top bar, the "Tune" checkbox toggles tuning for the currently selected in
 
 *Note:* "Tune" will not make Geonkick polyphonic.
 
-#### Export
-
-The Export dialog can be accessed by clicking the "Export" button in the top bar.
-
-- **File format:** "FLAC16", "FLAC24", "WAV16", "WAV24", "WAV32", "Ogg"
-- **"Stereo" or "Mono":** Exports into a file with one or two identical channels.
-
-Geonkick will export only the currently selected instrument.
-
 ### Kit
 
-Geonkick is multitimbral by default. Each synthesized instrument in Geonkick is added to a list, forming a kit of up to 16 instruments. To access the kit UI, click the "Kit" button on the top bar the main UI.
+Geonkick is multi-instrument by default. Each synthesized instrument is added to a list, forming a kit of up to 16 instruments.
+To access the kit UI, click the **"Kit"** button on the top bar of the main interface.
 
 #### Default Kit State
 
@@ -277,14 +272,11 @@ The instrument list has a maximum limit of 16 instruments and displays the instr
 
 - **Left click:** Selects the current instrument.
 - **Left double click:** Edits the instrument name.
-- **"Add" button (icon with a plus):** Adds a new default instrument.
-- **"Open" button (icon with an up arrow):** Opens a kit preset.
-- **"Save" button (icon with a down arrow):** Saves the kit preset.
+- **"Add" button (icon with a plus):** Adds a new instrument.
 - **"Remove" button (icon with a cross):** Removes the instrument.
 - **"Copy" button:** Copies an instrument and adds it to the list.
-- **Buttons at the end of the instrument line:** Popup for selecting the MIDI key.
 - **Spinbox for setting MIDI input channel for an instrument.**
-- **Column labels:** Show the MIDI key the instrument can be mapped to. The "Any" label indicates that the instrument will be played by pressing any key.
+- **Key:** Control to MIDI key the instrument can be mapped to. The "Any" label indicates that the instrument will be played by pressing any key.
 - **noff:** Turns off/on to ignore the NOTE OFF when the MIDI key is released.
 - **Green circle:** Indicates which instrument is mapped to which output channel and can be changed by left-clicking on the grid cell.
 - **Limiter slider:** Controls the limiter for the current instrument.
@@ -293,64 +285,72 @@ The instrument list has a maximum limit of 16 instruments and displays the instr
 
 #### Current Instrument
 
-When the user selects an instrument from the kit list, it becomes the current controllable instrument in the instrument UI. The instrument UI displays the graph and envelopes of the current instrument. Changing controls will synthesize the selected instrument.
-
-When the user opens an instrument preset (using the "Open" button in the top bar), the currently selected instrument is updated to the opened preset. Similarly, when the user saves an instrument, only the preset of the currently selected instrument is saved. The same applies to exporting.
+When the user selects an instrument from the kit list, it becomes the current controllable instrument in the instrument UI. The instrument UI displays the waveform and envelopes of the current instrument. Changing controls will synthesize the selected instrument.
 
 #### Kit Output Channels
 
 There are a maximum of 16 stereo audio output channels to which the user can map the instruments. When a new instrument is added, it is mapped to channel 1 by default.
 
-#### Kit Preset
-
-A kit preset is in JSON format with the file extension "*.gkit" and includes a list of all instrument presets from the kit. Users can save and open this preset from the kit UI.
-
-#### Kit Preset vs Instrument Preset
-
-An instrument preset is specific to a single instrument and can be loaded using the instrument UI. In contrast, a kit preset contains a list of instrument presets and can be loaded using the kit UI.
-
-#### Preset Browser
-
-The preset browser can be accessed by clicking the "Presets" button on the top bar.
-
-The first column of the preset browser lists the names of preset folders. Each folder may contain instrument and kit presets. When a folder is selected, the browser displays all the presets within that folder in subsequent columns. Kit presets are marked with the prefix "KIT:".
-
-- "+" / "-" -  to add or remove a custom preset folder (for all instances).
-- ">", "<" - to navigate the preset pages
-
-**Note2:**
-- To add new presets to the browser, users need to save the presets (both kit and instrument types) in one of the following paths, then reopen the program or reload the plugin:
-    - /usr/share/geonkick/presets/<PresetFolder>/<Preset>
-    - /usr/local/share/geonkick/presets/<PresetFolder>/<Preset>
-    - /home/<user>/.local/geonkick/presets/<PresetFolder>/<Preset>
-
-**Note3:**
-- Default Geonkick presets are installed under:
-    - /usr/share/geonkick/presets/
-    - or /usr/local/share/geonkick/presets
-
 #### Instrument vs Channel
 
 In Geonkick's Kit UI, instruments and channels are distinct entities. An instrument from the kit UI can be redirected to any audio output channel (from channels 1 to 16). This allows multiple instruments to be directed to a single channel. However, assigning multiple channels to a single instrument is not possible from the Kit UI (this feature may be provided by the host).
 
+### Geonkick Preset
+
+Geonkick is a preset in JSON format with the file extension "*.gkit" and includes a single or multiple instruments. Users can save and open this preset from **Preset Browser**.
+
+### Sidebar
+
+The sidebar contains the **Preset Browser** and **Sample Browser**. It can be shown or hidden from the settings, and this applies to all Geonkick instances. 
+Use the top menu of the sidebar to switch between the **Preset Browser** and **Sample Browser**.
+
+Both the Preset and Sample browsers have a top menu with the following controls:
+
+- **"Forward" & "Backwards"** — Navigate through browsing history.
+- **"+"** — Create a new directory in the current path.
+- **"*"** — Bookmark/unbookmark the current path.
+- **Bookmarks bar** — Contains bookmarked paths, as well as default paths like factory presets and user paths.
+- **Breadcrumb bar** — Displays the current path as clickable segments for easy navigation.
+- **Save/Export button** — In the Preset Browser, saves the current preset. In the Sample Browser, exports the current instrument's waveform.
+
+#### Preset Browser
+
+The Preset Browser includes a list that shows the contents of the currently selected preset folder.
+When the user selects a path that contains presets, they will be displayed in the list.
+
 #### Sample Browser
 
-The sample browser is a file dialog for sample files (WAV, FLAC, OGG). Users can select and load samples into Osc1 or Osc2. The browser includes a preview section where the selected file can be played and previewed. The preview sound is routed through the first stereo channel (which must be connected in the host for plugin usage).
+The Sample Browser has additional controls in the bottom bar:
+
+- **"O1, O2, O3"** — When a sample file is selected, pressing one of these buttons will load the sample into the corresponding oscillator (O1, O2, or O3), and the oscillator's waveform will be set to "sample".
+- **"Export as"** — A spinbox where the export format can be selected: WAV, FLAC, OGG, or SFZ.
+
+#### Export
+
+The export feature can be accessed by clicking the **"Save"** button in the **Sample Browser**.
+
+- **File format:** "FLAC16", "FLAC24", "WAV16", "WAV24", "WAV32", "Ogg", "SFZ"
+
+Geonkick will export only the currently selected instrument.
+
 
 #### Settings
 
-The settings widget gives the user the ability to configure various settings. These settings typically apply to all Geonkick instances.
+Settings can be accessed from the top bar. The settings widget allows the user to configure various settings. These settings apply to all Geonkick instances.
+For settings to take effect (especially UI-related ones), it may be necessary to restart the UI or even the instance (restart the host, reload the plugin,
+or reopen the standalone application).
 
-- **Force all MIDI channels to:** Forces all instrument MIDI input channels to a specific channel (for all instances).
-
+- **Force all MIDI channels to** - Forces all instrument MIDI input channels to a specific channel (applies to all instances).
+- **Scale UI** - Sets the scale of the UI (options: no scale, 1.5x, and 2x). Useful for HiDPI screens.
+- **Show sidebar** - Toggles the visibility of the sidebar.
 
 ### LV2 Plugin
 
 There are two versions of the plugin: the default version and the "Single" version.
 
-- The default plugin version supports kits with 16 instruments and creates 16 stereo audio output channels per plugin instance. One instance of this plugin will use approximately 35MB of heap memory.
+- The default plugin version supports kits with 16 instruments and creates 16 stereo audio output channels per plugin instance.
 
-- The "Single" plugin version does not support kits and only includes one instrument and one stereo audio output channel. One instance of this version will use about 2MB of heap memory. If only one instrument per track is needed, it is recommended to use the "Single" version of the plugin.
+- The "Single" plugin version does not support kits and only includes one instrument and one stereo audio output channel.
 
 *Note*: VST3 plugin has only the default version (kit version).
 
