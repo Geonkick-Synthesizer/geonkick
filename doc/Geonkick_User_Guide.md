@@ -1,3 +1,45 @@
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [The Sound Designer Craft](#the-sound-designer-craft)
+3. [How it works](#how-it-works)
+4. [Block Diagram](#block-diagram)
+5. [Instrument](#instrument)
+   - [Instrument Layers](#instrument-layers)
+   - [Playing Instrument and Note off](#playing-instrument-and-note-off)
+   - [Instrument UI](#instrument-ui)
+   - [Top Bar](#top-bar)
+   - [Shortcut Keys](#shortcut-keys)
+   - [Instrument Envelope Area](#instrument-envelope-area)
+   - [Envelope Points](#envelope-points)
+   - [Bézier Curve for Envelopes](#bézier-curve-for-envelopes)
+   - [Envelope Point Label](#envelope-point-label)
+   - [Manually Input Envelope Point Value](#manually-input-envelope-point-value)
+   - [Display Current Selected Coordinates of Envelope Point](#display-current-selected-coordinates-of-envelope-point)
+   - [Instrument Wave Form](#instrument-wave-form)
+   - [Instrument Preset](#instrument-preset)
+6. [Oscillator](#oscillator)
+7. [Global Controls](#global-controls)
+8. [Limiter](#limiter)
+9. [Filter](#filter)
+10. [Distortion](#distortion)
+11. [Tune](#tune)
+12. [Kit](#kit)
+    - [Default Kit State](#default-kit-state)
+    - [Kit UI](#kit-ui)
+    - [Current Instrument](#current-instrument)
+    - [Kit Output Channels](#kit-output-channels)
+    - [Instrument vs Channel](#instrument-vs-channel)
+13. [Geonkick Preset](#geonkick-preset)
+14. [Sidebar](#sidebar)
+    - [Preset Browser](#preset-browser)
+    - [Sample Browser](#sample-browser)
+    - [Export](#export)
+15. [Settings](#settings)
+16. [LV2 Plugin](#lv2-plugin)
+17. [Standalone](#standalone)
+18. [Build & Install](#build--install)
+
 # Geonkick User Guide
 
 **Author:** Iurie Nistor
@@ -8,51 +50,7 @@
 
 **Website:** [https://geonkick.org](https://geonkick.org)
 
-### Table of Contents
 
-- [Introduction](#introduction)
-- [The Sound Designer Craft](#the-sound-designer-craft)
-- [How it works](#how-it-works)
-- [Block diagram](#block-diagram)
-- [Instrument](#instrument)
-   * [Instrument Layers](#instrument-layers)
-   * [Playing Instrument and Note Off](#playing-instrument-and-note-off)
-   * [Instrument UI](#instrument-ui)
-   * [Top Bar](#top-bar)
-   * [Shortcut Keys](#shortcut-keys)
-   * [Instrument Envelope Area](#instrument-envelope-area)
-   * [Envelope Points](#envelope-points)
-   * [Envelope Point Label](#envelope-point-label)
-   * [Manually Input Envelope Point Value](#manually-input-envelope-point-value)
-   * [Display Current Selected Coordinates of Envelope Point](#display-current-selected-coordinates-of-envelope-point)
-   * [Instrument Wave Form](#instrument-wave-form)
-   * [Instrument Preset](#instrument-preset)
-   * [Oscillator](#oscillator)
-   * [Noise Generator](#noise-generator)
-   * [General Controls](#general-controls)
-   * [Limiter](#limiter)
-   * [Filter](#filter)
-   * [Distortion](#distortion)
-   * [Compressor](#compressor)
-   * [Tune](#tune)
-   * [Export](#export)
-- [Kit](#kit)
-   * [Default Kit State](#default-kit-state)
-   * [Kit UI](#kit-ui)
-   * [Current Instrument](#current-instrument)
-   * [Kit Output Channels](#kit-output-channels)
-   * [Kit Preset vs Instrument Preset](#kit-preset-vs-instrument-preset)
-- [Geonkick Preset](#geonkick-preset)
-- [Preset Browser](#preset-browser)
-- [Instrument vs Channel](#instrument-vs-channel)
-- [Sidebar](#sidebar)
-   * [Preset Browser](#preset-browser)
-   * [Sample Browser](#sample-browser)
-   * [Export](#export)
-- [Settings](#settings)
-- [LV2 Plugin](#lv2-plugin)
-- [Standalone](#standalone)
-- [Build & Install](#build-install)
 
 ### Introduction
 
@@ -152,6 +150,12 @@ Users can add, remove, or move an envelope point. The default first and last poi
 - **Left click:** Select and move the point.
 - **Left double click:** Add a new point.
 - **Right click:** Remove the point.
+
+#### Bézier Curve for Envelopes
+
+To add a Bézier curve, you need to insert a control point between two node points using Left Ctrl + double-click.
+
+Note: If one of the adjacent points is already a control point, a normal node point will be added instead. You can only add a control point between two existing node points.
 
 #### Envelope Point Label
 
@@ -295,7 +299,7 @@ Geonkick is a preset in JSON format with the file extension "*.gkit" and include
 
 ### Sidebar
 
-The sidebar contains the **Preset Browser** and **Sample Browser**. It can be shown or hidden from the settings, and this applies to all Geonkick instances. 
+The sidebar contains the **Preset Browser** and **Sample Browser**. It can be shown or hidden from the settings, and this applies to all Geonkick instances.
 Use the top menu of the sidebar to switch between the **Preset Browser** and **Sample Browser**.
 
 Both the Preset and Sample browsers have a top menu with the following controls:
