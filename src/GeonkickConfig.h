@@ -53,6 +53,8 @@ class GeonkickConfig {
         const fs::path& getPresetCurrentPath() const;
         void setExportFormat(const std::string_view &format);
         const std::string& getExportFormat() const;
+        void setExportNumberOfChannels(unsigned int channels);
+        unsigned int getExportNumberOfChannels() const;
 
  protected:
         void loadConfig(const std::string &data);
@@ -72,6 +74,7 @@ class GeonkickConfig {
         fs::path sampleCurrentPath;
         bool showSidebar;
         std::string exportFormat;
+        unsigned int exportNumberOfChannels;
 };
 
 #endif // GEONGKICK_CONFIG_H

@@ -44,6 +44,12 @@ RK_DECLARE_IMAGE_RC(osc1_load_sample_pressed);
 RK_DECLARE_IMAGE_RC(osc3_load_sample);
 RK_DECLARE_IMAGE_RC(osc3_load_sample_hover);
 RK_DECLARE_IMAGE_RC(osc3_load_sample_pressed);
+RK_DECLARE_IMAGE_RC(export_mono_channel_botton);
+RK_DECLARE_IMAGE_RC(export_mono_channel_botton_hover);
+RK_DECLARE_IMAGE_RC(export_mono_channel_botton_pressed);
+RK_DECLARE_IMAGE_RC(export_stereo_channel_botton);
+RK_DECLARE_IMAGE_RC(export_stereo_channel_botton_hover);
+RK_DECLARE_IMAGE_RC(export_stereo_channel_botton_pressed);
 
 SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         : GeonkickWidget(parent)
@@ -86,18 +92,17 @@ SampleBrowser::SampleBrowser(GeonkickWidget *parent, KitModel* model)
         mainLayout->setSize(size());
         mainLayout->addWidget(fileBrowser);
 
+        // Bottom menu
         auto bottomMenu = new RkContainer(this);
         bottomMenu->setSize({width(), 20});
-
-        createOscillatorsMenu(bottomMenu);
-        //        createExportFormatMenu(bottomMenu);
-
+        createBottomMenu(bottomMenu);
         mainLayout->addSpace(3);
         mainLayout->addContainer(bottomMenu);
+
         show();
 }
 
-void SampleBrowser::createOscillatorsMenu(RkContainer* container)
+void SampleBrowser::createBottomMenu(RkContainer* container)
 {
         // Load to oscillator label
         auto loadLabel = new RkLabel(this, "Load to:");
@@ -186,6 +191,45 @@ void SampleBrowser::createOscillatorsMenu(RkContainer* container)
                              GeonkickConfig().setExportFormat(std::get<std::string>(item));
                      });
 
+        container->addSpace(8);
+
+        GeonkickConfig config;
+        auto monoChannelButton = new GeonkickButton(this);
+        monoChannelButton->setPressed(config.getExportNumberOfChannels() == 1);
+        monoChannelButton->setSize(18, 18);
+        monoChannelButton->setImage(RK_RC_IMAGE(export_mono_channel_botton),
+                                    RkButton::State::Unpressed);
+        monoChannelButton->setImage(RK_RC_IMAGE(export_mono_channel_botton_hover),
+                                    RkButton::State::UnpressedHover);
+        monoChannelButton->setImage(RK_RC_IMAGE(export_mono_channel_botton_pressed),
+                                    RkButton::State::Pressed);
+        container->addWidget(monoChannelButton);
+
+        container->addSpace(3);
+        auto stereoChannelButton = new GeonkickButton(this);
+        stereoChannelButton->setPressed(config.getExportNumberOfChannels() == 2);
+        stereoChannelButton->setSize(18, 18);
+        stereoChannelButton->setImage(RK_RC_IMAGE(export_stereo_channel_botton),
+                                      RkButton::State::Unpressed);
+        stereoChannelButton->setImage(RK_RC_IMAGE(export_stereo_channel_botton_hover),
+                                      RkButton::State::UnpressedHover);
+        stereoChannelButton->setImage(RK_RC_IMAGE(export_stereo_channel_botton_pressed),
+                                      RkButton::State::Pressed);
+
+        RK_ACT_BINDL(monoChannelButton,
+                     pressed,
+                     RK_ACT_ARGS(),
+                     [=,this]() {
+                     GeonkickConfig().setExportNumberOfChannels(1);
+                     stereoChannelButton->setPressed(false); });
+
+        RK_ACT_BINDL(stereoChannelButton,
+                     pressed,
+                     RK_ACT_ARGS(),
+                     [=,this]() {
+                     GeonkickConfig().setExportNumberOfChannels(2);
+                     monoChannelButton->setPressed(false); });
+        container->addWidget(stereoChannelButton);
 }
 
 void SampleBrowser::setOscillator(GeonkickApi::OscillatorType osc)
@@ -237,6 +281,6 @@ void SampleBrowser::doExport(const fs::path &path) const
         adjustedPath.replace_extension(".sfz");
     }
 
-    exportInfo.channels = 2;
+    exportInfo.channels = GeonkickConfig().getExportNumberOfChannels();
     kitModel->doExport(adjustedPath.string(), exportInfo);
 }

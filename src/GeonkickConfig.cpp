@@ -41,6 +41,7 @@ GeonkickConfig::GeonkickConfig(bool autosave)
         , sampleCurrentPath{DesktopPaths().getDataPath()}
         , showSidebar{false}
         , exportFormat{Geonkick::defaultExportFormat}
+        , exportNumberOfChannels{1}
 {
         open();
 }
@@ -129,6 +130,8 @@ void GeonkickConfig::loadConfig(const std::string &data)
                         sampleCurrentPath = m.value.GetString();
                 if (m.name == "exportFormat" && m.value.IsString())
                         exportFormat = m.value.GetString();
+                if (m.name == "exportNumberOfChannels" && m.value.IsInt())
+                        exportNumberOfChannels = m.value.GetInt();
         }
 }
 
@@ -279,6 +282,16 @@ const std::string& GeonkickConfig::getExportFormat() const
         return exportFormat;
 }
 
+void GeonkickConfig::setExportNumberOfChannels(unsigned int channels)
+{
+        exportNumberOfChannels = channels;
+}
+
+unsigned int GeonkickConfig::getExportNumberOfChannels() const
+{
+        return exportNumberOfChannels;
+}
+
 void GeonkickConfig::writeBookmarkedPathsToJson(auto& writer) const
 {
         writer.Key("bookmarkedPaths");
@@ -321,6 +334,8 @@ std::string GeonkickConfig::toJson() const
         if (!exportFormat.empty()) {
                 writer.Key("exportFormat");
                 writer.String(exportFormat.c_str());
+                writer.Key("exportNumberOfChannels");
+                writer.Int(exportNumberOfChannels);
         }
         writer.EndObject();
         return s.GetString();

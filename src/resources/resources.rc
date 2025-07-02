@@ -119,6 +119,12 @@ export_hover.png
 export_bk.png
 export_format_pressed.png
 export_format_unpressed.png
+export_mono_channel_botton.png
+export_mono_channel_botton_hover.png
+export_mono_channel_botton_pressed.png
+export_stereo_channel_botton.png
+export_stereo_channel_botton_hover.png
+export_stereo_channel_botton_pressed.png
 flac16_radio_button.png
 flac16_radio_button_active.png
 flac24_radio_button.png
