@@ -56,7 +56,7 @@
 
 ### Introduction
 
-Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and blend samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin.
+Geonkick is a [free software](https://www.gnu.org/philosophy/free-sw.en.html) percussive synthesizer. It can synthesize various percussive sounds, including kicks, snares, hi-hats, shakers, claps, and other unique sound effects. The synthesizer can also play pre-existing samples and offers features such as pitch modification, allowing users to modify and blend samples and synthesis. Geonkick is released under the GNU General Public License version 3 (and later), developed in C and C++, and utilizes the CMake build system. It can be used as a standalone application and as a LV2 & VST3 plugin. Can run on GNU/Linux and Windows.
 
 ### The Sound Designer Craft
 
@@ -97,13 +97,13 @@ If the "noff" button is disabled, Geonkick will mix the current sound with the n
 
 By default, the "noff" button is disabled. In future releases, this may change.
 
-**Important:** When "noff" is disabled, sounds will accumulate, and if the sound is played repeatedly and very quickly, it may introduce distortion. In such cases, it is better to enable the "noff" button.
+**Important:** When "noff" is disabled, sounds will accumulate, and if the sound is played repeatedly and very quickly, it may introduce distortion. In such cases, it is better to enable the "noff" button or adjust the instrument limiter, or even the oscillators or effects output.
 
-If there are changes to controls during instrument playback, the changes will only be applied on the next key press. However, the instrument graph will display the changes instantly.
+If there are changes to controls during instrument playback, the changes will only be applied on the next key press. However, the instrument wavefrom will display the changes instantly.
 
 #### Instrument UI
 
-The instrument's user interface serves as the primary window of Geonkick, displaying the instrument graph, envelopes, and controls. Additionally, there is a menu for opening and saving instrument presets, as well as exporting instruments.
+The instrument's user interface serves as the primary window of Geonkick, displaying the instrument wavefrom, envelopes, and controls. Additionally, there is a menu for opening and saving instrument presets, as well as exporting instruments.
 
 #### Top Bar
 
@@ -131,7 +131,6 @@ The instrument's user interface serves as the primary window of Geonkick, displa
 - **'Left Ctrl + left mouse double-click on an envelope point':** Opens the envelope point context input for its value.
 
 **Note:** When running as a plugin, ensure that the focus is on the main Geonkick window and that the key inputs are enabled by the host for the plugin.
-
 
 #### Instrument Envelope Area
 
@@ -203,10 +202,12 @@ Each layer consists of three oscillators, the outputs of which are mixed with a 
 - **Density Knob:** When the noise wave function is selected, this knob controls the density of the noise.
 - **Pitch Button:** Shows the envelopes for the pitch shift.
 - **Density Button:** Shows the envelope of the noise density.
-- **"Filter" Button:** Enables/Disables the filter for the oscillator.
-- **Envelopes Buttons:** "Amplitude," "Frequency," "Pitch," and "Cutoff" to access envelopes for amplitude, frequency, pitch shift, and filter cutoff, respectively.
+- **"Filter"** and **"Distortion"** effects buttons: Buttons to enable and switch to the filter or distortion effect UI.
+- **Distortion:**
+- **Filter:** a digital state-variable filter
+  - Cutoff knob and **Cutoff** envelope button, filter types: **LP** (low-pass), **BP** (band-pass), **HP** (high-pass), **Resonance** knob, and **Q** resonance envelope button.
 
-**Note:** Loading/saving presets preserves the noise pattern, seed, and density patern.
+**Note:** Loading/saving presets preserves the noise pattern, seed, and density patern for the oscillator.
 
 #### Global Controls
 
@@ -215,18 +216,16 @@ Global controls are applied after the layers mixer. Arranged vertically and appl
 - **Amplitude Knob:** Controls the maximum amplitude after the layers mixer.
 - **"Amplitude" Button:** Shows the general amplitude envelope.
 - **"Length":** Sets the maximum sound length of the instrument.
-- **Filter Controls:** Similar to oscillator controls.
-- **Distortion:** Drive and volume envelopes can be accessed with "Drive" and "Volume" buttons.
+- **Filter:** Similar to oscillator.
+- **Distortion:** Similar to oscillator.
 
 #### Limiter
 
 The limiter control is applied to the audio output of the instrument, controlling only the currently selected instrument.
 
-*Issues:* When playing the instrument and simultaneously changing the limiter quickly, sound artifacts may occur due to abrupt changes in sound. To adjust the total output amplitude, it's better to use the "General" controls for amplitude.
-
 #### Filter
 
-Geonkick implements a digital state-variable filter applied to oscillators, the noise generator, and after the layers mixer (general filter).
+Geonkick implements a digital state-variable filter applied to oscillators, and after the layers mixer (instrument global filter).
 
 Parameters:
 
@@ -237,25 +236,20 @@ Parameters:
 - **"Q" Button:** Shows the envelope for the resonance.
 - **Filter Type Buttons:** "LP" for low-pass, "BP" for band-pass, and "HP" for high-pass filters.
 
-The filter becomes unstable for extreme combinations of cutoff frequency and Q parameter. If it becomes unstable, the instrument graph will be hard-limited. Proper adjustments of the Q factor are necessary to maintain desired cutoff frequency ranges. This behavior can be used as a feature to generate special effect sounds.
+The filter becomes unstable for extreme combinations of cutoff frequency and Q parameter. If it becomes unstable, the instrument sound will be hard-limited. Proper adjustments of the Q factor are necessary to maintain desired cutoff frequency ranges. But this behavior can be used as a feature to generate special effect sounds.
 
 #### Distortion
 
-The distortion effect is applied after the general filter and has the following controls:
+The distortion effect (for oscillators and global) is applied after the filter and has the following controls:
 
-- **Input:** Limiter for the input signal.
-- **Volume:** Output volume control.
-- **Volume Envelope:** Accessed with the "Volume" button.
-- **Drive:** Controls the amount of distortion.
-- **Drive Envelope:** Accessed with the "Drive" button.
-
-*Note:* The compressor is not a standard compressor; it only compresses signal amplitude with a zero release time. It is more useful for creating distortion effects. For standard sound compression, it is recommended to use a dedicated compressor.
+  - **Distortion Type:** Functions used to create distortion: *hard clip*, *tangent*, *arctangent*, *exponential*, *logarithm*, and *polynomial*.
+  - **Drive** knob,
+  - **Drive envelope Button**,
+  - **Input** and **Output** Limiters.
 
 #### Tune
 
 In the top bar, the "Tune" checkbox toggles tuning for the currently selected instrument. When enabled, Geonkick will stop mapping the instrument to a specific key and will tune the sound relative to the untuned key A4 (in number of semitones).
-
-*Note:* "Tune" will not make Geonkick polyphonic.
 
 ### Kit
 
@@ -322,8 +316,9 @@ When the user selects a path that contains presets, they will be displayed in th
 
 The Sample Browser has additional controls in the bottom bar:
 
-- **"O1, O2, O3"** — When a sample file is selected, pressing one of these buttons will load the sample into the corresponding oscillator (O1, O2, or O3), and the oscillator's waveform will be set to "sample".
-- **"Export as"** — A spinbox where the export format can be selected: WAV, FLAC, OGG, or SFZ.
+- **"O1, O2, O3"** - When a sample file is selected, pressing one of these buttons will load the sample into the corresponding oscillator (O1, O2, or O3), and the oscillator's waveform will be set to "sample".
+- **"Export as"** - A spinbox where the export format can be selected: WAV, FLAC, OGG, or SFZ.
+- **"M"**, **"S"** - Export as stereo or mono (not applicable for SFZ format).
 
 #### Export
 
