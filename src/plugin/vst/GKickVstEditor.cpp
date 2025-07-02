@@ -136,6 +136,7 @@ GKickVstEditor::getSize(ViewRect* newSize)
 	return kResultOk;
 }
 
+#ifndef GEONKICK_OS_GNU
 tresult GKickVstEditor::processKey(RkEvent::Type keyType, char16 key)
 {
         if (!mainWindow)
@@ -169,3 +170,4 @@ tresult GKickVstEditor::onKeyUp(char16 key,
 {
         return processKey(RkEvent::Type::KeyReleased, key);
 }
+#endif // GEONKICK_OS_GNU
