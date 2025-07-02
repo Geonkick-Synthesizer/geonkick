@@ -42,15 +42,15 @@ Source code repository:
      - initial phase control
      - amplitude, frequency, noise density, and sample pitch shift envelope
      - low, band and high pass filter, cutoff & resonance envelope
+     - distortion (hard-clip, tan, arctan, log, exp, polynomial)
 * FM synthesis
      - OSC1->OSC2
 * General
      - amplitude envelope & kick length
      - low & high pass filter, cutoff envelope & resonance envelope
      - limiter
-     - distortion
+     - distortion (hard-clip, tan, arctan, log, exp, polynomial)
      - distortion drive envelope
-     - distortion volume envelope
      - tune percussion option (relative to key A4)
 * Key velocity sensitive for instrument total output amplitude
 * Jack support
@@ -59,8 +59,9 @@ Source code repository:
      - WAV: 16, 24, 32 bit
      - FLAC: 16, 24 bit
      - Ogg
-* Open & Save presets in JSON format
-* Preset browser
+     - SFZ
+* Load & Save presets in JSON format
+* Preset & Sample browser
 * Standalone
 * Pitch to note
 * LV2 & VST3 Plugin
@@ -120,7 +121,7 @@ Get VST3 SDK than build Geonkick VST3 plugin:
 
         mkdir geonkick/build
         cd geonkick/build
-        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=OFF -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=OFF -DSMTG_ENABLE_VSTGUI_SUPPORT=OFF ../
+        cmake -DVST3_SDK_PATH=<full system path to VST3 SDK folder> ../
         make
         make install
 
