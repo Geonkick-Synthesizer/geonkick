@@ -4,7 +4,7 @@ A lightweight graphics widget toolkit.
 
 Author: Iurie Nistor
 
-Version: 2.0.0
+Version: 2.1.0
 
 License: GNU General Public License v3.0
 

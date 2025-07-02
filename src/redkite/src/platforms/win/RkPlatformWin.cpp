@@ -78,7 +78,6 @@ static Rk::Key convertToRkKey(unsigned int winKey)
         if (winKey >= 0x21 && winKey <= 0x7e)
                 return static_cast<Rk::Key>(winKey);
 
-        RK_LOG_DEV_DEBUG("Rk::Key:: " << std::hex << winKey);
         Rk::Key rkKey;
         switch(winKey) {
         case VK_BACK:
@@ -117,11 +116,9 @@ static Rk::Key convertToRkKey(unsigned int winKey)
                 break;
         case VK_CONTROL:
         case VK_LCONTROL:
-                RK_LOG_DEV_DEBUG("Rk::Key::Key_Control_Left");
                 rkKey = Rk::Key::Key_Control_Left;
                 break;
         case VK_RCONTROL:
-                RK_LOG_DEV_DEBUG("Rk::Key::Key_Control_Right");
                 rkKey = Rk::Key::Key_Control_Right;
                 break;
         case VK_MENU:
