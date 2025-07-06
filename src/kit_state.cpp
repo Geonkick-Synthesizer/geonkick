@@ -138,6 +138,9 @@ const std::vector<std::unique_ptr<PercussionState>>& KitState::percussions() con
                 auto state = std::make_unique<PercussionState>();
                 if (!state->loadObject(obj))
                         return false;
+#ifdef GEONKICK_SINGLE
+                state->setId(0);
+#endif // GEONKICK_SINGLE
                 addPercussion(std::move(state));
                 return true;
         }
