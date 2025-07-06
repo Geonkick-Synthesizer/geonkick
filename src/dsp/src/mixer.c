@@ -140,6 +140,8 @@ gkick_mixer_set_leveler(struct gkick_mixer *mixer,
                         size_t index,
                         gkick_real val)
 {
+        if (index >= GEONKICK_MAX_INSTRUMENTS)
+                return;
         if (mixer->limiter_callback != NULL && mixer->limiter_callback_arg != NULL)
                 mixer->limiter_callback(mixer->limiter_callback_arg, index, val);
 }
@@ -184,20 +186,23 @@ gkick_mixer_mute(struct gkick_mixer *mixer, size_t id, bool b)
 enum geonkick_error
 gkick_mixer_is_muted(struct gkick_mixer *mixer, size_t id, bool *b)
 {
-        *b = mixer->audio_outputs[id]->muted;
+        if (id < GEONKICK_MAX_INSTRUMENTS)
+                *b = mixer->audio_outputs[id]->muted;
         return GEONKICK_OK;
 }
 
 enum geonkick_error
 gkick_mixer_solo(struct gkick_mixer *mixer, size_t id, bool b)
 {
-        mixer->audio_outputs[id]->solo = b;
-        bool is_solo = false;
-        for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
-                if (mixer->audio_outputs[i]->enabled && mixer->audio_outputs[i]->solo)
-                        is_solo = true;
+        if (id < GEONKICK_MAX_INSTRUMENTS) {
+                mixer->audio_outputs[id]->solo = b;
+                bool is_solo = false;
+                for (size_t i = 0; i < GEONKICK_MAX_INSTRUMENTS; i++) {
+                        if (mixer->audio_outputs[i]->enabled && mixer->audio_outputs[i]->solo)
+                                is_solo = true;
+                }
+                mixer->solo = is_solo;
         }
-        mixer->solo = is_solo;
 
         return GEONKICK_OK;
 }
@@ -205,7 +210,8 @@ gkick_mixer_solo(struct gkick_mixer *mixer, size_t id, bool b)
 enum geonkick_error
 gkick_mixer_is_solo(struct gkick_mixer *mixer, size_t id, bool *b)
 {
-        *b = mixer->audio_outputs[id]->solo;
+        if (id < GEONKICK_MAX_INSTRUMENTS)
+                *b = mixer->audio_outputs[id]->solo;
         return GEONKICK_OK;
 }
 
@@ -253,7 +259,8 @@ gkick_mixer_enable_note_off(struct gkick_mixer *mixer,
                             size_t id,
                             bool enable)
 {
-        gkick_audio_output_enable_note_off(mixer->audio_outputs[id], enable);
+        if (id < GEONKICK_MAX_INSTRUMENTS)
+                gkick_audio_output_enable_note_off(mixer->audio_outputs[id], enable);
         return GEONKICK_OK;
 }
 
@@ -262,6 +269,7 @@ gkick_mixer_note_off_enabled(struct gkick_mixer *mixer,
                              size_t id,
                              bool *enabled)
 {
-        *enabled = gkick_audio_output_note_off(mixer->audio_outputs[id]);
+        if (id < GEONKICK_MAX_INSTRUMENTS)
+                *enabled = gkick_audio_output_note_off(mixer->audio_outputs[id]);
         return GEONKICK_OK;
 }
