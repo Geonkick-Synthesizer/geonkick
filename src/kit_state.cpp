@@ -123,6 +123,7 @@ const std::vector<std::unique_ptr<PercussionState>>& KitState::percussions() con
 
  bool KitState::fromJson(const std::string &jsonData, bool oldPreset)
 {
+        percussionsList.clear();
         rapidjson::Document document;
         document.Parse(jsonData.c_str());
         if (!document.IsObject())
