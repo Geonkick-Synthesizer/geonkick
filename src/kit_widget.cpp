@@ -133,14 +133,16 @@ void KitWidget::updatePercussion(PercussionIndex index, PercussionModel *model)
 
 void KitWidget::removePercussion(PercussionIndex index)
 {
+        size_t containerIndex = 0;
         for (auto it = percussionViewList.begin(); it != percussionViewList.end(); ++it) {
                 if ((*it)->getModel()->index() == index) {
-                        percussionsContainer->removeAt(index);
+                        percussionsContainer->removeAt(containerIndex);
                         delete *it;
                         percussionViewList.erase(it);
                         percussionsContainer->update();
                         break;
                 }
+                containerIndex++;
         }
 }
 
