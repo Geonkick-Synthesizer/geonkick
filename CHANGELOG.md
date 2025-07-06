@@ -1,3 +1,11 @@
+## [3.6.1]
+
+### Fixes
+
+- fix crash for single version of Geonkick when selecting some presets
+- fix crash deleting and after selecting a kit instrument
+- fix setting instrument channel after deleting a kit instrument
+
 ## [3.6.0]
 
 ### Features
